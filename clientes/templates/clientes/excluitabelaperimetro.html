@@ -1,0 +1,22 @@
+<form method="post" action="{% url 'excluitabelaperimetro' 0 %}" class="js-exclui-tabelaperimetro-form">
+    {% csrf_token %}
+    <div class="modal-header">
+        <button type="button"class="close" data-dismiss="modal" aria-label="close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title"><b>TABELA PERÍMETRO</b></h4>
+    </div>
+    <div class="modal-body">
+        <div class="divformulario">
+            <h4>Você tem certeza que deseja excluir o registro abaixo?</h4>
+            <br>
+            <P>PERÍMETRO DE <b>{{ tabelaperimetro.PerimetroInicial }} KMs</b> ATÉ <b>{{ tabelaperimetro.PerimetroFinal }} KMs</b>.</P>
+            <p>VALOR À RECEBER PERÍMETRO <b>R$ {{ tabelaperimetro.PerimetroCobra }}</b>.</p>
+            <p>VALOR À PAGAR PERÍMETRO <b>R$ {{ tabelaperimetro.PerimetroPaga }}</b>.</p>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" data-dismiss="modal">CANCELAR</button>
+        <button type="submit" class="btn btn-danger" id="excluicobrancacliente" idcobranca="">EXCLUIR</button>
+    </div>
+</form>

@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+
+{% block title %} Módulo Clientes {% endblock %}
+
+{% block main %}
+    <header class="header_base">
+
+    </header>
+    <div class="conteudo_base">
+        {% block maincliente %}
+        {% endblock %}
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        $("button[name='temtabela']").click(function() {
+            var selecionaveiculo = $(this).attr('idveiculo');
+            var selecionacliente = $(this).attr('idcliente');
+
+            $.ajax ({
+                url:'/clientes/selecionatabelaveiculo/',
+                type: 'GET',
+                data: {
+                    'selecionaveiculo': selecionaveiculo,
+                    'selecionacliente': selecionacliente
+                },
+                datatype: 'json',
+                success: function(data){
+                    console.log(data)
+                    $("#mostratabelaveiculo .teste-div").html(data.html_tabelaveiculo);
+                    $("#botaotabelaveiculo").attr('data-url', "{% url 'editatabelaveiculo' 0 %}".replace(/0/, $("#tabelaveiculomostra").attr('idtabelaveiculomostra')));
+                    $("#botaotabelaveiculo").attr('idtabelaveiculo', $("#tabelaveiculomostra").attr('idtabelaveiculomostra'));
+                    $("#botaook").hide();
+                    $("#botaotabelaveiculo").show();
+                    $("#mostratabelaveiculo").show()
+                },
+            });
+
+        });
+
+        $("button[name='naotemtabela']").click(function() {
+            $("#botaoidcategoriaveiculo").attr('idcategoriaveiculo',$(this).attr('idveiculo'))
+            $("#botaook").show();
+            $("#botaotabelaveiculo").hide();
+            $("#mostratabelaveiculo").hide();
+        });
+
+        $(document).ready(function(){
+            $("#botaook").show();
+            $("#botaotabelaveiculo").hide();
+            $("#mostratabelaveiculo").hide();
+
+            var pc = $(".phkesccobra").text().substring(0,1);
+            var hc = $(".phkesccobra").text().substring(1,2);
+            var kc = $(".phkesccobra").text().substring(2,3);
+            var ec = $(".phkesccobra").text().substring(3,4);
+            var sc = $(".phkesccobra").text().substring(4,5);
+            var cc = $(".phkesccobra").text().substring(5,6);
+
+            var pp = $(".phkescpaga").text().substring(0,1);
+            var hp = $(".phkescpaga").text().substring(1,2);
+            var kp = $(".phkescpaga").text().substring(2,3);
+            var ep = $(".phkescpaga").text().substring(3,4);
+            var sp = $(".phkescpaga").text().substring(4,5);
+            var cp = $(".phkescpaga").text().substring(5,6);
+
+            if (pc == 1) {
+                $("#switch-porcentagem-cobra").attr('checked', 'checked');
+            };
+            if (hc == 1) {
+                $("#switch-hora-cobra").attr('checked', 'checked');
+            };
+            if (kc == 1) {
+                $("#switch-kilometragem-cobra").attr('checked', 'checked');
+            };
+            if (ec == 1) {
+                $("#switch-entrega-cobra").attr('checked', 'checked');
+            };
+            if (sc == 1) {
+                $("#switch-saida-cobra").attr('checked', 'checked');
+            };
+            if (cc == 1) {
+                $("#switch-capacidade-cobra").attr('checked', 'checked');
+            };
+
+            if (pp == 1) {
+                $("#switch-porcentagem-paga").attr('checked', 'checked');
+            };
+            if (hp == 1) {
+                $("#switch-hora-paga").attr('checked', 'checked');
+            };
+            if (kp == 1) {
+                $("#switch-kilometragem-paga").attr('checked', 'checked');
+            };
+            if (ep == 1) {
+                $("#switch-entrega-paga").attr('checked', 'checked');
+            };
+            if (sp == 1) {
+                $("#switch-saida-paga").attr('checked', 'checked');
+            };
+            if (cp == 1) {
+                $("#switch-capacidade-paga").attr('checked', 'checked');
+            };
+
+            var loadForm = function(){
+                var idclick = $(this).attr("idclick");
+
+                $("#mostratabelaveiculo").hide();
+                var obj = $(this);
+                var idcliente = $(this).attr("idcliente");
+                var idemailcliente = $(this).attr("idemailcliente");
+                var idfonecliente = $(this).attr("idfonecliente");
+                var idcobrancacliente = $(this).attr("idcobrancacliente");
+                var idtabelacliente = $(this).attr("idtabelacliente");
+                var idtabelaveiculo = $(this).attr("idtabelaveiculo");
+                var idcategoriaveiculo = $(this).attr("idveiculo");
+                var idtabelacapacidade = $(this).attr("idtabelacapacidade");
+                var idtabelaperimetro = $(this).attr("idtabelaperimetro");
+
+                $.ajax({
+                    url: obj.attr("data-url"),
+                    type: 'get',
+                    dataType: 'json',
+                    data: {
+                        idcliente: idcliente,
+                        idcategoriaveiculo: idcategoriaveiculo,
+                    },
+                    beforeSend: function(){
+                        $("#modal-formulario .modal-content").html("");
+                        $("#modal-formulario").modal("show");
+                    },
+                    success: function(data){
+                        $("#modal-formulario .modal-content").html(data.html_form);
+
+                        if (idclick == 'cliente') {
+                            $("#id_Fantasia").focus();
+                        } else if (idclick == 'clienteemail') {
+                            $("#id_Contato").focus();
+                        } else if (idclick == 'clientefone') {
+                            $("#id_Contato").focus();
+                        } else if (idclick == 'clientecobranca') {
+                            $("#id_Nome").focus();
+                        } else if (idclick == 'clientetabela') {
+                            $("#id_Comissao").focus();
+                        } else if (idclick == 'clientetabelaveiculo') {
+                            $("#id_PorcentagemCobra").focus();
+                        } else if (idclick == 'clientetabelacapacidade') {
+                            $("#id_CapacidadeInicial").focus();
+                        } else if (idclick == 'clientetabelaperimetro') {
+                            $("#id_PerimetroInicial").focus();
+                        };
+
+                        $("#categoriaveiculomodal").text('TABELA VEÍCULO - ')
+                        $(".js-edita-cliente-form").attr('action', "{% url 'editacliente' 0 %}".replace(/0/, idcliente));
+                        $(".js-exclui-cliente-form").attr('action', "{% url 'excluicliente' 0 %}".replace(/0/, idcliente));
+                        $(".js-edita-emailcliente-form").attr('action', "{% url 'editaemailcliente' 0 %}".replace(/0/, idemailcliente));
+                        $(".js-exclui-emailcliente-form").attr('action', "{% url 'excluiemailcliente' 0 %}".replace(/0/, idemailcliente));
+                        $(".js-edita-fonecliente-form").attr('action', "{% url 'editafonecliente' 0 %}".replace(/0/, idfonecliente));
+                        $(".js-exclui-fonecliente-form").attr('action', "{% url 'excluifonecliente' 0 %}".replace(/0/, idfonecliente));
+                        $(".js-edita-cobrancacliente-form").attr('action', "{% url 'editacobrancacliente' 0 %}".replace(/0/, idcobrancacliente));
+                        $(".js-exclui-cobrancacliente-form").attr('action', "{% url 'excluicobrancacliente' 0 %}".replace(/0/, idcobrancacliente));
+                        $(".js-edita-tabelacliente-form").attr('action', "{% url 'editatabelacliente' 0 %}".replace(/0/, idtabelacliente));
+                        $(".js-edita-tabelaveiculo-form").attr('action', "{% url 'editatabelaveiculo' 0 %}".replace(/0/, $("#botaotabelaveiculo").attr('idtabelaveiculo')));
+                        $(".js-edita-tabelacapacidade-form").attr('action', "{% url 'editatabelacapacidade' 0 %}".replace(/0/, idtabelacapacidade));
+                        $(".js-exclui-tabelacapacidade-form").attr('action', "{% url 'excluitabelacapacidade' 0 %}".replace(/0/, idtabelacapacidade));
+                        $(".js-edita-tabelaperimetro-form").attr('action', "{% url 'editatabelaperimetro' 0 %}".replace(/0/, idtabelaperimetro));
+                        $(".js-exclui-tabelaperimetro-form").attr('action', "{% url 'excluitabelaperimetro' 0 %}".replace(/0/, idtabelaperimetro));
+                    }
+                });
+            };
+
+            $(".js-criacliente").click(loadForm);
+            $(".js-editacliente").click(loadForm);
+            $(".js-excluicliente").click(loadForm);
+            $(".js-criaemailcliente").click(loadForm);
+            $(".js-editaemailcliente").click(loadForm);
+            $(".js-excluiemailcliente").click(loadForm);
+            $(".js-criafonecliente").click(loadForm);
+            $(".js-editafonecliente").click(loadForm);
+            $(".js-excluifonecliente").click(loadForm);
+            $(".js-criacobrancacliente").click(loadForm);
+            $(".js-editacobrancacliente").click(loadForm);
+            $(".js-excluicobrancacliente").click(loadForm);
+            $(".js-criatabelacliente").click(loadForm);
+            $(".js-editatabelacliente").click(loadForm);
+            $(".js-criatabelaveiculo").click(loadForm);
+            $(".js-editatabelaveiculo").click(loadForm);
+            $(".js-criatabelacapacidade").click(loadForm);
+            $(".js-editatabelacapacidade").click(loadForm);
+            $(".js-excluitabelacapacidade").click(loadForm);
+            $(".js-criatabelaperimetro").click(loadForm);
+            $(".js-editatabelaperimetro").click(loadForm);
+            $(".js-excluitabelaperimetro").click(loadForm);
+
+        });
+    </script>
+{% endblock %}

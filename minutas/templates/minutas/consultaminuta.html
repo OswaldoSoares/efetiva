@@ -1,0 +1,600 @@
+{% extends 'minutas/baseminutas.html' %}
+
+{% block title %}
+    Módulo Minutas
+{% endblock %}
+
+{% block mainminuta %}
+<div class="consulta" xmlns="http://www.w3.org/1999/html">
+    {% for itens in minuta %}
+        <header class="consulta_header">
+            <div class="consulta_headertitulo">
+                <p><b>MINUTA {{ itens.Minuta }} - DATA {{ itens.DataMinuta }} - PERÍODO DAS {{ itens.HoraInicial }} ATÉ {{ itens.HoraFinal }} - {{ itens.idCliente.Fantasia }}</b></p>
+            </div>
+            <div class="consulta_headerbtn">
+                <button class="btn btn-success js-editaminuta"
+                        idminuta="{{ itens.idMinuta }}"
+                        data-url="{% url 'editaminuta' itens.idMinuta %}">
+                    <span class="glyphicon glyphicon-edit"></span>
+                </button>
+                <button class="btn btn-warning js-imprimeminuta"
+                        idminuta="{{ itens.idMinuta }}"
+                        onclick="window.location.href = '{% url 'imprimeminuta' itens.idMinuta %}'">
+                    <span class="glyphicon glyphicon-file"></span>
+                </button>
+            </div>
+            <div class="consulta_headerdados">
+                <p><b>COLETA: {{ itens.Coleta|slice:"0:125" }}</b></p>
+                <p><b>ENTREGA: {{ itens.Entrega|slice:"0:125" }}</b></p>
+                <p><b>OBSERVAÇÕES: {{ itens.Obs|slice:"0:125" }}</b></p>
+            </div>
+        </header>
+
+        <div class="consulta_coluna1">
+
+            <!-- MOTORISTA MINUTA -->
+            <div class="consulta_cliente_modulo">
+                <h2 class="consulta_subtitulo"><b>MOTORISTA:</b></h2>
+                {% if motorista_da_minuta %}
+                    <label class="glyphicon glyphicon-ok botaoadicionar"></label>
+                {% else %}
+                    <label class="glyphicon glyphicon-plus botaoadicionar js-criaminutamotorista" idminuta="{{ itens.idMinuta }}" data-url="{% url 'criaminutamotorista' %}"></label>
+                {% endif %}
+
+                {% for itensmotorista in motorista_da_minuta %}
+                    <div class="consulta_contatoemail">
+                        <p>{{ itensmotorista.idPessoal }}</p>
+                    </div>
+                    <div class="excluidocfone">
+                        <button class="btn btn-danger btn-xs js-excluiminutamotorista" idminutacolaboradores="{{ itensmotorista.idMinutaColaboradores }}" data-url="{% url 'excluiminutamotorista' itensmotorista.idMinutaColaboradores %}">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </div>
+                {% endfor %}
+                {% if itens_paga_motorista %}
+                    <div class="consulta_itens">
+                        {% for itens_paga_motorista in itens_paga_motorista %}
+                            <li>{{ itens_paga_motorista.Descricao }} - R$ {{ itens_paga_motorista.Valor }}</li>
+                        {% endfor %}
+                    </div>
+                    <div class="consulta_contatoemail">
+                        <p>Total do pagamento do motorista R$ {{ soma_paga_motorista|floatformat:2 }}</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- AJUDANTE MINUTA -->
+            <div class="consulta_cliente_modulo">
+                <h2 class="consulta_subtitulo"><b>AJUDANTE:</b></h2>
+                <label class="glyphicon glyphicon-plus botaoadicionar js-criaminutaajudante" idminuta="{{ itens.idMinuta }}" data-url="{% url 'criaminutaajudante' %}"></label>
+                {% for itensajudante in ajudantes_da_minuta %}
+                    <div class="consulta_contatoemail">
+                        <p>{{ itensajudante.idPessoal }}</p>
+                    </div>
+                    <div class="excluidocfone">
+                        <button class="btn btn-danger btn-xs js-excluiminutaajudante" idminutacolaboradores="{{ itensajudante.idMinutaColaboradores }}" data-url="{% url 'excluiminutaajudante' itensajudante.idMinutaColaboradores %}">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- VEÍCULO SOLICITADO -->
+            <div class="consulta_cliente_modulo">
+                <h2 class="consulta_subtitulo"><b>VEÍCULO SOLICITADO:</b></h2>
+                <label class="glyphicon glyphicon-ok botaoadicionar"></label>
+                {% if itens.idCategoriaVeiculo %}
+                    <div class="consulta_contatoemail">
+                        <p>{{ itens.idCategoriaVeiculo }}</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- VEÍCULO MINUTA -->
+            <div class="consulta_cliente_modulo">
+                <h2 class="consulta_subtitulo"><b>VEÍCULO ENVIADO:</b></h2>
+                {% if motoristaminuta %}
+                    {% if itens.idVeiculo %}
+                        <label class="glyphicon glyphicon-edit botaoadicionar js-editaminutaveiculo" idminuta="{{ itens.idMinuta }}" data-url="{% url 'editaminutaveiculo' itens.idMinuta %}"></label>
+                    {% else %}
+                        <label class="glyphicon glyphicon-plus botaoadicionar js-editaminutaveiculo" idminuta="{{ itens.idMinuta }}" data-url="{% url 'editaminutaveiculo' itens.idMinuta %}"></label>
+                    {% endif %}
+                {% else %}
+                    <label class="glyphicon glyphicon-ok botaoadicionar"></label>
+                {% endif %}
+
+                {% if veiculo %}
+                    {% for itensveiculo in veiculo %}
+                        <div class="consulta_contatoemail">
+                            <p>{{ itensveiculo.Marca }} {{ itensveiculo.Modelo }} - PLACA {{ itensveiculo.Placa }}</p>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <!-- HORA FINAL -->
+            <div class="consulta_cliente_modulo">
+                <h2 class="consulta_subtitulo"><b>HORA FINAL:</b></h2>
+                <label class="glyphicon glyphicon-ok botaoadicionar"></label>
+                <div class="consulta_atualizacoes">
+                    <form method="post" action="{% url 'editaminutahorafinal' itens.idMinuta %}" class="js-edita-minuta-form">
+                        {% csrf_token %}
+                        <div class="divformulario">
+                            <div class="consulta_formatualiza">
+                                {% for field in formhorafinal %}
+                                    {{ field }}
+                                {% endfor %}
+                                <button type="submit" class="btn btn-primary btn-sm">ENVIAR</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- KM INICIAL -->
+            <div class="consulta_cliente_modulo">
+                <h2 class="consulta_subtitulo"><b>KM INICIAL:</b></h2>
+                <label class="glyphicon glyphicon-ok botaoadicionar"></label>
+                <div class="consulta_atualizacoes">
+                    <form method="post" action="{% url 'editaminutakminicial' itens.idMinuta %}" class="js-edita-minuta-form">
+                        {% csrf_token %}
+                        <div class="divformulario">
+                            <div class="consulta_formatualiza">
+                                {% for field in formkminicial %}
+                                    {{ field }}
+                                {% endfor %}
+                                <button type="submit" class="btn btn-primary btn-sm">ENVIAR</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- KM FINAL -->
+            <div class="consulta_cliente_modulo">
+                <h2 class="consulta_subtitulo"><b>KM FINAL:</b></h2>
+                <label class="glyphicon glyphicon-ok botaoadicionar"></label>
+                <div class="consulta_atualizacoes">
+                    <form method="post" action="{% url 'editaminutakmfinal' itens.idMinuta %}" class="js-edita-minuta-form">
+                        {% csrf_token %}
+                        <div class="divformulario">
+                            <div class="consulta_formatualiza">
+                                {% for field in formkmfinal %}
+                                    {{ field }}
+                                {% endfor %}
+                                <button type="submit" class="btn btn-primary btn-sm active">ENVIAR</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- DESPESAS -->
+            <div class="consulta_cliente_modulo">
+                <h2 class="consulta_subtitulo"><b>DESPESAS:</b></h2>
+                <label class="glyphicon glyphicon-plus botaoadicionar js-criaminutaparametrodespesa"
+                       idminuta="{{ itens.idMinuta }}"
+                       data-url="{% url 'criaminutaparametrodespesa' %}">
+                </label>
+                {% if itensminuta %}
+                    {% for itensminuta in itensminuta %}
+                        <div class="consulta_contatoemail">
+                            <p>{{ itensminuta.Descricao }} R$ {{ itensminuta.Valor }}</p>
+                        </div>
+                        <div class="excluidocfone">
+                            <button class="btn btn-danger btn-xs js-excluiminutadespesa"
+                                    idminuta="{{ itensminuta.idMinuta }}"
+                                    idminutaitens="{{ itensminuta.idMinutaItens }}"
+                                    data-url="{% url 'excluiminutadespesa' itensminuta.idMinutaItens %}">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <div class="consulta_atualizacoes">
+                   <form method="post"
+                         action="{% url 'criaminutadespesa' %}"
+                         class="js-cria-minutadespesa-form">
+                        {% csrf_token %}
+                        <div class="divformulario">
+                            <div class="consulta_formatualiza">
+                                <input type="hidden"
+                                       name="idMinuta"
+                                       value="{{ itens.idMinuta }}"
+                                       id="id_idMinuta">
+                                <select name="Descricao"
+                                        class="formfieldsshort"
+                                        maxlength="25"
+                                        id="id_Descricao">
+                                    {% for itens in despesas %}
+                                        <option value="{{ itens }}">{{ itens }}</option>
+                                    {% endfor %}
+                                </select>
+                                <input type="number"
+                                       name="Valor"
+                                       value="0.00"
+                                       class="formfieldsshort"
+                                       step="0.01"
+                                       required=""
+                                       id="id_Valor">
+                                <input type="hidden"
+                                       name="TipoItens"
+                                       value="DESPESA"
+                                       id="id_TipoItens">
+                                <input type="hidden"
+                                       name="RecebePaga"
+                                       value="R"
+                                       id="id_RecebePaga">
+                                <input type="hidden"
+                                       name="Tempo"
+                                       value="0"
+                                       id="id_Tempo">
+                                <button type="submit"
+                                        class="btn btn-primary btn-sm active">ENVIAR</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- ENTREGAS -->
+            <div class="consulta_cliente_modulo">
+                <h2 class="consulta_subtitulo"><b>ENTREGAS:</b></h2>
+                <label class="glyphicon glyphicon-plus botaoadicionar js-criaminutaentrega" idminuta="{{ itens.idMinuta }}" data-url="{% url 'criaminutaentrega' %}"></label>
+                {% for notasminuta in notasminuta %}
+                    <div class="consulta_contatoemail">
+                        <p>Nota: {{ notasminuta.Nota }} - Valor: R$ {{ notasminuta.Valor }} - Peso: {{ notasminuta.Peso }} - Volume: {{ notasminuta.Volume }}</p>
+                    </div>
+                    <div class="excluidocfone">
+                        <button class="btn btn-success btn-xs js-editaminutaentrega"
+                                idminuta="{{ notasminuta.idMinuta }}"
+                                idminutanotas="{{ notasminuta.idMinutaNotas }}"
+                                data-url="{% url 'editaminutaentrega' notasminuta.idMinutaNotas %}">
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </button>
+                        <button class="btn btn-danger btn-xs js-excluiminutaentrega"
+                                idminuta="{{ notasminuta.idMinuta }}"
+                                idminutanotas="{{ notasminuta.idMinutaNotas }}"
+                                data-url="{% url 'excluiminutaentrega' notasminuta.idMinutaNotas %}">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </div>
+                {% endfor %}
+                {% if notasminuta %}
+                    <div class="consulta_contatoemail">
+                        <p><b>Valor Total: R$ {{ totalvalornotas.totalvalor }} -
+                            Peso Total: {{ totalpesonotas.totalpeso }} -
+                            Volume Total: {{ totalvolumenotas.totalvolume }}</b></p>
+                    </div>
+                {% endif %}
+            </div>
+
+            {% if itens.StatusMinuta == 'ABERTA' %}
+            <!-- VALORES DE FATURAMENTO -->
+            <div class="consulta_cliente_modulo">
+                <h2 class="consulta_subtitulo"><b>VALORES DE FATURAMENTO E PAGAMENTO:</b></h2>
+                <label class="glyphicon glyphicon-ok botaoadicionar"></label>
+                <div class="demonstrativo">
+                    <form method="post"
+                         action="">
+                        {% csrf_token %}
+                        <div class="tb-recebe">
+                            <table class="tb-demo-recebe">
+                                <thead>
+                                    <th class="titulo">DESCRICÃO</th>
+                                    <th class="titulo" colspan="4">RECEBE</th>
+                                    <th class="titulo" colspan="4">PAGA</th>
+                                </thead>
+                                <tbody>
+                                    {% for key, value in tabela_recebe_e_paga.items %}
+                                        <tr class="tb-linha">
+                                            <td class="tb-coluna1">
+                                                <span><b>{{ key }}</b></span>
+                                            </td>
+                                            <td class="tb-coluna2">
+                                                <input id="{{ value.id_swr }}"
+                                                       name="{{ value.name_swr }}"
+                                                       {% if value.checked_swr %}
+                                                           checked="checked"
+                                                       {% endif %}
+                                                       value="{{ value.value_swr }}"
+                                                       class="{{ value.class_swr }}"
+                                                       type="{{ value.type_swr }}"
+                                                >
+                                                <label for="{{ value.id_swr }}"></label>
+                                            </td>
+                                            <td class="tb-coluna3">
+                                                <span><b>{{ value.type_tabela_recebe }}</b></span>
+                                                <input id="{{ value.id_tr }}"
+                                                       name="{{ value.name_tr }}"
+                                                       value="{{ value.value_tr|stringformat:'.2f' }}"
+                                                       class="{{ value.class_tr }}"
+                                                       type="{{ value.type_tr }}"
+                                                       step="{{ value.step_tr }}"
+                                                >
+                                            </td>
+                                            <td class="tb-coluna4">
+                                                {% if value.type_minuta_recebe %}
+                                                    <span><b>{{ value.type_minuta_recebe }}</b></span>
+                                                    <input id="{{ value.id_mr }}"
+                                                           name="{{ value.name_mr }}"
+                                                           {% if value.type_minuta_recebe == "HS" %}
+                                                               value="{{ value.value_mr }}"
+                                                           {% elif value.type_minuta_recebe == "UN" %}
+                                                               value="{{ value.value_mr }}"
+                                                               step="1.00"
+                                                           {% else %}
+                                                               value="{{ value.value_mr|stringformat:'.2f' }}"
+                                                               step="0.01"
+                                                           {% endif %}
+                                                           class="{{ value.class_mr }}"
+                                                           type="{{ value.type_mr }}"
+                                                    >
+                                                {% endif %}
+                                            </td>
+                                            <td class="tb-coluna5">
+                                                <span id="{{ value.id_tor }}"
+                                                      class="to-despesa-recebe">R$ 0,00</span>
+                                                <input id="{{ value.id_hir }}"
+                                                       class="valor-recebe"
+                                                       name="valor-recebe"
+                                                       value="0.00"
+                                                       type="hidden">
+                                            </td>
+                                            <td class="tb-coluna2">
+                                                {% if value.id_swp %}
+                                                    <input id="{{ value.id_swp }}"
+                                                           name="{{ value.name_swp }}"
+                                                           {% if value.checked_swp %}
+                                                               checked="checked"
+                                                           {% endif %}
+                                                           value="{{ value.value_swp }}"
+                                                           class="{{ value.class_swp }}"
+                                                           type="{{ value.type_swp }}"
+                                                    >
+                                                    <label for="{{ value.id_swp }}"></label>
+                                                {% endif %}
+                                            </td>
+                                            <td class="tb-coluna3">
+                                                {% if value.id_swp %}
+                                                    <span><b>{{ value.type_tabela_paga }}</b></span>
+                                                    <input id="{{ value.id_tp }}"
+                                                           name="{{ value.name_tp }}"
+                                                           value="{{ value.value_tp|stringformat:'.2f' }}"
+                                                           class="{{ value.class_tp }}"
+                                                           type="{{ value.type_tp }}"
+                                                           step="{{ value.step_tp }}"
+                                                    >
+                                                {% endif %}
+                                            </td>
+                                            <td class="tb-coluna4">
+                                                {% if value.type_minuta_paga %}
+                                                    <span><b>{{ value.type_minuta_paga }}</b></span>
+                                                    <input id="{{ value.id_mr }}"
+                                                           name="{{ value.name_mr }}"
+                                                           {% if value.type_minuta_recebe == "HS" %}
+                                                               value="{{ value.value_mr }}"
+                                                           {% elif value.type_minuta_recebe == "UN" %}
+                                                               value="{{ value.value_mr }}"
+                                                               step="1.00"
+                                                           {% else %}
+                                                               value="{{ value.value_mr|stringformat:'.2f' }}"
+                                                               step="0.01"
+                                                           {% endif %}
+                                                           class="{{ value.class_mr }}"
+                                                           type="{{ value.type_mr }}"
+                                                    >
+                                                {% endif %}
+                                            </td>
+                                            <td class="tb-coluna5">
+                                                {% if value.id_swp %}
+                                                    <span id="{{ value.id_top }}"
+                                                          class="tl-despesa-paga">R$ 0,00</span>
+                                                    <input id="{{ value.id_hip }}"
+                                                           class="valor-paga"
+                                                           name="valor-paga"
+                                                           value="0.00"
+                                                           type="hidden">
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                <!--&lt;!&ndash; TAXA DE EXPEDIÇÃO &ndash;&gt;-->
+                                <!--<tr class="tb-linha">-->
+                                    <!--<td class="tb-coluna1">-->
+                                        <!--<span><b>TAXA DE EXPEDIÇÃO</b></span>-->
+                                    <!--</td>-->
+                                    <!--<td class="tb-coluna2">-->
+                                        <!--<input id="sw-taxadeexpedição-recebe"-->
+                                               <!--name="switch"-->
+                                               <!--{% if sw_taxadeexpedição_recebe %}-->
+                                                   <!--checked="checked"-->
+                                               <!--{% endif %}-->
+                                               <!--value="sw-taxadeexpedição-recebe"-->
+                                               <!--class="switch switch&#45;&#45;shadow change-taxadeexpedicao-recebe"-->
+                                               <!--type="checkbox"-->
+                                        <!--&gt;-->
+                                        <!--<label for="sw-taxadeexpedição-recebe"></label>-->
+                                    <!--</td>-->
+                                    <!--<td class="tb-coluna3">-->
+                                        <!--<span><b>R$ </b></span>-->
+                                        <!--<input id="tb-taxadeexpedicao-recebe"-->
+                                               <!--name="tb-taxadeexpedicao-recebe"-->
+                                               <!--value="{{ valortaxaexpedicao|stringformat:'.2f' }}"-->
+                                               <!--class="demonstrativo-input change-taxadeexpedicao-recebe"-->
+                                               <!--type="number"-->
+                                               <!--step="0.01"-->
+                                        <!--&gt;-->
+                                    <!--</td>-->
+                                    <!--<td class="tb-coluna4"></td>-->
+                                    <!--<td class="tb-coluna5">-->
+                                        <!--<span id="tl-taxadeexpedicao-recebe"-->
+                                              <!--class="tl-despesa-recebe">R$ 0,00</span>-->
+                                        <!--<input name="descricao-recebe"-->
+                                               <!--value="TAXA DE EXPEDIÇÃO"-->
+                                               <!--type="hidden">-->
+                                        <!--<input id="hi-taxadeexpedicao-recebe"-->
+                                               <!--class="valor-recebe"-->
+                                               <!--name="valor-recebe"-->
+                                               <!--value="0.00"-->
+                                               <!--type="hidden">-->
+                                    <!--</td>-->
+                                    <!--<td class="tb-coluna2"></td>-->
+                                    <!--<td class="tb-coluna3"></td>-->
+                                    <!--<td class="tb-coluna4"></td>-->
+                                    <!--<td class="tb-coluna5"></td>-->
+                                <!--</tr>-->
+                                <!-- DESPESAS -->
+                                {% for itens in itensminuta %}
+                                    <tr class="tb-linha">
+                                        <td class="tb-coluna1">
+                                            <span><b>{{ itens.Descricao }}</b></span>
+                                        </td>
+                                        <td class="tb-coluna2">
+                                            <input id="sw-{{ itens.Descricao|lower|cut:' ' }}-recebe"
+                                                   name="switch"
+                                                   checked="checked"
+                                                   value="sw-{{ itens.Descricao|lower|cut:' ' }}-recebe"
+                                                   class="switch switch--shadow switch-despesa-recebe"
+                                                   type="checkbox"
+                                            >
+                                            <label for="sw-{{ itens.Descricao|lower|cut:' ' }}-recebe"></label>
+                                        </td>
+                                        <td class="tb-coluna3">
+                                            <span><b>R$ </b></span>
+                                            <input id="tb-{{ itens.Descricao|lower|cut:' ' }}-recebe"
+                                                   name="tb-despesa-recebe"
+                                                   value="{{ itens.Valor|stringformat:'.2f'  }}"
+                                                   class="demonstrativo-input tb-despesa-recebe"
+                                                   type="number"
+                                                   step="0.01"
+                                            >
+                                        </td>
+                                        <td class="tb-coluna4"></td>
+                                        <td class="tb-coluna5">
+                                            <span id="tl-{{ itens.Descricao|lower|cut:' ' }}-recebe"
+                                                  class="tl-despesa-recebe">R$ {{ itens.Valor }}</span>
+                                            <input name="descricao_despesa-recebe"
+                                                   value="{{ itens.Descricao }}"
+                                                   type="hidden">
+                                            <input id="hi-{{ itens.Descricao|lower|cut:' ' }}-recebe"
+                                                   class="hi-despesa-recebe"
+                                                   name="valor-despesa-recebe"
+                                                   value="0.00"
+                                                   type="hidden">
+                                        </td>
+                                        <td class="tb-coluna2">
+                                            <input id="sw-{{ itens.Descricao|lower|cut:' ' }}-paga"
+                                                   name="switch"
+                                                   checked="checked"
+                                                   value="sw-{{ itens.Descricao|lower|cut:' ' }}-paga"
+                                                   class="switch switch--shadow switch-despesa-paga"
+                                                   type="checkbox"
+                                            >
+                                            <label for="sw-{{ itens.Descricao|lower|cut:' ' }}-paga"></label>
+                                        </td>
+                                        <td class="tb-coluna3">
+                                            <span><b>R$ </b></span>
+                                            <input id="tb-{{ itens.Descricao|lower|cut:' ' }}-paga"
+                                                   name="tb-despesa-paga"
+                                                   value="{{ itens.Valor|stringformat:'.2f'  }}"
+                                                   class="demonstrativo-input tb-despesa-paga"
+                                                   type="number"
+                                                   step="0.01"
+                                            >
+                                        </td>
+                                        <td class="tb-coluna4"></td>
+                                        <td class="tb-coluna5">
+                                            <span id="tl-{{ itens.Descricao|lower|cut:' ' }}-paga"
+                                                  class="tl-despesa-paga">R$ {{ itens.Valor }}</span>
+                                            <input name="descricao-despesa-paga"
+                                                   value="{{ itens.Descricao }}"
+                                                   type="hidden">
+                                            <input id="hi-{{ itens.Descricao|lower|cut:' ' }}-paga"
+                                                   class="hi-despesa-paga"
+                                                   name="valor-despesa-paga"
+                                                   value="0.00"
+                                                   type="hidden">
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                 </tbody>
+                                <tfoot>
+                                    <th class="titulo">TOTAL</th>
+                                    <th class="titulo" id="totalrecebe" colspan="4">R$ 0,00</th>
+                                    <th class="titulo" id="totalpaga" colspan="4">R$ 0,00</th>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div class="saldo-minuta">
+                            <span>SALDO MINUTA R$ 0,00</span>
+                        </div>
+                        <div class="btnfinalizaminuta">
+                            <button type="submit"
+                                    class="btn btn-success btn-sm active"
+                                    onclick="window.location.href = '{% url 'fecha_minuta' itens.idMinuta %}'">FINALIZAR MINUTA
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if itens.StatusMinuta == 'FECHADA' %}
+            <!-- MINUTA FECHADA -->
+            <div class="consulta_cliente_modulo">
+                <h2 class="consulta_subtitulo"><b>VALOR A RECEBER:</b></h2>
+                <label class="glyphicon glyphicon-ok botaoadicionar"></label>
+                <div class="demonstrativo">
+                    <div class="tb-recebe">
+                        <table class="tb-demo-recebe">
+                            <thead>
+                                <td class="titulo">DESCRICÃO</td>
+                                <td class="titulo" colspan="4">RECEBE</td>
+                            </thead>
+                            <tbody>
+                                {% for minuta_itens_fechada in minuta_itens_fechada %}
+                                    {% if minuta_itens_fechada.TipoItens == 'RECEBE' %}
+                                        <tr>
+                                            <td>{{ minuta_itens_fechada.Descricao }}</td>
+                                            <td>R$ {{ minuta_itens_fechada.Valor|stringformat:'.2f' }}</td>
+                                            <td>{{ minuta_itens_fechada.Quantidade }}</td>
+                                            <td>{{ minuta_itens_fechada.Porcento }}</td>
+                                            <td>{{ minuta_itens_fechada.Tempo }}</td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                                {% for minuta_itens_fechada in minuta_itens_fechada %}
+                                    {% if minuta_itens_fechada.TipoItens == 'DESPESA' %}
+                                        <tr>
+                                            <td>{{ minuta_itens_fechada.TipoItens }} - {{ minuta_itens_fechada.Descricao }}</td>
+                                            <td>R$ {{ minuta_itens_fechada.Valor|stringformat:'.2f' }}</td>
+                                            <td></td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            <!-- DIV MODAL -->
+            <div class="modal fade" id="modal-formulario" >
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="consulta_coluna2">
+
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+<form method="post" action="{% url 'excluitabelacapacidade' 0 %}" class="js-exclui-tabelacapacidade-form">
+    {% csrf_token %}
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title"><b>TABELA CAPACIDADE</b></h4>
+    </div>
+    <div class="modal-body">
+        <div class="divformulario">
+            <h4>Você tem certeza que deseja excluir o registro abaixo?</h4>
+            <br>
+            <p>CAPACIDADE DE <b>{{ tabelacapacidade.CapacidadeInicial }} KGs</b> ATÉ <b>{{ tabelacapacidade.CapacidadeFinal }} KGs</b>.</p>
+            <p>VALOR À RECEBER CAPACIDADE <b>R$ {{ tabelacapacidade.CapacidadeCobra }}</b>.</p>
+            <p>VALOR À PAGAR CAPACIDADE <b>R$ {{ tabelacapacidade.CapacidadePaga }}</b>.</p>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" data-dismiss="modal">CANCELAR</button>
+        <button type="submit" class="btn btn-danger" id="excluicobrancacliente" idcobranca="">EXCLUIR</button>
+    </div>
+</form>

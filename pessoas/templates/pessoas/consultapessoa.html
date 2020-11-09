@@ -1,0 +1,98 @@
+{% extends 'pessoas/basepessoas.html' %}
+
+{% block title %}
+    Módulo Colaboradores
+{% endblock %}
+
+{% block mainpessoal %}
+    <div class="consulta">
+        <header class="consulta_header">
+            {% for itens in pessoa %}
+                <div class="consulta_headertitulo">
+                    <p>{{ itens.Nome }} - {{ itens.DataNascimento }}</p>
+                </div>
+                <div class="consulta_headerbtn">
+                    <button class="btn btn-success js-editapessoa" idpessoal="{{ itens.idPessoal }}" data-url="{% url 'editapessoa' itens.idPessoal %}">
+                        <span class="glyphicon glyphicon-edit"></span>
+                    </button>
+                    <button class="btn btn-danger js-excluipessoa" idpessoal="{{ itens.idPessoal }}" data-url="{% url 'excluipessoa' itens.idPessoal %}">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                </div>
+                <div class="consulta_headerdados">
+                    <p><b>{{ itens.Endereco }} - {{ itens.Bairro }} - {{ itens.Cidade }} - {{ itens.Estado }}</b></p>
+                    <p><b>{{ itens.Categoria }}</b></p>
+                    <p><b>{{ itens.TipoPgto }}</b></p>
+                </div>
+            {% endfor %}
+        </header>
+        <div class="consulta_coluna1">
+            <h2 class="consulta_subtitulo"><b>DOCUMENTOS:</b></h2>
+            {% for itens in pessoa %}
+                <label class="glyphicon glyphicon-plus botaoadicionar js-criadocpessoa" idpessoal="{{ itens.idPessoal }}" data-url="{% url 'criadocpessoa' %}"></label>
+            {% endfor %}
+            {% for itensdoc in docpessoa %}
+                <div class="consulta_pessoadoc">
+                    <p>{{ itensdoc.TipoDocumento }}: {{ itensdoc.Documento }} - {{ itensdoc.Data}}</p>
+                </div>
+                <div class="excluidocfone">
+                    <button class="btn btn-danger btn-xs js-excluidocpessoa" iddocpessoal="{{ itensdoc.idDocPessoal }}" data-url="{% url 'excluidocpessoa' itensdoc.idDocPessoal %}">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                </div>
+            {% endfor %}
+            <h2 class="consulta_subtitulo"><b>TELEFONES:</b></h2>
+            {% for itens in pessoa %}
+                <label class="glyphicon glyphicon-plus botaoadicionar js-criafonepessoa" idpessoal="{{ itens.idPessoal }}" data-url="{% url 'criafonepessoa' %}"></label>
+            {% endfor %}
+            {% for itensfone in fonepessoa %}
+                <div class="consulta_pessoafone">
+                    <p>{{ itensfone.Fone }} - {{ itensfone.TipoFone }} - {{ itensfone.Contato }}</p>
+                </div>
+                <div class="excluidocfone">
+                    <button class="btn btn-danger btn-xs js-excluifonepessoa" idfonepessoal="{{ itensfone.idFonePessoal }}" data-url="{% url 'excluifonepessoa' itensfone.idFonePessoal %}">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                </div>
+            {% endfor %}
+
+            <h2 class="consulta_subtitulo"><b>CONTA BANCÁRIA:</b></h2>
+            {% for itens in pessoa %}
+                <label class="glyphicon glyphicon-plus botaoadicionar js-criacontapessoa" idpessoal="{{ itens.idPessoal }}" data-url="{% url 'criacontapessoa' %}"></label>
+            {% endfor %}
+            {% for itensconta in contapessoa %}
+                <div class="consulta_pessoaconta">
+                    <p>BANCO {{ itensconta.Banco }} - AGÊNCIA {{ itensconta.Agencia }} - CONTA {{ itensconta.TipoConta }} {{ itensconta.Conta }}</p>
+                </div>
+                <div class="excluidocfone">
+                    <button class="btn btn-danger btn-xs js-excluicontapessoa" idcontapessoal="{{ itensconta.idContaPessoal }}" data-url="{% url 'excluicontapessoa' itensconta.idContaPessoal %}">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                </div>
+                {% if itensconta.Titular %}
+                    <div class="consulta_pessoaconta">
+                        <p>TITULAR {{ itensconta.Titular }} CPF {{ itens.CPF }}</p>
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+            <!-- DIV MODAL -->
+            <div class="modal fade" id="modal-formulario" >
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="consulta_coluna2">
+            <figure class="containerimg">
+                {% for itens in pessoa %}
+                    <img src="/media/{{ itens.Foto }}" alt="">
+                {% endfor %}
+            </figure>
+        </div>
+
+    </div>
+{% endblock %}

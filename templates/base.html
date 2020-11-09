@@ -1,0 +1,62 @@
+<!doctype html>
+{% load static %}
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'website/css/style.css' %}">
+    <!--<link rel="stylesheet" href="{% static 'website/css/personalizado.css' %}">-->
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    {% load static %}
+    <div class="container">
+        <nav class="sidebar" align="center">
+            <header class="header_website">
+                <hgroup>
+                    <img src="{% static 'website/img/transportadora.png' %}" alt="Teste" width="150px"/>
+                    <h5>Controle Transportadora</h5>
+                </hgroup>
+            </header>
+            <ul>
+                <li><a href="{% url 'index_website' %}"><i class="fa fa-dashboard"></i>Painel Geral</a></li>
+                <li><a href="{% url 'indexcliente' %}"><i class="fa fa-address-card-o"></i>Clientes</a></li>
+                <li><a href="{% url 'indexpessoal' %}"><i class="fa fa-user-o"></i>Colaboradores</a></li>
+                <li><a href="#"><i class="fa fa-bank"></i>Faturamento</a></li>
+                <li><a href="{% url 'index_minuta' %}"><i class="fa fa-list-alt"></i>Minutas</a></li>
+                <li><a href="#"><i class="fa fa-money"></i>Pagamentos</a></li>
+                <li><a href="{% url 'indexveiculo' %}"><i class="fa fa-truck"></i>Veículos</a></li>
+                <li><a href="{% url 'criaformapgto' %}"><i class="fa fa-cogs"></i>Parametros</a></li>
+            </ul>
+
+            <footer class="footer_website">
+                <button class="btn btn-sidebar btn-lg" onclick="window.location.href = '#';">
+                    <span class="glyphicon glyphicon-user"></span>
+                </button>
+                <h6>Oswaldo</h6>
+                <h6>TRANSEFETIVA</h6>
+            </footer>
+        </nav>
+
+        <div class="conteudo">
+            <section>
+                {% block main %}
+                {% endblock %}
+            </section>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="{% static 'website/css/style.css' %}"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    {% block script %}
+    {% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Módulo Pessoas
+{% endblock %}
+
+{% block main %}
+    <header class="header_base">
+
+    </header>
+    <div class="conteudo_base">
+        {% block mainpessoal %}
+        {% endblock %}
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        $(document).ready(function(){
+            $("#botaook").show();
+            $("#botaotabelaveiculo").hide();
+            $("#tabelaveiculo").hide();
+
+            var loadForm = function(){
+                var obj = $(this);
+                var idpessoal = $(this).attr("idpessoal");
+                var iddocpessoal = $(this).attr("iddocpessoal");
+                var idfonepessoal = $(this).attr("idfonepessoal");
+                var idcontapessoal = $(this).attr("idcontapessoal");
+
+                $.ajax({
+                    url: obj.attr("data-url"),
+                    type: 'get',
+                    dataType: 'json',
+                    data: {
+                        idpessoal: idpessoal
+                    },
+                    beforeSend: function(){
+                        $("#modal-formulario .modal-content").html("");
+                        $("#modal-formulario").modal("show");
+                    },
+                    success: function(data){
+                        $("#modal-formulario .modal-content").html(data.html_form);
+                        $(".js-edita-pessoa-form").attr('action', "{% url 'editapessoa' 0 %}".replace(/0/, idpessoal));
+                        $(".js-exclui-pessoa-form").attr('action', "{% url 'excluipessoa' 0 %}".replace(/0/, idpessoal));
+                        $(".js-exclui-docpessoa-form").attr('action', "{% url 'excluidocpessoa' 0 %}".replace(/0/,iddocpessoal));
+                        $(".js-exclui-fonepessoa-form").attr('action', "{% url 'excluifonepessoa' 0 %}".replace(/0/, idfonepessoal));
+                        $(".js-exclui-contapessoa-form").attr('action', "{% url 'excluicontapessoa' 0 %}".replace(/0/, idcontapessoal));
+                    }
+                });
+            };
+
+            $(".js-criapessoa").click(loadForm);
+            $(".js-editapessoa").click(loadForm);
+            $(".js-excluipessoa").click(loadForm);
+            $(".js-criadocpessoa").click(loadForm);
+            $(".js-excluidocpessoa").click(loadForm);
+            $(".js-criafonepessoa").click(loadForm);
+            $(".js-excluifonepessoa").click(loadForm);
+            $(".js-criacontapessoa").click(loadForm);
+            $(".js-excluicontapessoa").click(loadForm);
+
+        });
+    </script>
+{% endblock %}

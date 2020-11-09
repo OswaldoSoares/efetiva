@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Módulo Minutas {% endblock %}
+
+{% block main %}
+    <header class="header_base">
+
+    </header>
+    <div class="conteudo_base">
+        {% block mainminuta %}
+        {% endblock %}
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript"
+            src="{% static 'website/js/minutas.js' %}">
+    </script>
+{% endblock %}

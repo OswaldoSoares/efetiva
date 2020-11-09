@@ -1,0 +1,72 @@
+{% extends 'clientes/baseclientes.html' %}
+
+{% block maincliente %}
+    <div class="lista_conteudo">
+        <header>
+            <h4>CADASTRO DE CLIENTES</h4>
+        </header>
+        <div class="nav_filtro">
+            <div>
+                <div class="filtro">
+                    <form>
+                        <input type="text" class="filtrotexto" placeholder="FILTRAR FANTASIA..." name="filtrofantasia"/>
+                        <button type="submit" class="btn btn-info glyphicon glyphicon-search"></button>
+                    </form>
+                </div>
+                <div class="filtro filtroadicional">
+                    <form>
+                        <input type="text" class="filtrotexto" placeholder="FILTRAR NOME..." name="filtronome"/>
+                        <button type="submit" class="btn btn-info glyphicon glyphicon-search"></button>
+                    </form>
+                </div>
+            </div>
+            <div class="add_registro">
+                <button type="button" class="btn btn-success glyphicon glyphicon-plus js-criacliente" data-url="{% url 'criacliente' %}" idclick="cliente"></button>
+            </div>
+        </div>
+        <div>
+            <table class="tabela">
+                <thead>
+                    <tr class="tabelatitulo">
+                        <th class="primeiracoluna">FANTASIA</th>
+                        <th>RAZÃO SOCIAL</th>
+                        <th>CNPJ</th>
+                        <th>STATUS</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for itens in cliente %}
+                        <tr class="tabelalinha">
+                            <td class="primeiracoluna"> {{ itens.Fantasia }}</td>
+                            <td>{{ itens.Nome }}</td>
+                            <td>{{ itens.CNPJ }}</td>
+                            <td class="status_cliente"><b>ATIVO</b></td>
+                            <td class="seleciona_registo">
+                                <button class="btn btn-primary btn-xs" onclick="window.location.href = '{% url 'consultacliente' itens.idCliente %}'">
+                                    <span class="glyphicon glyphicon-folder-open"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <footer>
+            {% for itens in cliente %}
+                {% if forloop.last %}
+                    <h5> {{ forloop.counter }} Registros de clientes listados.</h5>
+                {% endif %}
+            {% endfor %}
+        </footer>
+    </div>
+
+    <!-- DIV MODAL -->
+    <div class="modal fade" id="modal-formulario" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

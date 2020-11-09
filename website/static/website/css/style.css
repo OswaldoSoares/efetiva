@@ -1,0 +1,772 @@
+{% load static %}
+:root {
+    --corprincipal: #083c5d; /* #333a56 */
+    --corsecundaria: #d7cec7; /* #eac67a #C0C0C0 */
+    --corsidebar: #CD6090;
+    --corfundo: white;
+}
+/* Arquivo base.html */
+body {
+	font-family: 'Roboto', sans-serif;
+}
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+}
+.container {
+	margin: 0;
+	padding: 0;
+	display: flex;
+	align-items: stretch;
+	width: 100%;
+	min-height: 100vh;
+}
+.sidebar {
+	position: fixed;
+	left: 0;
+	width: 180px;
+	height: 100%;
+	background-color: var(--corsecundaria);
+	display: flex;
+	flex-wrap: wrap;
+}
+.sidebar ul a {
+    display: block;
+    height: 100%;
+    width: 100%;
+    line-height: 50px;
+    font-size: 16px;
+    text-align: left;
+    color: var(--corprincipal);
+    padding-left: 20px;
+    box-sizing: border-box;
+    border-top: 1px solid rgba(0, 0, 0, .1)
+    border-bottom: 1px solid black;
+    transition: .4s;
+}
+.sidebar ul li:hover a {
+    padding-left: 30px;
+    text-decoration: none;
+}
+.sidebar ul a i {
+    margin-right: 16px;
+}
+.sidebar:focus {
+    text-decoration: none;
+}
+.header_website {
+	margin: 0;
+	padding: 0;
+	width: 180px;
+	height: 110px;
+	background-color: var(--corprincipal);
+}
+.header_website h5 {
+	color: var(--corsecundaria);
+	text-align: center;
+	font-family: verdana;
+	font-size: 12px;
+}
+.section_website {
+	margin: 0px auto;
+}
+.footer_website {
+	align-self: flex-end;
+	margin: 0;
+	padding: 10px 0px 0px 0px;
+	width: 180px;
+	background-color: var(--corprincipal);
+}
+.footer_website h5,h6 {
+	color: var(--corsecundaria);
+	text-align: center;
+	font-family: verdana;
+	font-size: 12px;
+}
+.conteudo {
+	width: 100%;
+	padding: 0;
+	margin: 0 0 0 180px;
+	/* background imagem
+	background: url("/static/website/img/wallpaper.jpg");
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-size: cover; */
+}
+/* CSS COMPARTILHADOS - Arquivos index.html */
+.header_base {
+	background-color: var(--corprincipal);
+	width: 100%;
+	height: 50px;
+	padding: 0px 0px;
+	margin: 0px;
+}
+.conteudo_base {
+    background-color: var(--corsecundaria);
+    height: auto;
+    overflow: hidden;
+    margin: 10px;
+    box-shadow: 5px 5px 2px var(--corsecundaria);
+	border: 2px solid var(--corprincipal);
+}
+.lista_conteudo {
+    background-color: var(--corprincipal);
+    width: 100%;
+    margin: 0px;
+}
+.lista_conteudo header h4 {
+    width: 100%;
+    height: 50px;
+    color: #fff;
+    padding: 10px;
+    margin: 0px;
+    text-align: left;
+}
+.lista_conteudo footer {
+    background-color: var(--corprincipal);
+    width: 100%;
+    float: left;
+}
+.lista_conteudo footer h5 {
+    color: var(--corsecundaria);
+    text-align: center;
+    font-size: 14px;
+}
+.nav_filtro {
+    background-color: var(--corsecundaria);
+    width: 100%;
+}
+.add_registro {
+    margin: 7px 5px 3px 5px;
+	float: right;
+}
+.tabela {
+    width: 100%;
+    float: left;
+}
+.tabelatitulo {
+    background-color: var(--corprincipal);
+    color: var(--corsecundaria);
+    height: 40px;
+    padding: 10px;
+}
+.tabelalinha {
+    background-color: var(--corsecundaria);
+    font-size: 14px;
+    text-align: left;
+    color: var(--corprincipal);
+    height: 40px;
+}
+.tabelalinha:hover {
+    background-color: #66CDAA;
+    font-size: 14px;
+    text-align: left;
+    color: var(--corprincipal);
+    height: 40px;
+}
+.primeiracoluna {
+    padding-left: 5px;
+}
+.seleciona_registo {
+    float: right;
+    margin: 10px 10px 0 0;
+}
+.filtro {
+	margin: 5px;
+	border: 2px solid var(--corprincipal);
+	float: left;
+}
+.filtroadicional {
+	margin: 5px 5px 5px 20px;
+}
+.filtrotexto {
+	border: 0;
+	background: var(--corfundo);
+	color: #000;
+	width: 180px;
+	height: 36px;
+	margin: 0 auto;
+	padding: 5px 0 5px 5px;
+	float: left;
+	line-height: 36px;
+}
+.consulta_header {
+    width: 100%;
+    margin: 0;
+}
+.consulta_headertitulo {
+    background: var(--corprincipal);
+    color: #fff;
+    height: 45px;
+    width: 85%;
+    font-size: 18px;
+    text-align: left;
+    padding: 8px 5px 0 5px;
+    margin: 0;
+    float: left;
+    border-bottom: 1px solid var(--corsecundaria);
+}
+.consulta_headerbtn {
+    background: var(--corprincipal);
+    height: 45px;
+    width: 15%;
+    text-align: right;
+    padding: 5px 5px;
+    margin: 0;
+    float: right;
+    border-bottom: 1px solid var(--corsecundaria);
+}
+.consulta_headerdados {
+    background: var(--corprincipal);
+    color: #fff;
+    height: 60px;
+    width: 100%;
+    font-size: 12px;
+    text-align: left;
+    line-height: 8px;
+    float: left;
+    padding: 8px 5px;
+}
+
+/* clientes/index.html */
+.status_cliente {
+    color: #3CB371;
+}
+.tabelaveiculo {
+    background-color: var(--corprincipal);
+    color: var(--corsecundaria);
+    border: solid 1px var(--corsecundaria);
+    margin: 0 0 0 10px;
+    text-align: left;
+    width: 98%;
+    float: center;
+    border: 2px solid var(--corprincipal);
+}
+.tabelaveiculo thead {
+    background-color: #a9a9a9;
+    color: var(--corprincipal);
+    font-size: 18px;
+    height: 30px;
+}
+.tabelaveiculo th {
+    font-family: verdana;
+    font-size: 16px;
+    text-align: center;
+    padding: 5px;
+}
+.tabelaveiculo td {
+    font-family: verdana;
+    font-size: 16px;
+    height: 30px;
+}
+.alinhaesquerda {
+    text-align: left;
+    padding: 0 0 0 5px;
+}
+.alinhacenter {
+    text-align: center;
+}
+.alinhadireita {
+    text-align: right;
+}
+.col1 {
+    width: 23%;
+    _width: 23%;
+}
+.col2 {
+    width: 23%;
+    _width: 23%;
+}
+.col3 {
+    width: 23%;
+    _width: 23%;
+}
+.col3 {
+    width: 23%;
+    _width: 23%;
+}
+.col5 {
+    width: 8%;
+    _width: 8%;
+}
+.botaomenu {
+    background: var(--corprincipal);
+    width: 100%;
+    height: 40px;
+    font-size: 14px;
+    text-align: left;
+    color: var(--corsecundaria);
+    padding: 5px;
+    margin: 0px;
+}
+.botaomenu:hover {
+    background: #66CDAA;
+    color: var(--corprincipal);
+}
+.botaomenu:focus {
+    color: var(--corsecundaria);
+    outline: none;
+}
+.botaomenu span {
+    float: right;
+}
+
+/* minutas/index.html */
+
+/* pessoas/index.html */
+.containerimg {
+    width: 100%;
+    height: auto;
+    margin: 0;
+}
+.containerimg img {
+    max-width: 100%;
+    min-width: auto;
+    max-height: 150px;
+    min-height: auto;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5px;
+}
+
+/* veiculos/index.html */
+
+/* CSS FORMULÁRIOS */
+.modal-header {
+    background-color: var(--corsecundaria);
+    color: var(--corprincipal);
+    text-align: center;
+}
+.close {
+    color: var(--corprincipal);
+}
+.modal-footer {
+    background-color: var(--corsecundaria);
+}
+.divformulario label {
+    color: var(--corprincipal);
+    margin: 2px 0 0 0;
+}
+.divformulario h4 {
+    text-align: center;
+}
+.formfields,
+.formfieldstexto {
+	background: var(corfundo);
+	color: #000;
+	font-size: 18px;
+	width: 100%;
+	height: 25px;
+	line-height: 18px;
+	margin: 2px 0px;
+	border: 1px solid #000;
+	padding: 0px 5px;
+}
+.formfields:focus,
+.formfieldstexto:focus {
+	background: #a8a8a8;
+	color: #000;
+	box-shadow: 0 0 5px #fff;
+	border: 3px solid #305a72;
+}
+.formfieldstexto {
+	height: 50px;
+	line-height: 18px;
+}
+.fieldsfinaliza {
+    width: 82px;
+    text-align: right;
+    margin-left: 10px;
+}
+
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+	-webkit-text-fill-color: #000;
+	-webkit-box-shadow: 0 0 0px 1000px #e8e8e8 inset;
+}
+::placeholder {
+	color: #a9a9a9;
+}
+
+/* */
+.excluidocfone {
+    background: var(--corsecundaria);
+    max-width: 12%;
+    min-width: 12%;
+    height: 26px;
+    float: right;
+}
+.excluicategoria {
+    background: var(--corsecundaria);
+    max-width: 12%;
+    min-width: 12%;
+    height: 26px;
+    float: right;
+}
+
+
+.consulta {
+    background: var(--corsecundaria);
+    height: auto;
+    overflow: hidden; /* div pai acompanha div filho */
+    margin: 0px;
+}
+.consulta_coluna1 {
+    width: 90%;
+    float: left;
+    overflow: hidden;
+    border-right: 2px solid var(--corprincipal);
+}
+.consulta_coluna2 {
+    width: 10%;
+    float: left;
+    overflow: hidden;
+}
+
+.btnswitch {
+    margin: 0 30px 0 0;
+    float: right;
+}
+
+.consulta_cliente_modulo {
+    height: auto;
+}
+.consulta_pessoafone,
+.consulta_pessoadoc,
+.consulta_pessoaconta,
+.consulta_contatofone,
+.consulta_contatoemail {
+    width: 88%;
+    height: 26px;
+    float: left;
+    margin: 0;
+    padding: 7px 0;
+}
+.consulta_pessoaconta, {
+    height: 65px;
+}
+.consulta_coluna1 h20 {
+    width: 100%;
+    font-size: 18px;
+    text-align: left;
+    margin: 0;
+    padding: 5px 5px 0 5px;
+    border-bottom: 1px solid #363636;
+}
+.consulta_cliente {
+    width: 100%;
+    margin: 0;
+    border-bottom: 1px solid #fff;
+}
+.consulta_clientetitulo {
+    height: auto;
+    overflow: hidden;
+    margin: 10px 0 0 0;
+}
+.consulta_clientetitulo h2 {
+    background: var(--corprincipal);
+    font-size: 18px;
+    text-align: center;
+    color: #fff;
+    width: 100%;
+    height: 30px;
+    float: left;
+    margin: 0;
+    padding: 5px;
+    border-bottom: 1px solid #fff;
+}
+.consulta_subtitulo {
+    background: var(--corsecundaria);
+    font-size: 18px;
+    text-align: left;
+    color: var(--corprincipal);
+    width: 97%;
+    height: 30px;
+    float: left;
+    margin: 5px 0;
+    padding: 5px 5px 0 5px;
+    border-bottom: 1px solid var(--corprincipal);
+    border-top: 1px solid var(--corprincipal);
+}
+.subtitulo2 {
+    width: 100%;
+}
+.metade1 {
+    width: 48%;
+}
+.metade2 {
+    padding: 5px 5px 0 20px;
+    width: 49%;
+}
+.consulta_pessoafone p,
+.consulta_pessoadoc p,
+.consulta_pessoaconta p,
+.consulta_contatofone p,
+.consulta_contatoemail p {
+    font-size: 16px;
+    text-align: left;
+    line-height: 12px;
+    padding: 0 5px;
+}
+.consulta_cobranca {
+    width: 88%;
+    height: 60px;
+    float: left;
+    margin: 0;
+    padding: 7px 0;
+}
+.consulta_cobranca p {
+    font-size: 14px;
+    text-align: left;
+    line-height: 10px;
+    padding: 0 5px;
+}
+.consulta_tabela {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+.consulta_tabela p {
+    font-size: 16px;
+    text-align: left;
+    padding: 0 5px;
+    margin: 0;
+}
+.consulta_tabelaveiculomenu {
+    width: 25%;
+    float: left;
+}
+.consulta_tabelaveiculomenu ul {
+	padding: 0;
+	margin: 0;
+	font-family: verdana;
+	font-size: 16px;
+	text-align: left;
+	color: #FFF;
+	list-style: none;
+	text-indent: 5px;
+}
+.consulta_tabelaveiculo {
+ /*   background: yellow;*/
+    width: 75%;
+    height: auto;
+    overflow: hidden;
+    float: left;
+}
+.js-excluitabelacapacidade,
+.js-excluitabelaperimetro {
+    margin: 10px;
+}
+.botaoadicionar {
+    background: var(--corsecundaria);
+    font-size: 10px;
+    text-align: right;
+    color: var(--corprincipal);
+    width: 3%;
+    height: 30px;
+    float: right;
+    margin: 4px 0;
+    padding: 9px 5px 0 5px;
+    border-bottom: 1px solid var(--corprincipal) ;
+    border-top: 1px solid var(--corprincipal) ;
+}
+
+
+.consulta_formatualiza {
+    margin: 0px 0px 5px 5px;
+    padding: 0px;
+}
+
+
+.switch {
+    position: absolute;
+    margin-left: -9999px;
+    visibility: hidden;
+}
+
+.switch + label {
+    display: block;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+    user-select:none;
+}
+
+.switch--shadow + label {
+    padding: 2px;
+    width: 40px;
+    height: 20px;
+    background: var(--corprincipal);
+    border-radius: 20px;
+}
+
+.switch--shadow + label:before,
+.switch--shadow + label:after {
+    display: block;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    bottom: 1px;
+    content: '';
+}
+
+.switch--shadow + label:before {
+    right: 1px;
+    background-color: var(--corsecundaria);
+    border: 1px solid;
+    border-radius: 20px;
+    transition: all 0.4s;
+}
+
+.switch--shadow + label:after {
+    width: 18px;
+    background-color: dodgerblue;
+    border-radius: 100%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    transition: all 0.4s;
+}
+
+.switch--shadow:checked + label:before {
+    background-color: var(--corprincipal);
+}
+
+.switch--shadow:checked + label:after {
+    transform: translateX(20px);
+}
+
+.switch-titulo {
+    padding: 0 10px 0 5px;
+}
+
+.tableswitch {
+    margin-left: 5px;
+    width: 50%;
+    float: left;
+}
+
+.switchminuta {
+    background: red;
+    min-height: 20px;
+    margin: 20px;
+}
+
+/* TABELA RECEBIVEIS */
+.tb-recebe {
+    width: 100%;
+    margin-right: 5px;
+}
+.tb-recebe tr {
+    height: 30px;
+}
+.tb-descricao {
+    width: 60%;
+    padding-left: 5px;
+}
+.tb-switch {
+    padding-top: 3px;
+    height: 26px;
+}
+.tb-valor {
+    width: 30%;
+    text-align: right;
+    padding-right: 5px;
+}
+.tb-despesas {
+    padding-right: 22px;
+}
+
+.porcentagem {
+    max-width: 70px;
+}
+
+.demonstrativo {
+
+}
+
+.tb-demo-recebe {
+    width: 100%;
+    font-size: 14px;
+}
+
+.titulo {
+    font-size: 16px;
+    text-align: center;
+    background-color: var(--corprincipal);
+    color: var(--corsecundaria);
+    border: 1px solid;
+}
+
+.tb-coluna1 {
+    min-width: 170px;
+    max-width: 170px;
+    padding-left: 5px;
+}
+
+.tb-coluna2 {
+    padding-top: 5px;
+    padding-left: 2px;
+    border-left: 1px solid;
+}
+
+.tb-coluna3 {
+    min-width: 100px;
+    max-width: 100px;
+    text-align: right;
+}
+
+.tb-coluna4 {
+    min-width: 100px;
+    max-width: 100px;
+    text-align: right;
+}
+
+.tb-coluna5 {
+    min-width: 80px;
+    max-width: 80px;
+    text-align: right;
+    padding-right: 2px;
+}
+
+.tb-demo-recebe {
+
+}
+
+.demonstrativo-input {
+    width: 75%;
+    text-align: right;
+}
+
+.btnfinalizaminuta {
+    float: right;
+    margin: 5px;
+    width: 15%;
+}
+
+.saldo-minuta {
+    float: left;
+    padding: 7px 25px;
+    font-size: 18px;
+    font-weigth: bold;
+    color: var(--corprincipal);
+    width: 70%;
+}
+.consulta_itens {
+    width: 88%;
+    height: inherit;
+    float: left;
+    margin: 0;
+    padding: 0 0 0 50px;
+    font-size: 14px;
+}
+.consulta_atualizacoes {
+    width: 100%;
+    float: left;
+}
