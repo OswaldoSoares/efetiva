@@ -1,4 +1,6 @@
 from django.db import models
+from pip._vendor.contextlib2 import nullcontext
+
 from clientes.models import Cliente
 from pessoas.models import Pessoal
 from veiculos.models import CategoriaVeiculo, Veiculo
@@ -112,13 +114,13 @@ class MinutaItens(models.Model):
 class MinutaNotas(models.Model):
     idMinutaNotas = models.AutoField(primary_key=True)
     Nota = models.CharField(max_length=10)
-    Valor = models.DecimalField(max_digits=8,
-                                decimal_places=2,
-                                default=0)
-    Peso = models.DecimalField(max_digits=8,
-                               decimal_places=2,
-                               default=0)
+    Valor = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    Peso = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     Volume = models.IntegerField(default=0)
+    Nome =  models.CharField(max_length=50, blank=True, null=True)
+    Estado = models.CharField(max_length=60, default='SP')
+    Cidade = models.CharField(max_length=60, default='SÃO PAULO')
+    NotaGuia = models.CharField(max_length=10, blank=True, null=True)
     idMinuta = models.ForeignKey(Minuta, on_delete=models.CASCADE)
 
     class Meta:

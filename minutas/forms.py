@@ -412,49 +412,17 @@ class CadastraMinutaParametroDespesa(forms.Form):
 class CadastraMinutaNota(forms.ModelForm):
     class Meta:
         model = MinutaNotas
-        fields = {
-            'idMinutaNotas',
-            'Nota',
-            'Valor',
-            'Peso',
-            'Volume',
-            'idMinuta'
-        }
-        labels = {
-            'Nota': 'NOTA',
-            'Valor': 'VALOR',
-            'Peso': 'PESO',
-            'Volume': 'VOLUME',
-        }
-        widgets = {
-            'Nota': forms.TextInput(
-                attrs={
-                    'class': 'formfields'
-                }
-            ),
-            'Valor': forms.NumberInput(
-                attrs={
-                    'class': 'formfields'
-                }
-            ),
-            'Peso': forms.NumberInput(
-                attrs={
-                    'class': 'formfields'
-                }
-            ),
-            'Volume': forms.NumberInput(
-                attrs={
-                    'class': 'formfields'
-                }
-            ),
-            'idMinuta': forms.HiddenInput(
-
-            ),
-        }
-
-    field_order = [
-        'Nota',
-        'Valor',
-        'Peso,',
-        'Volume',
-    ]
+        fields = {'idMinutaNotas', 'Nota', 'Valor', 'Peso', 'Volume', 'Nome', 'Estado', 'Cidade', 'NotaGuia',
+                  'idMinuta'}
+        labels = {'Nota': 'NOTA', 'Valor': 'VALOR', 'Peso': 'PESO', 'Volume': 'VOLUME', 'Nome': 'Razão Social',
+                  'Estado': 'Esrado', 'Cidade': 'Cidade', 'NotaGuia': 'Nota Guia'}
+        widgets = {'Nota': forms.TextInput(attrs={'class': 'formfields'}),
+                   'Valor': forms.NumberInput(attrs={'class': 'formfields'}),
+                   'Peso': forms.NumberInput(attrs={'class': 'formfields'}),
+                   'Volume': forms.NumberInput(attrs={'class': 'formfields'}),
+                   'Nome': forms.TextInput(attrs={'class': 'formfields'}),
+                   'Estado': forms.TextInput(attrs={'class': 'formfields'}),
+                   'Cidade': forms.TextInput(attrs={'class': 'formfields'}),
+                   'NotaGuia': forms.TextInput(attrs={'class': 'formfields'}),
+                   'idMinuta': forms.HiddenInput()}
+    field_order = ['Nota', 'Valor', 'Peso,', 'Volume', 'NotaGuia', 'Nome', 'Estado', 'Cidade',]
