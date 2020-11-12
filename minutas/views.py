@@ -333,7 +333,7 @@ def consultaminuta(request, idmin):
     values_tabela_recebe = [list(tabelacliente.values('TaxaExpedicao')[0].values())[0], 0.23, valorporcentagemrecebe,
                             valorhorarecebe, 100, list(tabelaveiculo.values('KMCobra')[0].values())[0],
                             valorentrega_recebe, valorentregakg_recebe, valorentregavolume_recebe, valorsaidarecebe,
-                            valorcapacidaderecebe, 1000, 1000, list(tabelacliente.values('AjudanteCobra')[0].values())[
+                            valorcapacidaderecebe, 100, 100, list(tabelacliente.values('AjudanteCobra')[0].values())[
                                 0], 0]
     # Cria lista a receber para os labels dos inputs dos valores da minuta
     type_minuta_recebe = [None, 'R$', 'R$', 'HS', 'HS', 'UN', 'UN', 'KG', 'UN', None, None, 'R$', 'R$', 'UN', None]
@@ -352,12 +352,12 @@ def consultaminuta(request, idmin):
     # Cria lista a pagar para os inputs com os valores das tabelas do cliente
     values_tabela_paga = [valorporcentagempaga, valorhorapaga, 100, list(tabelaveiculo.values('KMPaga')[0].values())[
         0],valorentrega_paga, valorentregakg_paga, valorentregavolume_paga, valorsaidapaga, valorcapacidadepaga,
-                          1000, 1000, list(tabelacliente.values('AjudantePaga')[0].values())[0]]
+                          100, 100, list(tabelacliente.values('AjudantePaga')[0].values())[0]]
     # Cria lista a pagar para os labels dos inputs dos valores da minuta
     type_minuta_paga = ['R$', 'HS', 'HS', 'UN', 'UN', 'KG', 'UN', None, None, 'R$', 'R$', 'UN']
     # Cria lista a pagar para os inputs com os valores daminuta
     values_minuta_paga = [totalvalornotas['totalvalor'], minimohoras, excedehoras, totalkm, totalquantidadenotas,
-                          totalpesonotas['totalpeso'], totalvolumenotas['totalvolume'], None, None, 1000, 1000, None]
+                          totalpesonotas['totalpeso'], totalvolumenotas['totalvolume'], None, None, 1000, 1000, total_de_ajudantes]
     # Cria dict com os switchs a receber desligados
     switch_recebe = {}
     for item in keys_nome_recebe:
@@ -422,7 +422,7 @@ def consultaminuta(request, idmin):
         # Coluna 3 Recebe - tipo moeda ou porcentagem
         tabela_recebe_e_paga[str(item)]['type_tabela_recebe'] = type_tabela_recebe[index]
         # Columa 3 Recebe - valores das tabelas
-        tabela_recebe_e_paga[str(item)]['id_tr'] = 'tr-%s-recebe' % keys_nome_recebe[index]
+        tabela_recebe_e_paga[str(item)]['id_tr'] = 'ta-%s-recebe' % keys_nome_recebe[index]
         tabela_recebe_e_paga[str(item)]['name_tr'] = 'tabela_recebe'
         tabela_recebe_e_paga[str(item)]['value_tr'] = values_tabela_recebe[index]
         tabela_recebe_e_paga[str(item)]['class_tr'] = 'demonstrativo-input change-%s-recebe' % keys_nome_recebe[index]
@@ -431,7 +431,7 @@ def consultaminuta(request, idmin):
         # Coluna 4 Recebe - tipo moeda ou tempo ou unidade ou kg
         tabela_recebe_e_paga[str(item)]['type_minuta_recebe'] = type_minuta_recebe[index]
         # Columa 4 Recebe - valores das tabelas
-        tabela_recebe_e_paga[str(item)]['id_mr'] = 'mr-%s-recebe' % keys_nome_recebe[index]
+        tabela_recebe_e_paga[str(item)]['id_mr'] = 'mi-%s-recebe' % keys_nome_recebe[index]
         tabela_recebe_e_paga[str(item)]['name_mr'] = 'minuta_recebe'
         tabela_recebe_e_paga[str(item)]['value_mr'] = values_minuta_recebe[index]
         tabela_recebe_e_paga[str(item)]['class_mr'] = 'demonstrativo-input change-%s-recebe' % keys_nome_recebe[index]
@@ -456,7 +456,7 @@ def consultaminuta(request, idmin):
         # Coluna 3 Paga - tipo moeda ou porcentagem
         tabela_recebe_e_paga[str(item)]['type_tabela_paga'] = type_tabela_paga[index]
         # Columa 3 Paga - valores das tabelas
-        tabela_recebe_e_paga[str(item)]['id_tp'] = 'tp-%s-paga' % keys_nome_paga[index]
+        tabela_recebe_e_paga[str(item)]['id_tp'] = 'ta-%s-paga' % keys_nome_paga[index]
         tabela_recebe_e_paga[str(item)]['name_tp'] = 'tabela_paga'
         tabela_recebe_e_paga[str(item)]['value_tp'] = values_tabela_paga[index]
         tabela_recebe_e_paga[str(item)]['class_tp'] = 'demonstrativo-input change-%s-paga' % keys_nome_paga[index]
@@ -465,7 +465,7 @@ def consultaminuta(request, idmin):
         # Coluna 4 Paga - tipo moeda ou tempo ou unidade ou kg
         tabela_recebe_e_paga[str(item)]['type_minuta_paga'] = type_minuta_paga[index]
         # Columa 4 Paga - valores das tabelas
-        tabela_recebe_e_paga[str(item)]['id_mp'] = 'mp-%s-paga' % keys_nome_paga[index]
+        tabela_recebe_e_paga[str(item)]['id_mp'] = 'mi-%s-paga' % keys_nome_paga[index]
         tabela_recebe_e_paga[str(item)]['name_mp'] = 'minuta_paga'
         tabela_recebe_e_paga[str(item)]['value_mp'] = values_minuta_paga[index]
         tabela_recebe_e_paga[str(item)]['class_mp'] = 'demonstrativo-input change-%s-paga' % keys_nome_paga[index]

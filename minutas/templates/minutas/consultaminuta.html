@@ -311,6 +311,7 @@
                                                        class="{{ value.class_tr }}"
                                                        type="{{ value.type_tr }}"
                                                        step="{{ value.step_tr }}"
+                                                       meu_tipo="{{ value.type_tabela_recebe }}"
                                                 >
                                             </td>
                                             <td class="tb-coluna4">
@@ -329,6 +330,7 @@
                                                            {% endif %}
                                                            class="{{ value.class_mr }}"
                                                            type="{{ value.type_mr }}"
+                                                           meu_tipo="{{ value.type_minuta_recebe }}"
                                                     >
                                                 {% endif %}
                                             </td>
@@ -364,26 +366,27 @@
                                                            class="{{ value.class_tp }}"
                                                            type="{{ value.type_tp }}"
                                                            step="{{ value.step_tp }}"
+                                                           meu_tipo="{{ value.type_tabela_paga }}"
                                                     >
                                                 {% endif %}
                                             </td>
                                             <td class="tb-coluna4">
                                                 {% if value.type_minuta_paga %}
                                                     <span><b>{{ value.type_minuta_paga }}</b></span>
-                                                    <input id="{{ value.id_mr }}"
-                                                           name="{{ value.name_mr }}"
-                                                           {% if value.type_minuta_recebe == "HS" %}
-                                                               value="{{ value.value_mr }}"
-                                                           {% elif value.type_minuta_recebe == "UN" %}
-                                                               value="{{ value.value_mr }}"
+                                                    <input id="{{ value.id_mp }}"
+                                                           name="{{ value.name_mp }}"
+                                                           {% if value.type_minuta_paga == "HS" %}
+                                                               value="{{ value.value_mp }}"
+                                                           {% elif value.type_minuta_paga == "UN" %}
+                                                               value="{{ value.value_mp }}"
                                                                step="1.00"
                                                            {% else %}
-                                                               value="{{ value.value_mr|stringformat:'.2f' }}"
+                                                               value="{{ value.value_mp|stringformat:'.2f' }}"
                                                                step="0.01"
                                                            {% endif %}
-                                                           class="{{ value.class_mr }}"
-                                                           type="{{ value.type_mr }}"
-                                                    >
+                                                           class="{{ value.class_mp }}"
+                                                           type="{{ value.type_mp }}"
+                                                           meu_tipo="{{ value.type_minuta_paga }}"                                                    >
                                                 {% endif %}
                                             </td>
                                             <td class="tb-coluna5">
@@ -399,51 +402,6 @@
                                             </td>
                                         </tr>
                                     {% endfor %}
-                                <!--&lt;!&ndash; TAXA DE EXPEDIÇÃO &ndash;&gt;-->
-                                <!--<tr class="tb-linha">-->
-                                    <!--<td class="tb-coluna1">-->
-                                        <!--<span><b>TAXA DE EXPEDIÇÃO</b></span>-->
-                                    <!--</td>-->
-                                    <!--<td class="tb-coluna2">-->
-                                        <!--<input id="sw-taxadeexpedição-recebe"-->
-                                               <!--name="switch"-->
-                                               <!--{% if sw_taxadeexpedição_recebe %}-->
-                                                   <!--checked="checked"-->
-                                               <!--{% endif %}-->
-                                               <!--value="sw-taxadeexpedição-recebe"-->
-                                               <!--class="switch switch&#45;&#45;shadow change-taxadeexpedicao-recebe"-->
-                                               <!--type="checkbox"-->
-                                        <!--&gt;-->
-                                        <!--<label for="sw-taxadeexpedição-recebe"></label>-->
-                                    <!--</td>-->
-                                    <!--<td class="tb-coluna3">-->
-                                        <!--<span><b>R$ </b></span>-->
-                                        <!--<input id="tb-taxadeexpedicao-recebe"-->
-                                               <!--name="tb-taxadeexpedicao-recebe"-->
-                                               <!--value="{{ valortaxaexpedicao|stringformat:'.2f' }}"-->
-                                               <!--class="demonstrativo-input change-taxadeexpedicao-recebe"-->
-                                               <!--type="number"-->
-                                               <!--step="0.01"-->
-                                        <!--&gt;-->
-                                    <!--</td>-->
-                                    <!--<td class="tb-coluna4"></td>-->
-                                    <!--<td class="tb-coluna5">-->
-                                        <!--<span id="tl-taxadeexpedicao-recebe"-->
-                                              <!--class="tl-despesa-recebe">R$ 0,00</span>-->
-                                        <!--<input name="descricao-recebe"-->
-                                               <!--value="TAXA DE EXPEDIÇÃO"-->
-                                               <!--type="hidden">-->
-                                        <!--<input id="hi-taxadeexpedicao-recebe"-->
-                                               <!--class="valor-recebe"-->
-                                               <!--name="valor-recebe"-->
-                                               <!--value="0.00"-->
-                                               <!--type="hidden">-->
-                                    <!--</td>-->
-                                    <!--<td class="tb-coluna2"></td>-->
-                                    <!--<td class="tb-coluna3"></td>-->
-                                    <!--<td class="tb-coluna4"></td>-->
-                                    <!--<td class="tb-coluna5"></td>-->
-                                <!--</tr>-->
                                 <!-- DESPESAS -->
                                 {% for itens in itensminuta %}
                                     <tr class="tb-linha">
@@ -462,8 +420,8 @@
                                         </td>
                                         <td class="tb-coluna3">
                                             <span><b>R$ </b></span>
-                                            <input id="tb-{{ itens.Descricao|lower|cut:' ' }}-recebe"
-                                                   name="tb-despesa-recebe"
+                                            <input id="ta-{{ itens.Descricao|lower|cut:' ' }}-recebe"
+                                                   name="ta-despesa-recebe"
                                                    value="{{ itens.Valor|stringformat:'.2f'  }}"
                                                    class="demonstrativo-input tb-despesa-recebe"
                                                    type="number"
@@ -472,15 +430,15 @@
                                         </td>
                                         <td class="tb-coluna4"></td>
                                         <td class="tb-coluna5">
-                                            <span id="tl-{{ itens.Descricao|lower|cut:' ' }}-recebe"
-                                                  class="tl-despesa-recebe">R$ {{ itens.Valor }}</span>
+                                            <span id="to-{{ itens.Descricao|lower|cut:' ' }}-recebe"
+                                                  class="to-despesa-recebe">R$ {{ itens.Valor }}</span>
                                             <input name="descricao_despesa-recebe"
                                                    value="{{ itens.Descricao }}"
                                                    type="hidden">
                                             <input id="hi-{{ itens.Descricao|lower|cut:' ' }}-recebe"
-                                                   class="hi-despesa-recebe"
+                                                   class="valor-recebe"
                                                    name="valor-despesa-recebe"
-                                                   value="0.00"
+                                                   value="{{ itens.Valor }}"
                                                    type="hidden">
                                         </td>
                                         <td class="tb-coluna2">
@@ -495,8 +453,8 @@
                                         </td>
                                         <td class="tb-coluna3">
                                             <span><b>R$ </b></span>
-                                            <input id="tb-{{ itens.Descricao|lower|cut:' ' }}-paga"
-                                                   name="tb-despesa-paga"
+                                            <input id="ta-{{ itens.Descricao|lower|cut:' ' }}-paga"
+                                                   name="ta-despesa-paga"
                                                    value="{{ itens.Valor|stringformat:'.2f'  }}"
                                                    class="demonstrativo-input tb-despesa-paga"
                                                    type="number"
@@ -505,15 +463,15 @@
                                         </td>
                                         <td class="tb-coluna4"></td>
                                         <td class="tb-coluna5">
-                                            <span id="tl-{{ itens.Descricao|lower|cut:' ' }}-paga"
-                                                  class="tl-despesa-paga">R$ {{ itens.Valor }}</span>
+                                            <span id="to-{{ itens.Descricao|lower|cut:' ' }}-paga"
+                                                  class="to-despesa-paga">R$ {{ itens.Valor }}</span>
                                             <input name="descricao-despesa-paga"
                                                    value="{{ itens.Descricao }}"
                                                    type="hidden">
                                             <input id="hi-{{ itens.Descricao|lower|cut:' ' }}-paga"
-                                                   class="hi-despesa-paga"
+                                                   class="valor-paga"
                                                    name="valor-despesa-paga"
-                                                   value="0.00"
+                                                   value="{{ itens.Valor }}"
                                                    type="hidden">
                                         </td>
                                     </tr>
