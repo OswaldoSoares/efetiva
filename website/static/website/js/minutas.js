@@ -109,15 +109,11 @@ $(document).ready(function(){
         $("#totalrecebe").text('R$ ' + valor_recebe.toFixed(2).replace('.',','))
         $("#totalpaga").text('R$ ' + valor_paga.toFixed(2).replace('.',','))
         $(".saldo-minuta").text('Saldo da Minuta R$ ' + (valor_recebe-valor_paga).toFixed(2).replace('.',','))
-
     }
 
     var loadForm = function(){
         var obj = $(this);
         var idminuta = $(this).attr("idminuta");
-        var idminutacolaboradores = $(this).attr("idminutacolaboradores");
-        var idminutaitens = $(this).attr("idminutaitens");
-        var idminutanotas = $(this).attr("idminutanotas");
 
         $.ajax({
             url: obj.attr("data-url"),
@@ -131,15 +127,9 @@ $(document).ready(function(){
                 $("#modal-formulario").modal("show");
             },
             success: function(data){
+                console.log(data);
                 $("#modal-formulario .modal-content").html(data.html_form);
-                $(".js-edita-minuta-form").attr('action', "{% url 'editaminuta' 0 %}".replace(/0/, idminuta));
                 $(".js-edita-minutaveiculo-form").attr('action', "{% url 'editaminutaveiculo' 0 %}".replace(/0/, idminuta));
-                $(".js-exclui-minutamotorista-form").attr('action', "{% url 'excluiminutamotorista' 0 %}".replace(/0/, idminutacolaboradores));
-                $(".js-exclui-minutaajudante-form").attr('action', "{% url 'excluiminutaajudante' 0 %}".replace(/0/, idminutacolaboradores));
-                $(".js-exclui-minutadespesa-form").attr('action', "{% url 'excluiminutadespesa' 0 %}".replace(/0/, idminutaitens));
-                $(".js-edita-minutaentrega-form").attr('action', "{% url 'editaminutaentrega' 0 %}".replace(/0/, idminutanotas));
-                $(".js-exclui-minutaentrega-form").attr('action', "{% url 'excluiminutaentrega' 0 %}".replace(/0/, idminutanotas));
-                console.log(data)
             }
         });
     };
@@ -174,4 +164,4 @@ $(document).ready(function(){
     $(".js-editaminutaentrega").click(loadForm);
     $(".js-excluiminutaentrega").click(loadForm);
 
-    });
+});

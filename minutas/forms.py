@@ -410,6 +410,9 @@ class CadastraMinutaParametroDespesa(forms.Form):
 
 
 class CadastraMinutaNota(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(CadastraMinutaNota, self).__init__(*args, **kwargs)
+        self.fields['NotaGuia'].queryset = MinutaNotas.objects.exclude(NotaGuia=None)
     class Meta:
         model = MinutaNotas
         fields = {'idMinutaNotas', 'Nota', 'Valor', 'Peso', 'Volume', 'Nome', 'Estado', 'Cidade', 'NotaGuia',
@@ -423,6 +426,6 @@ class CadastraMinutaNota(forms.ModelForm):
                    'Nome': forms.TextInput(attrs={'class': 'formfields'}),
                    'Estado': forms.TextInput(attrs={'class': 'formfields'}),
                    'Cidade': forms.TextInput(attrs={'class': 'formfields'}),
-                   'NotaGuia': forms.TextInput(attrs={'class': 'formfields'}),
-                   'idMinuta': forms.HiddenInput()}
-    field_order = ['Nota', 'Valor', 'Peso,', 'Volume', 'NotaGuia', 'Nome', 'Estado', 'Cidade',]
+                   'NotaGuia': forms.Select(attrs={'class': 'formfields'}),
+                   'idMinuta': forms.HiddenInput(),}
+    field_order = ['Nota', 'Valor', 'Peso', 'Volume', 'NotaGuia', 'Nome', 'Estado', 'Cidade',]

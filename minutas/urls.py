@@ -22,6 +22,7 @@ from .views import index_minuta,\
     excluiminutaentrega,\
     filtraminutaveiculo
 
+
 urlpatterns = [
     path(
         '',

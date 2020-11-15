@@ -126,4 +126,15 @@ class MinutaNotas(models.Model):
     class Meta:
         db_table = 'MinutaNotas'
 
+    def __str__(self):
+        return str(self.Nota)
+
+    def save(self, *args, **kwargs):
+        self.Nota = self.Nota.upper()
+        self.Nome = self.Nome.upper()
+        self.Estado = self.Estado.upper()
+        self.Cidade = self.Cidade.upper()
+
+        super(MinutaNotas, self).save(*args, **kwargs)
+
     objects = models.Manager()
