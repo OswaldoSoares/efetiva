@@ -280,14 +280,13 @@ def consultaminuta(request, idmin):
     formkminicial = CadastraMinutaKMInicial(instance=minutaform)
     formkmfinal = CadastraMinutaKMFinal(instance=minutaform)
     # Cria queryset notas e objs das somas
-    notasminuta = MinutaNotas.objects.filter(idMinuta=idmin)
-    notas_minuta_guia = MinutaNotas.objects.filter(idMinuta=idmin).exclude(NotaGuia=None)
+    notas_minuta = MinutaNotas.objects.filter(idMinuta=idmin).order_by('Nota')
+    notas_minuta_guia = MinutaNotas.objects.filter(idMinuta=idmin, NotaGuia='0').order_by('Nota')
     totalvalornotas = MinutaNotas.objects.filter(idMinuta=idmin).aggregate(totalvalor=Sum('Valor'))
     totalpesonotas = MinutaNotas.objects.filter(idMinuta=idmin).aggregate(totalpeso=Sum('Peso'))
     peso = totalpesonotas['totalpeso']
     totalvolumenotas = MinutaNotas.objects.filter(idMinuta=idmin).aggregate(totalvolume=Sum('Volume'))
-    totalquantidadenotas = MinutaNotas.objects.filter(idMinuta=idmin).count()
-    quantidade_notas_guia = MinutaNotas.objects.filter(idMinuta=idmin).exclude(NotaGuia=None).count()
+    totalquantidadenotas = MinutaNotas.objects.filter(idMinuta=idmin, NotaGuia='0').count()
     # Percorre a tabelacapacidade para localizar o peso
     if tabelacapacidade and peso:
         for x in tabelacapacidade:
@@ -499,13 +498,12 @@ def consultaminuta(request, idmin):
         'formhoraexcede': formhoraexcede,
         'despesas': despesas,
         'itensminuta': itensminuta,
-        'notasminuta': notasminuta,
-        'nota_minuta_guia': notas_minuta_guia,
+        'notas_minuta': notas_minuta,
+        'notas_minuta_guia': notas_minuta_guia,
         'totalvalornotas': totalvalornotas,
         'totalpesonotas': totalpesonotas,
         'totalvolumenotas': totalvolumenotas,
         'totalquantidadenotas': totalquantidadenotas,
-        'quantidade_notas_guia': quantidade_notas_guia,
         'valortaxaexpedicao': valortaxaexpedicao,
         'valorporcentagemrecebe': valorporcentagemrecebe,
         'valorporcentagempaga': valorporcentagempaga,
@@ -1351,24 +1349,24 @@ def excluiminutadespesa(request, idmindes):
 def criaminutaentrega(request):
     if request.method == 'POST':
         idminuta = request.POST.get('idMinuta')
-        form = CadastraMinutaNota(request.POST)
+        form = CadastraMinutaNota(idminuta, request.POST)
+        print(form)
     else:
         idminuta = request.GET.get('idminuta')
-        form = CadastraMinutaNota(initial={'idMinuta': idminuta})
-    return salva_form(request, form, 'minutas/criaminutaentrega.html',
-                      idminuta)
+        form = CadastraMinutaNota(idminuta, initial={'idMinuta': idminuta})
+    return salva_form(request, form, 'minutas/criaminutaentrega.html', idminuta)
 
 
 def editaminutaentrega(request, idminent):
     notaminuta = get_object_or_404(MinutaNotas, idMinutaNotas=idminent)
     data = dict()
     if request.method == 'POST':
-        form = CadastraMinutaNota(request.POST, instance=notaminuta)
+        form = CadastraMinutaNota(notaminuta.idMinuta_id, request.POST, instance=notaminuta)
         if form.is_valid():
             form.save()
         return redirect('consultaminuta', notaminuta.idMinuta_id)
     else:
-        form = CadastraMinutaNota(instance=notaminuta)
+        form = CadastraMinutaNota(notaminuta.idMinuta_id, instance=notaminuta)
         context = {'form': form, 'numerominuta': request.GET.get('idminuta'), 'idminent': idminent}
         data['html_form'] = render_to_string('minutas/editaminutaentrega.html', context, request=request)
     return JsonResponse(data)
@@ -1382,8 +1380,7 @@ def excluiminutaentrega(request, idminent):
         return redirect('consultaminuta', notaminuta.idMinuta_id)
     else:
         context = {'notaminuta': notaminuta}
-        data['html_form'] = render_to_string(
-            'minutas/excluiminutaentrega.html', context, request=request)
+        data['html_form'] = render_to_string('minutas/excluiminutaentrega.html', context, request=request)
     return JsonResponse(data)
 
 
@@ -1453,8 +1450,6 @@ def salva_form(request, form, template_name, idmin):
     data = dict()
     numerominuta = 0
     numeroidminuta = form.instance
-    print('PO')
-    print(numeroidminuta)
     if request.method == 'POST':
         if form.is_valid():
             data['form_is_valid'] = True
@@ -1465,7 +1460,7 @@ def salva_form(request, form, template_name, idmin):
             else:
                 return redirect('consultaminuta', idmin)
         else:
-            return redirect('consultaminuta', idmin, {'formkmfinal', form})
+            return redirect('consultaminuta', idmin)
     context = {'form': form, 'numerominuta': numerominuta, 'numeroidminuta': numeroidminuta}
     data['html_form'] = render_to_string(template_name, context, request=request)
     return JsonResponse(data)

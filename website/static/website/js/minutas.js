@@ -26,6 +26,18 @@ $(document).ready(function(){
             $("#id_Propriedade").focus();   // Configura o foco inicial
 
         }, 800);
+
+        $('#id_NotaGuia').change(function() {
+            if ($('#id_NotaGuia').val() != 0) {
+                $('#id_Nome').attr('disabled', 'disabled')
+                $('#id_Estado').attr('disabled', 'disabled')
+                $('#id_Cidade').attr('disabled', 'disabled')
+            } else {
+                $('#id_Nome').attr('disabled', '')
+                $('#id_Estado').attr('disabled', '')
+                $('#id_Cidade').attr('disabled', '')
+            }
+        });
     });
 
     var mostravalores = function(obj) {
@@ -127,7 +139,6 @@ $(document).ready(function(){
                 $("#modal-formulario").modal("show");
             },
             success: function(data){
-                console.log(data);
                 $("#modal-formulario .modal-content").html(data.html_form);
                 $(".js-edita-minutaveiculo-form").attr('action', "{% url 'editaminutaveiculo' 0 %}".replace(/0/, idminuta));
             }

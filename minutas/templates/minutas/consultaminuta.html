@@ -241,26 +241,52 @@
             <div class="consulta_cliente_modulo">
                 <h2 class="consulta_subtitulo"><b>ENTREGAS:</b></h2>
                 <label class="glyphicon glyphicon-plus botaoadicionar js-criaminutaentrega" idminuta="{{ itens.idMinuta }}" data-url="{% url 'criaminutaentrega' %}"></label>
-                {% for notasminuta in notasminuta %}
+                {% for notasminutaguia in notas_minuta_guia %}
                     <div class="consulta_contatoemail">
-                        <p>Nota: {{ notasminuta.Nota }} - Valor: R$ {{ notasminuta.Valor }} - Peso: {{ notasminuta.Peso }} - Volume: {{ notasminuta.Volume }}</p>
+                        <p>Nota: {{ notasminutaguia.Nota }} - Valor: R$ {{ notasminutaguia.Valor }} - Peso:
+                            {{ notasminutaguia.Peso }} - Volume: {{ notasminutaguia.Volume }} -
+                            {{ notasminutaguia.Cidade }} {% if notasminutaguia.Nome %} - {{ notasminutaguia.Nome }}
+                            {% endif %}</p>
                     </div>
                     <div class="excluidocfone">
                         <button class="btn btn-success btn-xs js-editaminutaentrega"
-                                idminuta="{{ notasminuta.idMinuta }}"
-                                idminutanotas="{{ notasminuta.idMinutaNotas }}"
-                                data-url="{% url 'editaminutaentrega' notasminuta.idMinutaNotas %}">
+                                idminuta="{{ notasminutaguia.idMinuta }}"
+                                idminutanotas="{{ notasminutaguia.idMinutaNotas }}"
+                                data-url="{% url 'editaminutaentrega' notasminutaguia.idMinutaNotas %}">
                             <span class="glyphicon glyphicon-edit"></span>
                         </button>
                         <button class="btn btn-danger btn-xs js-excluiminutaentrega"
-                                idminuta="{{ notasminuta.idMinuta }}"
-                                idminutanotas="{{ notasminuta.idMinutaNotas }}"
-                                data-url="{% url 'excluiminutaentrega' notasminuta.idMinutaNotas %}">
+                                idminuta="{{ notasminutaguia.idMinuta }}"
+                                idminutanotas="{{ notasminutaguia.idMinutaNotas }}"
+                                data-url="{% url 'excluiminutaentrega' notasminutaguia.idMinutaNotas %}">
                             <span class="glyphicon glyphicon-trash"></span>
                         </button>
                     </div>
+                    {% for notasminuta in notas_minuta %}
+                        {% if notasminuta.NotaGuia == notasminutaguia.Nota %}
+                            <div class="consulta_contatoemail">
+                                <p>&nbsp;&nbsp;&nbsp;&nbsp;|&#8211;&#8211;&#8211; {{ notasminuta.Nota }} - Valor: R$
+                                    {{notasminuta.Valor }} - Peso: {{ notasminuta.Peso }} - Volume:
+                                    {{notasminuta.Volume }}</p>
+                            </div>
+                            <div class="excluidocfone">
+                                <button class="btn btn-success btn-xs js-editaminutaentrega"
+                                        idminuta="{{ notasminuta.idMinuta }}"
+                                        idminutanotas="{{ notasminuta.idMinutaNotas }}"
+                                        data-url="{% url 'editaminutaentrega' notasminuta.idMinutaNotas %}">
+                                    <span class="glyphicon glyphicon-edit"></span>
+                                </button>
+                                <button class="btn btn-danger btn-xs js-excluiminutaentrega"
+                                        idminuta="{{ notasminuta.idMinuta }}"
+                                        idminutanotas="{{ notasminuta.idMinutaNotas }}"
+                                        data-url="{% url 'excluiminutaentrega' notasminuta.idMinutaNotas %}">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </button>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
                 {% endfor %}
-                {% if notasminuta %}
+                {% if notas_minuta %}
                     <div class="consulta_contatoemail">
                         <p><b>Valor Total: R$ {{ totalvalornotas.totalvalor }} -
                             Peso Total: {{ totalpesonotas.totalpeso }} -

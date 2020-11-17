@@ -410,15 +410,19 @@ class CadastraMinutaParametroDespesa(forms.Form):
 
 
 class CadastraMinutaNota(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(CadastraMinutaNota, self).__init__(*args, **kwargs)
-        self.fields['NotaGuia'].queryset = MinutaNotas.objects.exclude(NotaGuia=None)
+    def __init__(self, idminuta, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        qs = MinutaNotas.objects.filter(idMinuta=idminuta)
+        self.fields['NotaGuia'] = forms.ChoiceField(choices=[('0', '  ')] + [(x.Nota, x.Nota) for x in qs])
+        self.fields['NotaGuia'].widget.attrs = {'class': 'formfields'}
+        self.fields['NotaGuia'].label = 'NOTA GUIA'
+
     class Meta:
         model = MinutaNotas
         fields = {'idMinutaNotas', 'Nota', 'Valor', 'Peso', 'Volume', 'Nome', 'Estado', 'Cidade', 'NotaGuia',
                   'idMinuta'}
-        labels = {'Nota': 'NOTA', 'Valor': 'VALOR', 'Peso': 'PESO', 'Volume': 'VOLUME', 'Nome': 'Razão Social',
-                  'Estado': 'Esrado', 'Cidade': 'Cidade', 'NotaGuia': 'Nota Guia'}
+        labels = {'Nota': 'NOTA', 'Valor': 'VALOR', 'Peso': 'PESO', 'Volume': 'VOLUME', 'Nome': 'RAZÃO SOCIAL',
+                  'Estado': 'ESTADO', 'Cidade': 'CIDADE'}
         widgets = {'Nota': forms.TextInput(attrs={'class': 'formfields'}),
                    'Valor': forms.NumberInput(attrs={'class': 'formfields'}),
                    'Peso': forms.NumberInput(attrs={'class': 'formfields'}),
@@ -426,6 +430,6 @@ class CadastraMinutaNota(forms.ModelForm):
                    'Nome': forms.TextInput(attrs={'class': 'formfields'}),
                    'Estado': forms.TextInput(attrs={'class': 'formfields'}),
                    'Cidade': forms.TextInput(attrs={'class': 'formfields'}),
-                   'NotaGuia': forms.Select(attrs={'class': 'formfields'}),
+                   # 'NotaGuia': forms.Select(attrs={'class': 'formfields'}),
                    'idMinuta': forms.HiddenInput(),}
     field_order = ['Nota', 'Valor', 'Peso', 'Volume', 'NotaGuia', 'Nome', 'Estado', 'Cidade',]
