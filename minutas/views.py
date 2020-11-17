@@ -77,21 +77,17 @@ def salvaminutaitens(Descricao, TipoItens, RecebePaga, Valor, Quantidade, Porcen
     :param idMinuta:
     :return:
     """
-    minutaitens = MinutaItens.objects.filter(idMinuta=idMinuta,
-                                             Descricao=Descricao[0],
-                                             RecebePaga=RecebePaga,
+    minutaitens = MinutaItens.objects.filter(idMinuta=idMinuta, Descricao=Descricao, RecebePaga=RecebePaga,
                                              TipoItens=TipoItens)
     hora_datetime = datetime.strptime(Tempo, '%H:%M')
-    hora_timedelta = timedelta(days=0, hours=hora_datetime.hour,
-                               minutes=hora_datetime.minute)
+    hora_timedelta = timedelta(days=0, hours=hora_datetime.hour, minutes=hora_datetime.minute)
     obj = MinutaItens()
     if minutaitens:
-        obj.idMinutaItens = \
-            list(minutaitens.values('idMinutaItens')[0].values())[0]
-    obj.Descricao = Descricao[0]
+        obj.idMinutaItens = list(minutaitens.values('idMinutaItens')[0].values())[0]
+    obj.Descricao = Descricao
     obj.TipoItens = TipoItens
     obj.RecebePaga = RecebePaga
-    obj.Valor = Valor[0]
+    obj.Valor = Valor
     obj.Quantidade = Quantidade
     obj.Porcento = Porcento
     obj.Peso = Peso
@@ -427,7 +423,7 @@ def consultaminuta(request, idmin):
         tabela_recebe_e_paga[str(item)]['type_tabela_recebe'] = type_tabela_recebe[index]
         # Columa 3 Recebe - valores das tabelas
         tabela_recebe_e_paga[str(item)]['id_tr'] = 'ta-%s-recebe' % keys_nome_recebe[index]
-        tabela_recebe_e_paga[str(item)]['name_tr'] = 'tabela_recebe'
+        tabela_recebe_e_paga[str(item)]['name_tr'] = 'tabela-recebe'
         tabela_recebe_e_paga[str(item)]['value_tr'] = values_tabela_recebe[index]
         tabela_recebe_e_paga[str(item)]['class_tr'] = 'demonstrativo-input change-%s-recebe' % keys_nome_recebe[index]
         tabela_recebe_e_paga[str(item)]['type_tr'] = 'number'
@@ -436,7 +432,7 @@ def consultaminuta(request, idmin):
         tabela_recebe_e_paga[str(item)]['type_minuta_recebe'] = type_minuta_recebe[index]
         # Columa 4 Recebe - valores das tabelas
         tabela_recebe_e_paga[str(item)]['id_mr'] = 'mi-%s-recebe' % keys_nome_recebe[index]
-        tabela_recebe_e_paga[str(item)]['name_mr'] = 'minuta_recebe'
+        tabela_recebe_e_paga[str(item)]['name_mr'] = 'minuta-recebe'
         tabela_recebe_e_paga[str(item)]['value_mr'] = values_minuta_recebe[index]
         tabela_recebe_e_paga[str(item)]['class_mr'] = 'demonstrativo-input change-%s-recebe' % keys_nome_recebe[index]
         if isinstance(values_minuta_recebe[index], time):
@@ -461,7 +457,7 @@ def consultaminuta(request, idmin):
         tabela_recebe_e_paga[str(item)]['type_tabela_paga'] = type_tabela_paga[index]
         # Columa 3 Paga - valores das tabelas
         tabela_recebe_e_paga[str(item)]['id_tp'] = 'ta-%s-paga' % keys_nome_paga[index]
-        tabela_recebe_e_paga[str(item)]['name_tp'] = 'tabela_paga'
+        tabela_recebe_e_paga[str(item)]['name_tp'] = 'tabela-paga'
         tabela_recebe_e_paga[str(item)]['value_tp'] = values_tabela_paga[index]
         tabela_recebe_e_paga[str(item)]['class_tp'] = 'demonstrativo-input change-%s-paga' % keys_nome_paga[index]
         tabela_recebe_e_paga[str(item)]['type_tp'] = 'number'
@@ -470,7 +466,7 @@ def consultaminuta(request, idmin):
         tabela_recebe_e_paga[str(item)]['type_minuta_paga'] = type_minuta_paga[index]
         # Columa 4 Paga - valores das tabelas
         tabela_recebe_e_paga[str(item)]['id_mp'] = 'mi-%s-paga' % keys_nome_paga[index]
-        tabela_recebe_e_paga[str(item)]['name_mp'] = 'minuta_paga'
+        tabela_recebe_e_paga[str(item)]['name_mp'] = 'minuta-paga'
         tabela_recebe_e_paga[str(item)]['value_mp'] = values_minuta_paga[index]
         tabela_recebe_e_paga[str(item)]['class_mp'] = 'demonstrativo-input change-%s-paga' % keys_nome_paga[index]
         if isinstance(values_minuta_paga[index], time):
@@ -836,317 +832,92 @@ def fecha_minuta(request, idmin):
     :param request: request
     :param idmin: int :return:
     """
+    keys_recebe = ['TAXA DE EXPEDIÇÃO', 'SEGURO', 'PORCENTAGEM DA NOTA', 'HORAS', 'HORAS EXCEDENTE', 'KILOMETRAGEM',
+                   'ENTREGAS', 'ENTREGAS KG', 'ENTREGAS VOLUME', 'SAIDA', 'CAPACIDADE PESO', 'PERIMETRO', 'PERNOITE',
+                   'AJUDANTE', 'DESCONTO']
+    keys_nome_recebe = ['taxaexpedicao', 'seguro', 'porcentagem', 'horas', 'horasexcede', 'kilometragem', 'entregas',
+                        'entregaskg', 'entregasvolume', 'saida', 'capacidade', 'perimetro', 'pernoite', 'ajudante',
+                        'desconto']
+    type_tabela_recebe = ['R$', '%', '%', 'R$', '%', 'R$', 'R$', 'R$', 'R$', 'R$', 'R$', '%', '%', 'R$', 'R$']
+    type_minuta_recebe = [None, 'R$', 'R$', 'HS', 'HS', 'UN', 'UN', 'KG', 'UN', None, None, 'R$', 'R$', 'UN', None]
+    keys_paga = ['PORCENTAGEM DA NOTA', 'HORAS', 'HORAS EXCEDENTE', 'KILOMETRAGEM', 'ENTREGAS', 'ENTREGAS KG',
+                 'ENTREGAS VOLUME', 'SAIDA', 'CAPACIDADE PESO', 'PERIMETRO', 'PERNOITE', 'AJUDANTE']
+    keys_nome_paga = ['porcentagem', 'horas', 'horasexcede', 'kilometragem', 'entregas', 'entregaskg',
+                      'entregasvolume', 'saida', 'capacidade', 'perimetro', 'pernoite', 'ajudante']
+    type_tabela_paga = ['%', 'R$', '%', 'R$', 'R$', 'R$', 'R$', 'R$', 'R$', '%', '%', 'R$']
+    type_minuta_paga = ['R$', 'HS', 'HS', 'UN', 'UN', 'KG', 'UN', None, None, 'R$', 'R$', 'UN']
     dados_switch = request.POST.getlist('switch')
-    descricao_recebe = request.POST.getlist('descricao-recebe')
+    dados_tabela_recebe = request.POST.getlist('tabela-recebe')
+    dados_minuta_recebe = request.POST.getlist('minuta-recebe')
+    dados_minuta_recebe.insert(0, None)
+    dados_minuta_recebe.insert(9, None)
+    dados_minuta_recebe.insert(10, None)
+    dados_minuta_recebe.insert(14, None)
     dados_valor_recebe = request.POST.getlist('valor-recebe')
-    dados_descricao_paga = request.POST.getlist('descricao-paga')
+    for index, itens in enumerate(keys_nome_recebe):
+        switch_name = 'sw-%s-recebe' % itens
+        if switch_name in dados_switch:
+            if dados_valor_recebe != 0:
+                if (type_tabela_recebe[index] == 'R$') and (type_minuta_recebe[index] == None):
+                    salvaminutaitens(keys_recebe[index], 'RECEBE', 'R', dados_valor_recebe[index], 0, 0, 0,
+                                     dados_tabela_recebe[index], '00:00', idmin)
+                if (type_tabela_recebe[index] == '%') and (type_minuta_recebe[index] == 'R$'):
+                    salvaminutaitens(keys_recebe[index], 'RECEBE', 'R', dados_valor_recebe[index], 0,
+                                     dados_tabela_recebe[index], 0, dados_minuta_recebe[index], '00:00', idmin)
+                if (type_tabela_recebe[index] == 'R$') and (type_minuta_recebe[index] == 'HS'):
+                    salvaminutaitens(keys_recebe[index], 'RECEBE', 'R', dados_valor_recebe[index], 0, 0, 0,
+                                     dados_tabela_recebe[index], dados_minuta_recebe[index], idmin)
+                if (type_tabela_recebe[index] == '%') and (type_minuta_recebe[index] == 'HS'):
+                    salvaminutaitens(keys_recebe[index], 'RECEBE', 'R', dados_valor_recebe[index], 0,
+                                     dados_tabela_recebe[index], 0, 0, dados_minuta_recebe[index], idmin)
+                if (type_tabela_recebe[index] == 'R$') and (type_minuta_recebe[index] == 'UN'):
+                    salvaminutaitens(keys_recebe[index], 'RECEBE', 'R', dados_valor_recebe[index], dados_minuta_recebe[
+                        index], 0, 0, dados_tabela_recebe[index], '00:00', idmin)
+                if (type_tabela_recebe[index] == 'R$') and (type_minuta_recebe[index] == 'KG'):
+                    salvaminutaitens(keys_recebe[index], 'RECEBE', 'R', dados_valor_recebe[index], 0, 0,
+                                     dados_minuta_recebe[index], dados_tabela_recebe[index], '00:00', idmin)
+    dados_tabela_paga = request.POST.getlist('tabela-paga')
+    dados_minuta_paga = request.POST.getlist('minuta-paga')
+    dados_minuta_paga.insert(7, None)
+    dados_minuta_paga.insert(8, None)
     dados_valor_paga = request.POST.getlist('valor-paga')
-    dados_descricao_despesa_recebe = request.POST.getlist(
-        'descricao_despesa-recebe')
+    for index, itens in enumerate(keys_nome_paga):
+        switch_name = 'sw-%s-paga' % itens
+        if switch_name in dados_switch:
+            if dados_valor_paga != 0:
+                if (type_tabela_paga[index] == 'R$') and (type_minuta_paga[index] == None):
+                    salvaminutaitens(keys_paga[index], 'PAGA', 'P', dados_valor_paga[index], 0, 0, 0,
+                                     dados_tabela_paga[index], '00:00', idmin)
+                if (type_tabela_paga[index] == '%') and (type_minuta_paga[index] == 'R$'):
+                    salvaminutaitens(keys_paga[index], 'PAGA', 'P', dados_valor_paga[index], 0,
+                                     dados_tabela_paga[index], 0, dados_minuta_paga[index], '00:00', idmin)
+                if (type_tabela_paga[index] == 'R$') and (type_minuta_paga[index] == 'HS'):
+                    salvaminutaitens(keys_paga[index], 'PAGA', 'P', dados_valor_paga[index], 0, 0, 0,
+                                     dados_tabela_paga[index], dados_minuta_paga[index], idmin)
+                if (type_tabela_paga[index] == '%') and (type_minuta_paga[index] == 'HS'):
+                    salvaminutaitens(keys_paga[index], 'PAGA', 'P', dados_valor_paga[index], 0,
+                                     dados_tabela_paga[index], 0, 0, dados_minuta_paga[index], idmin)
+                if (type_tabela_paga[index] == 'R$') and (type_minuta_paga[index] == 'UN'):
+                    salvaminutaitens(keys_paga[index], 'PAGA', 'P', dados_valor_paga[index], dados_minuta_paga[
+                        index], 0, 0, dados_tabela_paga[index], '00:00', idmin)
+                if (type_tabela_paga[index] == 'R$') and (type_minuta_paga[index] == 'KG'):
+                    salvaminutaitens(keys_paga[index], 'PAGA', 'P', dados_valor_paga[index], 0, 0,
+                                     dados_minuta_paga[index], dados_tabela_paga[index], '00:00', idmin)
+    dados_descricao_despesa_recebe = request.POST.getlist('descricao-despesa-recebe')
     dados_valor_despesa_recebe = request.POST.getlist('valor-despesa-recebe')
-    dados_descricao_despesa_paga = request.POST.getlist(
-        'descricao-despesa-paga')
+    for index, itens in enumerate(dados_descricao_despesa_recebe, start=0):
+        salvaminutaitens(dados_descricao_despesa_recebe[index], 'DESPESA', 'R', dados_valor_despesa_recebe[index], 0,
+                         0.00, 0.00, 0.00, '00:00', idmin)
+    dados_descricao_despesa_paga = request.POST.getlist('descricao-despesa-paga')
     dados_valor_despesa_paga = request.POST.getlist('valor-despesa-paga')
-    # print(dados_switch)
-    # print(dados_valor_recebe)
-    # print(dados_descricao_paga)
-    # print(dados_valor_paga)
-    # print(dados_descricao_despesa_recebe)
-    # print(dados_valor_despesa_recebe)
-    # print(dados_descricao_despesa_paga)
-    # print(dados_valor_despesa_paga)
-
-    # print(descricao_recebe)
-    for itens in descricao_recebe:
-        if 'sw-%s-recebe' % itens.lower().replace(' ', '') in dados_switch:
-            descricao = itens
-            valor = request.POST.get(
-                'hi-%s-recebe' % itens.lower().replace(' ', ''))
-
-            # print(descricao, valor)
-
-    # print(request.POST)
-
-    # if 'sw-taxaexpedicao-recebe' in dados_switch:
-    #     salvaminutaitens(
-    #         dados_descricao_recebe[0:1],
-    #         'RECEBE',
-    #         'R',
-    #         dados_valor_recebe[0:1],
-    #         0,
-    #         0.0,
-    #         '00:00',
-    #         idmin
-    #     )
-    # if 'sw-seguro-recebe' in dados_switch:
-    #     salvaminutaitens(
-    #         dados_descricao_recebe[1:2],
-    #         'RECEBE',
-    #         'R',
-    #         dados_valor_recebe[1:2],
-    #         0,
-    #         request.POST.get('tb-seguro-recebe'),
-    #         '00:00',
-    #         idmin
-    #     )
-    # if 'sw-porcentagem-recebe' in dados_switch:
-    #     salvaminutaitens(
-    #         dados_descricao_recebe[2:3],
-    #         'RECEBE',
-    #         'R',
-    #         dados_valor_recebe[2:3],
-    #         0,
-    #         request.POST.get('tb-porcentagem-recebe'),
-    #         '00:00',
-    #         idmin
-    #     )
-    # if 'sw-hora-recebe' in dados_switch:
-    #     salvaminutaitens(
-    #         dados_descricao_recebe[3:4],
-    #         'RECEBE',
-    #         'R',
-    #         dados_valor_recebe[3:4],
-    #         0,
-    #         0.00,
-    #         request.POST.get('fa-hora-recebe'),
-    #         idmin
-    #     )
-    # if 'sw-horasexcede-recebe' in dados_switch:
-    #     salvaminutaitens(
-    #         dados_descricao_recebe[4:5],
-    #         'RECEBE',
-    #         'R',
-    #         dados_valor_recebe[4:5],
-    #         0,
-    #         request.POST.get('fa-horasexcede-recebe'),
-    #         request.POST.get('tb-horasexcede-recebe'),
-    #         idmin
-    #     )
-    # if 'sw-km-recebe' in dados_switch:
-    #     salvaminutaitens(
-    #         dados_descricao_recebe[5:6],
-    #         'RECEBE',
-    #         'R',
-    #         dados_valor_recebe[5:6],
-    #         request.POST.get('fa-km-recebe'),
-    #         0.00,
-    #         '00:00',
-    #         idmin
-    #     )
-    # if 'sw-entrega-recebe' in dados_switch:
-    #     salvaminutaitens(
-    #         dados_descricao_recebe[6:7],
-    #         'RECEBE',
-    #         'R',
-    #         dados_valor_recebe[6:7],
-    #         request.POST.get('fa-entrega-recebe'),
-    #         0.00,
-    #         '00:00',
-    #         idmin
-    #     )
-    # if 'sw-entregakg-recebe' in dados_switch:
-    #     salvaminutaitens(
-    #         dados_descricao_recebe[7:8],
-    #         'RECEBE',
-    #         'R',
-    #         dados_valor_recebe[7:8],
-    #         0,
-    #         request.POST.get('fa-entregakg-recebe'),
-    #         '00:00',
-    #         idmin
-    #     )
-    # if 'sw-entregavolume-recebe' in dados_switch:
-    #     salvaminutaitens(
-    #         dados_descricao_recebe[8:9],
-    #         'RECEBE',
-    #         'R',
-    #         dados_valor_recebe[8:9],
-    #         request.POST.get('fa-entregavolume-recebe'),
-    #         0.00,
-    #         '00:00',
-    #         idmin
-    #     )
-    # if 'sw-saida-recebe' in dados_switch:
-    #     salvaminutaitens(
-    #         dados_descricao_recebe[9:10],
-    #         'RECEBE',
-    #         'R',
-    #         dados_valor_recebe[9:10],
-    #         0,
-    #         0.00,
-    #         '00:00',
-    #         idmin
-    #     )
-    # if 'sw-capacidade-recebe' in dados_switch:
-    #     salvaminutaitens(
-    #         dados_descricao_recebe[10:11],
-    #         'RECEBE',
-    #         'R',
-    #         dados_valor_recebe[10:11],
-    #         0,
-    #         0.00,
-    #         '00:00',
-    #         idmin
-    #     )
-    # if 'sw-ajudante-recebe' in dados_switch:
-    #     salvaminutaitens(
-    #         dados_descricao_recebe[11:12],
-    #         'RECEBE',
-    #         'R',
-    #         dados_valor_recebe[11:12],
-    #         request.POST.get('fa-ajudante-recebe'),
-    #         0.00,
-    #         '00:00',
-    #         idmin
-    #     )
-    # if 'sw-desconto-recebe' in dados_switch:
-    #     salvaminutaitens(
-    #         dados_descricao_recebe[12:13],
-    #         'RECEBE',
-    #         'R',
-    #         dados_valor_recebe[12:13],
-    #         0,
-    #         0.00,
-    #         '00:00',
-    #         idmin
-    #     )
-    # if 'sw-porcentagem-paga' in dados_switch:
-    #     salvaminutaitens(
-    #         dados_descricao_paga[0:1],
-    #         'PAGA',
-    #         'P',
-    #         dados_valor_paga[0:1],
-    #         0,
-    #         request.POST.get('tb-porcentagem-paga'),
-    #         '00:00',
-    #         idmin
-    #     )
-    # if 'sw-hora-paga' in dados_switch:
-    #     salvaminutaitens(
-    #         dados_descricao_paga[1:2],
-    #         'PAGA',
-    #         'P',
-    #         dados_valor_paga[1:2],
-    #         0,
-    #         0.00,
-    #         request.POST.get('fa-hora-paga'),
-    #         idmin
-    #     )
-    # if 'sw-horasexcede-paga' in dados_switch:
-    #     salvaminutaitens(
-    #         dados_descricao_paga[2:3],
-    #         'PAGA',
-    #         'P',
-    #         dados_valor_paga[2:3],
-    #         0,
-    #         request.POST.get('fa-horasexcede-paga'),
-    #         request.POST.get('tb-horasexcede-paga'),
-    #         idmin
-    #     )
-    # if 'sw-km-recebe' in dados_switch:
-    #     salvaminutaitens(
-    #         dados_descricao_paga[3:4],
-    #         'PAGA',
-    #         'P',
-    #         dados_valor_paga[3:4],
-    #         request.POST.get('fa-km-paga'),
-    #         0.00,
-    #         '00:00',
-    #         idmin
-    #     )
-    # if 'sw-entrega-paga' in dados_switch:
-    #     salvaminutaitens(
-    #         dados_descricao_paga[4:5],
-    #         'PAGA',
-    #         'P',
-    #         dados_valor_paga[4:5],
-    #         request.POST.get('fa-entrega-paga'),
-    #         0.00,
-    #         '00:00',
-    #         idmin
-    #     )
-    # if 'sw-entregakg-paga' in dados_switch:
-    #     salvaminutaitens(
-    #         dados_descricao_paga[5:6],
-    #         'PAGA',
-    #         'P',
-    #         dados_valor_paga[5:6],
-    #         0,
-    #         request.POST.get('fa-entregakg-paga'),
-    #         '00:00',
-    #         idmin
-    #     )
-    # if 'sw-entregavolume-paga' in dados_switch:
-    #     salvaminutaitens(
-    #         dados_descricao_paga[6:7],
-    #         'PAGA',
-    #         'P',
-    #         dados_valor_paga[6:7],
-    #         request.POST.get('fa-entregavolume-paga'),
-    #         0.00,
-    #         '00:00',
-    #         idmin
-    #     )
-    # if 'sw-saida-paga' in dados_switch:
-    #     salvaminutaitens(
-    #         dados_descricao_paga[7:8],
-    #         'PAGA',
-    #         'P',
-    #         dados_valor_paga[7:8],
-    #         0,
-    #         0.00,
-    #         '00:00',
-    #         idmin
-    #     )
-    # if 'sw-capacidade-paga' in dados_switch:
-    #     salvaminutaitens(
-    #         dados_descricao_paga[8:9],
-    #         'PAGA',
-    #         'P',
-    #         dados_valor_paga[8:9],
-    #         0,
-    #         0.00,
-    #         '00:00',
-    #         idmin
-    #     )
-    # if 'sw-ajudante-paga' in dados_switch:
-    #     salvaminutaitens(
-    #         dados_descricao_paga[9:10],
-    #         'PAGA',
-    #         'P',
-    #         dados_valor_paga[9:10],
-    #         request.POST.get('fa-ajudante-paga'),
-    #         0.00,
-    #         '00:00',
-    #         idmin
-    #     )
-    # for index, x in enumerate(dados_descricao_despesa_recebe, start=0):
-    #     salvaminutaitens(
-    #         dados_descricao_despesa_recebe[index:index+1],
-    #         'DESPESA',
-    #         'R',
-    #         dados_valor_despesa_recebe[index:index+1],
-    #         0,
-    #         0.00,
-    #         '00:00',
-    #         idmin
-    #     )
-    # for index, x in enumerate(dados_descricao_despesa_paga, start=0):
-    #     salvaminutaitens(
-    #         dados_descricao_despesa_paga[index:index+1],
-    #         'PAGA',
-    #         'R',
-    #         dados_valor_despesa_paga[index:index+1],
-    #         0,
-    #         0.00,
-    #         '00:00',
-    #         idmin
-    #     )
-    # minuta_itens = MinutaItens.objects.filter(idMinuta_id=idmin)
-    # for itens in minuta_itens:
-    #     if itens.Valor == 0:
-    #         excluiminutaitens(itens.idMinutaItens)
-    # altera_status_minuta('FECHADA', idmin)
+    for index, itens in enumerate(dados_descricao_despesa_paga, start=0):
+        salvaminutaitens(dados_descricao_despesa_paga[index], 'REEMBOLSO', 'P', dados_valor_despesa_paga[index], 0,
+                         0.00, 0.00, 0.00, '00:00', idmin)
+    minuta_itens = MinutaItens.objects.filter(idMinuta_id=idmin)
+    for itens in minuta_itens:
+        if itens.Valor == 0:
+            excluiminutaitens(itens.idMinutaItens)
+    altera_status_minuta('FECHADA', idmin)
     return redirect('consultaminuta', idmin)
 
 
@@ -1156,12 +927,10 @@ def estorna_minuta(request, idmin):
         pass
     elif minuta.StatusMinuta == 'FECHADA':
         altera_status_minuta('ABERTA', idmin)
-        itens_minuta_recebe_excluir = MinutaItens.objects.filter(
-            idMinuta=idmin).filter(TipoItens='RECEBE')
+        itens_minuta_recebe_excluir = MinutaItens.objects.filter(idMinuta=idmin).filter(TipoItens='RECEBE')
         for itens in itens_minuta_recebe_excluir:
             excluiminutaitens(itens.idMinutaItens)
-        itens_minuta_paga_excluir = MinutaItens.objects.filter(
-            idMinuta=idmin).filter(TipoItens='PAGA')
+        itens_minuta_paga_excluir = MinutaItens.objects.filter(idMinuta=idmin).filter(RecebePaga='P')
         for itens in itens_minuta_paga_excluir:
             excluiminutaitens(itens.idMinutaItens)
     return redirect('index_minuta')

@@ -430,6 +430,5 @@ class CadastraMinutaNota(forms.ModelForm):
                    'Nome': forms.TextInput(attrs={'class': 'formfields'}),
                    'Estado': forms.TextInput(attrs={'class': 'formfields'}),
                    'Cidade': forms.TextInput(attrs={'class': 'formfields'}),
-                   # 'NotaGuia': forms.Select(attrs={'class': 'formfields'}),
                    'idMinuta': forms.HiddenInput(),}
     field_order = ['Nota', 'Valor', 'Peso', 'Volume', 'NotaGuia', 'Nome', 'Estado', 'Cidade',]

@@ -189,7 +189,7 @@ $(document).ready(function(){
         mostravalores(obj);
     });
 
-    $("#mi-ajudante-paga").attr('disabled', 'disabled')
+    $("#mi-ajudante-paga").attr('readonly', 'readonly')
     $(".js-criaminuta").click(loadForm);
     $(".js-editaminuta").click(loadForm);
     $(".js-imprimeminuta").click(loadForm);

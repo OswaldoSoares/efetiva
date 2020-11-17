@@ -301,8 +301,7 @@
                 <h2 class="consulta_subtitulo"><b>VALORES DE FATURAMENTO E PAGAMENTO:</b></h2>
                 <label class="glyphicon glyphicon-ok botaoadicionar"></label>
                 <div class="demonstrativo">
-                    <form method="post"
-                         action="">
+                    <form method="post" action="{% url 'fecha_minuta' itens.idMinuta %}">
                         {% csrf_token %}
                         <div class="tb-recebe">
                             <table class="tb-demo-recebe">
@@ -458,7 +457,7 @@
                                         <td class="tb-coluna5">
                                             <span id="to-{{ itens.Descricao|lower|cut:' ' }}-recebe"
                                                   class="to-despesa-recebe">R$ {{ itens.Valor }}</span>
-                                            <input name="descricao_despesa-recebe"
+                                            <input name="descricao-despesa-recebe"
                                                    value="{{ itens.Descricao }}"
                                                    type="hidden">
                                             <input id="hi-{{ itens.Descricao|lower|cut:' ' }}-recebe"
@@ -514,10 +513,7 @@
                             <span>SALDO MINUTA R$ 0,00</span>
                         </div>
                         <div class="btnfinalizaminuta">
-                            <button type="submit"
-                                    class="btn btn-success btn-sm active"
-                                    onclick="window.location.href = '{% url 'fecha_minuta' itens.idMinuta %}'">FINALIZAR MINUTA
-                            </button>
+                            <button type="submit" class="btn btn-success btn-sm active">FINALIZAR MINUTA</button>
                         </div>
                     </form>
                 </div>

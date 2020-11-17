@@ -87,21 +87,13 @@ class MinutaFatura(models.Model):
 class MinutaItens(models.Model):
     idMinutaItens = models.AutoField(primary_key=True)
     Descricao = models.CharField(max_length=25)
-    TipoItens = models.CharField(max_length=8)
+    TipoItens = models.CharField(max_length=9)
     RecebePaga = models.CharField(max_length=1)
-    Valor = models.DecimalField(max_digits=8,
-                                decimal_places=2,
-                                default=0)
+    Valor = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     Quantidade = models.IntegerField(default=0)
-    Porcento = models.DecimalField(max_digits=8,
-                                   decimal_places=2,
-                                   default=0)
-    Peso = models.DecimalField(max_digits=8,
-                               decimal_places=2,
-                               default=0)
-    ValorBase = models.DecimalField(max_digits=8,
-                                    decimal_places=2,
-                                    default=0)
+    Porcento = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    Peso = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    ValorBase = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     Tempo = models.DurationField(default=0)
     idMinuta = models.ForeignKey(Minuta, on_delete=models.CASCADE)
 
