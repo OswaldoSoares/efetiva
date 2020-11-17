@@ -224,7 +224,6 @@ def consultaminuta(request, idmin):
     porceperimetrorecebe = 0.00
     porceperimetropaga = 0.00
     porcesegurorecebe = 1.00
-    porceperimetro = 100
     porcepernoite = 100
     if tabelaveiculo:
         # Cria variavel horaminimo
@@ -299,8 +298,8 @@ def consultaminuta(request, idmin):
     for x in tabelaperimetro:
         if totalkm > x.PerimetroInicial:
             if totalkm < x.PerimetroFinal:
-                porceperimetrorecebe = 100 + x.PerimetroCobra
-                porceperimetropaga = 100 + x.PerimetroPaga
+                porceperimetrorecebe = x.PerimetroCobra
+                porceperimetropaga = x.PerimetroPaga
                 break
     formhoracobra = ''
     formhoraexcede = ''
@@ -334,14 +333,14 @@ def consultaminuta(request, idmin):
     values_tabela_recebe = [list(tabelacliente.values('TaxaExpedicao')[0].values())[0], 0.23, valorporcentagemrecebe,
                             valorhorarecebe, 100, list(tabelaveiculo.values('KMCobra')[0].values())[0],
                             valorentrega_recebe, valorentregakg_recebe, valorentregavolume_recebe, valorsaidarecebe,
-                            valorcapacidaderecebe, 100, 100, list(tabelacliente.values('AjudanteCobra')[0].values())[
-                                0], 0]
+                            valorcapacidaderecebe, porceperimetrorecebe, 0, list(tabelacliente.values(
+            'AjudanteCobra')[0].values())[0], 0]
     # Cria lista a receber para os labels dos inputs dos valores da minuta
     type_minuta_recebe = [None, 'R$', 'R$', 'HS', 'HS', 'UN', 'UN', 'KG', 'UN', None, None, 'R$', 'R$', 'UN', None]
     # Cria lista a receber para os inputs com os valores daminuta
     values_minuta_recebe = [None, totalvalornotas['totalvalor'], totalvalornotas['totalvalor'], minimohoras,
                             excedehoras, totalkm, totalquantidadenotas, totalpesonotas['totalpeso'],
-                            totalvolumenotas['totalvolume'], None, None, 1000, 1000, total_de_ajudantes, None]
+                            totalvolumenotas['totalvolume'], None, None, 0, 0, total_de_ajudantes, None]
     # Cria lista a pagar para a descrições dos itens
     keys_paga = ['PORCENTAGEM DA NOTA', 'HORAS', 'HORAS EXCEDENTE', 'KILOMETRAGEM', 'ENTREGAS', 'ENTREGAS KG',
                  'ENTREGAS VOLUME', 'SAIDA', 'CAPACIDADE PESO', 'PERIMETRO', 'PERNOITE', 'AJUDANTE']
@@ -353,12 +352,13 @@ def consultaminuta(request, idmin):
     # Cria lista a pagar para os inputs com os valores das tabelas do cliente
     values_tabela_paga = [valorporcentagempaga, valorhorapaga, 100, list(tabelaveiculo.values('KMPaga')[0].values())[
         0],valorentrega_paga, valorentregakg_paga, valorentregavolume_paga, valorsaidapaga, valorcapacidadepaga,
-                          100, 100, list(tabelacliente.values('AjudantePaga')[0].values())[0]]
+                          porceperimetropaga, 0, list(tabelacliente.values('AjudantePaga')[0].values())[0]]
     # Cria lista a pagar para os labels dos inputs dos valores da minuta
     type_minuta_paga = ['R$', 'HS', 'HS', 'UN', 'UN', 'KG', 'UN', None, None, 'R$', 'R$', 'UN']
     # Cria lista a pagar para os inputs com os valores daminuta
     values_minuta_paga = [totalvalornotas['totalvalor'], minimohoras, excedehoras, totalkm, totalquantidadenotas,
-                          totalpesonotas['totalpeso'], totalvolumenotas['totalvolume'], None, None, 1000, 1000, total_de_ajudantes]
+                          totalpesonotas['totalpeso'], totalvolumenotas['totalvolume'], None, None, 0, 0,
+                          total_de_ajudantes]
     # Cria dict com os switchs a receber desligados
     switch_recebe = {}
     for item in keys_nome_recebe:
@@ -386,8 +386,8 @@ def consultaminuta(request, idmin):
     if phkescrecebe[5:6] == '1':
         switch_recebe['capacidade'] = True
     if tabelaperimetro:
-        switch_recebe['perimetro'] = True
-        switch_paga['perimetro'] = True
+        if porceperimetrorecebe != 0:
+            switch_recebe['perimetro'] = True
     if ajudantes_da_minuta:
         switch_recebe['ajudante'] = True
         switch_paga['ajudante'] = True
@@ -407,6 +407,9 @@ def consultaminuta(request, idmin):
         switch_paga['saida'] = True
     if phkescpaga[5:6] == '1':
         switch_paga['capacidade'] = True
+    if tabelaperimetro:
+        if porceperimetropaga != 0:
+            switch_paga['perimetro'] = True
     # Cria as chaves para o dict
     for item in keys_recebe:
         tabela_recebe_e_paga[item] = {}
