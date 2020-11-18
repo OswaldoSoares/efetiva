@@ -109,9 +109,9 @@ class MinutaNotas(models.Model):
     Valor = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     Peso = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     Volume = models.IntegerField(default=0)
-    Nome =  models.CharField(max_length=50, blank=True, null=True)
-    Estado = models.CharField(max_length=60, blank=True, null=True, default='SP')
-    Cidade = models.CharField(max_length=60, blank=True, null=True, default='SÃO PAULO')
+    Nome =  models.CharField(max_length=60, blank=True, null=True)
+    Estado = models.CharField(max_length=2, default='SP')
+    Cidade = models.CharField(max_length=30, default='SÃO PAULO')
     NotaGuia = models.CharField(max_length=10, blank=True, null=True, default='0')
     idMinuta = models.ForeignKey(Minuta, on_delete=models.CASCADE)
 
