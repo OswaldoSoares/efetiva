@@ -20,7 +20,7 @@ from .views import index_minuta,\
     criaminutaentrega,\
     editaminutaentrega,\
     excluiminutaentrega,\
-    filtraminutaveiculo
+    filtraminutaveiculo, buscaminutaentrega
 
 
 urlpatterns = [
@@ -129,6 +129,7 @@ urlpatterns = [
         excluiminutaentrega,
         name='excluiminutaentrega'
     ),
+    path('buscaminutaentrega/', buscaminutaentrega, name='buscaminutaentrega'),
     path(
         'filtraminutaveiculo/',
         filtraminutaveiculo,

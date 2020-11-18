@@ -29,13 +29,34 @@ $(document).ready(function(){
 
         $('#id_NotaGuia').change(function() {
             if ($('#id_NotaGuia').val() != 0) {
-                $('#id_Nome').attr('disabled', 'disabled')
-                $('#id_Estado').attr('disabled', 'disabled')
-                $('#id_Cidade').attr('disabled', 'disabled')
+                nota_guia = $('#id_NotaGuia').val()
+                id_minuta = $('#id_idMinuta').val()
+                $('#id_Nome').attr('readonly', 'readonly')
+                $('#id_Estado').attr('readonly', 'readonly')
+                $('#id_Cidade').attr('readonly', 'readonly')
+                $.ajax({
+                    url: '/minutas/buscaminutaentrega',
+                    type: 'get',
+                    dataType: 'json',
+                    data: {
+                        nota_guia: nota_guia,
+                        id_minuta: id_minuta,
+                    },
+                    beforeSend: function(){
+                        console.log(nota_guia, id_minuta)
+                    },
+                    success: function(data){
+                        console.log(data)
+                        $('#id_Nome').val(data.nota_guia_nome);
+                        $('#id_Estado').val(data.nota_guia_estado);
+                        $('#id_Cidade').val(data.nota_guia_cidade);
+                    }
+                });
+
             } else {
-                $('#id_Nome').attr('disabled', '')
-                $('#id_Estado').attr('disabled', '')
-                $('#id_Cidade').attr('disabled', '')
+                $('#id_Nome').removeAttr('readonly')
+                $('#id_Estado').removeAttr('readonly')
+                $('#id_Cidade').removeAttr('readonly')
             }
         });
     });
@@ -171,6 +192,12 @@ $(document).ready(function(){
             success: function(data){
                 $("#modal-formulario .modal-content").html(data.html_form);
                 $(".js-edita-minutaveiculo-form").attr('action', "{% url 'editaminutaveiculo' 0 %}".replace(/0/, idminuta));
+
+                if ($('#id_NotaGuia').val() != 0) {
+                    $('#id_Nome').attr('readonly', 'readonly')
+                    $('#id_Estado').attr('readonly', 'readonly')
+                    $('#id_Cidade').attr('readonly', 'readonly')
+                }
             }
         });
     };

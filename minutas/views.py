@@ -274,9 +274,10 @@ def consultaminuta(request, idmin):
     formhorafinal = CadastraMinutaHoraFinal(instance=minutaform)
     formkminicial = CadastraMinutaKMInicial(instance=minutaform)
     formkmfinal = CadastraMinutaKMFinal(instance=minutaform)
-    # Cria queryset notas e objs das somas
+    # Cria queryset notas e dassomas
     notas_minuta = MinutaNotas.objects.filter(idMinuta=idmin).order_by('Nota')
     notas_minuta_guia = MinutaNotas.objects.filter(idMinuta=idmin, NotaGuia='0').order_by('Nota')
+    notas_perimetro = MinutaNotas.objects.filter(idMinuta=idmin).exclude(Cidade='SÃO PAULO')
     totalvalornotas = MinutaNotas.objects.filter(idMinuta=idmin).aggregate(totalvalor=Sum('Valor'))
     totalpesonotas = MinutaNotas.objects.filter(idMinuta=idmin).aggregate(totalpeso=Sum('Peso'))
     peso = totalpesonotas['totalpeso']
@@ -1122,7 +1123,6 @@ def criaminutaentrega(request):
     if request.method == 'POST':
         idminuta = request.POST.get('idMinuta')
         form = CadastraMinutaNota(idminuta, request.POST)
-        print(form)
     else:
         idminuta = request.GET.get('idminuta')
         form = CadastraMinutaNota(idminuta, initial={'idMinuta': idminuta})
@@ -1153,6 +1153,16 @@ def excluiminutaentrega(request, idminent):
     else:
         context = {'notaminuta': notaminuta}
         data['html_form'] = render_to_string('minutas/excluiminutaentrega.html', context, request=request)
+    return JsonResponse(data)
+
+
+def buscaminutaentrega(request):
+    nota_guia = MinutaNotas.objects.filter(idMinuta_id=request.GET.get('id_minuta'), Nota=request.GET.get('nota_guia'))
+    nota_guia_nome = list(nota_guia.values('Nome')[0].values())[0]
+    nota_guia_cidade = list(nota_guia.values('Cidade')[0].values())[0]
+    nota_guia_estado = list(nota_guia.values('Estado')[0].values())[0]
+    data = {'nota_guia_nome': nota_guia_nome, 'nota_guia_cidade': nota_guia_cidade, 'nota_guia_estado':
+        nota_guia_estado}
     return JsonResponse(data)
 
 
@@ -1223,7 +1233,9 @@ def salva_form(request, form, template_name, idmin):
     numerominuta = 0
     numeroidminuta = form.instance
     if request.method == 'POST':
+        print(form)
         if form.is_valid():
+            print('aqui')
             data['form_is_valid'] = True
             if template_name != 'minutas/editaminutaveiculo.html':
                 form.save()
