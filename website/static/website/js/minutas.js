@@ -120,8 +120,14 @@ $(document).ready(function(){
                     $(hi_id).val($(ta_id).val()*$(mi_id).val())
                 }
             } else {
-                $(to_id).text('R$ ' + ($(ta_id).val()*1).toFixed(2).replace('.',','))
-                $(hi_id).val($(ta_id).val())
+                if (to_id == '#to-desconto-recebe') {
+                    console.log(to_id)
+                    $(to_id).text('R$ ' + ($(ta_id).val()*-1).toFixed(2).replace('.',','))
+                    $(hi_id).val($(ta_id).val()*-1)
+                } else {
+                    $(to_id).text('R$ ' + ($(ta_id).val()*1).toFixed(2).replace('.',','))
+                    $(hi_id).val($(ta_id).val())
+                }
             }
         } else {
             $(to_id).text('R$ 0,00')

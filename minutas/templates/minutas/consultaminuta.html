@@ -250,8 +250,9 @@
                     <div class="consulta_contatoemail">
                         <p>Nota: {{ notasminutaguia.Nota }} - Valor: R$ {{ notasminutaguia.Valor }} - Peso:
                             {{ notasminutaguia.Peso }} - Volume: {{ notasminutaguia.Volume }} -
-                            {{ notasminutaguia.Cidade }} {% if notasminutaguia.Nome %} - {{ notasminutaguia.Nome }}
-                            {% endif %}</p>
+                            <b>{{ notasminutaguia.Cidade }} {% if notasminutaguia.Nome %} -
+                            {{ notasminutaguia.Nome }}
+                            {% endif %}</b></p>
                     </div>
                     {% if itens.StatusMinuta == 'ABERTA' %}
                         <div class="excluidocfone">
