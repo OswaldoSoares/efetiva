@@ -1048,8 +1048,7 @@ def editaminutaveiculo(request, idmin):
             obj.idVeiculo_id = form.cleaned_data['Veiculo']
             obj.save()
     else:
-        form = CadastraMinutaVeiculo(
-            initial={'idMinuta': idmin, 'Veiculo': minuta.idVeiculo_id})
+        form = CadastraMinutaVeiculo(initial={'idMinuta': idmin, 'Veiculo': minuta.idVeiculo_id})
     return salva_form(request, form, 'minutas/editaminutaveiculo.html', idmin)
 
 
@@ -1231,11 +1230,11 @@ def criaminutaparametrodespesa(request):
 def salva_form(request, form, template_name, idmin):
     data = dict()
     numerominuta = 0
-    numeroidminuta = form.instance
+    numeroidminuta = idmin
+    if template_name != 'minutas/editaminutaveiculo.html':
+        numeroidminuta = form.instance
     if request.method == 'POST':
-        print(form)
         if form.is_valid():
-            print('aqui')
             data['form_is_valid'] = True
             if template_name != 'minutas/editaminutaveiculo.html':
                 form.save()

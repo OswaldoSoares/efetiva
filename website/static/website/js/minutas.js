@@ -121,7 +121,6 @@ $(document).ready(function(){
                 }
             } else {
                 if (to_id == '#to-desconto-recebe') {
-                    console.log(to_id)
                     $(to_id).text('R$ ' + ($(ta_id).val()*-1).toFixed(2).replace('.',','))
                     $(hi_id).val($(ta_id).val()*-1)
                 } else {
@@ -197,8 +196,6 @@ $(document).ready(function(){
             },
             success: function(data){
                 $("#modal-formulario .modal-content").html(data.html_form);
-                $(".js-edita-minutaveiculo-form").attr('action', "{% url 'editaminutaveiculo' 0 %}".replace(/0/, idminuta));
-
                 if ($('#id_NotaGuia').val() != 0) {
                     $('#id_Nome').attr('readonly', 'readonly')
                     $('#id_Estado').attr('readonly', 'readonly')

@@ -2,6 +2,7 @@ from django.db import models
 from pip._vendor.contextlib2 import nullcontext
 
 from clientes.models import Cliente
+from faturamentos.models import Fatura
 from pessoas.models import Pessoal
 from veiculos.models import CategoriaVeiculo, Veiculo
 import datetime
@@ -12,9 +13,7 @@ class Minuta(models.Model):
     Minuta = models.IntegerField()
     DataMinuta = models.DateField(default=0)
     HoraInicial = models.TimeField(default=datetime.time(0))
-    HoraFinal = models.TimeField(default=datetime.time(0),
-                                 blank=True,
-                                 null=True)
+    HoraFinal = models.TimeField(default=datetime.time(0), blank=True, null=True)
     Coleta = models.TextField(blank=True)
     Entrega = models.TextField(blank=True)
     KMInicial = models.IntegerField(default=0)
@@ -66,22 +65,15 @@ class MinutaColaboradores(models.Model):
 
 class MinutaFatura(models.Model):
     idMinutaFatura = models.AutoField(primary_key=True)
-    DataFatura = models.DateField(default=0)
-    Valor = models.DecimalField(max_digits=10,
-                                decimal_places=2,
-                                default=0)
-    ValorPago = models.DecimalField(max_digits=10,
-                                    decimal_places=2,
-                                    default=0)
-    ValorDesconto = models.DecimalField(max_digits=10,
-                                        decimal_places=2,
-                                        default=0)
-    DataPtgo = models.DateField(default=0)
-    idMinuta = models.ForeignKey(Minuta,
-                                 on_delete=models.CASCADE)
+    Valor = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    Comentarios = models.TextField()
+    idMinuta = models.ForeignKey(Minuta, on_delete=models.CASCADE)
+    idFatura = models.ForeignKey(Fatura, on_delete=models.PROTECT, blank=True, null=True)
 
     class Meta:
         db_table = 'MinutaFatura'
+
+    objects = models.Manager()
 
 
 class MinutaItens(models.Model):

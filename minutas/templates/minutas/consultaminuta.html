@@ -103,7 +103,7 @@
             <!-- VEÍCULO MINUTA -->
             <div class="consulta_cliente_modulo">
                 <h2 class="consulta_subtitulo"><b>VEÍCULO ENVIADO:</b></h2>
-                {% if motoristaminuta %}
+                {% if motorista_da_minuta %}
                     {% if itens.idVeiculo %}
                         <label class="glyphicon glyphicon-edit botaoadicionar js-editaminutaveiculo" idminuta="{{ itens.idMinuta }}" data-url="{% url 'editaminutaveiculo' itens.idMinuta %}"></label>
                     {% else %}

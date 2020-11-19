@@ -28,69 +28,17 @@ class CadastraMinuta(forms.ModelForm):
 
     class Meta:
         model = Minuta
-        fields = ('Minuta',
-                  'idCliente',
-                  'DataMinuta',
-                  'HoraInicial',
-                  'idCategoriaVeiculo',
-                  'Coleta',
-                  'Entrega',
-                  'Obs',
-                  'StatusMinuta',
-                  )
-        labels = {
-            'idCliente': 'CLIENTE',
-            'DataMinuta': 'DATA DA MINUTA',
-            'HoraInicial': 'HORA INICIAL',
-            'idCategoriaVeiculo': 'VEÍCULO SOLICITADO',
-            'Coleta': 'COLETA',
-            'Entrega': 'ENTREGA',
-            'Obs': 'OBSERVAÇÕES',
-        }
-        widgets = {
-            'Minuta': forms.HiddenInput(
-            ),
-            'idCliente': forms.Select(
-                attrs={
-                    'class': 'formfields',
-                }
-            ),
-            'DataMinuta': MeuDateInput(
-                format='%Y-%m-%d',
-                attrs={
-                    'class': 'formfields',
-                    'value': '01/09/2020'
-                 }
-            ),
-            'HoraInicial': MeuTimeInput(
-                attrs={
-                    'class': 'formfields',
-                }
-            ),
-            'idCategoriaVeiculo': forms.Select(
-                attrs={
-                    'class': 'formfields',
-                }
-            ),
-            'Coleta': forms.Textarea(
-                attrs={
-                    'class': 'formfieldstexto',
-                }
-            ),
-            'Entrega': forms.Textarea(
-                attrs={
-                    'class': 'formfieldstexto',
-                }
-            ),
-            'Obs': forms.Textarea(
-                attrs={
-                    'class': 'formfieldstexto',
-                }
-            ),
-            'StatusMinuta': forms.HiddenInput(
-
-            )
-        }
+        fields = ('Minuta', 'idCliente', 'DataMinuta', 'HoraInicial', 'idCategoriaVeiculo', 'Coleta', 'Entrega',
+                  'Obs', 'StatusMinuta')
+        labels = {'idCliente': 'CLIENTE', 'DataMinuta': 'DATA DA MINUTA', 'HoraInicial': 'HORA INICIAL',
+                  'idCategoriaVeiculo': 'VEÍCULO SOLICITADO', 'Coleta': 'COLETA', 'Entrega': 'ENTREGA',
+                  'Obs': 'OBSERVAÇÕES'}
+        widgets = {'Minuta': forms.HiddenInput(), 'idCliente': forms.Select(attrs={'class': 'formfields'}),
+                   'DataMinuta': MeuDateInput(format='%Y-%m-%d', attrs={'class': 'formfields', 'value': '01/09/2020'}),
+                   'HoraInicial': MeuTimeInput(attrs={'class': 'formfields'}),  'idCategoriaVeiculo': forms.Select(
+                attrs={'class': 'formfields'}), 'Coleta': forms.Textarea(attrs={'class': 'formfieldstexto'}),
+                   'Entrega': forms.Textarea(attrs={'class': 'formfieldstexto'}), 'Obs': forms.Textarea(attrs={
+                'class': 'formfieldstexto'}), 'StatusMinuta': forms.HiddenInput()}
 
 
 class CadastraMinutaMotorista(forms.ModelForm):
@@ -102,26 +50,10 @@ class CadastraMinutaMotorista(forms.ModelForm):
 
     class Meta:
         model = MinutaColaboradores
-        fields = ('idPessoal',
-                  'idMinuta',
-                  'Cargo'
-                  )
-        labels = {
-            'idPessoal': 'MOTORISTA'
-        }
-        widgets = {
-            'idPessoal': forms.Select(
-                attrs={
-                    'class': 'formfields',
-                }
-            ),
-            'idMinuta': forms.HiddenInput(
-
-            ),
-            'Cargo': forms.HiddenInput(
-
-            )
-        }
+        fields = ('idPessoal', 'idMinuta', 'Cargo')
+        labels = {'idPessoal': 'MOTORISTA'}
+        widgets = {'idPessoal': forms.Select(attrs={'class': 'formfields'}), 'idMinuta': forms.HiddenInput(),
+                   'Cargo': forms.HiddenInput()}
 
 
 class CadastraMinutaAjudante(forms.ModelForm):
@@ -133,25 +65,10 @@ class CadastraMinutaAjudante(forms.ModelForm):
 
     class Meta:
         model = MinutaColaboradores
-        fields = ('idPessoal',
-                  'idMinuta',
-                  'Cargo'
-                  )
-        labels = {
-            'idPessoal': 'AJUDANTE'
-        }
-        widgets = {
-            'idPessoal': forms.Select(
-                attrs={
-                    'class': 'formfields',
-                }
-            ),
-            'idMinuta': forms.HiddenInput(
-
-            ),
-            'Cargo': forms.HiddenInput(
-            )
-        }
+        fields = ('idPessoal', 'idMinuta', 'Cargo' )
+        labels = {'idPessoal': 'AJUDANTE'}
+        widgets = {'idPessoal': forms.Select(attrs={'class': 'formfields'}), 'idMinuta': forms.HiddenInput(),
+                   'Cargo': forms.HiddenInput()}
 
 
 class CadastraMinutaVeiculo(forms.Form):
@@ -160,52 +77,20 @@ class CadastraMinutaVeiculo(forms.Form):
         Veiculo=Concat('Marca', Value(' - '), 'Modelo', Value(' - '), 'Placa')).filter(Motorista=0)
     choice = [('0', 'Selecione um item da lista...')] + [(x.idVeiculo, x.Veiculo) for x in qs]
 
-    idMinuta = forms.IntegerField(
-        widget=forms.HiddenInput(
-
-        )
-    )
-    Propriedade = forms.CharField(
-        label='PROPRIEDADE',
-        widget=forms.Select(
-            choices=(
-                ('0', 'Selecione um item da lista...'),
-                ('1', 'VEÍCULO PRÓPRIO'),
-                ('2', 'VEÍCULOS TRANSPORTADORA'),
-                ('3', 'VEÍCULOS CADASTRADOS'),
-            ),
-            attrs={
-                'class': 'formfields',
-                'data-url': '/minutas/filtraminutaveiculo',
-            }
-        )
-    )
-    Veiculo = forms.CharField(
-        required=True,
-        label='VEÍCULO',
-        widget=forms.Select(
-            choices=(choice),
-            attrs={
-                'class': 'formfields'
-            }
-        )
-    )
+    idMinuta = forms.IntegerField(widget=forms.HiddenInput())
+    Propriedade = forms.CharField(label='PROPRIEDADE', widget=forms.Select(choices=(
+                ('0', 'Selecione um item da lista...'), ('1', 'VEÍCULO PRÓPRIO'), ('2', 'VEÍCULOS TRANSPORTADORA'),
+                ('3', 'VEÍCULOS CADASTRADOS')), attrs={'class': 'formfields', 'data-url':
+        '/minutas/filtraminutaveiculo'}))
+    Veiculo = forms.CharField(required=True, label='VEÍCULO', widget=forms.Select(choices=(choice), attrs={
+                'class': 'formfields'}))
 
 
 class CadastraMinutaHoraFinal(forms.ModelForm):
     class Meta:
         model = Minuta
-        fields = {
-            'idMinuta',
-            'HoraFinal',
-        }
-        widgets = {
-            'HoraFinal': MeuTimeInput(
-                attrs={
-                    'class': 'formfieldshort',
-                }
-            ),
-        }
+        fields = {'idMinuta', 'HoraFinal'}
+        widgets = {'HoraFinal': MeuTimeInput(attrs={'class': 'formfieldshort'})}
 
 
 class CadastraMinutaHoraCobra(forms.ModelForm):
@@ -215,29 +100,9 @@ class CadastraMinutaHoraCobra(forms.ModelForm):
 
     class Meta:
         model = MinutaItens
-        fields = {
-            'idMinuta',
-            'Descricao',
-            'TipoItens',
-            'Tempo'
-        }
-        widgets = {
-            'Descricao': forms.HiddenInput(
-
-            ),
-            'Valor': forms.HiddenInput(
-
-            ),
-            'idMinuta': forms.HiddenInput(
-
-            ),
-            'TipoItens': forms.HiddenInput(
-
-            ),
-            'Tempo': MeuTimeInput(
-
-            )
-        }
+        fields = {'idMinuta', 'Descricao', 'TipoItens', 'Tempo'}
+        widgets = {'Descricao': forms.HiddenInput(), 'Valor': forms.HiddenInput(), 'idMinuta': forms.HiddenInput(),
+                   'TipoItens': forms.HiddenInput(), 'Tempo': MeuTimeInput()}
 
 
 class CadastraMinutaHoraExcede(forms.ModelForm):
@@ -248,60 +113,20 @@ class CadastraMinutaHoraExcede(forms.ModelForm):
 
     class Meta:
         model = MinutaItens
-        fields = {
-            'idMinuta',
-            'Descricao',
-            'TipoItens',
-            'RecebePaga',
-            'Tempo',
-            'Porcento'
-        }
-        widgets = {
-            'idMinuta': forms.HiddenInput(
+        fields = {'idMinuta', 'Descricao', 'TipoItens', 'RecebePaga', 'Tempo', 'Porcento'}
+        widgets = {'idMinuta': forms.HiddenInput(), 'Descricao': forms.HiddenInput(),
+                   'TipoItens': forms.HiddenInput(), 'RecebePaga': forms.HiddenInput(), 'Tempo': MeuTimeInput(),
+                   'Porcento': forms.NumberInput(attrs={'class': 'formfield porcentagem', 'step': '1.00'}),
+                   'Valor': forms.HiddenInput()}
 
-            ),
-            'Descricao': forms.HiddenInput(
-
-            ),
-            'TipoItens': forms.HiddenInput(
-
-            ),
-            'RecebePaga': forms.HiddenInput(
-
-            ),
-            'Tempo': MeuTimeInput(
-
-            ),
-            'Porcento': forms.NumberInput(
-                attrs={
-                    'class': 'formfield porcentagem',
-                    'step': '1.00'
-                }
-            ),
-            'Valor': forms.HiddenInput(
-
-            )
-        }
-
-    field_order = [
-        'Tempo',
-        'Porcento',
-    ]
+    field_order = ['Tempo', 'Porcento']
 
 
 class CadastraMinutaKMInicial(forms.ModelForm):
     class Meta:
         model = Minuta
-        fields = (
-            'KMInicial',
-        )
-        widgets = {
-            'KMInicial': forms.NumberInput(
-                attrs={
-                    'class': 'formfieldshort',
-                },
-            ),
-        }
+        fields = {'KMInicial'}
+        widgets = {'KMInicial': forms.NumberInput(attrs={'class': 'formfieldshort'})}
 
 
 class CadastraMinutaKMFinal(forms.ModelForm):
@@ -312,44 +137,16 @@ class CadastraMinutaKMFinal(forms.ModelForm):
 
     class Meta:
         model = Minuta
-        fields = (
-            'KMInicial',
-            'KMFinal',
-        )
-        widgets = {
-            'KMInicial': forms.HiddenInput(
-                attrs={
-                    'class': 'formfieldshort',
-                },
-            ),
-            'KMFinal': forms.NumberInput(
-                attrs={
-                    'class': 'formfieldshort',
-                },
-            ),
-        }
+        fields = ('KMInicial', 'KMFinal',)
+        widgets = {'KMInicial': forms.HiddenInput(attrs={'class': 'formfieldshort'}),
+                   'KMFinal': forms.NumberInput(attrs={'class': 'formfieldshort'})}
 
 
 class CadastraMinutaItens(forms.ModelForm):
     class Meta:
         model = MinutaItens
-        fields = {
-            'idMinuta',
-            'Descricao',
-            'TipoItens',
-            'Valor',
-            'Quantidade',
-            'Porcento',
-            'Tempo',
-        }
-        widgets = {
-            'Descricao': forms.TextInput(
-                attrs={
-                    'class': 'formfields'
-                }
-            ),
-
-        }
+        fields = {'idMinuta', 'Descricao', 'TipoItens', 'Valor', 'Quantidade', 'Porcento', 'Tempo',}
+        widgets = {'Descricao': forms.TextInput(attrs={'class': 'formfields'})}
 
 
 class CadastraMinutaDespesa(forms.ModelForm):
@@ -359,54 +156,16 @@ class CadastraMinutaDespesa(forms.ModelForm):
 
     class Meta:
         model = MinutaItens
-        fields = {
-            'idMinuta',
-            'Descricao',
-            'Valor',
-            'TipoItens',
-            'Tempo',
-            'RecebePaga',
-        }
-        widgets = {
-            'Descricao': forms.Select(
-                attrs={
-                    'class': 'formfieldsshort'
-                }
-            ),
-            'Valor': forms.NumberInput(
-                attrs={
-                    'class': 'formfieldsshort'
-                }
-            ),
-            'idMinuta': forms.HiddenInput(
-
-            ),
-            'TipoItens': forms.HiddenInput(
-
-            ),
-            'Tempo': forms.HiddenInput(
-
-            ),
-            'RecebePaga': forms.HiddenInput(
-
-            ),
-        }
+        fields = {'idMinuta', 'Descricao', 'Valor', 'TipoItens', 'Tempo', 'RecebePaga',}
+        widgets = {'Descricao': forms.Select(attrs={'class': 'formfieldsshort'}),
+                   'Valor': forms.NumberInput(attrs={'class': 'formfieldsshort'}),
+                   'idMinuta': forms.HiddenInput(), 'TipoItens': forms.HiddenInput(), 'Tempo': forms.HiddenInput(),
+                   'RecebePaga': forms.HiddenInput(),}
 
 
 class CadastraMinutaParametroDespesa(forms.Form):
-    Despesa = forms.CharField(
-        label='DESPESA',
-        widget=forms.TextInput(
-            attrs={
-                'class': 'formfields',
-            }
-        )
-    )
-    idMinuta = forms.IntegerField(
-        widget=forms.HiddenInput(
-
-        )
-    )
+    Despesa = forms.CharField( label='DESPESA', widget=forms.TextInput(attrs={'class': 'formfields'}))
+    idMinuta = forms.IntegerField(widget=forms.HiddenInput())
 
 
 class CadastraMinutaNota(forms.ModelForm):
