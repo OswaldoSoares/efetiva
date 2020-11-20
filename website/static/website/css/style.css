@@ -770,3 +770,27 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
     width: 100%;
     float: left;
 }
+
+#id_Comentarios {
+    width: 100%;
+    padding: 0 10px;
+    font-size: 18px;
+    color: --var(corprincipal)
+    resize: none;
+}
+
+.div_cometarios form button {
+    width: 100%;
+    float: center;
+    margin: 50px;
+    padding: 50px;
+}
+.comentarios {
+	line-height: 18px;
+}
+.comentarios:focus{
+	background: #363636;
+	color: #fff;
+	box-shadow: 0 0 5px #fff;
+	border: 3px solid #305a72;
+}

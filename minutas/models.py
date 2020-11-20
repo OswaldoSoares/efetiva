@@ -66,7 +66,7 @@ class MinutaColaboradores(models.Model):
 class MinutaFatura(models.Model):
     idMinutaFatura = models.AutoField(primary_key=True)
     Valor = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    Comentarios = models.TextField()
+    Comentarios = models.TextField(blank=True, null=True)
     idMinuta = models.ForeignKey(Minuta, on_delete=models.CASCADE)
     idFatura = models.ForeignKey(Fatura, on_delete=models.PROTECT, blank=True, null=True)
 

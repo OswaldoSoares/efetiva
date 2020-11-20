@@ -15,8 +15,8 @@ from clientes.models import FoneContatoCliente, Tabela, TabelaVeiculo, \
 from veiculos.models import Veiculo
 from .forms import CadastraMinuta, CadastraMinutaMotorista, CadastraMinutaAjudante, CadastraMinutaVeiculo, \
     CadastraMinutaKMInicial,CadastraMinutaKMFinal, CadastraMinutaHoraFinal, CadastraMinutaDespesa, \
-    CadastraMinutaParametroDespesa, CadastraMinutaNota
-from .models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas
+    CadastraMinutaParametroDespesa, CadastraMinutaNota, CadastraComentarioMinuta
+from .models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas, MinutaFatura
 
 
 def convertemp(mm):
@@ -115,6 +115,27 @@ def excluiminutaitens(idminutaitens):
 
 def buscaminutaitens(Descricao, TipoItens, RecebePaga, idMinuta):
     pass
+
+
+def cria_minuta_fatura(Valor, Cometarios, idMinuta, idFatura):
+    """
+    Função para inserir e atualizar fatura da minuta
+
+    :param :
+    :param :
+    :return:
+    """
+    minutafatura = MinutaFatura.objects.filter(idMinuta=idMinuta)
+    obj = MinutaFatura()
+    if minutafatura:
+        obj.idMinutaFatura = list(minutafatura.values('idMinutaFatura')[0].values())[0]
+    obj.Valor = Valor
+    obj.Comentarios = Cometarios
+    obj.idMinuta_id = idMinuta
+    obj.idFatura_id = idFatura
+    obj.save()
+    return True
+
 
 
 def altera_status_minuta(novo_status, idminuta):
@@ -274,6 +295,9 @@ def consultaminuta(request, idmin):
     formhorafinal = CadastraMinutaHoraFinal(instance=minutaform)
     formkminicial = CadastraMinutaKMInicial(instance=minutaform)
     formkmfinal = CadastraMinutaKMFinal(instance=minutaform)
+    comentarios = get_object_or_404(MinutaFatura, idMinuta=idmin)
+    formcomentarios = CadastraComentarioMinuta(initial={'idMinutaFatura': comentarios.idMinutaFatura},
+                                                        instance=comentarios)
     # Cria queryset notas e dassomas
     notas_minuta = MinutaNotas.objects.filter(idMinuta=idmin).order_by('Nota')
     notas_minuta_guia = MinutaNotas.objects.filter(idMinuta=idmin, NotaGuia='0').order_by('Nota')
@@ -496,6 +520,7 @@ def consultaminuta(request, idmin):
         'formhorafinal': formhorafinal,
         'formhoracobra': formhoracobra,
         'formhoraexcede': formhoraexcede,
+        'formcomentarios': formcomentarios,
         'despesas': despesas,
         'itensminuta': itensminuta,
         'notas_minuta': notas_minuta,
@@ -918,7 +943,9 @@ def fecha_minuta(request, idmin):
     for itens in minuta_itens:
         if itens.Valor == 0:
             excluiminutaitens(itens.idMinutaItens)
-    altera_status_minuta('FECHADA', idmin)
+    # altera_status_minuta('FECHADA', idmin)
+    valor_minuta = MinutaItens.objects.filter(idMinuta=idmin, RecebePaga='R').aggregate(totalminuta=Sum('Valor'))
+    cria_minuta_fatura(valor_minuta['totalminuta'], '', idmin, None)
     return redirect('consultaminuta', idmin)
 
 
@@ -1008,8 +1035,7 @@ def criaminutaajudante(request):
         form = CadastraMinutaAjudante(request.POST)
     else:
         idminuta = request.GET.get('idminuta')
-        form = CadastraMinutaAjudante(
-            initial={'idMinuta': idminuta, 'Cargo': 'AJUDANTE'})
+        form = CadastraMinutaAjudante(initial={'idMinuta': idminuta, 'Cargo': 'AJUDANTE'})
     return salva_form(request, form, 'minutas/criaminutaajudante.html',
                       idminuta)
 
@@ -1225,6 +1251,13 @@ def criaminutaparametrodespesa(request):
     data['html_form'] = render_to_string(
         'minutas/criaminutaparametrodespesa.html', context, request=request)
     return JsonResponse(data)
+
+
+def edita_comentario(request):
+    minutafatura = MinutaFatura.objects.get(idMinuta=request.POST.get('idMinuta'))
+    if request.method == 'POST':
+        form = CadastraComentarioMinuta(request.POST, instance=minutafatura)
+    return salva_form(request, form, 'minutas/consultaminuta.html', request.POST.get('idMinuta'))
 
 
 def salva_form(request, form, template_name, idmin):

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas
+from .models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas, MinutaFatura
 from veiculos.models import Veiculo
 from pessoas.models import Pessoal
 from django.db.models import Value
@@ -189,5 +189,19 @@ class CadastraMinutaNota(forms.ModelForm):
                    'Nome': forms.TextInput(attrs={'class': 'formfields'}),
                    'Estado': forms.TextInput(attrs={'class': 'formfields'}),
                    'Cidade': forms.TextInput(attrs={'class': 'formfields'}),
-                   'idMinuta': forms.HiddenInput(),}
+                   'idMinuta': forms.HiddenInput()}
     field_order = ['Nota', 'Valor', 'Peso', 'Volume', 'NotaGuia', 'Nome', 'Estado', 'Cidade',]
+
+
+class CadastraMinutaFatura(forms.ModelForm):
+    class Meta:
+        model = MinutaFatura
+        fields = {'idMinutaFatura', 'Valor', 'Comentarios', 'idMinuta', 'idFatura'}
+
+
+class CadastraComentarioMinuta(forms.ModelForm):
+    class Meta:
+        model = MinutaFatura
+        fields = {'idMinutaFatura', 'Comentarios', 'idMinuta'}
+        widgets = {'Comentarios': forms.Textarea(attrs={'rows': 5, 'class': 'comentarios'}), 'idMinuta':
+            forms.HiddenInput()}

@@ -572,6 +572,22 @@
                 </div>
             </div>
             {% endif %}
+            <!-- COMENTARIO DA MINUTA -->
+            <div class="consulta_cliente_modulo">
+                <h2 class="consulta_subtitulo"><b>COMENTÁRIOS:</b></h2>
+                <label class="glyphicon glyphicon-ok botaoadicionar"></label>
+                <div class="div_comentarios">
+                    <form method="post" action="{% url 'editacomentario' %}">
+                        {% csrf_token %}
+                        {% for field in formcomentarios %}
+                            {{ field }}
+                        {% endfor %}
+                        {% if itens.StatusMinuta == 'ABERTA' %}
+                            <button type="submit" class="btn btn-primary btn-sm">ENVIAR</button>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
             <!-- DIV MODAL -->
             <div class="modal fade" id="modal-formulario" >
                 <div class="modal-dialog">
