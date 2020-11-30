@@ -1,9 +1,9 @@
-{% extends 'minutas/baseminutas.html' %}
+{% extends 'faturamentos/basefaturamentos.html' %}
 
-{% block mainminuta %}
+{% block mainfaturamento %}
     <div class="lista_conteudo">
         <header>
-            <h4>CADASTRO DE MINUTAS</h4>
+            <h4>CADASTRO DE FATURAS</h4>
         </header>
         <div class="nav_filtro">
             <div>
@@ -33,44 +33,29 @@
             <table class="tabela">
                 <thead>
                     <tr class="tabelatitulo">
-                        <th class="primeiracoluna">MINUTA</th>
-                        <th>DATA</th>
-                        <th>HORA</th>
-                        <th>CLIENTE</th>
-                        <th>MOTORISTA</th>
-                        <th>VEÍCULO</th>
-                        <th>PLACA</th>
-                        <th>STATUS</th>
+                        <th class="primeiracoluna">FANTASIA</th>
+                        <th>MINUTAS</th>
+                        <th>TOTAL</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for itens in minuta %}
+                    {% for itens in fatura %}
                         <tr class="tabelalinha">
-                            <td class="primeiracoluna"> {{ itens.Minuta }}</td>
-                            <td>{{ itens.DataMinuta }}</td>
-                            <td>{{ itens.HoraInicial }}</td>
-                            <td>{{ itens.idCliente.Fantasia }}</td>
-                            <td>
-                                {% for itensmotorista in minutacolaboradores %}
-                                    {% if itens.idMinuta == itensmotorista.idMinuta_id %}
-                                        {{ itensmotorista.idPessoal.Nome }}
-                                    {% endif %}
-                                {% endfor %}
-                            </td>
-                            <td>{{ itens.idVeiculo.Modelo }}</td>
-                            <td>{{ itens.idVeiculo.Placa }}</td>
-                            <td>{{ itens.StatusMinuta }}</td>
+                            <td class="primeiracoluna"> {{ itens.idMinuta_id__idCliente_id__Fantasia }} </td>
+                            <td>{{ itens.quantidademinutas }} </td>
+                            <td>R$ {{ itens.somaminutas }} </td>
                             <td class="seleciona_registo">
                                 {% if itens.StatusMinuta != 'ABERTA' %}
-                                    <button class="btn btn-danger btn-xs" onclick="window.location.href = '{% url 'estorna_minuta' itens.idMinuta %}'">
+                                    <button class="btn btn-danger btn-xs" onclick="window.location.href = ''">
                                         <span class="glyphicon glyphicon-backward"></span>
                                     </button>
                                 {% endif %}
-                                <button class="btn btn-warning btn-xs" onclick="window.location.href = '{% url 'imprimeminuta' itens.idMinuta %}'">
+                                <button class="btn btn-warning btn-xs" onclick="window.location.href = ''">
                                     <span class="glyphicon glyphicon-file"></span>
                                 </button>
-                                <button class="btn btn-primary btn-xs" onclick="window.location.href = '{% url 'consultaminuta' itens.idMinuta %}'">
+                                <button class="btn btn-primary btn-xs"
+                                        onclick="window.location.href = '{% url 'minutasfaturarcliente' itens.idMinuta_id__idCliente_id %}'">
                                     <span class="glyphicon glyphicon-folder-open"></span>
                                 </button>
                             </td>
@@ -80,14 +65,13 @@
             </table>
         </div>
         <footer>
-            {% for itens in minuta %}
+            {% for itens in fatura %}
                 {% if forloop.last %}
                     <h5> {{ forloop.counter }} Registros de minutas listadas.</h5>
                 {% endif %}
             {% endfor %}
         </footer>
     </div>
-
     <!-- DIV MODAL -->
     <div class="modal fade" id="modal-formulario" >
         <div class="modal-dialog">

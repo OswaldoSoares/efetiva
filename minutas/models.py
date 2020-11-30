@@ -98,7 +98,7 @@ class MinutaItens(models.Model):
 class MinutaNotas(models.Model):
     idMinutaNotas = models.AutoField(primary_key=True)
     Nota = models.CharField(max_length=10)
-    Valor = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    ValorNota = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     Peso = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     Volume = models.IntegerField(default=0)
     Nome =  models.CharField(max_length=60, blank=True, null=True)

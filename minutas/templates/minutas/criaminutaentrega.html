@@ -7,12 +7,14 @@
         <h4 class="modal-title numerominuta"><b>ENTREGA NOTA</b></h4>
     </div>
     <div class="modal-body">
+        <p class="informa-entrega">Atenção: para informar apenas os perimetros preencha o campo nota com a palavra
+            'perimetro'.</p>
         <div class="divformulario">
             {% include 'tabelaformulario.html' %}
         </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-primary" data-dismiss="modal">FECHAR</button>
-        <button type="submit" class="btn btn-success">SALVAR</button>
+        <button id="id_EntregaNota" type="submit" class="btn btn-success">SALVAR</button>
     </div>
 </form>

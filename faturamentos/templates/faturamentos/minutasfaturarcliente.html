@@ -1,0 +1,56 @@
+{% extends 'faturamentos/basefaturamentos.html' %}
+
+{% block mainfaturamento %}
+    <header>
+        <div class="container">
+            <form>
+                <div class="input-cria-fatura">
+                    {% for itens in ultima_fatura %}
+                        {% if ites.UltimaFatura == None %}
+                            <input class="numero-fatura input-fatura" type="text" readonly="readonly"
+                                   value="Fatura Nº 1">
+                        {% else %}
+                            <input class="numero-fatura input--fatura"type="text" readonly="readonly"
+                                   value="Fatura Nº {{ itens.UltimaFatura }}">
+                        {% endif %}
+                    {% endfor %}
+                    <input class="valor-fatura input-fatura" type="text" readonly="readonly"">
+                </div>
+                <div class="input-cria-fatura-vencimento">
+                    <span class="vencimento-label">VENCIMENTO</span>
+                    <input class="vencimento-fatura input-fatura" type="date">
+                </div>
+                <div class="botao-cria-fatura">
+                    <button>Teste</button>
+                </div>
+            </form>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <p id="cod-10004" hidden="true">&#10004</p>
+            <p id="cod-10008" hidden="true">&#10008</p>
+            <div class="seleciona-minuta">
+                <p class="titulo-seleciona-minuta"><b>MINUTAS SELECIONADAS PARA FATURAR</b></p>
+                {% for itens in minutas_faturar %}
+                <table class="tb-select-minuta">
+                    <tr>
+                        <td class="tb-select-minuta-col1 checked" id="col1-{{ itens.vMinuta }}">
+                            <p id="atual-{{ itens.vMinuta }}" class="tag-select" valor="{{ itens.vValor }}">&#10004<p>
+                        </td>
+                        <td class="tb-select-minuta-col2" id="col2-{{ itens.vMinuta }}">
+                            <p><b>MINUTA {{ itens.vMinuta }}</b></p>
+                            <p><b>{{ itens.vData }}</b></p>
+                            <p><b>R$ {{ itens.vValor }}</b></p>
+                        </td>
+                    </tr>
+                </table>
+                {% endfor %}
+            </div>
+            <div class="minutas-selecionadas">
+                <!-- html gerado automaticamente pela função criadivselecionada -->
+            </div>
+        </div>
+    </main>
+{% endblock %}

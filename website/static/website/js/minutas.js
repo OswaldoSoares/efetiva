@@ -59,6 +59,22 @@ $(document).ready(function(){
                 $('#id_Cidade').removeAttr('readonly')
             }
         });
+
+        $('#id_Nota').focusout(function() {
+            if ($('#id_Nota').val().toUpperCase() == 'PERIMETRO') {
+                $('#id_Estado').focus();
+                $('#id_ValorNota').attr('readonly', 'readonly')
+                $('#id_Peso').attr('readonly', 'readonly')
+                $('#id_Volume').attr('readonly', 'readonly')
+                $('#id_NotaGuia').attr('disabled', 'disabled')
+                $('#id_Nome').attr('readonly', 'readonly')
+            }
+        });
+
+        $("#id_EntregaNota").click(function() {
+            $('#id_NotaGuia').removeAttr('disabled');
+            $('#id_NotaGuia').val("0");
+        });
     });
 
     var mostravalores = function(obj) {

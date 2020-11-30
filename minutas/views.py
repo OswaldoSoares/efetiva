@@ -130,7 +130,7 @@ def cria_minuta_fatura(Valor, Cometarios, idMinuta, idFatura):
     if minutafatura:
         obj.idMinutaFatura = list(minutafatura.values('idMinutaFatura')[0].values())[0]
     obj.Valor = Valor
-    obj.Comentarios = Cometarios
+    # obj.Comentarios = Cometarios
     obj.idMinuta_id = idMinuta
     obj.idFatura_id = idFatura
     obj.save()
@@ -181,8 +181,7 @@ def index_minuta(request):
     minuta_status = Minuta.objects.all().values_list('StatusMinuta', flat=True)
     minuta_status = sorted(list(dict.fromkeys(minuta_status)))
     minutacolaboradores = MinutaColaboradores.objects.filter(Cargo='MOTORISTA')
-    return render(request, 'minutas/index.html', {'minuta': minuta,
-                                                  'minuta_status': minuta_status,
+    return render(request, 'minutas/index.html', {'minuta': minuta, 'minuta_status': minuta_status,
                                                   'minutacolaboradores': minutacolaboradores})
 
 
@@ -302,7 +301,7 @@ def consultaminuta(request, idmin):
     notas_minuta = MinutaNotas.objects.filter(idMinuta=idmin).order_by('Nota')
     notas_minuta_guia = MinutaNotas.objects.filter(idMinuta=idmin, NotaGuia='0').order_by('Nota')
     notas_perimetro = MinutaNotas.objects.filter(idMinuta=idmin).exclude(Cidade='SÃO PAULO')
-    totalvalornotas = MinutaNotas.objects.filter(idMinuta=idmin).aggregate(totalvalor=Sum('Valor'))
+    totalvalornotas = MinutaNotas.objects.filter(idMinuta=idmin).aggregate(totalvalor=Sum('ValorNota'))
     totalpesonotas = MinutaNotas.objects.filter(idMinuta=idmin).aggregate(totalpeso=Sum('Peso'))
     peso = totalpesonotas['totalpeso']
     totalvolumenotas = MinutaNotas.objects.filter(idMinuta=idmin).aggregate(totalvolume=Sum('Volume'))
@@ -351,11 +350,9 @@ def consultaminuta(request, idmin):
     # Cria lista a receber para os labels dos inputs dos valores das tabelas do cliente
     type_tabela_recebe = ['R$', '%', '%', 'R$', '%', 'R$', 'R$', 'R$', 'R$', 'R$', 'R$', '%', '%', 'R$', 'R$']
     # Cria lista a receber para os inputs com os valores das tabelas do cliente
-    values_tabela_recebe = [list(tabelacliente.values('TaxaExpedicao')[0].values())[0], 0.23, valorporcentagemrecebe,
-                            valorhorarecebe, 100, list(tabelaveiculo.values('KMCobra')[0].values())[0],
+    values_tabela_recebe = [valortaxaexpedicao, 0.23, valorporcentagemrecebe, valorhorarecebe, 100, valorkmrecebe,
                             valorentrega_recebe, valorentregakg_recebe, valorentregavolume_recebe, valorsaidarecebe,
-                            valorcapacidaderecebe, porceperimetrorecebe, 0, list(tabelacliente.values(
-            'AjudanteCobra')[0].values())[0], 0]
+                            valorcapacidaderecebe, porceperimetrorecebe, 0, valorajudanterecebe, 0]
     # Cria lista a receber para os labels dos inputs dos valores da minuta
     type_minuta_recebe = [None, 'R$', 'R$', 'HS', 'HS', 'UN', 'UN', 'KG', 'UN', None, None, 'R$', 'R$', 'UN', None]
     # Cria lista a receber para os inputs com os valores daminuta
@@ -371,9 +368,9 @@ def consultaminuta(request, idmin):
     # Cria lista a pagar para os labels dos inputs dos valores das tabelas do cliente
     type_tabela_paga = ['%', 'R$', '%', 'R$', 'R$', 'R$', 'R$', 'R$', 'R$', '%', '%', 'R$']
     # Cria lista a pagar para os inputs com os valores das tabelas do cliente
-    values_tabela_paga = [valorporcentagempaga, valorhorapaga, 100, list(tabelaveiculo.values('KMPaga')[0].values())[
-        0],valorentrega_paga, valorentregakg_paga, valorentregavolume_paga, valorsaidapaga, valorcapacidadepaga,
-                          porceperimetropaga, 0, list(tabelacliente.values('AjudantePaga')[0].values())[0]]
+    values_tabela_paga = [valorporcentagempaga, valorhorapaga, 100, valorkmpaga, valorentrega_paga,
+                          valorentregakg_paga, valorentregavolume_paga, valorsaidapaga, valorcapacidadepaga,
+                          porceperimetropaga, 0, valorajudantepaga]
     # Cria lista a pagar para os labels dos inputs dos valores da minuta
     type_minuta_paga = ['R$', 'HS', 'HS', 'UN', 'UN', 'KG', 'UN', None, None, 'R$', 'R$', 'UN']
     # Cria lista a pagar para os inputs com os valores daminuta
@@ -943,7 +940,7 @@ def fecha_minuta(request, idmin):
     for itens in minuta_itens:
         if itens.Valor == 0:
             excluiminutaitens(itens.idMinutaItens)
-    # altera_status_minuta('FECHADA', idmin)
+    altera_status_minuta('FECHADA', idmin)
     valor_minuta = MinutaItens.objects.filter(idMinuta=idmin, RecebePaga='R').aggregate(totalminuta=Sum('Valor'))
     cria_minuta_fatura(valor_minuta['totalminuta'], '', idmin, None)
     return redirect('consultaminuta', idmin)

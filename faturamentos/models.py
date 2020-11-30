@@ -7,6 +7,7 @@ class Fatura(models.Model):
     ValorFatura = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     DataPagamento = models.DateField(default=0)
     ValorPagamento = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    StatusFatura = models.CharField(max_length=6, default='ABERTA')
 
     class Meta:
         db_table = 'Fatura'
