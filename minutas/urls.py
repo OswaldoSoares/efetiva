@@ -130,7 +130,7 @@ urlpatterns = [
         name='excluiminutaentrega'
     ),
     path('buscaminutaentrega/', buscaminutaentrega, name='buscaminutaentrega'),
-    path('editacomentario/', edita_comentario, name='editacomentario'),
+    path('editacomentario/<int:idmin>/', edita_comentario, name='editacomentario'),
     path(
         'filtraminutaveiculo/',
         filtraminutaveiculo,

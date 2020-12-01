@@ -891,6 +891,7 @@ main .seleciona-minuta {
     justify-content: space-around;
     margin-top: 5px;
     margin-left: 5px;
+    margin-bottom: 5px;
 }
 
 main .seleciona-minuta .titulo-seleciona-minuta {
@@ -912,7 +913,7 @@ main .seleciona-minuta .tb-select-minuta {
 }
 
 main .seleciona-minuta .tb-select-minuta-col1 {
-/*    color: var(--corsecundaria);*/
+    color: var(--corsecundaria);
     width: 60px;
     font-size: 40px;
     text-align: center;
@@ -952,6 +953,7 @@ main .minutas-selecionadas {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin-right: 5px;
 }
 
 main .minutas-selecionadas .auto-minuta {

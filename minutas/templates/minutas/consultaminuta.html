@@ -577,7 +577,7 @@
                 <h2 class="consulta_subtitulo"><b>COMENTÁRIOS:</b></h2>
                 <label class="glyphicon glyphicon-ok botaoadicionar"></label>
                 <div class="div_comentarios">
-                    <form method="post" action="{% url 'editacomentario' %}">
+                    <form method="post" action="{% url 'editacomentario' itens.idMinuta %}">
                         {% csrf_token %}
                         {% for field in formcomentarios %}
                             {{ field }}

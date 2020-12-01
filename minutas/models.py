@@ -1,6 +1,5 @@
 from django.db import models
 from pip._vendor.contextlib2 import nullcontext
-
 from clientes.models import Cliente
 from faturamentos.models import Fatura
 from pessoas.models import Pessoal
@@ -19,18 +18,13 @@ class Minuta(models.Model):
     KMInicial = models.IntegerField(default=0)
     KMFinal = models.IntegerField(default=0)
     Obs = models.TextField(blank=True)
-    StatusMinuta = models.CharField(max_length=10,
-                                    default='ABERTA')
-    idCliente = models.ForeignKey(Cliente,
-                                  on_delete=models.PROTECT)
-    idCategoriaVeiculo = models.ForeignKey(CategoriaVeiculo,
-                                           on_delete=models.PROTECT,
-                                           blank=True,
-                                           null=True)
-    idVeiculo = models.ForeignKey(Veiculo,
-                                  on_delete=models.PROTECT,
-                                  blank=True,
-                                  null=True)
+    StatusMinuta = models.CharField(max_length=10, default='ABERTA')
+    Valor = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    Comentarios = models.TextField(default='', blank=True)
+    idCliente = models.ForeignKey(Cliente, on_delete=models.PROTECT)
+    idCategoriaVeiculo = models.ForeignKey(CategoriaVeiculo, on_delete=models.PROTECT, blank=True, null=True)
+    idVeiculo = models.ForeignKey(Veiculo, on_delete=models.PROTECT, blank=True, null=True)
+    idFatura = models.ForeignKey(Fatura, on_delete=models.PROTECT, blank=True, null=True)
 
     class Meta:
         db_table = 'Minuta'
@@ -51,27 +45,12 @@ class Minuta(models.Model):
 
 class MinutaColaboradores(models.Model):
     idMinutaColaboradores = models.AutoField(primary_key=True)
-    idPessoal = models.ForeignKey(Pessoal,
-                                  on_delete=models.PROTECT)
-    idMinuta = models.ForeignKey(Minuta,
-                                 on_delete=models.CASCADE)
+    idPessoal = models.ForeignKey(Pessoal, on_delete=models.PROTECT)
+    idMinuta = models.ForeignKey(Minuta, on_delete=models.CASCADE)
     Cargo = models.CharField(max_length=10)
 
     class Meta:
         db_table = 'MinutaColaboradores'
-
-    objects = models.Manager()
-
-
-class MinutaFatura(models.Model):
-    idMinutaFatura = models.AutoField(primary_key=True)
-    Valor = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    Comentarios = models.TextField(blank=True, null=True)
-    idMinuta = models.ForeignKey(Minuta, on_delete=models.CASCADE)
-    idFatura = models.ForeignKey(Fatura, on_delete=models.PROTECT, blank=True, null=True)
-
-    class Meta:
-        db_table = 'MinutaFatura'
 
     objects = models.Manager()
 

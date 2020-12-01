@@ -8,10 +8,8 @@
         {% endfor %}
     {% endif %}
 </section>
-{% for itens in minutafatura %}
-    {% if itens.Comentarios %}
-        <section class="comentarios-fatura">
-            <p><b>Comentários:</b> {{ itens.Comentarios }}</p>
-        </section>
-    {% endif %}
-{% endfor %}
+{% if minuta.Comentarios %}
+    <section class="comentarios-fatura">
+        <p><b>Comentários:</b> {{ minuta.Comentarios }}</p>
+    </section>
+{% endif %}

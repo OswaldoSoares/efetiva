@@ -42,7 +42,7 @@
                 <tbody>
                     {% for itens in fatura %}
                         <tr class="tabelalinha">
-                            <td class="primeiracoluna"> {{ itens.idMinuta_id__idCliente_id__Fantasia }} </td>
+                            <td class="primeiracoluna"> {{ itens.idCliente__Fantasia }} </td>
                             <td>{{ itens.quantidademinutas }} </td>
                             <td>R$ {{ itens.somaminutas }} </td>
                             <td class="seleciona_registo">
@@ -55,7 +55,7 @@
                                     <span class="glyphicon glyphicon-file"></span>
                                 </button>
                                 <button class="btn btn-primary btn-xs"
-                                        onclick="window.location.href = '{% url 'minutasfaturarcliente' itens.idMinuta_id__idCliente_id %}'">
+                                        onclick="window.location.href = '{% url 'minutasfaturarcliente' itens.idCliente %}'">
                                     <span class="glyphicon glyphicon-folder-open"></span>
                                 </button>
                             </td>
