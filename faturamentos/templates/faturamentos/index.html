@@ -42,9 +42,9 @@
                 <tbody>
                     {% for itens in fatura %}
                         <tr class="tabelalinha">
-                            <td class="primeiracoluna"> {{ itens.idCliente__Fantasia }} </td>
-                            <td>{{ itens.quantidademinutas }} </td>
-                            <td>R$ {{ itens.somaminutas }} </td>
+                            <td class="primeiracoluna"> {{ itens.Fantasia }} </td>
+                            <td>{{ itens.Quantidade }} </td>
+                            <td>R$ {{ itens.Valor }} </td>
                             <td class="seleciona_registo">
                                 {% if itens.StatusMinuta != 'ABERTA' %}
                                     <button class="btn btn-danger btn-xs" onclick="window.location.href = ''">

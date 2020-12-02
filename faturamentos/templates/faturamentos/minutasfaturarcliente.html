@@ -3,25 +3,20 @@
 {% block mainfaturamento %}
     <header>
         <div class="container">
-            <form>
+            <form method="post" action="{% url 'criafatura' %}">
+                {% csrf_token %}
                 <div class="input-cria-fatura">
-                    {% for itens in ultima_fatura %}
-                        {% if ites.UltimaFatura == None %}
-                            <input class="numero-fatura input-fatura" type="text" readonly="readonly"
-                                   value="Fatura Nº 1">
-                        {% else %}
-                            <input class="numero-fatura input--fatura"type="text" readonly="readonly"
-                                   value="Fatura Nº {{ itens.UltimaFatura }}">
-                        {% endif %}
-                    {% endfor %}
-                    <input class="valor-fatura input-fatura" type="text" readonly="readonly"">
+                    <input class="numero-fatura input-fatura"type="text" name="numero-fatura" readonly="readonly"
+                           value="Fatura Nº {{ ultima_fatura.UltimaFatura }}">
+                    <input class="valor-fatura input-fatura" type="text" name="valor-fatura" readonly="readonly"">
                 </div>
                 <div class="input-cria-fatura-vencimento">
                     <span class="vencimento-label">VENCIMENTO</span>
-                    <input class="vencimento-fatura input-fatura" type="date">
+                    <input class="vencimento-fatura input-fatura" name="vencimento-fatura" type="date"
+                           value="{{ dia_vencimento }}">
                 </div>
                 <div class="botao-cria-fatura">
-                    <button>Teste</button>
+                    <button type="submit" class="btn btn-success glyphicon glyphicon-usd"></button>
                 </div>
             </form>
         </div>

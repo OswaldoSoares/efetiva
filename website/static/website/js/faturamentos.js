@@ -26,6 +26,8 @@ $(document).ready(function(){
             somaFatura += parseFloat($(this).attr('valor').replace(',','.'))
             minuta = $(this).attr('id').substr(6,($(this).attr('id').length)-1);
             $('.minutas-selecionadas').append('<div class="auto-minuta" id=' + minuta + ' data-sid=' + minuta + '>' + minuta + '</div>');
+            $('.input-cria-fatura').append('<input id="input'+ minuta +'" type="hidden" name="numero-minuta" value='+
+            minuta +'>');
             buscaDados(minuta);
         }
         $('.valor-fatura').val('R$ ' + somaFatura.toFixed(2).replace('.',','));
@@ -37,12 +39,15 @@ $(document).ready(function(){
         var minuta = $atual.substr(7,($atual.length)-1);
         if ($($atual).text() == $('#cod-10004').text()) {
             $('#'+minuta).remove();
+            $('#input'+minuta).remove();
             $($this).removeClass("checked");
             $($this).toggleClass("nochecked");
             $($atual).text($('#cod-10008').text());
             somaFatura -= parseFloat($($atual).attr('valor').replace(',','.'));
         } else {
             $('.minutas-selecionadas').append('<div class="auto-minuta" id=' + minuta + ' data-sid=' + minuta + '>' + minuta + '</div>');
+            $('.input-cria-fatura').append('<input id="input'+ minuta +'" type="hidden" name="numero-minuta" value='+
+            minuta +'>');
             buscaDados(minuta);
             $($this).removeClass("nochecked");
             $($this).toggleClass("checked");
