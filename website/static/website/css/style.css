@@ -821,6 +821,121 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
 
 /* Modulo Faturamento */
 
+/* index */
+main .faturas {
+    margin-top: 0px;
+}
+
+main .faturas header {
+    background: var(--corprincipal);
+    color: var(--corsecundaria);
+    width: 100%;
+    text-align: center;
+}
+
+main .faturas header h2 {
+    margin: 0;
+    padding: 0;
+    font-size: 30px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-weight: bold;
+}
+
+main .faturas main {
+    background: var(--corsecundaria);
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: flex-start;
+    justify-content: space-between;
+    padding: 5px;
+    padding-top: 0px;
+}
+
+main .faturas .card-faturada {
+    background: var(--corsecundaria);
+    color: var(--corprincipal);
+    border: 2px solid var(--corprincipal);
+    width: 200px;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    margin-top: 5px;
+}
+
+main .faturas .card-faturada header {
+    background: var(--corprincipal);
+    color: var(--corsecundaria);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+main .faturas .card-faturada footer {
+    background: #a1a1a1;
+    width: 100%;
+    padding: 5px 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+main .faturas .card-faturar {
+    background: var(--corsecundaria);
+    color: var(--corprincipal);
+    border: 2px solid var(--corprincipal);
+    width: 200px;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    margin-top: 5px;
+}
+
+main .faturas .card-faturar header {
+    background: var(--corprincipal);
+    color: var(--corsecundaria);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+}
+
+main .faturas .card-faturar footer {
+    background: #a1a1a1;
+    width: 100%;
+    padding: 5px 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+main .faturas .rodape {
+    background: var(--corsecundaria);
+    width: 100%;
+    text-align: center;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 10px;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 10px;
+}
+
+
+
+
+/* minutafaturarcliente */
+
 header .container {
     background-color: var(--corprincipal);
     width: 100%;

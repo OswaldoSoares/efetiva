@@ -9,14 +9,18 @@ from datetime import date, timedelta
 
 
 def index_faturamento(request):
-    fatura = Cliente.objects.values('idCliente',
-                                    'Fantasia').filter(minuta__idFatura=None,  minuta__Valor__gt='0.00').annotate(
+    fatura = Cliente.objects.values('idCliente', 'Fantasia').filter(minuta__StatusMinuta='FECHADA',
+                                                                    minuta__Valor__gt='0.00').annotate(
         Valor=Sum('minuta__Valor'), Quantidade=Count('minuta__Minuta'))
-    return render(request, 'faturamentos/index.html', {'fatura': fatura})
+    faturada = Fatura.objects.filter(StatusFatura='ABERTA').annotate(TotalMinutas=Count('minuta')).exclude(
+        TotalMinutas=0).values('minuta__idCliente__Fantasia', 'idFatura', 'Fatura', 'VencimentoFatura', 'ValorFatura', \
+                                                               'TotalMinutas')
+    return render(request, 'faturamentos/index.html', {'fatura': fatura, 'faturada': faturada})
 
 
 def minutas_faturar_cliente(request, idcli):
-    minutas_faturar = Minuta.objects.values('Minuta', 'DataMinuta', 'Valor').filter(idCliente=idcli, idFatura=None,
+    minutas_faturar = Minuta.objects.values('Minuta', 'DataMinuta', 'Valor').filter(idCliente=idcli,
+                                                                                    StatusMinuta='FECHADA',
                                                                                     Valor__gt='0.00')
     minuta = Minuta.objects.filter(idCliente=idcli, StatusMinuta='FECHADA')
     minutaitens = MinutaItens.objects.filter(RecebePaga='R').order_by('-TipoItens')
@@ -44,6 +48,7 @@ def cria_div_selecionada(request):
 
 
 def cria_fatura(request):
+    print(request.POST)
     if request.POST.get('valor-fatura') != 'R$ 0,00':
         numero_fatura = request.POST.get('numero-fatura')[10:]
         valor_fatura = request.POST.get('valor-fatura')[3:].replace(',','.')
@@ -56,6 +61,7 @@ def cria_fatura(request):
         obj.VencimentoFatura = vencimento_fatura
         obj.StatusFatura = 'ABERTA'
         obj.save()
+        fatura = Fatura.objects.get(Fatura=numero_fatura)
         for itens in minutas_faturadas:
             minuta = Minuta.objects.get(Minuta=itens)
             if minuta:
@@ -71,9 +77,44 @@ def cria_fatura(request):
                 obj.StatusMinuta = 'FATURADA'
                 obj.Valor = minuta.Valor
                 obj.Comentarios = minuta.Comentarios
-                obj.idFatura_id = numero_fatura
+                obj.idFatura_id = fatura.idFatura
                 obj.idCliente = minuta.idCliente
                 obj.idCategoriaVeiculo = minuta.idCategoriaVeiculo
                 obj.idVeiculo = minuta.idVeiculo
                 obj.save()
+    return redirect('index_faturamento')
+
+
+def estorna_fatura(request, idfatura):
+    fatura = Fatura.objects.get(idFatura=idfatura)
+    minutas = Minuta.objects.filter(idFatura=fatura.idFatura)
+    for itens in minutas:
+        minuta = Minuta.objects.get(idMinuta=itens.idMinuta)
+        if minuta:
+            obj = Minuta()
+            obj.idMinuta = minuta.idMinuta
+            obj.Minuta = minuta.Minuta
+            obj.DataMinuta = minuta.DataMinuta
+            obj.HoraInicial = minuta.HoraInicial
+            obj.HoraFinal = minuta.HoraFinal
+            obj.Coleta = minuta.Coleta
+            obj.Entrega = minuta.Entrega
+            obj.Obs = minuta.Obs
+            obj.StatusMinuta = 'FECHADA'
+            obj.Valor = minuta.Valor
+            obj.Comentarios = minuta.Comentarios
+            obj.idFatura_id = None
+            obj.idCliente = minuta.idCliente
+            obj.idCategoriaVeiculo = minuta.idCategoriaVeiculo
+            obj.idVeiculo = minuta.idVeiculo
+            obj.save()
+    if fatura:
+        obj = Fatura(fatura)
+        obj.idFatura = fatura.idFatura
+        obj.Fatura = fatura.Fatura
+        obj.DataFatura = fatura.DataFatura
+        obj.ValorFatura = fatura.ValorFatura
+        obj.VencimentoFatura = fatura.VencimentoFatura
+        obj.StatusFatura = 'CANCEL'
+        obj.save()
     return redirect('index_faturamento')

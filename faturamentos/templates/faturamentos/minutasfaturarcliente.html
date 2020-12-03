@@ -5,6 +5,7 @@
         <div class="container">
             <form method="post" action="{% url 'criafatura' %}">
                 {% csrf_token %}
+                <input type="hidden" value="{{ idFatura }}">
                 <div class="input-cria-fatura">
                     <input class="numero-fatura input-fatura"type="text" name="numero-fatura" readonly="readonly"
                            value="Fatura Nº {{ ultima_fatura.UltimaFatura }}">

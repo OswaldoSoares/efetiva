@@ -165,6 +165,7 @@ def altera_status_minuta(novo_status, idminuta):
         obj.idCliente = minuta.idCliente
         obj.idCategoriaVeiculo = minuta.idCategoriaVeiculo
         obj.idVeiculo = minuta.idVeiculo
+        obj.idfatura = None
         obj.save()
     return True
 

@@ -1,83 +1,86 @@
 {% extends 'faturamentos/basefaturamentos.html' %}
 
 {% block mainfaturamento %}
-    <div class="lista_conteudo">
+<main>
+    {% if fatura %}
+    <div class="faturas">
         <header>
-            <h4>CADASTRO DE FATURAS</h4>
+            <h2>FECHADAS - AGUARDANDO FATURAMENTO</h2>
         </header>
-        <div class="nav_filtro">
-            <div>
-                <div class="filtro">
-                    <form>
-                        <input type="text" class="filtrotexto" placeholder="FILTRAR MINUTA..." name="filtrominuta"/>
-                        <button type="submit" class="btn btn-info glyphicon glyphicon-search"></button>
-                    </form>
-                </div>
-                <div class="filtro">
-                    <form>
-                        <select class="filtrotexto" name="filtrostatus">
-                            <option value="" disable selected>FILTRAR STATUS...</option>
-                            {% for minuta_status in minuta_status %}
-                                <option value="{{ minuta_status }}">{{ minuta_status }}</option>
-                            {% endfor %}
-                        </select>
-                        <button type="submit" class="btn btn-info glyphicon glyphicon-search"></button>
-                    </form>
-                </div>
+        <main>
+            {% for itens in fatura %}
+            <div class="card-faturar">
+                <header>
+                    <span><b>{{ itens.Fantasia }}</b></span>
+                </header>
+                <span>VALOR <b>R$ {{ itens.Valor }}</b></span>
+                <span>TOTAL DE MINUTAS <b>{{ itens.Quantidade }}</b></span>
+                <footer>
+                    <button class="btn btn-primary btn-xs"
+                            onclick="window.location.href = '{% url 'minutasfaturarcliente' itens.idCliente %}'">
+                        <span class="glyphicon glyphicon-folder-open"></span>
+                    </button>
+                </footer>
             </div>
-            <div class="add_registro">
-                <button type="button" class="btn btn-success glyphicon glyphicon-plus js-criaminuta" data-url="{% url 'criaminuta' %}"></button>
-            </div>
-        </div>
-        <div>
-            <table class="tabela">
-                <thead>
-                    <tr class="tabelatitulo">
-                        <th class="primeiracoluna">FANTASIA</th>
-                        <th>MINUTAS</th>
-                        <th>TOTAL</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for itens in fatura %}
-                        <tr class="tabelalinha">
-                            <td class="primeiracoluna"> {{ itens.Fantasia }} </td>
-                            <td>{{ itens.Quantidade }} </td>
-                            <td>R$ {{ itens.Valor }} </td>
-                            <td class="seleciona_registo">
-                                {% if itens.StatusMinuta != 'ABERTA' %}
-                                    <button class="btn btn-danger btn-xs" onclick="window.location.href = ''">
-                                        <span class="glyphicon glyphicon-backward"></span>
-                                    </button>
-                                {% endif %}
-                                <button class="btn btn-warning btn-xs" onclick="window.location.href = ''">
-                                    <span class="glyphicon glyphicon-file"></span>
-                                </button>
-                                <button class="btn btn-primary btn-xs"
-                                        onclick="window.location.href = '{% url 'minutasfaturarcliente' itens.idCliente %}'">
-                                    <span class="glyphicon glyphicon-folder-open"></span>
-                                </button>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <footer>
+            {% endfor %}
+        </main>
+        <footer class="rodape">
             {% for itens in fatura %}
                 {% if forloop.last %}
-                    <h5> {{ forloop.counter }} Registros de minutas listadas.</h5>
+                    {% if forloop.counter == 1 %}
+                        <h5> {{ forloop.counter }} REGISTRO DE MINUTAS AGUARDANDO FATURAMENTO.</h5>
+                    {% else %}
+                        <h5> {{ forloop.counter }} REGISTROS DE MINUTAS AGUARDANDO FATURAMENTO.</h5>
+                    {% endif %}
                 {% endif %}
             {% endfor %}
         </footer>
     </div>
-    <!-- DIV MODAL -->
-    <div class="modal fade" id="modal-formulario" >
-        <div class="modal-dialog">
-            <div class="modal-content">
-
+    {% endif %}
+    {% if faturada %}
+    <div class="faturas">
+        <header>
+            <h2>FATURADAS - AGUARDANDO PAGAMENTO</h2>
+        </header>
+        <main>
+            {% for itens in faturada %}
+            <div class="card-faturada">
+                <header>
+                    <span><b>{{ itens.minuta__idCliente__Fantasia }}</b></span>
+                    <span><b>FATURA {{ itens.Fatura }}</b></span>
+                </header>
+                <span>VENCIMENTO <b>{{ itens.VencimentoFatura }}</b></span>
+                <span>VALOR <b>R$ {{ itens.ValorFatura }}</b></span>
+                <span>TOTAL DE MINUTAS <b>{{ itens.TotalMinutas }}</b></span>
+                <footer>
+                    {% if itens.StatusMinuta != 'ABERTA' %}
+                    <button class="btn btn-danger btn-xs"
+                            onclick="window.location.href = '{% url 'estornafatura' itens.idFatura %}'">
+                        <span class="glyphicon glyphicon-backward"></span>
+                    </button>
+                    {% endif %}
+                    <button class="btn btn-warning btn-xs" onclick="window.location.href = ''">
+                        <span class="glyphicon glyphicon-file"></span>
+                    </button>
+                    <button class="btn btn-primary btn-xs" onclick="window.location.href = ''">
+                        <span class="glyphicon glyphicon-folder-open"></span>
+                    </button>
+                </footer>
             </div>
-        </div>
+            {% endfor %}
+        </main>
+        <footer class="rodape">
+            {% for itens in faturada %}
+                {% if forloop.last %}
+                    {% if forloop.counter == 1 %}
+                        <h5> {{ forloop.counter }} REGISTRO DE MINUTAS AGUARDANDO PAGAMENTO.</h5>
+                    {% else %}
+                        <h5> {{ forloop.counter }} REGISTROS DE MINUTAS AGUARDANDO PAGAMENTO.</h5>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </footer>
     </div>
+    {%  endif %}
+</main>
 {% endblock %}
