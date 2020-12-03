@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
                 ('StatusFatura', models.CharField(default='ABERTA', max_length=6)),
                 ('VencimentoFatura', models.DateField(default=0)),
                 ('ValorPagamento', models.DecimalField(decimal_places=2, default=0, max_digits=10)),
-                ('Comentario', models.TextField(blank=True, null=True)),
+                # ('Comentario', models.TextField(blank=True, null=True)),
             ],
             options={
                 'db_table': 'Fatura',

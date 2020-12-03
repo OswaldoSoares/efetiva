@@ -21,7 +21,7 @@ def minutas_faturar_cliente(request, idcli):
     minuta = Minuta.objects.filter(idCliente=idcli, StatusMinuta='FECHADA')
     minutaitens = MinutaItens.objects.filter(RecebePaga='R').order_by('-TipoItens')
     ultima_fatura = Fatura.objects.aggregate(UltimaFatura=Max('Fatura'))
-    if ultima_fatura == None:
+    if ultima_fatura['UltimaFatura'] == None:
         ultima_fatura['UltimaFatura'] = 1
     else:
         ultima_fatura['UltimaFatura'] += 1
