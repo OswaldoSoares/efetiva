@@ -6,85 +6,136 @@
     --corfundo: white;
 }
 /* Arquivo base.html */
-body {
-	font-family: 'Roboto', sans-serif;
-}
 * {
     margin: 0;
     padding: 0;
     list-style: none;
     text-decoration: none;
 }
-.container {
+
+body {
+	font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+}
+
+body .container {
 	margin: 0;
 	padding: 0;
 	display: flex;
-	align-items: stretch;
-	width: 100%;
-/*	min-height: 100vh; */
-}
-.sidebar {
-	position: fixed;
-	left: 0;
-	width: 180px;
-	height: 100%;
-	background-color: var(--corsecundaria);
-	display: flex;
-	flex-wrap: wrap;
-}
-.sidebar ul a {
-    display: block;
-    height: 100%;
+    align-items: center;
+    justify-content: flex-start;
     width: 100%;
-    line-height: 50px;
-    font-size: 16px;
-    text-align: left;
+    height: 100%;
+}
+
+nav {
+    width: 180px;
+    min-width: 180px;
+	height: 100vh;
+	background-color: var(--corsecundaria);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;	
+}
+
+nav header {
+    background-color: var(--corprincipal);
+    color: var(--corsecundaria);
+    width: 180px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 5px;
+}
+
+nav header h6 {
+    font-size: 14px;
+}
+
+nav .menu {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+nav ul {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    padding-left: 15px;
+    margin: 0;
+}
+
+nav .menu a{
+    font-size: 17px;
     color: var(--corprincipal);
-    padding-left: 20px;
-    box-sizing: border-box;
-    border-top: 1px solid rgba(0, 0, 0, .1)
-    border-bottom: 1px solid black;
     transition: .4s;
 }
-.sidebar ul li:hover a {
-    padding-left: 30px;
+nav .menu li:hover a {
+    color: deeppink;
+    padding-left: 15px;
     text-decoration: none;
 }
-.sidebar ul a i {
-    margin-right: 16px;
+
+nav .menu i {
+    margin: 0;
+    padding: 0;
 }
-.sidebar:focus {
-    text-decoration: none;
+
+nav footer {
+    background-color: var(--corprincipal);
+    color: var(--corsecundaria);
+    width: 180px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 5px;
 }
-.header_website {
-	margin: 0;
-	padding: 0;
-	width: 180px;
-	height: 110px;
-	background-color: var(--corprincipal);
+
+nav footer h6 {
+    font-size: 14px;
+    margin:  5px;
+    padding: 0;
 }
-.header_website h5 {
-	color: var(--corsecundaria);
-	text-align: center;
-	font-family: verdana;
-	font-size: 12px;
+
+.menu-icone label {
+    position: absolute;
+    left: 0;
+    top: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 0px;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    color: deeppink;
+    cursor: pointer;
+    transition: all .4s;
 }
-.section_website {
-	margin: 0px auto;
+
+.menu-icone label:hover {
+    background: deeppink;
+    color: var(--corprincipal);
 }
-.footer_website {
-	align-self: flex-end;
-	margin: 0;
-	padding: 10px 0px 0px 0px;
-	width: 180px;
-	background-color: var(--corprincipal);
+
+#chk:checked ~ .container nav {
+    display: flex;
+    transition: all .4s;
 }
-.footer_website h5,h6 {
-	color: var(--corsecundaria);
-	text-align: center;
-	font-family: verdana;
-	font-size: 12px;
+
+#chk {
+    display: none;
 }
+
+
 @media screen and (max-width: 360px) {
     .sidebar {
         width: 100%;
@@ -98,15 +149,15 @@ body {
 }
 
 .conteudo {
-	width: 100%;
+    width: 100%;
+    height: 100vh;
 	padding: 0;
-	margin: 0 0 0 180px;
-	/* background imagem
+	margin: 0;
 	background: url("/static/website/img/wallpaper.jpg");
 	background-position: center center;
 	background-repeat: no-repeat;
 	background-attachment: fixed;
-	background-size: cover; */
+	background-size: cover; 
 }
 /* CSS COMPARTILHADOS - Arquivos index.html */
 .header_base {
@@ -817,7 +868,23 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
     text-align: center;
 }
 
+/* Arquivo Base */
+.header-base {
+    background-color: var(--corprincipal);
+	width: 100%;
+	height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
+.header-base h1 {
+    margin: 0;
+    padding: 0;
+    color: deeppink;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 36px;
+}
 
 /* Modulo Faturamento */
 
