@@ -4,6 +4,5 @@ db.sqlite3
 venv
 media
 *.pyc
-*.json
 minutas/functions.py
 desktop.ini
