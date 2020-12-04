@@ -922,13 +922,46 @@ main .faturas .card-faturar footer {
 
 main .faturas .rodape {
     background: var(--corsecundaria);
+    color: var(--corprincipal);
     width: 100%;
     text-align: center;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    font-size: 10px;
     margin: 0;
     padding: 0;
     margin-bottom: 10px;
+}
+
+main .faturas .rodape h5 {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 20px;
+}
+
+
+@media screen and (max-width: 360px) {
+    .sidebar {
+        display: none;
+    }
+
+    .conteudo {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    main .faturas header h2 {
+        font-size: 14px;
+    }
+
+    main .faturas .card-faturar {
+        width: 100%;
+    }
+
+    main .faturas .card-faturada {
+        width: 100%;
+    }
+
+    main .faturas .rodape h5 {
+        font-size: 10px;
+    }
 }
 
 
