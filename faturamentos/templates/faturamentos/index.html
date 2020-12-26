@@ -28,12 +28,13 @@
             {% for itens in fatura %}
                 {% if forloop.last %}
                     {% if forloop.counter == 1 %}
-                        <h5> {{ forloop.counter }} REGISTRO DE MINUTAS AGUARDANDO FATURAMENTO.</h5>
+                        <h5> {{ forloop.counter }} CLIENTE AGUARDANDO FATURAMENTO.</h5>
                     {% else %}
-                        <h5> {{ forloop.counter }} REGISTROS DE MINUTAS AGUARDANDO FATURAMENTO.</h5>
+                        <h5> {{ forloop.counter }} CLIENTES AGUARDANDO FATURAMENTO.</h5>
                     {% endif %}
                 {% endif %}
             {% endfor %}
+            <h5>TOTAL A FATURAR R$ {{ total_fatura.ValorTotal }}.</h5>
         </footer>
     </div>
     {% endif %}
@@ -62,8 +63,9 @@
                     <button class="btn btn-warning btn-xs" onclick="window.location.href = ''">
                         <span class="glyphicon glyphicon-file"></span>
                     </button>
-                    <button class="btn btn-primary btn-xs" onclick="window.location.href = ''">
-                        <span class="glyphicon glyphicon-folder-open"></span>
+                    <button class="btn btn-success btn-xs js-pagafatura" idfatura="{{ itens.Fatura }}"
+                            data-url="{% url 'pagafatura' itens.Fatura %}">
+                        <span class="glyphicon glyphicon-usd"></span>
                     </button>
                 </footer>
             </div>
@@ -73,14 +75,64 @@
             {% for itens in faturada %}
                 {% if forloop.last %}
                     {% if forloop.counter == 1 %}
-                        <h5> {{ forloop.counter }} REGISTRO DE MINUTAS AGUARDANDO PAGAMENTO.</h5>
+                        <h5> {{ forloop.counter }} FATURA AGUARDANDO PAGAMENTO.</h5>
                     {% else %}
-                        <h5> {{ forloop.counter }} REGISTROS DE MINUTAS AGUARDANDO PAGAMENTO.</h5>
+                        <h5> {{ forloop.counter }} FATURAS AGUARDANDO PAGAMENTO.</h5>
                     {% endif %}
                 {% endif %}
             {% endfor %}
+            <h5>TOTAL A RECEBER R$ {{ total_faturada.ValorTotal }}.</h5>
         </footer>
     </div>
+    {% endif %}
+    {% if paga %}
+    <div class="faturas">
+        <header>
+            <h2> FATURAS PAGAS</h2>
+        </header>
+        <main>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="centro">CLIENTE</th>
+                        <th class="centro">FATURA Nº</th>
+                        <th class="centro">PAGAMENTO</th>
+                        <th class="centro">VALOR PAGO</th>
+                        <th class="centro">MINUTAS</th>
+                        <th class="centro">&nbsp</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pagas in paga %}
+                    <tr>
+                        <td class="esquerda">{{ pagas.Fantasia }}</td>
+                        <td class="direita">{{ pagas.minuta__idFatura__Fatura }}</td>
+                        <td class="centro">{{ pagas.minuta__idFatura__DataPagamento }}</td>
+                        <td class="direita">R$ {{ pagas.minuta__idFatura__ValorPagamento }}</td>
+                        <td class="centro">{{ pagas.minutas }}</td>
+                        <td class="direita">
+                            <button class="btn btn-danger btn-xs"
+                                    onclick="window.location.href = '{% url 'estornafatura' pagas.minuta__idFatura__idFatura %}'">
+                                <span class="glyphicon glyphicon-backward"></span>
+                            </button>
+                            <button class="btn btn-warning btn-xs" onclick="window.location.href = ''">
+                                <span class="glyphicon glyphicon-file"></span>
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </main>
+    </div>
     {%  endif %}
+    <!-- DIV MODAL -->
+    <div class="modal fade" id="modal-formulario" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+            </div>
+        </div>
+    </div>
 </main>
 {% endblock %}

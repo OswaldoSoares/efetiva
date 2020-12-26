@@ -81,7 +81,9 @@
                     </div>
                     {% if itens.StatusMinuta == 'ABERTA' %}
                         <div class="excluidocfone">
-                            <button class="btn btn-danger btn-xs js-excluiminutaajudante" idminutacolaboradores="{{ itensajudante.idMinutaColaboradores }}" data-url="{% url 'excluiminutaajudante' itensajudante.idMinutaColaboradores %}">
+                            <button class="btn btn-danger btn-xs js-excluiminutaajudante"
+                                    idminutacolaboradores="{{ itensajudante.idMinutaColaboradores }}"
+                                    data-url="{% url 'excluiminutaajudante' itensajudante.idMinutaColaboradores %}">
                                 <span class="glyphicon glyphicon-trash"></span>
                             </button>
                         </div>

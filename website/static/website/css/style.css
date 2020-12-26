@@ -20,22 +20,35 @@ body {
 body .container {
 	margin: 0;
 	padding: 0;
+    width: 100%;
+    height: auto;
 	display: flex;
     align-items: center;
-    justify-content: flex-start;
-    width: 100%;
-    height: 100%;
+    justify-content: flex-start;    
+	background-image: url("/static/website/img/wallpaper.jpg");
+	background-position: center center;
+	background-repeat: no-repeat;
+    -webkit-backgroud-size: cover;
+    -moz-background-size: cover;
+    -moz-background-size:cover;
+    background-size: cover;
+    background-attachment: fixed; 
+    overflow: visible;
 }
 
 nav {
     width: 180px;
     min-width: 180px;
-	height: 100vh;
-	background-color: var(--corsecundaria);
+    height: 100vh;
+    background-color: var(--corsecundaria);
+    position: fixed;
+    top: 0;
+    left: 0;
     display: none;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;	
+    justify-content: space-between;
+    z-index: 9998 ;
 }
 
 nav header {
@@ -73,7 +86,7 @@ nav ul {
     margin: 0;
 }
 
-nav .menu a{
+nav .menu a {
     font-size: 17px;
     color: var(--corprincipal);
     transition: .4s;
@@ -107,34 +120,48 @@ nav footer h6 {
 }
 
 .menu-icone label {
-    position: absolute;
-    left: 0;
-    top: 5px;
-    font-size: 18px;
+    position: fixed;
+    margin-left: 0px;
+    top: 0;
+    font-size: 35px;
     font-weight: bold;
     padding: 0px;
-    width: 20px;
-    height: 20px;
+    padding-top: 5px;;
+    width: 50px;
+    height: 50px;
     text-align: center;
     color: deeppink;
     cursor: pointer;
     transition: all .4s;
+    z-index: 9999;
 }
 
 .menu-icone label:hover {
-    background: deeppink;
-    color: var(--corprincipal);
+    background-color: var(--corprincipal);
+    color: deeppink;
 }
 
 #chk:checked ~ .container nav {
     display: flex;
-    transition: all .4s;
+    transition: 0.4s ease all;
+}
+
+#chk:checked ~ .container .conteudo {
+    margin-left: 180px;
+}
+
+#chk:checked ~ .menu-icone label {
+    margin-left: 180px;
+    display: none;
+}
+
+#chk:checked ~ .container .conteudo .header-base {
+    padding-left: 20px;
 }
 
 #chk {
     display: none;
 }
-
 
 @media screen and (max-width: 360px) {
     .sidebar {
@@ -149,24 +176,14 @@ nav footer h6 {
 }
 
 .conteudo {
-    width: 100%;
-    height: 100vh;
+    width: 100vw;
+    /* height: 100vh; */
 	padding: 0;
-	margin: 0;
-	background: url("/static/website/img/wallpaper.jpg");
-	background-position: center center;
-	background-repeat: no-repeat;
-	background-attachment: fixed;
-	background-size: cover; 
+    margin: 0;
+    margin-left: 0;
+    /* overflow: visible; */
 }
 /* CSS COMPARTILHADOS - Arquivos index.html */
-.header_base {
-	background-color: var(--corprincipal);
-	width: 100%;
-	height: 50px;
-	padding: 0px 0px;
-	margin: 0px;
-}
 .conteudo_base {
     background-color: var(--corsecundaria);
     height: auto;
@@ -517,6 +534,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
 .consulta_pessoaconta, {
     height: 65px;
 }
+
 .consulta_coluna1 h20 {
     width: 100%;
     font-size: 18px;
@@ -821,7 +839,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
     float: left;
     padding: 7px 25px;
     font-size: 18px;
-    font-weigth: bold;
+    font-weight: bold;
     color: var(--corprincipal);
     width: 70%;
 }
@@ -871,11 +889,16 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
 /* Arquivo Base */
 .header-base {
     background-color: var(--corprincipal);
-	width: 100%;
-	height: 50px;
+	width: 100vw;
+    height: 50px;
+    position: fixed;
+    top: 0;
+    margin: 0;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: start;
+    padding-left: 70px;
+    z-index: 9997;
 }
 
 .header-base h1 {
@@ -883,14 +906,25 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
     padding: 0;
     color: deeppink;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    font-size: 36px;
+    font-size: 24px;
+    font-weight: bold;
 }
 
 /* Modulo Faturamento */
+.conteudo-base {
+    height: auto;
+    overflow: hidden;
+    margin: 70px 20px;
+    padding: 0px;
+}
 
 /* index */
 main .faturas {
-    margin-top: 0px;
+    background-color: white;
+    border: 3px solid black;
+    margin: 0;    
+    margin-bottom: 20px;
+    padding: 0;
 }
 
 main .faturas header {
@@ -898,26 +932,26 @@ main .faturas header {
     color: var(--corsecundaria);
     width: 100%;
     text-align: center;
+    padding: 5px 0;
 }
 
 main .faturas header h2 {
     margin: 0;
     padding: 0;
-    font-size: 30px;
+    font-size: 24px;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-weight: bold;
 }
 
 main .faturas main {
-    background: var(--corsecundaria);
+    background: white;
     width: 100%;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    align-content: flex-start;
-    justify-content: space-between;
+    justify-content: flex-start;
+    margin: 0px;
     padding: 5px;
-    padding-top: 0px;
 }
 
 main .faturas .card-faturada {
@@ -931,7 +965,7 @@ main .faturas .card-faturada {
     align-items: center;
     justify-content: center;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    margin-top: 5px;
+    margin: 5px;
 }
 
 main .faturas .card-faturada header {
@@ -964,7 +998,7 @@ main .faturas .card-faturar {
     align-items: center;
     justify-content: center;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    margin-top: 5px;
+    margin: 5px;
 }
 
 main .faturas .card-faturar header {
@@ -991,17 +1025,59 @@ main .faturas .rodape {
     background: var(--corsecundaria);
     color: var(--corprincipal);
     width: 100%;
-    text-align: center;
     margin: 0;
-    padding: 0;
-    margin-bottom: 10px;
+    padding: 0 10px;;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 main .faturas .rodape h5 {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-size: 20px;
+    margin: 0;
+    padding: 5px 0;
 }
 
+main .faturas-pagas {
+    display: flex;
+}
+
+main .faturas table thead {
+    background-color: var(--corprincipal);
+}
+
+main .faturas table th {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 18px;
+    color: var(--corsecundaria);
+}
+
+main .faturas table tbody {
+    background-color: var(--corsecundaria);
+}
+
+main .faturas table td {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 16px;
+    color: var(--corprincipal);
+}
+
+main .faturas table tbody tr:hover {
+    background-color: #66CDAA;
+}
+
+.esquerda {
+    text-align: left;
+}
+
+.direita {
+    text-align: right;
+}
+
+.centro {
+    text-align: center;
+}
 
 @media screen and (max-width: 360px) {
     .sidebar {
@@ -1037,13 +1113,13 @@ main .faturas .rodape h5 {
 /* minutafaturarcliente */
 
 header .container {
-    background-color: var(--corprincipal);
+    /* background-color: var(--corprincipal);
     width: 100%;
     height: 48px;
     max-height: 48px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: center; */
 }
 
 header form {

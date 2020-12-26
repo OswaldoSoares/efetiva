@@ -60,4 +60,27 @@ $(document).ready(function(){
         $('.valor-fatura').val('R$ ' + somaFatura.toFixed(2).replace('.',','));
     });
 
+    var loadForm = function(){
+        var obj = $(this);
+        var idfatura = $(this).attr("idfatura");
+
+        $.ajax({
+            url: obj.attr("data-url"),
+            type: 'get',
+            dataType: 'json',
+            data: {
+                idfatura: idfatura,
+            },
+            beforeSend: function(){
+                $("#modal-formulario .modal-content").html("");
+                $("#modal-formulario").modal("show");
+            },
+            success: function(data){
+                $("#modal-formulario .modal-content").html(data.html_form);
+            }
+        });
+    };
+
+    $(".js-pagafatura").click(loadForm);
+
 });

@@ -1,8 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Sum, Max, Count
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from .models import Fatura
+from .forms import PagaFatura
 from minutas.models import Minuta, MinutaItens
 from clientes.models import Cliente, Tabela
 from datetime import date, timedelta
@@ -12,10 +13,20 @@ def index_faturamento(request):
     fatura = Cliente.objects.values('idCliente', 'Fantasia').filter(minuta__StatusMinuta='FECHADA',
                                                                     minuta__Valor__gt='0.00').annotate(
         Valor=Sum('minuta__Valor'), Quantidade=Count('minuta__Minuta'))
+    total_fatura = Minuta.objects.filter(StatusMinuta='FECHADA').aggregate(ValorTotal=Sum('Valor'), Quantidade=Count(
+        Minuta))
     faturada = Fatura.objects.filter(StatusFatura='ABERTA').annotate(TotalMinutas=Count('minuta')).exclude(
         TotalMinutas=0).values('minuta__idCliente__Fantasia', 'idFatura', 'Fatura', 'VencimentoFatura', 'ValorFatura', \
                                                                'TotalMinutas')
-    return render(request, 'faturamentos/index.html', {'fatura': fatura, 'faturada': faturada})
+    total_faturada = Fatura.objects.filter(StatusFatura='ABERTA').aggregate(ValorTotal=Sum('ValorFatura'),
+                                                                            Quantidade=Count('Fatura'))
+    paga = Cliente.objects.filter(minuta__idFatura__StatusFatura='PAGA').values('minuta__idFatura__Fatura', 'Fantasia',
+                                                                                'minuta__idFatura__ValorPagamento',
+                                                                                'minuta__idFatura__DataPagamento',
+                                                                                'minuta__idFatura__idFatura'). \
+           annotate(minutas=Count('minuta__idFatura__Fatura')).order_by('-minuta__idFatura__Fatura')
+    return render(request, 'faturamentos/index.html', {'fatura': fatura, 'faturada': faturada, 'total_fatura':
+        total_fatura, 'total_faturada': total_faturada, 'paga': paga})
 
 
 def minutas_faturar_cliente(request, idcli):
@@ -48,7 +59,6 @@ def cria_div_selecionada(request):
 
 
 def cria_fatura(request):
-    print(request.POST)
     if request.POST.get('valor-fatura') != 'R$ 0,00':
         numero_fatura = request.POST.get('numero-fatura')[10:]
         valor_fatura = request.POST.get('valor-fatura')[3:].replace(',','.')
@@ -59,6 +69,7 @@ def cria_fatura(request):
         obj.DataFatura = date.today()
         obj.ValorFatura = valor_fatura
         obj.VencimentoFatura = vencimento_fatura
+        obj.DataPagamento = '2020-01-01'
         obj.StatusFatura = 'ABERTA'
         obj.save()
         fatura = Fatura.objects.get(Fatura=numero_fatura)
@@ -86,28 +97,33 @@ def cria_fatura(request):
 
 
 def estorna_fatura(request, idfatura):
+    novo_status = '';
     fatura = Fatura.objects.get(idFatura=idfatura)
-    minutas = Minuta.objects.filter(idFatura=fatura.idFatura)
-    for itens in minutas:
-        minuta = Minuta.objects.get(idMinuta=itens.idMinuta)
-        if minuta:
-            obj = Minuta()
-            obj.idMinuta = minuta.idMinuta
-            obj.Minuta = minuta.Minuta
-            obj.DataMinuta = minuta.DataMinuta
-            obj.HoraInicial = minuta.HoraInicial
-            obj.HoraFinal = minuta.HoraFinal
-            obj.Coleta = minuta.Coleta
-            obj.Entrega = minuta.Entrega
-            obj.Obs = minuta.Obs
-            obj.StatusMinuta = 'FECHADA'
-            obj.Valor = minuta.Valor
-            obj.Comentarios = minuta.Comentarios
-            obj.idFatura_id = None
-            obj.idCliente = minuta.idCliente
-            obj.idCategoriaVeiculo = minuta.idCategoriaVeiculo
-            obj.idVeiculo = minuta.idVeiculo
-            obj.save()
+    if fatura.StatusFatura == 'ABERTA':
+        minutas = Minuta.objects.filter(idFatura=fatura.idFatura)
+        for itens in minutas:
+            minuta = Minuta.objects.get(idMinuta=itens.idMinuta)
+            if minuta:
+                obj = Minuta()
+                obj.idMinuta = minuta.idMinuta
+                obj.Minuta = minuta.Minuta
+                obj.DataMinuta = minuta.DataMinuta
+                obj.HoraInicial = minuta.HoraInicial
+                obj.HoraFinal = minuta.HoraFinal
+                obj.Coleta = minuta.Coleta
+                obj.Entrega = minuta.Entrega
+                obj.Obs = minuta.Obs
+                obj.StatusMinuta = 'FECHADA'
+                obj.Valor = minuta.Valor
+                obj.Comentarios = minuta.Comentarios
+                obj.idFatura_id = None
+                obj.idCliente = minuta.idCliente
+                obj.idCategoriaVeiculo = minuta.idCategoriaVeiculo
+                obj.idVeiculo = minuta.idVeiculo
+                obj.save()
+        novo_status = 'CANCEL'
+    if fatura.StatusFatura == 'PAGA':
+        novo_status = 'ABERTA'
     if fatura:
         obj = Fatura(fatura)
         obj.idFatura = fatura.idFatura
@@ -115,6 +131,28 @@ def estorna_fatura(request, idfatura):
         obj.DataFatura = fatura.DataFatura
         obj.ValorFatura = fatura.ValorFatura
         obj.VencimentoFatura = fatura.VencimentoFatura
-        obj.StatusFatura = 'CANCEL'
+        obj.DataPagamento = '2020-01-01'
+        obj.StatusFatura = novo_status
         obj.save()
     return redirect('index_faturamento')
+
+
+def paga_fatura(request, idfatura):
+    data = dict()
+    fatura = Fatura.objects.get(Fatura=idfatura)
+    # fatura = get_object_or_404(Fatura, idFatura=idfatura)
+    if request.method == 'POST':
+        form = PagaFatura(request.POST, instance=fatura)
+        if form.is_valid():
+            form.save()
+            return redirect('index_faturamento')
+    else:
+        form = PagaFatura(initial={'ValorPagamento': fatura.ValorFatura, 'DataPagamento': date.today(),
+                                   'StatusFatura': 'PAGA'}, instance=fatura)
+    contexto = {'form': form, 'idfatura': idfatura}
+    data['html_form'] = render_to_string('faturamentos/pagafatura.html', contexto, request=request)
+    return JsonResponse(data)
+
+
+def estorna_paagamento_fatura(request,idFatura):
+    pass
