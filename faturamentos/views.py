@@ -7,6 +7,7 @@ from .forms import PagaFatura
 from minutas.models import Minuta, MinutaItens
 from clientes.models import Cliente, Tabela
 from datetime import date, timedelta
+from .imprime import imprime_fatura_my
 
 
 def index_faturamento(request):
@@ -154,5 +155,6 @@ def paga_fatura(request, idfatura):
     return JsonResponse(data)
 
 
-def estorna_paagamento_fatura(request,idFatura):
-    pass
+def imprime_fatura(request, idfatura):
+    response = imprime_fatura_my(request, idfatura)
+    return response

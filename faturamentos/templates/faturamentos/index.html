@@ -60,7 +60,8 @@
                         <span class="glyphicon glyphicon-backward"></span>
                     </button>
                     {% endif %}
-                    <button class="btn btn-warning btn-xs" onclick="window.location.href = ''">
+                    <button class="btn btn-warning btn-xs"
+                            onclick="window.location.href = '{% url 'imprimefatura' itens.idFatura %}'">
                         <span class="glyphicon glyphicon-file"></span>
                     </button>
                     <button class="btn btn-success btn-xs js-pagafatura" idfatura="{{ itens.Fatura }}"
@@ -115,7 +116,8 @@
                                     onclick="window.location.href = '{% url 'estornafatura' pagas.minuta__idFatura__idFatura %}'">
                                 <span class="glyphicon glyphicon-backward"></span>
                             </button>
-                            <button class="btn btn-warning btn-xs" onclick="window.location.href = ''">
+                            <button class="btn btn-warning btn-xs"
+                                    onclick="window.location.href = '{% url 'imprimefatura' pagas.minuta__idFatura__idFatura %}'">
                                 <span class="glyphicon glyphicon-file"></span>
                             </button>
                         </td>
