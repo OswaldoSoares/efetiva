@@ -12,7 +12,7 @@ from .models import Fatura
 
 
 def decricao_servico(dict_servicos):
-    servicos = None
+    servicos = ''
     for itens in dict_servicos:
         if itens['TipoItens'] == 'RECEBE':
             if itens['Descricao'] == 'TAXA DE EXPEDIÇÃO':
