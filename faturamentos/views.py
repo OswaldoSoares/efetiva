@@ -14,8 +14,8 @@ def index_faturamento(request):
     fatura = Cliente.objects.values('idCliente', 'Fantasia').filter(minuta__StatusMinuta='FECHADA',
                                                                     minuta__Valor__gt='0.00').annotate(
         Valor=Sum('minuta__Valor'), Quantidade=Count('minuta__Minuta'))
-    total_fatura = Minuta.objects.filter(StatusMinuta='FECHADA').aggregate(ValorTotal=Sum('Valor'), Quantidade=Count(
-        Minuta))
+    total_fatura = Minuta.objects.filter(StatusMinuta='FECHADA').aggregate(ValorTotal=Sum('Valor'),
+                                                                           Quantidade=Count(Minuta))
     faturada = Fatura.objects.filter(StatusFatura='ABERTA').annotate(TotalMinutas=Count('minuta')).exclude(
         TotalMinutas=0).values('minuta__idCliente__Fantasia', 'idFatura', 'Fatura', 'VencimentoFatura',
                                'ValorFatura', 'TotalMinutas')
