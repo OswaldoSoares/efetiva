@@ -905,8 +905,8 @@ def fecha_minuta(request, idmin):
                     salvaminutaitens(keys_recebe[index], 'RECEBE', 'R', dados_valor_recebe[index], 0,
                                      dados_tabela_recebe[index], 0, 0, dados_minuta_recebe[index], idmin)
                 if (type_tabela_recebe[index] == 'R$') and (type_minuta_recebe[index] == 'UN'):
-                    salvaminutaitens(keys_recebe[index], 'RECEBE', 'R', dados_valor_recebe[index], dados_minuta_recebe[
-                        index], 0, 0, dados_tabela_recebe[index], '00:00', idmin)
+                    salvaminutaitens(keys_recebe[index], 'RECEBE', 'R', dados_valor_recebe[index],
+                                     dados_minuta_recebe[index], 0, 0, dados_tabela_recebe[index], '00:00', idmin)
                 if (type_tabela_recebe[index] == 'R$') and (type_minuta_recebe[index] == 'KG'):
                     salvaminutaitens(keys_recebe[index], 'RECEBE', 'R', dados_valor_recebe[index], 0, 0,
                                      dados_minuta_recebe[index], dados_tabela_recebe[index], '00:00', idmin)

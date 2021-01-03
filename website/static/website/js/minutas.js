@@ -148,6 +148,8 @@ $(document).ready(function(){
             $(to_id).text('R$ 0,00')
             $(hi_id).val(0.00)
         }
+//
+
         somaPerimetro();
         totais();
     };
@@ -177,7 +179,7 @@ $(document).ready(function(){
         soma_recebe += $('#hi-entregasvolume-recebe').val()*1
         soma_recebe += $('#hi-saida-recebe').val()*1
         soma_recebe += $('#hi-capacidade-recebe').val()*1
-        soma_recebe = (soma_recebe*1).toFixed(2).replace('.',',')
+        soma_recebe = (soma_recebe*1).toFixed(2)
         $('#mi-perimetro-recebe').val(soma_recebe)
         $('#mi-pernoite-recebe').val(soma_recebe)
         var soma_paga = 0.00
@@ -190,7 +192,7 @@ $(document).ready(function(){
         soma_paga += $('#hi-entregasvolume-paga').val()*1
         soma_paga += $('#hi-saida-paga').val()*1
         soma_paga += $('#hi-capacidade-paga').val()*1
-        soma_paga = (soma_paga*1).toFixed(2).replace('.',',')
+        soma_paga = (soma_paga*1).toFixed(2)
         $('#mi-perimetro-paga').val(soma_paga)
         $('#mi-pernoite-paga').val(soma_paga)
     }
@@ -228,6 +230,10 @@ $(document).ready(function(){
     $('.switch').change(function() {
         mostravalores($(this));
     });
+
+    $('.demonstrativo-input').change(function() {
+        $(this).val(parseFloat($(this).val()).toFixed(2))
+    })
 
     $('.demonstrativo-input').change(function() {
         var elemento_alterado = '#sw' + $(this).attr('id').substring(2, 50)
