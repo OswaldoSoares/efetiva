@@ -912,7 +912,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
 
 /* Modulo Faturamento */
 .conteudo-base {
-    height: auto;
+    min-height: 100vh;
     overflow: hidden;
     margin: 70px 20px;
     padding: 0px;
@@ -1098,7 +1098,7 @@ main .faturas table tbody tr:hover {
         width: 100%;
     }
 
-    main .faturas .card-faturada {
+    main .faturas .ca rd-faturada {
         width: 100%;
     }
 
@@ -1107,69 +1107,71 @@ main .faturas table tbody tr:hover {
     }
 }
 
+/* minutafaturarcliente.html */
 
-
-
-/* minutafaturarcliente */
-
-header .container {
-    /* background-color: var(--corprincipal);
+main .minutas-faturar  {
+    border: 3px solid black;
     width: 100%;
-    height: 48px;
-    max-height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center; */
+    height: auto;
+    margin: 0;    
+    margin-bottom: 20px;
+    padding: 0;
 }
 
-header form {
+main .minutas-faturar header form {
+    background-color: var(--corprincipal);
     width: 100%;
+    height: auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    font-size: 18px;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    margin: 0 5px;
+    font-weight: bold;
+    margin: 0;
+    padding: 5px 10px 8px;
 }
 
-header .input-fatura {
+main .minutas-faturar header .input-fatura {
     width: 150px;
     text-align: right;
     padding-right: 5px;
 }
 
-header .input-cria-fatura {
+main .minutas-faturar header .input-cria-fatura {
     width: 35%;
     display: flex;
     align-items: center;
     justify-content: space-between;    
 }
 
-header .input-cria-fatura-vencimento {
+main .minutas-faturar header .input-cria-fatura-vencimento {
     width: 35%;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-header .input-cria-fatura-vencimento span {
+main .minutas-faturar header .input-cria-fatura-vencimento span {
     color: var(--corsecundaria);
     margin-right: 5px;
 }
 
-header .botao-cria-fatura {
+main .minutas-faturar header .botao-cria-fatura {
     width: 30%;
     display: flex;
     align-items: center;
     justify-content: flex-end;
 }
 
-main .container {
+main .minutas-faturar main{
+    background-color: white;
     width: 100%;
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    justify-content: space-between;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    justify-content: space-around;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;    
 }
 
 main .seleciona-minuta {
@@ -1256,11 +1258,18 @@ main .minutas-selecionadas .auto-minuta {
     margin-bottom: 5px;
 }
 
-main .minutas-selecionadas .auto-minuta span {
+main .minutas-selecionadas .auto-minuta .dados-minuta {
     background-color: var(--corprincipal);
     color: var(--corsecundaria);
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+main .minutas-selecionadas .auto-minuta span {
     padding-left: 5px;
+    padding-right: 5px;;
 }
 
 main .minutas-selecionadas .auto-minuta .minuta-fatura {

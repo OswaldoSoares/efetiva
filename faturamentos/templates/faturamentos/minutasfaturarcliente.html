@@ -1,34 +1,34 @@
 {% extends 'faturamentos/basefaturamentos.html' %}
 
 {% block mainfaturamento %}
-    <header>
-        <div class="container">
-            <form method="post" action="{% url 'criafatura' %}">
-                {% csrf_token %}
-                <input type="hidden" value="{{ idFatura }}">
-                <div class="input-cria-fatura">
-                    <input class="numero-fatura input-fatura"type="text" name="numero-fatura" readonly="readonly"
-                           value="Fatura Nº {{ ultima_fatura.UltimaFatura }}">
-                    <input class="valor-fatura input-fatura" type="text" name="valor-fatura" readonly="readonly"">
-                </div>
-                <div class="input-cria-fatura-vencimento">
-                    <span class="vencimento-label">VENCIMENTO</span>
-                    <input class="vencimento-fatura input-fatura" name="vencimento-fatura" type="date"
-                           value="{{ dia_vencimento }}">
-                </div>
-                <div class="botao-cria-fatura">
-                    <button type="submit" class="btn btn-success glyphicon glyphicon-usd"></button>
-                </div>
-            </form>
-        </div>
-    </header>
-
-    <main>
-        <div class="container">
+<main>
+    <div class="minutas-faturar">
+        <header>
+            <div class="container">
+                <form method="post" action="{% url 'criafatura' %}">
+                    {% csrf_token %}
+                    <input type="hidden" value="{{ idFatura }}">
+                    <div class="input-cria-fatura">
+                        <input class="numero-fatura input-fatura"type="text" name="numero-fatura" readonly="readonly"
+                               value="Fatura Nº {{ ultima_fatura.UltimaFatura }}">
+                        <input class="valor-fatura input-fatura" type="text" name="valor-fatura" readonly="readonly"">
+                    </div>
+                    <div class="input-cria-fatura-vencimento">
+                        <span class="vencimento-label">VENCIMENTO</span>
+                        <input class="vencimento-fatura input-fatura" name="vencimento-fatura" type="date"
+                               value="{{ dia_vencimento }}">
+                    </div>
+                    <div class="botao-cria-fatura">
+                        <button type="submit" class="btn btn-success glyphicon glyphicon-usd"></button>
+                    </div>
+                </form>
+            </div>
+        </header>
+        <main>
             <p id="cod-10004" hidden="true">&#10004</p>
             <p id="cod-10008" hidden="true">&#10008</p>
             <div class="seleciona-minuta">
-                <p class="titulo-seleciona-minuta"><b>MINUTAS SELECIONADAS PARA FATURAR</b></p>
+                <p class="titulo-seleciona-minuta"><b>SELECIONADAS PARA FATURAR</b></p>
                 {% for itens in minutas_faturar %}
                 <table class="tb-select-minuta">
                     <tr>
@@ -47,6 +47,7 @@
             <div class="minutas-selecionadas">
                 <!-- html gerado automaticamente pela função criadivselecionada -->
             </div>
-        </div>
-    </main>
+        </main>
+    </div>
+</main>
 {% endblock %}

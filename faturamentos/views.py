@@ -4,8 +4,9 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 from .models import Fatura
 from .forms import PagaFatura
-from minutas.models import Minuta, MinutaItens
+from minutas.models import Minuta, MinutaItens, MinutaColaboradores
 from clientes.models import Cliente, Tabela
+from pessoas.models import Pessoal
 from datetime import date, timedelta
 from .imprime import imprime_fatura_pdf
 
@@ -54,7 +55,10 @@ def cria_div_selecionada(request):
     numero_minuta = request.GET.get('minuta')
     minuta = Minuta.objects.get(Minuta=numero_minuta)
     minutaitens = MinutaItens.objects.filter(idMinuta_id=minuta.idMinuta, RecebePaga='R').order_by('-TipoItens')
-    context = {'minuta': minuta, 'minutaitens': minutaitens}
+    motorista = MinutaColaboradores.objects.filter(idMinuta_id=minuta.idMinuta, Cargo='MOTORISTA')
+    if motorista:
+        motorista = Pessoal.objects.get(idPessoal=motorista[0].idPessoal_id)
+    context = {'minuta': minuta, 'minutaitens': minutaitens, 'motorista': motorista}
     data['html_minuta'] = render_to_string('criadivselecionada.html', context, request=request)
     return JsonResponse(data)
 
