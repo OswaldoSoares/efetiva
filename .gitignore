@@ -6,3 +6,4 @@ media
 *.pyc
 minutas/functions.py
 desktop.ini
+*.json

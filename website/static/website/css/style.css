@@ -957,7 +957,7 @@ main .consulta main {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
+    align-items: flex-start;
     justify-content: flex-start;
     margin: 0px;
     padding: 5px;
@@ -1047,7 +1047,7 @@ main .card-base2 {
     background: var(--corsecundaria);
     color: var(--corprincipal);
     border: 2px solid var(--corprincipal);
-    width: 300px;
+    width: 20%;
     min-width: 300px;
     display: flex;
     flex-direction: column;
@@ -1105,6 +1105,75 @@ main .card-base2 footer {
     display: flex;
     align-items: center;
     justify-content: space-around;
+}
+
+main .card-base3 {
+    background: var(--corsecundaria);
+    color: var(--corprincipal);
+    border: 2px solid var(--corprincipal);
+    width: 70%;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    margin: 5px;
+}
+
+main .card-base3 header {
+    background: var(--corprincipal);
+    color: var(--corsecundaria);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+}
+
+main .card-base3 section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: auto;
+}
+
+main .card-base3 section .entregas-itens {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3px 5px;
+}
+
+main .card-base3 form {
+    width: 100%;
+}
+
+main .card-base3 form select {
+    margin-top: 5px;
+}
+
+main .card-base3 form input {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+main .card-base3 footer {
+    background: #a1a1a1;
+    width: 100%;
+    padding: 5px 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+main .card-base3 .seta {
+    font-size: 24px;
+    padding: 0;
 }
 
 main .consulta .consulta-header-despesas-entregas {
