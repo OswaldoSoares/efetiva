@@ -155,7 +155,7 @@
                     </section>
                     <footer>
                         <button type="submit" class="btn btn-primary btn-xs">
-                            <span class="glyphicon glyphicon-edit"></span>
+                            <span class="glyphicon glyphicon-save"></span>
                         </button>
                     </footer>
                 </form>
@@ -174,7 +174,7 @@
                     </section>
                     <footer>
                         <button type="submit" class="btn btn-primary btn-xs">
-                            <span class="glyphicon glyphicon-edit"></span>
+                            <span class="glyphicon glyphicon-save"></span>
                         </button>
                     </footer>
                 </form>
@@ -192,7 +192,7 @@
                     </section>
                     <footer>
                         <button type="submit" class="btn btn-primary btn-xs">
-                            <span class="glyphicon glyphicon-edit"></span>
+                            <span class="glyphicon glyphicon-save"></span>
                         </button>
                     </footer>
                 </form>
@@ -201,7 +201,7 @@
     </div>
     <div class="consulta">
         <header class="consulta-header-despesas-entregas">
-            <p>DESPESAS E ENTREGAS</p>
+            <span>DESPESAS E ENTREGAS</span>
         </header>
         <main>
             <div class="card-despesas card-base2">
@@ -245,7 +245,7 @@
                     </section>
                     <footer>
                         <button type="submit" class="btn btn-primary btn-xs active">
-                            <span class="glyphicon glyphicon-edit"></span>
+                            <span class="glyphicon glyphicon-save"></span>
                         </button>
                     </footer>
                 </form>
@@ -332,7 +332,7 @@
                     </section>
                     <footer>
                         <button type="submit" class="btn btn-primary btn-xs active">
-                            <span class="glyphicon glyphicon-edit"></span>
+                            <span class="glyphicon glyphicon-save"></span>
                         </button>
                     </footer>
                 </form>
@@ -344,8 +344,9 @@
         {% if itens.StatusMinuta == 'ABERTA' %}
         <!-- VALORES DE FATURAMENTO -->
         <div class="consulta_cliente_modulo">
-            <h2 class="consulta_subtitulo"><b>DEMONSTRATIVO DE FATURAMENTO E PAGAMENTO:</b></h2>
-            <label class="glyphicon glyphicon-ok botaoadicionar"></label>
+            <header class="consulta-header-despesas-entregas">
+                <span>DEMONSTRATIVO DE FATURAMENTO E PAGAMENTO</span>
+            </header>
             <div class="demonstrativo">
                 <form method="post" action="{% url 'fecha_minuta' itens.idMinuta %}">
                     {% csrf_token %}
@@ -608,18 +609,22 @@
             </div>
         </div>
         {% endif %}
-        <!-- COMENTARIO DA MINUTA -->
-        <div class="consulta_cliente_modulo">
-            <h2 class="consulta_subtitulo"><b>COMENTÁRIOS:</b></h2>
-            <label class="glyphicon glyphicon-ok botaoadicionar"></label>
-            <div class="div_comentarios">
+    </div>
+    <div class="consulta">
+        <div class="consulta-comentario">
+            <header class="consulta-header-despesas-entregas">
+                <span>COMENTÁRIOS</span>
+            </header>
+            <div class="div-comentarios">
                 <form method="post" action="{% url 'editacomentario' itens.idMinuta %}">
                     {% csrf_token %}
                     {% for field in formcomentarios %}
                         {{ field }}
                     {% endfor %}
                     {% if itens.StatusMinuta == 'ABERTA' %}
-                        <button type="submit" class="btn btn-primary btn-sm">ENVIAR</button>
+                        <button type="submit" class="btn btn-primary btn-xs">
+                            <span class="glyphicon glyphicon-save"></span>
+                        </button>
                     {% endif %}
                 </form>
             </div>
