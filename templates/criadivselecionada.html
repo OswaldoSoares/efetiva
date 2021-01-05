@@ -1,17 +1,17 @@
-<div class="dados-minuta">
+<section class="dados-minuta">
     <span><b>MINUTA {{ minuta.Minuta }}</b></span>
     {% if motorista %}
     <span><b>MOTORISTA {{ motorista.Nome }}</b></span>
     {% endif %}
-</div>
-<div class="dados-minuta">
+</section>
+<section class="dados-minuta">
     {% if minuta.idCategoriaVeiculo %}
     <span><b>SOLICITADO {{ minuta.idCategoriaVeiculo }}</b></span>
     {% endif %}
     {% if minuta.idVeiculo %}
     <span><b>VEICULO {{ minuta.idVeiculo.Marca }} {{ minuta.idVeiculo.Modelo }} - {{ minuta.idVeiculo.Placa }}</b></span>
     {% endif %}
-</div>
+</section>
 <section class="minuta-fatura">
     {% if minutaitens %}
         {% for itens in minutaitens %}

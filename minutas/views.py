@@ -52,15 +52,12 @@ def horascobra(horai, horaf, datam, horam):
 
 def parametrominutadespesa():
     despesas = ()
-    try:
-        arquivo_json = open('parametros.json', 'r')
-        dados_json = json.load(arquivo_json)
-        arquivo_json.close()
-        despesas = dados_json['Despesa']['Descricao']
-        despesas.sort()
-        return despesas
-    except:
-        return despesas
+    arquivo_json = open('parametros.json', 'r')
+    dados_json = json.load(arquivo_json)
+    arquivo_json.close()
+    despesas = dados_json['Despesa']['Descricao']
+    despesas.sort()
+    return despesas
 
 
 def salvaminutaitens(Descricao, TipoItens, RecebePaga, Valor, Quantidade, Porcento, Peso, ValorBase, Tempo, idMinuta):

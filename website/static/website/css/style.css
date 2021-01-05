@@ -277,7 +277,7 @@ nav footer h6 {
 	float: left;
 	line-height: 36px;
 }
-.consulta_header {
+main .consulta .consulta-header {
     width: 100%;
     margin: 0;
 }
@@ -286,7 +286,7 @@ nav footer h6 {
     color: #fff;
     height: 45px;
     width: 85%;
-    font-size: 18px;
+    font-size: 20px;
     text-align: left;
     padding: 8px 5px 0 5px;
     margin: 0;
@@ -303,16 +303,19 @@ nav footer h6 {
     float: right;
     border-bottom: 1px solid var(--corsecundaria);
 }
-.consulta_headerdados {
+.consulta-header-dados {
     background: var(--corprincipal);
-    color: #fff;
-    height: 60px;
+    color: white;    
     width: 100%;
+    height: auto;
     font-size: 12px;
-    text-align: left;
     line-height: 8px;
     float: left;
-    padding: 8px 5px;
+    align-items: center;
+    justify-content: center;
+    padding-top: 10px;
+    padding-left: 5px;
+ /*   padding: 8px 5px;*/
 }
 
 /* clientes/index.html */
@@ -493,23 +496,28 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
     float: right;
 }
 
-
-.consulta {
+main .consulta {
+    background-color: white;
+    border: 3px solid black;
+    margin: 0;    
+    margin-bottom: 20px;
+    padding: 0;
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+}
+/*.consulta {
     background: var(--corsecundaria);
     height: auto;
-    overflow: hidden; /* div pai acompanha div filho */
+    overflow: hidden;
+
     margin: 0px;
-}
-.consulta_coluna1 {
-    width: 90%;
+}*/
+main .consulta .consulta-body {
+    width: 100%;
     float: left;
     overflow: hidden;
     border-right: 2px solid var(--corprincipal);
-}
-.consulta_coluna2 {
-    width: 10%;
-    float: left;
-    overflow: hidden;
 }
 
 .btnswitch {
@@ -918,7 +926,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
     padding: 0px;
 }
 
-/* index */
+/* index.html */
 main .faturas {
     background-color: white;
     border: 3px solid black;
@@ -943,7 +951,8 @@ main .faturas header h2 {
     font-weight: bold;
 }
 
-main .faturas main {
+main .faturas main,
+main .consulta main {
     background: white;
     width: 100%;
     display: flex;
@@ -987,7 +996,8 @@ main .faturas .card-faturada footer {
     justify-content: space-around;
 }
 
-main .faturas .card-faturar {
+/* Usado nos Modulo Faturameno e Modulo Minuta */
+main .card-base1 {
     background: var(--corsecundaria);
     color: var(--corprincipal);
     border: 2px solid var(--corprincipal);
@@ -1001,7 +1011,7 @@ main .faturas .card-faturar {
     margin: 5px;
 }
 
-main .faturas .card-faturar header {
+main .card-base1 header {
     background: var(--corprincipal);
     color: var(--corsecundaria);
     width: 100%;
@@ -1012,13 +1022,99 @@ main .faturas .card-faturar header {
     padding: 10px 0;
 }
 
-main .faturas .card-faturar footer {
+main .card-base1 section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 50px;
+}
+
+main .card-base1 form {
+    width: 100%;
+}
+
+main .card-base1 footer {
     background: #a1a1a1;
     width: 100%;
     padding: 5px 50px;
     display: flex;
     align-items: center;
     justify-content: space-around;
+}
+
+main .card-base2 {
+    background: var(--corsecundaria);
+    color: var(--corprincipal);
+    border: 2px solid var(--corprincipal);
+    width: 300px;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    margin: 5px;
+}
+
+main .card-base2 header {
+    background: var(--corprincipal);
+    color: var(--corsecundaria);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+}
+
+main .card-base2 section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: auto;
+}
+
+main .card-base2 section .despesa-itens {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3px 5px;
+}
+
+main .card-base2 form {
+    width: 100%;
+}
+
+main .card-base2 form select {
+    margin-top: 5px;
+}
+
+main .card-base2 form input {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+main .card-base2 footer {
+    background: #a1a1a1;
+    width: 100%;
+    padding: 5px 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+main .consulta .consulta-header-despesas-entregas {
+    background-color: var(--corprincipal);
+    color: white;
+    font-size: 20px;
+    text-align: center;
+    width: 100%;
+    margin: 0;
+    padding: 3px;
 }
 
 main .faturas .rodape {

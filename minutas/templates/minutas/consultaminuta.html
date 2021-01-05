@@ -5,9 +5,10 @@
 {% endblock %}
 
 {% block mainminuta %}
-<div class="consulta" xmlns="http://www.w3.org/1999/html">
-    {% for itens in minuta %}
-        <header class="consulta_header">
+<main>
+    <div class="consulta" xmlns="http://www.w3.org/1999/html">
+        {% for itens in minuta %}
+        <header class="consulta-header">
             <div class="consulta_headertitulo">
                 <p><b>MINUTA {{ itens.Minuta }} - DATA {{ itens.DataMinuta }} - PERÍODO DAS {{ itens.HoraInicial }} ATÉ {{ itens.HoraFinal }} - {{ itens.idCliente.Fantasia }}</b></p>
             </div>
@@ -25,219 +26,232 @@
                     <span class="glyphicon glyphicon-file"></span>
                 </button>
             </div>
-            <div class="consulta_headerdados">
+            <div class="consulta-header-dados">
+                {% if itens.idCategoriaVeiculo %}
+                <p><b>VEÍCULO SOLICITADO: {{ itens.idCategoriaVeiculo }}</b></p>
+                {% endif %}
+                {% if itens.Coleta %}
                 <p><b>COLETA: {{ itens.Coleta|slice:"0:125" }}</b></p>
+                {% endif %}
+                {% if itens.Entrega %}
                 <p><b>ENTREGA: {{ itens.Entrega|slice:"0:125" }}</b></p>
+                {% endif %}
+                {% if itens.Obs %}
                 <p><b>OBSERVAÇÕES: {{ itens.Obs|slice:"0:125" }}</b></p>
+                {% endif %}
             </div>
         </header>
-
-        <div class="consulta_coluna1">
-
-            <!-- MOTORISTA MINUTA -->
-            <div class="consulta_cliente_modulo">
-                <h2 class="consulta_subtitulo"><b>MOTORISTA:</b></h2>
-                {% if motorista_da_minuta %}
-                    <label class="glyphicon glyphicon-ok botaoadicionar"></label>
-                {% else %}
-                    <label class="glyphicon glyphicon-plus botaoadicionar js-criaminutamotorista" idminuta="{{ itens.idMinuta }}" data-url="{% url 'criaminutamotorista' %}"></label>
-                {% endif %}
-
-                {% for itensmotorista in motorista_da_minuta %}
-                    <div class="consulta_contatoemail">
-                        <p>{{ itensmotorista.idPessoal }}</p>
-                    </div>
-                    {% if itens.StatusMinuta == 'ABERTA' %}
-                        <div class="excluidocfone">
-                            <button class="btn btn-danger btn-xs js-excluiminutamotorista" idminutacolaboradores="{{ itensmotorista.idMinutaColaboradores }}" data-url="{% url 'excluiminutamotorista' itensmotorista.idMinutaColaboradores %}">
-                                <span class="glyphicon glyphicon-trash"></span>
-                            </button>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-                {% if itens_paga_motorista %}
-                    <div class="consulta_itens">
-                        {% for itens_paga_motorista in itens_paga_motorista %}
-                            <li>{{ itens_paga_motorista.Descricao }} - R$ {{ itens_paga_motorista.Valor }}</li>
-                        {% endfor %}
-                    </div>
-                    <div class="consulta_contatoemail">
-                        <p>Total do pagamento do motorista R$ {{ soma_paga_motorista|floatformat:2 }}</p>
-                    </div>
-                {% endif %}
-            </div>
-
-            <!-- AJUDANTE MINUTA -->
-            <div class="consulta_cliente_modulo">
-                <h2 class="consulta_subtitulo"><b>AJUDANTE:</b></h2>
-                {% if itens.StatusMinuta == 'ABERTA' %}
-                    <label class="glyphicon glyphicon-plus botaoadicionar js-criaminutaajudante" idminuta="{{ itens.idMinuta }}" data-url="{% url 'criaminutaajudante' %}"></label>
-                {% else %}
-                    <label class="glyphicon glyphicon-ok botaoadicionar"></label>
-                {% endif %}
-                {% for itensajudante in ajudantes_da_minuta %}
-                    <div class="consulta_contatoemail">
-                        <p>{{ itensajudante.idPessoal }}</p>
-                    </div>
-                    {% if itens.StatusMinuta == 'ABERTA' %}
-                        <div class="excluidocfone">
-                            <button class="btn btn-danger btn-xs js-excluiminutaajudante"
-                                    idminutacolaboradores="{{ itensajudante.idMinutaColaboradores }}"
-                                    data-url="{% url 'excluiminutaajudante' itensajudante.idMinutaColaboradores %}">
-                                <span class="glyphicon glyphicon-trash"></span>
-                            </button>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
-
-            <!-- VEÍCULO SOLICITADO -->
-            <div class="consulta_cliente_modulo">
-                <h2 class="consulta_subtitulo"><b>VEÍCULO SOLICITADO:</b></h2>
-                <label class="glyphicon glyphicon-ok botaoadicionar"></label>
-                {% if itens.idCategoriaVeiculo %}
-                    <div class="consulta_contatoemail">
-                        <p>{{ itens.idCategoriaVeiculo }}</p>
-                    </div>
-                {% endif %}
-            </div>
-
-            <!-- VEÍCULO MINUTA -->
-            <div class="consulta_cliente_modulo">
-                <h2 class="consulta_subtitulo"><b>VEÍCULO ENVIADO:</b></h2>
-                {% if motorista_da_minuta %}
-                    {% if itens.idVeiculo %}
-                        <label class="glyphicon glyphicon-edit botaoadicionar js-editaminutaveiculo" idminuta="{{ itens.idMinuta }}" data-url="{% url 'editaminutaveiculo' itens.idMinuta %}"></label>
+        <main>
+            <div class="card-motorista card-base1">
+                <header>
+                    <span><b>MOTORISTA</b></span>
+                </header>
+                <section>
+                    {% if motorista_da_minuta %}
+                    {% for itensmotorista in motorista_da_minuta %}
+                    <span><b>{{ itensmotorista.idPessoal }}</b></span>
+                    {% endfor %}
                     {% else %}
-                        <label class="glyphicon glyphicon-plus botaoadicionar js-editaminutaveiculo" idminuta="{{ itens.idMinuta }}" data-url="{% url 'editaminutaveiculo' itens.idMinuta %}"></label>
+                    <span><b>NENHUM MOTORISTA SELECIONADO</b></span>
                     {% endif %}
-                {% else %}
-                    <label class="glyphicon glyphicon-ok botaoadicionar"></label>
-                {% endif %}
-
-                {% if veiculo %}
+                </section>
+                <footer>
+                    {% if motorista_da_minuta %}
+                    {% for itensmotorista in motorista_da_minuta %}
+                    <button class="btn btn-danger btn-xs js-excluiminutamotorista"
+                            idminutacolaboradores="{{ itensmotorista.idMinutaColaboradores }}"
+                            data-url="{% url 'excluiminutamotorista' itensmotorista.idMinutaColaboradores %}">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                    {% endfor %}
+                    {% else %}
+                    <button class="btn btn-success btn-xs js-criaminutamotorista"  idminuta="{{ itens.idMinuta }}"
+                            data-url="{% url 'criaminutamotorista' %}">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                    {% endif %}
+                </footer>
+            </div>
+            {% if motorista_da_minuta %}
+            <div class="card-veiculo card-base1">
+                <header>
+                    <span><b>VEÍCULO</b></span>
+                </header>
+                <section>
+                    {% if itens.idVeiculo %}
                     {% for itensveiculo in veiculo %}
-                        <div class="consulta_contatoemail">
-                            <p>{{ itensveiculo.Marca }} {{ itensveiculo.Modelo }} - PLACA {{ itensveiculo.Placa }}</p>
-                        </div>
+                    <span><b>{{ itensveiculo.Marca }} {{ itensveiculo.Modelo }} {{ itensveiculo.Placa }}</b></span>
                     {% endfor %}
-                {% endif %}
+                    {% else %}
+                    <span><b>NENHUM VEÍCULO SELECIONADO</b></span>
+                    {% endif %}
+                </section>
+                <footer>
+                    {% if itens.idVeiculo %}
+                    <button class="btn btn-success btn-xs js-editaminutaveiculo"
+                            idminuta="{{ itens.idMinuta }}"
+                            data-url="{% url 'editaminutaveiculo' itens.idMinuta %}">
+                        <span class="glyphicon glyphicon-edit"></span>
+                    </button>
+                    {% else %}
+                    <button class="btn btn-success btn-xs js-editaminutaveiculo"
+                            idminuta="{{ itens.idMinuta }}"
+                            data-url="{% url 'editaminutaveiculo' itens.idMinuta %}">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                    {% endif %}
+                </footer>
             </div>
-
-            <!-- HORA FINAL -->
-            <div class="consulta_cliente_modulo">
-                <h2 class="consulta_subtitulo"><b>HORA FINAL:</b></h2>
-                <label class="glyphicon glyphicon-ok botaoadicionar"></label>
-                <div class="consulta_atualizacoes">
-                    <form method="post" action="{% url 'editaminutahorafinal' itens.idMinuta %}" class="js-edita-minuta-form">
-                        {% csrf_token %}
-                        <div class="divformulario">
-                            <div class="consulta_formatualiza">
-                                {% for field in formhorafinal %}
-                                    {{ field }}
-                                {% endfor %}
-                                {% if itens.StatusMinuta == 'ABERTA' %}
-                                    <button type="submit" class="btn btn-primary btn-sm">ENVIAR</button>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </form>
-                </div>
+            {% endif %}
+            {% if ajudantes_da_minuta %}
+            {% for itensajudante in ajudantes_da_minuta %}
+            <div class="card-ajudante card-base1">
+                <header>
+                    <span><b>AJUDANTE</b></span>
+                </header>
+                <section>
+                    <span><b>{{ itensajudante.idPessoal }}</b></span>
+                </section>
+                <footer>
+                    <button class="btn btn-danger btn-xs js-excluiminutaajudante"
+                            idminutacolaboradores="{{ itensajudante.idMinutaColaboradores }}"
+                            data-url="{% url 'excluiminutaajudante' itensajudante.idMinutaColaboradores %}">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                    <button class="btn btn-success btn-xs js-criaminutaajudante"  idminuta="{{ itens.idMinuta }}"
+                            data-url="{% url 'criaminutaajudante' %}">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </footer>
             </div>
-
-            <!-- KM INICIAL -->
-            <div class="consulta_cliente_modulo">
-                <h2 class="consulta_subtitulo"><b>KM INICIAL:</b></h2>
-                <label class="glyphicon glyphicon-ok botaoadicionar"></label>
-                <div class="consulta_atualizacoes">
-                    <form method="post" action="{% url 'editaminutakminicial' itens.idMinuta %}" class="js-edita-minuta-form">
-                        {% csrf_token %}
-                        <div class="divformulario">
-                            <div class="consulta_formatualiza">
-                                {% for field in formkminicial %}
-                                    {{ field }}
-                                {% endfor %}
-                                {% if itens.StatusMinuta == 'ABERTA' %}
-                                    <button type="submit" class="btn btn-primary btn-sm">ENVIAR</button>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </form>
-                </div>
+            {% endfor %}
+            {% else %}
+            <div class="card-ajudante card-base1">
+                <header>
+                    <span><b>AJUDANTE</b></span>
+                </header>
+                <section>
+                    <span><b>NENHUM AJUDANTE SELECIONADO</b></span>
+                </section>
+                <footer>
+                    <button class="btn btn-success btn-xs js-criaminutaajudante"  idminuta="{{ itens.idMinuta }}"
+                            data-url="{% url 'criaminutaajudante' %}">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </footer>
             </div>
-
-            <!-- KM FINAL -->
-            <div class="consulta_cliente_modulo">
-                <h2 class="consulta_subtitulo"><b>KM FINAL:</b></h2>
-                <label class="glyphicon glyphicon-ok botaoadicionar"></label>
-                <div class="consulta_atualizacoes">
-                    <form method="post" action="{% url 'editaminutakmfinal' itens.idMinuta %}" class="js-edita-minuta-form">
-                        {% csrf_token %}
-                        <div class="divformulario">
-                            <div class="consulta_formatualiza">
-                                {% for field in formkmfinal %}
-                                    {{ field }}
-                                {% endfor %}
-                                {% if itens.StatusMinuta == 'ABERTA' %}
-                                    <button type="submit" class="btn btn-primary btn-sm active">ENVIAR</button>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </form>
-                </div>
+            {% endif %}
+            <div class="card-hora-final card-base1">
+                <header>
+                    <span><b>HORA FINAL</b></span>
+                </header>
+                <form method="post" action="{% url 'editaminutahorafinal' itens.idMinuta %}"
+                      class="js-edita-minuta-form">
+                    {% csrf_token %}
+                    <section>
+                    {% for field in formhorafinal %}
+                        {{ field }}
+                    {% endfor %}
+                    </section>
+                    <footer>
+                        <button type="submit" class="btn btn-primary btn-xs">
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </button>
+                    </footer>
+                </form>
             </div>
-
-            <!-- DESPESAS -->
-            <div class="consulta_cliente_modulo">
-                <h2 class="consulta_subtitulo"><b>DESPESAS:</b></h2>
-                {% if itens.StatusMinuta == 'ABERTA' %}
-                    <label class="glyphicon glyphicon-plus botaoadicionar js-criaminutaparametrodespesa"
-                           idminuta="{{ itens.idMinuta }}" data-url="{% url 'criaminutaparametrodespesa' %}">
-                    </label>
-                {% else %}
-                    <label class="glyphicon glyphicon-ok botaoadicionar"></label>
-                {% endif %}
+            <div class="card-km-inicial card-base1">
+                <header>
+                    <span><b>KM INICIAL</b></span>
+                </header>
+                <form method="post" action="{% url 'editaminutakminicial' itens.idMinuta %}"
+                      class="js-edita-minuta-form">
+                    {% csrf_token %}
+                    <section>
+                    {% for field in formkminicial %}
+                        {{ field }}
+                    {% endfor %}
+                    </section>
+                    <footer>
+                        <button type="submit" class="btn btn-primary btn-xs">
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </button>
+                    </footer>
+                </form>
+            </div>
+            <div class="card-km-final card-base1">
+                <header>
+                    <span><b>KM FINAL</b></span>
+                </header>
+                <form method="post" action="{% url 'editaminutakmfinal' itens.idMinuta %}" class="js-edita-minuta-form">
+                    {% csrf_token %}
+                    <section>
+                    {% for field in formkmfinal %}
+                        {{ field }}
+                    {% endfor %}
+                    </section>
+                    <footer>
+                        <button type="submit" class="btn btn-primary btn-xs">
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </button>
+                    </footer>
+                </form>
+            </div>
+        </main>
+    </div>
+    <div class="consulta">
+        <header class="consulta-header-despesas-entregas">
+            <p>DESPESAS E ENTREGAS</p>
+        </header>
+        <div class="card-km-final card-base2">
+            <header>
+                <div class="despesa-titulo">
+                    <span><b>DESPESAS&nbsp;&nbsp;</b></span>
+                    <button class="btn btn-success btn-xs js-criaminutaparametrodespesa" idminuta="{{ itens.idMinuta }}"
+                            data-url="{% url 'criaminutaparametrodespesa' %}">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                <div>
+            </header>
+            <section>
                 {% if itensminuta %}
-                    {% for itensminuta in itensminuta %}
-                        <div class="consulta_contatoemail">
-                            <p>{{ itensminuta.Descricao }} R$ {{ itensminuta.Valor }}</p>
-                        </div>
-                        {% if itens.Status.Minuta %}
-                            <div class="excluidocfone">
-                                <button class="btn btn-danger btn-xs js-excluiminutadespesa"
-                                        idminuta="{{ itensminuta.idMinuta }}"
-                                        idminutaitens="{{ itensminuta.idMinutaItens }}"
-                                        data-url="{% url 'excluiminutadespesa' itensminuta.idMinutaItens %}">
-                                    <span class="glyphicon glyphicon-trash"></span>
-                                </button>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-                <div class="consulta_atualizacoes">
-                   <form method="post" action="{% url 'criaminutadespesa' %}" class="js-cria-minutadespesa-form">
-                        {% csrf_token %}
-                        <div class="divformulario">
-                            <div class="consulta_formatualiza">
-                                <input type="hidden" name="idMinuta" value="{{ itens.idMinuta }}" id="id_idMinuta">
-                                <select name="Descricao" class="formfieldsshort" maxlength="25" id="id_Descricao">
-                                    {% for itens in despesas %}
-                                        <option value="{{ itens }}">{{ itens }}</option>
-                                    {% endfor %}
-                                </select>
-                                <input type="number" name="Valor" value="0.00" class="formfieldsshort" step="0.01"
-                                       required="" id="id_Valor">
-                                <input type="hidden" name="TipoItens" value="DESPESA" id="id_TipoItens">
-                                <input type="hidden" name="RecebePaga" value="R" id="id_RecebePaga">
-                                <input type="hidden" name="Tempo" value="0" id="id_Tempo">
-                                {% if itens.StatusMinuta == 'ABERTA' %}
-                                    <button type="submit" class="btn btn-primary btn-sm active">ENVIAR</button>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </form>
+                {% for itensminuta in itensminuta %}
+                <div class="despesa-itens">
+                    <span>{{ itensminuta.Descricao }} R$ {{ itensminuta.Valor }}</span>
+                    <button class="btn btn-danger btn-xs js-excluiminutadespesa" idminuta="{{ itensminuta.idMinuta }}"
+                            idminutaitens="{{ itensminuta.idMinutaItens }}"
+                            data-url="{% url 'excluiminutadespesa' itensminuta.idMinutaItens %}">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
                 </div>
-            </div>
+                {% endfor %}
+                {% endif %}
+            </section>
+            <form method="post" action="{% url 'criaminutadespesa' %}" class="js-cria-minutadespesa-form">
+                {% csrf_token %}
+                <section>
+                <input type="hidden" name="idMinuta" value="{{ itens.idMinuta }}" id="id_idMinuta">
+                <select name="Descricao" class="formfieldsshort" maxlength="25" id="id_Descricao">
+                    {% for itens in despesas %}
+                        <option value="{{ itens }}">{{ itens }}</option>
+                    {% endfor %}
+                </select>
+                <input type="number" name="Valor" value="0.00" class="formfieldsshort" step="0.01"
+                       required="" id="id_Valor">
+                <input type="hidden" name="TipoItens" value="DESPESA" id="id_TipoItens">
+                <input type="hidden" name="RecebePaga" value="R" id="id_RecebePaga">
+                <input type="hidden" name="Tempo" value="0" id="id_Tempo">
+                </section>
+                <footer>
+                    <button type="submit" class="btn btn-primary btn-xs active">
+                        <span class="glyphicon glyphicon-edit"></span>
+                    </button>
+                </footer>
+            </form>
+        </div>
+
+        <div class="consulta-body">
+
 
             <!-- ENTREGAS -->
             <div class="consulta_cliente_modulo">
@@ -306,11 +320,13 @@
                     </div>
                 {% endif %}
             </div>
-
+        </div>
+    </div>
+        <div class="consulta">
             {% if itens.StatusMinuta == 'ABERTA' %}
             <!-- VALORES DE FATURAMENTO -->
             <div class="consulta_cliente_modulo">
-                <h2 class="consulta_subtitulo"><b>VALORES DE FATURAMENTO E PAGAMENTO:</b></h2>
+                <h2 class="consulta_subtitulo"><b>DEMONSTRATIVO DE FATURAMENTO E PAGAMENTO:</b></h2>
                 <label class="glyphicon glyphicon-ok botaoadicionar"></label>
                 <div class="demonstrativo">
                     <form method="post" action="{% url 'fecha_minuta' itens.idMinuta %}">
@@ -600,9 +616,7 @@
             </div>
 
         </div>
-        <div class="consulta_coluna2">
-
-        </div>
-    {% endfor %}
-</div>
+        {% endfor %}
+    </div>
+</main>
 {% endblock %}
