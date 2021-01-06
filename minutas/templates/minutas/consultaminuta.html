@@ -55,6 +55,7 @@
                     <span><b>NENHUM MOTORISTA SELECIONADO</b></span>
                     {% endif %}
                 </section>
+                {% if itens.StatusMinuta == 'ABERTA' %}
                 <footer>
                     {% if motorista_da_minuta %}
                     {% for itensmotorista in motorista_da_minuta %}
@@ -71,6 +72,7 @@
                     </button>
                     {% endif %}
                 </footer>
+                {% endif %}
             </div>
             {% if motorista_da_minuta %}
             <div class="card-veiculo card-base1">
@@ -86,6 +88,7 @@
                     <span><b>NENHUM VEÍCULO SELECIONADO</b></span>
                     {% endif %}
                 </section>
+                {% if itens.StatusMinuta == 'ABERTA' %}
                 <footer>
                     {% if itens.idVeiculo %}
                     <button class="btn btn-success btn-xs js-editaminutaveiculo"
@@ -101,6 +104,7 @@
                     </button>
                     {% endif %}
                 </footer>
+                {% endif %}
             </div>
             {% endif %}
             {% if ajudantes_da_minuta %}
@@ -112,6 +116,7 @@
                 <section>
                     <span><b>{{ itensajudante.idPessoal }}</b></span>
                 </section>
+                {% if itens.StatusMinuta == 'ABERTA' %}
                 <footer>
                     <button class="btn btn-danger btn-xs js-excluiminutaajudante"
                             idminutacolaboradores="{{ itensajudante.idMinutaColaboradores }}"
@@ -123,6 +128,7 @@
                         <span class="glyphicon glyphicon-plus"></span>
                     </button>
                 </footer>
+                {% endif %}
             </div>
             {% endfor %}
             {% else %}
@@ -133,12 +139,14 @@
                 <section>
                     <span><b>NENHUM AJUDANTE SELECIONADO</b></span>
                 </section>
+                {% if itens.StatusMinuta == 'ABERTA' %}
                 <footer>
                     <button class="btn btn-success btn-xs js-criaminutaajudante"  idminuta="{{ itens.idMinuta }}"
                             data-url="{% url 'criaminutaajudante' %}">
                         <span class="glyphicon glyphicon-plus"></span>
                     </button>
                 </footer>
+                {% endif %}
             </div>
             {% endif %}
             <div class="card-hora-final card-base1">
@@ -153,11 +161,13 @@
                         {{ field }}
                     {% endfor %}
                     </section>
+                    {% if itens.StatusMinuta == 'ABERTA' %}
                     <footer>
                         <button type="submit" class="btn btn-primary btn-xs">
                             <span class="glyphicon glyphicon-save"></span>
                         </button>
                     </footer>
+                    {% endif %}
                 </form>
             </div>
             <div class="card-km-inicial card-base1">
@@ -172,11 +182,13 @@
                         {{ field }}
                     {% endfor %}
                     </section>
+                    {% if itens.StatusMinuta == 'ABERTA' %}
                     <footer>
                         <button type="submit" class="btn btn-primary btn-xs">
                             <span class="glyphicon glyphicon-save"></span>
                         </button>
                     </footer>
+                    {% endif %}
                 </form>
             </div>
             <div class="card-km-final card-base1">
@@ -190,11 +202,13 @@
                         {{ field }}
                     {% endfor %}
                     </section>
+                    {% if itens.StatusMinuta == 'ABERTA' %}
                     <footer>
                         <button type="submit" class="btn btn-primary btn-xs">
                             <span class="glyphicon glyphicon-save"></span>
                         </button>
                     </footer>
+                    {% endif %}
                 </form>
             </div>
         </main>
@@ -208,22 +222,26 @@
                 <header>
                     <div class="despesa-titulo">
                         <span><b>DESPESAS&nbsp;&nbsp;</b></span>
+                        {% if itens.StatusMinuta == 'ABERTA' %}
                         <button class="btn btn-success btn-xs js-criaminutaparametrodespesa" idminuta="{{ itens.idMinuta }}"
                                 data-url="{% url 'criaminutaparametrodespesa' %}">
                             <span class="glyphicon glyphicon-plus"></span>
                         </button>
-                    <div>
+                        {% endif %}
+                    </div>
                 </header>
                 <section>
                     {% if itensminuta %}
                     {% for itensminuta in itensminuta %}
                     <div class="despesa-itens">
                         <span>{{ itensminuta.Descricao }} R$ {{ itensminuta.Valor }}</span>
+                        {% if itens.StatusMinuta == 'ABERTA' %}
                         <button class="btn btn-danger btn-xs js-excluiminutadespesa" idminuta="{{ itensminuta.idMinuta }}"
                                 idminutaitens="{{ itensminuta.idMinutaItens }}"
                                 data-url="{% url 'excluiminutadespesa' itensminuta.idMinutaItens %}">
                             <span class="glyphicon glyphicon-trash"></span>
                         </button>
+                        {% endif %}
                     </div>
                     {% endfor %}
                     {% endif %}
@@ -243,22 +261,26 @@
                     <input type="hidden" name="RecebePaga" value="R" id="id_RecebePaga">
                     <input type="hidden" name="Tempo" value="0" id="id_Tempo">
                     </section>
+                    {% if itens.StatusMinuta == 'ABERTA' %}
                     <footer>
                         <button type="submit" class="btn btn-primary btn-xs active">
                             <span class="glyphicon glyphicon-save"></span>
                         </button>
                     </footer>
+                    {% endif %}
                 </form>
             </div>
             <div class="card-entregas card-base3">
                 <header>
                     <div class="despesa-titulo">
                         <span><b>ENTREGAS&nbsp;&nbsp;</b></span>
+                        {% if itens.StatusMinuta == 'ABERTA' %}
                         <button class="btn btn-success btn-xs js-criaminutaentrega" idminuta="{{ itens.idMinuta }}"
                                 data-url="{% url 'criaminutaentrega' %}">
                             <span class="glyphicon glyphicon-plus"></span>
                         </button>
-                    <div>
+                        {% endif %}
+                    </div>
                 </header>
                 <section>
                     {% if notas_minuta_guia %}
@@ -267,8 +289,10 @@
                         <span>Nota: {{ notasminutaguia.Nota }} - Valor: R$ {{ notasminutaguia.Valor }} - Peso:
                                 {{ notasminutaguia.Peso }} - Volume: {{ notasminutaguia.Volume }} -
                                 <b>{{ notasminutaguia.Cidade }} {% if notasminutaguia.Nome %} -
-                                {{ notasminutaguia.Nome }} {% endif %}</b></span>
+                                {{ notasminutaguia.Nome }} {% endif %}</b>
+                        </span>
                         <div>
+                            {% if itens.StatusMinuta == 'ABERTA' %}
                             <button class="btn btn-success btn-xs js-editaminutaentrega"
                                     idminuta="{{ notasminutaguia.idMinuta }}"
                                     idminutanotas="{{ notasminutaguia.idMinutaNotas }}"
@@ -281,6 +305,7 @@
                                     data-url="{% url 'excluiminutaentrega' notasminutaguia.idMinutaNotas %}">
                                 <span class="glyphicon glyphicon-trash"></span>
                             </button>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="entregas-itens">
@@ -288,8 +313,10 @@
                         {% if notasminuta.NotaGuia == notasminutaguia.Nota %}
                         <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#x27A5 {{ notasminuta.Nota }} - Valor: R$
                             {{notasminuta.Valor }} - Peso: {{ notasminuta.Peso }} - Volume:
-                            {{notasminuta.Volume }}</span>
+                            {{notasminuta.Volume }}
+                        </span>
                         <div>
+                            {% if itens.StatusMinuta == 'ABERTA' %}
                             <button class="btn btn-success btn-xs js-editaminutaentrega"
                                     idminuta="{{ notasminuta.idMinuta }}"
                                     idminutanotas="{{ notasminuta.idMinutaNotas }}"
@@ -302,6 +329,7 @@
                                     data-url="{% url 'excluiminutaentrega' notasminuta.idMinutaNotas %}">
                                 <span class="glyphicon glyphicon-trash"></span>
                             </button>
+                            {% endif %}
                         </div>
                         {% endif %}
                         {% endfor %}
@@ -330,11 +358,13 @@
                         <input type="text" name="Estado" value="SP" id="id_Estado" maxlength="2" required="">
                         <input type="text" name="Cidade" value="SÃO PAULO" id="id_Cidade" maxlength="30" required="">
                     </section>
+                    {% if itens.StatusMinuta == 'ABERTA' %}
                     <footer>
                         <button type="submit" class="btn btn-primary btn-xs active">
                             <span class="glyphicon glyphicon-save"></span>
                         </button>
                     </footer>
+                    {% endif %}
                 </form>
             </div>
         </main>
