@@ -153,12 +153,12 @@ def imprime_fatura_pdf(fatura):
                                                                                                                 ','))
         linha -= 3
         pdf.setFont("Times-Roman", 8)
-        if minuta_motorista:
-            pdf.drawString(convertemp(12), convertemp(linha), '{}'.format(minuta_motorista))
-        if minuta_veiculo:
-            pdf.drawCentredString(convertemp(105), convertemp(linha), 'SOLICITADO: {}'.format(minuta_veiculo))
+        # if minuta_motorista:
+        #     pdf.drawString(convertemp(12), convertemp(linha), '{}'.format(minuta_motorista))
+        # if minuta_veiculo:
+        #     pdf.drawCentredString(convertemp(105), convertemp(linha), 'SOLICITADO: {}'.format(minuta_veiculo))
         if minuta_placa:
-            pdf.drawRightString(convertemp(198), convertemp(linha), '{} - {}'.format(minuta_marca_modelo, minuta_placa))
+            pdf.drawString(convertemp(12), convertemp(linha), 'VEÍCULO: {} - {}'.format(minuta_veiculo, minuta_placa))
         coleta_entrega = None
         if minutas[index].Coleta and minutas[index].Entrega:
             coleta_entrega = 'COLETA: {} - ENTREGA: {}'.format(minutas[index].Coleta, minutas[index].Entrega)
