@@ -286,7 +286,7 @@
                     {% if notas_minuta_guia %}
                     {% for notasminutaguia in notas_minuta_guia %}
                     <div class="entregas-itens">
-                        <span>Nota: {{ notasminutaguia.Nota }} - Valor: R$ {{ notasminutaguia.Valor }} - Peso:
+                        <span>Nota: {{ notasminutaguia.Nota }} - Valor: R$ {{ notasminutaguia.ValorNota }} - Peso:
                                 {{ notasminutaguia.Peso }} - Volume: {{ notasminutaguia.Volume }} -
                                 <b>{{ notasminutaguia.Cidade }} {% if notasminutaguia.Nome %} -
                                 {{ notasminutaguia.Nome }} {% endif %}</b>
@@ -312,7 +312,7 @@
                         {% for notasminuta in notas_minuta %}
                         {% if notasminuta.NotaGuia == notasminutaguia.Nota %}
                         <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#x27A5 {{ notasminuta.Nota }} - Valor: R$
-                            {{notasminuta.Valor }} - Peso: {{ notasminuta.Peso }} - Volume:
+                            {{notasminuta.ValorNota }} - Peso: {{ notasminuta.Peso }} - Volume:
                             {{notasminuta.Volume }}
                         </span>
                         <div>
