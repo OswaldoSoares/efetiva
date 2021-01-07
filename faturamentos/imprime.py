@@ -236,6 +236,9 @@ def imprime_fatura_pdf(fatura):
             para.wrapOn(pdf, convertemp(186), convertemp(297))
             linha -= para.height * 0.352777
             para.drawOn(pdf, convertemp(12), convertemp(linha))
+        linha -= 3
+        pdf.drawString(convertemp(12), convertemp(linha), 'KM INICIAL {} - KM FINAL {} - TOTAL {} KMS'.format(
+            inicialkm, finalkm, totalkm))
         linha -= 1
         pdf.line(convertemp(12), convertemp(linha), convertemp(198), convertemp(linha))
         linha -= 1
