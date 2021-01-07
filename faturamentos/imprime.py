@@ -6,7 +6,7 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.enums import TA_JUSTIFY
 from io import BytesIO
 from minutas.views import convertemp
-from minutas.models import Minuta, MinutaColaboradores, MinutaItens
+from minutas.models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas
 from clientes.models import Cliente
 from .models import Fatura
 
@@ -187,6 +187,26 @@ def imprime_fatura_pdf(fatura):
         para.wrapOn(pdf, convertemp(186), convertemp(297))
         linha -= para.height * 0.352777
         para.drawOn(pdf, convertemp(12), convertemp(linha))
+        notas_perimetro = MinutaNotas.objects.values('Cidade').filter(idMinuta=minutas[index].idMinuta).exclude(
+            Cidade='SÃO PAULO')
+        cidades = 'CIDADE(S):'
+        if notas_perimetro:
+            for itens in notas_perimetro:
+                cidades = '{} &#x2713 {} '.format(cidades, itens['Cidade'])
+            para = Paragraph(cidades, style=styles_claro)
+            para.wrapOn(pdf, convertemp(186), convertemp(297))
+            linha -= para.height * 0.352777
+            para.drawOn(pdf, convertemp(12), convertemp(linha))
+        notas_bairro = MinutaNotas.objects.values('Bairro').filter(idMinuta=minutas[index].idMinuta).exclude(
+            Bairro__isnull=True).exclude(Bairro__exact='')
+        bairros = 'BAIRRO(S):'
+        if notas_bairro:
+            for itens in notas_bairro:
+                bairros = '{} &#x2713 {} '.format(bairros, itens['Bairro'])
+            para = Paragraph(bairros, style=styles_claro)
+            para.wrapOn(pdf, convertemp(186), convertemp(297))
+            linha -= para.height * 0.352777
+            para.drawOn(pdf, convertemp(12), convertemp(linha))
         if minutas[index].Comentarios:
             para = Paragraph(minutas[index].Comentarios, style=styles_claro)
             para.wrapOn(pdf, convertemp(186), convertemp(297))

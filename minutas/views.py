@@ -308,7 +308,9 @@ def consultaminuta(request, idmin):
     # Cria queryset notas e dassomas
     notas_minuta = MinutaNotas.objects.filter(idMinuta=idmin).order_by('Nota')
     notas_minuta_guia = MinutaNotas.objects.filter(idMinuta=idmin, NotaGuia='0').order_by('Nota')
-    notas_perimetro = MinutaNotas.objects.filter(idMinuta=idmin).exclude(Cidade='SÃO PAULO')
+    notas_perimetro = MinutaNotas.objects.values('Cidade').filter(idMinuta=idmin).exclude(Cidade='SÃO PAULO')
+    notas_bairro = MinutaNotas.objects.values('Bairro').filter(idMinuta=idmin).exclude(Bairro__isnull=True).exclude(
+        Bairro__exact='')
     totalvalornotas = MinutaNotas.objects.filter(idMinuta=idmin).aggregate(totalvalor=Sum('ValorNota'))
     totalpesonotas = MinutaNotas.objects.filter(idMinuta=idmin).aggregate(totalpeso=Sum('Peso'))
     peso = totalpesonotas['totalpeso']
@@ -322,13 +324,14 @@ def consultaminuta(request, idmin):
                     valorcapacidaderecebe = x.CapacidadeCobra
                     valorcapacidadepaga = x.CapacidadePaga
                     break
-    # Percorre a tabelaperimetro para localizar a km
-    for x in tabelaperimetro:
-        if totalkm > x.PerimetroInicial:
-            if totalkm < x.PerimetroFinal:
-                porceperimetrorecebe = x.PerimetroCobra
-                porceperimetropaga = x.PerimetroPaga
-                break
+    if notas_perimetro:
+        # Percorre a tabelaperimetro para localizar a km
+        for x in tabelaperimetro:
+            if totalkm > x.PerimetroInicial:
+                if totalkm < x.PerimetroFinal:
+                    porceperimetrorecebe = x.PerimetroCobra
+                    porceperimetropaga = x.PerimetroPaga
+                    break
     formhoracobra = ''
     formhoraexcede = ''
     despesas = parametrominutadespesa()
@@ -530,6 +533,8 @@ def consultaminuta(request, idmin):
         'itensminuta': itensminuta,
         'notas_minuta': notas_minuta,
         'notas_minuta_guia': notas_minuta_guia,
+        'notas_perimetro': notas_perimetro,
+        'notas_bairro': notas_bairro,
         'totalvalornotas': totalvalornotas,
         'totalpesonotas': totalpesonotas,
         'totalvolumenotas': totalvolumenotas,
