@@ -63,6 +63,7 @@ class EMailContatoCliente(models.Model):
     idEmailContatoCliente = models.AutoField(primary_key=True)
     Contato = models.CharField(max_length=25)
     EMail = models.CharField(max_length=50)
+    RecebeFatura = models.BooleanField(default=False)
     idCliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
 
     class Meta:
