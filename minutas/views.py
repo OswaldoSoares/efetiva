@@ -325,6 +325,7 @@ def consultaminuta(request, idmin):
                     valorcapacidadepaga = x.CapacidadePaga
                     break
     if notas_perimetro:
+        print('tem perimetro')
         # Percorre a tabelaperimetro para localizar a km
         for x in tabelaperimetro:
             if totalkm > x.PerimetroInicial:
@@ -332,6 +333,7 @@ def consultaminuta(request, idmin):
                     porceperimetrorecebe = x.PerimetroCobra
                     porceperimetropaga = x.PerimetroPaga
                     break
+        print(porceperimetrorecebe)
     formhoracobra = ''
     formhoraexcede = ''
     despesas = parametrominutadespesa()

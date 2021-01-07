@@ -187,6 +187,22 @@ def imprime_fatura_pdf(fatura):
         para.wrapOn(pdf, convertemp(186), convertemp(297))
         linha -= para.height * 0.352777
         para.drawOn(pdf, convertemp(12), convertemp(linha))
+        notas_dados = MinutaNotas.objects.values('Nota', 'ValorNota', 'Peso', 'Volume', 'Cidade', 'Nome').filter(
+            idMinuta=minutas[index].idMinuta).exclude(Nota='PERIMETRO')
+        notas = 'NOTA(S):'
+        if notas_dados:
+            for itens in notas_dados:
+                if itens['Nome']:
+                    notas = '{} &#x2713 NOTA: {} VALOR: {} PESO: {} VOLUME: {} - {} - {}'.format(
+                        notas, itens['Nota'], itens['ValorNota'], itens['Peso'], itens['Volume'], itens['Cidade'],
+                        itens['Nome'])
+                else:
+                    notas = '{} &#x2713 NOTA: {} VALOR: {} PESO: {} VOLUME: {} - {} '.format(
+                        notas, itens['Nota'], itens['ValorNota'], itens['Peso'], itens['Volume'], itens['Cidade'])
+            para = Paragraph(notas, style=styles_claro)
+            para.wrapOn(pdf, convertemp(186), convertemp(297))
+            linha -= para.height * 0.352777
+            para.drawOn(pdf, convertemp(12), convertemp(linha))
         notas_perimetro = MinutaNotas.objects.values('Cidade').filter(idMinuta=minutas[index].idMinuta).exclude(
             Cidade='SÃO PAULO')
         cidades = 'CIDADE(S):'
