@@ -193,7 +193,7 @@
             </div>
             <div class="card-km-final card-base1">
                 <header>
-                    <span><b>KM FINAL</b></span>
+                    <span><b>KM FINAL{% if finalkm > 0 %} - {{  totalkm }} kms {% endif %}</b></span>
                 </header>
                 <form method="post" action="{% url 'editaminutakmfinal' itens.idMinuta %}" class="js-edita-minuta-form">
                     {% csrf_token %}
@@ -369,7 +369,34 @@
             </div>
         </main>
     </div>
+    <div class="consulta">
+        <div class="consulta-comentario">
+            <header class="consulta-header-despesas-entregas">
+                <span>COMENTÁRIOS</span>
+            </header>
+            <div class="div-comentarios">
+                <form method="post" action="{% url 'editacomentario' itens.idMinuta %}">
+                    {% csrf_token %}
+                    {% for field in formcomentarios %}
+                        {{ field }}
+                    {% endfor %}
+                    {% if itens.StatusMinuta == 'ABERTA' %}
+                        <button type="submit" class="btn btn-primary btn-xs">
+                            <span class="glyphicon glyphicon-save"></span>
+                        </button>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+        <!-- DIV MODAL -->
+        <div class="modal fade" id="modal-formulario" >
+            <div class="modal-dialog">
+                <div class="modal-content">
 
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="consulta">
         {% if itens.StatusMinuta == 'ABERTA' %}
         <!-- VALORES DE FATURAMENTO -->
@@ -383,9 +410,11 @@
                     <div class="tb-recebe">
                         <table class="tb-demo-recebe">
                             <thead>
-                                <th class="titulo">DESCRICÃO</th>
-                                <th class="titulo" colspan="4">RECEBE</th>
-                                <th class="titulo" colspan="4">PAGA</th>
+                                <tr>>
+                                    <th class="titulo">DESCRICÃO</th>
+                                    <th class="titulo" colspan="4">RECEBE</th>
+                                    <th class="titulo" colspan="4">PAGA</th>
+                                </tr>
                             </thead>
                             <tbody>
                                 {% for key, value in tabela_recebe_e_paga.items %}
@@ -401,8 +430,7 @@
                                                    {% endif %}
                                                    value="{{ value.value_swr }}"
                                                    class="{{ value.class_swr }}"
-                                                   type="{{ value.type_swr }}"
-                                            >
+                                                   type="{{ value.type_swr }}">
                                             <label for="{{ value.id_swr }}"></label>
                                         </td>
                                         <td class="tb-coluna3">
@@ -413,8 +441,7 @@
                                                    class="{{ value.class_tr }}"
                                                    type="{{ value.type_tr }}"
                                                    step="{{ value.step_tr }}"
-                                                   meu_tipo="{{ value.type_tabela_recebe }}"
-                                            >
+                                                   meu_tipo="{{ value.type_tabela_recebe }}">
                                         </td>
                                         <td class="tb-coluna4">
                                             {% if value.type_minuta_recebe %}
@@ -580,9 +607,11 @@
                             {% endfor %}
                              </tbody>
                             <tfoot>
-                                <th class="titulo">TOTAL</th>
-                                <th class="titulo" id="totalrecebe" colspan="4">R$ 0,00</th>
-                                <th class="titulo" id="totalpaga" colspan="4">R$ 0,00</th>
+                                <tr>
+                                    <th class="titulo">TOTAL</th>
+                                    <td class="titulo" id="totalrecebe" colspan="4">R$ 0,00</td>
+                                    <td class="titulo" id="totalpaga" colspan="4">R$ 0,00</td>
+                                </tr>
                             </tfoot>
                         </table>
                     </div>
@@ -606,8 +635,10 @@
                 <div class="tb-recebe">
                     <table class="tb-demo-recebe">
                         <thead>
-                            <td class="titulo">DESCRICÃO</td>
-                            <td class="titulo" colspan="4">RECEBE</td>
+                            <tr>
+                                <th class="titulo">DESCRICÃO</th>
+                                <th class="titulo" colspan="4">RECEBE</th>
+                            </tr>
                         </thead>
                         <tbody>
                             {% for minuta_itens_fechada in minuta_itens_fechada %}
@@ -631,7 +662,6 @@
                                 {% endif %}
                             {% endfor %}
                         </tbody>
-
                         <tfoot>
                         </tfoot>
                     </table>
@@ -640,34 +670,7 @@
         </div>
         {% endif %}
     </div>
-    <div class="consulta">
-        <div class="consulta-comentario">
-            <header class="consulta-header-despesas-entregas">
-                <span>COMENTÁRIOS</span>
-            </header>
-            <div class="div-comentarios">
-                <form method="post" action="{% url 'editacomentario' itens.idMinuta %}">
-                    {% csrf_token %}
-                    {% for field in formcomentarios %}
-                        {{ field }}
-                    {% endfor %}
-                    {% if itens.StatusMinuta == 'ABERTA' %}
-                        <button type="submit" class="btn btn-primary btn-xs">
-                            <span class="glyphicon glyphicon-save"></span>
-                        </button>
-                    {% endif %}
-                </form>
-            </div>
-        </div>
-        <!-- DIV MODAL -->
-        <div class="modal fade" id="modal-formulario" >
-            <div class="modal-dialog">
-                <div class="modal-content">
 
-                </div>
-            </div>
-        </div>
-    </div>
     {% endfor %}
 </main>
 {% endblock %}
