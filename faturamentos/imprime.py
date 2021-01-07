@@ -13,29 +13,38 @@ from .models import Fatura
 
 def decricao_servico(dict_servicos, perimetro_inicial, perimetro_final):
     servicos = ''
+    texto_taxa = ''
+    texto_seguro = ''
+    texto_ajudante = ''
+    texto_desconto= ''
     for itens in dict_servicos:
         if itens['TipoItens'] == 'RECEBE':
+            if itens['Descricao'] == 'TAXA DE EXPEDIÇÃO':
+                texto_taxa = '&#x2713 TAXA DE EXPEDICAO &#x27BA R$ {} '.format(itens['Valor'])
+            if itens['Descricao'] == 'SEGURO':
+                texto_seguro = '&#x2713 SEGURO {}% DO VALOR DA(S) NOTA(S) R$ {} &#x27BA R$ {} '.format(
+                    itens['Porcento'], itens['ValorBase'], itens['Valor'])
             if itens['Descricao'] == 'PORCENTAGEM DA NOTA':
                 servicos = '{} &#x2713 {}% DO VALOR DA(S) NOTA(S) R$ {} &#x27BA R$ {} '.format(
                     servicos, itens['Porcento'], itens['ValorBase'], itens['Valor'])
             if itens['Descricao'] == 'HORAS':
-                servicos = '{} &#x2713 {} HORAS MINIMAS NO VALOR DE R$ {} CADA &#x27BA R$ {} '.format(
-                    servicos, itens['Tempo'], itens['ValorBase'], itens['Valor'])
+                servicos = '{} &#x2713 {} HORAS MINIMAS &#x27BA R$ {} '.format(
+                    servicos, itens['Tempo'], itens['Valor'])
             if itens['Descricao'] == 'HORAS EXCEDENTE':
                 servicos = '{} &#x2713 {} HORAS EXCEDENTE &#x27BA R$ {} '.format(
                     servicos, itens['Tempo'], itens['Valor'])
             if itens['Descricao'] == 'KILOMETRAGEM':
-                servicos = '{} &#x2713 {} KMS NO VALOR DE R$ {} CADA &#x27BA R$ {} '.format(
-                    servicos, itens['Quantidade'], itens['ValorBase'], itens['Valor'])
+                servicos = '{} &#x2713 {} KMS &#x27BA R$ {} '.format(
+                    servicos, itens['Quantidade'], itens['Valor'])
             if itens['Descricao'] == 'ENTREGAS':
-                servicos = '{} &#x2713 {} ENTREGA(S) NO VALOR DE R$ {} CADA &#x27BA R$ {} '.format(
-                    servicos, itens['Quantidade'], itens['ValorBase'], itens['Valor'])
+                servicos = '{} &#x2713 {} ENTREGA(S) &#x27BA R$ {} '.format(
+                    servicos, itens['Quantidade'], itens['Valor'])
             if itens['Descricao'] == 'ENTREGAS KG':
-                servicos = '{} &#x2713 {} KGS NO VALOR DE R$ {} CADA &#x27BA R$ {} '.format(
-                    servicos, itens['Peso'], itens['ValorBase'], itens['Valor'])
+                servicos = '{} &#x2713 {} KGS &#x27BA R$ {} '.format(
+                    servicos, itens['Peso'], itens['Valor'])
             if itens['Descricao'] == 'ENTREGAS VOLUME':
-                servicos = '{} &#x2713 {} VOLUME NO VALOR DE R$ {} CADA &#x27BA R$ {} '.format(
-                    servicos, itens['Quantidade'], itens['ValorBase'], itens['Valor'])
+                servicos = '{} &#x2713 {} VOLUME &#x27BA R$ {} '.format(
+                    servicos, itens['Quantidade'], itens['Valor'])
             if itens['Descricao'] == 'SAIDA':
                 servicos = '{} &#x2713 SAÍDA &#x27BA R$ {} '.format(
                     servicos, itens['Valor'])
@@ -50,17 +59,13 @@ def decricao_servico(dict_servicos, perimetro_inicial, perimetro_final):
             if itens['Descricao'] == 'PERNOITE':
                 servicos = '{} &#x2713 PERNOITE {}% DO VALOR DOS SERVIÇOS DE R$ {} &#x27BA R$ {} '.format(
                     servicos, itens['Porcento'], itens['ValorBase'], itens['Valor'])
-            if itens['Descricao'] == 'TAXA DE EXPEDIÇÃO':
-                servicos = '&#x2713 TAXA DE EXPEDICAO &#x27BA R$ {} '.format(itens['Valor'])
-            if itens['Descricao'] == 'SEGURO':
-                servicos = '{} &#x2713 SEGURO {}% DO VALOR DA(S) NOTA(S) R$ {} &#x27BA R$ {} '.format(
-                    servicos, itens['Porcento'], itens['ValorBase'], itens['Valor'])
             if itens['Descricao'] == 'AJUDANTE':
-                servicos = '{} &#x2713 {} AJUDANTE(S) NO VALOR DE R$ {} CADA &#x27BA R$ {} '.format(
-                    servicos, itens['Quantidade'], itens['ValorBase'], itens['Valor'])
+                texto_ajudante = '{} &#x2713 {} AJUDANTE(S) &#x27BA R$ {} '.format(
+                    servicos, itens['Quantidade'], itens['Valor'])
             if itens['Descricao'] == 'DESCONTO':
-                servicos = '{} &#x2713 DESCONTO &#x27BA R$ {} '.format(
+                texto_desconto = '{} &#x2713 DESCONTO &#x27BA R$ {} '.format(
                     servicos, itens['Valor'])
+    servicos = '{} {} {} {} {}'.format(servicos, texto_taxa,  texto_seguro, texto_ajudante, texto_desconto)
     for itens in dict_servicos:
         if itens['TipoItens'] == 'DESPESA':
                 servicos = '{} &#x2713 {} &#x27BA R$ {},'.format(
@@ -76,13 +81,13 @@ def imprime_cabecalho(pdf, fatura_selecionada):
     pdf.drawImage('website/static/website/img/transportadora.jpg', convertemp(12), convertemp(265), convertemp(40),
                   convertemp(20))
     pdf.setFont("Times-Bold", 18)
-    pdf.drawString(convertemp(56), convertemp(279), 'TRANSEFETIVA TRANSPORTE - EIRELLI - ME')
+    pdf.drawString(convertemp(54), convertemp(279), 'TRANSEFETIVA TRANSPORTE - EIRELLI - ME')
     pdf.setFont("Times-Roman", 12)
-    pdf.drawString(convertemp(57), convertemp(273), 'RUA OLIMPIO PORTUGAL, 245 - MOOCA - SÃO PAULO - SP - CEP '
+    pdf.drawString(convertemp(53), convertemp(273), 'RUA OLIMPIO PORTUGAL, 245 - MOOCA - SÃO PAULO - SP - CEP '
                                                     '03112-010')
     pdf.setFont("Times-Roman", 12)
-    pdf.drawString(convertemp(70), convertemp(268), '(11) 2305-0582 - (11) 2305-0583 - WHATSAPP (11) 94167-0583')
-    pdf.drawString(convertemp(67), convertemp(263), 'e-mail: transefetiva@terra.com.br - '
+    pdf.drawString(convertemp(68), convertemp(268), '(11) 2305-0582 - (11) 2305-0583 - WHATSAPP (11) 94167-0583')
+    pdf.drawString(convertemp(65), convertemp(263), 'e-mail: transefetiva@terra.com.br - '
                                                     'operacional.efetiva@terra.com.br')
     pdf.line(convertemp(10), convertemp(260), convertemp(200), convertemp(260))
     pdf.setFillColor(HexColor("#B0C4DE"))
@@ -233,7 +238,7 @@ def imprime_fatura_pdf(fatura):
             para.drawOn(pdf, convertemp(12), convertemp(linha))
         if totalkm > 0:
             linha -= 3
-            pdf.setFont("Times-Roman", 10)
+            pdf.setFont("Times-Roman", 8)
             pdf.drawString(convertemp(12), convertemp(linha), 'TOTAL {} KMS'.format(totalkm))
         if minutas[index].Comentarios:
             para = Paragraph(minutas[index].Comentarios, style=styles_claro)
