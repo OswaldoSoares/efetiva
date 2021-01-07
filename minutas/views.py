@@ -319,21 +319,19 @@ def consultaminuta(request, idmin):
     # Percorre a tabelacapacidade para localizar o peso
     if tabelacapacidade and peso:
         for x in tabelacapacidade:
-            if peso > x.CapacidadeInicial:
-                if peso < x.CapacidadeFinal:
+            if peso >= x.CapacidadeInicial:
+                if peso <= x.CapacidadeFinal:
                     valorcapacidaderecebe = x.CapacidadeCobra
                     valorcapacidadepaga = x.CapacidadePaga
                     break
     if notas_perimetro:
-        print('tem perimetro')
         # Percorre a tabelaperimetro para localizar a km
         for x in tabelaperimetro:
-            if totalkm > x.PerimetroInicial:
-                if totalkm < x.PerimetroFinal:
+            if totalkm >= x.PerimetroInicial:
+                if totalkm <= x.PerimetroFinal:
                     porceperimetrorecebe = x.PerimetroCobra
                     porceperimetropaga = x.PerimetroPaga
                     break
-        print(porceperimetrorecebe)
     formhoracobra = ''
     formhoraexcede = ''
     despesas = parametrominutadespesa()
