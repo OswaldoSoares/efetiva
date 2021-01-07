@@ -543,6 +543,11 @@ main .consulta .consulta-body {
     height: 65px;
 }
 
+.consulta_coluna1 {
+    background-color: var(--corsecundaria);
+    height: auto;
+}
+
 .consulta_coluna1 h20 {
     width: 100%;
     font-size: 18px;

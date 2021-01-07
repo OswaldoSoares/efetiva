@@ -178,10 +178,11 @@ class CadastraMinutaNota(forms.ModelForm):
 
     class Meta:
         model = MinutaNotas
-        fields = {'idMinutaNotas', 'Nota', 'ValorNota', 'Peso', 'Volume', 'Nome', 'Estado', 'Cidade', 'NotaGuia',
+        fields = {'idMinutaNotas', 'Nota', 'ValorNota', 'Peso', 'Volume', 'Nome', 'Estado', 'Cidade', 'Bairro',
+                  'NotaGuia',
                   'idMinuta'}
         labels = {'Nota': 'NOTA', 'Valor': 'VALOR', 'Peso': 'PESO', 'Volume': 'VOLUME', 'Nome': 'RAZÃO SOCIAL',
-                  'Estado': 'ESTADO', 'Cidade': 'CIDADE'}
+                  'Estado': 'ESTADO', 'Cidade': 'CIDADE', 'Bairro': 'BAIRRO'}
         widgets = {'Nota': forms.TextInput(attrs={'class': 'formfields'}),
                    'ValorNota': forms.NumberInput(attrs={'class': 'formfields'}),
                    'Peso': forms.NumberInput(attrs={'class': 'formfields'}),
@@ -189,8 +190,9 @@ class CadastraMinutaNota(forms.ModelForm):
                    'Nome': forms.TextInput(attrs={'class': 'formfields'}),
                    'Estado': forms.TextInput(attrs={'class': 'formfields'}),
                    'Cidade': forms.TextInput(attrs={'class': 'formfields'}),
+                   'Bairro': forms.TextInput(attrs={'class': 'formfields'}),
                    'idMinuta': forms.HiddenInput()}
-    field_order = ['Nota', 'ValorNota', 'Peso', 'Volume', 'NotaGuia', 'Nome', 'Estado', 'Cidade']
+    field_order = ['Nota', 'ValorNota', 'Peso', 'Volume', 'NotaGuia', 'Nome', 'Estado', 'Cidade', 'Bairro']
 
 
 class CadastraMinutaFatura(forms.ModelForm):

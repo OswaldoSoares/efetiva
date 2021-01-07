@@ -288,7 +288,8 @@
                     <div class="entregas-itens">
                         <span>Nota: {{ notasminutaguia.Nota }} - Valor: R$ {{ notasminutaguia.ValorNota }} - Peso:
                                 {{ notasminutaguia.Peso }} - Volume: {{ notasminutaguia.Volume }} -
-                                <b>{{ notasminutaguia.Cidade }} {% if notasminutaguia.Nome %} -
+                                <b>{% if notasminutaguia.Bairro %} {{ notasminutaguia.Bairro }} - {% endif %}
+                                {{ notasminutaguia.Cidade }} {% if notasminutaguia.Nome %} -
                                 {{ notasminutaguia.Nome }} {% endif %}</b>
                         </span>
                         <div>
@@ -355,8 +356,12 @@
                         <input type="hidden" name="idMinuta" value="{{ itens.idMinuta }}" id="id_idMinutaNota">
                         <input type="hidden" name="Nome" id="id_Nome">
                         <input type="hidden" name="NotaGuia" value="0" id="id_NotaGuia">
-                        <input type="text" name="Estado" value="SP" id="id_Estado" maxlength="2" required="">
-                        <input type="text" name="Cidade" value="SÃO PAULO" id="id_Cidade" maxlength="30" required="">
+                        <input type="text" name="Estado" value="SP" id="id_Estado" maxlength="2" placeholder="ESTADO"
+                               required="">
+                        <input type="text" name="Cidade" value="SÃO PAULO" id="id_Cidade" maxlength="30"
+                               placeholder="CIDADE" required="">
+                        <input type="text" name="Bairro" value="" id="id_Bairro" maxlength="30" placeholder="BAIRRO"
+                                required="">
                     </section>
                     {% if itens.StatusMinuta == 'ABERTA' %}
                     <footer>

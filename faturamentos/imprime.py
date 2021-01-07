@@ -57,8 +57,8 @@ def decricao_servico(dict_servicos):
                 servicos = '{} &#x2713 {} AJUDANTE(S) NO VALOR DE R$ {} CADA &#x27BA R$ {} '.format(
                     servicos, itens['Quantidade'], itens['ValorBase'], itens['Valor'])
             if itens['Descricao'] == 'DESCONTO':
-                servicos = '{} &#x2713 DESCONTO DE R$ {} &#x27BA R$ {} '.format(
-                    servicos, itens['ValorBase'], itens['Valor'])
+                servicos = '{} &#x2713 DESCONTO &#x27BA R$ {} '.format(
+                    servicos, itens['Valor'])
     for itens in dict_servicos:
         if itens['TipoItens'] == 'DESPESA':
                 servicos = '{} &#x2713 {} &#x27BA R$ {},'.format(
@@ -147,18 +147,15 @@ def imprime_fatura_pdf(fatura):
         pdf.setFillColor('#CD5C5C')
         pdf.drawString(convertemp(12), convertemp(linha), 'MINUTA: {}'.format(minuta_numero))
         pdf.setFillColor(HexColor("#000000"))
-        pdf.drawCentredString(convertemp(105), convertemp(linha), 'DATA: {} - {} hs até {} hs '.format(
-            minuta_data, minuta_hora_inicial, minuta_hora_final))
+        pdf.drawCentredString(convertemp(105), convertemp(linha), 'DATA: {}'.format(minuta_data))
         pdf.drawRightString(convertemp(198), convertemp(linha), 'VALOR: R$ {:.2f}'.format(minuta_valor).replace('.',
                                                                                                                 ','))
         linha -= 3
         pdf.setFont("Times-Roman", 8)
-        # if minuta_motorista:
-        #     pdf.drawString(convertemp(12), convertemp(linha), '{}'.format(minuta_motorista))
-        # if minuta_veiculo:
-        #     pdf.drawCentredString(convertemp(105), convertemp(linha), 'SOLICITADO: {}'.format(minuta_veiculo))
         if minuta_placa:
             pdf.drawString(convertemp(12), convertemp(linha), 'VEÍCULO: {} - {}'.format(minuta_veiculo, minuta_placa))
+        pdf.drawCentredString(convertemp(105), convertemp(linha), 'HORA INICIAL: {} HS ATÉ AS {} HS'.format(
+            minuta_hora_inicial, minuta_hora_final))
         coleta_entrega = None
         if minutas[index].Coleta and minutas[index].Entrega:
             coleta_entrega = 'COLETA: {} - ENTREGA: {}'.format(minutas[index].Coleta, minutas[index].Entrega)

@@ -98,6 +98,7 @@ class MinutaNotas(models.Model):
         # self.Nome = self.Nome.upper()
         self.Estado = self.Estado.upper()
         self.Cidade = self.Cidade.upper()
+        self.Bairro = self.Bairro.upper()
 
         super(MinutaNotas, self).save(*args, **kwargs)
 
