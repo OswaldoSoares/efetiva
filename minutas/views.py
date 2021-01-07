@@ -132,6 +132,8 @@ def cria_minuta_fatura(Valor, idMinuta):
         obj.HoraFinal = minuta.HoraFinal
         obj.Coleta = minuta.Coleta
         obj.Entrega = minuta.Entrega
+        obj.KMInicial = minuta.KMInicial
+        obj.KMFinal = minuta.KMFinal
         obj.Obs = minuta.Obs
         obj.StatusMinuta = minuta.StatusMinuta
         obj.Valor = Valor
@@ -155,6 +157,8 @@ def altera_status_minuta(novo_status, idminuta):
         obj.HoraFinal = minuta.HoraFinal
         obj.Coleta = minuta.Coleta
         obj.Entrega = minuta.Entrega
+        obj.KMInicial = minuta.KMInicial
+        obj.KMFinal = minuta.KMFinal
         obj.Obs = minuta.Obs
         obj.StatusMinuta = novo_status
         obj.Valor = minuta.Valor
@@ -953,7 +957,7 @@ def fecha_minuta(request, idmin):
     for itens in minuta_itens:
         if itens.Valor == 0:
             excluiminutaitens(itens.idMinutaItens)
-    altera_status_minuta('FECHADA', idmin)
+        altera_status_minuta('FECHADA', idmin)
     valor_minuta = MinutaItens.objects.filter(idMinuta=idmin, RecebePaga='R').aggregate(totalminuta=Sum('Valor'))
     cria_minuta_fatura(valor_minuta['totalminuta'], idmin)
     return redirect('consultaminuta', idmin)
@@ -991,6 +995,8 @@ def criaminutamotorista(request):
             obj.HoraFinal = minuta.HoraFinal
             obj.Coleta = minuta.Coleta
             obj.Entrega = minuta.Entrega
+            obj.KMInicial = minuta.KMInicial
+            obj.KMFinal = minuta.KMFinal
             obj.Obs = minuta.Obs
             obj.StatusMinuta = minuta.StatusMinuta
             obj.idCategoriaVeiculo = minuta.idCategoriaVeiculo
@@ -1025,6 +1031,8 @@ def excluiminutamotorista(request, idmincol):
         obj.HoraFinal = minuta.HoraFinal
         obj.Coleta = minuta.Coleta
         obj.Entrega = minuta.Entrega
+        obj.KMInicial = minuta.KMInicial
+        obj.KMFinal = minuta.KMFinal
         obj.Obs = minuta.Obs
         obj.StatusMinuta = minuta.StatusMinuta
         obj.idCategoriaVeiculo = minuta.idCategoriaVeiculo
@@ -1077,6 +1085,8 @@ def editaminutaveiculo(request, idmin):
             obj.HoraFinal = minuta.HoraFinal
             obj.Coleta = minuta.Coleta
             obj.Entrega = minuta.Entrega
+            obj.KMInicial = minuta.KMInicial
+            obj.KMFinal = minuta.KMFinal
             obj.Obs = minuta.Obs
             obj.StatusMinuta = minuta.StatusMinuta
             obj.idCategoriaVeiculo = minuta.idCategoriaVeiculo

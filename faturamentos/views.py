@@ -89,6 +89,8 @@ def cria_fatura(request):
                 obj.HoraFinal = minuta.HoraFinal
                 obj.Coleta = minuta.Coleta
                 obj.Entrega = minuta.Entrega
+                obj.KMInicial = minuta.KMInicial
+                obj.KMFinal = minuta.KMFinal
                 obj.Obs = minuta.Obs
                 obj.StatusMinuta = 'FATURADA'
                 obj.Valor = minuta.Valor
