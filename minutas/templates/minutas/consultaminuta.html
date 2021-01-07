@@ -10,7 +10,8 @@
         {% for itens in minuta %}
         <header class="consulta-header">
             <div class="consulta_headertitulo">
-                <p><b>MINUTA {{ itens.Minuta }} - DATA {{ itens.DataMinuta }} - PERÍODO DAS {{ itens.HoraInicial }} ATÉ {{ itens.HoraFinal }} - {{ itens.idCliente.Fantasia }}</b></p>
+                <p><b>{{ itens.idCliente.Fantasia }} - MINUTA {{ itens.Minuta }} - DATA {{ itens.DataMinuta }} -
+                    PERÍODO DAS {{ itens.HoraInicial }} ATÉ {{ itens.HoraFinal }} ({{ totalhoras }} Horas) </b></p>
             </div>
             <div class="consulta_headerbtn">
                 {% if itens.StatusMinuta == 'ABERTA' %}
