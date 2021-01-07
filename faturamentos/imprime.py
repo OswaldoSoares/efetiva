@@ -54,17 +54,15 @@ def decricao_servico(dict_servicos, perimetro_inicial, perimetro_final):
             if itens['Descricao'] == 'PERIMETRO':
                 servicos = '{} &#x2713 SUBTOTAL {} '.format(
                     servicos, itens['ValorBase'])
-                servicos = '{} &#x2713 PERIMETRO {}% DE {} KMS ATÉ {} KMS &#x27BA R$ {} '.format(
+                servicos = '{} &#x2713 PERIMETRO {}% (DE {} KMS ATÉ {} KMS) &#x27BA R$ {} '.format(
                     servicos, itens['Porcento'], perimetro_inicial, perimetro_final, itens['Valor'])
             if itens['Descricao'] == 'PERNOITE':
-                servicos = '{} &#x2713 PERNOITE {}% DO VALOR DOS SERVIÇOS DE R$ {} &#x27BA R$ {} '.format(
-                    servicos, itens['Porcento'], itens['ValorBase'], itens['Valor'])
+                servicos = '{} &#x2713 PERNOITE {}% &#x27BA R$ {} '.format(
+                    servicos, itens['Porcento'], itens['Valor'])
             if itens['Descricao'] == 'AJUDANTE':
-                texto_ajudante = '{} &#x2713 {} AJUDANTE(S) &#x27BA R$ {} '.format(
-                    servicos, itens['Quantidade'], itens['Valor'])
+                texto_ajudante = '&#x2713 {} AJUDANTE(S) &#x27BA R$ {} '.format(itens['Quantidade'], itens['Valor'])
             if itens['Descricao'] == 'DESCONTO':
-                texto_desconto = '{} &#x2713 DESCONTO &#x27BA R$ {} '.format(
-                    servicos, itens['Valor'])
+                texto_desconto = '&#x2713 DESCONTO &#x27BA R$ {} '.format(itens['Valor'])
     servicos = '{} {} {} {} {}'.format(servicos, texto_taxa,  texto_seguro, texto_ajudante, texto_desconto)
     for itens in dict_servicos:
         if itens['TipoItens'] == 'DESPESA':

@@ -119,6 +119,8 @@ def estorna_fatura(request, idfatura):
                 obj.HoraFinal = minuta.HoraFinal
                 obj.Coleta = minuta.Coleta
                 obj.Entrega = minuta.Entrega
+                obj.KMInicial = minuta.KMInicial
+                obj.KMFinal = minuta.KMFinal
                 obj.Obs = minuta.Obs
                 obj.StatusMinuta = 'FECHADA'
                 obj.Valor = minuta.Valor
