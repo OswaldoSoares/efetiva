@@ -83,6 +83,7 @@ class MinutaNotas(models.Model):
     Nome =  models.CharField(max_length=60, blank=True, null=True)
     Estado = models.CharField(max_length=2, default='SP')
     Cidade = models.CharField(max_length=30, default='SÃO PAULO')
+    Bairro = models.CharField(max_length=30, blank=True, null=True)
     NotaGuia = models.CharField(max_length=10, blank=True, null=True, default='0')
     idMinuta = models.ForeignKey(Minuta, on_delete=models.CASCADE)
 
