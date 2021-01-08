@@ -1016,6 +1016,16 @@ main .card-base1 {
     margin: 5px;
 }
 
+main .card-email {
+    width: 300px;
+    min-width: 300px;
+}
+
+main .card-endereco {
+    width: auto;
+    min-width: 300px;
+}
+
 main .card-base1 header {
     background: var(--corprincipal);
     color: var(--corsecundaria);
@@ -1028,11 +1038,26 @@ main .card-base1 header {
 }
 
 main .card-base1 section {
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     height: 50px;
+}
+
+main .card-clientes section {
+    flex-direction: column;
+    height: auto;
+    min-height: 50px;
+}
+
+main .card-base1 section .section-itens {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 5px;
 }
 
 main .card-base1 form {

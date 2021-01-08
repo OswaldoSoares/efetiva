@@ -157,30 +157,11 @@ class CadastraFoneContatoCliente(forms.ModelForm):
 class CadastraEMailContatoCliente(forms.ModelForm):
     class Meta:
         model = EMailContatoCliente
-        fields = ('Contato',
-                  'EMail',
-                  'idCliente'
-                  )
-        labels = {
-            'Contato': 'CONTATO',
-            'EMail': 'E-MAIL',
-        }
-        widgets = {
-            'Contato': forms.TextInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'CONTATO',
-                }
-            ),
-            'EMail': forms.EmailInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'E-MAIL',
-                }
-            ),
-            'idCliente': forms.HiddenInput(
-            )
-        }
+        fields = ('Contato', 'EMail', 'RecebeFatura', 'idCliente')
+        labels = {'Contato': 'CONTATO', 'EMail': 'E-MAIL', 'RcebeFatura': 'RECEBE FATURA'}
+        widgets = {'Contato': forms.TextInput(attrs={'class': 'formfields'}),
+                   'EMail': forms.EmailInput(attrs={'class': 'formfields'}),
+                   'RecebeFatura': forms.CheckboxInput(), 'idCliente': forms.HiddenInput()}
 
 
 class CadastraCobranca(forms.ModelForm):
