@@ -114,6 +114,7 @@
                 var idcobrancacliente = $(this).attr("idcobrancacliente");
                 var idtabelacliente = $(this).attr("idtabelacliente");
                 var idtabelaveiculo = $(this).attr("idtabelaveiculo");
+                alert(idtabelaveiculo)
                 var idcategoriaveiculo = $(this).attr("idveiculo");
                 var idtabelacapacidade = $(this).attr("idtabelacapacidade");
                 var idtabelaperimetro = $(this).attr("idtabelaperimetro");
@@ -161,7 +162,7 @@
                         $(".js-edita-cobrancacliente-form").attr('action', "{% url 'editacobrancacliente' 0 %}".replace(/0/, idcobrancacliente));
                         $(".js-exclui-cobrancacliente-form").attr('action', "{% url 'excluicobrancacliente' 0 %}".replace(/0/, idcobrancacliente));
                         $(".js-edita-tabelacliente-form").attr('action', "{% url 'editatabelacliente' 0 %}".replace(/0/, idtabelacliente));
-                        $(".js-edita-tabelaveiculo-form").attr('action', "{% url 'editatabelaveiculo' 0 %}".replace(/0/, $("#botaotabelaveiculo").attr('idtabelaveiculo')));
+                        $(".js-edita-tabelaveiculo-form").attr('action', "{% url 'editatabelaveiculo' 0 %}".replace(/0/, idtabelaveiculo));
                         $(".js-edita-tabelacapacidade-form").attr('action', "{% url 'editatabelacapacidade' 0 %}".replace(/0/, idtabelacapacidade));
                         $(".js-exclui-tabelacapacidade-form").attr('action', "{% url 'excluitabelacapacidade' 0 %}".replace(/0/, idtabelacapacidade));
                         $(".js-edita-tabelaperimetro-form").attr('action', "{% url 'editatabelaperimetro' 0 %}".replace(/0/, idtabelaperimetro));

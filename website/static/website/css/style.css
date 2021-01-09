@@ -513,6 +513,8 @@ main .consulta {
 
     margin: 0px;
 }*/
+
+
 main .consulta .consulta-body {
     width: 100%;
     float: left;
@@ -659,10 +661,7 @@ main .consulta .consulta-body {
     overflow: hidden;
     float: left;
 }
-.js-excluitabelacapacidade,
-.js-excluitabelaperimetro {
-    margin: 10px;
-}
+
 .botaoadicionar {
     background: var(--corsecundaria);
     font-size: 10px;
@@ -1040,10 +1039,12 @@ main .card-base1 header {
 main .card-base1 section {
     width: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    height: 50px;
+    height: auto;
+    min-height: 50px;
 }
 
 main .card-clientes section {
@@ -1105,6 +1106,7 @@ main .card-base2 section {
     justify-content: center;
     text-align: center;
     height: auto;
+    min-height: 50px;
 }
 
 main .card-base2 section .despesa-itens {
@@ -1113,6 +1115,26 @@ main .card-base2 section .despesa-itens {
     align-items: center;
     justify-content: space-between;
     padding: 3px 5px;
+}
+
+main .card-base2 section .section-itens {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3px 5px;
+}
+
+main .card-base2 section .tabela-itens {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3px 5px;
+}
+
+main .card-base2 section .switch-itens {
+    padding: 0 5px;
 }
 
 main .card-base2 form {
@@ -1218,6 +1240,16 @@ main .consulta-comentario form button {
 }
 
 main .consulta .consulta-header-despesas-entregas {
+    background-color: var(--corprincipal);
+    color: white;
+    font-size: 20px;
+    text-align: center;
+    width: 100%;
+    margin: 0;
+    padding: 3px;
+}
+
+main .consulta .consulta-header-tabelas {
     background-color: var(--corprincipal);
     color: white;
     font-size: 20px;

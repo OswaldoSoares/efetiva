@@ -209,321 +209,438 @@
             {% endif %}
         </main>
     </div>
-    <div class="constulta">
-        <header>
-
+    <div class="consulta">
+        <header class="consulta-header-tabelas">
+            <span>TABELA CLIENTE</span>
         </header>
         <main>
-
-
-
-
-            <div class="consulta_coluna1">
-
-
-
-
-
-
-
-
-
-
-                <!--TABELA CLIENTE-->
-                <div class="consulta_cliente_modulo">
-                    <h2 class="consulta_subtitulo"><b>TABELA CLIENTE:</b></h2>
-                    {% if not tabela %}
-                        {% for itens in cliente %}
-                            <label class="glyphicon glyphicon-plus botaoadicionar js-criatabelacliente" idcliente="{{ itens.idCliente }}" data-url="{% url 'criatabelacliente' %}" idclick="clientetabela"></label>
-                        {% endfor %}
-                    {% else %}
-                        {% for itenstabela in tabela %}
-                            <label class="glyphicon glyphicon-edit botaoadicionar js-editatabelacliente" idcliente="{{ itenstabela.idCliente }}" idtabelacliente="{{ itenstabela.idTabela }}" data-url="{% url 'editatabelacliente' itenstabela.idTabela %}" idclick="clientetabela"></label>
-                        {% endfor %}
-                    {% endif %}
-                    <div class="consulta_tabela">
-                        {% for itenstabela in tabela %}
-                            <p>FORMA DE PAGAMENTO: {{ itenstabela.idFormaPagamento }} DIAS</p>
-                            <p>COMISSÃO: {{ itenstabela.Comissao }}%</p>
-                            <p>TAXA DE EXPEDIÇÃO: R$ {{ itenstabela.TaxaExpedicao }}</p>
-                            <p>AJUDANTE COBRA: R$ {{ itenstabela.AjudanteCobra }}</p>
-                            <p>AJUDANTE PAGA: R$ {{ itenstabela.AjudantePaga }}</p>
-                        {% endfor %}
-                    </div>
-                </div>
-
-                <!--TIPO DE COBRANÇA-->
-                <div class="consulta_cliente_modulo">
-                    {% for itenstabela in tabela %}
-                        <form method="post" action="{% url 'editaphkesc' itenstabela.idTabela %}">
-                            {% csrf_token %}
-                            <h2 class="consulta_subtitulo metade1"><b>TIPO DE COBRANÇA:</b></h2>
-                            <h2 class="consulta_subtitulo metade2"><b>TIPO DE PAGAMENTO:</b></h2>
-                            <label class="glyphicon glyphicon-ok botaoadicionar"></label>
-                            <p class="phkesccobra" hidden>{{ itenstabela.phkescCobra }}</p>
-                            <p class="phkescpaga" hidden>{{ itenstabela.phkescPaga }}</p>
-                            <div class="tableswitch">
-                                <table>
-                                    <tr>
-                                        <td class="switch-titulo"><b>P</b>ORCENTAGEM</td>
-                                        <td>
-                                            <div class="consulta_tabela">
-                                              <input id="switch-porcentagem-cobra" name="switch" value="porcentagem-cobra" class="switch switch--shadow" type="checkbox" />
-                                              <label for="switch-porcentagem-cobra"></label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="switch-titulo"><b>H</b>ORA</td>
-                                        <td>
-                                            <div class="consulta_tabela">
-                                              <input id="switch-hora-cobra" name="switch" value="hora-cobra" class="switch switch--shadow" type="checkbox" />
-                                              <label for="switch-hora-cobra"></label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="switch-titulo"><b>K</b>ILOMETRAGEM</td>
-                                        <td>
-                                            <div class="consulta_tabela">
-                                              <input id="switch-kilometragem-cobra" name="switch" value="kilometragem-cobra" class="switch switch--shadow" type="checkbox" />
-                                              <label for="switch-kilometragem-cobra"></label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="switch-titulo"><b>E</b>NTREGA</td>
-                                        <td>
-                                            <div class="consulta_tabela">
-                                              <input id="switch-entrega-cobra" name="switch" value="entrega-cobra" class="switch switch--shadow" type="checkbox" />
-                                              <label for="switch-entrega-cobra"></label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="switch-titulo"><b>S</b>AÍDA</td>
-                                        <td>
-                                            <div class="consulta_tabela">
-                                              <input id="switch-saida-cobra" name="switch" value="saida-cobra" class="switch switch--shadow" type="checkbox" />
-                                              <label for="switch-saida-cobra"></label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="switch-titulo"><b>C</b>APACIDADE</td>
-                                        <td>
-                                            <div class="consulta_tabela">
-                                              <input id="switch-capacidade-cobra" name="switch" value="capacidade-cobra" class="switch switch--shadow" type="checkbox" />
-                                              <label for="switch-capacidade-cobra"></label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <div class="tabelaswitch">
-                                <table>
-                                    <tr>
-                                        <td class="switch-titulo"><b>P</b>ORCENTAGEM</td>
-                                        <td>
-                                            <div class="consulta_tabela">
-                                              <input id="switch-porcentagem-paga" name="switch" value="porcentagem-paga" class="switch switch--shadow" type="checkbox" />
-                                              <label for="switch-porcentagem-paga"></label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="switch-titulo"><b>H</b>ORA</td>
-                                        <td>
-                                            <div class="consulta_tabela">
-                                              <input id="switch-hora-paga" name="switch" value="hora-paga" class="switch switch--shadow" type="checkbox" />
-                                              <label for="switch-hora-paga"></label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="switch-titulo"><b>K</b>ILOMETRAGEM</td>
-                                        <td>
-                                            <div class="consulta_tabela">
-                                              <input id="switch-kilometragem-paga" name="switch" value="kilometragem-paga" class="switch switch--shadow" type="checkbox" />
-                                              <label for="switch-kilometragem-paga"></label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="switch-titulo"><b>E</b>NTREGA</td>
-                                        <td>
-                                            <div class="consulta_tabela">
-                                              <input id="switch-entrega-paga" name="switch" value="entrega-paga" class="switch switch--shadow" type="checkbox" />
-                                              <label for="switch-entrega-paga"></label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="switch-titulo"><b>S</b>AÍDA</td>
-                                        <td>
-                                            <div class="consulta_tabela">
-                                              <input id="switch-saida-paga" name="switch" value="saida-paga" class="switch switch--shadow" type="checkbox" />
-                                              <label for="switch-saida-paga"></label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="switch-titulo"><b>C</b>APACIDADE</td>
-                                        <td>
-                                            <div class="consulta_tabela">
-                                              <input id="switch-capacidade-paga" name="switch" value="capacidade-paga" class="switch switch--shadow" type="checkbox" />
-                                              <label for="switch-capacidade-paga"></label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <div class="btnswitch">
-                                <button type="submit" class="btn btn-success">ENVIAR</button>
-                            </div>
-                        </form>
-                    {% endfor %}
-                </div>
-
-                <!--TABELA VEÍCULO-->
-                <div class="consulta_cliente_modulo">
-                    <h2 class="consulta_subtitulo" id="titulocategoriaveiculo"><b>TABELA VEÍCULO:</b></h2>
-                    <label class="glyphicon glyphicon-ok botaoadicionar" id="botaook"></label>
-                    <label class="glyphicon glyphicon-edit botaoadicionar js-editatabelaveiculo" name="botaotabelaveiculo" id="botaotabelaveiculo" data-url="" data-toggle="modal" data-target="#myModalAtualizaTabelaVeiculoCliente" idclick="clientetabelaveiculo"></label>
-
-                    <!-- CRIA MENU COM AS CATEGORIAS DOS VEÍCULOS (COM E SEM TABELA) -->
-                    <div class="consulta_tabelaveiculomenu">
-                        <ul>
-                        {% for itenstabela in tabela %}
-                            {% for itens in categoriaveiculo %}
-                                {% if itens.idCategoria in tabelaveiculocompletalista %}
-                                    <li class="temtabela">
-                                        <button class="btn btn-xs botaomenu" name="temtabela" idveiculo="{{ itens.idCategoria }}" idcliente="{{ itenstabela.idCliente_id }}">
-                                            <b>{{ itens.Categoria }}</b> <span class="glyphicon glyphicon-ok"></span>
-                                        </button>
-                                    </li>
-                                {% else %}
-                                    <li class="naotemtabela">
-                                        <button class="btn btn-xs botaomenu js-criatabelaveiculo" name="naotemtabela" idveiculo="{{ itens.idCategoria }}" idcliente="{{ itenstabela.idCliente_id }}" categoria="{{ itens.Categoria }}" data-url="{% url 'criatabelaveiculo' %}" idclick="clientetabelaveiculo">
-                                            <b>{{ itens.Categoria }}</b> <span class="glyphicon glyphicon-plus"></span>
-                                        </button>
-                                    </li>
-                                {% endif %}
-                            {% endfor %}
-                        {% endfor %}
-                        </ul>
-                    </div>
-
-                    <!-- MOSTRA TABELA SELECIONADA -->
-                    <div class="consulta_tabelaveiculo" id="mostratabelaveiculo">
-                        <div class="teste-div">
-
+            {% if tabela %}
+            {% for itenstabela in tabela %}
+            <div class="card-tabela card-base2">
+                <header class="consulta-tabela">
+                    <span><b>TIPOS DE COBRANÇA E PAGAMENTO</b></span>
+                </header>
+                <form method="post" action="{% url 'editaphkesc' itenstabela.idTabela %}">
+                {% csrf_token %}
+                    <section>
+                        <p class="phkesccobra" hidden>{{ itenstabela.phkescCobra }}</p>
+                        <p class="phkescpaga" hidden>{{ itenstabela.phkescPaga }}</p>
+                        <div><b>COBRANÇA</b></div>
+                        <div class="section-itens switch-itens">
+                            <span class="switch-titulo"><b>PORCENTAGEM</b></span>
+                            <input id="switch-porcentagem-cobra" name="switch" value="porcentagem-cobra"
+                                   class="switch switch--shadow" type="checkbox" />
+                            <label for="switch-porcentagem-cobra"></label>
                         </div>
-                    </div>
-                </div>
-
-                <!--TABELA CAPACIDADE-->
-                <div class="consulta_cliente_modulo">
-                    <h2 class="consulta_subtitulo"><b>TABELA CAPACIDADE:</b></h2>
-                    {% for itens in cliente %}
-                        <label class="glyphicon glyphicon-plus botaoadicionar js-criatabelacapacidade" id="criatabelacapacidade" idcliente="{{ itens.idCliente }}" data-url="{% url 'criatabelacapacidade' %}" idclick="clientetabelacapacidade"></label>
-                    {% endfor %}
-                    {% if tabelacapacidade %}
-                        <table class="tabelaveiculo">
-                            <thead>
-                                <tr>
-                                    <th class="col1">PESO INICIAL</th>
-                                    <th class="col2">PESO FINAL</th>
-                                    <th class="col3">RECEBE</th>
-                                    <th class="col4">PAGA</th>
-                                    <th class="col5"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for itenstabelacapacidade in tabelacapacidade %}
-                                <tr>
-                                    <td class="alinhadireita">{{ itenstabelacapacidade.CapacidadeInicial }}</td>
-                                    <td class="alinhadireita">{{ itenstabelacapacidade.CapacidadeFinal }}</td>
-                                    <td class="alinhadireita">R$ {{ itenstabelacapacidade.CapacidadeCobra }}</td>
-                                    <td class="alinhadireita">R$ {{ itenstabelacapacidade.CapacidadePaga }}</td>
-                                    <td class="alinhacenter">
-                                        <button class="btn btn-success btn-xs js-editatabelacapacidade" idtabelacapacidade="{{ itenstabelacapacidade.idTabelaCapacidade }}" data-url="{% url 'editatabelacapacidade' itenstabelacapacidade.idTabelaCapacidade %}" idclick="clientetabelacapacidade">
-                                            <span class="glyphicon glyphicon-edit"></span>
-                                        </button>
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                        <div class="alinhacenter">
-                            {% for itenstabelacapacidade in tabelacapacidade %}
-                                {% if forloop.last %}
-                                    <button class="btn btn-danger btn-sm js-excluitabelacapacidade" idtabelacapacidade="{{ itenstabelacapacidade.idTabelaCapacidade }}" data-url="{% url 'excluitabelacapacidade' itenstabelacapacidade.idTabelaCapacidade %}">
-                                        <span class="glyphicon glyphicon-trash"></span>
-                                    </button>
-                                {% endif %}
-                            {% endfor %}
+                        <div class="section-itens switch-itens">
+                            <span class="switch-titulo"><b>HORA</b></span>
+                            <input id="switch-hora-cobra" name="switch" value="hora-cobra"
+                                   class="switch switch--shadow" type="checkbox" />
+                            <label for="switch-hora-cobra"></label>
                         </div>
-                    {% endif %}
-                </div>
-
-                <!--TABELA PERÍMETRO-->
-                <div class="consulta_cliente_modulo">
-                    <h2 class="consulta_subtitulo"><b>TABELA PERÍMETRO:</b></h2>
-                    {% for itens in cliente %}
-                        <label class="glyphicon glyphicon-plus botaoadicionar js-criatabelaperimetro" id="criatabelaperimetro" idcliente="{{ itens.idCliente }}" data-url="{% url 'criatabelaperimetro' %}" idclick="clientetabelaperimetro"></label>
-                    {% endfor %}
-                    {% if tabelaperimetro %}
-                        <table class="tabelaveiculo">
-                            <thead>
-                                <tr>
-                                    <th class="col1">KM INICIAL</th>
-                                    <th class="col2">KM FINAL</th>
-                                    <th class="col3">RECEBE</th>
-                                    <th class="col4">PAGA</th>
-                                    <th class="col5"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for itenstabelaperimetro in tabelaperimetro %}
-                                <tr>
-                                    <td class="alinhadireita">{{ itenstabelaperimetro.PerimetroInicial }}</td>
-                                    <td class="alinhadireita">{{ itenstabelaperimetro.PerimetroFinal }}</td>
-                                    <td class="alinhadireita">{{ itenstabelaperimetro.PerimetroCobra }} %</td>
-                                    <td class="alinhadireita">{{ itenstabelaperimetro.PerimetroPaga }} %</td>
-                                    <td class="alinhacenter">
-                                        <button class="btn btn-success btn-xs js-editatabelaperimetro alinhacenter" idtabelaperimetro="{{ itenstabelaperimetro.idTabelaPerimetro }}" data-url="{% url 'editatabelaperimetro' itenstabelaperimetro.idTabelaPerimetro %}" idclick="clientetabelaperimetro">
-                                            <span class="glyphicon glyphicon-edit"></span>
-                                        </button>
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                        <div class="alinhacenter">
-                            {% for itenstabelaperimetro in tabelaperimetro %}
-                                {% if forloop.last %}
-                                    <button class="btn btn-danger btn-sm js-excluitabelaperimetro alinhacenter" idtabelaperimetro="{{ itenstabelaperimetro.idTabelaPerimetro }}" data-url="{% url 'excluitabelaperimetro' itenstabelaperimetro.idTabelaPerimetro %}">
-                                        <span class="glyphicon glyphicon-trash"></span>
-                                    </button>
-                                {% endif %}
-                            {% endfor %}
+                        <div class="section-itens switch-itens">
+                            <span class="switch-titulo"><b>KILOMETRAGEM</b></span>
+                            <input id="switch-kilometragem-cobra" name="switch" value="kilometragem-cobra"
+                                   class="switch switch--shadow" type="checkbox" />
+                            <label for="switch-kilometragem-cobra"></label>
                         </div>
-                    {% endif %}
-                </div>
-
-                <!-- DIV MODAL -->
-                <div class="modal fade" id="modal-formulario" >
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-
+                        <div class="section-itens switch-itens">
+                            <span class="switch-titulo"><b>ENTREGA</b></span>
+                            <input id="switch-entrega-cobra" name="switch" value="entrega-cobra"
+                                   class="switch switch--shadow" type="checkbox" />
+                            <label for="switch-entrega-cobra"></label>
                         </div>
-                    </div>
-                </div>
-
+                        <div class="section-itens switch-itens">
+                            <span class="switch-titulo"><b>SAÍDA</b></span>
+                            <input id="switch-saida-cobra" name="switch" value="saida-cobra"
+                                   class="switch switch--shadow" type="checkbox" />
+                            <label for="switch-saida-cobra"></label>
+                        </div>
+                        <div class="section-itens switch-itens">
+                            <span class="switch-titulo"><b>CAPACIDADE</b></span>
+                            <input id="switch-capacidade-cobra" name="switch" value="capacidade-cobra"
+                                   class="switch switch--shadow" type="checkbox" />
+                            <label for="switch-capacidade-cobra"></label>
+                        </div>
+                        <div><b>PAGAMENTO</b></div>
+                        <div class="section-itens switch-itens">
+                            <span class="switch-titulo"><b>PORCENTAGEM</b></span>
+                            <input id="switch-porcentagem-paga" name="switch" value="porcentagem-paga"
+                                   class="switch switch--shadow" type="checkbox" />
+                            <label for="switch-porcentagem-paga"></label>
+                        </div>
+                        <div class="section-itens switch-itens">
+                            <span class="switch-titulo"><b>HORA</b></span>
+                            <input id="switch-hora-paga" name="switch" value="hora-paga" class="switch switch--shadow"
+                                   type="checkbox" />
+                            <label for="switch-hora-paga"></label>
+                        </div>
+                        <div class="section-itens switch-itens">
+                            <span class="switch-titulo"><b>KILOMETRAGEM</b></span>
+                            <input id="switch-kilometragem-paga" name="switch" value="kilometragem-paga"
+                                   class="switch switch--shadow" type="checkbox" />
+                            <label for="switch-kilometragem-paga"></label>
+                        </div>
+                        <div class="section-itens switch-itens">
+                            <span class="switch-titulo"><b>ENTREGA</b></span>
+                            <input id="switch-entrega-paga" name="switch" value="entrega-paga"
+                                   class="switch switch--shadow" type="checkbox" />
+                            <label for="switch-entrega-paga"></label>
+                        </div>
+                        <div class="section-itens switch-itens">
+                            <span class="switch-titulo"><b>SAÍDA</b></span>
+                            <input id="switch-saida-paga" name="switch" value="saida-paga" class="switch switch--shadow"
+                                   type="checkbox" />
+                            <label for="switch-saida-paga"></label>
+                        </div>
+                        <div class="section-itens switch-itens">
+                            <span class="switch-titulo"><b>CAPACIDADE</b></span>
+                            <input id="switch-capacidade-paga" name="switch" value="capacidade-paga"
+                                   class="switch switch--shadow" type="checkbox" />
+                            <label for="switch-capacidade-paga"></label>
+                        </div>
+                    </section>
+                    <footer>
+                        <button type="submit" class="btn btn-primary btn-xs">
+                                <span class="glyphicon glyphicon-save"></span>
+                        </button>
+                    </footer>
+                </form>
             </div>
+            {% endfor %}
+            {% endif %}
+            {% if tabela %}
+            {% for itenstabela in tabela %}
+            <div class="card-tabela card-base2">
+                <header class="consulta-tabela">
+                    <span><b>TABELA</b></span>
+                </header>
+                <section>
+                    <div class="section-itens">
+                        <span><b>PAGAMENTO:</b></span>
+                        <span>{{ itenstabela.idFormaPagamento }} DIAS</span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>COMISSÃO:</b></span>
+                        <span>{{ itenstabela.Comissao }}%</span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>TAXA DE EXPEDIÇÃO:</b></span>
+                        <span>R$ {{ itenstabela.TaxaExpedicao }}</span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>AJUDANTE COBRA:</b></span>
+                        <span>R$ {{ itenstabela.AjudanteCobra }}</span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>AJUDANTE PAGA:</b></span>
+                        <span>R$ {{ itenstabela.AjudantePaga }}</span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>ENTREGA COBRA:</b></span>
+                        <span>R$ {{ itenstabela.EntregaCobra }}</span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>ENTREGA PAGA:</b></span>
+                        <span>R$ {{ itenstabela.EntregaPaga }}</span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>ENTREGA KG COBRA:</b></span>
+                        <span>R$ {{ itenstabela.EntregaKGCobra }}</span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>ENTREGA KG PAGA:</b></span>
+                        <span>R$ {{ itenstabela.EntregaKGPaga }}</span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>ENTREGA VOLUME COBRA:</b></span>
+                        <span>R$ {{ itenstabela.EntregaVolumeCobra }}</span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>ENTREGA VOLUME PAGA:</b></span>
+                        <span>R$ {{ itenstabela.EntregaVolumePaga }}</span>
+                    </div>
+                </section>
+                <footer>
+                    <button class="btn btn-success btn-xs js-editatabelacliente"
+                            idcliente="{{ itenstabela.idCliente }}" idtabelacliente="{{ itenstabela.idTabela }}"
+                            data-url="{% url 'editatabelacliente' itenstabela.idTabela %}"
+                            idclick="clientetabela">
+                        <span class="glyphicon glyphicon-edit"></span>
+                    </button>
+                </footer>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="card-tabela card-base2">
+                <header class="consulta-tabela">
+                    <span><b>TABELA CLIENTE</b></span>
+                </header>
+                <section>
+                    <span><b>TABELA NÃO CADASTRADA</b></span>
+                </section>
+                <footer>
+                    <button class="btn btn-primary btn-xs js-criatabelacliente"
+                           idcliente="{{ itens.idCliente }}" data-url="{% url 'criatabelacliente' %}"
+                           idclick="clientetabela">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </footer>
+            </div>
+            {% endif %}
         </main>
     </div>
+    <div class="consulta">
+        <header class="consulta-header-tabelas">
+            <span>TABELA VEÍCULOS</span>
+        </header>
+        <main>
+            {% for itens in categoriaveiculo %}
+            {% if not itens.idCategoria in tabelaveiculocompletalista %}
+            <div class="card-veiculo card-base2">
+                <header>
+                    <span><b>{{ itens.Categoria }}</b></span>
+                </header>
+                <section>
+                    <span><b>VEÍCULO SEM TABELA</b></span>
+                </section>
+                <footer>
+                    <button class="btn btn-primary btn-xs js-criatabelaveiculo" name="naotemtabela"
+                            idveiculo="{{ itens.idCategoria }}" idcliente="{{ itenstabela.idCliente_id }}"
+                            categoria="{{ itens.Categoria }}" data-url="{% url 'criatabelaveiculo' %}"
+                            idclick="clientetabelaveiculo">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </footer>
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% for itens in categoriaveiculo %}
+            {% if itens.idCategoria in tabelaveiculocompletalista %}
+            <div class="card-veiculo card-base2">
+                {% for itenstabela in tabelaveiculo %}
+                {% if itenstabela.idCategoriaVeiculo_id == itens.idCategoria %}
+                <header>
+                    <span><b>{{ itens.Categoria }}</b></span><br>
+                </header>
+                <section>
+                    <div class="section-itens">
+                        <span><b>% DA NOTA - RECEBE</b></span>
+                        <span>{{ itenstabela.PorcentagemCobra }}%</span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>% DA NOTA - PAGA</b></span>
+                        <span>{{ itenstabela.PorcentagemPaga }}%</span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>HORA - RECEBE</b></span>
+                        <span>R$ {{ itenstabela.HoraCobra }}</span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>HORA - PAGA</b></span>
+                        <span>R$ {{ itenstabela.HoraPaga }}</span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>HORA - MÍNIMO</b></span>
+                        <span>{{ itenstabela.HoraMinimo }}</span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>KM - RECEBE</b></span>
+                        <span>R$ {{ itenstabela.KMCobra }}</span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>KM - PAGA</b></span>
+                        <span>R$ {{ itenstabela.KMPaga }}</span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>KM - MÍNIMO</b></span>
+                        <span>{{ itenstabela.KMMinimo }}</span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>ENTREGAS - RECEBE</b></span>
+                        <span>R$ {{ itenstabela.EntregaCobra }}</span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>ENTREGAS - PAGA</b></span>
+                        <span>R$ {{ itenstabela.EntregaPaga }}</span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>ENTREGAS - MÍNIMO</b></span>
+                        <span>{{ itenstabela.EntregaMinimo }}</span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>SAIDA - RECEBE</b></span>
+                        <span>R$ {{ itenstabela.SaidaCobra }}</span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>SAIDA - PAGA</b></span>
+                        <span>R$ {{ itenstabela.SaidaPaga }}</span>
+                    </div>
+                </section>
+                <footer>
+                    <button class="btn btn-success btn-xs js-editatabelaveiculo"
+                            idtabelaveiculo="{{ itenstabela.idTabelaVeiculo }}"
+                            data-url="{% url 'editatabelaveiculo' itenstabela.idTabelaVeiculo %}" data-toggle="modal"
+                            data-target="#myModalAtualizaTabelaVeiculoCliente" idclick="clientetabelaveiculo">
+                        <span class="glyphicon glyphicon-edit"></span>
+                    </button>
+                </footer>
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endfor %}
+        </main>
+    </div>
+    <div class="consulta">
+        <header class="consulta-header-tabelas">
+            <span>PERÍMETRO E CAPACIDADE</span>
+        </header>
+        <main>
+            {% if tabelaperimetro %}
+            {% for itenstabelaperimetro in tabelaperimetro %}
+            <div class="card-tabela card-base1">
+                <header>
+                    <span><b>PERÍMETRO</b></span>
+                </header>
+                <section>
+                    <div class="section-itens">
+                        <span><b>KM INICIAL</b></span>
+                        <span>{{ itenstabelaperimetro.PerimetroInicial }}</span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>KM FINAL</b></span>
+                        <span>{{ itenstabelaperimetro.PerimetroFinal }}</span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>RECEBE</b></span>
+                        <span>{{ itenstabelaperimetro.PerimetroCobra }}%</span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>PAGAR</b></span>
+                        <span>{{ itenstabelaperimetro.PerimetroPaga }}%</span>
+                    </div>
+                </section>
+                <footer>
+                    <div>
+                        {% if forloop.last %}
+                        <button class="btn btn-primary btn-xs js-criatabelaperimetro"
+                               idtabela="criatabelaperimetro" idcliente="{{ itens.idCliente }}"
+                               data-url="{% url 'criatabelaperimetro' %}" idclick="clientetabelaperimetro">
+                            <span class="glyphicon glyphicon-plus"></span>
+                        </button>
+                        {% endif %}
+                        <button class="btn btn-success btn-xs js-editatabelaperimetro"
+                                idtabelaperimetro="{{ itenstabelaperimetro.idTabelaPerimetro }}"
+                                data-url="{% url 'editatabelaperimetro' itenstabelaperimetro.idTabelaPerimetro %}"
+                                idclick="clientetabelaperimetro">
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </button>
+                        {% if forloop.last %}
+                        <button class="btn btn-danger btn-xs js-excluitabelaperimetro"
+                                idtabelaperimetro="{{ itenstabelaperimetro.idTabelaPerimetro }}"
+                                data-url="{% url 'excluitabelaperimetro' itenstabelaperimetro.idTabelaPerimetro %}">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                        {% endif %}
+                    </div>
+                </footer>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="card-tabela card-base1">
+                <header>
+                    <span><b>PERÍMETRO</b></span>
+                </header>
+                <section>
+                    <span><b>NENHUM PERÍMETRO CADASTRADO</b></span>
+                </section>
+                <footer>
+                    <button class="btn btn-primary btn-xs js-criatabelaperimetro"
+                           idtabela="criatabelaperimetro" idcliente="{{ itens.idCliente }}"
+                           data-url="{% url 'criatabelaperimetro' %}" idclick="clientetabelaperimetro">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </footer>
+            </div>
+            {% endif %}
+            {% if tabelacapacidade %}
+            {% for itenstabelacapacidade in tabelacapacidade %}
+            <div class="card-tabela card-base1">
+                <header>
+                    <span><b>CAPACIDADE</b></span>
+                </header>
+                <section>
+                    <div class="section-itens">
+                        <span><b>PESO INICIAL</b></span>
+                        <span>{{ itenstabelacapacidade.CapacidadeInicial }}</span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>PESO FINAL</b></span>
+                        <span>{{ itenstabelacapacidade.CapacidadeFinal }}</span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>RECEBE</b></span>
+                        <span>R$ {{ itenstabelacapacidade.CapacidadeCobra }}</span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>PAGAR</b></span>
+                        <span>R$ {{ itenstabelacapacidade.CapacidadePaga }}</span>
+                    </div>
+                </section>
+                <footer>
+                    <div>
+                        {% if forloop.last %}
+                        <button class="btn btn-primary btn-xs js-criatabelacapacidade"
+                               idcapacidade="criatabelacapacidade" idcliente="{{ itens.idCliente }}"
+                               data-url="{% url 'criatabelacapacidade' %}" idclick="clientetabelacapacidade">
+                            <span class="glyphicon glyphicon-plus"></span>
+                        </button>
+                        {% endif %}
+                        <button class="btn btn-success btn-xs js-editatabelacapacidade"
+                                idtabelacapacidade="{{ itenstabelacapacidade.idTabelaCapacidade }}"
+                                data-url="{% url 'editatabelacapacidade' itenstabelacapacidade.idTabelaCapacidade %}"
+                                idclick="clientetabelacapacidade">
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </button>
+                        {% if forloop.last %}
+                        <button class="btn btn-danger btn-xs js-excluitabelacapacidade"
+                                idtabelacapacidade="{{ itenstabelacapacidade.idTabelaCapacidade }}"
+                                data-url="{% url 'excluitabelacapacidade' itenstabelacapacidade.idTabelaCapacidade %}">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                        {% endif %}
+                    </div>
+                </footer>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="card-tabela card-base1">
+                <header>
+                    <span><b>PERÍMETRO</b></span>
+                </header>
+                <section>
+                    <span><b>NENHUM PERÍMETRO CADASTRADO</b></span>
+                </section>
+                <footer>
+                    <button class="btn btn-primary btn-xs js-criatabelaperimetro"
+                           idtabela="criatabelaperimetro" idcliente="{{ itens.idCliente }}"
+                           data-url="{% url 'criatabelaperimetro' %}" idclick="clientetabelaperimetro">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </footer>
+            </div>
+            {% endif %}
+        </main>
+    </div>
+    <!-- DIV MODAL -->
+        <div class="modal fade" id="modal-formulario" >
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                </div>
+            </div>
+        </div>
     {% endfor %}
 </main>
 {% endblock %}
