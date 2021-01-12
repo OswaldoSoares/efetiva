@@ -201,7 +201,8 @@ def imprime_fatura_pdf(fatura):
             para.wrapOn(pdf, convertemp(186), convertemp(297))
             linha -= para.height * 0.352777
             para.drawOn(pdf, convertemp(12), convertemp(linha))
-        notas_dados = MinutaNotas.objects.values('Nota', 'ValorNota', 'Peso', 'Volume', 'Cidade', 'Nome').filter(
+        notas_dados = MinutaNotas.objects.values('Nota', 'ValorNota', 'Peso', 'Volume', 'Bairro', 'Cidade',
+                                                 'Nome').filter(
             idMinuta=minutas[index].idMinuta).exclude(Nota='PERIMETRO')
         notas = 'NOTA(S):'
         if notas_dados:
@@ -220,9 +221,8 @@ def imprime_fatura_pdf(fatura):
                     notas_bairro = ' - {}'.format(itens['Bairro'])
                 if itens['Nome']:
                     notas = '{} &#x2713 NOTA: {}{}{}{}{} - {} - {}'.format(
-                        notas, itens['Nota'], notas_valor, notas_peso, notas_volume, itens['Bairro'], \
-                                                                                          itens['Cidade'], \
-                                                                                          itens['Nome'])
+                        notas, itens['Nota'], notas_valor, notas_peso, notas_volume, itens['Bairro'],
+                        itens['Cidade'], itens['Nome'])
                 else:
                     notas = '{} &#x2713 NOTA: {}{}{}{}{} - {} '.format(
                         notas, itens['Nota'], notas_valor, notas_peso, notas_volume, itens['Bairro'], itens['Cidade'])
