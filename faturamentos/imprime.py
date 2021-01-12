@@ -103,18 +103,10 @@ def imprime_cabecalho(pdf, fatura_selecionada):
 def imprime_fatura_pdf(fatura):
     fatura_selecionada = Fatura.objects.filter(idFatura=fatura)
     minutas = Minuta.objects.filter(idFatura=fatura).order_by('DataMinuta')
-    inicialkm = list(minutas.values('KMInicial')[0].values())[0]
-    finalkm = list(minutas.values('KMFinal')[0].values())[0]
-    totalkm = finalkm - inicialkm
     tabelaperimetro = TabelaPerimetro.objects.filter(idCliente=minutas[0].idCliente_id)
     perimetro_inicial = 0
     perimetro_final = 0
-    for x in tabelaperimetro:
-        if totalkm >= x.PerimetroInicial:
-            if totalkm <= x.PerimetroFinal:
-                perimetro_inicial = x.PerimetroInicial
-                perimetro_final = x.PerimetroFinal
-                break
+
 
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'filename="FATURA {}.pdf"'.format(fatura_selecionada[0].Fatura)
@@ -148,6 +140,16 @@ def imprime_fatura_pdf(fatura):
     pdf.line(convertemp(10), convertemp(linha), convertemp(200), convertemp(linha))
     linha = 242.8
     for index, itens in enumerate(minutas):
+        inicialkm = list(minutas.values('KMInicial')[0].values())[0]
+        finalkm = list(minutas.values('KMFinal')[0].values())[0]
+        totalkm = finalkm - inicialkm
+        print(inicialkm, finalkm, totalkm)
+        for x in tabelaperimetro:
+            if totalkm >= x.PerimetroInicial:
+                if totalkm <= x.PerimetroFinal:
+                    perimetro_inicial = x.PerimetroInicial
+                    perimetro_final = x.PerimetroFinal
+                    break
         minuta_colaboradores = MinutaColaboradores.objects.filter(idMinuta=minutas[index].idMinuta, Cargo='MOTORISTA')
         minuta_numero = minutas[index].Minuta
         minuta_data = minutas[index].DataMinuta.strftime("%d/%m/%Y")
@@ -157,7 +159,6 @@ def imprime_fatura_pdf(fatura):
         if minuta_colaboradores:
             minuta_motorista = minuta_colaboradores[0].idPessoal
         minuta_veiculo = minutas[index].idCategoriaVeiculo
-        minuta_marca_modelo = None
         minuta_placa = None
         if minutas[index].idVeiculo:
             minuta_placa = minutas[index].idVeiculo
