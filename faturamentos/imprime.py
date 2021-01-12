@@ -215,12 +215,17 @@ def imprime_fatura_pdf(fatura):
                 notas_volume = ''
                 if itens['Volume'] > 0:
                     notas_volume = ' VOLUME {}'.format(itens['Volume'])
+                notas_bairro = ''
+                if itens['Bairro']:
+                    notas_bairro = ' - {}'.format(itens['Bairro'])
                 if itens['Nome']:
-                    notas = '{} &#x2713 NOTA: {}{}{}{} - {} - {}'.format(
-                        notas, itens['Nota'], notas_valor, notas_peso, notas_volume, itens['Cidade'], itens['Nome'])
+                    notas = '{} &#x2713 NOTA: {}{}{}{}{} - {} - {}'.format(
+                        notas, itens['Nota'], notas_valor, notas_peso, notas_volume, itens['Bairro'], \
+                                                                                          itens['Cidade'], \
+                                                                                          itens['Nome'])
                 else:
-                    notas = '{} &#x2713 NOTA: {}{}{}{} - {} '.format(
-                        notas, itens['Nota'], notas_valor, notas_peso, notas_volume, itens['Cidade'])
+                    notas = '{} &#x2713 NOTA: {}{}{}{}{} - {} '.format(
+                        notas, itens['Nota'], notas_valor, notas_peso, notas_volume, itens['Bairro'], itens['Cidade'])
             para = Paragraph(notas, style=styles_claro)
             para.wrapOn(pdf, convertemp(186), convertemp(297))
             linha -= para.height * 0.352777
