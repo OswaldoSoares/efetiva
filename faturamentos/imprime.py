@@ -205,16 +205,16 @@ def imprime_fatura_pdf(fatura):
             idMinuta=minutas[index].idMinuta).exclude(Nota='PERIMETRO')
         notas = 'NOTA(S):'
         if notas_dados:
-            notas_valor = ''
-            # if itens['ValorNota']:
-            #     notas_valor = ' VALOR {}'.format(itens['ValorNota'])
-            notas_peso = ''
-            # if itens['Peso']:
-            #     notas_peso = ' PESO {}'.format(itens['Peso'])
-            notas_volume = ''
-            # if itens['Volume']:
-            #     notas_volume = ' VOLUME {}'.format(itens['Volume'])
             for itens in notas_dados:
+                notas_valor = ''
+                if itens['ValorNota'] > 0.00:
+                    notas_valor = ' VALOR {}'.format(itens['ValorNota'])
+                notas_peso = ''
+                if itens['Peso'] > 0.00:
+                    notas_peso = ' PESO {}'.format(itens['Peso'])
+                notas_volume = ''
+                if itens['Volume'] > 0:
+                    notas_volume = ' VOLUME {}'.format(itens['Volume'])
                 if itens['Nome']:
                     notas = '{} &#x2713 NOTA: {}{}{}{} - {} - {}'.format(
                         notas, itens['Nota'], notas_valor, notas_peso, notas_volume, itens['Cidade'], itens['Nome'])
