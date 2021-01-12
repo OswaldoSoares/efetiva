@@ -225,7 +225,7 @@ def imprime_fatura_pdf(fatura):
                         itens['Cidade'], itens['Nome'])
                 else:
                     notas = '{} &#x2713 NOTA: {}{}{}{}{} - {} '.format(
-                        notas, itens['Nota'], notas_valor, notas_peso, notas_volume, itens['Bairro'], itens['Cidade'])
+                        notas, itens['Nota'], notas_valor, notas_peso, notas_volume, notas_bairro, itens['Cidade'])
             para = Paragraph(notas, style=styles_claro)
             para.wrapOn(pdf, convertemp(186), convertemp(297))
             linha -= para.height * 0.352777
