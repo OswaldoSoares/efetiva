@@ -206,13 +206,13 @@ def imprime_fatura_pdf(fatura):
         notas = 'NOTA(S):'
         if notas_dados:
             notas_valor = ''
-            if float(itens['ValorNota']) > 0:
+            if itens['ValorNota']:
                 notas_valor = ' VALOR {}'.format(itens['ValorNota'])
             notas_peso = ''
-            if float(itens['Peso']) > 0:
+            if itens['Peso']:
                 notas_peso = ' PESO {}'.format(itens['Peso'])
             notas_volume = ''
-            if float(itens['Volume']) > 0:
+            if itens['Volume']:
                 notas_volume = ' VOLUME {}'.format(itens['Volume'])
             for itens in notas_dados:
                 if itens['Nome']:
