@@ -68,6 +68,10 @@
                             data-url="{% url 'pagafatura' itens.Fatura %}">
                         <span class="glyphicon glyphicon-usd"></span>
                     </button>
+                    <button class="btn btn-primary btn-xs"
+                            onclick="window.location.href = '{% url 'emailfatura' itens.idFatura %}'">
+                        <span class="glyphicon glyphicon-envelope"></span>
+                    </button>
                 </footer>
             </div>
             {% endfor %}

@@ -2,10 +2,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Sum, Max, Count
 from django.http import JsonResponse
 from django.template.loader import render_to_string
+from django.core.mail import send_mail
+from django.core import mail
+from django.utils.html import strip_tags
 from .models import Fatura
 from .forms import PagaFatura
 from minutas.models import Minuta, MinutaItens, MinutaColaboradores
-from clientes.models import Cliente, Tabela
+from clientes.models import Cliente, Tabela, EMailContatoCliente
 from pessoas.models import Pessoal
 from datetime import date, timedelta
 from .imprime import imprime_fatura_pdf
@@ -149,7 +152,6 @@ def estorna_fatura(request, idfatura):
 def paga_fatura(request, idfatura):
     data = dict()
     fatura = Fatura.objects.get(Fatura=idfatura)
-    # fatura = get_object_or_404(Fatura, idFatura=idfatura)
     if request.method == 'POST':
         form = PagaFatura(request.POST, instance=fatura)
         if form.is_valid():
@@ -166,3 +168,22 @@ def paga_fatura(request, idfatura):
 def imprime_fatura(request, idfatura):
     response = imprime_fatura_pdf(idfatura)
     return response
+
+
+def email_fatura(request, idfatura):
+    fatura = Fatura.objects.filter(idFatura=idfatura)
+    numero_fatura = [item.Fatura for item in fatura]
+    numero_fatura = numero_fatura[0]
+    cliente = Cliente.objects.filter(minuta__idFatura=idfatura)
+    idcliente = [item.idCliente for item in cliente]
+    idcliente = idcliente[0]
+    emails = EMailContatoCliente.objects.filter(idCliente_id=idcliente, RecebeFatura=1)
+    lista_emails = [item.EMail for item in emails]
+    contexto = {'numero_fatura': str(numero_fatura)}
+    subject = 'Fatura nº {}'.format(numero_fatura)
+    html_message = render_to_string('faturamentos/emailfatura.html', contexto)
+    plain_message = strip_tags(html_message)
+    from_email = 'From <oswaldosoares@gmail.com>'
+    to = lista_emails
+    mail.send_mail(subject, plain_message, from_email, to, html_message=html_message)
+    return redirect('index_faturamento')
