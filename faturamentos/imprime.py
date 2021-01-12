@@ -171,10 +171,12 @@ def imprime_fatura_pdf(fatura):
             pdf.drawRightString(convertemp(198), convertemp(linha), 'VEÍCULO: {} - {}'.format(minuta_veiculo,
                                                                                               minuta_placa))
         linha -= 4
+        pdf.setFont("Times-Roman", 8)
         if minuta_motorista:
             pdf.drawString(convertemp(12), convertemp(linha), '{}'.format(minuta_motorista))
         pdf.drawCentredString(convertemp(105), convertemp(linha), 'HORA INICIAL: {} HS ATÉ AS {} HS'.format(
             minuta_hora_inicial, minuta_hora_final))
+        pdf.setFont("Times-Roman", 10)
         pdf.drawRightString(convertemp(198), convertemp(linha), 'VALOR: R$ {:.2f}'.format(minuta_valor).replace('.',
                                                                                                                 ','))
         coleta_entrega = None
