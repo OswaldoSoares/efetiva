@@ -28,13 +28,13 @@
             {% for itens in fatura %}
                 {% if forloop.last %}
                     {% if forloop.counter == 1 %}
-                        <h5> {{ forloop.counter }} CLIENTE AGUARDANDO FATURAMENTO.</h5>
+                        <h5> {{ forloop.counter }} CLIENTE AGUARDANDO FATURAMENTO</h5>
                     {% else %}
-                        <h5> {{ forloop.counter }} CLIENTES AGUARDANDO FATURAMENTO.</h5>
+                        <h5> {{ forloop.counter }} CLIENTES AGUARDANDO FATURAMENTO</h5>
                     {% endif %}
                 {% endif %}
             {% endfor %}
-            <h5>TOTAL A FATURAR R$ {{ total_fatura.ValorTotal }}.</h5>
+            <h5>TOTAL A FATURAR R$ {{ total_fatura.ValorTotal }}</h5>
         </footer>
     </div>
     {% endif %}
@@ -79,13 +79,13 @@
             {% for itens in faturada %}
                 {% if forloop.last %}
                     {% if forloop.counter == 1 %}
-                        <h5> {{ forloop.counter }} FATURA AGUARDANDO PAGAMENTO.</h5>
+                        <h5> {{ forloop.counter }} FATURA AGUARDANDO PAGAMENTO</h5>
                     {% else %}
-                        <h5> {{ forloop.counter }} FATURAS AGUARDANDO PAGAMENTO.</h5>
+                        <h5> {{ forloop.counter }} FATURAS AGUARDANDO PAGAMENTO</h5>
                     {% endif %}
                 {% endif %}
             {% endfor %}
-            <h5>TOTAL A RECEBER R$ {{ total_faturada.ValorTotal }}.</h5>
+            <h5>TOTAL A RECEBER R$ {{ total_faturada.ValorTotal }}</h5>
         </footer>
     </div>
     {% endif %}

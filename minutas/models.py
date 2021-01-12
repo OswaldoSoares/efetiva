@@ -95,7 +95,8 @@ class MinutaNotas(models.Model):
 
     def save(self, *args, **kwargs):
         self.Nota = self.Nota.upper()
-        # self.Nome = self.Nome.upper()
+        if self.Nome:
+            self.Nome = self.Nome.upper()
         if self.Estado:
             self.Estado = self.Estado.upper()
         if self.Cidade:

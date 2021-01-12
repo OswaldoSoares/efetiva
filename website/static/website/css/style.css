@@ -1377,14 +1377,14 @@ main .minutas-faturar header .input-fatura {
 }
 
 main .minutas-faturar header .input-cria-fatura {
-    width: 35%;
+    width: 180px;
     display: flex;
     align-items: center;
     justify-content: space-between;    
 }
 
 main .minutas-faturar header .input-cria-fatura-vencimento {
-    width: 35%;
+    width: 180px;
     display: flex;
     align-items: center;
     justify-content: center;

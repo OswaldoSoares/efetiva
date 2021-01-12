@@ -221,7 +221,7 @@ def imprime_fatura_pdf(fatura):
                     notas_bairro = ' - {}'.format(itens['Bairro'])
                 if itens['Nome']:
                     notas = '{} &#x2713 NOTA: {}{}{}{}{} - {} - {}'.format(
-                        notas, itens['Nota'], notas_valor, notas_peso, notas_volume, itens['Bairro'],
+                        notas, itens['Nota'], notas_valor, notas_peso, notas_volume, notas_bairro,
                         itens['Cidade'], itens['Nome'])
                 else:
                     notas = '{} &#x2713 NOTA: {}{}{}{}{} - {} '.format(
