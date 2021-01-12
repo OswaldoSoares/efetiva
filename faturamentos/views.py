@@ -183,7 +183,7 @@ def email_fatura(request, idfatura):
     subject = 'Fatura nº {}'.format(numero_fatura)
     html_message = render_to_string('faturamentos/emailfatura.html', contexto)
     plain_message = strip_tags(html_message)
-    from_email = 'From <oswaldosoares@gmail.com>'
+    from_email = 'From <financeiro.efetiva@terra.com.br>'
     to = lista_emails
     email = EmailMessage(subject, html_message, from_email, to)
     email.content_subtype = 'html'

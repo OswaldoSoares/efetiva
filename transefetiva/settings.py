@@ -135,10 +135,10 @@ USE_TZ = True
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'smtp.terra.com.br'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'oswaldosoares@gmail.com'
-EMAIL_HOST_PASSWORD = 'sc1910cp'
+EMAIL_HOST_USER = 'financeiro.efetiva@terra.com.br'
+EMAIL_HOST_PASSWORD = 'mau159753'
 
 
 
