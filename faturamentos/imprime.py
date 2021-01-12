@@ -140,8 +140,8 @@ def imprime_fatura_pdf(fatura):
     pdf.line(convertemp(10), convertemp(linha), convertemp(200), convertemp(linha))
     linha = 242.8
     for index, itens in enumerate(minutas):
-        inicialkm = list(minutas.values('KMInicial')[0].values())[0]
-        finalkm = list(minutas.values('KMFinal')[0].values())[0]
+        inicialkm = minutas[index].KMInicial
+        finalkm = minutas[index].KMFinal
         totalkm = finalkm - inicialkm
         print(inicialkm, finalkm, totalkm)
         for x in tabelaperimetro:
