@@ -102,7 +102,7 @@ def imprime_cabecalho(pdf, fatura_selecionada):
 
 def imprime_fatura_pdf(fatura):
     fatura_selecionada = Fatura.objects.filter(idFatura=fatura)
-    minutas = Minuta.objects.filter(idFatura=fatura)
+    minutas = Minuta.objects.filter(idFatura=fatura).order_by['DataMinuta']
     inicialkm = list(minutas.values('KMInicial')[0].values())[0]
     finalkm = list(minutas.values('KMFinal')[0].values())[0]
     totalkm = finalkm - inicialkm
