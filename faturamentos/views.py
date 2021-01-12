@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Sum, Max, Count
 from django.http import JsonResponse
 from django.template.loader import render_to_string
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 from django.core import mail
 from django.utils.html import strip_tags
 from .models import Fatura
@@ -166,7 +166,7 @@ def paga_fatura(request, idfatura):
 
 
 def imprime_fatura(request, idfatura):
-    response = imprime_fatura_pdf(idfatura)
+    response = imprime_fatura_pdf(idfatura)[0]
     return response
 
 
@@ -177,13 +177,18 @@ def email_fatura(request, idfatura):
     cliente = Cliente.objects.filter(minuta__idFatura=idfatura)
     idcliente = [item.idCliente for item in cliente]
     idcliente = idcliente[0]
-    emails = EMailContatoCliente.objects.filter(idCliente_id=idcliente, RecebeFatura=1)
-    lista_emails = [item.EMail for item in emails]
+    emails_to = EMailContatoCliente.objects.filter(idCliente_id=idcliente, RecebeFatura=1)
+    lista_emails = [item.EMail for item in emails_to]
     contexto = {'numero_fatura': str(numero_fatura)}
     subject = 'Fatura nº {}'.format(numero_fatura)
     html_message = render_to_string('faturamentos/emailfatura.html', contexto)
     plain_message = strip_tags(html_message)
     from_email = 'From <oswaldosoares@gmail.com>'
     to = lista_emails
-    mail.send_mail(subject, plain_message, from_email, to, html_message=html_message)
+    email = EmailMessage(subject, html_message, from_email, to)
+    email.content_subtype = 'html'
+    fatura_pdf = imprime_fatura_pdf(idfatura)[1]
+    nome_arquivo = 'FATURA {}.pdf'.format(numero_fatura)
+    email.attach(nome_arquivo, fatura_pdf)
+    email.send()
     return redirect('index_faturamento')

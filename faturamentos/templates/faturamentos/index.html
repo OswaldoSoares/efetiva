@@ -60,10 +60,9 @@
                         <span class="glyphicon glyphicon-backward"></span>
                     </button>
                     {% endif %}
-                    <button class="btn btn-warning btn-xs"
-                            onclick="window.location.href = '{% url 'imprimefatura' itens.idFatura %}'">
+                    <a class="btn btn-warning btn-xs" href = "{% url 'imprimefatura' itens.idFatura %}" target="_blank">
                         <span class="glyphicon glyphicon-file"></span>
-                    </button>
+                    </a>
                     <button class="btn btn-success btn-xs js-pagafatura" idfatura="{{ itens.Fatura }}"
                             data-url="{% url 'pagafatura' itens.Fatura %}">
                         <span class="glyphicon glyphicon-usd"></span>
@@ -120,10 +119,10 @@
                                     onclick="window.location.href = '{% url 'estornafatura' pagas.minuta__idFatura__idFatura %}'">
                                 <span class="glyphicon glyphicon-backward"></span>
                             </button>
-                            <button class="btn btn-warning btn-xs"
-                                    onclick="window.location.href = '{% url 'imprimefatura' pagas.minuta__idFatura__idFatura %}'">
+                            <a class="btn btn-warning btn-xs" href =
+                                    "{% url 'imprimefatura' pagas.minuta__idFatura__idFatura %}" target="_blank">
                                 <span class="glyphicon glyphicon-file"></span>
-                            </button>
+                            </a>
                         </td>
                     </tr>
                     {% endfor %}

@@ -117,6 +117,7 @@ def imprime_fatura_pdf(fatura):
                 break
 
     response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'filename="FATURA {}.pdf"'.format(fatura_selecionada[0].Fatura)
     buffer = BytesIO()
     pdf = canvas.Canvas(buffer)
     styles_claro = ParagraphStyle('claro', fontName='Times-Roman', fontSize=8, leading=9, alignment=TA_JUSTIFY)
@@ -269,4 +270,4 @@ def imprime_fatura_pdf(fatura):
     pdf = buffer.getvalue()
     buffer.close()
     response.write(pdf)
-    return response
+    return [response, pdf]
