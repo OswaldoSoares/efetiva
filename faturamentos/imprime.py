@@ -143,7 +143,6 @@ def imprime_fatura_pdf(fatura):
         inicialkm = minutas[index].KMInicial
         finalkm = minutas[index].KMFinal
         totalkm = finalkm - inicialkm
-        print(inicialkm, finalkm, totalkm)
         for x in tabelaperimetro:
             if totalkm >= x.PerimetroInicial:
                 if totalkm <= x.PerimetroFinal:
@@ -164,7 +163,7 @@ def imprime_fatura_pdf(fatura):
             minuta_placa = minutas[index].idVeiculo
         minuta_valor = minutas[index].Valor
         pdf.setFont("Times-Roman", 10)
-        pdf.setFillColor(HexColor('#CD5C5C'))
+        pdf.setFillColor(HexColor('#FF0000'))
         pdf.drawString(convertemp(12), convertemp(linha), 'DATA: {}'.format(minuta_data))
         pdf.setFillColor(HexColor("#000000"))
         pdf.drawCentredString(convertemp(105), convertemp(linha), 'MINUTA: {}'.format(minuta_numero))
@@ -178,8 +177,10 @@ def imprime_fatura_pdf(fatura):
         pdf.drawCentredString(convertemp(105), convertemp(linha), 'HORA INICIAL: {} HS ATÉ AS {} HS'.format(
             minuta_hora_inicial, minuta_hora_final))
         pdf.setFont("Times-Roman", 10)
+        pdf.setFillColor(HexColor("#0000FF"))
         pdf.drawRightString(convertemp(198), convertemp(linha), 'VALOR: R$ {:.2f}'.format(minuta_valor).replace('.',
                                                                                                                 ','))
+        pdf.setFillColor(HexColor("#000000"))
         coleta_entrega = None
         if minutas[index].Coleta and minutas[index].Entrega:
             coleta_entrega = 'COLETA: {} - ENTREGA: {}'.format(minutas[index].Coleta, minutas[index].Entrega)

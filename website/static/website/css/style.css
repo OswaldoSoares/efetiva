@@ -1363,7 +1363,7 @@ main .minutas-faturar header form {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: 18px;
+    font-size: 16px;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-weight: bold;
     margin: 0;
@@ -1377,14 +1377,14 @@ main .minutas-faturar header .input-fatura {
 }
 
 main .minutas-faturar header .input-cria-fatura {
-    width: 30%;
+    width: 35%;
     display: flex;
     align-items: center;
     justify-content: space-between;    
 }
 
 main .minutas-faturar header .input-cria-fatura-vencimento {
-    width: 40%;
+    width: 35%;
     display: flex;
     align-items: center;
     justify-content: center;

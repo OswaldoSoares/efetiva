@@ -1,6 +1,6 @@
 from io import BytesIO
 from textwrap import wrap
-from django.db.models import Value, Sum
+from django.db.models import Value, Sum, Max
 from django.db.models.functions import Concat
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import redirect, get_object_or_404
@@ -169,6 +169,12 @@ def altera_status_minuta(novo_status, idminuta):
         obj.idfatura = None
         obj.save()
     return True
+
+
+def KMFinal_Veiculo(idveiculo):
+    veiculo = Minuta.objects.filter(idVeiculo=idveiculo).aggregate(Max('KMFinal'))
+    kmfinal = [item for item in veiculo.values()]
+    return kmfinal[0]
 
 
 def index_minuta(request):
@@ -995,7 +1001,6 @@ def criaminutamotorista(request):
             obj.HoraFinal = minuta.HoraFinal
             obj.Coleta = minuta.Coleta
             obj.Entrega = minuta.Entrega
-            obj.KMInicial = minuta.KMInicial
             obj.KMFinal = minuta.KMFinal
             obj.Obs = minuta.Obs
             obj.StatusMinuta = minuta.StatusMinuta
@@ -1003,6 +1008,8 @@ def criaminutamotorista(request):
             obj.idCliente = minuta.idCliente
             for x in veiculo:
                 idveiculo = x.idVeiculo
+            km_inicial = KMFinal_Veiculo(idveiculo)
+            obj.KMInicial = km_inicial
             obj.idVeiculo_id = idveiculo
             obj.save()
     else:
@@ -1014,15 +1021,13 @@ def criaminutamotorista(request):
 
 
 def excluiminutamotorista(request, idmincol):
-    motoristaminuta = get_object_or_404(MinutaColaboradores,
-                                        idMinutaColaboradores=idmincol)
+    motoristaminuta = get_object_or_404(MinutaColaboradores, idMinutaColaboradores=idmincol)
     # cliente = Cliente.objects.get(Nome=tabelacapacidade.idCliente)
     data = dict()
     if request.method == "POST":
         motoristaminuta.delete()
         # Altera field idVeiculo para null
-        minuta = get_object_or_404(Minuta,
-                                   idMinuta=motoristaminuta.idMinuta_id)
+        minuta = get_object_or_404(Minuta, idMinuta=motoristaminuta.idMinuta_id)
         obj = Minuta()
         obj.idMinuta = minuta.idMinuta
         obj.Minuta = minuta.Minuta
@@ -1077,6 +1082,7 @@ def editaminutaveiculo(request, idmin):
     if request.method == 'POST':
         form = CadastraMinutaVeiculo(request.POST)
         if form.is_valid():
+            km_inicial = KMFinal_Veiculo(form.cleaned_data['Veiculo'])
             obj = Minuta()
             obj.idMinuta = form.cleaned_data['idMinuta']
             obj.Minuta = minuta.Minuta
@@ -1085,7 +1091,7 @@ def editaminutaveiculo(request, idmin):
             obj.HoraFinal = minuta.HoraFinal
             obj.Coleta = minuta.Coleta
             obj.Entrega = minuta.Entrega
-            obj.KMInicial = minuta.KMInicial
+            obj.KMInicial = km_inicial
             obj.KMFinal = minuta.KMFinal
             obj.Obs = minuta.Obs
             obj.StatusMinuta = minuta.StatusMinuta
