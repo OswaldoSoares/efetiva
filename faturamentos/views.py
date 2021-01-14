@@ -182,7 +182,6 @@ def email_fatura(request, idfatura):
     contexto = {'numero_fatura': str(numero_fatura)}
     subject = 'Fatura nº {}'.format(numero_fatura)
     html_message = render_to_string('faturamentos/emailfatura.html', contexto)
-    plain_message = strip_tags(html_message)
     from_email = 'Transefetiva Transportes <financeiro.efetiva@terra.com.br>'
     to = lista_emails
     email = EmailMessage(subject, html_message, from_email, to)

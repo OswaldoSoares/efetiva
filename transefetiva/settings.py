@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'faturamentos',
     'minutas',
     'pessoas',
+    'usuarios',
     'veiculos',
     'website',
 ]
