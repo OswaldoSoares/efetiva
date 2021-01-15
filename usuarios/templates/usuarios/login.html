@@ -2,26 +2,31 @@
 {% load static %}
 
 {% block mainusuario %}
-<main>
-    <div class="container py-5">
-        <div class="row mt-5">
-            <div class="col-lg">
-                <h3>{{ titulo }}</h3>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-5">
-                <form method="post">
-                    <!-- Todo formulário tem que ter essa validação -->
-                    {% csrf_token %}
-                    <!-- Gera o formulário -->
-                    {{ form }}
-                    <button type="submit" class="btn btn-primary">
-                        Entrar
-                    </button>
-                </form>
-            </div>
-        </div>
+<main class="tela-login">
+    <div class="usuario">
+        <header>
+            <span>LOGIN</span>
+        </header>
+        <form method="post">
+            <section class="form-row">
+            {% csrf_token %}
+                <div class="usuario-row">
+                    <label class="usuario-label" for="id_username">USUÁRIO</label>
+                    <input id="id_username" type="text" name="username" autofocus="", autocapitalize="none"
+                           autocomplete="username" maxlength="150" required="">
+                </div>
+                <div class="usuario-row">
+                    <label class="usuario-label" for="id_password">SENHA</label>
+                    <input id="id_password" type="password" name="password", autocomplete="current-password"
+                           required="">
+                </div>
+            </section>
+            <footer>
+                <button type="submit" class="btn btn-primary">
+                    ACESSAR
+                </button>
+            </footer>
+        </form>
     </div>
 </main>
 {% endblock %}

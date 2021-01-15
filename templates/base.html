@@ -43,7 +43,11 @@
                     <button class="btn btn-sidebar btn-lg" onclick="window.location.href = '{% url 'login' %}';">
                         <span class="glyphicon glyphicon-user"></span>
                     </button>
-                    <h6>Oswaldo</h6>
+                    {% if request.user.is_authenticated %}
+                    <h6><a href="{% url 'logout' %}">{{ user }}</a></h6>
+                    {% else %}
+                    <h6><a href="{% url 'login' %}">login</a></h6>
+                    {% endif %}
                     <h6>TRANSEFETIVA</h6>
                 </footer>
             <!--</div>-->

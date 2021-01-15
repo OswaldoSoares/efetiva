@@ -1363,7 +1363,7 @@ main .minutas-faturar header form {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: 16px;
+    font-size: 17px;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-weight: bold;
     margin: 0;
@@ -1533,3 +1533,115 @@ main .minutas-selecionadas .auto-minuta .comentarios-fatura p {
     margin: 0;
     padding: 0;
 }
+
+.tela-login {
+    display: flex;
+    align-items: flex-center;
+    justify-content: center;
+}
+
+main .usuario {
+    background-color: white;
+    color: var(--corprincipal);
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+main .usuario header {
+    background-color: var(--corprincipal);
+    color: var(--corsecundaria);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+main .usuario header span {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-weight: bold;
+    font-size: 24px;
+    padding: 10px;
+}
+
+main .usuario form {
+    width: 100%;
+}
+
+main .usuario section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+main .usuario-row {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    justify-content: center;
+}
+
+.teste {
+    background-color: yellowgreen;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    justify-content: center;
+}
+
+.teste form {
+    background-color: wheat;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    justify-content: center;
+}
+
+.helptext {
+    width: 100%;
+}
+
+.helptext li {
+    color: salmon;
+    font-size: 12px;
+}
+
+.errorlist li {
+    color: red;
+}
+
+main .usuario-out {
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 10px;
+}
+
+main .usuario-row label {
+    padding: 0;
+    margin: 0;
+}
+
+main .usuario-row input {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+main .usuario footer {
+    background-color: var(--corsecundaria);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+

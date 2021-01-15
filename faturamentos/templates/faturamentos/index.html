@@ -2,6 +2,7 @@
 
 {% block mainfaturamento %}
 <main>
+    {% if request.user.is_authenticated %}
     {% if fatura %}
     <div class="faturas">
         <header>
@@ -139,5 +140,6 @@
             </div>
         </div>
     </div>
+    {% endif %}
 </main>
 {% endblock %}
