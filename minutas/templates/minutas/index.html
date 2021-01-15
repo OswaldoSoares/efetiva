@@ -62,7 +62,7 @@
                             <td>{{ itens.idVeiculo.Placa }}</td>
                             <td>{{ itens.StatusMinuta }}</td>
                             <td class="seleciona_registo">
-                                {% if itens.StatusMinuta != 'ABERTA' %}
+                                {% if itens.StatusMinuta == 'FECHADA' %}
                                     <button class="btn btn-danger btn-xs" onclick="window.location.href = '{% url 'estorna_minuta' itens.idMinuta %}'">
                                         <span class="glyphicon glyphicon-backward"></span>
                                     </button>
