@@ -47,6 +47,7 @@ def horascobra(horai, horaf, datam, horam):
             totalhoras = datafinal - datainicial
     if totalhoras > minimohoras:
         excedehoras = totalhoras - minimohoras
+    print(totalhoras)
     return totalhoras, minimohoras, excedehoras
 
 
@@ -261,6 +262,7 @@ def consultaminuta(request, idmin):
     porcesegurorecebe = 1.00
     porcepernoite = 100
     if tabelaveiculo:
+        print('Estive aqui')
         # Cria variavel horaminimo
         horaminimo = list(tabelaveiculo.values('HoraMinimo')[0].values())[0]
         # Cria variaveis totalhoras - minimohoras - excedehoras (Type timedelta) - geradas pela função horascobra

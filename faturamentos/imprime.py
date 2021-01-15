@@ -16,7 +16,7 @@ def decricao_servico(dict_servicos, perimetro_inicial, perimetro_final):
     texto_taxa = ''
     texto_seguro = ''
     texto_ajudante = ''
-    texto_desconto= ''
+    texto_desconto = ''
     for itens in dict_servicos:
         if itens['TipoItens'] == 'RECEBE':
             if itens['Descricao'] == 'TAXA DE EXPEDIÇÃO':
@@ -106,8 +106,6 @@ def imprime_fatura_pdf(fatura):
     tabelaperimetro = TabelaPerimetro.objects.filter(idCliente=minutas[0].idCliente_id)
     perimetro_inicial = 0
     perimetro_final = 0
-
-
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'filename="FATURA {}.pdf"'.format(fatura_selecionada[0].Fatura)
     buffer = BytesIO()
@@ -203,31 +201,53 @@ def imprime_fatura_pdf(fatura):
             para.wrapOn(pdf, convertemp(186), convertemp(297))
             linha -= para.height * 0.352777
             para.drawOn(pdf, convertemp(12), convertemp(linha))
-        notas_dados = MinutaNotas.objects.values('Nota', 'ValorNota', 'Peso', 'Volume', 'Bairro', 'Cidade',
-                                                 'Nome').filter(
-            idMinuta=minutas[index].idMinuta).exclude(Nota='PERIMETRO')
-        notas = 'NOTA(S):'
+        notas_dados = MinutaNotas.objects.values('Nota', 'ValorNota', 'Peso', 'Volume', 'Bairro', 'Cidade', 'Nome',
+                                                 'NotaGuia').filter(idMinuta=minutas[index].idMinuta,
+                                                                    NotaGuia='0').exclude(Nota='PERIMETRO')
+        idminuta = minutas[index].idMinuta
+        notas = 'NOTA(S): '
         if notas_dados:
-            for itens in notas_dados:
+            for itensnotas in notas_dados:
                 notas_valor = ''
-                if itens['ValorNota'] > 0.00:
-                    notas_valor = ' VALOR {}'.format(itens['ValorNota'])
+                if itensnotas['ValorNota'] > 0.00:
+                    notas_valor = ' VALOR {}'.format(itensnotas['ValorNota'])
                 notas_peso = ''
-                if itens['Peso'] > 0.00:
-                    notas_peso = ' PESO {}'.format(itens['Peso'])
+                if itensnotas['Peso'] > 0.00:
+                    notas_peso = ' PESO {}'.format(itensnotas['Peso'])
                 notas_volume = ''
-                if itens['Volume'] > 0:
-                    notas_volume = ' VOLUME {}'.format(itens['Volume'])
+                if itensnotas['Volume'] > 0:
+                    notas_volume = ' VOLUME {}'.format(itensnotas['Volume'])
+                notasguia_dados = MinutaNotas.objects.values('Nota', 'NotaGuia', 'ValorNota', 'Peso', 'Volume').filter(
+                    idMinuta=idminuta, NotaGuia=itensnotas['Nota'])
+                notasguia = ''
+                if notasguia_dados:
+                    notasguia_nota = ''
+                    notasguia_valor = ''
+                    notasguia_peso = ''
+                    notasguia_volume = ''
+                    for itensnotasguia in notasguia_dados:
+                        notasguia_nota = ' &#x271B NOTA: {}'.format(itensnotasguia['Nota'])
+                        notasguia_valor = ''
+                        if itensnotasguia['ValorNota'] > 0.00:
+                            notasguia_valor = ' VALOR {}'.format(itensnotasguia['ValorNota'])
+                        notasguia_peso = ''
+                        if itensnotasguia['Peso'] > 0.00:
+                            notasguia_peso = ' PESO {}'.format(itensnotasguia['Peso'])
+                        notasguia_volume = ''
+                        if itensnotasguia['Volume'] > 0:
+                            notasguia_volume = ' VOLUME {}'.format(itensnotasguia['Volume'])
+                    notasguia = '{}{}{}{}'.format(notasguia_nota, notasguia_valor, notasguia_peso, notasguia_volume)
                 notas_bairro = ''
-                if itens['Bairro']:
-                    notas_bairro = ' - {}'.format(itens['Bairro'])
-                if itens['Nome']:
-                    notas = '{} &#x2713 NOTA: {}{}{}{}{} - {} - {}'.format(
-                        notas, itens['Nota'], notas_valor, notas_peso, notas_volume, notas_bairro,
-                        itens['Cidade'], itens['Nome'])
+                if itensnotas['Bairro']:
+                    notas_bairro = ' - {}'.format(itensnotas['Bairro'])
+                if itensnotas['Nome']:
+                    notas = '{} &#x2713 NOTA: {}{}{}{}{}{} - {} - {}'.format(
+                        notas, itensnotas['Nota'], notas_valor, notas_peso, notas_volume, notasguia, notas_bairro,
+                        itensnotas['Cidade'], itensnotas['Nome'])
                 else:
-                    notas = '{} &#x2713 NOTA: {}{}{}{}{} - {} '.format(
-                        notas, itens['Nota'], notas_valor, notas_peso, notas_volume, notas_bairro, itens['Cidade'])
+                    notas = '{} &#x2713 NOTA: {}{}{}{}{}{} - {} '.format(
+                        notas, itensnotas['Nota'], notas_valor, notas_peso, notas_volume, notasguia, notas_bairro,
+                        itensnotas['Cidade'])
             para = Paragraph(notas, style=styles_claro)
             para.wrapOn(pdf, convertemp(186), convertemp(297))
             linha -= para.height * 0.352777
@@ -236,8 +256,8 @@ def imprime_fatura_pdf(fatura):
             Cidade='SÃO PAULO')
         cidades = 'CIDADE(S):'
         if notas_perimetro:
-            for itens in notas_perimetro:
-                cidades = '{} &#x2713 {} '.format(cidades, itens['Cidade'])
+            for itensperimetro in notas_perimetro:
+                cidades = '{} &#x2713 {} '.format(cidades, itensperimetro['Cidade'])
             para = Paragraph(cidades, style=styles_claro)
             para.wrapOn(pdf, convertemp(186), convertemp(297))
             linha -= para.height * 0.352777
@@ -246,8 +266,8 @@ def imprime_fatura_pdf(fatura):
             Bairro__isnull=True).exclude(Bairro__exact='')
         bairros = 'BAIRRO(S):'
         if notas_bairro:
-            for itens in notas_bairro:
-                bairros = '{} &#x2713 {} '.format(bairros, itens['Bairro'])
+            for itensbairro in notas_bairro:
+                bairros = '{} &#x2713 {} '.format(bairros, itensbairro['Bairro'])
             para = Paragraph(bairros, style=styles_claro)
             para.wrapOn(pdf, convertemp(186), convertemp(297))
             linha -= para.height * 0.352777
