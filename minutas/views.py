@@ -195,7 +195,7 @@ def index_minuta(request):
     if meu_filtro_minuta:
         minuta = Minuta.objects.filter(Minuta=meu_filtro_minuta)
     elif meu_filtro_status:
-        minuta = Minuta.objects.filter(StatusMinuta=meu_filtro_status)
+        minuta = Minuta.objects.filter(StatusMinuta=meu_filtro_status).order_by('-Minuta')
     else:
         minuta = Minuta.objects.filter(StatusMinuta='ABERTA')
     minuta_status = Minuta.objects.all().values_list('StatusMinuta', flat=True)
