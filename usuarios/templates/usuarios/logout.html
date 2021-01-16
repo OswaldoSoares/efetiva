@@ -9,7 +9,7 @@
         </header>
         <section>
         {% csrf_token %}
-            <div class="usuario-row usuario-out">
+            <div class="usuario-out">
                 <h3>{{ user }} você está logado!</h3>
                 <span><a href="{% url 'senha' %}">ALTERAR SUA SENHA</a></span>
             </div>

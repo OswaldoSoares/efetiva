@@ -1579,59 +1579,22 @@ main .usuario section {
     margin-top: 10px;
 }
 
-main .usuario-row {
-    width: 300px;
-    display: flex;
-    flex-direction: column;
-    align-items: baseline;
-    justify-content: center;
-}
-
-.teste {
-    background-color: yellowgreen;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: baseline;
-    justify-content: center;
-}
-
-.teste form {
-    background-color: wheat;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: baseline;
-    justify-content: center;
-}
-
-.helptext {
-    width: 100%;
-}
-
-.helptext li {
-    color: salmon;
-    font-size: 12px;
-}
-
-.errorlist li {
-    color: red;
-}
-
-main .usuario-out {
-    align-items: center;
-    margin-bottom: 10px;
-    font-size: 10px;
-}
-
-main .usuario-row label {
+main .usuario label {
     padding: 0;
     margin: 0;
 }
 
-main .usuario-row input {
-    width: 100%;
+main .usuario input {
+    width: 300px;
     margin-bottom: 10px;
+}
+
+main .usuario ul {
+    margin: 0 5px 5px 5px;
+}
+
+main .usuario span {
+    margin: 0 5px 5px 5px;
 }
 
 main .usuario footer {
@@ -1644,4 +1607,8 @@ main .usuario footer {
     padding: 10px;
 }
 
-
+main .usuario-out {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 10px;
+}

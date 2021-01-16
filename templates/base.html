@@ -40,7 +40,8 @@
                     </ul>
                 </div>
                 <footer>
-                    <button class="btn btn-sidebar btn-lg" onclick="window.location.href = '{% url 'login' %}';">
+                    <button class="btn btn-sidebar btn-lg"
+                            onclick="window.location.href = '{% url 'cadastrausuario' %}';">
                         <span class="glyphicon glyphicon-user"></span>
                     </button>
                     {% if request.user.is_authenticated %}

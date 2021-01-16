@@ -2,26 +2,15 @@ from django.shortcuts import render
 from django.shortcuts import redirect, get_object_or_404
 from django.http import JsonResponse
 from django.template.loader import render_to_string
-from .models import Cliente,\
-    FoneContatoCliente,\
-    EMailContatoCliente,\
-    Cobranca,\
-    Tabela,\
-    TabelaVeiculo,\
-    TabelaCapacidade,\
-    TabelaPerimetro
-from .forms import CadastraCliente,\
-    CadastraFoneContatoCliente,\
-    CadastraEMailContatoCliente,\
-    CadastraCobranca,\
-    CadastraTabela,\
-    CadastraTabelaVeiculo,\
-    CadastraTabelaCapacidade,\
-    CadastraTabelaPerimetro, \
-    CadastraFormaPgto
+from django.contrib.auth.decorators import login_required
+from .models import Cliente, FoneContatoCliente, EMailContatoCliente, Cobranca, Tabela, TabelaVeiculo, \
+    TabelaCapacidade, TabelaPerimetro
+from .forms import CadastraCliente, CadastraFoneContatoCliente, CadastraEMailContatoCliente, CadastraCobranca,\
+    CadastraTabela, CadastraTabelaVeiculo, CadastraTabelaCapacidade, CadastraTabelaPerimetro, CadastraFormaPgto
 from veiculos.models import CategoriaVeiculo
 
 
+@login_required(redirect_field_name='usuarios/login.html')
 def indexcliente(request):
     meufiltrofantasia = request.GET.get('filtrofantasia', None)
     meufiltronome = request.GET.get('filtronome', None)
@@ -39,15 +28,14 @@ def indexcliente(request):
     )
 
 
+@login_required(redirect_field_name='usuarios/login.html')
 def consultacliente(request, idcli):
     cliente = Cliente.objects.filter(idCliente=idcli)
     fonecontatocliente = FoneContatoCliente.objects.filter(idCliente=idcli)
     emailcontatocliente = EMailContatoCliente.objects.filter(idCliente=idcli)
     cobrancacliente = Cobranca.objects.filter(idCliente=idcli)
-
     categoriaveiculo = CategoriaVeiculo.objects.all()
     tabela = Tabela.objects.filter(idCliente=idcli)
-
     # Seleciona a tabela completa cliente e cria uma list apenas com a categoria
     tabelaveiculocompleta = TabelaVeiculo.objects.filter(idCliente=idcli)
     tabelaveiculocompletalista = []
