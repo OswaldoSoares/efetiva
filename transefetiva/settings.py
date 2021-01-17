@@ -39,6 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # apps de terceiros
+    'rolepermissions',
+    # meus apps
     'clientes',
     'faturamentos',
     'minutas',
@@ -157,3 +160,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 br_formats.DATE_FORMAT = 'd/m/Y'
 
 django_heroku.settings(locals())
+
+# Permissões
+ROLEPERMISSIONS_MODULE = 'transefetiva.roles'
+ROLEPERMISSIONS_REGISTER_ADMIN = True
