@@ -976,6 +976,8 @@ def estorna_minuta(request, idmin):
     minuta = get_object_or_404(Minuta, idMinuta=idmin)
     if minuta.StatusMinuta == 'ABERTA':
         pass
+    elif minuta.StatusMinuta == 'CONCLUIDA':
+        altera_status_minuta('ABERTA', idmin)
     elif minuta.StatusMinuta == 'FECHADA':
         altera_status_minuta('ABERTA', idmin)
         itens_minuta_recebe_excluir = MinutaItens.objects.filter(idMinuta=idmin).filter(TipoItens='RECEBE')
@@ -985,6 +987,12 @@ def estorna_minuta(request, idmin):
         for itens in itens_minuta_paga_excluir:
             excluiminutaitens(itens.idMinutaItens)
     return redirect('index_minuta')
+
+
+def conclui_minuta(request, idmin):
+    altera_status_minuta('CONCLUIDA', idmin)
+    return redirect('consultaminuta', idmin)
+
 
 
 def criaminutamotorista(request):

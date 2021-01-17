@@ -7,8 +7,8 @@
 
 {% block mainminuta %}
 <main>
+    {% for itens in minuta %}
     <div class="consulta">
-        {% for itens in minuta %}
         <header class="consulta-header">
             <div class="consulta_headertitulo">
                 <p><b>{{ itens.idCliente.Fantasia }} - MINUTA {{ itens.Minuta }} - DATA {{ itens.DataMinuta }} -
@@ -426,18 +426,32 @@
                 </form>
             </div>
         </div>
-        <!-- DIV MODAL -->
-        <div class="modal fade" id="modal-formulario" >
-            <div class="modal-dialog">
-                <div class="modal-content">
-
-                </div>
-            </div>
+    </div>
+    {% if itens.StatusMinuta == 'ABERTA' %}
+    <div class="consulta">
+        <div class="consulta-concluir">
+            <header class="consulta-header-despesas-entregas">
+                <span>CONCLUIR MINUTA</span>
+            </header>
+            <section>
+                <h4>APÓS INSERIR TODOS OS DADOS DA MINUTA</h4>
+                <h4>CONCLUIR A MINUTA PARA FICAR DISPONIVEL PARA FATURAMENTO</h4>
+            </section>
+            <footer>
+                {% if user|can:'conclui_minuta' %}
+                <button class="btn btn-success btn-sm active"
+                        idminuta="{{ itens.idMinuta }}"
+                        onclick="window.location.href = '{% url 'concluiminuta' itens.idMinuta %}'">
+                    <span>CONCLUIR MINUTA</span>
+                </button>
+                {% endif %}
+            </footer>
         </div>
     </div>
+    {% endif %}
     {% if user|can:'demonstrativo_minuta' %}
     <div class="consulta">
-        {% if itens.StatusMinuta == 'ABERTA' %}
+        {% if itens.StatusMinuta == 'ABERTA' or itens.StatusMinuta == 'CONCLUIDA'%}
         <!-- VALORES DE FATURAMENTO -->
         <div class="consulta_cliente_modulo">
             <header class="consulta-header-despesas-entregas">
@@ -449,7 +463,7 @@
                     <div class="tb-recebe">
                         <table class="tb-demo-recebe">
                             <thead>
-                                <tr>>
+                                <tr>
                                     <th class="titulo">DESCRICÃO</th>
                                     <th class="titulo" colspan="4">RECEBE</th>
                                     <th class="titulo" colspan="4">PAGA</th>
@@ -498,8 +512,7 @@
                                                        {% endif %}
                                                        class="{{ value.class_mr }}"
                                                        type="{{ value.type_mr }}"
-                                                       meu_tipo="{{ value.type_minuta_recebe }}"
-                                                >
+                                                       meu_tipo="{{ value.type_minuta_recebe }}">
                                             {% endif %}
                                         </td>
                                         <td class="tb-coluna5">
@@ -520,8 +533,7 @@
                                                        {% endif %}
                                                        value="{{ value.value_swp }}"
                                                        class="{{ value.class_swp }}"
-                                                       type="{{ value.type_swp }}"
-                                                >
+                                                       type="{{ value.type_swp }}">
                                                 <label for="{{ value.id_swp }}"></label>
                                             {% endif %}
                                         </td>
@@ -534,8 +546,7 @@
                                                        class="{{ value.class_tp }}"
                                                        type="{{ value.type_tp }}"
                                                        step="{{ value.step_tp }}"
-                                                       meu_tipo="{{ value.type_tabela_paga }}"
-                                                >
+                                                       meu_tipo="{{ value.type_tabela_paga }}">
                                             {% endif %}
                                         </td>
                                         <td class="tb-coluna4">
@@ -554,7 +565,7 @@
                                                        {% endif %}
                                                        class="{{ value.class_mp }}"
                                                        type="{{ value.type_mp }}"
-                                                       meu_tipo="{{ value.type_minuta_paga }}"                                                    >
+                                                       meu_tipo="{{ value.type_minuta_paga }}">
                                             {% endif %}
                                         </td>
                                         <td class="tb-coluna5">
@@ -582,8 +593,7 @@
                                                checked="checked"
                                                value="sw-{{ itens.Descricao|lower|cut:' ' }}-recebe"
                                                class="switch switch--shadow switch-despesa-recebe"
-                                               type="checkbox"
-                                        >
+                                               type="checkbox">
                                         <label for="sw-{{ itens.Descricao|lower|cut:' ' }}-recebe"></label>
                                     </td>
                                     <td class="tb-coluna3">
@@ -593,8 +603,7 @@
                                                value="{{ itens.Valor|stringformat:'.2f'  }}"
                                                class="demonstrativo-input tb-despesa-recebe"
                                                type="number"
-                                               step="0.01"
-                                        >
+                                               step="0.01">
                                     </td>
                                     <td class="tb-coluna4"></td>
                                     <td class="tb-coluna5">
@@ -615,8 +624,7 @@
                                                checked="checked"
                                                value="sw-{{ itens.Descricao|lower|cut:' ' }}-paga"
                                                class="switch switch--shadow switch-despesa-paga"
-                                               type="checkbox"
-                                        >
+                                               type="checkbox">
                                         <label for="sw-{{ itens.Descricao|lower|cut:' ' }}-paga"></label>
                                     </td>
                                     <td class="tb-coluna3">
@@ -626,8 +634,7 @@
                                                value="{{ itens.Valor|stringformat:'.2f'  }}"
                                                class="demonstrativo-input tb-despesa-paga"
                                                type="number"
-                                               step="0.01"
-                                        >
+                                               step="0.01">
                                     </td>
                                     <td class="tb-coluna4"></td>
                                     <td class="tb-coluna5">
@@ -710,6 +717,14 @@
             </div>
         </div>
         {% endif %}
+    </div>
+    <!-- DIV MODAL -->
+    <div class="modal fade" id="modal-formulario" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+            </div>
+        </div>
     </div>
     {% endif %}
     {% endfor %}

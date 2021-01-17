@@ -886,8 +886,8 @@ main .consulta .consulta-body {
 	line-height: 18px;
 }
 .comentarios:focus{
-	background: #363636;
-	color: #fff;
+	background: var(--corsecundaria);
+	color: var(--corprincipal);
 	box-shadow: 0 0 5px #fff;
 	border: 3px solid #305a72;
 }
@@ -1237,6 +1237,27 @@ main .consulta-comentario form {
 
 main .consulta-comentario form button {
     margin: 5px;
+}
+
+main .consulta-concluir section {
+    background-color: var(--corsecundaria);
+    color: var(--corprincipal);
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+main .consulta-concluir footer {
+    background-color: #a1a1a1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+main .consulta-concluir footer button {
+    margin: 10px;
 }
 
 main .consulta .consulta-header-despesas-entregas {
@@ -1598,7 +1619,7 @@ main .usuario span {
 }
 
 main .usuario footer {
-    background-color: var(--corsecundaria);
+    background-color: #a1a1a1;
     width: 100%;
     display: flex;
     flex-direction: column;

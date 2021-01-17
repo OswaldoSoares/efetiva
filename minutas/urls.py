@@ -1,10 +1,5 @@
 from django.urls import path
-from .views import index_minuta,\
-    criaminuta,\
-    editaminuta,\
-    imprimeminuta,\
-    fecha_minuta,\
-    estorna_minuta,\
+from .views import index_minuta, criaminuta, editaminuta, imprimeminuta, conclui_minuta, fecha_minuta, estorna_minuta,\
     consultaminuta,\
     criaminutamotorista,\
     excluiminutamotorista,\
@@ -43,6 +38,9 @@ urlpatterns = [
         'imprimeminuta/<int:idmin>/',
         imprimeminuta,
         name='imprimeminuta'
+    ),
+    path(
+        'concluiminuta/<int:idmin>/', conclui_minuta, name='concluiminuta'
     ),
     path(
         'fecha_minuta/<int:idmin>/',
