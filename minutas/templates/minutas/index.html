@@ -1,4 +1,5 @@
 {% extends 'minutas/baseminutas.html' %}
+{% load permission_tags %}
 
 {% block mainminuta %}
     <div class="lista_conteudo">
@@ -10,7 +11,9 @@
                 <div class="filtro">
                     <form>
                         <input type="text" class="filtrotexto" placeholder="FILTRAR MINUTA..." name="filtrominuta"/>
+                        {% if user|can:'filtra_minuta' %}
                         <button type="submit" class="btn btn-info glyphicon glyphicon-search"></button>
+                        {% endif %}
                     </form>
                 </div>
                 <div class="filtro">
@@ -21,12 +24,16 @@
                                 <option value="{{ minuta_status }}">{{ minuta_status }}</option>
                             {% endfor %}
                         </select>
+                        {% if user|can:'filtra_minuta' %}
                         <button type="submit" class="btn btn-info glyphicon glyphicon-search"></button>
+                        {% endif %}
                     </form>
                 </div>
             </div>
             <div class="add_registro">
+                {% if user|can:'cria_minuta' %}
                 <button type="button" class="btn btn-success glyphicon glyphicon-plus js-criaminuta" data-url="{% url 'criaminuta' %}"></button>
+                {% endif %}
             </div>
         </div>
         <div>
@@ -63,9 +70,11 @@
                             <td>{{ itens.StatusMinuta }}</td>
                             <td class="seleciona_registo">
                                 {% if itens.StatusMinuta == 'FECHADA' %}
+                                    {% if user|can:'estorna_minuta' %}
                                     <button class="btn btn-danger btn-xs" onclick="window.location.href = '{% url 'estorna_minuta' itens.idMinuta %}'">
                                         <span class="glyphicon glyphicon-backward"></span>
                                     </button>
+                                    {% endif %}
                                 {% endif %}
                                 <button class="btn btn-warning btn-xs" onclick="window.location.href = '{% url 'imprimeminuta' itens.idMinuta %}'">
                                     <span class="glyphicon glyphicon-file"></span>
