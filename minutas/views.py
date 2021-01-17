@@ -588,7 +588,6 @@ def consultaminuta(request, idmin):
     return render(request, 'minutas/consultaminuta.html', contexto)
 
 
-@has_permission_decorator('cria_minuta')
 def criaminuta(request):
     # Numero inicial da minuta no sistema
     numerominuta = 7000
