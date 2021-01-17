@@ -29,6 +29,7 @@ estornar_faturada = 'estornar_faturada'
 pagar_faturada = 'pagar_faturada'
 estornar_paga = 'estornar_paga'
 cria_minuta = 'cria_minuta'
+filtra_minuta = 'filtra_minuta'
 estorna_fechada = 'estorna_fechada'
 edita_minuta = 'edita_minuta'
 motorista_minuta = 'motorista_minuta'
@@ -78,6 +79,7 @@ class Diretor(AbstractUserRole):
         pagar_faturada: True,
         estornar_paga: True,
         cria_minuta: True,
+        filtra_minuta: True,
         estorna_fechada: True,
         edita_minuta: True,
         motorista_minuta: True,
@@ -119,6 +121,7 @@ class Secretaria(AbstractUserRole):
         banco_colaborador: True,
         faturar_minuta: True,
         cria_minuta: True,
+        filtra_minuta: True,
         edita_minuta: True,
         motorista_minuta: True,
         veiculo_minuta: True,
