@@ -6,12 +6,12 @@ from django.http import JsonResponse, HttpResponse
 from django.shortcuts import redirect, get_object_or_404
 from django.shortcuts import render
 from django.template.loader import render_to_string
+from rolepermissions.decorators import has_permission_decorator
 from reportlab.lib.colors import HexColor
 from reportlab.pdfgen import canvas
 from datetime import datetime, timedelta, time
 import json
-from clientes.models import FoneContatoCliente, Tabela, TabelaVeiculo, \
-    TabelaCapacidade, TabelaPerimetro
+from clientes.models import FoneContatoCliente, Tabela, TabelaVeiculo, TabelaCapacidade, TabelaPerimetro
 from veiculos.models import Veiculo
 from .forms import CadastraMinuta, CadastraMinutaMotorista, CadastraMinutaAjudante, CadastraMinutaVeiculo, \
     CadastraMinutaKMInicial,CadastraMinutaKMFinal, CadastraMinutaHoraFinal, CadastraMinutaDespesa, \
@@ -178,6 +178,7 @@ def KMFinal_Veiculo(idveiculo):
     return kmfinal[0]
 
 
+@has_permission_decorator('modulo_minutas')
 def index_minuta(request):
     """
     Função para carregar a página principal do Módulo: Minuta.

@@ -35,7 +35,7 @@ motorista_minuta = 'motorista_minuta'
 veiculo_minuta = 'veiculo_minuta'
 ajudante_minuta = 'ajudante_minuta'
 hora_minuta = 'hora_minuta'
-kn_minuta = 'kn_minuta'
+km_minuta = 'km_minuta'
 despesa_minuta = 'despesa_minuta'
 entrega_minuta = 'entrega_minuta'
 comentario_minuta = 'comentario_minuta'
@@ -84,7 +84,7 @@ class Diretor(AbstractUserRole):
         veiculo_minuta: True,
         ajudante_minuta: True,
         hora_minuta: True,
-        kn_minuta: True,
+        km_minuta: True,
         despesa_minuta: True,
         entrega_minuta: True,
         comentario_minuta: True,
@@ -95,6 +95,7 @@ class Diretor(AbstractUserRole):
         edita_veiculo: True,
         exclui_veiculo: True,
     }
+
 
 class Secretaria(AbstractUserRole):
     available_permissions = {
@@ -123,7 +124,7 @@ class Secretaria(AbstractUserRole):
         veiculo_minuta: True,
         ajudante_minuta: True,
         hora_minuta: True,
-        kn_minuta: True,
+        km_minuta: True,
         despesa_minuta: True,
         entrega_minuta: True,
         comentario_minuta: True,
@@ -133,11 +134,12 @@ class Secretaria(AbstractUserRole):
         exclui_veiculo: True,
     }
 
+
 class Motorista(AbstractUserRole):
     available_permissions = {
         modulo_minutas: True,
         hora_minuta: True,
-        kn_minuta: True,
+        km_minuta: True,
         despesa_minuta: True,
         entrega_minuta: True,
         comentario_minuta: True,

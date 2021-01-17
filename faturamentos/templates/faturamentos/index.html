@@ -1,8 +1,9 @@
 {% extends 'faturamentos/basefaturamentos.html' %}
+{% load permission_tags %}
 
 {% block mainfaturamento %}
 <main>
-    {% if request.user.is_authenticated %}
+    {% if user|has_role:'modulo_faturamento' %}
     {% if fatura %}
     <div class="faturas">
         <header>

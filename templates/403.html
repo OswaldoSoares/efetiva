@@ -1,0 +1,22 @@
+{% extends 'usuarios/baseusuarios.html' %}
+{% load static %}
+
+{% block mainusuario %}
+<main class="tela-login">
+    <div class="usuario">
+        <header>
+            <span>403 - ACESSO NEGADO</span>
+        </header>
+        <section>
+            <span>VOCÊ NÃO TEM ACESSO A ESTE CONTEÚDO</span>
+            <span>ENTRE EM CONTATO COM O</span>
+            <span>ADMINISTRADOR DA APLICAÇÃO</span>
+        </section>
+        <footer>
+            <button type="submit" class="btn btn-primary">
+                <a href="{% url 'index_website' %}">OK</a>
+            </button>
+        </footer>
+    </div>
+</main>
+{% endblock %}

@@ -1,10 +1,9 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.db.models import Sum, Max, Count
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
-from django.core import mail
-from django.utils.html import strip_tags
+from rolepermissions.decorators import has_permission_decorator
 from .models import Fatura
 from .forms import PagaFatura
 from minutas.models import Minuta, MinutaItens, MinutaColaboradores
@@ -14,6 +13,7 @@ from datetime import date, timedelta
 from .imprime import imprime_fatura_pdf
 
 
+@has_permission_decorator('modulo_faturamento')
 def index_faturamento(request):
     fatura = Cliente.objects.values('idCliente', 'Fantasia').filter(minuta__StatusMinuta='FECHADA',
                                                                     minuta__Valor__gt='0.00').annotate(

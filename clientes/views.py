@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect, get_object_or_404
 from django.http import JsonResponse
 from django.template.loader import render_to_string
-from django.contrib.auth.decorators import login_required, permission_required
+from rolepermissions.decorators import has_permission_decorator
 from .models import Cliente, FoneContatoCliente, EMailContatoCliente, Cobranca, Tabela, TabelaVeiculo, \
     TabelaCapacidade, TabelaPerimetro
 from .forms import CadastraCliente, CadastraFoneContatoCliente, CadastraEMailContatoCliente, CadastraCobranca,\
@@ -10,7 +10,7 @@ from .forms import CadastraCliente, CadastraFoneContatoCliente, CadastraEMailCon
 from veiculos.models import CategoriaVeiculo
 
 
-@permission_required('cria_minuta')
+@has_permission_decorator('modulo_clientes')
 def indexcliente(request):
     meufiltrofantasia = request.GET.get('filtrofantasia', None)
     meufiltronome = request.GET.get('filtronome', None)
@@ -28,7 +28,6 @@ def indexcliente(request):
     )
 
 
-@login_required(redirect_field_name='usuarios/login.html')
 def consultacliente(request, idcli):
     cliente = Cliente.objects.filter(idCliente=idcli)
     fonecontatocliente = FoneContatoCliente.objects.filter(idCliente=idcli)

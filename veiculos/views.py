@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect, get_object_or_404
 from django.http import JsonResponse
 from django.template.loader import render_to_string
+from rolepermissions.decorators import has_permission_decorator
 from .models import Veiculo, CategoriaVeiculo
 from pessoas.models import Pessoal, DocPessoal
 from .forms import CadastraVeiculo, CadastraCategoria
@@ -14,6 +15,7 @@ def removeduplicadas(lista):
     return novalista
 
 
+@has_permission_decorator('modulo_veiculos')
 def indexveiculo(request):
     meufiltrocategoria = request.GET.get('filtrocategoria', None)
     veiculo = Veiculo.objects.all()

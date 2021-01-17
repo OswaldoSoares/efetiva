@@ -144,7 +144,6 @@ EMAIL_HOST_USER = 'financeiro.efetiva@terra.com.br'
 EMAIL_HOST_PASSWORD = 'mau159753'
 
 # LOGIN
-
 LOGIN_REDIRECT_URL = 'index_website'
 LOGIN_URL = 'login'
 LOGOUT_REDIRECT_URL = 'login'
@@ -161,6 +160,7 @@ br_formats.DATE_FORMAT = 'd/m/Y'
 
 django_heroku.settings(locals())
 
-# Permissões
+# Permissões - DJANGO-ROLE-PERMISSIONS
 ROLEPERMISSIONS_MODULE = 'transefetiva.roles'
 ROLEPERMISSIONS_REGISTER_ADMIN = True
+# ROLEPERMISSIONS_REDIRECT_TO_LOGIN = True

@@ -2,14 +2,9 @@ from django.shortcuts import render
 from django.shortcuts import redirect, get_object_or_404
 from django.http import JsonResponse
 from django.template.loader import render_to_string
-from .models import Pessoal,\
-    DocPessoal,\
-    FonePessoal, \
-    ContaPessoal
-from .forms import CadastraPessoal,\
-    CadastraDocPessoal,\
-    CadastraFonePessoal, \
-    CadastraContaPessoal
+from rolepermissions.decorators import has_permission_decorator
+from .models import Pessoal, DocPessoal, FonePessoal, ContaPessoal
+from .forms import CadastraPessoal, CadastraDocPessoal, CadastraFonePessoal, CadastraContaPessoal
 
 
 def removeduplicadas(lista):
@@ -20,6 +15,7 @@ def removeduplicadas(lista):
     return novalista
 
 
+@has_permission_decorator('modulo_colaboradores')
 def indexpessoal(request):
     meufiltronome = request.GET.get('filtronome', None)
     meufiltrofuncao = request.GET.get('filtrofuncao', None)
