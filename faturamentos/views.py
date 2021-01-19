@@ -107,7 +107,7 @@ def cria_fatura(request):
 
 
 def estorna_fatura(request, idfatura):
-    novo_status = '';
+    novo_status = ''
     fatura = Fatura.objects.get(idFatura=idfatura)
     if fatura.StatusFatura == 'ABERTA':
         minutas = Minuta.objects.filter(idFatura=fatura.idFatura)

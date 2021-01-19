@@ -674,7 +674,7 @@
         </div>
         {% endif %}
 
-        {% if itens.StatusMinuta == 'FECHADA' %}
+        {% if itens.StatusMinuta == 'FECHADA' or itens.StatusMinuta == 'FATURADA' %}
         <!-- MINUTA FECHADA -->
         <div class="consulta_cliente_modulo">
             <h2 class="consulta_subtitulo"><b>VALOR A RECEBER:</b></h2>

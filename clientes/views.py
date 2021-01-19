@@ -3,6 +3,7 @@ from django.shortcuts import redirect, get_object_or_404
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from rolepermissions.decorators import has_permission_decorator
+from clientes import facade
 from .models import Cliente, FoneContatoCliente, EMailContatoCliente, Cobranca, Tabela, TabelaVeiculo, \
     TabelaCapacidade, TabelaPerimetro
 from .forms import CadastraCliente, CadastraFoneContatoCliente, CadastraEMailContatoCliente, CadastraCobranca,\
@@ -14,18 +15,12 @@ from veiculos.models import CategoriaVeiculo
 def indexcliente(request):
     meufiltrofantasia = request.GET.get('filtrofantasia', None)
     meufiltronome = request.GET.get('filtronome', None)
-    cliente = Cliente.objects.all()
+    cliente = facade.list_cliente_all()
     if meufiltrofantasia:
-        cliente = Cliente.objects.all()
         cliente = cliente.filter(Fantasia__icontains=meufiltrofantasia)
     elif meufiltronome:
-        cliente = Cliente.objects.all()
         cliente = cliente.filter(Nome__icontains=meufiltronome)
-    return render(
-        request, 'clientes/index.html', {
-            'cliente': cliente,
-        }
-    )
+    return render(request, 'clientes/index.html', {'cliente': cliente})
 
 
 def consultacliente(request, idcli):
@@ -38,33 +33,21 @@ def consultacliente(request, idcli):
     # Seleciona a tabela completa cliente e cria uma list apenas com a categoria
     tabelaveiculocompleta = TabelaVeiculo.objects.filter(idCliente=idcli)
     tabelaveiculocompletalista = []
-    for linhas in tabelaveiculocompleta.values_list(
-            'idCategoriaVeiculo_id', flat=True):
+    for linhas in tabelaveiculocompleta.values_list('idCategoriaVeiculo_id', flat=True):
         tabelaveiculocompletalista.append(linhas)
-
     tabelaveiculo = TabelaVeiculo.objects.filter(
         idCliente=idcli)
-
     tabelacapacidade = TabelaCapacidade.objects.filter(idCliente=idcli)
     tabelaperimetro = TabelaPerimetro.objects.filter(idCliente=idcli)
     veiculo = 'Vazia'
-
     if request.method == 'POST':
         return redirect('consultacliente', idcli)
-    return render(
-        request, 'clientes/consultacliente.html', {'cliente': cliente,
-                                            'fonecontatocliente': fonecontatocliente,
-                                            'emailcontatocliente': emailcontatocliente,
-                                            'cobrancacliente': cobrancacliente,
-                                            'categoriaveiculo': categoriaveiculo,
-                                            'tabela': tabela,
-                                            'tabelaveiculocompletalista': tabelaveiculocompletalista,
-                                            'tabelaveiculo': tabelaveiculo,
-                                            'tabelacapacidade': tabelacapacidade,
-                                            'tabelaperimetro': tabelaperimetro,
-                                            'veiculo': veiculo
-                                            }
-    )
+    contexto = {'cliente': cliente, 'fonecontatocliente': fonecontatocliente,
+                'emailcontatocliente': emailcontatocliente, 'cobrancacliente': cobrancacliente,
+                'categoriaveiculo': categoriaveiculo, 'tabela': tabela,
+                'tabelaveiculocompletalista': tabelaveiculocompletalista, 'tabelaveiculo': tabelaveiculo,
+                'tabelacapacidade': tabelacapacidade, 'tabelaperimetro': tabelaperimetro, 'veiculo': veiculo}
+    return render(request, 'clientes/consultacliente.html', contexto)
 
 
 def criacliente(request):
