@@ -1,13 +1,6 @@
 from django import forms
-from .models import Cliente,\
-    FoneContatoCliente,\
-    EMailContatoCliente,\
-    Cobranca,\
-    Tabela,\
-    TabelaVeiculo,\
-    TabelaCapacidade,\
-    TabelaPerimetro, \
-    FormaPagamento
+from .models import Cliente, FoneContatoCliente, EMailContatoCliente, Cobranca, Tabela, TabelaVeiculo, \
+    TabelaCapacidade, TabelaPerimetro, FormaPagamento
 
 TIPOFONE = [
     ('WHATSAPP', 'WHATSAPP'),
@@ -348,23 +341,11 @@ class CadastraTabela(forms.ModelForm):
 
 class CadastraTabelaVeiculo(forms.ModelForm):
     class Meta:
+        fields = ('PorcentagemCobra', 'PorcentagemPaga', 'HoraCobra', 'HoraPaga', 'HoraMinimo', 'KMCobra', 'KMPaga',
+                  'KMMinimo', 'EntregaCobra', 'EntregaPaga', 'EntregaMinimo', 'EntregaKGCobra', 'EntregaKGPaga',
+                  'EntregaVolumeCobra', 'EntregaVolumePaga', 'SaidaCobra', 'SaidaPaga' , 'idCliente',
+                  'idCategoriaVeiculo')
         model = TabelaVeiculo
-        fields = ('PorcentagemCobra',
-                  'PorcentagemPaga',
-                  'HoraCobra',
-                  'HoraPaga',
-                  'HoraMinimo',
-                  'KMCobra',
-                  'KMPaga',
-                  'KMMinimo',
-                  'EntregaCobra',
-                  'EntregaPaga',
-                  'EntregaMinimo',
-                  'SaidaCobra',
-                  'SaidaPaga',
-                  'idCliente',
-                  'idCategoriaVeiculo'
-                  )
         labels = {
             'PorcentagemCobra': 'PORCENTAGEM DAS NOTAS À RECEBER',
             'PorcentagemPaga': 'PORCENTAGEM DAS NOTAS À PAGAR',
@@ -377,108 +358,40 @@ class CadastraTabelaVeiculo(forms.ModelForm):
             'EntregaCobra': 'VALOR DA ENTREGA À RECEBER',
             'EntregaPaga': 'VALOR DA ENTREGA À PAGAR',
             'EntregaMinimo': 'MÍNIMO DE ENTREGAS',
+            'EntregaKGCobra': 'VALOR KG À RECEBER',
+            'EntregaKGPaga': 'VALOR KG À PAGAR',
+            'EntregaVolumeCobra': 'VALOR VOLUME À RECEBER',
+            'EntregaVolumePaga': 'VALOR VOLUME À PAGAR',
             'SaidaCobra': 'VALOR DA SAÍDA À RECEBER',
             'SaidaPaga': 'VALOR DA SAÍDA À PAGAR'
         }
         widgets = {
-            'PorcentagemCobra': forms.NumberInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'PORCENTAGEM DAS NOTAS À RECEBER',
-                    'step': '1',
-                }
-            ),
-            'PorcentagemPaga': forms.NumberInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'PORCENTAGEM DAS NOTAS À PAGAR',
-                }
-            ),
-            'HoraCobra': forms.NumberInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'HORA COBRA:',
-                }
-            ),
-            'HoraPaga': forms.NumberInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'HORA PAGA:',
-                }
-            ),
-            'HoraMinimo': MeuTimeInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'HORA MÍNIMO:',
-                }
-            ),
-            'KMCobra': forms.NumberInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'KILOMETRAGEM COBRA:',
-                }
-            ),
-            'KMPaga': forms.NumberInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'KILOMETRAGEM PAGA:',
-                }
-            ),
-            'KMMinimo': forms.NumberInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'KILOMETRAGEM MÍNIMO:',
-                }
-            ),
-            'EntregaCobra': forms.NumberInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'ENTREGA COBRA:',
-                }
-            ),
-            'EntregaPaga': forms.NumberInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'ENTREGA PAGA:',
-                }
-            ),
-            'EntregaMinimo': forms.NumberInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'ENTREGA MÍNIMO:',
-                }
-            ),
-            'SaidaCobra': forms.NumberInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'SAÍDA COBRA:',
-                }
-            ),
-            'SaidaPaga': forms.NumberInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'SAÍDA PAGA:',
-                }
-            ),
-            'idCliente': forms.HiddenInput(
-                attrs={
-                }
-            ),
-            'idCategoriaVeiculo': forms.HiddenInput(
-                attrs={
-                }
-            ),
+            'PorcentagemCobra': forms.NumberInput(attrs={'class': 'formfields', 'step': '1'}),
+            'PorcentagemPaga': forms.NumberInput(attrs={'class': 'formfields'}),
+            'HoraCobra': forms.NumberInput(attrs={'class': 'formfields'}),
+            'HoraPaga': forms.NumberInput(attrs={'class': 'formfields'}),
+            'HoraMinimo': MeuTimeInput(attrs={'class': 'formfields'}),
+            'KMCobra': forms.NumberInput(attrs={'class': 'formfields'}),
+            'KMPaga': forms.NumberInput(attrs={'class': 'formfields'}),
+            'KMMinimo': forms.NumberInput(attrs={'class': 'formfields'}),
+            'EntregaCobra': forms.NumberInput(attrs={'class': 'formfields'}),
+            'EntregaPaga': forms.NumberInput(attrs={'class': 'formfields'}),
+            'EntregaMinimo': forms.NumberInput(attrs={'class': 'formfields'}),
+            'EntregaKGCobra': forms.NumberInput(attrs={'class': 'formfields'}),
+            'EntregaKGPaga': forms.NumberInput(attrs={'class': 'formfields'}),
+            'EntregaVolumeCobra': forms.NumberInput(attrs={'class': 'formfields'}),
+            'EntregaVolumePaga': forms.NumberInput(attrs={'class': 'formfields'}),
+            'SaidaCobra': forms.NumberInput(attrs={'class': 'formfields'}),
+            'SaidaPaga': forms.NumberInput(attrs={'class': 'formfields'}),
+            'idCliente': forms.HiddenInput(attrs={}),
+            'idCategoriaVeiculo': forms.HiddenInput(attrs={}),
         }
 
 
 class CadastraTabelaCapacidade(forms.ModelForm):
     class Meta:
         model = TabelaCapacidade
-        fields = ('CapacidadeInicial',
-                  'CapacidadeFinal',
-                  'CapacidadeCobra',
-                  'CapacidadePaga',
-                  'idCliente'
+        fields = ('CapacidadeInicial', 'CapacidadeFinal', 'CapacidadeCobra', 'CapacidadePaga', 'idCliente'
                   )
         labels = {
             'CapacidadeInicial': 'CAPACIDADE (KGs) INICIAL',

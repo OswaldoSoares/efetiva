@@ -395,19 +395,19 @@
             <span>TABELA VEÍCULOS</span>
         </header>
         <main>
-            {% for itens in categoriaveiculo %}
-            {% if not itens.idCategoria in tabelaveiculocompletalista %}
+            {% for itenscategoria in categoriaveiculo %}
+            {% if not itenscategoria.idCategoria in tabelaveiculocompletalista %}
             <div class="card-veiculo card-base2">
                 <header>
-                    <span><b>{{ itens.Categoria }}</b></span>
+                    <span><b>{{ itenscategoria.Categoria }}</b></span>
                 </header>
                 <section>
                     <span><b>VEÍCULO SEM TABELA</b></span>
                 </section>
                 <footer>
                     <button class="btn btn-primary btn-xs js-criatabelaveiculo" name="naotemtabela"
-                            idveiculo="{{ itens.idCategoria }}" idcliente="{{ itenstabela.idCliente_id }}"
-                            categoria="{{ itens.Categoria }}" data-url="{% url 'criatabelaveiculo' %}"
+                            idveiculo="{{ itenscategoria.idCategoria }}" idcliente="{{ itens.idCliente }}"
+                            categoria="{{ itenscategoria.Categoria }}" data-url="{% url 'criatabelaveiculo' %}"
                             idclick="clientetabelaveiculo">
                         <span class="glyphicon glyphicon-plus"></span>
                     </button>
@@ -415,13 +415,13 @@
             </div>
             {% endif %}
             {% endfor %}
-            {% for itens in categoriaveiculo %}
-            {% if itens.idCategoria in tabelaveiculocompletalista %}
+            {% for itenscategoria in categoriaveiculo %}
+            {% if itenscategoria.idCategoria in tabelaveiculocompletalista %}
             <div class="card-veiculo card-base2">
                 {% for itenstabela in tabelaveiculo %}
-                {% if itenstabela.idCategoriaVeiculo_id == itens.idCategoria %}
+                {% if itenstabela.idCategoriaVeiculo_id == itenscategoria.idCategoria %}
                 <header>
-                    <span><b>{{ itens.Categoria }}</b></span><br>
+                    <span><b>{{ itenscategoria.Categoria }}</b></span><br>
                 </header>
                 <section>
                     <div class="section-itens">
@@ -469,6 +469,22 @@
                         <span>{{ itenstabela.EntregaMinimo }}</span>
                     </div>
                     <div class="section-itens">
+                        <span><b>ENTREGAS KG - RECEBE</b></span>
+                        <span>{{ itenstabela.EntregaKGCobra }}</span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>ENTREGAS KG - PAGA</b></span>
+                        <span>{{ itenstabela.EntregaKGPaga }}</span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>ENTREGAS VOLUME - RECEBE</b></span>
+                        <span>{{ itenstabela.EntregaVolumeCobra }}</span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>ENTREGAS VOLUME - PAGA</b></span>
+                        <span>{{ itenstabela.EntregaVolumePaga }}</span>
+                    </div>
+                    <div class="section-itens">
                         <span><b>SAIDA - RECEBE</b></span>
                         <span>R$ {{ itenstabela.SaidaCobra }}</span>
                     </div>
@@ -478,7 +494,7 @@
                     </div>
                 </section>
                 <footer>
-                    <button class="btn btn-success btn-xs js-editatabelaveiculo"
+                    <button class="btn btn-success btn-xs js-editatabelaveiculo" idcliente="{{ itens.idCliente }}"
                             idtabelaveiculo="{{ itenstabela.idTabelaVeiculo }}"
                             data-url="{% url 'editatabelaveiculo' itenstabela.idTabelaVeiculo %}" data-toggle="modal"
                             data-target="#myModalAtualizaTabelaVeiculoCliente" idclick="clientetabelaveiculo">
