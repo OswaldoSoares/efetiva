@@ -228,12 +228,6 @@ def consultaminuta(request, idmin):
     valortaxaexpedicao = list(tabelacliente.values('TaxaExpedicao')[0].values())[0]
     valorajudanterecebe = list(tabelacliente.values('AjudanteCobra')[0].values())[0]
     valorajudantepaga = list(tabelacliente.values('AjudantePaga')[0].values())[0]
-    valorentrega_recebe = list(tabelacliente.values('EntregaCobra')[0].values())[0]
-    valorentregakg_recebe = list(tabelacliente.values('EntregaKGCobra')[0].values())[0]
-    valorentregavolume_recebe = list(tabelacliente.values('EntregaVolumeCobra')[0].values())[0]
-    valorentrega_paga = list(tabelacliente.values('EntregaPaga')[0].values())[0]
-    valorentregakg_paga = list(tabelacliente.values('EntregaKGPaga')[0].values())[0]
-    valorentregavolume_paga = list(tabelacliente.values('EntregaVolumePaga')[0].values())[0]
     # Cria queryset obj tabela veículo
     tabelaveiculo = TabelaVeiculo.objects.filter(idCliente=idcliente, idCategoriaVeiculo=idcategoriaveiculo)
     inicialkm = list(minuta.values('KMInicial')[0].values())[0]
@@ -272,6 +266,12 @@ def consultaminuta(request, idmin):
         valorhorapaga = list(tabelaveiculo.values('HoraPaga')[0].values())[0]
         valorkmrecebe = list(tabelaveiculo.values('KMCobra')[0].values())[0]
         valorkmpaga = list(tabelaveiculo.values('KMPaga')[0].values())[0]
+        valorentrega_recebe = list(tabelaveiculo.values('EntregaCobra')[0].values())[0]
+        valorentregakg_recebe = list(tabelaveiculo.values('EntregaKGCobra')[0].values())[0]
+        valorentregavolume_recebe = list(tabelaveiculo.values('EntregaVolumeCobra')[0].values())[0]
+        valorentrega_paga = list(tabelaveiculo.values('EntregaPaga')[0].values())[0]
+        valorentregakg_paga = list(tabelaveiculo.values('EntregaKGPaga')[0].values())[0]
+        valorentregavolume_paga = list(tabelaveiculo.values('EntregaVolumePaga')[0].values())[0]
         minimokm = list(tabelaveiculo.values('KMMinimo')[0].values())[0]
         # TODO VALOR DA ENTREGA MUDOU PARA TABELA DE CLIENTE 03/10/2020
         # valorentrega = list(tabelaveiculo.values('EntregaCobra')[0].values())[0]

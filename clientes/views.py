@@ -24,10 +24,10 @@ def indexcliente(request):
 
 
 def consultacliente(request, idcli):
-    cliente = Cliente.objects.filter(idCliente=idcli)
-    fonecontatocliente = FoneContatoCliente.objects.filter(idCliente=idcli)
-    emailcontatocliente = EMailContatoCliente.objects.filter(idCliente=idcli)
-    cobrancacliente = Cobranca.objects.filter(idCliente=idcli)
+    cliente, fonecontatocliente, emailcontatocliente, cobrancacliente = facade.get_cliente_idcliente(idcli)
+    # fonecontatocliente = FoneContatoCliente.objects.filter(idCliente=idcli)
+    # emailcontatocliente = EMailContatoCliente.objects.filter(idCliente=idcli)
+    # cobrancacliente = Cobranca.objects.filter(idCliente=idcli)
     categoriaveiculo = CategoriaVeiculo.objects.all()
     tabela = Tabela.objects.filter(idCliente=idcli)
     # Seleciona a tabela completa cliente e cria uma list apenas com a categoria

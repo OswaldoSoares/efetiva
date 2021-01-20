@@ -1,5 +1,5 @@
 from typing import List
-from clientes.models import Cliente
+from clientes.models import Cliente, FoneContatoCliente, EMailContatoCliente, Cobranca
 
 def list_cliente_all() -> List[Cliente]:
     """
@@ -11,8 +11,12 @@ def list_cliente_all() -> List[Cliente]:
 
 def get_cliente_idcliente(idcliente: int) -> Cliente:
     """
-
+    Get the Cliente in Models
     :param idcliente:
-    :return:
+    :return: queryset
     """
-    return Cliente.objects.get(idCliente=idcliente)
+    cliente = Cliente.objects.filter(idCliente=idcliente)
+    fonecontatocliente = FoneContatoCliente.objects.filter(idCliente=idcliente)
+    emailcontatocliente = EMailContatoCliente.objects.filter(idCliente=idcliente)
+    cobrancacliente = Cobranca.objects.filter(idCliente=idcliente)
+    return cliente, fonecontatocliente, emailcontatocliente, cobrancacliente
