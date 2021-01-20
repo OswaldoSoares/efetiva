@@ -241,101 +241,21 @@ class CadastraTabela(forms.ModelForm):
 
     class Meta:
         model = Tabela
-        fields = ('Comissao',
-                  'TaxaExpedicao',
-                  'AjudanteCobra',
-                  'AjudantePaga',
-                  'EntregaCobra',
-                  'EntregaKGCobra',
-                  'EntregaVolumeCobra',
-                  'EntregaPaga',
-                  'EntregaKGPaga',
-                  'EntregaVolumePaga',
-                  'idFormaPagamento',
-                  'idCliente'
-                  )
+        fields = ('Comissao', 'TaxaExpedicao', 'AjudanteCobra', 'AjudantePaga', 'idFormaPagamento', 'idCliente')
         labels = {
             'Comissao': 'PORCENTAGEM DA COMISSÃO',
             'TaxaExpedicao': 'TAXA EXPEDIÇÃO',
             'AjudanteCobra': 'VALOR AJUDANTE À RECEBER',
             'AjudantePaga': 'VALOR AJUDANTE À PAGAR',
-            'EntregaCobra': 'VALOR ENTREGA À RECEBER',
-            'EntregaKGCobra': 'VALOR ENTREGA KG À RECEBER',
-            'EntregaVolumeCobra': 'VALOR ENTREGA VOLUME À RECEBER',
-            'EntregaPaga': 'VALOR ENTREGA À PAGAR',
-            'EntregaKGPaga': 'VALOR ENTREGA KG À PAGAR',
-            'EntregaVolumePaga': 'VALOR ENTREGA VOLUME À PAGAR',
             'idFormaPagamento': 'FORMA DE PAGAMENTO',
         }
         widgets = {
-            'Comissao': forms.NumberInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'COMISSÃO',
-                }
-            ),
-            'TaxaExpedicao': forms.NumberInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'TAXA DE EXPEDIÇÃO'
-                }
-            ),
-            'AjudanteCobra': forms.NumberInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'VALOR AJUDANTE À RECEBER'
-                }
-            ),
-            'AjudantePaga': forms.NumberInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'VALOR AJUDANTE À PAGAR'
-                }
-            ),
-            'EntregaCobra': forms.NumberInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'VALOR ENTREGA À RECEBER'
-                }
-            ),
-            'EntregaKGCobra': forms.NumberInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'VALOR ENTREGA À RECEBER'
-                }
-            ),
-            'EntregaVolumeCobra': forms.NumberInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'VALOR ENTREGA À RECEBER'
-                }
-            ),
-            'EntregaPaga': forms.NumberInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'VALOR ENTREGA À RECEBER'
-                }
-            ),
-            'EntregaKGPaga': forms.NumberInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'VALOR ENTREGA À RECEBER'
-                }
-            ),
-            'EntregaVolumePaga': forms.NumberInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'VALOR ENTREGA À RECEBER'
-                }
-            ),
-            'idFormaPagamento': forms.Select(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'FORMA DE PAGAMENTO',
-                }
-            ),
-            'idCliente': forms.HiddenInput(
-            )
+            'Comissao': forms.NumberInput(attrs={'class': 'formfields'}),
+            'TaxaExpedicao': forms.NumberInput(attrs={'class': 'formfields'}),
+            'AjudanteCobra': forms.NumberInput(attrs={'class': 'formfields'}),
+            'AjudantePaga': forms.NumberInput(attrs={'class': 'formfields'}),
+            'idFormaPagamento': forms.Select(attrs={'class': 'formfields'}),
+            'idCliente': forms.HiddenInput()
         }
 
 
@@ -391,8 +311,7 @@ class CadastraTabelaVeiculo(forms.ModelForm):
 class CadastraTabelaCapacidade(forms.ModelForm):
     class Meta:
         model = TabelaCapacidade
-        fields = ('CapacidadeInicial', 'CapacidadeFinal', 'CapacidadeCobra', 'CapacidadePaga', 'idCliente'
-                  )
+        fields = ('CapacidadeInicial', 'CapacidadeFinal', 'CapacidadeCobra', 'CapacidadePaga', 'idCliente')
         labels = {
             'CapacidadeInicial': 'CAPACIDADE (KGs) INICIAL',
             'CapacidadeFinal': 'CAPACIDADE (KGs) FINAL',
@@ -400,45 +319,18 @@ class CadastraTabelaCapacidade(forms.ModelForm):
             'CapacidadePaga': 'CAPACIDADE PAGA',
         }
         widgets = {
-            'CapacidadeInicial': forms.NumberInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'CAPACIDADE (KGs) INICIAL:',
-                    'readonly': True,
-                }
-            ),
-            'CapacidadeFinal': forms.NumberInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'CAPACIDADE (KGs) FINAL:',
-                }
-            ),
-            'CapacidadeCobra': forms.NumberInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'CAPACIDADE COBRA:',
-                }
-            ),
-            'CapacidadePaga': forms.NumberInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'CAPACIDADE PAGA:',
-                }
-            ),
-            'idCliente': forms.HiddenInput(
-            )
+            'CapacidadeInicial': forms.NumberInput(attrs={'class': 'formfields', 'readonly': True}),
+            'CapacidadeFinal': forms.NumberInput(attrs={'class': 'formfields'}),
+            'CapacidadeCobra': forms.NumberInput(attrs={'class': 'formfields'}),
+            'CapacidadePaga': forms.NumberInput(attrs={'class': 'formfields'}),
+            'idCliente': forms.HiddenInput()
         }
 
 
 class CadastraTabelaPerimetro(forms.ModelForm):
     class Meta:
         model = TabelaPerimetro
-        fields = ('PerimetroInicial',
-                  'PerimetroFinal',
-                  'PerimetroCobra',
-                  'PerimetroPaga',
-                  'idCliente'
-                  )
+        fields = ('PerimetroInicial', 'PerimetroFinal', 'PerimetroCobra', 'PerimetroPaga', 'idCliente')
         labels = {
             'PerimetroInicial': 'PERIMETRO (KMs) INICIAL',
             'PerimetroFinal': 'PERIMETRO (KMs) FINAL',
@@ -449,20 +341,17 @@ class CadastraTabelaPerimetro(forms.ModelForm):
             'PerimetroInicial': forms.NumberInput(
                 attrs={
                     'class': 'formfields',
-                    # 'placeholder': 'PERIMETRO (KMs) INICIAL:',
                     'readonly': True,
                 }
             ),
             'PerimetroFinal': forms.NumberInput(
                 attrs={
                     'class': 'formfields',
-                    # 'placeholder': 'PERIMETRO (KMs) FINAL:',
                 }
             ),
             'PerimetroCobra': forms.NumberInput(
                 attrs={
                     'class': 'formfields',
-                    # 'placeholder': 'PERIMETRO COBRA:',
                 }
             ),
             'PerimetroPaga': forms.NumberInput(

@@ -47,7 +47,6 @@ def horascobra(horai, horaf, datam, horam):
             totalhoras = datafinal - datainicial
     if totalhoras > minimohoras:
         excedehoras = totalhoras - minimohoras
-    print(totalhoras)
     return totalhoras, minimohoras, excedehoras
 
 
@@ -120,10 +119,10 @@ def cria_minuta_fatura(valor, idminuta):
     :param :
     :return:
     """
-    minuta = get_object_or_404(Minuta, idMinuta=idminuta)
+    minuta = Minuta.objects.get(idMinuta=idminuta)
     if minuta:
         obj = Minuta()
-        obj.idMinuta = minuta.idminuta
+        obj.idMinuta = minuta.idMinuta
         obj.Minuta = minuta.Minuta
         obj.DataMinuta = minuta.DataMinuta
         obj.HoraInicial = minuta.HoraInicial
@@ -254,7 +253,6 @@ def consultaminuta(request, idmin):
     porcesegurorecebe = 1.00
     porcepernoite = 100
     if tabelaveiculo:
-        print('Estive aqui')
         # Cria variavel horaminimo
         horaminimo = list(tabelaveiculo.values('HoraMinimo')[0].values())[0]
         # Cria variaveis totalhoras - minimohoras - excedehoras (Type timedelta) - geradas pela função horascobra
@@ -920,20 +918,19 @@ def fecha_minuta(request, idmin):
 
 
 def estorna_minuta(request, idmin):
-    if request.iser.is_authenticated():
-        minuta = get_object_or_404(Minuta, idMinuta=idmin)
-        if minuta.StatusMinuta == 'ABERTA':
-            pass
-        elif minuta.StatusMinuta == 'CONCLUIDA':
-            altera_status_minuta('ABERTA', idmin)
-        elif minuta.StatusMinuta == 'FECHADA':
-            altera_status_minuta('ABERTA', idmin)
-            itens_minuta_recebe_excluir = MinutaItens.objects.filter(idMinuta=idmin).filter(TipoItens='RECEBE')
-            for itens in itens_minuta_recebe_excluir:
-                excluiminutaitens(itens.idMinutaItens)
-            itens_minuta_paga_excluir = MinutaItens.objects.filter(idMinuta=idmin).filter(RecebePaga='P')
-            for itens in itens_minuta_paga_excluir:
-                excluiminutaitens(itens.idMinutaItens)
+    minuta = get_object_or_404(Minuta, idMinuta=idmin)
+    if minuta.StatusMinuta == 'ABERTA':
+        pass
+    elif minuta.StatusMinuta == 'CONCLUIDA':
+        altera_status_minuta('ABERTA', idmin)
+    elif minuta.StatusMinuta == 'FECHADA':
+        altera_status_minuta('ABERTA', idmin)
+        itens_minuta_recebe_excluir = MinutaItens.objects.filter(idMinuta=idmin).filter(TipoItens='RECEBE')
+        for itens in itens_minuta_recebe_excluir:
+            excluiminutaitens(itens.idMinutaItens)
+        itens_minuta_paga_excluir = MinutaItens.objects.filter(idMinuta=idmin).filter(RecebePaga='P')
+        for itens in itens_minuta_paga_excluir:
+            excluiminutaitens(itens.idMinutaItens)
     return redirect('index_minuta')
 
 
@@ -1200,7 +1197,6 @@ def filtraminutaveiculo(request):
     for x in veiculo:
         listaveiculo.append(x)
     context = {'listaveiculo': listaveiculo}
-    # print(listaveiculo)
     data['html_form'] = render_to_string(
         'minutas/editaminutaveiculolista.html', context, request=request)
     return JsonResponse(data)
