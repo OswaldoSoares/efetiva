@@ -27,8 +27,8 @@
             </div>
         </header>
         <main>
-            {% if emailcontatocliente %}
-            {% for itensemail in emailcontatocliente %}
+            {% if email_cliente %}
+            {% for itensemail in email_cliente %}
             <div class="card-email card-base1 card-clientes">
                 <header>
                     <span><b>E-MAIL</b></span>
@@ -93,8 +93,8 @@
                 </footer>
             </div>
             {% endif %}
-            {% if fonecontatocliente %}
-            {% for itensfone in fonecontatocliente %}
+            {% if fone_cliente %}
+            {% for itensfone in fone_cliente %}
             <div class="card-telefone card-base1 card-clientes">
                 <header>
                     <span><b>TELEFONE</b></span>
@@ -153,8 +153,8 @@
                 </footer>
             </div>
             {% endif %}
-            {% if cobrancacliente %}
-            {% for itenscobranca in cobrancacliente %}
+            {% if cobranca_cliente %}
+            {% for itenscobranca in cobranca_cliente %}
             <div class="card-endereco card-base1 card-clientes">
                 <header>
                     <span><b>ENDEREÇO DE COBRANÇA</b></span>
@@ -214,8 +214,8 @@
             <span>TABELA CLIENTE</span>
         </header>
         <main>
-            {% if tabela %}
-            {% for itenstabela in tabela %}
+            {% if tabela_cliente %}
+            {% for itenstabela in tabela_cliente %}
             <div class="card-tabela card-base2">
                 <header class="consulta-tabela">
                     <span><b>TIPOS DE COBRANÇA E PAGAMENTO</b></span>
@@ -309,8 +309,8 @@
             </div>
             {% endfor %}
             {% endif %}
-            {% if tabela %}
-            {% for itenstabela in tabela %}
+            {% if tabela_cliente %}
+            {% for itenstabela in tabela_cliente %}
             <div class="card-tabela card-base2">
                 <header class="consulta-tabela">
                     <span><b>TABELA</b></span>
@@ -371,8 +371,8 @@
             <span>TABELA VEÍCULOS</span>
         </header>
         <main>
-            {% for itenscategoria in categoriaveiculo %}
-            {% if not itenscategoria.idCategoria in tabelaveiculocompletalista %}
+            {% for itenscategoria in categoria_veiculo %}
+            {% if not itenscategoria.idCategoria in list_categoria_cliente %}
             <div class="card-veiculo card-base2">
                 <header>
                     <span><b>{{ itenscategoria.Categoria }}</b></span>
@@ -391,10 +391,10 @@
             </div>
             {% endif %}
             {% endfor %}
-            {% for itenscategoria in categoriaveiculo %}
-            {% if itenscategoria.idCategoria in tabelaveiculocompletalista %}
+            {% for itenscategoria in categoria_veiculo %}
+            {% if itenscategoria.idCategoria in list_categoria_cliente %}
             <div class="card-veiculo card-base2">
-                {% for itenstabela in tabelaveiculo %}
+                {% for itenstabela in tabela_veiculo_cliente %}
                 {% if itenstabela.idCategoriaVeiculo_id == itenscategoria.idCategoria %}
                 <header>
                     <span><b>{{ itenscategoria.Categoria }}</b></span><br>
@@ -489,8 +489,8 @@
             <span>PERÍMETRO E CAPACIDADE</span>
         </header>
         <main>
-            {% if tabelaperimetro %}
-            {% for itenstabelaperimetro in tabelaperimetro %}
+            {% if tabela_perimetro_cliente %}
+            {% for itenstabelaperimetro in tabela_perimetro_cliente %}
             <div class="card-tabela card-base1">
                 <header>
                     <span><b>PERÍMETRO</b></span>
@@ -556,8 +556,8 @@
                 </footer>
             </div>
             {% endif %}
-            {% if tabelacapacidade %}
-            {% for itenstabelacapacidade in tabelacapacidade %}
+            {% if tabela_capacidade_cliente %}
+            {% for itenstabelacapacidade in tabela_capacidade_cliente %}
             <div class="card-tabela card-base1">
                 <header>
                     <span><b>CAPACIDADE</b></span>

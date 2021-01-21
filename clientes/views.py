@@ -24,29 +24,9 @@ def indexcliente(request):
 
 
 def consultacliente(request, idcli):
-    cliente, fonecontatocliente, emailcontatocliente, cobrancacliente = facade.get_cliente_idcliente(idcli)
-    # fonecontatocliente = FoneContatoCliente.objects.filter(idCliente=idcli)
-    # emailcontatocliente = EMailContatoCliente.objects.filter(idCliente=idcli)
-    # cobrancacliente = Cobranca.objects.filter(idCliente=idcli)
-    categoriaveiculo = CategoriaVeiculo.objects.all()
-    tabela = Tabela.objects.filter(idCliente=idcli)
-    # Seleciona a tabela completa cliente e cria uma list apenas com a categoria
-    tabelaveiculocompleta = TabelaVeiculo.objects.filter(idCliente=idcli)
-    tabelaveiculocompletalista = []
-    for linhas in tabelaveiculocompleta.values_list('idCategoriaVeiculo_id', flat=True):
-        tabelaveiculocompletalista.append(linhas)
-    tabelaveiculo = TabelaVeiculo.objects.filter(
-        idCliente=idcli)
-    tabelacapacidade = TabelaCapacidade.objects.filter(idCliente=idcli)
-    tabelaperimetro = TabelaPerimetro.objects.filter(idCliente=idcli)
-    veiculo = 'Vazia'
-    if request.method == 'POST':
-        return redirect('consultacliente', idcli)
-    contexto = {'cliente': cliente, 'fonecontatocliente': fonecontatocliente,
-                'emailcontatocliente': emailcontatocliente, 'cobrancacliente': cobrancacliente,
-                'categoriaveiculo': categoriaveiculo, 'tabela': tabela,
-                'tabelaveiculocompletalista': tabelaveiculocompletalista, 'tabelaveiculo': tabelaveiculo,
-                'tabelacapacidade': tabelacapacidade, 'tabelaperimetro': tabelaperimetro, 'veiculo': veiculo}
+    contexto = facade.create_cliente_context(idcli)
+    contexto_veiculo = {'categoria_veiculo': facade.get_categoria_veiculo()}
+    contexto.update(contexto_veiculo)
     return render(request, 'clientes/consultacliente.html', contexto)
 
 

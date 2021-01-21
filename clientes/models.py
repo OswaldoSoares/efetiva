@@ -141,12 +141,6 @@ class Tabela(models.Model):
     AjudantePaga = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     phkescCobra = models.CharField(max_length=6, default='000000')
     phkescPaga = models.CharField(max_length=6, default='000000')
-    EntregaCobra = models.DecimalField(max_digits=8, decimal_places=2, default=0)
-    EntregaKGCobra = models.DecimalField(max_digits=8, decimal_places=2, default=0)
-    EntregaVolumeCobra = models.DecimalField(max_digits=8, decimal_places=2, default=0)
-    EntregaPaga = models.DecimalField(max_digits=8, decimal_places=2, default=0)
-    EntregaKGPaga = models.DecimalField(max_digits=8, decimal_places=2, default=0)
-    EntregaVolumePaga = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     idFormaPagamento = models.ForeignKey(FormaPagamento, on_delete=models.PROTECT, verbose_name='FORMA DE PAGAMENTO')
     idCliente = models.OneToOneField(Cliente, on_delete=models.CASCADE)
 
