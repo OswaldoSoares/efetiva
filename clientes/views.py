@@ -23,6 +23,7 @@ def indexcliente(request):
     return render(request, 'clientes/index.html', {'cliente': cliente})
 
 
+@has_permission_decorator('modulo_clientes')
 def consultacliente(request, idcli):
     contexto = facade.create_cliente_context(idcli)
     contexto_veiculo = {'categoria_veiculo': facade.get_categoria_veiculo()}

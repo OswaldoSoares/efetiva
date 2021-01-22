@@ -1079,7 +1079,7 @@ main .card-base2 {
     color: var(--corprincipal);
     border: 2px solid var(--corprincipal);
     width: 20%;
-    min-width: 300px;
+    min-width: 290px;
     display: flex;
     flex-direction: column;
     align-items: center;

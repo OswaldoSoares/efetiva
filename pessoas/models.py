@@ -91,11 +91,12 @@ class ContaPessoal(models.Model):
     TipoConta = models.CharField(max_length=8, blank=True)
     Titular = models.CharField(max_length=50, blank=True)
     Documento = models.CharField(max_length=25, blank=True)
+    PIX = models.CharField(max_length=20, blank=True)
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'ContaPessoal'
-        ordering = ['idPessoal', 'Banco', 'Agencia', 'Conta']
+        ordering = ['idPessoal', 'Banco', 'Agencia', 'Conta', 'PIX']
 
     def __str__(self):
         return (self.ContaPessoal)

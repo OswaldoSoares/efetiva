@@ -7,9 +7,9 @@ from veiculos.models import CategoriaVeiculo
 
 def create_cliente_context(idcliente: int):
     """
-    
+    Create context queryset with all models Cliente
     :param idcliente: 
-    :return: 
+    :return: dict with queryset
     """
     cliente = get_cliente(idcliente)
     fone_cliente = get_cliente_telefone(idcliente)
@@ -117,9 +117,9 @@ def get_cliente_tabela_capacidade(idcliente: int):
 
 def list_categoria_tabela_veiculo_cliente(idcliente: int):
     """
-
+    List Categoria of Veiculos registered
     :param idcliente:
-    :return:
+    :return: list of Categorias
     """
     veiculos_categoria = get_cliente_tabela_veiculo(idcliente)
     veiculos_categoria_existe = [itens.idCategoriaVeiculo_id for itens in veiculos_categoria]
