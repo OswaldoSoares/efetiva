@@ -214,6 +214,7 @@ $(document).ready(function(){
             },
             success: function(data){
                 $("#modal-formulario .modal-content").html(data.html_form);
+                console.log(data)
                 if ($('#id_NotaGuia').val() != 0) {
                     $('#id_Nome').attr('readonly', 'readonly')
                     $('#id_Estado').attr('readonly', 'readonly')

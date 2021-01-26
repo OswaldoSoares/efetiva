@@ -16,13 +16,13 @@
             </div>
             <div class="consulta_headerbtn">
                 {% if itens.StatusMinuta == 'ABERTA' %}
-                    {% if user|can:'edita_minuta' %}
-                    <button class="btn btn-success js-editaminuta"
-                            idminuta="{{ itens.idMinuta }}"
-                            data-url="{% url 'editaminuta' itens.idMinuta %}">
-                        <span class="glyphicon glyphicon-edit"></span>
-                    </button>
-                    {% endif %}
+                {% if user|can:'edita_minuta' %}
+                <button class="btn btn-success js-editaminuta"
+                        idminuta="{{ itens.idMinuta }}"
+                        data-url="{% url 'editaminuta' itens.idMinuta %}">
+                    <span class="glyphicon glyphicon-edit"></span>
+                </button>
+                {% endif %}
                 {% endif %}
                 <button class="btn btn-warning js-imprimeminuta"
                         idminuta="{{ itens.idMinuta }}"
@@ -61,7 +61,7 @@
                 </section>
                 {% if itens.StatusMinuta == 'ABERTA' %}
                 <footer>
-                    {% if user|can:'motorrista_minuta' %}
+                    {% if user|can:'motorista_minuta' %}
                     {% if motorista_da_minuta %}
                     {% for itensmotorista in motorista_da_minuta %}
                     <button class="btn btn-danger btn-xs js-excluiminutamotorista"
@@ -718,6 +718,8 @@
         </div>
         {% endif %}
     </div>
+    {% endif %}
+    {% endfor %}
     <!-- DIV MODAL -->
     <div class="modal fade" id="modal-formulario" >
         <div class="modal-dialog">
@@ -726,7 +728,5 @@
             </div>
         </div>
     </div>
-    {% endif %}
-    {% endfor %}
 </main>
 {% endblock %}
