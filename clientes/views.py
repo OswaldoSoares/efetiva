@@ -217,12 +217,12 @@ def editaphkesc(request, idtabcli):
         obj.AjudantePaga = tabelacliente.AjudantePaga
         obj.phkescCobra = phkesccobra
         obj.phkescPaga = phkescpaga
-        obj.EntregaCobra = tabelacliente.EntregaCobra
-        obj.EntregaKGCobra = tabelacliente.EntregaKGCobra
-        obj.EntregaVolumeCobra = tabelacliente.EntregaVolumeCobra
-        obj.EntregaPaga = tabelacliente.EntregaPaga
-        obj.EntregaKGPaga = tabelacliente.EntregaKGPaga
-        obj.EntregaVolumePaga = tabelacliente.EntregaVolumePaga
+        # obj.EntregaCobra = tabelacliente.EntregaCobra
+        # obj.EntregaKGCobra = tabelacliente.EntregaKGCobra
+        # obj.EntregaVolumeCobra = tabelacliente.EntregaVolumeCobra
+        # obj.EntregaPaga = tabelacliente.EntregaPaga
+        # obj.EntregaKGPaga = tabelacliente.EntregaKGPaga
+        # obj.EntregaVolumePaga = tabelacliente.EntregaVolumePaga
         obj.idFormaPagamento = tabelacliente.idFormaPagamento
         obj.idCliente = tabelacliente.idCliente
         obj.save()
