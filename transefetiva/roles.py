@@ -40,7 +40,7 @@ km_minuta = 'km_minuta'
 despesa_minuta = 'despesa_minuta'
 entrega_minuta = 'entrega_minuta'
 comentario_minuta = 'comentario_minuta'
-finalizar_minuta = 'finalizar_minuta'
+conclui_minuta = 'conclui_minuta'
 demonstrativo_minuta = 'demonstrativo_minuta'
 fechar_minuta = 'fechar_minuta'
 cria_veiculo = 'cria_veiculo'
@@ -90,7 +90,7 @@ class Diretor(AbstractUserRole):
         despesa_minuta: True,
         entrega_minuta: True,
         comentario_minuta: True,
-        finalizar_minuta: True,
+        conclui_minuta: True,
         demonstrativo_minuta: True,
         fechar_minuta: True,
         cria_veiculo: True,
@@ -131,7 +131,7 @@ class Secretaria(AbstractUserRole):
         despesa_minuta: True,
         entrega_minuta: True,
         comentario_minuta: True,
-        finalizar_minuta: True,
+        conclui_minuta: True,
         cria_veiculo: True,
         edita_veiculo: True,
         exclui_veiculo: True,
@@ -146,5 +146,4 @@ class Motorista(AbstractUserRole):
         despesa_minuta: True,
         entrega_minuta: True,
         comentario_minuta: True,
-        finalizar_minuta: True,
     }
