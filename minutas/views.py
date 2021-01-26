@@ -935,8 +935,8 @@ def estorna_minuta(request, idmin):
 
 
 def conclui_minuta(request, idmin):
-    if request.user.is_authenticated():
-        altera_status_minuta('CONCLUIDA', idmin)
+    # if request.user.is_authenticated():
+    altera_status_minuta('CONCLUIDA', idmin)
     return redirect('consultaminuta', idmin)
 
 

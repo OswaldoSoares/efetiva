@@ -23,6 +23,7 @@ class Pessoal(models.Model):
     Pai = models.CharField(max_length=50, blank=True, null=True)
     Categoria = models.CharField(max_length=15)
     TipoPgto = models.CharField(max_length=25, blank=False)
+    StatusPessoal = models.BooleanField(default=True)
     Foto = models.ImageField(upload_to=get_file_path, null=True, blank=True)
 
     class Meta:

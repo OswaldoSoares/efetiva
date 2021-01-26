@@ -27,7 +27,8 @@
             </div>
         </header>
         <main>
-            <div class="card-foto card-base2 card-pessoas">
+            <div class="card-columns">
+            <div class="card-foto card-base2 card-pessoas card">
                 <header>
                     <spaa><b>FOTO</b></spaa>
                 </header>
@@ -39,7 +40,7 @@
             </div>
             {% if docpessoa %}
             {% for itensdoc in docpessoa %}
-            <div class="card-doc card-base2 card-pessoas">
+            <div class="card-doc card-base2 card-pessoas card">
                 <header>
                     <span><b>DOCUMENTO</b></span>
                 </header>
@@ -73,7 +74,7 @@
             </div>
             {% endfor %}
             {% else %}
-            <div class="card-doc card-base2 card-pessoas">
+            <div class="card-doc card-base2 card-pessoas card">
                 <header>
                     <span><b>DOCUMENTO</b></span>
                 </header>
@@ -90,7 +91,7 @@
             {% endif %}
             {% if fonepessoa %}
             {% for itensfone in fonepessoa %}
-            <div class="card-fone card-base2 card=pessoas">
+            <div class="card-fone card-base2 card=pessoas card">
                 <header>
                     <span><b>TELEFONE</b></span>
                 </header>
@@ -126,7 +127,7 @@
             </div>
             {% endfor %}
             {% else %}
-            <div class="card-fone card-base2 card=pessoas">
+            <div class="card-fone card-base2 card=pessoas card">
                 <header>
                     <span><b>TELEFONE</b></span>
                 </header>
@@ -145,7 +146,7 @@
             {% endif %}
             {% if contapessoa %}
             {% for itensconta in contapessoa %}
-            <div class="card-conta card-base2 card-pessoas">
+            <div class="card-conta card-base2 card-pessoas card">
                 <header>
                     <span><b>CONTA BANCÁRIA</b></span>
                 </header>
@@ -197,7 +198,7 @@
             </div>
             {% endfor %}
             {% else %}
-            <div class="card-conta card-base2 card-pessoas">
+            <div class="card-conta card-base2 card-pessoas card">
                 <header>
                     <span><b>CONTA BANCÁRIA</b></span>
                 </header>
@@ -214,6 +215,7 @@
                 </footer>
             </div>
             {% endif %}
+            </div>
         </main>
     </div>
     <!-- DIV MODAL -->
