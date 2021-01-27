@@ -952,7 +952,6 @@ def criaminutamotorista(request):
         form = CadastraMinutaMotorista(request.POST)
         # Altera field idVeiculo conforme motorista escolhido
         veiculo = Veiculo.objects.filter(Motorista=request.POST.get('idPessoal'))
-        print(veiculo)
         if veiculo.count() == 1:
             idveiculo = ''
             for x in veiculo:
@@ -1047,6 +1046,8 @@ def editaminutaveiculo(request, idmin):
         form = CadastraMinutaVeiculo(request.POST)
         if form.is_valid():
             km_inicial = kmfinal_veiculo(form.cleaned_data['Veiculo'])
+            if not km_inicial:
+                km_inicial = 0
             obj = Minuta()
             obj.idMinuta = form.cleaned_data['idMinuta']
             obj.Minuta = minuta.Minuta
