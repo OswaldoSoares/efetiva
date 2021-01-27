@@ -951,33 +951,31 @@ def criaminutamotorista(request):
         idminuta = request.POST.get('idMinuta')
         form = CadastraMinutaMotorista(request.POST)
         # Altera field idVeiculo conforme motorista escolhido
-        veiculo = Veiculo.objects.filter(
-            Motorista=request.POST.get('idPessoal'))
+        veiculo = Veiculo.objects.filter(Motorista=request.POST.get('idPessoal'))
+        print(veiculo)
         if veiculo.count() == 1:
-            minuta = get_object_or_404(Minuta, idMinuta=idminuta)
-            obj = Minuta()
-            obj.idMinuta = minuta.idMinuta
-            obj.Minuta = minuta.Minuta
-            obj.DataMinuta = minuta.DataMinuta
-            obj.HoraInicial = minuta.HoraInicial
-            obj.HoraFinal = minuta.HoraFinal
-            obj.Coleta = minuta.Coleta
-            obj.Entrega = minuta.Entrega
-            obj.KMFinal = minuta.KMFinal
-            obj.Obs = minuta.Obs
-            obj.StatusMinuta = minuta.StatusMinuta
-            obj.idCategoriaVeiculo = minuta.idCategoriaVeiculo
-            obj.idCliente = minuta.idCliente
             idveiculo = ''
-            if veiculo:
-                for x in veiculo:
-                    idveiculo = x.idVeiculo
-                km_inicial = kmfinal_veiculo(idveiculo)
-            else:
-                km_inicial = 0
-            obj.KMInicial = km_inicial
-            obj.idVeiculo_id = idveiculo
-            obj.save()
+            for x in veiculo:
+                idveiculo = x.idVeiculo
+            km_inicial = kmfinal_veiculo(idveiculo)
+            if km_inicial:
+                minuta = get_object_or_404(Minuta, idMinuta=idminuta)
+                obj = Minuta()
+                obj.idMinuta = minuta.idMinuta
+                obj.Minuta = minuta.Minuta
+                obj.DataMinuta = minuta.DataMinuta
+                obj.HoraInicial = minuta.HoraInicial
+                obj.HoraFinal = minuta.HoraFinal
+                obj.Coleta = minuta.Coleta
+                obj.Entrega = minuta.Entrega
+                obj.KMInicial = km_inicial
+                obj.KMFinal = minuta.KMFinal
+                obj.Obs = minuta.Obs
+                obj.StatusMinuta = minuta.StatusMinuta
+                obj.idCategoriaVeiculo = minuta.idCategoriaVeiculo
+                obj.idCliente = minuta.idCliente
+                obj.idVeiculo_id = idveiculo
+                obj.save()
     else:
         idminuta = request.GET.get('idminuta')
         form = CadastraMinutaMotorista(
