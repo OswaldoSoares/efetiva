@@ -15,7 +15,7 @@ from .views import index_minuta, criaminuta, editaminuta, imprimeminuta, conclui
     criaminutaentrega,\
     editaminutaentrega,\
     excluiminutaentrega,\
-    filtraminutaveiculo, buscaminutaentrega, edita_comentario
+    filtraminutaveiculo, buscaminutaentrega, edita_comentario, exclui_minuta
 
 
 urlpatterns = [
@@ -133,5 +133,6 @@ urlpatterns = [
         'filtraminutaveiculo/',
         filtraminutaveiculo,
         name='filtraminutaveiculo'
-    )
+    ),
+    path('excluiminuta/<int:idminuta>/', exclui_minuta, name='excluiminuta'),
 ]

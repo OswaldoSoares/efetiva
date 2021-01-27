@@ -20,7 +20,7 @@ class Cliente(models.Model):
         ordering = ['Fantasia']
 
     def __str__(self):
-        return self.Nome
+        return self.Fantasia
 
     def save(self, *args, **kwargs):
         self.Fantasia = self.Fantasia.upper()

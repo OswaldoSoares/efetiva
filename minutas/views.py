@@ -250,6 +250,12 @@ def consultaminuta(request, idmin):
     valorcapacidadepaga = 0.00
     porceperimetrorecebe = 0.00
     porceperimetropaga = 0.00
+    valorentrega_recebe = 0.00
+    valorentregakg_recebe = 0.00
+    valorentregavolume_recebe = 0.00
+    valorentrega_paga = 0.00
+    valorentregakg_paga = 0.00
+    valorentregavolume_paga = 0.00
     porcesegurorecebe = 1.00
     porcepernoite = 100
     if tabelaveiculo:
@@ -584,7 +590,7 @@ def consultaminuta(request, idmin):
 
 def criaminuta(request):
     # Numero inicial da minuta no sistema
-    numerominuta = 7000
+    numerominuta = 2021
     if request.method == 'POST':
         form = CadastraMinuta(request.POST)
     else:
@@ -1263,3 +1269,9 @@ def salva_form(request, form, template_name, idmin):
     context = {'form': form, 'numerominuta': numerominuta, 'numeroidminuta': numeroidminuta}
     data['html_form'] = render_to_string(template_name, context, request=request)
     return JsonResponse(data)
+
+
+def exclui_minuta(request, idminuta):
+    minuta = Minuta.objects.filter(idMinuta=idminuta)
+    minuta.delete()
+    return redirect('index_minuta')

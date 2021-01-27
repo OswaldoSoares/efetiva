@@ -76,10 +76,12 @@
                                     </button>
                                     {% endif %}
                                 {% endif %}
-                                <button class="btn btn-warning btn-xs" onclick="window.location.href = '{% url 'imprimeminuta' itens.idMinuta %}'">
+                                <button class="btn btn-warning btn-xs"
+                                        onclick="window.location.href = '{% url 'imprimeminuta' itens.idMinuta %}'">
                                     <span class="glyphicon glyphicon-file"></span>
                                 </button>
-                                <button class="btn btn-primary btn-xs" onclick="window.location.href = '{% url 'consultaminuta' itens.idMinuta %}'">
+                                <button class="btn btn-primary btn-xs"
+                                        onclick="window.location.href = '{% url 'consultaminuta' itens.idMinuta %}'">
                                     <span class="glyphicon glyphicon-folder-open"></span>
                                 </button>
                             </td>
