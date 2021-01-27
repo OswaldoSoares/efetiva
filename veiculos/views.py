@@ -6,6 +6,7 @@ from rolepermissions.decorators import has_permission_decorator
 from .models import Veiculo, CategoriaVeiculo
 from pessoas.models import Pessoal, DocPessoal
 from .forms import CadastraVeiculo, CadastraCategoria
+from clientes.models import TabelaVeiculo
 
 def removeduplicadas(lista):
     novalista = list()
@@ -99,6 +100,8 @@ def exclui_categoria_veiculos(request, id):
     except:
         veiculo = ''
     contexto = {'veiculos_list': veiculo, 'categoria': categoria}
+    tabelaveiculo = TabelaVeiculo.objects.filter(idCategoriaVeiculo=id)
+    tabelaveiculo.delete()
     if request.method == 'POST':
         categoria.delete()
         return redirect('lista_categoria_veiculos')
