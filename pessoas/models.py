@@ -87,13 +87,13 @@ class FonePessoal(models.Model):
 
 class ContaPessoal(models.Model):
     idContaPessoal = models.AutoField(primary_key=True)
-    Banco = models.CharField(max_length=20)
-    Agencia = models.CharField(max_length=6)
-    Conta = models.CharField(max_length=10)
+    Banco = models.CharField(max_length=20, blank=True)
+    Agencia = models.CharField(max_length=6, blank=True)
+    Conta = models.CharField(max_length=10, blank=True)
     TipoConta = models.CharField(max_length=8, blank=True)
     Titular = models.CharField(max_length=50, blank=True)
     Documento = models.CharField(max_length=25, blank=True)
-    PIX = models.CharField(max_length=20, blank=True)
+    PIX = models.CharField(max_length=50, blank=True)
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
 
     class Meta:

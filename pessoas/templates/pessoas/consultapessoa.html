@@ -10,7 +10,8 @@
     <div class="consulta">
         <header class="consulta-header">
             <div class="consulta_headertitulo">
-                <p><b>{{ itens.Nome }} - {{ itens.DataNascimento }} - ADMISSÃO: {{ itens.DataAdmissao }}</b></p>
+                <p><b>{{ itens.Nome }} - {{ itens.DataNascimento }} {% if itens.DataAdmissao %}
+                    - ADMISSÃO: {{ itens.DataAdmissao }} {% endif %}</b></p>
             </div>
             <div class="consulta_headerbtn">
                 <button class="btn btn-success js-editapessoa" idpessoal="{{ itens.idPessoal }}" data-url="{% url 'editapessoa' itens.idPessoal %}">
@@ -150,6 +151,7 @@
                     <span><b>CONTA BANCÁRIA</b></span>
                 </header>
                 <section>
+                    {% if itensconta.Banco %}
                     <div class="section-itens">
                         <span><b>BANCO:</b></span>
                         <span><b>{{ itensconta.Banco }}</b></span>
@@ -166,6 +168,7 @@
                         <span><b>CONTA:</b></span>
                         <span><b>{{ itensconta.Conta }}</b></span>
                     </div>
+                    {% endif %}
                     <div class="section-itens">
                         <span><b>PIX:</b></span>
                         <span><b>{{ itensconta.PIX }}</b></span>
