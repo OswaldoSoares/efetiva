@@ -13,7 +13,7 @@ def get_file_path(instance, filename):
 class Pessoal(models.Model):
     idPessoal = models.AutoField(primary_key=True)
     Nome = models.CharField(max_length=50)
-    Endereco = models.CharField(max_length=35, blank=True)
+    Endereco = models.CharField(max_length=60, blank=True)
     Bairro = models.CharField(max_length=20, blank=True)
     CEP = models.CharField(max_length=9, blank=True)
     Cidade = models.CharField(max_length=25, blank=True, default='SÃO PAULO')
