@@ -1661,3 +1661,8 @@ main .usuario-out {
         column-count: 1;
     }
 }
+
+.card {
+    display: inline-block;
+    -webkit-column-break-inside: avoid ;
+}
