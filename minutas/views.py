@@ -969,9 +969,12 @@ def criaminutamotorista(request):
             obj.idCategoriaVeiculo = minuta.idCategoriaVeiculo
             obj.idCliente = minuta.idCliente
             idveiculo = ''
-            for x in veiculo:
-                idveiculo = x.idVeiculo
-            km_inicial = kmfinal_veiculo(idveiculo)
+            if veiculo:
+                for x in veiculo:
+                    idveiculo = x.idVeiculo
+                km_inicial = kmfinal_veiculo(idveiculo)
+            else:
+                km_inicial = 0
             obj.KMInicial = km_inicial
             obj.idVeiculo_id = idveiculo
             obj.save()
