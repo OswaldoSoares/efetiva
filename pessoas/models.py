@@ -65,7 +65,7 @@ class DocPessoal(models.Model):
 class FonePessoal(models.Model):
     idFonePessoal = models.AutoField(primary_key=True)
     TipoFone = models.CharField(max_length=15)
-    Fone = models.CharField(max_length=14)
+    Fone = models.CharField(max_length=20)
     Contato =models.CharField(max_length=50, blank=True)
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
 

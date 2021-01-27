@@ -32,7 +32,6 @@ def consultaveiculo(request, idvei):
         idmotorista = (x.Motorista_id)
     proprietario = Pessoal.objects.filter(idPessoal=idproprietario)
     docproprietario = DocPessoal.objects.filter(idPessoal_id=idproprietario)
-    print(docproprietario)
     motorista = Pessoal.objects.filter(idPessoal=idmotorista)
 
     return render(request, 'veiculos/consultaveiculo.html', {'veiculo': veiculo,
