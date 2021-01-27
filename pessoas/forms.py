@@ -63,6 +63,7 @@ class CadastraPessoal(forms.ModelForm):
                   'DataNascimento',
                   'Mae',
                   'Pai',
+                  'DataAdmissao',
                   'Categoria',
                   'TipoPgto',
                   'Foto'
@@ -77,6 +78,7 @@ class CadastraPessoal(forms.ModelForm):
             'DataNascimento': 'DATA DE NASCIMENTO',
             'Mae': 'NOME DA MÃE',
             'Pai': 'NOME DO PAI',
+            'DataAdmissao': 'DATA DE ADMISSÃO',
             'Categoria': 'CATEGORIA',
             'TipoPgto': 'TIPO DE PAGAMENTO',
             'Foto': 'FOTO DO COLABORADOR',
@@ -127,6 +129,13 @@ class CadastraPessoal(forms.ModelForm):
             'Pai': forms.TextInput(
                 attrs={
                     'class': 'formfields',
+                },
+            ),
+            'DataAdmissao': MeuDateInput(
+                format=('%Y-%m-%d'),
+                attrs={
+                    'class': 'formfields',
+                    'max': '2020/01/29',
                 },
             ),
             'Categoria': forms.Select(

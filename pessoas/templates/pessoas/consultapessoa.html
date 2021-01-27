@@ -10,7 +10,7 @@
     <div class="consulta">
         <header class="consulta-header">
             <div class="consulta_headertitulo">
-                <p><b>{{ itens.Nome }} - {{ itens.DataNascimento }}</b></p>
+                <p><b>{{ itens.Nome }} - {{ itens.DataNascimento }} - ADMISSÃO: {{ itens.DataAdmissao }}</b></p>
             </div>
             <div class="consulta_headerbtn">
                 <button class="btn btn-success js-editapessoa" idpessoal="{{ itens.idPessoal }}" data-url="{% url 'editapessoa' itens.idPessoal %}">
