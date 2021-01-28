@@ -342,7 +342,7 @@ def editatabelaperimetro(request, idtabper):
 
 def excluitabelaperimetro(request, idtabper):
     tabelaperimetro = get_object_or_404(TabelaPerimetro, idTabelaPerimetro=idtabper)
-    cliente = Cliente.objects.get(Nome=tabelaperimetro.idCliente)
+    cliente = Cliente.objects.get(Fantasia=tabelaperimetro.idCliente)
     data = dict()
     if request.method == "POST":
         tabelaperimetro.delete()
