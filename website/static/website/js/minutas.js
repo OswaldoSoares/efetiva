@@ -22,9 +22,7 @@ $(document).ready(function(){
                     }
                 });
             });
-
             $("#id_Propriedade").focus();   // Configura o foco inicial
-
         }, 800);
 
         $('#id_NotaGuia').change(function() {
@@ -59,7 +57,6 @@ $(document).ready(function(){
                 $('#id_Cidade').removeAttr('readonly')
             }
         });
-
         $('#id_Nota').focusout(function() {
             if ($('#id_Nota').val().toUpperCase() == 'PERIMETRO') {
                 $('#id_Estado').focus();
@@ -70,7 +67,6 @@ $(document).ready(function(){
                 $('#id_Nome').attr('readonly', 'readonly')
             }
         });
-
         $("#id_EntregaNota").click(function() {
             $('#id_NotaGuia').removeAttr('disabled');
             $('#id_NotaGuia').val("0");
@@ -148,9 +144,20 @@ $(document).ready(function(){
             $(to_id).text('R$ 0,00')
             $(hi_id).val(0.00)
         }
-//
-
         somaPerimetro();
+        // Calcula novamente o pernoite e o perimetro caso tenha alguma mudança
+        $('#to-perimetro-recebe').text('R$ ' + ($('#ta-perimetro-recebe').val() /100 * $('#mi-perimetro-recebe').val())
+        .toFixed(2).replace('.',','))
+        $('#hi-perimetro-recebe').val(($('#ta-perimetro-recebe').val() /100 * $('#mi-perimetro-recebe').val()))
+        $('#to-pernoite-recebe').text('R$ ' + ($('#ta-pernoite-recebe').val() /100 * $('#mi-pernoite-recebe').val())
+        .toFixed(2).replace('.',','))
+        $('#hi-pernoite-recebe').val(($('#ta-pernoite-recebe').val() /100 * $('#mi-pernoite-recebe').val()))
+        $('#to-perimetro-paga').text('R$ ' + ($('#ta-perimetro-paga').val() /100 * $('#mi-perimetro-paga').val())
+        .toFixed(2).replace('.',','))
+        $('#hi-perimetro-paga').val(($('#ta-perimetro-paga').val() /100 * $('#mi-perimetro-paga').val()))
+        $('#to-pernoite-paga').text('R$ ' + ($('#ta-pernoite-paga').val() /100 * $('#mi-pernoite-paga').val())
+        .toFixed(2).replace('.',','))
+        $('#hi-pernoite-paga').val(($('#ta-pernoite-paga').val() /100 * $('#mi-pernoite-paga').val()))
         totais();
     };
 
@@ -233,7 +240,9 @@ $(document).ready(function(){
     });
 
     $('.demonstrativo-input').change(function() {
-        $(this).val(parseFloat($(this).val()).toFixed(2))
+        if ($(this).attr('type') != 'time') {
+            $(this).val(parseFloat($(this).val()).toFixed(2))
+        }
     })
 
     $('.demonstrativo-input').change(function() {
