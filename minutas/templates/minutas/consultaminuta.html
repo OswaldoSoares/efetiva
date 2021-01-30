@@ -15,19 +15,23 @@
                     PERÍODO DAS {{ itens.HoraInicial }} ATÉ {{ itens.HoraFinal }} ({{ totalhoras }} Horas) </b></p>
             </div>
             <div class="consulta_headerbtn">
-                {% if itens.StatusMinuta == 'ABERTA' %}
-                {% if user|can:'edita_minuta' %}
-                <button class="btn btn-success js-editaminuta"
-                        idminuta="{{ itens.idMinuta }}"
-                        data-url="{% url 'editaminuta' itens.idMinuta %}">
-                    <span class="glyphicon glyphicon-edit"></span>
+                {% if itens.StatusMinuta == 'FECHADA' or itens.StatusMinuta == 'CONCLUIDA'%}
+                {% if user|can:'estorna_minuta' %}
+                <button class="btn btn-danger glyphicon glyphicon-backward"
+                        onclick="window.location.href = '{% url 'estorna_minuta' itens.idMinuta %}'">
                 </button>
                 {% endif %}
                 {% endif %}
-                <button class="btn btn-warning js-imprimeminuta"
+                {% if itens.StatusMinuta == 'ABERTA' %}
+                {% if user|can:'edita_minuta' %}
+                <button class="btn btn-success glyphicon glyphicon-edit js-editaminuta" idminuta="{{ itens.idMinuta }}"
+                        data-url="{% url 'editaminuta' itens.idMinuta %}">
+                </button>
+                {% endif %}
+                {% endif %}
+                <button class="btn btn-warning glyphicon glyphicon-file js-imprimeminuta"
                         idminuta="{{ itens.idMinuta }}"
                         onclick="window.location.href = '{% url 'imprimeminuta' itens.idMinuta %}'">
-                    <span class="glyphicon glyphicon-file"></span>
                 </button>
             </div>
             <div class="consulta-header-dados">
@@ -64,16 +68,14 @@
                     {% if user|can:'motorista_minuta' %}
                     {% if motorista_da_minuta %}
                     {% for itensmotorista in motorista_da_minuta %}
-                    <button class="btn btn-danger btn-xs js-excluiminutamotorista"
+                    <button class="btn btn-danger btn-xs glyphicon glyphicon-trash js-excluiminutamotorista"
                             idminutacolaboradores="{{ itensmotorista.idMinutaColaboradores }}"
                             data-url="{% url 'excluiminutamotorista' itensmotorista.idMinutaColaboradores %}">
-                        <span class="glyphicon glyphicon-trash"></span>
                     </button>
                     {% endfor %}
                     {% else %}
-                    <button class="btn btn-success btn-xs js-criaminutamotorista"  idminuta="{{ itens.idMinuta }}"
-                            data-url="{% url 'criaminutamotorista' %}">
-                        <span class="glyphicon glyphicon-plus"></span>
+                    <button class="btn btn-success btn-xs glyphicon glyphicon-plus js-criaminutamotorista"
+                            idminuta="{{ itens.idMinuta }}" data-url="{% url 'criaminutamotorista' %}">
                     </button>
                     {% endif %}
                     {% endif %}
@@ -98,16 +100,12 @@
                 <footer>
                     {% if user|can:'veiculo_minuta' %}
                     {% if itens.idVeiculo %}
-                    <button class="btn btn-success btn-xs js-editaminutaveiculo"
-                            idminuta="{{ itens.idMinuta }}"
-                            data-url="{% url 'editaminutaveiculo' itens.idMinuta %}">
-                        <span class="glyphicon glyphicon-edit"></span>
+                    <button class="btn btn-success btn-xs glyphicon glyphicon-edit js-editaminutaveiculo"
+                            idminuta="{{ itens.idMinuta }}" data-url="{% url 'editaminutaveiculo' itens.idMinuta %}">
                     </button>
                     {% else %}
-                    <button class="btn btn-success btn-xs js-editaminutaveiculo"
-                            idminuta="{{ itens.idMinuta }}"
-                            data-url="{% url 'editaminutaveiculo' itens.idMinuta %}">
-                        <span class="glyphicon glyphicon-plus"></span>
+                    <button class="btn btn-success btn-xs glyphicon glyphicon-plus js-editaminutaveiculo"
+                            idminuta="{{ itens.idMinuta }}" data-url="{% url 'editaminutaveiculo' itens.idMinuta %}">
                     </button>
                     {% endif %}
                     {% endif %}
@@ -127,14 +125,12 @@
                 {% if itens.StatusMinuta == 'ABERTA' %}
                 <footer>
                     {% if user|can:'ajudante_minuta' %}
-                    <button class="btn btn-danger btn-xs js-excluiminutaajudante"
+                    <button class="btn btn-danger btn-xs glyphicon glyphicon-trash js-excluiminutaajudante"
                             idminutacolaboradores="{{ itensajudante.idMinutaColaboradores }}"
                             data-url="{% url 'excluiminutaajudante' itensajudante.idMinutaColaboradores %}">
-                        <span class="glyphicon glyphicon-trash"></span>
                     </button>
-                    <button class="btn btn-success btn-xs js-criaminutaajudante"  idminuta="{{ itens.idMinuta }}"
-                            data-url="{% url 'criaminutaajudante' %}">
-                        <span class="glyphicon glyphicon-plus"></span>
+                    <button class="btn btn-success btn-xs glyphicon glyphicon-plus js-criaminutaajudante"
+                            idminuta="{{ itens.idMinuta }}" data-url="{% url 'criaminutaajudante' %}">
                     </button>
                     {% endif %}
                 </footer>
@@ -152,9 +148,8 @@
                 {% if itens.StatusMinuta == 'ABERTA' %}
                 <footer>
                     {% if user|can:'ajudante_minuta' %}
-                    <button class="btn btn-success btn-xs js-criaminutaajudante"  idminuta="{{ itens.idMinuta }}"
-                            data-url="{% url 'criaminutaajudante' %}">
-                        <span class="glyphicon glyphicon-plus"></span>
+                    <button class="btn btn-success btn-xs glyphicon glyphicon-plus js-criaminutaajudante"
+                            idminuta="{{ itens.idMinuta }}" data-url="{% url 'criaminutaajudante' %}">
                     </button>
                     {% endif %}
                 </footer>
@@ -176,9 +171,7 @@
                     {% if itens.StatusMinuta == 'ABERTA' %}
                     <footer>
                         {% if user|can:'hora_minuta' %}
-                        <button type="submit" class="btn btn-primary btn-xs">
-                            <span class="glyphicon glyphicon-save"></span>
-                        </button>
+                        <button type="submit" class="btn btn-primary glyphicon glyphicon-save btn-xs"></button>
                         {% endif %}
                     </footer>
                     {% endif %}
@@ -199,9 +192,7 @@
                     {% if itens.StatusMinuta == 'ABERTA' %}
                     <footer>
                         {% if user|can:'km_minuta' %}
-                        <button type="submit" class="btn btn-primary btn-xs">
-                            <span class="glyphicon glyphicon-save"></span>
-                        </button>
+                        <button type="submit" class="btn btn-primary btn-xs glyphicon glyphicon-save"></button>
                         {% endif %}
                     </footer>
                     {% endif %}
@@ -221,9 +212,7 @@
                     {% if itens.StatusMinuta == 'ABERTA' %}
                     <footer>
                         {% if user|can:'km_minuta' %}
-                        <button type="submit" class="btn btn-primary btn-xs">
-                            <span class="glyphicon glyphicon-save"></span>
-                        </button>
+                        <button type="submit" class="btn btn-primary btn-xs glyphicon glyphicon-save"></button>
                         {% endif %}
                     </footer>
                     {% endif %}
@@ -242,9 +231,8 @@
                         <span><b>DESPESAS&nbsp;&nbsp;</b></span>
                         {% if itens.StatusMinuta == 'ABERTA' %}
                         {% if user|can:'despesa_minuta' %}
-                        <button class="btn btn-success btn-xs js-criaminutaparametrodespesa" idminuta="{{ itens.idMinuta }}"
-                                data-url="{% url 'criaminutaparametrodespesa' %}">
-                            <span class="glyphicon glyphicon-plus"></span>
+                        <button class="btn btn-success btn-xs js-criaminutaparametrodespesa glyphicon glyphicon-plus"
+                                idminuta="{{ itens.idMinuta }}" data-url="{% url 'criaminutaparametrodespesa' %}">
                         </button>
                         {% endif %}
                         {% endif %}
@@ -257,10 +245,9 @@
                         <span>{{ itensminuta.Descricao }} R$ {{ itensminuta.Valor }}</span>
                         {% if itens.StatusMinuta == 'ABERTA' %}
                         {% if user|can:'despesa_minuta' %}
-                        <button class="btn btn-danger btn-xs js-excluiminutadespesa" idminuta="{{ itensminuta.idMinuta }}"
-                                idminutaitens="{{ itensminuta.idMinutaItens }}"
+                        <button class="btn btn-danger btn-xs js-excluiminutadespesa glyphicon glyphicon-trash"
+                                idminuta="{{ itensminuta.idMinuta }}" idminutaitens="{{ itensminuta.idMinutaItens }}"
                                 data-url="{% url 'excluiminutadespesa' itensminuta.idMinutaItens %}">
-                            <span class="glyphicon glyphicon-trash"></span>
                         </button>
                         {% endif %}
                         {% endif %}
@@ -274,7 +261,7 @@
                     <input type="hidden" name="idMinuta" value="{{ itens.idMinuta }}" id="id_idMinuta">
                     <select name="Descricao" class="formfieldsshort" maxlength="25" id="id_Descricao">
                         {% for itens in despesas %}
-                            <option value="{{ itens }}">{{ itens }}</option>
+                        <option value="{{ itens }}">{{ itens }}</option>
                         {% endfor %}
                     </select>
                     <input type="number" name="Valor" value="0.00" class="formfieldsshort" step="0.01"
@@ -286,9 +273,7 @@
                     {% if itens.StatusMinuta == 'ABERTA' %}
                     <footer>
                         {% if user|can:'despesa_minuta' %}
-                        <button type="submit" class="btn btn-primary btn-xs active">
-                            <span class="glyphicon glyphicon-save"></span>
-                        </button>
+                        <button type="submit" class="btn btn-primary btn-xs active glyphicon glyphicon-save"></button>
                         {% endif %}
                     </footer>
                     {% endif %}
@@ -300,9 +285,8 @@
                         <span><b>ENTREGAS&nbsp;&nbsp;</b></span>
                         {% if itens.StatusMinuta == 'ABERTA' %}
                         {% if user|can:'entrega_minuta' %}
-                        <button class="btn btn-success btn-xs js-criaminutaentrega" idminuta="{{ itens.idMinuta }}"
-                                data-url="{% url 'criaminutaentrega' %}">
-                            <span class="glyphicon glyphicon-plus"></span>
+                        <button class="btn btn-success btn-xs glyphicon glyphicon-plus js-criaminutaentrega"
+                                idminuta="{{ itens.idMinuta }}" data-url="{% url 'criaminutaentrega' %}">
                         </button>
                         {% endif %}
                         {% endif %}
@@ -321,17 +305,15 @@
                         <div>
                             {% if itens.StatusMinuta == 'ABERTA' %}
                             {% if user|can:'entrega_minuta' %}
-                            <button class="btn btn-success btn-xs js-editaminutaentrega"
+                            <button class="btn btn-success btn-xs glyphicon glyphicon-edit js-editaminutaentrega"
                                     idminuta="{{ notasminutaguia.idMinuta }}"
                                     idminutanotas="{{ notasminutaguia.idMinutaNotas }}"
                                     data-url="{% url 'editaminutaentrega' notasminutaguia.idMinutaNotas %}">
-                                <span class="glyphicon glyphicon-edit"></span>
                             </button>
-                            <button class="btn btn-danger btn-xs js-excluiminutaentrega"
+                            <button class="btn btn-danger btn-xs glyphicon glyphicon-trash js-excluiminutaentrega"
                                     idminuta="{{ notasminutaguia.idMinuta }}"
                                     idminutanotas="{{ notasminutaguia.idMinutaNotas }}"
                                     data-url="{% url 'excluiminutaentrega' notasminutaguia.idMinutaNotas %}">
-                                <span class="glyphicon glyphicon-trash"></span>
                             </button>
                             {% endif %}
                             {% endif %}
@@ -347,17 +329,15 @@
                         <div>
                             {% if itens.StatusMinuta == 'ABERTA' %}
                             {% if user|can:'entrega_minuta' %}
-                            <button class="btn btn-success btn-xs js-editaminutaentrega"
+                            <button class="btn btn-success btn-xs glyphicon glyphicon-edit js-editaminutaentrega"
                                     idminuta="{{ notasminuta.idMinuta }}"
                                     idminutanotas="{{ notasminuta.idMinutaNotas }}"
                                     data-url="{% url 'editaminutaentrega' notasminuta.idMinutaNotas %}">
-                                <span class="glyphicon glyphicon-edit"></span>
                             </button>
-                            <button class="btn btn-danger btn-xs js-excluiminutaentrega"
+                            <button class="btn btn-danger btn-xs glyphicon glyphicon-trash js-excluiminutaentrega"
                                     idminuta="{{ notasminuta.idMinuta }}"
                                     idminutanotas="{{ notasminuta.idMinutaNotas }}"
                                     data-url="{% url 'excluiminutaentrega' notasminuta.idMinutaNotas %}">
-                                <span class="glyphicon glyphicon-trash"></span>
                             </button>
                             {% endif %}
                             {% endif %}
@@ -395,9 +375,7 @@
                     {% if itens.StatusMinuta == 'ABERTA' %}
                     <footer>
                         {% if user|can:'entrega_minuta' %}
-                        <button type="submit" class="btn btn-primary btn-xs active">
-                            <span class="glyphicon glyphicon-save"></span>
-                        </button>
+                        <button type="submit" class="btn btn-primary btn-xs active glyphicon glyphicon-save"></button>
                         {% endif %}
                     </footer>
                     {% endif %}
@@ -418,9 +396,7 @@
                     {% endfor %}
                     {% if itens.StatusMinuta == 'ABERTA' %}
                     {% if user|can:'comentario_minuta' %}
-                    <button type="submit" class="btn btn-primary btn-xs">
-                        <span class="glyphicon glyphicon-save"></span>
-                    </button>
+                    <button type="submit" class="btn btn-primary btn-xs glyphicon glyphicon-save"></button>
                     {% endif %}
                     {% endif %}
                 </form>
@@ -429,6 +405,10 @@
     </div>
     {% if itens.StatusMinuta == 'ABERTA' %}
     <div class="consulta">
+        {{ itens.HoraFinal }}
+        {{ itens.KMInicial }}
+        {{ itens.KMFinal }}
+        {% if itens.HoraFinal %}
         <div class="consulta-concluir">
             <header class="consulta-header-despesas-entregas">
                 <span>CONCLUIR MINUTA</span>
@@ -439,14 +419,14 @@
             </section>
             <footer>
                 {% if user|can:'conclui_minuta' %}
-                <button class="btn btn-success btn-sm active"
-                        idminuta="{{ itens.idMinuta }}"
+                <button class="btn btn-success btn-sm active" idminuta="{{ itens.idMinuta }}"
                         onclick="window.location.href = '{% url 'concluiminuta' itens.idMinuta %}'">
                     <span>CONCLUIR MINUTA</span>
                 </button>
                 {% endif %}
             </footer>
         </div>
+        {% endif %}
     </div>
     {% endif %}
     {% if user|can:'demonstrativo_minuta' %}

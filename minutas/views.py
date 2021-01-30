@@ -937,7 +937,7 @@ def estorna_minuta(request, idmin):
         itens_minuta_paga_excluir = MinutaItens.objects.filter(idMinuta=idmin).filter(RecebePaga='P')
         for itens in itens_minuta_paga_excluir:
             excluiminutaitens(itens.idMinutaItens)
-    return redirect('index_minuta')
+    return redirect('consultaminuta', idmin)
 
 
 def conclui_minuta(request, idmin):

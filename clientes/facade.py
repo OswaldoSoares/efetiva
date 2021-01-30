@@ -1,7 +1,7 @@
 from typing import List
 from clientes.models import Cliente, FoneContatoCliente, EMailContatoCliente, Cobranca, Tabela, TabelaVeiculo, \
     TabelaPerimetro, TabelaCapacidade
-# TODO EXPORTAR FROM FACADE VEICULOS
+# TODO IMPORTAR FROM FACADE VEICULOS
 from veiculos.models import CategoriaVeiculo
 
 

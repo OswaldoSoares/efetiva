@@ -207,6 +207,7 @@ $(document).ready(function(){
     var loadForm = function(){
         var obj = $(this);
         var idminuta = $(this).attr("idminuta");
+        console.log('ok')
 
         $.ajax({
             url: obj.attr("data-url"),

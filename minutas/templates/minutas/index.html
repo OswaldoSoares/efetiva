@@ -2,109 +2,107 @@
 {% load permission_tags %}
 
 {% block mainminuta %}
-    <div class="lista_conteudo">
-        <header>
-            <h4>CADASTRO DE MINUTAS</h4>
-        </header>
-        <div class="nav_filtro">
-            <div>
-                <div class="filtro">
-                    <form>
-                        <input type="text" class="filtrotexto" placeholder="FILTRAR MINUTA..." name="filtrominuta"/>
-                        {% if user|can:'filtra_minuta' %}
-                        <button type="submit" class="btn btn-info glyphicon glyphicon-search"></button>
-                        {% endif %}
-                    </form>
-                </div>
-                <div class="filtro">
-                    <form>
-                        <select class="filtrotexto" name="filtrostatus">
-                            <option value="" disable selected>FILTRAR STATUS...</option>
-                            {% for minuta_status in minuta_status %}
-                                <option value="{{ minuta_status }}">{{ minuta_status }}</option>
-                            {% endfor %}
-                        </select>
-                        {% if user|can:'filtra_minuta' %}
-                        <button type="submit" class="btn btn-info glyphicon glyphicon-search"></button>
-                        {% endif %}
-                    </form>
-                </div>
-            </div>
-            <div class="add_registro">
-                {% if user|can:'cria_minuta' %}
-                <button type="button" class="btn btn-success glyphicon glyphicon-plus js-criaminuta" data-url="{% url 'criaminuta' %}"></button>
-                {% endif %}
-            </div>
-        </div>
+<div class="lista_conteudo">
+    <header>
+        <h4>CADASTRO DE MINUTAS</h4>
+    </header>
+    <div class="nav_filtro">
         <div>
-            <table class="tabela">
-                <thead>
-                    <tr class="tabelatitulo">
-                        <th class="primeiracoluna">MINUTA</th>
-                        <th>DATA</th>
-                        <th>HORA</th>
-                        <th>CLIENTE</th>
-                        <th>MOTORISTA</th>
-                        <th>VEÍCULO</th>
-                        <th>PLACA</th>
-                        <th>STATUS</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for itens in minuta %}
-                        <tr class="tabelalinha">
-                            <td class="primeiracoluna"> {{ itens.Minuta }}</td>
-                            <td>{{ itens.DataMinuta }}</td>
-                            <td>{{ itens.HoraInicial }}</td>
-                            <td>{{ itens.idCliente.Fantasia }}</td>
-                            <td>
-                                {% for itensmotorista in minutacolaboradores %}
-                                    {% if itens.idMinuta == itensmotorista.idMinuta_id %}
-                                        {{ itensmotorista.idPessoal.Nome }}
-                                    {% endif %}
-                                {% endfor %}
-                            </td>
-                            <td>{{ itens.idVeiculo.Modelo }}</td>
-                            <td>{{ itens.idVeiculo.Placa }}</td>
-                            <td>{{ itens.StatusMinuta }}</td>
-                            <td class="seleciona_registo">
-                                {% if itens.StatusMinuta == 'FECHADA' or itens.StatusMinuta == 'CONCLUIDA'%}
-                                    {% if user|can:'estorna_minuta' %}
-                                    <button class="btn btn-danger btn-xs" onclick="window.location.href = '{% url 'estorna_minuta' itens.idMinuta %}'">
-                                        <span class="glyphicon glyphicon-backward"></span>
-                                    </button>
-                                    {% endif %}
-                                {% endif %}
-                                <button class="btn btn-warning btn-xs"
-                                        onclick="window.location.href = '{% url 'imprimeminuta' itens.idMinuta %}'">
-                                    <span class="glyphicon glyphicon-file"></span>
-                                </button>
-                                <button class="btn btn-primary btn-xs"
-                                        onclick="window.location.href = '{% url 'consultaminuta' itens.idMinuta %}'">
-                                    <span class="glyphicon glyphicon-folder-open"></span>
-                                </button>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <footer>
-            {% for itens in minuta %}
-                {% if forloop.last %}
-                    <h5> {{ forloop.counter }} Registros de minutas listadas.</h5>
-                {% endif %}
-            {% endfor %}
-        </footer>
-    </div>
-
-    <!-- DIV MODAL -->
-    <div class="modal fade" id="modal-formulario" >
-        <div class="modal-dialog">
-            <div class="modal-content">
-
+            <div class="filtro">
+                <form>
+                    <input type="text" class="filtrotexto" placeholder="FILTRAR MINUTA..." name="filtrominuta"/>
+                    {% if user|can:'filtra_minuta' %}
+                    <button type="submit" class="btn btn-info glyphicon glyphicon-search"></button>
+                    {% endif %}
+                </form>
+            </div>
+            <div class="filtro">
+                <form>
+                    <select class="filtrotexto" name="filtrostatus">
+                        <option value="" disable selected>FILTRAR STATUS...</option>
+                        {% for minuta_status in minuta_status %}
+                            <option value="{{ minuta_status }}">{{ minuta_status }}</option>
+                        {% endfor %}
+                    </select>
+                    {% if user|can:'filtra_minuta' %}
+                    <button type="submit" class="btn btn-info glyphicon glyphicon-search"></button>
+                    {% endif %}
+                </form>
             </div>
         </div>
+        <div class="add_registro">
+            {% if user|can:'cria_minuta' %}
+            <button type="button" class="btn btn-success glyphicon glyphicon-plus js-criaminuta"
+                    data-url="{% url 'criaminuta' %}"></button>
+            {% endif %}
+        </div>
     </div>
+    <div>
+        <table class="tabela">
+            <thead>
+                <tr class="tabelatitulo">
+                    <th class="primeiracoluna">MINUTA</th>
+                    <th>DATA</th>
+                    <th>HORA</th>
+                    <th>CLIENTE</th>
+                    <th>MOTORISTA</th>
+                    <th>VEÍCULO</th>
+                    <th>PLACA</th>
+                    <th>STATUS</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for itens in minuta %}
+                    <tr class="tabelalinha">
+                        <td class="primeiracoluna"> {{ itens.Minuta }}</td>
+                        <td>{{ itens.DataMinuta }}</td>
+                        <td>{{ itens.HoraInicial }}</td>
+                        <td>{{ itens.idCliente.Fantasia }}</td>
+                        <td>
+                            {% for itensmotorista in minutacolaboradores %}
+                            {% if itens.idMinuta == itensmotorista.idMinuta_id %}
+                            {{ itensmotorista.idPessoal.Nome }}
+                            {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>{{ itens.idVeiculo.Modelo }}</td>
+                        <td>{{ itens.idVeiculo.Placa }}</td>
+                        <td>{{ itens.StatusMinuta }}</td>
+                        <td class="seleciona_registo">
+                            {% if itens.StatusMinuta == 'FECHADA' or itens.StatusMinuta == 'CONCLUIDA'%}
+                            {% if user|can:'estorna_minuta' %}
+                            <button class="btn btn-danger btn-xs glyphicon glyphicon-backward"
+                                    onclick="window.location.href = '{% url 'estorna_minuta' itens.idMinuta %}'">
+                            </button>
+                            {% endif %}
+                            {% endif %}
+                            <button class="btn btn-warning btn-xs glyphicon glyphicon-file"
+                                    onclick="window.location.href = '{% url 'imprimeminuta' itens.idMinuta %}'">
+                            </button>
+                            <button class="btn btn-primary btn-xs glyphicon glyphicon-folder-open"
+                                    onclick="window.location.href = '{% url 'consultaminuta' itens.idMinuta %}'">
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <footer>
+        {% for itens in minuta %}
+            {% if forloop.last %}
+                <h5> {{ forloop.counter }} Registros de minutas listadas.</h5>
+            {% endif %}
+        {% endfor %}
+    </footer>
+</div>
+<!-- DIV MODAL -->
+<div class="modal fade" id="modal-formulario" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
 {% endblock %}
