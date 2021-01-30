@@ -1117,13 +1117,41 @@ main .card-base2 section .despesa-itens {
     padding: 3px 5px;
 }
 
-main .card-base2 section .section-itens {
+main .card-base3 section .tipo-cobranca {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+main .card-base3 section article {
+    background-color: steelblue;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+main .card-base3 section article .teste {
+    background-color: tomato;
+    display: flex;
+    width: 100%;
+    margin-top: 5px;
+}
+
+main .card-base2 section .section-itens,
+main .card-base3 section article .teste .switch-itens {
+    background-color: yellow;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
     padding: 3px 5px;
 }
+
+
+
 
 main .card-base2 section .tabela-itens {
     width: 100%;
@@ -1133,7 +1161,7 @@ main .card-base2 section .tabela-itens {
     padding: 3px 5px;
 }
 
-main .card-base2 section .switch-itens {
+main .card-base3 section .switch-itens {
     padding: 0 5px;
 }
 

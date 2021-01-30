@@ -176,12 +176,12 @@ def editaphkesc(request, idtabcli):
     tabelacliente = get_object_or_404(Tabela, idTabela=idtabcli)
     if request.method == 'POST':
         switchdict = dict(request.POST.lists())
-        phkesccobra = '000000'
-        phkescpaga = '000000'
+        phkesccobra = '00000000'
+        phkescpaga = '00000000'
         if 'switch' in switchdict:
             switchlist = switchdict['switch']
-            pc, hc, kc, ec, sc, cc = '0', '0', '0', '0', '0', '0'
-            pp, hp, kp, ep, sp, cp = '0', '0', '0', '0', '0', '0'
+            pc, hc, kc, ec, sc, cc, ekc, evc = '0', '0', '0', '0', '0', '0', '0', '0'
+            pp, hp, kp, ep, sp, cp, ekp, evp = '0', '0', '0', '0', '0', '0', '0', '0'
             if switchlist:
                 if 'porcentagem-cobra' in switchlist:
                     pc = '1'
@@ -191,6 +191,10 @@ def editaphkesc(request, idtabcli):
                     kc = '1'
                 if 'entrega-cobra' in switchlist:
                     ec = '1'
+                if 'entregakg-cobra' in switchlist:
+                    ekp = '1'
+                if 'entregavolume-cobra' in switchlist:
+                    ekv = '1'
                 if 'saida-cobra' in switchlist:
                     sc = '1'
                 if 'capacidade-cobra' in switchlist:
@@ -203,12 +207,16 @@ def editaphkesc(request, idtabcli):
                     kp = '1'
                 if 'entrega-paga' in switchlist:
                     ep = '1'
+                if 'entregakg-paga' in switchlist:
+                    ekp = '1'
+                if 'entregavolume-paga' in switchlist:
+                    ekv = '1'
                 if 'saida-paga' in switchlist:
                     sp = '1'
                 if 'capacidade-paga' in switchlist:
                     cp = '1'
-                phkesccobra = pc + hc + kc + ec + sc + cc
-                phkescpaga = pp + hp + kp + ep + sp + cp
+                phkesccobra = pc + hc + kc + ec + sc + cc + ekc + evc
+                phkescpaga = pp + hp + kp + ep + sp + cp + ekp + evp
         obj = Tabela()
         obj.idTabela = tabelacliente.idTabela
         obj.Comissao = tabelacliente.Comissao

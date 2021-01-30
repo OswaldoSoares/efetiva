@@ -29,7 +29,7 @@
                 </button>
                 {% endif %}
                 {% endif %}
-                <button class="btn btn-warning glyphicon glyphicon-file js-imprimeminuta"
+                <button class="btn btn-warning glyphicon glyphicon-print js-imprimeminuta"
                         idminuta="{{ itens.idMinuta }}"
                         onclick="window.location.href = '{% url 'imprimeminuta' itens.idMinuta %}'">
                 </button>
@@ -404,11 +404,10 @@
         </div>
     </div>
     {% if itens.StatusMinuta == 'ABERTA' %}
+    {% if itens.HoraFinal|time:"H:i" != "00:00" %}
+    {% if itens.KMInicial != 0 %}
+    {% if itens.KMFinal != 0 %}
     <div class="consulta">
-        {{ itens.HoraFinal }}
-        {{ itens.KMInicial }}
-        {{ itens.KMFinal }}
-        {% if itens.HoraFinal %}
         <div class="consulta-concluir">
             <header class="consulta-header-despesas-entregas">
                 <span>CONCLUIR MINUTA</span>
@@ -426,8 +425,10 @@
                 {% endif %}
             </footer>
         </div>
-        {% endif %}
     </div>
+    {% endif %}
+    {% endif %}
+    {% endif %}
     {% endif %}
     {% if user|can:'demonstrativo_minuta' %}
     <div class="consulta">

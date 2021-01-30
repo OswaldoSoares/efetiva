@@ -216,7 +216,7 @@
         <main>
             {% if tabela_cliente %}
             {% for itenstabela in tabela_cliente %}
-            <div class="card-tabela card-base2">
+            <div class="card-tabela card-base3">
                 <header class="consulta-tabela">
                     <span><b>TIPOS DE COBRANÇA E PAGAMENTO</b></span>
                 </header>
@@ -225,80 +225,110 @@
                     <section>
                         <p class="phkesccobra" hidden>{{ itenstabela.phkescCobra }}</p>
                         <p class="phkescpaga" hidden>{{ itenstabela.phkescPaga }}</p>
-                        <div><b>COBRANÇA</b></div>
-                        <div class="section-itens switch-itens">
-                            <span class="switch-titulo"><b>PORCENTAGEM</b></span>
-                            <input id="switch-porcentagem-cobra" name="switch" value="porcentagem-cobra"
-                                   class="switch switch--shadow" type="checkbox" />
-                            <label for="switch-porcentagem-cobra"></label>
+                        <article class="tipo-cobranca">
+                        <div class="teste">
+                            <div><b>COBRANÇA</b></div>
+                            <div class="section-itens switch-itens">
+                                <span class="switch-titulo"><b>PORCENTAGEM</b></span>
+                                <input id="switch-porcentagem-cobra" name="switch" value="porcentagem-cobra"
+                                       class="switch switch--shadow" type="checkbox" />
+                                <label for="switch-porcentagem-cobra"></label>
+                            </div>
+                            <div class="section-itens switch-itens">
+                                <span class="switch-titulo"><b>HORA</b></span>
+                                <input id="switch-hora-cobra" name="switch" value="hora-cobra"
+                                       class="switch switch--shadow" type="checkbox" />
+                                <label for="switch-hora-cobra"></label>
+                            </div>
+                            <div class="section-itens switch-itens">
+                                <span class="switch-titulo"><b>KILOMETRAGEM</b></span>
+                                <input id="switch-kilometragem-cobra" name="switch" value="kilometragem-cobra"
+                                       class="switch switch--shadow" type="checkbox" />
+                                <label for="switch-kilometragem-cobra"></label>
+                            </div>
+                            <div class="section-itens switch-itens">
+                                <span class="switch-titulo"><b>ENTREGA</b></span>
+                                <input id="switch-entrega-cobra" name="switch" value="entrega-cobra"
+                                       class="switch switch--shadow" type="checkbox" />
+                                <label for="switch-entrega-cobra"></label>
+                            </div>
+                            <div class="section-itens switch-itens">
+                                <span class="switch-titulo"><b>ENTREGA KG</b></span>
+                                <input id="switch-entregakg-cobra" name="switch" value="entregakg-cobra"
+                                       class="switch switch--shadow" type="checkbox" />
+                                <label for="switch-entregakg-cobra"></label>
+                            </div>
+                            <div class="section-itens switch-itens">
+                                <span class="switch-titulo"><b>ENTREGA VOLUME</b></span>
+                                <input id="switch-entregavolume-cobra" name="switch" value="entregavolume-cobra"
+                                       class="switch switch--shadow" type="checkbox" />
+                                <label for="switch-entregavolume-cobra"></label>
+                            </div>
+                            <div class="section-itens switch-itens">
+                                <span class="switch-titulo"><b>SAÍDA</b></span>
+                                <input id="switch-saida-cobra" name="switch" value="saida-cobra"
+                                       class="switch switch--shadow" type="checkbox" />
+                                <label for="switch-saida-cobra"></label>
+                            </div>
+                            <div class="section-itens switch-itens">
+                                <span class="switch-titulo"><b>CAPACIDADE</b></span>
+                                <input id="switch-capacidade-cobra" name="switch" value="capacidade-cobra"
+                                       class="switch switch--shadow" type="checkbox" />
+                                <label for="switch-capacidade-cobra"></label>
+                            </div>
                         </div>
-                        <div class="section-itens switch-itens">
-                            <span class="switch-titulo"><b>HORA</b></span>
-                            <input id="switch-hora-cobra" name="switch" value="hora-cobra"
-                                   class="switch switch--shadow" type="checkbox" />
-                            <label for="switch-hora-cobra"></label>
+                        <div class="teste">
+                            <div><b>PAGAMENTO</b></div>
+                            <div class="section-itens switch-itens">
+                                <span class="switch-titulo"><b>PORCENTAGEM</b></span>
+                                <input id="switch-porcentagem-paga" name="switch" value="porcentagem-paga"
+                                       class="switch switch--shadow" type="checkbox" />
+                                <label for="switch-porcentagem-paga"></label>
+                            </div>
+                            <div class="section-itens switch-itens">
+                                <span class="switch-titulo"><b>HORA</b></span>
+                                <input id="switch-hora-paga" name="switch" value="hora-paga" class="switch switch--shadow"
+                                       type="checkbox" />
+                                <label for="switch-hora-paga"></label>
+                            </div>
+                            <div class="section-itens switch-itens">
+                                <span class="switch-titulo"><b>KILOMETRAGEM</b></span>
+                                <input id="switch-kilometragem-paga" name="switch" value="kilometragem-paga"
+                                       class="switch switch--shadow" type="checkbox" />
+                                <label for="switch-kilometragem-paga"></label>
+                            </div>
+                            <div class="section-itens switch-itens">
+                                <span class="switch-titulo"><b>ENTREGA</b></span>
+                                <input id="switch-entrega-paga" name="switch" value="entrega-paga"
+                                       class="switch switch--shadow" type="checkbox" />
+                                <label for="switch-entrega-paga"></label>
+                            </div>
+                            <div class="section-itens switch-itens">
+                                <span class="switch-titulo"><b>ENTREGA KG</b></span>
+                                <input id="switch-entregakg-paga" name="switch" value="entregakg-paga"
+                                       class="switch switch--shadow" type="checkbox" />
+                                <label for="switch-entregakg-paga"></label>
+                            </div>
+                            <div class="section-itens switch-itens">
+                                <span class="switch-titulo"><b>ENTREGA VOLUME</b></span>
+                                <input id="switch-entregavolume-paga" name="switch" value="entregavolume-paga"
+                                       class="switch switch--shadow" type="checkbox" />
+                                <label for="switch-entregavolume-paga"></label>
+                            </div>
+                            <div class="section-itens switch-itens">
+                                <span class="switch-titulo"><b>SAÍDA</b></span>
+                                <input id="switch-saida-paga" name="switch" value="saida-paga" class="switch switch--shadow"
+                                       type="checkbox" />
+                                <label for="switch-saida-paga"></label>
+                            </div>
+                            <div class="section-itens switch-itens">
+                                <span class="switch-titulo"><b>CAPACIDADE</b></span>
+                                <input id="switch-capacidade-paga" name="switch" value="capacidade-paga"
+                                       class="switch switch--shadow" type="checkbox" />
+                                <label for="switch-capacidade-paga"></label>
+                            </div>
                         </div>
-                        <div class="section-itens switch-itens">
-                            <span class="switch-titulo"><b>KILOMETRAGEM</b></span>
-                            <input id="switch-kilometragem-cobra" name="switch" value="kilometragem-cobra"
-                                   class="switch switch--shadow" type="checkbox" />
-                            <label for="switch-kilometragem-cobra"></label>
-                        </div>
-                        <div class="section-itens switch-itens">
-                            <span class="switch-titulo"><b>ENTREGA</b></span>
-                            <input id="switch-entrega-cobra" name="switch" value="entrega-cobra"
-                                   class="switch switch--shadow" type="checkbox" />
-                            <label for="switch-entrega-cobra"></label>
-                        </div>
-                        <div class="section-itens switch-itens">
-                            <span class="switch-titulo"><b>SAÍDA</b></span>
-                            <input id="switch-saida-cobra" name="switch" value="saida-cobra"
-                                   class="switch switch--shadow" type="checkbox" />
-                            <label for="switch-saida-cobra"></label>
-                        </div>
-                        <div class="section-itens switch-itens">
-                            <span class="switch-titulo"><b>CAPACIDADE</b></span>
-                            <input id="switch-capacidade-cobra" name="switch" value="capacidade-cobra"
-                                   class="switch switch--shadow" type="checkbox" />
-                            <label for="switch-capacidade-cobra"></label>
-                        </div>
-                        <div><b>PAGAMENTO</b></div>
-                        <div class="section-itens switch-itens">
-                            <span class="switch-titulo"><b>PORCENTAGEM</b></span>
-                            <input id="switch-porcentagem-paga" name="switch" value="porcentagem-paga"
-                                   class="switch switch--shadow" type="checkbox" />
-                            <label for="switch-porcentagem-paga"></label>
-                        </div>
-                        <div class="section-itens switch-itens">
-                            <span class="switch-titulo"><b>HORA</b></span>
-                            <input id="switch-hora-paga" name="switch" value="hora-paga" class="switch switch--shadow"
-                                   type="checkbox" />
-                            <label for="switch-hora-paga"></label>
-                        </div>
-                        <div class="section-itens switch-itens">
-                            <span class="switch-titulo"><b>KILOMETRAGEM</b></span>
-                            <input id="switch-kilometragem-paga" name="switch" value="kilometragem-paga"
-                                   class="switch switch--shadow" type="checkbox" />
-                            <label for="switch-kilometragem-paga"></label>
-                        </div>
-                        <div class="section-itens switch-itens">
-                            <span class="switch-titulo"><b>ENTREGA</b></span>
-                            <input id="switch-entrega-paga" name="switch" value="entrega-paga"
-                                   class="switch switch--shadow" type="checkbox" />
-                            <label for="switch-entrega-paga"></label>
-                        </div>
-                        <div class="section-itens switch-itens">
-                            <span class="switch-titulo"><b>SAÍDA</b></span>
-                            <input id="switch-saida-paga" name="switch" value="saida-paga" class="switch switch--shadow"
-                                   type="checkbox" />
-                            <label for="switch-saida-paga"></label>
-                        </div>
-                        <div class="section-itens switch-itens">
-                            <span class="switch-titulo"><b>CAPACIDADE</b></span>
-                            <input id="switch-capacidade-paga" name="switch" value="capacidade-paga"
-                                   class="switch switch--shadow" type="checkbox" />
-                            <label for="switch-capacidade-paga"></label>
-                        </div>
+                        </article>
                     </section>
                     <footer>
                         <button type="submit" class="btn btn-primary btn-xs">
