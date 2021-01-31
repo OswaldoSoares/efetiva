@@ -12,20 +12,14 @@ from veiculos.models import CategoriaVeiculo
 
 
 @has_permission_decorator('modulo_clientes')
-def indexcliente(request):
-    meufiltrofantasia = request.GET.get('filtrofantasia', None)
-    meufiltronome = request.GET.get('filtronome', None)
-    cliente = facade.list_cliente_all()
-    if meufiltrofantasia:
-        cliente = cliente.filter(Fantasia__icontains=meufiltrofantasia)
-    elif meufiltronome:
-        cliente = cliente.filter(Nome__icontains=meufiltronome)
-    return render(request, 'clientes/index.html', {'cliente': cliente})
+def index_cliente(request):
+    contexto = facade.create_cliente_filter_context(request)
+    return render(request, 'clientes/index.html', contexto)
 
 
 @has_permission_decorator('modulo_clientes')
-def consultacliente(request, idcli):
-    contexto = facade.create_cliente_context(idcli)
+def consulta_cliente(request, idcliente):
+    contexto = facade.create_cliente_context(idcliente)
     contexto_veiculo = {'categoria_veiculo': facade.get_categoria_veiculo()}
     contexto.update(contexto_veiculo)
     return render(request, 'clientes/consultacliente.html', contexto)

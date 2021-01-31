@@ -27,7 +27,7 @@ SECRET_KEY = '-l-u+z*d%x-8edq9ef+v2uc9*ko#p2z&dij-h@^j71^)0kic5)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -152,6 +152,7 @@ LOGOUT_REDIRECT_URL = 'login'
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

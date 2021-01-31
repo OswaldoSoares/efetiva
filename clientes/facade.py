@@ -27,12 +27,32 @@ def create_cliente_context(idcliente: int):
     return context
 
 
+def create_cliente_filter_context(request):
+    meufiltrofantasia = request.GET.get('filtrofantasia', None)
+    meufiltronome = request.GET.get('filtronome', None)
+    cliente = qet_cliente_all()
+    if meufiltrofantasia:
+        cliente = cliente.filter(Fantasia__icontains=meufiltrofantasia)
+    elif meufiltronome:
+        cliente = cliente.filter(Nome__icontains=meufiltronome)
+    context = {'cliente': cliente}
+    return context
+
+
 def list_cliente_all() -> List[Cliente]:
     """
     List Clientes
     :return: List of Clientes
     """
     return list(Cliente.objects.all())
+
+
+def qet_cliente_all():
+    """
+    Get all Clientes in Models
+    :return: queryset
+    """
+    return Cliente.objects.all()
 
 
 def get_cliente(idcliente: int) -> Cliente:

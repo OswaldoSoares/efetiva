@@ -1,6 +1,5 @@
 from django.urls import path
-from .views import indexcliente,\
-    consultacliente, \
+from .views import index_cliente, consulta_cliente, \
     criacliente, \
     editacliente, \
     excluicliente, \
@@ -28,16 +27,8 @@ from .views import indexcliente,\
     criaformapgto
 
 urlpatterns = [
-    path(
-        '',
-        indexcliente,
-        name='indexcliente'
-    ),
-    path(
-        'consultacliente/<int:idcli>/',
-        consultacliente,
-        name='consultacliente'
-    ),
+    path('', index_cliente, name='indexcliente'),
+    path('consultacliente/<int:idcliente>/', consulta_cliente, name='consultacliente'),
     path(
         'criacliente/',
         criacliente,
