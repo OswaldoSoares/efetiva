@@ -404,14 +404,15 @@
         </div>
     </div>
     {% if itens.StatusMinuta == 'ABERTA' %}
-    {% if itens.HoraFinal|time:"H:i" != "00:00" %}
-    {% if itens.KMInicial != 0 %}
-    {% if itens.KMFinal != 0 %}
     <div class="consulta">
         <div class="consulta-concluir">
             <header class="consulta-header-despesas-entregas">
                 <span>CONCLUIR MINUTA</span>
             </header>
+            {% if itens.idCategoriaVeiculo %}
+            {% if itens.HoraFinal|time:"H:i" != "00:00" %}
+            {% if itens.KMInicial != 0 %}
+            {% if itens.KMFinal != 0 %}
             <section>
                 <h4>APÓS INSERIR TODOS OS DADOS DA MINUTA</h4>
                 <h4>CONCLUIR A MINUTA PARA FICAR DISPONIVEL PARA FATURAMENTO</h4>
@@ -424,11 +425,24 @@
                 </button>
                 {% endif %}
             </footer>
+            {% endif %}
+            {% endif %}
+            {% endif %}
+            {% endif %}
+            {% if not itens.idCategoriaVeiculo %}
+                <span class="mensagem-concluir">Falta inserir o Veículo Solicitado</span>
+            {% endif %}
+            {% if itens.HoraFinal|time:"H:i" == "00:00" %}
+                <span class="mensagem-concluir">Falta inserir a Hora Final</span>
+            {% endif %}
+            {% if itens.KMInicial == 0 %}
+                <span class="mensagem-concluir">Falta inserir a KM Inicial</span>
+            {% endif %}
+            {% if itens.KMFinal == 0 %}
+                <span class="mensagem-concluir">Falta inserir a KM Final</span>
+            {% endif %}
         </div>
     </div>
-    {% endif %}
-    {% endif %}
-    {% endif %}
     {% endif %}
     {% if user|can:'demonstrativo_minuta' %}
     <div class="consulta">

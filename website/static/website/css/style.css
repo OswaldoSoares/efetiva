@@ -1280,6 +1280,15 @@ main .consulta-concluir footer button {
     margin: 10px;
 }
 
+main .consulta-concluir .mensagem-concluir {
+    color: red;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 20px;
+    font-size: 20px;
+}
+
 main .consulta .consulta-header-despesas-entregas {
     background-color: var(--corprincipal);
     color: white;
