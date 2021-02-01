@@ -425,16 +425,8 @@ main .consulta .consulta-header {
 /* veiculos/index.html */
 
 /* CSS FORMULÁRIOS */
-.modal-header {
-    background-color: var(--corsecundaria);
-    color: var(--corprincipal);
-    text-align: center;
-}
 .close {
     color: var(--corprincipal);
-}
-.modal-footer {
-    background-color: var(--corsecundaria);
 }
 .divformulario label {
     color: var(--corprincipal);
@@ -1709,7 +1701,6 @@ main .usuario-out {
     background-color: deeppink;
     color: white;
     text-align: center;
-    font-size: 50px;
 }
 
 .modal label {

@@ -13,6 +13,12 @@
                 <p><b>{{ itens.Fantasia }} - {{ itens.Nome }}</b></p>
             </div>
             <div class="consulta_headerbtn">
+                <button type="button" class="btn btn-success glyphicon glyphicon-edit"
+                        onclick="openMyModal(event); return false;"
+                        data-title="CADASTRO DE CLIENTE"
+                        data-action="{% url 'editacliente' itens.idCliente %}"
+                        data-button-save-label="SALVAR"
+                        width="100"></button>
                 <button class="btn btn-success js-editacliente" idcliente="{{ itens.idCliente }}" data-url="{% url 'editacliente' itens.idCliente %}" idclick="cliente">
                     <span class="glyphicon glyphicon-edit"></span>
                 </button>

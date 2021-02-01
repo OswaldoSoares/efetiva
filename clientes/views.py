@@ -17,7 +17,7 @@ def index_cliente(request):
     return render(request, 'clientes/index.html', contexto)
 
 
-@has_permission_decorator('modulo_clientes')
+# @has_permission_decorator('modulo_clientes')
 def consulta_cliente(request, idcliente):
     contexto = facade.create_cliente_context(idcliente)
     contexto_veiculo = {'categoria_veiculo': facade.get_categoria_veiculo()}
@@ -26,17 +26,20 @@ def consulta_cliente(request, idcliente):
 
 
 def cria_cliente(request):
-    data = facade.form_cliente(request, CadastraCliente, 'clientes/criacliente.html', 'indexcliente')
+    print(request.POST)
+    data = facade.form_cliente(request, CadastraCliente, 'clientes/criacliente.html', None)
     return data
 
 
-def editacliente(request, idcli):
-    cliente = get_object_or_404(Cliente, idCliente=idcli)
-    if request.method == 'POST':
-        form = CadastraCliente(request.POST, instance=cliente)
-    else:
-        form = CadastraCliente(instance=cliente)
-    return salva_form(request, form, 'clientes/editacliente.html', idcli)
+def edita_cliente(request, idcliente):
+    # cliente = get_object_or_404(Cliente, idCliente=idcli)
+    # if request.method == 'POST':
+    #     form = CadastraCliente(request.POST, instance=cliente)
+    # else:
+    #     form = CadastraCliente(instance=cliente)
+    # return salva_form(request, form, 'clientes/editacliente.html', idcli)
+    data = facade.form_cliente(request, CadastraCliente, 'clientes/criacliente.html', idcliente)
+    return data
 
 
 def excluicliente(request, idcli):
