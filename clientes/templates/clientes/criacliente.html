@@ -1,18 +1,54 @@
-<form method="post" action="{% url 'criacliente' %}" class="js-cria-cliente-form">
-    {% csrf_token %}
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        <h4 class="modal-title"><b>CADASTRO DE CLIENTE</b></h4>
+{% if c_template == 'clientes/criacliente.html' %}
+<form class="row g-3" method="post" action="{% url 'criacliente' %}">
+{% csrf_token %}
+    <div class="col-md-4">
+        <label for="id_Fantasia" class="form-label">Fantasia</label>
+        <input type="text" class="form-control" id="id_Fantasia" placeholder="">
     </div>
-    <div class="modal-body">
-        <div class="divformulario">
-            {% include 'tabelaformulario.html' %}
-        </div>
+
+    <div class="col-md-8">
+        <label for="id_Nome" class="form-label">Nome</label>
+        <input type="text" class="form-control" id="id_Nome">
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal">FECHAR</button>
-        <button type="submit" class="btn btn-success">CRIAR</button>
+
+    <div class="col-md-12">
+        <label for="id_Endereco" class="form-label">Endereço</label>
+        <input type="text" class="form-control" id="id_Endereco">
+    </div>
+
+    <div class="col-md-6">
+        <label for="inputBairro" class="form-label">Bairro</label>
+        <input type="text" class="form-control" id="inputBairro">
+    </div>
+
+    <div class="col-md-2">
+        <label for="id_CEP" class="form-label">CEP</label>
+        <input type="text" class="form-control" id="id_CEP">
+    </div>
+
+    <div class="col-md-4">
+        <label for="id_Cidade" class="form-label">Cidade</label>
+        <input type="text" class="form-control" id="id_Cidade" value="SÃO PAULO">
+    </div>
+
+    <div class="col-md-1">
+        <label for="id_Estado" class="form-label">Estado</label>
+        <input type="text" class="form-control" id="id_Estado" value="SP">
+    </div>
+
+    <div class="col-md-3">
+        <label for="id_CNPJ" class="form-label">CNPJ</label>
+        <input type="text" class="form-control" id="id_CNPJ">
+    </div>
+
+    <div class="col-md-3">
+        <label for="id_IE" class="form-label">Inscrição Estadual</label>
+        <input type="text" class="form-control" id="id_IE">
+    </div>
+
+    <div class="col-md-5">
+        <label for="id_Site" class="form-label">Site</label>
+        <input type="text" class="form-control" id="id_Site">
     </div>
 </form>
+{% endif %}

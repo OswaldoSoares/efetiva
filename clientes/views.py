@@ -25,12 +25,9 @@ def consulta_cliente(request, idcliente):
     return render(request, 'clientes/consultacliente.html', contexto)
 
 
-def criacliente(request):
-    if request.method == 'POST':
-        form = CadastraCliente(request.POST)
-    else:
-        form = CadastraCliente()
-    return salva_form(request, form, 'clientes/criacliente.html', 0)
+def cria_cliente(request):
+    data = facade.form_cliente(request, CadastraCliente, 'clientes/criacliente.html', 'indexcliente')
+    return data
 
 
 def editacliente(request, idcli):

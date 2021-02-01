@@ -1,6 +1,3 @@
-{% for field in form %}
-    {% if not field.is_hidden %}
-        <label>{{ field.label_tag }}</label>
-    {% endif %}
-    {{ field }}
-{% endfor %}
+<table>
+    {{ form.as_p }}
+</table>

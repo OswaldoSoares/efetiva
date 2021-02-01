@@ -402,26 +402,6 @@
         </header>
         <main>
             {% for itenscategoria in categoria_veiculo %}
-            {% if not itenscategoria.idCategoria in list_categoria_cliente %}
-            <div class="card-veiculo card-base2">
-                <header>
-                    <span><b>{{ itenscategoria.Categoria }}</b></span>
-                </header>
-                <section>
-                    <span><b>VEÍCULO SEM TABELA</b></span>
-                </section>
-                <footer>
-                    <button class="btn btn-primary btn-xs js-criatabelaveiculo" name="naotemtabela"
-                            idveiculo="{{ itenscategoria.idCategoria }}" idcliente="{{ itens.idCliente }}"
-                            categoria="{{ itenscategoria.Categoria }}" data-url="{% url 'criatabelaveiculo' %}"
-                            idclick="clientetabelaveiculo">
-                        <span class="glyphicon glyphicon-plus"></span>
-                    </button>
-                </footer>
-            </div>
-            {% endif %}
-            {% endfor %}
-            {% for itenscategoria in categoria_veiculo %}
             {% if itenscategoria.idCategoria in list_categoria_cliente %}
             <div class="card-veiculo card-base2">
                 {% for itenstabela in tabela_veiculo_cliente %}
@@ -509,6 +489,26 @@
                 </footer>
                 {% endif %}
                 {% endfor %}
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% for itenscategoria in categoria_veiculo %}
+            {% if not itenscategoria.idCategoria in list_categoria_cliente %}
+            <div class="card-veiculo card-base2">
+                <header>
+                    <span><b>{{ itenscategoria.Categoria }}</b></span>
+                </header>
+                <section>
+                    <span><b>VEÍCULO SEM TABELA</b></span>
+                </section>
+                <footer>
+                    <button class="btn btn-primary btn-xs js-criatabelaveiculo" name="naotemtabela"
+                            idveiculo="{{ itenscategoria.idCategoria }}" idcliente="{{ itens.idCliente }}"
+                            categoria="{{ itenscategoria.Categoria }}" data-url="{% url 'criatabelaveiculo' %}"
+                            idclick="clientetabelaveiculo">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </footer>
             </div>
             {% endif %}
             {% endfor %}

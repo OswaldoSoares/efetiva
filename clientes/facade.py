@@ -1,4 +1,8 @@
 from typing import List
+
+from django.http import JsonResponse
+from django.template.loader import render_to_string
+
 from clientes.models import Cliente, FoneContatoCliente, EMailContatoCliente, Cobranca, Tabela, TabelaVeiculo, \
     TabelaPerimetro, TabelaCapacidade
 # TODO IMPORTAR FROM FACADE VEICULOS
@@ -149,3 +153,25 @@ def list_categoria_tabela_veiculo_cliente(idcliente: int):
 def get_categoria_veiculo():
     categoria_veiculo = CategoriaVeiculo.objects.all()
     return categoria_veiculo
+
+
+def form_cliente(request, c_form, c_template, c_redirect):
+    """
+
+    :param request:
+    :param c_form:
+    :param c_template:
+    :param c_redirect:
+    :return: JsonResponse
+    """
+    data = dict()
+    if request.method == 'POST':
+        form = c_form(request.POST or None)
+        if form.is_valid():
+            form.save()
+    else:
+        form = c_form()
+    context = {'form': form, 'c_template': c_template}
+    data['html_form'] = render_to_string(c_template, context, request=request)
+    c_return = JsonResponse(data)
+    return c_return

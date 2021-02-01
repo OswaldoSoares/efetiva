@@ -1,4 +1,6 @@
 from django import forms
+from django.core.exceptions import ValidationError
+
 from .models import Cliente, FoneContatoCliente, EMailContatoCliente, Cobranca, Tabela, TabelaVeiculo, \
     TabelaCapacidade, TabelaPerimetro, FormaPagamento
 
@@ -21,92 +23,30 @@ class MeuTimeInput(forms.TimeInput):
 class CadastraCliente(forms.ModelForm):
     class Meta:
         model = Cliente
-        fields = ('Fantasia',
-                  'Nome',
-                  'Endereco',
-                  'Bairro',
-                  'CEP',
-                  'Cidade',
-                  'Estado',
-                  'CNPJ',
-                  'IE',
-                  'Site',
-                  'idCliente',
-                  )
-        labels = {
-            'Fantasia': 'NOME FANTASIA',
-            'Nome': 'RAZÃO SOCIAL',
-            'Endereco': 'ENDEREÇO',
-            'Bairro': 'BAIRRO',
-            'CEP': 'CEP',
-            'Cidade': 'CIDADE',
-            'Estado': 'ESTADO',
-            'CNPJ': 'CNPJ',
-            'IE': 'INSCRIÇÃO ESTADUAL',
-            'Site': 'SITE',
-        }
+        fields = ('idCliente', 'Fantasia', 'Nome', 'Endereco', 'Bairro', 'CEP', 'Cidade', 'Estado', 'CNPJ', 'IE',
+                  'Site')
+        labels = {'Fantasia': 'NOME FANTASIA', 'Nome': 'RAZÃO SOCIAL', 'Endereco': 'ENDEREÇO', 'Bairro': 'BAIRRO',
+                  'CEP': 'CEP', 'Cidade': 'CIDADE', 'Estado': 'ESTADO', 'CNPJ': 'CNPJ', 'IE': 'INSCRIÇÃO ESTADUAL',
+                  'Site': 'SITE',}
         widgets = {
-            'Fantasia': forms.TextInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'FANTASIA',
-                }
-            ),
-            'Nome': forms.TextInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'NOME',
-                }
-            ),
-            'Endereco': forms.TextInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'ENDEREÇO',
-                }
-            ),
-            'Bairro': forms.TextInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'BAIRRO',
-                }
-            ),
-            'CEP': forms.TextInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'CEP',
-                }
-            ),
-            'Cidade': forms.TextInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'CIDADE',
-                }
-            ),
-            'Estado': forms.TextInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'ESTADO',
-                }
-            ),
-            'CNPJ': forms.TextInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'CNPJ',
-                }
-            ),
-            'IE': forms.TextInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'IE',
-                }
-            ),
-            'Site': forms.TextInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'SITE'
-                }
-            ),
+            'idCliente': forms.HiddenInput(),
+            'Fantasia': forms.TextInput(attrs={'class': 'formfields'}),
+            'Nome': forms.TextInput(attrs={'class': 'formfields'}),
+            'Endereco': forms.TextInput(attrs={'class': 'formfields'}),
+            'Bairro': forms.TextInput(attrs={'class': 'formfields'}),
+            'CEP': forms.TextInput(attrs={'class': 'formfields'}),
+            'Cidade': forms.TextInput(attrs={'class': 'formfields'}),
+            'Estado': forms.TextInput(attrs={'class': 'formfields'}),
+            'CNPJ': forms.TextInput(attrs={'class': 'formfields'}),
+            'IE': forms.TextInput(attrs={'class': 'formfields'}),
+            'Site': forms.TextInput(attrs={'class': 'formfields'}),
         }
+
+    def clean_Fantasia(self):
+        fantasia = self.cleaned_data['Fantasia']
+        if Cliente.objects.filter(Fantasia=fantasia).exists():
+            raise ValidationError('O Nome fantasia {} já existe'.format(fantasia))
+        return fantasia
 
 
 class CadastraFoneContatoCliente(forms.ModelForm):

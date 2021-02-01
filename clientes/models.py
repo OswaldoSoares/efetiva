@@ -4,12 +4,12 @@ from veiculos.models import CategoriaVeiculo
 
 class Cliente(models.Model):
     idCliente = models.AutoField(primary_key=True)
-    Fantasia = models.CharField(max_length=20)
-    Nome = models.CharField(max_length=50)
-    Endereco = models.CharField(max_length=35, blank=True)
-    Bairro = models.CharField(max_length=20, blank=True)
+    Fantasia = models.CharField(max_length=20, unique=True)
+    Nome = models.CharField(max_length=60)
+    Endereco = models.CharField(max_length=60, blank=True)
+    Bairro = models.CharField(max_length=25, blank=True)
     CEP = models.CharField(max_length=9, blank=True)
-    Cidade = models.CharField(max_length=25, blank=True, default='SÃO PAULO')
+    Cidade = models.CharField(max_length=30, blank=True, default='SÃO PAULO')
     Estado = models.CharField(max_length=2, blank=True, default='SP')
     CNPJ = models.CharField(max_length=18, blank=True)
     IE = models.CharField(max_length=15, blank=True)
