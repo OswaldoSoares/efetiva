@@ -15,15 +15,12 @@
             <div class="consulta_headerbtn">
                 <button type="button" class="btn btn-success glyphicon glyphicon-edit"
                         onclick="openMyModal(event); return false;"
-                        data-title="CADASTRO DE CLIENTE"
+                        data-title="EDITA CADASTRO DE CLIENTE"
                         data-action="{% url 'editacliente' itens.idCliente %}"
-                        data-button-save-label="SALVAR"
-                        width="100"></button>
-                <button class="btn btn-success js-editacliente" idcliente="{{ itens.idCliente }}" data-url="{% url 'editacliente' itens.idCliente %}" idclick="cliente">
-                    <span class="glyphicon glyphicon-edit"></span>
-                </button>
-                <button class="btn btn-danger js-excluicliente" idcliente="{{ itens.idCliente }}" data-url="{% url 'excluicliente' itens.idCliente %}">
-                    <span class="glyphicon glyphicon-trash"></span>
+                        data-button-save-label="ALTERAR"></button>
+                <button class="btn btn-danger js-excluicliente glyphicon glyphicon-trash"
+                        idcliente="{{ itens.idCliente }}"
+                        data-url="{% url 'excluicliente' itens.idCliente %}">
                 </button>
             </div>
             <div class="consulta-header-dados">
@@ -661,14 +658,26 @@
             {% endif %}
         </main>
     </div>
+    {% endfor %}
     <!-- DIV MODAL -->
-    <div class="modal fade" id="modal-formulario" >
-        <div class="modal-dialog">
+    <div class="modal fade bd-example-modal-lg" id="MyModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title"><b>CADASTRO DE CLIENTE</b></h4>
+                </div>
+                <div class="modal-body">
 
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">FECHAR</button>
+                    <button type="submit" class="btn btn-success btn-save">CRIAR</button>
+                </div>
             </div>
         </div>
     </div>
-    {% endfor %}
 </main>
 {% endblock %}

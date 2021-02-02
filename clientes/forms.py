@@ -23,29 +23,20 @@ class MeuTimeInput(forms.TimeInput):
 class CadastraCliente(forms.ModelForm):
     class Meta:
         model = Cliente
-        fields = ('idCliente', 'Fantasia', 'Nome', 'Endereco', 'Bairro', 'CEP', 'Cidade', 'Estado', 'CNPJ', 'IE',
-                  'Site')
+        fields = '__all__'
         labels = {'Fantasia': 'NOME FANTASIA', 'Nome': 'RAZÃO SOCIAL', 'Endereco': 'ENDEREÇO', 'Bairro': 'BAIRRO',
                   'CEP': 'CEP', 'Cidade': 'CIDADE', 'Estado': 'ESTADO', 'CNPJ': 'CNPJ', 'IE': 'INSCRIÇÃO ESTADUAL',
-                  'Site': 'SITE',}
-        widgets = {
-            'idCliente': forms.HiddenInput(),
-            'Fantasia': forms.TextInput(attrs={'class': 'formfields'}),
-            'Nome': forms.TextInput(attrs={'class': 'formfields'}),
-            'Endereco': forms.TextInput(attrs={'class': 'formfields'}),
-            'Bairro': forms.TextInput(attrs={'class': 'formfields'}),
-            'CEP': forms.TextInput(attrs={'class': 'formfields'}),
-            'Cidade': forms.TextInput(attrs={'class': 'formfields'}),
-            'Estado': forms.TextInput(attrs={'class': 'formfields'}),
-            'CNPJ': forms.TextInput(attrs={'class': 'formfields'}),
-            'IE': forms.TextInput(attrs={'class': 'formfields'}),
-            'Site': forms.TextInput(attrs={'class': 'formfields'}),
-        }
+                  'Site': 'SITE'}
+        widgets = {'Fantasia': forms.TextInput(), 'Nome': forms.TextInput(), 'Endereco': forms.TextInput(),
+                   'Bairro': forms.TextInput(), 'CEP': forms.TextInput(), 'CNPJ': forms.TextInput(),
+                   'IE': forms.TextInput(), 'Cidade': forms.TextInput(attrs={'value': 'São  Paulo'}),
+                   'Estado': forms.TextInput(attrs={'value': 'SP'}), 'Site': forms.TextInput()}
 
     def clean_Fantasia(self):
         fantasia = self.cleaned_data['Fantasia']
         if Cliente.objects.filter(Fantasia=fantasia).exists():
-            raise ValidationError('O Nome fantasia {} já existe'.format(fantasia))
+            if not self.instance.idCliente:
+                raise ValidationError('Cliente com este Fantasia já existe.')
         return fantasia
 
 

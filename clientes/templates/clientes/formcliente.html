@@ -1,12 +1,11 @@
-{% if c_template == 'clientes/criacliente.html' %}
-<form class="row g-3" method="post" action="{% url 'criacliente' %}" idcliente="{{ idcliente }}">
+<form class="row g-3" method="post" action="{{ c_url }}" idcliente="{{ idcliente }}">
 {% csrf_token %}
     {% if form.idCliente.value %}
     <input type="hidden" id="id_idCliente" name="idcliente" value="{{ idcliente }}">
     {% endif %}
 
     <div class="col-md-4">
-        <label for="id_Fantasia" class="form-label">Fantasia</label>
+        <label for="id_Fantasia" class="form-label">FANTASIA:</label>
         <input type="text" class="form-control" id="id_Fantasia" name="Fantasia" maxlength="20" required=""
                value="{% if form.Fantasia.value %}{{ form.Fantasia.value }}{% endif %}">
         {% if form.Fantasia.errors %}
@@ -19,7 +18,7 @@
     </div>
 
     <div class="col-md-8">
-        <label for="id_Nome" class="form-label">Nome</label>
+        <label for="id_Nome" class="form-label">NOME:</label>
         <input type="text" class="form-control" id="id_Nome" name="Nome" maxlength="60" required=""
                value="{% if form.Nome.value %}{{ form.Nome.value }}{% endif %}">
         {% if form.Nome.errors %}
@@ -32,51 +31,50 @@
     </div>
 
     <div class="col-md-12">
-        <label for="id_Endereco" class="form-label">Endereço</label>
+        <label for="id_Endereco" class="form-label">ENDEREÇO:</label>
         <input type="text" class="form-control" id="id_Endereco" name="Endereco" maxlength="60"
                value="{% if form.Endereco.value %}{{ form.Endereco.value }}{% endif %}">
     </div>
 
     <div class="col-md-6">
-        <label for="inputBairro" class="form-label">Bairro</label>
+        <label for="inputBairro" class="form-label">BAIRRO:</label>
         <input type="text" class="form-control" id="inputBairro" name="Bairro" maxlength="25"
                value="{% if form.Bairro.value %}{{ form.Bairro.value }}{% endif %}">
     </div>
 
     <div class="col-md-2">
-        <label for="id_CEP" class="form-label">CEP</label>
+        <label for="id_CEP" class="form-label">CEP:</label>
         <input type="text" class="form-control" id="id_CEP" name="CEP", maxlength="9"
                value="{% if form.CEP.value %}{{ form.CEP.value }}{% endif %}">
     </div>
 
     <div class="col-md-4">
-        <label for="id_Cidade" class="form-label">Cidade</label>
+        <label for="id_Cidade" class="form-label">CIDADE:</label>
         <input type="text" class="form-control" id="id_Cidade" name="Cidade" maxlength="30"
                value="{% if form.Cidade.value %}{{ form.Cidade.value }}{% endif %}">
     </div>
 
-    <div class="col-md-1">
-        <label for="id_Estado" class="form-label">Estado</label>
+    <div class="col-md-2">
+        <label for="id_Estado" class="form-label">ESTADO:</label>
         <input type="text" class="form-control" id="id_Estado" name="Estado" maxlength="2"
                value="{% if form.Estado.value %}{{ form.Estado.value }}{% endif %}">
     </div>
 
     <div class="col-md-3">
-        <label for="id_CNPJ" class="form-label">CNPJ</label>
+        <label for="id_CNPJ" class="form-label">CNPJ ou CPF:</label>
         <input type="text" class="form-control" id="id_CNPJ" name="CNPJ" maxlength="18"
                value="{% if form.CNPJ.value %}{{ form.CNPJ.value }}{% endif %}">
     </div>
 
     <div class="col-md-3">
-        <label for="id_IE" class="form-label">Inscrição Estadual</label>
+        <label for="id_IE" class="form-label">IE ou RG:</label>
         <input type="text" class="form-control" id="id_IE" name="IE" maxlength="15"
                value="{% if form.IE.value %}{{ form.IE.value }}{% endif %}">
     </div>
 
-    <div class="col-md-5">
-        <label for="id_Site" class="form-label">Site</label>
+    <div class="col-md-4">
+        <label for="id_Site" class="form-label">SITE:</label>
         <input type="text" class="form-control" id="id_Site" name="Site" maxlength="40"
                value="{% if form.Fantasia.value %}{{ form.Site.value }}{% endif %}">
     </div>
 </form>
-{% endif %}

@@ -155,34 +155,24 @@ def get_categoria_veiculo():
     return categoria_veiculo
 
 
-def form_cliente(request, c_form, c_template, idcliente):
-    """
-
-    :param request:
-    :param c_form:
-    :param c_template:
-    :param c_redirect:
-    :return: JsonResponse
-    """
-    # if idcliente:
-    #     print('aqui')
-    #     cliente = Cliente.objects.get(idCliente=idcliente)
+def form_cliente(request, c_form, c_url, idcliente):
+    cliente = None
     data = dict()
+    if idcliente:
+        cliente = Cliente.objects.get(idCliente=idcliente)
     if request.method == 'POST':
-        # if idcliente:
-        #     form = c_form(request.POST, instance=cliente)
-        # else:
-        form = c_form(request.POST or None)
+        if idcliente:
+            form = c_form(request.POST, instance=cliente)
+        else:
+            form = c_form(request.POST or None)
         if form.is_valid():
             form.save()
     else:
-        # if idcliente:
-        #     form = c_form(instance=cliente)
-        #     print(form)
-        # else:
-        form = c_form()
-    context = {'form': form, 'c_template': c_template}
-    data['html_form'] = render_to_string(c_template, context, request=request)
+        if idcliente:
+            form = c_form(instance=cliente)
+        else:
+            form = c_form()
+    context = {'form': form, 'c_url': c_url, 'idcliente': idcliente}
+    data['html_form'] = render_to_string('clientes/formcliente.html', context, request=request)
     c_return = JsonResponse(data)
-    print(form)
     return c_return

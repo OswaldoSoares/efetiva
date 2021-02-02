@@ -26,19 +26,12 @@ def consulta_cliente(request, idcliente):
 
 
 def cria_cliente(request):
-    print(request.POST)
-    data = facade.form_cliente(request, CadastraCliente, 'clientes/criacliente.html', None)
+    data = facade.form_cliente(request, CadastraCliente, '/clientes/criacliente/', None)
     return data
 
 
 def edita_cliente(request, idcliente):
-    # cliente = get_object_or_404(Cliente, idCliente=idcli)
-    # if request.method == 'POST':
-    #     form = CadastraCliente(request.POST, instance=cliente)
-    # else:
-    #     form = CadastraCliente(instance=cliente)
-    # return salva_form(request, form, 'clientes/editacliente.html', idcli)
-    data = facade.form_cliente(request, CadastraCliente, 'clientes/criacliente.html', idcliente)
+    data = facade.form_cliente(request, CadastraCliente, '/clientes/editacliente/{}/'.format(idcliente), idcliente)
     return data
 
 
