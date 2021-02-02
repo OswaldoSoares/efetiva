@@ -13,18 +13,22 @@
                 <p><b>{{ itens.Fantasia }} - {{ itens.Nome }}</b></p>
             </div>
             <div class="consulta_headerbtn">
-                <button type="button" class="btn btn-success glyphicon glyphicon-edit"
-                        onclick="openMyModal(event); return false;"
-                        data-title="EDITA CADASTRO DE CLIENTE"
-                        data-action="{% url 'editacliente' itens.idCliente %}"
-                        data-button-save-label="ALTERAR"></button>
-                <button class="btn btn-danger js-excluicliente glyphicon glyphicon-trash"
-                        idcliente="{{ itens.idCliente }}"
-                        data-url="{% url 'excluicliente' itens.idCliente %}">
+                <button class="btn btn-success glyphicon glyphicon-edit" onclick="openMyModal(event); return false;"
+                        data-title="EDITA CADASTRO DE CLIENTE" data-action="{% url 'editacliente' itens.idCliente %}"
+                        data-button-save-label="ALTERAR">
                 </button>
+                <button class="btn btn-danger glyphicon glyphicon-trash" onclick="openMyModal(event); return false;"
+                        data-title="EXCLUI CADASTRO DE CLIENTE" data-action="{% url 'excluicliente' itens.idCliente %}"
+                        data-button-save-label="EXCLUIR">
+                </button>
+                <!--<button class="btn btn-danger js-excluicliente glyphicon glyphicon-trash"-->
+                        <!--idcliente="{{ itens.idCliente }}"-->
+                        <!--data-url="{% url 'excluicliente' itens.idCliente %}">-->
+                <!--</button>-->
             </div>
             <div class="consulta-header-dados">
-                <p><b>{{ itens.Endereco }} - {{ itens.Bairro }} - {{ itens.CEP }} - {{ itens.Cidade }} - {{ itens.Estado }}</b></p>
+                <p><b>'{{ itens.Endereco }} - {{ itens.Bairro }} - {{ itens.CEP }} - {{ itens.Cidade }} - {{
+                    itens.Estado }}</b></p>
                 <p><b>CNPJ: {{ itens.CNPJ }} - IE: {{ itens.IE }}</b></p>
                 <p><b><a href="http://www.{{ itens.Site }}">{{ itens.Site }}</a></b></p>
             </div>
@@ -676,6 +680,14 @@
                     <button type="button" class="btn btn-primary" data-dismiss="modal">FECHAR</button>
                     <button type="submit" class="btn btn-success btn-save">CRIAR</button>
                 </div>
+            </div>
+        </div>
+    </div>
+    <!-- DIV MODAL -->
+    <div class="modal fade" id="modal-formulario" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+
             </div>
         </div>
     </div>

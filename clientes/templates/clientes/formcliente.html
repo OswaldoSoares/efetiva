@@ -1,9 +1,5 @@
 <form class="row g-3" method="post" action="{{ c_url }}" idcliente="{{ idcliente }}">
 {% csrf_token %}
-    {% if form.idCliente.value %}
-    <input type="hidden" id="id_idCliente" name="idcliente" value="{{ idcliente }}">
-    {% endif %}
-
     <div class="col-md-4">
         <label for="id_Fantasia" class="form-label">FANTASIA:</label>
         <input type="text" class="form-control" id="id_Fantasia" name="Fantasia" maxlength="20" required=""

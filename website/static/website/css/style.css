@@ -1117,24 +1117,24 @@ main .card-base3 section .tipo-cobranca {
 }
 
 main .card-base3 section article {
-    background-color: steelblue;
+ /*   background-color: steelblue;*/
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-main .card-base3 section article .teste {
+/*main .card-base3 section article .teste {
     background-color: tomato;
     display: flex;
     
     width: 100%;
     margin-top: 5px;
-}
+}*/
 
 main .card-base2 section .section-itens,
 main .card-base3 section article .teste .switch-itens {
-    background-color: yellow;
+  /*  background-color: yellow;*/
     width: 100%;
     display: flex;
     align-items: center;
