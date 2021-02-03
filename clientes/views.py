@@ -28,19 +28,17 @@ def consulta_cliente(request, idcliente):
 
 
 def cria_cliente(request):
-    data = facade.form_cliente(request, CadastraCliente, '/clientes/criacliente/', None, 'cria_cliente')
+    data = facade.form_cliente(request, CadastraCliente, None, 'cria_cliente')
     return data
 
 
 def edita_cliente(request, idcliente):
-    data = facade.form_cliente(request, CadastraCliente, '/clientes/editacliente/{}/'.format(idcliente), idcliente,
-                               'edita_cliente')
+    data = facade.form_cliente(request, CadastraCliente, idcliente, 'edita_cliente')
     return data
 
 
 def exclui_cliente(request, idcliente):
-    data = facade.form_exclui_cliente(request, '/clientes/excluicliente/{}/'.format(idcliente), idcliente,
-                                      'exclui_cliente')
+    data = facade.form_exclui_cliente(request, idcliente, 'exclui_cliente')
     return data
 
 

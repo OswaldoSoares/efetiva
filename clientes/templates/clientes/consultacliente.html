@@ -52,7 +52,9 @@
                     <span><b>&#x2713; IE: {{ itens.IE }}</b></span>
                 {% endif %}
                 </p>
-                <p><b>&#x2713; <a href="http://www.{{ itens.Site }}" target="_blank">{{ itens.Site }}</a></b></p>
+                {% if itens.Site %}
+                    <p><b>&#x2713; <a href="http://www.{{ itens.Site }}" target="_blank">{{ itens.Site }}</a></b></p>
+                {% endif %}
             </div>
         </header>
         <main>

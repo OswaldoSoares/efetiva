@@ -155,7 +155,7 @@ def get_categoria_veiculo():
     return categoria_veiculo
 
 
-def form_cliente(request, c_form, c_url, idcliente, c_view):
+def form_cliente(request, c_form, idcliente, c_view):
     cliente = None
     data = dict()
     if idcliente:
@@ -166,25 +166,27 @@ def form_cliente(request, c_form, c_url, idcliente, c_view):
         else:
             form = c_form(request.POST or None)
         if form.is_valid():
-            form.save()
+            save_id = form.save()
+            data['save_id'] = save_id.idCliente
     else:
         if idcliente:
             form = c_form(instance=cliente)
         else:
             form = c_form()
-    context = {'form': form, 'c_url': c_url, 'idcliente': idcliente, 'c_view': c_view}
+    context = {'form': form, 'c_url': request.get_full_path(), 'idcliente': idcliente, 'c_view': c_view}
     data['html_form'] = render_to_string('clientes/formcliente.html', context, request=request)
+    data['c_view'] = c_view
     c_return = JsonResponse(data)
     return c_return
 
 
-def form_exclui_cliente(request, c_url, idcliente, c_view):
+def form_exclui_cliente(request, idcliente, c_view):
     data = dict()
-    print(request.GET)
     cliente = Cliente.objects.get(idCliente=idcliente)
     if request.method == "POST":
         cliente.delete()
-    context = {'c_url': c_url, 'idcliente': idcliente, 'c_view': c_view, 'cliente': cliente}
+    context = {'c_url': request.get_full_path(), 'idcliente': idcliente, 'c_view': c_view, 'cliente': cliente}
     data['html_form'] = render_to_string('clientes/formcliente.html', context, request=request)
+    data['c_view'] = c_view
     c_return = JsonResponse(data)
     return c_return

@@ -230,8 +230,6 @@
             header.addClass('loading');
 
             var url = $(this).attr('action') || action;
-            console.log($(this).attr('idcliente'))
-            console.log($(this).attr('action'))
 
             // serialize the form’s content and send via an AJAX call
             // using the form’s defined action and method
@@ -255,7 +253,14 @@
                     } else {
                         // otherwise, we've done and can close the modal
                         $(modal).modal('hide');
-                        location.reload();
+                        if (xhr['c_view'] == 'cria_cliente') {
+                            window.location.href = "/clientes/consultacliente/" + xhr['save_id']
+                        } else if (xhr['c_view'] == 'edita_cliente') {
+                            window.location.href = "/clientes/consultacliente/" + xhr['save_id']
+                        } else if (xhr['c_view'] == 'exclui_cliente') {
+                            window.location.href = '/clientes/'
+                        }
+                        
                         if (cbAfterSuccess) { cbAfterSuccess(modal); }
                     }
                 },
