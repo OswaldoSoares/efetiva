@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect, get_object_or_404
 from django.http import JsonResponse
 from django.template.loader import render_to_string
+from django.contrib.auth.decorators import login_required
 from rolepermissions.decorators import has_permission_decorator
 from clientes import facade
 from .models import Cliente, FoneContatoCliente, EMailContatoCliente, Cobranca, Tabela, TabelaVeiculo, \
@@ -11,6 +12,7 @@ from .forms import CadastraCliente, CadastraFoneContatoCliente, CadastraEMailCon
 from veiculos.models import CategoriaVeiculo
 
 
+@login_required(login_url='login')
 @has_permission_decorator('modulo_clientes')
 def index_cliente(request):
     contexto = facade.create_cliente_filter_context(request)
@@ -26,25 +28,20 @@ def consulta_cliente(request, idcliente):
 
 
 def cria_cliente(request):
-    data = facade.form_cliente(request, CadastraCliente, '/clientes/criacliente/', None)
+    data = facade.form_cliente(request, CadastraCliente, '/clientes/criacliente/', None, 'cria_cliente')
     return data
 
 
 def edita_cliente(request, idcliente):
-    data = facade.form_cliente(request, CadastraCliente, '/clientes/editacliente/{}/'.format(idcliente), idcliente)
+    data = facade.form_cliente(request, CadastraCliente, '/clientes/editacliente/{}/'.format(idcliente), idcliente,
+                               'edita_cliente')
     return data
 
 
-def excluicliente(request, idcli):
-    cliente = get_object_or_404(Cliente, idCliente=idcli)
-    data = dict()
-    if request.method == "POST":
-        cliente.delete()
-        return redirect('indexcliente')
-    else:
-        context = {'cliente': cliente}
-        data['html_form'] = render_to_string('clientes/excluicliente.html', context, request=request)
-    return JsonResponse(data)
+def exclui_cliente(request, idcliente):
+    data = facade.form_exclui_cliente(request, '/clientes/excluicliente/{}/'.format(idcliente), idcliente,
+                                      'exclui_cliente')
+    return data
 
 
 def criaemailcliente(request):
@@ -354,10 +351,7 @@ def salva_form(request, form, template_name, idcli):
         if form.is_valid():
             form.save()
             data['form_is_valid'] = True
-            if template_name == 'clientes/criacliente.html':
-                return redirect('indexcliente')
-            else:
-                return redirect('consultacliente', idcli)
+            return redirect('consultacliente', idcli)
         else:
             data['form_is_valid'] = False
     context = {'form': form}

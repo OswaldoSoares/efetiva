@@ -318,6 +318,17 @@ main .consulta .consulta-header {
  /*   padding: 8px 5px;*/
 }
 
+.consulta-header-dados p b a {
+    color: white;
+}
+
+.consulta-header-dados p b a:hover,
+.consulta-header-dados p b a:checked,
+.consulta-header-dados p b a:focus {
+    color: deeppink;
+    text-decoration: none;
+}
+
 /* clientes/index.html */
 .status_cliente {
     color: #3CB371;
@@ -1142,7 +1153,16 @@ main .card-base3 section article .teste .switch-itens {
     padding: 3px 5px;
 }
 
+.section-itens a {
+    color: black;
+}
 
+.section-itens a:hover,
+.section-itens a:checked,
+.section-itens a:focus {
+    color: deeppink;
+    text-decoration: none;
+}
 
 
 main .card-base2 section .tabela-itens {

@@ -155,7 +155,7 @@ def get_categoria_veiculo():
     return categoria_veiculo
 
 
-def form_cliente(request, c_form, c_url, idcliente):
+def form_cliente(request, c_form, c_url, idcliente, c_view):
     cliente = None
     data = dict()
     if idcliente:
@@ -172,7 +172,19 @@ def form_cliente(request, c_form, c_url, idcliente):
             form = c_form(instance=cliente)
         else:
             form = c_form()
-    context = {'form': form, 'c_url': c_url, 'idcliente': idcliente}
+    context = {'form': form, 'c_url': c_url, 'idcliente': idcliente, 'c_view': c_view}
+    data['html_form'] = render_to_string('clientes/formcliente.html', context, request=request)
+    c_return = JsonResponse(data)
+    return c_return
+
+
+def form_exclui_cliente(request, c_url, idcliente, c_view):
+    data = dict()
+    print(request.GET)
+    cliente = Cliente.objects.get(idCliente=idcliente)
+    if request.method == "POST":
+        cliente.delete()
+    context = {'c_url': c_url, 'idcliente': idcliente, 'c_view': c_view, 'cliente': cliente}
     data['html_form'] = render_to_string('clientes/formcliente.html', context, request=request)
     c_return = JsonResponse(data)
     return c_return

@@ -27,10 +27,32 @@
                 <!--</button>-->
             </div>
             <div class="consulta-header-dados">
-                <p><b>'{{ itens.Endereco }} - {{ itens.Bairro }} - {{ itens.CEP }} - {{ itens.Cidade }} - {{
-                    itens.Estado }}</b></p>
-                <p><b>CNPJ: {{ itens.CNPJ }} - IE: {{ itens.IE }}</b></p>
-                <p><b><a href="http://www.{{ itens.Site }}">{{ itens.Site }}</a></b></p>
+                <p>
+                {% if itens.Endereco %}
+                    <span><b>&#x2713; {{ itens.Endereco }} </b></span>
+                {% endif %}
+                {% if itens.Bairro %}
+                    <span><b>&#x2713; {{ itens.Bairro }} </b></span>
+                {% endif %}
+                {% if itens.CEP %}
+                    <span><b>&#x2713; {{ itens.CEP }} </b></span>
+                {% endif %}
+                {% if itens.Cidade %}
+                    <span><b>&#x2713; {{ itens.Cidade }} </b></span>
+                {% endif %}
+                {% if itens.Estado %}
+                    <span><b>&#x2713; {{ itens.Estado }}</b></span>
+                {% endif %}
+                </p>
+                <p>
+                {% if itens.CNPJ %}
+                    <span><b>&#x2713; CNPJ: {{ itens.CNPJ }} </b></span>
+                {% endif %}
+                {% if itens.IE %}
+                    <span><b>&#x2713; IE: {{ itens.IE }}</b></span>
+                {% endif %}
+                </p>
+                <p><b>&#x2713; <a href="http://www.{{ itens.Site }}" target="_blank">{{ itens.Site }}</a></b></p>
             </div>
         </header>
         <main>
@@ -171,7 +193,8 @@
                         <span><b>{{ itenscobranca.Nome }}</b></span>
                     </div>
                     <div class="section-itens">
-                        <span>{{ itenscobranca.Endereco }} - {{ itenscobranca.Bairro }} - {{ itenscobranca.CEP }}- {{ itenscobranca.Cidade }} - {{ itenscobranca.Estado }}</span>
+                        <span>{{ itenscobranca.Endereco }} - {{ itenscobranca.Bairro }} - {{ itenscobranca.CEP }} -
+                            {{ itenscobranca.Cidade }} - {{ itenscobranca.Estado }}</span>
                     </div>
                     <div class="section-itens">
                         <span>CNPJ: {{ itenscobranca.CNPJ }} - IE: {{ itenscobranca.IE }}</span>
@@ -294,8 +317,8 @@
                             </div>
                             <div class="section-itens switch-itens">
                                 <span class="switch-titulo"><b>HORA</b></span>
-                                <input id="switch-hora-paga" name="switch" value="hora-paga" class="switch switch--shadow"
-                                       type="checkbox" />
+                                <input id="switch-hora-paga" name="switch" value="hora-paga"
+                                       class="switch switch--shadow" type="checkbox" />
                                 <label for="switch-hora-paga"></label>
                             </div>
                             <div class="section-itens switch-itens">
@@ -324,8 +347,8 @@
                             </div>
                             <div class="section-itens switch-itens">
                                 <span class="switch-titulo"><b>SAÍDA</b></span>
-                                <input id="switch-saida-paga" name="switch" value="saida-paga" class="switch switch--shadow"
-                                       type="checkbox" />
+                                <input id="switch-saida-paga" name="switch" value="saida-paga"
+                                       class="switch switch--shadow" type="checkbox" />
                                 <label for="switch-saida-paga"></label>
                             </div>
                             <div class="section-itens switch-itens">
