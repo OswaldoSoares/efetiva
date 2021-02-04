@@ -88,5 +88,40 @@
     </div>
 {% endif %}
 
+{% if c_view == 'cria_email_cliente' or c_view == 'edita_email_cliente' %}
+    <div class="col-md-6">
+        <label for="id_Contato" class="form-label">CONTATO:</label>
+        <input type="text" class="form-control" id="id_Contato" name="Contato" maxlength="25" required=""
+               value="{% if form.Contato.value %}{{ form.Contato.value }}{% endif %}">
+        {% if form.Coontato.errors %}
+            <ul class="errorlist">
+            {% for error in form.Contato.errors %}
+                <li><strong>{{ error|escape }}</strong></li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+    <div class="col-md-6">
+        <label for="id_Nome" class="form-label">E-MAIL:</label>
+        <input type="email" class="form-control" id="id_EMail" name="EMail" maxlength="50" required=""
+               value="{% if form.EMail.value %}{{ form.EMail.value }}{% endif %}">
+        {% if form.EMail.errors %}
+            <ul class="errorlist">
+            {% for error in form.EMail.errors %}
+                <li><strong>{{ error|escape }}</strong></li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+    <div class="col-xs-3">
+        <label for="id_Endereco" class="form-label">RECEBE FATURA:</label>
+        <input type="checkbox" class="form-control" id="id_RecebeFatura" name="recebeFatura"
+               value="{% if form.RecebeFatura.value %}{{ form.RecebeFatura.value }}{% endif %}">
+    </div>
+    <input type="hidden" name="idCliente" value="{{ idcliente }}" id="id_idCliente">
+{% endif %}
+
 
 </form>

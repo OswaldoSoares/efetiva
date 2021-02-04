@@ -42,14 +42,16 @@ def exclui_cliente(request, idcliente):
     return data
 
 
-def criaemailcliente(request):
-    if request.method == 'POST':
-        idcliente = request.POST.get('idCliente')
-        form = CadastraEMailContatoCliente(request.POST)
-    else:
-        idcliente = request.GET.get('idcliente')
-        form = CadastraEMailContatoCliente(initial={'idCliente': idcliente})
-    return salva_form(request, form, 'clientes/criaemailcliente.html', idcliente)
+def cria_email_cliente(request):
+    # if request.method == 'POST':
+    #     idcliente = request.POST.get('idCliente')
+    #     form = CadastraEMailContatoCliente(request.POST)
+    # else:
+    #     idcliente = request.GET.get('idcliente')
+    #     form = CadastraEMailContatoCliente(initial={'idCliente': idcliente})
+    # return salva_form(request, form, 'clientes/criaemailcliente.html', idcliente)
+    data = facade.form_cliente(request, CadastraEMailContatoCliente, None, 'cria_email_cliente')
+    return data
 
 
 def editaemailcliente(request, idemacon):

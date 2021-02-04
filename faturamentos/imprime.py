@@ -220,23 +220,21 @@ def imprime_fatura_pdf(fatura):
                 notasguia_dados = MinutaNotas.objects.values('Nota', 'NotaGuia', 'ValorNota', 'Peso', 'Volume').filter(
                     idMinuta=idminuta, NotaGuia=itensnotas['Nota'])
                 notasguia = ''
+                print(notasguia_dados)
                 if notasguia_dados:
-                    notasguia_nota = ''
-                    notasguia_valor = ''
-                    notasguia_peso = ''
-                    notasguia_volume = ''
                     for itensnotasguia in notasguia_dados:
-                        notasguia_nota = ' &#x271B NOTA: {}'.format(itensnotasguia['Nota'])
                         notasguia_valor = ''
+                        notasguia_peso = ''
+                        notasguia_volume = ''
+                        notasguia_nota = ' &#x271B NOTA: {}'.format(itensnotasguia['Nota'])
                         if itensnotasguia['ValorNota'] > 0.00:
                             notasguia_valor = ' VALOR {}'.format(itensnotasguia['ValorNota'])
-                        notasguia_peso = ''
                         if itensnotasguia['Peso'] > 0.00:
                             notasguia_peso = ' PESO {}'.format(itensnotasguia['Peso'])
-                        notasguia_volume = ''
                         if itensnotasguia['Volume'] > 0:
                             notasguia_volume = ' VOLUME {}'.format(itensnotasguia['Volume'])
-                    notasguia = '{}{}{}{}'.format(notasguia_nota, notasguia_valor, notasguia_peso, notasguia_volume)
+                        notasguia = notasguia + '{}{}{}{}'.format(notasguia_nota, notasguia_valor, notasguia_peso,
+                                                                 notasguia_volume)
                 notas_bairro = ''
                 if itensnotas['Bairro']:
                     notas_bairro = ' - {}'.format(itensnotas['Bairro'])
