@@ -220,7 +220,6 @@ def imprime_fatura_pdf(fatura):
                 notasguia_dados = MinutaNotas.objects.values('Nota', 'NotaGuia', 'ValorNota', 'Peso', 'Volume').filter(
                     idMinuta=idminuta, NotaGuia=itensnotas['Nota'])
                 notasguia = ''
-                print(notasguia_dados)
                 if notasguia_dados:
                     for itensnotasguia in notasguia_dados:
                         notasguia_valor = ''

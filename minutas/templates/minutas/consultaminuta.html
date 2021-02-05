@@ -319,9 +319,9 @@
                             {% endif %}
                         </div>
                     </div>
+                    {% for notasminuta in notas_minuta %}
+                    {% if notasminuta.NotaGuia == notasminutaguia.Nota %}
                     <div class="entregas-itens">
-                        {% for notasminuta in notas_minuta %}
-                        {% if notasminuta.NotaGuia == notasminutaguia.Nota %}
                         <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#x27A5 {{ notasminuta.Nota }} - Valor: R$
                             {{notasminuta.ValorNota }} - Peso: {{ notasminuta.Peso }} - Volume:
                             {{notasminuta.Volume }}
@@ -342,9 +342,9 @@
                             {% endif %}
                             {% endif %}
                         </div>
-                        {% endif %}
-                        {% endfor %}
                     </div>
+                    {% endif %}
+                    {% endfor %}
                     {% endfor %}
                     {% endif %}
                     <div class="entregas-itens">
