@@ -1,9 +1,6 @@
 from django.urls import path
 from .views import index_cliente, consulta_cliente, cria_cliente, edita_cliente, exclui_cliente, cria_email_cliente, \
-    edita_email_cliente, exclui_email_cliente,\
-    criafonecliente, \
-    editafonecliente, \
-    excluifonecliente, \
+    edita_email_cliente, exclui_email_cliente, cria_fone_cliente, edita_fone_cliente, exclui_fone_cliente, \
     criacobrancacliente, \
     editacobrancacliente, \
     excluicobrancacliente, \
@@ -30,21 +27,9 @@ urlpatterns = [
     path('criaemailcliente/', cria_email_cliente, name='criaemailcliente'),
     path('editaemailcliente/<int:idclienteemail>/', edita_email_cliente, name='editaemailcliente'),
     path('excluiemailcliente/<int:idclienteemail>/', exclui_email_cliente, name='excluiemailcliente'),
-    path(
-        'criafonecliente/',
-        criafonecliente,
-        name='criafonecliente'
-    ),
-    path(
-        'editafonecliente/<int:idfoncon>/',
-        editafonecliente,
-        name='editafonecliente'
-    ),
-    path(
-        'excluifonecliente/<int:idfoncon>/',
-        excluifonecliente,
-        name='excluifonecliente'
-    ),
+    path('criafonecliente/', cria_fone_cliente, name='criafonecliente'),
+    path('editafonecliente/<int:idclientefone>/', edita_fone_cliente, name='editafonecliente'),
+    path('excluifonecliente/<int:idclientefone>/', exclui_fone_cliente, name='excluifonecliente'),
     path(
         'criacobrancacliente/',
         criacobrancacliente,

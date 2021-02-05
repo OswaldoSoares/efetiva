@@ -164,6 +164,9 @@ def form_cliente(request, c_form, c_idobj, c_url, c_view, idcliente):
     elif c_view == 'cria_email_cliente' or c_view == 'edita_email_cliente':
         if c_idobj:
             c_instance = EMailContatoCliente.objects.get(idEmailContatoCliente=c_idobj)
+    elif c_view == 'cria_fone_cliente' or c_view == 'edita_fone_cliente':
+        if c_idobj:
+            c_instance = FoneContatoCliente.objects.get(idFoneContatoCliente=c_idobj)
     if request.method == 'POST':
         form = c_form(request.POST, instance=c_instance)
         if form.is_valid():
@@ -188,6 +191,8 @@ def form_exclui_cliente(request, c_idobj, c_url, c_view, idcliente):
         c_queryset = Cliente.objects.get(idCliente=c_idobj)
     elif c_view == 'exclui_email_cliente':
         c_queryset = EMailContatoCliente.objects.get(idEmailContatoCliente=c_idobj)
+    elif c_view == 'exclui_fone_cliente':
+        c_queryset = FoneContatoCliente.objects.get(idFoneContatoCliente=c_idobj)
     if request.method == "POST":
         c_queryset.delete()
     context = {'c_url': c_url, 'c_view': c_view, 'c_queryset': c_queryset, 'idcliente': idcliente}

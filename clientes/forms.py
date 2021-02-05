@@ -43,39 +43,10 @@ class CadastraCliente(forms.ModelForm):
 class CadastraFoneContatoCliente(forms.ModelForm):
     class Meta:
         model = FoneContatoCliente
-        fields = ('Contato',
-                  'TipoFone',
-                  'Fone',
-                  'idCliente'
-                  )
-        labels = {
-            'Contato': 'CONTATO',
-            'TipoFone': 'OPERADORA',
-            'Fone': 'TELEFONE',
-        }
-        widgets = {
-            'Contato': forms.TextInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'CONTATO',
-                }
-            ),
-            'TipoFone': forms.Select(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'OPERADORA',
-                },
-                choices=TIPOFONE
-            ),
-            'Fone': forms.TextInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'TELEFONE',
-                }
-            ),
-            'idCliente': forms.HiddenInput(
-            )
-        }
+        fields = ('Contato', 'TipoFone', 'Fone', 'idCliente')
+        labels = {'Contato': 'CONTATO', 'TipoFone': 'OPERADORA', 'Fone': 'TELEFONE',}
+        widgets = {'Contato': forms.TextInput(), 'TipoFone': forms.Select(), 'Fone': forms.TextInput(),
+                   'idCliente': forms.HiddenInput()}
 
 
 class CadastraEMailContatoCliente(forms.ModelForm):
@@ -83,9 +54,8 @@ class CadastraEMailContatoCliente(forms.ModelForm):
         model = EMailContatoCliente
         fields = ('Contato', 'EMail', 'RecebeFatura', 'idCliente')
         labels = {'Contato': 'CONTATO', 'EMail': 'E-MAIL', 'RcebeFatura': 'RECEBE FATURA'}
-        widgets = {'Contato': forms.TextInput(attrs={'class': 'formfields'}),
-                   'EMail': forms.EmailInput(attrs={'class': 'formfields'}),
-                   'RecebeFatura': forms.CheckboxInput(), 'idCliente': forms.HiddenInput()}
+        widgets = {'Contato': forms.TextInput(), 'EMail': forms.EmailInput(), 'RecebeFatura': forms.CheckboxInput(),
+                   'idCliente': forms.HiddenInput()}
 
 
 class CadastraCobranca(forms.ModelForm):

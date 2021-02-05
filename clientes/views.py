@@ -85,35 +85,33 @@ def exclui_email_cliente(request, idclienteemail):
     return data
 
 
-def criafonecliente(request):
-    if request.method == 'POST':
-        idcliente = request.POST.get('idCliente')
-        form = CadastraFoneContatoCliente(request.POST)
-    else:
-        idcliente = request.GET.get('idcliente')
-        form = CadastraFoneContatoCliente(initial={'idCliente': idcliente})
-    return salva_form(request, form, 'clientes/criafonecliente.html', idcliente)
+def cria_fone_cliente(request):
+    c_form = CadastraFoneContatoCliente
+    c_idobj = None
+    c_url = '/clientes/criafonecliente/'
+    c_view = 'cria_fone_cliente'
+    idcliente = request.GET.get('idcliente')
+    data = facade.form_cliente(request, c_form, c_idobj, c_url, c_view, idcliente)
+    return data
 
 
-def editafonecliente(request, idfoncon):
-    fonecliente = get_object_or_404(FoneContatoCliente, idFoneContatoCliente=idfoncon)
-    if request.method == 'POST':
-        form = CadastraFoneContatoCliente(request.POST, instance=fonecliente)
-    else:
-        form = CadastraFoneContatoCliente(instance=fonecliente)
-    return salva_form(request, form, 'clientes/editafonecliente.html', fonecliente.idCliente_id)
+def edita_fone_cliente(request, idclientefone):
+    c_form = CadastraFoneContatoCliente
+    c_idobj = idclientefone
+    c_url = '/clientes/editafonecliente/{}/'.format(c_idobj)
+    c_view = 'edita_fone_cliente'
+    idcliente = request.GET.get('idcliente')
+    data = facade.form_cliente(request, c_form, c_idobj, c_url, c_view, idcliente)
+    return data
 
 
-def excluifonecliente(request, idfoncon):
-    fonecliente = get_object_or_404(FoneContatoCliente, idFoneContatoCliente=idfoncon)
-    data = dict()
-    if request.method == "POST":
-        fonecliente.delete()
-        return redirect('consultacliente', fonecliente.idCliente_id)
-    else:
-        context = {'fonecliente': fonecliente}
-        data['html_form'] = render_to_string('clientes/excluifonecliente.html', context, request=request)
-    return JsonResponse(data)
+def exclui_fone_cliente(request, idclientefone):
+    c_idobj = idclientefone
+    c_url = '/clientes/excluifonecliente/{}/'.format(c_idobj)
+    c_view = 'exclui_fone_cliente'
+    idcliente = request.POST.get('idCliente')
+    data = facade.form_exclui_cliente(request, c_idobj, c_url, c_view, idcliente)
+    return data
 
 
 def criacobrancacliente(request):

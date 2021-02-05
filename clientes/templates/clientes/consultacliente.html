@@ -135,24 +135,24 @@
                 </section>
                 <footer>
                     <div>
-                        <button class="btn btn-primary btn-xs js-criafonecliente"
-                               idcliente="{{ itens.idCliente }}"
-                               data-url="{% url 'criafonecliente' %}"
-                               idclick="clientefone">
-                            <span class="glyphicon glyphicon-plus"></span>
+                        <button class="btn btn-primary btn-xs glyphicon glyphicon-plus"
+                                onclick="openMyModal(event); return false;" data-title="CADASTRO CONTATO DE CLIENTE"
+                                data-action="{% url 'criafonecliente' %}" data-idcliente="{{ itens.idCliente }}"
+                                data-button-save-label="SALVAR">
                         </button>
-                        <button class="btn btn-success btn-xs js-editafonecliente"
-                                idcliente="{{ itensfone.idCliente_id }}"
-                                idfonecliente="{{ itensfone.idFoneContatoCliente }}"
-                                data-url="{% url 'editafonecliente' itensfone.idFoneContatoCliente %}"
-                                idclick="clientefone">
-                            <span class="glyphicon glyphicon-edit"></span>
+                        <button class="btn btn-success btn-xs glyphicon glyphicon-edit"
+                                onclick="openMyModal(event); return false;"
+                                data-title="EDITA CADASTRO CONTATO DE CLIENTE"
+                                data-action="{% url 'editafonecliente' itensfone.idFoneContatoCliente %}"
+                                data-idcliente="{{ itens.idCliente }}"
+                                data-idobj="{{ itensfone.idFoneContatoCliente }}" data-button-save-label="EDITAR">
                         </button>
-                        <button class="btn btn-danger btn-xs js-excluifonecliente"
-                                idcliente="{{ itensfone.idCliente_id }}"
-                                idfonecliente="{{ itensfone.idFoneContatoCliente }}"
-                                data-url="{% url 'excluifonecliente' itensfone.idFoneContatoCliente %}">
-                            <span class="glyphicon glyphicon-trash"></span>
+                        <button class="btn btn-danger btn-xs glyphicon glyphicon-trash"
+                                onclick="openMyModal(event); return false;"
+                                data-title="EXCLUI CADASTRO CONTATO DE CLIENTE"
+                                data-action="{% url 'excluifonecliente' itensfone.idFoneContatoCliente %}"
+                                data-idcliente="{{ itens.idCliente }}"
+                                data-idobj="{{ itensfone.idFoneContatoCliente }}" data-button-save-label="EXCLUIR">
                         </button>
                     </div>
                 </footer>
@@ -167,11 +167,10 @@
                     <span><b>NENHUM TELEFONE CADASTRADO</b></span>
                 </section>
                 <footer>
-                    <button class="btn btn-primary btn-xs js-criafonecliente"
-                           idcliente="{{ itens.idCliente }}"
-                           data-url="{% url 'criafonecliente' %}"
-                           idclick="clientefone">
-                        <span class="glyphicon glyphicon-plus"></span>
+                    <button class="btn btn-primary btn-xs glyphicon glyphicon-plus"
+                                onclick="openMyModal(event); return false;" data-title="CADASTRO TELECONE DE CLIENTE"
+                                data-action="{% url 'criafonecliente' %}" data-idcliente="{{ itens.idCliente }}"
+                                data-button-save-label="SALVAR">
                     </button>
                 </footer>
             </div>

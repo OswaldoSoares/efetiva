@@ -135,5 +135,59 @@
     <input type="hidden" name="idCliente" value="{{ c_queryset.idCliente_id }}" id="id_idCliente">
 {% endif %}
 
+{% if c_view == 'cria_fone_cliente' or c_view == 'edita_fone_cliente' %}
+    <div class="col-md-4">
+        <label for="id_Contato" class="form-label">CONTATO:</label>
+        <input type="text" class="form-control" id="id_Contato" name="Contato" maxlength="25" required=""
+               value="{% if form.Contato.value %} {{ form.Contato.value }} {% endif %}">
+        {% if form.Contato.errors %}
+            <ul class="errorlist">
+            {% for error in form.Contato.errors %}
+                <li><strong>{{ error|escape }}</strong></li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+    <div class="col-md-4">
+        <label for="id_TipoFone" class="form-label">OPERADORA:</label>
+        <select class="form-control" id="id_TipoFone" name="TipoFone" maxlength="15">
+            <option value="WHATSAPP">WHATSAPP</option>
+            <option value="VIVO">VIVO</option>
+            <option value="TIM">TIM</option>
+            <option value="OI">OI</option>
+            <option value="CLARO">CLARO</option>
+            <option value="NEXTEL">NEXTEL</option>
+            <option value="FIXO">FIXO</option>
+            <option value="RECADO">RECADO</option>
+        </select>
+    </div>
+    <div class="col-md-4">
+        <label for="id_Fone" class="form-label">TELEFONE:</label>
+        <input type="text" class="form-control" id="id_Fone" name="Fone" maxlength="30" required=""
+               value="{% if form.Fone.value %} {{ form.Fone.value }} {% endif %}">
+        {% if form.Fone.errors %}
+            <ul class="errorlist">
+            {% for error in form.Fone.errors %}
+                <li><strong>{{ error|escape }}</strong></li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    <input type="hidden" name="idCliente" value="{{ idcliente }}" id="id_idCliente">
+{% endif %}
+
+{% if c_view == 'exclui_fone_cliente' %}
+    <div class="col-md-12">
+        <h4>Você tem certeza que deseja excluir o registro abaixo?</h4>
+        <br>
+        <p>CONTATO: <b>{{ c_queryset.Contato }}</b>.</p>
+        <p>OPERADORA: <b>{{ c_queryset.TipoFone }}</b>.</p>
+        <p>TELEFONE: <b>{{ c_queryset.Fone }}</b>.</p>
+        <p>CLIENTE: {{ c_queryset.idCliente }}.</p>
+    </div>
+    <input type="hidden" name="idCliente" value="{{ c_queryset.idCliente_id }}" id="id_idCliente">
+{% endif %}
+
 
 </form>
