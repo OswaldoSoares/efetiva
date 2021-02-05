@@ -77,31 +77,23 @@
                 </section>
                 <footer>
                     <div>
-                        <button class="btn btn-primary btn-xs js-criaemailcliente"
-                                idcliente="{{ itensemail.idCliente_id }}"
-                                idemailcliente="{{ itensemail.idEmailContatoCliente }}"
-                                data-url="{% url 'criaemailcliente' %}"
-                                idclick="clienteemail">
-                            <span class="glyphicon glyphicon-plus"></span>
-                        </button>
-                        <button class="btn btn-primary glyphicon glyphicon-plus"
-                                onclick="openMyModal(event); return false;"
-                                data-title="CADASTRO EMAIL DE CLIENTE"
-                                data-action="{% url 'criaemailcliente' %}"
+                        <button class="btn btn-primary btn-xs glyphicon glyphicon-plus"
+                                onclick="openMyModal(event); return false;" data-title="CADASTRO EMAIL DE CLIENTE"
+                                data-action="{% url 'criaemailcliente' %}" data-idcliente="{{ itens.idCliente }}"
                                 data-button-save-label="SALVAR">
                         </button>
-                        <button class="btn btn-success btn-xs js-editaemailcliente"
-                                idcliente="{{ itensemail.idCliente_id }}"
-                                idemailcliente="{{ itensemail.idEmailContatoCliente }}"
-                                data-url="{% url 'editaemailcliente' itensemail.idEmailContatoCliente %}"
-                                idclick="clienteemail">
-                            <span class="glyphicon glyphicon-edit"></span>
+                        <button class="btn btn-success btn-xs glyphicon glyphicon-edit"
+                                onclick="openMyModal(event); return false;" data-title="EDITA CADASTRO EMAIL DE CLIENTE"
+                                data-action="{% url 'editaemailcliente' itensemail.idEmailContatoCliente %}"
+                                data-idcliente="{{ itens.idCliente }}"
+                                data-idobj="{{ itensemail.idEmailContatoCliente }}" data-button-save-label="EDITAR">
                         </button>
-                        <button class="btn btn-danger btn-xs js-excluiemailcliente"
-                                idcliente="{{ itensemail.idCliente_id }}"
-                                idemailcliente="{{ itensemail.idEmailContatoCliente }}"
-                                data-url="{% url 'excluiemailcliente' itensemail.idEmailContatoCliente %}">
-                            <span class="glyphicon glyphicon-trash"></span>
+                        <button class="btn btn-danger btn-xs glyphicon glyphicon-trash"
+                                onclick="openMyModal(event); return false;"
+                                data-title="EXCLUI CADASTRO EMAIL DE CLIENTE"
+                                data-action="{% url 'excluiemailcliente' itensemail.idEmailContatoCliente %}"
+                                data-idcliente="{{ itens.idCliente }}"
+                                data-idobj="{{ itensemail.idEmailContatoCliente }}" data-button-save-label="EXCLUIR">
                         </button>
                     </div>
                 </footer>
@@ -116,12 +108,10 @@
                     <span><b>NENHUM E-MAIL CADASTRADO</b></span>
                 </section>
                 <footer>
-                    <button class="btn btn-primary btn-xs js-criaemailcliente"
-                            idcliente="{{ itens.idCliente }}"
-                            idemailcliente="{{ itensemail.idEmailContatoCliente }}"
-                            data-url="{% url 'criaemailcliente' %}"
-                            idclick="clienteemail">
-                        <span class="glyphicon glyphicon-plus"></span>
+                    <button class="btn btn-primary btn-xs glyphicon glyphicon-plus"
+                                onclick="openMyModal(event); return false;" data-title="CADASTRO EMAIL DE CLIENTE"
+                                data-action="{% url 'criaemailcliente' %}" data-idcliente="{{ itens.idCliente }}"
+                                data-button-save-label="SALVAR">
                     </button>
                 </footer>
             </div>

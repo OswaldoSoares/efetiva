@@ -1,4 +1,4 @@
-<form class="row g-3" method="post" action="{{ c_url }}" idcliente="{{ idcliente }}">
+<form class="row g-3" method="post" action="{{ c_url }}" idobj="{{ c_idobj }}">
 {% csrf_token %}
 {% if c_view == 'cria_cliente' or c_view == 'edita_cliente' %}
     <div class="col-md-4">
@@ -80,10 +80,10 @@
     <div class="col-md-12">
         <h4>Você tem certeza que deseja excluir o registro abaixo?</h4>
         <br>
-        <p>NOME FANTASIA: <b>{{ cliente.Fantasia }}</b>.</p>
-        <p>RAZÃO SOCIAL: <b>{{ cliente.Nome }}</b>.</p>
-        {% if cliente.CNPJ %}
-            <p>CNPJ: {{ cliente.CNPJ }}.</p>
+        <p>NOME FANTASIA: <b>{{ c_queryset.Fantasia }}</b>.</p>
+        <p>RAZÃO SOCIAL: <b>{{ c_queryset.Nome }}</b>.</p>
+        {% if c_queeyset.CNPJ %}
+            <p>CNPJ: {{ c_queryset.CNPJ }}.</p>
         {% endif %}
     </div>
 {% endif %}
@@ -92,7 +92,7 @@
     <div class="col-md-6">
         <label for="id_Contato" class="form-label">CONTATO:</label>
         <input type="text" class="form-control" id="id_Contato" name="Contato" maxlength="25" required=""
-               value="{% if form.Contato.value %}{{ form.Contato.value }}{% endif %}">
+               value="{% if form.Contato.value %} {{ form.Contato.value }} {% endif %}">
         {% if form.Coontato.errors %}
             <ul class="errorlist">
             {% for error in form.Contato.errors %}
@@ -103,9 +103,9 @@
     </div>
 
     <div class="col-md-6">
-        <label for="id_Nome" class="form-label">E-MAIL:</label>
+        <label for="id_EMail" class="form-label">E-MAIL:</label>
         <input type="email" class="form-control" id="id_EMail" name="EMail" maxlength="50" required=""
-               value="{% if form.EMail.value %}{{ form.EMail.value }}{% endif %}">
+               value="{% if form.EMail.value %} {{ form.EMail.value }} {% endif %}">
         {% if form.EMail.errors %}
             <ul class="errorlist">
             {% for error in form.EMail.errors %}
@@ -114,13 +114,25 @@
             </ul>
         {% endif %}
     </div>
-
-    <div class="col-xs-3">
-        <label for="id_Endereco" class="form-label">RECEBE FATURA:</label>
-        <input type="checkbox" class="form-control" id="id_RecebeFatura" name="recebeFatura"
-               value="{% if form.RecebeFatura.value %}{{ form.RecebeFatura.value }}{% endif %}">
+    <div class="col-md-12">
+        <div class="forn-check">
+            <label for="id_RecebeFatura" class="form-check-label">RECEBE FATURA:</label>
+            <input type="checkbox" class="form-check-input" id="id_RecebeFatura" name="RecebeFatura"
+                   {% if form.RecebeFatura.value %} checked="checked" {% endif %}>
+        </div>
     </div>
     <input type="hidden" name="idCliente" value="{{ idcliente }}" id="id_idCliente">
+{% endif %}
+
+{% if c_view == 'exclui_email_cliente' %}
+    <div class="col-md-12">
+        <h4>Você tem certeza que deseja excluir o registro abaixo?</h4>
+        <br>
+        <p>CONTATO: <b>{{ c_queryset.Contato }}</b>.</p>
+        <p>E-MAIL: <b>{{ c_queryset.EMail }}</b>.</p>
+        <p>CLIENTE: {{ c_queryset.idCliente }}.</p>
+    </div>
+    <input type="hidden" name="idCliente" value="{{ c_queryset.idCliente_id }}" id="id_idCliente">
 {% endif %}
 
 

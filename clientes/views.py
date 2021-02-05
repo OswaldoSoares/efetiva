@@ -28,51 +28,61 @@ def consulta_cliente(request, idcliente):
 
 
 def cria_cliente(request):
-    data = facade.form_cliente(request, CadastraCliente, None, 'cria_cliente')
+    c_form = CadastraCliente
+    c_idobj = None,
+    c_url = '/clientes/criacliente/'
+    c_view = 'cria_cliente'
+    idcliente = None
+    data = facade.form_cliente(request, c_form, c_idobj, c_url, c_view, idcliente)
     return data
 
 
 def edita_cliente(request, idcliente):
-    data = facade.form_cliente(request, CadastraCliente, idcliente, 'edita_cliente')
+    c_form = CadastraCliente
+    c_idobj = idcliente
+    c_url = '/clientes/editacliente/{}/'.format(c_idobj)
+    c_view = 'edita_cliente'
+    idcliente = idcliente
+    data = facade.form_cliente(request, c_form, c_idobj, c_url, c_view, idcliente)
     return data
 
 
 def exclui_cliente(request, idcliente):
-    data = facade.form_exclui_cliente(request, idcliente, 'exclui_cliente')
+    c_idobj = idcliente
+    c_url = '/clientes/excluicliente/{}/'.format(c_idobj)
+    c_view = 'exclui_cliente'
+    idcliente = idcliente
+    data = facade.form_exclui_cliente(request, c_idobj, c_url, c_view, idcliente)
     return data
 
 
 def cria_email_cliente(request):
-    # if request.method == 'POST':
-    #     idcliente = request.POST.get('idCliente')
-    #     form = CadastraEMailContatoCliente(request.POST)
-    # else:
-    #     idcliente = request.GET.get('idcliente')
-    #     form = CadastraEMailContatoCliente(initial={'idCliente': idcliente})
-    # return salva_form(request, form, 'clientes/criaemailcliente.html', idcliente)
-    data = facade.form_cliente(request, CadastraEMailContatoCliente, None, 'cria_email_cliente')
+    c_form = CadastraEMailContatoCliente
+    c_idobj = None
+    c_url = '/clientes/criaemailcliente/'
+    c_view = 'cria_email_cliente'
+    idcliente = request.GET.get('idcliente')
+    data = facade.form_cliente(request, c_form, c_idobj, c_url, c_view, idcliente)
     return data
 
 
-def editaemailcliente(request, idemacon):
-    emailcliente = get_object_or_404(EMailContatoCliente, idEmailContatoCliente=idemacon)
-    if request.method == 'POST':
-        form = CadastraEMailContatoCliente(request.POST, instance=emailcliente)
-    else:
-        form = CadastraEMailContatoCliente(instance=emailcliente)
-    return salva_form(request, form, 'clientes/editaemailcliente.html', emailcliente.idCliente_id)
+def edita_email_cliente(request, idclienteemail):
+    c_form = CadastraEMailContatoCliente
+    c_idobj = idclienteemail
+    c_url = '/clientes/editaemailcliente/{}/'.format(c_idobj)
+    c_view = 'edita_email_cliente'
+    idcliente = request.GET.get('idcliente')
+    data = facade.form_cliente(request, c_form, c_idobj, c_url, c_view, idcliente)
+    return data
 
 
-def excluiemailcliente(request, idemacon):
-    emailcliente = get_object_or_404(EMailContatoCliente, idEmailContatoCliente=idemacon)
-    data = dict()
-    if request.method == "POST":
-        emailcliente.delete()
-        return redirect('consultacliente', emailcliente.idCliente_id)
-    else:
-        context = {'emailcliente': emailcliente}
-        data['html_form'] = render_to_string('clientes/excluiemailcliente.html', context, request=request)
-    return JsonResponse(data)
+def exclui_email_cliente(request, idclienteemail):
+    c_idobj = idclienteemail
+    c_url = '/clientes/excluiemailcliente/{}/'.format(c_idobj)
+    c_view = 'exclui_email_cliente'
+    idcliente = request.POST.get('idCliente')
+    data = facade.form_exclui_cliente(request, c_idobj, c_url, c_view, idcliente)
+    return data
 
 
 def criafonecliente(request):

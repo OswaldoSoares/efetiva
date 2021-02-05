@@ -155,38 +155,44 @@ def get_categoria_veiculo():
     return categoria_veiculo
 
 
-def form_cliente(request, c_form, idcliente, c_view):
-    cliente = None
+def form_cliente(request, c_form, c_idobj, c_url, c_view, idcliente):
     data = dict()
-    if idcliente:
-        cliente = Cliente.objects.get(idCliente=idcliente)
+    c_instance = None
+    if c_view == 'edita_cliente' or c_view == 'exclui_cliente':
+        if c_idobj:
+            c_instance = Cliente.objects.get(idCliente=c_idobj)
+    elif c_view == 'cria_email_cliente' or c_view == 'edita_email_cliente':
+        if c_idobj:
+            c_instance = EMailContatoCliente.objects.get(idEmailContatoCliente=c_idobj)
     if request.method == 'POST':
-        if idcliente:
-            form = c_form(request.POST, instance=cliente)
-        else:
-            form = c_form(request.POST or None)
+        form = c_form(request.POST, instance=c_instance)
         if form.is_valid():
             save_id = form.save()
-            data['save_id'] = save_id.idCliente
+            if c_view == 'cria_cliente' or c_view == 'edita_cliente':
+                data['save_id'] = save_id.idCliente
+            else:
+                data['save_id'] = save_id.idCliente_id
     else:
-        if idcliente:
-            form = c_form(instance=cliente)
-        else:
-            form = c_form()
-    context = {'form': form, 'c_url': request.get_full_path(), 'idcliente': idcliente, 'c_view': c_view}
+        form = c_form(instance=c_instance)
+    context = {'form': form, 'c_idobj': c_idobj, 'c_url': c_url, 'c_view': c_view, 'idcliente': idcliente}
     data['html_form'] = render_to_string('clientes/formcliente.html', context, request=request)
     data['c_view'] = c_view
     c_return = JsonResponse(data)
     return c_return
 
 
-def form_exclui_cliente(request, idcliente, c_view):
+def form_exclui_cliente(request, c_idobj, c_url, c_view, idcliente):
     data = dict()
-    cliente = Cliente.objects.get(idCliente=idcliente)
+    c_queryset = None
+    if c_view == 'exclui_cliente':
+        c_queryset = Cliente.objects.get(idCliente=c_idobj)
+    elif c_view == 'exclui_email_cliente':
+        c_queryset = EMailContatoCliente.objects.get(idEmailContatoCliente=c_idobj)
     if request.method == "POST":
-        cliente.delete()
-    context = {'c_url': request.get_full_path(), 'idcliente': idcliente, 'c_view': c_view, 'cliente': cliente}
+        c_queryset.delete()
+    context = {'c_url': c_url, 'c_view': c_view, 'c_queryset': c_queryset, 'idcliente': idcliente}
     data['html_form'] = render_to_string('clientes/formcliente.html', context, request=request)
     data['c_view'] = c_view
+    data['save_id'] = idcliente
     c_return = JsonResponse(data)
     return c_return

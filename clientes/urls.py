@@ -1,7 +1,6 @@
 from django.urls import path
 from .views import index_cliente, consulta_cliente, cria_cliente, edita_cliente, exclui_cliente, cria_email_cliente, \
-    editaemailcliente, \
-    excluiemailcliente,\
+    edita_email_cliente, exclui_email_cliente,\
     criafonecliente, \
     editafonecliente, \
     excluifonecliente, \
@@ -29,16 +28,8 @@ urlpatterns = [
     path('editacliente/<int:idcliente>/', edita_cliente, name='editacliente'),
     path('excluicliente/<int:idcliente>/', exclui_cliente, name='excluicliente'),
     path('criaemailcliente/', cria_email_cliente, name='criaemailcliente'),
-    path(
-        'editaemailcliente/<int:idemacon>/',
-        editaemailcliente,
-        name='editaemailcliente'
-    ),
-    path(
-        'excluiemailcliente/<int:idemacon>/',
-        excluiemailcliente,
-        name='excluiemailcliente'
-    ),
+    path('editaemailcliente/<int:idclienteemail>/', edita_email_cliente, name='editaemailcliente'),
+    path('excluiemailcliente/<int:idclienteemail>/', exclui_email_cliente, name='excluiemailcliente'),
     path(
         'criafonecliente/',
         criafonecliente,
