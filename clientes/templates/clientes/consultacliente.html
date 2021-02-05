@@ -195,18 +195,19 @@
                 </section>
                 <footer>
                     <div>
-                        <button class="btn btn-success btn-xs js-editacobrancacliente"
-                                idcliente="{{ itenscobranca.idCliente_id }}"
-                                idcobrancacliente="{{ itenscobranca.idCobranca }}"
-                                data-url="{% url 'editacobrancacliente' itenscobranca.idCobranca %}"
-                                idclick="clientecobranca">
-                            <span class="glyphicon glyphicon-edit"></span>
+                        <button class="btn btn-success btn-xs glyphicon glyphicon-edit"
+                                onclick="openMyModal(event); return false;"
+                                data-title="EDITA CADASTRO COBRANÇA DE CLIENTE"
+                                data-action="{% url 'editacobrancacliente' itenscobranca.idCobranca %}"
+                                data-idcliente="{{ itens.idCliente }}" data-idobj="{{ itenscobranca.idCobranca }}"
+                                data-button-save-label="EDITAR">
                         </button>
-                        <button class="btn btn-danger btn-xs js-excluicobrancacliente"
-                                idcliente="{{ itenscobranca.idCliente_id }}"
-                                idcobrancacliente="{{ itenscobranca.idCobranca }}"
-                                data-url="{% url 'excluicobrancacliente' itenscobranca.idCobranca %}">
-                            <span class="glyphicon glyphicon-trash"></span>
+                        <button class="btn btn-danger btn-xs glyphicon glyphicon-trash"
+                                onclick="openMyModal(event); return false;"
+                                data-title="EXCLUI CADASTRO COBRANÇA DE CLIENTE"
+                                data-action="{% url 'excluicobrancacliente' itenscobranca.idCobranca %}"
+                                data-idcliente="{{ itens.idCliente }}" data-idobj="{{ itenscobranca.idCobranca }}"
+                                data-button-save-label="EXCLUIR">
                         </button>
                     </div>
                 </footer>
@@ -221,11 +222,10 @@
                     <span><b>NENHUM ENDEREÇO DE COBRANÇA CADASTRADO</b></span>
                 </section>
                 <footer>
-                    <button class="btn btn-primary btn-xs js-criacobrancacliente"
-                           idcliente="{{ itens.idCliente }}"
-                           data-url="{% url 'criacobrancacliente' %}"
-                           idclick="clientecobranca">
-                        <span class="glyphicon glyphicon-plus"></span>
+                    <button class="btn btn-primary btn-xs glyphicon glyphicon-plus"
+                                onclick="openMyModal(event); return false;" data-title="CADASTRO COBRANÇA DE CLIENTE"
+                                data-action="{% url 'criacobrancacliente' %}" data-idcliente="{{ itens.idCliente }}"
+                                data-button-save-label="SALVAR">
                     </button>
                 </footer>
             </div>

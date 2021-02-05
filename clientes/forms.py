@@ -61,77 +61,13 @@ class CadastraEMailContatoCliente(forms.ModelForm):
 class CadastraCobranca(forms.ModelForm):
     class Meta:
         model = Cobranca
-        fields = ('Nome',
-                  'Endereco',
-                  'Bairro',
-                  'CEP',
-                  'Cidade',
-                  'Estado',
-                  'CNPJ',
-                  'IE',
-                  'idCliente')
-        labels = {
-            'Nome': 'RAZÃO SOCIAL',
-            'Endereco': 'ENDEREÇO',
-            'Bairro': 'BAIRRO',
-            'CEP': 'CEP',
-            'Cidade': 'CIDADE',
-            'Estado': 'ESTADO',
-            'CNPJ': 'CNPJ',
-            'IE': 'INSCRIÇÃO ESTADUAL',
-        }
+        fields = ('Nome', 'Endereco', 'Bairro', 'CEP', 'Cidade', 'Estado', 'CNPJ', 'IE', 'idCliente')
+        labels = {'Nome': 'RAZÃO SOCIAL', 'Endereco': 'ENDEREÇO', 'Bairro': 'BAIRRO', 'CEP': 'CEP', 'Cidade':
+            'CIDADE', 'Estado': 'ESTADO', 'CNPJ': 'CNPJ', 'IE': 'INSCRIÇÃO ESTADUAL',}
         widgets = {
-            'Nome': forms.TextInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'NOME',
-                }
-            ),
-            'Endereco': forms.TextInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'ENDEREÇO',
-                }
-            ),
-            'Bairro': forms.TextInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'BAIRRO',
-                }
-            ),
-            'CEP': forms.TextInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'CEP',
-                }
-            ),
-            'Cidade': forms.TextInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'CIDADE',
-                }
-            ),
-            'Estado': forms.TextInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'ESTADO',
-                }
-            ),
-            'CNPJ': forms.TextInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'CNPJ',
-                }
-            ),
-            'IE': forms.TextInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'IE',
-                }
-            ),
-            'idCliente': forms.HiddenInput(
-            )
-        }
+            'Nome': forms.TextInput(), 'Endereco': forms.TextInput(), 'Bairro': forms.TextInput(),
+            'CEP': forms.TextInput(), 'Cidade': forms.TextInput(), 'Estado': forms.TextInput(),
+            'CNPJ': forms.TextInput(), 'IE': forms.TextInput(), 'idCliente': forms.HiddenInput()}
 
 
 class CadastraTabela(forms.ModelForm):

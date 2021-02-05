@@ -1,9 +1,7 @@
 from django.urls import path
 from .views import index_cliente, consulta_cliente, cria_cliente, edita_cliente, exclui_cliente, cria_email_cliente, \
     edita_email_cliente, exclui_email_cliente, cria_fone_cliente, edita_fone_cliente, exclui_fone_cliente, \
-    criacobrancacliente, \
-    editacobrancacliente, \
-    excluicobrancacliente, \
+    cria_cobranca_cliente, edita_cobranca_cliente, exclui_cobranca_cliente, \
     criatabelacliente, \
     editatabelacliente, \
     editaphkesc, \
@@ -30,21 +28,9 @@ urlpatterns = [
     path('criafonecliente/', cria_fone_cliente, name='criafonecliente'),
     path('editafonecliente/<int:idclientefone>/', edita_fone_cliente, name='editafonecliente'),
     path('excluifonecliente/<int:idclientefone>/', exclui_fone_cliente, name='excluifonecliente'),
-    path(
-        'criacobrancacliente/',
-        criacobrancacliente,
-        name='criacobrancacliente'
-    ),
-    path(
-        'editacobrancacliente/<int:idcobcli>/',
-        editacobrancacliente,
-        name='editacobrancacliente'
-    ),
-    path(
-        'excluicobrancacliente/<int:idcobcli>/',
-        excluicobrancacliente,
-        name='excluicobrancacliente'
-    ),
+    path('criacobrancacliente/', cria_cobranca_cliente, name='criacobrancacliente'),
+    path('editacobrancacliente/<int:idcobrancacliente>/', edita_cobranca_cliente, name='editacobrancacliente'),
+    path('excluicobrancacliente/<int:idcobrancacliente>/', exclui_cobranca_cliente, name='excluicobrancacliente'),
     path(
         'criatabelacliente/',
         criatabelacliente,

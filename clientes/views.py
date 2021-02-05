@@ -114,35 +114,33 @@ def exclui_fone_cliente(request, idclientefone):
     return data
 
 
-def criacobrancacliente(request):
-    if request.method == 'POST':
-        idcliente = request.POST.get('idCliente')
-        form = CadastraCobranca(request.POST)
-    else:
-        idcliente = request.GET.get('idcliente')
-        form = CadastraCobranca(initial={'idCliente': idcliente})
-    return salva_form(request, form, 'clientes/criacobrancacliente.html', idcliente)
+def cria_cobranca_cliente(request):
+    c_form = CadastraCobranca
+    c_idobj = None
+    c_url = '/clientes/criacobrancacliente/'
+    c_view = 'cria_cobranca_cliente'
+    idcliente = request.GET.get('idcliente')
+    data = facade.form_cliente(request, c_form, c_idobj, c_url, c_view, idcliente)
+    return data
 
 
-def editacobrancacliente(request, idcobcli):
-    cobrancacliente = get_object_or_404(Cobranca, idCobranca=idcobcli)
-    if request.method == 'POST':
-        form = CadastraCobranca(request.POST, instance=cobrancacliente)
-    else:
-        form = CadastraCobranca(instance=cobrancacliente)
-    return salva_form(request, form, 'clientes/editacobrancacliente.html', cobrancacliente.idCliente_id)
+def edita_cobranca_cliente(request, idcobrancacliente):
+    c_form = CadastraCobranca
+    c_idobj = idcobrancacliente
+    c_url = '/clientes/editacobrancacliente/{}/'.format(c_idobj)
+    c_view = 'edita_cobranca_cliente'
+    idcliente = request.GET.get('idcliente')
+    data = facade.form_cliente(request, c_form, c_idobj, c_url, c_view, idcliente)
+    return data
 
 
-def excluicobrancacliente(request, idcobcli):
-    cobrancacliente = get_object_or_404(Cobranca, idCobranca=idcobcli)
-    data = dict()
-    if request.method == "POST":
-        cobrancacliente.delete()
-        return redirect('consultacliente', cobrancacliente.idCliente_id)
-    else:
-        context = {'cobrancacliente': cobrancacliente}
-        data['html_form'] = render_to_string('clientes/excluicobrancacliente.html', context, request=request)
-    return JsonResponse(data)
+def exclui_cobranca_cliente(request, idcobrancacliente):
+    c_idobj = idcobrancacliente
+    c_url = '/clientes/excluicobrancacliente/{}/'.format(c_idobj)
+    c_view = 'exclui_cobranca_cliente'
+    idcliente = request.POST.get('idCliente')
+    data = facade.form_exclui_cliente(request, c_idobj, c_url, c_view, idcliente)
+    return data
 
 
 def criatabelacliente(request):
