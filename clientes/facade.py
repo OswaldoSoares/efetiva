@@ -170,6 +170,9 @@ def form_cliente(request, c_form, c_idobj, c_url, c_view, idcliente):
     elif c_view == 'cria_cobranca_cliente' or c_view == 'edita_cobranca_cliente':
         if c_idobj:
             c_instance = Cobranca.objects.get(idCobranca=c_idobj)
+    elif c_view == 'cria_tabela_cliente' or c_view == 'edita_tabela_cliente':
+        if c_idobj:
+            c_instance = Tabela.objects.get(idTabela=c_idobj)
     if request.method == 'POST':
         form = c_form(request.POST, instance=c_instance)
         if form.is_valid():
@@ -180,6 +183,7 @@ def form_cliente(request, c_form, c_idobj, c_url, c_view, idcliente):
                 data['save_id'] = save_id.idCliente_id
     else:
         form = c_form(instance=c_instance)
+        print(form)
     context = {'form': form, 'c_idobj': c_idobj, 'c_url': c_url, 'c_view': c_view, 'idcliente': idcliente}
     data['html_form'] = render_to_string('clientes/formcliente.html', context, request=request)
     data['c_view'] = c_view

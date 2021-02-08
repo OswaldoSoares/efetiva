@@ -74,26 +74,19 @@ class CadastraTabela(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CadastraTabela, self).__init__(*args, **kwargs)
         # Personaliza opcão o do SELECT
-        self.fields['idFormaPagamento'].empty_label = 'Selecione um item da lista'
+        self.fields['idFormaPagamento'].empty_label = 'SELECIONE UM ITEM DA LISTA'
 
     class Meta:
         model = Tabela
         fields = ('Comissao', 'TaxaExpedicao', 'AjudanteCobra', 'AjudantePaga', 'idFormaPagamento', 'idCliente')
-        labels = {
-            'Comissao': 'PORCENTAGEM DA COMISSÃO',
-            'TaxaExpedicao': 'TAXA EXPEDIÇÃO',
-            'AjudanteCobra': 'VALOR AJUDANTE À RECEBER',
-            'AjudantePaga': 'VALOR AJUDANTE À PAGAR',
-            'idFormaPagamento': 'FORMA DE PAGAMENTO',
-        }
-        widgets = {
-            'Comissao': forms.NumberInput(attrs={'class': 'formfields'}),
-            'TaxaExpedicao': forms.NumberInput(attrs={'class': 'formfields'}),
-            'AjudanteCobra': forms.NumberInput(attrs={'class': 'formfields'}),
-            'AjudantePaga': forms.NumberInput(attrs={'class': 'formfields'}),
-            'idFormaPagamento': forms.Select(attrs={'class': 'formfields'}),
-            'idCliente': forms.HiddenInput()
-        }
+        labels = {'Comissao': 'PORCENTAGEM DA COMISSÃO', 'TaxaExpedicao': 'TAXA EXPEDIÇÃO',
+                  'AjudanteCobra': 'VALOR AJUDANTE À RECEBER', 'AjudantePaga': 'VALOR AJUDANTE À PAGAR',
+                  'idFormaPagamento': 'FORMA DE PAGAMENTO'}
+        widgets = {'Comissao': forms.NumberInput(attrs={'class': 'form-control'}),
+                   'TaxaExpedicao': forms.NumberInput(attrs={'class': 'form-control'}),
+                   'AjudanteCobra': forms.NumberInput(attrs={'class': 'form-control'}),
+                   'AjudantePaga': forms.NumberInput(attrs={'class': 'form-control'}),
+                   'idFormaPagamento': forms.Select(attrs={'class': 'form-control'}), 'idCliente': forms.HiddenInput()}
 
 
 class CadastraTabelaVeiculo(forms.ModelForm):

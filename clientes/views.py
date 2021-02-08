@@ -143,23 +143,24 @@ def exclui_cobranca_cliente(request, idcobrancacliente):
     return data
 
 
-def criatabelacliente(request):
-    if request.method == 'POST':
-        idcliente = request.POST.get('idCliente')
-        form = CadastraTabela(request.POST)
-    else:
-        idcliente = request.GET.get('idcliente')
-        form = CadastraTabela(initial={'idCliente': idcliente})
-    return salva_form(request, form, 'clientes/criatabelacliente.html', idcliente)
+def cria_tabela_cliente(request):
+    c_form = CadastraTabela
+    c_idobj = None
+    c_url = '/clientes/criatabelacliente/'
+    c_view = 'cria_tabela_cliente'
+    idcliente = request.GET.get('idcliente')
+    data = facade.form_cliente(request, c_form, c_idobj, c_url, c_view, idcliente)
+    return data
 
 
-def editatabelacliente(request, idtabcli):
-    tabelacliente = get_object_or_404(Tabela, idTabela=idtabcli)
-    if request.method == "POST":
-        form = CadastraTabela(request.POST, instance=tabelacliente)
-    else:
-        form = CadastraTabela(instance=tabelacliente)
-    return salva_form(request, form, 'clientes/editatabelacliente.html', tabelacliente.idCliente_id)
+def edita_tabela_cliente(request, idclientetabela):
+    c_form = CadastraTabela
+    c_idobj = idclientetabela
+    c_url = '/clientes/editatabelacliente/{}/'.format(c_idobj)
+    c_view = 'edita_tabela_cliente'
+    idcliente = request.GET.get('idcliente')
+    data = facade.form_cliente(request, c_form, c_idobj, c_url, c_view, idcliente)
+    return data
 
 
 def editaphkesc(request, idtabcli):

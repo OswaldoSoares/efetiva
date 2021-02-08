@@ -391,12 +391,18 @@
                     </div>
                 </section>
                 <footer>
-                    <button class="btn btn-success btn-xs js-editatabelacliente"
-                            idcliente="{{ itenstabela.idCliente }}" idtabelacliente="{{ itenstabela.idTabela }}"
-                            data-url="{% url 'editatabelacliente' itenstabela.idTabela %}"
-                            idclick="clientetabela">
-                        <span class="glyphicon glyphicon-edit"></span>
+                    <button class="btn btn-success btn-xs glyphicon glyphicon-plus"
+                            onclick="openMyModal(event); return false;" data-title="EDITA CADASTRO TABELA CLIENTE"
+                            data-action="{% url 'editatabelacliente' itenstabela.idTabela %}"
+                            data-idcliente="{{ itens.idCliente }}"
+                            data-button-save-label="EDITAR">
                     </button>
+                    <!--<button class="btn btn-success btn-xs js-editatabelacliente"-->
+                            <!--idcliente="{{ itenstabela.idCliente }}" idtabelacliente="{{ itenstabela.idTabela }}"-->
+                            <!--data-url="{% url 'editatabelacliente' itenstabela.idTabela %}"-->
+                            <!--idclick="clientetabela">-->
+                        <!--<span class="glyphicon glyphicon-edit"></span>-->
+                    <!--</button>-->
                 </footer>
             </div>
             {% endfor %}
@@ -409,10 +415,10 @@
                     <span><b>TABELA NÃO CADASTRADA</b></span>
                 </section>
                 <footer>
-                    <button class="btn btn-primary btn-xs js-criatabelacliente"
-                           idcliente="{{ itens.idCliente }}" data-url="{% url 'criatabelacliente' %}"
-                           idclick="clientetabela">
-                        <span class="glyphicon glyphicon-plus"></span>
+                     <button class="btn btn-primary btn-xs glyphicon glyphicon-plus"
+                            onclick="openMyModal(event); return false;" data-title="CADASTRO TABELA CLIENTE"
+                            data-action="{% url 'criatabelacliente' %}" data-idcliente="{{ itens.idCliente }}"
+                            data-button-save-label="SALVAR">
                     </button>
                 </footer>
             </div>

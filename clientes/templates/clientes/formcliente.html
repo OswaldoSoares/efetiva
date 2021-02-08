@@ -41,7 +41,7 @@
 
     <div class="col-md-2">
         <label for="id_CEP" class="form-label">CEP:</label>
-        <input type="text" class="form-control" id="id_CEP" name="CEP", maxlength="9"
+        <input type="text" class="form-control" id="id_CEP" name="CEP" maxlength="9"
                value="{% if form.CEP.value %}{{ form.CEP.value }}{% endif %}">
     </div>
 
@@ -217,7 +217,7 @@
 
     <div class="col-md-2">
         <label for="id_CEP" class="form-label">CEP:</label>
-        <input type="text" class="form-control" id="id_CEP" name="CEP", maxlength="9"
+        <input type="text" class="form-control" id="id_CEP" name="CEP" maxlength="9"
                value="{% if form.CEP.value %}{{ form.CEP.value }}{% endif %}">
     </div>
 
@@ -258,6 +258,35 @@
         {% endif %}
     </div>
     <input type="hidden" name="idCliente" value="{{ c_queryset.idCliente_id }}" id="id_idCliente">
+{% endif %}
+
+{% if c_view == 'cria_tabela_cliente' or c_view == 'edita_tabela_cliente' %}
+    <div class="col-md-6">
+        <label for="id_idFFrmaPagamento" class="form-label">FORMA DE PAGAMENTO:</label>
+        {{ form.idFormaPagamento}}
+    </div>
+
+    <div class="col-md-6">
+        <label for="id_Comissao}}" class="form-label">PORCENTAGEM DA COMISSÃO:</label>
+        {{ form.Comissao }}
+    </div>
+
+    <div class="col-md-4">
+        <label for="id_TaxaExpedicao" class="form-label">TAXA EXPEDIÇÃO:</label>
+        {{ form.TaxaExpedicao }}
+    </div>
+
+    <div class="col-md-4">
+        <label for="id_AjudanteCobra" class="form-label">AJUDANTE A RECEBER:</label>
+        {{ form.AjudanteCobra }}
+    </div>
+
+    <div class="col-md-4">
+        <label for="id_AjudantePaga" class="form-label">AJUDANTE A PAGAR:</label>
+        {{ form.AjudantePaga }}
+    </div>
+
+    <input type="hidden" name="idCliente" value="{{ idcliente }}" id="id_idCliente">
 {% endif %}
 
 

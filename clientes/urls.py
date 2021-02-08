@@ -1,9 +1,7 @@
 from django.urls import path
 from .views import index_cliente, consulta_cliente, cria_cliente, edita_cliente, exclui_cliente, cria_email_cliente, \
     edita_email_cliente, exclui_email_cliente, cria_fone_cliente, edita_fone_cliente, exclui_fone_cliente, \
-    cria_cobranca_cliente, edita_cobranca_cliente, exclui_cobranca_cliente, \
-    criatabelacliente, \
-    editatabelacliente, \
+    cria_cobranca_cliente, edita_cobranca_cliente, exclui_cobranca_cliente, cria_tabela_cliente, edita_tabela_cliente, \
     editaphkesc, \
     criatabelaveiculo, \
     editatabelaveiculo, \
@@ -31,16 +29,8 @@ urlpatterns = [
     path('criacobrancacliente/', cria_cobranca_cliente, name='criacobrancacliente'),
     path('editacobrancacliente/<int:idcobrancacliente>/', edita_cobranca_cliente, name='editacobrancacliente'),
     path('excluicobrancacliente/<int:idcobrancacliente>/', exclui_cobranca_cliente, name='excluicobrancacliente'),
-    path(
-        'criatabelacliente/',
-        criatabelacliente,
-        name='criatabelacliente'
-    ),
-    path(
-        'editatabelacliente/<int:idtabcli>/',
-        editatabelacliente,
-        name='editatabelacliente'
-    ),
+    path('criatabelacliente/', cria_tabela_cliente, name='criatabelacliente'),
+    path('editatabelacliente/<int:idclientetabela>/', edita_tabela_cliente, name='editatabelacliente'),
     path(
         'editaphkesc/<int:idtabcli>/',
         editaphkesc,
