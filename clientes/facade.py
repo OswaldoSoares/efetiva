@@ -1,6 +1,7 @@
 from typing import List
 
 from django.http import JsonResponse
+from django.shortcuts import redirect
 from django.template.loader import render_to_string
 
 from clientes.models import Cliente, FoneContatoCliente, EMailContatoCliente, Cobranca, Tabela, TabelaVeiculo, \
@@ -183,7 +184,6 @@ def form_cliente(request, c_form, c_idobj, c_url, c_view, idcliente):
                 data['save_id'] = save_id.idCliente_id
     else:
         form = c_form(instance=c_instance)
-        print(form)
     context = {'form': form, 'c_idobj': c_idobj, 'c_url': c_url, 'c_view': c_view, 'idcliente': idcliente}
     data['html_form'] = render_to_string('clientes/formcliente.html', context, request=request)
     data['c_view'] = c_view
@@ -209,4 +209,37 @@ def form_exclui_cliente(request, c_idobj, c_url, c_view, idcliente):
     data['c_view'] = c_view
     data['save_id'] = idcliente
     c_return = JsonResponse(data)
+    return c_return
+
+
+def phkesc(switchdict):
+    phkesc = {'porcentagem-cobra': '0', 'hora-cobra': '0', 'kilometragem-cobra': '0', 'entrega-cobra': '0',
+              'saida-cobra': '0', 'capacidade-cobra': '0', 'entregakg-cobra': '0', 'entregavolume-cobra': '0',
+              'porcentagem-paga': '0', 'hora-paga': '0', 'kilometragem-paga': '0', 'entrega-paga': '0',
+              'saida-paga': '0', 'capacidade-paga': '0', 'entregakg-paga': '0', 'entregavolume-paga': '0'}
+    for itens in phkesc:
+        if itens in switchdict['switch']:
+            phkesc[itens] = '1'
+    valor_phkesc = ''
+    for itens in phkesc:
+        valor_phkesc += phkesc[itens]
+    phkesc_cobra = valor_phkesc[0:8]
+    phkesc_paga = valor_phkesc[8:16]
+    return phkesc_cobra, phkesc_paga
+
+
+def save_phkesc(idtabelacliente, phkesc_cobra, phkesc_paga):
+    tabela = Tabela.objects.get(idTabela=idtabelacliente)
+    obj = Tabela()
+    obj.idTabela = tabela.idTabela
+    obj.Comissao = tabela.Comissao
+    obj.TaxaExpedicao = tabela.TaxaExpedicao
+    obj.AjudanteCobra = tabela.AjudanteCobra
+    obj.AjudantePaga = tabela.AjudantePaga
+    obj.phkescCobra = phkesc_cobra
+    obj.phkescPaga = phkesc_paga
+    obj.idFormaPagamento = tabela.idFormaPagamento
+    obj.idCliente = tabela.idCliente
+    obj.save()
+    c_return = redirect('consultacliente', tabela.idCliente_id)
     return c_return

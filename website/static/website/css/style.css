@@ -1120,32 +1120,7 @@ main .card-base2 section .despesa-itens {
     padding: 3px 5px;
 }
 
-main .card-base3 section .tipo-cobranca {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-}
-
-main .card-base3 section article {
- /*   background-color: steelblue;*/
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-/*main .card-base3 section article .teste {
-    background-color: tomato;
-    display: flex;
-    
-    width: 100%;
-    margin-top: 5px;
-}*/
-
-main .card-base2 section .section-itens,
-main .card-base3 section article .teste .switch-itens {
-  /*  background-color: yellow;*/
+main .card-base2 section .section-itens {
     width: 100%;
     display: flex;
     align-items: center;
@@ -1153,13 +1128,13 @@ main .card-base3 section article .teste .switch-itens {
     padding: 3px 5px;
 }
 
-.section-itens a {
+section .section-itens a {
     color: black;
 }
 
-.section-itens a:hover,
-.section-itens a:checked,
-.section-itens a:focus {
+section .section-itens a:hover,
+section .section-itens a:checked,
+section .section-itens a:focus {
     color: deeppink;
     text-decoration: none;
 }
@@ -1231,6 +1206,24 @@ main .card-base3 section {
     justify-content: center;
     text-align: center;
     height: auto;
+}
+
+main .card-tabela {
+    width: 400px;
+}
+
+main .card-tabela section .tipo-cobranca {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+main .card-tabela section article .section-itens {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 main .card-base3 section .entregas-itens {

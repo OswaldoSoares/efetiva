@@ -163,63 +163,10 @@ def edita_tabela_cliente(request, idclientetabela):
     return data
 
 
-def editaphkesc(request, idtabcli):
-    tabelacliente = get_object_or_404(Tabela, idTabela=idtabcli)
-    if request.method == 'POST':
-        switchdict = dict(request.POST.lists())
-        phkesccobra = '00000000'
-        phkescpaga = '00000000'
-        if 'switch' in switchdict:
-            switchlist = switchdict['switch']
-            pc, hc, kc, ec, sc, cc, ekc, evc = '0', '0', '0', '0', '0', '0', '0', '0'
-            pp, hp, kp, ep, sp, cp, ekp, evp = '0', '0', '0', '0', '0', '0', '0', '0'
-            if switchlist:
-                if 'porcentagem-cobra' in switchlist:
-                    pc = '1'
-                if 'hora-cobra' in switchlist:
-                    hc = '1'
-                if 'kilometragem-cobra' in switchlist:
-                    kc = '1'
-                if 'entrega-cobra' in switchlist:
-                    ec = '1'
-                if 'entregakg-cobra' in switchlist:
-                    ekp = '1'
-                if 'entregavolume-cobra' in switchlist:
-                    ekv = '1'
-                if 'saida-cobra' in switchlist:
-                    sc = '1'
-                if 'capacidade-cobra' in switchlist:
-                    cc = '1'
-                if 'porcentagem-paga' in switchlist:
-                    pp = '1'
-                if 'hora-paga' in switchlist:
-                    hp = '1'
-                if 'kilometragem-paga' in switchlist:
-                    kp = '1'
-                if 'entrega-paga' in switchlist:
-                    ep = '1'
-                if 'entregakg-paga' in switchlist:
-                    ekp = '1'
-                if 'entregavolume-paga' in switchlist:
-                    ekv = '1'
-                if 'saida-paga' in switchlist:
-                    sp = '1'
-                if 'capacidade-paga' in switchlist:
-                    cp = '1'
-                phkesccobra = pc + hc + kc + ec + sc + cc + ekc + evc
-                phkescpaga = pp + hp + kp + ep + sp + cp + ekp + evp
-        obj = Tabela()
-        obj.idTabela = tabelacliente.idTabela
-        obj.Comissao = tabelacliente.Comissao
-        obj.TaxaExpedicao = tabelacliente.TaxaExpedicao
-        obj.AjudanteCobra = tabelacliente.AjudanteCobra
-        obj.AjudantePaga = tabelacliente.AjudantePaga
-        obj.phkescCobra = phkesccobra
-        obj.phkescPaga = phkescpaga
-        obj.idFormaPagamento = tabelacliente.idFormaPagamento
-        obj.idCliente = tabelacliente.idCliente
-        obj.save()
-    return redirect('consultacliente', tabelacliente.idCliente_id)
+def edita_phkesc(request, idclientetabela):
+    phkesc_cobra, phkesc_paga = facade.phkesc(dict(request.POST.lists()))
+    data = facade.save_phkesc(idclientetabela, phkesc_cobra, phkesc_paga)
+    return data
 
 
 def criatabelaveiculo(request):
