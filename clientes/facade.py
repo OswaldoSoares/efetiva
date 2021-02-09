@@ -1,5 +1,6 @@
 from typing import List
 
+from django.db.models import Max
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.template.loader import render_to_string
@@ -177,16 +178,30 @@ def form_cliente(request, c_form, c_idobj, c_url, c_view, idcliente):
     elif c_view == 'cria_tabela_veiculo' or c_view == 'edita_tabela_veiculo':
         if c_idobj:
             c_instance = TabelaVeiculo.objects.get(idTabelaVeiculo=c_idobj)
+    elif c_view == 'cria_tabela_capacidade' or c_view == 'edita_tabela_capacidade':
+        if c_idobj:
+            c_instance = TabelaCapacidade.objects.get(idTabelaCapacidade=c_idobj)
     if request.method == 'POST':
-        form = c_form(request.POST, instance=c_instance)
+        if c_view == 'edita_tabela_capacidade':
+            request_copy = request.POST.copy()
+            request_copy['CapacidadeFinal'] = c_instance.CapacidadeFinal
+            form = c_form(request_copy, instance=c_instance)
+        else:
+            form = c_form(request.POST, instance=c_instance)
         if form.is_valid():
             save_id = form.save()
             if c_view == 'cria_cliente' or c_view == 'edita_cliente':
                 data['save_id'] = save_id.idCliente
             else:
                 data['save_id'] = save_id.idCliente_id
+        else:
+            print(form)
     else:
-        form = c_form(instance=c_instance)
+        if c_view == 'cria_tabela_capacidade':
+            peso = TabelaCapacidade.objects.filter(idCliente=idcliente).aggregate(peso=Max('CapacidadeFinal'))
+            form = c_form(initial={'CapacidadeInicial': peso['peso']+1, 'CapacidadeFinal': peso['peso']+2})
+        else:
+            form = c_form(instance=c_instance)
     context = {'form': form, 'c_idobj': c_idobj, 'c_url': c_url, 'c_view': c_view, 'idcliente': idcliente,
                'idcategoriaveiculo': request.GET.get('idcategoriaveiculo')}
     data['html_form'] = render_to_string('clientes/formcliente.html', context, request=request)
@@ -206,6 +221,8 @@ def form_exclui_cliente(request, c_idobj, c_url, c_view, idcliente):
         c_queryset = FoneContatoCliente.objects.get(idFoneContatoCliente=c_idobj)
     elif c_view == 'exclui_cobranca_cliente':
         c_queryset = Cobranca.objects.get(idCobranca=c_idobj)
+    elif c_view == 'exclui_tabela_capacidade':
+        c_queryset = TabelaCapacidade.objects.get(idTabelaCapacidade=c_idobj)
     if request.method == "POST":
         c_queryset.delete()
     context = {'c_url': c_url, 'c_view': c_view, 'c_queryset': c_queryset, 'idcliente': idcliente}

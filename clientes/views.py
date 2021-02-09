@@ -177,15 +177,6 @@ def cria_tabela_veiculo(request):
     idcliente = request.GET.get('idcliente')
     data = facade.form_cliente(request, c_form, c_idobj, c_url, c_view, idcliente)
     return data
-    # if request.method == 'POST':
-    #     idcliente = request.POST.get('idCliente')
-    #     form = CadastraTabelaVeiculo(request.POST)
-    # else:
-    #     idcliente = request.GET.get('idcliente')
-    #     idcategoriaveiculo = request.GET.get('idcategoriaveiculo')
-    #     form = CadastraTabelaVeiculo(initial={
-    #         'idCliente': idcliente, 'idCategoriaVeiculo': idcategoriaveiculo})
-    # return salva_form(request, form, 'clientes/criatabelaveiculo.html', idcliente)
 
 
 def edita_tabela_veiculo(request, idtabelaveiculo):
@@ -196,70 +187,35 @@ def edita_tabela_veiculo(request, idtabelaveiculo):
     idcliente = request.GET.get('idcliente')
     data = facade.form_cliente(request, c_form, c_idobj, c_url, c_view, idcliente)
     return data
-    # tabelaveiculo = get_object_or_404(TabelaVeiculo, idTabelaVeiculo=idtabvei)
-    # if request.method == 'POST':
-    #     form = CadastraTabelaVeiculo(request.POST, instance=tabelaveiculo)
-    # else:
-    #     form = CadastraTabelaVeiculo(instance=tabelaveiculo)
-    # return salva_form(request, form, 'clientes/editatabelaveiculo.html', tabelaveiculo.idCliente_id)
 
 
-def selecionatabelaveiculo(request):
-    data = dict()
-    selecionaveiculo = request.GET.get('selecionaveiculo')
-    selecionacliente = request.GET.get('selecionacliente')
-    tabelaveiculocliente = TabelaVeiculo.objects.filter(idCategoriaVeiculo=selecionaveiculo,
-                                                        idCliente=selecionacliente).values()
-    selecionatabelaveiculo = list(tabelaveiculocliente)
-    tabelacategoriaveiculo = CategoriaVeiculo.objects.filter(idCategoria=selecionaveiculo).values()
-    selecionaveiculo = list(tabelacategoriaveiculo)
-    context = {
-        'selecionatabelaveiculo': selecionatabelaveiculo,
-        'selecionaveiculo': selecionaveiculo
-    }
-    data['html_tabelaveiculo'] = render_to_string('clientes/selecionatabelaveiculo.html', context, request=request)
-    return JsonResponse(data)
+def cria_tabela_capacidade(request):
+    c_form = CadastraTabelaCapacidade
+    c_idobj = None
+    c_url = '/clientes/criatabelacapacidade/'
+    c_view = 'cria_tabela_capacidade'
+    idcliente = request.GET.get('idcliente')
+    data = facade.form_cliente(request, c_form, c_idobj, c_url, c_view, idcliente)
+    return data
 
 
-def criatabelacapacidade(request):
-    if request.method == 'POST':
-        idcliente = request.POST.get('idCliente')
-        form = CadastraTabelaCapacidade(request.POST)
-    else:
-        idcliente = request.GET.get('idcliente')
-        registros = TabelaCapacidade.objects.filter(idCliente=idcliente).values()
-        if registros:
-            ultimoregistro = registros[len(registros) - 1]
-            peso = ultimoregistro['CapacidadeFinal']
-        else:
-            peso = 0
-        form = CadastraTabelaCapacidade(initial={'idCliente': idcliente, 'CapacidadeInicial': peso+1,
-                                                 'CapacidadeFinal': peso+2})
-    return salva_form(request, form, 'clientes/criatabelacapacidade.html', idcliente)
+def edita_tabela_capacidade(request, idtabelacapacidade):
+    c_form = CadastraTabelaCapacidade
+    c_idobj = idtabelacapacidade
+    c_url = '/clientes/editatabelacapacidade/{}/'.format(c_idobj)
+    c_view = 'edita_tabela_capacidade'
+    idcliente = request.GET.get('idcliente')
+    data = facade.form_cliente(request, c_form, c_idobj, c_url, c_view, idcliente)
+    return data
 
 
-def editatabelacapacidade(request, idtabcap):
-    tabelacapacidade = get_object_or_404(TabelaCapacidade, idTabelaCapacidade=idtabcap)
-    if request.method == 'POST':
-        requestcopia = request.POST.copy()
-        requestcopia['CapacidadeFinal'] = tabelacapacidade.CapacidadeFinal
-        form = CadastraTabelaCapacidade(requestcopia, instance=tabelacapacidade)
-    else:
-        form = CadastraTabelaCapacidade(instance=tabelacapacidade)
-    return salva_form(request, form, 'clientes/editatabelacapacidade.html', tabelacapacidade.idCliente_id)
-
-
-def excluitabelacapacidade(request, idtabcap):
-    tabelacapacidade = get_object_or_404(TabelaCapacidade, idTabelaCapacidade=idtabcap)
-    cliente = Cliente.objects.get(Nome=tabelacapacidade.idCliente)
-    data = dict()
-    if request.method == "POST":
-        tabelacapacidade.delete()
-        return redirect('consultacliente', cliente.idCliente)
-    else:
-        context = {'tabelacapacidade': tabelacapacidade}
-        data['html_form'] = render_to_string('clientes/excluitabelacapacidade.html', context, request=request)
-    return JsonResponse(data)
+def exclui_tabela_capacidade(request, idtabelacapacidade):
+    c_idobj = idtabelacapacidade
+    c_url = '/clientes/excluitabelacapacidade/{}/'.format(c_idobj)
+    c_view = 'exclui_tabela_capacidade'
+    idcliente = request.POST.get('idCliente')
+    data = facade.form_exclui_cliente(request, c_idobj, c_url, c_view, idcliente)
+    return data
 
 
 def criatabelaperimetro(request):

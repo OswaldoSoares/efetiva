@@ -277,12 +277,12 @@
     </div>
 
     <div class="col-md-4">
-        <label for="id_AjudanteCobra" class="form-label">AJUDANTE A RECEBER:</label>
+        <label for="id_AjudanteCobra" class="form-label">AJUDANTE RECEBE:</label>
         {{ form.AjudanteCobra }}
     </div>
 
     <div class="col-md-4">
-        <label for="id_AjudantePaga" class="form-label">AJUDANTE A PAGAR:</label>
+        <label for="id_AjudantePaga" class="form-label">AJUDANTE PAGA:</label>
         {{ form.AjudantePaga }}
     </div>
 
@@ -379,6 +379,41 @@
     <input type="hidden" name="idCategoriaVeiculo" value="{{ idcategoriaveiculo }}" id="id_idCategoriaVeiculo">
 {% endif %}
 
+{% if c_view == 'cria_tabela_capacidade' or c_view == 'edita_tabela_capacidade' %}
+    <div class="col-md-3">
+        <label for="id_CapacidadeInicial" class="form-label">KG INICIAL:</label>
+        {{ form.CapacidadeInicial}}
+    </div>
+
+    <div class="col-md-3">
+        <label for="id_CapacidadeFinal}}" class="form-label">KG FINAL:</label>
+        {{ form.CapacidadeFinal }}
+    </div>
+
+    <div class="col-md-3">
+        <label for="id_CapacidadeCobra" class="form-label">CAPACIDADE RECEBE:</label>
+        {{ form.CapacidadeCobra }}
+    </div>
+
+    <div class="col-md-3">
+        <label for="id_CapacidadePaga" class="form-label">CAPACIDADE PAGA:</label>
+        {{ form.CapacidadePaga }}
+    </div>
+
+    <input type="hidden" name="idCliente" value="{{ idcliente }}" id="id_idCliente">
+    <input type="hidden" name="idCategoriaVeiculo" value="{{ idcategoriaveiculo }}" id="id_idCategoriaVeiculo">
+{% endif %}
+
+{% if c_view == 'exclui_tabela_capacidade' %}
+    <div class="col-md-12">
+        <h4>Você tem certeza que deseja excluir o registro abaixo?</h4>
+        <br>
+        <p>CAPACIDADE DE <b>{{ c_queryset.CapacidadeInicial }} KGs</b> ATÉ <b>{{ c_queryset.CapacidadeFinal }} KGs</b>.</p>
+        <p>CAPACIDADE RECEBE : <b>R$ {{ c_queryset.CapacidadeCobra }}</b>.</p>
+        <p>CAPACIDADE PAGA : <b>R$ {{ c_queryset.CapacidadePaga }}</b>.</p>
+    </div>
+    <input type="hidden" name="idCliente" value="{{ c_queryset.idCliente_id }}" id="id_idCliente">
+{% endif %}
 
 
 </form>

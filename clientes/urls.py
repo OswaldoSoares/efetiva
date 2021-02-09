@@ -2,11 +2,8 @@ from django.urls import path
 from .views import index_cliente, consulta_cliente, cria_cliente, edita_cliente, exclui_cliente, cria_email_cliente, \
     edita_email_cliente, exclui_email_cliente, cria_fone_cliente, edita_fone_cliente, exclui_fone_cliente, \
     cria_cobranca_cliente, edita_cobranca_cliente, exclui_cobranca_cliente, cria_tabela_cliente, edita_tabela_cliente, \
-    edita_phkesc, cria_tabela_veiculo, edita_tabela_veiculo, \
-    selecionatabelaveiculo, \
-    criatabelacapacidade,\
-    editatabelacapacidade,\
-    excluitabelacapacidade,\
+    edita_phkesc, cria_tabela_veiculo, edita_tabela_veiculo, cria_tabela_capacidade, edita_tabela_capacidade,\
+    exclui_tabela_capacidade,\
     criatabelaperimetro,\
     editatabelaperimetro,\
     excluitabelaperimetro, \
@@ -31,28 +28,10 @@ urlpatterns = [
     path('editatabelacliente/<int:idclientetabela>/', edita_tabela_cliente, name='editatabelacliente'),
     path('editaphkesc/<int:idclientetabela>/', edita_phkesc, name='editaphkesc'),
     path('criatabelaveiculo/', cria_tabela_veiculo, name='criatabelaveiculo'),
-    path('editatabelaveiculo/<int:idtabelaveiculo>/', edita_tabela_veiculo, name='editatabelaveiculo'
-    ),
-    path(
-        'selecionatabelaveiculo/',
-        selecionatabelaveiculo,
-        name='selecionatabelaveiculo'
-    ),
-    path(
-        'criatabelacapacidade/',
-        criatabelacapacidade,
-        name='criatabelacapacidade'
-    ),
-    path(
-        'editatabelacapacidade/<int:idtabcap>/',
-        editatabelacapacidade,
-        name='editatabelacapacidade'
-    ),
-    path(
-        'excluitabelacapacidade/<int:idtabcap>/',
-        excluitabelacapacidade,
-        name='excluitabelacapacidade'
-    ),
+    path('editatabelaveiculo/<int:idtabelaveiculo>/', edita_tabela_veiculo, name='editatabelaveiculo'),
+    path('criatabelacapacidade/', cria_tabela_capacidade, name='criatabelacapacidade'),
+    path('editatabelacapacidade/<int:idtabelacapacidade>/', edita_tabela_capacidade, name='editatabelacapacidade'),
+    path('excluitabelacapacidade/<int:idtabelacapacidade>/', exclui_tabela_capacidade, name='excluitabelacapacidade'),
     path(
         'criatabelaperimetro/',
         criatabelaperimetro,

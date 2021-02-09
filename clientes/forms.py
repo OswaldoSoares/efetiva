@@ -141,17 +141,13 @@ class CadastraTabelaCapacidade(forms.ModelForm):
     class Meta:
         model = TabelaCapacidade
         fields = ('CapacidadeInicial', 'CapacidadeFinal', 'CapacidadeCobra', 'CapacidadePaga', 'idCliente')
-        labels = {
-            'CapacidadeInicial': 'CAPACIDADE (KGs) INICIAL',
-            'CapacidadeFinal': 'CAPACIDADE (KGs) FINAL',
-            'CapacidadeCobra': 'CAPACIDADE COBRA',
-            'CapacidadePaga': 'CAPACIDADE PAGA',
-        }
+        labels = {'CapacidadeInicial': 'CAPACIDADE (KGs) INICIAL', 'CapacidadeFinal': 'CAPACIDADE (KGs) FINAL',
+            'CapacidadeCobra': 'CAPACIDADE COBRA', 'CapacidadePaga': 'CAPACIDADE PAGA',}
         widgets = {
-            'CapacidadeInicial': forms.NumberInput(attrs={'class': 'formfields', 'readonly': True}),
-            'CapacidadeFinal': forms.NumberInput(attrs={'class': 'formfields'}),
-            'CapacidadeCobra': forms.NumberInput(attrs={'class': 'formfields'}),
-            'CapacidadePaga': forms.NumberInput(attrs={'class': 'formfields'}),
+            'CapacidadeInicial': forms.NumberInput(attrs={'class': 'form-control', 'readonly': True}),
+            'CapacidadeFinal': forms.NumberInput(attrs={'class': 'form-control'}),
+            'CapacidadeCobra': forms.NumberInput(attrs={'class': 'form-control'}),
+            'CapacidadePaga': forms.NumberInput(attrs={'class': 'form-control'}),
             'idCliente': forms.HiddenInput()
         }
 

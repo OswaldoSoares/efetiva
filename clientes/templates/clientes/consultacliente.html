@@ -239,7 +239,7 @@
         <main>
             {% if tabela_cliente %}
             {% for itenstabela in tabela_cliente %}
-            <div class="card-tabela card-base3">
+            <div class="card-tabela card-base3 card-tipo">
                 <header class="consulta-tabela">
                     <span><b>TIPOS DE COBRANÇA E PAGAMENTO</b></span>
                 </header>
@@ -636,10 +636,15 @@
                     <span><b>NENHUM PERÍMETRO CADASTRADO</b></span>
                 </section>
                 <footer>
-                    <button class="btn btn-primary btn-xs js-criatabelaperimetro"
-                           idtabela="criatabelaperimetro" idcliente="{{ itens.idCliente }}"
-                           data-url="{% url 'criatabelaperimetro' %}" idclick="clientetabelaperimetro">
-                        <span class="glyphicon glyphicon-plus"></span>
+                    <!--<button class="btn btn-primary btn-xs js-criatabelaperimetro"-->
+                           <!--idtabela="criatabelaperimetro" idcliente="{{ itens.idCliente }}"-->
+                           <!--data-url="{% url 'criatabelaperimetro' %}" idclick="clientetabelaperimetro">-->
+                        <!--<span class="glyphicon glyphicon-plus"></span>-->
+                    <!--</button>-->
+                    <button class="btn btn-primary btn-xs glyphicon glyphicon-plus"
+                            onclick="openMyModal(event); return false;" data-title="CADASTRO TABELA CAPACIDADE"
+                            data-action="{% url 'criatabelaperimetro' %}" data-idcliente="{{ itens.idCliente }}"
+                            data-button-save-label="SALVAR">
                     </button>
                 </footer>
             </div>
@@ -671,24 +676,25 @@
                 <footer>
                     <div>
                         {% if forloop.last %}
-                        <button class="btn btn-primary btn-xs js-criatabelacapacidade"
-                               idcapacidade="criatabelacapacidade" idcliente="{{ itens.idCliente }}"
-                               data-url="{% url 'criatabelacapacidade' %}" idclick="clientetabelacapacidade">
-                            <span class="glyphicon glyphicon-plus"></span>
+                        <button class="btn btn-primary btn-xs glyphicon glyphicon-plus"
+                            onclick="openMyModal(event); return false;" data-title="CADASTRO TABELA CAPACIDADE"
+                            data-action="{% url 'criatabelacapacidade' %}" data-idcliente="{{ itens.idCliente }}"
+                            data-button-save-label="CRIAR">
                         </button>
                         {% endif %}
-                        <button class="btn btn-success btn-xs js-editatabelacapacidade"
-                                idtabelacapacidade="{{ itenstabelacapacidade.idTabelaCapacidade }}"
-                                data-url="{% url 'editatabelacapacidade' itenstabelacapacidade.idTabelaCapacidade %}"
-                                idclick="clientetabelacapacidade">
-                            <span class="glyphicon glyphicon-edit"></span>
+                        <button class="btn btn-success btn-xs glyphicon glyphicon-edit"
+                            onclick="openMyModal(event); return false;" data-title="EDITA CADASTRO TABELA CAPACIDADE"
+                            data-action="{% url 'editatabelacapacidade' itenstabelacapacidade.idTabelaCapacidade %}"
+                            data-idcliente="{{ itens.idCliente }}"
+                            data-button-save-label="EDITAR">
                         </button>
                         {% if forloop.last %}
-                        <button class="btn btn-danger btn-xs js-excluitabelacapacidade"
-                                idtabelacapacidade="{{ itenstabelacapacidade.idTabelaCapacidade }}"
-                                data-url="{% url 'excluitabelacapacidade' itenstabelacapacidade.idTabelaCapacidade %}">
-                                <span class="glyphicon glyphicon-trash"></span>
-                            </button>
+                        <button class="btn btn-danger btn-xs glyphicon glyphicon-trash"
+                            onclick="openMyModal(event); return false;" data-title="EXCLUI CADASTRO TABELA CAPACIDADE"
+                            data-action="{% url 'excluitabelacapacidade' itenstabelacapacidade.idTabelaCapacidade %}"
+                            data-idcliente="{{ itens.idCliente }}"
+                            data-button-save-label="EXCLUIR">
+                        </button>
                         {% endif %}
                     </div>
                 </footer>
@@ -703,10 +709,10 @@
                     <span><b>NENHUMA CAPACIDADE CADASTRADA</b></span>
                 </section>
                 <footer>
-                    <button class="btn btn-primary btn-xs js-criatabelacapacidade"
-                           idcapacidade="criatabelacapacidade" idcliente="{{ itens.idCliente }}"
-                           data-url="{% url 'criatabelacapacidade' %}" idclick="clientetabelaccapacidade">
-                        <span class="glyphicon glyphicon-plus"></span>
+                    <button class="btn btn-primary btn-xs glyphicon glyphicon-plus"
+                            onclick="openMyModal(event); return false;" data-title="CADASTRO TABELA CAPACIDADE"
+                            data-action="{% url 'criatabelacapacidade' %}" data-idcliente="{{ itens.idCliente }}"
+                            data-button-save-label="SALVAR">
                     </button>
                 </footer>
             </div>
