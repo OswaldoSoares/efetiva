@@ -61,7 +61,7 @@
                     </button>
                     {% endif %}
                     <a class="btn btn-warning btn-xs" href = "{% url 'imprimefatura' itens.idFatura %}" target="_blank">
-                        <span class="glyphicon glyphicon-file"></span>
+                        <span class="glyphicon glyphicon-print"></span>
                     </a>
                     <button class="btn btn-success btn-xs js-pagafatura" idfatura="{{ itens.Fatura }}"
                             data-url="{% url 'pagafatura' itens.Fatura %}">
