@@ -169,25 +169,39 @@ def edita_phkesc(request, idclientetabela):
     return data
 
 
-def criatabelaveiculo(request):
-    if request.method == 'POST':
-        idcliente = request.POST.get('idCliente')
-        form = CadastraTabelaVeiculo(request.POST)
-    else:
-        idcliente = request.GET.get('idcliente')
-        idcategoriaveiculo = request.GET.get('idcategoriaveiculo')
-        form = CadastraTabelaVeiculo(initial={
-            'idCliente': idcliente, 'idCategoriaVeiculo': idcategoriaveiculo})
-    return salva_form(request, form, 'clientes/criatabelaveiculo.html', idcliente)
+def cria_tabela_veiculo(request):
+    c_form = CadastraTabelaVeiculo
+    c_idobj = None
+    c_url = '/clientes/criatabelaveiculo/'
+    c_view = 'cria_tabela_veiculo'
+    idcliente = request.GET.get('idcliente')
+    data = facade.form_cliente(request, c_form, c_idobj, c_url, c_view, idcliente)
+    return data
+    # if request.method == 'POST':
+    #     idcliente = request.POST.get('idCliente')
+    #     form = CadastraTabelaVeiculo(request.POST)
+    # else:
+    #     idcliente = request.GET.get('idcliente')
+    #     idcategoriaveiculo = request.GET.get('idcategoriaveiculo')
+    #     form = CadastraTabelaVeiculo(initial={
+    #         'idCliente': idcliente, 'idCategoriaVeiculo': idcategoriaveiculo})
+    # return salva_form(request, form, 'clientes/criatabelaveiculo.html', idcliente)
 
 
-def editatabelaveiculo(request, idtabvei):
-    tabelaveiculo = get_object_or_404(TabelaVeiculo, idTabelaVeiculo=idtabvei)
-    if request.method == 'POST':
-        form = CadastraTabelaVeiculo(request.POST, instance=tabelaveiculo)
-    else:
-        form = CadastraTabelaVeiculo(instance=tabelaveiculo)
-    return salva_form(request, form, 'clientes/editatabelaveiculo.html', tabelaveiculo.idCliente_id)
+def edita_tabela_veiculo(request, idtabelaveiculo):
+    c_form = CadastraTabelaVeiculo
+    c_idobj = idtabelaveiculo
+    c_url = '/clientes/editatabelaveiculo/{}/'.format(c_idobj)
+    c_view = 'edita_tabela_veiculo'
+    idcliente = request.GET.get('idcliente')
+    data = facade.form_cliente(request, c_form, c_idobj, c_url, c_view, idcliente)
+    return data
+    # tabelaveiculo = get_object_or_404(TabelaVeiculo, idTabelaVeiculo=idtabvei)
+    # if request.method == 'POST':
+    #     form = CadastraTabelaVeiculo(request.POST, instance=tabelaveiculo)
+    # else:
+    #     form = CadastraTabelaVeiculo(instance=tabelaveiculo)
+    # return salva_form(request, form, 'clientes/editatabelaveiculo.html', tabelaveiculo.idCliente_id)
 
 
 def selecionatabelaveiculo(request):

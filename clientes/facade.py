@@ -174,6 +174,9 @@ def form_cliente(request, c_form, c_idobj, c_url, c_view, idcliente):
     elif c_view == 'cria_tabela_cliente' or c_view == 'edita_tabela_cliente':
         if c_idobj:
             c_instance = Tabela.objects.get(idTabela=c_idobj)
+    elif c_view == 'cria_tabela_veiculo' or c_view == 'edita_tabela_veiculo':
+        if c_idobj:
+            c_instance = TabelaVeiculo.objects.get(idTabelaVeiculo=c_idobj)
     if request.method == 'POST':
         form = c_form(request.POST, instance=c_instance)
         if form.is_valid():
@@ -184,7 +187,8 @@ def form_cliente(request, c_form, c_idobj, c_url, c_view, idcliente):
                 data['save_id'] = save_id.idCliente_id
     else:
         form = c_form(instance=c_instance)
-    context = {'form': form, 'c_idobj': c_idobj, 'c_url': c_url, 'c_view': c_view, 'idcliente': idcliente}
+    context = {'form': form, 'c_idobj': c_idobj, 'c_url': c_url, 'c_view': c_view, 'idcliente': idcliente,
+               'idcategoriaveiculo': request.GET.get('idcategoriaveiculo')}
     data['html_form'] = render_to_string('clientes/formcliente.html', context, request=request)
     data['c_view'] = c_view
     c_return = JsonResponse(data)

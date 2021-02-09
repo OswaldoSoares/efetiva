@@ -262,7 +262,7 @@
 
 {% if c_view == 'cria_tabela_cliente' or c_view == 'edita_tabela_cliente' %}
     <div class="col-md-6">
-        <label for="id_idFFrmaPagamento" class="form-label">FORMA DE PAGAMENTO:</label>
+        <label for="id_idFormaPagamento" class="form-label">FORMA DE PAGAMENTO:</label>
         {{ form.idFormaPagamento}}
     </div>
 
@@ -288,6 +288,97 @@
 
     <input type="hidden" name="idCliente" value="{{ idcliente }}" id="id_idCliente">
 {% endif %}
+
+{% if c_view == 'cria_tabela_veiculo' or c_view == 'edita_tabela_veiculo' %}
+    <div class="col-md-3">
+        <label for="id_PorcentagemCobra" class="form-label">% DA NOTA RECEBE:</label>
+        {{ form.PorcentagemCobra}}
+    </div>
+
+    <div class="col-md-3">
+        <label for="id_PorcentagemPaga}}" class="form-label">% DA NOTA PAGA:</label>
+        {{ form.PorcentagemPaga }}
+    </div>
+
+    <div class="col-md-3">
+        <label for="id_SaidaCobra" class="form-label">SAÍDA RECEBE:</label>
+        {{ form.SaidaCobra }}
+    </div>
+
+    <div class="col-md-3">
+        <label for="id_SaidaPaga" class="form-label">SAÍDA A PAGA:</label>
+        {{ form.SaidaPaga }}
+    </div>
+
+    <div class="col-md-4">
+        <label for="id_HoraRecebe" class="form-label">HORA RECEBE:</label>
+        {{ form.HoraCobra }}
+    </div>
+
+    <div class="col-md-4">
+        <label for="id_HoraPaga" class="form-label">HORA PAGA:</label>
+        {{ form.HoraPaga }}
+    </div>
+
+    <div class="col-md-4">
+        <label for="id_HoraMinimo" class="form-label">MINIMO HORAS:</label>
+        {{ form.HoraMinimo }}
+    </div>
+
+    <div class="col-md-4">
+        <label for="id_idKMCobra" class="form-label">KM RECEBE:</label>
+        {{ form.KMCobra }}
+    </div>
+
+    <div class="col-md-4">
+        <label for="id_KMPaga}}" class="form-label">KM PAGA:</label>
+        {{ form.KMPaga }}
+    </div>
+
+    <div class="col-md-4">
+        <label for="id_KMMinimo" class="form-label">KM MINIMO:</label>
+        {{ form.KMMinimo }}
+    </div>
+
+    <div class="col-md-4">
+        <label for="id_EntregaCobra" class="form-label">ENTREGA RECEBER:</label>
+        {{ form.EntregaCobra }}
+    </div>
+
+    <div class="col-md-4">
+        <label for="id_EntregaPaga" class="form-label">ENTREGA PAGAR:</label>
+        {{ form.EntregaPaga }}
+    </div>
+
+    <div class="col-md-4">
+        <label for="id_EntregaMinimo" class="form-label">ENTREGA MINIMO:</label>
+        {{ form.EntregaMinimo}}
+    </div>
+
+    <div class="col-md-3">
+        <label for="id_Comissao}}" class="form-label">ENTREGA KG RECEBE:</label>
+        {{ form.EntregaKGCobra }}
+    </div>
+
+    <div class="col-md-3">
+        <label for="id_TaxaExpedicao" class="form-label">ENTREGA KG PAGA:</label>
+        {{ form.EntregaKGPaga }}
+    </div>
+
+    <div class="col-md-3">
+        <label for="id_AjudanteCobra" class="form-label">ENTREGA VOL. RECEBE:</label>
+        {{ form.EntregaVolumeCobra }}
+    </div>
+
+    <div class="col-md-3">
+        <label for="id_AjudantePaga" class="form-label">ENTREGA VOL. PAGA:</label>
+        {{ form.EntregaVolumePaga }}
+    </div>
+
+    <input type="hidden" name="idCliente" value="{{ idcliente }}" id="id_idCliente">
+    <input type="hidden" name="idCategoriaVeiculo" value="{{ idcategoriaveiculo }}" id="id_idCategoriaVeiculo">
+{% endif %}
+
 
 
 </form>

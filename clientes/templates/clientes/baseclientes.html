@@ -186,9 +186,8 @@
         var url = $(event.target).data('action');
         var idobj = $(event.target).data('idobj');
         var idcliente = $(event.target).data('idcliente');
-        console.log(idobj)
-        console.log(idcliente)
-        console.log('estranho')
+        var idcategoriaveiculo = $(event.target).data('idcategoriaveiculo');
+        console.log(idcategoriaveiculo)
         
         $.ajax({
             type: "GET",
@@ -196,6 +195,7 @@
             data : {
                 idobj: idobj,
                 idcliente: idcliente,
+                idcategoriaveiculo: idcategoriaveiculo,
             }
         }).done(function(data, textStatus, jqXHR) {
             modal.find('.modal-body').html(data.html_form);

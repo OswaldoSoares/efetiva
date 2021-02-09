@@ -2,9 +2,7 @@ from django.urls import path
 from .views import index_cliente, consulta_cliente, cria_cliente, edita_cliente, exclui_cliente, cria_email_cliente, \
     edita_email_cliente, exclui_email_cliente, cria_fone_cliente, edita_fone_cliente, exclui_fone_cliente, \
     cria_cobranca_cliente, edita_cobranca_cliente, exclui_cobranca_cliente, cria_tabela_cliente, edita_tabela_cliente, \
-    edita_phkesc, \
-    criatabelaveiculo, \
-    editatabelaveiculo, \
+    edita_phkesc, cria_tabela_veiculo, edita_tabela_veiculo, \
     selecionatabelaveiculo, \
     criatabelacapacidade,\
     editatabelacapacidade,\
@@ -32,15 +30,8 @@ urlpatterns = [
     path('criatabelacliente/', cria_tabela_cliente, name='criatabelacliente'),
     path('editatabelacliente/<int:idclientetabela>/', edita_tabela_cliente, name='editatabelacliente'),
     path('editaphkesc/<int:idclientetabela>/', edita_phkesc, name='editaphkesc'),
-    path(
-        'criatabelaveiculo/',
-        criatabelaveiculo,
-        name='criatabelaveiculo'
-    ),
-    path(
-        'editatabelaveiculo/<int:idtabvei>/',
-        editatabelaveiculo,
-        name='editatabelaveiculo'
+    path('criatabelaveiculo/', cria_tabela_veiculo, name='criatabelaveiculo'),
+    path('editatabelaveiculo/<int:idtabelaveiculo>/', edita_tabela_veiculo, name='editatabelaveiculo'
     ),
     path(
         'selecionatabelaveiculo/',
