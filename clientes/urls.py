@@ -3,10 +3,7 @@ from .views import index_cliente, consulta_cliente, cria_cliente, edita_cliente,
     edita_email_cliente, exclui_email_cliente, cria_fone_cliente, edita_fone_cliente, exclui_fone_cliente, \
     cria_cobranca_cliente, edita_cobranca_cliente, exclui_cobranca_cliente, cria_tabela_cliente, edita_tabela_cliente, \
     edita_phkesc, cria_tabela_veiculo, edita_tabela_veiculo, cria_tabela_capacidade, edita_tabela_capacidade,\
-    exclui_tabela_capacidade,\
-    criatabelaperimetro,\
-    editatabelaperimetro,\
-    excluitabelaperimetro, \
+    exclui_tabela_capacidade, cria_tabela_perimetro, edita_tabela_perimetro, exclui_tabela_perimetro, \
     criaformapgto
 
 urlpatterns = [
@@ -32,21 +29,9 @@ urlpatterns = [
     path('criatabelacapacidade/', cria_tabela_capacidade, name='criatabelacapacidade'),
     path('editatabelacapacidade/<int:idtabelacapacidade>/', edita_tabela_capacidade, name='editatabelacapacidade'),
     path('excluitabelacapacidade/<int:idtabelacapacidade>/', exclui_tabela_capacidade, name='excluitabelacapacidade'),
-    path(
-        'criatabelaperimetro/',
-        criatabelaperimetro,
-        name='criatabelaperimetro'
-    ),
-    path(
-        'editatabelaperimetro/<int:idtabper>/',
-        editatabelaperimetro,
-        name='editatabelaperimetro'
-    ),
-    path(
-        'excluitabelaperimetro/<int:idtabper>/',
-        excluitabelaperimetro,
-        name='excluitabelaperimetro'
-    ),
+    path('criatabelaperimetro/', cria_tabela_perimetro, name='criatabelaperimetro'),
+    path('editatabelaperimetro/<int:idtabelaperimetro>/', edita_tabela_perimetro, name='editatabelaperimetro'),
+    path('excluitabelaperimetro/<int:idtabelaperimetro>/', exclui_tabela_perimetro, name='excluitabelaperimetro'),
     path(
         'criaformapgto/',
         criaformapgto,

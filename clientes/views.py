@@ -218,22 +218,14 @@ def exclui_tabela_capacidade(request, idtabelacapacidade):
     return data
 
 
-def criatabelaperimetro(request):
-    if request.method == 'POST':
-        idcliente = request.POST.get('idCliente')
-        form = CadastraTabelaPerimetro(request.POST)
-    else:
-        idcliente = request.GET.get('idcliente')
-        registros = TabelaPerimetro.objects.filter(idCliente=idcliente).values()
-        if registros:
-            ultimoregistro = registros[len(registros)-1]
-            kms = ultimoregistro['PerimetroFinal']
-        else:
-            kms = 0
-        form = CadastraTabelaPerimetro(initial={'idCliente': idcliente,
-                                                'PerimetroInicial': kms+1,
-                                                'PerimetroFinal': kms+2})
-    return salva_form(request, form, 'clientes/criatabelaperimetro.html', idcliente)
+def cria_tabela_perimetro(request):
+    c_form = CadastraTabelaPerimetro
+    c_idobj = None
+    c_url = '/clientes/criatabelaperimetro/'
+    c_view = 'cria_tabela_perimetro'
+    idcliente = request.GET.get('idcliente')
+    data = facade.form_cliente(request, c_form, c_idobj, c_url, c_view, idcliente)
+    return data
 
 
 def criaformapgto(request):
@@ -245,39 +237,34 @@ def criaformapgto(request):
     return render(request, 'clientes/criaformapgto.html', {'formapgto': formapgto})
 
 
-def editatabelaperimetro(request, idtabper):
-    tabelaperimetro = get_object_or_404(TabelaPerimetro, idTabelaPerimetro=idtabper)
-    if request.method == 'POST':
-        requestcopia = request.POST.copy()
-        requestcopia['PerimetroFinal'] = tabelaperimetro.PerimetroFinal
-        form = CadastraTabelaPerimetro(requestcopia, instance=tabelaperimetro)
-    else:
-        form = CadastraTabelaPerimetro(instance=tabelaperimetro)
-    return salva_form(request, form, 'clientes/editatabelaperimetro.html', tabelaperimetro.idCliente_id)
+def edita_tabela_perimetro(request, idtabelaperimetro):
+    c_form = CadastraTabelaPerimetro
+    c_idobj = idtabelaperimetro
+    c_url = '/clientes/editatabelaperimetro/{}/'.format(c_idobj)
+    c_view = 'edita_tabela_perimetro'
+    idcliente = request.GET.get('idcliente')
+    data = facade.form_cliente(request, c_form, c_idobj, c_url, c_view, idcliente)
+    return data
 
 
-def excluitabelaperimetro(request, idtabper):
-    tabelaperimetro = get_object_or_404(TabelaPerimetro, idTabelaPerimetro=idtabper)
-    cliente = Cliente.objects.get(Fantasia=tabelaperimetro.idCliente)
-    data = dict()
-    if request.method == "POST":
-        tabelaperimetro.delete()
-        return redirect('consultacliente', cliente.idCliente)
-    else:
-        context = {'tabelaperimetro': tabelaperimetro}
-        data['html_form'] = render_to_string('clientes/excluitabelaperimetro.html', context, request=request)
-    return JsonResponse(data)
+def exclui_tabela_perimetro(request, idtabelaperimetro):
+    c_idobj = idtabelaperimetro
+    c_url = '/clientes/excluitabelaperimetro/{}/'.format(c_idobj)
+    c_view = 'exclui_tabela_perimetro'
+    idcliente = request.POST.get('idCliente')
+    data = facade.form_exclui_cliente(request, c_idobj, c_url, c_view, idcliente)
+    return data
 
 
-def salva_form(request, form, template_name, idcli):
-    data = dict()
-    if request.method == 'POST':
-        if form.is_valid():
-            form.save()
-            data['form_is_valid'] = True
-            return redirect('consultacliente', idcli)
-        else:
-            data['form_is_valid'] = False
-    context = {'form': form}
-    data['html_form'] = render_to_string(template_name, context, request=request)
-    return JsonResponse(data)
+# def salva_form(request, form, template_name, idcli):
+#     data = dict()
+#     if request.method == 'POST':
+#         if form.is_valid():
+#             form.save()
+#             data['form_is_valid'] = True
+#             return redirect('consultacliente', idcli)
+#         else:
+#             data['form_is_valid'] = False
+#     context = {'form': form}
+#     data['html_form'] = render_to_string(template_name, context, request=request)
+#     return JsonResponse(data)

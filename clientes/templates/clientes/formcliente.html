@@ -415,5 +415,40 @@
     <input type="hidden" name="idCliente" value="{{ c_queryset.idCliente_id }}" id="id_idCliente">
 {% endif %}
 
+{% if c_view == 'cria_tabela_perimetro' or c_view == 'edita_tabela_perimetro' %}
+    <div class="col-md-3">
+        <label for="id_PerimetroInicial" class="form-label">PERIMETRO INICIAL:</label>
+        {{ form.PerimetroInicial}}
+    </div>
+
+    <div class="col-md-3">
+        <label for="id_PerimetroFinal}}" class="form-label">PERIMETRO FINAL:</label>
+        {{ form.PerimetroFinal }}
+    </div>
+
+    <div class="col-md-3">
+        <label for="id_CapacidadeCobra" class="form-label">PERIMETRO RECEBE:</label>
+        {{ form.PerimetroCobra }}
+    </div>
+
+    <div class="col-md-3">
+        <label for="id_CapacidadePaga" class="form-label">PERIMETRO PAGA:</label>
+        {{ form.PerimetroPaga }}
+    </div>
+
+    <input type="hidden" name="idCliente" value="{{ idcliente }}" id="id_idCliente">
+    <input type="hidden" name="idCategoriaVeiculo" value="{{ idcategoriaveiculo }}" id="id_idCategoriaVeiculo">
+{% endif %}
+
+{% if c_view == 'exclui_tabela_perimetro' %}
+    <div class="col-md-12">
+        <h4>Você tem certeza que deseja excluir o registro abaixo?</h4>
+        <br>
+        <p>PERÍMETRO DE <b>{{ c_queryset.PerimetroInicial }} KMs</b> ATÉ <b>{{ c_queryset.PerimetroFinal }} KMs</b>.</p>
+        <p>PERÍMETRO RECEBE : <b>R$ {{ c_queryset.PerimetroCobra }}</b>.</p>
+        <p>PERÍMETROv PAGA : <b>R$ {{ c_queryset.PerimetroPaga }}</b>.</p>
+    </div>
+    <input type="hidden" name="idCliente" value="{{ c_queryset.idCliente_id }}" id="id_idCliente">
+{% endif %}
 
 </form>

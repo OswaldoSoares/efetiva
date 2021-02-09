@@ -181,10 +181,17 @@ def form_cliente(request, c_form, c_idobj, c_url, c_view, idcliente):
     elif c_view == 'cria_tabela_capacidade' or c_view == 'edita_tabela_capacidade':
         if c_idobj:
             c_instance = TabelaCapacidade.objects.get(idTabelaCapacidade=c_idobj)
+    elif c_view == 'cria_tabela_perimetro' or c_view == 'edita_tabela_perimetro':
+        if c_idobj:
+            c_instance = TabelaPerimetro.objects.get(idTabelaPerimetro=c_idobj)
     if request.method == 'POST':
         if c_view == 'edita_tabela_capacidade':
             request_copy = request.POST.copy()
             request_copy['CapacidadeFinal'] = c_instance.CapacidadeFinal
+            form = c_form(request_copy, instance=c_instance)
+        elif c_view == 'edita_tabela_perimetro':
+            request_copy = request.POST.copy()
+            request_copy['PerimetroFinal'] = c_instance.PerimetroFinal
             form = c_form(request_copy, instance=c_instance)
         else:
             form = c_form(request.POST, instance=c_instance)
@@ -200,6 +207,9 @@ def form_cliente(request, c_form, c_idobj, c_url, c_view, idcliente):
         if c_view == 'cria_tabela_capacidade':
             peso = TabelaCapacidade.objects.filter(idCliente=idcliente).aggregate(peso=Max('CapacidadeFinal'))
             form = c_form(initial={'CapacidadeInicial': peso['peso']+1, 'CapacidadeFinal': peso['peso']+2})
+        elif c_view == 'cria_tabela_perimetro':
+            km = TabelaPerimetro.objects.filter(idCliente=idcliente).aggregate(km=Max('PerimetroFinal'))
+            form = c_form(initial={'PerimetroInicial': km['km']+1, 'PerimetroFinal': km['km']+2})
         else:
             form = c_form(instance=c_instance)
     context = {'form': form, 'c_idobj': c_idobj, 'c_url': c_url, 'c_view': c_view, 'idcliente': idcliente,
@@ -223,6 +233,8 @@ def form_exclui_cliente(request, c_idobj, c_url, c_view, idcliente):
         c_queryset = Cobranca.objects.get(idCobranca=c_idobj)
     elif c_view == 'exclui_tabela_capacidade':
         c_queryset = TabelaCapacidade.objects.get(idTabelaCapacidade=c_idobj)
+    elif c_view == 'exclui_tabela_perimetro':
+        c_queryset = TabelaPerimetro.objects.get(idTabelaPerimetro=c_idobj)
     if request.method == "POST":
         c_queryset.delete()
     context = {'c_url': c_url, 'c_view': c_view, 'c_queryset': c_queryset, 'idcliente': idcliente}

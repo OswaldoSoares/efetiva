@@ -604,23 +604,24 @@
                 <footer>
                     <div>
                         {% if forloop.last %}
-                        <button class="btn btn-primary btn-xs js-criatabelaperimetro"
-                               idtabela="criatabelaperimetro" idcliente="{{ itens.idCliente }}"
-                               data-url="{% url 'criatabelaperimetro' %}" idclick="clientetabelaperimetro">
-                            <span class="glyphicon glyphicon-plus"></span>
+                        <button class="btn btn-primary btn-xs glyphicon glyphicon-plus"
+                            onclick="openMyModal(event); return false;" data-title="CADASTRO TABELA CAPACIDADE"
+                            data-action="{% url 'criatabelaperimetro' %}" data-idcliente="{{ itens.idCliente }}"
+                            data-button-save-label="CRIAR">
                         </button>
                         {% endif %}
-                        <button class="btn btn-success btn-xs js-editatabelaperimetro"
-                                idtabelaperimetro="{{ itenstabelaperimetro.idTabelaPerimetro }}"
-                                data-url="{% url 'editatabelaperimetro' itenstabelaperimetro.idTabelaPerimetro %}"
-                                idclick="clientetabelaperimetro">
-                            <span class="glyphicon glyphicon-edit"></span>
+                        <button class="btn btn-success btn-xs glyphicon glyphicon-edit"
+                            onclick="openMyModal(event); return false;" data-title="EDITA CADASTRO TABELA CAPACIDADE"
+                            data-action="{% url 'editatabelaperimetro' itenstabelaperimetro.idTabelaPerimetro %}"
+                                data-idcliente="{{ itens.idCliente }}"
+                            data-button-save-label="EDITAR">
                         </button>
                         {% if forloop.last %}
-                        <button class="btn btn-danger btn-xs js-excluitabelaperimetro"
-                                idtabelaperimetro="{{ itenstabelaperimetro.idTabelaPerimetro }}"
-                                data-url="{% url 'excluitabelaperimetro' itenstabelaperimetro.idTabelaPerimetro %}">
-                            <span class="glyphicon glyphicon-trash"></span>
+                        <button class="btn btn-danger btn-xs glyphicon glyphicon-trash"
+                            onclick="openMyModal(event); return false;" data-title="EXCLUI CADASTRO TABELA CAPACIDADE"
+                            data-action="{% url 'excluitabelaperimetro' itenstabelaperimetro.idTabelaPerimetro %}"
+                                data-idcliente="{{ itens.idCliente }}"
+                            data-button-save-label="EXCLUIR">
                         </button>
                         {% endif %}
                     </div>
