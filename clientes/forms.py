@@ -103,17 +103,12 @@ class CadastraTabelaVeiculo(forms.ModelForm):
         labels = {'PorcentagemCobra': 'PORCENTAGEM DAS NOTAS À RECEBER',
                   'PorcentagemPaga': 'PORCENTAGEM DAS NOTAS À PAGAR', 'HoraCobra': 'VALOR DA HORA À RECEBER',
                   'HoraPaga': 'VALOR DA HORA À PAGAR', 'HoraMinimo': 'MÍNIMO DE HORAS',
-                    'KMCobra': 'VALOR DO KILOMETRO À RECEBER', 'KMPaga': 'VALOR DO KILOMETRO À PAGAR',
-            'KMMinimo': 'MÍNIMO DE KILOMETROS',
-            'EntregaCobra': 'VALOR DA ENTREGA À RECEBER',
-            'EntregaPaga': 'VALOR DA ENTREGA À PAGAR',
-            'EntregaMinimo': 'MÍNIMO DE ENTREGAS',
-            'EntregaKGCobra': 'VALOR KG À RECEBER',
-            'EntregaKGPaga': 'VALOR KG À PAGAR',
-            'EntregaVolumeCobra': 'VALOR VOLUME À RECEBER',
-            'EntregaVolumePaga': 'VALOR VOLUME À PAGAR',
-            'SaidaCobra': 'VALOR DA SAÍDA À RECEBER',
-            'SaidaPaga': 'VALOR DA SAÍDA À PAGAR'
+                  'KMCobra': 'VALOR DO KILOMETRO À RECEBER', 'KMPaga': 'VALOR DO KILOMETRO À PAGAR',
+                  'KMMinimo': 'MÍNIMO DE KILOMETROS', 'EntregaCobra': 'VALOR DA ENTREGA À RECEBER',
+                  'EntregaPaga': 'VALOR DA ENTREGA À PAGAR', 'EntregaMinimo': 'MÍNIMO DE ENTREGAS',
+                  'EntregaKGCobra': 'VALOR KG À RECEBER', 'EntregaKGPaga': 'VALOR KG À PAGAR',
+                  'EntregaVolumeCobra': 'VALOR VOLUME À RECEBER', 'EntregaVolumePaga': 'VALOR VOLUME À PAGAR',
+                  'SaidaCobra': 'VALOR DA SAÍDA À RECEBER', 'SaidaPaga': 'VALOR DA SAÍDA À PAGAR'
         }
         widgets = {
             'PorcentagemCobra': forms.NumberInput(attrs={'class': 'form-control'}),
@@ -142,7 +137,7 @@ class CadastraTabelaCapacidade(forms.ModelForm):
         model = TabelaCapacidade
         fields = ('CapacidadeInicial', 'CapacidadeFinal', 'CapacidadeCobra', 'CapacidadePaga', 'idCliente')
         labels = {'CapacidadeInicial': 'CAPACIDADE (KGs) INICIAL', 'CapacidadeFinal': 'CAPACIDADE (KGs) FINAL',
-            'CapacidadeCobra': 'CAPACIDADE COBRA', 'CapacidadePaga': 'CAPACIDADE PAGA',}
+                  'CapacidadeCobra': 'CAPACIDADE COBRA', 'CapacidadePaga': 'CAPACIDADE PAGA',}
         widgets = {
             'CapacidadeInicial': forms.NumberInput(attrs={'class': 'form-control', 'readonly': True}),
             'CapacidadeFinal': forms.NumberInput(attrs={'class': 'form-control'}),
@@ -156,38 +151,14 @@ class CadastraTabelaPerimetro(forms.ModelForm):
     class Meta:
         model = TabelaPerimetro
         fields = ('PerimetroInicial', 'PerimetroFinal', 'PerimetroCobra', 'PerimetroPaga', 'idCliente')
-        labels = {
-            'PerimetroInicial': 'PERIMETRO (KMs) INICIAL',
-            'PerimetroFinal': 'PERIMETRO (KMs) FINAL',
-            'PerimetroCobra': 'PERIMETRO COBRA',
-            'PerimetroPaga': 'PERIMETRO PAGA',
-        }
+        labels = {'PerimetroInicial': 'PERIMETRO (KMs) INICIAL', 'PerimetroFinal': 'PERIMETRO (KMs) FINAL',
+                  'PerimetroCobra': 'PERIMETRO COBRA', 'PerimetroPaga': 'PERIMETRO PAGA',}
         widgets = {
-            'PerimetroInicial': forms.NumberInput(
-                attrs={
-                    'class': 'formfields',
-                    'readonly': True,
-                }
-            ),
-            'PerimetroFinal': forms.NumberInput(
-                attrs={
-                    'class': 'formfields',
-                }
-            ),
-            'PerimetroCobra': forms.NumberInput(
-                attrs={
-                    'class': 'formfields',
-                }
-            ),
-            'PerimetroPaga': forms.NumberInput(
-                attrs={
-                    'class': 'formfields',
-                    # 'placeholder': 'PERIMETRO PAGA:',
-                }
-            ),
-            'idCliente': forms.HiddenInput(
-            )
-        }
+            'PerimetroInicial': forms.NumberInput(attrs={'class': 'form-control', 'readonly': True}),
+            'PerimetroFinal': forms.NumberInput(attrs={'class': 'form-control'}),
+            'PerimetroCobra': forms.NumberInput(attrs={'class': 'form-control'}),
+            'PerimetroPaga': forms.NumberInput(attrs={'class': 'form-control'}),
+            'idCliente': forms.HiddenInput()}
 
 
 class CadastraFormaPgto(forms.ModelForm):
