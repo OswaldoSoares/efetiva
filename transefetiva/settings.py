@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'clientes',
     'faturamentos',
     'minutas',
+    'orcamentos',
     'pessoas',
     'usuarios.apps.UsuariosConfig',
     'veiculos',

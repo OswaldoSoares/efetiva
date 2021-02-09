@@ -21,35 +21,35 @@
     <div class="container">
         <nav>
             <!--<div class="menu-completo">-->
-                <header class="header_website">
-                    <img src="{% static 'website/img/transportadora.png' %}" alt="Teste" width="150px"/>
-                    <h6>Controle Transportadora</h6>
-                </header>
-                <div class="menu">
-                    <ul>
-                        <li><a href="{% url 'index_website' %}"><i class="fa fa-dashboard"></i>&nbsp;&nbsp;Painel
-                            Geral</a></li>
-                        <li><a href="{% url 'indexcliente' %}"><i class="fa fa-address-card-o"></i>&nbsp;&nbsp;Clientes</a></li>
-                        <li><a href="{% url 'indexpessoal' %}"><i class="fa fa-user-o"></i>&nbsp;&nbsp;Colaboradores</a></li>
-                        <li><a href="{% url 'index_faturamento' %}"><i class="fa fa-bank"></i>&nbsp;&nbsp;Faturamento</a></li>
-                        <li><a href="{% url 'index_minuta' %}"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;Minutas</a></li>
-                        <li><a href="#"><i class="fa fa-money"></i>&nbsp;&nbsp;Pagamentos</a></li>
-                        <li><a href="{% url 'indexveiculo' %}"><i class="fa fa-truck"></i>&nbsp;&nbsp;Veículos</a></li>
-                        <li><a href="{% url 'criaformapgto' %}"><i class="fa fa-cogs"></i>&nbsp;&nbsp;Parametros</a></li>
-                    </ul>
-                </div>
-                <footer>
-                    <button class="btn btn-sidebar btn-lg"
-                            onclick="window.location.href = '{% url 'cadastrausuario' %}';">
-                        <span class="glyphicon glyphicon-user"></span>
-                    </button>
-                    {% if request.user.is_authenticated %}
-                    <h6><a href="{% url 'logout' %}">{{ user }}</a></h6>
-                    {% else %}
-                    <h6><a href="{% url 'login' %}">login</a></h6>
-                    {% endif %}
-                    <h6>TRANSEFETIVA</h6>
-                </footer>
+            <header class="header_website">
+                <img src="{% static 'website/img/transportadora.png' %}" alt="Teste" width="150px"/>
+                <h6>Controle Transportadora</h6>
+            </header>
+            <div class="menu">
+                <ul>
+                    <li><a href="{% url 'index_website' %}"><i class="fa fa-dashboard"></i>&nbsp;&nbsp;Painel Geral</a></li>
+                    <li><a href="{% url 'indexcliente' %}"><i class="fa fa-address-card-o"></i>&nbsp;&nbsp;Clientes</a></li>
+                    <li><a href="{% url 'indexpessoal' %}"><i class="fa fa-user-o"></i>&nbsp;&nbsp;Colaboradores</a></li>
+                    <li><a href="{% url 'index_faturamento' %}"><i class="fa fa-bank"></i>&nbsp;&nbsp;Faturamento</a></li>
+                    <li><a href="{% url 'index_minuta' %}"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;Minutas</a></li>
+                    <li><a href="#"><i class="fa fa-money"></i>&nbsp;&nbsp;Pagamentos</a></li>
+                    <li><a href="{% url 'indexveiculo' %}"><i class="fa fa-truck"></i>&nbsp;&nbsp;Veículos</a></li>
+                    <li><a href="#"><i class="fa fa-file-text"></i>&nbsp;&nbsp;Orçamentos</a></li>
+                    <li><a href="{% url 'criaformapgto' %}"><i class="fa fa-cogs"></i>&nbsp;&nbsp;Parametros</a></li>
+                </ul>
+            </div>
+            <footer>
+                <button class="btn btn-sidebar btn-lg"
+                        onclick="window.location.href = '{% url 'cadastrausuario' %}';">
+                    <span class="glyphicon glyphicon-user"></span>
+                </button>
+                {% if request.user.is_authenticated %}
+                <h6><a href="{% url 'logout' %}">{{ user }}</a></h6>
+                {% else %}
+                <h6><a href="{% url 'login' %}">login</a></h6>
+                {% endif %}
+                <h6>TRANSEFETIVA</h6>
+            </footer>
             <!--</div>-->
         </nav>
         <div class="conteudo">
