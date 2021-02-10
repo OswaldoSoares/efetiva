@@ -2,6 +2,7 @@ from django.db import models
 from veiculos.models import CategoriaVeiculo
 from clientes.models import Cliente
 
+
 class Orcamento(models.Model):
     idOrcamento = models.AutoField(primary_key=True)
     DataOrcamento = models.DateField(default=0)
@@ -13,6 +14,8 @@ class Orcamento(models.Model):
     Destino = models.CharField(max_length=30, blank=True, null=True)
     KM = models.IntegerField(default=0)
     Perimetro = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    Pedagio = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    Despesas = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     Ajudantes = models.IntegerField(default=0)
     Comentario = models.TextField(blank=True, null=True)
     Cliente = models.ForeignKey(Cliente, on_delete=models.PROTECT, blank=True, null=True)

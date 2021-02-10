@@ -1725,12 +1725,14 @@ main .usuario-out {
     text-align: center;
 }
 
-.modal label {
+.modal label,
+.modal-orcamento label {
     color: var(--corprincipal);
     padding-top: 10px;
 }
 
-.modal input {
+.modal input,
+.modal-orcamento input {
     background-color: snow;
     color: var(--corprincipal);
     padding: 10px;

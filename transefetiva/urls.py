@@ -18,6 +18,7 @@ from django.urls import path, include
 from clientes import urls as clientes_urls
 from faturamentos import urls as faturamentos_urls
 from minutas import urls as minutas_urls
+from orcamentos import urls as orcamentos_urls
 from pessoas import urls as pessoas_urls
 from usuarios import urls as usuarios_urls
 from veiculos import urls as veiculos_urls
@@ -30,6 +31,7 @@ urlpatterns = [
     path('clientes/', include(clientes_urls)),
     path('faturamentos/', include(faturamentos_urls)),
     path('minutas/', include(minutas_urls)),
+    path('orcamentos/', include(orcamentos_urls)),
     path('pessoas/', include(pessoas_urls)),
     path('usuarios/', include(usuarios_urls)),
     path('veiculos/', include(veiculos_urls)),
