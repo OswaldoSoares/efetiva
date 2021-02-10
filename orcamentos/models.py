@@ -10,6 +10,7 @@ class Orcamento(models.Model):
     Contato = models.CharField(max_length=40, blank=True, null=True)
     Email = models.EmailField(max_length=50)
     Telefone = models.CharField(max_length=25)
+    ValorTabela = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     Valor = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     Destino = models.CharField(max_length=30, blank=True, null=True)
     KM = models.IntegerField(default=0)

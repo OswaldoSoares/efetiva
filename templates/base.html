@@ -19,6 +19,16 @@
         <label for="chk" class="glyphicon glyphicon-menu-hamburger"></label>
     </div>
     <div class="container">
+        <header class="header-base">
+            <h1>TRANSEFETIVA</h1>
+            <div class="header-login">
+                {% if request.user.is_authenticated %}
+                <a href=" {% url 'logout' %}">{{ user }}</a>
+                {% else %}
+                <a  href="{% url 'cadastrausuario' %}">Cadastre-se</a>
+                {% endif %}
+            </div>
+        </header>
         <nav>
             <!--<div class="menu-completo">-->
             <header class="header_website">
@@ -35,21 +45,21 @@
                     <li><a href="#"><i class="fa fa-money"></i>&nbsp;&nbsp;Pagamentos</a></li>
                     <li><a href="{% url 'indexveiculo' %}"><i class="fa fa-truck"></i>&nbsp;&nbsp;Veículos</a></li>
                     <li><a href="{% url 'indexorcamento' %}"><i class="fa fa-file-text"></i>&nbsp;&nbsp;Orçamentos</a></li>
-                    <li><a href="{% url 'criaformapgto' %}"><i class="fa fa-cogs"></i>&nbsp;&nbsp;Parametros</a></li>
+                    <li><a href="{% url 'parametros' %}"><i class="fa fa-cogs"></i>&nbsp;&nbsp;Parametros</a></li>
                 </ul>
             </div>
-            <footer>
-                <button class="btn btn-sidebar btn-lg"
-                        onclick="window.location.href = '{% url 'cadastrausuario' %}';">
-                    <span class="glyphicon glyphicon-user"></span>
-                </button>
-                {% if request.user.is_authenticated %}
-                <h6><a href="{% url 'logout' %}">{{ user }}</a></h6>
-                {% else %}
-                <h6><a href="{% url 'login' %}">login</a></h6>
-                {% endif %}
-                <h6>TRANSEFETIVA</h6>
-            </footer>
+            <!--<footer>-->
+                <!--<button class="btn btn-sidebar btn-lg"-->
+                        <!--onclick="window.location.href = '{% url 'cadastrausuario' %}';">-->
+                    <!--<span class="glyphicon glyphicon-user"></span>-->
+                <!--</button>-->
+                <!--{% if request.user.is_authenticated %}-->
+                <!--<h6><a href="{% url 'logout' %}">{{ user }}</a></h6>-->
+                <!--{% else %}-->
+                <!--<h6><a href="{% url 'login' %}">login</a></h6>-->
+                <!--{% endif %}-->
+                <!--<h6>TRANSEFETIVA</h6>-->
+            <!--</footer>-->
             <!--</div>-->
         </nav>
         <div class="conteudo">
