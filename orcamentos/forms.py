@@ -17,7 +17,7 @@ class CadastraOrcamento(forms.ModelForm):
     class Meta:
         model = Orcamento
         fields = ['DataOrcamento', 'Solicitante', 'Contato', 'Email', 'Telefone', 'Destino', 'KM', 'Perimetro',
-                  'Pedagio', 'Despesas', 'Ajudantes', 'Comentario', 'idCategoriaVeiculo', 'Valor']
+                  'Pedagio', 'Despesas', 'ValorTabela', 'Ajudantes', 'Comentario', 'idCategoriaVeiculo', 'Valor']
         labels = []
         widgets = {'DataOrcamento': MeuDateInput(format='%Y-%m-%d', attrs={'class': 'form-control'}),
                    'Solicitante': forms.TextInput(attrs={'class': 'form-control'}),
@@ -26,6 +26,7 @@ class CadastraOrcamento(forms.ModelForm):
                    'Telefone': forms.TextInput(attrs={'class': 'form-control'}),
                    'idCategoriaVeiculo': forms.Select(attrs={'class': 'form-control'}),
                    'Destino': forms.TextInput(attrs={'class': 'form-control'}),
+                   'ValorTabela': forms.NumberInput(attrs={'class': 'form-control'}),
                    'KM': forms.NumberInput(attrs={'class': 'form-control'}),
                    'Perimetro': forms.NumberInput(attrs={'class': 'form-control'}),
                    'Pedagio': forms.NumberInput(attrs={'class': 'form-control'}),
