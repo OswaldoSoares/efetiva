@@ -95,11 +95,11 @@ class CadastraTabelaVeiculo(forms.ModelForm):
         self.fields['HoraMinimo'].initial = '00:00'
 
     class Meta:
+        model = TabelaVeiculo
         fields = ('PorcentagemCobra', 'PorcentagemPaga', 'HoraCobra', 'HoraPaga', 'HoraMinimo', 'KMCobra', 'KMPaga',
                   'KMMinimo', 'EntregaCobra', 'EntregaPaga', 'EntregaMinimo', 'EntregaKGCobra', 'EntregaKGPaga',
                   'EntregaVolumeCobra', 'EntregaVolumePaga', 'SaidaCobra', 'SaidaPaga' , 'idCliente',
                   'idCategoriaVeiculo')
-        model = TabelaVeiculo
         labels = {'PorcentagemCobra': 'PORCENTAGEM DAS NOTAS À RECEBER',
                   'PorcentagemPaga': 'PORCENTAGEM DAS NOTAS À PAGAR', 'HoraCobra': 'VALOR DA HORA À RECEBER',
                   'HoraPaga': 'VALOR DA HORA À PAGAR', 'HoraMinimo': 'MÍNIMO DE HORAS',

@@ -53,7 +53,7 @@ def list_cliente_all() -> List[Cliente]:
     return list(Cliente.objects.all())
 
 
-def qet_cliente_all():
+def get_cliente_all():
     """
     Get all Clientes in Models
     :return: queryset
@@ -155,6 +155,14 @@ def list_categoria_tabela_veiculo_cliente(idcliente: int):
 def get_categoria_veiculo():
     categoria_veiculo = CategoriaVeiculo.objects.all()
     return categoria_veiculo
+
+
+def create_select_cliente():
+    """
+    Create a Select com id e fantasia
+    :return:
+    """
+    return [('0', 'SELECIONE UM ITEM')] + [(i.idCliente, i.Fantasia) for i in get_cliente_all()]
 
 
 def form_cliente(request, c_form, c_idobj, c_url, c_view, idcliente):

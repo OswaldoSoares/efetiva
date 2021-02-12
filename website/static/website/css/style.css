@@ -14,7 +14,7 @@
 }
 
 body {
-    background-color: tomato;
+    
     background-image: url("/static/website/img/wallpaper.jpg");
     background-position: center center;
 	background-repeat: no-repeat;
@@ -25,6 +25,7 @@ body {
     background-attachment: fixed; 
 	font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     max-height: 93vh;
+    background-color: black;
 }
 
 body .container {
@@ -35,14 +36,6 @@ body .container {
 	display: flex;
     align-items: center;
     justify-content: flex-start;    
-	/*background-image: url("/static/website/img/wallpaper.jpg");
-	background-position: center center;
-	background-repeat: no-repeat;
-    -webkit-backgroud-size: cover;
-    -moz-background-size: cover;
-    -moz-background-size:cover;
-    background-size: cover;
-    background-attachment: fixed; */
     overflow: visible;
 }
 

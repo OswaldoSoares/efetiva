@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %} Módulo Veículos {% endblock %}
+{% block title %} Módulo Parametros {% endblock %}
 
 {% block main %}
     <div class="conteudo-base">
@@ -10,5 +11,5 @@
 {% endblock %}
 
 {% block script %}
-
+    <script src="{% static 'website/js/website.js' %}"></script>
 {% endblock %}
