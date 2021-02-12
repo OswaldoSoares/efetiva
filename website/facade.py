@@ -7,7 +7,9 @@ from clientes.facade import get_cliente
 
 def create_parametro_context():
     tabela_padrao = get_tabela_padrao()
-    tabela_padrao_cliente = get_cliente(tabela_padrao[0].Valor)
+    tabela_padrao_cliente = ''
+    if tabela_padrao:
+        tabela_padrao_cliente = get_cliente(tabela_padrao[0].Valor)
     context = {'tabela_padrao': tabela_padrao, 'tabela_padrao_cliente': tabela_padrao_cliente}
     return context
 
