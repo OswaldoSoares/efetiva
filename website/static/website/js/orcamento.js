@@ -9,6 +9,7 @@ $(document).ready(function(){
                 },
                 success: function(data) {
                     $('#id_ValorTabela').val(data.valor)
+                    somaOrcamento();
                 },
             });
         });
@@ -20,11 +21,26 @@ $(document).ready(function(){
                     KMs: $('#id_KM').val()
                 },
                 success: function(data) {
-                    console.log(data.porcentagem)
                     $('#id_Perimetro').val(data.porcentagem)
+                    somaOrcamento();
                 },
             });
         });
+
+        $(this).change(function() {
+            somaOrcamento();
+        });
+
+        function somaOrcamento() {
+            var ajudantes = parseFloat($('#id_Ajudantes').val());
+            var valortabela = parseFloat($('#id_ValorTabela').val());
+            var perimetro = parseFloat($('#id_Perimetro').val());
+            var pedagio = parseFloat($('#id_Pedagio').val());
+            var despesas = parseFloat($('#id_Despesas').val());
+            var total = valortabela + (valortabela * perimetro / 100) + ajudantes + pedagio + despesas
+            $('#id_Valor').val(total);
+        }
+        
     });
 });
 
