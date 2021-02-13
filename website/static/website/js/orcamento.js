@@ -9,7 +9,6 @@ $(document).ready(function(){
                 },
                 success: function(data) {
                     $('#id_ValorTabela').val(data.valor)
-                    somaOrcamento();
                 },
             });
         });
@@ -22,7 +21,16 @@ $(document).ready(function(){
                 },
                 success: function(data) {
                     $('#id_Perimetro').val(data.porcentagem)
-                    somaOrcamento();
+                },
+            });
+        });
+        $('#id_QuantidadeAjudantes').change(function() {
+            $.ajax({
+                type: 'GET',
+                url: 'orcamentoajudante',
+                success: function(data) {
+                    var totalajudantes = data.valor * $('#id_QuantidadeAjudantes').val()
+                    $('#id_Ajudantes').val(totalajudantes.toFixed(2))
                 },
             });
         });
@@ -39,7 +47,25 @@ $(document).ready(function(){
             var despesas = parseFloat($('#id_Despesas').val());
             var total = valortabela + (valortabela * perimetro / 100) + ajudantes + pedagio + despesas
             $('#id_Valor').val(total);
+            casasDecimais();
         }
+
+        function casasDecimais() {
+            var input = parseFloat($('#id_Ajudantes').val())
+            $('#id_Ajudantes').val(input.toFixed(2))
+            var input = parseFloat($('#id_ValorTabela').val())
+            $('#id_ValorTabela').val(input.toFixed(2))
+            var input = parseFloat($('#id_Perimetro').val())
+            $('#id_Perimetro').val(input.toFixed(2))
+            var input = parseFloat($('#id_Pedagio').val())
+            $('#id_Pedagio').val(input.toFixed(2))
+            var input = parseFloat($('#id_Despesas').val())
+            $('#id_Despesas').val(input.toFixed(2))
+            var input = parseFloat($('#id_Valor').val())
+            $('#id_Valor').val(input.toFixed(2))
+        }
+
+        casasDecimais();
         
     });
 });

@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 
 from .models import Orcamento
-from clientes.models import TabelaVeiculo, TabelaPerimetro
+from clientes.models import TabelaVeiculo, TabelaPerimetro, Tabela
 from website import facade
 
 
@@ -48,6 +48,17 @@ def get_porcentagem_perimetro(request):
     if tabela:
         porcentagem = tabela[0].PerimetroCobra
     data = {'porcentagem': porcentagem}
+    return JsonResponse(data)
+
+
+def get_valor_ajudante(request):
+    valor = 0
+    idcliente = facade.get_tabela_padrao()
+    idcliente = idcliente[0].Valor
+    tabela = Tabela.objects.filter(idCliente=idcliente)
+    if tabela:
+        valor = tabela[0].AjudanteCobra
+    data = {'valor': valor}
     return JsonResponse(data)
 
 

@@ -35,3 +35,8 @@ def orcamento_veiculo(request):
 def orcamento_perimetro(request):
     data = facade.get_porcentagem_perimetro(request)
     return data
+
+
+def orcamento_ajudante(request):
+    data = facade.get_valor_ajudante(request)
+    return data
