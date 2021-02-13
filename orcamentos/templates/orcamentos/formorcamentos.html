@@ -1,0 +1,77 @@
+<form class="row g-3" method="post" action="{{ c_url }}" idobj="{{ c_idobj }}">
+    {% csrf_token %}
+        <div class="col-md-3">
+            <label for="id_Data" class="form-label">DATA:</label>
+            {{ form.DataOrcamento }}
+        </div>
+
+        <div class="col-md-9">
+            <label for="id_Solicitante" class="form-label">EMPRESA:</label>
+            {{ form.Solicitante }}
+        </div>
+
+        <div class="col-md-4">
+            <label for="id_Contato" class="form-label">CONTATO:</label>
+            {{ form.Contato }}
+        </div>
+
+        <div class="col-md-5">
+            <label for="id_Email" class="form-label">E-MAIL:</label>
+            {{ form.Email }}
+        </div>
+
+        <div class="col-md-3">
+            <label for="id_Telefone" class="form-label">TELEFONE:</label>
+            {{ form.Telefone }}
+        </div>
+
+        <div class="col-md-4">
+            <label for="id_idCategoriaVeiculo" class="form-label">VEÍCULO:</label>
+            {{ form.idCategoriaVeiculo }}
+        </div>
+
+        <div class="col-md-6">
+            <label for="id_Destino" class="form-label">DESTINO:</label>
+            {{ form.Destino }}
+        </div>
+
+        <div class="col-md-2">
+            <label for="id_Ajudante" class="form-label">AJUDANTE:</label>
+            {{ form.Ajudantes }}
+        </div>
+
+        <div class="col-md-2">
+            <label for="id_ValorTabela" class="form-label">VALOR TABELA:</label>
+            {{ form.ValorTabela }}
+        </div>
+
+        <div class="col-md-2">
+            <label for="id_KM" class="form-label">KM:</label>
+            {{ form.KM }}
+        </div>
+
+        <div class="col-md-2">
+            <label for="id_Perimetro" class="form-label">% PERIMETRO:</label>
+            {{ form.Perimetro }}
+        </div>
+
+        <div class="col-md-2">
+            <label for="id_Pedagio" class="form-label">PEDÁGIO:</label>
+            {{ form.Pedagio }}
+        </div>
+
+        <div class="col-md-2">
+            <label for="id_Despesas" class="form-label">DESPESAS:</label>
+            {{ form.Despesas }}
+        </div>
+
+        <div class="col-md-2">
+            <label for="id_Valor" class="form-label">VALOR TOTAL:</label>
+            {{ form.Valor }}
+        </div>
+
+        <div class="col-md-12">
+            <label for="id_Comentario" class="form-label">COMENTÁRIOS:</label>
+            {{ form.Comentario }}
+        </div>
+</form>

@@ -36,7 +36,7 @@ def create_cliente_context(idcliente: int):
 def create_cliente_filter_context(request):
     meufiltrofantasia = request.GET.get('filtrofantasia', None)
     meufiltronome = request.GET.get('filtronome', None)
-    cliente = qet_cliente_all()
+    cliente = get_cliente_all()
     if meufiltrofantasia:
         cliente = cliente.filter(Fantasia__icontains=meufiltrofantasia)
     elif meufiltronome:

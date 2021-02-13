@@ -120,7 +120,6 @@ $(document).ready(function(){
                     } else {
                         // otherwise, we've done and can close the modal
                         $(modal).modal('hide');
-                        console.log('aqui')
                         window.location.href = '/parametro/'
 
                         if (cbAfterSuccess) { cbAfterSuccess(modal); }
