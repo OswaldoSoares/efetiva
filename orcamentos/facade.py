@@ -7,7 +7,8 @@ from website import facade
 
 
 def create_orcamento_context():
-    context = {}
+    orcamento = get_orcamento_all()
+    context = {'orcamento': orcamento}
     return context
 
 
@@ -32,9 +33,10 @@ def get_valor_veiculo(request):
     idcliente = facade.get_tabela_padrao()
     idcliente = idcliente[0].Valor
     idcategoriaveiculo = request.GET.get('idCategoriaVeiculo')
-    tabela = TabelaVeiculo.objects.filter(idCategoriaVeiculo=idcategoriaveiculo, idCliente=idcliente)
-    if tabela:
-        valor = tabela[0].SaidaCobra
+    if idcategoriaveiculo:
+        tabela = TabelaVeiculo.objects.filter(idCategoriaVeiculo=idcategoriaveiculo, idCliente=idcliente)
+        if tabela:
+            valor = tabela[0].SaidaCobra
     data = {'valor': valor}
     return JsonResponse(data)
 
@@ -82,11 +84,11 @@ def form_orcamento(request, c_form, c_idobj, c_url, c_view):
 
 def form_exclui_orcamento(request, c_idobj, c_url, c_view):
     data = dict()
-    c_queryset = get_orcamento(c_idobj)
+    c_queryset = Orcamento.objects.get(idOrcamento=c_idobj)
     if request.method == "POST":
         c_queryset.delete()
     context = {'c_url': c_url, 'c_view': c_view, 'c_queryset': c_queryset}
-    data['html_form'] = render_to_string('orcamentos/formorcamento.html', context, request=request)
+    data['html_form'] = render_to_string('orcamentos/formorcamentos.html', context, request=request)
     data['c_view'] = c_view
     c_return = JsonResponse(data)
     return c_return

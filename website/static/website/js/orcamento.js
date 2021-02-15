@@ -1,74 +1,76 @@
-$(document).ready(function(){
-    $('#MyModal').on('shown.bs.modal', function () {
-        $('#id_idCategoriaVeiculo').change(function() {
-            $.ajax({
-                type: 'GET',
-                url: 'orcamentoveiculo',
-                data: {
-                    idCategoriaVeiculo: $('#id_idCategoriaVeiculo').val()
-                },
-                success: function(data) {
-                    $('#id_ValorTabela').val(data.valor)
-                },
-            });
+function carregaFuncoesModal() {
+    $('#id_idCategoriaVeiculo').change(function() {
+        $.ajax({
+            type: 'GET',
+            url: 'orcamentoveiculo',
+            data: {
+                idCategoriaVeiculo: $('#id_idCategoriaVeiculo').val()
+            },
+            success: function(data) {
+                $('#id_ValorTabela').val(data.valor)
+                somaOrcamento();
+            },
         });
-        $('#id_KM').change(function() {
-            $.ajax({
-                type: 'GET',
-                url: 'orcamentoperimetro',
-                data: {
-                    KMs: $('#id_KM').val()
-                },
-                success: function(data) {
-                    $('#id_Perimetro').val(data.porcentagem)
-                },
-            });
-        });
-        $('#id_QuantidadeAjudantes').change(function() {
-            $.ajax({
-                type: 'GET',
-                url: 'orcamentoajudante',
-                success: function(data) {
-                    var totalajudantes = data.valor * $('#id_QuantidadeAjudantes').val()
-                    $('#id_Ajudantes').val(totalajudantes.toFixed(2))
-                },
-            });
-        });
-
-        $(this).change(function() {
-            somaOrcamento();
-        });
-
-        function somaOrcamento() {
-            var ajudantes = parseFloat($('#id_Ajudantes').val());
-            var valortabela = parseFloat($('#id_ValorTabela').val());
-            var perimetro = parseFloat($('#id_Perimetro').val());
-            var pedagio = parseFloat($('#id_Pedagio').val());
-            var despesas = parseFloat($('#id_Despesas').val());
-            var total = valortabela + (valortabela * perimetro / 100) + ajudantes + pedagio + despesas
-            $('#id_Valor').val(total);
-            casasDecimais();
-        }
-
-        function casasDecimais() {
-            var input = parseFloat($('#id_Ajudantes').val())
-            $('#id_Ajudantes').val(input.toFixed(2))
-            var input = parseFloat($('#id_ValorTabela').val())
-            $('#id_ValorTabela').val(input.toFixed(2))
-            var input = parseFloat($('#id_Perimetro').val())
-            $('#id_Perimetro').val(input.toFixed(2))
-            var input = parseFloat($('#id_Pedagio').val())
-            $('#id_Pedagio').val(input.toFixed(2))
-            var input = parseFloat($('#id_Despesas').val())
-            $('#id_Despesas').val(input.toFixed(2))
-            var input = parseFloat($('#id_Valor').val())
-            $('#id_Valor').val(input.toFixed(2))
-        }
-
-        casasDecimais();
-        
     });
-});
+    $('#id_KM').change(function() {
+        $.ajax({
+            type: 'GET',
+            url: 'orcamentoperimetro',
+            data: {
+                KMs: $('#id_KM').val()
+            },
+            success: function(data) {
+                $('#id_Perimetro').val(data.porcentagem)
+                somaOrcamento();
+            },
+        });
+    });
+    $('#id_QuantidadeAjudantes').change(function() {
+        $.ajax({
+            type: 'GET',
+            url: 'orcamentoajudante',
+            success: function(data) {
+                var totalajudantes = data.valor * $('#id_QuantidadeAjudantes').val()
+                $('#id_Ajudantes').val(totalajudantes.toFixed(2))
+                somaOrcamento();
+            },
+        });
+    });
+    $('#id_ValorTabela').change(function() {
+        somaOrcamento();
+    });
+    $('#id_Ajudantes').change(function() {
+        somaOrcamento();
+    });
+    $('#id_Perimetro').change(function() {
+        somaOrcamento();
+    });
+    $('#id_Pedagio').change(function() {
+        somaOrcamento();
+    });
+    $('#id_Despesas').change(function() {
+        somaOrcamento();
+    }); 
+
+    function somaOrcamento() {
+        var ajudantes = parseFloat($('#id_Ajudantes').val());
+        var valortabela = parseFloat($('#id_ValorTabela').val());
+        var perimetro = parseFloat($('#id_Perimetro').val());
+        var pedagio = parseFloat($('#id_Pedagio').val());
+        var despesas = parseFloat($('#id_Despesas').val());
+        var total = valortabela + (valortabela * perimetro / 100) + ajudantes + pedagio + despesas
+        $('#id_Valor').val(total);
+        /* Duas casas decimais */
+        $('#id_Ajudantes').val(parseFloat($('#id_Ajudantes').val()).toFixed(2))
+        $('#id_ValorTabela').val(parseFloat($('#id_ValorTabela').val()).toFixed(2))
+        $('#id_Perimetro').val(parseFloat($('#id_Perimetro').val()).toFixed(2))
+        $('#id_Pedagio').val(parseFloat($('#id_Pedagio').val()).toFixed(2))
+        $('#id_Despesas').val(parseFloat($('#id_Despesas').val()).toFixed(2))
+        $('#id_Valor').val(parseFloat($('#id_Valor').val()).toFixed(2))
+    }
+    
+    somaOrcamento();
+}
 
 function initModalDialog(event, modal_element) {
     /*
@@ -125,9 +127,11 @@ function openMyModal(event) {
     }).done(function(data, textStatus, jqXHR) {
         modal.find('.modal-body').html(data.html_form);
         modal.modal('show');
+        carregaFuncoesModal();
         formAjaxSubmit(modal, url, null, null);
     }).fail(function(jqXHR, textStatus, errorThrown) {
         alert("SERVER ERROR: " + errorThrown);
+
     });
 }
 
@@ -176,10 +180,11 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                 // so we keep it open for further editing
                 if ($(xhr['html_form']).find('.errorlist').length > 0) {
                     formAjaxSubmit(modal, url, cbAfterLoad, cbAfterSuccess);
+                    carregaFuncoesModal();
                 } else {
                     // otherwise, we've done and can close the modal
                     $(modal).modal('hide');
-                    window.location.href = '/parametro/'
+                    window.location.href = '/orcamentos/'
 
                     if (cbAfterSuccess) { cbAfterSuccess(modal); }
                 }

@@ -2,12 +2,12 @@
 {% load permission_tags %}
 
 {% block mainorcamento %}
-<div class="lista_conteudo">
+<div class="orcamento-conteudo">
     <header>
-        <h4>CADASTRO DE ORÇAMENTOS</h4>
+        <h3>ORÇAMENTOS</h3>
     </header>
-    <div class="nav_filtro">
-        <!--<div>-->
+    <div class="orcamento-nav">
+        <div class="orcamento-filtro">
             <!--<div class="filtro">-->
                 <!--<form>-->
                     <!--<input type="text" class="filtrotexto" placeholder="FILTRAR FANTASIA..." name="filtrofantasia"/>-->
@@ -20,49 +20,55 @@
                     <!--<button type="submit" class="btn btn-info glyphicon glyphicon-search"></button>-->
                 <!--</form>-->
             <!--</div>-->
-        <!--</div>-->
-        <div class="add_registro">
-            <button type="button" class="btn btn-success glyphicon glyphicon-plus"
+        </div>
+        <div class="orcamento-add-registro">
+            <button type="button" class="btn btn-primary glyphicon glyphicon-plus"
                     onclick="openMyModal(event); return false;" data-title="CADASTRO ORÇAMENTO"
                     data-action="{% url 'criaorcamento' %}" data-button-save-label="SALVAR">
             </button>
         </div>
     </div>
-    <div>
-        <!--<table class="tabela">-->
-            <!--<thead>-->
-                <!--<tr class="tabelatitulo">-->
-                    <!--<th class="primeiracoluna">FANTASIA</th>-->
-                    <!--<th>RAZÃO SOCIAL</th>-->
-                    <!--<th>CNPJ</th>-->
-                    <!--<th>STATUS</th>-->
-                    <!--<th></th>-->
-                <!--</tr>-->
-            <!--</thead>-->
-            <!--<tbody>-->
-                <!--{% for itens in cliente %}-->
-                    <!--<tr class="tabelalinha">-->
-                        <!--<td class="primeiracoluna"> {{ itens.Fantasia }}</td>-->
-                        <!--<td>{{ itens.Nome }}</td>-->
-                        <!--<td>{{ itens.CNPJ }}</td>-->
-                        <!--<td class="status_cliente"><b>ATIVO</b></td>-->
-                        <!--<td class="seleciona_registo">-->
-                            <!--<button class="btn btn-primary btn-xs"-->
-                                    <!--onclick="window.location.href = '{% url 'consultacliente' itens.idCliente %}'">-->
-                                <!--<span class="glyphicon glyphicon-folder-open"></span>-->
-                            <!--</button>-->
-                        <!--</td>-->
-                    <!--</tr>-->
-                <!--{% endfor %}-->
-            <!--</tbody>-->
-        <!--</table>-->
+    <div class="orcamento-base-card">
+        {% for itens in orcamento %}
+        <div class="orcamento-container-card">
+            <div class="orcamento-card">
+                <header class="orcamento-titulo"><p>{{ itens.Solicitante }}</p></header>
+                <diV class="orcamento-data"><p>DATA:</p><p>{{ itens.DataOrcamento }}</p></diV>
+                <diV class="orcamento-data"><p>CONTATO:</p><p>{{ itens.Contato }}</p></diV>
+                <diV class="orcamento-data"><p>E-MAIL:</p><p>{{ itens.Email }}</p></diV>
+                <diV class="orcamento-data"><p>TELEFONE:</p><p>{{ itens.Telefone }}</p></diV>
+                <diV class="orcamento-data"><p>DESTINO:</p><p>{{ itens.Destino }}</p></diV>
+                <diV class="orcamento-data"><p>VEÚCULO:</p><p>{{ itens.idCategoriaVeiculo }}</p></diV>
+                <diV class="orcamento-data"><p>VALOR VEICULO:</p><p>R${{ itens.ValorTabela }}</p></diV>
+                <diV class="orcamento-data"><p>KMs:</p><p>{{ itens.KM }}</p></diV>
+                <diV class="orcamento-data"><p>PERIMETRO:</p><p>{{ itens.Perimetro }}%</p></diV>
+                <diV class="orcamento-data"><p>PEDÁGIO:</p><p>R$ {{ itens.Pedagio }}</p></diV>
+                <diV class="orcamento-data"><p>DESPESAS:</p><p>R$ {{ itens.Despesas }}</p></diV>
+                <diV class="orcamento-data"><p>Nº AJUDANTES:</p><p>{{ itens.QuantidadeAjudantes }}</p></diV>
+                <diV class="orcamento-data"><p>AJUDANTES:</p><p>R$ {{ itens.Ajudantes }}</p></diV>
+                <diV class="orcamento-data"><p><b>VALOR TOTAL</b>:</p><p><b>R$ {{ itens.Valor }}</b></p></diV>
+                <footer class="orcamento-footer-card">
+                    <div>
+                        <button class="btn btn-success btn-xs glyphicon glyphicon-edit"
+                                onclick="openMyModal(event); return false;" data-title="EDITA CADASTRO ORÇAMENTO"
+                                data-action="{% url 'editaorcamento' itens.idOrcamento %}"
+                                data-button-save-label="EDITAR">
+                        </button>
+                        <button class="btn btn-primary btn-xs glyphicon glyphicon-send"
+                                onclick="">
+                        </button>
+                        <button class="btn btn-danger btn-xs glyphicon glyphicon-trash"
+                                onclick="openMyModal(event); return false;" data-title="EXCLUI CADASTRO ORÇAMENTO"
+                                data-action="{% url 'excluiorcamento' itens.idOrcamento %}"
+                                data-button-save-label="EXCLUIR">
+                        </button>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        {% endfor %}
     </div>
     <footer>
-        {% for itens in cliente %}
-            {% if forloop.last %}
-                <h5> {{ forloop.counter }} Registros de clientes listados.</h5>
-            {% endif %}
-        {% endfor %}
     </footer>
 </div>
 <!-- DIV MODAL -->

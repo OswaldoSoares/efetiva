@@ -5,8 +5,8 @@ from orcamentos import facade
 
 
 def index_orcamento(request):
-    form = CadastraOrcamento()
-    return render(request, 'orcamentos/index.html', {'form': form})
+    contexto = facade.create_orcamento_context()
+    return render(request, 'orcamentos/index.html', contexto)
 
 
 def cria_orcamento(request):
@@ -18,12 +18,20 @@ def cria_orcamento(request):
     return data
 
 
-def edita_orcamento(request, idparametro):
+def edita_orcamento(request, idorcamento):
     c_form = CadastraOrcamento
-    c_idobj = idparametro
+    c_idobj = idorcamento
     c_url = '/orcamentos/editaorcamento/{}/'.format(c_idobj)
     c_view = 'edita_orcamento'
     data = facade.form_orcamento(request, c_form, c_idobj, c_url, c_view)
+    return data
+
+
+def exclui_orcamento(request, idorcamento):
+    c_idobj = idorcamento
+    c_url = '/orcamentos/excluiorcamento/{}/'.format(c_idobj)
+    c_view = 'exclui_orcamento'
+    data = facade.form_exclui_orcamento(request, c_idobj, c_url, c_view)
     return data
 
 

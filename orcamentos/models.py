@@ -28,10 +28,14 @@ class Orcamento(models.Model):
         ordering = ['DataOrcamento']
 
     def save(self, *args, **kwargs):
-        self.Solicitante = self.Solicitante.upper()
-        self.Contato = self.Contato.upper()
-        self.Destino = self.Destino.upper()
-        self.Comentario = self.Comentario.upper()
+        if self.Solicitante:
+            self.Solicitante = self.Solicitante.upper()
+        if self.Contato:
+            self.Contato = self.Contato.upper()
+        if self.Destino:
+            self.Destino = self.Destino.upper()
+        if self.Comentario:
+            self.Comentario = self.Comentario.upper()
 
         super(Orcamento, self).save(*args, **kwargs)
 
