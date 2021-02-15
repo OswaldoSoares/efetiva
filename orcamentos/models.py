@@ -1,6 +1,6 @@
 from django.db import models
 from veiculos.models import CategoriaVeiculo
-from clientes.models import Cliente
+from clientes.models import Cliente, FormaPagamento
 
 
 class Orcamento(models.Model):

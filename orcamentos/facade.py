@@ -71,7 +71,8 @@ def get_valor_taxa_expedicao(request):
     tabela = Tabela.objects.filter(idCliente=idcliente)
     if tabela:
         valor = tabela[0].TaxaExpedicao
-    data = {'valor': valor}
+        formapgto = tabela[0].idFormaPagamento
+    data = {'valor': valor, 'formapgto': formapgto}
     return JsonResponse(data)
 
 

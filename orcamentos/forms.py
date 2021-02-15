@@ -26,6 +26,7 @@ class CadastraOrcamento(forms.ModelForm):
                    'Email': forms.EmailInput(attrs={'class': 'form-control'}),
                    'Telefone': forms.TextInput(attrs={'class': 'form-control'}),
                    'idCategoriaVeiculo': forms.Select(attrs={'class': 'form-control'}),
+                   # 'idFormaPagamento': forms.Select(attrs={'class': 'form-control'}),
                    'Destino': forms.TextInput(attrs={'class': 'form-control'}),
                    'ValorTabela': forms.NumberInput(attrs={'class': 'form-control'}),
                    'KM': forms.NumberInput(attrs={'class': 'form-control'}),
