@@ -46,17 +46,22 @@
                 <diV class="orcamento-data"><p>DESPESAS:</p><p>R$ {{ itens.Despesas }}</p></diV>
                 <diV class="orcamento-data"><p>Nº AJUDANTES:</p><p>{{ itens.QuantidadeAjudantes }}</p></diV>
                 <diV class="orcamento-data"><p>AJUDANTES:</p><p>R$ {{ itens.Ajudantes }}</p></diV>
+                <diV class="orcamento-data"><p>TAXA DE EXPEDIÇÃO:</p><p>R$ {{ itens.TaxaExpedicao }}</p></diV>
                 <diV class="orcamento-data"><p><b>VALOR TOTAL</b>:</p><p><b>R$ {{ itens.Valor }}</b></p></diV>
                 <footer class="orcamento-footer-card">
                     <div>
                         <button class="btn btn-success btn-xs glyphicon glyphicon-edit"
                                 onclick="openMyModal(event); return false;" data-title="EDITA CADASTRO ORÇAMENTO"
-                                data-action="{% url 'editaorcamento' itens.idOrcamento %}"
+                                data-action="{% url 'editaorcamento' itens.idOrcamento %}" data-modo="edita_orcamento"
                                 data-button-save-label="EDITAR">
                         </button>
-                        <button class="btn btn-primary btn-xs glyphicon glyphicon-send"
-                                onclick="">
+                        {% if itens.StatusOrcamento == 'CRIADO' %}
+                        <button class="btn btn-primary btn-xs glyphicon glyphicon-send">
                         </button>
+                        {% else %}
+                        <button class="btn btn-primary btn-xs glyphicon glyphicon-envelope">
+                        </button>
+                        {% endif %}
                         <button class="btn btn-danger btn-xs glyphicon glyphicon-trash"
                                 onclick="openMyModal(event); return false;" data-title="EXCLUI CADASTRO ORÇAMENTO"
                                 data-action="{% url 'excluiorcamento' itens.idOrcamento %}"

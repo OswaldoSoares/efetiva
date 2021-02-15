@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.template.loader import render_to_string
-
+from django.core.mail import EmailMessage
 from .models import Orcamento
 from clientes.models import TabelaVeiculo, TabelaPerimetro, Tabela
 from website import facade
@@ -62,6 +62,30 @@ def get_valor_ajudante(request):
         valor = tabela[0].AjudanteCobra
     data = {'valor': valor}
     return JsonResponse(data)
+
+
+def get_valor_taxa_expedicao(request):
+    valor = 0
+    idcliente = facade.get_tabela_padrao()
+    idcliente = idcliente[0].Valor
+    tabela = Tabela.objects.filter(idCliente=idcliente)
+    if tabela:
+        valor = tabela[0].TaxaExpedicao
+    data = {'valor': valor}
+    return JsonResponse(data)
+
+
+def create_email(idorcamento):
+    orcamento = get_orcamento(idorcamento)
+    contexto = {'orcamento': orcamento}
+    subject = 'Orçamento'
+    html_message = render_to_string('orcamentos/emailorcamento.html', contexto)
+    from_email = 'Transefetiva Transportes <operacional.efetiva@terra.com.br>'
+    to = []
+    email = EmailMessage(subject, html_message, from_email, to)
+    email.content_subtype = 'html'
+    email.send()
+
 
 
 def form_orcamento(request, c_form, c_idobj, c_url, c_view):

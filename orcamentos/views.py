@@ -1,9 +1,13 @@
-from django.shortcuts import render, redirect
-from .models import Orcamento
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from rolepermissions.decorators import has_permission_decorator
+
 from .forms import CadastraOrcamento
 from orcamentos import facade
 
 
+@login_required(login_url='login')
+@has_permission_decorator('modulo_clientes')
 def index_orcamento(request):
     contexto = facade.create_orcamento_context()
     return render(request, 'orcamentos/index.html', contexto)
@@ -35,6 +39,10 @@ def exclui_orcamento(request, idorcamento):
     return data
 
 
+def email_orcamento(request):
+    pass
+
+
 def orcamento_veiculo(request):
     data = facade.get_valor_veiculo(request)
     return data
@@ -47,4 +55,9 @@ def orcamento_perimetro(request):
 
 def orcamento_ajudante(request):
     data = facade.get_valor_ajudante(request)
+    return data
+
+
+def orcamento_taxa_expedicao(request):
+    data = facade.get_valor_taxa_expedicao(request)
     return data

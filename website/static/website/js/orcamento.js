@@ -1,3 +1,11 @@
+$(document).ready(function(){
+    // JQuery da Janela Modal
+    $('#modal-formulario').on('shown.bs.modal', function () {
+        
+    });
+});
+var modo_orcamento = ''
+
 function carregaFuncoesModal() {
     $('#id_idCategoriaVeiculo').change(function() {
         $.ajax({
@@ -50,7 +58,25 @@ function carregaFuncoesModal() {
     });
     $('#id_Despesas').change(function() {
         somaOrcamento();
-    }); 
+    });
+    $('#id_TaxaExpedicao').change(function() {
+        somaOrcamento();
+    });
+    
+    function getTaxaExpedicao() {
+        if ($('#id_TaxaExpedicao').val() == 0) {
+            console.log(modo_orcamento)
+            if ( modo_orcamento != 'edita_orcamento') {
+                $.ajax({
+                    type: 'GET',
+                    url: 'orcamentotaxaexpedicao',
+                    success: function(data) {
+                        $('#id_TaxaExpedicao').val(data.valor)
+                    },
+                });
+            }
+        }
+    }
 
     function somaOrcamento() {
         var ajudantes = parseFloat($('#id_Ajudantes').val());
@@ -58,7 +84,8 @@ function carregaFuncoesModal() {
         var perimetro = parseFloat($('#id_Perimetro').val());
         var pedagio = parseFloat($('#id_Pedagio').val());
         var despesas = parseFloat($('#id_Despesas').val());
-        var total = valortabela + (valortabela * perimetro / 100) + ajudantes + pedagio + despesas
+        var taxaexpedicao = parseFloat($('#id_TaxaExpedicao').val());
+        var total = valortabela + (valortabela * perimetro / 100) + ajudantes + pedagio + despesas + taxaexpedicao
         $('#id_Valor').val(total);
         /* Duas casas decimais */
         $('#id_Ajudantes').val(parseFloat($('#id_Ajudantes').val()).toFixed(2))
@@ -66,9 +93,11 @@ function carregaFuncoesModal() {
         $('#id_Perimetro').val(parseFloat($('#id_Perimetro').val()).toFixed(2))
         $('#id_Pedagio').val(parseFloat($('#id_Pedagio').val()).toFixed(2))
         $('#id_Despesas').val(parseFloat($('#id_Despesas').val()).toFixed(2))
+        $('#id_TaxaExpedicao').val(parseFloat($('#id_TaxaExpedicao').val()).toFixed(2))
         $('#id_Valor').val(parseFloat($('#id_Valor').val()).toFixed(2))
     }
     
+    getTaxaExpedicao();
     somaOrcamento();
 }
 
@@ -117,6 +146,7 @@ function openMyModal(event) {
     var modal = initModalDialog(event, '#MyModal');
     var url = $(event.target).data('action');
     var idobj = $(event.target).data('idobj');
+    modo_orcamento = $(event.target).data('modo');
 
     $.ajax({
         type: "GET",

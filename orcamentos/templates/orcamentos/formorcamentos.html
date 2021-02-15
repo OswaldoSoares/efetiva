@@ -36,9 +36,14 @@
         {{ form.idCategoriaVeiculo.errors }}
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-6">
         <label for="id_Destino" class="form-label">DESTINO:</label>
         {{ form.Destino }}
+    </div>
+
+    <div class="col-md-2">
+        <label for="id_TaxaExpedicao" class="form-label">R$ EXPEDIÇÃO:</label>
+        {{ form.TaxaExpedicao }}
     </div>
 
     <div class="col-md-2">
@@ -61,22 +66,22 @@
         {{ form.Ajudantes }}
     </div>
 
-    <div class="col-md-3">
-        <label for="id_ValorTabela" class="form-label">VALOR VEÍCULO:</label>
+    <div class="col-md-2">
+        <label for="id_ValorTabela" class="form-label">R$ VEÍCULO:</label>
         {{ form.ValorTabela }}
     </div>
 
-    <div class="col-md-3">
+    <div class="col-md-2">
         <label for="id_Pedagio" class="form-label">R$ PEDÁGIO:</label>
         {{ form.Pedagio }}
     </div>
 
-    <div class="col-md-3">
+    <div class="col-md-2">
         <label for="id_Despesas" class="form-label">R$ DESPESAS:</label>
         {{ form.Despesas }}
     </div>
 
-    <div class="col-md-3">
+    <div class="col-md-2">
         <label for="id_Valor" class="form-label">VALOR TOTAL:</label>
         {{ form.Valor }}
     </div>
@@ -85,6 +90,7 @@
         <label for="id_Comentario" class="form-label">COMENTÁRIOS:</label>
         {{ form.Comentario }}
     </div>
+    {{ form.StatusOrcamento }}
 {% endif %}
 
 {% if c_view == 'exclui_orcamento' %}

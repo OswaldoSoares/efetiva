@@ -19,7 +19,9 @@ class Orcamento(models.Model):
     Despesas = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     Ajudantes = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     QuantidadeAjudantes = models.IntegerField(default=0)
+    TaxaExpedicao = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     Comentario = models.TextField(blank=True, null=True)
+    StatusOrcamento = models.CharField(max_length=20, default='CRIADO')
     Cliente = models.ForeignKey(Cliente, on_delete=models.PROTECT, blank=True, null=True)
     idCategoriaVeiculo = models.ForeignKey(CategoriaVeiculo, on_delete=models.PROTECT)
 

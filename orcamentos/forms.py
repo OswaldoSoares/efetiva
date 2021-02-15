@@ -17,8 +17,8 @@ class CadastraOrcamento(forms.ModelForm):
     class Meta:
         model = Orcamento
         fields = ['DataOrcamento', 'Solicitante', 'Contato', 'Email', 'Telefone', 'Destino', 'KM', 'Perimetro',
-                  'Pedagio', 'Despesas', 'ValorTabela', 'QuantidadeAjudantes', 'Ajudantes', 'Comentario',
-                  'idCategoriaVeiculo', 'Valor']
+                  'Pedagio', 'Despesas', 'ValorTabela', 'QuantidadeAjudantes', 'Ajudantes', 'TaxaExpedicao',
+                  'StatusOrcamento', 'Comentario', 'idCategoriaVeiculo', 'Valor']
         labels = []
         widgets = {'DataOrcamento': MeuDateInput(format='%Y-%m-%d', attrs={'class': 'form-control'}),
                    'Solicitante': forms.TextInput(attrs={'class': 'form-control'}),
@@ -34,5 +34,7 @@ class CadastraOrcamento(forms.ModelForm):
                    'Despesas': forms.NumberInput(attrs={'class': 'form-control'}),
                    'QuantidadeAjudantes': forms.NumberInput(attrs={'class': 'form-control'}),
                    'Ajudantes': forms.NumberInput(attrs={'class': 'form-control'}),
+                   'TaxaExpedicao': forms.NumberInput(attrs={'class': 'form-control'}),
                    'Comentario': forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}),
-                   'Valor': forms.NumberInput(attrs={'class': 'form-control', 'readonly': 'True'})}
+                   'Valor': forms.NumberInput(attrs={'class': 'form-control', 'readonly': 'True'}),
+                   'StatusOrcamento': forms.HiddenInput()}
