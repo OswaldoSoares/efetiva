@@ -13,14 +13,13 @@ class CadastraOrcamento(forms.ModelForm):
         super(CadastraOrcamento, self).__init__(*args, **kwargs)
         self.fields['DataOrcamento'].initial = datetime.date.today()
         self.fields['idCategoriaVeiculo'].empty_label = 'SELECIONE UM ITEM'
+        self.fields['idFormaPagamento'].empty_label = ''
 
     class Meta:
         model = Orcamento
         fields = ['DataOrcamento', 'Solicitante', 'Contato', 'Email', 'Telefone', 'Destino', 'KM', 'Perimetro',
                   'Pedagio', 'Despesas', 'ValorTabela', 'QuantidadeAjudantes', 'Ajudantes', 'TaxaExpedicao',
-                  'StatusOrcamento', 'Comentario', 'idCategoriaVeiculo', 'Valor',
-                  # 'idFormaPagamento'
-                  ]
+                  'StatusOrcamento', 'Comentario', 'idCategoriaVeiculo', 'Valor', 'idFormaPagamento']
         labels = []
         widgets = {'DataOrcamento': MeuDateInput(format='%Y-%m-%d', attrs={'class': 'form-control'}),
                    'Solicitante': forms.TextInput(attrs={'class': 'form-control'}),
@@ -28,7 +27,7 @@ class CadastraOrcamento(forms.ModelForm):
                    'Email': forms.EmailInput(attrs={'class': 'form-control'}),
                    'Telefone': forms.TextInput(attrs={'class': 'form-control'}),
                    'idCategoriaVeiculo': forms.Select(attrs={'class': 'form-control'}),
-                   # 'idFormaPagamento': forms.Select(attrs={'class': 'form-control'}),
+                   'idFormaPagamento': forms.Select(attrs={'class': 'form-control'}),
                    'Destino': forms.TextInput(attrs={'class': 'form-control'}),
                    'ValorTabela': forms.NumberInput(attrs={'class': 'form-control'}),
                    'KM': forms.NumberInput(attrs={'class': 'form-control'}),

@@ -72,6 +72,8 @@ function carregaFuncoesModal() {
                     url: 'orcamentotaxaexpedicao',
                     success: function(data) {
                         $('#id_TaxaExpedicao').val(data.valor)
+                        $('.formapgto option[value='+data.formapgto+']').attr('selected', 'selected')
+                        console.log(data.formapgto)
                     },
                 });
             }
