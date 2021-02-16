@@ -358,11 +358,11 @@ def consultaminuta(request, idmin):
         veiculo = Veiculo.objects.filter(idVeiculo=idveiculo)
     minuta_itens_fechada = MinutaItens.objects.filter(idMinuta=idmin).order_by('TipoItens', 'Descricao')
     """
-    Criaremos um dict 'tabela_recebe_e_paga' com todas as informações para gerar a tabela de recebimento e 
-    pagamento. A tabela será formada por 9 colunas sendo a primeira com as descrições (keys) e as demais divididas em 
-    4 para recebimento e 4 para pagamento. 1ª Coluna - switch - 2ª Coluna dados das tabelas - 3ª Coluna dados da 
+    Criaremos um dict 'tabela_recebe_e_paga' com todas as informações para gerar a tabela de recebimento e
+    pagamento. A tabela será formada por 9 colunas sendo a primeira com as descrições (keys) e as demais divididas em
+    4 para recebimento e 4 para pagamento. 1ª Coluna - switch - 2ª Coluna dados das tabelas - 3ª Coluna dados da
     minuta - 4ª Coluna para ostotais que serão executados no frontend.
-    
+
     """
     # Cria dict vazio
     tabela_recebe_e_paga = {}
@@ -632,7 +632,7 @@ def imprimeminuta(request, idmin):
             motorista = [item.idPessoal for item in minutacolaboradores]
             motorista = motorista[0]
             ajudante = MinutaColaboradores.objects.filter(idMinuta=idmin, Cargo='AJUDANTE')
-        response = HttpResponse(content_type='application/pdf')
+        # response = HttpResponse(content_type='application/pdf')
         buffer = BytesIO()
         # Create the PDF object, using the BytesIO object as its "file."
         pdf = canvas.Canvas(buffer)

@@ -1,6 +1,5 @@
 from django.urls import path
-from .views import index_faturamento, minutas_faturar_cliente, cria_div_selecionada, cria_fatura, estorna_fatura, \
-    paga_fatura, imprime_fatura, email_fatura
+from .views import index_faturamento, minutas_faturar_cliente, cria_div_selecionada, cria_fatura, estorna_fatura, paga_fatura, imprime_fatura, email_fatura
 
 urlpatterns = [
     path('', index_faturamento, name='index_faturamento'),

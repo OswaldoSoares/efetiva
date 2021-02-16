@@ -24,6 +24,7 @@ class Orcamento(models.Model):
     StatusOrcamento = models.CharField(max_length=20, default='CRIADO')
     Cliente = models.ForeignKey(Cliente, on_delete=models.PROTECT, blank=True, null=True)
     idCategoriaVeiculo = models.ForeignKey(CategoriaVeiculo, on_delete=models.PROTECT)
+    # idFormaPagamento = models.ForeignKey(FormaPagamento, on_delete=models.PROTECT)
 
     class Meta:
         db_table = 'Orcamento'

@@ -14,7 +14,7 @@ from veiculos.models import CategoriaVeiculo
 def create_cliente_context(idcliente: int):
     """
     Create context queryset with all models Cliente
-    :param idcliente: 
+    :param idcliente:
     :return: dict with queryset
     """
     cliente = get_cliente(idcliente)
