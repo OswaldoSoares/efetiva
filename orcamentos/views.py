@@ -55,11 +55,11 @@ def orcamento_perimetro(request):
     return data
 
 
-def orcamento_ajudante():
-    data = facade.get_valor_ajudante()
+def orcamento_ajudante(request):
+    data = facade.get_valor_ajudante(request)
     return data
 
 
-def orcamento_taxa_expedicao():
-    data = facade.get_valor_taxa_expedicao()
+def orcamento_taxa_expedicao(request):
+    data = facade.get_valor_taxa_expedicao(request)
     return data

@@ -19,28 +19,37 @@
  		</tr>
         <tr>
             <td>
-                <h3 style="color: #083c5d; margin: 5px;">Prezado Sr(a): {{ itens.Contato }}</h3>
+                <h3 style="color: #083c5d; margin: 10px 5px 0 5px;">{{ itens.Solicitante }}</h3>
+                <h3 style="color: #083c5d; margin: 5px;">Prezado Sr(a){% if itens.Contato %}: {{ itens.Contato }}
+                    {% endif %}</h3>
             </td>
         </tr>
         <tr>
             <td align="justify"style="padding: 10px 5px;">
-                <p style="margin: 0; color: #083c5d;">Connforme solicitado segue orçamento de transporte.</p>
+                <p style="margin: 0; color: #083c5d;">Conforme solicitado segue orçamento:</p>
             </td>
         </tr>
         <tr>
-            <td align="left" style="padding: 1px 5px; background-color: red;">
-                <p>Empresa: {{ itens.Solicitante }}</p>
-                <p>Veículo: {{ itens.idCategoriaVeiculo }}</p>
-                <p>Destino: {{ itens.Destino }} {% if KMs %}({{ itens.KMs }} kms){% endif %}</p>
-                <p>{% if itens.TaxaExpedicao %}Taxa Expedição: R$ {{ itens.TaxaExpedicao }}{% endif %}</p>
-                <p>{% if itens.Ajudantes %}Ajudantes: R$ {{ itens.Ajudantes }}{% endif %}</p>
-                <p>{% if itens.Valor %}Saída: R$ {{ itens.Valor }}{% endif %}</p>
+            <td align="left" style="color: #083c5d; padding: 0 5px;">
+                <p style="color: #083c5d;">Veículo: {{ itens.idCategoriaVeiculo }}</p>
+                <p style="color: #083c5d;">Destino: {{ itens.Destino }} {% if itens.KM %} ({{ itens.KM }} kms){% endif %}</p>
+                <p style="color: #083c5d;">{% if itens.TaxaExpedicao %}Taxa Expedição: R$ {{ itens.TaxaExpedicao }}{% endif %}</p>
+                <p style="color: #083c5d;">{% if itens.ValorTabela %}Saída: R$ {{ itens.ValorTabela }}{% endif %}</p>
+                <p style="color: #083c5d;">{% if itens.Perimetro %}Perimetro: R$ {{ perimetro }}
+                    ({{ itens.Perimetro }}%){% endif %}</p>
+                <p style="color: #083c5d;">{% if itens.Ajudantes %}Ajudantes: {{ itens.QuantidadeAjudantes }} - R$
+                    {{ itens.Ajudantes }}{% endif %}</p>
+                <p style="color: #083c5d;">{% if itens.Pedagio %}Pedagio: R$ {{ itens.Pedagio }}{% endif %}</p>
+                <p style="color: #083c5d;">{% if itens.Despesas %}Despesas: R$ {{ itens.Despesas }}{% endif %}</p>
+                <p style="color: #083c5d; text-align: justify;">{% if itens.Comentario %}Observações:
+                    {{ itens.Comentario }}{% endif %}</p>
+                <h3 style="color: #083c5d; margin: 5px 0 10px 0;">Valor Total R$ {{ itens.Valor }}</h3>
             </td>
         </tr>
         <tr>
             <td>
-                <p style="color: #083c5d; margin: 5px;">Qualquer dúvida, estou à disposição:</p>
-                <p style="color: #083c5d; margin: 5px;">Mauricio Salgado</p>
+                <p style="color: #083c5d; margin: 5px;">Qualquer dúvida, estamos à disposição:</p>
+                <p style="color: #083c5d; margin: 5px;">Transefetiva Transportes</p>
                 <p style="color: #083c5d; margin: 5px;">Telefones: 2305-0582 - 2305-0583</p>
                 <p style="color: #083c5d; margin: 5px;">Whatsapp: 94167-0583 - 97449-1101</p>
             </td>

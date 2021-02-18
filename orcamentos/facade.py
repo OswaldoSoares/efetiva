@@ -53,7 +53,7 @@ def get_porcentagem_perimetro(request):
     return JsonResponse(data)
 
 
-def get_valor_ajudante():
+def get_valor_ajudante(request):
     valor = 0
     idcliente = facade.get_tabela_padrao()
     idcliente = idcliente[0].Valor
@@ -64,7 +64,7 @@ def get_valor_ajudante():
     return JsonResponse(data)
 
 
-def get_valor_taxa_expedicao():
+def get_valor_taxa_expedicao(request):
     valor = 0
     formapgto = ''
     idcliente = facade.get_tabela_padrao()
@@ -79,12 +79,12 @@ def get_valor_taxa_expedicao():
 
 def create_email(idorcamento):
     orcamento = get_orcamento(idorcamento)
-    contexto = {'orcamento': orcamento}
-    print(orcamento[0].Email)
+    perimetro = round(orcamento[0].ValorTabela * orcamento[0].Perimetro / 100, 2)
+    contexto = {'orcamento': orcamento, 'perimetro': perimetro}
     subject = 'Orçamento'
     html_message = render_to_string('orcamentos/emailorcamento.html', contexto)
     from_email = 'Transefetiva Transportes <operacional.efetiva@terra.com.br>'
-    to = [orcamento[0].Email]
+    to = [orcamento[0].Email, 'ml.efetiva@terra.com.br']
     email = EmailMessage(subject, html_message, from_email, to)
     email.content_subtype = 'html'
     email.send()
