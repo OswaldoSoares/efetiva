@@ -45,15 +45,15 @@ def get_porcentagem_perimetro(request):
     porcentagem = 0
     idcliente = facade.get_tabela_padrao()
     idcliente = idcliente[0].Valor
-    KMs = request.GET.get('KMs')
-    tabela = TabelaPerimetro.objects.filter(idCliente=idcliente, PerimetroInicial__lte=KMs, PerimetroFinal__gte=KMs)
+    kms = request.GET.get('KMs')
+    tabela = TabelaPerimetro.objects.filter(idCliente=idcliente, PerimetroInicial__lte=kms, PerimetroFinal__gte=kms)
     if tabela:
         porcentagem = tabela[0].PerimetroCobra
     data = {'porcentagem': porcentagem}
     return JsonResponse(data)
 
 
-def get_valor_ajudante(request):
+def get_valor_ajudante():
     valor = 0
     idcliente = facade.get_tabela_padrao()
     idcliente = idcliente[0].Valor
@@ -64,31 +64,32 @@ def get_valor_ajudante(request):
     return JsonResponse(data)
 
 
-def get_valor_taxa_expedicao(request):
+def get_valor_taxa_expedicao():
     valor = 0
+    formapgto = ''
     idcliente = facade.get_tabela_padrao()
     idcliente = idcliente[0].Valor
     tabela = Tabela.objects.filter(idCliente=idcliente)
     if tabela:
         valor = tabela[0].TaxaExpedicao
         formapgto = tabela[0].idFormaPagamento_id
-        print(formapgto)
     data = {'valor': valor, 'formapgto': formapgto}
-    print(data)
     return JsonResponse(data)
 
 
 def create_email(idorcamento):
     orcamento = get_orcamento(idorcamento)
     contexto = {'orcamento': orcamento}
+    print(orcamento[0].Email)
     subject = 'Orçamento'
     html_message = render_to_string('orcamentos/emailorcamento.html', contexto)
     from_email = 'Transefetiva Transportes <operacional.efetiva@terra.com.br>'
-    to = []
+    to = [orcamento[0].Email]
     email = EmailMessage(subject, html_message, from_email, to)
     email.content_subtype = 'html'
     email.send()
-
+    data = {'enviado': 'enviado'}
+    return JsonResponse(data)
 
 
 def form_orcamento(request, c_form, c_idobj, c_url, c_view):

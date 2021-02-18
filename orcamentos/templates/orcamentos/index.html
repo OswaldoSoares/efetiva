@@ -57,10 +57,12 @@
                                 data-button-save-label="EDITAR">
                         </button>
                         {% if itens.StatusOrcamento == 'CRIADO' %}
-                        <button class="btn btn-primary btn-xs glyphicon glyphicon-send">
+                        <button class="btn btn-primary btn-xs glyphicon glyphicon-send"
+                                onclick="window.location.href = '{% url 'emailorcamento' itens.idOrcamento %}'">
                         </button>
                         {% else %}
-                        <button class="btn btn-primary btn-xs glyphicon glyphicon-envelope">
+                        <button class="btn btn-primary btn-xs glyphicon glyphicon-envelope"
+                                onclick="window.location.href = '{% url 'emailorcamento' itens.idOrcamento %}'">
                         </button>
                         {% endif %}
                         <button class="btn btn-danger btn-xs glyphicon glyphicon-trash"

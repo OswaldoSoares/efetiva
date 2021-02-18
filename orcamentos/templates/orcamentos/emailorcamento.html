@@ -8,6 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 </head>
 <body style="margin: 0; padding: 0;">
+    {% for itens in orcamento %}
 	<table align="left" border="0" cellpadding="0" cellspacing="0" width="600" style="border-collapse: collapse;">
  		<tr>
 			<td align="center" bgcolor="#083c5d" style="padding: 5px 5px 5px 5px;">
@@ -18,23 +19,33 @@
  		</tr>
         <tr>
             <td>
-                <h3 style="color: #083c5d; margin: 5px;">Prezado Sr(a)</h3>
+                <h3 style="color: #083c5d; margin: 5px;">Prezado Sr(a): {{ itens.Contato }}</h3>
             </td>
         </tr>
         <tr>
             <td align="justify"style="padding: 10px 5px;">
-                <h3 style="margin: 0; color: #083c5d;">Segue em anexo Fatura nº {{ numero_fatura }}, referente a
-                    serviço de transporte.</h3>
+                <p style="margin: 0; color: #083c5d;">Connforme solicitado segue orçamento de transporte.</p>
+            </td>
+        </tr>
+        <tr>
+            <td align="left" style="padding: 1px 5px; background-color: red;">
+                <p>Empresa: {{ itens.Solicitante }}</p>
+                <p>Veículo: {{ itens.idCategoriaVeiculo }}</p>
+                <p>Destino: {{ itens.Destino }} {% if KMs %}({{ itens.KMs }} kms){% endif %}</p>
+                <p>{% if itens.TaxaExpedicao %}Taxa Expedição: R$ {{ itens.TaxaExpedicao }}{% endif %}</p>
+                <p>{% if itens.Ajudantes %}Ajudantes: R$ {{ itens.Ajudantes }}{% endif %}</p>
+                <p>{% if itens.Valor %}Saída: R$ {{ itens.Valor }}{% endif %}</p>
             </td>
         </tr>
         <tr>
             <td>
-                <h3 style="color: #083c5d; margin: 5px;">Qualquer dúvida, estou à disposição:</h3>
-                <h3 style="color: #083c5d; margin: 5px;">Mauricio Salgado</h3>
-                <h5 style="color: #083c5d; margin: 5px;">Telefones: 2305-0582 - 2305-0583</h5>
-                <h5 style="color: #083c5d; margin: 5px;">Whatsapp: 94167-0583 - 97449-1101</h5>
+                <p style="color: #083c5d; margin: 5px;">Qualquer dúvida, estou à disposição:</p>
+                <p style="color: #083c5d; margin: 5px;">Mauricio Salgado</p>
+                <p style="color: #083c5d; margin: 5px;">Telefones: 2305-0582 - 2305-0583</p>
+                <p style="color: #083c5d; margin: 5px;">Whatsapp: 94167-0583 - 97449-1101</p>
             </td>
         </tr>
     </table>
+    {% endfor %}
 </body>
 </html>

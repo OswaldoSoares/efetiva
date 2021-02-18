@@ -39,8 +39,10 @@ def exclui_orcamento(request, idorcamento):
     return data
 
 
-def email_orcamento(request):
-    pass
+def email_orcamento(request, idorcamento):
+    c_idobj =idorcamento
+    data = facade.create_email(c_idobj)
+    return data
 
 
 def orcamento_veiculo(request):
@@ -53,11 +55,11 @@ def orcamento_perimetro(request):
     return data
 
 
-def orcamento_ajudante(request):
-    data = facade.get_valor_ajudante(request)
+def orcamento_ajudante():
+    data = facade.get_valor_ajudante()
     return data
 
 
-def orcamento_taxa_expedicao(request):
-    data = facade.get_valor_taxa_expedicao(request)
+def orcamento_taxa_expedicao():
+    data = facade.get_valor_taxa_expedicao()
     return data

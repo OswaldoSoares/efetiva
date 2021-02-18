@@ -217,6 +217,8 @@ def form_cliente(request, c_form, c_idobj, c_url, c_view, idcliente):
             form = c_form(initial={'CapacidadeInicial': peso['peso']+1, 'CapacidadeFinal': peso['peso']+2})
         elif c_view == 'cria_tabela_perimetro':
             km = TabelaPerimetro.objects.filter(idCliente=idcliente).aggregate(km=Max('PerimetroFinal'))
+            if not km['km']:
+                km['km'] = 0
             form = c_form(initial={'PerimetroInicial': km['km']+1, 'PerimetroFinal': km['km']+2})
         else:
             form = c_form(instance=c_instance)
