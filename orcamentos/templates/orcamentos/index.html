@@ -32,12 +32,12 @@
         {% for itens in orcamento %}
         <div class="orcamento-container-card">
             <div class="orcamento-card">
-                <header class="orcamento-titulo"><p>{{ itens.Solicitante }}</p></header>
+                <header class="orcamento-titulo"><p>{{ itens.Solicitante|slice:"0:20" }}</p></header>
                 <diV class="orcamento-data"><p>DATA:</p><p>{{ itens.DataOrcamento }}</p></diV>
-                <diV class="orcamento-data"><p>CONTATO:</p><p>{{ itens.Contato }}</p></diV>
-                <diV class="orcamento-data"><p>E-MAIL:</p><p>{{ itens.Email }}</p></diV>
+                <diV class="orcamento-data"><p>CONTATO:</p><p>{{ itens.Contato|slice:"0:20" }}</p></diV>
+                <diV class="orcamento-data"><p>E-MAIL:</p><p>{{ itens.Email|slice:"0:25" }}</p></diV>
                 <diV class="orcamento-data"><p>TELEFONE:</p><p>{{ itens.Telefone }}</p></diV>
-                <diV class="orcamento-data"><p>DESTINO:</p><p>{{ itens.Destino }}</p></diV>
+                <diV class="orcamento-data"><p>DESTINO:</p><p>{{ itens.Destino|slice:"0:25" }}</p></diV>
                 <diV class="orcamento-data"><p>VEÚCULO:</p><p>{{ itens.idCategoriaVeiculo }}</p></diV>
                 <diV class="orcamento-data"><p>VALOR VEICULO:</p><p>R${{ itens.ValorTabela }}</p></diV>
                 <diV class="orcamento-data"><p>KMs:</p><p>{{ itens.KM }}</p></diV>

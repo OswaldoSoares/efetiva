@@ -43,7 +43,10 @@
                 <p style="color: #083c5d;">{% if itens.Despesas %}Despesas: R$ {{ itens.Despesas }}{% endif %}</p>
                 <p style="color: #083c5d; text-align: justify;">{% if itens.Comentario %}Observações:
                     {{ itens.Comentario }}{% endif %}</p>
-                <h3 style="color: #083c5d; margin: 5px 0 10px 0;">Valor Total R$ {{ itens.Valor }}</h3>
+                <h3 style="color: #083c5d; margin: 5px 0 10px 0;">Valor Total: R$ {{ itens.Valor }}</h3>
+                <h3 style="color: #083c5d; margin: 5px 0 10px 0;">Forma de Pagamento: {{ itens.idFormaPagamento }}</h3>
+                <p style="color: #083c5d;">Este orçamento tem vigência de 15 dias a contar do recebimento deste
+                    E-Mail.</p>
             </td>
         </tr>
         <tr>

@@ -1,4 +1,5 @@
 from django.http import JsonResponse
+from django.shortcuts import redirect
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from .models import Orcamento
@@ -77,6 +78,13 @@ def get_valor_taxa_expedicao(request):
     return JsonResponse(data)
 
 
+def altera_status_orcamento(novo_status, idorcamento):
+    orcamento = Orcamento.objects.get(idOrcamento=idorcamento)
+    orcamento.StatusOrcamento = novo_status
+    orcamento.save(update_fields=['StatusOrcamento'])
+    return True
+
+
 def create_email(idorcamento):
     orcamento = get_orcamento(idorcamento)
     perimetro = round(orcamento[0].ValorTabela * orcamento[0].Perimetro / 100, 2)
@@ -87,9 +95,10 @@ def create_email(idorcamento):
     to = [orcamento[0].Email, 'ml.efetiva@terra.com.br']
     email = EmailMessage(subject, html_message, from_email, to)
     email.content_subtype = 'html'
-    email.send()
-    data = {'enviado': 'enviado'}
-    return JsonResponse(data)
+    if email.send():
+        altera_status_orcamento('ENVIADO', idorcamento)
+    data = redirect('indexorcamento')
+    return data
 
 
 def form_orcamento(request, c_form, c_idobj, c_url, c_view):
