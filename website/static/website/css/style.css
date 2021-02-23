@@ -1,7 +1,7 @@
 {% load static %}
 :root {
     --corprincipal: #083c5d; /* #333a56 */
-    --corsecundaria: #d7cec7; /* #eac67a #C0C0C0 */
+    --corsecundaria: #d7cec7; /* #eac67a #C0C0C0 #d7cec7 */
     --corsidebar: #CD6090;
     --corfundo: white;
 }
@@ -183,6 +183,36 @@ nav footer h6 {
     }
 }
 
+.cliente-conteudo {
+    background-color: var(--corprincipal);
+    width: 100%;
+    height: 100%;
+    margin: 0%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.cliente-conteudo header {
+    width: 100%;
+}
+.cliente-conteudo header h3 {
+    color: var(--corsecundaria);
+    margin: 0px;
+    padding: 10px 0;
+    text-align: center;
+}
+.cliente-conteudo footer {
+    background-color: var(--corprincipal);
+    width: 100%;
+    float: left;
+}
+.cliente-conteudo footer h5 {
+    color: var(--corsecundaria);
+    text-align: center;
+    font-size: 14px;
+}
+
 /* CSS COMPARTILHADOS - Arquivos index.html */
 .lista_conteudo {
     background-color: var(--corprincipal);
@@ -191,7 +221,7 @@ nav footer h6 {
     overflow: hidden;
     margin: 0px;
 }
-.lista_conteudo header h4 {
+.lista_conteudo header h3 {
     width: 100%;
     height: 50px;
     color: #fff;
@@ -219,22 +249,27 @@ nav footer h6 {
     margin: 7px 5px 3px 5px;
 	float: right;
 }
-.tabela {
+.tabela-base {
     width: 100%;
-    float: left;
 }
-.tabelatitulo {
+.tabela {
+    width: 100%; 
+}
+.tabelatitulo { 
     background-color: var(--corprincipal);
     color: var(--corsecundaria);
     height: 40px;
-    padding: 10px;
 }
 .tabelalinha {
     background-color: var(--corsecundaria);
+    color: var(--corprincipal);
     font-size: 14px;
     text-align: left;
-    color: var(--corprincipal);
     height: 40px;
+}
+.tabelalinha td {
+    margin: 0;
+    padding: 0 5px;
 }
 .tabelalinha:hover {
     background-color: #66CDAA;
@@ -273,6 +308,20 @@ main .consulta .consulta-header {
     width: 100%;
     margin: 0;
 }
+
+.consulta-header-titulo {
+    background: var(--corprincipal);
+    color: var(--corsecundaria);
+    height: 45px;
+    width: 85%;
+    font-size: 20px;
+    text-align: left;
+    padding: 8px 5px 0 5px;
+    margin: 0;
+    float: left;
+    border-bottom: 1px solid var(--corsecundaria);
+}
+
 .consulta_headertitulo {
     background: var(--corprincipal);
     color: #fff;
@@ -297,7 +346,7 @@ main .consulta .consulta-header {
 }
 .consulta-header-dados {
     background: var(--corprincipal);
-    color: white;    
+    color: var(--corsecundaria);    
     width: 100%;
     height: auto;
     font-size: 12px;
@@ -492,7 +541,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
 }
 
 main .consulta {
-    background-color: white;
+    background-color: var(--corfundo);
     border: 3px solid black;
     margin: 0;    
     margin-bottom: 20px;
@@ -945,8 +994,7 @@ main .consulta .consulta-body {
 
 /* index.html */
 main .faturas {
-    background-color: white;
-    border: 3px solid black;
+    background-color: var(--corfundo);
     margin: 0;    
     margin-bottom: 20px;
     padding: 0;
@@ -970,7 +1018,7 @@ main .faturas header h2 {
 
 main .faturas main,
 main .consulta main {
-    background: white;
+    background: var(--corfundo);
     width: 100%;
     display: flex;
     flex-wrap: wrap;
@@ -983,7 +1031,6 @@ main .consulta main {
 main .faturas .card-faturada {
     background: var(--corsecundaria);
     color: var(--corprincipal);
-    border: 2px solid var(--corprincipal);
     width: 200px;
     min-width: 200px;
     display: flex;
@@ -1005,19 +1052,20 @@ main .faturas .card-faturada header {
 }
 
 main .faturas .card-faturada footer {
-    background: #a1a1a1;
+    background: var(--corsecundaria);
     width: 100%;
-    padding: 5px 50px;
+    margin: 0 0px;
+    padding: 5px 40px 7px 40px;
     display: flex;
     align-items: center;
     justify-content: space-around;
+    border-top: 1px solid black;
 }
 
 /* Usado nos Modulo Faturameno e Modulo Minuta */
 main .card-base1 {
     background: var(--corsecundaria);
     color: var(--corprincipal);
-    border: 2px solid var(--corprincipal);
     width: 200px;
     min-width: 200px;
     display: flex;
@@ -1079,18 +1127,18 @@ main .card-base1 form {
 }
 
 main .card-base1 footer {
-    background: #a1a1a1;
+    background: var(--corsecundaria);
     width: 100%;
-    padding: 5px 50px;
+    padding: 5px 30px 7px 30px;
     display: flex;
     align-items: center;
     justify-content: space-around;
+    border-top: 1px solid black;
 }
 
 main .card-base2 {
     background: var(--corsecundaria);
     color: var(--corprincipal);
-    border: 2px solid var(--corprincipal);
     width: 20%;
     min-width: 290px;
     display: flex;
@@ -1176,18 +1224,18 @@ main .card-base2 form input {
 }
 
 main .card-base2 footer {
-    background: #a1a1a1;
+    background: var(--corsecundaria);
     width: 100%;
-    padding: 5px 50px;
+    padding: 5px 30px 7px 30px;
     display: flex;
     align-items: center;
     justify-content: space-around;
+    border-top: 1px solid black;
 }
 
 main .card-base3 {
     background: var(--corsecundaria);
     color: var(--corprincipal);
-    border: 2px solid var(--corprincipal);
     width: 70%;
     min-width: 300px;
     display: flex;
@@ -1257,12 +1305,13 @@ main .card-base3 form input {
 }
 
 main .card-base3 footer {
-    background: #a1a1a1;
+    background: var(--corsecundaria);
     width: 100%;
-    padding: 5px 50px;
+    padding: 5px 30px 7px 30px;
     display: flex;
     align-items: center;
     justify-content: space-around;
+    border-top: 1px solid black;
 }
 
 main .card-base3 .seta {
@@ -1314,7 +1363,7 @@ main .consulta-concluir .mensagem-concluir {
 
 main .consulta .consulta-header-despesas-entregas {
     background-color: var(--corprincipal);
-    color: white;
+    color: var(--corsecundaria);
     font-size: 20px;
     text-align: center;
     width: 100%;
@@ -1324,7 +1373,7 @@ main .consulta .consulta-header-despesas-entregas {
 
 main .consulta .consulta-header-tabelas {
     background-color: var(--corprincipal);
-    color: white;
+    color: var(--corsecundaria);
     font-size: 20px;
     text-align: center;
     width: 100%;
@@ -1421,7 +1470,6 @@ main .faturas table tbody tr:hover {
 /* minutafaturarcliente.html */
 
 main .minutas-faturar  {
-    border: 3px solid black;
     width: 100%;
     height: auto;
     margin: 0;    
@@ -1444,7 +1492,7 @@ main .minutas-faturar header form {
 }
 
 main .minutas-faturar header .input-fatura {
-    width: 150px;
+    width: 170px;
     text-align: right;
     padding-right: 5px;
 }
@@ -1476,7 +1524,7 @@ main .minutas-faturar header .botao-cria-fatura {
 }
 
 main .minutas-faturar main{
-    background-color: white;
+    background-color: var(--corfundo);
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -1614,7 +1662,7 @@ main .minutas-selecionadas .auto-minuta .comentarios-fatura p {
 }
 
 main .usuario {
-    background-color: white;
+    background-color: var(--corfundo);
     color: var(--corprincipal);
     width: 350px;
     display: flex;
@@ -1767,7 +1815,7 @@ main .usuario-out {
 }
 
 .orcamento-conteudo header h3 {
-    color: #fff;
+    color: var(--corsecundaria);
     margin: 0px;
     padding: 10px 0;
 }
@@ -1793,7 +1841,7 @@ main .usuario-out {
 }
 
 .orcamento-base-card {
-    background-color: white;
+    background-color: var(--corfundo);
     width: 100%;
     display: flex;
     align-items: center;

@@ -4,7 +4,7 @@
 <main>
     <div class="minutas-faturar">
         <header>
-            <div class="container">
+            <div>
                 <form method="post" action="{% url 'criafatura' %}">
                     {% csrf_token %}
                     <input type="hidden" value="{{ idFatura }}">

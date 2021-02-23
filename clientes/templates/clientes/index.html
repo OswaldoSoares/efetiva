@@ -1,9 +1,9 @@
 {% extends 'clientes/baseclientes.html' %}
 
 {% block maincliente %}
-    <div class="lista_conteudo">
+    <div class="cliente-conteudo">
         <header>
-            <h4>CADASTRO DE CLIENTES</h4>
+            <h3>CLIENTES</h3>
         </header>
         <div class="nav_filtro">
             <div>
@@ -22,14 +22,11 @@
             </div>
             <div class="add_registro">
                 <button type="button" class="btn btn-success glyphicon glyphicon-plus"
-                        onclick="openMyModal(event); return false;"
-                        data-title="CADASTRO DE CLIENTE"
-                        data-action="{% url 'criacliente' %}"
-                        data-button-save-label="SALVAR"
-                        width="100"></button>
+                        onclick="openMyModal(event); return false;" data-title="CADASTRO DE CLIENTE"
+                        data-action="{% url 'criacliente' %}" data-button-save-label="SALVAR"></button>
             </div>
         </div>
-        <div>
+        <div class="tabela-base">
             <table class="tabela">
                 <thead>
                     <tr class="tabelatitulo">
@@ -48,9 +45,8 @@
                             <td>{{ itens.CNPJ }}</td>
                             <td class="status_cliente"><b>ATIVO</b></td>
                             <td class="seleciona_registo">
-                                <button class="btn btn-primary btn-xs"
+                                <button class="btn btn-primary btn-xs glyphicon glyphicon-folder-open"
                                         onclick="window.location.href = '{% url 'consultacliente' itens.idCliente %}'">
-                                    <span class="glyphicon glyphicon-folder-open"></span>
                                 </button>
                             </td>
                         </tr>

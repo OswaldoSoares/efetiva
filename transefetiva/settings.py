@@ -135,6 +135,8 @@ USE_L10N = True
 
 USE_TZ = True
 
+# USE_THOUSAND_SEPARATOR = True
+
 
 # Configuração de E-Mails
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

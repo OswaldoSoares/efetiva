@@ -65,7 +65,6 @@ function carregaFuncoesModal() {
     
     function getTaxaExpedicao() {
         if ($('#id_TaxaExpedicao').val() == 0) {
-            console.log(modo_orcamento)
             if ( modo_orcamento != 'edita_orcamento') {
                 $.ajax({
                     type: 'GET',
@@ -73,7 +72,6 @@ function carregaFuncoesModal() {
                     success: function(data) {
                         $('#id_TaxaExpedicao').val(data.valor)
                         $('.formapgto option[value='+data.formapgto+']').attr('selected', 'selected')
-                        console.log(data.formapgto)
                     },
                 });
             }
