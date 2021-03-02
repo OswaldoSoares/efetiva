@@ -1942,6 +1942,7 @@ main .usuario-out {
 .page403_01 {
     font-size: 300px;
     color: deeppink;
+    text-shadow: 2px 2px var(--corprincipal);
     margin: 0;
     padding: 0;
 }
@@ -1949,13 +1950,16 @@ main .usuario-out {
 .page403_02 {
     font-size: 70px;
     color: deeppink;
+    text-shadow: 2px 2px var(--corprincipal);
     margin: 0;
     padding: 0;
 }
 
 .page403 section {
-    font-size: 18px;
     color: var(--corprincipal);
+    text-shadow: 1px 1px deeppink;
+    font-size: 18px;
+    font-weight: bold;
     display: flex;
     flex-direction: column;
     align-items: center;

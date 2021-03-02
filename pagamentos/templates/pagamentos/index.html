@@ -1,0 +1,8 @@
+{% for itens in b %}
+<p>{{ itens.idMinuta__minutacolaboradores__idPessoal__Nome }} - {{ itens.valor }}</p>
+{% endfor %}
+
+<h1>OK</h1>
+{% for itens in c %}
+<p>{{ itens.Descricao }} - {{ itens.Valor }} - {{ itens.idMinuta__Minuta }}</p>
+{% endfor %}
