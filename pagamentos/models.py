@@ -19,13 +19,13 @@ class Recibo(models.Model):
     objects = models.Manager()
 
 
-class ItensRecibo(models.Model):
-    idItensRecibo = models.AutoField(primary_key=True)
+class ReciboItens(models.Model):
+    idReciboItens = models.AutoField(primary_key=True)
     idRecibo = models.ForeignKey(Recibo, on_delete=models.PROTECT)
     idMinutaItens = models.ForeignKey(MinutaItens, on_delete=models.PROTECT, blank=True, null=True)
     idVales = models.ForeignKey(Vales, on_delete=models.PROTECT, blank=True, null=True)
 
     class Meta:
-        db_table = 'ItensRecibo'
+        db_table = 'RecibovItens'
 
     objects = models.Manager()

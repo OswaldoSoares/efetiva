@@ -1,0 +1,18 @@
+{% for itens in qs_ajudante %}
+<div class="pagamento-dados-itens">
+    <div class="pagamento-dados-minuta">
+        <div class="pagamento-switch-minuta">
+            <input id="{{ itens.Minuta }}" name="switch"
+                   value="{{ itens.Minuta }}"
+                   class="switch switch--shadow"
+                   type="checkbox">
+            <label for="{{ itens.Minuta }}"></label>
+        </div>
+        {{ itens.Minuta }}
+    </div>
+    <div class="pagamento-dados-valor">
+        <div>{{ itens.Descricao }} </div>
+        <div>R$ {{ itens.Valor|floatformat:2 }}</div>
+    </div>
+</div>
+{% endfor %}

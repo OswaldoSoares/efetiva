@@ -18,7 +18,6 @@ $(document).ready(function(){
                     success: function(data){
                         $("#id_Veiculo").fadeOut(500).fadeIn(500)
                         $("#id_Veiculo ").html(data.html_form)
-                        console.log(data)
                     }
                 });
             });
@@ -41,10 +40,8 @@ $(document).ready(function(){
                         id_minuta: id_minuta,
                     },
                     beforeSend: function(){
-                        console.log(nota_guia, id_minuta)
                     },
                     success: function(data){
-                        console.log(data)
                         $('#id_Nome').val(data.nota_guia_nome);
                         $('#id_Estado').val(data.nota_guia_estado);
                         $('#id_Cidade').val(data.nota_guia_cidade);
@@ -143,7 +140,6 @@ $(document).ready(function(){
         } else {
             $(to_id).text('R$ 0,00')
             $(hi_id).val(0.00)
-            console.log(ta_id, mi_id, to_id, hi_id)
         }
         somaPerimetro();
         // Calcula novamente o pernoite e o perimetro caso tenha alguma mudança
@@ -216,7 +212,8 @@ $(document).ready(function(){
     var loadForm = function(){
         var obj = $(this);
         var idminuta = $(this).attr("idminuta");
-        console.log('ok')
+        var urlok = obj.attr("data-url")
+        console.log(urlok)
 
         $.ajax({
             url: obj.attr("data-url"),
@@ -231,7 +228,6 @@ $(document).ready(function(){
             },
             success: function(data){
                 $("#modal-formulario .modal-content").html(data.html_form);
-                console.log(data)
                 if ($('#id_NotaGuia').val() != 0) {
                     $('#id_Nome').attr('readonly', 'readonly')
                     $('#id_Estado').attr('readonly', 'readonly')

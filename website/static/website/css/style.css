@@ -1804,6 +1804,7 @@ main .usuario-out {
     background-color: deeppink;
 }
 
+.pagamento-conteudo,
 .orcamento-conteudo {
     background-color: var(--corprincipal);
     width: 100%;
@@ -1814,6 +1815,7 @@ main .usuario-out {
     justify-content: center;
 }
 
+.pagamento-conteudo header h3,
 .orcamento-conteudo header h3 {
     color: var(--corsecundaria);
     margin: 0px;
@@ -1964,4 +1966,88 @@ main .usuario-out {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+.pagamento-conteudo {
+    background-color: var(--corprincipal);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.pagamento-conteudo header h3 {
+    color: var(--corsecundaria);
+    margin: 0px;
+    padding: 10px 0;
+}
+.pagamento-conteudo main {
+    background-color: white;
+    width: 100%;
+    padding: 5px;
+}
+.pagamento-conteudo main form {
+    width: 100%;
+    display: flex;
+}
+.pagamento-conteudo main form .pagamento-base-colaboradores {
+    background-color: var(--corprincipal);
+    color: var(--corsecundaria);
+    width:  60%;
+}
+.pagamento-conteudo main form .pagamento-base-itens {
+    background-color: var(--corsecundaria);
+    color: var(--corprincipal);
+    width:  40%;
+}
+.pagamento-list-colaboradores {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 5px;
+    font-size: 20px;
+}
+.pagamento-switch-colaboradores {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 10%;
+    height: 28px;
+    padding-top: 5px;
+} 
+.pagamento-dados-colaboradores {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+    font-size: 20px;
+}
+.pagamento-dados-itens {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 5px;
+    width: 100%;
+    font-size: 20px;
+}
+.pagamento-switch-minuta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 28px;
+    padding-top: 5px;
+} 
+.pagamento-dados-minuta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 20%;
+    padding-right: 5px;
+}
+.pagamento-dados-valor {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 80%;
 }

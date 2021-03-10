@@ -48,6 +48,7 @@ class MinutaColaboradores(models.Model):
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.PROTECT)
     idMinuta = models.ForeignKey(Minuta, on_delete=models.CASCADE)
     Cargo = models.CharField(max_length=10)
+    Pago = models.BooleanField(default=False)
 
     class Meta:
         db_table = 'MinutaColaboradores'
