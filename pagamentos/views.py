@@ -16,7 +16,8 @@ def index_pagamento(request):
         qs_colaborador = MinutaColaboradores.objects.filter(idPessoal__Nome=nome, Pago=False)
         for itens_colaborador in qs_colaborador:
             if itens_colaborador.Cargo == 'AJUDANTE':
-                base_valor_ajudante = ExpressionWrapper(F('Valor') / F('Quantidade'), output_field=DecimalField())
+                # base_valor_ajudante = ExpressionWrapper(F('Valor') / F('Quantidade'), output_field=DecimalField())
+                base_valor_ajudante = Sum('Valor')
                 qs_ajudante = MinutaItens.objects.values(ValorAjudante=base_valor_ajudante).filter(
                     TipoItens='PAGA', idMinuta=itens_colaborador.idMinuta, Descricao='AJUDANTE')
                 if qs_ajudante[0]['ValorAjudante']:
