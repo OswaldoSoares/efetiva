@@ -27,10 +27,10 @@ def index_pagamento(request):
                 qs_motorista = MinutaItens.objects.filter(idMinuta=itens_colaborador.idMinuta).exclude(
                     Descricao='AJUDANTE').exclude(TipoItens='RECEBE').exclude(TipoItens='DESPESA').aggregate(
                     ValorMotorista=Sum('Valor'))
-                # if qs_motorista['ValorMotorista']:
-                #     valor_motorista = colaboradores[index]['Total']
-                #     valor_adicionar_motorista = qs_motorista['ValorMotorista']
-                #     colaboradores[index]['Total'] = valor_motorista + valor_adicionar_motorista
+                if qs_motorista['ValorMotorista']:
+                    valor_motorista = colaboradores[index]['Total']
+                    valor_adicionar_motorista = qs_motorista['ValorMotorista']
+                    colaboradores[index]['Total'] = valor_motorista + valor_adicionar_motorista
     return render(request, 'pagamentos/index.html', {'colaboradores': colaboradores})
 
 
