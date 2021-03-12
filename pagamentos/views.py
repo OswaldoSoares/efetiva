@@ -8,8 +8,7 @@ from django.db.models import Count, Sum, F, ExpressionWrapper, DecimalField
 
 def index_pagamento(request):
     qs_colaboradores = MinutaColaboradores.objects.values('idPessoal__Nome').filter(Pago=False).order_by(
-        'idPessoal__Nome')
-        # .annotate(registros=Sum('idPessoal__Nome'))
+        'idPessoal__Nome').annotate(registros=Sum('idPessoal'))
     colaboradores = []
     for index, itens_cr in enumerate(qs_colaboradores):
         colaboradores.append({'Nome': itens_cr['idPessoal__Nome'], 'Total': 0})
