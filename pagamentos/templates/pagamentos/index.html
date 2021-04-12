@@ -2,56 +2,77 @@
 {% load permission_tags %}
 
 {% block mainpagamento %}
-<div class="pagamento-conteudo">
-    <header>
-        <h3>PAGAMENTOS</h3>
-    </header>
-    <main>
-        <form method="post" action="">
-            <div class="pagamento-base-colaboradores">
-                {% csrf_token %}
-                {% for itens in colaboradores %}
-                <div class="pagamento-list-colaboradores">
-                    <div class="pagamento-switch-colaboradores">
-                        <input id="{{ itens.Nome }}" name="switch"
-                               value="{{ itens.Nome }}"
-                               class="switch switch--shadow"
-                               type="radio">
-                        <label for="{{ itens.Nome }}"></label>
-                    </div>
-                    <div class="pagamento-dados-colaboradores">
-                        <div>{{ itens.Nome }}</diV>
-                        <div>R$ {{ itens.Total|floatformat:2 }}</diV>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-            <div class="pagamento-base-itens">
-                {% for itens in qs_ajudante %}
-                <div class="pagamento-dados-itens">
-                    <div class="pagamento-dados-minuta">
-                        <div class="pagamento-switch-minuta">
-                            <input id="{{ itens.Minuta }}" name="switch"
-                                   value="{{ itens.Minuta }}"
+<main>
+    <div class="pagamento-conteudo mensalistas">
+        <header>
+            <h3>PAGAMENTOS - MENSALISTAS</h3>
+        </header>
+        <main>
+            <div class="pagamento-selecao">
+                <div class="pagamento-base-colaboradores">
+                    {% csrf_token %}
+                    {% for itens in qs_mensalistas %}
+                    <div class="pagamento-list-colaboradores">
+                        <div class="pagamento-switch-colaboradores">
+                            <input id="{{ itens.Nome }}" name="switch"
+                                   value="{{ itens.Nome }}"
                                    class="switch switch--shadow"
-                                   type="checkbox">
-                            <label for="{{ itens.Minuta }}"></label>
+                                   type="radio">
+                            <label for="{{ itens.Nome }}"></label>
                         </div>
-                        {{ itens.Minuta }}
+                        <div class="pagamento-dados-colaboradores">
+                            <div>{{ itens.Nome }}</diV>
+                        </div>
                     </div>
-                    <div class="pagamento-dados-valor">
-                        <div>{{ itens.Descricao }} </div>
-                        <div>R$ {{ itens.Valor|floatformat:2 }}</div>
-                    </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
-                <button class="btn btn-primary btn-xs glyphicon glyphicon-send"
-                        onclick="window.location.href = '{% url 'index_pagamento' %}'">
-                </button>
+                <div class="pagamento-base-itens">
+
+                </div>
             </div>
-        </form>
-    </main>
-</div>
+            <footer>
+                <button type="button" class="btn btn-success glyphicon glyphicon-plus"
+                        data-url="">
+                </button>
+            </footer>
+        </main>
+    </div>
+    <div class="pagamento-conteudo avulsos">
+        <header>
+            <h3>PAGAMENTOS - AVULSOS</h3>
+        </header>
+        <main>
+            <div class="pagamento-selecao">
+                <div class="pagamento-base-colaboradores">
+                    {% csrf_token %}
+                    {% for itens in colaboradores %}
+                    <div class="pagamento-list-colaboradores">
+                        <div class="pagamento-switch-colaboradores">
+                            <input id="{{ itens.Nome }}" name="switch"
+                                   value="{{ itens.Nome }}"
+                                   class="switch switch--shadow"
+                                   type="radio">
+                            <label for="{{ itens.Nome }}"></label>
+                        </div>
+                        <div class="pagamento-dados-colaboradores">
+                            <div>{{ itens.Nome }}</diV>
+                            <div>R$ {{ itens.Total|floatformat:2 }}</diV>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="pagamento-base-itens">
+
+                </div>
+            </div>
+            <footer>
+                <button type="button" class="btn btn-success glyphicon glyphicon-plus"
+                        data-url="">
+                </button>
+            </footer>
+        </main>
+    </div>
+</main>
 {% endblock %}
 
 

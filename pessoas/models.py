@@ -1,6 +1,7 @@
 from django.db import models
 import os
 
+
 def get_file_path(instance, filename):
     ext = filename.split(".")[-1]
     nomearquivo = str(instance)
@@ -32,7 +33,7 @@ class Pessoal(models.Model):
         ordering = ['Nome']
 
     def __str__(self):
-        return (self.Nome)
+        return self.Nome
 
     def save(self, *args, **kwargs):
         self.Nome = self.Nome.upper()
@@ -40,6 +41,10 @@ class Pessoal(models.Model):
         self.Bairro = self.Bairro.upper()
         self.Cidade = self.Cidade.upper()
         self.Estado = self.Estado.upper()
+        if self.Mae:
+            self.Mae = self.Mae.upper()
+        if self.Pai:
+            self.Pai = self.Pai.upper()
 
         super(Pessoal, self).save(*args, **kwargs)
 
@@ -58,7 +63,7 @@ class DocPessoal(models.Model):
         ordering = ['TipoDocumento']
 
     def __str__(self):
-        return (self,DocPessoal)
+        return self.TipoDocumento
 
     objects = models.Manager()
 
@@ -67,7 +72,7 @@ class FonePessoal(models.Model):
     idFonePessoal = models.AutoField(primary_key=True)
     TipoFone = models.CharField(max_length=15)
     Fone = models.CharField(max_length=20)
-    Contato =models.CharField(max_length=50, blank=True)
+    Contato = models.CharField(max_length=50, blank=True)
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
 
     class Meta:
@@ -75,7 +80,7 @@ class FonePessoal(models.Model):
         ordering = ['TipoFone']
 
     def __str__(self):
-        return (self, FonePessoal)
+        return self.TipoFone
 
     def save(self, *args, **kwargs):
         self.Contato = self.Contato.upper()
@@ -101,7 +106,7 @@ class ContaPessoal(models.Model):
         ordering = ['idPessoal', 'Banco', 'Agencia', 'Conta', 'PIX']
 
     def __str__(self):
-        return (self.ContaPessoal)
+        return self.Banco
 
     def save(self, *args, **kwargs):
         self.Banco = self.Banco.upper()
@@ -128,7 +133,7 @@ class HorasTrabalhadas(models.Model):
         ordering = ['idPessoal', 'Data', 'Minuta']
 
     def __str__(self):
-        return (self.HorasTrabalhadas)
+        return self.idHorasTrabalhadas
 
     objects = models.Manager()
 
@@ -145,22 +150,56 @@ class Vales(models.Model):
         ordering = ['idPessoal', 'Data', 'Descricao']
 
     def __str__(self):
-        return (self.Vales)
+        return self.Descricao
 
     objects = models.Manager()
 
 
-class HorasConfig(models.Model):
-    idHorasConfig = models.AutoField(primary_key=True)
+class Salario(models.Model):
+    idSalario = models.AutoField(primary_key=True)
     Salario = models.DecimalField(decimal_places=2, max_digits=9, default=1.00)
-    HorasMensais = models.DurationField()
+    HorasMensais = models.DecimalField(decimal_places=2, max_digits=6, default=220.00)
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.PROTECT, default=1)
 
     class Meta:
-        db_table = 'HorasConfig'
+        db_table = 'Salario'
         ordering = ['idPessoal']
 
     def __str__(self):
-        return (self.HorasConfig)
+        return str(self.Salario)
+
+    objects = models.Manager()
+
+
+class ContraCheque(models.Model):
+    idContraCheque = models.AutoField(primary_key=True)
+    MesReferencia = models.CharField(max_length=9)
+    AnoReferencia = models.IntegerField()
+    Valor = models.DecimalField(decimal_places=2, max_digits=9, default=0.00)
+    idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'ContraCheque'
+        ordering = ['-idContraCheque']
+
+    def __str__(self):
+        return f'{self.MesReferencia}/{self.AnoReferencia}'
+
+    objects = models.Manager()
+
+
+class ContraChequeItens(models.Model):
+    idContraChequeItens = models.AutoField(primary_key=True)
+    Descricao = models.TextField(max_length=50)
+    Valor = models.DecimalField(decimal_places=2, max_digits=9, default=0.00)
+    Registro = models.CharField(max_length=1)
+    idContraCheque = models.ForeignKey(ContraCheque, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'ContraChequeItens'
+        ordering = ['Descricao']
+
+    def __str__(self):
+        return self.Descricao
 
     objects = models.Manager()

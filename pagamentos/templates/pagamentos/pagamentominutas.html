@@ -1,12 +1,13 @@
-{% for itens in qs_ajudante %}
+{% for itens in lista_itens_pagar %}
 <div class="pagamento-dados-itens">
     <div class="pagamento-dados-minuta">
         <div class="pagamento-switch-minuta">
-            <input id="{{ itens.Minuta }}" name="switch"
-                   value="{{ itens.Minuta }}"
+            <input id="{{ itens.idMinutaItens }}" name="switch"
+                   value="{{ itens.idMinutaItens }}"
                    class="switch switch--shadow"
+                   checked="checked"
                    type="checkbox">
-            <label for="{{ itens.Minuta }}"></label>
+            <label for="{{ itens.idMinutaItens }}"></label>
         </div>
         {{ itens.Minuta }}
     </div>

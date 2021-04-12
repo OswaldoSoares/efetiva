@@ -6,7 +6,7 @@
 
 {% block mainpessoal %}
 <main>
-    {% for itens in pessoa %}
+    {% for itens in colaborador %}
     <div class="consulta">
         <header class="consulta-header">
             <div class="consulta_headertitulo">
@@ -14,12 +14,22 @@
                     - ADMISSÃO: {{ itens.DataAdmissao }} {% endif %}</b></p>
             </div>
             <div class="consulta_headerbtn">
-                <button class="btn btn-success js-editapessoa" idpessoal="{{ itens.idPessoal }}" data-url="{% url 'editapessoa' itens.idPessoal %}">
-                    <span class="glyphicon glyphicon-edit"></span>
+                <button class="btn btn-success glyphicon glyphicon-edit" onclick="openMyModal(event); return false;"
+                        data-title="EDITA CADASTRO DE COLABORADOR"
+                        data-action="{% url 'editapessoa' itens.idPessoal %}"
+                        data-button-save-label="ALTERAR">
                 </button>
-                <button class="btn btn-danger js-excluipessoa" idpessoal="{{ itens.idPessoal }}" data-url="{% url 'excluipessoa' itens.idPessoal %}">
-                    <span class="glyphicon glyphicon-trash"></span>
+                <button class="btn btn-danger glyphicon glyphicon-trash" onclick="openMyModal(event); return false;"
+                        data-title="EXCLUI CADASTRO DE COLABORADOR"
+                        data-action="{% url 'excluipessoa' itens.idPessoal %}"
+                        data-button-save-label="EXCLUIR">
                 </button>
+                <!--<button class="btn btn-success js-editapessoa" idpessoal="{{ itens.idPessoal }}" data-url="{% url 'editapessoa' itens.idPessoal %}">-->
+                    <!--<span class="glyphicon glyphicon-edit"></span>-->
+                <!--</button>-->
+                <!--<button class="btn btn-danger js-excluipessoa" idpessoal="{{ itens.idPessoal }}" data-url="{% url 'excluipessoa' itens.idPessoal %}">-->
+                    <!--<span class="glyphicon glyphicon-trash"></span>-->
+                <!--</button>-->
             </div>
             <div class="consulta-header-dados">
                 <p><b>{{ itens.Endereco }} - {{ itens.Bairro }} - {{ itens.Cidade }} - {{ itens.Estado }}</b></p>
@@ -218,6 +228,102 @@
             </div>
             {% endif %}
         </main>
+    </div>
+    <div class="consulta">
+        <header class="consulta-header-tabelas">
+            <span>CONTRACHEQUE</span>
+        </header>
+        <main>
+            <div class="contracheque-coluna1">
+                <div class="card-base2">
+                    <header>
+                        <span><b>SALÁRIO BASE</b></span>
+                    </header>
+                    <form class="row g-3" method="post" action="{% url 'editasalario' %}">
+                        {% csrf_token %}
+                        <div class="col-md-6">
+                            <label for="id_Salario" class="form-label">SALÁRIO:</label>
+                            {{ formsalario.Salario }}
+                            {{ formsalario.Salario.error }}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="id_HorasMensais" class="form-label">HORAS MENSAIS:</label>
+                            {{ formsalario.HorasMensais }}
+                            {{ formsalario.HorasMensais.error }}
+                        </div>
+                        {{ form.idPessoal }}
+                        <input type="hidden" name="idPessoal" value="{{ itens.idPessoal }}" id="id_idPessoalv">
+                        <footer>
+                            <button class="btn btn-primary btn-xs glyphicon glyphicon-repeat">
+                            </button>
+                        </footer>
+                    </form>
+                </div>
+                <div class="card-base2">
+                    <header>
+                        <span><b>REFERÊNCIA</b></span>
+                    </header>
+                    <form class="row g-3" method="post" action="{% url 'criacontracheque' %}">
+                        {% csrf_token %}
+                        <div class="col-md-6">
+                            <label for="id_MesReferencia" class="form-label">MÊS:</label>
+                            {{ formcontracheque.MesReferencia }}
+                            {{ formcontracheque.MesReferencia.error }}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="id_AnoReferencia" class="form-label">ANO:</label>
+                            {{ formcontracheque.AnoReferencia }}
+                            {{ formcontracheque.AnoReferencia.error }}
+                        </div>
+                        <input type="hidden" name="Valor" value="0.00" id="id_Valor">
+                        <input type="hidden" name="idPessoal" value="{{ itens.idPessoal }}" id="id_idPessoal">
+                        <footer>
+                            <button class="btn btn-primary btn-xs glyphicon glyphicon-save">
+                            </button>
+                        </footer>
+                    </form>
+                </div>
+                {% if contracheque %}
+                <div class="card-base2">
+                    <header>
+                        <span><b>MÊS REFERÊNCIA</b></span>
+                    </header>
+                    <section class="referencia">
+                    {% for itenscontracheque in contracheque %}
+                        <a class="section-itens select_contracheque" mes="{{ itenscontracheque.MesReferencia }}"
+                           ano="{{ itenscontracheque.AnoReferencia }}" idpessoal="{{ itens.idPessoal }}">
+                            <span><b>{{ itenscontracheque.MesReferencia }}</b></span>
+                            <span><b>{{ itenscontracheque.AnoReferencia }}</b></span>
+                        </a>
+                    {% endfor %}
+                    </section>
+                </div>
+                {% endif %}
+            </div>
+            <div class="contracheque-coluna2">
+
+            </div>
+        </main>
+    </div>
+    <!-- DIV MODAL -->
+    <div class="modal fade bd-example-modal-lg" id="MyModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title"><b>CADASTRO DE COLABORADORES</b></h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">FECHAR</button>
+                    <button type="submit" class="btn btn-success btn-save">CRIAR</button>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- DIV MODAL -->
     <div class="modal fade" id="modal-formulario" >

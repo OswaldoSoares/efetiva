@@ -1,0 +1,91 @@
+<form class="row g-3" method="post" action="{{ c_url }}" idobj="{{ c_idobj }}">
+{% csrf_token %}
+{% if c_view == 'cria_pessoa' or c_view == 'edita_pessoa' %}
+    <div class="col-md-6">
+        <label for="id_Nome" class="form-label">NOME:</label>
+        <input type="text" class="form-control" id="id_Nome" name="Nome" maxlength="50" required=""
+               value="{% if form.Nome.value %}{{ form.Nome.value }}{% endif %}">
+        {% if form.Nome.errors %}
+            <ul class="errorlist">
+            {% for error in form.Nome.errors %}
+                <li><strong>{{ error|escape }}</strong></li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+    <div class="col-md-6">
+        <label for="id_Endereco" class="form-label">ENDEREÇO:</label>
+        {{ form.Endereco }}
+        {{ form.Endereco.error }}
+    </div>
+
+    <div class="col-md-4">
+        <label for="id_Bairro" class="form-label">BAIRRO:</label>
+        {{ form.Bairro }}
+        {{ form.Bairro.error }}
+    </div>
+
+    <div class="col-md-2">
+        <label for="id_CEP" class="form-label">CEP:</label>
+        {{ form.CEP }}
+        {{ form.CEP.error }}
+    </div>
+
+    <div class="col-md-4">
+        <label for="id_Cidade" class="form-label">CIDADE:</label>
+        {{ form.Cidade }}
+        {{ form.Cidade.error }}
+    </div>
+
+    <div class="col-md-2">
+        <label for="id_Estado" class="form-label">ESTADO:</label>
+        {{ form.Estado }}
+        {{ form.Estado.error }}
+    </div>
+
+    <div class="col-md-6">
+        <label for="id_Mae" class="form-label">NOME DA MÃE:</label>
+        {{ form.Mae }}
+        {{ form.Mae.error }}
+    </div>
+
+    <div class="col-md-6">
+        <label for="id_Pai" class="form-label">NOME DO PAI:</label>
+        {{ form.Pai }}
+        {{ form.Pai.error }}
+    </div>
+
+    <div class="col-md-3">
+        <label for="id_DataNascimento" class="form-label">DATA NASCIMENTO:</label>
+        {{ form.DataNascimento }}
+        {{ form.DataNascimento.error }}
+    </div>
+
+    <div class="col-md-3">
+        <label for="id_Categoria" class="form-label">CATEGORIA:</label>
+        {{ form.Categoria }}
+        {{ form.Categoria.error }}
+    </div>
+
+    <div class="col-md-3">
+        <label for="id_DataAdmissao" class="form-label">DATA ADMISSÃO:</label>
+        {{ form.DataAdmissao }}
+        {{ form.DataAdmissao.error }}
+    </div>
+
+    <div class="col-md-3">
+        <label for="id_TipoPgto" class="form-label">TIPO DE PAGAMENTO:</label>
+        {{ form.TipoPgto }}
+        {{ form.TipoPgto.error }}
+    </div>
+
+    <div class="col-md-3">
+        <label for="id_Foto" class="form-label">FOTO DO COLABORADOR:</label>
+        {{ form.Foto }}
+        {{ form.Foto.error }}
+    </div>
+
+{% endif %}
+
+</form>

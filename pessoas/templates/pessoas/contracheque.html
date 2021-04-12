@@ -1,0 +1,94 @@
+<div class="insere-itens">
+    {% for itens in qs_contracheque %}
+    {% if not tem_adiantamento %}
+    <div class="card-base1">
+        <header>
+            <span><b>ADIANTAMENTO</b></span>
+        </header>
+        <form class="row g-3" method="post" action="{% url 'criacontrachequeitens' %}" id="form-cria-contracheque">
+            {% csrf_token %}
+            <div class="col-md-12">
+                <label for="id_Data" class="form-label">VALOR:</label>
+                {{ formcqitens.Valor }}
+                {{ formcqitens.Valor.error }}
+            </div>
+            <input type="hidden" name="Descricao" value="ADIANTAMENTO" id="id_Descricao">
+            <input type="hidden" name="Registro" value="D" id="id_Registro">
+            <input type="hidden" name="idContraCheque" value="{{ itens.idContraCheque }}" id="id_idContraCheque">
+            <input type="hidden" name="MesReferencia" value="{{ itens.MesReferencia }}" id="MesReferencia">
+            <input type="hidden" name="AnoReferencia" value="{{ itens.AnoReferencia }}" id="AnoReferencia">
+            <input type="hidden" name="idPessoal" value="{{ itens.idPessoal_id }}" id="idPessoal">
+            <footer>
+                <button class="btn btn-primary btn-xs glyphicon glyphicon-save">
+                </button>
+            </footer>
+        </form>
+    </div>
+    {% endif %}
+    <div class="card-base2 tamanho2a">
+        <header>
+            <span><b>ITEM CONTRACHEQUE</b></span>
+        </header>
+        <form class="row g-3" method="post" action="{% url 'criacontrachequeitens' %}" id="form-cria-contracheque">
+            {% csrf_token %}
+            <div class="col-md-6">
+                <label for="id_Data" class="form-label">DESCRIÇÃO:</label>
+                {{ formcqitens.Descricao }}
+                {{ formcqitens.Descricao.error }}
+            </div>
+            <div class="col-md-3">
+                <label for="id_Data" class="form-label">VALOR:</label>
+                {{ formcqitens.Valor }}
+                {{ formcqitens.Valor.error }}
+            </div>
+            <div class="col-md-3">
+                <label for="id_Data" class="form-label">REGISTRO:</label>
+                {{ formcqitens.Registro }}
+                {{ formcqitens.Registro.error }}
+            </div>
+            <input type="hidden" name="idContraCheque" value="{{ itens.idContraCheque }}" id="id_idContraCheque">
+            <input type="hidden" name="MesReferencia" value="{{ itens.MesReferencia }}" id="MesReferencia">
+            <input type="hidden" name="AnoReferencia" value="{{ itens.AnoReferencia }}" id="AnoReferencia">
+            <input type="hidden" name="idPessoal" value="{{ itens.idPessoal_id }}" id="idPessoal">
+            <footer>
+                <button class="btn btn-primary btn-xs glyphicon glyphicon-save">
+                </button>
+            </footer>
+        </form>
+    </div>
+    {% endfor %}
+</div>
+<div>
+    <table class="tb-contracheque">
+        <tr class="tb-titulo">
+            <th class="col-descricao">DESCRIÇÃO</th>
+            <th class="col-provento">PROVENTOS</th>
+            <th class="col-desconto">DESCONTOS</th>
+        </tr>
+        {% for itens in qs_contrachequeitens %}
+        <tr>
+            <td class="descricao"><span><b>{{ itens.Descricao }}</b></span></td>
+            <td class="provento">
+            {% if itens.Registro == 'C' %}
+            <span class="valor-debito">R$ {{ itens.Valor }}</span>
+            {% endif %}
+            </td>
+            <td class="desconto">
+            {% if itens.Registro == 'D' %}
+            <span class="valor-credito">R$ {{ itens.Valor }}</span>
+            {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td class="fim-descricao"></td>
+            <td class="provento tb-titulo"><span id="total-credito">R$ {{ totais.Credito }}</span></td>
+            <td class="desconto tb-titulo"><span id="total-debito">R$ {{ totais.Debito }}</span></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td class="provento">LIQUIDO A RECEBER &#x2794</td>
+            <td class="desconto"><span id="total-liquido">R$ {{ totais.Liquido }}</span></td>
+        </tr>
+    </table>
+</div>

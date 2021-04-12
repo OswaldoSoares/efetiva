@@ -1233,6 +1233,88 @@ main .card-base2 footer {
     border-top: 1px solid black;
 }
 
+main .card-base2 form .col-md-6 {
+    padding: 5px 10px;
+}
+
+main .card-base3 form .col-md-6 {
+    padding: 5px 10px;
+}
+
+main .tamanho2a {
+    width: 560px;
+}
+
+main .contracheque-coluna1 {
+    width: 25%;
+}
+
+main .contracheque-coluna2 {
+    width: 75%;
+}
+main .contracheque-coluna2 .insere-itens{
+    display: flex;
+}
+
+main .contracheque-coluna1 .referencia {
+    min-height: 0;
+    max-height: 208px;
+}
+
+main .contracheque-coluna1 section a {
+    color: var(--corprincipal);
+}
+
+main .contracheque-coluna2 div .tb-contracheque {
+    margin-left: 5px;
+    width: 80%;
+    border: solid 1px black;
+    border-radius: 5px;
+}
+
+main .contracheque-coluna2 div .tb-contracheque .tb-titulo {
+    border: solid 1px black;
+}
+
+main .contracheque-coluna2 div .tb-contracheque .col-descricao {
+    padding: 5px;
+    width: 50%;
+    text-align: center;
+}
+
+main .contracheque-coluna2 div .tb-contracheque .col-provento {
+    padding: 5px;
+    width: 25%;
+    text-align: center;
+}
+
+main .contracheque-coluna2 div .tb-contracheque .col-desconto {
+    padding: 5px;
+    width: 25%;
+    text-align: center;
+}
+
+main .contracheque-coluna2 div .tb-contracheque .descricao {
+    padding-left: 5px;
+    text-align: left;
+}
+
+main .contracheque-coluna2 div .tb-contracheque .provento {
+    border-left: solid 1px black;
+    padding-right: 5px;
+    text-align: right;
+}
+
+main .contracheque-coluna2 div .tb-contracheque .desconto {
+    border-left: solid 1px black;
+    padding-right: 5px;
+    text-align: right;
+}
+
+main .contracheque-coluna2 div .tb-contracheque .fim-descricao {
+    border-top: solid 1px black;
+}
+
 main .card-base3 {
     background: var(--corsecundaria);
     color: var(--corprincipal);
@@ -1976,6 +2058,7 @@ main .usuario-out {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin-bottom: 20px;
 }
 .pagamento-conteudo header h3 {
     color: var(--corsecundaria);
@@ -1987,16 +2070,16 @@ main .usuario-out {
     width: 100%;
     padding: 5px;
 }
-.pagamento-conteudo main form {
+.pagamento-conteudo main .pagamento-selecao {
     width: 100%;
     display: flex;
 }
-.pagamento-conteudo main form .pagamento-base-colaboradores {
+.pagamento-conteudo main .pagamento-selecao .pagamento-base-colaboradores {
     background-color: var(--corprincipal);
     color: var(--corsecundaria);
     width:  60%;
 }
-.pagamento-conteudo main form .pagamento-base-itens {
+.pagamento-conteudo main .pagamento-selecao .pagamento-base-itens {
     background-color: var(--corsecundaria);
     color: var(--corprincipal);
     width:  40%;

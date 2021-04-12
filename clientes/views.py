@@ -29,7 +29,7 @@ def consulta_cliente(request, idcliente):
 
 def cria_cliente(request):
     c_form = CadastraCliente
-    c_idobj = None,
+    c_idobj = None
     c_url = '/clientes/criacliente/'
     c_view = 'cria_cliente'
     idcliente = None

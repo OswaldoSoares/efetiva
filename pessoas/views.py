@@ -3,8 +3,10 @@ from django.shortcuts import redirect, get_object_or_404
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from rolepermissions.decorators import has_permission_decorator
+from pessoas import facade
 from .models import Pessoal, DocPessoal, FonePessoal, ContaPessoal
-from .forms import CadastraPessoal, CadastraDocPessoal, CadastraFonePessoal, CadastraContaPessoal
+from .forms import CadastraPessoal, CadastraDocPessoal, CadastraFonePessoal, CadastraContaPessoal, CadastraSalario, \
+    CadastraVale
 
 
 def removeduplicadas(lista):
@@ -34,21 +36,36 @@ def indexpessoal(request):
     )
 
 
-def criapessoa(request):
-    if request.method == 'POST':
-        form = CadastraPessoal(request.POST, request.FILES or None)
-    else:
-        form = CadastraPessoal()
-    return salva_form(request, form, 'pessoas/criapessoa.html', 0)
+def cria_pessoa(request):
+    print('ok')
+    c_form = CadastraPessoal
+    c_idobj = None
+    c_url = '/pessoas/criapessoa/'
+    c_view = 'cria_pessoa'
+    idpessoal = None
+    data = facade.form_pessoa(request, c_form, c_idobj, c_url, c_view, idpessoal)
+    return data
+    # if request.method == 'POST':
+    #     form = CadastraPessoal(request.POST, request.FILES or None)
+    # else:
+    #     form = CadastraPessoal()
+    # return salva_form(request, form, 'pessoas/criapessoa.html', 0)
 
 
-def editapessoa(request, idpes):
-    pessoa = get_object_or_404(Pessoal, idPessoal=idpes)
-    if request.method == 'POST':
-        form = CadastraPessoal(request.POST, request.FILES, instance=pessoa)
-    else:
-        form = CadastraPessoal(instance=pessoa)
-    return salva_form(request, form, 'pessoas/editapessoa.html', idpes)
+def edita_pessoa(request, idpessoa):
+    c_form = CadastraPessoal
+    c_idobj = idpessoa
+    c_url = '/pessoas/editapessoa/{}/'.format(c_idobj)
+    c_view = 'edita_pessoa'
+    idpessoal = 'edita_pessoa'
+    data = facade.form_pessoa(request, c_form, c_idobj, c_url, c_view, idpessoal)
+    return data
+    # pessoa = get_object_or_404(Pessoal, idPessoal=idpes)
+    # if request.method == 'POST':
+    #     form = CadastraPessoal(request.POST, request.FILES, instance=pessoa)
+    # else:
+    #     form = CadastraPessoal(instance=pessoa)
+    # return salva_form(request, form, 'pessoas/editapessoa.html', idpes)
 
 
 def excluipessoa(request, idpes):
@@ -129,17 +146,11 @@ def excluicontapessoa(request, idpescon):
     return JsonResponse(data)
 
 
-def consultapessoa(request, idpes):
-    pessoa = Pessoal.objects.filter(idPessoal=idpes)
-    docpessoa = DocPessoal.objects.filter(idPessoal=idpes)
-    fonepessoa = FonePessoal.objects.filter(idPessoal=idpes)
-    contapessoa = ContaPessoal.objects.filter(idPessoal=idpes)
-    if request.method == 'POST':
-        redirect('consultapessoa', idpes)
-    return render(request, 'pessoas/consultapessoa.html', {'pessoa': pessoa,
-                                                           'docpessoa': docpessoa,
-                                                           'fonepessoa': fonepessoa,
-                                                           'contapessoa': contapessoa})
+def consulta_pessoa(request, idpessoa):
+    contexto = facade.create_pessoal_context(idpessoa)
+    # if request.method == 'POST':
+    #     redirect('consultapessoa', idpessoa)
+    return render(request, 'pessoas/consultapessoa.html', contexto)
 
 
 def salva_form(request, form, template_name, idpes):
@@ -157,3 +168,50 @@ def salva_form(request, form, template_name, idpes):
     context = {'form': form}
     data['html_form'] = render_to_string(template_name, context, request=request)
     return JsonResponse(data)
+
+
+def edita_salario(request):
+    idpessoal = request.POST.get('idPessoal')
+    salario = request.POST.get('Salario')
+    horas_mensais = float(request.POST.get('HorasMensais'))
+    facade.save_salario(idpessoal, salario, horas_mensais)
+    return redirect('consultapessoa', idpessoal)
+
+
+def cria_vale(request):
+    c_data = request.POST.get('Data')
+    c_descricao = request.POST.get('Descricao')
+    c_valor = request.POST.get('Valor')
+    c_pessoal = request.POST.get('idPessoal')
+    facade.create_vale(c_data, c_descricao, c_valor, c_pessoal)
+    return render(request, 'pessoas/consultapessoa.html')
+
+
+def cria_contracheque(request):
+    c_mesreferencia = request.POST.get('MesReferencia')
+    c_anoreferencia = request.POST.get('AnoReferencia')
+    c_valor = 0.00
+    c_pessoal = request.POST.get('idPessoal')
+    facade.create_contracheque(c_mesreferencia, c_anoreferencia, c_valor, c_pessoal)
+    return redirect('consultapessoa', c_pessoal)
+
+
+def seleciona_contracheque(request):
+    c_idpessoal = request.GET.get('idpessoal')
+    c_mes = request.GET.get('mes')
+    c_ano = request.GET.get('ano')
+    data = facade.seleciona_contracheque(request, c_mes, c_ano, c_idpessoal)
+    return data
+
+
+def cria_contrachequeitens(request):
+    c_idcontracheque = request.POST.get('idContraCheque')
+    c_descricao = request.POST.get('Descricao')
+    c_valor = request.POST.get('Valor')
+    c_registro = request.POST.get('Registro')
+    c_mes = request.POST.get('MesReferencia')
+    c_ano = request.POST.get('AnoReferencia')
+    c_idpessoal = request.POST.get('idPessoal')
+    facade.create_contracheque_itens(c_descricao, c_valor, c_registro, c_idcontracheque)
+    data = facade.seleciona_contracheque(request, c_mes, c_ano, c_idpessoal)
+    return data
