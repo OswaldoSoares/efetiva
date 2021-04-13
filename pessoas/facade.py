@@ -142,7 +142,10 @@ def seleciona_contracheque(request, mesreferencia, anoreferencia, idpessoal):
                                                Registro='C').aggregate(Total=Sum('Valor'))
     debito = ContraChequeItens.objects.filter(idContraCheque=qs_contracheque[0].idContraCheque,
                                               Registro='D').aggregate(Total=Sum('Valor'))
-    totais = {'Credito': credito['Total'], 'Debito': debito['Total'], 'Liquido': credito['Total'] - debito['Total']}
+    totais = {'Credito': 0.00, 'Debito': 0.00, 'Liquido': 0.00}
+    if credito:
+        if debito:
+            totais = {'Credito': credito['Total'], 'Debito': debito['Total'], 'Liquido': credito['Total'] - debito['Total']}
     tem_adiantamento = False
     if busca_contrachequeitens(qs_contracheque[0].idContraCheque, 'ADIANTAMENTO', 'D'):
         tem_adiantamento = True
