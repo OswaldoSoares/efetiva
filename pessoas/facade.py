@@ -1,6 +1,7 @@
 from django.db.models import Sum
 from django.http import JsonResponse
 from django.template.loader import render_to_string
+from decimal import Decimal
 
 from pessoas.forms import CadastraSalario, CadastraVale, CadastraContraCheque, CadastraContraChequeItens
 from pessoas.models import Pessoal, Salario, DocPessoal, FonePessoal, ContaPessoal, Vales, ContraCheque, \
@@ -142,10 +143,13 @@ def seleciona_contracheque(request, mesreferencia, anoreferencia, idpessoal):
                                                Registro='C').aggregate(Total=Sum('Valor'))
     debito = ContraChequeItens.objects.filter(idContraCheque=qs_contracheque[0].idContraCheque,
                                               Registro='D').aggregate(Total=Sum('Valor'))
-    totais = {'Credito': 0.00, 'Debito': 0.00, 'Liquido': 0.00}
-    if credito:
-        if debito:
-            totais = {'Credito': credito['Total'], 'Debito': debito['Total'], 'Liquido': credito['Total'] - debito['Total']}
+    if credito['Total'] == None:
+        credito['Total'] = Decimal('0.00')
+    if debito['Total'] == None:
+        debito['Total'] = Decimal('0.00')
+    # totais = {'Credito': 0.00, 'Debito': 0.00, 'Liquido': 0.00}
+    print(credito, debito)
+    totais = {'Credito': credito['Total'], 'Debito': debito['Total'], 'Liquido': credito['Total'] - debito['Total']}
     tem_adiantamento = False
     if busca_contrachequeitens(qs_contracheque[0].idContraCheque, 'ADIANTAMENTO', 'D'):
         tem_adiantamento = True
