@@ -171,36 +171,36 @@ class Salario(models.Model):
     objects = models.Manager()
 
 
-# class ContraCheque(models.Model):
-#     idContraCheque = models.AutoField(primary_key=True)
-#     MesReferencia = models.CharField(max_length=9)
-#     AnoReferencia = models.IntegerField()
-#     Valor = models.DecimalField(decimal_places=2, max_digits=9, default=0.00)
-#     Pago = models.BooleanField(default=False)
-#     idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
-#
-#     class Meta:
-#         db_table = 'ContraCheque'
-#         ordering = ['-idContraCheque']
-#
-#     def __str__(self):
-#         return f'{self.MesReferencia}/{self.AnoReferencia}'
-#
-#     objects = models.Manager()
-#
-#
-# class ContraChequeItens(models.Model):
-#     idContraChequeItens = models.AutoField(primary_key=True)
-#     Descricao = models.TextField(max_length=50)
-#     Valor = models.DecimalField(decimal_places=2, max_digits=9, default=0.00)
-#     Registro = models.CharField(max_length=1)
-#     idContraCheque = models.ForeignKey(ContraCheque, on_delete=models.CASCADE)
-#
-#     class Meta:
-#         db_table = 'ContraChequeItens'
-#         ordering = ['Descricao']
-#
-#     def __str__(self):
-#         return self.Descricao
-#
-#     objects = models.Manager()
+class ContraCheque(models.Model):
+    idContraCheque = models.AutoField(primary_key=True)
+    MesReferencia = models.CharField(max_length=9)
+    AnoReferencia = models.IntegerField()
+    Valor = models.DecimalField(decimal_places=2, max_digits=9, default=0.00)
+    Pago = models.BooleanField(default=False)
+    idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'ContraCheque'
+        ordering = ['-idContraCheque']
+
+    def __str__(self):
+        return f'{self.MesReferencia}/{self.AnoReferencia}'
+
+    objects = models.Manager()
+
+
+class ContraChequeItens(models.Model):
+    idContraChequeItens = models.AutoField(primary_key=True)
+    Descricao = models.TextField(max_length=50)
+    Valor = models.DecimalField(decimal_places=2, max_digits=9, default=0.00)
+    Registro = models.CharField(max_length=1)
+    idContraCheque = models.ForeignKey(ContraCheque, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'ContraChequeItens'
+        ordering = ['Descricao']
+
+    def __str__(self):
+        return self.Descricao
+
+    objects = models.Manager()
