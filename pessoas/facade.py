@@ -2,11 +2,9 @@ from django.db.models import Sum
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 
-from pessoas.forms import CadastraSalario, CadastraVale\
-    # , CadastraContraCheque, CadastraContraChequeItens
-from pessoas.models import Pessoal, Salario, DocPessoal, FonePessoal, ContaPessoal, Vales\
-    # , ContraCheque, \
-    # ContraChequeItens
+from pessoas.forms import CadastraSalario, CadastraVale, CadastraContraCheque, CadastraContraChequeItens
+from pessoas.models import Pessoal, Salario, DocPessoal, FonePessoal, ContaPessoal, Vales, ContraCheque, \
+    ContraChequeItens
 
 
 def create_pessoal_context(idpessoa: int):
@@ -94,65 +92,65 @@ def create_vale(data, descricao, valor, idpessoal):
     obj.save()
 
 
-# def create_contracheque(mesreferencia, anoreferencia, valor, idpessoal):
-#     meses = ['JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL', 'MAIO', 'JUNHO', 'JULHO', 'AGOSTO', 'SETEMBRO', 'OUTUBRO',
-#              'NOVEMBRO', 'DEZEMBRO']
-#     salario = get_salario(idpessoal)
-#     if not busca_contracheque(meses[int(mesreferencia)-1], anoreferencia, idpessoal):
-#         obj = ContraCheque()
-#         obj.MesReferencia = meses[int(mesreferencia)-1]
-#         obj.AnoReferencia = anoreferencia
-#         obj.Valor = valor
-#         obj.idPessoal_id = idpessoal
-#         obj.save()
-#         create_contracheque_itens('Salario Base', salario[0].Salario, 'C', obj.idContraCheque)
-#
-#
-# def create_contracheque_itens(descricao, valor, registro, idcontracheque):
-#     if not busca_contrachequeitens(idcontracheque, descricao, registro):
-#         obj = ContraChequeItens()
-#         obj.Descricao = descricao
-#         obj.Valor = valor
-#         obj.Registro = registro
-#         obj.idContraCheque_id = idcontracheque
-#         if float(valor) > 0:
-#             obj.save()
-#
-#
-# def busca_contracheque(mesreferencia, anoreferencia, idpessoal):
-#     qs_contracheque = ContraCheque.objects.filter(MesReferencia=mesreferencia, AnoReferencia=anoreferencia,
-#                                                   idPessoal=idpessoal)
-#     if qs_contracheque:
-#         return True
-#
-#
-# def busca_contrachequeitens(idcontracheque, descricao, registro):
-#     qs_contrachequeitens = ContraChequeItens.objects.filter(idContraCheque=idcontracheque, Descricao=descricao,
-#                                                             Registro=registro)
-#     if qs_contrachequeitens:
-#         return True
-#
-#
-# def seleciona_contracheque(request, mesreferencia, anoreferencia, idpessoal):
-#     data = dict()
-#     formcqitens = CadastraContraChequeItens()
-#     qs_contracheque = ContraCheque.objects.filter(MesReferencia=mesreferencia, AnoReferencia=anoreferencia,
-#                                                   idPessoal=idpessoal)
-#     qs_contrachequeitens = ContraChequeItens.objects.filter(idContraCheque=qs_contracheque[0].idContraCheque).order_by(
-#         'Registro')
-#     credito = ContraChequeItens.objects.filter(idContraCheque=qs_contracheque[0].idContraCheque,
-#                                                Registro='C').aggregate(Total=Sum('Valor'))
-#     debito = ContraChequeItens.objects.filter(idContraCheque=qs_contracheque[0].idContraCheque,
-#                                               Registro='D').aggregate(Total=Sum('Valor'))
-#     totais = {'Credito': credito['Total'], 'Debito': debito['Total'], 'Liquido': credito['Total'] - debito['Total']}
-#     tem_adiantamento = False
-#     if busca_contrachequeitens(qs_contracheque[0].idContraCheque, 'ADIANTAMENTO', 'D'):
-#         tem_adiantamento = True
-#     context = {'formcqitens': formcqitens, 'qs_contracheque': qs_contracheque, 'qs_contrachequeitens':
-#                qs_contrachequeitens, 'tem_adiantamento': tem_adiantamento, 'totais': totais}
-#     data['html_contracheque'] = render_to_string('pessoas/contracheque.html', context, request=request)
-#     c_return = JsonResponse(data)
-#     return c_return
+def create_contracheque(mesreferencia, anoreferencia, valor, idpessoal):
+    meses = ['JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL', 'MAIO', 'JUNHO', 'JULHO', 'AGOSTO', 'SETEMBRO', 'OUTUBRO',
+             'NOVEMBRO', 'DEZEMBRO']
+    salario = get_salario(idpessoal)
+    if not busca_contracheque(meses[int(mesreferencia)-1], anoreferencia, idpessoal):
+        obj = ContraCheque()
+        obj.MesReferencia = meses[int(mesreferencia)-1]
+        obj.AnoReferencia = anoreferencia
+        obj.Valor = valor
+        obj.idPessoal_id = idpessoal
+        obj.save()
+        create_contracheque_itens('Salario Base', salario[0].Salario, 'C', obj.idContraCheque)
+
+
+def create_contracheque_itens(descricao, valor, registro, idcontracheque):
+    if not busca_contrachequeitens(idcontracheque, descricao, registro):
+        obj = ContraChequeItens()
+        obj.Descricao = descricao
+        obj.Valor = valor
+        obj.Registro = registro
+        obj.idContraCheque_id = idcontracheque
+        if float(valor) > 0:
+            obj.save()
+
+
+def busca_contracheque(mesreferencia, anoreferencia, idpessoal):
+    qs_contracheque = ContraCheque.objects.filter(MesReferencia=mesreferencia, AnoReferencia=anoreferencia,
+                                                  idPessoal=idpessoal)
+    if qs_contracheque:
+        return True
+
+
+def busca_contrachequeitens(idcontracheque, descricao, registro):
+    qs_contrachequeitens = ContraChequeItens.objects.filter(idContraCheque=idcontracheque, Descricao=descricao,
+                                                            Registro=registro)
+    if qs_contrachequeitens:
+        return True
+
+
+def seleciona_contracheque(request, mesreferencia, anoreferencia, idpessoal):
+    data = dict()
+    formcqitens = CadastraContraChequeItens()
+    qs_contracheque = ContraCheque.objects.filter(MesReferencia=mesreferencia, AnoReferencia=anoreferencia,
+                                                  idPessoal=idpessoal)
+    qs_contrachequeitens = ContraChequeItens.objects.filter(idContraCheque=qs_contracheque[0].idContraCheque).order_by(
+        'Registro')
+    credito = ContraChequeItens.objects.filter(idContraCheque=qs_contracheque[0].idContraCheque,
+                                               Registro='C').aggregate(Total=Sum('Valor'))
+    debito = ContraChequeItens.objects.filter(idContraCheque=qs_contracheque[0].idContraCheque,
+                                              Registro='D').aggregate(Total=Sum('Valor'))
+    totais = {'Credito': credito['Total'], 'Debito': debito['Total'], 'Liquido': credito['Total'] - debito['Total']}
+    tem_adiantamento = False
+    if busca_contrachequeitens(qs_contracheque[0].idContraCheque, 'ADIANTAMENTO', 'D'):
+        tem_adiantamento = True
+    context = {'formcqitens': formcqitens, 'qs_contracheque': qs_contracheque, 'qs_contrachequeitens':
+               qs_contrachequeitens, 'tem_adiantamento': tem_adiantamento, 'totais': totais}
+    data['html_contracheque'] = render_to_string('pessoas/contracheque.html', context, request=request)
+    c_return = JsonResponse(data)
+    return c_return
 
 
 def form_pessoa(request, c_form, c_idobj, c_url, c_view, idpessoal):

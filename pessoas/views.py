@@ -187,31 +187,31 @@ def cria_vale(request):
     return render(request, 'pessoas/consultapessoa.html')
 
 
-# def cria_contracheque(request):
-#     c_mesreferencia = request.POST.get('MesReferencia')
-#     c_anoreferencia = request.POST.get('AnoReferencia')
-#     c_valor = 0.00
-#     c_pessoal = request.POST.get('idPessoal')
-#     facade.create_contracheque(c_mesreferencia, c_anoreferencia, c_valor, c_pessoal)
-#     return redirect('consultapessoa', c_pessoal)
-#
-#
-# def seleciona_contracheque(request):
-#     c_idpessoal = request.GET.get('idpessoal')
-#     c_mes = request.GET.get('mes')
-#     c_ano = request.GET.get('ano')
-#     data = facade.seleciona_contracheque(request, c_mes, c_ano, c_idpessoal)
-#     return data
-#
-#
-# def cria_contrachequeitens(request):
-#     c_idcontracheque = request.POST.get('idContraCheque')
-#     c_descricao = request.POST.get('Descricao')
-#     c_valor = request.POST.get('Valor')
-#     c_registro = request.POST.get('Registro')
-#     c_mes = request.POST.get('MesReferencia')
-#     c_ano = request.POST.get('AnoReferencia')
-#     c_idpessoal = request.POST.get('idPessoal')
-#     facade.create_contracheque_itens(c_descricao, c_valor, c_registro, c_idcontracheque)
-#     data = facade.seleciona_contracheque(request, c_mes, c_ano, c_idpessoal)
-#     return data
+def cria_contracheque(request):
+    c_mesreferencia = request.POST.get('MesReferencia')
+    c_anoreferencia = request.POST.get('AnoReferencia')
+    c_valor = 0.00
+    c_pessoal = request.POST.get('idPessoal')
+    facade.create_contracheque(c_mesreferencia, c_anoreferencia, c_valor, c_pessoal)
+    return redirect('consultapessoa', c_pessoal)
+
+
+def seleciona_contracheque(request):
+    c_idpessoal = request.GET.get('idpessoal')
+    c_mes = request.GET.get('mes')
+    c_ano = request.GET.get('ano')
+    data = facade.seleciona_contracheque(request, c_mes, c_ano, c_idpessoal)
+    return data
+
+
+def cria_contrachequeitens(request):
+    c_idcontracheque = request.POST.get('idContraCheque')
+    c_descricao = request.POST.get('Descricao')
+    c_valor = request.POST.get('Valor')
+    c_registro = request.POST.get('Registro')
+    c_mes = request.POST.get('MesReferencia')
+    c_ano = request.POST.get('AnoReferencia')
+    c_idpessoal = request.POST.get('idPessoal')
+    facade.create_contracheque_itens(c_descricao, c_valor, c_registro, c_idcontracheque)
+    data = facade.seleciona_contracheque(request, c_mes, c_ano, c_idpessoal)
+    return data
