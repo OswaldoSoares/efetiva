@@ -1,7 +1,8 @@
 import datetime
 
 from django import forms
-from .models import Pessoal, DocPessoal, FonePessoal, ContaPessoal, Salario, Vales, ContraCheque, ContraChequeItens
+from .models import Pessoal, DocPessoal, FonePessoal, ContaPessoal, Salario, Vales\
+    # , ContraCheque, ContraChequeItens
 
 
 CATEGORIAS = [('', ''), ('AGREGADO', 'AGREGADO'), ('AJUDANTE', 'AJUDANTE'), ('FUNCIONÁRIO', 'FUNCIONÁRIO'),
@@ -113,26 +114,26 @@ class CadastraVale(forms.ModelForm):
                    'Valor': forms.NumberInput(attrs={'class': 'form-control'})}
 
 
-class CadastraContraCheque(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(CadastraContraCheque, self).__init__(*args, **kwargs)
-        self.fields['MesReferencia'].initial = hoje.month
-        self.fields['AnoReferencia'].initial = hoje.year
-
-    class Meta:
-        model = ContraCheque
-        fields = ('MesReferencia', 'AnoReferencia', 'Valor', 'idPessoal')
-        labels = {'MesReferencia': 'MÊS REFERÊNCIA', 'AnoReferencia': 'ANO REFERÊNCIA'}
-        widgets = {'MesReferencia': forms.Select(attrs={'class': 'form-control'}, choices=MESREFERENCIA),
-                   'AnoReferencia': forms.Select(attrs={'class': 'form-control'}, choices=ANOREFERENCIA)}
-
-
-class CadastraContraChequeItens(forms.ModelForm):
-    class Meta:
-        model = ContraChequeItens
-        fields = ('Descricao', 'Valor', 'Registro', 'idContraCheque')
-        lables = {'Descricao': 'DESCRIÇÃO', 'Valor': 'VALOR'}
-        widgets = {'Descricao': forms.TextInput(attrs={'class': 'form-control'}),
-                   'Valor': forms.NumberInput(attrs={'class': 'form-control'}),
-                   'Registro': forms.Select(attrs={'class': 'form-control'}, choices=[('C', 'CRÉDITO'),
-                                                                                      ('D', 'DÉBITO')])}
+# class CadastraContraCheque(forms.ModelForm):
+#     def __init__(self, *args, **kwargs):
+#         super(CadastraContraCheque, self).__init__(*args, **kwargs)
+#         self.fields['MesReferencia'].initial = hoje.month
+#         self.fields['AnoReferencia'].initial = hoje.year
+#
+#     class Meta:
+#         model = ContraCheque
+#         fields = ('MesReferencia', 'AnoReferencia', 'Valor', 'idPessoal')
+#         labels = {'MesReferencia': 'MÊS REFERÊNCIA', 'AnoReferencia': 'ANO REFERÊNCIA'}
+#         widgets = {'MesReferencia': forms.Select(attrs={'class': 'form-control'}, choices=MESREFERENCIA),
+#                    'AnoReferencia': forms.Select(attrs={'class': 'form-control'}, choices=ANOREFERENCIA)}
+#
+#
+# class CadastraContraChequeItens(forms.ModelForm):
+#     class Meta:
+#         model = ContraChequeItens
+#         fields = ('Descricao', 'Valor', 'Registro', 'idContraCheque')
+#         lables = {'Descricao': 'DESCRIÇÃO', 'Valor': 'VALOR'}
+#         widgets = {'Descricao': forms.TextInput(attrs={'class': 'form-control'}),
+#                    'Valor': forms.NumberInput(attrs={'class': 'form-control'}),
+#                    'Registro': forms.Select(attrs={'class': 'form-control'}, choices=[('C', 'CRÉDITO'),
+#                                                                                       ('D', 'DÉBITO')])}
