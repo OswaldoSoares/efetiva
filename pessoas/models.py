@@ -203,4 +203,9 @@ class ContraChequeItens(models.Model):
     def __str__(self):
         return self.Descricao
 
+    def save(self, *args, **kwargs):
+        self.Descricao = self.Descricao.upper()
+
+        super(ContraChequeItens, self).save(*args, **kwargs)
+
     objects = models.Manager()
