@@ -176,6 +176,7 @@ class ContraCheque(models.Model):
     MesReferencia = models.CharField(max_length=9)
     AnoReferencia = models.IntegerField()
     Valor = models.DecimalField(decimal_places=2, max_digits=9, default=0.00)
+    Pago = models.BooleanField(default=False)
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
 
     class Meta:
