@@ -1,12 +1,15 @@
+from django.db.models import Sum
 from django.shortcuts import render
 from django.shortcuts import redirect, get_object_or_404
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from rolepermissions.decorators import has_permission_decorator
 from pessoas import facade
-from .models import Pessoal, DocPessoal, FonePessoal, ContaPessoal
+from .models import Pessoal, DocPessoal, FonePessoal, ContaPessoal, ContraChequeItens
 from .forms import CadastraPessoal, CadastraDocPessoal, CadastraFonePessoal, CadastraContaPessoal, CadastraSalario, \
     CadastraVale
+from .print import print_contracheque
+from decimal import Decimal
 
 
 def removeduplicadas(lista):
@@ -215,3 +218,23 @@ def cria_contrachequeitens(request):
     facade.create_contracheque_itens(c_descricao, c_valor, c_registro, c_idcontracheque)
     data = facade.seleciona_contracheque(request, c_mes, c_ano, c_idpessoal)
     return data
+
+
+def imprime_contracheque(request, idcontracheque):
+    contracheque = facade.get_contrachequeid(idcontracheque)
+    contrachequeitens = facade.get_contracheque_itens(idcontracheque)
+    colaborador = facade.get_pessoal(contracheque[0].idPessoal_id)
+    credito = ContraChequeItens.objects.filter(idContraCheque=contracheque[0].idContraCheque,
+                                               Registro='C').aggregate(Total=Sum('Valor'))
+    debito = ContraChequeItens.objects.filter(idContraCheque=contracheque[0].idContraCheque,
+                                              Registro='D').aggregate(Total=Sum('Valor'))
+    if credito['Total'] == None:
+        credito['Total'] = Decimal('0.00')
+    if debito['Total'] == None:
+        debito['Total'] = Decimal('0.00')
+    # totais = {'Credito': 0.00, 'Debito': 0.00, 'Liquido': 0.00}
+    totais = {'Credito': credito['Total'], 'Debito': debito['Total'], 'Liquido': credito['Total'] - debito['Total']}
+    contexto = {'contracheque': contracheque, 'contrachequeitens': contrachequeitens, 'colaborador': colaborador,
+                'totais': totais}
+    response = print_contracheque(contexto)
+    return response

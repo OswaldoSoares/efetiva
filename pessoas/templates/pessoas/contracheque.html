@@ -1,5 +1,5 @@
+{% for itens in qs_contracheque %}
 <div class="insere-itens">
-    {% for itens in qs_contracheque %}
     {% if not tem_adiantamento %}
     <div class="card-base1">
         <header>
@@ -56,7 +56,6 @@
             </footer>
         </form>
     </div>
-    {% endfor %}
 </div>
 <div>
     <table class="tb-contracheque">
@@ -86,9 +85,14 @@
             <td class="desconto tb-titulo"><span id="total-debito">R$ {{ totais.Debito }}</span></td>
         </tr>
         <tr>
-            <td></td>
+            <td>
+                <a class="btn btn-warning glyphicon glyphicon-print"
+                   href="{% url 'imprimecontracheque' itens.idContraCheque %}" target="_blank">
+                </a>
+            </td>
             <td class="provento">LIQUIDO A RECEBER &#x2794</td>
             <td class="desconto"><span id="total-liquido">R$ {{ totais.Liquido }}</span></td>
         </tr>
     </table>
 </div>
+{% endfor %}

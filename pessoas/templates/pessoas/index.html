@@ -50,7 +50,8 @@
                             <td>{{ itens.DataNascimento }}</td>
                             <td class="status_pessoa"><b>ATIVO</b></td>
                             <td class="seleciona_registo">
-                                <button class="btn btn-primary btn-xs" onclick="window.location.href = '{% url 'consultapessoa' itens.idPessoal %}'">
+                                <button class="btn btn-primary btn-xs"
+                                        onclick="window.location.href = '{% url 'consultapessoa' itens.idPessoal %}'">
                                     <span class="glyphicon glyphicon-folder-open"></span>
                                 </button>
                             </td>

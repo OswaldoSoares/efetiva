@@ -63,8 +63,13 @@ def get_contracheque(idpessoal: int):
     return contracheque
 
 
+def get_contrachequeid(idcontracheque: int):
+    contracheque = ContraCheque.objects.filter(idContraCheque=idcontracheque)
+    return contracheque
+
+
 def get_contracheque_itens(idcontracheque: int):
-    contracheque_itens = ContraChequeItens.objects.filter(idContraCheque_id=idcontracheque)
+    contracheque_itens = ContraChequeItens.objects.filter(idContraCheque_id=idcontracheque).order_by('Registro')
     return contracheque_itens
 
 
