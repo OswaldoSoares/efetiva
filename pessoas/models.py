@@ -209,3 +209,27 @@ class ContraChequeItens(models.Model):
         super(ContraChequeItens, self).save(*args, **kwargs)
 
     objects = models.Manager()
+
+
+class CartaoPonto(models.Model):
+    idCartaPonto = models.AutoField(primary_key=True)
+    Dia = models.DateField()
+    Entrada = models.TimeField()
+    Saida = models.TimeField()
+    Ausencia = models.CharField(max_length=7, blank=True)
+    idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'CartaoPonto'
+        ordering = ['Dia']
+
+    def __str__(self):
+        return self.idPessoal
+
+    def save(self, *args, **kwargs):
+        if self.Ausencia:
+            self.Ausencia = self.Ausencia.upper()
+
+        super(CartaoPonto, self).save(*args, **kwargs)
+
+    objects = models.Manager()
