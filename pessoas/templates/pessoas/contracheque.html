@@ -61,7 +61,7 @@
     <table class="tb-contracheque">
         <tr class="tb-titulo">
             <th class="col-descricao">DESCRIÇÃO</th>
-            <th class="col-provento">PROVENTOS</th>
+            <th class="col-provento">VENCIMENTOS</th>
             <th class="col-desconto">DESCONTOS</th>
         </tr>
         {% for itens in qs_contrachequeitens %}
@@ -92,6 +92,32 @@
             </td>
             <td class="provento">LIQUIDO A RECEBER &#x2794</td>
             <td class="desconto"><span id="total-liquido">R$ {{ totais.Liquido }}</span></td>
+        </tr>
+    </table>
+</div>
+<div class="cartao-ponto">
+    <table class="tb-contracheque">
+        <tr>
+            <td colspan="3">{{ itens.MesReferencia }}/{{ itens.AnoReferencia }}</td>
+            <td>
+                <button class="btn btn-primary btn-xs glyphicon glyphicon-save">
+                </button>
+            </td>
+        </tr>
+        <tr>
+            <td>DIA</td>
+            <td>ENTRADA</td>
+            <td>SAÍDA</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
         </tr>
     </table>
 </div>

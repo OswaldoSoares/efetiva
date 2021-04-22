@@ -204,6 +204,9 @@ def seleciona_contracheque(request):
     c_mes = request.GET.get('mes')
     c_ano = request.GET.get('ano')
     data = facade.seleciona_contracheque(request, c_mes, c_ano, c_idpessoal)
+    facade.create_cartaoponto('ABRIL', '2021', 6)
+    facade.create_cartaoponto('MARÇO', '2021', 6)
+    facade.create_cartaoponto('FEVEREIRO', '2021', 6)
     return data
 
 

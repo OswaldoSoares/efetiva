@@ -1,3 +1,6 @@
+import calendar
+import datetime
+
 from django.db.models import Sum
 from django.http import JsonResponse
 from django.template.loader import render_to_string
@@ -5,7 +8,7 @@ from decimal import Decimal
 
 from pessoas.forms import CadastraSalario, CadastraVale, CadastraContraCheque, CadastraContraChequeItens
 from pessoas.models import Pessoal, Salario, DocPessoal, FonePessoal, ContaPessoal, Vales, ContraCheque, \
-    ContraChequeItens
+    ContraChequeItens, CartaoPonto
 
 
 def create_pessoal_context(idpessoa: int):
@@ -148,9 +151,9 @@ def seleciona_contracheque(request, mesreferencia, anoreferencia, idpessoal):
                                                Registro='C').aggregate(Total=Sum('Valor'))
     debito = ContraChequeItens.objects.filter(idContraCheque=qs_contracheque[0].idContraCheque,
                                               Registro='D').aggregate(Total=Sum('Valor'))
-    if credito['Total'] == None:
+    if not credito['Total']:
         credito['Total'] = Decimal('0.00')
-    if debito['Total'] == None:
+    if not debito['Total']:
         debito['Total'] = Decimal('0.00')
     # totais = {'Credito': 0.00, 'Debito': 0.00, 'Liquido': 0.00}
     print(credito, debito)
@@ -163,6 +166,28 @@ def seleciona_contracheque(request, mesreferencia, anoreferencia, idpessoal):
     data['html_contracheque'] = render_to_string('pessoas/contracheque.html', context, request=request)
     c_return = JsonResponse(data)
     return c_return
+
+
+def create_cartaoponto(mesreferencia, anoreferencia, idpessoal):
+    meses = ['JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL', 'MAIO', 'JUNHO', 'JULHO', 'AGOSTO', 'SETEMBRO', 'OUTUBRO',
+             'NOVEMBRO', 'DEZEMBRO']
+    dias = ['SEGUNDA-FEIRA', 'TERÇA-FEIRA', 'QUARTA-FEIRA', 'QUINTA-FEIRA', 'SEXTA-FEIRA', 'SÁBADO', 'DOMINGO']
+    mes = meses.index(mesreferencia)+1
+    referencia = calendar.monthrange(int(anoreferencia), mes)
+    for x in range(1, referencia[1]+1):
+        dia = '{}-{}-{}'.format(anoreferencia, mes, x)
+        dia = datetime.datetime.strptime(dia, '%Y-%m-%d')
+        obj = CartaoPonto()
+        obj.Dia = dia
+        obj.Entrada = '01:00'
+        obj.Saida = '18:00'
+        if dia.weekday() == 5 or dia.weekday() == 6:
+            obj.Ausencia = dias[dia.weekday()]
+        else:
+            obj.Ausencia = ''
+        print(dia, obj.Ausencia, dia.weekday())
+        obj.idPessoal_id = idpessoal
+        # obj.save()
 
 
 def form_pessoa(request, c_form, c_idobj, c_url, c_view, idpessoal):
