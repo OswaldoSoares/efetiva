@@ -98,7 +98,7 @@
 <div class="cartao-ponto">
     <table class="tb-contracheque">
         <tr>
-            <td colspan="3">{{ itens.MesReferencia }}/{{ itens.AnoReferencia }}</td>
+            <td colspan="2">{{ itens.MesReferencia }}/{{ itens.AnoReferencia }}</td>
             <td>
                 <button class="btn btn-primary btn-xs glyphicon glyphicon-save">
                 </button>
@@ -108,14 +108,18 @@
             <td>DIA</td>
             <td>ENTRADA</td>
             <td>SAÍDA</td>
-            <td></td>
         </tr>
+        {% for dias in cartaoponto %}
         <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>{{ dias.Dia }}</td>
+            {% if dias.Ausencia %}
+            <td colspan="2">{{ dias.Ausencia }}</td>
+            {% else %}
+            <td>{{ dias.Entrada }}</td>
+            <td>{{ dias.Saida }}</td>
+            {% endif %}
         </tr>
+        {% endfor %}
         <tr>
             <td></td>
         </tr>

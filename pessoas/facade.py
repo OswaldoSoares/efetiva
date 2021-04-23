@@ -151,6 +151,15 @@ def seleciona_contracheque(request, mesreferencia, anoreferencia, idpessoal):
                                                Registro='C').aggregate(Total=Sum('Valor'))
     debito = ContraChequeItens.objects.filter(idContraCheque=qs_contracheque[0].idContraCheque,
                                               Registro='D').aggregate(Total=Sum('Valor'))
+    meses = ['JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL', 'MAIO', 'JUNHO', 'JULHO', 'AGOSTO', 'SETEMBRO', 'OUTUBRO',
+             'NOVEMBRO', 'DEZEMBRO']
+    mes = meses.index(mesreferencia) + 1
+    dia = '{}-{}-{}'.format(anoreferencia, mes, 1)
+    dia = datetime.datetime.strptime(dia, '%Y-%m-%d')
+    referencia = calendar.monthrange(int(anoreferencia), mes)
+    diafinal = '{}-{}-{}'.format(anoreferencia, mes, referencia[1])
+    diafinal = datetime.datetime.strptime(diafinal, '%Y-%m-%d')
+    cartaoponto = CartaoPonto.objects.filter(Dia__range=[dia, diafinal], idPessoal=idpessoal)
     if not credito['Total']:
         credito['Total'] = Decimal('0.00')
     if not debito['Total']:
@@ -160,7 +169,7 @@ def seleciona_contracheque(request, mesreferencia, anoreferencia, idpessoal):
     if busca_contrachequeitens(qs_contracheque[0].idContraCheque, 'ADIANTAMENTO', 'D'):
         tem_adiantamento = True
     context = {'formcqitens': formcqitens, 'qs_contracheque': qs_contracheque, 'qs_contrachequeitens':
-               qs_contrachequeitens, 'tem_adiantamento': tem_adiantamento, 'totais': totais}
+               qs_contrachequeitens, 'tem_adiantamento': tem_adiantamento, 'totais': totais, 'cartaoponto': cartaoponto}
     data['html_contracheque'] = render_to_string('pessoas/contracheque.html', context, request=request)
     c_return = JsonResponse(data)
     return c_return
