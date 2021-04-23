@@ -155,8 +155,6 @@ def seleciona_contracheque(request, mesreferencia, anoreferencia, idpessoal):
         credito['Total'] = Decimal('0.00')
     if not debito['Total']:
         debito['Total'] = Decimal('0.00')
-    # totais = {'Credito': 0.00, 'Debito': 0.00, 'Liquido': 0.00}
-    print(credito, debito)
     totais = {'Credito': credito['Total'], 'Debito': debito['Total'], 'Liquido': credito['Total'] - debito['Total']}
     tem_adiantamento = False
     if busca_contrachequeitens(qs_contracheque[0].idContraCheque, 'ADIANTAMENTO', 'D'):
@@ -179,15 +177,24 @@ def create_cartaoponto(mesreferencia, anoreferencia, idpessoal):
         dia = datetime.datetime.strptime(dia, '%Y-%m-%d')
         obj = CartaoPonto()
         obj.Dia = dia
-        obj.Entrada = '01:00'
-        obj.Saida = '18:00'
+        obj.Entrada = '00:00'
+        obj.Saida = '00:00'
         if dia.weekday() == 5 or dia.weekday() == 6:
             obj.Ausencia = dias[dia.weekday()]
         else:
             obj.Ausencia = ''
-        print(dia, obj.Ausencia, dia.weekday())
         obj.idPessoal_id = idpessoal
-        # obj.save()
+        obj.save()
+
+
+def busca_cartaoponto_referencia(mesreferencia, anoreferencia, idpessoal):
+    meses = ['JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL', 'MAIO', 'JUNHO', 'JULHO', 'AGOSTO', 'SETEMBRO', 'OUTUBRO',
+             'NOVEMBRO', 'DEZEMBRO']
+    mes = meses.index(mesreferencia) + 1
+    dia = '{}-{}-{}'.format(anoreferencia, mes, 1)
+    cartaoponto = CartaoPonto.objects.filter(Dia=dia, idPessoal=idpessoal)
+    if cartaoponto:
+        return True
 
 
 def form_pessoa(request, c_form, c_idobj, c_url, c_view, idpessoal):
