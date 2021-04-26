@@ -5,36 +5,19 @@
 <main>
     <div class="pagamento-conteudo mensalistas">
         <header>
-            <h3>PAGAMENTOS - MENSALISTAS</h3>
+            <h3>FOLHA DE PAGAMENTO</h3>
         </header>
         <main>
-            <div class="pagamento-selecao">
-                <div class="pagamento-base-colaboradores">
-                    {% csrf_token %}
-                    {% for itens in qs_mensalistas %}
-                    <div class="pagamento-list-colaboradores">
-                        <div class="pagamento-switch-colaboradores">
-                            <input id="{{ itens.Nome }}" name="switch"
-                                   value="{{ itens.Nome }}"
-                                   class="switch switch--shadow"
-                                   type="radio">
-                            <label for="{{ itens.Nome }}"></label>
-                        </div>
-                        <div class="pagamento-dados-colaboradores">
-                            <div>{{ itens.Nome }}</diV>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="pagamento-base-itens">
-
-                </div>
-            </div>
-            <footer>
-                <button type="button" class="btn btn-success glyphicon glyphicon-plus"
-                        data-url="">
-                </button>
-            </footer>
+        {{ folha }}
+        {% for colaborador in folha %}
+            <table>
+                <tr>
+                    <td>{{ colaborador }}</td>
+                    <td>{{ colaborador.Salario }}</td>
+                    <td>{{ colaborador.Liquido }}</td>
+                </tr>
+            </table>
+        {% endfor %}
         </main>
     </div>
     <div class="pagamento-conteudo avulsos">

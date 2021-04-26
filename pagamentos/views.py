@@ -4,10 +4,16 @@ from django.template.loader import render_to_string
 
 from minutas.models import MinutaItens, MinutaColaboradores
 from pessoas.models import Pessoal
+from pagamentos import facade
 from django.db.models import Count, Sum, F, ExpressionWrapper, DecimalField
 
 
 def index_pagamento(request):
+    contexto = facade.create_context()
+    print(contexto)
+
+
+
     qs_colaboradores = MinutaColaboradores.objects.values('idPessoal__Nome').filter(Pago=False).order_by(
         'idPessoal__Nome').annotate(registros=Sum('idPessoal')).exclude(idPessoal__TipoPgto='MENSAL - BANCO DE HORAS')
     qs_mensalistas = Pessoal.objects.filter(TipoPgto='MENSAL - BANCO DE HORAS').order_by('Nome')
@@ -33,7 +39,9 @@ def index_pagamento(request):
                     valor_motorista = colaboradores[index]['Total']
                     valor_adicionar_motorista = qs_motorista['ValorMotorista']
                     colaboradores[index]['Total'] = valor_motorista + valor_adicionar_motorista
-    return render(request, 'pagamentos/index.html', {'colaboradores': colaboradores, 'qs_mensalistas': qs_mensalistas})
+    contexto2 = {'colaboradores': colaboradores, 'qs_mensalistas': qs_mensalistas}
+    contexto.update(contexto2)
+    return render(request, 'pagamentos/index.html', contexto)
 
 
 def teste(request):

@@ -12,7 +12,7 @@ from pessoas.models import Pessoal, Salario, DocPessoal, FonePessoal, ContaPesso
 
 
 meses = ['JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL', 'MAIO', 'JUNHO', 'JULHO', 'AGOSTO', 'SETEMBRO', 'OUTUBRO',
-             'NOVEMBRO', 'DEZEMBRO']
+         'NOVEMBRO', 'DEZEMBRO']
 dias = ['SEGUNDA-FEIRA', 'TERÇA-FEIRA', 'QUARTA-FEIRA', 'QUINTA-FEIRA', 'SEXTA-FEIRA', 'SÁBADO', 'DOMINGO']
 
 
@@ -39,6 +39,10 @@ def list_pessoal_all():
 
 def get_pessoal_all():
     return Pessoal.objects.all()
+
+
+def get_pessoal_mensalista_ativo():
+    return  Pessoal.objects.filter(TipoPgto='MENSALISTA', StatusPessoal=True)
 
 
 def get_pessoal(idpessoa: int):
@@ -73,6 +77,12 @@ def get_contracheque(idpessoal: int):
 
 def get_contrachequeid(idcontracheque: int):
     contracheque = ContraCheque.objects.filter(idContraCheque=idcontracheque)
+    return contracheque
+
+
+def get_contrachequereferencia(mesreferencia,anoreferencia, idpessoal):
+    contracheque = ContraCheque.objects.filter(MesReferencia=mesreferencia, AnoReferencia=anoreferencia,
+                                               idPessoal=idpessoal)
     return contracheque
 
 
@@ -150,15 +160,7 @@ def seleciona_contracheque(request, mesreferencia, anoreferencia, idpessoal):
                                                   idPessoal=idpessoal)
     qs_contrachequeitens = ContraChequeItens.objects.filter(idContraCheque=qs_contracheque[0].idContraCheque).order_by(
         'Registro')
-    credito = ContraChequeItens.objects.filter(idContraCheque=qs_contracheque[0].idContraCheque,
-                                               Registro='C').aggregate(Total=Sum('Valor'))
-    debito = ContraChequeItens.objects.filter(idContraCheque=qs_contracheque[0].idContraCheque,
-                                              Registro='D').aggregate(Total=Sum('Valor'))
-    if not credito['Total']:
-        credito['Total'] = Decimal('0.00')
-    if not debito['Total']:
-        debito['Total'] = Decimal('0.00')
-    totais = {'Credito': credito['Total'], 'Debito': debito['Total'], 'Liquido': credito['Total'] - debito['Total']}
+    totais = saldo_contracheque(qs_contracheque[0].idContraCheque)
     tem_adiantamento = False
     if busca_contrachequeitens(qs_contracheque[0].idContraCheque, 'ADIANTAMENTO', 'D'):
         tem_adiantamento = True
@@ -170,6 +172,19 @@ def seleciona_contracheque(request, mesreferencia, anoreferencia, idpessoal):
     return c_return
 
 
+def saldo_contracheque(idcontracheque):
+    credito = ContraChequeItens.objects.filter(idContraCheque=idcontracheque,
+                                               Registro='C').aggregate(Total=Sum('Valor'))
+    debito = ContraChequeItens.objects.filter(idContraCheque=idcontracheque,
+                                              Registro='D').aggregate(Total=Sum('Valor'))
+    if not credito['Total']:
+        credito['Total'] = Decimal('0.00')
+    if not debito['Total']:
+        debito['Total'] = Decimal('0.00')
+    totais = {'Credito': credito['Total'], 'Debito': debito['Total'], 'Liquido': credito['Total'] - debito['Total']}
+    return totais
+
+
 def print_contracheque_context(idcontracheque):
     contracheque = get_contrachequeid(idcontracheque)
     contrachequeitens = get_contracheque_itens(idcontracheque)
@@ -178,9 +193,9 @@ def print_contracheque_context(idcontracheque):
                                                Registro='C').aggregate(Total=Sum('Valor'))
     debito = ContraChequeItens.objects.filter(idContraCheque=contracheque[0].idContraCheque,
                                               Registro='D').aggregate(Total=Sum('Valor'))
-    if credito['Total'] == None:
+    if credito['Total']:
         credito['Total'] = Decimal('0.00')
-    if debito['Total'] == None:
+    if debito['Total']:
         debito['Total'] = Decimal('0.00')
     totais = {'Credito': credito['Total'], 'Debito': debito['Total'], 'Liquido': credito['Total'] - debito['Total']}
     contexto = {'contracheque': contracheque, 'contrachequeitens': contrachequeitens, 'colaborador': colaborador,
@@ -223,7 +238,7 @@ def busca_cartaoponto_referencia(mesreferencia, anoreferencia, idpessoal):
 
 def altera_status(idpessoal):
     pessoa = Pessoal.objects.get(idPessoal=idpessoal)
-    if pessoa.StatusPessoal == True:
+    if pessoa.StatusPessoal:
         pessoa.StatusPessoal = False
     else:
         pessoa.StatusPessoal = True
