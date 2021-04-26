@@ -50,21 +50,25 @@
                             <td>{{ itens.DataNascimento }}</td>
                             {% if itens.StatusPessoal %}
                             <td class="status_pessoa"><b>ATIVO</b></td>
-                            <td class="seleciona_registo">
-                                <button class="btn btn-primary btn-xs"
-                                        onclick="window.location.href = '{% url 'consultapessoa' itens.idPessoal %}'">
-                                    <span class="glyphicon glyphicon-folder-open"></span>
-                                </button>
-                                <button class="btn btn-success btn-xs glyphicon glyphicon-thumbs-up"
-                                        onclick="window.location.href = '{% url 'bloqueiapessoa' itens.idPessoal %}'">
-                                </button>
+                            <td class="seleciona-registo">
+                                <div class="seleciona-registro-botoes">
+                                    <button class="btn btn-primary btn-xs glyphicon glyphicon-folder-open"
+                                            onclick="window.location.href = '{% url 'consultapessoa' itens.idPessoal %}'">
+                                    </button>
+                                    <button class="btn btn-success btn-xs glyphicon glyphicon-thumbs-up"
+                                            onclick="window.location.href = '{% url 'bloqueiapessoa' itens.idPessoal %}'">
+                                    </button>
+                                </div>
                             </td>
                             {% else %}
                             <td class="status_pessoa"><b>BLOQUEADO</b></td>
-                            <td class="seleciona_registo">
-                                <button class="btn btn-danger btn-xs glyphicon glyphicon-thumbs-down"
-                                        onclick="window.location.href = '{% url 'bloqueiapessoa' itens.idPessoal %}'">
-                                </button>
+                            <td class="seleciona-registo">
+                                <div class="seleciona-regitro-botoes">
+                                    <button class="btn btn-danger btn-xs glyphicon glyphicon-thumbs-down"
+                                            onclick="window.location.href = '{% url 'bloqueiapessoa' itens.idPessoal %}'">
+                                    </button>
+                                </div>
+
                             </td>
                             {% endif %}
                         </tr>
