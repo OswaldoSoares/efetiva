@@ -10,6 +10,7 @@ urlpatterns = [
     path('criapessoa/', cria_pessoa, name='criapessoa'),
     path('editapessoa/<int:idpessoa>/', edita_pessoa, name='editapessoa'),
     path('excluipessoa/<int:idpes>/', excluipessoa, name='excluipessoa'),
+    path('bloqueiapessoa/<int:idpesssoa>/', excluipessoa, name='bloqueiapessoa'),
     path('criadocpessoa/', criadocpessoa, name='criadocpessoa'),
     path('excluidocpessoa/<int:idpesdoc>/', excluidocpessoa, name='excluidocpessoa'),
     path('criafonepessoa/', criafonepessoa, name='criafonepessoa'),

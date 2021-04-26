@@ -54,6 +54,12 @@
                                         onclick="window.location.href = '{% url 'consultapessoa' itens.idPessoal %}'">
                                     <span class="glyphicon glyphicon-folder-open"></span>
                                 </button>
+                                <button class="btn btn-danger btn-xs glyphicon glyphicon-thumbs-down"
+                                        onclick="openMyModal(event); return false;"
+                                        data-title="BLOQUEIA COLABORADOR"
+                                        data-action="{% url 'bloqueiapessoa' itens.idPessoal %}"
+                                        data-button-save-label="BLOQUEAR">
+                                </button>
                             </td>
                         </tr>
                     {% endfor %}

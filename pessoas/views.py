@@ -173,12 +173,13 @@ def salva_form(request, form, template_name, idpes):
     return JsonResponse(data)
 
 
+
 def edita_salario(request):
-    idpessoal = request.POST.get('idPessoal')
-    salario = request.POST.get('Salario')
-    horas_mensais = float(request.POST.get('HorasMensais'))
-    facade.save_salario(idpessoal, salario, horas_mensais)
-    return redirect('consultapessoa', idpessoal)
+    c_pessoal = request.POST.get('idPessoal')
+    c_salario = request.POST.get('Salario')
+    c_horas_mensais = float(request.POST.get('HorasMensais'))
+    facade.save_salario(c_pessoal, c_salario, c_horas_mensais)
+    return redirect('consultapessoa', c_pessoal)
 
 
 def cria_vale(request):
@@ -204,8 +205,6 @@ def seleciona_contracheque(request):
     c_mes = request.GET.get('mes')
     c_ano = request.GET.get('ano')
     data = facade.seleciona_contracheque(request, c_mes, c_ano, c_idpessoal)
-    if not facade.busca_cartaoponto_referencia('ABRIL', '2021', 6):
-        facade.create_cartaoponto('ABRIL', '2021', 6)
     return data
 
 
@@ -223,20 +222,6 @@ def cria_contrachequeitens(request):
 
 
 def imprime_contracheque(request, idcontracheque):
-    contracheque = facade.get_contrachequeid(idcontracheque)
-    contrachequeitens = facade.get_contracheque_itens(idcontracheque)
-    colaborador = facade.get_pessoal(contracheque[0].idPessoal_id)
-    credito = ContraChequeItens.objects.filter(idContraCheque=contracheque[0].idContraCheque,
-                                               Registro='C').aggregate(Total=Sum('Valor'))
-    debito = ContraChequeItens.objects.filter(idContraCheque=contracheque[0].idContraCheque,
-                                              Registro='D').aggregate(Total=Sum('Valor'))
-    if credito['Total'] == None:
-        credito['Total'] = Decimal('0.00')
-    if debito['Total'] == None:
-        debito['Total'] = Decimal('0.00')
-    # totais = {'Credito': 0.00, 'Debito': 0.00, 'Liquido': 0.00}
-    totais = {'Credito': credito['Total'], 'Debito': debito['Total'], 'Liquido': credito['Total'] - debito['Total']}
-    contexto = {'contracheque': contracheque, 'contrachequeitens': contrachequeitens, 'colaborador': colaborador,
-                'totais': totais}
+    contexto = facade.print_contracheque_context(idcontracheque)
     response = print_contracheque(contexto)
     return response

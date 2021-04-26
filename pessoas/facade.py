@@ -11,6 +11,11 @@ from pessoas.models import Pessoal, Salario, DocPessoal, FonePessoal, ContaPesso
     ContraChequeItens, CartaoPonto
 
 
+meses = ['JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL', 'MAIO', 'JUNHO', 'JULHO', 'AGOSTO', 'SETEMBRO', 'OUTUBRO',
+             'NOVEMBRO', 'DEZEMBRO']
+dias = ['SEGUNDA-FEIRA', 'TERÇA-FEIRA', 'QUARTA-FEIRA', 'QUINTA-FEIRA', 'SEXTA-FEIRA', 'SÁBADO', 'DOMINGO']
+
+
 def create_pessoal_context(idpessoa: int):
     colaborador = get_pessoal(idpessoa)
     docpessoa = get_docpessoal(idpessoa)
@@ -102,8 +107,6 @@ def create_vale(data, descricao, valor, idpessoal):
 
 
 def create_contracheque(mesreferencia, anoreferencia, valor, idpessoal):
-    meses = ['JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL', 'MAIO', 'JUNHO', 'JULHO', 'AGOSTO', 'SETEMBRO', 'OUTUBRO',
-             'NOVEMBRO', 'DEZEMBRO']
     salario = get_salario(idpessoal)
     if not busca_contracheque(meses[int(mesreferencia)-1], anoreferencia, idpessoal):
         obj = ContraCheque()
@@ -151,15 +154,6 @@ def seleciona_contracheque(request, mesreferencia, anoreferencia, idpessoal):
                                                Registro='C').aggregate(Total=Sum('Valor'))
     debito = ContraChequeItens.objects.filter(idContraCheque=qs_contracheque[0].idContraCheque,
                                               Registro='D').aggregate(Total=Sum('Valor'))
-    meses = ['JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL', 'MAIO', 'JUNHO', 'JULHO', 'AGOSTO', 'SETEMBRO', 'OUTUBRO',
-             'NOVEMBRO', 'DEZEMBRO']
-    mes = meses.index(mesreferencia) + 1
-    dia = '{}-{}-{}'.format(anoreferencia, mes, 1)
-    dia = datetime.datetime.strptime(dia, '%Y-%m-%d')
-    referencia = calendar.monthrange(int(anoreferencia), mes)
-    diafinal = '{}-{}-{}'.format(anoreferencia, mes, referencia[1])
-    diafinal = datetime.datetime.strptime(diafinal, '%Y-%m-%d')
-    cartaoponto = CartaoPonto.objects.filter(Dia__range=[dia, diafinal], idPessoal=idpessoal)
     if not credito['Total']:
         credito['Total'] = Decimal('0.00')
     if not debito['Total']:
@@ -168,6 +162,7 @@ def seleciona_contracheque(request, mesreferencia, anoreferencia, idpessoal):
     tem_adiantamento = False
     if busca_contrachequeitens(qs_contracheque[0].idContraCheque, 'ADIANTAMENTO', 'D'):
         tem_adiantamento = True
+    cartaoponto = busca_cartaoponto_referencia(mesreferencia, anoreferencia, 6)
     context = {'formcqitens': formcqitens, 'qs_contracheque': qs_contracheque, 'qs_contrachequeitens':
                qs_contrachequeitens, 'tem_adiantamento': tem_adiantamento, 'totais': totais, 'cartaoponto': cartaoponto}
     data['html_contracheque'] = render_to_string('pessoas/contracheque.html', context, request=request)
@@ -175,10 +170,25 @@ def seleciona_contracheque(request, mesreferencia, anoreferencia, idpessoal):
     return c_return
 
 
+def print_contracheque_context(idcontracheque):
+    contracheque = get_contrachequeid(idcontracheque)
+    contrachequeitens = get_contracheque_itens(idcontracheque)
+    colaborador = get_pessoal(contracheque[0].idPessoal_id)
+    credito = ContraChequeItens.objects.filter(idContraCheque=contracheque[0].idContraCheque,
+                                               Registro='C').aggregate(Total=Sum('Valor'))
+    debito = ContraChequeItens.objects.filter(idContraCheque=contracheque[0].idContraCheque,
+                                              Registro='D').aggregate(Total=Sum('Valor'))
+    if credito['Total'] == None:
+        credito['Total'] = Decimal('0.00')
+    if debito['Total'] == None:
+        debito['Total'] = Decimal('0.00')
+    totais = {'Credito': credito['Total'], 'Debito': debito['Total'], 'Liquido': credito['Total'] - debito['Total']}
+    contexto = {'contracheque': contracheque, 'contrachequeitens': contrachequeitens, 'colaborador': colaborador,
+                'totais': totais}
+    return contexto
+
+
 def create_cartaoponto(mesreferencia, anoreferencia, idpessoal):
-    meses = ['JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL', 'MAIO', 'JUNHO', 'JULHO', 'AGOSTO', 'SETEMBRO', 'OUTUBRO',
-             'NOVEMBRO', 'DEZEMBRO']
-    dias = ['SEGUNDA-FEIRA', 'TERÇA-FEIRA', 'QUARTA-FEIRA', 'QUINTA-FEIRA', 'SEXTA-FEIRA', 'SÁBADO', 'DOMINGO']
     mes = meses.index(mesreferencia)+1
     referencia = calendar.monthrange(int(anoreferencia), mes)
     for x in range(1, referencia[1]+1):
@@ -197,13 +207,18 @@ def create_cartaoponto(mesreferencia, anoreferencia, idpessoal):
 
 
 def busca_cartaoponto_referencia(mesreferencia, anoreferencia, idpessoal):
-    meses = ['JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL', 'MAIO', 'JUNHO', 'JULHO', 'AGOSTO', 'SETEMBRO', 'OUTUBRO',
-             'NOVEMBRO', 'DEZEMBRO']
     mes = meses.index(mesreferencia) + 1
     dia = '{}-{}-{}'.format(anoreferencia, mes, 1)
-    cartaoponto = CartaoPonto.objects.filter(Dia=dia, idPessoal=idpessoal)
+    dia = datetime.datetime.strptime(dia, '%Y-%m-%d')
+    referencia = calendar.monthrange(int(anoreferencia), mes)
+    diafinal = '{}-{}-{}'.format(anoreferencia, mes, referencia[1])
+    diafinal = datetime.datetime.strptime(diafinal, '%Y-%m-%d')
+    cartaoponto = CartaoPonto.objects.filter(Dia__range=[dia, diafinal], idPessoal=idpessoal)
+    if not cartaoponto:
+        create_cartaoponto(mesreferencia, anoreferencia, 6)
+        cartaoponto = CartaoPonto.objects.filter(Dia__range=[dia, diafinal], idPessoal=idpessoal)
     if cartaoponto:
-        return True
+        return cartaoponto
 
 
 def form_pessoa(request, c_form, c_idobj, c_url, c_view, idpessoal):
@@ -212,37 +227,7 @@ def form_pessoa(request, c_form, c_idobj, c_url, c_view, idpessoal):
     if c_view == 'edita_pessoa' or c_view == 'exclui_pessoa':
         if c_idobj:
             c_instance = Pessoal.objects.get(idPessoal=c_idobj)
-    # elif c_view == 'cria_email_cliente' or c_view == 'edita_email_cliente':
-    #     if c_idobj:
-    #         c_instance = EMailContatoCliente.objects.get(idEmailContatoCliente=c_idobj)
-    # elif c_view == 'cria_fone_cliente' or c_view == 'edita_fone_cliente':
-    #     if c_idobj:
-    #         c_instance = FoneContatoCliente.objects.get(idFoneContatoCliente=c_idobj)
-    # elif c_view == 'cria_cobranca_cliente' or c_view == 'edita_cobranca_cliente':
-    #     if c_idobj:
-    #         c_instance = Cobranca.objects.get(idCobranca=c_idobj)
-    # elif c_view == 'cria_tabela_cliente' or c_view == 'edita_tabela_cliente':
-    #     if c_idobj:
-    #         c_instance = Tabela.objects.get(idTabela=c_idobj)
-    # elif c_view == 'cria_tabela_veiculo' or c_view == 'edita_tabela_veiculo':
-    #     if c_idobj:
-    #         c_instance = TabelaVeiculo.objects.get(idTabelaVeiculo=c_idobj)
-    # elif c_view == 'cria_tabela_capacidade' or c_view == 'edita_tabela_capacidade':
-    #     if c_idobj:
-    #         c_instance = TabelaCapacidade.objects.get(idTabelaCapacidade=c_idobj)
-    # elif c_view == 'cria_tabela_perimetro' or c_view == 'edita_tabela_perimetro':
-    #     if c_idobj:
-    #         c_instance = TabelaPerimetro.objects.get(idTabelaPerimetro=c_idobj)
     if request.method == 'POST':
-        # if c_view == 'edita_tabela_capacidade':
-        #     request_copy = request.POST.copy()
-        #     request_copy['CapacidadeFinal'] = c_instance.CapacidadeFinal
-        #     form = c_form(request_copy, instance=c_instance)
-        # elif c_view == 'edita_tabela_perimetro':
-        #     request_copy = request.POST.copy()
-        #     request_copy['PerimetroFinal'] = c_instance.PerimetroFinal
-        #     form = c_form(request_copy, instance=c_instance)
-        # else:
         form = c_form(request.POST, instance=c_instance)
         if form.is_valid():
             save_id = form.save()
@@ -254,15 +239,6 @@ def form_pessoa(request, c_form, c_idobj, c_url, c_view, idpessoal):
         else:
             print(form)
     else:
-        # if c_view == 'cria_tabela_capacidade':
-        #     peso = TabelaCapacidade.objects.filter(idCliente=idcliente).aggregate(peso=Max('CapacidadeFinal'))
-        #     form = c_form(initial={'CapacidadeInicial': peso['peso']+1, 'CapacidadeFinal': peso['peso']+2})
-        # elif c_view == 'cria_tabela_perimetro':
-        #     km = TabelaPerimetro.objects.filter(idCliente=idcliente).aggregate(km=Max('PerimetroFinal'))
-        #     if not km['km']:
-        #         km['km'] = 0
-        #     form = c_form(initial={'PerimetroInicial': km['km']+1, 'PerimetroFinal': km['km']+2})
-        # else:
         form = c_form(instance=c_instance)
     context = {'form': form, 'c_idobj': c_idobj, 'c_url': c_url, 'c_view': c_view, 'idpessoal': idpessoal}
     data['html_form'] = render_to_string('pessoas/formpessoa.html', context, request=request)
