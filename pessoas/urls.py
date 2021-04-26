@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import indexpessoal, cria_pessoa, consulta_pessoa, criadocpessoa, criafonepessoa, edita_pessoa, \
-    excluipessoa, excluidocpessoa, excluifonepessoa, criacontapessoa, excluicontapessoa, edita_salario, cria_vale,\
-    cria_contracheque, seleciona_contracheque, cria_contrachequeitens, imprime_contracheque
+    excluipessoa, bloqueia_pessoa, excluidocpessoa, excluifonepessoa, criacontapessoa, excluicontapessoa, \
+    edita_salario, cria_vale, cria_contracheque, seleciona_contracheque, cria_contrachequeitens, imprime_contracheque
 
 
 urlpatterns = [
@@ -10,7 +10,7 @@ urlpatterns = [
     path('criapessoa/', cria_pessoa, name='criapessoa'),
     path('editapessoa/<int:idpessoa>/', edita_pessoa, name='editapessoa'),
     path('excluipessoa/<int:idpes>/', excluipessoa, name='excluipessoa'),
-    path('bloqueiapessoa/<int:idpesssoa>/', excluipessoa, name='bloqueiapessoa'),
+    path('bloqueiapessoa/<int:idpessoa>/', bloqueia_pessoa, name='bloqueiapessoa'),
     path('criadocpessoa/', criadocpessoa, name='criadocpessoa'),
     path('excluidocpessoa/<int:idpesdoc>/', excluidocpessoa, name='excluidocpessoa'),
     path('criafonepessoa/', criafonepessoa, name='criafonepessoa'),

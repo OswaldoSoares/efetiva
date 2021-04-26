@@ -173,6 +173,10 @@ def salva_form(request, form, template_name, idpes):
     return JsonResponse(data)
 
 
+def bloqueia_pessoa(request, idpessoa):
+    facade.altera_status(idpessoa)
+    return redirect('indexpessoal')
+
 
 def edita_salario(request):
     c_pessoal = request.POST.get('idPessoal')

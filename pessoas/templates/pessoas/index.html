@@ -48,19 +48,25 @@
                             <td class="primeiracoluna"> {{ itens.Nome }}</td>
                             <td>{{ itens.Categoria }}</td>
                             <td>{{ itens.DataNascimento }}</td>
+                            {% if itens.StatusPessoal %}
                             <td class="status_pessoa"><b>ATIVO</b></td>
                             <td class="seleciona_registo">
                                 <button class="btn btn-primary btn-xs"
                                         onclick="window.location.href = '{% url 'consultapessoa' itens.idPessoal %}'">
                                     <span class="glyphicon glyphicon-folder-open"></span>
                                 </button>
-                                <button class="btn btn-danger btn-xs glyphicon glyphicon-thumbs-down"
-                                        onclick="openMyModal(event); return false;"
-                                        data-title="BLOQUEIA COLABORADOR"
-                                        data-action="{% url 'bloqueiapessoa' itens.idPessoal %}"
-                                        data-button-save-label="BLOQUEAR">
+                                <button class="btn btn-success btn-xs glyphicon glyphicon-thumbs-up"
+                                        onclick="window.location.href = '{% url 'bloqueiapessoa' itens.idPessoal %}'">
                                 </button>
                             </td>
+                            {% else %}
+                            <td class="status_pessoa"><b>BLOQUEADO</b></td>
+                            <td class="seleciona_registo">
+                                <button class="btn btn-danger btn-xs glyphicon glyphicon-thumbs-down"
+                                        onclick="window.location.href = '{% url 'bloqueiapessoa' itens.idPessoal %}'">
+                                </button>
+                            </td>
+                            {% endif %}
                         </tr>
                     {% endfor %}
                 </tbody>

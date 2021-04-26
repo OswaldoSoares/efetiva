@@ -221,6 +221,15 @@ def busca_cartaoponto_referencia(mesreferencia, anoreferencia, idpessoal):
         return cartaoponto
 
 
+def altera_status(idpessoal):
+    pessoa = Pessoal.objects.get(idPessoal=idpessoal)
+    if pessoa.StatusPessoal == True:
+        pessoa.StatusPessoal = False
+    else:
+        pessoa.StatusPessoal = True
+    pessoa.save()
+
+
 def form_pessoa(request, c_form, c_idobj, c_url, c_view, idpessoal):
     data = dict()
     c_instance = None
