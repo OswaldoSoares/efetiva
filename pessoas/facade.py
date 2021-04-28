@@ -80,8 +80,8 @@ def get_contrachequeid(idcontracheque: int):
     return contracheque
 
 
-def get_contrachequereferencia(mesreferencia,anoreferencia, idpessoal):
-    contracheque = ContraCheque.objects.filter(MesReferencia=mesreferencia, AnoReferencia=anoreferencia,
+def get_contrachequereferencia(mesreferencia, anoreferencia, idpessoal):
+    contracheque = ContraCheque.objects.filter(MesReferencia=meses[int(mesreferencia)-1], AnoReferencia=anoreferencia,
                                                idPessoal=idpessoal)
     return contracheque
 
@@ -125,7 +125,7 @@ def create_contracheque(mesreferencia, anoreferencia, valor, idpessoal):
         obj.Valor = valor
         obj.idPessoal_id = idpessoal
         obj.save()
-        create_contracheque_itens('Salario Base', salario[0].Salario, 'C', obj.idContraCheque)
+        create_contracheque_itens('Salario', salario[0].Salario, 'C', obj.idContraCheque)
 
 
 def create_contracheque_itens(descricao, valor, registro, idcontracheque):
@@ -204,34 +204,31 @@ def print_contracheque_context(idcontracheque):
 
 
 def create_cartaoponto(mesreferencia, anoreferencia, idpessoal):
-    mes = meses.index(mesreferencia)+1
-    referencia = calendar.monthrange(int(anoreferencia), mes)
-    for x in range(1, referencia[1]+1):
-        dia = '{}-{}-{}'.format(anoreferencia, mes, x)
-        dia = datetime.datetime.strptime(dia, '%Y-%m-%d')
-        obj = CartaoPonto()
-        obj.Dia = dia
-        obj.Entrada = '00:00'
-        obj.Saida = '00:00'
-        if dia.weekday() == 5 or dia.weekday() == 6:
-            obj.Ausencia = dias[dia.weekday()]
-        else:
-            obj.Ausencia = ''
-        obj.idPessoal_id = idpessoal
-        obj.save()
+    # mes = meses.index(mesreferencia)+1
+    if not busca_cartaoponto_referencia(mesreferencia, anoreferencia, idpessoal):
+        referencia = calendar.monthrange(int(anoreferencia), int(mesreferencia))
+        for x in range(1, referencia[1]+1):
+            dia = '{}-{}-{}'.format(anoreferencia, mesreferencia, x)
+            dia = datetime.datetime.strptime(dia, '%Y-%m-%d')
+            obj = CartaoPonto()
+            obj.Dia = dia
+            obj.Entrada = '00:00'
+            obj.Saida = '00:00'
+            if dia.weekday() == 5 or dia.weekday() == 6:
+                obj.Ausencia = dias[dia.weekday()]
+            else:
+                obj.Ausencia = ''
+            obj.idPessoal_id = idpessoal
+            obj.save()
 
 
 def busca_cartaoponto_referencia(mesreferencia, anoreferencia, idpessoal):
-    mes = meses.index(mesreferencia) + 1
-    dia = '{}-{}-{}'.format(anoreferencia, mes, 1)
+    dia = '{}-{}-{}'.format(anoreferencia, mesreferencia, 1)
     dia = datetime.datetime.strptime(dia, '%Y-%m-%d')
-    referencia = calendar.monthrange(int(anoreferencia), mes)
-    diafinal = '{}-{}-{}'.format(anoreferencia, mes, referencia[1])
+    referencia = calendar.monthrange(int(anoreferencia), int(mesreferencia))
+    diafinal = '{}-{}-{}'.format(anoreferencia, mesreferencia, referencia[1])
     diafinal = datetime.datetime.strptime(diafinal, '%Y-%m-%d')
     cartaoponto = CartaoPonto.objects.filter(Dia__range=[dia, diafinal], idPessoal=idpessoal)
-    if not cartaoponto:
-        create_cartaoponto(mesreferencia, anoreferencia, 6)
-        cartaoponto = CartaoPonto.objects.filter(Dia__range=[dia, diafinal], idPessoal=idpessoal)
     if cartaoponto:
         return cartaoponto
 

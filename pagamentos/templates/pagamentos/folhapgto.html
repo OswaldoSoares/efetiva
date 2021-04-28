@@ -1,0 +1,72 @@
+<table class="fp-tabela">
+    <tr>
+        <td class="fp-titulo">NOME</td>
+        <td class="fp-titulo">SALÁRIO</td>
+        <td class="fp-titulo">SALDO</td>
+        <td class="fp-titulo">C-CHEQUE</td>
+        <td class="fp-titulo">C-PONTO</td>
+    </tr>
+    {% for keys, values in folha.items %}
+    <tr>
+        <td class="fp-nome">{{ keys }}</td>
+        <td class="fp-valor">{{ values.Salario }}</td>
+        <td class="fp-valor">{{ values.Liquido }}</td>
+        <td class="fp-button">
+            {% if values.ContraCheque %}
+            <button class="btn btn-info btn-xs glyphicon glyphicon-ok"></button>
+            {% endif %}
+        </td>
+        <td class="fp-button">
+            {% if values.CartaoPonto %}
+            <button class="btn btn-info btn-xs glyphicon glyphicon-ok"></button>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td class="fp-button">
+            <button class="btn btn-warning btn-xs" data-url="{% url 'criafolha' %}" id="gerar-folha"
+                    mesreferencia="{{ referencia.MesReferencia }}"
+                    anoreferencia="{{ referencia.AnoReferencia }}">GERAR FOLHA DE PAGAMENTO
+            </button>
+        </td>
+        <td class="fp-valor">Total</td>
+        <td class="fp-valor">{{ totalfolha }}</td>
+        <td class="fp-button"></td>
+        <td class="fp-button"></td>
+    </tr>
+</table>
+<table class="tb-contracheque">
+    <tr class="tb-titulo">
+        <th class="col-descricao">DESCRIÇÃO</th>
+        <th class="col-provento">VENCIMENTOS</th>
+        <th class="col-desconto">DESCONTOS</th>
+    </tr>
+    {% for itens in qs_contrachequeitens %}
+    <tr>
+        <td class="descricao"><span><b>{{ itens.Descricao }}</b></span></td>
+        <td class="provento">
+        {% if itens.Registro == 'C' %}
+        <span class="valor-debito">R$ {{ itens.Valor }}</span>
+        {% endif %}
+        </td>
+        <td class="desconto">
+        {% if itens.Registro == 'D' %}
+        <span class="valor-credito">R$ {{ itens.Valor }}</span>
+        {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td class="fim-descricao"></td>
+        <td class="provento tb-titulo"><span id="total-credito">R$ {{ totais.Credito }}</span></td>
+        <td class="desconto tb-titulo"><span id="total-debito">R$ {{ totais.Debito }}</span></td>
+    </tr>
+    <tr>
+        <td>
+
+        </td>
+        <td class="provento">LIQUIDO A RECEBER &#x2794</td>
+        <td class="desconto"><span id="total-liquido">R$ {{ totais.Liquido }}</span></td>
+    </tr>
+</table>

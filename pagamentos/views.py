@@ -9,38 +9,37 @@ from django.db.models import Count, Sum, F, ExpressionWrapper, DecimalField
 
 
 def index_pagamento(request):
-    contexto = facade.create_context()
-    print(contexto)
+    contexto = facade.context_contracheque()
 
 
 
-    qs_colaboradores = MinutaColaboradores.objects.values('idPessoal__Nome').filter(Pago=False).order_by(
-        'idPessoal__Nome').annotate(registros=Sum('idPessoal')).exclude(idPessoal__TipoPgto='MENSAL - BANCO DE HORAS')
-    qs_mensalistas = Pessoal.objects.filter(TipoPgto='MENSAL - BANCO DE HORAS').order_by('Nome')
-    colaboradores = []
-    for index, itens_cr in enumerate(qs_colaboradores):
-        colaboradores.append({'Nome': itens_cr['idPessoal__Nome'], 'Total': 0})
-        nome = itens_cr['idPessoal__Nome']
-        qs_colaborador = MinutaColaboradores.objects.filter(idPessoal__Nome=nome, Pago=False)
-        for itens_colaborador in qs_colaborador:
-            if itens_colaborador.Cargo == 'AJUDANTE':
-                base_valor_ajudante = ExpressionWrapper(F('Valor') / F('Quantidade'), output_field=DecimalField())
-                qs_ajudante = MinutaItens.objects.values(ValorAjudante=base_valor_ajudante).filter(
-                    TipoItens='PAGA', idMinuta=itens_colaborador.idMinuta, Descricao='AJUDANTE')
-                if qs_ajudante:
-                    valor_ajudante = colaboradores[index]['Total']
-                    valor_adicionar_ajudante = qs_ajudante[0]['ValorAjudante']
-                    colaboradores[index]['Total'] = valor_ajudante + valor_adicionar_ajudante
-            elif itens_colaborador.Cargo == 'MOTORISTA':
-                qs_motorista = MinutaItens.objects.filter(idMinuta=itens_colaborador.idMinuta).exclude(
-                    Descricao='AJUDANTE').exclude(TipoItens='RECEBE').exclude(TipoItens='DESPESA').aggregate(
-                    ValorMotorista=Sum('Valor'))
-                if qs_motorista['ValorMotorista']:
-                    valor_motorista = colaboradores[index]['Total']
-                    valor_adicionar_motorista = qs_motorista['ValorMotorista']
-                    colaboradores[index]['Total'] = valor_motorista + valor_adicionar_motorista
-    contexto2 = {'colaboradores': colaboradores, 'qs_mensalistas': qs_mensalistas}
-    contexto.update(contexto2)
+    # qs_colaboradores = MinutaColaboradores.objects.values('idPessoal__Nome').filter(Pago=False).order_by(
+    #     'idPessoal__Nome').annotate(registros=Sum('idPessoal')).exclude(idPessoal__TipoPgto='MENSAL - BANCO DE HORAS')
+    # qs_mensalistas = Pessoal.objects.filter(TipoPgto='MENSAL - BANCO DE HORAS').order_by('Nome')
+    # colaboradores = []
+    # for index, itens_cr in enumerate(qs_colaboradores):
+    #     colaboradores.append({'Nome': itens_cr['idPessoal__Nome'], 'Total': 0})
+    #     nome = itens_cr['idPessoal__Nome']
+    #     qs_colaborador = MinutaColaboradores.objects.filter(idPessoal__Nome=nome, Pago=False)
+    #     for itens_colaborador in qs_colaborador:
+    #         if itens_colaborador.Cargo == 'AJUDANTE':
+    #             base_valor_ajudante = ExpressionWrapper(F('Valor') / F('Quantidade'), output_field=DecimalField())
+    #             qs_ajudante = MinutaItens.objects.values(ValorAjudante=base_valor_ajudante).filter(
+    #                 TipoItens='PAGA', idMinuta=itens_colaborador.idMinuta, Descricao='AJUDANTE')
+    #             if qs_ajudante:
+    #                 valor_ajudante = colaboradores[index]['Total']
+    #                 valor_adicionar_ajudante = qs_ajudante[0]['ValorAjudante']
+    #                 colaboradores[index]['Total'] = valor_ajudante + valor_adicionar_ajudante
+    #         elif itens_colaborador.Cargo == 'MOTORISTA':
+    #             qs_motorista = MinutaItens.objects.filter(idMinuta=itens_colaborador.idMinuta).exclude(
+    #                 Descricao='AJUDANTE').exclude(TipoItens='RECEBE').exclude(TipoItens='DESPESA').aggregate(
+    #                 ValorMotorista=Sum('Valor'))
+    #             if qs_motorista['ValorMotorista']:
+    #                 valor_motorista = colaboradores[index]['Total']
+    #                 valor_adicionar_motorista = qs_motorista['ValorMotorista']
+    #                 colaboradores[index]['Total'] = valor_motorista + valor_adicionar_motorista
+    # contexto2 = {'colaboradores': colaboradores, 'qs_mensalistas': qs_mensalistas}
+    # contexto.update(contexto2)
     return render(request, 'pagamentos/index.html', contexto)
 
 
@@ -81,3 +80,18 @@ def teste(request):
     data['html_form'] = render_to_string('pagamentos/pagamentominutas.html', {'lista_itens_pagar': lista_itens_pagar},
                                          request=request)
     return JsonResponse(data)
+
+
+def cria_folha(request):
+    c_mes = request.GET.get('MesReferencia')
+    c_ano = request.GET.get('AnoReferencia')
+    facade.create_folha(c_mes, c_ano)
+    data = facade.seleciona_folha(request, c_mes, c_ano)
+    return data
+
+
+def seleciona_folha(request):
+    c_mes = request.POST.get('MesReferencia')
+    c_ano = request.POST.get('AnoReferencia')
+    data = facade.seleciona_folha(request, c_mes, c_ano)
+    return data

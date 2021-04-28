@@ -4,57 +4,68 @@
 {% block mainpagamento %}
 <main>
     <div class="pagamento-conteudo mensalistas">
-        <header>
+        <header class="titulo-mensalistas">
             <h3>FOLHA DE PAGAMENTO</h3>
         </header>
         <main>
-        {{ folha }}
-        {% for colaborador in folha %}
-            <table>
-                <tr>
-                    <td>{{ colaborador }}</td>
-                    <td>{{ colaborador.Salario }}</td>
-                    <td>{{ colaborador.Liquido }}</td>
-                </tr>
-            </table>
-        {% endfor %}
-        </main>
-    </div>
-    <div class="pagamento-conteudo avulsos">
-        <header>
-            <h3>PAGAMENTOS - AVULSOS</h3>
-        </header>
-        <main>
-            <div class="pagamento-selecao">
-                <div class="pagamento-base-colaboradores">
+            <div class="fp-referencia">
+                <form class="row g-2" method="post" action="{% url 'selecionafolha' %}" id="form-seleciona-folha">
                     {% csrf_token %}
-                    {% for itens in colaboradores %}
-                    <div class="pagamento-list-colaboradores">
-                        <div class="pagamento-switch-colaboradores">
-                            <input id="{{ itens.Nome }}" name="switch"
-                                   value="{{ itens.Nome }}"
-                                   class="switch switch--shadow"
-                                   type="radio">
-                            <label for="{{ itens.Nome }}"></label>
-                        </div>
-                        <div class="pagamento-dados-colaboradores">
-                            <div>{{ itens.Nome }}</diV>
-                            <div>R$ {{ itens.Total|floatformat:2 }}</diV>
-                        </div>
+                    <div class="col-md-4">
+                        {{ formcontracheque.MesReferencia }}
+                        {{ formcontracheque.MesReferencia.error }}
                     </div>
-                    {% endfor %}
-                </div>
-                <div class="pagamento-base-itens">
-
-                </div>
+                    <div class="col-md-4">
+                        {{ formcontracheque.AnoReferencia }}
+                        {{ formcontracheque.AnoReferencia.error }}
+                    </div>
+                    <input type="hidden" name="Valor" value="0.00" id="id_Valor">
+                    <input type="hidden" name="idPessoal" value="{{ itens.idPessoal }}" id="id_idPessoal">
+                    <div class="col-md-4">
+                        <button class="btn btn-primary glyphicon glyphicon-save"></button>
+                    </div>
+                </form>
             </div>
-            <footer>
-                <button type="button" class="btn btn-success glyphicon glyphicon-plus"
-                        data-url="">
-                </button>
-            </footer>
+            <div class="fp-folha-contracheque">
+            <!-- Comentário: arquivo folhapgto.html -->
+            </div>
         </main>
     </div>
+    <!--<div class="pagamento-conteudo avulsos">-->
+        <!--<header>-->
+            <!--<h3>PAGAMENTOS - AVULSOS</h3>-->
+        <!--</header>-->
+        <!--<main>-->
+            <!--<div class="pagamento-selecao">-->
+                <!--<div class="pagamento-base-colaboradores">-->
+                    <!--{% csrf_token %}-->
+                    <!--{% for itens in colaboradores %}-->
+                    <!--<div class="pagamento-list-colaboradores">-->
+                        <!--<div class="pagamento-switch-colaboradores">-->
+                            <!--<input id="{{ itens.Nome }}" name="switch"-->
+                                   <!--value="{{ itens.Nome }}"-->
+                                   <!--class="switch switch&#45;&#45;shadow"-->
+                                   <!--type="radio">-->
+                            <!--<label for="{{ itens.Nome }}"></label>-->
+                        <!--</div>-->
+                        <!--<div class="pagamento-dados-colaboradores">-->
+                            <!--<div>{{ itens.Nome }}</diV>-->
+                            <!--<div>R$ {{ itens.Total|floatformat:2 }}</diV>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--{% endfor %}-->
+                <!--</div>-->
+                <!--<div class="pagamento-base-itens">-->
+
+                <!--</div>-->
+            <!--</div>-->
+            <!--<footer>-->
+                <!--<button type="button" class="btn btn-success glyphicon glyphicon-plus"-->
+                        <!--data-url="">-->
+                <!--</button>-->
+            <!--</footer>-->
+        <!--</main>-->
+    <!--</div>-->
 </main>
 {% endblock %}
 
