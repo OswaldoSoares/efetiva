@@ -6,29 +6,34 @@
     <div class="pagamento-conteudo mensalistas">
         <header class="titulo-mensalistas">
             <h3>FOLHA DE PAGAMENTO</h3>
+            <button class="btn btn-xs glyphicon glyphicon-chevron-up"
+                            data-url="" mesreferencia="{{ referencia.MesReferencia }}"
+                            anoreferencia="{{ referencia.AnoReferencia }}" idpessoal="{{ values.idPessoal }}">
+            </button>
         </header>
         <main>
-            <div class="fp-referencia">
-                <form class="row g-2" method="post" action="{% url 'selecionafolha' %}" id="form-seleciona-folha">
-                    {% csrf_token %}
-                    <div class="col-md-4">
-                        {{ formcontracheque.MesReferencia }}
-                        {{ formcontracheque.MesReferencia.error }}
-                    </div>
-                    <div class="col-md-4">
-                        {{ formcontracheque.AnoReferencia }}
-                        {{ formcontracheque.AnoReferencia.error }}
-                    </div>
-                    <input type="hidden" name="Valor" value="0.00" id="id_Valor">
-                    <input type="hidden" name="idPessoal" value="{{ itens.idPessoal }}" id="id_idPessoal">
-                    <div class="col-md-4">
-                        <button class="btn btn-primary glyphicon glyphicon-save"></button>
-                    </div>
-                </form>
+            <div class="fp-form">
+                <div class="fp-referencia">
+                    <form class="row g-3" method="post" action="{% url 'selecionafolha' %}" id="form-seleciona-folha">
+                        {% csrf_token %}
+                        <div class="col-md-4">
+                            {{ formcontracheque.MesReferencia }}
+                            {{ formcontracheque.MesReferencia.error }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ formcontracheque.AnoReferencia }}
+                            {{ formcontracheque.AnoReferencia.error }}
+                        </div>
+                        <input type="hidden" name="Valor" value="0.00" id="id_Valor">
+                        <input type="hidden" name="idPessoal" value="{{ itens.idPessoal }}" id="id_idPessoal">
+                        <div class="col-md-4">
+                            <button class="btn btn-primary glyphicon glyphicon-save"></button>
+                        </div>
+                    </form>
+                </div>
+                <div class="fp-contrachequeitens"><!-- Comentário: arquivo contrachequeitens.html --></div>
             </div>
-            <div class="fp-folha-contracheque">
-            <!-- Comentário: arquivo folhapgto.html -->
-            </div>
+            <div class="fp-folha-contracheque"><!-- Comentário: arquivo folhapgto.html --></div>
         </main>
     </div>
     <!--<div class="pagamento-conteudo avulsos">-->

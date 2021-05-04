@@ -20,7 +20,7 @@ urlpatterns = [
     path('editasalario/', edita_salario, name='editasalario'),
     path('criavale/', cria_vale, name='criavale'),
     path('criacontracheque/', cria_contracheque, name='criacontracheque'),
-    path('selecionacontracheque/', seleciona_contracheque, name='selecionacontracheque'),
-    path('criacontrachequeitens/', cria_contrachequeitens, name='criacontrachequeitens'),
+    path('selecionacontrachequemudei/', seleciona_contracheque, name='selecionacontrachequemudei'),
+    path('criacontrachequeitensmudei/', cria_contrachequeitens, name='criacontrachequeitensmudei'),
     path('imprimecontracheque/<int:idcontracheque>/', imprime_contracheque, name='imprimecontracheque')
 ]

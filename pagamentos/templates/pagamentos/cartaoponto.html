@@ -1,0 +1,46 @@
+<table class="tb-cartaoponto">
+    <tr>
+        <td class="cp-titulo" colspan="3">1ª QUINZENA</td>
+    </tr>
+    <tr>
+        <td class="cp-titulo">DIA</td>
+        <td class="cp-titulo">ENTRADA</td>
+        <td class="cp-titulo">SAÍDA</td>
+    </tr>
+    {% for dias in cartaoponto %}
+    {% if forloop.counter < 16 %}
+    <tr>
+        <td class="cp-dia">{{ dias.Dia }}</td>
+        {% if dias.Ausencia %}
+        <td class="cp-hora" colspan="2">{{ dias.Ausencia }}</td>
+        {% else %}
+        <td class="cp-hora">{{ dias.Entrada }}</td>
+        <td class="cp-hora">{{ dias.Saida }}</td>
+        {% endif %}
+    </tr>
+    {% endif %}
+    {% endfor %}
+</table>
+<table class="tb-cartaoponto">
+    <tr>
+        <td class="cp-titulo" colspan="3">2ª QUINZENA</td>
+    </tr>
+    <tr>
+        <td class="cp-titulo">DIA</td>
+        <td class="cp-titulo">ENTRADA</td>
+        <td class="cp-titulo">SAÍDA</td>
+    </tr>
+    {% for dias in cartaoponto %}
+    {% if forloop.counter > 15 %}
+    <tr>
+        <td class="cp-dia">{{ dias.Dia }}</td>
+        {% if dias.Ausencia %}
+        <td class="cp-hora" colspan="2">{{ dias.Ausencia }}</td>
+        {% else %}
+        <td class="cp-hora">{{ dias.Entrada }}</td>
+        <td class="cp-hora">{{ dias.Saida }}</td>
+        {% endif %}
+    </tr>
+    {% endif %}
+    {% endfor %}
+</table>

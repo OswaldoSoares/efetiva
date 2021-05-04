@@ -81,7 +81,11 @@ def get_contrachequeid(idcontracheque: int):
 
 
 def get_contrachequereferencia(mesreferencia, anoreferencia, idpessoal):
-    contracheque = ContraCheque.objects.filter(MesReferencia=meses[int(mesreferencia)-1], AnoReferencia=anoreferencia,
+    if mesreferencia in meses:
+        mes = mesreferencia
+    else:
+        mes = meses[int(mesreferencia)-1]
+    contracheque = ContraCheque.objects.filter(MesReferencia=mes, AnoReferencia=anoreferencia,
                                                idPessoal=idpessoal)
     return contracheque
 
@@ -117,26 +121,37 @@ def create_vale(data, descricao, valor, idpessoal):
 
 
 def create_contracheque(mesreferencia, anoreferencia, valor, idpessoal):
-    salario = get_salario(idpessoal)
-    if not busca_contracheque(meses[int(mesreferencia)-1], anoreferencia, idpessoal):
-        obj = ContraCheque()
-        obj.MesReferencia = meses[int(mesreferencia)-1]
-        obj.AnoReferencia = anoreferencia
-        obj.Valor = valor
-        obj.idPessoal_id = idpessoal
-        obj.save()
-        create_contracheque_itens('Salario', salario[0].Salario, 'C', obj.idContraCheque)
+    colaborador = get_pessoal(idpessoal)
+    admissao = colaborador[0].DataAdmissao
+    if int(anoreferencia) >= admissao.year:
+        if int(mesreferencia) >= admissao.month:
+            salario = get_salario(idpessoal)
+            if not busca_contracheque(meses[int(mesreferencia)-1], anoreferencia, idpessoal):
+                obj = ContraCheque()
+                obj.MesReferencia = meses[int(mesreferencia)-1]
+                obj.AnoReferencia = anoreferencia
+                obj.Valor = valor
+                obj.idPessoal_id = idpessoal
+                obj.save()
+                create_contracheque_itens('Salario', salario[0].Salario, 'C', obj.idContraCheque)
 
 
 def create_contracheque_itens(descricao, valor, registro, idcontracheque):
-    if not busca_contrachequeitens(idcontracheque, descricao, registro):
-        obj = ContraChequeItens()
-        obj.Descricao = descricao
-        obj.Valor = valor
-        obj.Registro = registro
-        obj.idContraCheque_id = idcontracheque
-        if float(valor) > 0:
+    if float(valor) > 0:
+        if not busca_contrachequeitens(idcontracheque, descricao, registro):
+            obj = ContraChequeItens()
+            obj.Descricao = descricao
+            obj.Valor = valor
+            obj.Registro = registro
+            obj.idContraCheque_id = idcontracheque
             obj.save()
+
+
+def altera_contracheque_itens(contrachequeitens, valorhoraextra):
+    if float(valorhoraextra) > 0:
+        obj = contrachequeitens
+        obj.Valor = valorhoraextra
+        obj.save(update_fields=['Valor'])
 
 
 def busca_contracheque(mesreferencia, anoreferencia, idpessoal):
@@ -147,29 +162,29 @@ def busca_contracheque(mesreferencia, anoreferencia, idpessoal):
 
 
 def busca_contrachequeitens(idcontracheque, descricao, registro):
-    qs_contrachequeitens = ContraChequeItens.objects.filter(idContraCheque=idcontracheque, Descricao=descricao,
-                                                            Registro=registro)
-    if qs_contrachequeitens:
-        return True
+    contrachequeitens = ContraChequeItens.objects.filter(idContraCheque=idcontracheque, Descricao=descricao,
+                                                         Registro=registro)
+    return contrachequeitens
 
 
 def seleciona_contracheque(request, mesreferencia, anoreferencia, idpessoal):
-    data = dict()
-    formcqitens = CadastraContraChequeItens()
-    qs_contracheque = ContraCheque.objects.filter(MesReferencia=mesreferencia, AnoReferencia=anoreferencia,
-                                                  idPessoal=idpessoal)
-    qs_contrachequeitens = ContraChequeItens.objects.filter(idContraCheque=qs_contracheque[0].idContraCheque).order_by(
-        'Registro')
-    totais = saldo_contracheque(qs_contracheque[0].idContraCheque)
-    tem_adiantamento = False
-    if busca_contrachequeitens(qs_contracheque[0].idContraCheque, 'ADIANTAMENTO', 'D'):
-        tem_adiantamento = True
-    cartaoponto = busca_cartaoponto_referencia(mesreferencia, anoreferencia, 6)
-    context = {'formcqitens': formcqitens, 'qs_contracheque': qs_contracheque, 'qs_contrachequeitens':
-               qs_contrachequeitens, 'tem_adiantamento': tem_adiantamento, 'totais': totais, 'cartaoponto': cartaoponto}
-    data['html_contracheque'] = render_to_string('pessoas/contracheque.html', context, request=request)
-    c_return = JsonResponse(data)
-    return c_return
+    # data = dict()
+    # formcqitens = CadastraContraChequeItens()
+    # qs_contracheque = ContraCheque.objects.filter(MesReferencia=mesreferencia, AnoReferencia=anoreferencia,
+    #                                               idPessoal=idpessoal)
+    # qs_contrachequeitens = ContraChequeItens.objects.filter(idContraCheque=qs_contracheque[0].idContraCheque).order_by(
+    #     'Registro')
+    # totais = saldo_contracheque(qs_contracheque[0].idContraCheque)
+    # tem_adiantamento = False
+    # if busca_contrachequeitens(qs_contracheque[0].idContraCheque, 'ADIANTAMENTO', 'D'):
+    #     tem_adiantamento = True
+    # cartaoponto = busca_cartaoponto_referencia(mesreferencia, anoreferencia, 6)
+    # context = {'formcqitens': formcqitens, 'qs_contracheque': qs_contracheque, 'qs_contrachequeitens':
+    #            qs_contrachequeitens, 'tem_adiantamento': tem_adiantamento, 'totais': totais, 'cartaoponto': cartaoponto}
+    # data['html_contracheque'] = render_to_string('pessoas/contracheque.html', context, request=request)
+    # c_return = JsonResponse(data)
+    # return c_return
+    pass
 
 
 def saldo_contracheque(idcontracheque):
@@ -204,29 +219,39 @@ def print_contracheque_context(idcontracheque):
 
 
 def create_cartaoponto(mesreferencia, anoreferencia, idpessoal):
-    # mes = meses.index(mesreferencia)+1
-    if not busca_cartaoponto_referencia(mesreferencia, anoreferencia, idpessoal):
-        referencia = calendar.monthrange(int(anoreferencia), int(mesreferencia))
-        for x in range(1, referencia[1]+1):
-            dia = '{}-{}-{}'.format(anoreferencia, mesreferencia, x)
-            dia = datetime.datetime.strptime(dia, '%Y-%m-%d')
-            obj = CartaoPonto()
-            obj.Dia = dia
-            obj.Entrada = '00:00'
-            obj.Saida = '00:00'
-            if dia.weekday() == 5 or dia.weekday() == 6:
-                obj.Ausencia = dias[dia.weekday()]
-            else:
-                obj.Ausencia = ''
-            obj.idPessoal_id = idpessoal
-            obj.save()
+    colaborador = get_pessoal(idpessoal)
+    admissao = colaborador[0].DataAdmissao
+    if int(anoreferencia) >= admissao.year:
+        if int(mesreferencia) >= admissao.month:
+            admissao = datetime.datetime(admissao.year, admissao.month, admissao.day)
+            if not busca_cartaoponto_referencia(mesreferencia, anoreferencia, idpessoal):
+                referencia = calendar.monthrange(int(anoreferencia), int(mesreferencia))
+                for x in range(1, referencia[1]+1):
+                    dia = '{}-{}-{}'.format(anoreferencia, mesreferencia, x)
+                    dia = datetime.datetime.strptime(dia, '%Y-%m-%d')
+                    obj = CartaoPonto()
+                    obj.Dia = dia
+                    obj.Entrada = '07:00'
+                    obj.Saida = '17:00'
+                    if dia.weekday() == 5 or dia.weekday() == 6:
+                        obj.Ausencia = dias[dia.weekday()]
+                    else:
+                        obj.Ausencia = ''
+                    if dia < admissao:
+                        obj.Ausencia = '-------'
+                    obj.idPessoal_id = idpessoal
+                    obj.save()
 
 
 def busca_cartaoponto_referencia(mesreferencia, anoreferencia, idpessoal):
-    dia = '{}-{}-{}'.format(anoreferencia, mesreferencia, 1)
+    if mesreferencia in meses:
+        mes = meses.index(mesreferencia)+1
+    else:
+        mes = int(mesreferencia)
+    dia = '{}-{}-{}'.format(anoreferencia, mes, 1)
     dia = datetime.datetime.strptime(dia, '%Y-%m-%d')
-    referencia = calendar.monthrange(int(anoreferencia), int(mesreferencia))
-    diafinal = '{}-{}-{}'.format(anoreferencia, mesreferencia, referencia[1])
+    referencia = calendar.monthrange(int(anoreferencia), mes)
+    diafinal = '{}-{}-{}'.format(anoreferencia, mes, referencia[1])
     diafinal = datetime.datetime.strptime(diafinal, '%Y-%m-%d')
     cartaoponto = CartaoPonto.objects.filter(Dia__range=[dia, diafinal], idPessoal=idpessoal)
     if cartaoponto:

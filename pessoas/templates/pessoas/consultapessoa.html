@@ -221,81 +221,29 @@
                 </footer>
             </div>
             {% endif %}
-        </main>
-    </div>
-    <div class="consulta">
-        <header class="consulta-header-tabelas">
-            <span>CONTRACHEQUE</span>
-        </header>
-        <main>
-            <div class="contracheque-coluna1">
-                <div class="card-base2">
-                    <header>
-                        <span><b>SALÁRIO BASE</b></span>
-                    </header>
-                    <form class="row g-3" method="post" action="{% url 'editasalario' %}">
-                        {% csrf_token %}
-                        <div class="col-md-6">
-                            <label for="id_Salario" class="form-label">SALÁRIO:</label>
-                            {{ formsalario.Salario }}
-                            {{ formsalario.Salario.error }}
-                        </div>
-                        <div class="col-md-6">
-                            <label for="id_HorasMensais" class="form-label">HORAS MENSAIS:</label>
-                            {{ formsalario.HorasMensais }}
-                            {{ formsalario.HorasMensais.error }}
-                        </div>
-                        {{ form.idPessoal }}
-                        <input type="hidden" name="idPessoal" value="{{ itens.idPessoal }}" id="id_idPessoalv">
-                        <footer>
-                            <button class="btn btn-primary btn-xs glyphicon glyphicon-repeat">
-                            </button>
-                        </footer>
-                    </form>
-                </div>
-                <div class="card-base2">
-                    <header>
-                        <span><b>REFERÊNCIA</b></span>
-                    </header>
-                    <form class="row g-3" method="post" action="{% url 'criacontracheque' %}">
-                        {% csrf_token %}
-                        <div class="col-md-6">
-                            <label for="id_MesReferencia" class="form-label">MÊS:</label>
-                            {{ formcontracheque.MesReferencia }}
-                            {{ formcontracheque.MesReferencia.error }}
-                        </div>
-                        <div class="col-md-6">
-                            <label for="id_AnoReferencia" class="form-label">ANO:</label>
-                            {{ formcontracheque.AnoReferencia }}
-                            {{ formcontracheque.AnoReferencia.error }}
-                        </div>
-                        <input type="hidden" name="Valor" value="0.00" id="id_Valor">
-                        <input type="hidden" name="idPessoal" value="{{ itens.idPessoal }}" id="id_idPessoal">
-                        <footer>
-                            <button class="btn btn-primary btn-xs glyphicon glyphicon-save">
-                            </button>
-                        </footer>
-                    </form>
-                </div>
-                {% if contracheque %}
-                <div class="card-base2">
-                    <header>
-                        <span><b>MÊS REFERÊNCIA</b></span>
-                    </header>
-                    <section class="referencia">
-                    {% for itenscontracheque in contracheque %}
-                        <a class="section-itens select_contracheque" mes="{{ itenscontracheque.MesReferencia }}"
-                           ano="{{ itenscontracheque.AnoReferencia }}" idpessoal="{{ itens.idPessoal }}">
-                            <span><b>{{ itenscontracheque.MesReferencia }}</b></span>
-                            <span><b>{{ itenscontracheque.AnoReferencia }}</b></span>
-                        </a>
-                    {% endfor %}
-                    </section>
-                </div>
-                {% endif %}
-            </div>
-            <div class="contracheque-coluna2">
-
+            <div class="card-base2">
+                <header>
+                    <span><b>SALÁRIO BASE</b></span>
+                </header>
+                <form class="row g-3" method="post" action="{% url 'editasalario' %}">
+                    {% csrf_token %}
+                    <div class="col-md-6">
+                        <label for="id_Salario" class="form-label">SALÁRIO:</label>
+                        {{ formsalario.Salario }}
+                        {{ formsalario.Salario.error }}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="id_HorasMensais" class="form-label">HORAS MENSAIS:</label>
+                        {{ formsalario.HorasMensais }}
+                        {{ formsalario.HorasMensais.error }}
+                    </div>
+                    {{ form.idPessoal }}
+                    <input type="hidden" name="idPessoal" value="{{ itens.idPessoal }}" id="id_idPessoalv">
+                    <footer>
+                        <button class="btn btn-primary btn-xs glyphicon glyphicon-repeat">
+                        </button>
+                    </footer>
+                </form>
             </div>
         </main>
     </div>

@@ -90,8 +90,50 @@ def cria_folha(request):
     return data
 
 
+def cria_contrachequeitens(request):
+    c_descricao = request.POST.get('Descricao')
+    c_valor = request.POST.get('Valor')
+    c_registro = request.POST.get('Registro')
+    c_idcontracheque = request.POST.get('idContraCheque')
+    facade.facade.create_contracheque_itens(c_descricao, c_valor, c_registro, c_idcontracheque)
+    c_mes = request.POST.get('MesReferencia')
+    c_ano = request.POST.get('AnoReferencia')
+    c_idpesssoal = request.POST.get('idPessoal')
+    data = seleciona_folha(request)
+    # data += facade.seleciona_contracheque(request, c_mes, c_ano, c_idpesssoal)
+    return data
+
+
 def seleciona_folha(request):
     c_mes = request.POST.get('MesReferencia')
     c_ano = request.POST.get('AnoReferencia')
     data = facade.seleciona_folha(request, c_mes, c_ano)
     return data
+
+
+def seleciona_contracheque(request):
+    c_mes = request.GET.get('MesReferencia')
+    c_ano = request.GET.get('AnoReferencia')
+    c_idpesssoal = request.GET.get('idPessoal')
+    facade.atualiza_cartaoponto(c_mes, c_ano, c_idpesssoal)
+    data = facade.seleciona_contracheque(request, c_mes, c_ano, c_idpesssoal)
+    return data
+
+
+def manutencao(request):
+    contracheque = facade.ContraCheque.objects.all()
+    contrachequeitens = facade.ContraChequeItens.objects.all()
+    cartaoponto = facade.CartaoPonto.objects.all()
+    contexto = {'contracheque': contracheque, 'contrachequeitens': contrachequeitens, 'cartaoponto': cartaoponto}
+    return render(request, 'pagamentos/manutencao.html', contexto)
+
+
+def apagar_tudo(request):
+    contracheque = facade.ContraCheque.objects.all()
+    contrachequeitens = facade.ContraChequeItens.objects.all()
+    cartaoponto = facade.CartaoPonto.objects.all()
+    contracheque.delete()
+    cartaoponto.delete()
+    contexto = {'contracheque': contracheque, 'contrachequeitens': contrachequeitens, 'cartaoponto': cartaoponto}
+    return render(request, 'pagamentos/manutencao.html', contexto)
+

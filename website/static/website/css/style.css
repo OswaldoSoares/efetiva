@@ -985,7 +985,7 @@ main .consulta .consulta-body {
 .conteudo-base {
     height: 100%;
     overflow: hidden;
-    margin: 20px 20px;
+    margin: 5px;
     padding: 0px;
 }
 
@@ -2004,44 +2004,46 @@ main .usuario-out {
 
 /* PAGAMENTOS fp=Folha Pagamento - av=Avulso*/
 main .pagamento-conteudo {
-    background-color: silver;
+    background-color: var(--corsecundaria);
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: left;
-    margin-bottom: 10px;
+}
+
+main .pagamento-conteudo header {
+    margin: 0;
+    padding: 5px;
+    background-color: silver;
+    color: var(--corprincipal);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+main .pagamento-conteudo header h3 {
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
 }
 
 main .pagamento-conteudo main {
     width: 100%;
 }
 
-main .pagamento-conteudo header {
+main .fp-form {
     margin: 0;
     padding: 0;
-    background-color: var(--corsecundaria);
-    color: var(--corprincipal);
-    width: 100%;
-    text-align: left;
-}
-
-main .pagamento-conteudo header h3 {
-    margin: 0;
-    padding: 5px;
-    font-size: 20px;
-}
-
-main .fp-folha-contracheque {
-    margin: 5px;
     width: 100%;
     display: flex;
-    align-items: top;
+    align-items: flex-start;
     justify-content: flex-start;
 }
 
-main .fp-referencia {
+main .fp-form .fp-referencia {
     background-color: white;
     color: var(--corprincipal);
     width: 45%;
@@ -2051,10 +2053,60 @@ main .fp-referencia {
     border-radius: 5px;
 }
 
-main .fp-tabela {
+main .fp-contrachequeitens {
     background-color: white;
     color: var(--corprincipal);
+    width: 55%;
+    height: 44px;
+    text-align: right;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+main .fp-contracheque-cartaoponto .fp-adiantamento {
+background-color: white;
+    color: var(--corprincipal);
+    width: 100%;
+    height: 44px;
+    text-align: right;
+    padding: 5px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+}
+
+.label-adiantamento {
+    margin-top: 8px;
+}
+
+
+main .fp-folha-contracheque {
+    width: 100%;
+    display: flex;
+    align-items: top;
+    justify-content: flex-start;
+}
+
+main .fp-folha-contracheque .fp-folha {
+    color: var(--corprincipal);
     width: 45%;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+main .fp-folha-contracheque .fp-contracheque-cartaoponto {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 55%;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+main .fp-tabela {
+    background-color: white;
+    width: 100%;
     border-radius: 5px;
 }
 
@@ -2072,46 +2124,70 @@ main .fp-tabela .fp-titulo {
 }
 
 main .fp-tabela .fp-nome {
-    width: 300px;
-    padding-left: 5px;
+    width: 250px;
+    padding: 3px 5px;
 }
 
 main .fp-tabela .fp-valor {
-    width: 75px;
-    padding-right: 5px;
+    width: 95px;
+    padding: 3px 5px;
     text-align: right;
 }
 
 main .fp-tabela .fp-button {
-    width: 65px;
+    width: 50px;
     text-align: center;
-    padding: 2px 0;
+    padding: 2px 5px;
+}
+
+main .fp-contracheque {
+    background-color: white;
+    width: 100%; 
+    border-radius: 5px;
+}
+
+main .fp-cartaoponto {
+    background-color: white;
+    margin-top: 5px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-around;
+    width: 100%; 
+    border-radius: 5px;
 }
 
 main .tb-contracheque {
     background-color: white;
     color: var(--corprincipal);
-    margin-left: 5px;
-    width: 53.5%;
+    width: 100%;
     border-radius: 5px;
 }
 
+main .tb-contracheque .tb-nome {
+    padding: 3px 5px;
+    text-align: center;
+    border-bottom: solid 1px black;
+}
+
 main .tb-contracheque .col-descricao {
-    padding: 5px;
+    padding: 3px 5px;
     width: 45%;
     text-align: center;
+    border-bottom: solid 1px black;
 }
 
 main .tb-contracheque .col-provento {
     padding: 5px;
     width: 25%;
     text-align: center;
+    border-bottom: solid 1px black;
 }
 
 main .tb-contracheque .col-desconto {
     padding: 5px;
     width: 25%;
     text-align: center;
+    border-bottom: solid 1px black;
 }
 
 main .tb-contracheque .descricao {
@@ -2121,18 +2197,54 @@ main .tb-contracheque .descricao {
 
 main .tb-contracheque .provento {
     border-left: solid 1px black;
+    border-top: solid 1px black; 
     padding-right: 5px;
     text-align: right;
 }
 
 main .tb-contracheque .desconto {
     border-left: solid 1px black;
+    border-top: solid 1px black;
     padding-right: 5px;
     text-align: right;
 }
 
 main .tb-contracheque .fim-descricao {
     border-top: solid 1px black;
+    text-align: center;
+}
+
+main .tb-contracheque .provento {
+    border-top: solid 1px black;
+}
+
+main .tb-cartaoponto {
+    background-color: white;
+    color: var(--corprincipal);
+    width: 45%;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+main .tb-cartaoponto .cp-titulo {
+    padding: 1px 5px;
+    text-align: center;
+    font-size: 13px;
+    border-bottom: 1px solid black;
+}
+
+main .tb-cartaoponto .cp-dia {
+    padding: 0 5px;
+    text-align: center;
+    font-size: 13px;
+    border-bottom: 1px solid black;
+}
+
+main .tb-cartaoponto .cp-hora {
+    padding: 0 5px;
+    text-align: center;
+    font-size: 13px;
+    border-bottom: 1px solid black;
 }
 
 /*

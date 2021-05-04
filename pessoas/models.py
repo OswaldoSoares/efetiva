@@ -212,7 +212,7 @@ class ContraChequeItens(models.Model):
 
 
 class CartaoPonto(models.Model):
-    idCartaPonto = models.AutoField(primary_key=True)
+    idCartaoPonto = models.AutoField(primary_key=True)
     Dia = models.DateField()
     Entrada = models.TimeField()
     Saida = models.TimeField()
