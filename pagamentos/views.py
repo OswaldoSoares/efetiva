@@ -9,10 +9,7 @@ from django.db.models import Count, Sum, F, ExpressionWrapper, DecimalField
 
 
 def index_pagamento(request):
-    contexto = facade.context_contracheque()
-
-
-
+    contexto = facade.create_context_formcontracheque()
     # qs_colaboradores = MinutaColaboradores.objects.values('idPessoal__Nome').filter(Pago=False).order_by(
     #     'idPessoal__Nome').annotate(registros=Sum('idPessoal')).exclude(idPessoal__TipoPgto='MENSAL - BANCO DE HORAS')
     # qs_mensalistas = Pessoal.objects.filter(TipoPgto='MENSAL - BANCO DE HORAS').order_by('Nome')
@@ -136,4 +133,3 @@ def apagar_tudo(request):
     cartaoponto.delete()
     contexto = {'contracheque': contracheque, 'contrachequeitens': contrachequeitens, 'cartaoponto': cartaoponto}
     return render(request, 'pagamentos/manutencao.html', contexto)
-
