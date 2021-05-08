@@ -2,6 +2,7 @@ import calendar
 import datetime
 from decimal import Decimal
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Sum
 from django.http import JsonResponse
 from django.template.loader import render_to_string
@@ -71,18 +72,20 @@ def create_contracheque(mesreferencia, anoreferencia, valor, idpessoal):
                 obj.Valor = valor
                 obj.idPessoal_id = idpessoal
                 obj.save()
-                create_contracheque_itens('Salario', salario[0].Salario, 'C', obj.idContraCheque)
+                create_contracheque_itens('SALARIO', salario[0].Salario, 'C', obj.idContraCheque)
 
 
 def create_contracheque_itens(descricao, valor, registro, idcontracheque):
     if float(valor) > 0:
-        if not busca_contrachequeitens(idcontracheque, descricao, registro):
-            obj = ContraChequeItens()
-            obj.Descricao = descricao
-            obj.Valor = valor
-            obj.Registro = registro
-            obj.idContraCheque_id = idcontracheque
-            obj.save()
+        saldo = saldo_contracheque(idcontracheque)
+        if int(valor) < int(saldo['Liquido']) or descricao == 'SALARIO':
+            if not busca_contrachequeitens(idcontracheque, descricao, registro):
+                obj = ContraChequeItens()
+                obj.Descricao = descricao
+                obj.Valor = valor
+                obj.Registro = registro
+                obj.idContraCheque_id = idcontracheque
+                obj.save()
 
 
 def create_cartaoponto(mesreferencia, anoreferencia, idpessoal):
@@ -108,6 +111,7 @@ def create_cartaoponto(mesreferencia, anoreferencia, idpessoal):
                         obj.Ausencia = '-------'
                     obj.idPessoal_id = idpessoal
                     obj.save()
+                atualiza_cartaoponto(mesreferencia, anoreferencia, idpessoal)
 
 
 def get_contracheque(idpessoal: int):
@@ -131,8 +135,11 @@ def get_contrachequereferencia(mesreferencia, anoreferencia, idpessoal):
 
 
 def get_contrachequeitens(idcontracheque, descricao, registro):
-    contrachequeitens = ContraChequeItens.objects.get(idContraCheque=idcontracheque, Descricao=descricao,
-                                                      Registro=registro)
+    try:
+        contrachequeitens = ContraChequeItens.objects.get(idContraCheque=idcontracheque, Descricao=descricao,
+                                                          Registro=registro)
+    except ObjectDoesNotExist:
+        contrachequeitens = None
     return contrachequeitens
 
 
@@ -198,6 +205,8 @@ def seleciona_contracheque(request, mesreferencia, anoreferencia, idpessoal):
         data['html_adiantamento'] = True
     else:
         data['html_adiantamento'] = False
+    contexto = create_context(mesreferencia, anoreferencia)
+    data['html_folha'] = render_to_string('pagamentos/folhapgto.html', contexto, request=request)
     data['html_contracheque'] = render_to_string('pagamentos/contracheque.html', context, request=request)
     data['html_formccadianta'] = render_to_string('pagamentos/contrachequeadianta.html', contextform, request=request)
     data['html_formccitens'] = render_to_string('pagamentos/contrachequeitens.html', contextform, request=request)
@@ -206,7 +215,7 @@ def seleciona_contracheque(request, mesreferencia, anoreferencia, idpessoal):
     return c_return
 
 
-def seleciona_cartaoponto(mesreferencia, anoreferencia, idpessoal):
+def periodo_cartaoponto(mesreferencia, anoreferencia):
     if mesreferencia in meses:
         mesreferencia = meses.index(mesreferencia)+1
     dia = '{}-{}-{}'.format(anoreferencia, mesreferencia, 1)
@@ -214,19 +223,18 @@ def seleciona_cartaoponto(mesreferencia, anoreferencia, idpessoal):
     referencia = calendar.monthrange(int(anoreferencia), int(mesreferencia))
     diafinal = '{}-{}-{}'.format(anoreferencia, mesreferencia, referencia[1])
     diafinal = datetime.datetime.strptime(diafinal, '%Y-%m-%d')
+    return dia, diafinal
+
+
+def seleciona_cartaoponto(mesreferencia, anoreferencia, idpessoal):
+    dia, diafinal = periodo_cartaoponto(mesreferencia, anoreferencia)
     cartaoponto = CartaoPonto.objects.filter(Dia__range=[dia, diafinal], idPessoal=idpessoal)
     context = {'cartaoponto': cartaoponto}
     return render_to_string('pagamentos/cartaoponto.html', context)
 
 
 def atualiza_cartaoponto(mesreferencia, anoreferencia, idpessoal):
-    if mesreferencia in meses:
-        mesreferencia = meses.index(mesreferencia)+1
-    dia = '{}-{}-{}'.format(anoreferencia, mesreferencia, 1)
-    dia = datetime.datetime.strptime(dia, '%Y-%m-%d')
-    referencia = calendar.monthrange(int(anoreferencia), int(mesreferencia))
-    diafinal = '{}-{}-{}'.format(anoreferencia, mesreferencia, referencia[1])
-    diafinal = datetime.datetime.strptime(diafinal, '%Y-%m-%d')
+    dia, diafinal = periodo_cartaoponto(mesreferencia, anoreferencia)
     minutas = MinutaColaboradores.objects.filter(idPessoal=idpessoal,
                                                  idMinuta_id__DataMinuta__range=(dia, diafinal)).order_by(
                                                  'idMinuta_id__DataMinuta').values('idMinuta_id__DataMinuta',

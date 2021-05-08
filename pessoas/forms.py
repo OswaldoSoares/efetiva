@@ -132,7 +132,7 @@ class CadastraContraChequeItens(forms.ModelForm):
         model = ContraChequeItens
         fields = ('Descricao', 'Valor', 'Registro', 'idContraCheque')
         lables = {'Descricao': 'DESCRIÇÃO', 'Valor': 'VALOR'}
-        widgets = {'Descricao': forms.TextInput(attrs={'class': 'form-control'}),
+        widgets = {'Descricao': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'DESCRIÇÃO'}),
                    'Valor': forms.NumberInput(attrs={'class': 'form-control'}),
                    'Registro': forms.Select(attrs={'class': 'form-control'}, choices=[('C', 'CRÉDITO'),
                                                                                       ('D', 'DÉBITO')])}

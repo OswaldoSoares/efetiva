@@ -6,7 +6,7 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 from decimal import Decimal
 
-from pessoas.forms import CadastraSalario, CadastraVale, CadastraContraCheque, CadastraContraChequeItens
+from pessoas.forms import CadastraSalario, CadastraVale, CadastraContraCheque
 from pessoas.models import Pessoal, Salario, DocPessoal, FonePessoal, ContaPessoal, Vales, ContraCheque, \
     ContraChequeItens, CartaoPonto
 
@@ -42,7 +42,7 @@ def get_pessoal_all():
 
 
 def get_pessoal_mensalista_ativo():
-    return  Pessoal.objects.filter(TipoPgto='MENSALISTA', StatusPessoal=True)
+    return Pessoal.objects.filter(TipoPgto='MENSALISTA', StatusPessoal=True)
 
 
 def get_pessoal(idpessoa: int):
@@ -165,26 +165,6 @@ def busca_contrachequeitens(idcontracheque, descricao, registro):
     contrachequeitens = ContraChequeItens.objects.filter(idContraCheque=idcontracheque, Descricao=descricao,
                                                          Registro=registro)
     return contrachequeitens
-
-
-def seleciona_contracheque(request, mesreferencia, anoreferencia, idpessoal):
-    # data = dict()
-    # formcqitens = CadastraContraChequeItens()
-    # qs_contracheque = ContraCheque.objects.filter(MesReferencia=mesreferencia, AnoReferencia=anoreferencia,
-    #                                               idPessoal=idpessoal)
-    # qs_contrachequeitens = ContraChequeItens.objects.filter(idContraCheque=qs_contracheque[0].idContraCheque).order_by(
-    #     'Registro')
-    # totais = saldo_contracheque(qs_contracheque[0].idContraCheque)
-    # tem_adiantamento = False
-    # if busca_contrachequeitens(qs_contracheque[0].idContraCheque, 'ADIANTAMENTO', 'D'):
-    #     tem_adiantamento = True
-    # cartaoponto = busca_cartaoponto_referencia(mesreferencia, anoreferencia, 6)
-    # context = {'formcqitens': formcqitens, 'qs_contracheque': qs_contracheque, 'qs_contrachequeitens':
-    #            qs_contrachequeitens, 'tem_adiantamento': tem_adiantamento, 'totais': totais, 'cartaoponto': cartaoponto}
-    # data['html_contracheque'] = render_to_string('pessoas/contracheque.html', context, request=request)
-    # c_return = JsonResponse(data)
-    # return c_return
-    pass
 
 
 def saldo_contracheque(idcontracheque):

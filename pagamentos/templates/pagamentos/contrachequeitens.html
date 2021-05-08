@@ -1,8 +1,5 @@
 <form class="form-row g-3" method="post" action="{% url 'criacontrachequeitens' %}" id="form-cria-contrachequeitens">
     {% csrf_token %}
-    <!--<div class="col-md-1">-->
-        <!--<label for="id_Data" class="form-label">DESCRIÇÃO:</label>-->
-    <!--</div>-->
     <div class="col-md-5">
         {{ formcontrachequeitens.Descricao }}
         {{ formcontrachequeitens.Descricao.error }}

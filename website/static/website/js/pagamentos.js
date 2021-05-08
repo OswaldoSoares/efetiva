@@ -67,8 +67,16 @@ $(document).on('submit', '#form-cria-contrachequeitens', function(event) {
             $(".fp-folha-contracheque").html("");
         },
         success: function(data){
-            print('ok')
             $(".fp-folha-contracheque").html(data.html_folha);
+            $(".fp-contrachequeitens").html(data.html_formccitens);
+            $(".fp-contracheque").html(data.html_contracheque);
+            if (data.html_adiantamento == true) {
+                $(".fp-adiantamento").hide();
+            } else {
+                $(".fp-adiantamento").show();
+            }
+            $(".fp-adiantamento").html(data.html_formccadianta);
+            $(".fp-cartaoponto").html(data.html_cartaoponto);
         },
         error: function(error) {
             console.log(error)

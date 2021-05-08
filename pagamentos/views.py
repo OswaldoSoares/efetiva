@@ -92,12 +92,11 @@ def cria_contrachequeitens(request):
     c_valor = request.POST.get('Valor')
     c_registro = request.POST.get('Registro')
     c_idcontracheque = request.POST.get('idContraCheque')
-    facade.facade.create_contracheque_itens(c_descricao, c_valor, c_registro, c_idcontracheque)
+    facade.create_contracheque_itens(c_descricao, c_valor, c_registro, c_idcontracheque)
     c_mes = request.POST.get('MesReferencia')
     c_ano = request.POST.get('AnoReferencia')
     c_idpesssoal = request.POST.get('idPessoal')
-    data = seleciona_folha(request)
-    # data += facade.seleciona_contracheque(request, c_mes, c_ano, c_idpesssoal)
+    data = facade.seleciona_contracheque(request, c_mes, c_ano, c_idpesssoal)
     return data
 
 
