@@ -147,3 +147,41 @@ $(document).on('click', '.selecionar-contracheque', function(event) {
         }
     });
 });
+
+$(document).on('click', '.altera-falta', function(event) {
+    var url = $(this).attr('data-url')
+    var mesreferencia = $(this).attr('mesreferencia')
+    var anoreferencia = $(this).attr('anoreferencia')
+    var idpessoal = $(this).attr('idpessoal')
+    var idcartaoponto = $(this).attr('idcartaoponto')
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: url,
+        data: {
+            MesReferencia: mesreferencia,
+            AnoReferencia: anoreferencia,
+            idPessoal: idpessoal,
+            idCartaoPonto: idcartaoponto,
+        },
+        success: function(data){
+            $(".fp-folha-contracheque").html("");
+            $(".fp-folha-contracheque").html(data.html_folha)
+            $(".fp-contracheque").html("");
+            $(".fp-contracheque").html(data.html_contracheque);
+            $(".fp-cartaoponto").html("");
+            $(".fp-cartaoponto").html(data.html_cartaoponto);
+            $(".fp-adiantamento").html("");
+            if (data.html_adiantamento == true) {
+                $(".fp-adiantamento").hide();
+            } else {
+                $(".fp-adiantamento").show();
+            }
+            $(".fp-adiantamento").html(data.html_formccadianta);
+        },
+        error: function(error, data) {
+            console.log(data.html_cartaoponto)
+            console.log(error)
+        }
+    });
+});

@@ -2247,6 +2247,20 @@ main .tb-cartaoponto .cp-hora {
     border-bottom: 1px solid black;
 }
 
+main .tb-cartaoponto .cp-buttom {
+    padding: 1px 5px 3px 5px;
+    text-align: center;
+    font-size: 13px;
+    border-bottom: 1px solid black;
+}
+
+main .tb-cartaoponto .cp-buttom .btn-xs {
+    width: 19px;
+    height: 19px;
+    padding: 0;
+    margin: 0; 
+}
+
 /*
 .pagamento-conteudo main {
     background-color: white;

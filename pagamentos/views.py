@@ -3,9 +3,8 @@ from django.shortcuts import render
 from django.template.loader import render_to_string
 
 from minutas.models import MinutaItens, MinutaColaboradores
-from pessoas.models import Pessoal
 from pagamentos import facade
-from django.db.models import Count, Sum, F, ExpressionWrapper, DecimalField
+from django.db.models import F, ExpressionWrapper, DecimalField
 
 
 def index_pagamento(request):
@@ -52,7 +51,7 @@ def teste(request):
                 'idMinutaItens', 'idMinuta__Minuta', 'Descricao', ValorAjudante=base_valor_ajudante).filter(
                 TipoItens='PAGA', idMinuta=itens_colaborador.idMinuta, Descricao='AJUDANTE')
             if qs_ajudante:
-                itens_pagar = {}
+                itens_pagar = dict()
                 itens_pagar['idMinutaItens'] = qs_ajudante[0]['idMinutaItens']
                 itens_pagar['Minuta'] = qs_ajudante[0]['idMinuta__Minuta']
                 itens_pagar['Descricao'] = qs_ajudante[0]['Descricao']
@@ -66,7 +65,7 @@ def teste(request):
                 Descricao='AJUDANTE').exclude(TipoItens='RECEBE').exclude(TipoItens='DESPESA')
             if qs_motorista:
                 for index_motorista, itens_motorista in enumerate(qs_motorista):
-                    itens_pagar = {}
+                    itens_pagar = dict()
                     itens_pagar['idMinutaItens'] = qs_motorista[index_motorista]['idMinutaItens']
                     itens_pagar['Minuta'] = qs_motorista[index_motorista]['idMinuta__Minuta']
                     itens_pagar['Descricao'] = qs_motorista[index_motorista]['Descricao']
@@ -96,14 +95,14 @@ def cria_contrachequeitens(request):
     c_mes = request.POST.get('MesReferencia')
     c_ano = request.POST.get('AnoReferencia')
     c_idpesssoal = request.POST.get('idPessoal')
-    data = facade.seleciona_contracheque(request, c_mes, c_ano, c_idpesssoal)
+    data = facade.seleciona_contracheque(request, c_mes, c_ano, c_idpesssoal, request)
     return data
 
 
 def seleciona_folha(request):
     c_mes = request.POST.get('MesReferencia')
     c_ano = request.POST.get('AnoReferencia')
-    data = facade.seleciona_folha(request, c_mes, c_ano)
+    data = facade.seleciona_folha(c_mes, c_ano)
     return data
 
 
@@ -112,7 +111,16 @@ def seleciona_contracheque(request):
     c_ano = request.GET.get('AnoReferencia')
     c_idpesssoal = request.GET.get('idPessoal')
     facade.atualiza_cartaoponto(c_mes, c_ano, c_idpesssoal)
-    data = facade.seleciona_contracheque(request, c_mes, c_ano, c_idpesssoal)
+    data = facade.seleciona_contracheque(c_mes, c_ano, c_idpesssoal, request)
+    return data
+
+
+def inserefalta(request):
+    c_mes = request.GET.get('MesReferencia')
+    c_ano = request.GET.get('AnoReferencia')
+    c_idpesssoal = request.GET.get('idPessoal')
+    c_idcartaoponto = request.GET.get('idCartaoPonto')
+    data = facade.altera_falta(c_mes, c_ano, c_idpesssoal, c_idcartaoponto, request)
     return data
 
 

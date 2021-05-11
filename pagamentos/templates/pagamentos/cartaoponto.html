@@ -1,11 +1,12 @@
 <table class="tb-cartaoponto">
     <tr>
-        <td class="cp-titulo" colspan="3">1ª QUINZENA</td>
+        <td class="cp-titulo" colspan="4">1ª QUINZENA</td>
     </tr>
     <tr>
         <td class="cp-titulo">DIA</td>
         <td class="cp-titulo">ENTRADA</td>
         <td class="cp-titulo">SAÍDA</td>
+        <td class="cp-buttom"></td>
     </tr>
     {% for dias in cartaoponto %}
     {% if forloop.counter < 16 %}
@@ -13,9 +14,25 @@
         <td class="cp-dia">{{ dias.Dia }}</td>
         {% if dias.Ausencia %}
         <td class="cp-hora" colspan="2">{{ dias.Ausencia }}</td>
+        <td class="cp-buttom">
+            {% if dias.Ausencia == 'FALTA' %}
+            <button class="btn btn-danger btn-xs altera-falta" data-url="{% url 'inserefalta' %}"
+                    mesreferencia="{{ mesreferencia }}" anoreferencia="{{ anoreferencia }}"
+                    idpessoal="{{ idpessoal }}" idcartaoponto="{{ dias.idCartaoPonto }}">
+            </button>
+            {% else %}
+            <span class="btn btn-dark btn-xs"></span>
+            {% endif %}
+        </td>
         {% else %}
         <td class="cp-hora">{{ dias.Entrada }}</td>
         <td class="cp-hora">{{ dias.Saida }}</td>
+        <td class="cp-buttom">
+            <button class="btn btn-success btn-xs altera-falta" data-url="{% url 'inserefalta' %}"
+                    mesreferencia="{{ mesreferencia }}" anoreferencia="{{ anoreferencia }}"
+                    idpessoal="{{ idpessoal }}" idcartaoponto="{{ dias.idCartaoPonto }}">
+            </button>
+        </td>
         {% endif %}
     </tr>
     {% endif %}
@@ -23,12 +40,13 @@
 </table>
 <table class="tb-cartaoponto">
     <tr>
-        <td class="cp-titulo" colspan="3">2ª QUINZENA</td>
+        <td class="cp-titulo" colspan="4">2ª QUINZENA</td>
     </tr>
     <tr>
         <td class="cp-titulo">DIA</td>
         <td class="cp-titulo">ENTRADA</td>
         <td class="cp-titulo">SAÍDA</td>
+        <td class="cp-buttom"></td>
     </tr>
     {% for dias in cartaoponto %}
     {% if forloop.counter > 15 %}
@@ -36,9 +54,25 @@
         <td class="cp-dia">{{ dias.Dia }}</td>
         {% if dias.Ausencia %}
         <td class="cp-hora" colspan="2">{{ dias.Ausencia }}</td>
+        <td class="cp-buttom">
+            {% if dias.Ausencia == 'FALTA' %}
+            <button class="btn btn-danger btn-xs altera-falta" data-url="{% url 'inserefalta' %}"
+                    mesreferencia="{{ mesreferencia }}" anoreferencia="{{ anoreferencia }}"
+                    idpessoal="{{ idpessoal }}" idcartaoponto="{{ dias.idCartaoPonto }}">
+            </button>
+            {% else %}
+            <span class="btn btn-dark btn-xs"></span>
+            {% endif %}
+        </td>
         {% else %}
         <td class="cp-hora">{{ dias.Entrada }}</td>
         <td class="cp-hora">{{ dias.Saida }}</td>
+        <td class="cp-buttom">
+            <button class="btn btn-success btn-xs altera-falta" data-url="{% url 'inserefalta' %}"
+                    mesreferencia="{{ mesreferencia }}" anoreferencia="{{ anoreferencia }}"
+                    idpessoal="{{ idpessoal }}" idcartaoponto="{{ dias.idCartaoPonto }}">
+            </button>
+        </td>
         {% endif %}
     </tr>
     {% endif %}
