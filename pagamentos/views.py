@@ -1,12 +1,14 @@
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
+from rolepermissions.decorators import has_permission_decorator
 
 from minutas.models import MinutaItens, MinutaColaboradores
 from pagamentos import facade
 from django.db.models import F, ExpressionWrapper, DecimalField
 
 
+@has_permission_decorator('modulo_faturamento')
 def index_pagamento(request):
     contexto = facade.create_context_formcontracheque()
     # qs_colaboradores = MinutaColaboradores.objects.values('idPessoal__Nome').filter(Pago=False).order_by(

@@ -105,7 +105,6 @@ class Secretaria(AbstractUserRole):
         modulo_clientes: True,
         modulo_colaboradores: True,
         modulo_minutas: True,
-        modulo_pagamentos: True,
         modulo_veiculos: True,
         cria_cliente: True,
         edit_cliente: True,
