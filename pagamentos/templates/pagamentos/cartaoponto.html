@@ -18,21 +18,22 @@
         <td class="cp-hora" colspan="2">{{ dias.Ausencia }}</td>
         <td class="cp-buttom">
             {% if dias.Ausencia == 'FALTA' %}
-            <button class="btn btn-danger btn-xs altera-falta" data-url="{% url 'inserefalta' %}"
-                    mesreferencia="{{ mesreferencia }}" anoreferencia="{{ anoreferencia }}"
-                    idpessoal="{{ idpessoal }}" idcartaoponto="{{ dias.idCartaoPonto }}">
+            <button class="btn btn-danger btn-xs glyphicon glyphicon-ban-circle altera-falta"
+                    data-url="{% url 'inserefalta' %}" mesreferencia="{{ mesreferencia }}"
+                    anoreferencia="{{ anoreferencia }}" idpessoal="{{ idpessoal }}"
+                    idcartaoponto="{{ dias.idCartaoPonto }}">
             </button>
             {% else %}
-            <span class="btn btn-dark btn-xs"></span>
+            <span class="btn btn-dark btn-xs glyphicon glyphicon-sunglasses"></span>
             {% endif %}
         </td>
         {% else %}
         <td  class="cp-buttom">
-            <button class="btn btn-primary btn-xs" onclick="openMyModal(event); return false;"
-                data-action="{% url 'editacartaoponto' dias.idCartaoPonto  %}"
-                data-title="EDITA CARTÃO DE PONTO" data-button-save-label="ALTERAR"
-                data-mesreferencia="{{ mesreferencia }}" data-anoreferencia="{{ anoreferencia }}"
-                data-idpessoal="{{ idpessoal }}" data-idcartaoponto="{{ dias.idCartaoPonto }}">
+            <button class="btn btn-primary btn-xs glyphicon glyphicon-pencil"
+                    onclick="openMyModal(event); return false;" data-button-save-label="ALTERAR"
+                    data-action="{% url 'editacartaoponto' dias.idCartaoPonto  %}" data-title="EDITA CARTÃO DE PONTO"
+                    data-mesreferencia="{{ mesreferencia }}" data-anoreferencia="{{ anoreferencia }}"
+                    data-idpessoal="{{ idpessoal }}" data-idcartaoponto="{{ dias.idCartaoPonto }}">
             </button>
         </td>
         {% if dias.Entrada|time:"H:i" > '07:00' %}
@@ -48,9 +49,10 @@
         <td class="cp-horapadrao">{{ dias.Saida }}</td>
         {% endif %}
         <td class="cp-buttom">
-            <button class="btn btn-success btn-xs altera-falta" data-url="{% url 'inserefalta' %}"
-                    mesreferencia="{{ mesreferencia }}" anoreferencia="{{ anoreferencia }}"
-                    idpessoal="{{ idpessoal }}" idcartaoponto="{{ dias.idCartaoPonto }}">
+            <button class="btn btn-success btn-xs glyphicon glyphicon-user altera-falta"
+                    data-url="{% url 'inserefalta' %}" mesreferencia="{{ mesreferencia }}"
+                    anoreferencia="{{ anoreferencia }}" idpessoal="{{ idpessoal }}"
+                    idcartaoponto="{{ dias.idCartaoPonto }}">
             </button>
         </td>
         {% endif %}
@@ -78,21 +80,22 @@
         <td class="cp-hora" colspan="2">{{ dias.Ausencia }}</td>
         <td class="cp-buttom">
             {% if dias.Ausencia == 'FALTA' %}
-            <button class="btn btn-danger btn-xs altera-falta" data-url="{% url 'inserefalta' %}"
-                    mesreferencia="{{ mesreferencia }}" anoreferencia="{{ anoreferencia }}"
-                    idpessoal="{{ idpessoal }}" idcartaoponto="{{ dias.idCartaoPonto }}">
+            <button class="btn btn-danger btn-xs glyphicon glyphicon-ban-circle altera-falta"
+                    data-url="{% url 'inserefalta' %}" mesreferencia="{{ mesreferencia }}"
+                    anoreferencia="{{ anoreferencia }}" idpessoal="{{ idpessoal }}"
+                    idcartaoponto="{{ dias.idCartaoPonto }}">
             </button>
             {% else %}
-            <span class="btn btn-dark btn-xs"></span>
+            <span class="btn btn-dark btn-xs glyphicon glyphicon-sunglasses"></span>
             {% endif %}
         </td>
         {% else %}
         <td  class="cp-buttom">
-            <button class="btn btn-primary btn-xs" onclick="openMyModal(event); return false;"
-                data-action="{% url 'editacartaoponto' dias.idCartaoPonto  %}"
-                data-title="EDITA CARTÃO DE PONTO" data-button-save-label="ALTERAR"
-                data-mesreferencia="{{ mesreferencia }}" data-anoreferencia="{{ anoreferencia }}"
-                data-idpessoal="{{ idpessoal }}" data-idcartaoponto="{{ dias.idCartaoPonto }}">
+            <button class="btn btn-primary btn-xs glyphicon glyphicon-pencil"
+                    onclick="openMyModal(event); return false;" data-button-save-label="ALTERAR"
+                    data-action="{% url 'editacartaoponto' dias.idCartaoPonto  %}" data-title="EDITA CARTÃO DE PONTO"
+                    data-mesreferencia="{{ mesreferencia }}" data-anoreferencia="{{ anoreferencia }}"
+                    data-idpessoal="{{ idpessoal }}" data-idcartaoponto="{{ dias.idCartaoPonto }}">
             </button>
         </td>
         {% if dias.Entrada|time:"H:i" > '07:00' %}
@@ -108,9 +111,10 @@
         <td class="cp-horapadrao">{{ dias.Saida }}</td>
         {% endif %}
         <td class="cp-buttom">
-            <button class="btn btn-success btn-xs altera-falta" data-url="{% url 'inserefalta' %}"
-                    mesreferencia="{{ mesreferencia }}" anoreferencia="{{ anoreferencia }}"
-                    idpessoal="{{ idpessoal }}" idcartaoponto="{{ dias.idCartaoPonto }}">
+            <button class="btn btn-success btn-xs glyphicon glyphicon-user altera-falta"
+                    data-url="{% url 'inserefalta' %}" mesreferencia="{{ mesreferencia }}"
+                    anoreferencia="{{ anoreferencia }}" idpessoal="{{ idpessoal }}"
+                    idcartaoponto="{{ dias.idCartaoPonto }}">
             </button>
         </td>
         {% endif %}
