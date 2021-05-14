@@ -63,20 +63,23 @@ $(document).on('submit', '.form-cria-contrachequeitens', function(event) {
         type: $(this).attr('method'),
         url: url,
         data: $(this).serialize(),
-        beforeSend: function(){
-            $(".fp-folha-contracheque").html("");
-        },
         success: function(data){
-            $(".fp-folha-contracheque").html(data.html_folha);
-            $(".fp-contrachequeitens").html(data.html_formccitens);
+            console.log('OK Também')
+            $(".fp-folha-contracheque").html("");
+            $(".fp-folha-contracheque").html(data.html_folha)
+            $(".fp-contracheque").html("");
             $(".fp-contracheque").html(data.html_contracheque);
+            $(".fp-cartaoponto").html("");
+            $(".fp-cartaoponto").html(data.html_cartaoponto);
+            $(".fp-contrachequeitens").html("");
+            $(".fp-contrachequeitens").html(data.html_formccitens);
+            $(".fp-adiantamento").html("");
+            $(".fp-adiantamento").html(data.html_formccadianta);
+            $(".fp-minutas").html("");
+            $(".fp-minutas").html(data.html_minutascontracheque);
             if (data.html_adiantamento == true) {
                 $(".fp-adiantamento").hide();
-            } else {
-                $(".fp-adiantamento").show();
             }
-            $(".fp-adiantamento").html(data.html_formccadianta);
-            $(".fp-cartaoponto").html(data.html_cartaoponto);
         },
         error: function(error) {
             console.log(error)
@@ -173,12 +176,12 @@ $(document).on('click', '.altera-falta', function(event) {
             $(".fp-cartaoponto").html("");
             $(".fp-cartaoponto").html(data.html_cartaoponto);
             $(".fp-adiantamento").html("");
+            $(".fp-adiantamento").html(data.html_formccadianta);
+            $(".fp-minutas").html("");
+            $(".fp-minutas").html(data.html_minutascontracheque);
             if (data.html_adiantamento == true) {
                 $(".fp-adiantamento").hide();
-            } else {
-                $(".fp-adiantamento").show();
             }
-            $(".fp-adiantamento").html(data.html_formccadianta);
         },
         error: function(error, data) {
             console.log(data.html_cartaoponto)
@@ -263,6 +266,13 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                     $(".fp-contracheque").html(xhr.html_contracheque);
                     $(".fp-cartaoponto").html("");
                     $(".fp-cartaoponto").html(xhr.html_cartaoponto);
+                    $(".fp-adiantamento").html("");
+                    $(".fp-adiantamento").html(xhr.html_formccadianta);
+                    $(".fp-minutas").html("");
+                    $(".fp-minutas").html(xhr.html_minutascontracheque);
+                    if (xhr.html_adiantamento == true) {
+                        $(".fp-adiantamento").hide();
+                    }
                     if (cbAfterSuccess) { cbAfterSuccess(modal); }
                 }
             },

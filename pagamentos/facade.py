@@ -181,6 +181,13 @@ def busca_contrachequeitens(idcontracheque, descricao, registro):
     return contrachequeitens
 
 
+def busca_adiantamento(idcontracheque):
+    if ContraChequeItens.objects.filter(idContraCheque=idcontracheque, Descricao='ADIANTAMENTO', Registro='D'):
+        return True
+    else:
+        return False
+
+
 def delete_contrachequeitens(idcontracheque, descricao, registro):
     contrachequeitens = ContraChequeItens.objects.filter(idContraCheque=idcontracheque, Descricao=descricao,
                                                          Registro=registro)
@@ -197,16 +204,13 @@ def seleciona_folha(mesreferencia, anoreferencia):
 def seleciona_contracheque(mesreferencia, anoreferencia, idpessoal, request):
     data = dict()
     contracheque = get_contrachequereferencia(mesreferencia, anoreferencia, idpessoal)
-    if busca_contrachequeitens(contracheque[0].idContraCheque, 'ADIANTAMENTO', 'D'):
-        data['html_adiantamento'] = True
-    else:
-        data['html_adiantamento'] = False
+    data['html_adiantamento'] = busca_adiantamento(contracheque[0].idContraCheque)
     data['html_folha'] = html_folha(mesreferencia, anoreferencia)
     data['html_contracheque'] = html_contracheque(mesreferencia, anoreferencia, idpessoal)
     data['html_cartaoponto'] = html_cartaoponto(mesreferencia,  anoreferencia, idpessoal)
     data['html_formccadianta'] = html_formccadianta(contracheque, request)
     data['html_formccitens'] = html_formccitens(contracheque, request)
-    data['html_minutascontracheque'] = minutas(mesreferencia,  anoreferencia, idpessoal)
+    data['html_minutascontracheque'] = html_minutascontracheque(mesreferencia,  anoreferencia, idpessoal)
     c_return = JsonResponse(data)
     return c_return
 
@@ -243,7 +247,7 @@ def select_minutas_contracheque(mesreferencia, anoreferencia, idpessoal):
     return minutas
 
 
-def minutas(mesreferencia, anoreferencia, idpessoal):
+def html_minutascontracheque(mesreferencia, anoreferencia, idpessoal):
     minutas = select_minutas_contracheque(mesreferencia, anoreferencia, idpessoal)
     context = {'minutas': minutas, 'idPessoal': idpessoal}
     c_return = render_to_string('pagamentos/minutascontracheque.html', context)
@@ -296,11 +300,13 @@ def altera_falta(mesreferencia, anoreferencia, idpessoal, idcartaoponto, request
     obj.save(update_fields=['Ausencia', 'Alteracao', 'Entrada', 'Saida'])
     calcula_faltas(mesreferencia, anoreferencia, idpessoal)
     atualiza_cartaoponto(mesreferencia, anoreferencia, idpessoal)
+    data['html_adiantamento'] = busca_adiantamento(contracheque[0].idContraCheque)
     data['html_folha'] = html_folha(mesreferencia, anoreferencia)
     data['html_contracheque'] = html_contracheque(mesreferencia, anoreferencia, idpessoal)
     data['html_cartaoponto'] = html_cartaoponto(mesreferencia, anoreferencia, idpessoal)
     data['html_formccadianta'] = html_formccadianta(contracheque, request)
     data['html_formccitens'] = html_formccitens(contracheque, request)
+    data['html_minutascontracheque'] = html_minutascontracheque(mesreferencia, anoreferencia, idpessoal)
     c_return = JsonResponse(data)
     return c_return
 
@@ -320,11 +326,7 @@ def html_contracheque(mesreferencia, anoreferencia, idpessoal):
     contrachequeitens = ContraChequeItens.objects.filter(idContraCheque=contracheque[0].idContraCheque).order_by(
         'Registro')
     totais = saldo_contracheque(contracheque[0].idContraCheque)
-    tem_adiantamento = False
-    if busca_contrachequeitens(contracheque[0].idContraCheque, 'ADIANTAMENTO', 'D'):
-        tem_adiantamento = True
-    context = {'qs_contracheque': contracheque, 'qs_contrachequeitens': contrachequeitens, 'tem_adiantamento':
-               tem_adiantamento, 'totais': totais}
+    context = {'qs_contracheque': contracheque, 'qs_contrachequeitens': contrachequeitens, 'totais': totais}
     c_return = render_to_string('pagamentos/contracheque.html', context)
     return c_return
 
@@ -353,7 +355,6 @@ def html_formccitens(contracheque, request):
 
 
 def calcula_faltas(mesreferencia, anoreferencia, idpessoal):
-    data = dict()
     dia, diafinal = periodo_cartaoponto(mesreferencia, anoreferencia)
     faltas = CartaoPonto.objects.filter(Dia__range=[dia, diafinal], idPessoal=idpessoal, Ausencia='FALTA').count()
     salario = get_salario(idpessoal)
@@ -362,10 +363,6 @@ def calcula_faltas(mesreferencia, anoreferencia, idpessoal):
     contracheque = get_contrachequereferencia(mesreferencia, anoreferencia, idpessoal)
     contrachequeitens = get_contrachequeitens(contracheque[0].idContraCheque, 'SALARIO', 'C')
     altera_contracheque_itens(contrachequeitens, salario)
-    data['html_folha'] = html_folha(mesreferencia, anoreferencia)
-    data['html_contracheque'] = html_contracheque(mesreferencia, anoreferencia, idpessoal)
-    c_return = JsonResponse(data)
-    return c_return
 
 
 def calcula_horas_extras(mesreferencia, anoreferencia, idpessoal):
@@ -463,9 +460,14 @@ def form_pagamento(request, c_form, c_idobj, c_url, c_view, idcartaoponto, mesre
             form.save()
         calcula_horas_extras(mesreferencia, anoreferencia, idpessoal)
         calcula_horas_atrazo(mesreferencia, anoreferencia, idpessoal)
+        contracheque = get_contrachequereferencia(mesreferencia, anoreferencia, idpessoal)
+        data['html_adiantamento'] = busca_adiantamento(contracheque[0].idContraCheque)
         data['html_folha'] = html_folha(mesreferencia, anoreferencia)
         data['html_contracheque'] = html_contracheque(mesreferencia, anoreferencia, idpessoal)
         data['html_cartaoponto'] = html_cartaoponto(mesreferencia, anoreferencia, idpessoal)
+        data['html_formccadianta'] = html_formccadianta(contracheque, request)
+        data['html_formccitens'] = html_formccitens(contracheque, request)
+        data['html_minutascontracheque'] = html_minutascontracheque(mesreferencia, anoreferencia, idpessoal)
     else:
         form = c_form(instance=c_instance)
     context = {'form': form, 'c_idobj': c_idobj, 'c_url': c_url, 'c_view': c_view, 'idcartaoponto': idcartaoponto,
