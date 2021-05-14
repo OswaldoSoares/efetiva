@@ -2094,6 +2094,13 @@ main .fp-folha-contracheque .fp-folha {
     border-radius: 5px;
 }
 
+main .fp-folha-contracheque .fp-minutas {
+    color: var(--corprincipal);
+    width: 100%;
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
 main .fp-folha-contracheque .fp-contracheque-cartaoponto {
     display: flex;
     flex-direction: column;
@@ -2247,6 +2254,30 @@ main .tb-cartaoponto .cp-hora {
     border-bottom: 1px solid black;
 }
 
+main .tb-cartaoponto .cp-horaatrazo {
+    color: deeppink;
+    padding: 0 5px;
+    text-align: center;
+    font-size: 13px;
+    border-bottom: 1px solid black;
+}
+
+main .tb-cartaoponto .cp-horapadrao {
+    color: var(--corsecundaria);
+    padding: 0 5px;
+    text-align: center;
+    font-size: 13px;
+    border-bottom: 1px solid black;
+}
+
+main .tb-cartaoponto .cp-horaextra {
+    color: var(--corprincipal);
+    padding: 0 5px;
+    text-align: center;
+    font-size: 13px;
+    border-bottom: 1px solid black;
+}
+
 main .tb-cartaoponto .cp-buttom {
     padding: 1px 5px 3px 5px;
     text-align: center;
@@ -2260,6 +2291,70 @@ main .tb-cartaoponto .cp-buttom .btn-xs {
     padding: 0;
     margin: 0; 
 }
+
+main .fp-folha .fp-minutas {
+    background-color: white;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+main .fp-minutas .fp-minuta-tabela {
+    width: 95%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+main .fp-minutas .fp-minuta-tabela .fp-tabela {
+    width: 100%;
+    padding: 1px 5px;
+    text-align: center;
+    font-size: 13px;
+    border-bottom: 1px solid black;
+}
+
+main .fp-minutas .fp-tabela .fp-minuta-titulo {
+    padding: 0 5px;
+    text-align: center;
+    font-size: 13px;
+    border-bottom: 1px solid black;    
+}
+
+main .fp-minutas .fp-tabela .fp-minuta-dia {
+    width: 15%;
+    padding: 0 5px;
+    margin-left: 5px;
+    text-align: center;
+    font-size: 13px;
+    border-bottom: 1px solid black;    
+}
+
+main .fp-minutas .fp-tabela .fp-minuta-numero {
+    width: 15%;
+    padding: 0 5px;
+    text-align: center;
+    font-size: 13px;
+    border-bottom: 1px solid black;    
+}
+
+main .fp-minutas .fp-tabela .fp-minuta-cliente {
+    width: 50%;
+    padding: 0 5px;
+    text-align: center;
+    font-size: 13px;
+    border-bottom: 1px solid black;    
+}
+
+main .fp-minutas .fp-tabela .fp-minuta-horafinal {
+    width: 20%;
+    padding: 0 5px;
+    text-align: center;
+    font-size: 13px;
+    border-bottom: 1px solid black;    
+}
+
 
 /*
 .pagamento-conteudo main {

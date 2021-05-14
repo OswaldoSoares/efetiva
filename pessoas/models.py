@@ -217,6 +217,7 @@ class CartaoPonto(models.Model):
     Entrada = models.TimeField()
     Saida = models.TimeField()
     Ausencia = models.CharField(max_length=7, blank=True)
+    Alteracao = models.CharField(max_length=6, default='ROBOT')
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
 
     class Meta:

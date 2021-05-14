@@ -1,4 +1,4 @@
-<form class="form-row g-3" method="post" action="{% url 'criacontrachequeitens' %}" id="form-cria-contrachequeitens">
+<form class="form-row g-3" method="post" action="{% url 'criacontrachequeitens' %}" class="form-cria-contrachequeitens">
     {% csrf_token %}
     <div class="col-md-5">
         {{ formcontrachequeitens.Descricao }}

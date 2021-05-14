@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import index_pagamento, teste, cria_folha, cria_contrachequeitens, seleciona_folha, \
-    seleciona_contracheque, inserefalta, manutencao, apagar_tudo
+    seleciona_contracheque, inserefalta, edita_cartaoponto, manutencao, apagar_tudo
 
 urlpatterns = [
     path('', index_pagamento, name='index_pagamento'),
@@ -10,6 +10,7 @@ urlpatterns = [
     path('selecionacontracheque', seleciona_contracheque, name='selecionacontracheque'),
     path('criacontrachequeitens', cria_contrachequeitens, name='criacontrachequeitens'),
     path('inserefalta', inserefalta, name='inserefalta'),
+    path('editacartaoponto/<int:idcartaoponto>/',edita_cartaoponto, name='editacartaoponto'),
     path('manutencao', manutencao),
     path('apaga', apagar_tudo, name='apaga')
 ]

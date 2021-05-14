@@ -5,6 +5,7 @@ from rolepermissions.decorators import has_permission_decorator
 
 from minutas.models import MinutaItens, MinutaColaboradores
 from pagamentos import facade
+from .forms import CadastraCartaoPonto
 from django.db.models import F, ExpressionWrapper, DecimalField
 
 
@@ -84,7 +85,7 @@ def cria_folha(request):
     c_mes = request.GET.get('MesReferencia')
     c_ano = request.GET.get('AnoReferencia')
     facade.create_folha(c_mes, c_ano)
-    data = facade.seleciona_folha(request, c_mes, c_ano)
+    data = facade.seleciona_folha(c_mes, c_ano)
     return data
 
 
@@ -97,7 +98,7 @@ def cria_contrachequeitens(request):
     c_mes = request.POST.get('MesReferencia')
     c_ano = request.POST.get('AnoReferencia')
     c_idpesssoal = request.POST.get('idPessoal')
-    data = facade.seleciona_contracheque(request, c_mes, c_ano, c_idpesssoal, request)
+    data = facade.seleciona_contracheque(c_mes, c_ano, c_idpesssoal, request)
     return data
 
 
@@ -142,3 +143,16 @@ def apagar_tudo(request):
     cartaoponto.delete()
     contexto = {'contracheque': contracheque, 'contrachequeitens': contrachequeitens, 'cartaoponto': cartaoponto}
     return render(request, 'pagamentos/manutencao.html', contexto)
+
+
+def edita_cartaoponto(request, idcartaoponto):
+    c_form = CadastraCartaoPonto
+    c_idobj = idcartaoponto
+    c_url = '/pagamentos/editacartaoponto/{}/'.format(c_idobj)
+    c_view = 'edita_cartaoponto'
+    c_idcartaoponto = request.GET.get('idcartaoponto')
+    c_mes = request.POST.get('MesReferencia')
+    c_ano = request.POST.get('AnoReferencia')
+    c_idpessoal = request.POST.get('idPessoal')
+    data = facade.form_pagamento(request, c_form, c_idobj, c_url, c_view, c_idcartaoponto, c_mes, c_ano, c_idpessoal)
+    return data

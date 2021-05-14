@@ -1,4 +1,4 @@
-<form class="row g-3" method="post" action="{% url 'criacontrachequeitens' %}" id="form-cria-contrachequeitens">
+<form class="row g-3" method="post" action="{% url 'criacontrachequeitens' %}" class="form-cria-contrachequeitens">
     {% csrf_token %}
     <div class="col-md-3">
         <label for="id_Data" class="form-label label-adiantamento">ADIANTAMENTO:</label>
@@ -8,12 +8,12 @@
         {{ formcontrachequeitens.Valor.error }}
     </div>
     {% for itens in contracheque %}
-    <input type="hidden" name="Descricao" value="ADIANTAMENTO" id="id_Descricao">
-    <input type="hidden" name="Registro" value="D" id="id_Registro">
-    <input type="hidden" name="idContraCheque" value="{{ itens.idContraCheque }}" id="id_idContraCheque">
-    <input type="hidden" name="MesReferencia" value="{{ itens.MesReferencia }}" id="MesReferencia">
-    <input type="hidden" name="AnoReferencia" value="{{ itens.AnoReferencia }}" id="AnoReferencia">
-    <input type="hidden" name="idPessoal" value="{{ itens.idPessoal_id }}" id="idPessoal">
+    <input type="hidden" name="Descricao" value="ADIANTAMENTO" id="id_Descricao_ad">
+    <input type="hidden" name="Registro" value="D" id="id_Registro_ad">
+    <input type="hidden" name="idContraCheque" value="{{ itens.idContraCheque }}" id="id_idContraCheque_ad">
+    <input type="hidden" name="MesReferencia" value="{{ itens.MesReferencia }}" id="MesReferencia_ad">
+    <input type="hidden" name="AnoReferencia" value="{{ itens.AnoReferencia }}" id="AnoReferencia-ad">
+    <input type="hidden" name="idPessoal" value="{{ itens.idPessoal_id }}" id="idPessoal_ad">
     {% endfor %}
     <div class="col-md-4">
         <button class="btn btn-primary glyphicon glyphicon-save">

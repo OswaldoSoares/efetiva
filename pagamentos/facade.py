@@ -148,6 +148,11 @@ def get_salario(idpessoal: int):
     return salario
 
 
+def get_cartaopontoid(idcartaoponto):
+    cartaoponto = CartaoPonto.objects.get(idCartaoPonto=idcartaoponto)
+    return cartaoponto
+
+
 def busca_cartaoponto_referencia(mesreferencia, anoreferencia, idpessoal):
     if mesreferencia in meses:
         mes = meses.index(mesreferencia)+1
@@ -176,6 +181,12 @@ def busca_contrachequeitens(idcontracheque, descricao, registro):
     return contrachequeitens
 
 
+def delete_contrachequeitens(idcontracheque, descricao, registro):
+    contrachequeitens = ContraChequeItens.objects.filter(idContraCheque=idcontracheque, Descricao=descricao,
+                                                         Registro=registro)
+    contrachequeitens.delete()
+
+
 def seleciona_folha(mesreferencia, anoreferencia):
     data = dict()
     data['html_folha'] = html_folha(mesreferencia, anoreferencia)
@@ -195,6 +206,7 @@ def seleciona_contracheque(mesreferencia, anoreferencia, idpessoal, request):
     data['html_cartaoponto'] = html_cartaoponto(mesreferencia,  anoreferencia, idpessoal)
     data['html_formccadianta'] = html_formccadianta(contracheque, request)
     data['html_formccitens'] = html_formccitens(contracheque, request)
+    data['html_minutascontracheque'] = minutas(mesreferencia,  anoreferencia, idpessoal)
     c_return = JsonResponse(data)
     return c_return
 
@@ -218,37 +230,47 @@ def seleciona_cartaoponto(mesreferencia, anoreferencia, idpessoal):
     return render_to_string('pagamentos/cartaoponto.html', context)
 
 
-def atualiza_cartaoponto(mesreferencia, anoreferencia, idpessoal):
+def select_minutas_contracheque(mesreferencia, anoreferencia, idpessoal):
     dia, diafinal = periodo_cartaoponto(mesreferencia, anoreferencia)
     minutas = MinutaColaboradores.objects.filter(idPessoal=idpessoal,
                                                  idMinuta_id__DataMinuta__range=(dia, diafinal)).order_by(
                                                  'idMinuta_id__DataMinuta').values('idMinuta_id__DataMinuta',
+                                                                                   'idMinuta_id__Minuta',
+                                                                                   'idMinuta_id__idCliente__Fantasia',
                                                                                    'idMinuta_id__HoraInicial',
                                                                                    'idMinuta_id__HoraFinal',
                                                                                    'idPessoal')
-    totalextra = datetime.timedelta(hours=0, minutes=0)
+    return minutas
+
+
+def minutas(mesreferencia, anoreferencia, idpessoal):
+    minutas = select_minutas_contracheque(mesreferencia, anoreferencia, idpessoal)
+    context = {'minutas': minutas, 'idPessoal': idpessoal}
+    c_return = render_to_string('pagamentos/minutascontracheque.html', context)
+    return c_return
+
+
+def atualiza_cartaoponto(mesreferencia, anoreferencia, idpessoal):
+    minutas = select_minutas_contracheque(mesreferencia, anoreferencia, idpessoal)
     for x in minutas:
         cartaoponto = CartaoPonto.objects.get(Dia=x['idMinuta_id__DataMinuta'], idPessoal_id=x['idPessoal'])
         obj = cartaoponto
         horasaida = datetime.datetime.strptime('17:00:00', '%H:%M:%S').time()
-        tdsaida = datetime.timedelta(hours=horasaida.hour, minutes=horasaida.minute)
-        tdfinal = datetime.timedelta(hours=x['idMinuta_id__HoraFinal'].hour, minutes=x['idMinuta_id__HoraFinal'].minute)
-        if tdfinal > tdsaida:
-            totalextra += tdfinal-tdsaida
-        if x['idMinuta_id__HoraFinal'] != obj.Saida:
-            if x['idMinuta_id__HoraFinal'] > horasaida:
-                obj.Saida = x['idMinuta_id__HoraFinal']
-                obj.save(update_fields=['Saida'])
-    salario = get_salario(idpessoal)
-    valorhoraextra = float(salario[0].Salario)/30/9/60/60*totalextra.seconds
-    contracheque = get_contrachequereferencia(mesreferencia, anoreferencia, idpessoal)
-    if contracheque:
-        contrachequeitens = get_contrachequeitens(contracheque[0].idContraCheque, 'HORA EXTRA', 'C')
-        if contrachequeitens:
-            altera_contracheque_itens(contrachequeitens, valorhoraextra)
-        else:
-            if valorhoraextra > 0:
-                create_contracheque_itens('HORA EXTRA', valorhoraextra, 'C', contracheque[0].idContraCheque)
+        if obj.Alteracao == 'ROBOT' and obj.Ausencia != 'FALTA':
+            if x['idMinuta_id__HoraFinal'] != obj.Saida:
+                if x['idMinuta_id__HoraFinal'] > horasaida:
+                    obj.Saida = x['idMinuta_id__HoraFinal']
+                    obj.save(update_fields=['Saida'])
+    totalextra = calcula_horas_extras(mesreferencia, anoreferencia, idpessoal)
+    calcula_horas_atrazo(mesreferencia, anoreferencia, idpessoal)
+    return totalextra
+
+
+def altera_horario_manual(idcartaoponto, horaentrada, horasaida):
+    obj = get_cartaopontoid(idcartaoponto)
+    obj.Entrada = horaentrada
+    obj.Saida = horasaida
+    obj.save(update_fields=['Entrada', 'Saida'])
 
 
 def altera_contracheque_itens(contrachequeitens, valorhoraextra):
@@ -265,31 +287,20 @@ def altera_falta(mesreferencia, anoreferencia, idpessoal, idcartaoponto, request
     obj = cartaoponto
     if obj.Ausencia == 'FALTA':
         obj.Ausencia = ''
+        obj.Alteracao = 'ROBOT'
     else:
         obj.Ausencia = 'FALTA'
-    obj.save(update_fields=['Ausencia'])
-    calculafaltas(mesreferencia, anoreferencia, idpessoal)
+        obj.Alteracao = 'ROBOT'
+    obj.Entrada = '07:00:00'
+    obj.Saida = '17:00:00'
+    obj.save(update_fields=['Ausencia', 'Alteracao', 'Entrada', 'Saida'])
+    calcula_faltas(mesreferencia, anoreferencia, idpessoal)
+    atualiza_cartaoponto(mesreferencia, anoreferencia, idpessoal)
     data['html_folha'] = html_folha(mesreferencia, anoreferencia)
     data['html_contracheque'] = html_contracheque(mesreferencia, anoreferencia, idpessoal)
     data['html_cartaoponto'] = html_cartaoponto(mesreferencia, anoreferencia, idpessoal)
     data['html_formccadianta'] = html_formccadianta(contracheque, request)
     data['html_formccitens'] = html_formccitens(contracheque, request)
-    c_return = JsonResponse(data)
-    return c_return
-
-
-def calculafaltas(mesreferencia, anoreferencia, idpessoal):
-    data = dict()
-    dia, diafinal = periodo_cartaoponto(mesreferencia, anoreferencia)
-    faltas = CartaoPonto.objects.filter(Dia__range=[dia, diafinal], idPessoal=idpessoal, Ausencia='FALTA').count()
-    salario = get_salario(idpessoal)
-    desconto = float(salario[0].Salario)/30*int(faltas)*2
-    salario = float(salario[0].Salario) - desconto
-    contracheque = get_contrachequereferencia(mesreferencia, anoreferencia, idpessoal)
-    contrachequeitens = get_contrachequeitens(contracheque[0].idContraCheque, 'SALARIO', 'C')
-    altera_contracheque_itens(contrachequeitens, salario)
-    data['html_folha'] = html_folha(mesreferencia, anoreferencia)
-    data['html_contracheque'] = html_contracheque(mesreferencia, anoreferencia, idpessoal)
     c_return = JsonResponse(data)
     return c_return
 
@@ -341,6 +352,88 @@ def html_formccitens(contracheque, request):
     return c_return
 
 
+def calcula_faltas(mesreferencia, anoreferencia, idpessoal):
+    data = dict()
+    dia, diafinal = periodo_cartaoponto(mesreferencia, anoreferencia)
+    faltas = CartaoPonto.objects.filter(Dia__range=[dia, diafinal], idPessoal=idpessoal, Ausencia='FALTA').count()
+    salario = get_salario(idpessoal)
+    desconto = float(salario[0].Salario)/30*int(faltas)*2
+    salario = float(salario[0].Salario) - desconto
+    contracheque = get_contrachequereferencia(mesreferencia, anoreferencia, idpessoal)
+    contrachequeitens = get_contrachequeitens(contracheque[0].idContraCheque, 'SALARIO', 'C')
+    altera_contracheque_itens(contrachequeitens, salario)
+    data['html_folha'] = html_folha(mesreferencia, anoreferencia)
+    data['html_contracheque'] = html_contracheque(mesreferencia, anoreferencia, idpessoal)
+    c_return = JsonResponse(data)
+    return c_return
+
+
+def calcula_horas_extras(mesreferencia, anoreferencia, idpessoal):
+    salario = get_salario(idpessoal)
+    totalextra = total_horas_extras(mesreferencia, anoreferencia, idpessoal)
+    horazero = datetime.datetime.strptime('00:00:00', '%H:%M:%S').time()
+    horazero = datetime.timedelta(hours=horazero.hour, minutes=horazero.minute)
+    valorhoraextra = float(salario[0].Salario) / 30 / 9 / 60 / 60 * totalextra.seconds
+    contracheque = get_contrachequereferencia(mesreferencia, anoreferencia, idpessoal)
+    if totalextra > horazero:
+        if contracheque:
+            contrachequeitens = get_contrachequeitens(contracheque[0].idContraCheque, 'HORA EXTRA', 'C')
+            if contrachequeitens:
+                altera_contracheque_itens(contrachequeitens, valorhoraextra)
+            else:
+                if valorhoraextra > 0:
+                    create_contracheque_itens('HORA EXTRA', valorhoraextra, 'C', contracheque[0].idContraCheque)
+    else:
+        delete_contrachequeitens(contracheque[0].idContraCheque, 'HORA EXTRA', 'C')
+    return totalextra
+
+
+def total_horas_extras(mesreferencia, anoreferencia, idpessoal):
+    dia, diafinal = periodo_cartaoponto(mesreferencia, anoreferencia)
+    cartaoponto = CartaoPonto.objects.filter(Dia__range=[dia, diafinal], idPessoal=idpessoal)
+    totalextra = datetime.timedelta(hours=0, minutes=0)
+    for x in cartaoponto:
+        horasaidapadrao = datetime.datetime.strptime('17:00:00', '%H:%M:%S').time()
+        horasaidapadrao = datetime.timedelta(hours=horasaidapadrao.hour, minutes=horasaidapadrao.minute)
+        horasaidareal = datetime.timedelta(hours=x.Saida.hour, minutes=x.Saida.minute)
+        if horasaidareal > horasaidapadrao:
+            totalextra += horasaidareal - horasaidapadrao
+    return totalextra
+
+
+def calcula_horas_atrazo(mesreferencia, anoreferencia, idpessoal):
+    salario = get_salario(idpessoal)
+    totalatrazo = total_horas_atrazo(mesreferencia, anoreferencia, idpessoal)
+    horazero = datetime.datetime.strptime('00:00:00', '%H:%M:%S').time()
+    horazero = datetime.timedelta(hours=horazero.hour, minutes=horazero.minute)
+    valorhoraatrazo = float(salario[0].Salario) / 30 / 9 / 60 / 60 * totalatrazo.seconds
+    contracheque = get_contrachequereferencia(mesreferencia, anoreferencia, idpessoal)
+    if totalatrazo > horazero:
+        if contracheque:
+            contrachequeitens = get_contrachequeitens(contracheque[0].idContraCheque, 'ATRAZO', 'D')
+            if contrachequeitens:
+                altera_contracheque_itens(contrachequeitens, valorhoraatrazo)
+            else:
+                if valorhoraatrazo > 0:
+                    create_contracheque_itens('ATRAZO', valorhoraatrazo, 'D', contracheque[0].idContraCheque)
+    else:
+        delete_contrachequeitens(contracheque[0].idContraCheque, 'ATRAZO', 'D')
+    return totalatrazo
+
+
+def total_horas_atrazo(mesreferencia, anoreferencia, idpessoal):
+    dia, diafinal = periodo_cartaoponto(mesreferencia, anoreferencia)
+    cartaoponto = CartaoPonto.objects.filter(Dia__range=[dia, diafinal], idPessoal=idpessoal)
+    totalatrazo = datetime.timedelta(hours=0, minutes=0)
+    for x in cartaoponto:
+        horaentradapadrao = datetime.datetime.strptime('07:00:00', '%H:%M:%S').time()
+        horaentradapadrao = datetime.timedelta(hours=horaentradapadrao.hour, minutes=horaentradapadrao.minute)
+        horaentradareal = datetime.timedelta(hours=x.Entrada.hour, minutes=x.Entrada.minute)
+        if horaentradareal > horaentradapadrao:
+            totalatrazo += horaentradareal - horaentradapadrao
+    return totalatrazo
+
+
 def saldo_contracheque(idcontracheque):
     credito = ContraChequeItens.objects.filter(idContraCheque=idcontracheque,
                                                Registro='C').aggregate(Total=Sum('Valor'))
@@ -356,3 +449,27 @@ def saldo_contracheque(idcontracheque):
 
 def lista_mensaalista_ativos():
     return facade.get_pessoal_mensalista_ativo()
+
+
+def form_pagamento(request, c_form, c_idobj, c_url, c_view, idcartaoponto, mesreferencia, anoreferencia, idpessoal):
+    data = dict()
+    c_instance = None
+    if c_view == 'edita_cartaoponto':
+        if c_idobj:
+            c_instance = CartaoPonto.objects.get(idCartaoPonto=c_idobj)
+    if request.method == 'POST':
+        form = c_form(request.POST, instance=c_instance)
+        if form.is_valid():
+            form.save()
+        calcula_horas_extras(mesreferencia, anoreferencia, idpessoal)
+        calcula_horas_atrazo(mesreferencia, anoreferencia, idpessoal)
+        data['html_folha'] = html_folha(mesreferencia, anoreferencia)
+        data['html_contracheque'] = html_contracheque(mesreferencia, anoreferencia, idpessoal)
+        data['html_cartaoponto'] = html_cartaoponto(mesreferencia, anoreferencia, idpessoal)
+    else:
+        form = c_form(instance=c_instance)
+    context = {'form': form, 'c_idobj': c_idobj, 'c_url': c_url, 'c_view': c_view, 'idcartaoponto': idcartaoponto,
+               'idcategoriaveiculo': request.GET.get('idcategoriaveiculo')}
+    data['html_form'] = render_to_string('pagamentos/formpagamento.html', context, request=request)
+    c_return = JsonResponse(data)
+    return c_return
