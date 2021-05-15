@@ -102,6 +102,18 @@ def cria_contrachequeitens(request):
     return data
 
 
+def exclui_contrachequeitens(request):
+    c_idcontracheque = request.GET.get('idContraCheque')
+    c_descricao = request.GET.get('Descricao')
+    c_registro = request.GET.get('Registro')
+    facade.delete_contrachequeitens(c_idcontracheque, c_descricao, c_registro)
+    c_mes = request.GET.get('MesReferencia')
+    c_ano = request.GET.get('AnoReferencia')
+    c_idpesssoal = request.GET.get('idPessoal')
+    data = facade.seleciona_contracheque(c_mes, c_ano, c_idpesssoal, request)
+    return data
+
+
 def seleciona_folha(request):
     c_mes = request.POST.get('MesReferencia')
     c_ano = request.POST.get('AnoReferencia')

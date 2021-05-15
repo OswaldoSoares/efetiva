@@ -2216,8 +2216,15 @@ main .tb-contracheque .desconto {
     text-align: right;
 }
 
+main .tb-contracheque tr td .descricao {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: solid 1px black;
+    padding: 1px 5px 2px 0;
+}
+
 main .tb-contracheque .fim-descricao {
-    border-top: solid 1px black;
     text-align: center;
 }
 
@@ -2283,21 +2290,7 @@ main .tb-cartaoponto .cp-buttom {
     text-align: center;
     font-size: 13px;
     border-bottom: 1px solid black;
-}
-
-main .tb-cartaoponto .cp-buttomfalta {
-    padding: 1px 5px 3px 5px;
-    text-align: center;
-    font-size: 13px;
-    border-bottom: 1px solid black;
     margin-top: 1px; 
-}
-
-main .tb-cartaoponto .cp-buttomfalta .btn-xs {
-    width: 19px;
-    height: 19px;
-    padding: 0;
-    margin: 0;
 }
 
 main .fp-folha .fp-minutas {

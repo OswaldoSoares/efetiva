@@ -1,7 +1,7 @@
-{% for itens in qs_contracheque %}
+{% for itenscc in qs_contracheque %}
 <table class="tb-contracheque">
     <tr>
-        <th class="tb-nome" colspan="3">{{ itens.idPessoal }}</th>
+        <th class="tb-nome" colspan="3">{{ itenscc.idPessoal }}</th>
     </tr>
     <tr class="tb-titulo">
         <th class="col-descricao">DESCRIÇÃO</th>
@@ -10,7 +10,27 @@
     </tr>
     {% for itens in qs_contrachequeitens %}
     <tr>
-        <td class="descricao"><span><b>{{ itens.Descricao }}</b></span></td>
+        <td>
+            <div class="descricao">
+                <span><b>{{ itens.Descricao }}</b></span>
+                {% if itens.Descricao == 'SALARIO' %}
+                <span class="btn btn-dark btn-xs glyphicon glyphicon-pushpin"></span>
+                {% elif itens.Descricao == 'HORA EXTRA' %}
+                <span class="btn btn-dark btn-xs glyphicon glyphicon-pushpin"></span>
+                {% elif itens.Descricao == 'ATRAZO' %}
+                <span class="btn btn-dark btn-xs glyphicon glyphicon-pushpin"></span>
+                {% else %}
+                <button class="btn btn-danger btn-xs glyphicon glyphicon-remove remove-item"
+                        data-url="{% url 'excluicontrachequeitens' %}"
+                        idcontracheque="{{ itens.idContraCheque_id }}"
+                        descricao="{{ itens.Descricao }}"
+                        registro="{{ itens.Registro }}"
+                        mesreferencia="{{ itenscc.MesReferencia }}"
+                        anoreferencia="{{ itenscc.AnoReferencia }}" idpessoal="{{ itenscc.idPessoal_id }}">
+                </button>
+                {% endif %}
+            </div>
+        </td>
         <td class="provento">
         {% if itens.Registro == 'C' %}
         <span class="valor-debito">R$ {{ itens.Valor }}</span>
@@ -26,7 +46,7 @@
     <tr>
         <td class="fim-descricao" rowspan="2">
             <a class="btn btn-warning glyphicon glyphicon-print"
-               href="{% url 'imprimecontracheque' itens.idContraCheque %}" target="_blank">
+               href="{% url 'imprimecontracheque' itenscc.idContraCheque %}" target="_blank">
             </a>
         </td>
         <td class="provento tb-titulo"><span id="total-credito">R$ {{ totais.Credito }}</span></td>

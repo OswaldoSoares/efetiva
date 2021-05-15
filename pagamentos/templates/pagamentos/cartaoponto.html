@@ -14,7 +14,7 @@
     <tr>
         <td class="cp-dia">{{ dias.Dia }}</td>
         {% if dias.Ausencia %}
-        <td class="cp-buttom"></td>
+        <td class="cp-buttom"><span class="btn btn-dark btn-xs glyphicon glyphicon-sunglasses"></span></td>
         <td class="cp-hora" colspan="2">{{ dias.Ausencia }}</td>
         <td class="cp-buttom">
             {% if dias.Ausencia == 'FALTA' %}
@@ -76,7 +76,7 @@
     <tr>
         <td class="cp-dia">{{ dias.Dia }}</td>
         {% if dias.Ausencia %}
-        <td class="cp-buttom"></td>
+        <td class="cp-buttom"><span class="btn btn-dark btn-xs glyphicon glyphicon-sunglasses"></span></td>
         <td class="cp-hora" colspan="2">{{ dias.Ausencia }}</td>
         <td class="cp-buttom">
             {% if dias.Ausencia == 'FALTA' %}

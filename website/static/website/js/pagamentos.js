@@ -87,6 +87,51 @@ $(document).on('submit', '.form-cria-contrachequeitens', function(event) {
     });
 });
 
+$(document).on('click', '.remove-item', function(event) {
+    console.log('ok')
+    var url = $(this).attr('data-url')
+    var idcontracheque = $(this).attr('idcontracheque')
+    var descricao = $(this).attr('descricao')
+    var registro = $(this).attr('registro')
+    var mesreferencia = $(this).attr('mesreferencia')
+    var anoreferencia = $(this).attr('anoreferencia')
+    var idpessoal = $(this).attr('idpessoal')
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: url,
+        data: {
+            idContraCheque: idcontracheque,
+            Descricao: descricao,
+            Registro: registro,
+            MesReferencia: mesreferencia,
+            AnoReferencia: anoreferencia,
+            idPessoal: idpessoal,
+        },
+        success: function(data){
+            console.log('OK Também')
+            $(".fp-folha-contracheque").html("");
+            $(".fp-folha-contracheque").html(data.html_folha)
+            $(".fp-contracheque").html("");
+            $(".fp-contracheque").html(data.html_contracheque);
+            $(".fp-cartaoponto").html("");
+            $(".fp-cartaoponto").html(data.html_cartaoponto);
+            $(".fp-contrachequeitens").html("");
+            $(".fp-contrachequeitens").html(data.html_formccitens);
+            $(".fp-adiantamento").html("");
+            $(".fp-adiantamento").html(data.html_formccadianta);
+            $(".fp-minutas").html("");
+            $(".fp-minutas").html(data.html_minutascontracheque);
+            if (data.html_adiantamento == true) {
+                $(".fp-adiantamento").hide();
+            }
+        },
+        error: function(error) {
+            console.log(error)
+        }
+    });
+});
+
 $(document).on('click', '#gerar-folha', function(event) {
     var url = $(this).attr('data-url')
     var mesreferencia = $(this).attr('mesreferencia')
