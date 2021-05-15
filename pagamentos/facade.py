@@ -300,6 +300,7 @@ def altera_falta(mesreferencia, anoreferencia, idpessoal, idcartaoponto, request
     obj.save(update_fields=['Ausencia', 'Alteracao', 'Entrada', 'Saida'])
     calcula_faltas(mesreferencia, anoreferencia, idpessoal)
     atualiza_cartaoponto(mesreferencia, anoreferencia, idpessoal)
+    calcula_conducao(mesreferencia, anoreferencia, idpessoal)
     data['html_adiantamento'] = busca_adiantamento(contracheque[0].idContraCheque)
     data['html_folha'] = html_folha(mesreferencia, anoreferencia)
     data['html_contracheque'] = html_contracheque(mesreferencia, anoreferencia, idpessoal)
@@ -429,6 +430,31 @@ def total_horas_atrazo(mesreferencia, anoreferencia, idpessoal):
         if horaentradareal > horaentradapadrao:
             totalatrazo += horaentradareal - horaentradapadrao
     return totalatrazo
+
+
+def calcula_conducao(mesreferencia, anoreferencia, idpessoal):
+    dia, diafinal = periodo_cartaoponto(mesreferencia, anoreferencia)
+    cartaoponto = CartaoPonto.objects.filter(Dia__range=[dia, diafinal], idPessoal=idpessoal, Ausencia='').count()
+    contracheque = get_contrachequereferencia(mesreferencia, anoreferencia, idpessoal)
+    valorconducao = 8.80
+    valetransporte = float(cartaoponto)*float(valorconducao)
+    print('1')
+    if cartaoponto > 0:
+        print('2')
+        if contracheque:
+            print('3')
+            contrachequeitens = get_contrachequeitens(contracheque[0].idContraCheque, 'VALE TRANSPORTE', 'C')
+            if contrachequeitens:
+                print('4')
+                altera_contracheque_itens(contrachequeitens, valetransporte)
+            else:
+                print('5')
+                if valetransporte > 0:
+                    create_contracheque_itens('VALE TRANSPORTE', valetransporte, 'C', contracheque[0].idContraCheque)
+    else:
+        print('6')
+        delete_contrachequeitens(contracheque[0].idContraCheque, 'VALE TRANSPORTE', 'C')
+    return valetransporte
 
 
 def saldo_contracheque(idcontracheque):

@@ -126,6 +126,7 @@ def seleciona_contracheque(request):
     c_ano = request.GET.get('AnoReferencia')
     c_idpesssoal = request.GET.get('idPessoal')
     facade.atualiza_cartaoponto(c_mes, c_ano, c_idpesssoal)
+    facade.calcula_conducao(c_mes, c_ano, c_idpesssoal)
     data = facade.seleciona_contracheque(c_mes, c_ano, c_idpesssoal, request)
     return data
 
