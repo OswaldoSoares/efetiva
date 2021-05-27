@@ -1,0 +1,33 @@
+<div class="fp-vale-tabela">
+    <table class="fp-tabela">
+        <tr>
+            <td colspan="4">
+                <div class="titulo-tabela-vale">
+                    <b>VALES</b>
+                    <!--<button class="btn btn-success btn-xs glyphicon glyphicon-plus"-->
+                            <!--onclick="openMyModal(event); return false;" data-button-save-label="ALTERAR"-->
+                            <!--data-action="{% url 'criavale' %}" data-title="CADASTRA VALE"-->
+                            <!--data-mesreferencia="{{ mesreferencia }}" data-anoreferencia="{{ anoreferencia }}"-->
+                            <!--data-idpessoal="{{ idpessoal }}" data-idcartaoponto="{{ dias.idCartaoPonto }}">-->
+                    <!--</button>-->
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="fp-vale-titulo">DIA</td>
+            <td class="fp-vale-titulo">DESCRIÇÃO</td>
+            <td class="fp-vale-titulo">VALOR</td>
+            <td class="fp-vale-titulo"></td>
+        </tr>
+        {% for itens in vale %}
+        <tr>
+            <td class="fp-vale-dia">{{ itens.Data }}</td>
+            <td class="fp-vale-descricao">{{ itens.Descricao }}</td>
+            <td class="fp-vale-valor">R$ {{ itens.Valor }}</td>
+            <td class="fp-vale-button">
+
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>

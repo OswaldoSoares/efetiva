@@ -45,6 +45,10 @@ def get_pessoal_mensalista_ativo():
     return Pessoal.objects.filter(TipoPgto='MENSALISTA', StatusPessoal=True)
 
 
+def get_pessoal_nao_mensalista_ativo():
+    return Pessoal.objects.filter(StatusPessoal=True).exclude(TipoPgto='MENSALISTA')
+
+
 def get_pessoal(idpessoa: int):
     colaborador = Pessoal.objects.filter(idPessoal=idpessoa)
     return colaborador

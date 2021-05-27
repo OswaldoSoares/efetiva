@@ -12,33 +12,10 @@ from django.db.models import F, ExpressionWrapper, DecimalField
 @has_permission_decorator('modulo_faturamento')
 def index_pagamento(request):
     contexto = facade.create_context_formcontracheque()
-    # qs_colaboradores = MinutaColaboradores.objects.values('idPessoal__Nome').filter(Pago=False).order_by(
-    #     'idPessoal__Nome').annotate(registros=Sum('idPessoal')).exclude(idPessoal__TipoPgto='MENSAL - BANCO DE HORAS')
-    # qs_mensalistas = Pessoal.objects.filter(TipoPgto='MENSAL - BANCO DE HORAS').order_by('Nome')
-    # colaboradores = []
-    # for index, itens_cr in enumerate(qs_colaboradores):
-    #     colaboradores.append({'Nome': itens_cr['idPessoal__Nome'], 'Total': 0})
-    #     nome = itens_cr['idPessoal__Nome']
-    #     qs_colaborador = MinutaColaboradores.objects.filter(idPessoal__Nome=nome, Pago=False)
-    #     for itens_colaborador in qs_colaborador:
-    #         if itens_colaborador.Cargo == 'AJUDANTE':
-    #             base_valor_ajudante = ExpressionWrapper(F('Valor') / F('Quantidade'), output_field=DecimalField())
-    #             qs_ajudante = MinutaItens.objects.values(ValorAjudante=base_valor_ajudante).filter(
-    #                 TipoItens='PAGA', idMinuta=itens_colaborador.idMinuta, Descricao='AJUDANTE')
-    #             if qs_ajudante:
-    #                 valor_ajudante = colaboradores[index]['Total']
-    #                 valor_adicionar_ajudante = qs_ajudante[0]['ValorAjudante']
-    #                 colaboradores[index]['Total'] = valor_ajudante + valor_adicionar_ajudante
-    #         elif itens_colaborador.Cargo == 'MOTORISTA':
-    #             qs_motorista = MinutaItens.objects.filter(idMinuta=itens_colaborador.idMinuta).exclude(
-    #                 Descricao='AJUDANTE').exclude(TipoItens='RECEBE').exclude(TipoItens='DESPESA').aggregate(
-    #                 ValorMotorista=Sum('Valor'))
-    #             if qs_motorista['ValorMotorista']:
-    #                 valor_motorista = colaboradores[index]['Total']
-    #                 valor_adicionar_motorista = qs_motorista['ValorMotorista']
-    #                 colaboradores[index]['Total'] = valor_motorista + valor_adicionar_motorista
-    # contexto2 = {'colaboradores': colaboradores, 'qs_mensalistas': qs_mensalistas}
-    # contexto.update(contexto2)
+    contextovales = facade.cria_contexto_pagamentos()
+    contexto.update(contextovales)
+    contextoavulso = facade.create_context_avulso()
+    contexto.update(contextoavulso)
     return render(request, 'pagamentos/index.html', contexto)
 
 
@@ -89,6 +66,17 @@ def cria_folha(request):
     return data
 
 
+def cria_vale(request):
+    c_data = request.POST.get('Data')
+    c_descricao = request.POST.get('Descricao')
+    c_valor = request.POST.get('Valor')
+    c_parcelas = request.POST.get('Parcelas')
+    c_idpessoal = request.POST.get('idPessoal')
+    print(request.POST)
+    if request.method == 'POST':
+        facade.cria_vale(c_data, c_descricao, c_valor, c_parcelas, c_idpessoal)
+
+
 def cria_contrachequeitens(request):
     c_descricao = request.POST.get('Descricao')
     c_valor = request.POST.get('Valor')
@@ -119,6 +107,12 @@ def seleciona_folha(request):
     c_ano = request.POST.get('AnoReferencia')
     data = facade.seleciona_folha(c_mes, c_ano)
     return data
+
+
+def seleciona_periodo(request):
+    c_datainicial = request.POST.get('DataInicial')
+    c_datafinal = request.POST.get('DataFinal')
+    print(c_datainicial, c_datafinal)
 
 
 def seleciona_contracheque(request):

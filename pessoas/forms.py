@@ -107,10 +107,11 @@ class CadastraVale(forms.ModelForm):
     class Meta:
         model = Vales
         fields = ('idPessoal', 'Data', 'Descricao', 'Valor')
-        labels = {'Data': 'DATA', 'Descricao': 'DESCRIÇÃo', 'Valor': 'VALOR'}
+        labels = {'Data': 'DATA', 'Descricao': 'DESCRIÇÃo', 'Valor': 'VALOR', 'idPessoal': 'COLABORADOR'}
         widgets = {'Data': MeuDateInput(format='%Y-%m-%d', attrs={'class': 'form-control'}),
                    'Descricao': forms.TextInput(attrs={'class': 'form-control'}),
-                   'Valor': forms.NumberInput(attrs={'class': 'form-control'})}
+                   'Valor': forms.NumberInput(attrs={'class': 'form-control'}),
+                   'idPessoal': forms.Select(attrs={'class': 'form-control'})}
 
 
 class CadastraContraCheque(forms.ModelForm):

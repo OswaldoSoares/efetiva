@@ -1,5 +1,5 @@
 $(document).ready(function(){
-
+    $(".glyphicon-chevron-down").hide();
 });
 
 $('.switch').change(function() {
@@ -77,6 +77,8 @@ $(document).on('submit', '.form-cria-contrachequeitens', function(event) {
             $(".fp-adiantamento").html(data.html_formccadianta);
             $(".fp-minutas").html("");
             $(".fp-minutas").html(data.html_minutascontracheque);
+            $(".fp-vales").html("");
+            $(".fp-vales").html(data.html_vales);
             if (data.html_adiantamento == true) {
                 $(".fp-adiantamento").hide();
             }
@@ -122,6 +124,8 @@ $(document).on('click', '.remove-item', function(event) {
             $(".fp-adiantamento").html(data.html_formccadianta);
             $(".fp-minutas").html("");
             $(".fp-minutas").html(data.html_minutascontracheque);
+            $(".fp-vales").html("");
+            $(".fp-vales").html(data.html_vales);
             if (data.html_adiantamento == true) {
                 $(".fp-adiantamento").hide();
             }
@@ -190,6 +194,8 @@ $(document).on('click', '.selecionar-contracheque', function(event) {
             $(".fp-adiantamento").html(data.html_formccadianta);
             $(".fp-cartaoponto").html(data.html_cartaoponto);
             $(".fp-minutas").html(data.html_minutascontracheque);
+            $(".fp-vales").html("");
+            $(".fp-vales").html(data.html_vales);
         },
         error: function(error) {
             console.log(error)
@@ -224,6 +230,8 @@ $(document).on('click', '.altera-falta', function(event) {
             $(".fp-adiantamento").html(data.html_formccadianta);
             $(".fp-minutas").html("");
             $(".fp-minutas").html(data.html_minutascontracheque);
+            $(".fp-vales").html("");
+            $(".fp-vales").html(data.html_vales);
             if (data.html_adiantamento == true) {
                 $(".fp-adiantamento").hide();
             }
@@ -315,6 +323,8 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                     $(".fp-adiantamento").html(xhr.html_formccadianta);
                     $(".fp-minutas").html("");
                     $(".fp-minutas").html(xhr.html_minutascontracheque);
+                    $(".fp-vales").html("");
+                    $(".fp-vales").html(xhr.html_vales);
                     if (xhr.html_adiantamento == true) {
                         $(".fp-adiantamento").hide();
                     }
@@ -330,3 +340,15 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
         });
     });
 }
+
+$(".div-fade").click(function(){  
+    if ($("#fp-main").is(':hidden')) {
+        $("#fp-main").slideDown("fast");
+        $(".glyphicon-chevron-up").show()
+        $(".glyphicon-chevron-down").hide()
+    } else {
+        $(".glyphicon-chevron-up").hide()
+        $(".glyphicon-chevron-down").show()
+        $("#fp-main").slideUp("fast");
+    }
+});

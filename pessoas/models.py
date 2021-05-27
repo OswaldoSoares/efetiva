@@ -152,6 +152,11 @@ class Vales(models.Model):
     def __str__(self):
         return self.Descricao
 
+    def save(self, *args, **kwargs):
+        self.Descricao = self.Descricao.upper()
+
+        super(Vales, self).save(*args, **kwargs)
+
     objects = models.Manager()
 
 
