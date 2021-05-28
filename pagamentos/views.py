@@ -72,7 +72,6 @@ def cria_vale(request):
     c_valor = request.POST.get('Valor')
     c_parcelas = request.POST.get('Parcelas')
     c_idpessoal = request.POST.get('idPessoal')
-    print(request.POST)
     if request.method == 'POST':
         facade.cria_vale(c_data, c_descricao, c_valor, c_parcelas, c_idpessoal)
 
@@ -112,7 +111,8 @@ def seleciona_folha(request):
 def seleciona_periodo(request):
     c_datainicial = request.POST.get('DataInicial')
     c_datafinal = request.POST.get('DataFinal')
-    print(c_datainicial, c_datafinal)
+    data = facade.seleciona_saldoavulso(c_datainicial, c_datafinal)
+    return data
 
 
 def seleciona_contracheque(request):
@@ -122,6 +122,14 @@ def seleciona_contracheque(request):
     facade.atualiza_cartaoponto(c_mes, c_ano, c_idpesssoal)
     facade.calcula_conducao(c_mes, c_ano, c_idpesssoal)
     data = facade.seleciona_contracheque(c_mes, c_ano, c_idpesssoal, request)
+    return data
+
+
+def seleciona_saldoavulso(request):
+    c_datainicial = request.GET.get('DataInicial')
+    c_datafinal = request.GET.get('DataFinal')
+    c_idpesssoal = request.GET.get('idPessoal')
+    data = facade.seleciona_minutasavulso(c_datainicial, c_datafinal, c_idpesssoal)
     return data
 
 

@@ -1,0 +1,18 @@
+<table class="pa-tabela">
+    <tr>
+        <td class="pa-titulo">DATA</td>
+        <td class="pa-titulo">MINUTA</td>
+        <td class="pa-titulo">CLIENTE</td>
+        <td class="pa-titulo">DESCRIÇÃO</td>
+        <td class="pa-titulo">VALOR</td>
+    </tr>
+    {% for itens in recibo %}
+    <tr>
+        <td class="pa-dataminuta">{{ itens.Data }}</td>
+        <td class="pa-dataminuta">{{ itens.Minuta }}</td>
+        <td class="pa-cliente">{{ itens.Cliente }}</td>
+        <td class="pa-descricao">{{ itens.Descricao }}</td>
+        <td class="pa-valor">R$ {{ itens.Valor }}</td>
+    </tr>
+    {% endfor %}
+</table>

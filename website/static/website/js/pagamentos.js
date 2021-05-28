@@ -1,5 +1,6 @@
 $(document).ready(function(){
-    $(".glyphicon-chevron-down").hide();
+    $(".down-folha").hide();
+    $(".down-avulso").hide();
 });
 
 $('.switch').change(function() {
@@ -341,14 +342,69 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
     });
 }
 
-$(".div-fade").click(function(){  
+$(".div-fade-folha").click(function(){  
     if ($("#fp-main").is(':hidden')) {
         $("#fp-main").slideDown("fast");
-        $(".glyphicon-chevron-up").show()
-        $(".glyphicon-chevron-down").hide()
+        $(".up-folha").show()
+        $(".down-folha").hide()
     } else {
-        $(".glyphicon-chevron-up").hide()
-        $(".glyphicon-chevron-down").show()
+        $(".up-folha").hide()
+        $(".down-folha").show()
         $("#fp-main").slideUp("fast");
     }
+});
+
+$(".div-fade-avulso").click(function(){  
+    if ($("#pa-main").is(':hidden')) {
+        $("#pa-main").slideDown("fast");
+        $(".up-avulso").show()
+        $(".down-avulso").hide()
+    } else {
+        $(".up-avulso").hide()
+        $(".down-avulso").show()
+        $("#pa-main").slideUp("fast");
+    }
+});
+
+$(document).on('submit', '#form-seleciona-periodo', function(event) {
+    event.preventDefault();
+    var url = $(this).attr('action') || action;
+    $.ajax({
+        type: $(this).attr('method'),
+        url: url,
+        data: $(this).serialize(),
+        beforeSend: function(){
+            
+        },
+        success: function(data){
+          /*  $(".pa-saldo").html("");*/
+            $(".pa-saldo-minutas").html(data.html_saldoavulso);
+        },
+        error: function(error) {
+            console.log(error)
+        }
+    });
+});
+
+$(document).on('click', '.selecionar-saldoavulso', function(event) {
+    var url = $(this).attr('data-url')
+    var datainicial = $(this).attr('datainicial')
+    var datafinal = $(this).attr('datafinal')
+    var idpessoal = $(this).attr('idpessoal')
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: url,
+        data: {
+            DataInicial: datainicial,
+            DataFinal: datafinal,
+            idPessoal: idpessoal,
+        },
+        success: function(data){
+            $(".pa-minutas").html(data.html_minutas);
+        },
+        error: function(error) {
+            console.log(error)
+        }
+    });
 });

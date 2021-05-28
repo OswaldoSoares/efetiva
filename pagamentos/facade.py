@@ -3,11 +3,11 @@ import datetime
 from decimal import Decimal
 
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import Sum, Max, Min, F
+from django.db.models import Sum, Max, Min, F, ExpressionWrapper, DecimalField
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 
-from minutas.models import MinutaColaboradores, Minuta
+from minutas.models import MinutaColaboradores, MinutaItens
 from pessoas import facade
 from pessoas.forms import CadastraContraCheque, CadastraContraChequeItens, CadastraVale
 from pessoas.models import ContraCheque, ContraChequeItens, CartaoPonto, Salario, Vales
@@ -60,14 +60,13 @@ def create_context_formcontracheque():
 
 
 def create_context_avulso():
-    avulsos = list_avulsos_ativo()
-    minutaspagar = MinutaColaboradores.objects.filter(Pago=False).exclude(idPessoal__TipoPgto='MENSALISTA')
-    periodo = get_periodo_minuta_avulsos()
-    contexto = {'avulsos': avulsos, 'minutaspagar': minutaspagar, 'periodo': periodo}
+    periodo = get_periodo_pagamento_avulsos()
+    saldo = get_saldo_pagamento_avulso(periodo['DataInicial'], periodo['DataFinal'])
+    contexto = {'periodo': periodo, 'saldo': saldo}
     return contexto
 
 
-def get_periodo_minuta_avulsos():
+def get_periodo_pagamento_avulsos():
     periodo = MinutaColaboradores.objects.filter(Pago=False).exclude(idPessoal__TipoPgto='MENSALISTA').aggregate(
         DataInicial=Min('idMinuta__DataMinuta'), DataFinal=Max('idMinuta__DataMinuta'))
     periodo['DataInicial'] = periodo['DataInicial'].strftime('%Y-%m-%d')
@@ -75,33 +74,65 @@ def get_periodo_minuta_avulsos():
     return periodo
 
 
-    # colaboradores = []
-    # for index, itens_cr in enumerate(qs_colaboradores):
-    #     colaboradores.append({'Nome': itens_cr['idPessoal__Nome'], 'Total': 0})
-    #     nome = itens_cr['idPessoal__Nome']
-    #     qs_colaborador = MinutaColaboradores.objects.filter(idPessoal__Nome=nome, Pago=False)g1
-    #     for itens_colaborador in qs_colaborador:
-    #         if itens_colaborador.Cargo == 'AJUDANTE':
-    #             base_valor_ajudante = ExpressionWrapper(F('Valor') / F('Quantidade'), output_field=DecimalField())
-    #             qs_ajudante = MinutaItens.objects.values(ValorAjudante=base_valor_ajudante).filter(
-    #                 TipoItens='PAGA', idMinuta=itens_colaborador.idMinuta, Descricao='AJUDANTE')
-    #             if qs_ajudante:
-    #                 valor_ajudante = colaboradores[index]['Total']
-    #                 valor_adicionar_ajudante = qs_ajudante[0]['ValorAjudante']
-    #                 colaboradores[index]['Total'] = valor_ajudante + valor_adicionar_ajudante
-    #         elif itens_colaborador.Cargo == 'MOTORISTA':
-    #             qs_motorista = MinutaItens.objects.filter(idMinuta=itens_colaborador.idMinuta).exclude(
-    #                 Descricao='AJUDANTE').exclude(TipoItens='RECEBE').exclude(TipoItens='DESPESA').aggregate(
-    #                 ValorMotorista=Sum('Valor'))
-    #             if qs_motorista['ValorMotorista']:
-    #                 valor_motorista = colaboradores[index]['Total']
-    #                 valor_adicionar_motorista = qs_motorista['ValorMotorista']
-    #                 colaboradores[index]['Total'] = valor_motorista + valor_adicionar_motorista
-    # contexto2 = {'colaboradores': colaboradores, 'qs_mensalistas': qs_mensalistas}
-    # contexto.update(contexto2)
+def get_saldo_pagamento_avulso(datainicial, datafinal):
+    saldo = []
+    avulsos = list_avulsos_ativo()
+    saldo_total = 0
+    for colaboradores in avulsos:
+        colaborador = MinutaColaboradores.objects.filter(idPessoal__Nome=colaboradores.Nome, Pago=False)
+        saldo_colaborador = 0
+        for index, itens in enumerate(colaborador):
+            if itens.Cargo == 'AJUDANTE':
+                base_valor = ExpressionWrapper(F('Valor') / F('Quantidade'), output_field=DecimalField())
+                ajudante = MinutaItens.objects.values(ValorAjudante=base_valor).filter(
+                    TipoItens='PAGA', idMinuta=itens.idMinuta, Descricao='AJUDANTE', idMinuta_id__DataMinuta__range=[
+                        datainicial, datafinal])
+                if ajudante:
+                    saldo_colaborador += ajudante[0]['ValorAjudante']
+                    saldo_total += ajudante[0]['ValorAjudante']
+            elif itens.Cargo == 'MOTORISTA':
+                motorista = MinutaItens.objects.filter(TipoItens='PAGA', idMinuta=itens.idMinuta,
+                                                       idMinuta_id__DataMinuta__range=[
+                        datainicial, datafinal]).exclude(Descricao='AJUDANTE').aggregate(ValorMotorista=Sum('Valor'))
+                if motorista['ValorMotorista']:
+                    saldo_colaborador += motorista['ValorMotorista']
+                    saldo_total += motorista['ValorMotorista']
+        if saldo_colaborador > 0:
+            saldo.append({'Nome': colaboradores.Nome, 'idPessoal': colaboradores.idPessoal, 'Saldo': saldo_colaborador,
+                          'Vale': 0.00})
+    return saldo, saldo_total
 
 
+def seleciona_minutasavulso(datainicial, datafinal, idpessoal):
+    data = dict()
+    data['html_minutas'] = html_minutasavulso(datainicial, datafinal, idpessoal)
+    c_return = JsonResponse(data)
+    return c_return
 
+
+def html_minutasavulso(datainicial, datafinal, idpessoal):
+    recibo = []
+    minutas = MinutaColaboradores.objects.filter(idPessoal=idpessoal, Pago=False,
+                                                 idMinuta_id__DataMinuta__range=[datainicial, datafinal])
+    for index, itens in enumerate(minutas):
+        if itens.Cargo == 'AJUDANTE':
+            minutaitens = MinutaItens.objects.filter(TipoItens='PAGA', idMinuta=itens.idMinuta, Descricao='AJUDANTE',
+                                                     idMinuta_id__DataMinuta__range=[datainicial, datafinal])
+            if minutaitens:
+                recibo.append({'Data': itens.idMinuta.DataMinuta, 'Minuta': itens.idMinuta.Minuta,
+                               'Cliente': itens.idMinuta.idCliente.Fantasia, 'Descricao': minutaitens[0].Descricao,
+                               'Valor': minutaitens[0].ValorBase})
+        elif itens.Cargo == 'MOTORISTA':
+            minutaitens = MinutaItens.objects.filter(TipoItens='PAGA', idMinuta=itens.idMinuta,
+                                                     idMinuta_id__DataMinuta__range=[datainicial, datafinal]).exclude(
+                Descricao='AJUDANTE')
+            for minutas in minutaitens:
+                recibo.append({'Data': itens.idMinuta.DataMinuta, 'Minuta': itens.idMinuta.Minuta,
+                               'Cliente': itens.idMinuta.idCliente.Fantasia, 'Descricao': minutas.Descricao,
+                               'Valor': minutas.Valor})
+    context = {'recibo': recibo}
+    c_return = render_to_string('pagamentos/minutasavulso.html', context)
+    return c_return
 
 
 def create_folha(mesreferencia, anoreferencia):
@@ -177,7 +208,6 @@ def cria_vale(data, descricao, valor, parcelas, idpessoal):
         obj.Valor = float(valor)/int(parcelas)
         obj.idPessoal_id = idpessoal
         obj.save()
-
 
 
 def get_contracheque(idpessoal: int):
@@ -278,6 +308,13 @@ def seleciona_contracheque(mesreferencia, anoreferencia, idpessoal, request):
     data['html_formccitens'] = html_formccitens(contracheque, request)
     data['html_minutascontracheque'] = html_minutascontracheque(mesreferencia,  anoreferencia, idpessoal)
     data['html_vales'] = html_vale(idpessoal)
+    c_return = JsonResponse(data)
+    return c_return
+
+
+def seleciona_saldoavulso(datainicial, datafinal):
+    data = dict()
+    data['html_saldoavulso'] = html_saldoavulso(datainicial, datafinal)
     c_return = JsonResponse(data)
     return c_return
 
@@ -431,6 +468,13 @@ def html_formccitens(contracheque, request):
     formcontrachequeitens = CadastraContraChequeItens()
     contextform = {'formcontrachequeitens': formcontrachequeitens, 'contracheque': contracheque}
     c_return = render_to_string('pagamentos/contrachequeitens.html', contextform, request=request)
+    return c_return
+
+
+def html_saldoavulso(datainicial, datafinal):
+    saldo, saldototal = get_saldo_pagamento_avulso(datainicial, datafinal)
+    context = {'saldo': saldo, 'saldototal': saldototal, 'datainicial': datainicial, 'datafinal': datafinal}
+    c_return = render_to_string('pagamentos/saldoavulso.html', context)
     return c_return
 
 

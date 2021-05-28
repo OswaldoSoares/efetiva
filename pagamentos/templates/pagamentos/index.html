@@ -6,8 +6,8 @@
     <div class="pagamento-conteudo mensalistas">
         <header class="titulo-mensalistas">
             <h3>FOLHA DE PAGAMENTO MENSALISTAS</h3>
-            <button class="btn btn-xs glyphicon glyphicon-chevron-up div-fade"></button>
-            <button class="btn btn-xs glyphicon glyphicon-chevron-down div-fade"></button>
+            <button class="btn btn-xs glyphicon glyphicon-chevron-up up-folha div-fade-folha"></button>
+            <button class="btn btn-xs glyphicon glyphicon-chevron-down down-folha div-fade-folha"></button>
         </header>
         <main id="fp-main">
             <div class="fp-form">
@@ -37,10 +37,10 @@
     <div class="pagamento-conteudo avulsos">
         <header class="titulo-mensalistas">
             <h3>PAGAMENTO AVULSOS</h3>
-            <button class="btn btn-xs glyphicon glyphicon-chevron-up div-fade"></button>
-            <button class="btn btn-xs glyphicon glyphicon-chevron-down div-fade"></button>
+            <button class="btn btn-xs glyphicon glyphicon-chevron-up up-avulso div-fade-avulso"></button>
+            <button class="btn btn-xs glyphicon glyphicon-chevron-down down-avulso div-fade-avulso"></button>
         </header>
-        <main class="pa-main">
+        <main id="pa-main">
             <div class="pa-form">
                 <div class="pa-periodo">
                     <form class="row g-3" method="post" action="{% url 'selecionaperiodo' %}" id="form-seleciona-periodo">
@@ -60,23 +60,8 @@
                 </div>
                 <div class="fp-contrachequeitens"><!-- Comentário: ??? --></div>
             </div>
-            <div>
-                <table>
-                    <tr>
-                        <td>Nome</td>
-                        <td>Saldo</td>
-                        <td>Vales</td>
-                        <td></td>
-                    </tr>
-                    {% for itens in avulsos %}
-                    <tr>
-                        <td>{{ itens.Nome }}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    {% endfor %}
-                </table>
+            <div class="pa-saldo-minutas">
+
             </div>
         </main>
     </div>
