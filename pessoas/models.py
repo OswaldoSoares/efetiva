@@ -143,6 +143,7 @@ class Vales(models.Model):
     Data = models.DateField()
     Descricao = models.CharField(max_length=100, blank=False)
     Valor = models.DecimalField(decimal_places=2, max_digits=7, default=1.00)
+    Pago = models.BooleanField(default=False)
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.PROTECT, default=1)
 
     class Meta:

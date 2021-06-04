@@ -2,15 +2,7 @@
     <table class="fp-tabela">
         <tr>
             <td colspan="4">
-                <div class="titulo-tabela-vale">
-                    <b>VALES</b>
-                    <!--<button class="btn btn-success btn-xs glyphicon glyphicon-plus"-->
-                            <!--onclick="openMyModal(event); return false;" data-button-save-label="ALTERAR"-->
-                            <!--data-action="{% url 'criavale' %}" data-title="CADASTRA VALE"-->
-                            <!--data-mesreferencia="{{ mesreferencia }}" data-anoreferencia="{{ anoreferencia }}"-->
-                            <!--data-idpessoal="{{ idpessoal }}" data-idcartaoponto="{{ dias.idCartaoPonto }}">-->
-                    <!--</button>-->
-                </div>
+                <b>VALES</b>
             </td>
         </tr>
         <tr>
@@ -19,15 +11,23 @@
             <td class="fp-vale-titulo">VALOR</td>
             <td class="fp-vale-titulo"></td>
         </tr>
-        {% for itens in vale %}
-        <tr>
-            <td class="fp-vale-dia">{{ itens.Data }}</td>
-            <td class="fp-vale-descricao">{{ itens.Descricao }}</td>
-            <td class="fp-vale-valor">R$ {{ itens.Valor }}</td>
-            <td class="fp-vale-button">
-
-            </td>
-        </tr>
-        {% endfor %}
+            {% for key, value in dict_vale.items %}
+                <tr>
+                    <td class="fp-vale-dia">{{ value.Data }}</td>
+                    <td class="fp-vale-descricao">{{ value.Descricao|truncatechars:40 }}</td>
+                    <td class="fp-vale-valor" id="valor_{{ value.idVales }}_Vale">R$ {{ value.Valor }}</td>
+                    <td class="fp-vale-button">
+                        <input class="switchmini switchmini--shadow" id="id_{{ value.idVales }}_Vale" name="Vale"
+                               {% if value.Checked %}
+                               checked="checked"
+                               {% endif %}
+                               value=""
+                               valorvale="{{ value.Valor }}"
+                               idPessoal="{{ idPessoal }}"
+                               type="checkbox">
+                        <label for="id_{{ value.idVales }}_Vale"></label>
+                    </td>
+                </tr>
+            {% endfor %}
     </table>
 </div>

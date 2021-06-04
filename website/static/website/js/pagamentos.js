@@ -1,24 +1,7 @@
 $(document).ready(function(){
     $(".down-folha").hide();
     $(".down-avulso").hide();
-});
-
-$('.switch').change(function() {
-    $('.pagamento-base-itens').html("");
-    nome = $(this).attr('id');
-
-    $.ajax({
-        type: 'GET',
-        url: 'teste',
-        data: {
-            nome: nome,
-        },
-        success: function(data) {
-            $('.pagamento-base-itens').html(data.html_form);
-        },
-    });
-
-   
+    $('[data-toggle="tooltip"]').tooltip();
 });
 
 $(document).on('change', '#id_MesReferencia', function(event) {
@@ -33,6 +16,12 @@ $(document).on('change', '#id_AnoReferencia', function(event) {
     $(".fp-folha-contracheque").html("");
     $(".fp-adiantamento").html("");
     $(".fp-adiantamento").hide();
+});
+
+$(document).on('change', '.switchmini', function(event) {
+    var idpessoal = '#vale_' + $(this).attr('idPessoal')
+    valeselect(idpessoal);
+    somavales();
 });
 
 $(document).on('submit', '#form-seleciona-folha', function(event) {
@@ -65,7 +54,6 @@ $(document).on('submit', '.form-cria-contrachequeitens', function(event) {
         url: url,
         data: $(this).serialize(),
         success: function(data){
-            console.log('OK Também')
             $(".fp-folha-contracheque").html("");
             $(".fp-folha-contracheque").html(data.html_folha)
             $(".fp-contracheque").html("");
@@ -90,8 +78,48 @@ $(document).on('submit', '.form-cria-contrachequeitens', function(event) {
     });
 });
 
+$(document).on('submit', '#form-seleciona-periodo', function(event) {
+    event.preventDefault();
+    var url = $(this).attr('action') || action;
+    $.ajax({
+        type: $(this).attr('method'),
+        url: url,
+        data: $(this).serialize(),
+        beforeSend: function(){
+            
+        },
+        success: function(data){
+          /*  $(".pa-saldo").html("");*/
+            $(".pa-saldo-minutas").html(data.html_saldoavulso);
+        },
+        error: function(error) {
+            console.log(error)
+        }
+    });
+});
+
+$(document).on('submit', '#form-vale', function(event) {
+    event.preventDefault();
+    var url = $(this).attr('action') || action;
+    $.ajax({
+        type: $(this).attr('method'),
+        url: url,
+        data: $(this).serialize(),
+        success: function(data){
+            if (data.html_vales) {
+                $(".fp-vales").html(data.html_vales);
+            }
+            if (data.html_valesavulso) {
+                $(".pa-vales").html(data.html_valesavulso);
+            }
+        },
+        error: function(error) {
+            console.log(error)
+        }
+    });
+});
+
 $(document).on('click', '.remove-item', function(event) {
-    console.log('ok')
     var url = $(this).attr('data-url')
     var idcontracheque = $(this).attr('idcontracheque')
     var descricao = $(this).attr('descricao')
@@ -112,7 +140,6 @@ $(document).on('click', '.remove-item', function(event) {
             idPessoal: idpessoal,
         },
         success: function(data){
-            console.log('OK Também')
             $(".fp-folha-contracheque").html("");
             $(".fp-folha-contracheque").html(data.html_folha)
             $(".fp-contracheque").html("");
@@ -238,10 +265,59 @@ $(document).on('click', '.altera-falta', function(event) {
             }
         },
         error: function(error, data) {
-            console.log(data.html_cartaoponto)
             console.log(error)
         }
     });
+});
+
+$(document).on('click', '.selecionar-saldoavulso', function(event) {
+    var url = $(this).attr('data-url')
+    var datainicial = $(this).attr('datainicial')
+    var datafinal = $(this).attr('datafinal')
+    var idpessoal = $(this).attr('idpessoal')
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: url,
+        data: {
+            DataInicial: datainicial,
+            DataFinal: datafinal,
+            idPessoal: idpessoal,
+        },
+        success: function(data){
+            $(".pa-minutas").html(data.html_minutas);
+            $(".pa-vales").html(data.html_valesavulso);
+            valeselect('#vale_' + idpessoal);
+            somavales();
+        },
+        error: function(error) {
+            console.log(error)
+        }
+    });
+});
+
+$(".div-fade-folha").click(function(){  
+    if ($("#fp-main").is(':hidden')) {
+        $("#fp-main").slideDown("fast");
+        $(".up-folha").show()
+        $(".down-folha").hide()
+    } else {
+        $(".up-folha").hide()
+        $(".down-folha").show()
+        $("#fp-main").slideUp("fast");
+    }
+});
+
+$(".div-fade-avulso").click(function(){  
+    if ($("#pa-main").is(':hidden')) {
+        $("#pa-main").slideDown("fast");
+        $(".up-avulso").show()
+        $(".down-avulso").hide()
+    } else {
+        $(".up-avulso").hide()
+        $(".down-avulso").show()
+        $("#pa-main").slideUp("fast");
+    }
 });
 
 function openMyModal(event) {
@@ -342,69 +418,20 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
     });
 }
 
-$(".div-fade-folha").click(function(){  
-    if ($("#fp-main").is(':hidden')) {
-        $("#fp-main").slideDown("fast");
-        $(".up-folha").show()
-        $(".down-folha").hide()
-    } else {
-        $(".up-folha").hide()
-        $(".down-folha").show()
-        $("#fp-main").slideUp("fast");
-    }
-});
-
-$(".div-fade-avulso").click(function(){  
-    if ($("#pa-main").is(':hidden')) {
-        $("#pa-main").slideDown("fast");
-        $(".up-avulso").show()
-        $(".down-avulso").hide()
-    } else {
-        $(".up-avulso").hide()
-        $(".down-avulso").show()
-        $("#pa-main").slideUp("fast");
-    }
-});
-
-$(document).on('submit', '#form-seleciona-periodo', function(event) {
-    event.preventDefault();
-    var url = $(this).attr('action') || action;
-    $.ajax({
-        type: $(this).attr('method'),
-        url: url,
-        data: $(this).serialize(),
-        beforeSend: function(){
-            
-        },
-        success: function(data){
-          /*  $(".pa-saldo").html("");*/
-            $(".pa-saldo-minutas").html(data.html_saldoavulso);
-        },
-        error: function(error) {
-            console.log(error)
+function valeselect(idpessoal) {
+    var total = 0.00
+    $('.switchmini').each(function() {
+        if ($(this).is(":checked") && $(this).attr('idPessoal') == idpessoal.substring(6)) {
+            total += parseFloat($(this).attr('valorvale').replace(',', '.'))
         }
+        $(idpessoal).text('R$ ' + total.toFixed(2).replace('.', ','));
     });
-});
+}
 
-$(document).on('click', '.selecionar-saldoavulso', function(event) {
-    var url = $(this).attr('data-url')
-    var datainicial = $(this).attr('datainicial')
-    var datafinal = $(this).attr('datafinal')
-    var idpessoal = $(this).attr('idpessoal')
-    $.ajax({
-        type: 'GET',
-        dataType: 'json',
-        url: url,
-        data: {
-            DataInicial: datainicial,
-            DataFinal: datafinal,
-            idPessoal: idpessoal,
-        },
-        success: function(data){
-            $(".pa-minutas").html(data.html_minutas);
-        },
-        error: function(error) {
-            console.log(error)
-        }
+function somavales() {
+    var total = 0.00
+    $('.saldovale').each(function() {
+        total += parseFloat($(this).text().replace('R$ ', '').replace(',', '.'))
     });
-});
+    $('#totalvales').text('R$ ' + total.toFixed(2).replace('.', ','))    
+}

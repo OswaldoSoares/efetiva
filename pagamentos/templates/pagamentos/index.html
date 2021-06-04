@@ -58,11 +58,9 @@
                         </div>
                     </form>
                 </div>
-                <div class="fp-contrachequeitens"><!-- Comentário: ??? --></div>
+                <div class="pa-faixa"><!-- Comentário: ??? --></div>
             </div>
-            <div class="pa-saldo-minutas">
-
-            </div>
+            <div class="pa-saldo-minutas"></div>
         </main>
     </div>
     <div class="pagamento-conteudo vales">
@@ -71,7 +69,7 @@
         </header>
         <main>
             <div class="fp-vale-form">
-                <form class="row g-3" method="post" action="/pagamentos/criavale">
+                <form class="row g-3" method="post" action="/pagamentos/criavale" id="form-vale">
                     {% csrf_token %}
                     <div class="col-md-2">
                         <label for="id_Data" class="form-label">DATA:</label>

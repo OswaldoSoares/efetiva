@@ -78,6 +78,8 @@ def get_saldo_pagamento_avulso(datainicial, datafinal):
     saldo = []
     avulsos = list_avulsos_ativo()
     saldo_total = 0
+    saldo_vales = 0
+    total_select = 0
     for colaboradores in avulsos:
         colaborador = MinutaColaboradores.objects.filter(idPessoal__Nome=colaboradores.Nome, Pago=False)
         saldo_colaborador = 0
@@ -97,21 +99,55 @@ def get_saldo_pagamento_avulso(datainicial, datafinal):
                 if motorista['ValorMotorista']:
                     saldo_colaborador += motorista['ValorMotorista']
                     saldo_total += motorista['ValorMotorista']
-        if saldo_colaborador > 0:
+        total_vales = calcula_total_vales(colaboradores.idPessoal)
+        if not total_vales:
+            total_vales = 0
+        saldo_vales += total_vales
+        dict_vale, saldo_vales_select = get_vales_select(colaboradores.idPessoal)
+        total_select += saldo_vales_select
+        if saldo_colaborador > 0 or total_vales > 0:
             saldo.append({'Nome': colaboradores.Nome, 'idPessoal': colaboradores.idPessoal, 'Saldo': saldo_colaborador,
-                          'Vale': 0.00})
-    return saldo, saldo_total
+                          'ValeSelect': saldo_vales_select, 'ValeTotal': total_vales})
+    return saldo, saldo_total, saldo_vales, total_select
+
+
+def get_vales_select(idpessoal):
+    dict_vale = dict()
+    vale = Vales.objects.filter(idPessoal=idpessoal, Pago=False)
+    for itens in vale:
+        dict_vale['id{}'.format(itens.idVales)] = {'idVales': itens.idVales, 'Data': itens.Data,
+                                                   'Descricao': itens.Descricao, 'Valor': itens.Valor, 'Checked': True}
+    content_descricao = None
+    saldo_vales_select = 0
+    for itens in dict_vale:
+        for key, value in dict_vale[itens].items():
+            if key == 'Descricao' and value[-9:] == 'PARCELADO':
+                if content_descricao == None:
+                    dict_vale[itens]['Checked'] = True
+                if content_descricao == value[0:-16]:
+                    dict_vale[itens]['Checked'] = False
+                content_descricao = value[0:-16]
+        if dict_vale[itens]['Checked']:
+            saldo_vales_select += dict_vale[itens]['Valor']
+    return dict_vale, saldo_vales_select
+
+
+def calcula_total_vales(idpessoal):
+    totalvales = Vales.objects.filter(idPessoal=idpessoal, Pago=False).aggregate(ValorTotal=Sum('Valor'))
+    return totalvales['ValorTotal']
 
 
 def seleciona_minutasavulso(datainicial, datafinal, idpessoal):
     data = dict()
     data['html_minutas'] = html_minutasavulso(datainicial, datafinal, idpessoal)
+    data['html_valesavulso'] = html_vale(idpessoal)
     c_return = JsonResponse(data)
     return c_return
 
 
 def html_minutasavulso(datainicial, datafinal, idpessoal):
     recibo = []
+    colaborador = facade.get_pessoal(idpessoal)
     minutas = MinutaColaboradores.objects.filter(idPessoal=idpessoal, Pago=False,
                                                  idMinuta_id__DataMinuta__range=[datainicial, datafinal])
     for index, itens in enumerate(minutas):
@@ -130,7 +166,7 @@ def html_minutasavulso(datainicial, datafinal, idpessoal):
                 recibo.append({'Data': itens.idMinuta.DataMinuta, 'Minuta': itens.idMinuta.Minuta,
                                'Cliente': itens.idMinuta.idCliente.Fantasia, 'Descricao': minutas.Descricao,
                                'Valor': minutas.Valor})
-    context = {'recibo': recibo}
+    context = {'recibo': recibo, 'colaborador': colaborador[0].Nome}
     c_return = render_to_string('pagamentos/minutasavulso.html', context)
     return c_return
 
@@ -198,16 +234,17 @@ def create_cartaoponto(mesreferencia, anoreferencia, idpessoal):
 
 
 def cria_vale(data, descricao, valor, parcelas, idpessoal):
-    for x in range(int(parcelas)):
-        obj = Vales()
-        obj.Data = data
-        if parcelas == 1:
-            obj.Descricao = descricao
-        else:
-            obj.Descricao = '{} P-{}/{}'.format(descricao, x+1, parcelas)
-        obj.Valor = float(valor)/int(parcelas)
-        obj.idPessoal_id = idpessoal
-        obj.save()
+    if int(parcelas) > 0:
+        for x in range(int(parcelas)):
+            obj = Vales()
+            obj.Data = data
+            if int(parcelas) == 1:
+                obj.Descricao = descricao
+            else:
+                obj.Descricao = '{} {}/{} PARCELADO'.format(descricao, str(x+1).zfill(2), parcelas.zfill(2))
+            obj.Valor = float(valor)/int(parcelas)
+            obj.idPessoal_id = idpessoal
+            obj.save()
 
 
 def get_contracheque(idpessoal: int):
@@ -339,7 +376,14 @@ def seleciona_cartaoponto(mesreferencia, anoreferencia, idpessoal):
 
 
 def seleciona_vales(idpessoal):
-    pass
+    data = dict()
+    colaborador = facade.get_pessoal(idpessoal)
+    if colaborador[0].TipoPgto == 'MENSALISTA':
+        data['html_vales'] = html_vale(idpessoal)
+    else:
+        data['html_valesavulso'] = html_vale(idpessoal)
+    c_return = JsonResponse(data)
+    return c_return
 
 
 def select_minutas_contracheque(mesreferencia, anoreferencia, idpessoal):
@@ -451,8 +495,8 @@ def html_cartaoponto(mesreferencia, anoreferencia, idpessoal):
 
 
 def html_vale(idpessoal):
-    vale = Vales.objects.filter(idPessoal=idpessoal)
-    context = {'vale': vale}
+    dict_vale, saldo_vale_select = get_vales_select(idpessoal)
+    context = {'dict_vale': dict_vale, 'idPessoal': idpessoal}
     c_return = render_to_string('pagamentos/vale.html', context)
     return c_return
 
@@ -472,8 +516,9 @@ def html_formccitens(contracheque, request):
 
 
 def html_saldoavulso(datainicial, datafinal):
-    saldo, saldototal = get_saldo_pagamento_avulso(datainicial, datafinal)
-    context = {'saldo': saldo, 'saldototal': saldototal, 'datainicial': datainicial, 'datafinal': datafinal}
+    saldo, saldototal, saldovales, totalselect = get_saldo_pagamento_avulso(datainicial, datafinal)
+    context = {'saldo': saldo, 'saldototal': saldototal, 'saldovales': saldovales,  'totalselect': totalselect,
+               'datainicial': datainicial, 'datafinal': datafinal}
     c_return = render_to_string('pagamentos/saldoavulso.html', context)
     return c_return
 

@@ -74,6 +74,8 @@ def cria_vale(request):
     c_idpessoal = request.POST.get('idPessoal')
     if request.method == 'POST':
         facade.cria_vale(c_data, c_descricao, c_valor, c_parcelas, c_idpessoal)
+    data = facade.seleciona_vales(c_idpessoal)
+    return data
 
 
 def cria_contrachequeitens(request):
