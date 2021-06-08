@@ -66,6 +66,15 @@ def cria_folha(request):
     return data
 
 
+def cria_pagamento(request):
+    c_idpessoal = request.GET.get('idPessoal')
+    c_datainicial = request.GET.get('DataInicial')
+    c_datafinal = request.GET.get('DataFinal')
+    c_vales = request.GET.getlist('ValesSelecionados[]')
+    data = facade.create_pagamento_avulso(c_datainicial, c_datafinal, c_idpessoal, c_vales)
+    return data
+
+
 def cria_vale(request):
     c_data = request.POST.get('Data')
     c_descricao = request.POST.get('Descricao')

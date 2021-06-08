@@ -1,6 +1,7 @@
+{% for colaborador in colaborador %}
 <table class="pa-tabela">
     <tr>
-        <td colspan="5" class="pa-titulo">{{ colaborador }}</td>
+        <td colspan="5" class="pa-titulo">{{ colaborador.Nome }}</td>
     </tr>
     <tr>
         <td class="pa-titulo">DATA</td>
@@ -19,4 +20,7 @@
     </tr>
     {% endfor %}
 </table>
-<button>GERA PAGAMENTO</button>
+<button class="btn btn-warning" data-url="{% url 'criapagamento' %}" id="gerar-pagamento"  datafinal="{{ datafinal }}"
+        datainicial="{{ datainicial }}" idpessoal="{{ colaborador.idPessoal }}">GERAR PAGAMENTO
+</button>
+{% endfor %}

@@ -190,6 +190,31 @@ $(document).on('click', '#gerar-folha', function(event) {
     });
 });
 
+$(document).on('click', '#gerar-pagamento', function(event) {
+    var url = $(this).attr('data-url')
+    var idpessoal = $(this).attr('idpessoal')
+    var datainicial = $(this).attr('datainicial')
+    var datafinal = $(this).attr('datafinal')
+    var valesselecionados = valeselect('#vale_' + $(this).attr('idpessoal'))
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: url,
+        data: {
+            idPessoal: idpessoal,
+            DataInicial: datainicial,
+            DataFinal: datafinal,
+            ValesSelecionados: valesselecionados,
+        },
+        success: function(data){
+            $(".fp-folha-contracheque").html(data.html_folha);
+        },
+        error: function(error) {
+            console.log(error)
+        }
+    });
+});
+
 $(document).on('click', '.selecionar-contracheque', function(event) {
     var url = $(this).attr('data-url')
     var mesreferencia = $(this).attr('mesreferencia')
@@ -419,13 +444,16 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
 }
 
 function valeselect(idpessoal) {
+    var data = [];
     var total = 0.00
     $('.switchmini').each(function() {
         if ($(this).is(":checked") && $(this).attr('idPessoal') == idpessoal.substring(6)) {
             total += parseFloat($(this).attr('valorvale').replace(',', '.'))
+            data.push($(this).attr('id'))
         }
         $(idpessoal).text('R$ ' + total.toFixed(2).replace('.', ','));
     });
+    return data
 }
 
 function somavales() {

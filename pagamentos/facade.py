@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 
 from minutas.models import MinutaColaboradores, MinutaItens
+from pagamentos.models import Recibo
 from pessoas import facade
 from pessoas.forms import CadastraContraCheque, CadastraContraChequeItens, CadastraVale
 from pessoas.models import ContraCheque, ContraChequeItens, CartaoPonto, Salario, Vales
@@ -166,7 +167,7 @@ def html_minutasavulso(datainicial, datafinal, idpessoal):
                 recibo.append({'Data': itens.idMinuta.DataMinuta, 'Minuta': itens.idMinuta.Minuta,
                                'Cliente': itens.idMinuta.idCliente.Fantasia, 'Descricao': minutas.Descricao,
                                'Valor': minutas.Valor})
-    context = {'recibo': recibo, 'colaborador': colaborador[0].Nome}
+    context = {'recibo': recibo, 'colaborador': colaborador, 'datainicial': datainicial, 'datafinal': datafinal}
     c_return = render_to_string('pagamentos/minutasavulso.html', context)
     return c_return
 
@@ -176,6 +177,27 @@ def create_folha(mesreferencia, anoreferencia):
     for itens in mensalistas:
         create_contracheque(mesreferencia, anoreferencia, '0.00', itens.idPessoal)
         create_cartaoponto(mesreferencia, anoreferencia, itens.idPessoal)
+
+
+def create_pagamento_avulso(datainicial, datafinal, idpessoal, vales):
+    minutas = MinutaColaboradores.objects.filter(idMinutaidPessoal=idpessoal, Pago=False,
+                                                 idMinuta_id__DataMinuta__range=[datainicial, datafinal])
+    total_vales = 0
+    for itens in vales:
+        vale = Vales.objects.get(idVales=itens[3:-5])
+        total_vales += vale.Valor
+        obj = vale
+        obj.Pago = True
+        # obj.save(update_fields=['Pago'])
+    print(total_vales)
+    recibo = Recibo.objects.annotate(Maior=Max('idRecibo') + 1)
+    if not recibo:
+        recibo = 1431
+    else:
+        recibo = recibo.Maior
+
+
+    pass
 
 
 def create_contracheque(mesreferencia, anoreferencia, valor, idpessoal):
@@ -539,7 +561,7 @@ def calcula_horas_extras(mesreferencia, anoreferencia, idpessoal):
     totalextra = total_horas_extras(mesreferencia, anoreferencia, idpessoal)
     horazero = datetime.datetime.strptime('00:00:00', '%H:%M:%S').time()
     horazero = datetime.timedelta(hours=horazero.hour, minutes=horazero.minute)
-    valorhoraextra = float(salario[0].Salario) / 30 / 9 / 60 / 60 * totalextra.seconds
+    valorhoraextra = float(salario[0].Salario) / 100 * 150 / 30 / 9 / 60 / 60 * totalextra.seconds
     contracheque = get_contrachequereferencia(mesreferencia, anoreferencia, idpessoal)
     if totalextra > horazero:
         if contracheque:
