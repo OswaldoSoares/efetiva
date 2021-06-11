@@ -2087,28 +2087,28 @@ background-color: white;
 }
 
 
-main .fp-folha-contracheque {
+main .fp-base {
     width: 100%;
     display: flex;
     align-items: top;
     justify-content: flex-start;
 }
 
-main .fp-folha-contracheque .fp-folha {
+main .fp-base .fp-folha {
     color: var(--corprimaria);
     width: 45%;
     margin: 5px;
     border-radius: 5px;
 }
 
-main .fp-folha-contracheque .fp-minutas {
+main .fp-base .fp-minutas {
     color: var(--corprimaria);
     width: 100%;
     margin-top: 5px;
     border-radius: 5px;
 }
 
-main .fp-folha-contracheque .fp-contracheque-cartaoponto {
+main .fp-base .fp-contracheque-cartaoponto {
     display: flex;
     flex-direction: column;
     align-items: flex-start;

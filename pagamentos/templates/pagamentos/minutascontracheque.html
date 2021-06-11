@@ -1,4 +1,5 @@
 <div class="fp-minuta-tabela">
+    {% if minutas %}
     <table class="fp-tabela">
         <tr>
             <td colspan="4" class="titulo-tabela">MINUTAS</td>
@@ -18,4 +19,7 @@
         </tr>
         {% endfor %}
     </table>
+    {% else %}
+    <span>NENHUMA MINUTA ENCONTRADA</span>
+    {% endif %}
 </div>

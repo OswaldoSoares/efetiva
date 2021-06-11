@@ -14,8 +14,7 @@
             <td class="fp-button">
                 {% if values.ContraCheque %}
                 <button class="btn btn-info btn-xs glyphicon glyphicon-ok selecionar-contracheque"
-                        data-url="{% url 'selecionacontracheque' %}" mesreferencia="{{ referencia.MesReferencia }}"
-                        anoreferencia="{{ referencia.AnoReferencia }}" idpessoal="{{ values.idPessoal }}">
+                        data-url="{% url 'selecionacontracheque' %}" idpessoal="{{ values.idPessoal }}">
                 </button>
                 {% endif %}
             </td>
@@ -28,7 +27,7 @@
                         anoreferencia="{{ referencia.AnoReferencia }}">GERAR FOLHA DE PAGAMENTO
                 </button>
             </td>
-            <td class="fp-valor">Total</td>
+            <td class="fp-valor">R$ {{ totalsalario }}</td>
             <td class="fp-valor">R$ {{ totalfolha }}</td>
             <td class="fp-button"></td>
         </tr>

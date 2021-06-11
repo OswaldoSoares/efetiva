@@ -21,10 +21,9 @@
                                {% if value.Checked %}
                                checked="checked"
                                {% endif %}
-                               value=""
-                               valorvale="{{ value.Valor }}"
-                               idPessoal="{{ idPessoal }}"
-                               type="checkbox">
+                               tipopgto="{{ TipoPgto }}" valorvale="{{ value.Valor }}" type="checkbox"
+                               data-url="criacontrachequeitensvale" idpessoal="{{ idPessoal }}"
+                               idcontracheque="{{ idcontracheque }}" idvales="{{ value.idVales }}">
                         <label for="id_{{ value.idVales }}_Vale"></label>
                     </td>
                 </tr>

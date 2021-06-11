@@ -8,7 +8,6 @@ from pessoas import facade
 from .models import Pessoal, DocPessoal, FonePessoal, ContaPessoal, ContraChequeItens
 from .forms import CadastraPessoal, CadastraDocPessoal, CadastraFonePessoal, CadastraContaPessoal, CadastraSalario, \
     CadastraVale
-from .print import print_contracheque
 from decimal import Decimal
 
 
@@ -224,8 +223,3 @@ def cria_contrachequeitens(request):
     data = facade.seleciona_contracheque(request, c_mes, c_ano, c_idpessoal)
     return data
 
-
-def imprime_contracheque(request, idcontracheque):
-    contexto = facade.print_contracheque_context(idcontracheque)
-    response = print_contracheque(contexto)
-    return response

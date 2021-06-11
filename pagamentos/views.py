@@ -6,6 +6,7 @@ from rolepermissions.decorators import has_permission_decorator
 from minutas.models import MinutaItens, MinutaColaboradores
 from pagamentos import facade
 from .forms import CadastraCartaoPonto
+from .print import print_contracheque
 from django.db.models import F, ExpressionWrapper, DecimalField
 
 
@@ -17,6 +18,63 @@ def index_pagamento(request):
     contextoavulso = facade.create_context_avulso()
     contexto.update(contextoavulso)
     return render(request, 'pagamentos/index.html', contexto)
+
+
+def cria_folha(request):
+    c_mes = request.GET.get('MesReferencia')
+    c_ano = request.GET.get('AnoReferencia')
+    facade.create_folha(c_mes, c_ano)
+    data = facade.seleciona_folha(c_mes, c_ano)
+    return data
+
+
+def seleciona_folha(request):
+    c_mes = request.POST.get('MesReferencia')
+    c_ano = request.POST.get('AnoReferencia')
+    data = facade.seleciona_folha(c_mes, c_ano)
+    return data
+
+
+def seleciona_contracheque(request):
+    c_mes = request.GET.get('MesReferencia')
+    c_ano = request.GET.get('AnoReferencia')
+    c_idpesssoal = request.GET.get('idPessoal')
+    facade.atualiza_cartaoponto(c_mes, c_ano, c_idpesssoal)
+    facade.calcula_conducao(c_mes, c_ano, c_idpesssoal)
+    data = facade.seleciona_contracheque(c_mes, c_ano, c_idpesssoal, request)
+    return data
+
+
+def cria_contrachequeitens(request):
+    c_descricao = request.POST.get('Descricao')
+    c_valor = request.POST.get('Valor')
+    c_registro = request.POST.get('Registro')
+    c_idcontracheque = request.POST.get('idContraCheque')
+    facade.create_contracheque_itens(c_descricao, c_valor, c_registro, c_idcontracheque)
+    c_mes = request.POST.get('MesReferencia')
+    c_ano = request.POST.get('AnoReferencia')
+    c_idpesssoal = request.POST.get('idPessoal')
+    data = facade.seleciona_contracheque(c_mes, c_ano, c_idpesssoal, request)
+    return data
+
+
+def exclui_contrachequeitens(request):
+    c_idcontracheque = request.GET.get('idContraCheque')
+    c_descricao = request.GET.get('Descricao')
+    c_registro = request.GET.get('Registro')
+    facade.delete_contrachequeitens(c_idcontracheque, c_descricao, c_registro)
+    c_mes = request.GET.get('MesReferencia')
+    c_ano = request.GET.get('AnoReferencia')
+    c_idpesssoal = request.GET.get('idPessoal')
+    data = facade.seleciona_contracheque(c_mes, c_ano, c_idpesssoal, request)
+    return data
+
+
+def imprime_contracheque(request, idcontracheque):
+    print(request.GET)
+    contexto = facade.print_contracheque_context(idcontracheque)
+    response = print_contracheque(contexto)
+    return response
 
 
 def teste(request):
@@ -58,14 +116,6 @@ def teste(request):
     return JsonResponse(data)
 
 
-def cria_folha(request):
-    c_mes = request.GET.get('MesReferencia')
-    c_ano = request.GET.get('AnoReferencia')
-    facade.create_folha(c_mes, c_ano)
-    data = facade.seleciona_folha(c_mes, c_ano)
-    return data
-
-
 def cria_pagamento(request):
     c_idpessoal = request.GET.get('idPessoal')
     c_datainicial = request.GET.get('DataInicial')
@@ -75,24 +125,17 @@ def cria_pagamento(request):
     return data
 
 
-def cria_vale(request):
-    c_data = request.POST.get('Data')
-    c_descricao = request.POST.get('Descricao')
-    c_valor = request.POST.get('Valor')
-    c_parcelas = request.POST.get('Parcelas')
-    c_idpessoal = request.POST.get('idPessoal')
-    if request.method == 'POST':
-        facade.cria_vale(c_data, c_descricao, c_valor, c_parcelas, c_idpessoal)
-    data = facade.seleciona_vales(c_idpessoal)
-    return data
 
 
-def cria_contrachequeitens(request):
-    c_descricao = request.POST.get('Descricao')
-    c_valor = request.POST.get('Valor')
-    c_registro = request.POST.get('Registro')
-    c_idcontracheque = request.POST.get('idContraCheque')
-    facade.create_contracheque_itens(c_descricao, c_valor, c_registro, c_idcontracheque)
+
+
+
+
+def cria_contrachequeitensvale(request):
+    c_idpessoal = request.GET.get('idPessoal')
+    c_idvales = request.GET.get('idVales')
+    c_idcontracheque = request.GET.get('idContraCheque')
+    facade.create_contracheque_itens_vales(c_idpessoal, c_idvales, c_idcontracheque)
     c_mes = request.POST.get('MesReferencia')
     c_ano = request.POST.get('AnoReferencia')
     c_idpesssoal = request.POST.get('idPessoal')
@@ -100,11 +143,11 @@ def cria_contrachequeitens(request):
     return data
 
 
-def exclui_contrachequeitens(request):
-    c_idcontracheque = request.GET.get('idContraCheque')
-    c_descricao = request.GET.get('Descricao')
-    c_registro = request.GET.get('Registro')
-    facade.delete_contrachequeitens(c_idcontracheque, c_descricao, c_registro)
+
+
+def exclui_contrachequeitensvale(request):
+    c_idvale = request.GET.get('idVales')
+    facade.delete_contracheque_itens_vale(c_idvale)
     c_mes = request.GET.get('MesReferencia')
     c_ano = request.GET.get('AnoReferencia')
     c_idpesssoal = request.GET.get('idPessoal')
@@ -112,11 +155,7 @@ def exclui_contrachequeitens(request):
     return data
 
 
-def seleciona_folha(request):
-    c_mes = request.POST.get('MesReferencia')
-    c_ano = request.POST.get('AnoReferencia')
-    data = facade.seleciona_folha(c_mes, c_ano)
-    return data
+
 
 
 def seleciona_periodo(request):
@@ -126,14 +165,7 @@ def seleciona_periodo(request):
     return data
 
 
-def seleciona_contracheque(request):
-    c_mes = request.GET.get('MesReferencia')
-    c_ano = request.GET.get('AnoReferencia')
-    c_idpesssoal = request.GET.get('idPessoal')
-    facade.atualiza_cartaoponto(c_mes, c_ano, c_idpesssoal)
-    facade.calcula_conducao(c_mes, c_ano, c_idpesssoal)
-    data = facade.seleciona_contracheque(c_mes, c_ano, c_idpesssoal, request)
-    return data
+
 
 
 def seleciona_saldoavulso(request):
@@ -181,4 +213,16 @@ def edita_cartaoponto(request, idcartaoponto):
     c_ano = request.POST.get('AnoReferencia')
     c_idpessoal = request.POST.get('idPessoal')
     data = facade.form_pagamento(request, c_form, c_idobj, c_url, c_view, c_idcartaoponto, c_mes, c_ano, c_idpessoal)
+    return data
+
+
+def cria_vale(request):
+    c_data = request.POST.get('Data')
+    c_descricao = request.POST.get('Descricao')
+    c_valor = request.POST.get('Valor')
+    c_parcelas = request.POST.get('Parcelas')
+    c_idpessoal = request.POST.get('idPessoal')
+    if request.method == 'POST':
+        facade.cria_vale(c_data, c_descricao, c_valor, c_parcelas, c_idpessoal)
+    data = facade.seleciona_vales(c_idpessoal)
     return data

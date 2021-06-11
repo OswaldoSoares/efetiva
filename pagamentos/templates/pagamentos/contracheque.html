@@ -21,14 +21,13 @@
                 <span class="btn btn-dark btn-xs glyphicon glyphicon-pushpin"></span>
                 {% elif itens.Descricao == 'VALE TRANSPORTE' %}
                 <span class="btn btn-dark btn-xs glyphicon glyphicon-pushpin"></span>
+                {% elif itens.Vales_id > 0 %}
+                <span class="btn btn-dark btn-xs glyphicon glyphicon-pushpin"></span>
                 {% else %}
                 <button class="btn btn-danger btn-xs glyphicon glyphicon-remove remove-item"
-                        data-url="{% url 'excluicontrachequeitens' %}"
-                        idcontracheque="{{ itens.idContraCheque_id }}"
-                        descricao="{{ itens.Descricao }}"
-                        registro="{{ itens.Registro }}"
-                        mesreferencia="{{ itenscc.MesReferencia }}"
-                        anoreferencia="{{ itenscc.AnoReferencia }}" idpessoal="{{ itenscc.idPessoal_id }}">
+                        data-url="{% url 'excluicontrachequeitens' %}" idcontracheque="{{ itens.idContraCheque_id }}"
+                        descricao="{{ itens.Descricao }}" registro="{{ itens.Registro }}"
+                        idpessoal="{{ itenscc.idPessoal_id }}">
                 </button>
                 {% endif %}
             </div>

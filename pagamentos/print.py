@@ -22,7 +22,7 @@ def print_contracheque(contexto):
     pdf = canvas.Canvas(buffer)
     pdf.setFont("Times-Roman", 10)
     linha = 297
-    for x in range(2):
+    for x in range(1):
         pdf.setFillColor(HexColor("#000000"))
         pdf.rect(convertemp(5), convertemp(linha-18.5), convertemp(173), convertemp(13.5), fill=0)
         pdf.rect(convertemp(5), convertemp(linha-28.3), convertemp(173), convertemp(9.3), fill=0)
@@ -85,25 +85,25 @@ def print_contracheque(contexto):
                                                                                           'Debito']).replace('.', ','))
         pdf.drawRightString(convertemp(171.7), convertemp(linha - 132), '{}'.format(contexto['totais'][
                                                                                         'Liquido']).replace('.', ','))
-        linha = 148.5
+        # linha = 148
+    # pdf.drawString(convertemp(5), convertemp(147.4), '{}'.format('\u2702'))
+    # pdf.drawString(convertemp(70), convertemp(147.4), '{}'.format('\u2702'))
+    # pdf.drawRightString(convertemp(140), convertemp(147.4), '{}'.format('\u2702'))
+    # pdf.drawRightString(convertemp(205), convertemp(147.4), '{}'.format('\u2702'))
+    # pdf.setLineWidth(0.5)
     pdf.setFont("Times-Roman", 9)
     pdf.setFillColor(HexColor("#808080"))
-    pdf.drawString(convertemp(5), convertemp(147.4), '{}'.format('\u2702'))
-    pdf.drawString(convertemp(70), convertemp(147.4), '{}'.format('\u2702'))
-    pdf.drawRightString(convertemp(140), convertemp(147.4), '{}'.format('\u2702'))
-    pdf.drawRightString(convertemp(205), convertemp(147.4), '{}'.format('\u2702'))
-    pdf.setLineWidth(0.5)
     pdf.line(convertemp(0), convertemp(148.5), convertemp(210), convertemp(148.5))
     pdf.rotate(90)
     linha = 297
-    for x in range(2):
+    for x in range(1):
         pdf.drawString(convertemp(linha - 138), convertemp(-186), 'DECLARO TER RECEBIDO A IMPORTÂNCIA LÍQUIDA '
                                                                   'DISCRIMINADA NESTE RECIBO')
         pdf.drawString(convertemp(linha - 133), convertemp(-197), '_____/_____/_____')
         pdf.drawString(convertemp(linha - 133), convertemp(-201), '          DATA       ')
         pdf.drawString(convertemp(linha - 83), convertemp(-197), '_______________________________')
         pdf.drawString(convertemp(linha - 83), convertemp(-201), 'ASSINATURA DO FUNCIONÁRIO')
-        linha = 148.5
+        # linha = 148.5
     pdf.setTitle('contracheque.pdf')
     pdf.save()
     buffer.seek(0)

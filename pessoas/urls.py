@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import indexpessoal, cria_pessoa, consulta_pessoa, criadocpessoa, criafonepessoa, edita_pessoa, \
     excluipessoa, bloqueia_pessoa, excluidocpessoa, excluifonepessoa, criacontapessoa, excluicontapessoa, \
-    edita_salario, cria_vale, cria_contracheque, seleciona_contracheque, cria_contrachequeitens, imprime_contracheque
+    edita_salario, cria_vale, cria_contracheque, seleciona_contracheque, cria_contrachequeitens
 
 
 urlpatterns = [
@@ -22,5 +22,4 @@ urlpatterns = [
     path('criacontracheque/', cria_contracheque, name='criacontracheque'),
     path('selecionacontrachequemudei/', seleciona_contracheque, name='selecionacontrachequemudei'),
     path('criacontrachequeitensmudei/', cria_contrachequeitens, name='criacontrachequeitensmudei'),
-    path('imprimecontracheque/<int:idcontracheque>/', imprime_contracheque, name='imprimecontracheque')
 ]
