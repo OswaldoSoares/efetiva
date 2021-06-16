@@ -1,10 +1,11 @@
 {% for itenscc in qs_contracheque %}
 <table class="tb-contracheque">
     <tr>
-        <th class="tb-nome" colspan="3">{{ itenscc.idPessoal }}</th>
+        <th class="tb-nome" colspan="4">{{ itenscc.idPessoal }}</th>
     </tr>
     <tr class="tb-titulo">
         <th class="col-descricao">DESCRIÇÃO</th>
+        <th class="col-referencia">REFERÊNCIA</th>
         <th class="col-provento">VENCIMENTOS</th>
         <th class="col-desconto">DESCONTOS</th>
     </tr>
@@ -32,6 +33,9 @@
                 {% endif %}
             </div>
         </td>
+        <td class="referencia">
+
+        </td>
         <td class="provento">
         {% if itens.Registro == 'C' %}
         <span class="valor-debito">R$ {{ itens.Valor }}</span>
@@ -47,13 +51,16 @@
     <tr>
         <td class="fim-descricao" rowspan="2">
             <a class="btn btn-warning glyphicon glyphicon-print"
-               href="{% url 'imprimecontracheque' itenscc.idContraCheque %}" target="_blank">
+               href="{% url 'imprimecontracheque' %}?idcc={{ itenscc.idContraCheque }}&idco={{ itenscc.idPessoal_id }}&mes={{ mesreferencia }}&ano={{ anoreferencia }}"
+               target="_blank">
             </a>
         </td>
+        <td></td>
         <td class="provento tb-titulo"><span id="total-credito">R$ {{ totais.Credito }}</span></td>
         <td class="desconto tb-titulo"><span id="total-debito">R$ {{ totais.Debito }}</span></td>
     </tr>
     <tr>
+        <td></td>
         <td class="provento">A RECEBER &#x2794</td>
         <td class="desconto"><span id="total-liquido">R$ {{ totais.Liquido }}</span></td>
     </tr>

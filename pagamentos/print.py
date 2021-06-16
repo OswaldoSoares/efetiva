@@ -91,6 +91,33 @@ def print_contracheque(contexto):
     # pdf.drawRightString(convertemp(140), convertemp(147.4), '{}'.format('\u2702'))
     # pdf.drawRightString(convertemp(205), convertemp(147.4), '{}'.format('\u2702'))
     # pdf.setLineWidth(0.5)
+    if contexto['minutas']:
+        linha = 135
+        numerominutas = contexto['minutas'].count()
+        pdf.setFont("Times-Roman", 9)
+        pdf.rect(convertemp(5), convertemp(linha), convertemp(200), convertemp(6), fill=0)
+        pdf.drawCentredString(convertemp(105), convertemp(linha + 1.5), '{}-{}'.format(contexto['minutas'].count(),
+                                                                                       'MINUTAS'))
+        linha -= 4
+        pdf.setFont("Times-Roman", 9)
+        pdf.drawCentredString(convertemp(15), convertemp(linha), '{}'.format('DATA'))
+        pdf.drawCentredString(convertemp(40), convertemp(linha), '{}'.format('MINUTA'))
+        pdf.drawCentredString(convertemp(90), convertemp(linha), '{}'.format('CLIENTE'))
+        pdf.drawCentredString(convertemp(170), convertemp(linha), '{}'.format('HORA INICIAL'))
+        pdf.drawCentredString(convertemp(195), convertemp(linha), '{}'.format('HORA FINAL'))
+        pdf.line(convertemp(5), convertemp(linha - 1), convertemp(205), convertemp(linha - 1))
+        linha -= 4
+        for minutas in contexto['minutas']:
+            pdf.drawCentredString(convertemp(15), convertemp(linha), '{}'.format(minutas['idMinuta_id__DataMinuta']))
+            pdf.drawCentredString(convertemp(40), convertemp(linha), '{}'.format(minutas['idMinuta_id__Minuta']))
+            pdf.drawCentredString(convertemp(90), convertemp(linha), '{}'.format(minutas['idMinuta_id__idCliente__Fantasia']))
+            pdf.drawCentredString(convertemp(170), convertemp(linha), '{}'.format(minutas['idMinuta_id__HoraInicial']))
+            pdf.drawCentredString(convertemp(195), convertemp(linha), '{}'.format(minutas['idMinuta_id__HoraFinal']))
+            linha -= 4
+
+        linha + 3
+        pdf.rect(convertemp(5), convertemp(linha + 3), convertemp(200), convertemp(numerominutas * 4 + 5), fill=0)
+
     pdf.setFont("Times-Roman", 9)
     pdf.setFillColor(HexColor("#808080"))
     pdf.line(convertemp(0), convertemp(148.5), convertemp(210), convertemp(148.5))

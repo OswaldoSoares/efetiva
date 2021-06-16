@@ -20,7 +20,7 @@ urlpatterns = [
     path('criavale', cria_vale, name='criavale'),
     path('criacontrachequeitensvale', cria_contrachequeitensvale, name='criacontrachequeitensvale'),
     path('excluicontrachequeitensvale', exclui_contrachequeitensvale, name='excluicontrachequeitensvale'),
-    path ('imprimecontracheque/<int:idcontracheque>/', imprime_contracheque, name='imprimecontracheque'),
+    path('imprimecontracheque/', imprime_contracheque, name='imprimecontracheque'),
     path('manutencao', manutencao),
     path('apaga', apagar_tudo, name='apaga')
 ]

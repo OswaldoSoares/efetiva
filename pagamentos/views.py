@@ -70,9 +70,12 @@ def exclui_contrachequeitens(request):
     return data
 
 
-def imprime_contracheque(request, idcontracheque):
-    print(request.GET)
-    contexto = facade.print_contracheque_context(idcontracheque)
+def imprime_contracheque(request):
+    c_idcontracheque = request.GET.get('idcc')
+    c_mes = request.GET.get('mes')
+    c_ano = request.GET.get('ano')
+    c_idpesssoal = request.GET.get('idco')
+    contexto = facade.print_contracheque_context(c_idcontracheque, c_mes, c_ano, c_idpesssoal)
     response = print_contracheque(contexto)
     return response
 

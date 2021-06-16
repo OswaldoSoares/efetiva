@@ -541,7 +541,8 @@ def html_contracheque(mesreferencia, anoreferencia, idpessoal):
     contrachequeitens = ContraChequeItens.objects.filter(idContraCheque=contracheque[0].idContraCheque).order_by(
         'Registro')
     totais = saldo_contracheque(contracheque[0].idContraCheque)
-    context = {'qs_contracheque': contracheque, 'qs_contrachequeitens': contrachequeitens, 'totais': totais}
+    context = {'qs_contracheque': contracheque, 'qs_contrachequeitens': contrachequeitens, 'totais': totais,
+               'mesreferencia': mesreferencia, 'anoreferencia': anoreferencia}
     c_return = render_to_string('pagamentos/contracheque.html', context)
     return c_return
 
@@ -565,11 +566,11 @@ def html_vale(idpessoal, tipopgto, idcontracheque):
     return c_return
 
 
-def print_contracheque_context(idcontracheque):
+def print_contracheque_context(idcontracheque, mesreferencia, anoreferencia, idpessoal):
     contracheque = get_contrachequeid(idcontracheque)
     contrachequeitens = facade.get_contracheque_itens(idcontracheque)
     colaborador = facade.get_pessoal(contracheque[0].idPessoal_id)
-    minutas = select_minutas_contracheque(mesreferencia, anoreferencia, idcontracheque)
+    minutas = select_minutas_contracheque(mesreferencia, anoreferencia, idpessoal)
     credito = ContraChequeItens.objects.filter(idContraCheque=contracheque[0].idContraCheque,
                                                Registro='C').aggregate(Total=Sum('Valor'))
     debito = ContraChequeItens.objects.filter(idContraCheque=contracheque[0].idContraCheque,
@@ -581,7 +582,7 @@ def print_contracheque_context(idcontracheque):
         debito['Total'] = Decimal('0.00')
     totais = {'Credito': credito['Total'], 'Debito': debito['Total'], 'Liquido': credito['Total'] - debito['Total']}
     contexto = {'contracheque': contracheque, 'contrachequeitens': contrachequeitens, 'colaborador': colaborador,
-                'totais': totais}
+                'totais': totais, 'minutas': minutas}
     return contexto
 
 
