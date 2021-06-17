@@ -63,7 +63,7 @@ def print_contracheque(contexto):
         pdf.setFillColor(HexColor("#000000"))
         pdf.setFont("Times-Roman", 11)
         pdf.drawString(convertemp(6), convertemp(linha-13.8), '{}'.format('TRANSEFETIVA TRANSPORTES - EIRELLI - ME'))
-        pdf.drawString(convertemp(6), convertemp(linha-17.7), '{}'.format('CNPJ: 00.000.000/0000-00'))
+        pdf.drawString(convertemp(6), convertemp(linha-17.7), '{}'.format('CNPJ: 21.602.117/0001-15'))
         pdf.drawString(convertemp(122.8), convertemp(linha-17.7), '{}'.format(contexto['contracheque'][0]))
         pdf.drawString(convertemp(5.8), convertemp(linha-27.2), '{}'.format(contexto['colaborador'][
                                                                                 0].idPessoal).zfill(4))
