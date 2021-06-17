@@ -2221,7 +2221,7 @@ main .tb-contracheque .referencia {
     border-top: solid 1px black; 
     border-bottom: solid 1px black;
     padding-right: 5px;
-    text-align: right;
+    text-align: center;
 }
 
 main .tb-contracheque .provento {
