@@ -225,10 +225,10 @@ def create_contracheque(mesreferencia, anoreferencia, valor, idpessoal):
                 obj.Valor = valor
                 obj.idPessoal_id = idpessoal
                 obj.save()
-                create_contracheque_itens('SALARIO', salario[0].Salario, 'C', obj.idContraCheque)
+                create_contracheque_itens('SALARIO', salario[0].Salario, '30d', 'C', obj.idContraCheque)
 
 
-def create_contracheque_itens(descricao, valor, registro, idcontracheque):
+def create_contracheque_itens(descricao, valor, referencia, registro, idcontracheque):
     if float(valor) > 0:
         saldo = saldo_contracheque(idcontracheque)
         if int(valor) < int(saldo['Liquido']) or descricao == 'SALARIO':
@@ -236,6 +236,7 @@ def create_contracheque_itens(descricao, valor, registro, idcontracheque):
                 obj = ContraChequeItens()
                 obj.Descricao = descricao
                 obj.Valor = valor
+                obj.Referencia = referencia
                 obj.Registro = registro
                 obj.idContraCheque_id = idcontracheque
                 obj.save()
@@ -247,6 +248,7 @@ def create_contracheque_itens_vales(idcliente, idvale, idcontracheque):
         obj = ContraChequeItens()
         if vale.Descricao[-9:] == 'PARCELADO':
             obj.Descricao = vale.Descricao[0:-10]
+            obj.Referencia = vale.Descricao[-15:-9]
         else:
             obj.Descricao = vale.Descricao
         obj.Valor = vale.Valor
@@ -634,7 +636,8 @@ def calcula_horas_extras(mesreferencia, anoreferencia, idpessoal):
                 altera_contracheque_itens(contrachequeitens, valorhoraextra)
             else:
                 if valorhoraextra > 0:
-                    create_contracheque_itens('HORA EXTRA', valorhoraextra, 'C', contracheque[0].idContraCheque)
+                    create_contracheque_itens('HORA EXTRA', valorhoraextra, totalextra, 'C', contracheque[
+                        0].idContraCheque)
     else:
         delete_contrachequeitens(contracheque[0].idContraCheque, 'HORA EXTRA', 'C')
     return totalextra
@@ -699,7 +702,8 @@ def calcula_conducao(mesreferencia, anoreferencia, idpessoal):
                 altera_contracheque_itens(contrachequeitens, valetransporte)
             else:
                 if valetransporte > 0:
-                    create_contracheque_itens('VALE TRANSPORTE', valetransporte, 'C', contracheque[0].idContraCheque)
+                    create_contracheque_itens('VALE TRANSPORTE', valetransporte, cartaoponto, 'C',
+                                              contracheque[0].idContraCheque)
     else:
         delete_contrachequeitens(contracheque[0].idContraCheque, 'VALE TRANSPORTE', 'C')
     return valetransporte
