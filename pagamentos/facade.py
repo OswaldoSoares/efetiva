@@ -225,7 +225,7 @@ def create_contracheque(mesreferencia, anoreferencia, valor, idpessoal):
                 obj.Valor = valor
                 obj.idPessoal_id = idpessoal
                 obj.save()
-                create_contracheque_itens('SALARIO', salario[0].Salario, '30d', 'C', obj.idContraCheque)
+                create_contracheque_itens('SALARIO', salario[0].Salario, '30', 'C', obj.idContraCheque)
 
 
 def create_contracheque_itens(descricao, valor, referencia, registro, idcontracheque):
@@ -492,11 +492,12 @@ def altera_horario_manual(idcartaoponto, horaentrada, horasaida):
     obj.save(update_fields=['Entrada', 'Saida'])
 
 
-def altera_contracheque_itens(contrachequeitens, valorhoraextra):
+def altera_contracheque_itens(contrachequeitens, valorhoraextra, referencia):
     if float(valorhoraextra) > 0:
         obj = contrachequeitens
         obj.Valor = valorhoraextra
-        obj.save(update_fields=['Valor'])
+        obj.Referencia = referencia
+        obj.save(update_fields=['Valor', 'Referencia'])
 
 
 def altera_falta(mesreferencia, anoreferencia, idpessoal, idcartaoponto, request):
@@ -618,7 +619,7 @@ def calcula_faltas(mesreferencia, anoreferencia, idpessoal):
     salario = float(salario[0].Salario) - desconto
     contracheque = get_contrachequereferencia(mesreferencia, anoreferencia, idpessoal)
     contrachequeitens = get_contrachequeitens(contracheque[0].idContraCheque, 'SALARIO', 'C')
-    altera_contracheque_itens(contrachequeitens, salario)
+    altera_contracheque_itens(contrachequeitens, salario, '{}d'.format(30-faltas))
 
 
 def calcula_horas_extras(mesreferencia, anoreferencia, idpessoal):
@@ -633,11 +634,12 @@ def calcula_horas_extras(mesreferencia, anoreferencia, idpessoal):
         if contracheque:
             contrachequeitens = get_contrachequeitens(contracheque[0].idContraCheque, 'HORA EXTRA', 'C')
             if contrachequeitens:
-                altera_contracheque_itens(contrachequeitens, valorhoraextra)
+                altera_contracheque_itens(contrachequeitens, valorhoraextra, totalextra)
             else:
                 if valorhoraextra > 0:
-                    create_contracheque_itens('HORA EXTRA', valorhoraextra, totalextra, 'C', contracheque[
-                        0].idContraCheque)
+                    create_contracheque_itens('HORA EXTRA', valorhoraextra,
+                                              totalextra.strptime('00:00:00', '%H:%M').time(),
+                                              'C', contracheque[0].idContraCheque)
     else:
         delete_contrachequeitens(contracheque[0].idContraCheque, 'HORA EXTRA', 'C')
     return totalextra
@@ -667,10 +669,11 @@ def calcula_horas_atrazo(mesreferencia, anoreferencia, idpessoal):
         if contracheque:
             contrachequeitens = get_contrachequeitens(contracheque[0].idContraCheque, 'ATRAZO', 'D')
             if contrachequeitens:
-                altera_contracheque_itens(contrachequeitens, valorhoraatrazo)
+                altera_contracheque_itens(contrachequeitens, valorhoraatrazo, totalatrazo)
             else:
                 if valorhoraatrazo > 0:
-                    create_contracheque_itens('ATRAZO', valorhoraatrazo, 'D', contracheque[0].idContraCheque)
+                    create_contracheque_itens('ATRAZO', valorhoraatrazo, totalatrazo, 'D',
+                                              contracheque[0].idContraCheque)
     else:
         delete_contrachequeitens(contracheque[0].idContraCheque, 'ATRAZO', 'D')
     return totalatrazo
@@ -699,10 +702,11 @@ def calcula_conducao(mesreferencia, anoreferencia, idpessoal):
         if contracheque:
             contrachequeitens = get_contrachequeitens(contracheque[0].idContraCheque, 'VALE TRANSPORTE', 'C')
             if contrachequeitens:
-                altera_contracheque_itens(contrachequeitens, valetransporte)
+                altera_contracheque_itens(contrachequeitens, valetransporte, '{}d'.format(cartaoponto))
+                print(cartaoponto)
             else:
                 if valetransporte > 0:
-                    create_contracheque_itens('VALE TRANSPORTE', valetransporte, cartaoponto, 'C',
+                    create_contracheque_itens('VALE TRANSPORTE', valetransporte, '{}d'.format(cartaoponto), 'C',
                                               contracheque[0].idContraCheque)
     else:
         delete_contrachequeitens(contracheque[0].idContraCheque, 'VALE TRANSPORTE', 'C')

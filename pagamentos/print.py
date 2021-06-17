@@ -72,6 +72,8 @@ def print_contracheque(contexto):
         linhaitens = 0
         for itens in contexto['contrachequeitens']:
             pdf.drawString(convertemp(17.5), convertemp(linha - 41.2 - linhaitens), '{}'.format(itens.Descricao))
+            pdf.drawCentredString(convertemp(106), convertemp(linha - 41.2 - linhaitens), '{}'.format(
+                itens.Referencia))
             if itens.Registro == 'C':
                 pdf.drawRightString(convertemp(142.6), convertemp(linha - 41.2 - linhaitens), '{}'.format(
                     itens.Valor).replace('.', ','))
