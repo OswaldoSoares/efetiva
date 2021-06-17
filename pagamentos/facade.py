@@ -589,6 +589,22 @@ def print_contracheque_context(idcontracheque, mesreferencia, anoreferencia, idp
     return contexto
 
 
+def print_contracheque_adiantamento_context(idcontracheque, mesreferencia, anoreferencia, idpessoal):
+    contracheque = get_contrachequeid(idcontracheque)
+    contrachequeitens = facade.get_contracheque_itens(idcontracheque)
+    colaborador = facade.get_pessoal(contracheque[0].idPessoal_id)
+    minutas = select_minutas_contracheque(mesreferencia, anoreferencia, idpessoal)
+    credito = ContraChequeItens.objects.filter(idContraCheque=contracheque[0].idContraCheque, Descricao='DIANTAMENTO',
+                                               Registro='D').aggregate(Total=Sum('Valor'))
+    debito = Decimal('0.00')
+    if not credito['Total']:
+        credito['Total'] = Decimal('0.00')
+    totais = {'Credito': credito['Total'], 'Debito': debito, 'Liquido': credito['Total'] - debito}
+    contexto = {'contracheque': contracheque, 'contrachequeitens': contrachequeitens, 'colaborador': colaborador,
+                'totais': totais, 'minutas': minutas}
+    return contexto
+
+
 def html_formccadianta(contracheque, request):
     formcontrachequeitens = CadastraContraChequeItens()
     contextform = {'formcontrachequeitens': formcontrachequeitens, 'contracheque': contracheque}
@@ -703,7 +719,6 @@ def calcula_conducao(mesreferencia, anoreferencia, idpessoal):
             contrachequeitens = get_contrachequeitens(contracheque[0].idContraCheque, 'VALE TRANSPORTE', 'C')
             if contrachequeitens:
                 altera_contracheque_itens(contrachequeitens, valetransporte, '{}d'.format(cartaoponto))
-                print(cartaoponto)
             else:
                 if valetransporte > 0:
                     create_contracheque_itens('VALE TRANSPORTE', valetransporte, '{}d'.format(cartaoponto), 'C',

@@ -2591,7 +2591,7 @@ main .pa-vales .fp-vale-tabela .fp-vale-dia {
 }
 
 main .pa-vales .fp-vale-tabela .fp-vale-descricao {
-    width: 55%;
+    width: 40%;
     padding: 0 5px;
     text-align: left;
     font-size: 13px;
@@ -2607,7 +2607,7 @@ main .pa-vales .fp-vale-tabela .fp-vale-valor {
 }
 
 main .pa-vales .fp-vale-tabela .fp-vale-button {
-    width: 10%;
+    width: 20%;
     padding: 0 5px;
     text-align: center;
     font-size: 13px;

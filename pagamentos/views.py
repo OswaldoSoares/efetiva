@@ -75,8 +75,17 @@ def imprime_contracheque(request):
     c_mes = request.GET.get('mes')
     c_ano = request.GET.get('ano')
     c_idpesssoal = request.GET.get('idco')
-    contexto = facade.print_contracheque_context(c_idcontracheque, c_mes, c_ano, c_idpesssoal)
-    response = print_contracheque(contexto)
+    c_adiantamento = request.GET.get('adianta')
+    print(type(c_adiantamento))
+    print('Eita', request.GET.get('adianta'))
+    if c_adiantamento == 'False':
+        contexto = facade.print_contracheque_context(c_idcontracheque, c_mes, c_ano, c_idpesssoal)
+        response = print_contracheque(contexto, False)
+        print('Falso')
+    else:
+        contexto = facade.print_contracheque_adiantamento_context(c_idcontracheque, c_mes, c_ano, c_idpesssoal)
+        response = print_contracheque(contexto, True)
+        print('Verdadeiro')
     return response
 
 

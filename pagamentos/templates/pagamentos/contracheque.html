@@ -51,7 +51,11 @@
     <tr>
         <td class="fim-descricao" rowspan="2">
             <a class="btn btn-warning glyphicon glyphicon-print"
-               href="{% url 'imprimecontracheque' %}?idcc={{ itenscc.idContraCheque }}&idco={{ itenscc.idPessoal_id }}&mes={{ mesreferencia }}&ano={{ anoreferencia }}"
+               href="{% url 'imprimecontracheque' %}?idcc={{ itenscc.idContraCheque }}&idco={{ itenscc.idPessoal_id }}&mes={{ mesreferencia }}&ano={{ anoreferencia }}&adianta=True"
+               target="_blank">
+            </a>
+            <a class="btn btn-warning glyphicon glyphicon-print"
+               href="{% url 'imprimecontracheque' %}?idcc={{ itenscc.idContraCheque }}&idco={{ itenscc.idPessoal_id }}&mes={{ mesreferencia }}&ano={{ anoreferencia }}&adianta=False"
                target="_blank">
             </a>
         </td>
