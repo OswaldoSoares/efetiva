@@ -2,20 +2,26 @@
     {% if minutas %}
     <table class="fp-tabela">
         <tr>
-            <td colspan="4" class="titulo-tabela">MINUTAS</td>
+            <td colspan="6" class="titulo-tabela">MINUTAS</td>
         </tr>
         <tr>
             <td class="fp-minuta-titulo">DIA</td>
             <td class="fp-minuta-titulo">MINUTA</td>
             <td class="fp-minuta-titulo">CLIENTE</td>
-            <td class="fp-minuta-titulo">HORA FINAL</td>
+            <td class="fp-minuta-titulo">INICIO</td>
+            <td class="fp-minuta-titulo">FIM</td>
+            <td class="fp-minuta-titulo">EXTRA</td>
         </tr>
         {% for itens in minutas %}
         <tr>
             <td class="fp-minuta-dia">{{ itens.idMinuta_id__DataMinuta }}</td>
             <td class="fp-minuta-numero">{{ itens.idMinuta_id__Minuta }}</td>
             <td class="fp-minuta-cliente">{{ itens.idMinuta_id__idCliente__Fantasia }}</td>
+            <td class="fp-minuta-horafinal">{{ itens.idMinuta_id__HoraInicial }}</td>
             <td class="fp-minuta-horafinal">{{ itens.idMinuta_id__HoraFinal }}</td>
+            {% if itens.idMinuta_id__HoraFinal|time:"H:i" > '17:00' %}
+                <td class="fp-minuta-horafinal">{{ itens.idMinuta_id__DataMinuta|timesince }}</td>
+            {% endif %}
         </tr>
         {% endfor %}
     </table>

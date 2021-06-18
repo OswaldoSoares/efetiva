@@ -48,7 +48,19 @@ $(document).on('change', '.switchmini', function(event) {
                 EstadoSwitchMini: estado_switchmini,
             },
             success: function(data){
-                $(".fp-contracheque").html(data.html_contracheque);    
+                $(".fp-base").html(data.html_folha);
+                $(".fp-contracheque").html(data.html_contracheque);
+                $(".fp-minutas").html(data.html_minutascontracheque);
+                $(".fp-vales").html(data.html_vales);
+                $(".fp-contrachequeitens").html(data.html_formccitens);
+                if (data.html_adiantamento == true) {
+                    $(".fp-adiantamento").hide();
+                } else {
+                    $(".fp-adiantamento").show();
+                }
+                $(".fp-adiantamento").html(data.html_formccadianta);
+                $(".fp-contracheque").html(data.html_contracheque);
+                $(".fp-cartaoponto").html(data.html_cartaoponto);
             }
         })
     }

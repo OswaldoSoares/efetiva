@@ -681,9 +681,8 @@ def calcula_horas_extras(mesreferencia, anoreferencia, idpessoal):
                 altera_contracheque_itens(contrachequeitens, valorhoraextra, totalextra)
             else:
                 if valorhoraextra > 0:
-                    create_contracheque_itens('HORA EXTRA', valorhoraextra,
-                                              totalextra.strptime('00:00:00', '%H:%M').time(),
-                                              'C', contracheque[0].idContraCheque)
+                    create_contracheque_itens('HORA EXTRA', valorhoraextra, totalextra, 'C',
+                                              contracheque[0].idContraCheque)
     else:
         delete_contrachequeitens(contracheque[0].idContraCheque, 'HORA EXTRA', 'C')
     return totalextra

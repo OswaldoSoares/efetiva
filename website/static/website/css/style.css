@@ -2243,7 +2243,7 @@ main .tb-contracheque tr td .descricao {
     align-items: center;
     justify-content: space-between;
     border-bottom: solid 1px black;
-    padding: 1px 5px 2px 0;
+    padding: 1px 5px 2px 5px;
 }
 
 main .tb-contracheque .fim-descricao {
@@ -2362,7 +2362,7 @@ main .fp-minutas .fp-tabela .fp-minuta-dia {
 }
 
 main .fp-minutas .fp-tabela .fp-minuta-numero {
-    width: 15%;
+    width: 10%;
     padding: 0 5px;
     text-align: center;
     font-size: 13px;
@@ -2370,7 +2370,7 @@ main .fp-minutas .fp-tabela .fp-minuta-numero {
 }
 
 main .fp-minutas .fp-tabela .fp-minuta-cliente {
-    width: 50%;
+    width: 45%;
     padding: 0 5px;
     text-align: center;
     font-size: 13px;
@@ -2378,14 +2378,13 @@ main .fp-minutas .fp-tabela .fp-minuta-cliente {
 }
 
 main .fp-minutas .fp-tabela .fp-minuta-horafinal {
-    width: 20%;
+    background-color: #66CDAA;
+    width: 10%;
     padding: 0 5px;
     text-align: center;
     font-size: 13px;
     border-bottom: 1px solid black;    
 }
-
-c
 
 main .fp-vale-form {
     background-color: white;

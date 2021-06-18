@@ -155,7 +155,6 @@ def exclui_contrachequeitensvale(request):
     c_ano = request.GET.get('AnoReferencia')
     c_idpesssoal = request.GET.get('idPessoal')
     c_switch = request.GET.get('EstadoSwitchMini')
-    print(c_switch)
     facade.estado_swith_vales[c_idpesssoal] = c_switch[0:-1].split('-')
     data = facade.seleciona_contracheque(c_mes, c_ano, c_idpesssoal, request)
     return data
