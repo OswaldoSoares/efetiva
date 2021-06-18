@@ -594,7 +594,7 @@ def print_contracheque_adiantamento_context(idcontracheque, mesreferencia, anore
     contrachequeitens = facade.get_contracheque_itens(idcontracheque)
     colaborador = facade.get_pessoal(contracheque[0].idPessoal_id)
     minutas = select_minutas_contracheque(mesreferencia, anoreferencia, idpessoal)
-    credito = ContraChequeItens.objects.filter(idContraCheque=contracheque[0].idContraCheque, Descricao='DIANTAMENTO',
+    credito = ContraChequeItens.objects.filter(idContraCheque=contracheque[0].idContraCheque, Descricao='ADIANTAMENTO',
                                                Registro='D').aggregate(Total=Sum('Valor'))
     debito = Decimal('0.00')
     if not credito['Total']:

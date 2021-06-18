@@ -2548,7 +2548,16 @@ main .pa-saldo .pa-vales {
     margin-top: 5px;
 }
 
-main .pa-vales .fp-vale-tabela {
+main .fp-folha .fp-vales {
+    background-color: white;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
+}
+
+main .fp-vale-tabela {
     width: 95%;
     display: flex;
     align-items: center;
@@ -2556,7 +2565,7 @@ main .pa-vales .fp-vale-tabela {
     padding-bottom: 5px;
 }
 
-main .pa-vales .fp-vale-tabela .fp-tabela {
+main .fp-vale-tabela .fp-tabela {
     width: 100%;
     padding: 1px 5px;
     text-align: center;
@@ -2564,7 +2573,7 @@ main .pa-vales .fp-vale-tabela .fp-tabela {
     border-bottom: 1px solid black;
 }
 
-main .pa-vales .fp-vale-tabela .titulo-tabela-vale {
+main .fp-vale-tabela .titulo-tabela-vale {
     width: 100%;
     padding: 1px 5px 2px 5px;
     display: flex;
@@ -2574,14 +2583,14 @@ main .pa-vales .fp-vale-tabela .titulo-tabela-vale {
     border-bottom: 1px solid black;    
 }
 
-main .pa-vales .fp-vale-tabela .fp-vale-titulo {
+main .fp-vale-tabela .fp-vale-titulo {
     padding: 0 5px;
     text-align: center;
     font-size: 13px;
     border-bottom: 1px solid black;    
 }
 
-main .pa-vales .fp-vale-tabela .fp-vale-dia {
+main .fp-vale-tabela .fp-vale-dia {
     width: 15%;
     padding: 0 5px;
     margin-left: 5px;
@@ -2590,25 +2599,33 @@ main .pa-vales .fp-vale-tabela .fp-vale-dia {
     border-bottom: 1px solid black;    
 }
 
-main .pa-vales .fp-vale-tabela .fp-vale-descricao {
-    width: 40%;
+main .fp-vale-tabela .fp-vale-descricao {
+    width: 60%;
     padding: 0 5px;
     text-align: left;
     font-size: 13px;
     border-bottom: 1px solid black;    
 }
 
-main .pa-vales .fp-vale-tabela .fp-vale-valor {
-    width: 20%;
+main .fp-vale-tabela .fp-vale-valor {
+    width: 15%;
     padding: 0 5px;
     text-align: right;
     font-size: 13px;
     border-bottom: 1px solid black;    
 }
 
-main .pa-vales .fp-vale-tabela .fp-vale-button {
-    width: 20%;
+main .fp-vale-tabela .fp-vale-button {
+    width: 5%;
     padding: 0 5px;
+    text-align: center;
+    font-size: 13px;
+    border-bottom: 1px solid black;    
+}
+
+main .fp-vale-tabela .fp-vale-exclui {
+    width: 5%;
+    padding: 1px 5px 3px 5px;
     text-align: center;
     font-size: 13px;
     border-bottom: 1px solid black;    

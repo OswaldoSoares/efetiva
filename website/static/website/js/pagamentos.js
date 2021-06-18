@@ -1,6 +1,7 @@
 $(document).ready(function(){
     window.MesReferencia = '';
     window.AnoReferencia = '';
+    window.idpessoal = '';
     $(".down-folha").hide();
     $(".down-avulso").hide();
     $('[data-toggle="tooltip"]').tooltip();
@@ -141,6 +142,7 @@ $(document).on('click', '.selecionar-contracheque', function(event) {
     var mesreferencia = window.MesReferencia
     var anoreferencia = window.AnoReferencia
     var idpessoal = $(this).attr('idpessoal')
+    window.idPessoal = $(this).attr('idpessoal')
     $.ajax({
         type: 'GET',
         dataType: 'json',
@@ -185,6 +187,47 @@ $(document).on('click', '.remove-item', function(event) {
             idContraCheque: idcontracheque,
             Descricao: descricao,
             Registro: registro,
+            MesReferencia: mesreferencia,
+            AnoReferencia: anoreferencia,
+            idPessoal: idpessoal,
+        },
+        success: function(data){
+            $(".fp-base").html(data.html_folha)
+            $(".fp-contracheque").html("");
+            $(".fp-contracheque").html(data.html_contracheque);
+            $(".fp-cartaoponto").html("");
+            $(".fp-cartaoponto").html(data.html_cartaoponto);
+            $(".fp-contrachequeitens").html("");
+            $(".fp-contrachequeitens").html(data.html_formccitens);
+            $(".fp-adiantamento").html("");
+            $(".fp-adiantamento").html(data.html_formccadianta);
+            $(".fp-minutas").html("");
+            $(".fp-minutas").html(data.html_minutascontracheque);
+            $(".fp-vales").html("");
+            $(".fp-vales").html(data.html_vales);
+            if (data.html_adiantamento == true) {
+                $(".fp-adiantamento").hide();
+            }
+        },
+        error: function(error) {
+            console.log(error)
+        }
+    });
+});
+
+$(document).on('click', '.remove-vale', function(event) {
+    var url = $(this).attr('data-url')
+    var idvales = $(this).attr('idvales')
+    var mesreferencia = window.MesReferencias
+    var anoreferencia = window.AnoReferencia
+    var idpessoal = window.idPessoal
+
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: url,
+        data: {
+            idVales: idvales,
             MesReferencia: mesreferencia,
             AnoReferencia: anoreferencia,
             idPessoal: idpessoal,

@@ -25,11 +25,19 @@
                 {% elif itens.Vales_id > 0 %}
                 <span class="btn btn-dark btn-xs glyphicon glyphicon-pushpin"></span>
                 {% else %}
-                <button class="btn btn-danger btn-xs glyphicon glyphicon-remove remove-item"
-                        data-url="{% url 'excluicontrachequeitens' %}" idcontracheque="{{ itens.idContraCheque_id }}"
-                        descricao="{{ itens.Descricao }}" registro="{{ itens.Registro }}"
-                        idpessoal="{{ itenscc.idPessoal_id }}">
-                </button>
+                <div>
+                    {% if itens.Descricao == 'ADIANTAMENTO' %}
+                    <a class="btn btn-warning btn-xs glyphicon glyphicon-print"
+                       href="{% url 'imprimecontracheque' %}?idcc={{ itenscc.idContraCheque }}&idco={{ itenscc.idPessoal_id }}&mes={{ mesreferencia }}&ano={{ anoreferencia }}&adianta=True"
+                       target="_blank">
+                    </a>
+                    {% endif %}
+                    <button class="btn btn-danger btn-xs glyphicon glyphicon-remove remove-item"
+                            data-url="{% url 'excluicontrachequeitens' %}" idcontracheque="{{ itens.idContraCheque_id }}"
+                            descricao="{{ itens.Descricao }}" registro="{{ itens.Registro }}"
+                            idpessoal="{{ itenscc.idPessoal_id }}">
+                    </button>
+                </div>
                 {% endif %}
             </div>
         </td>
@@ -49,22 +57,16 @@
     </tr>
     {% endfor %}
     <tr>
-        <td class="fim-descricao" rowspan="2">
-            <a class="btn btn-warning glyphicon glyphicon-print"
-               href="{% url 'imprimecontracheque' %}?idcc={{ itenscc.idContraCheque }}&idco={{ itenscc.idPessoal_id }}&mes={{ mesreferencia }}&ano={{ anoreferencia }}&adianta=True"
-               target="_blank">
-            </a>
+        <td class="fim-descricao" rowspan="2" colspan="2">
             <a class="btn btn-warning glyphicon glyphicon-print"
                href="{% url 'imprimecontracheque' %}?idcc={{ itenscc.idContraCheque }}&idco={{ itenscc.idPessoal_id }}&mes={{ mesreferencia }}&ano={{ anoreferencia }}&adianta=False"
                target="_blank">
             </a>
         </td>
-        <td></td>
         <td class="provento tb-titulo"><span id="total-credito">R$ {{ totais.Credito }}</span></td>
         <td class="desconto tb-titulo"><span id="total-debito">R$ {{ totais.Debito }}</span></td>
     </tr>
     <tr>
-        <td></td>
         <td class="provento">A RECEBER &#x2794</td>
         <td class="desconto"><span id="total-liquido">R$ {{ totais.Liquido }}</span></td>
     </tr>
