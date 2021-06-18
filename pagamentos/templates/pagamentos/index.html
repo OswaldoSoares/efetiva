@@ -3,6 +3,9 @@
 
 {% block mainpagamento %}
 <main>
+    {% for x in bdcartao %}
+    {{ x.Dia }} - {{ x.Entrada }} - {{ x.Saida }} - {{ x.Ausencia }} - {{ x.idPessoal }} - {{ x.Alteracao }}<br>
+    {% endfor %}
     <div class="pagamento-conteudo mensalistas">
         <header class="titulo-mensalistas">
             <h3>FOLHA DE PAGAMENTO MENSALISTAS</h3>

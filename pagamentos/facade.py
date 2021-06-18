@@ -60,8 +60,11 @@ def create_context(mesreferencia, anoreferencia):
 
 
 def create_context_formcontracheque():
+    bdcartao = CartaoPonto.objects.all()
+    contrac = ContraCheque.objects.all()
+    contrai = ContraChequeItens.objects.all()
     formcontracheque = CadastraContraCheque()
-    contexto = {'formcontracheque': formcontracheque}
+    contexto = {'formcontracheque': formcontracheque, 'bdcartao': bdcartao}
     return contexto
 
 
