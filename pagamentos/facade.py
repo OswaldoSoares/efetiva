@@ -7,7 +7,7 @@ from django.db.models import Sum, Max, Min, F, ExpressionWrapper, DecimalField
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 
-from minutas.models import MinutaColaboradores, MinutaItens, Minuta
+from minutas.models import MinutaColaboradores, MinutaItens
 from pagamentos.models import Recibo
 from pessoas import facade
 from pessoas.forms import CadastraContraCheque, CadastraContraChequeItens, CadastraVale
@@ -60,9 +60,8 @@ def create_context(mesreferencia, anoreferencia):
 
 
 def create_context_formcontracheque():
-    minutas = Minuta.objects.all()
     formcontracheque = CadastraContraCheque()
-    contexto = {'formcontracheque': formcontracheque, 'minutas': minutas}
+    contexto = {'formcontracheque': formcontracheque}
     return contexto
 
 
@@ -214,7 +213,7 @@ def create_folha(mesreferencia, anoreferencia):
     mensalistas = lista_mensaalista_ativos()
     for itens in mensalistas:
         create_contracheque(mesreferencia, anoreferencia, '0.00', itens.idPessoal)
-        # create_cartaoponto(mesreferencia, anoreferencia, itens.idPessoal)
+        create_cartaoponto(mesreferencia, anoreferencia, itens.idPessoal)
 
 
 def create_pagamento_avulso(datainicial, datafinal, idpessoal, vales):
