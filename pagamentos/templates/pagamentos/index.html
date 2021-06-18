@@ -4,8 +4,7 @@
 {% block mainpagamento %}
 <main>
     {% for x in contrac %}
-    {{ x.idContraCheque }} - {{ x.MesReferencia }} - {{ x.AnoReferencia }} - {{ x.Valor }} - {{ x.Pago }} - {{
-    x.idPessoal }}<br>
+    {{ x.idContraCheque }} - {{ x.MesReferencia }} - {{ x.AnoReferencia }} - {{ x.Valor }} - {{ x.Pago }} - {{ x.idPessoal }}<br>
     {% endfor %}
     <br>
     {% for x in contrai %}
