@@ -252,7 +252,7 @@ def create_contracheque(mesreferencia, anoreferencia, valor, idpessoal):
                 obj.Valor = valor
                 obj.idPessoal_id = idpessoal
                 obj.save()
-                create_contracheque_itens('SALARIO', salario[0].Salario, '30', 'C', obj.idContraCheque)
+                create_contracheque_itens('SALARIO', salario[0].Salario, '30d', 'C', obj.idContraCheque)
 
 
 def create_contracheque_itens(descricao, valor, referencia, registro, idcontracheque):
