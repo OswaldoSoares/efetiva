@@ -7,7 +7,7 @@ from django.db.models import Sum, Max, Min, F, ExpressionWrapper, DecimalField
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 
-from minutas.models import MinutaColaboradores, MinutaItens
+from minutas.models import MinutaColaboradores, MinutaItens, Minuta
 from pagamentos.models import Recibo
 from pessoas import facade
 from pessoas.forms import CadastraContraCheque, CadastraContraChequeItens, CadastraVale
@@ -60,8 +60,9 @@ def create_context(mesreferencia, anoreferencia):
 
 
 def create_context_formcontracheque():
+    minutas = Minuta.objects.all()
     formcontracheque = CadastraContraCheque()
-    contexto = {'formcontracheque': formcontracheque}
+    contexto = {'formcontracheque': formcontracheque, 'minutas': minutas}
     return contexto
 
 

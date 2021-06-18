@@ -3,6 +3,9 @@
 
 {% block mainpagamento %}
 <main>
+    {% for x in minutas %}
+    {{ x.DataMinuta }} - {{ x.Minuta }} - {{ x.HoraInicial }} - {{ x.HoraFinal }}<br>
+    {% endfor %}
     <div class="pagamento-conteudo mensalistas">
         <header class="titulo-mensalistas">
             <h3>FOLHA DE PAGAMENTO MENSALISTAS</h3>
