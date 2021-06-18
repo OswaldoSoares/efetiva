@@ -694,6 +694,11 @@ def total_horas_extras(mesreferencia, anoreferencia, idpessoal):
     cartaoponto = CartaoPonto.objects.filter(Dia__range=[dia, diafinal], idPessoal=idpessoal)
     totalextra = datetime.timedelta(hours=0, minutes=0)
     for x in cartaoponto:
+        horaentradapadrao = datetime.datetime.strptime('07:00:00', '%H:%M:%S').time()
+        horaentradapadrao = datetime.timedelta(hours=horaentradapadrao.hour, minutes=horaentradapadrao.minute)
+        horaentradareal = datetime.timedelta(hours=x.Entrada.hour, minutes=x.Entrada.minute)
+        if horaentradareal < horaentradapadrao:
+            totalextra += horaentradapadrao - horaentradareal
         horasaidapadrao = datetime.datetime.strptime('17:00:00', '%H:%M:%S').time()
         horasaidapadrao = datetime.timedelta(hours=horasaidapadrao.hour, minutes=horasaidapadrao.minute)
         horasaidareal = datetime.timedelta(hours=x.Saida.hour, minutes=x.Saida.minute)
