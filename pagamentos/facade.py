@@ -13,11 +13,13 @@ from pessoas import facade
 from pessoas.forms import CadastraContraCheque, CadastraContraChequeItens, CadastraVale
 from pessoas.models import ContraCheque, ContraChequeItens, CartaoPonto, Salario, Vales
 
+
 meses = ['JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL', 'MAIO', 'JUNHO', 'JULHO', 'AGOSTO', 'SETEMBRO', 'OUTUBRO',
          'NOVEMBRO', 'DEZEMBRO']
 
 dias = ['SEGUNDA-FEIRA', 'TERÇA-FEIRA', 'QUARTA-FEIRA', 'QUINTA-FEIRA', 'SEXTA-FEIRA', 'SÁBADO', 'DOMINGO']
 
+estado_swith_vales = dict()
 
 
 def cria_contexto_pagamentos():
@@ -65,8 +67,8 @@ def create_context_formcontracheque():
 
 def create_context_avulso():
     periodo = get_periodo_pagamento_avulsos()
-    saldo = get_saldo_pagamento_avulso(periodo['DataInicial'], periodo['DataFinal'])
-    contexto = {'periodo': periodo, 'saldo': saldo}
+    # saldo = get_saldo_pagamento_avulso(periodo['DataInicial'], periodo['DataFinal'])
+    contexto = {'periodo': periodo}
     return contexto
 
 
@@ -116,26 +118,48 @@ def get_saldo_pagamento_avulso(datainicial, datafinal):
 
 
 def get_vales_select(idpessoal, idcontracheque):
+    """
+
+    :param idpessoal:
+    :param idcontracheque:
+    :return:
+    """
+    "Procura no dict 'estado_switch_vales' se existe a chave 'idpessoal, caso não exista é incluida"
+    if not idpessoal in estado_swith_vales.keys():
+        estado_swith_vales[str(idpessoal)] = ''
+    "Cria dict vales"
     dict_vale = dict()
     vale = Vales.objects.filter(idPessoal=idpessoal, Pago=False)
     for itens in vale:
         dict_vale['id{}'.format(itens.idVales)] = {'idVales': itens.idVales, 'Data': itens.Data,
                                                    'Descricao': itens.Descricao, 'Valor': itens.Valor, 'Checked': True}
+
     content_descricao = None
     saldo_vales_select = 0
+    "Percorre dict vales"
     for itens in dict_vale:
+        "Se encontrar um vale PARCELADO, seleciona apenas a parcela mais nova"
         if dict_vale[itens]['Descricao'][-9:] == 'PARCELADO':
             if content_descricao == None:
                 dict_vale[itens]['Checked'] = True
             if content_descricao == dict_vale[itens]['Descricao'][0:-16]:
                 dict_vale[itens]['Checked'] = False
             content_descricao = dict_vale[itens]['Descricao'][0:-16]
-        if busca_contracheque_itens_vale(dict_vale[itens]['idVales']):
-            dict_vale[itens]['Checked'] = True
+            "Busca se o vale já está no contravale, e seleciona mesmo se não for a parcela mais nova"
+            if busca_contracheque_itens_vale(dict_vale[itens]['idVales']):
+                dict_vale[itens]['Checked'] = True
+        "Se o usuario fez alguma alteração na seleção, é mantida"
+        if 'Manual' in estado_swith_vales[str(idpessoal)]:
+            if str(dict_vale[itens]['idVales']) in estado_swith_vales[str(idpessoal)]:
+                dict_vale[itens]['Checked'] = True
+            else:
+                dict_vale[itens]['Checked'] = False
+        "Busca o vale no conrracheque, se não tiver cria"
         if idcontracheque > 0:
             if dict_vale[itens]['Checked']:
                 if not busca_contracheque_itens_vale(dict_vale[itens]['idVales']):
                     create_contracheque_itens_vales(idpessoal, dict_vale[itens]['idVales'], idcontracheque)
+        "Calcula saldo dos vales"
         if dict_vale[itens]['Checked']:
             saldo_vales_select += dict_vale[itens]['Valor']
     return dict_vale, saldo_vales_select

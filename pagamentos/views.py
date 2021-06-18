@@ -133,24 +133,19 @@ def cria_pagamento(request):
     return data
 
 
-
-
-
-
-
-
 def cria_contrachequeitensvale(request):
     c_idpessoal = request.GET.get('idPessoal')
     c_idvales = request.GET.get('idVales')
     c_idcontracheque = request.GET.get('idContraCheque')
     facade.create_contracheque_itens_vales(c_idpessoal, c_idvales, c_idcontracheque)
-    c_mes = request.POST.get('MesReferencia')
-    c_ano = request.POST.get('AnoReferencia')
-    c_idpesssoal = request.POST.get('idPessoal')
+    c_mes = request.GET.get('MesReferencia')
+    c_ano = request.GET.get('AnoReferencia')
+    c_idpesssoal = request.GET.get('idPessoal')
+    c_switch = request.GET.get('EstadoSwitchMini')
+    print(c_switch)
+    facade.estado_swith_vales[c_idpesssoal] = c_switch[0:-1].split('-')
     data = facade.seleciona_contracheque(c_mes, c_ano, c_idpesssoal, request)
     return data
-
-
 
 
 def exclui_contrachequeitensvale(request):
@@ -159,11 +154,11 @@ def exclui_contrachequeitensvale(request):
     c_mes = request.GET.get('MesReferencia')
     c_ano = request.GET.get('AnoReferencia')
     c_idpesssoal = request.GET.get('idPessoal')
+    c_switch = request.GET.get('EstadoSwitchMini')
+    print(c_switch)
+    facade.estado_swith_vales[c_idpesssoal] = c_switch[0:-1].split('-')
     data = facade.seleciona_contracheque(c_mes, c_ano, c_idpesssoal, request)
     return data
-
-
-
 
 
 def seleciona_periodo(request):
@@ -171,9 +166,6 @@ def seleciona_periodo(request):
     c_datafinal = request.POST.get('DataFinal')
     data = facade.seleciona_saldoavulso(c_datainicial, c_datafinal)
     return data
-
-
-
 
 
 def seleciona_saldoavulso(request):

@@ -34,6 +34,7 @@ $(document).on('change', '.switchmini', function(event) {
         var idcontracheque = $(this).attr('idcontracheque')
         var mesreferencia = window.MesReferencia
         var anoreferencia = window.AnoReferencia
+        var estado_switchmini = estadoswitchmini(idpessoal)
         $.ajax({
             type: 'GET',
             dateType:'json',
@@ -44,6 +45,10 @@ $(document).on('change', '.switchmini', function(event) {
                 idContraCheque: idcontracheque,
                 MesReferencia: mesreferencia,
                 AnoReferencia: anoreferencia,
+                EstadoSwitchMini: estado_switchmini,
+            },
+            success: function(data){
+                $(".fp-contracheque").html(data.html_contracheque);    
             }
         })
     }
@@ -511,4 +516,16 @@ function somavales() {
         total += parseFloat($(this).text().replace('R$ ', '').replace(',', '.'))
     });
     $('#totalvales').text('R$ ' + total.toFixed(2).replace('.', ','))    
+}
+
+function estadoswitchmini(idpessoal) {
+    estado_switchmini = 'Manual-'
+    $('.switchmini').each(function() {
+        if ($(this).is(':checked')) {
+            if ($(this).attr('idpessoal') == idpessoal) {
+                estado_switchmini += $(this).attr('idvales') + '-'
+            }
+        }
+    })
+    return estado_switchmini
 }
