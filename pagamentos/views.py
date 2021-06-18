@@ -237,4 +237,10 @@ def cria_vale(request):
 
 
 def exclui_vale(request):
-    pass
+    c_idvales = request.GET.get('idVales')
+    c_mes = request.POST.get('MesReferencia')
+    c_ano = request.POST.get('AnoReferencia')
+    c_idpessoal = request.POST.get('idPessoal')
+    facade.exclui_vale(c_idvales)
+    data = facade.seleciona_contracheque(c_mes, c_ano, c_idpessoal, request)
+    return data

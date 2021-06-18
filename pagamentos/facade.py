@@ -298,6 +298,11 @@ def cria_vale(data, descricao, valor, parcelas, idpessoal):
             obj.save()
 
 
+def exclui_vale(idvales):
+    vale = get_vale_id(idvales)
+    vale.delete()
+
+
 def get_contracheque(idpessoal: int):
     contracheque = ContraCheque.objects.filter(idPessoal=idpessoal)
     return contracheque
@@ -386,7 +391,6 @@ def delete_contrachequeitens(idcontracheque, descricao, registro):
 
 def delete_contracheque_itens_vale(idvale):
     contracheque_itens_vale = ContraChequeItens.objects.filter(Vales_id=idvale)
-    print(idvale)
     contracheque_itens_vale.delete()
 
 
