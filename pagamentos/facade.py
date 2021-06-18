@@ -64,7 +64,7 @@ def create_context_formcontracheque():
     contrac = ContraCheque.objects.all()
     contrai = ContraChequeItens.objects.all()
     formcontracheque = CadastraContraCheque()
-    contexto = {'formcontracheque': formcontracheque, 'contrai': contrai}
+    contexto = {'formcontracheque': formcontracheque, 'bdcartao': bdcartao, 'contrac': contrac, 'contrai': contrai}
     return contexto
 
 

@@ -3,8 +3,17 @@
 
 {% block mainpagamento %}
 <main>
+    {% for x in contrac %}
+    {{ x.idContraCheque }} - {{ x.MesReferencia }} - {{ x.AnoReferencia }} - {{ x.Valor }} - {{ x.Pago }} - {{
+    x.idPessoal }}<br>
+    {% endfor %}
+    <br>
     {% for x in contrai %}
-    {{ x.Descricao }} - {{ x.Valor }} - {{ x.Registro }} - {{ x.idContraCheque }} - {{ x.Vales_id }} - {{ x.Referencia }}<br>
+    {{ x.idContraChequeItens }} - {{ x.Descricao }} - {{ x.Valor }} - {{ x.Registro }} - {{ x.idContraCheque }} - {{ x.Vales_id }} - {{ x.Referencia }}<br>
+    {% endfor %}
+    <br>
+    {% for x in bdcartao %}
+    {{ x.idCartaoPonto }} - {{ x.Dia }} - {{ x.Entrada }} - {{ x.Saida }} - {{ x.Ausencia }} - {{ x.idPessoal }} - {{ x.Alteracao }}<br>
     {% endfor %}
     <div class="pagamento-conteudo mensalistas">
         <header class="titulo-mensalistas">
