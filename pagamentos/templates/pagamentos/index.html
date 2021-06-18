@@ -3,6 +3,7 @@
 
 {% block mainpagamento %}
 <main>
+    <div class="pagamento-conteudo mensalistas">
     {% for x in contrac %}
     {{ x.idContraCheque }} - {{ x.MesReferencia }} - {{ x.AnoReferencia }} - {{ x.Valor }} - {{ x.Pago }} - {{ x.idPessoal }}<br>
     {% endfor %}
@@ -14,7 +15,6 @@
     {% for x in bdcartao %}
     {{ x.idCartaoPonto }} - {{ x.Dia }} - {{ x.Entrada }} - {{ x.Saida }} - {{ x.Ausencia }} - {{ x.idPessoal }} - {{ x.Alteracao }}<br>
     {% endfor %}
-    <div class="pagamento-conteudo mensalistas">
         <header class="titulo-mensalistas">
             <h3>FOLHA DE PAGAMENTO MENSALISTAS</h3>
             <button class="btn btn-xs glyphicon glyphicon-chevron-up up-folha div-fade-folha"></button>
