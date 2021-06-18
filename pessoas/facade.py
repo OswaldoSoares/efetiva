@@ -99,18 +99,20 @@ def get_contracheque_itens(idcontracheque: int):
     return contracheque_itens
 
 
-def save_salario(idpessoal, salario, horasmensais):
+def save_salario(idpessoal, salario, horasmensais, valetransporte):
     try:
         qs_salario = Salario.objects.get(idPessoal_id=idpessoal)
         obj = Salario(qs_salario)
         obj.idSalario = qs_salario.idSalario
         obj.Salario = salario
         obj.HorasMensais = horasmensais
+        obj.ValeTransporte = valetransporte
         obj.idPessoal_id = idpessoal
     except Salario.DoesNotExist:
         obj = Salario()
         obj.Salario = salario
         obj.HorasMensais = horasmensais
+        obj.ValeTransporte = valetransporte
         obj.idPessoal_id = idpessoal
     obj.save()
 

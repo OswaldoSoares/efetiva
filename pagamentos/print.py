@@ -65,10 +65,12 @@ def print_contracheque(contexto, adiantamento):
         pdf.drawString(convertemp(6), convertemp(linha-13.8), '{}'.format('TRANSEFETIVA TRANSPORTES - EIRELLI - ME'))
         pdf.drawString(convertemp(6), convertemp(linha-17.7), '{}'.format('CNPJ: 21.602.117/0001-15'))
         pdf.drawString(convertemp(122.8), convertemp(linha-17.7), '{}'.format(contexto['contracheque'][0]))
+        pdf.setFont("Times-Roman", 10)
         pdf.drawString(convertemp(5.8), convertemp(linha-27.2), '{}'.format(contexto['colaborador'][
                                                                                 0].idPessoal).zfill(4))
         pdf.drawString(convertemp(20.2), convertemp(linha-27.4), '{}'.format(contexto['colaborador'][0].Nome))
         pdf.drawString(convertemp(102.6), convertemp(linha-27.2), '{}'.format(contexto['colaborador'][0].Categoria))
+        pdf.setFont("Times-Roman", 11)
         linhaitens = 0
         for itens in contexto['contrachequeitens']:
             if not adiantamento:

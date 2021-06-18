@@ -181,7 +181,8 @@ def edita_salario(request):
     c_pessoal = request.POST.get('idPessoal')
     c_salario = request.POST.get('Salario')
     c_horas_mensais = float(request.POST.get('HorasMensais'))
-    facade.save_salario(c_pessoal, c_salario, c_horas_mensais)
+    c_valetransporte = request.POST.get('ValeTransporte')
+    facade.save_salario(c_pessoal, c_salario, c_horas_mensais, c_valetransporte)
     return redirect('consultapessoa', c_pessoal)
 
 

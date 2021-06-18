@@ -221,21 +221,26 @@
                 </footer>
             </div>
             {% endif %}
-            <div class="card-base2">
+            <div class="card-base3">
                 <header>
                     <span><b>SALÁRIO BASE</b></span>
                 </header>
                 <form class="row g-3" method="post" action="{% url 'editasalario' %}">
                     {% csrf_token %}
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="id_Salario" class="form-label">SALÁRIO:</label>
                         {{ formsalario.Salario }}
                         {{ formsalario.Salario.error }}
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="id_HorasMensais" class="form-label">HORAS MENSAIS:</label>
                         {{ formsalario.HorasMensais }}
                         {{ formsalario.HorasMensais.error }}
+                    </div>
+                    <div class="col-md-4">
+                        <label for="id_ValeTransporte" class="form-label">VALE TRANSPORTE:</label>
+                        {{ formsalario.ValeTransporte }}
+                        {{ formsalario.ValeTransporte.error }}
                     </div>
                     {{ form.idPessoal }}
                     <input type="hidden" name="idPessoal" value="{{ itens.idPessoal }}" id="id_idPessoalv">

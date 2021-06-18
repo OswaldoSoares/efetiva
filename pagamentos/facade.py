@@ -740,13 +740,17 @@ def calcula_conducao(mesreferencia, anoreferencia, idpessoal):
     dia, diafinal = periodo_cartaoponto(mesreferencia, anoreferencia)
     cartaoponto = CartaoPonto.objects.filter(Dia__range=[dia, diafinal], idPessoal=idpessoal, Ausencia='').count()
     contracheque = get_contrachequereferencia(mesreferencia, anoreferencia, idpessoal)
-    valorconducao = 8.80
+    salario = get_salario(idpessoal)
+    valorconducao = salario[0].ValeTransporte
     valetransporte = float(cartaoponto)*float(valorconducao)
     if cartaoponto > 0:
         if contracheque:
             contrachequeitens = get_contrachequeitens(contracheque[0].idContraCheque, 'VALE TRANSPORTE', 'C')
             if contrachequeitens:
-                altera_contracheque_itens(contrachequeitens, valetransporte, '{}d'.format(cartaoponto))
+                if valetransporte == 0:
+                    delete_contrachequeitens(contracheque[0].idContraCheque, 'VALE TRANSPORTE', 'C')
+                else:
+                    altera_contracheque_itens(contrachequeitens, valetransporte, '{}d'.format(cartaoponto))
             else:
                 if valetransporte > 0:
                     create_contracheque_itens('VALE TRANSPORTE', valetransporte, '{}d'.format(cartaoponto), 'C',
