@@ -213,7 +213,7 @@ def create_folha(mesreferencia, anoreferencia):
     mensalistas = lista_mensaalista_ativos()
     for itens in mensalistas:
         create_contracheque(mesreferencia, anoreferencia, '0.00', itens.idPessoal)
-        create_cartaoponto(mesreferencia, anoreferencia, itens.idPessoal)
+        # create_cartaoponto(mesreferencia, anoreferencia, itens.idPessoal)
 
 
 def create_pagamento_avulso(datainicial, datafinal, idpessoal, vales):
