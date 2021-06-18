@@ -3,8 +3,9 @@
 
 {% block mainpagamento %}
 <main>
-    {% for x in contrac %}
-    {{ x.MesReferencia }} - {{ x.AnoReferencia }} - {{ x.Valor }} - {{ x.Pago }} - {{ x.idPessoal }}<br>
+    {% for x in contrai %}
+    {{ x.Descricao }} - {{ x.Valor }} - {{ x.Registro }} - {{ x.ContraCheque }} - {{ x.Vales_id }} - {{ x.Referencia }}
+    <br>
     {% endfor %}
     <div class="pagamento-conteudo mensalistas">
         <header class="titulo-mensalistas">
