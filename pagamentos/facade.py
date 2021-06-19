@@ -748,7 +748,8 @@ def calcula_conducao(mesreferencia, anoreferencia, idpessoal):
     cartaoponto = CartaoPonto.objects.filter(Dia__range=[dia, diafinal], idPessoal=idpessoal, Ausencia='').count()
     contracheque = get_contrachequereferencia(mesreferencia, anoreferencia, idpessoal)
     salario = get_salario(idpessoal)
-    valorconducao = salario[0].ValeTransporte
+    # valorconducao = salario[0].ValeTransporte
+    valorconducao = 8.80
     valetransporte = float(cartaoponto)*float(valorconducao)
     if cartaoponto > 0:
         if contracheque:
