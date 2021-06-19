@@ -165,7 +165,7 @@ class Salario(models.Model):
     idSalario = models.AutoField(primary_key=True)
     Salario = models.DecimalField(decimal_places=2, max_digits=9, default=1.00)
     HorasMensais = models.DecimalField(decimal_places=2, max_digits=6, default=220.00)
-    # ValeTransporte = models.DecimalField(decimal_places=2, max_digits=9, default=0.00)
+    ValeTransporte = models.DecimalField(decimal_places=2, max_digits=9, default=0.00)
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.PROTECT, default=1)
 
     class Meta:
@@ -201,7 +201,7 @@ class ContraChequeItens(models.Model):
     Descricao = models.TextField(max_length=50)
     Valor = models.DecimalField(decimal_places=2, max_digits=9, default=0.00)
     Registro = models.CharField(max_length=1)
-    Referencia = models.CharField(max_length=7, blank=True)
+    Referencia = models.CharField(max_length=10, blank=True)
     Vales_id = models.IntegerField(default=0)
     idContraCheque = models.ForeignKey(ContraCheque, on_delete=models.CASCADE)
 
