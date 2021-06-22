@@ -484,7 +484,7 @@ def select_minutas_contracheque(mesreferencia, anoreferencia, idpessoal):
         '17:00', FMT), output_field=IntegerField())
     print(type(base_hora))
     minutas = MinutaColaboradores.objects.filter(idPessoal=idpessoal, idMinuta_id__DataMinuta__range=(
-        dia, diafinal)).order_by('idMinuta_id__DataMinuta').values(
+        dia, diafinal)).exclude(idMinuta_id__StatusMinuta='ABERTA').order_by('idMinuta_id__DataMinuta').values(
         'idMinuta_id__DataMinuta', 'idMinuta_id__Minuta', 'idMinuta_id__idCliente__Fantasia',
         'idMinuta_id__HoraInicial', 'idMinuta_id__HoraFinal', 'idPessoal').annotate(extraentrada=base_hora)
     print(minutas)
@@ -506,6 +506,7 @@ def atualiza_cartaoponto(mesreferencia, anoreferencia, idpessoal):
         horasaida = datetime.datetime.strptime('17:00:00', '%H:%M:%S').time()
         if obj.Alteracao == 'ROBOT' and obj.Ausencia != 'FALTA':
             if x['idMinuta_id__HoraFinal'] != obj.Saida:
+                print(x['idMinuta_id__Minuta'], x['idMinuta_id__HoraFinal'], horasaida)
                 if x['idMinuta_id__HoraFinal'] > horasaida:
                     obj.Saida = x['idMinuta_id__HoraFinal']
                     obj.save(update_fields=['Saida'])
