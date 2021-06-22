@@ -305,7 +305,7 @@ def create_cartaoponto(mesreferencia, anoreferencia, idpessoal):
                         obj.Ausencia = '-------'
                     obj.idPessoal_id = idpessoal
                     obj.save()
-                # atualiza_cartaoponto(mesreferencia, anoreferencia, idpessoal)
+                atualiza_cartaoponto(mesreferencia, anoreferencia, idpessoal)
 
 
 def cria_vale(data, descricao, valor, parcelas, idpessoal):
@@ -482,12 +482,12 @@ def select_minutas_contracheque(mesreferencia, anoreferencia, idpessoal):
     FMT = '%H:%M'
     base_hora = ExpressionWrapper(F('idMinuta_id__HoraFinal') - datetime.datetime.strptime(
         '17:00', FMT), output_field=IntegerField())
-    print(type(base_hora))
+    # print(type(base_hora))
     minutas = MinutaColaboradores.objects.filter(idPessoal=idpessoal, idMinuta_id__DataMinuta__range=(
         dia, diafinal)).exclude(idMinuta_id__StatusMinuta='ABERTA').order_by('idMinuta_id__DataMinuta').values(
         'idMinuta_id__DataMinuta', 'idMinuta_id__Minuta', 'idMinuta_id__idCliente__Fantasia',
         'idMinuta_id__HoraInicial', 'idMinuta_id__HoraFinal', 'idPessoal').annotate(extraentrada=base_hora)
-    print(minutas)
+    # print(minutas)
     return minutas
 
 
@@ -545,7 +545,7 @@ def altera_falta(mesreferencia, anoreferencia, idpessoal, idcartaoponto, request
     obj.Saida = '17:00:00'
     obj.save(update_fields=['Ausencia', 'Alteracao', 'Entrada', 'Saida'])
     calcula_faltas(mesreferencia, anoreferencia, idpessoal)
-    # atualiza_cartaoponto(mesreferencia, anoreferencia, idpessoal)
+    atualiza_cartaoponto(mesreferencia, anoreferencia, idpessoal)
     calcula_conducao(mesreferencia, anoreferencia, idpessoal)
     data['html_adiantamento'] = busca_adiantamento(contracheque[0].idContraCheque)
     data['html_folha'] = html_folha(mesreferencia, anoreferencia)
