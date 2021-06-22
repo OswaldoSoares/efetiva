@@ -480,8 +480,7 @@ def seleciona_vales(idpessoal):
 def select_minutas_contracheque(mesreferencia, anoreferencia, idpessoal):
     dia, diafinal = periodo_cartaoponto(mesreferencia, anoreferencia)
     FMT = '%H:%M'
-    base_hora = ExpressionWrapper(F('idMinuta_id__HoraFinal') - datetime.datetime.strptime(
-        '17:00', FMT))
+    base_hora = ExpressionWrapper(F('idMinuta_id__HoraFinal') - datetime.datetime.strptime('17:00', FMT))
     # print(type(base_hora))
     minutas = MinutaColaboradores.objects.filter(idPessoal=idpessoal, idMinuta_id__DataMinuta__range=(
         dia, diafinal)).exclude(idMinuta_id__StatusMinuta='ABERTA').order_by('idMinuta_id__DataMinuta').values(
