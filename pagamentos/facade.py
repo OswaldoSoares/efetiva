@@ -3,7 +3,7 @@ import datetime
 from decimal import Decimal
 
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import Sum, Max, Min, F, ExpressionWrapper, DecimalField
+from django.db.models import Sum, Max, Min, F, ExpressionWrapper, DecimalField, TimeField, DateField, IntegerField
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 
@@ -60,11 +60,8 @@ def create_context(mesreferencia, anoreferencia):
 
 
 def create_context_formcontracheque():
-    bdcartao = CartaoPonto.objects.all()
-    contrac = ContraCheque.objects.all()
-    contrai = ContraChequeItens.objects.all()
     formcontracheque = CadastraContraCheque()
-    contexto = {'formcontracheque': formcontracheque, 'bdcartao': bdcartao, 'contrac': contrac, 'contrai': contrai}
+    contexto = {'formcontracheque': formcontracheque}
     return contexto
 
 
@@ -482,14 +479,15 @@ def seleciona_vales(idpessoal):
 
 def select_minutas_contracheque(mesreferencia, anoreferencia, idpessoal):
     dia, diafinal = periodo_cartaoponto(mesreferencia, anoreferencia)
-    minutas = MinutaColaboradores.objects.filter(idPessoal=idpessoal,
-                                                 idMinuta_id__DataMinuta__range=(dia, diafinal)).order_by(
-                                                 'idMinuta_id__DataMinuta').values('idMinuta_id__DataMinuta',
-                                                                                   'idMinuta_id__Minuta',
-                                                                                   'idMinuta_id__idCliente__Fantasia',
-                                                                                   'idMinuta_id__HoraInicial',
-                                                                                   'idMinuta_id__HoraFinal',
-                                                                                   'idPessoal')
+    FMT = '%H:%M'
+    base_hora = ExpressionWrapper(F('idMinuta_id__HoraFinal') - datetime.datetime.strptime(
+        '17:00', FMT), output_field=IntegerField())
+    print(type(base_hora))
+    minutas = MinutaColaboradores.objects.filter(idPessoal=idpessoal, idMinuta_id__DataMinuta__range=(
+        dia, diafinal)).order_by('idMinuta_id__DataMinuta').values(
+        'idMinuta_id__DataMinuta', 'idMinuta_id__Minuta', 'idMinuta_id__idCliente__Fantasia',
+        'idMinuta_id__HoraInicial', 'idMinuta_id__HoraFinal', 'idPessoal').annotate(extraentrada=base_hora)
+    print(minutas)
     return minutas
 
 
@@ -748,8 +746,7 @@ def calcula_conducao(mesreferencia, anoreferencia, idpessoal):
     cartaoponto = CartaoPonto.objects.filter(Dia__range=[dia, diafinal], idPessoal=idpessoal, Ausencia='').count()
     contracheque = get_contrachequereferencia(mesreferencia, anoreferencia, idpessoal)
     salario = get_salario(idpessoal)
-    # valorconducao = salario[0].ValeTransporte
-    valorconducao = 8.80
+    valorconducao = salario[0].ValeTransporte
     valetransporte = float(cartaoponto)*float(valorconducao)
     if cartaoponto > 0:
         if contracheque:

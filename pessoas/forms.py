@@ -93,14 +93,11 @@ class CadastraContaPessoal(forms.ModelForm):
 class CadastraSalario(forms.ModelForm):
     class Meta:
         model = Salario
-        fields = ('idPessoal', 'Salario', 'HorasMensais')
-        # fields = ('idPessoal', 'Salario', 'HorasMensais', 'ValeTransporte')
-        labels = {'Salario': 'formfields', 'HorasMensais': 'HORAS MENSAIS'}
-        # labels = {'Salario': 'formfields', 'HorasMensais': 'HORAS MENSAIS', 'ValeTransporte': 'VALE TRANSPORTE'}
+        fields = ('idPessoal', 'Salario', 'HorasMensais', 'ValeTransporte')
+        labels = {'Salario': 'formfields', 'HorasMensais': 'HORAS MENSAIS', 'ValeTransporte': 'VALE TRANSPORTE'}
         widgets = {'Salario': forms.NumberInput(attrs={'class': 'form-control'}), 'idPessoal': forms.HiddenInput(),
                    'HorasMensais': forms.NumberInput(attrs={'class': 'form-control'}),
-                   }
-                   # 'ValeTransporte': forms.NumberInput(attrs={'class': 'form-control'})}
+                   'ValeTransporte': forms.NumberInput(attrs={'class': 'form-control'})}
 
 
 class CadastraVale(forms.ModelForm):
