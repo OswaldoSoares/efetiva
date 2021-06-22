@@ -305,7 +305,7 @@ def create_cartaoponto(mesreferencia, anoreferencia, idpessoal):
                         obj.Ausencia = '-------'
                     obj.idPessoal_id = idpessoal
                     obj.save()
-                atualiza_cartaoponto(mesreferencia, anoreferencia, idpessoal)
+                # atualiza_cartaoponto(mesreferencia, anoreferencia, idpessoal)
 
 
 def cria_vale(data, descricao, valor, parcelas, idpessoal):
