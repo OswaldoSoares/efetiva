@@ -545,7 +545,7 @@ def altera_falta(mesreferencia, anoreferencia, idpessoal, idcartaoponto, request
     obj.Saida = '17:00:00'
     obj.save(update_fields=['Ausencia', 'Alteracao', 'Entrada', 'Saida'])
     calcula_faltas(mesreferencia, anoreferencia, idpessoal)
-    atualiza_cartaoponto(mesreferencia, anoreferencia, idpessoal)
+    # atualiza_cartaoponto(mesreferencia, anoreferencia, idpessoal)
     calcula_conducao(mesreferencia, anoreferencia, idpessoal)
     data['html_adiantamento'] = busca_adiantamento(contracheque[0].idContraCheque)
     data['html_folha'] = html_folha(mesreferencia, anoreferencia)
