@@ -2378,7 +2378,6 @@ main .fp-minutas .fp-tabela .fp-minuta-cliente {
 }
 
 main .fp-minutas .fp-tabela .fp-minuta-horafinal {
-    background-color: #66CDAA;
     width: 10%;
     padding: 0 5px;
     text-align: center;

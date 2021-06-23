@@ -19,8 +19,10 @@
             <td class="fp-minuta-cliente">{{ itens.idMinuta_id__idCliente__Fantasia }}</td>
             <td class="fp-minuta-horafinal">{{ itens.idMinuta_id__HoraInicial }}</td>
             <td class="fp-minuta-horafinal">{{ itens.idMinuta_id__HoraFinal }}</td>
-            {% if itens.idMinuta_id__HoraFinal|time:"H:i" > '17:00' %}
-                <td class="fp-minuta-horafinal">{{ itens.Hora|time:"H:i" }}</td>
+            {% if itens.Extra != '00:00' %}
+                <td class="fp-minuta-horafinal">{{ itens.Extra }}</td>
+            {% else %}
+                <td class="fp-minuta-horafinal"></td>
             {% endif %}
         </tr>
         {% endfor %}

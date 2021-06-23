@@ -481,16 +481,27 @@ def seleciona_vales(idpessoal):
 def select_minutas_contracheque(mesreferencia, anoreferencia, idpessoal):
     dia, diafinal = periodo_cartaoponto(mesreferencia, anoreferencia)
     # FMT = '%H:%M'
-    # base_hora = ExpressionWrapper(F('idMinuta_id__HoraFinal') - datetime.datetime.strptime(
-    #     '17:00', FMT), output_field=DurationField())
-    # print(base_hora)
-    # print(type(base_hora))
     minutas = MinutaColaboradores.objects.filter(idPessoal=idpessoal, idMinuta_id__DataMinuta__range=(
         dia, diafinal)).exclude(idMinuta_id__StatusMinuta='ABERTA').order_by('idMinuta_id__DataMinuta').values(
         'idMinuta_id__DataMinuta', 'idMinuta_id__Minuta', 'idMinuta_id__idCliente__Fantasia',
-        'idMinuta_id__HoraInicial', 'idMinuta_id__HoraFinal', 'idPessoal')\
-        # .annotate(Hora=base_hora)
-    print(minutas)
+        'idMinuta_id__HoraInicial', 'idMinuta_id__HoraFinal', 'idPessoal')
+    minutas = list(minutas)
+    horaentrada = datetime.timedelta(hours=7, minutes=0)
+    horasaida = datetime.timedelta(hours=17, minutes=0)
+    for itens in minutas:
+        extra_entrada = datetime.timedelta(hours=0, minutes=0)
+        horainicial = datetime.timedelta(hours=itens['idMinuta_id__HoraInicial'].hour, minutes=itens[
+            'idMinuta_id__HoraInicial'].minute)
+        if horainicial < horaentrada:
+            extra_entrada = (horaentrada - horainicial)
+        extra_saida = datetime.timedelta(hours=0, minutes=0)
+        if itens['idMinuta_id__HoraFinal']:
+            horafinal = datetime.timedelta(hours=itens['idMinuta_id__HoraFinal'].hour, minutes=itens[
+                'idMinuta_id__HoraFinal'].minute)
+            if horafinal > horasaida:
+                extra_saida = (horafinal - horasaida)
+        extra = extra_entrada + extra_saida
+        itens['Extra'] = str(extra)[:-3].zfill(5)
     return minutas
 
 
@@ -509,7 +520,6 @@ def atualiza_cartaoponto(mesreferencia, anoreferencia, idpessoal):
         horasaida = datetime.datetime.strptime('17:00:00', '%H:%M:%S').time()
         if obj.Alteracao == 'ROBOT' and obj.Ausencia != 'FALTA':
             if x['idMinuta_id__HoraFinal'] != obj.Saida:
-                print(x['idMinuta_id__Minuta'], x['idMinuta_id__HoraFinal'], horasaida)
                 if x['idMinuta_id__HoraFinal'] > horasaida:
                     obj.Saida = x['idMinuta_id__HoraFinal']
                     obj.save(update_fields=['Saida'])
