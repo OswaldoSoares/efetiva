@@ -20,7 +20,7 @@
             <td class="fp-minuta-horafinal">{{ itens.idMinuta_id__HoraInicial }}</td>
             <td class="fp-minuta-horafinal">{{ itens.idMinuta_id__HoraFinal }}</td>
             {% if itens.idMinuta_id__HoraFinal|time:"H:i" > '17:00' %}
-                <td class="fp-minuta-horafinal">{{ itens.idMinuta_id__DataMinuta|timesince }}</td>
+                <td class="fp-minuta-horafinal">{{ itens.Hora|time:"H:i" }}</td>
             {% endif %}
         </tr>
         {% endfor %}

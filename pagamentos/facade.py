@@ -3,7 +3,8 @@ import datetime
 from decimal import Decimal
 
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import Sum, Max, Min, F, ExpressionWrapper, DecimalField, TimeField, DateField, IntegerField
+from django.db.models import Sum, Max, Min, F, ExpressionWrapper, DecimalField, DurationField
+from django.db.models.functions import Extract
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 
@@ -479,14 +480,17 @@ def seleciona_vales(idpessoal):
 
 def select_minutas_contracheque(mesreferencia, anoreferencia, idpessoal):
     dia, diafinal = periodo_cartaoponto(mesreferencia, anoreferencia)
-    FMT = '%H:%M'
-    base_hora = ExpressionWrapper(F('idMinuta_id__HoraFinal') - datetime.datetime.strptime('17:00', FMT))
+    # FMT = '%H:%M'
+    # base_hora = ExpressionWrapper(F('idMinuta_id__HoraFinal') - datetime.datetime.strptime(
+    #     '17:00', FMT), output_field=DurationField())
+    # print(base_hora)
     # print(type(base_hora))
     minutas = MinutaColaboradores.objects.filter(idPessoal=idpessoal, idMinuta_id__DataMinuta__range=(
         dia, diafinal)).exclude(idMinuta_id__StatusMinuta='ABERTA').order_by('idMinuta_id__DataMinuta').values(
         'idMinuta_id__DataMinuta', 'idMinuta_id__Minuta', 'idMinuta_id__idCliente__Fantasia',
-        'idMinuta_id__HoraInicial', 'idMinuta_id__HoraFinal', 'idPessoal').annotate(extraentrada=base_hora)
-    # print(minutas)
+        'idMinuta_id__HoraInicial', 'idMinuta_id__HoraFinal', 'idPessoal')\
+        # .annotate(Hora=base_hora)
+    print(minutas)
     return minutas
 
 
