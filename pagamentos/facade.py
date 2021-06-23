@@ -517,8 +517,13 @@ def atualiza_cartaoponto(mesreferencia, anoreferencia, idpessoal):
     for x in minutas:
         cartaoponto = CartaoPonto.objects.get(Dia=x['idMinuta_id__DataMinuta'], idPessoal_id=x['idPessoal'])
         obj = cartaoponto
+        horaentrada = datetime.datetime.strptime('07:00:00', '%H:%M:%S').time()
         horasaida = datetime.datetime.strptime('17:00:00', '%H:%M:%S').time()
         if obj.Alteracao == 'ROBOT' and obj.Ausencia != 'FALTA':
+            if x['idMinuta_id__HoraInicial'] != obj.Entrada:
+                if x['idMinuta_id__HoraInicial'] < horaentrada:
+                    obj.Entrada = x['idMinuta_id__HoraInicial']
+                    obj.save(update_fields=['Entrada'])
             if x['idMinuta_id__HoraFinal'] != obj.Saida:
                 if x['idMinuta_id__HoraFinal'] > horasaida:
                     obj.Saida = x['idMinuta_id__HoraFinal']
