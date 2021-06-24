@@ -242,6 +242,8 @@ def create_contracheque(mesreferencia, anoreferencia, valor, idpessoal):
     admissao = colaborador[0].DataAdmissao
     if int(anoreferencia) >= admissao.year:
         if int(mesreferencia) >= admissao.month:
+            # if int(anoreferencia) == admissao.year and int(mesreferencia) == admissao.month:
+            # else:
             salario = get_salario(idpessoal)
             if not busca_contracheque(meses[int(mesreferencia)-1], anoreferencia, idpessoal):
                 obj = ContraCheque()

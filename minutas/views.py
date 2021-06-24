@@ -632,7 +632,7 @@ def imprimeminuta(request, idmin):
             motorista = [item.idPessoal for item in minutacolaboradores]
             motorista = motorista[0]
             ajudante = MinutaColaboradores.objects.filter(idMinuta=idmin, Cargo='AJUDANTE')
-        # response = HttpResponse(content_type='application/pdf')
+        response = HttpResponse(content_type='application/pdf')
         buffer = BytesIO()
         # Create the PDF object, using the BytesIO object as its "file."
         pdf = canvas.Canvas(buffer)
