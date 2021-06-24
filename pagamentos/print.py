@@ -111,7 +111,7 @@ def print_contracheque(contexto, adiantamento):
             numerominutas = len(contexto['minutas'])
             pdf.setFont("Times-Roman", 9)
             pdf.rect(convertemp(5), convertemp(linha), convertemp(200), convertemp(6), fill=0)
-            pdf.drawCentredString(convertemp(105), convertemp(linha + 1.5), '{}-{}'.format(
+            pdf.drawCentredString(convertemp(105), convertemp(linha + 1.5), '{} - {}'.format(
                 len(contexto['minutas']), 'MINUTAS'))
             linha -= 4
             pdf.setFont("Times-Roman", 9)
@@ -125,7 +125,7 @@ def print_contracheque(contexto, adiantamento):
             linha -= 4
             for minutas in contexto['minutas']:
                 pdf.drawCentredString(convertemp(15), convertemp(linha), '{}'.format(
-                    minutas['idMinuta_id__DataMinuta']))
+                    minutas['idMinuta_id__DataMinuta'].strftime("%d/%m/%Y")))
                 pdf.drawCentredString(convertemp(40), convertemp(linha), '{}'.format(
                     minutas['idMinuta_id__Minuta']))
                 pdf.drawCentredString(convertemp(90), convertemp(linha), '{}'.format(
@@ -137,7 +137,7 @@ def print_contracheque(contexto, adiantamento):
                 if minutas['Extra'] != '00:00':
                     pdf.drawCentredString(convertemp(195), convertemp(linha), '{}'.format(minutas['Extra']))
                 linha -= 4
-            linha += 3
+            # linha += 3
             pdf.rect(convertemp(5), convertemp(linha + 3), convertemp(200), convertemp(numerominutas * 4 + 5), fill=0)
     pdf.setFont("Times-Roman", 9)
     pdf.setFillColor(HexColor("#808080"))
