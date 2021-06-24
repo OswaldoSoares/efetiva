@@ -49,8 +49,8 @@ def print_contracheque(contexto, adiantamento):
         pdf.setFont("Times-Roman", 10)
         pdf.drawString(convertemp(5.8), convertemp(linha-22.9), '{}'.format('Código'))
         pdf.drawString(convertemp(20.2), convertemp(linha-22.9), '{}'.format('Nome do Funcioonário'))
-        pdf.drawString(convertemp(102.6), convertemp(linha-22.9), '{}'.format('CBO    Emp.   Local   Dept.  Setor   '
-                                                                              'Seção   Fl.'))
+        pdf.drawString(convertemp(102.6), convertemp(linha-22.9), '{}'.format(
+            'CBO    Emp.   Local   Dept.  Setor   Seção   Fl.'))
         pdf.drawCentredString(convertemp(10.85), convertemp(linha - 35), '{}'.format('Cód.'))
         pdf.drawCentredString(convertemp(56.3), convertemp(linha - 35), '{}'.format('Descrição'))
         pdf.drawCentredString(convertemp(106), convertemp(linha - 35), '{}'.format('Referência'))
@@ -66,8 +66,8 @@ def print_contracheque(contexto, adiantamento):
         pdf.drawString(convertemp(6), convertemp(linha-17.7), '{}'.format('CNPJ: 21.602.117/0001-15'))
         pdf.drawString(convertemp(122.8), convertemp(linha-17.7), '{}'.format(contexto['contracheque'][0]))
         pdf.setFont("Times-Roman", 10)
-        pdf.drawString(convertemp(5.8), convertemp(linha-27.2), '{}'.format(contexto['colaborador'][
-                                                                                0].idPessoal).zfill(4))
+        pdf.drawString(convertemp(5.8), convertemp(linha-27.2), '{}'.format(
+            contexto['colaborador'][0].idPessoal).zfill(4))
         pdf.drawString(convertemp(20.2), convertemp(linha-27.4), '{}'.format(contexto['colaborador'][0].Nome))
         pdf.drawString(convertemp(102.6), convertemp(linha-27.2), '{}'.format(contexto['colaborador'][0].Categoria))
         pdf.setFont("Times-Roman", 11)
@@ -93,47 +93,52 @@ def print_contracheque(contexto, adiantamento):
                     pdf.drawRightString(convertemp(142.6), convertemp(linha - 41.2 - linhaitens), '{}'.format(
                         itens.Valor).replace('.', ','))
                     linhaitens += 4.1
-        pdf.drawRightString(convertemp(142.6), convertemp(linha - 124), '{}'.format(contexto['totais'][
-                                                                                          'Credito']).replace('.', ','))
-        pdf.drawRightString(convertemp(171.7), convertemp(linha - 124), '{}'.format(contexto['totais'][
-                                                                                          'Debito']).replace('.', ','))
-        pdf.drawRightString(convertemp(171.7), convertemp(linha - 132), '{}'.format(contexto['totais'][
-                                                                                        'Liquido']).replace('.', ','))
+        pdf.drawRightString(convertemp(142.6), convertemp(linha - 124), '{}'.format(
+            contexto['totais']['Credito']).replace('.', ','))
+        pdf.drawRightString(convertemp(171.7), convertemp(linha - 124), '{}'.format(
+            contexto['totais']['Debito']).replace('.', ','))
+        pdf.drawRightString(convertemp(171.7), convertemp(linha - 132), '{}'.format(
+            contexto['totais']['Liquido']).replace('.', ','))
         # linha = 148
     # pdf.drawString(convertemp(5), convertemp(147.4), '{}'.format('\u2702'))
     # pdf.drawString(convertemp(70), convertemp(147.4), '{}'.format('\u2702'))
     # pdf.drawRightString(convertemp(140), convertemp(147.4), '{}'.format('\u2702'))
     # pdf.drawRightString(convertemp(205), convertemp(147.4), '{}'.format('\u2702'))
     # pdf.setLineWidth(0.5)
-    print(adiantamento)
     if not adiantamento:
         if contexto['minutas']:
             linha = 135
-            numerominutas = contexto['minutas'].count()
+            numerominutas = len(contexto['minutas'])
             pdf.setFont("Times-Roman", 9)
             pdf.rect(convertemp(5), convertemp(linha), convertemp(200), convertemp(6), fill=0)
-            pdf.drawCentredString(convertemp(105), convertemp(linha + 1.5), '{}-{}'.format(contexto['minutas'].count(),
-                                                                                           'MINUTAS'))
+            pdf.drawCentredString(convertemp(105), convertemp(linha + 1.5), '{}-{}'.format(
+                len(contexto['minutas']), 'MINUTAS'))
             linha -= 4
             pdf.setFont("Times-Roman", 9)
             pdf.drawCentredString(convertemp(15), convertemp(linha), '{}'.format('DATA'))
             pdf.drawCentredString(convertemp(40), convertemp(linha), '{}'.format('MINUTA'))
             pdf.drawCentredString(convertemp(90), convertemp(linha), '{}'.format('CLIENTE'))
-            pdf.drawCentredString(convertemp(170), convertemp(linha), '{}'.format('HORA INICIAL'))
-            pdf.drawCentredString(convertemp(195), convertemp(linha), '{}'.format('HORA FINAL'))
+            pdf.drawCentredString(convertemp(165), convertemp(linha), '{}'.format('INICIO'))
+            pdf.drawCentredString(convertemp(180), convertemp(linha), '{}'.format('FIM'))
+            pdf.drawCentredString(convertemp(195), convertemp(linha), '{}'.format('EXTRA'))
             pdf.line(convertemp(5), convertemp(linha - 1), convertemp(205), convertemp(linha - 1))
             linha -= 4
             for minutas in contexto['minutas']:
-                pdf.drawCentredString(convertemp(15), convertemp(linha), '{}'.format(minutas['idMinuta_id__DataMinuta']))
-                pdf.drawCentredString(convertemp(40), convertemp(linha), '{}'.format(minutas['idMinuta_id__Minuta']))
-                pdf.drawCentredString(convertemp(90), convertemp(linha), '{}'.format(minutas['idMinuta_id__idCliente__Fantasia']))
-                pdf.drawCentredString(convertemp(170), convertemp(linha), '{}'.format(minutas['idMinuta_id__HoraInicial']))
-                pdf.drawCentredString(convertemp(195), convertemp(linha), '{}'.format(minutas['idMinuta_id__HoraFinal']))
+                pdf.drawCentredString(convertemp(15), convertemp(linha), '{}'.format(
+                    minutas['idMinuta_id__DataMinuta']))
+                pdf.drawCentredString(convertemp(40), convertemp(linha), '{}'.format(
+                    minutas['idMinuta_id__Minuta']))
+                pdf.drawCentredString(convertemp(90), convertemp(linha), '{}'.format(
+                    minutas['idMinuta_id__idCliente__Fantasia']))
+                pdf.drawCentredString(convertemp(165), convertemp(linha), '{}'.format(
+                    minutas['idMinuta_id__HoraInicial']))
+                pdf.drawCentredString(convertemp(180), convertemp(linha), '{}'.format(
+                    minutas['idMinuta_id__HoraFinal']))
+                if minutas['Extra'] != '00:00':
+                    pdf.drawCentredString(convertemp(195), convertemp(linha), '{}'.format(minutas['Extra']))
                 linha -= 4
-
-            linha + 3
+            linha += 3
             pdf.rect(convertemp(5), convertemp(linha + 3), convertemp(200), convertemp(numerominutas * 4 + 5), fill=0)
-
     pdf.setFont("Times-Roman", 9)
     pdf.setFillColor(HexColor("#808080"))
     pdf.line(convertemp(0), convertemp(148.5), convertemp(210), convertemp(148.5))
