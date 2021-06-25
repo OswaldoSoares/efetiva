@@ -8,7 +8,8 @@
         </tr>
         {% for keys, values in folha.items %}
         <tr>
-            <td class="fp-nome">{{ keys }}</td>
+            <td class="fp-nome" data-toggle="tooltip" data-placement="top" title="{{ keys }}">
+                {{ keys|truncatechars:25 }}</td>
             <td class="fp-valor">R$ {{ values.Salario }}</td>
             <td class="fp-valor">R$ {{ values.Liquido }}</td>
             <td class="fp-button">
