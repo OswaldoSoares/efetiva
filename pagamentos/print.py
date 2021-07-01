@@ -15,7 +15,7 @@ def convertemp(mm):
     return mm / 0.352777
 
 
-def print_contracheque(contexto, adiantamento):
+def print_contracheque(contexto, tipoimpressao):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'flename="CONTRACHEQUE {}.pdf'.format('A')
     buffer = BytesIO()
@@ -73,7 +73,7 @@ def print_contracheque(contexto, adiantamento):
         pdf.setFont("Times-Roman", 11)
         linhaitens = 0
         for itens in contexto['contrachequeitens']:
-            if not adiantamento:
+            if tipoimpressao == 'CONTRACHEQUE':
                 pdf.drawString(convertemp(17.5), convertemp(linha - 41.2 - linhaitens), '{}'.format(itens.Descricao))
                 pdf.drawCentredString(convertemp(106), convertemp(linha - 41.2 - linhaitens), '{}'.format(
                     itens.Referencia))
@@ -85,7 +85,15 @@ def print_contracheque(contexto, adiantamento):
                         itens.Valor).replace('.', ','))
                 linhaitens += 4.1
             else:
-                if itens.Descricao == 'ADIANTAMENTO':
+                if tipoimpressao == 'ADIANTAMENTO' and itens.Descricao == 'ADIANTAMENTO':
+                    pdf.drawString(convertemp(17.5), convertemp(linha - 41.2 - linhaitens),
+                                   '{}'.format(itens.Descricao))
+                    pdf.drawCentredString(convertemp(106), convertemp(linha - 41.2 - linhaitens), '{}'.format(
+                        itens.Referencia))
+                    pdf.drawRightString(convertemp(142.6), convertemp(linha - 41.2 - linhaitens), '{}'.format(
+                        itens.Valor).replace('.', ','))
+                    linhaitens += 4.1
+                if tipoimpressao == 'VALE TRANSPORTE' and itens.Descricao == 'VALE TRANSPORTE':
                     pdf.drawString(convertemp(17.5), convertemp(linha - 41.2 - linhaitens),
                                    '{}'.format(itens.Descricao))
                     pdf.drawCentredString(convertemp(106), convertemp(linha - 41.2 - linhaitens), '{}'.format(
@@ -105,7 +113,7 @@ def print_contracheque(contexto, adiantamento):
     # pdf.drawRightString(convertemp(140), convertemp(147.4), '{}'.format('\u2702'))
     # pdf.drawRightString(convertemp(205), convertemp(147.4), '{}'.format('\u2702'))
     # pdf.setLineWidth(0.5)
-    if not adiantamento:
+    if tipoimpressao == 'CONTRACHEQUE':
         if contexto['minutas']:
             linha = 135
             numerominutas = len(contexto['minutas'])

@@ -300,12 +300,12 @@ def create_contracheque_itens_vales(idcliente, idvale, idcontracheque):
 
 
 def create_cartaoponto(mesreferencia, anoreferencia, idpessoal):
-    colaborador = facade.get_pessoal(idpessoal)
-    admissao = colaborador[0].DataAdmissao
-    if int(anoreferencia) >= admissao.year:
-        if int(mesreferencia) >= admissao.month:
-            admissao = datetime.datetime(admissao.year, admissao.month, admissao.day)
-            if not busca_cartaoponto_referencia(mesreferencia, anoreferencia, idpessoal):
+    if not busca_cartaoponto_referencia(mesreferencia, anoreferencia, idpessoal):
+        colaborador = facade.get_pessoal(idpessoal)
+        admissao = colaborador[0].DataAdmissao
+        if int(anoreferencia) >= admissao.year:
+            if int(mesreferencia) >= admissao.month:
+                admissao = datetime.datetime(admissao.year, admissao.month, admissao.day)
                 referencia = calendar.monthrange(int(anoreferencia), int(mesreferencia))
                 for x in range(1, referencia[1]+1):
                     dia = '{}-{}-{}'.format(anoreferencia, mesreferencia, x)
@@ -670,6 +670,22 @@ def print_contracheque_adiantamento_context(idcontracheque, mesreferencia, anore
     return contexto
 
 
+def print_contracheque_valetransporte_context(idcontracheque, mesreferencia, anoreferencia, idpessoal):
+    contracheque = get_contrachequeid(idcontracheque)
+    contrachequeitens = facade.get_contracheque_itens(idcontracheque)
+    colaborador = facade.get_pessoal(contracheque[0].idPessoal_id)
+    minutas = select_minutas_contracheque(mesreferencia, anoreferencia, idpessoal)
+    credito = ContraChequeItens.objects.filter(idContraCheque=contracheque[0].idContraCheque,
+                                               Descricao='VALE TRANSPORTE', Registro='C').aggregate(Total=Sum('Valor'))
+    debito = Decimal('0.00')
+    if not credito['Total']:
+        credito['Total'] = Decimal('0.00')
+    totais = {'Credito': credito['Total'], 'Debito': debito, 'Liquido': credito['Total'] - debito}
+    contexto = {'contracheque': contracheque, 'contrachequeitens': contrachequeitens, 'colaborador': colaborador,
+                'totais': totais, 'minutas': minutas}
+    return contexto
+
+
 def html_formccadianta(contracheque, request):
     formcontrachequeitens = CadastraContraChequeItens()
     contextform = {'formcontrachequeitens': formcontrachequeitens, 'contracheque': contracheque}
@@ -709,7 +725,7 @@ def calcula_horas_extras(mesreferencia, anoreferencia, idpessoal):
 
     horazero = datetime.datetime.strptime('00:00:00', '%H:%M:%S').time()
     horazero = datetime.timedelta(hours=horazero.hour, minutes=horazero.minute)
-    valorhoraextra = float(salario[0].Salario) / 100 * 150 / 30 / 9 / 60 / 60 * totalextra.seconds
+    valorhoraextra = float(salario[0].Salario) / 30 / 9 / 60 / 60 * 1.5 * totalextra.seconds
     contracheque = get_contrachequereferencia(mesreferencia, anoreferencia, idpessoal)
     if totalextra > horazero:
         if contracheque:

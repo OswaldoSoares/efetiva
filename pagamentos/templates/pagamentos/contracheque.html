@@ -21,7 +21,13 @@
                 {% elif itens.Descricao == 'ATRAZO' %}
                 <span class="btn btn-dark btn-xs glyphicon glyphicon-pushpin"></span>
                 {% elif itens.Descricao == 'VALE TRANSPORTE' %}
-                <span class="btn btn-dark btn-xs glyphicon glyphicon-pushpin"></span>
+                <div>
+                    <a class="btn btn-warning btn-xs glyphicon glyphicon-print"
+                       href="{% url 'imprimecontracheque' %}?idcc={{ itenscc.idContraCheque }}&idco={{ itenscc.idPessoal_id }}&mes={{ mesreferencia }}&ano={{ anoreferencia }}&vale=True"
+                       target="_blank">
+                    </a>
+                    <span class="btn btn-dark btn-xs glyphicon glyphicon-pushpin"></span>
+                </div>
                 {% elif itens.Vales_id > 0 %}
                 <span class="btn btn-dark btn-xs glyphicon glyphicon-pushpin"></span>
                 {% else %}
@@ -59,7 +65,7 @@
     <tr>
         <td class="fim-descricao" rowspan="2" colspan="2">
             <a class="btn btn-warning glyphicon glyphicon-print"
-               href="{% url 'imprimecontracheque' %}?idcc={{ itenscc.idContraCheque }}&idco={{ itenscc.idPessoal_id }}&mes={{ mesreferencia }}&ano={{ anoreferencia }}&adianta=False"
+               href="{% url 'imprimecontracheque' %}?idcc={{ itenscc.idContraCheque }}&idco={{ itenscc.idPessoal_id }}&mes={{ mesreferencia }}&ano={{ anoreferencia }}&adianta=False&vale=False"
                target="_blank">
             </a>
         </td>

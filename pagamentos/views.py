@@ -76,12 +76,18 @@ def imprime_contracheque(request):
     c_ano = request.GET.get('ano')
     c_idpesssoal = request.GET.get('idco')
     c_adiantamento = request.GET.get('adianta')
-    if c_adiantamento == 'False':
+    c_valetransporte = request.GET.get('vale')
+    response = ''
+    if c_adiantamento == 'False' and c_valetransporte == 'False':
         contexto = facade.print_contracheque_context(c_idcontracheque, c_mes, c_ano, c_idpesssoal)
-        response = print_contracheque(contexto, False)
+        response = print_contracheque(contexto, 'CONTRACHEQUE')
     else:
-        contexto = facade.print_contracheque_adiantamento_context(c_idcontracheque, c_mes, c_ano, c_idpesssoal)
-        response = print_contracheque(contexto, True)
+        if c_adiantamento == 'True':
+            contexto = facade.print_contracheque_adiantamento_context(c_idcontracheque, c_mes, c_ano, c_idpesssoal)
+            response = print_contracheque(contexto, 'ADIANTAMENTO')
+        if c_valetransporte == 'True':
+            contexto = facade.print_contracheque_valetransporte_context(c_idcontracheque, c_mes, c_ano, c_idpesssoal)
+            response = print_contracheque(contexto, 'VALE TRANSPORTE')
     return response
 
 
