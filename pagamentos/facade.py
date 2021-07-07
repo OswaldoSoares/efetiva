@@ -300,9 +300,9 @@ def create_contracheque_itens_vales(idcliente, idvale, idcontracheque):
 
 
 def create_cartaoponto(mesreferencia, anoreferencia, idpessoal):
+    colaborador = facade.get_pessoal(idpessoal)
+    admissao = colaborador[0].DataAdmissao
     if not busca_cartaoponto_referencia(mesreferencia, anoreferencia, idpessoal):
-        colaborador = facade.get_pessoal(idpessoal)
-        admissao = colaborador[0].DataAdmissao
         if int(anoreferencia) >= admissao.year:
             if int(mesreferencia) >= admissao.month:
                 admissao = datetime.datetime(admissao.year, admissao.month, admissao.day)
@@ -322,7 +322,25 @@ def create_cartaoponto(mesreferencia, anoreferencia, idpessoal):
                         obj.Ausencia = '-------'
                     obj.idPessoal_id = idpessoal
                     obj.save()
-                atualiza_cartaoponto(mesreferencia, anoreferencia, idpessoal)
+    else:
+        if int(mesreferencia) == admissao.month and int(anoreferencia) == admissao.year:
+            confere_admissao(idpessoal, admissao)
+    atualiza_cartaoponto(mesreferencia, anoreferencia, idpessoal)
+
+
+def confere_admissao(idpessoal, admissao):
+    cartaoponto = busca_cartaoponto_referencia(admissao.month, admissao.year, idpessoal)
+    for itens in cartaoponto:
+        dia_cartaoponto = get_cartaopontoid(itens.idCartaoPonto)
+        obj = dia_cartaoponto
+        if itens.Dia < admissao:
+            obj.Ausencia = '-------'
+        else:
+            if itens.Dia.weekday() == 5 or itens.Dia.weekday() == 6:
+                obj.Ausencia = dias[itens.Dia.weekday()]
+            else:
+                obj.Ausencia = ''
+        obj.save(update_fields=['Ausencia'])
 
 
 def cria_vale(data, descricao, valor, parcelas, idpessoal):
