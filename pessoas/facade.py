@@ -265,7 +265,8 @@ def form_pessoa(request, c_form, c_idobj, c_url, c_view, idpessoal):
             save_id = form.save()
             if c_view == 'cria_pessoa' or c_view == 'edita_pessoa':
                 data['save_id'] = save_id.idPessoal
-                save_salario(save_id.idPessoal, 0.00, 1)
+                if c_view == 'cria_pessoa':
+                    save_salario(save_id.idPessoal, 0.00, 1, 0.00)
             else:
                 data['save_id'] = save_id.idPessoal_id
         else:
