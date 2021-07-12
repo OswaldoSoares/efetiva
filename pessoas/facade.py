@@ -6,9 +6,10 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 from decimal import Decimal
 
-from pessoas.forms import CadastraSalario, CadastraVale, CadastraContraCheque
+from pessoas.forms import CadastraSalario, CadastraVale
 from pessoas.models import Pessoal, Salario, DocPessoal, FonePessoal, ContaPessoal, Vales, ContraCheque, \
     ContraChequeItens, CartaoPonto
+from minutas.models import MinutaColaboradores
 
 
 meses = ['JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL', 'MAIO', 'JUNHO', 'JULHO', 'AGOSTO', 'SETEMBRO', 'OUTUBRO',
@@ -26,10 +27,10 @@ def create_pessoal_context(idpessoa: int):
     instance_salario = get_salario(idpessoa).first()
     formsalario = CadastraSalario(instance=instance_salario)
     formvale = CadastraVale()
-    formcontracheque = CadastraContraCheque()
+    minutas = MinutaColaboradores.objects.filter(idPessoal=idpessoa)
     context = {'colaborador': colaborador, 'docpessoa': docpessoa, 'fonepessoa': fonepessoa, 'contapessoa': contapessoa,
                'contracheque': contracheque, 'salario': salario, 'formsalario': formsalario, 'formvale': formvale,
-               'formcontracheque': formcontracheque}
+               'minutas': minutas}
     return context
 
 
@@ -276,5 +277,30 @@ def form_pessoa(request, c_form, c_idobj, c_url, c_view, idpessoal):
     context = {'form': form, 'c_idobj': c_idobj, 'c_url': c_url, 'c_view': c_view, 'idpessoal': idpessoal}
     data['html_form'] = render_to_string('pessoas/formpessoa.html', context, request=request)
     data['c_view'] = c_view
+    c_return = JsonResponse(data)
+    return c_return
+
+
+def form_exclui_pessoal(request, c_idobj, c_url, c_view, idpessoal):
+    data = dict()
+    c_queryset = None
+    if c_view == 'exclui_pessoa':
+        c_queryset = Pessoal.objects.get(idPessoal=c_idobj)
+    # elif c_view == 'exclui_email_cliente':
+    #     c_queryset = EMailContatoCliente.objects.get(idEmailContatoCliente=c_idobj)
+    # elif c_view == 'exclui_fone_cliente':
+    #     c_queryset = FoneContatoCliente.objects.get(idFoneContatoCliente=c_idobj)
+    # elif c_view == 'exclui_cobranca_cliente':
+    #     c_queryset = Cobranca.objects.get(idCobranca=c_idobj)
+    # elif c_view == 'exclui_tabela_capacidade':
+    #     c_queryset = TabelaCapacidade.objects.get(idTabelaCapacidade=c_idobj)
+    # elif c_view == 'exclui_tabela_perimetro':
+    #     c_queryset = TabelaPerimetro.objects.get(idTabelaPerimetro=c_idobj)
+    if request.method == "POST":
+        c_queryset.delete()
+    context = {'c_url': c_url, 'c_view': c_view, 'c_queryset': c_queryset, 'idpessoal': idpessoal}
+    data['html_form'] = render_to_string('pessoas/formpessoa.html', context, request=request)
+    data['c_view'] = c_view
+    data['save_id'] = idpessoal
     c_return = JsonResponse(data)
     return c_return

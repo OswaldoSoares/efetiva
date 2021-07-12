@@ -30,16 +30,10 @@ def indexpessoal(request):
         pessoal = pessoal.filter(Categoria__iexact=meufiltrofuncao)
     categoriaslist = Pessoal.objects.values('Categoria').order_by('Categoria')
     categorias = removeduplicadas(categoriaslist)
-    return render(
-        request, 'pessoas/index.html', {
-            'pessoal': pessoal,
-            'categorias': categorias
-        }
-    )
+    return render(request, 'pessoas/index.html', {'pessoal': pessoal, 'categorias': categorias})
 
 
 def cria_pessoa(request):
-    print('ok')
     c_form = CadastraPessoal
     c_idobj = None
     c_url = '/pessoas/criapessoa/'
@@ -47,11 +41,6 @@ def cria_pessoa(request):
     idpessoal = None
     data = facade.form_pessoa(request, c_form, c_idobj, c_url, c_view, idpessoal)
     return data
-    # if request.method == 'POST':
-    #     form = CadastraPessoal(request.POST, request.FILES or None)
-    # else:
-    #     form = CadastraPessoal()
-    # return salva_form(request, form, 'pessoas/criapessoa.html', 0)
 
 
 def edita_pessoa(request, idpessoa):
@@ -62,24 +51,15 @@ def edita_pessoa(request, idpessoa):
     idpessoal = 'edita_pessoa'
     data = facade.form_pessoa(request, c_form, c_idobj, c_url, c_view, idpessoal)
     return data
-    # pessoa = get_object_or_404(Pessoal, idPessoal=idpes)
-    # if request.method == 'POST':
-    #     form = CadastraPessoal(request.POST, request.FILES, instance=pessoa)
-    # else:
-    #     form = CadastraPessoal(instance=pessoa)
-    # return salva_form(request, form, 'pessoas/editapessoa.html', idpes)
 
 
-def excluipessoa(request, idpes):
-    pessoa = get_object_or_404(Pessoal, idPessoal=idpes)
-    data = dict()
-    if request.method == 'POST':
-        pessoa.delete()
-        return redirect('indexpessoal')
-    else:
-        context = {'pessoa': pessoa}
-        data['html_form'] = render_to_string('pessoas/excluipessoa.html', context, request=request)
-    return JsonResponse(data)
+def excluipessoa(request, idpessoa):
+    c_idobj = idpessoa
+    c_url = '/pessoas/excluipessoa/{}/'.format(c_idobj)
+    c_view = 'exclui_pessoa'
+    idpessoal = idpessoa
+    data = facade.form_exclui_pessoal(request, c_idobj, c_url, c_view, idpessoal)
+    return data
 
 
 def criadocpessoa(request):
@@ -150,6 +130,7 @@ def excluicontapessoa(request, idpescon):
 
 def consulta_pessoa(request, idpessoa):
     contexto = facade.create_pessoal_context(idpessoa)
+    print(contexto)
     # if request.method == 'POST':
     #     redirect('consultapessoa', idpessoa)
     return render(request, 'pessoas/consultapessoa.html', contexto)
