@@ -25,7 +25,7 @@ def indexpessoal(request):
     meufiltronome = request.GET.get('filtronome', None)
     meufiltrofuncao = request.GET.get('filtrofuncao', None)
     pessoal = Pessoal.objects.all()
-    minutaarru = MinutaColaboradores.objects.filter(idpessoa=115)
+    minutaarru = MinutaColaboradores.objects.filter(idPessoal_id=115)
     if meufiltronome:
         pessoal = pessoal.filter(Nome__icontains=meufiltronome)
     elif meufiltrofuncao:
