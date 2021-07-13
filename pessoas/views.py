@@ -9,6 +9,7 @@ from .models import Pessoal, DocPessoal, FonePessoal, ContaPessoal, ContraCheque
 from .forms import CadastraPessoal, CadastraDocPessoal, CadastraFonePessoal, CadastraContaPessoal, CadastraSalario, \
     CadastraVale
 from decimal import Decimal
+from  minutas.models import MinutaColaboradores
 
 
 def removeduplicadas(lista):
@@ -24,13 +25,14 @@ def indexpessoal(request):
     meufiltronome = request.GET.get('filtronome', None)
     meufiltrofuncao = request.GET.get('filtrofuncao', None)
     pessoal = Pessoal.objects.all()
+    minutaarru = MinutaColaboradores.objects.filter(idpessoa=115)
     if meufiltronome:
         pessoal = pessoal.filter(Nome__icontains=meufiltronome)
     elif meufiltrofuncao:
         pessoal = pessoal.filter(Categoria__iexact=meufiltrofuncao)
     categoriaslist = Pessoal.objects.values('Categoria').order_by('Categoria')
     categorias = removeduplicadas(categoriaslist)
-    return render(request, 'pessoas/index.html', {'pessoal': pessoal, 'categorias': categorias})
+    return render(request, 'pessoas/index.html', {'pessoal': pessoal, 'categorias': categorias, 'minutaarru': minutaarru})
 
 
 def cria_pessoa(request):

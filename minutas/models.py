@@ -5,6 +5,7 @@ from faturamentos.models import Fatura
 from pessoas.models import Pessoal
 from veiculos.models import CategoriaVeiculo, Veiculo
 import datetime
+from datetime import timedelta
 
 
 class Minuta(models.Model):
