@@ -25,25 +25,6 @@ def indexpessoal(request):
     meufiltronome = request.GET.get('filtronome', None)
     meufiltrofuncao = request.GET.get('filtrofuncao', None)
     pessoal = Pessoal.objects.all()
-    minuta = MinutaColaboradores.objects.filter(idPessoal_id=115)
-    for index, itens in enumerate(minuta):
-        obj = MinutaColaboradores.objects.get(idMinutaColaboradores=minuta[index].idMinutaColaboradores)
-        print(obj)
-        obj.idPessoal_id = 106
-        obj.save(update_fields=['idPessoal_id'])
-    minuta = MinutaColaboradores.objects.filter(idPessoal_id=109)
-    for index, itens in enumerate(minuta):
-        obj = MinutaColaboradores.objects.get(idMinutaColaboradores=minuta[index].idMinutaColaboradores)
-        print(obj)
-        obj.idPessoal_id = 106
-        obj.save(update_fields=['idPessoal_id'])
-    minuta = MinutaColaboradores.objects.filter(idPessoal_id=108)
-    for index, itens in enumerate(minuta):
-        obj = MinutaColaboradores.objects.get(idMinutaColaboradores=minuta[index].idMinutaColaboradores)
-        print(obj)
-        obj.idPessoal_id = 106
-        obj.save(update_fields=['idPessoal_id'])
-
     if meufiltronome:
         pessoal = pessoal.filter(Nome__icontains=meufiltronome)
     elif meufiltrofuncao:
