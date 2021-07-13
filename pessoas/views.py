@@ -25,14 +25,14 @@ def indexpessoal(request):
     meufiltronome = request.GET.get('filtronome', None)
     meufiltrofuncao = request.GET.get('filtrofuncao', None)
     pessoal = Pessoal.objects.all()
-    minutaarru = MinutaColaboradores.objects.filter(idPessoal_id=115)
+    minuta = MinutaColaboradores.objects.filter(idPessoal_id=115)
     if meufiltronome:
         pessoal = pessoal.filter(Nome__icontains=meufiltronome)
     elif meufiltrofuncao:
         pessoal = pessoal.filter(Categoria__iexact=meufiltrofuncao)
     categoriaslist = Pessoal.objects.values('Categoria').order_by('Categoria')
     categorias = removeduplicadas(categoriaslist)
-    return render(request, 'pessoas/index.html', {'pessoal': pessoal, 'categorias': categorias, 'minutaarru': minutaarru})
+    return render(request, 'pessoas/index.html', {'pessoal': pessoal, 'categorias': categorias, 'minuta': minuta})
 
 
 def cria_pessoa(request):
