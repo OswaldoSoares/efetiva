@@ -31,7 +31,7 @@ def indexpessoal(request):
         pessoal = pessoal.filter(Categoria__iexact=meufiltrofuncao)
     categoriaslist = Pessoal.objects.values('Categoria').order_by('Categoria')
     categorias = removeduplicadas(categoriaslist)
-    return render(request, 'pessoas/index.html', {'pessoal': pessoal, 'categorias': categorias, 'minuta': minuta})
+    return render(request, 'pessoas/index.html', {'pessoal': pessoal, 'categorias': categorias})
 
 
 def cria_pessoa(request):

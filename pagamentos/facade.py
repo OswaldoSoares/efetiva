@@ -190,8 +190,10 @@ def html_minutasavulso(datainicial, datafinal, idpessoal):
                                                  idMinuta_id__DataMinuta__range=[datainicial, datafinal])
     for index, itens in enumerate(minutas):
         if itens.Cargo == 'AJUDANTE':
-            minutaitens = MinutaItens.objects.filter(TipoItens='PAGA', idMinuta=itens.idMinuta, Descricao='AJUDANTE',
-                                                     idMinuta_id__DataMinuta__range=[datainicial, datafinal])
+            # minutaitens = MinutaItens.objects.filter(TipoItens='PAGA', idMinuta=itens.idMinuta, Descricao='AJUDANTE',
+            #                                          idMinuta_id__DataMinuta__range=[datainicial, datafinal])
+            minutaitens = MinutaItens.objects.all()
+            print(minutaitens[0].idMinutaItens)
             if minutaitens:
                 recibo.append({'Data': itens.idMinuta.DataMinuta, 'Minuta': itens.idMinuta.Minuta,
                                'Cliente': itens.idMinuta.idCliente.Fantasia, 'Descricao': minutaitens[0].Descricao,
