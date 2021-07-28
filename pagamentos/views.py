@@ -6,7 +6,7 @@ from rolepermissions.decorators import has_permission_decorator
 from minutas.models import MinutaItens, MinutaColaboradores
 from pagamentos import facade
 from .forms import CadastraCartaoPonto
-from .print import print_contracheque
+from .print import print_contracheque, print_recibo
 from django.db.models import F, ExpressionWrapper, DecimalField
 
 
@@ -148,7 +148,6 @@ def cria_contrachequeitensvale(request):
     c_ano = request.GET.get('AnoReferencia')
     c_idpesssoal = request.GET.get('idPessoal')
     c_switch = request.GET.get('EstadoSwitchMini')
-    print(c_switch)
     facade.estado_swith_vales[c_idpesssoal] = c_switch[0:-1].split('-')
     data = facade.seleciona_contracheque(c_mes, c_ano, c_idpesssoal, request)
     return data
@@ -241,3 +240,20 @@ def exclui_vale(request):
     facade.exclui_vale(c_idvales)
     data = facade.seleciona_contracheque(c_mes, c_ano, c_idpessoal, request)
     return data
+
+
+def exclui_recibo(request):
+    c_idrecibo = request.GET.get('idRecibo')
+    c_mes = request.POST.get('MesReferencia')
+    c_ano = request.POST.get('AnoReferencia')
+    c_idpessoal = request.POST.get('idPessoal')
+    facade.exclui_recibo(c_idrecibo)
+    data = facade.seleciona_contracheque(c_mes, c_ano, c_idpessoal, request)
+    return data
+
+
+def imprime_recibo(request):
+    c_idrecibo = request.GET.get('idrecibo')
+    contexto = facade.print_recibo(c_idrecibo)
+    response = print_recibo(contexto)
+    return response

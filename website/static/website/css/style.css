@@ -2546,6 +2546,15 @@ main .pa-saldo .pa-vales {
     margin-top: 5px;
 }
 
+main .pa-saldo .pa-recibos {
+    background-color: white;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
+}
+
 main .fp-folha .fp-vales {
     background-color: white;
     width: 100%;
@@ -2622,6 +2631,80 @@ main .fp-vale-tabela .fp-vale-button {
 }
 
 main .fp-vale-tabela .fp-vale-exclui {
+    width: 5%;
+    padding: 1px 5px 3px 5px;
+    text-align: center;
+    font-size: 13px;
+    border-bottom: 1px solid black;    
+}
+
+main .fp-recibo-tabela {
+    width: 95%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 5px;
+}
+
+main .fp-recibo-tabela .fp-tabela {
+    width: 100%;
+    padding: 1px 5px;
+    text-align: center;
+    font-size: 13px;
+    border-bottom: 1px solid black;
+}
+
+main .fp-recibo-tabela .titulo-tabela-vale {
+    width: 100%;
+    padding: 1px 5px 2px 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 15px;
+    border-bottom: 1px solid black;    
+}
+
+main .fp-recibo-tabela .fp-recibo-titulo {
+    padding: 0 5px;
+    text-align: center;
+    font-size: 13px;
+    border-bottom: 1px solid black;    
+}
+
+main .fp-recibo-tabela .fp-recibo-dia {
+    width: 15%;
+    padding: 0 5px;
+    margin-left: 5px;
+    text-align: center;
+    font-size: 13px;
+    border-bottom: 1px solid black;    
+}
+
+main .fp-recibo-tabela .fp-recibo-recibo {
+    width: 60%;
+    padding: 0 5px;
+    text-align: left;
+    font-size: 13px;
+    border-bottom: 1px solid black;    
+}
+
+main .fp-recibo-tabela .fp-recibo-valor {
+    width: 15%;
+    padding: 0 5px;
+    text-align: right;
+    font-size: 13px;
+    border-bottom: 1px solid black;    
+}
+
+main .fp-recibo-tabela .fp-recibo-estorna {
+    width: 5%;
+    padding: 0 5px;
+    text-align: center;
+    font-size: 13px;
+    border-bottom: 1px solid black;    
+}
+
+main .fp-recibo-tabela .fp-recibo-print {
     width: 5%;
     padding: 1px 5px 3px 5px;
     text-align: center;

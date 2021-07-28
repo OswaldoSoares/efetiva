@@ -145,6 +145,7 @@ class Vales(models.Model):
     Valor = models.DecimalField(decimal_places=2, max_digits=7, default=1.00)
     Pago = models.BooleanField(default=False)
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.PROTECT, default=1)
+    idRecibo = models.ForeignKey('pagamentos.Recibo', on_delete=models.PROTECT, blank=True, null=True)
 
     class Meta:
         db_table = 'Vales'

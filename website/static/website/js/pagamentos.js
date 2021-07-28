@@ -273,6 +273,49 @@ $(document).on('click', '.remove-vale', function(event) {
     });
 });
 
+$(document).on('click', '.estorna-recibo', function(event) {
+    var url = $(this).attr('data-url')
+    var idrecibo = $(this).attr('idrecibo')
+    var mesreferencia = window.MesReferencias
+    var anoreferencia = window.AnoReferencia
+    var idpessoal = window.idPessoal
+
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: url,
+        data: {
+            idRecibo: idrecibo,
+            MesReferencia: mesreferencia,
+            AnoReferencia: anoreferencia,
+            idPessoal: idpessoal,
+        },
+        success: function(data){
+            $(".fp-base").html(data.html_folha)
+            $(".fp-contracheque").html("");
+            $(".fp-contracheque").html(data.html_contracheque);
+            $(".fp-cartaoponto").html("");
+            $(".fp-cartaoponto").html(data.html_cartaoponto);
+            $(".fp-contrachequeitens").html("");
+            $(".fp-contrachequeitens").html(data.html_formccitens);
+            $(".fp-adiantamento").html("");
+            $(".fp-adiantamento").html(data.html_formccadianta);
+            $(".fp-minutas").html("");
+            $(".fp-minutas").html(data.html_minutascontracheque);
+            $(".fp-vales").html("");
+            $(".fp-vales").html(data.html_vales);
+            $(".fp-recibo").html("");
+            $(".fp-recibo").html(data.html_recibos);
+            if (data.html_adiantamento == true) {
+                $(".fp-adiantamento").hide();
+            }
+        },
+        error: function(error) {
+            console.log(error)
+        }
+    });
+});
+
 $(document).on('click', '#gerar-folha', function(event) {
     var url = $(this).attr('data-url')
     var mesreferencia = $(this).attr('mesreferencia')
@@ -379,6 +422,7 @@ $(document).on('click', '.selecionar-saldoavulso', function(event) {
         success: function(data){
             $(".pa-minutas").html(data.html_minutas);
             $(".pa-vales").html(data.html_valesavulso);
+            $(".pa-recibos").html(data.html_recibos);
             valeselect('#vale_' + idpessoal);
             somavales();
         },

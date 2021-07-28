@@ -1,6 +1,6 @@
 from django.db import models
-from minutas.models import MinutaItens
-from pessoas.models import Pessoal, Vales
+
+from pessoas.models import Pessoal
 
 
 class Recibo(models.Model):
@@ -15,17 +15,5 @@ class Recibo(models.Model):
 
     class Meta:
         db_table = 'Recibo'
-
-    objects = models.Manager()
-
-
-class ReciboItens(models.Model):
-    idReciboItens = models.AutoField(primary_key=True)
-    idRecibo = models.ForeignKey(Recibo, on_delete=models.PROTECT)
-    idMinutaItens = models.ForeignKey(MinutaItens, on_delete=models.PROTECT, blank=True, null=True)
-    idVales = models.ForeignKey(Vales, on_delete=models.PROTECT, blank=True, null=True)
-
-    class Meta:
-        db_table = 'RecibovItens'
 
     objects = models.Manager()
