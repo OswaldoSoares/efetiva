@@ -72,7 +72,10 @@ def create_context_avulso():
 
 
 def get_periodo_pagamento_avulsos():
-    periodo = MinutaColaboradores.objects.filter(Pago=False).exclude(idPessoal__TipoPgto='MENSALISTA').aggregate(
+    ' Quando estiver tudook mostrar apenas os avulsos '
+    # periodo = MinutaColaboradores.objects.filter(Pago=False).exclude(idPessoal__TipoPgto='MENSALISTA').aggregate(
+    #     DataInicial=Min('idMinuta__DataMinuta'), DataFinal=Max('idMinuta__DataMinuta'))
+    periodo = MinutaColaboradores.objects.filter(Pago=False).aggregate(
         DataInicial=Min('idMinuta__DataMinuta'), DataFinal=Max('idMinuta__DataMinuta'))
     periodo['DataInicial'] = periodo['DataInicial'].strftime('%Y-%m-%d')
     periodo['DataFinal'] = periodo['DataFinal'].strftime('%Y-%m-%d')
@@ -287,6 +290,10 @@ def create_pagamento_avulso(datainicial, datafinal, idpessoal, vales):
                 obj.Pago = True
                 obj.idRecibo_id = new_idrecibo
                 obj.save(update_fields=['Pago', 'idRecibo_id'])
+            for itens in minutas:
+                obj = itens
+                obj.Pago = True
+                obj.save(update_fields=['Pago'])
 
 
 def create_contracheque(mesreferencia, anoreferencia, valor, idpessoal):
@@ -418,7 +425,7 @@ def exclui_vale(idvales):
 
 
 def exclui_recibo(idrecibo):
-    Vales.objects.filter(idRecibo_id=idrecibo).update(idRecibo_id=None)
+    Vales.objects.filter(idRecibo_id=idrecibo).update(idRecibo_id=None, Pago=False)
     MinutaItens.objects.filter(idRecibo_id=idrecibo).update(idRecibo_id=None)
     recibo = get_recibo_id(idrecibo)
     if recibo:
@@ -978,9 +985,5 @@ def print_recibo(idrecibo):
                                 'Valor': itens.Valor, 'Motorista': motorista_nome,
                                 'idMinutaItens': minutaitens[0].idMinutaItens})
     vales = Vales.objects.filter(idRecibo_id=idrecibo)
-    print('Recibo', recibo)
-    print('Colaborador', colaborador)
-    print('Itens', reciboitens)
-    print('Vales', vales)
     contexto = {'recibo': recibo, 'colaborador': colaborador, 'reciboitens': reciboitens, 'vales': vales}
     return contexto

@@ -47,7 +47,9 @@ def get_pessoal_mensalista_ativo():
 
 
 def get_pessoal_nao_mensalista_ativo():
-    return Pessoal.objects.filter(StatusPessoal=True).exclude(TipoPgto='MENSALISTA')
+    return Pessoal.objects.filter(StatusPessoal=True)
+    ' Qubadi estiver ok , volta a mostrar somente avulsos'
+    # return Pessoal.objects.filter(StatusPessoal=True).exclude(TipoPgto='MENSALISTA')
 
 
 def get_pessoal(idpessoa: int):
