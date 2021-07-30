@@ -91,45 +91,6 @@ def imprime_contracheque(request):
     return response
 
 
-def teste(request):
-    nome = request.GET.get('nome')
-    qs_colaborador = MinutaColaboradores.objects.filter(idPessoal__Nome=nome, Pago=False).exclude(
-        idMinuta__StatusMinuta='ABERTA').exclude(idMinuta__StatusMinuta='CONCLUIDA')
-    lista_itens_pagar = []
-    for index, itens_colaborador in enumerate(qs_colaborador):
-        if itens_colaborador.Cargo == 'AJUDANTE':
-            base_valor_ajudante = ExpressionWrapper(F('Valor') / F('Quantidade'), output_field=DecimalField())
-            qs_ajudante = MinutaItens.objects.values(
-                'idMinutaItens', 'idMinuta__Minuta', 'Descricao', ValorAjudante=base_valor_ajudante).filter(
-                TipoItens='PAGA', idMinuta=itens_colaborador.idMinuta, Descricao='AJUDANTE')
-            if qs_ajudante:
-                itens_pagar = dict()
-                itens_pagar['idMinutaItens'] = qs_ajudante[0]['idMinutaItens']
-                itens_pagar['Minuta'] = qs_ajudante[0]['idMinuta__Minuta']
-                itens_pagar['Descricao'] = qs_ajudante[0]['Descricao']
-                itens_pagar['Valor'] = qs_ajudante[0]['ValorAjudante']
-                if itens_pagar:
-                    lista_itens_pagar.append(itens_pagar)
-        elif itens_colaborador.Cargo == 'MOTORISTA':
-            qs_motorista = MinutaItens.objects.values(
-                'idMinutaItens', 'idMinuta__Minuta', 'Descricao', 'Valor').filter(
-                idMinuta=itens_colaborador.idMinuta).exclude(
-                Descricao='AJUDANTE').exclude(TipoItens='RECEBE').exclude(TipoItens='DESPESA')
-            if qs_motorista:
-                for index_motorista, itens_motorista in enumerate(qs_motorista):
-                    itens_pagar = dict()
-                    itens_pagar['idMinutaItens'] = qs_motorista[index_motorista]['idMinutaItens']
-                    itens_pagar['Minuta'] = qs_motorista[index_motorista]['idMinuta__Minuta']
-                    itens_pagar['Descricao'] = qs_motorista[index_motorista]['Descricao']
-                    itens_pagar['Valor'] = qs_motorista[index_motorista]['Valor']
-                    if itens_pagar:
-                        lista_itens_pagar.append(itens_pagar)
-    data = dict()
-    data['html_form'] = render_to_string('pagamentos/pagamentominutas.html', {'lista_itens_pagar': lista_itens_pagar},
-                                         request=request)
-    return JsonResponse(data)
-
-
 def cria_pagamento(request):
     c_idpessoal = request.GET.get('idPessoal')
     c_datainicial = request.GET.get('DataInicial')

@@ -77,7 +77,6 @@ def get_periodo_pagamento_avulsos():
     #     DataInicial=Min('idMinuta__DataMinuta'), DataFinal=Max('idMinuta__DataMinuta'))
     periodo = MinutaColaboradores.objects.filter(Pago=False).aggregate(
         DataInicial=Min('idMinuta__DataMinuta'), DataFinal=Max('idMinuta__DataMinuta'))
-    print(periodo)
     periodo['DataInicial'] = periodo['DataInicial'].strftime('%Y-%m-%d')
     periodo['DataFinal'] = periodo['DataFinal'].strftime('%Y-%m-%d')
     return periodo
