@@ -8,7 +8,7 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 
 from minutas.models import MinutaColaboradores, MinutaItens
-from pagamentos.models import Recibo
+from pagamentos.models import Recibo, ReciboItens
 from pessoas import facade
 from pessoas.forms import CadastraContraCheque, CadastraContraChequeItens, CadastraVale
 from pessoas.models import ContraCheque, ContraChequeItens, CartaoPonto, Salario, Vales, Pessoal
@@ -283,10 +283,10 @@ def create_pagamento_avulso(datainicial, datafinal, idpessoal, vales):
             obj.save()
             new_idrecibo = obj.idRecibo
             for itens in recibo:
-                minutaitens = MinutaItens.objects.get(idMinutaItens=itens['idMinutaItens'])
-                obj = minutaitens
+                obj = ReciboItens()
                 obj.idRecibo_id = new_idrecibo
-                obj.save(update_fields=['idRecibo_id'])
+                obj.idMinutaItens_id = itens['idMinutaItens']
+                obj.save()
             for itens in vales:
                 vale = Vales.objects.get(idVales=itens[3:-5])
                 obj = vale
@@ -429,7 +429,9 @@ def exclui_vale(idvales):
 
 def exclui_recibo(idrecibo):
     Vales.objects.filter(idRecibo_id=idrecibo).update(idRecibo_id=None, Pago=False)
-    MinutaItens.objects.filter(idRecibo_id=idrecibo).update(idRecibo_id=None)
+    reciboitens = ReciboItens.objects.filter(idRecibo_id=idrecibo)
+    if reciboitens:
+        reciboitens.delete()
     recibo = get_recibo_id(idrecibo)
     if recibo:
         recibo.delete()
@@ -970,7 +972,11 @@ def print_recibo(idrecibo):
     reciboitens = []
     recibo = Recibo.objects.get(idRecibo=idrecibo)
     colaborador = Pessoal.objects.get(idPessoal=recibo.idPessoal_id)
-    minutaitens = MinutaItens.objects.filter(idRecibo_id=idrecibo).order_by('idMinuta_id')
+    minutaitens = ReciboItens.objects.filter(idRecibo_id=idrecibo).annotate(
+        idMinuta=F('idMinutaItens_id__idMinuta_id'),
+        DataMinuta=F('idMinutaItens_id__idMinuta_id__DataMinuta'), Minuta=F('idMinutaItens_id__idMinuta_id__Minuta'),
+        Cliente=F('idMinutaItens_id__idMinuta_id__idCliente__Fantasia'), Descricao=F('idMinutaItens_id__Descricao'),
+        Valor=F('idMinutaItens_id__Valor'), ValorBase=F('idMinutaItens_id__ValorBase'))
     for itens in minutaitens:
         motorista = MinutaColaboradores.objects.filter(Cargo='MOTORISTA', idMinuta_id=itens.idMinuta)
         if motorista:
@@ -978,15 +984,12 @@ def print_recibo(idrecibo):
         else:
             motorista_nome = ''
         if itens.Descricao == 'AJUDANTE':
-            reciboitens.append({'Data': itens.idMinuta.DataMinuta, 'Minuta': itens.idMinuta.Minuta,
-                                'Cliente': itens.idMinuta.idCliente.Fantasia, 'Descricao': itens.Descricao,
-                                'Valor': itens.ValorBase, 'Motorista': motorista_nome,
-                                'idMinutaItens': minutaitens[0].idMinutaItens})
+            reciboitens.append({'Data': itens.DataMinuta, 'Minuta': itens.Minuta, 'Cliente': itens.Cliente,
+                                'Descricao': itens.Descricao, 'Valor': itens.ValorBase, 'Motorista': motorista_nome})
         else:
-            reciboitens.append({'Data': itens.idMinuta.DataMinuta, 'Minuta': itens.idMinuta.Minuta,
-                                'Cliente': itens.idMinuta.idCliente.Fantasia, 'Descricao': itens.Descricao,
-                                'Valor': itens.Valor, 'Motorista': motorista_nome,
-                                'idMinutaItens': minutaitens[0].idMinutaItens})
+            reciboitens.append({'Data': itens.DataMinuta, 'Minuta': itens.Minuta, 'Cliente': itens.Cliente,
+                                'Descricao': itens.Descricao,
+                                'Valor': itens.Valor, 'Motorista': motorista_nome})
     vales = Vales.objects.filter(idRecibo_id=idrecibo)
     contexto = {'recibo': recibo, 'colaborador': colaborador, 'reciboitens': reciboitens, 'vales': vales}
     return contexto

@@ -25,6 +25,6 @@ class ReciboItens(models.Model):
     idRecibo = models.ForeignKey(Recibo, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'idRecibo'
+        db_table = 'ReciboItens'
 
     objects = models.Manager()
