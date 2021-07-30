@@ -71,7 +71,6 @@ class MinutaItens(models.Model):
     ValorBase = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     Tempo = models.DurationField(default=0)
     idMinuta = models.ForeignKey(Minuta, on_delete=models.CASCADE)
-    idRecibo = models.ForeignKey(Recibo, on_delete=models.PROTECT, blank=True, null=True)
 
     class Meta:
         db_table = 'MinutaItens'
