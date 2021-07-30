@@ -21,6 +21,7 @@ class Recibo(models.Model):
 
 class ReciboItens(models.Model):
     idReciboItens = models.AutoField(primary_key=True)
+    idMinutaItens = models.ForeignKey('minutas.MinutaItens', on_delete=models.PROTECT)
     idRecibo = models.ForeignKey(Recibo, on_delete=models.CASCADE)
 
     class Meta:
