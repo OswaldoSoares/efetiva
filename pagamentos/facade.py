@@ -242,8 +242,6 @@ def create_pagamento_avulso(datainicial, datafinal, idpessoal, vales):
             if itens.Cargo == 'AJUDANTE':
                 minutaitens = MinutaItens.objects.filter(
                     TipoItens='PAGA', idMinuta=itens.idMinuta, Descricao='AJUDANTE',
-                    # 'erro para resolver'
-                    # idRecibo_id__isnull='True',
                     idMinuta_id__DataMinuta__range=[datainicial, datafinal])
                 if minutaitens:
                     recibo.append({'Data': itens.idMinuta.DataMinuta, 'Minuta': itens.idMinuta.Minuta,
@@ -253,8 +251,6 @@ def create_pagamento_avulso(datainicial, datafinal, idpessoal, vales):
             elif itens.Cargo == 'MOTORISTA':
                 minutaitens = MinutaItens.objects.filter(
                     TipoItens='PAGA', idMinuta=itens.idMinuta,
-                    # 'erro para resolver'
-                    # idRecibo_id__isnull='True',
                     idMinuta_id__DataMinuta__range=[datainicial, datafinal]).exclude(Descricao='AJUDANTE')
                 for x in minutaitens:
                     recibo.append({'Data': itens.idMinuta.DataMinuta, 'Minuta': itens.idMinuta.Minuta,
@@ -296,7 +292,8 @@ def create_pagamento_avulso(datainicial, datafinal, idpessoal, vales):
             for itens in minutas:
                 obj = itens
                 obj.Pago = True
-                obj.save(update_fields=['Pago'])
+                obj.idRecibo_id = new_idrecibo
+                obj.save(update_fields=['Pago', 'idRecibo_id'])
 
 
 def create_contracheque(mesreferencia, anoreferencia, valor, idpessoal):
@@ -429,6 +426,7 @@ def exclui_vale(idvales):
 
 def exclui_recibo(idrecibo):
     Vales.objects.filter(idRecibo_id=idrecibo).update(idRecibo_id=None, Pago=False)
+    MinutaColaboradores.objects.filter(idRecibo_id=idrecibo).update(idRecibo_id=None, Pago=False)
     reciboitens = ReciboItens.objects.filter(idRecibo_id=idrecibo)
     if reciboitens:
         reciboitens.delete()
