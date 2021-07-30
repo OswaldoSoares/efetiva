@@ -12,7 +12,6 @@ from django.db.models import F, ExpressionWrapper, DecimalField
 
 @has_permission_decorator('modulo_faturamento')
 def index_pagamento(request):
-    MinutaColaboradores.objects.all().update(idRecibo_id=None, Pago=False)
     contexto = facade.create_context_formcontracheque()
     contextovales = facade.cria_contexto_pagamentos()
     contexto.update(contextovales)
