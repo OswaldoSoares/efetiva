@@ -17,3 +17,13 @@ class Recibo(models.Model):
         db_table = 'Recibo'
 
     objects = models.Manager()
+
+
+class ReciboItens(models.Model):
+    idReciboItens = models.AutoField(primary_key=True)
+    idRecibo = models.ForeignKey(Recibo, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'idRecibo'
+
+    objects = models.Manager()
