@@ -445,25 +445,26 @@ def consultaminuta(request, idmin):
     if ajudantes_paga > 0:
         switch_paga['ajudante'] = True
     # Altera os switchs a pagar para ligados conforme valores das tabelas dos cliente
-    if motorista_da_minuta[0].TipoPgto != 'MENSALISTA':
-        if phkescpaga[0:1] == '1':
-            switch_paga['porcentagem'] = True
-        if phkescpaga[1:2] == '1':
-            switch_paga['horas'] = True
-            switch_paga['horasexcede'] = True
-        if phkescpaga[2:3] == '1':
-            switch_paga['kilometragem'] = True
-        if phkescpaga[3:4] == '1':
-            switch_paga['entregas'] = True
-            switch_paga['entregaskg'] = True
-            switch_paga['entregasvolume'] = True
-        if phkescpaga[4:5] == '1':
-            switch_paga['saida'] = True
-        if phkescpaga[5:6] == '1':
-            switch_paga['capacidade'] = True
-        if tabelaperimetro:
-            if porceperimetropaga != 0:
-                switch_paga['perimetro'] = True
+    if motorista_da_minuta:
+        if motorista_da_minuta[0].TipoPgto != 'MENSALISTA':
+            if phkescpaga[0:1] == '1':
+                switch_paga['porcentagem'] = True
+            if phkescpaga[1:2] == '1':
+                switch_paga['horas'] = True
+                switch_paga['horasexcede'] = True
+            if phkescpaga[2:3] == '1':
+                switch_paga['kilometragem'] = True
+            if phkescpaga[3:4] == '1':
+                switch_paga['entregas'] = True
+                switch_paga['entregaskg'] = True
+                switch_paga['entregasvolume'] = True
+            if phkescpaga[4:5] == '1':
+                switch_paga['saida'] = True
+            if phkescpaga[5:6] == '1':
+                switch_paga['capacidade'] = True
+            if tabelaperimetro:
+                if porceperimetropaga != 0:
+                    switch_paga['perimetro'] = True
     # Cria as chaves para o dict
     for item in keys_recebe:
         tabela_recebe_e_paga[item] = {}
