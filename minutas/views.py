@@ -1,6 +1,6 @@
 from io import BytesIO
 from textwrap import wrap
-from django.db.models import Value, Sum, Max
+from django.db.models import Value, Sum, Max, F
 from django.db.models.functions import Concat
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import redirect, get_object_or_404
@@ -211,8 +211,10 @@ def consultaminuta(request, idmin):
         # fecha_minuta(request, idmin)
     # Cria queryset obj minuta - motorista - ajudante - ajudante quantidade
     minuta = Minuta.objects.filter(idMinuta=idmin)
-    motorista_da_minuta = MinutaColaboradores.objects.filter(idMinuta=idmin, Cargo='MOTORISTA')
-    ajudantes_da_minuta = MinutaColaboradores.objects.filter(idMinuta=idmin, Cargo='AJUDANTE')
+    motorista_da_minuta = MinutaColaboradores.objects.filter(idMinuta=idmin, Cargo='MOTORISTA').annotate(
+        TipoPgto=F('idPessoal__TipoPgto'))
+    ajudantes_da_minuta = MinutaColaboradores.objects.filter(idMinuta=idmin, Cargo='AJUDANTE').annotate(
+        TipoPgto=F('idPessoal__TipoPgto'))
     total_de_ajudantes = MinutaColaboradores.objects.filter(idMinuta=idmin, Cargo='AJUDANTE').count()
     itens_paga_motorista = MinutaItens.objects.filter(idMinuta=idmin, TipoItens='PAGA').exclude(Descricao='AJUDANTE')
     soma_paga_motorista = str(sum([i['Valor'] for i in itens_paga_motorista.values('Valor')]))
@@ -354,6 +356,11 @@ def consultaminuta(request, idmin):
     itensminuta = MinutaItens.objects.filter(idMinuta=idmin, TipoItens='DESPESA').order_by('Descricao')
     veiculo = ''
     idveiculo = list(minuta.values('idVeiculo')[0].values())[0]
+    ajudantes_mensalistas = 0
+    for itens in ajudantes_da_minuta:
+        if itens.TipoPgto == 'MENSALISTA':
+            ajudantes_mensalistas += 1
+    ajudantes_paga = total_de_ajudantes - ajudantes_mensalistas
     if motorista_da_minuta:
         veiculo = Veiculo.objects.filter(idVeiculo=idveiculo)
     minuta_itens_fechada = MinutaItens.objects.filter(idMinuta=idmin).order_by('TipoItens', 'Descricao')
@@ -361,7 +368,7 @@ def consultaminuta(request, idmin):
     Criaremos um dict 'tabela_recebe_e_paga' com todas as informações para gerar a tabela de recebimento e
     pagamento. A tabela será formada por 9 colunas sendo a primeira com as descrições (keys) e as demais divididas em
     4 para recebimento e 4 para pagamento. 1ª Coluna - switch - 2ª Coluna dados das tabelas - 3ª Coluna dados da
-    minuta - 4ª Coluna para ostotais que serão executados no frontend.
+    minuta - 4ª Coluna para os totais que serão executados no frontend.
 
     """
     # Cria dict vazio
@@ -403,7 +410,7 @@ def consultaminuta(request, idmin):
     # Cria lista a pagar para os inputs com os valores daminuta
     values_minuta_paga = [totalvalornotas['totalvalor'], minimohoras, excedehoras, totalkm, totalquantidadenotas,
                           totalpesonotas['totalpeso'], totalvolumenotas['totalvolume'], None, None, 0, 0,
-                          total_de_ajudantes]
+                          ajudantes_paga]
     # Cria dict com os switchs a receber desligados
     switch_recebe = {}
     for item in keys_nome_recebe:
@@ -435,26 +442,28 @@ def consultaminuta(request, idmin):
             switch_recebe['perimetro'] = True
     if ajudantes_da_minuta:
         switch_recebe['ajudante'] = True
+    if ajudantes_paga > 0:
         switch_paga['ajudante'] = True
     # Altera os switchs a pagar para ligados conforme valores das tabelas dos cliente
-    if phkescpaga[0:1] == '1':
-        switch_paga['porcentagem'] = True
-    if phkescpaga[1:2] == '1':
-        switch_paga['horas'] = True
-        switch_paga['horasexcede'] = True
-    if phkescpaga[2:3] == '1':
-        switch_paga['kilometragem'] = True
-    if phkescpaga[3:4] == '1':
-        switch_paga['entregas'] = True
-        switch_paga['entregaskg'] = True
-        switch_paga['entregasvolume'] = True
-    if phkescpaga[4:5] == '1':
-        switch_paga['saida'] = True
-    if phkescpaga[5:6] == '1':
-        switch_paga['capacidade'] = True
-    if tabelaperimetro:
-        if porceperimetropaga != 0:
-            switch_paga['perimetro'] = True
+    if motorista_da_minuta[0].TipoPgto != 'MENSALISTA':
+        if phkescpaga[0:1] == '1':
+            switch_paga['porcentagem'] = True
+        if phkescpaga[1:2] == '1':
+            switch_paga['horas'] = True
+            switch_paga['horasexcede'] = True
+        if phkescpaga[2:3] == '1':
+            switch_paga['kilometragem'] = True
+        if phkescpaga[3:4] == '1':
+            switch_paga['entregas'] = True
+            switch_paga['entregaskg'] = True
+            switch_paga['entregasvolume'] = True
+        if phkescpaga[4:5] == '1':
+            switch_paga['saida'] = True
+        if phkescpaga[5:6] == '1':
+            switch_paga['capacidade'] = True
+        if tabelaperimetro:
+            if porceperimetropaga != 0:
+                switch_paga['perimetro'] = True
     # Cria as chaves para o dict
     for item in keys_recebe:
         tabela_recebe_e_paga[item] = {}
