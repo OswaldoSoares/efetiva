@@ -293,6 +293,13 @@ def create_pagamento_avulso(datainicial, datafinal, idpessoal, vales):
                 obj.Pago = True
                 obj.idRecibo_id = new_idrecibo
                 obj.save(update_fields=['Pago', 'idRecibo_id'])
+    data = dict()
+    data['html_saldoavulso'] = html_saldoavulso(datainicial, datafinal)
+    data['html_minutas'] = html_minutasavulso(datainicial, datafinal, idpessoal)
+    data['html_recibos'] = html_recibo_avulso(idpessoal)
+    data['html_valesavulso'] = html_vale(idpessoal, 'avulso', 0)
+    c_return = JsonResponse(data)
+    return c_return
 
 
 def create_contracheque(mesreferencia, anoreferencia, valor, idpessoal):

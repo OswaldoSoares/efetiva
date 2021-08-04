@@ -359,7 +359,12 @@ $(document).on('click', '#gerar-pagamento', function(event) {
             ValesSelecionados: valesselecionados,
         },
         success: function(data){
-            $(".fp-base").html(data.html_folha);
+            $(".pa-saldo-minutas").html(data.html_saldoavulso);
+            $(".pa-minutas").html(data.html_minutas);
+            $(".pa-vales").html(data.html_valesavulso);
+            $(".pa-recibos").html(data.html_recibos);
+            valeselect('#vale_' + idpessoal);
+            somavales();
         },
         error: function(error) {
             console.log(error)
