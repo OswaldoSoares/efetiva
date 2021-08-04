@@ -72,10 +72,7 @@ def create_context_avulso():
 
 
 def get_periodo_pagamento_avulsos():
-    ' Quando estiver tudook mostrar apenas os avulsos '
-    # periodo = MinutaColaboradores.objects.filter(Pago=False).exclude(idPessoal__TipoPgto='MENSALISTA').aggregate(
-    #     DataInicial=Min('idMinuta__DataMinuta'), DataFinal=Max('idMinuta__DataMinuta'))
-    periodo = MinutaColaboradores.objects.filter(Pago=False).aggregate(
+    periodo = MinutaColaboradores.objects.filter(Pago=False).exclude(idPessoal__TipoPgto='MENSALISTA').aggregate(
         DataInicial=Min('idMinuta__DataMinuta'), DataFinal=Max('idMinuta__DataMinuta'))
     periodo['DataInicial'] = periodo['DataInicial'].strftime('%Y-%m-%d')
     periodo['DataFinal'] = periodo['DataFinal'].strftime('%Y-%m-%d')
@@ -200,7 +197,6 @@ def html_minutasavulso(datainicial, datafinal, idpessoal):
     for index, itens in enumerate(minutas):
         if itens.Cargo == 'AJUDANTE':
             minutaitens = MinutaItens.objects.filter(TipoItens='PAGA', idMinuta=itens.idMinuta, Descricao='AJUDANTE',
-                                                     # idRecibo_id__isnull='True',
                                                      idMinuta_id__DataMinuta__range=[datainicial, datafinal])
             if minutaitens:
                 recibo.append({'Data': itens.idMinuta.DataMinuta, 'Minuta': itens.idMinuta.Minuta,
@@ -208,7 +204,6 @@ def html_minutasavulso(datainicial, datafinal, idpessoal):
                                'Valor': minutaitens[0].ValorBase})
         elif itens.Cargo == 'MOTORISTA':
             minutaitens = MinutaItens.objects.filter(TipoItens='PAGA', idMinuta=itens.idMinuta,
-                                                     # idRecibo_id__isnull='True',
                                                      idMinuta_id__DataMinuta__range=[datainicial, datafinal]).exclude(
                 Descricao='AJUDANTE')
             for minutas in minutaitens:
@@ -592,7 +587,6 @@ def seleciona_vales(idpessoal):
 
 def select_minutas_contracheque(mesreferencia, anoreferencia, idpessoal):
     dia, diafinal = periodo_cartaoponto(mesreferencia, anoreferencia)
-    # FMT = '%H:%M'
     minutas = MinutaColaboradores.objects.filter(idPessoal=idpessoal, idMinuta_id__DataMinuta__range=(
         dia, diafinal)).exclude(idMinuta_id__StatusMinuta='ABERTA').order_by('idMinuta_id__DataMinuta').values(
         'idMinuta_id__DataMinuta', 'idMinuta_id__Minuta', 'idMinuta_id__idCliente__Fantasia',
