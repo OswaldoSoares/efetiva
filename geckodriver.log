@@ -46,7 +46,8 @@ GeckoDriver.prototype.minimizeWindow@chrome://marionette/content/driver.js:2500:
 console.log: WebExtensions: reset-default-search: starting.
 console.log: WebExtensions: reset-default-search: No addons in our list are installed.
 JavaScript error: , line 0: NS_ERROR_NOT_AVAILABLE
-ote" "-profile" "C:\\Users\\oswal\\AppData\\Local\\Temp\\rust_mozprofileB2ax1j"
+1628298236236	Marionette	INFO	Stopped listening on port 53809
+ozprofileB2ax1j"
 [GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
 1628259452592	Marionette	INFO	Marionette enabled
 [GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=

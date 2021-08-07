@@ -7,3 +7,4 @@ media
 minutas/functions.py
 desktop.ini
 *.json
+geckodriver.log
