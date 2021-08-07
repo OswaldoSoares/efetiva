@@ -1,0 +1,136 @@
+1628259298065	geckodriver	INFO	Listening on 127.0.0.1:49921
+1628259301831	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\oswal\\AppData\\Local\\Temp\\rust_mozprofileXyMcJ5"
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+1628259307242	Marionette	INFO	Marionette enabled
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\oswal\\AppData\\Local\\Temp\\rust_mozprofileXyMcJ5\\search.json.mozlz4", (void 0)))
+1628259318139	Marionette	INFO	Listening on port 49929
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+1628259318729	Marionette	WARN	TLS certificate errors will be ignored for this session
+1628259323764	Marionette	INFO	Stopped listening on port 49929
+[Parent 3464, IPC I/O Parent] WARNING: pipe error: 232: file /builds/worker/checkouts/gecko/ipc/chromium/src/chrome/common/ipc_channel_win.cc:544
+1628259352031	geckodriver	INFO	Listening on 127.0.0.1:50894
+1628259355093	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\oswal\\AppData\\Local\\Temp\\rust_mozprofile2bE6Zs"
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+1628259356663	Marionette	INFO	Marionette enabled
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\oswal\\AppData\\Local\\Temp\\rust_mozprofile2bE6Zs\\search.json.mozlz4", (void 0)))
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+1628259363019	Marionette	INFO	Listening on port 50902
+1628259363565	Marionette	WARN	TLS certificate errors will be ignored for this session
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+1628259367413	Marionette	INFO	Stopped listening on port 50902
+console.warn: services.settings: main/whats-new-panel sync interrupted by shutdown
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1628259407359	geckodriver	INFO	Listening on 127.0.0.1:53801
+1628259410391	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\oswal\\AppData\\Local\\Temp\\rust_mozprofilevTbN6R"
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+1628259412265	Marionette	INFO	Marionette enabled
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\oswal\\AppData\\Local\\Temp\\rust_mozprofilevTbN6R\\search.json.mozlz4", (void 0)))
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+1628259417022	Marionette	INFO	Listening on port 53809
+1628259417634	Marionette	WARN	TLS certificate errors will be ignored for this session
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+1628259426559	Marionette	WARN	TimedPromise timed out after 5000 ms: stacktrace:
+TimedPromise/<@chrome://marionette/content/sync.js:237:19
+TimedPromise@chrome://marionette/content/sync.js:222:10
+GeckoDriver.prototype.minimizeWindow@chrome://marionette/content/driver.js:2500:11
+console.log: WebExtensions: reset-default-search: starting.
+console.log: WebExtensions: reset-default-search: No addons in our list are installed.
+JavaScript error: , line 0: NS_ERROR_NOT_AVAILABLE
+ote" "-profile" "C:\\Users\\oswal\\AppData\\Local\\Temp\\rust_mozprofileB2ax1j"
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+1628259452592	Marionette	INFO	Marionette enabled
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\oswal\\AppData\\Local\\Temp\\rust_mozprofileB2ax1j\\search.json.mozlz4", (void 0)))
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+1628259458860	Marionette	INFO	Listening on port 53867
+1628259459515	Marionette	WARN	TLS certificate errors will be ignored for this session
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+JavaScript error: resource://gre/actors/AutoCompleteChild.jsm, line 125: Error: Invalid autocomplete selectedIndex
+JavaScript error: resource://gre/actors/AutoCompleteChild.jsm, line 125: Error: Invalid autocomplete selectedIndex
+JavaScript error: resource://gre/modules/LoginManagerChild.jsm, line 194: NS_ERROR_XPC_JAVASCRIPT_ERROR_WITH_DETAILS: [JavaScript Error: "Invalid autocomplete selectedIndex" {file: "resource://gre/actors/AutoCompleteChild.jsm" line: 125}]'[JavaScript Error: "Invalid autocomplete selectedIndex" {file: "resource://gre/actors/AutoCompleteChild.jsm" line: 125}]' when calling method: [nsIAutoCompletePopup::selectedIndex]
+1628259565242	Marionette	INFO	Stopped listening on port 53867
+1628259566546	geckodriver	INFO	Listening on 127.0.0.1:58916
+1628259569618	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\oswal\\AppData\\Local\\Temp\\rust_mozprofileLO2HVd"
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+1628259570990	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\oswal\\AppData\\Local\\Temp\\rust_mozprofileLO2HVd\\search.json.mozlz4", (void 0)))
+1628259575698	Marionette	INFO	Listening on port 58924
+1628259575980	Marionette	WARN	TLS certificate errors will be ignored for this session
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+[Parent 8600, IPC I/O Parent] WARNING: file /builds/worker/checkouts/gecko/ipc/chromium/src/base/process_util_win.cc:167
+1628259604032	Marionette	INFO	Stopped listening on port 58924
+1628259802577	geckodriver	INFO	Listening on 127.0.0.1:54647
+1628259805691	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\oswal\\AppData\\Local\\Temp\\rust_mozprofile1NoRwq"
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+1628259807611	Marionette	INFO	Marionette enabled
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\oswal\\AppData\\Local\\Temp\\rust_mozprofile1NoRwq\\search.json.mozlz4", (void 0)))
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+1628259813855	Marionette	INFO	Listening on port 54659
+1628259814269	Marionette	WARN	TLS certificate errors will be ignored for this session
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+IPDL protocol error: Handler returned error code!
+
+###!!! [Parent][DispatchAsyncMessage] Error: PLayerTransaction::Msg_ReleaseLayer Processing error: message was deserialized, but the handler returned false (indicating failure)
+
+JavaScript error: resource://gre/modules/CrashManager.jsm, line 829: AbortError: IOUtils: Shutting down and refusing additional I/O tasks
+1628259866123	Marionette	INFO	Stopped listening on port 54659
+1628295044796	geckodriver	INFO	Listening on 127.0.0.1:61657
+1628295047816	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\oswal\\AppData\\Local\\Temp\\rust_mozprofileBT67K8"
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+1628295049845	Marionette	INFO	Marionette enabled
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\oswal\\AppData\\Local\\Temp\\rust_mozprofileBT67K8\\search.json.mozlz4", (void 0)))
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+1628295057863	Marionette	INFO	Listening on port 61665
+1628295058392	Marionette	WARN	TLS certificate errors will be ignored for this session
+console.error: Region.jsm: "Error fetching region" (new Error("TIMEOUT", "resource://gre/modules/Region.jsm", 772))
+console.error: Region.jsm: "Failed to fetch region" (new Error("TIMEOUT", "resource://gre/modules/Region.jsm", 419))
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+1628295063748	Marionette	INFO	Stopped listening on port 61665
+console.error: services.settings: 
+  main/cfr Signature failed  TypeError: NetworkError when attempting to fetch resource.
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1628296731237	geckodriver	INFO	Listening on 127.0.0.1:61602
+1628296734273	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\oswal\\AppData\\Local\\Temp\\rust_mozprofileaqf4v2"
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+1628296735969	Marionette	INFO	Marionette enabled
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\oswal\\AppData\\Local\\Temp\\rust_mozprofileaqf4v2\\search.json.mozlz4", (void 0)))
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+1628296745882	Marionette	INFO	Listening on port 61611
+1628296746388	Marionette	WARN	TLS certificate errors will be ignored for this session
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+1628296750129	Marionette	INFO	Stopped listening on port 61611
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1628296832794	geckodriver	INFO	Listening on 127.0.0.1:62937
+1628296835797	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\oswal\\AppData\\Local\\Temp\\rust_mozprofileKcJxuy"
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+1628296837245	Marionette	INFO	Marionette enabled
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\oswal\\AppData\\Local\\Temp\\rust_mozprofileKcJxuy\\search.json.mozlz4", (void 0)))
+1628296842420	Marionette	INFO	Listening on port 62945
+1628296842509	Marionette	WARN	TLS certificate errors will be ignored for this session
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs igd10umd32 v= and igd10iumd32 v=
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1628296847421	Marionette	INFO	Stopped listening on port 62945
+console.warn: services.settings: main/cfr sync interrupted by shutdown

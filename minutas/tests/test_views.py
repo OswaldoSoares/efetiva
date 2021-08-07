@@ -1,10 +1,22 @@
-from django.test import TestCase
-from django.urls import reverse
-from minutas.views import index_minuta
+from selenium import webdriver
+import unittest
 
 
-class URLTests(TestCase):
-    def test_minuta_index(self):
+class AcessaModuloMinutas(unittest.TestCase):
 
-        response = self.client.get('/')
-        self.assertEqual(response.status_code, 200)
+    def setUp(self):
+        self.browser = webdriver.Firefox()
+
+    def tearDown(self):
+        self.browser.quit()
+
+    def test_verifica_pagina_inicial_modulo_miutas(self):
+        self.browser.get('http://localhost:8000/minutas')
+
+        # Título da pagina menciona a palavra Modulo
+        self.assertIn('Módulo', self.browser.title)
+        self.fail('Teste Finalizado!')
+
+
+if __name__ == '__main__':
+    unittest.main()
