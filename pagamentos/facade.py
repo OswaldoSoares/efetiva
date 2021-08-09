@@ -111,9 +111,9 @@ def get_saldo_pagamento_avulso(datainicial, datafinal):
         dict_vale, saldo_vales_select = get_vales_select(colaboradores.idPessoal, 0)
         total_select += saldo_vales_select
         " Colocar aqui condição para mostrar apenas colaboradores com saldo ou vale"
-        if saldo_colaborador > 0 or saldo_vales > 0:
-            saldo.append({'Nome': colaboradores.Nome, 'idPessoal': colaboradores.idPessoal, 'Saldo': saldo_colaborador,
-                        'ValeSelect': saldo_vales_select, 'ValeTotal': total_vales})
+        # if saldo_colaborador > 0 or saldo_vales > 0:
+        saldo.append({'Nome': colaboradores.Nome, 'idPessoal': colaboradores.idPessoal, 'Saldo': saldo_colaborador,
+                      'ValeSelect': saldo_vales_select, 'ValeTotal': total_vales})
     return saldo, saldo_total, saldo_vales, total_select
 
 
