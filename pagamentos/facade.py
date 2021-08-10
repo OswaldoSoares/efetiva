@@ -86,21 +86,23 @@ def get_saldo_pagamento_avulso(datainicial, datafinal):
     saldo_vales = 0
     total_select = 0
     for colaboradores in avulsos:
-        colaborador = MinutaColaboradores.objects.filter(idPessoal__Nome=colaboradores.Nome, Pago=False)
+        colaborador = MinutaColaboradores.objects.filter(
+            idPessoal__Nome=colaboradores.Nome, Pago=False).exclude(idMinuta__StatusMinuta='ABERTA')
         saldo_colaborador = 0
         for index, itens in enumerate(colaborador):
             if itens.Cargo == 'AJUDANTE':
                 base_valor = ExpressionWrapper(F('Valor') / F('Quantidade'), output_field=DecimalField())
-                ajudante = MinutaItens.objects.values(ValorAjudante=base_valor).filter(TipoItens='PAGA',
-                                                      idMinuta=itens.idMinuta, Descricao='AJUDANTE',
-                                                      idMinuta_id__DataMinuta__range=[datainicial, datafinal])
+                ajudante = MinutaItens.objects.values(ValorAjudante=base_valor).filter(
+                    TipoItens='PAGA', idMinuta=itens.idMinuta, Descricao='AJUDANTE',
+                    idMinuta_id__DataMinuta__range=[datainicial, datafinal])
                 if ajudante:
                     saldo_colaborador += ajudante[0]['ValorAjudante']
                     saldo_total += ajudante[0]['ValorAjudante']
             elif itens.Cargo == 'MOTORISTA':
-                motorista = MinutaItens.objects.filter(TipoItens='PAGA', idMinuta=itens.idMinuta,
-                                                       idMinuta_id__DataMinuta__range=[datainicial, datafinal]).exclude(
-                                                       Descricao='AJUDANTE').aggregate(ValorMotorista=Sum('Valor'))
+                motorista = MinutaItens.objects.filter(
+                    TipoItens='PAGA', idMinuta=itens.idMinuta,
+                    idMinuta_id__DataMinuta__range=[datainicial, datafinal]).exclude(
+                    Descricao='AJUDANTE').aggregate(ValorMotorista=Sum('Valor'))
                 if motorista['ValorMotorista']:
                     saldo_colaborador += motorista['ValorMotorista']
                     saldo_total += motorista['ValorMotorista']
@@ -193,19 +195,22 @@ def seleciona_minutasavulso(datainicial, datafinal, idpessoal):
 def html_minutasavulso(datainicial, datafinal, idpessoal):
     recibo = []
     colaborador = facade.get_pessoal(idpessoal)
-    minutas = MinutaColaboradores.objects.filter(idPessoal=idpessoal, Pago=False,
-                                                 idMinuta_id__DataMinuta__range=[datainicial, datafinal])
+    minutas = MinutaColaboradores.objects.filter(
+        idPessoal=idpessoal, Pago=False, idMinuta_id__DataMinuta__range=[datainicial, datafinal]).exclude(
+        idMinuta__StatusMinuta='ABERTA').exclude(idMinuta__StatusMinuta='CONCLUIDA')
     for index, itens in enumerate(minutas):
         if itens.Cargo == 'AJUDANTE':
-            minutaitens = MinutaItens.objects.filter(TipoItens='PAGA', idMinuta=itens.idMinuta, Descricao='AJUDANTE',
-                                                     idMinuta_id__DataMinuta__range=[datainicial, datafinal])
+            minutaitens = MinutaItens.objects.filter(
+                TipoItens='PAGA', idMinuta=itens.idMinuta, Descricao='AJUDANTE',
+                idMinuta_id__DataMinuta__range=[datainicial, datafinal])
             if minutaitens:
                 recibo.append({'Data': itens.idMinuta.DataMinuta, 'Minuta': itens.idMinuta.Minuta,
                                'Cliente': itens.idMinuta.idCliente.Fantasia, 'Descricao': minutaitens[0].Descricao,
                                'Valor': minutaitens[0].ValorBase})
         elif itens.Cargo == 'MOTORISTA':
-            minutaitens = MinutaItens.objects.filter(TipoItens='PAGA', idMinuta=itens.idMinuta,
-                                                     idMinuta_id__DataMinuta__range=[datainicial, datafinal]).exclude(
+            minutaitens = MinutaItens.objects.filter(
+                TipoItens='PAGA', idMinuta=itens.idMinuta,
+                idMinuta_id__DataMinuta__range=[datainicial, datafinal]).exclude(
                 Descricao='AJUDANTE')
             for minutas in minutaitens:
                 recibo.append({'Data': itens.idMinuta.DataMinuta, 'Minuta': itens.idMinuta.Minuta,
@@ -226,7 +231,8 @@ def create_folha(mesreferencia, anoreferencia):
 def create_pagamento_avulso(datainicial, datafinal, idpessoal, vales):
     recibo = []
     minutas = MinutaColaboradores.objects.filter(
-        idPessoal=idpessoal, Pago=False, idMinuta_id__DataMinuta__range=[datainicial, datafinal])
+        idPessoal=idpessoal, Pago=False, idMinuta_id__DataMinuta__range=[datainicial, datafinal]).exclude(
+        idMinuta__StatusMinuta='ABERTA').exclude(idMinuta__StatusMinuta='CONCLUIDA')
     if minutas:
         for index, itens in enumerate(minutas):
             motorista = MinutaColaboradores.objects.filter(Cargo='MOTORISTA', idMinuta_id=itens.idMinuta)
