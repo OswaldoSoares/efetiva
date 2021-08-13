@@ -20,7 +20,9 @@
                     <td class="fp-recibo-valor" id="valor_{{ value.idRecibos }}_Vale">R$ {{ itens.ValorRecibo }}</td>
                     <td class="fp-recibo-estorna">
                         <button class="btn btn-danger btn-xs glyphicon glyphicon-backward estorna-recibo"
-                                data-url="{% url 'excluirecibo' %}" idrecibo="{{ itens.idRecibo }}">
+                                data-url="{% url 'excluirecibo' %}" idrecibo="{{ itens.idRecibo }}"
+                                datainicial="{{ datainicial }}" datafinal="{{ datafinal }}"
+                                idpessoal="{{ itens.idPessoal }}">
                         </button>
                     </td>
                     <td class="fp-recibo-print">

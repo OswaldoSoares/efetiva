@@ -205,11 +205,11 @@ def exclui_vale(request):
 
 def exclui_recibo(request):
     c_idrecibo = request.GET.get('idRecibo')
-    c_mes = request.POST.get('MesReferencia')
-    c_ano = request.POST.get('AnoReferencia')
-    c_idpessoal = request.POST.get('idPessoal')
-    facade.exclui_recibo(c_idrecibo)
-    data = facade.seleciona_contracheque(c_mes, c_ano, c_idpessoal, request)
+    c_idpessoal = request.GET.get('idPessoal')
+    c_datainicial = request.GET.get('DataInicial')
+    c_datafinal = request.GET.get('DataFinal')
+    # c_vales = request.GET.getlist('ValesSelecionados[]')
+    data = facade.exclui_recibo(c_idrecibo, c_datainicial, c_datafinal, c_idpessoal)
     return data
 
 

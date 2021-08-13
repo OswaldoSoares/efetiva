@@ -291,24 +291,12 @@ $(document).on('click', '.estorna-recibo', function(event) {
             idPessoal: idpessoal,
         },
         success: function(data){
-            $(".fp-base").html(data.html_folha)
-            $(".fp-contracheque").html("");
-            $(".fp-contracheque").html(data.html_contracheque);
-            $(".fp-cartaoponto").html("");
-            $(".fp-cartaoponto").html(data.html_cartaoponto);
-            $(".fp-contrachequeitens").html("");
-            $(".fp-contrachequeitens").html(data.html_formccitens);
-            $(".fp-adiantamento").html("");
-            $(".fp-adiantamento").html(data.html_formccadianta);
-            $(".fp-minutas").html("");
-            $(".fp-minutas").html(data.html_minutascontracheque);
-            $(".fp-vales").html("");
-            $(".fp-vales").html(data.html_vales);
-            $(".fp-recibo").html("");
-            $(".fp-recibo").html(data.html_recibos);
-            if (data.html_adiantamento == true) {
-                $(".fp-adiantamento").hide();
-            }
+            $(".pa-saldo-minutas").html(data.html_saldoavulso);
+            $(".pa-minutas").html(data.html_minutas);
+            $(".pa-vales").html(data.html_valesavulso);
+            $(".pa-recibos").html(data.html_recibos);
+            valeselect('#vale_' + idpessoal);
+            somavales();
         },
         error: function(error) {
             console.log(error)

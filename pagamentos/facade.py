@@ -186,7 +186,7 @@ def calcula_total_vales(idpessoal):
 def seleciona_minutasavulso(datainicial, datafinal, idpessoal):
     data = dict()
     data['html_minutas'] = html_minutasavulso(datainicial, datafinal, idpessoal)
-    data['html_recibos'] = html_recibo_avulso(idpessoal)
+    data['html_recibos'] = html_recibo_avulso(datainicial, datafinal, idpessoal)
     data['html_valesavulso'] = html_vale(idpessoal, 'avulso', 0)
     c_return = JsonResponse(data)
     return c_return
@@ -265,7 +265,7 @@ def create_pagamento_avulso(datainicial, datafinal, idpessoal, vales):
         for itens in vales:
             vale = Vales.objects.get(idVales=itens[3:-5])
             total_vales += float(vale.Valor)
-        html_recibo_avulso(idpessoal)
+        # html_recibo_avulso(idpessoal)
         if total_recibo >= total_vales:
             numero_recibo = Recibo.objects.aggregate(Maior=Max('Recibo'))
             if not numero_recibo['Maior']:
@@ -295,10 +295,11 @@ def create_pagamento_avulso(datainicial, datafinal, idpessoal, vales):
                 obj.Pago = True
                 obj.idRecibo_id = new_idrecibo
                 obj.save(update_fields=['Pago', 'idRecibo_id'])
+
     data = dict()
-    data['html_saldoavulso'] = html_saldoavulso(datainicial, datafinal)
+    data['html_saldoavulso'] = html_saldo_avulso(datainicial, datafinal)
     data['html_minutas'] = html_minutasavulso(datainicial, datafinal, idpessoal)
-    data['html_recibos'] = html_recibo_avulso(idpessoal)
+    data['html_recibos'] = html_recibo_avulso(datainicial, datafinal, idpessoal)
     data['html_valesavulso'] = html_vale(idpessoal, 'avulso', 0)
     c_return = JsonResponse(data)
     return c_return
@@ -432,7 +433,10 @@ def exclui_vale(idvales):
     vale.delete()
 
 
-def exclui_recibo(idrecibo):
+def exclui_recibo(idrecibo, datainicial, datafinal, idpessoal):
+    periodo = get_periodo_pagamento_avulsos()
+    datainicial = periodo['DataInicial']
+    datafinal = periodo['DataFinal']
     Vales.objects.filter(idRecibo_id=idrecibo).update(idRecibo_id=None, Pago=False)
     MinutaColaboradores.objects.filter(idRecibo_id=idrecibo).update(idRecibo_id=None, Pago=False)
     reciboitens = ReciboItens.objects.filter(idRecibo_id=idrecibo)
@@ -441,6 +445,13 @@ def exclui_recibo(idrecibo):
     recibo = get_recibo_id(idrecibo)
     if recibo:
         recibo.delete()
+    data = dict()
+    data['html_saldoavulso'] = html_saldo_avulso(datainicial, datafinal)
+    data['html_minutas'] = html_minutasavulso(datainicial, datafinal, idpessoal)
+    data['html_recibos'] = html_recibo_avulso(datainicial, datafinal, idpessoal)
+    data['html_valesavulso'] = html_vale(idpessoal, 'avulso', 0)
+    c_return = JsonResponse(data)
+    return c_return
 
 
 def get_contracheque(idpessoal: int):
@@ -557,7 +568,7 @@ def seleciona_contracheque(mesreferencia, anoreferencia, idpessoal, request):
 
 def seleciona_saldoavulso(datainicial, datafinal):
     data = dict()
-    data['html_saldoavulso'] = html_saldoavulso(datainicial, datafinal)
+    data['html_saldoavulso'] = html_saldo_avulso(datainicial, datafinal)
     c_return = JsonResponse(data)
     return c_return
 
@@ -618,9 +629,9 @@ def select_minutas_contracheque(mesreferencia, anoreferencia, idpessoal):
     return minutas
 
 
-def html_recibo_avulso(idpessoal):
+def html_recibo_avulso(datainicial, datafinal, idpessoal):
     recibos = Recibo.objects.filter(idPessoal_id=idpessoal)
-    context = {'recibos': recibos}
+    context = {'recibos': recibos, 'idpessoal': idpessoal, 'datainicial': datainicial, 'datafinal': datafinal}
     c_return = render_to_string('pagamentos/reciboavulso.html', context)
     return c_return
 
@@ -802,14 +813,6 @@ def html_formccitens(contracheque, request):
     formcontrachequeitens = CadastraContraChequeItens()
     contextform = {'formcontrachequeitens': formcontrachequeitens, 'contracheque': contracheque}
     c_return = render_to_string('pagamentos/contrachequeitens.html', contextform, request=request)
-    return c_return
-
-
-def html_saldoavulso(datainicial, datafinal):
-    saldo, saldototal, saldovales, totalselect = get_saldo_pagamento_avulso(datainicial, datafinal)
-    context = {'saldo': saldo, 'saldototal': saldototal, 'saldovales': saldovales,  'totalselect': totalselect,
-               'datainicial': datainicial, 'datafinal': datafinal}
-    c_return = render_to_string('pagamentos/saldoavulso.html', context)
     return c_return
 
 
@@ -998,3 +1001,19 @@ def print_recibo(idrecibo):
     vales = Vales.objects.filter(idRecibo_id=idrecibo)
     contexto = {'recibo': recibo, 'colaborador': colaborador, 'reciboitens': reciboitens, 'vales': vales}
     return contexto
+
+
+def html_saldo_avulso(datainicial, datafinal):
+    """
+    utiliza a 'get_saldo_pagameto_avulso' para carregar as variáveis de saldo dos colaboradores que não são
+    considerados mensalistas, conforme período definido pelo usuário. E retorna um 'render_to_string', do template
+    'pagamentos/saldavulso.html'
+    :param datainicial:
+    :param datafinal:
+    :return: render_to_string através da variável c_return
+    """
+    saldo, saldototal, saldovales, totalselect = get_saldo_pagamento_avulso(datainicial, datafinal)
+    context = {'saldo': saldo, 'saldototal': saldototal, 'saldovales': saldovales,  'totalselect': totalselect,
+               'datainicial': datainicial, 'datafinal': datafinal}
+    c_return = render_to_string('pagamentos/saldoavulso.html', context)
+    return c_return
