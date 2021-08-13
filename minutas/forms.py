@@ -9,6 +9,9 @@ from datetime import timedelta
 import datetime
 
 
+choice = [('1', '1ª Saída'), ('2', '2ª Saída')]
+
+
 class MeuDateInput(forms.DateInput):
     input_type = 'date'
 
@@ -140,6 +143,13 @@ class CadastraMinutaKMFinal(forms.ModelForm):
         fields = ('KMInicial', 'KMFinal',)
         widgets = {'KMInicial': forms.HiddenInput(attrs={'class': 'formfieldshort'}),
                    'KMFinal': forms.NumberInput(attrs={'class': 'formfieldshort'})}
+
+
+class CadastraMinutaSaidaExraAjudante(forms.ModelForm):
+    class Meta:
+        model = MinutaNotas
+        fields = {'ExtraValorAjudante'}
+        widgets = {'ExtraValorAjudante': forms.RadioSelect(choices=choice)}
 
 
 class CadastraMinutaItens(forms.ModelForm):

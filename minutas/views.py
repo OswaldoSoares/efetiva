@@ -15,7 +15,7 @@ from clientes.models import FoneContatoCliente, Tabela, TabelaVeiculo, TabelaCap
 from veiculos.models import Veiculo
 from .forms import CadastraMinuta, CadastraMinutaMotorista, CadastraMinutaAjudante, CadastraMinutaVeiculo, \
     CadastraMinutaKMInicial, CadastraMinutaKMFinal, CadastraMinutaHoraFinal, CadastraMinutaDespesa, \
-    CadastraMinutaParametroDespesa, CadastraMinutaNota, CadastraComentarioMinuta
+    CadastraMinutaParametroDespesa, CadastraMinutaNota, CadastraComentarioMinuta, CadastraMinutaSaidaExraAjudante
 from .models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas
 
 
@@ -178,7 +178,7 @@ def kmfinal_veiculo(idveiculo):
 def index_minuta(request):
     """
     Função para carregar a página principal do Módulo: Minuta.
-    Cria como padrã a QuerySet minuta apenas com as Minutas cujo StatusMinuta é Aberta.
+    Cria como padrão a QuerySet minuta apenas com as Minutas cujo StatusMinuta é Aberta.
     Caso tenha request GET cria variaveis e QuerySet com as Minutas cujo Status ou minuta
     foi selecionado.
     Cria uma lista 'minuta_status' com as opções de Status para compor o Filtro.
@@ -231,6 +231,10 @@ def consultaminuta(request, idmin):
     phkescpaga = list(tabelacliente.values('phkescPaga')[0].values())[0]
     valortaxaexpedicao = list(tabelacliente.values('TaxaExpedicao')[0].values())[0]
     valorajudanterecebe = list(tabelacliente.values('AjudanteCobra')[0].values())[0]
+    """
+        ' Alteração Futura '
+        # Valor da hora extra do ajudante a ser implantado 13/08/2021
+    """
     valorajudantepaga = list(tabelacliente.values('AjudantePaga')[0].values())[0]
     # Cria queryset obj tabela veículo
     tabelaveiculo = TabelaVeiculo.objects.filter(idCliente=idcliente, idCategoriaVeiculo=idcategoriaveiculo)
@@ -263,6 +267,7 @@ def consultaminuta(request, idmin):
     valorentregavolume_paga = 0.00
     porcesegurorecebe = 1.00
     porcepernoite = 100
+    numero_saidas_do_ajudante = -1
     if tabelaveiculo:
         # Cria variavel horaminimo
         horaminimo = list(tabelaveiculo.values('HoraMinimo')[0].values())[0]
@@ -325,6 +330,8 @@ def consultaminuta(request, idmin):
     formcomentarios = CadastraComentarioMinuta(initial={'idMinuta': '29', 'Comentarios': comentarios})
     # Cria queryset notas e dassomas
     notas_minuta = MinutaNotas.objects.filter(idMinuta=idmin).order_by('Nota')
+    minutanotasform = get_object_or_404(notas_minuta)
+    formsaidaextraajudante = CadastraMinutaSaidaExraAjudante(instance=minutanotasform)
     notas_minuta_guia = MinutaNotas.objects.filter(idMinuta=idmin, NotaGuia='0').order_by('Nota')
     notas_perimetro = MinutaNotas.objects.values('Cidade').filter(idMinuta=idmin).exclude(Cidade='SÃO PAULO')
     notas_bairro = MinutaNotas.objects.values('Bairro').filter(idMinuta=idmin).exclude(Bairro__isnull=True).exclude(
@@ -334,6 +341,12 @@ def consultaminuta(request, idmin):
     peso = totalpesonotas['totalpeso']
     totalvolumenotas = MinutaNotas.objects.filter(idMinuta=idmin).aggregate(totalvolume=Sum('Volume'))
     totalquantidadenotas = MinutaNotas.objects.filter(idMinuta=idmin, NotaGuia='0').count()
+    extra_valor_ajudante = MinutaNotas.objects.filter(idMinuta=idmin)
+    if extra_valor_ajudante:
+        numero_saidas_do_ajudante = extra_valor_ajudante[0].ExtraValorAjudante
+        if numero_saidas_do_ajudante == 2:
+            # TODO COLOCAR O VALOR DE 10 (R$ 10,00) COMO PARAMETRO 13/08/2021
+            valorajudantepaga = valorajudantepaga + 10
     # Percorre a tabelacapacidade para localizar o peso
     if tabelacapacidade and peso:
         for x in tabelacapacidade:
@@ -552,6 +565,7 @@ def consultaminuta(request, idmin):
         'formkminicial': formkminicial,
         'formkmfinal': formkmfinal,
         'formhorafinal': formhorafinal,
+        'formsaidaextraajudante': formsaidaextraajudante,
         'formhoracobra': formhoracobra,
         'formhoraexcede': formhoraexcede,
         'formcomentarios': formcomentarios,
@@ -597,6 +611,7 @@ def consultaminuta(request, idmin):
         'valorajudanterecebe': valorajudanterecebe,
         'valorajudantepaga': valorajudantepaga,
         'minuta_itens_fechada': minuta_itens_fechada,
+        'numero_saidas_do_ajudante': numero_saidas_do_ajudante,
     }
     return render(request, 'minutas/consultaminuta.html', contexto)
 
@@ -1290,3 +1305,12 @@ def exclui_minuta(request, idminuta):
     minuta = Minuta.objects.filter(idMinuta=idminuta)
     minuta.delete()
     return redirect('index_minuta')
+
+
+def edita_minuta_saida_extra_ajudante(request, idminuta):
+    minutanotas = MinutaNotas.objects.filter(idMinuta=idminuta)
+    for itens in minutanotas:
+        obj = itens
+        obj.ExtraValorAjudante = request.POST.get('ExtraValorAjudante')
+        obj.save(update_fields=['ExtraValorAjudante'])
+    return redirect('consultaminuta', idminuta)

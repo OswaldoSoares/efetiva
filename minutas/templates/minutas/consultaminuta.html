@@ -218,6 +218,29 @@
                     {% endif %}
                 </form>
             </div>
+            {% if numero_saidas_do_ajudante > -1%}
+            <div class="card-saida-extra card-base1">
+                <header>
+                    <span><b>SAÍDA EXTRA AJUDANTE</b></span>
+                </header>
+                <form method="post" action="{% url 'editaminutasaidaextraajudante' itens.idMinuta %}"
+                      class="js-edita-minuta-form">
+                    {% csrf_token %}
+                    <section>
+                    {% for field in formsaidaextraajudante %}
+                        {{ field }}
+                    {% endfor %}
+                    </section>
+                    {% if itens.StatusMinuta == 'ABERTA' %}
+                    <footer>
+                        {% if user|can:'km_minuta' %}
+                        <button type="submit" class="btn btn-primary btn-xs glyphicon glyphicon-save"></button>
+                        {% endif %}
+                    </footer>
+                    {% endif %}
+                </form>
+            </div>
+            {% endif %}
         </main>
     </div>
     <div class="consulta">
@@ -413,6 +436,7 @@
             {% if itens.HoraFinal|time:"H:i" != "00:00" %}
             {% if itens.KMInicial != 0 %}
             {% if itens.KMFinal != 0 %}
+            {% if numero_saidas_do_ajudante > 0 %}
             <section>
                 <h4>APÓS INSERIR TODOS OS DADOS DA MINUTA</h4>
                 <h4>CONCLUIR A MINUTA PARA FICAR DISPONIVEL PARA FATURAMENTO</h4>
@@ -429,6 +453,7 @@
             {% endif %}
             {% endif %}
             {% endif %}
+            {% endif %}
             {% if not itens.idCategoriaVeiculo %}
                 <span class="mensagem-concluir">&#x2610; Falta inserir o Veículo Solicitado</span>
             {% endif %}
@@ -440,6 +465,9 @@
             {% endif %}
             {% if itens.KMFinal == 0 %}
                 <span class="mensagem-concluir">&#x2610; Falta inserir a KM Final</span>
+            {% endif %}
+            {% if numero_saidas_do_ajudante <= 0 %}
+                <span class="mensagem-concluir">&#x2610; Falta inserir tipo de cobrança de ajudantes</span>
             {% endif %}
         </div>
     </div>
