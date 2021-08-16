@@ -330,9 +330,10 @@ def consultaminuta(request, idmin):
     formcomentarios = CadastraComentarioMinuta(initial={'idMinuta': '29', 'Comentarios': comentarios})
     # Cria queryset notas e dassomas
     notas_minuta = MinutaNotas.objects.filter(idMinuta=idmin).order_by('Nota')
-    minutanotasform = get_list_or_404(notas_minuta)
-    print(minutanotasform)
-    formsaidaextraajudante = CadastraMinutaSaidaExraAjudante(instance=minutanotasform[0])
+    formsaidaextraajudante = CadastraMinutaSaidaExraAjudante()
+    if notas_minuta:
+        minutanotasform = get_list_or_404(notas_minuta)
+        formsaidaextraajudante = CadastraMinutaSaidaExraAjudante(instance=minutanotasform[0])
     notas_minuta_guia = MinutaNotas.objects.filter(idMinuta=idmin, NotaGuia='0').order_by('Nota')
     notas_perimetro = MinutaNotas.objects.values('Cidade').filter(idMinuta=idmin).exclude(Cidade='SÃO PAULO')
     notas_bairro = MinutaNotas.objects.values('Bairro').filter(idMinuta=idmin).exclude(Bairro__isnull=True).exclude(

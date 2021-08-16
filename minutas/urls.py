@@ -1,8 +1,8 @@
 from django.urls import path
 from .views import index_minuta, criaminuta, editaminuta, imprimeminuta, conclui_minuta, fecha_minuta, estorna_minuta,\
-    consultaminuta,criaminutamotorista,excluiminutamotorista,criaminutaajudante,excluiminutaajudante,\
-    editaminutaveiculo,editaminutakminicial,editaminutakmfinal,editaminutahorafinal,criaminutadespesa,\
-    excluiminutadespesa,criaminutaparametrodespesa,criaminutaentrega,editaminutaentrega,excluiminutaentrega,\
+    consultaminuta, criaminutamotorista, excluiminutamotorista, criaminutaajudante, excluiminutaajudante,\
+    editaminutaveiculo, editaminutakminicial, editaminutakmfinal, editaminutahorafinal, criaminutadespesa,\
+    excluiminutadespesa, criaminutaparametrodespesa, criaminutaentrega, editaminutaentrega, excluiminutaentrega,\
     filtraminutaveiculo, buscaminutaentrega, edita_comentario, exclui_minuta, edita_minuta_saida_extra_ajudante
 
 
