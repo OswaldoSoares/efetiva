@@ -379,6 +379,8 @@ def consultaminuta(request, idmin):
     minuta_itens_fechada = MinutaItens.objects.filter(idMinuta=idmin).order_by('TipoItens', 'Descricao')
     " ADICIONA VALOR HORA EXTRA NA COBRANÇA DO AJUDANTE "
     calcula_ajudante_recebe_hora_extra = Decimal(0.00)
+    print(totalhoras)
+    print(dezhoras)
     if totalhoras > dezhoras:
         horas = str(totalhoras)[0:2]
         minutos = str(totalhoras)[3:5]
