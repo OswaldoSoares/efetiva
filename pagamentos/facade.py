@@ -295,7 +295,6 @@ def create_pagamento_avulso(datainicial, datafinal, idpessoal, vales):
                 obj.Pago = True
                 obj.idRecibo_id = new_idrecibo
                 obj.save(update_fields=['Pago', 'idRecibo_id'])
-
     data = dict()
     data['html_saldoavulso'] = html_saldo_avulso(datainicial, datafinal)
     data['html_minutas'] = html_minutasavulso(datainicial, datafinal, idpessoal)
@@ -630,7 +629,7 @@ def select_minutas_contracheque(mesreferencia, anoreferencia, idpessoal):
 
 
 def html_recibo_avulso(datainicial, datafinal, idpessoal):
-    recibos = Recibo.objects.filter(idPessoal_id=idpessoal)
+    recibos = Recibo.objects.filter(idPessoal_id=idpessoal).order_by('-DataRecibo', '-Recibo')
     context = {'recibos': recibos, 'idpessoal': idpessoal, 'datainicial': datainicial, 'datafinal': datafinal}
     c_return = render_to_string('pagamentos/reciboavulso.html', context)
     return c_return
