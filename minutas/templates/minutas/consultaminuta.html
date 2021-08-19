@@ -218,7 +218,7 @@
                     {% endif %}
                 </form>
             </div>
-            {% if numero_saidas_do_ajudante > -1%}
+            {% if numero_saidas_do_ajudante > -1 and total_de_ajudantes > 0 %}
             <div class="card-saida-extra card-base1">
                 <header>
                     <span><b>SAÍDA EXTRA AJUDANTE</b></span>
@@ -432,25 +432,50 @@
             <header class="consulta-header-despesas-entregas">
                 <span>CONCLUIR MINUTA</span>
             </header>
-            {% if itens.idCategoriaVeiculo %}
-            {% if itens.HoraFinal|time:"H:i" != "00:00" %}
-            {% if itens.KMInicial != 0 %}
-            {% if itens.KMFinal != 0 %}
-            <section>
-                <h4>APÓS INSERIR TODOS OS DADOS DA MINUTA</h4>
-                <h4>CONCLUIR A MINUTA PARA FICAR DISPONIVEL PARA FATURAMENTO</h4>
-            </section>
-            <footer>
-                {% if user|can:'conclui_minuta' %}
-                <button class="btn btn-success btn-sm active" idminuta="{{ itens.idMinuta }}"
-                        onclick="window.location.href = '{% url 'concluiminuta' itens.idMinuta %}'">
-                    <span>CONCLUIR MINUTA</span>
-                </button>
+            {% if numero_saidas_do_ajudante > -1 and total_de_ajudantes > 0 %}
+                {% if itens.idCategoriaVeiculo %}
+                {% if itens.HoraFinal|time:"H:i" != "00:00" %}
+                {% if itens.KMInicial != 0 %}
+                {% if itens.KMFinal != 0 %}
+                {% if total_de_ajudantes > 0 %}
+                <section>
+                    <h4>APÓS INSERIR TODOS OS DADOS DA MINUTA</h4>
+                    <h4>CONCLUIR A MINUTA PARA FICAR DISPONIVEL PARA FATURAMENTO</h4>
+                </section>
+                <footer>
+                    {% if user|can:'conclui_minuta' %}
+                    <button class="btn btn-success btn-sm active" idminuta="{{ itens.idMinuta }}"
+                            onclick="window.location.href = '{% url 'concluiminuta' itens.idMinuta %}'">
+                        <span>CONCLUIR MINUTA</span>
+                    </button>
+                    {% endif %}
+                </footer>
                 {% endif %}
-            </footer>
-            {% endif %}
-            {% endif %}
-            {% endif %}
+                {% endif %}
+                {% endif %}
+                {% endif %}
+                {% endif %}
+            {% else %}
+                {% if itens.idCategoriaVeiculo %}
+                {% if itens.HoraFinal|time:"H:i" != "00:00" %}
+                {% if itens.KMInicial != 0 %}
+                {% if itens.KMFinal != 0 %}
+                <section>
+                    <h4>APÓS INSERIR TODOS OS DADOS DA MINUTA</h4>
+                    <h4>CONCLUIR A MINUTA PARA FICAR DISPONIVEL PARA FATURAMENTO</h4>
+                </section>
+                <footer>
+                    {% if user|can:'conclui_minuta' %}
+                    <button class="btn btn-success btn-sm active" idminuta="{{ itens.idMinuta }}"
+                            onclick="window.location.href = '{% url 'concluiminuta' itens.idMinuta %}'">
+                        <span>CONCLUIR MINUTA</span>
+                    </button>
+                    {% endif %}
+                </footer>
+                {% endif %}
+                {% endif %}
+                {% endif %}
+                {% endif %}
             {% endif %}
             {% if not itens.idCategoriaVeiculo %}
                 <span class="mensagem-concluir">&#x2610; Falta inserir o Veículo Solicitado</span>
@@ -464,10 +489,8 @@
             {% if itens.KMFinal == 0 %}
                 <span class="mensagem-concluir">&#x2610; Falta inserir a KM Final</span>
             {% endif %}
-            {% if total_de_ajudantes > 0 %}
-            {% if numero_saidas_do_ajudante <= 0 %}
+            {% if numero_saidas_do_ajudante == 0 and total_de_ajudantes > 0 %}
                 <span class="mensagem-concluir">&#x2610; Falta inserir tipo de cobrança de ajudantes</span>
-            {% endif %}
             {% endif %}
         </div>
     </div>
