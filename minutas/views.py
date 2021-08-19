@@ -240,7 +240,7 @@ def consultaminuta(request, idmin):
     finalkm = list(minuta.values('KMFinal')[0].values())[0]
     totalkm = finalkm - inicialkm
     # Cria variaveis zerada
-    totalhoras = 0.00
+    totalhoras = timedelta(days=0, hours=0, minutes=0)
     minimohoras = 0.00
     excedehoras = 0.00
     valorporcentagemrecebe = 0.00
