@@ -11,6 +11,7 @@ from reportlab.lib.colors import HexColor
 from reportlab.pdfgen import canvas
 from datetime import datetime, timedelta, time
 import json
+from decimal import Decimal
 from clientes.models import FoneContatoCliente, Tabela, TabelaVeiculo, TabelaCapacidade, TabelaPerimetro
 from veiculos.models import Veiculo
 from .forms import CadastraMinuta, CadastraMinutaMotorista, CadastraMinutaAjudante, CadastraMinutaVeiculo, \
@@ -231,10 +232,7 @@ def consultaminuta(request, idmin):
     phkescpaga = list(tabelacliente.values('phkescPaga')[0].values())[0]
     valortaxaexpedicao = list(tabelacliente.values('TaxaExpedicao')[0].values())[0]
     valorajudanterecebe = list(tabelacliente.values('AjudanteCobra')[0].values())[0]
-    """
-        ' Alteração Futura '
-        # Valor da hora extra do ajudante a ser implantado 13/08/2021
-    """
+    valor_ajudante_recebe_hora_extra = list(tabelacliente.values('AjudanteCobraHoraExtra')[0].values())[0]
     valorajudantepaga = list(tabelacliente.values('AjudantePaga')[0].values())[0]
     # Cria queryset obj tabela veículo
     tabelaveiculo = TabelaVeiculo.objects.filter(idCliente=idcliente, idCategoriaVeiculo=idcategoriaveiculo)
@@ -268,6 +266,7 @@ def consultaminuta(request, idmin):
     porcesegurorecebe = 1.00
     porcepernoite = 100
     numero_saidas_do_ajudante = -1
+    dezhoras = timedelta(days=0, hours=10, minutes=0)
     if tabelaveiculo:
         # Cria variavel horaminimo
         horaminimo = list(tabelaveiculo.values('HoraMinimo')[0].values())[0]
@@ -294,7 +293,6 @@ def consultaminuta(request, idmin):
         valorsaidapaga = list(tabelaveiculo.values('SaidaPaga')[0].values())[0]
         # Cria variavel dezhoras para verificar quantidade de digitos da
         # horas excedentes e minimo
-        dezhoras = timedelta(days=0, hours=10, minutes=0)
         # Converte a hora excedente (teltatime em str) em horas e minutos
         # e segundos
         if excedehoras < dezhoras:
@@ -379,6 +377,24 @@ def consultaminuta(request, idmin):
     if motorista_da_minuta:
         veiculo = Veiculo.objects.filter(idVeiculo=idveiculo)
     minuta_itens_fechada = MinutaItens.objects.filter(idMinuta=idmin).order_by('TipoItens', 'Descricao')
+    " ADICIONA VALOR HORA EXTRA NA COBRANÇA DO AJUDANTE "
+    calcula_ajudante_recebe_hora_extra = Decimal(0.00)
+    if totalhoras > dezhoras:
+        horas = str(totalhoras)[0:2]
+        minutos = str(totalhoras)[3:5]
+        if int(minutos) < 16  and int(minutos) > 0:
+            fator = Decimal(0.25)
+        elif int(minutos) < 31 and int(minutos) > 15:
+            fator = Decimal(0.5)
+        elif int(minutos) < 46 and int(minutos) > 30:
+            fator = Decimal(0.75)
+        elif int(minutos) < 59 and int(minutos) > 45:
+            fator = Decimal(1.00)
+        else:
+            fator = Decimal(0.00)
+        calcula_ajudante_recebe_hora_extra = valor_ajudante_recebe_hora_extra * fator
+        calcula_ajudante_recebe_hora_extra += valor_ajudante_recebe_hora_extra * Decimal(int(horas) - 10)
+    valorajudanterecebe += calcula_ajudante_recebe_hora_extra
     """
     Criaremos um dict 'tabela_recebe_e_paga' com todas as informações para gerar a tabela de recebimento e
     pagamento. A tabela será formada por 9 colunas sendo a primeira com as descrições (keys) e as demais divididas em

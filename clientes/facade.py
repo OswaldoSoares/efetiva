@@ -278,6 +278,7 @@ def save_phkesc(idtabelacliente, phkesc_cobra, phkesc_paga):
     obj.Comissao = tabela.Comissao
     obj.TaxaExpedicao = tabela.TaxaExpedicao
     obj.AjudanteCobra = tabela.AjudanteCobra
+    obj.AjudanteCobraHoraExtra = tabela.AjudanteCobraHoraExtra
     obj.AjudantePaga = tabela.AjudantePaga
     obj.phkescCobra = phkesc_cobra
     obj.phkescPaga = phkesc_paga
