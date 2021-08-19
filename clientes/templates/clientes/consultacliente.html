@@ -364,7 +364,7 @@
             {% endif %}
             {% if tabela_cliente %}
             {% for itenstabela in tabela_cliente %}
-            <div class="card-tabela card-base2">
+            <div class="card-tabela card-base2 card-tipo">
                 <header class="consulta-tabela">
                     <span><b>TABELA</b></span>
                 </header>
@@ -386,12 +386,16 @@
                         <span>R$ {{ itenstabela.AjudanteCobra }}</span>
                     </div>
                     <div class="section-itens">
+                        <span><b>AJUDANTE COBRA HORA EXTRA:</b></span>
+                        <span>R$ {{ itenstabela.AjudanteCobraHoraExtra }}</span>
+                    </div>
+                    <div class="section-itens">
                         <span><b>AJUDANTE PAGA:</b></span>
                         <span>R$ {{ itenstabela.AjudantePaga }}</span>
                     </div>
                 </section>
                 <footer>
-                    <button class="btn btn-success btn-xs glyphicon glyphicon-plus"
+                    <button class="btn btn-success btn-xs glyphicon glyphicon-edit"
                             onclick="openMyModal(event); return false;" data-title="EDITA CADASTRO TABELA CLIENTE"
                             data-action="{% url 'editatabelacliente' itenstabela.idTabela %}"
                             data-idcliente="{{ itens.idCliente }}"

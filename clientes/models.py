@@ -138,6 +138,7 @@ class Tabela(models.Model):
     Comissao = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     TaxaExpedicao = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     AjudanteCobra = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    AjudanteCobraHoraExtra = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     AjudantePaga = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     phkescCobra = models.CharField(max_length=8, default='00000000')
     phkescPaga = models.CharField(max_length=8, default='00000000')

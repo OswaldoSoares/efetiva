@@ -78,13 +78,16 @@ class CadastraTabela(forms.ModelForm):
 
     class Meta:
         model = Tabela
-        fields = ('Comissao', 'TaxaExpedicao', 'AjudanteCobra', 'AjudantePaga', 'idFormaPagamento', 'idCliente')
+        fields = ('Comissao', 'TaxaExpedicao', 'AjudanteCobra', 'AjudanteCobraHoraExtra', 'AjudantePaga',
+                  'idFormaPagamento', 'idCliente')
         labels = {'Comissao': 'PORCENTAGEM DA COMISSÃO', 'TaxaExpedicao': 'TAXA EXPEDIÇÃO',
-                  'AjudanteCobra': 'VALOR AJUDANTE À RECEBER', 'AjudantePaga': 'VALOR AJUDANTE À PAGAR',
-                  'idFormaPagamento': 'FORMA DE PAGAMENTO'}
+                  'AjudanteCobra': 'VALOR AJUDANTE À RECEBER',
+                  'AjudanteCobraHoraExtra': 'VALOR AJUDANTE À RECEBER HORA EXTRA',
+                  'AjudantePaga': 'VALOR AJUDANTE À PAGAR', 'idFormaPagamento': 'FORMA DE PAGAMENTO'}
         widgets = {'Comissao': forms.NumberInput(attrs={'class': 'form-control'}),
                    'TaxaExpedicao': forms.NumberInput(attrs={'class': 'form-control'}),
                    'AjudanteCobra': forms.NumberInput(attrs={'class': 'form-control'}),
+                   'AjudanteCobraHoraExtra': forms.NumberInput(attrs={'class': 'form-control'}),
                    'AjudantePaga': forms.NumberInput(attrs={'class': 'form-control'}),
                    'idFormaPagamento': forms.Select(attrs={'class': 'form-control'}), 'idCliente': forms.HiddenInput()}
 
