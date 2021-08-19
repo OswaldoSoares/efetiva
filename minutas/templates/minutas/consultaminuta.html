@@ -436,7 +436,8 @@
             {% if itens.HoraFinal|time:"H:i" != "00:00" %}
             {% if itens.KMInicial != 0 %}
             {% if itens.KMFinal != 0 %}
-            {% if numero_saidas_do_ajudante > 0 %}
+            <!--{% if total_de_ajudantes > 0 %}-->
+            <!--{% if numero_saidas_do_ajudante >= 0 %}-->
             <section>
                 <h4>APÓS INSERIR TODOS OS DADOS DA MINUTA</h4>
                 <h4>CONCLUIR A MINUTA PARA FICAR DISPONIVEL PARA FATURAMENTO</h4>
@@ -449,7 +450,8 @@
                 </button>
                 {% endif %}
             </footer>
-            {% endif %}
+            <!--{% endif %}-->
+            <!--{% endif %}-->
             {% endif %}
             {% endif %}
             {% endif %}
@@ -466,8 +468,10 @@
             {% if itens.KMFinal == 0 %}
                 <span class="mensagem-concluir">&#x2610; Falta inserir a KM Final</span>
             {% endif %}
+            {% if total_de_ajudantes > 0 %}
             {% if numero_saidas_do_ajudante <= 0 %}
                 <span class="mensagem-concluir">&#x2610; Falta inserir tipo de cobrança de ajudantes</span>
+            {% endif %}
             {% endif %}
         </div>
     </div>
