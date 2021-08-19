@@ -11,7 +11,7 @@ from minutas.models import MinutaColaboradores, MinutaItens
 from pagamentos.models import Recibo, ReciboItens
 from pessoas import facade
 from pessoas.forms import CadastraContraCheque, CadastraContraChequeItens, CadastraVale
-from pessoas.models import ContraCheque, ContraChequeItens, CartaoPonto, Salario, Vales, Pessoal
+from pessoas.models import ContraCheque, ContraChequeItens, CartaoPonto, Salario, Vales, Pessoal, ContaPessoal
 
 meses = ['JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL', 'MAIO', 'JUNHO', 'JULHO', 'AGOSTO', 'SETEMBRO', 'OUTUBRO',
          'NOVEMBRO', 'DEZEMBRO']
@@ -979,6 +979,7 @@ def print_recibo(idrecibo):
     reciboitens = []
     recibo = Recibo.objects.get(idRecibo=idrecibo)
     colaborador = Pessoal.objects.get(idPessoal=recibo.idPessoal_id)
+    conta_colaborador = ContaPessoal.objects.get(idPessoal=recibo.idPessoal_id)
     minutaitens = ReciboItens.objects.filter(idRecibo_id=idrecibo).annotate(
         idMinuta=F('idMinutaItens_id__idMinuta_id'),
         DataMinuta=F('idMinutaItens_id__idMinuta_id__DataMinuta'), Minuta=F('idMinutaItens_id__idMinuta_id__Minuta'),
@@ -998,7 +999,8 @@ def print_recibo(idrecibo):
                                 'Descricao': itens.Descricao,
                                 'Valor': itens.Valor, 'Motorista': motorista_nome})
     vales = Vales.objects.filter(idRecibo_id=idrecibo)
-    contexto = {'recibo': recibo, 'colaborador': colaborador, 'reciboitens': reciboitens, 'vales': vales}
+    contexto = {'recibo': recibo, 'colaborador': colaborador, 'reciboitens': reciboitens, 'vales': vales,
+                'conta_colaborador': conta_colaborador}
     return contexto
 
 

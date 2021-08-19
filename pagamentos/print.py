@@ -173,7 +173,7 @@ def print_contracheque(contexto, tipoimpressao):
 
 def print_recibo(contexto):
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'flename="CONTRACHEQUE {}.pdf'.format('A')
+    response['Content-Disposition'] = 'filename="CONTRACHEQUE {}.pdf'.format('A')
     buffer = BytesIO()
     pdf = canvas.Canvas(buffer)
     pdf.setFont("Times-Roman", 10)
@@ -187,59 +187,62 @@ def print_recibo(contexto):
         'recibo'].Recibo).zfill(6)))
     pdf.drawRightString(convertemp(204), convertemp(linha - 14), 'R$ {:.2f}'.format(contexto[
         'recibo'].ValorRecibo).replace('.', ','))
-    pdf.rect(convertemp(5), convertemp(linha - 23.5), convertemp(200), convertemp(5), fill=0)
+    pdf.rect(convertemp(5), convertemp(linha - 27.5), convertemp(200), convertemp(9), fill=0)
     pdf.drawCentredString(convertemp(105), convertemp(linha - 22.5), '{}'.format(contexto['colaborador']))
+    pdf.drawCentredString(convertemp(105), convertemp(linha - 26.5), 'Banco {} - Agência {} - Conta {} - PIX {}'.format(
+        contexto['conta_colaborador'].Banco, contexto['conta_colaborador'].Agencia, contexto['conta_colaborador'].Conta,
+        contexto['conta_colaborador'].PIX))
     pdf.setFillColor(HexColor("#808080"))
     pdf.setFont("Times-Roman", 14)
-    pdf.drawString(convertemp(6), convertemp(linha - 28), '{}'.format('Minuta'))
-    pdf.drawCentredString(convertemp(32), convertemp(linha - 28), '{}'.format('Data'))
-    pdf.drawString(convertemp(45), convertemp(linha - 28), '{}'.format('Cliente'))
-    pdf.drawString(convertemp(90), convertemp(linha - 28), '{}'.format('Descricao'))
-    pdf.drawRightString(convertemp(204), convertemp(linha - 28), '{}'.format('Valor'))
+    pdf.drawString(convertemp(6), convertemp(linha - 32), '{}'.format('Minuta'))
+    pdf.drawCentredString(convertemp(32), convertemp(linha - 32), '{}'.format('Data'))
+    pdf.drawString(convertemp(45), convertemp(linha - 32), '{}'.format('Cliente'))
+    pdf.drawString(convertemp(90), convertemp(linha - 32), '{}'.format('Descricao'))
+    pdf.drawRightString(convertemp(204), convertemp(linha - 32), '{}'.format('Valor'))
     pdf.setFillColor(HexColor("#000000"))
     pdf.setFont("Times-Roman", 11)
     linhaitens = 0
     total_vencimentos = decimal.Decimal(0.00)
     for itens in contexto['reciboitens']:
-        pdf.drawString(convertemp(6), convertemp(linha - 33 - linhaitens), '{}'.format(str(itens['Minuta']).zfill(6)))
-        pdf.drawCentredString(convertemp(32), convertemp(linha - 33 - linhaitens), '{}'.format(
+        pdf.drawString(convertemp(6), convertemp(linha - 37 - linhaitens), '{}'.format(str(itens['Minuta']).zfill(6)))
+        pdf.drawCentredString(convertemp(32), convertemp(linha - 37 - linhaitens), '{}'.format(
             itens['Data'].strftime("%d/%m/%Y")))
-        pdf.drawString(convertemp(45), convertemp(linha - 33 - linhaitens), '{}'.format(itens['Cliente']))
+        pdf.drawString(convertemp(45), convertemp(linha - 37 - linhaitens), '{}'.format(itens['Cliente']))
         if itens['Descricao'] == 'AJUDANTE':
-            pdf.drawString(convertemp(90), convertemp(linha - 33 - linhaitens), '{} DE {}'.format(
+            pdf.drawString(convertemp(90), convertemp(linha - 37 - linhaitens), '{} DE {}'.format(
                 itens['Descricao'], str(itens['Motorista'])[0:30]))
         else:
-            pdf.drawString(convertemp(90), convertemp(linha - 33 - linhaitens), '{}'.format(itens['Descricao']))
-        pdf.drawRightString(convertemp(204), convertemp(linha - 33 - linhaitens), 'R$ {:.2f}'.format(
+            pdf.drawString(convertemp(90), convertemp(linha - 37 - linhaitens), '{}'.format(itens['Descricao']))
+        pdf.drawRightString(convertemp(204), convertemp(linha - 37 - linhaitens), 'R$ {:.2f}'.format(
             itens['Valor']).replace('.', ','))
         total_vencimentos += itens['Valor']
         linhaitens += 4.1
-    pdf.drawRightString(convertemp(204), convertemp(linha - 36 - linhaitens), 'Total: R$ {}'.format(
+    pdf.drawRightString(convertemp(204), convertemp(linha - 40 - linhaitens), 'Total: R$ {}'.format(
         total_vencimentos).replace('.', ','))
-    pdf.rect(convertemp(5), convertemp(linha - 37 - linhaitens), convertemp(200), convertemp(13.5 + linhaitens), fill=0)
-    pdf.rect(convertemp(5), convertemp(linha - 43.5 - linhaitens), convertemp(200), convertemp(5), fill=0)
-    marca = linha - 43.5 - linhaitens
-    pdf.drawCentredString(convertemp(105), convertemp(linha - 42.5 - linhaitens), '{}'.format('DESCONTOS'))
+    pdf.rect(convertemp(5), convertemp(linha - 41 - linhaitens), convertemp(200), convertemp(13.5 + linhaitens), fill=0)
+    pdf.rect(convertemp(5), convertemp(linha - 47.5 - linhaitens), convertemp(200), convertemp(5), fill=0)
+    marca = linha - 47.5 - linhaitens
+    pdf.drawCentredString(convertemp(105), convertemp(linha - 46.5 - linhaitens), '{}'.format('DESCONTOS'))
     pdf.setFillColor(HexColor("#808080"))
     pdf.setFont("Times-Roman", 14)
-    pdf.drawString(convertemp(6), convertemp(linha - 48 - linhaitens), '{}'.format('Data'))
-    pdf.drawString(convertemp(45), convertemp(linha - 48 - linhaitens), '{}'.format('Descricao'))
-    pdf.drawRightString(convertemp(204), convertemp(linha - 48 - linhaitens), '{}'.format('Valor'))
+    pdf.drawString(convertemp(6), convertemp(linha - 52 - linhaitens), '{}'.format('Data'))
+    pdf.drawString(convertemp(45), convertemp(linha - 52 - linhaitens), '{}'.format('Descricao'))
+    pdf.drawRightString(convertemp(204), convertemp(linha - 52 - linhaitens), '{}'.format('Valor'))
     pdf.setFillColor(HexColor("#000000"))
     pdf.setFont("Times-Roman", 11)
     total_vales = decimal.Decimal(0.00)
     for itens in contexto['vales']:
-        pdf.drawString(convertemp(6), convertemp(linha - 53 - linhaitens), '{}'.format(
+        pdf.drawString(convertemp(6), convertemp(linha - 57 - linhaitens), '{}'.format(
             itens.Data.strftime("%d/%m/%Y")))
-        pdf.drawString(convertemp(45), convertemp(linha - 53 - linhaitens), '{}'.format(itens.Descricao))
-        pdf.drawRightString(convertemp(204), convertemp(linha - 53 - linhaitens), 'R$ {}'.format(
+        pdf.drawString(convertemp(45), convertemp(linha - 57 - linhaitens), '{}'.format(itens.Descricao))
+        pdf.drawRightString(convertemp(204), convertemp(linha - 57 - linhaitens), 'R$ {}'.format(
             itens.Valor).replace('.', ','))
         total_vales += itens.Valor
         linhaitens += 4.1
-    pdf.drawRightString(convertemp(204), convertemp(linha - 56 - linhaitens), 'Total: R$ {:.2f}'.format(
+    pdf.drawRightString(convertemp(204), convertemp(linha - 60 - linhaitens), 'Total: R$ {:.2f}'.format(
         total_vales).replace('.', ','))
-    pdf.rect(convertemp(5), convertemp(linha - 57 - linhaitens), convertemp(200), convertemp(
-        marca - (linha - 57 - linhaitens)), fill=0)
+    pdf.rect(convertemp(5), convertemp(linha - 61 - linhaitens), convertemp(200), convertemp(
+        marca - (linha - 61 - linhaitens)), fill=0)
     pdf.rect(convertemp(5), convertemp(5), convertemp(200), convertemp(15), fill=0)
     pdf.setFont("Times-Roman", 9)
     pdf.setFillColor(HexColor("#808080"))
