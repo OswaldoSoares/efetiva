@@ -1,4 +1,4 @@
-{% extends 'despesas/basedespesass.html' %}
+{% extends 'despesas/basedespesas.html' %}
 
 {% block maindespesa %}
 <main>
@@ -7,10 +7,13 @@
 
         </header>
         <main>
-
+            {% for itens in contexto %}
+            {% endfor %}
         </main>
         <footer>
-
+            <button type="button" class="btn btn-success glyphicon glyphicon-plus"
+                    onclick="openMyModal(event); return false;" data-title="CADASTRO DE ABASTECIMENTO"
+                    data-action="{% url 'cria_abastecimento' %}" data-button-save-label="SALVAR"></button>
         </footer>
     </div>
     <!-- DIV MODAL -->

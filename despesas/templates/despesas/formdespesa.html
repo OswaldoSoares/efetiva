@@ -1,10 +1,79 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<form class="row g-3" method="post" action="{{ c_url }}" idobj="{{ c_idobj }}">
+{% csrf_token %}
+{% if c_view == 'cria_abastecimento' or c_view == 'edita_cliente' %}
+    <div class="col-md-4">
+        <label for="id_DataAbastecimento" class="form-label">DATA:</label>
+        <input type="text" class="form-control" id="id_DataAbastecimento" name="DataAbastecimento" maxlength="20"
+               required=""
+               value="{% if form.Fantasia.value %}{{ form.Fantasia.value }}{% endif %}">
+        {% if form.Fantasia.errors %}
+            <ul class="errorlist">
+            {% for error in form.Fantasia.errors %}
+                <li><strong>{{ error|escape }}</strong></li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+    <div class="col-md-8">
+        <label for="id_Nome" class="form-label">RAZÃO SOCIAL:</label>
+        <input type="text" class="form-control" id="id_Nome" name="Nome" maxlength="60" required=""
+               value="{% if form.Nome.value %}{{ form.Nome.value }}{% endif %}">
+        {% if form.Nome.errors %}
+            <ul class="errorlist">
+            {% for error in form.Nome.errors %}
+                <li><strong>{{ error|escape }}</strong></li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+    <div class="col-md-12">
+        <label for="id_Endereco" class="form-label">ENDEREÇO:</label>
+        <input type="text" class="form-control" id="id_Endereco" name="Endereco" maxlength="60"
+               value="{% if form.Endereco.value %}{{ form.Endereco.value }}{% endif %}">
+    </div>
+
+    <div class="col-md-6">
+        <label for="inputBairro" class="form-label">BAIRRO:</label>
+        <input type="text" class="form-control" id="inputBairro" name="Bairro" maxlength="25"
+               value="{% if form.Bairro.value %}{{ form.Bairro.value }}{% endif %}">
+    </div>
+
+    <div class="col-md-2">
+        <label for="id_CEP" class="form-label">CEP:</label>
+        <input type="text" class="form-control" id="id_CEP" name="CEP" maxlength="9"
+               value="{% if form.CEP.value %}{{ form.CEP.value }}{% endif %}">
+    </div>
+
+    <div class="col-md-4">
+        <label for="id_Cidade" class="form-label">CIDADE:</label>
+        <input type="text" class="form-control" id="id_Cidade" name="Cidade" maxlength="30"
+               value="{% if form.Cidade.value %}{{ form.Cidade.value }}{% endif %}">
+    </div>
+
+    <div class="col-md-2">
+        <label for="id_Estado" class="form-label">ESTADO:</label>
+        <input type="text" class="form-control" id="id_Estado" name="Estado" maxlength="2"
+               value="{% if form.Estado.value %}{{ form.Estado.value }}{% endif %}">
+    </div>
+
+    <div class="col-md-3">
+        <label for="id_CNPJ" class="form-label">CNPJ ou CPF:</label>
+        <input type="text" class="form-control" id="id_CNPJ" name="CNPJ" maxlength="18"
+               value="{% if form.CNPJ.value %}{{ form.CNPJ.value }}{% endif %}">
+    </div>
+
+    <div class="col-md-3">
+        <label for="id_IE" class="form-label">IE ou RG:</label>
+        <input type="text" class="form-control" id="id_IE" name="IE" maxlength="15"
+               value="{% if form.IE.value %}{{ form.IE.value }}{% endif %}">
+    </div>
+
+    <div class="col-md-4">
+        <label for="id_Site" class="form-label">SITE:</label>
+        <input type="text" class="form-control" id="id_Site" name="Site" maxlength="40"
+               value="{% if form.Fantasia.value %}{{ form.Site.value }}{% endif %}">
+    </div>
+{% endif %}
+</form>

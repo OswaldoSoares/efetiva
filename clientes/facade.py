@@ -224,6 +224,7 @@ def form_cliente(request, c_form, c_idobj, c_url, c_view, idcliente):
             form = c_form(instance=c_instance)
     context = {'form': form, 'c_idobj': c_idobj, 'c_url': c_url, 'c_view': c_view, 'idcliente': idcliente,
                'idcategoriaveiculo': request.GET.get('idcategoriaveiculo')}
+    print(context)
     data['html_form'] = render_to_string('clientes/formcliente.html', context, request=request)
     data['c_view'] = c_view
     c_return = JsonResponse(data)

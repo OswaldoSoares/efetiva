@@ -979,7 +979,7 @@ def print_recibo(idrecibo):
     reciboitens = []
     recibo = Recibo.objects.get(idRecibo=idrecibo)
     colaborador = Pessoal.objects.get(idPessoal=recibo.idPessoal_id)
-    conta_colaborador = ContaPessoal.objects.get(idPessoal=recibo.idPessoal_id)
+    conta_colaborador = ContaPessoal.objects.filter(idPessoal=recibo.idPessoal_id)
     minutaitens = ReciboItens.objects.filter(idRecibo_id=idrecibo).annotate(
         idMinuta=F('idMinutaItens_id__idMinuta_id'),
         DataMinuta=F('idMinutaItens_id__idMinuta_id__DataMinuta'), Minuta=F('idMinutaItens_id__idMinuta_id__Minuta'),
