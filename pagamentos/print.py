@@ -189,9 +189,9 @@ def print_recibo(contexto):
         'recibo'].ValorRecibo).replace('.', ','))
     pdf.rect(convertemp(5), convertemp(linha - 27.5), convertemp(200), convertemp(9), fill=0)
     pdf.drawCentredString(convertemp(105), convertemp(linha - 22.5), '{}'.format(contexto['colaborador']))
-    pdf.drawCentredString(convertemp(105), convertemp(linha - 26.5), 'Banco {} - Agência {} - Conta {} - PIX {}'.format(
-        contexto['conta_colaborador'].Banco, contexto['conta_colaborador'].Agencia, contexto['conta_colaborador'].Conta,
-        contexto['conta_colaborador'].PIX))
+    # pdf.drawCentredString(convertemp(105), convertemp(linha - 26.5), 'Banco {} - Agência {} - Conta {} - PIX {}'.format(
+    #     contexto['conta_colaborador'].Banco, contexto['conta_colaborador'].Agencia, contexto['conta_colaborador'].Conta,
+    #     contexto['conta_colaborador'].PIX))
     pdf.setFillColor(HexColor("#808080"))
     pdf.setFont("Times-Roman", 14)
     pdf.drawString(convertemp(6), convertemp(linha - 32), '{}'.format('Minuta'))
