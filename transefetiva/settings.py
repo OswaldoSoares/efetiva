@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'rolepermissions',
     # meus apps
     'clientes',
+    'despesas',
     'faturamentos',
     'minutas',
     'orcamentos',

@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from clientes import urls as clientes_urls
+from despesas import urls as despesas_urls
 from faturamentos import urls as faturamentos_urls
 from minutas import urls as minutas_urls
 from orcamentos import urls as orcamentos_urls
@@ -30,6 +31,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('clientes/', include(clientes_urls)),
+    path('despesas/', include(despesas_urls)),
     path('faturamentos/', include(faturamentos_urls)),
     path('minutas/', include(minutas_urls)),
     path('orcamentos/', include(orcamentos_urls)),

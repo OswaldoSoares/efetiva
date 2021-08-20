@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <!--<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+          integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     <link rel="stylesheet" href="{% static 'website/css/style.css' %}">
     <title>{% block title %}{% endblock %}</title>
 </head>
@@ -37,20 +39,27 @@
             </header>
             <div class="menu">
                 <ul>
-                    <li><a href="{% url 'index_website' %}"><i class="fa fa-dashboard"></i>&nbsp;&nbsp;Painel Geral</a></li>
-                    <li><a href="{% url 'indexcliente' %}"><i class="fa fa-address-card-o"></i>&nbsp;&nbsp;Clientes</a></li>
-                    <li><a href="{% url 'indexpessoal' %}"><i class="fa fa-user-o"></i>&nbsp;&nbsp;Colaboradores</a></li>
-                    <li><a href="{% url 'index_faturamento' %}"><i class="fa fa-bank"></i>&nbsp;&nbsp;Faturamento</a></li>
-                    <li><a href="{% url 'index_minuta' %}"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;Minutas</a></li>
-                    <li><a href="{% url 'indexorcamento' %}"><i class="fa fa-file-text"></i>&nbsp;&nbsp;Orçamentos</a></li>
-                    <li><a href="{% url 'parametro' %}"><i class="fa fa-cogs"></i>&nbsp;&nbsp;Parametros</a></li>
-                    <li><a href="{% url 'index_pagamento' %}"><i class="fa fa-money"></i>&nbsp;&nbsp;Pagamentos</a></li>
-                    <li><a href="{% url 'indexveiculo' %}"><i class="fa fa-truck"></i>&nbsp;&nbsp;Veículos</a></li>
+                    <li><a href="{% url 'index_website' %}"><i class="fas fa-dashboard"></i>&nbsp;&nbsp;Painel
+                        Geral</a></li>
+                    <li><a href="{% url 'indexcliente' %}"><i class="fas fa-briefcase"></i>&nbsp;&nbsp;Clientes</a></li>
+                    <li><a href="{% url 'indexpessoal' %}"><i class="fas fa-users"></i>&nbsp;&nbsp;Colaboradores</a></li>
+                    <li><a href="{% url 'index_despesas' %}"><i class="fas fa-shopping-bag"></i>&nbsp;&nbsp;
+                        Despesas</a></li>
+                    <li><a href="{% url 'index_faturamento' %}"><i class="fas fa-bank"></i>&nbsp;&nbsp;
+                        Faturamento</a></li>
+                    <li><a href="{% url 'index_minuta' %}"><i class="fas fa-clipboard"></i>&nbsp;&nbsp;Minutas</a></li>
+                    <li><a href="{% url 'indexorcamento' %}"><i class="fas fa-file-text"></i>&nbsp;&nbsp;
+                        Orçamentos</a></li>
+                    <li><a href="{% url 'parametro' %}"><i class="fas fa-cogs"></i>&nbsp;&nbsp;Parametros</a></li>
+                    <li><a href="{% url 'index_pagamento' %}"><i class="fas fa-money"></i>&nbsp;&nbsp;Pagamentos</a></li>
+                    <li><a href="{% url 'indexveiculo' %}"><i class="fas fa-truck"></i>&nbsp;&nbsp;Veículos</a></li>
                 </ul>
             </div>
         </nav>
         <div class="conteudo">
             <section>
+                {% block dashboard %}
+                {% endblock %}
                 {% block main %}
                 {% endblock %}
             </section>
