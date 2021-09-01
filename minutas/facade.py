@@ -1,3 +1,6 @@
+from minutas.models import MinutaColaboradores
+
+
 class MinutaFinanceiro:
     def __init__(self, descricao, chave_descricao, tipo_valor_tabela, valor_tabela, tipo_valor_minuta, valor_minuta):
         self.descricao = descricao
@@ -14,6 +17,12 @@ class MinutaFinanceiro:
 
     def checked_off(self):
         self.checked = False
+
+
+def get_total_ajudantes(idminuta):
+    return MinutaColaboradores.objects.filter(idMinuta=idminuta, Cargo='AJUDANTE').count()
+
+
 
 
 porcentagem_paga = MinutaFinanceiro('PORCENTAGEM DA NOTA', 'porcentagem', '%', 0.00, 'R$', 0.00)
