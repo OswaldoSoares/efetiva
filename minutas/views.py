@@ -13,6 +13,7 @@ from datetime import datetime, timedelta, time
 import json
 from decimal import Decimal
 from clientes.models import FoneContatoCliente, Tabela, TabelaVeiculo, TabelaCapacidade, TabelaPerimetro
+from minutas.facade import MinutaSelecionada
 from veiculos.models import Veiculo
 from .forms import CadastraMinuta, CadastraMinutaMotorista, CadastraMinutaAjudante, CadastraMinutaVeiculo, \
     CadastraMinutaKMInicial, CadastraMinutaKMFinal, CadastraMinutaHoraFinal, CadastraMinutaDespesa, \
@@ -207,6 +208,9 @@ def index_minuta(request):
 
 
 def consultaminuta(request, idmin):
+    a = MinutaSelecionada(654)
+    print(a.__dict__)
+    # print(a.ajudantes.nome.idPessoal)
     if request.method == 'POST':
         print(request.POST)
         # fecha_minuta(request, idmin)
