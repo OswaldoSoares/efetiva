@@ -13,7 +13,7 @@ from datetime import datetime, timedelta, time
 import json
 from decimal import Decimal
 from clientes.models import FoneContatoCliente, Tabela, TabelaVeiculo, TabelaCapacidade, TabelaPerimetro
-from minutas.facade import MinutaSelecionada
+from minutas.facade import MinutaSelecionada, MinutaEntrega, MinutaDespesa
 from veiculos.models import Veiculo
 from .forms import CadastraMinuta, CadastraMinutaMotorista, CadastraMinutaAjudante, CadastraMinutaVeiculo, \
     CadastraMinutaKMInicial, CadastraMinutaKMFinal, CadastraMinutaHoraFinal, CadastraMinutaDespesa, \
@@ -208,12 +208,18 @@ def index_minuta(request):
 
 
 def consultaminuta(request, idmin):
-    a = MinutaSelecionada(654)
+    a = MinutaSelecionada(idmin)
     print(a.__dict__)
-    # print(a.ajudantes.nome.idPessoal)
-    if request.method == 'POST':
-        print(request.POST)
-        # fecha_minuta(request, idmin)
+    b = MinutaEntrega(idmin)
+    print(b)
+    c = MinutaEntrega.get_entregas(idmin)
+    print(c)
+    d = MinutaDespesa.get_despesas(idmin)
+    print(d)
+    print(F'Total de {a.total_kms()} KMs.')
+    print(F'Total de {a.saidas_ajudante()} saídas.')
+    print(F'Total de {a.total_horas()} horas.')
+    print(a.horas_excede())
     # Cria queryset obj minuta - motorista - ajudante - ajudante quantidade
     minuta = Minuta.objects.filter(idMinuta=idmin)
     motorista_da_minuta = MinutaColaboradores.objects.filter(idMinuta=idmin, Cargo='MOTORISTA').annotate(
@@ -576,6 +582,7 @@ def consultaminuta(request, idmin):
         tabela_recebe_e_paga[str(item)]['id_hip'] = 'hi-%s-paga' % keys_nome_paga[index]
     # Cria contexto para enviar ao template
     contexto = {
+        'a': a,
         'tabela_recebe_e_paga': tabela_recebe_e_paga,
         'minuta': minuta,
         'motorista_da_minuta': motorista_da_minuta,

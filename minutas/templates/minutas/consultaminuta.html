@@ -766,6 +766,9 @@
     </div>
     {% endif %}
     {% endfor %}
+    {% for itens in a.ajudantes %}
+    {{ itens.Nome }}
+    {% endfor %}
     <!-- DIV MODAL -->
     <div class="modal fade" id="modal-formulario" >
         <div class="modal-dialog">
