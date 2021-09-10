@@ -32,6 +32,18 @@ class MinutaSelecionada:
         minuta_selecionada = self.km_final - self.km_inicial
         return minuta_selecionada
 
+    def total_ajudantes(self):
+        self.total_ajudantes_avulso()
+        total_ajudantes = len(self.ajudantes)
+        return total_ajudantes
+
+    def total_ajudantes_avulso(self):
+        total_ajudantes_avulso = len(self.ajudantes)
+        for itens in self.ajudantes:
+            if itens['tipo'] == 'MENSALISTA':
+                total_ajudantes_avulso += -1
+        return total_ajudantes_avulso
+
     def saidas_ajudante(self):
         if self.ajudantes:
             saidas = len(self.entregas)
@@ -47,19 +59,145 @@ class MinutaSelecionada:
 
     def horas_excede(self):
         periodo = self.total_horas()
-        filtro_tabela_veiculo = [itens for itens in self.tabela_veiculo if itens['idCategoriaVeiculo'] ==
-                                 self.veiculo_solicitado]
-        minimo = timedelta(days=0, hours=filtro_tabela_veiculo[0]['HoraMinimo'].hour,
-                           minutes=filtro_tabela_veiculo[0]['HoraMinimo'].minute)
+        filtro_tabela_veiculo = self.filtro_tabela_veiculo()
+        minimo = timedelta(days=0, hours=filtro_tabela_veiculo['HoraMinimo'].hour,
+                           minutes=filtro_tabela_veiculo['HoraMinimo'].minute)
         if periodo > minimo:
             excede = periodo - minimo
             return excede
 
     def total_notas(self):
-       valor_entregas = sum([itens['ValorNota'] for itens in self.entregas])
-       volume_entregas = sum([itens['Volume'] for itens in self.entregas])
-       peso_entregas = sum([itens['Peso'] for itens in self.entregas])
-       return valor_entregas, volume_entregas, peso_entregas
+        valor_entregas = sum([itens['ValorNota'] for itens in self.entregas])
+        volume_entregas = sum([itens['Volume'] for itens in self.entregas])
+        peso_entregas = sum([itens['Peso'] for itens in self.entregas])
+        total_entregas = len(self.entregas)
+        return valor_entregas, volume_entregas, peso_entregas, total_entregas
+
+    @staticmethod
+    def saldo_porcentagem_nota(porcento, valor):
+        porcentagem = porcento
+        total_notas = valor
+        saldo = total_notas * porcentagem / 100
+        return saldo
+
+    def filtro_tabela_veiculo(self):
+        filtro_tabela_veiculo = [itens for itens in self.tabela_veiculo if itens['idCategoriaVeiculo'] ==
+                                 self.veiculo_solicitado]
+        return filtro_tabela_veiculo[0]
+
+    def carrega_valores_paga(self):
+        valores_paga = dict()
+        valores_paga['valor_porcentagem'] = self.filtro_tabela_veiculo()['PorcentagemPaga']
+        valores_paga['minuta_porcentagem'] = self.total_notas()[0]
+        valores_paga['valor_hora'] = self.filtro_tabela_veiculo()['HoraPaga']
+        valores_paga['minuta_hora'] = self.filtro_tabela_veiculo()['HoraMinimo']
+        valores_paga['valor_horaexcede'] = 100
+        valores_paga['minuta_horaexcede'] = self.horas_excede()
+        valores_paga['valor_kilometragem'] = self.filtro_tabela_veiculo()['KMPaga']
+        valores_paga['minuta_kilometragem'] = self.total_kms()
+        valores_paga['valor_entregas'] = self.filtro_tabela_veiculo()['EntregaPaga']
+        valores_paga['minuta_entregas'] = self.total_notas()[3]
+        valores_paga['valor_entregaskg'] = self.filtro_tabela_veiculo()['EntregaKGPaga']
+        valores_paga['minuta_entregaskg'] = self.total_notas()[2]
+        valores_paga['valor_entregasvolume'] = self.filtro_tabela_veiculo()['EntregaVolumePaga']
+        valores_paga['minuta_entregasvolume'] = self.total_notas()[1]
+        valores_paga['valor_saida'] = self.filtro_tabela_veiculo()['SaidaPaga']
+        capacidade = [itens['CapacidadePaga'] for itens in self.tabela_capacidade if itens['CapacidadeInicial'] <=
+                      self.total_kms() <= itens['CapacidadeFinal']]
+        if capacidade:
+            valores_paga['valor_capacidade'] = capacidade[0]
+        else:
+            valores_paga['valor_capacidade'] = 0.00
+        perimetro = [itens['PerimetroPaga'] for itens in self.tabela_perimetro if itens['PerimetroInicial'] <=
+                     self.total_kms() <= itens['PerimetroFinal']]
+        if perimetro:
+            valores_paga['valor_perimetro'] = perimetro[0]
+        else:
+            valores_paga['valor_perimetro'] = 0.00
+        valores_paga['valor_ajudante'] = self.tabela[0]['AjudantePaga']
+        if self.total_ajudantes() > 0 and self.saidas_ajudante() > 0:
+            valores_paga['valor_ajudante'] = float(self.tabela[0]['AjudantePaga']) + 10.00
+        valores_paga['minuta_ajudante'] = self.total_ajudantes_avulso()
+        return valores_paga
+
+    def lista_pagamentos(self):
+        paga = self.carrega_valores_paga()
+        porcentagem_paga = MinutaFinanceiro('PORCENTAGEM DA NOTA', 'porcentagem', '%', paga['valor_porcentagem'],
+                                            'R$', paga['minuta_porcentagem'])
+        horas_paga = MinutaFinanceiro('HORAS', 'horas', 'R$', paga['valor_hora'], 'HS', paga['minuta_hora'])
+        horasexcede_paga = MinutaFinanceiro('HORAS EXCEDENTE', 'horasexcede', '%', paga['valor_horaexcede'], 'HS',
+                                            paga['minuta_horaexcede'])
+        kilometragem_paga = MinutaFinanceiro('KILOMETRAGEM', 'kilometragem', 'R$', paga['valor_kilometragem'], 'UN',
+                                             paga['minuta_kilometragem'])
+        entregas_paga = MinutaFinanceiro('ENTREGAS', 'entregas', 'R$', paga['valor_entregas'], 'UN',
+                                         paga['minuta_entregas'])
+        entregaskg_paga = MinutaFinanceiro('ENTREGAS KG', 'entregaskg', 'R$', paga['valor_entregaskg'], 'KG',
+                                           paga['minuta_entregaskg'])
+        entregasvolume_paga = MinutaFinanceiro('ENTREGAS VOLUME', 'entregasvolume', 'R$',
+                                               paga['valor_entregasvolume'], 'UN', paga['minuta_entregasvolume'])
+        saida_paga = MinutaFinanceiro('SAIDA', 'saida', 'R$', paga['valor_saida'], '', '')
+        capacidade_paga = MinutaFinanceiro('CAPACIDADE PESO', 'capacidade', 'R$', paga['valor_capacidade'], '', '')
+        perimetro_paga = MinutaFinanceiro('PERIMETRO', 'perimetro', '%', paga['valor_perimetro'], 'R$', 0.00)
+        pernoite_paga = MinutaFinanceiro('PERNOITE', 'pernoite', '%', 0.00, 'R$', 0.00)
+        ajudante_paga = MinutaFinanceiro('AJUDANTE', 'ajudante', 'R$', paga['valor_ajudante'], 'UN',
+                                         paga['minuta_ajudante'])
+
+        itens_paga = list()
+        itens_paga.append(porcentagem_paga.__dict__)
+        itens_paga.append(horas_paga.__dict__)
+        itens_paga.append(horasexcede_paga.__dict__)
+        itens_paga.append(kilometragem_paga.__dict__)
+        itens_paga.append(entregas_paga.__dict__)
+        itens_paga.append(entregaskg_paga.__dict__)
+        itens_paga.append(entregasvolume_paga.__dict__)
+        itens_paga.append(saida_paga.__dict__)
+        itens_paga.append(capacidade_paga.__dict__)
+        itens_paga.append(perimetro_paga.__dict__)
+        itens_paga.append(pernoite_paga.__dict__)
+        itens_paga.append(ajudante_paga.__dict__)
+        return itens_paga
+
+    def saldo_paga_phkesc(self):
+        lista_itens_paga = self.lista_pagamentos()
+        valor_minuto = 0.00
+        for itens in lista_itens_paga:
+            if itens['descricao'] == 'PORCENTAGEM DA NOTA':
+                itens['saldo'] = float(itens['valor_tabela']) * float(itens['valor_minuta']) / 100
+            elif itens['descricao'] == 'HORAS':
+                valor_minuto = float(itens['valor_tabela']) / 60
+                minutos_hora = itens['valor_minuta'].strftime('%H:%M').split(':')
+                minutos_hora = int(minutos_hora[0]) * 60 + int(minutos_hora[1])
+                itens['saldo'] = valor_minuto * minutos_hora
+            elif itens['descricao'] == 'HORAS EXCEDENTE':
+                valor_minuto = valor_minuto * itens['valor_tabela'] / 100
+                segundos = itens['valor_minuta'].total_seconds()
+                minutos_hora_excede = segundos / 60
+                itens['saldo'] = valor_minuto * minutos_hora_excede
+            elif itens['descricao'] == 'KILOMETRAGEM' or itens['descricao'] == 'ENTREGAS' or itens['descricao'] \
+                    == 'ENTREGAS VOLUME':
+                itens['saldo'] = float(itens['valor_tabela']) * itens['valor_minuta']
+            elif itens['descricao'] == 'ENTREGAS KG':
+                itens['saldo'] = float(itens['valor_tabela'] * itens['valor_minuta'])
+            elif itens['descricao'] == 'SAIDA' or itens['descricao'] == 'CAPACIDADE':
+                itens['saldo'] = float(itens['valor_tabela'])
+        saldo_paga = 0.00
+        for itens in lista_itens_paga:
+            saldo_paga += itens['saldo']
+        return lista_itens_paga, saldo_paga
+
+    def saldos_paga(self):
+        lista_itens_paga, saldo_paga = self.saldo_paga_phkesc()
+        saldo_paga_adiciona = 0.00
+        for itens in lista_itens_paga:
+            if itens['descricao'] == 'PERIMETRO' or itens['descricao'] == 'PERNOITE':
+                itens['valor_minuta'] = float(saldo_paga)
+                itens['saldo'] = (float(itens['valor_tabela']) * float(saldo_paga)) / 100
+                saldo_paga_adiciona += itens['saldo']
+            elif itens['descricao'] == 'AJUDANTE':
+                itens['saldo'] = float(itens['valor_tabela']) * itens['valor_minuta']
+                saldo_paga_adiciona += itens['saldo']
+        saldo_paga += saldo_paga_adiciona
+        return lista_itens_paga, saldo_paga
 
 
 class MinutaMotorista:
@@ -81,8 +219,8 @@ class MinutaAjudantes:
     @staticmethod
     def get_ajudantes(idminuta):
         ajudantes = MinutaColaboradores.objects.filter(idMinuta=idminuta, Cargo='AJUDANTE')
-        lista = [{'idMinutaColaboradores': itens.idMinutaColaboradores, 'nome': itens.idPessoal.Nome}
-                 for itens in ajudantes]
+        lista = [{'idMinutaColaboradores': itens.idMinutaColaboradores, 'nome': itens.idPessoal.Nome,
+                  'tipo': itens.idPessoal.TipoPgto} for itens in ajudantes]
         return lista
 
 
@@ -173,10 +311,10 @@ class MinutaFinanceiro:
     def __init__(self, descricao, chave_descricao, tipo_valor_tabela, valor_tabela, tipo_valor_minuta, valor_minuta):
         self.descricao = descricao
         self.chave_descricao = chave_descricao
-        self.valor_tabela = valor_tabela
         self.tipo_valor_tabela = tipo_valor_tabela
-        self.valor_minuta = valor_minuta
+        self.valor_tabela = valor_tabela
         self.tipo_valor_minuta = tipo_valor_minuta
+        self.valor_minuta = valor_minuta
         self.saldo = 0.00
         self.checked = False
 
@@ -185,36 +323,3 @@ class MinutaFinanceiro:
 
     def checked_off(self):
         self.checked = False
-
-
-def get_total_ajudantes(idminuta):
-    return MinutaColaboradores.objects.filter(idMinuta=idminuta, Cargo='AJUDANTE').count()
-
-
-def cria_pagamentos():
-    porcentagem_paga = MinutaFinanceiro('PORCENTAGEM DA NOTA', 'porcentagem', '%', 0.00, 'R$', 0.00)
-    horas_paga = MinutaFinanceiro('HORAS', 'horas', 'R$', 0.00, 'HS', '00:00')
-    horasexcede_paga = MinutaFinanceiro('HORAS EXCEDENTE', 'horasexcede', '%', 0.00, 'HS', '00:00')
-    kilometragem_paga = MinutaFinanceiro('KILOMETRAGEM', 'kilometragem', 'R$', 0.00, 'UN', 0)
-    entregas_paga = MinutaFinanceiro('ENTREGAS', 'entregas', 'R$', 0.00, 'UN', 0)
-    entregaskg_paga = MinutaFinanceiro('ENTREGAS KG', 'entregaskg', 'R$', 0.00, 'KG', 0.00)
-    entregasvolume_paga = MinutaFinanceiro('ENTREGAS VOLUME', 'entregasvolume', 'R$', 0.00, 'UN', 0)
-    saida_paga = MinutaFinanceiro('SAIDA', 'saida', 'R$', 0.00, '', '')
-    capacidade_paga = MinutaFinanceiro('CAPACIDADE PESO', 'capacidade', 'R$', 0.00, '', '')
-    perimetro_paga = MinutaFinanceiro('PERIMETRO', 'perimetro', '%', 0.00, 'R$', 0.00)
-    pernoite_paga = MinutaFinanceiro('PERNOITE', 'pernoite', '%', 0.00, 'R$', 0.00)
-    ajudante_paga = MinutaFinanceiro('AJUDANTE', 'ajudante', 'R$', 0.00, 'UN', 0)
-
-    itens_paga = list()
-    itens_paga.append(porcentagem_paga)
-    itens_paga.append(horas_paga)
-    itens_paga.append(horasexcede_paga)
-    itens_paga.append(kilometragem_paga)
-    itens_paga.append(entregas_paga)
-    itens_paga.append(entregaskg_paga)
-    itens_paga.append(entregasvolume_paga)
-    itens_paga.append(saida_paga)
-    itens_paga.append(capacidade_paga)
-    itens_paga.append(perimetro_paga)
-    itens_paga.append(pernoite_paga)
-    itens_paga.append(ajudante_paga)

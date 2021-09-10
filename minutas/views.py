@@ -209,17 +209,7 @@ def index_minuta(request):
 
 def consultaminuta(request, idmin):
     a = MinutaSelecionada(idmin)
-    print(a.__dict__)
-    b = MinutaEntrega(idmin)
-    print(b)
-    c = MinutaEntrega.get_entregas(idmin)
-    print(c)
-    d = MinutaDespesa.get_despesas(idmin)
-    print(d)
-    print(F'Total de {a.total_kms()} KMs.')
-    print(F'Total de {a.saidas_ajudante()} saídas.')
-    print(F'Total de {a.total_horas()} horas.')
-    print(a.horas_excede())
+    print(a.saldos_paga())
     # Cria queryset obj minuta - motorista - ajudante - ajudante quantidade
     minuta = Minuta.objects.filter(idMinuta=idmin)
     motorista_da_minuta = MinutaColaboradores.objects.filter(idMinuta=idmin, Cargo='MOTORISTA').annotate(
