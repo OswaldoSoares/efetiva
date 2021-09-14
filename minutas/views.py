@@ -574,7 +574,7 @@ def consultaminuta(request, idmin):
         tabela_recebe_e_paga[str(item)]['id_hip'] = 'hi-%s-paga' % keys_nome_paga[index]
     # Cria contexto para enviar ao template
     contexto = {
-        'a': a,
+        # 'a': a,
         'tabela_recebe_e_paga': tabela_recebe_e_paga,
         'minuta': minuta,
         'motorista_da_minuta': motorista_da_minuta,
