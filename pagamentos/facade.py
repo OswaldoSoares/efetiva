@@ -643,25 +643,29 @@ def html_minutascontracheque(mesreferencia, anoreferencia, idpessoal):
 
 
 def atualiza_cartaoponto(mesreferencia, anoreferencia, idpessoal):
-    minutas = select_minutas_contracheque(mesreferencia, anoreferencia, idpessoal)
-    for x in minutas:
-        cartaoponto = CartaoPonto.objects.get(Dia=x['idMinuta_id__DataMinuta'], idPessoal_id=x['idPessoal'])
-        obj = cartaoponto
-        horaentrada = datetime.datetime.strptime('07:00:00', '%H:%M:%S').time()
-        horasaida = datetime.datetime.strptime('17:00:00', '%H:%M:%S').time()
-        if obj.Alteracao == 'ROBOT' and obj.Ausencia != 'FALTA':
-            if x['idMinuta_id__HoraInicial']:
-                if x['idMinuta_id__HoraInicial'] != obj.Entrada:
-                    if x['idMinuta_id__HoraInicial'] < horaentrada:
-                        obj.Entrada = x['idMinuta_id__HoraInicial']
-                        obj.save(update_fields=['Entrada'])
-            if x['idMinuta_id__HoraFinal']:
-                if x['idMinuta_id__HoraFinal'] != obj.Saida:
-                    if x['idMinuta_id__HoraFinal'] > horasaida:
-                        obj.Saida = x['idMinuta_id__HoraFinal']
-                        obj.save(update_fields=['Saida'])
-    totalextra = calcula_horas_extras(mesreferencia, anoreferencia, idpessoal)
-    calcula_horas_atrazo(mesreferencia, anoreferencia, idpessoal)
+    colaborador = facade.get_pessoal(idpessoal)
+    admissao = colaborador[0].DataAdmissao
+    totalextra = 0
+    if int(anoreferencia) >= admissao.year and int(mesreferencia) >= admissao.month:
+        minutas = select_minutas_contracheque(mesreferencia, anoreferencia, idpessoal)
+        for x in minutas:
+            cartaoponto = CartaoPonto.objects.get(Dia=x['idMinuta_id__DataMinuta'], idPessoal_id=x['idPessoal'])
+            obj = cartaoponto
+            horaentrada = datetime.datetime.strptime('07:00:00', '%H:%M:%S').time()
+            horasaida = datetime.datetime.strptime('17:00:00', '%H:%M:%S').time()
+            if obj.Alteracao == 'ROBOT' and obj.Ausencia != 'FALTA':
+                if x['idMinuta_id__HoraInicial']:
+                    if x['idMinuta_id__HoraInicial'] != obj.Entrada:
+                        if x['idMinuta_id__HoraInicial'] < horaentrada:
+                            obj.Entrada = x['idMinuta_id__HoraInicial']
+                            obj.save(update_fields=['Entrada'])
+                if x['idMinuta_id__HoraFinal']:
+                    if x['idMinuta_id__HoraFinal'] != obj.Saida:
+                        if x['idMinuta_id__HoraFinal'] > horasaida:
+                            obj.Saida = x['idMinuta_id__HoraFinal']
+                            obj.save(update_fields=['Saida'])
+        totalextra = calcula_horas_extras(mesreferencia, anoreferencia, idpessoal)
+        calcula_horas_atrazo(mesreferencia, anoreferencia, idpessoal)
     return totalextra
 
 
@@ -817,13 +821,22 @@ def html_formccitens(contracheque, request):
 
 def calcula_faltas(mesreferencia, anoreferencia, idpessoal):
     dia, diafinal = periodo_cartaoponto(mesreferencia, anoreferencia)
+    colaborador = facade.get_pessoal(idpessoal)
+    admissao = colaborador[0].DataAdmissao
+    mes_dias = 30
+    if int(anoreferencia) == admissao.year and int(mesreferencia) == admissao.month:
+        mes_dias -= admissao.day - 1
+        dia = admissao
     faltas = CartaoPonto.objects.filter(Dia__range=[dia, diafinal], idPessoal=idpessoal, Ausencia='FALTA').count()
     salario = get_salario(idpessoal)
     desconto = float(salario[0].Salario)/30*int(faltas)*2
-    salario = float(salario[0].Salario) - desconto
+    if mes_dias < 30:
+        salario = (float(salario[0].Salario) / 30 * mes_dias) - desconto
+    else:
+        salario = float(salario[0].Salario) - desconto
     contracheque = get_contrachequereferencia(mesreferencia, anoreferencia, idpessoal)
     contrachequeitens = get_contrachequeitens(contracheque[0].idContraCheque, 'SALARIO', 'C')
-    altera_contracheque_itens(contrachequeitens, salario, '{}d'.format(30-faltas))
+    altera_contracheque_itens(contrachequeitens, salario, f'{mes_dias-faltas}d')
 
 
 def calcula_horas_extras(mesreferencia, anoreferencia, idpessoal):
