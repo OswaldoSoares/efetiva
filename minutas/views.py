@@ -209,7 +209,11 @@ def index_minuta(request):
 
 def consultaminuta(request, idmin):
     a = MinutaSelecionada(idmin)
-    print(a.saldos_paga())
+    # print(a.saldos_paga())
+    b = a.saldos_recebe()[0]
+    for x in b:
+        print(x['descricao'], x['saldo'])
+    print(a.saldos_recebe()[1])
     # Cria queryset obj minuta - motorista - ajudante - ajudante quantidade
     minuta = Minuta.objects.filter(idMinuta=idmin)
     motorista_da_minuta = MinutaColaboradores.objects.filter(idMinuta=idmin, Cargo='MOTORISTA').annotate(
@@ -379,8 +383,6 @@ def consultaminuta(request, idmin):
     minuta_itens_fechada = MinutaItens.objects.filter(idMinuta=idmin).order_by('TipoItens', 'Descricao')
     " ADICIONA VALOR HORA EXTRA NA COBRANÇA DO AJUDANTE "
     calcula_ajudante_recebe_hora_extra = Decimal(0.00)
-    print(totalhoras)
-    print(dezhoras)
     if totalhoras > dezhoras:
         horas = str(totalhoras)[0:2]
         minutos = str(totalhoras)[3:5]
