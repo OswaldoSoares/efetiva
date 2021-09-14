@@ -83,6 +83,7 @@ class MinutaSelecionada:
         minimo = timedelta(days=0, hours=filtro_tabela_veiculo['HoraMinimo'].hour,
                            minutes=filtro_tabela_veiculo['HoraMinimo'].minute)
         excede = timedelta(hours=0, minutes=0)
+        print(periodo, minimo)
         if periodo > minimo:
             excede = periodo - minimo
         return excede
