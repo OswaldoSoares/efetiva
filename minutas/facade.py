@@ -70,20 +70,22 @@ class MinutaSelecionada:
             return saidas
 
     def total_horas(self):
+        periodo = timedelta(hours=0, minutes=0)
         if self.hora_final:
             inicial = datetime.combine(self.data, self.hora_inicial)
             final = datetime.combine(self.data, self.hora_final)
             if inicial < final:
                 periodo = final - inicial
-                return periodo
+        return periodo
 
     def horas_excede(self):
+        excede = timedelta(hours=0, minutes=0)
+        minimo = timedelta(hours=0, minutes=0)
         periodo = self.total_horas()
         filtro_tabela_veiculo = self.filtro_tabela_veiculo()
-        minimo = timedelta(days=0, hours=filtro_tabela_veiculo['HoraMinimo'].hour,
-                           minutes=filtro_tabela_veiculo['HoraMinimo'].minute)
-        excede = timedelta(hours=0, minutes=0)
-        print(periodo, minimo)
+        if filtro_tabela_veiculo:
+            minimo = timedelta(days=0, hours=filtro_tabela_veiculo['HoraMinimo'].hour,
+                               minutes=filtro_tabela_veiculo['HoraMinimo'].minute)
         if periodo > minimo:
             excede = periodo - minimo
         return excede
@@ -105,41 +107,53 @@ class MinutaSelecionada:
     def filtro_tabela_veiculo(self):
         filtro_tabela_veiculo = [itens for itens in self.tabela_veiculo if itens['idCategoriaVeiculo'] ==
                                  self.veiculo_solicitado]
-        return filtro_tabela_veiculo[0]
+        if filtro_tabela_veiculo:
+            return filtro_tabela_veiculo[0]
 
     def carrega_valores_paga(self):
-        valores_paga = dict()
-        valores_paga['valor_porcentagem'] = self.filtro_tabela_veiculo()['PorcentagemPaga']
-        valores_paga['minuta_porcentagem'] = self.total_notas()[0]
-        valores_paga['valor_hora'] = self.filtro_tabela_veiculo()['HoraPaga']
-        valores_paga['minuta_hora'] = self.filtro_tabela_veiculo()['HoraMinimo']
-        valores_paga['valor_horaexcede'] = 100
-        valores_paga['minuta_horaexcede'] = self.horas_excede()
-        valores_paga['valor_kilometragem'] = self.filtro_tabela_veiculo()['KMPaga']
-        valores_paga['minuta_kilometragem'] = self.total_kms()
-        valores_paga['valor_entregas'] = self.filtro_tabela_veiculo()['EntregaPaga']
-        valores_paga['minuta_entregas'] = self.total_notas()[3]
-        valores_paga['valor_entregaskg'] = self.filtro_tabela_veiculo()['EntregaKGPaga']
-        valores_paga['minuta_entregaskg'] = self.total_notas()[2]
-        valores_paga['valor_entregasvolume'] = self.filtro_tabela_veiculo()['EntregaVolumePaga']
-        valores_paga['minuta_entregasvolume'] = self.total_notas()[1]
-        valores_paga['valor_saida'] = self.filtro_tabela_veiculo()['SaidaPaga']
-        capacidade = [itens['CapacidadePaga'] for itens in self.tabela_capacidade if itens['CapacidadeInicial'] <=
-                      self.total_kms() <= itens['CapacidadeFinal']]
-        if capacidade:
-            valores_paga['valor_capacidade'] = capacidade[0]
-        else:
-            valores_paga['valor_capacidade'] = 0.00
-        perimetro = [itens['PerimetroPaga'] for itens in self.tabela_perimetro if itens['PerimetroInicial'] <=
-                     self.total_kms() <= itens['PerimetroFinal']]
-        if perimetro:
-            valores_paga['valor_perimetro'] = perimetro[0]
-        else:
-            valores_paga['valor_perimetro'] = 0.00
-        valores_paga['valor_ajudante'] = self.tabela[0]['AjudantePaga']
-        if self.total_ajudantes() > 0 and self.saidas_ajudante() > 0:
-            valores_paga['valor_ajudante'] = float(self.tabela[0]['AjudantePaga']) + 10.00
-        valores_paga['minuta_ajudante'] = self.total_ajudantes_avulso()
+        hora_zero_timedelta = timedelta(hours=0, minutes=0)
+        hora_zero_time = datetime.strptime('00:00', '%H:%M').time()
+        tabela_veiculo = self.filtro_tabela_veiculo()
+        valores_paga = dict({'valor_porcentagem': 0.00, 'minuta_porcentagem': 0.00, 'valor_hora': 0.00,
+                             'minuta_hora': hora_zero_time, 'valor_horaexcede': 100.00,
+                             'minuta_horaexcede': hora_zero_timedelta,
+                             'valor_kilometragem': 0.00, 'minuta_kilometragem': 0.00, 'valor_entregas': 0.00,
+                             'minuta_entregas': 0.00, 'valor_entregaskg': 0.00, 'minuta_entregaskg': 0.00,
+                             'valor_entregasvolume': 0.00, 'minuta_entregasvolume': 0.00, 'valor_saida': 0.00,
+                             'valor_capacidade': 0.00, 'valor_perimetro': 0.00, 'valor_ajudante': 0.00,
+                             'minuta_ajudante': 0.00})
+        if tabela_veiculo:
+            valores_paga['valor_porcentagem'] = tabela_veiculo['PorcentagemPaga']
+            valores_paga['minuta_porcentagem'] = self.total_notas()[0]
+            valores_paga['valor_hora'] = self.filtro_tabela_veiculo()['HoraPaga']
+            valores_paga['minuta_hora'] = self.filtro_tabela_veiculo()['HoraMinimo']
+            valores_paga['valor_horaexcede'] = 100
+            valores_paga['minuta_horaexcede'] = self.horas_excede()
+            valores_paga['valor_kilometragem'] = self.filtro_tabela_veiculo()['KMPaga']
+            valores_paga['minuta_kilometragem'] = self.total_kms()
+            valores_paga['valor_entregas'] = self.filtro_tabela_veiculo()['EntregaPaga']
+            valores_paga['minuta_entregas'] = self.total_notas()[3]
+            valores_paga['valor_entregaskg'] = self.filtro_tabela_veiculo()['EntregaKGPaga']
+            valores_paga['minuta_entregaskg'] = self.total_notas()[2]
+            valores_paga['valor_entregasvolume'] = self.filtro_tabela_veiculo()['EntregaVolumePaga']
+            valores_paga['minuta_entregasvolume'] = self.total_notas()[1]
+            valores_paga['valor_saida'] = self.filtro_tabela_veiculo()['SaidaPaga']
+            capacidade = [itens['CapacidadePaga'] for itens in self.tabela_capacidade if itens['CapacidadeInicial'] <=
+                          self.total_kms() <= itens['CapacidadeFinal']]
+            if capacidade:
+                valores_paga['valor_capacidade'] = capacidade[0]
+            else:
+                valores_paga['valor_capacidade'] = 0.00
+            perimetro = [itens['PerimetroPaga'] for itens in self.tabela_perimetro if itens['PerimetroInicial'] <=
+                         self.total_kms() <= itens['PerimetroFinal']]
+            if perimetro:
+                valores_paga['valor_perimetro'] = perimetro[0]
+            else:
+                valores_paga['valor_perimetro'] = 0.00
+            valores_paga['valor_ajudante'] = self.tabela[0]['AjudantePaga']
+            if self.total_ajudantes() > 0 and self.saidas_ajudante() > 0:
+                valores_paga['valor_ajudante'] = float(self.tabela[0]['AjudantePaga']) + 10.00
+            valores_paga['minuta_ajudante'] = self.total_ajudantes_avulso()
         return valores_paga
 
     def lista_pagamentos(self):
@@ -221,39 +235,54 @@ class MinutaSelecionada:
         return lista_itens_paga, saldo_paga
 
     def carrega_valores_recebe(self):
-        valores_recebe = dict()
-        valores_recebe['valor_taxaexpedicao'] = self.tabela[0]['TaxaExpedicao']
-        valores_recebe['valor_seguro'] = 0.23
-        valores_recebe['minuta_seguro'] = self.total_notas()[0]
-        valores_recebe['valor_porcentagem'] = self.filtro_tabela_veiculo()['PorcentagemCobra']
-        valores_recebe['minuta_porcentagem'] = self.total_notas()[0]
-        valores_recebe['valor_hora'] = self.filtro_tabela_veiculo()['HoraCobra']
-        valores_recebe['minuta_hora'] = self.filtro_tabela_veiculo()['HoraMinimo']
-        valores_recebe['valor_horaexcede'] = 100
-        valores_recebe['minuta_horaexcede'] = self.horas_excede()
-        valores_recebe['valor_kilometragem'] = self.filtro_tabela_veiculo()['KMCobra']
-        valores_recebe['minuta_kilometragem'] = self.total_kms()
-        valores_recebe['valor_entregas'] = self.filtro_tabela_veiculo()['EntregaCobra']
-        valores_recebe['minuta_entregas'] = self.total_notas()[3]
-        valores_recebe['valor_entregaskg'] = self.filtro_tabela_veiculo()['EntregaKGCobra']
-        valores_recebe['minuta_entregaskg'] = self.total_notas()[2]
-        valores_recebe['valor_entregasvolume'] = self.filtro_tabela_veiculo()['EntregaVolumeCobra']
-        valores_recebe['minuta_entregasvolume'] = self.total_notas()[1]
-        valores_recebe['valor_saida'] = self.filtro_tabela_veiculo()['SaidaCobra']
-        capacidade = [itens['CapacidadeCobra'] for itens in self.tabela_capacidade if itens['CapacidadeInicial'] <=
-                      self.total_kms() <= itens['CapacidadeFinal']]
-        if capacidade:
-            valores_recebe['valor_capacidade'] = capacidade[0]
-        else:
-            valores_recebe['valor_capacidade'] = 0.00
-        perimetro = [itens['PerimetroCobra'] for itens in self.tabela_perimetro if itens['PerimetroInicial'] <=
-                     self.total_kms() <= itens['PerimetroFinal']]
-        if perimetro:
-            valores_recebe['valor_perimetro'] = perimetro[0]
-        else:
-            valores_recebe['valor_perimetro'] = 0.00
-        valores_recebe['valor_ajudante'] = self.extra_ajudante_cobra()
-        valores_recebe['minuta_ajudante'] = self.total_ajudantes()
+        hora_zero_timedelta = timedelta(hours=0, minutes=0)
+        hora_zero_time = datetime.strptime('00:00', '%H:%M').time()
+        tabela_veiculo = self.filtro_tabela_veiculo()
+        valores_recebe = dict({'valor_taxaexpedicao': 0.00, 'valor_seguro': 0.00, 'minuta_seguro': 0.00,
+                               'valor_porcentagem': 0.00, 'minuta_porcentagem': 0.00, 'valor_hora': 0.00,
+                               'minuta_hora': hora_zero_time, 'valor_horaexcede': 100.00,
+                               'minuta_horaexcede': hora_zero_timedelta, 'valor_kilometragem': 0.00,
+                               'minuta_kilometragem': 0.00, 'valor_entregas': 0.00, 'minuta_entregas': 0.00,
+                               'valor_entregaskg': 0.00, 'minuta_entregaskg': 0.00, 'valor_entregasvolume': 0.00,
+                               'minuta_entregasvolume': 0.00, 'valor_saida': 0.00, 'valor_capacidade': 0.00,
+                               'valor_perimetro': 0.00, 'valor_ajudante': 0.00, 'minuta_ajudante': 0.00})
+        if tabela_veiculo:
+            valores_recebe = dict()
+            valores_recebe['valor_taxaexpedicao'] = self.tabela[0]['TaxaExpedicao']
+            valores_recebe['valor_seguro'] = 0.23
+            valores_recebe['minuta_seguro'] = self.total_notas()[0]
+            if self.filtro_tabela_veiculo():
+                valores_recebe['valor_porcentagem'] = self.filtro_tabela_veiculo()['PorcentagemCobra']
+            else:
+                valores_recebe['valor_porcentagem'] = 0.00
+            valores_recebe['minuta_porcentagem'] = self.total_notas()[0]
+            valores_recebe['valor_hora'] = self.filtro_tabela_veiculo()['HoraCobra']
+            valores_recebe['minuta_hora'] = self.filtro_tabela_veiculo()['HoraMinimo']
+            valores_recebe['valor_horaexcede'] = 100
+            valores_recebe['minuta_horaexcede'] = self.horas_excede()
+            valores_recebe['valor_kilometragem'] = self.filtro_tabela_veiculo()['KMCobra']
+            valores_recebe['minuta_kilometragem'] = self.total_kms()
+            valores_recebe['valor_entregas'] = self.filtro_tabela_veiculo()['EntregaCobra']
+            valores_recebe['minuta_entregas'] = self.total_notas()[3]
+            valores_recebe['valor_entregaskg'] = self.filtro_tabela_veiculo()['EntregaKGCobra']
+            valores_recebe['minuta_entregaskg'] = self.total_notas()[2]
+            valores_recebe['valor_entregasvolume'] = self.filtro_tabela_veiculo()['EntregaVolumeCobra']
+            valores_recebe['minuta_entregasvolume'] = self.total_notas()[1]
+            valores_recebe['valor_saida'] = self.filtro_tabela_veiculo()['SaidaCobra']
+            capacidade = [itens['CapacidadeCobra'] for itens in self.tabela_capacidade if itens['CapacidadeInicial'] <=
+                          self.total_kms() <= itens['CapacidadeFinal']]
+            if capacidade:
+                valores_recebe['valor_capacidade'] = capacidade[0]
+            else:
+                valores_recebe['valor_capacidade'] = 0.00
+            perimetro = [itens['PerimetroCobra'] for itens in self.tabela_perimetro if itens['PerimetroInicial'] <=
+                         self.total_kms() <= itens['PerimetroFinal']]
+            if perimetro:
+                valores_recebe['valor_perimetro'] = perimetro[0]
+            else:
+                valores_recebe['valor_perimetro'] = 0.00
+            valores_recebe['valor_ajudante'] = self.extra_ajudante_cobra()
+            valores_recebe['minuta_ajudante'] = self.total_ajudantes()
         return valores_recebe
 
     def lista_recebimentos(self):

@@ -208,11 +208,12 @@ def index_minuta(request):
 
 
 def consultaminuta(request, idmin):
-    # a = MinutaSelecionada(idmin)
-    # # print(a.saldos_paga())
-    # b = a.saldos_recebe()[0]
-    # for x in b:
-    #     print(x['descricao'], x['saldo'])
+    selecionada = MinutaSelecionada(idmin)
+    # print(a.saldos_paga())
+    a = selecionada.saldos_paga()[0]
+    b = selecionada.saldos_recebe()[0]
+    for x in b:
+        print(x['descricao'], x['saldo'])
     # print(a.saldos_recebe()[1])
     # Cria queryset obj minuta - motorista - ajudante - ajudante quantidade
     minuta = Minuta.objects.filter(idMinuta=idmin)
@@ -574,7 +575,7 @@ def consultaminuta(request, idmin):
         tabela_recebe_e_paga[str(item)]['id_hip'] = 'hi-%s-paga' % keys_nome_paga[index]
     # Cria contexto para enviar ao template
     contexto = {
-        # 'a': a,
+        'selecionada': selecionada,
         'tabela_recebe_e_paga': tabela_recebe_e_paga,
         'minuta': minuta,
         'motorista_da_minuta': motorista_da_minuta,
