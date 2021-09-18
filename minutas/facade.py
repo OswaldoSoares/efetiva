@@ -23,12 +23,15 @@ class MinutaSelecionada:
         self.veiculo = minuta.idVeiculo
         self.km_inicial = minuta.KMInicial
         self.km_final = minuta.KMFinal
-        self.despesas = MinutaDespesa(idminuta)
+        self.despesas = MinutaDespesa(idminuta).descricao
         self.entregas = MinutaEntrega(idminuta).nota
         self.tabela = ClienteTabela(minuta.idCliente).tabela
         self.tabela_veiculo = ClienteTabelaVeiculo(minuta.idCliente).tabela
         self.tabela_perimetro = ClienteTabelaPerimetro(minuta.idCliente).tabela
         self.tabela_capacidade = ClienteTabelaCapacidade(minuta.idCliente).tabela
+        self.valores_recebe = self.carrega_valores_recebe()
+        self.total_horas = self.total_horas()
+        self.total_kms = self.total_kms()
 
     def total_kms(self):
         minuta_selecionada = self.km_final - self.km_inicial

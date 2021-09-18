@@ -208,13 +208,7 @@ def index_minuta(request):
 
 
 def consultaminuta(request, idmin):
-    selecionada = MinutaSelecionada(idmin)
-    # print(a.saldos_paga())
-    a = selecionada.saldos_paga()[0]
-    b = selecionada.saldos_recebe()[0]
-    for x in b:
-        print(x['descricao'], x['saldo'])
-    # print(a.saldos_recebe()[1])
+    selecionada = MinutaSelecionada(idmin).__dict__
     # Cria queryset obj minuta - motorista - ajudante - ajudante quantidade
     minuta = Minuta.objects.filter(idMinuta=idmin)
     motorista_da_minuta = MinutaColaboradores.objects.filter(idMinuta=idmin, Cargo='MOTORISTA').annotate(

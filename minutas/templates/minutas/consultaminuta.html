@@ -766,9 +766,74 @@
     </div>
     {% endif %}
     {% endfor %}
-    {% for itens in a.ajudantes %}
-    {{ itens.Nome }}
-    {% endfor %}
+    <div class="consulta nova">
+        <article>
+            <i class="fas fa-clipboard-list"></i>
+            <span>{{ selecionada.numero }}</span>
+        </article>
+        <article>
+            <i class="fas fa-building"></i>
+            <span>{{ selecionada.cliente }}</span>
+        </article>
+        <article>
+            <i class="fas fa-calendar-alt"></i>
+            <span>{{ selecionada.data }}</span>
+        </article>
+        <article>
+            <i class="fas fa-sun"></i>
+            <span>{{ selecionada.hora_inicial }}</span>
+        </article>
+        <article>
+            <i class="fas fa-moon"></i>
+            <span>{{ selecionada.hora_final }}</span>
+        </article>
+        <article>
+            <i class="fas fa-clock"></i>
+            <span>{{ selecionada.total_horas }}</span>
+        </article>
+        {% for itens in selecionada.motorista %}
+        <article>
+            <i class="fas fa-user-tie"></i>
+            <span>{{ itens.nome }}</span>
+        </article>
+        {% endfor %}
+        <article>
+            <i class="fas fa-bullhorn"></i>
+            <span>{{ selecionada.veiculo_solicitado.Categoria }}</span>
+        </article>
+        <article>
+            <i class="fas fa-truck"></i>
+            <span>{{ selecionada.veiculo.Marca }} {{ selecionada.veiculo.Modelo }} -
+                  {{ selecionada.veiculo.Placa}}</span>
+        </article>
+        <article>
+            <i class="fas fa-tachometer-alt"></i>
+            <span>{{ selecionada.km_inicial }}</span>
+        </article>
+        <article>
+            <i class="fas fa-tachometer-alt"></i>
+            <span>{{ selecionada.km_final }}</span>
+        </article>
+        <article>
+            <i class="fas fa-calculator"></i>
+            <span>{{ selecionada.total_kms }} KMS</span>
+        </article>
+        {% for itens in selecionada.ajudantes %}
+        <article>
+            <i class="fas fa-people-carry"></i>
+            <span>{{ itens.nome }}</span>
+        </article>
+        {% endfor %}
+        {% for itens in selecionada.ajudantes %}
+        <article>
+            <i class="fas fa-sitemap"></i>
+            <span>a</span>
+        </article>
+        {% endfor %}
+        <div>
+            <span>{{ selecionada }}</span>
+        </div>
+    </div>
     <!-- DIV MODAL -->
     <div class="modal fade" id="modal-formulario" >
         <div class="modal-dialog">

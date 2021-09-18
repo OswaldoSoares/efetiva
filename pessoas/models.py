@@ -26,6 +26,7 @@ class Pessoal(models.Model):
     TipoPgto = models.CharField(max_length=25, blank=False)
     StatusPessoal = models.BooleanField(default=True)
     DataAdmissao = models.DateField(blank=True, null=True)
+    DataDemissao = models.DateField(blank=True, null=True)
     Foto = models.ImageField(upload_to=get_file_path, null=True, blank=True)
 
     class Meta:

@@ -2769,7 +2769,23 @@ main .fp-recibo-tabela .fp-recibo-print {
     transform: translateX(15px);
 }
 
+.nova {
+    font-size: 25px;
+}
 
+.nova article i {
+    color: black;
+    min-width: 50px;
+    text-align: center;
+}
+
+.nova article span {
+    background-color: olive;
+    color: var(--corprimaria);
+    display: inline-block;
+    width: 600px;
+    text-align: center;
+}
 /*
 .pagamento-conteudo main {
     background-color: white;
