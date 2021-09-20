@@ -51,12 +51,12 @@ def edita_pessoa(request, idpessoa):
     return data
 
 
-# def edita_demissao(request, idpessoa):
-#     c_form = CadastraDemissao
-#     c_idobj = idpessoa
-#     c_url = f'/pessoas/editademissao{c_idobj}'
-#     c_view = 'edita_demissao'
-#     pass
+def edita_demissao(request, idpessoa):
+    c_form = CadastraDemissao
+    c_idobj = idpessoa
+    c_url = f'/pessoas/editademissao{c_idobj}'
+    c_view = 'edita_demissao'
+    pass
 
 
 def excluipessoa(request, idpessoa):
