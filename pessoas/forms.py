@@ -138,3 +138,9 @@ class CadastraContraChequeItens(forms.ModelForm):
                    'Valor': forms.NumberInput(attrs={'class': 'form-control'}),
                    'Registro': forms.Select(attrs={'class': 'form-control'}, choices=[('C', 'CRÉDITO'),
                                                                                       ('D', 'DÉBITO')])}
+
+
+class CadastraDemissao(forms.ModelForm):
+    class Meta:
+        model = Pessoal
+        fields = ('DataDemissao',)

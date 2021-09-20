@@ -6,10 +6,7 @@ from django.template.loader import render_to_string
 from rolepermissions.decorators import has_permission_decorator
 from pessoas import facade
 from .models import Pessoal, DocPessoal, FonePessoal, ContaPessoal, ContraChequeItens
-from .forms import CadastraPessoal, CadastraDocPessoal, CadastraFonePessoal, CadastraContaPessoal, CadastraSalario, \
-    CadastraVale
-from decimal import Decimal
-from  minutas.models import MinutaColaboradores
+from .forms import CadastraPessoal, CadastraDocPessoal, CadastraFonePessoal, CadastraContaPessoal, CadastraDemissao
 
 
 def removeduplicadas(lista):
@@ -52,6 +49,14 @@ def edita_pessoa(request, idpessoa):
     idpessoal = 'edita_pessoa'
     data = facade.form_pessoa(request, c_form, c_idobj, c_url, c_view, idpessoal)
     return data
+
+
+# def edita_demissao(request, idpessoa):
+#     c_form = CadastraDemissao
+#     c_idobj = idpessoa
+#     c_url = f'/pessoas/editademissao{c_idobj}'
+#     c_view = 'edita_demissao'
+#     pass
 
 
 def excluipessoa(request, idpessoa):
@@ -205,4 +210,3 @@ def cria_contrachequeitens(request):
     facade.create_contracheque_itens(c_descricao, c_valor, c_registro, c_idcontracheque)
     data = facade.seleciona_contracheque(request, c_mes, c_ano, c_idpessoal)
     return data
-

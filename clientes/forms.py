@@ -32,7 +32,7 @@ class CadastraCliente(forms.ModelForm):
                    'IE': forms.TextInput(), 'Cidade': forms.TextInput(attrs={'value': 'São  Paulo'}),
                    'Estado': forms.TextInput(attrs={'value': 'SP'}), 'Site': forms.TextInput()}
 
-    def clean_Fantasia(self):
+    def clean_fantasia(self):
         fantasia = self.cleaned_data['Fantasia']
         if Cliente.objects.filter(Fantasia=fantasia).exists():
             if not self.instance.idCliente:
@@ -44,7 +44,7 @@ class CadastraFoneContatoCliente(forms.ModelForm):
     class Meta:
         model = FoneContatoCliente
         fields = ('Contato', 'TipoFone', 'Fone', 'idCliente')
-        labels = {'Contato': 'CONTATO', 'TipoFone': 'OPERADORA', 'Fone': 'TELEFONE',}
+        labels = {'Contato': 'CONTATO', 'TipoFone': 'OPERADORA', 'Fone': 'TELEFONE'}
         widgets = {'Contato': forms.TextInput(), 'TipoFone': forms.Select(), 'Fone': forms.TextInput(),
                    'idCliente': forms.HiddenInput()}
 
@@ -62,8 +62,8 @@ class CadastraCobranca(forms.ModelForm):
     class Meta:
         model = Cobranca
         fields = ('Nome', 'Endereco', 'Bairro', 'CEP', 'Cidade', 'Estado', 'CNPJ', 'IE', 'idCliente')
-        labels = {'Nome': 'RAZÃO SOCIAL', 'Endereco': 'ENDEREÇO', 'Bairro': 'BAIRRO', 'CEP': 'CEP', 'Cidade':
-            'CIDADE', 'Estado': 'ESTADO', 'CNPJ': 'CNPJ', 'IE': 'INSCRIÇÃO ESTADUAL',}
+        labels = {'Nome': 'RAZÃO SOCIAL', 'Endereco': 'ENDEREÇO', 'Bairro': 'BAIRRO', 'CEP': 'CEP', 'Cidade': 'CIDADE',
+                  'Estado': 'ESTADO', 'CNPJ': 'CNPJ', 'IE': 'INSCRIÇÃO ESTADUAL'}
         widgets = {
             'Nome': forms.TextInput(), 'Endereco': forms.TextInput(), 'Bairro': forms.TextInput(),
             'CEP': forms.TextInput(), 'Cidade': forms.TextInput(), 'Estado': forms.TextInput(),
@@ -101,7 +101,7 @@ class CadastraTabelaVeiculo(forms.ModelForm):
         model = TabelaVeiculo
         fields = ('PorcentagemCobra', 'PorcentagemPaga', 'HoraCobra', 'HoraPaga', 'HoraMinimo', 'KMCobra', 'KMPaga',
                   'KMMinimo', 'EntregaCobra', 'EntregaPaga', 'EntregaMinimo', 'EntregaKGCobra', 'EntregaKGPaga',
-                  'EntregaVolumeCobra', 'EntregaVolumePaga', 'SaidaCobra', 'SaidaPaga' , 'idCliente',
+                  'EntregaVolumeCobra', 'EntregaVolumePaga', 'SaidaCobra', 'SaidaPaga', 'idCliente',
                   'idCategoriaVeiculo')
         labels = {'PorcentagemCobra': 'PORCENTAGEM DAS NOTAS À RECEBER',
                   'PorcentagemPaga': 'PORCENTAGEM DAS NOTAS À PAGAR', 'HoraCobra': 'VALOR DA HORA À RECEBER',
@@ -111,8 +111,7 @@ class CadastraTabelaVeiculo(forms.ModelForm):
                   'EntregaPaga': 'VALOR DA ENTREGA À PAGAR', 'EntregaMinimo': 'MÍNIMO DE ENTREGAS',
                   'EntregaKGCobra': 'VALOR KG À RECEBER', 'EntregaKGPaga': 'VALOR KG À PAGAR',
                   'EntregaVolumeCobra': 'VALOR VOLUME À RECEBER', 'EntregaVolumePaga': 'VALOR VOLUME À PAGAR',
-                  'SaidaCobra': 'VALOR DA SAÍDA À RECEBER', 'SaidaPaga': 'VALOR DA SAÍDA À PAGAR'
-        }
+                  'SaidaCobra': 'VALOR DA SAÍDA À RECEBER', 'SaidaPaga': 'VALOR DA SAÍDA À PAGAR'}
         widgets = {
             'PorcentagemCobra': forms.NumberInput(attrs={'class': 'form-control'}),
             'PorcentagemPaga': forms.NumberInput(attrs={'class': 'form-control'}),
@@ -140,7 +139,7 @@ class CadastraTabelaCapacidade(forms.ModelForm):
         model = TabelaCapacidade
         fields = ('CapacidadeInicial', 'CapacidadeFinal', 'CapacidadeCobra', 'CapacidadePaga', 'idCliente')
         labels = {'CapacidadeInicial': 'CAPACIDADE (KGs) INICIAL', 'CapacidadeFinal': 'CAPACIDADE (KGs) FINAL',
-                  'CapacidadeCobra': 'CAPACIDADE COBRA', 'CapacidadePaga': 'CAPACIDADE PAGA',}
+                  'CapacidadeCobra': 'CAPACIDADE COBRA', 'CapacidadePaga': 'CAPACIDADE PAGA'}
         widgets = {
             'CapacidadeInicial': forms.NumberInput(attrs={'class': 'form-control', 'readonly': True}),
             'CapacidadeFinal': forms.NumberInput(attrs={'class': 'form-control'}),
@@ -155,7 +154,7 @@ class CadastraTabelaPerimetro(forms.ModelForm):
         model = TabelaPerimetro
         fields = ('PerimetroInicial', 'PerimetroFinal', 'PerimetroCobra', 'PerimetroPaga', 'idCliente')
         labels = {'PerimetroInicial': 'PERIMETRO (KMs) INICIAL', 'PerimetroFinal': 'PERIMETRO (KMs) FINAL',
-                  'PerimetroCobra': 'PERIMETRO COBRA', 'PerimetroPaga': 'PERIMETRO PAGA',}
+                  'PerimetroCobra': 'PERIMETRO COBRA', 'PerimetroPaga': 'PERIMETRO PAGA'}
         widgets = {
             'PerimetroInicial': forms.NumberInput(attrs={'class': 'form-control', 'readonly': True}),
             'PerimetroFinal': forms.NumberInput(attrs={'class': 'form-control'}),
