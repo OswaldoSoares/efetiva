@@ -44,8 +44,8 @@ class CadastraPessoal(forms.ModelForm):
                    'CEP': forms.TextInput(attrs={'class': 'form-control'}),
                    'Cidade': forms.TextInput(attrs={'class': 'form-control'}),
                    'Estado': forms.TextInput(attrs={'class': 'form-control'}),
-                   'DataNascimento': MeuDateInput(format='%Y-%m-%d', attrs={
-                       'class': 'form-control', 'max': '2020/01/29'}),
+                   'DataNascimento': MeuDateInput(format='%Y-%m-%d',
+                                                  attrs={'class': 'form-control', 'max': '2020/01/29'}),
                    'Mae': forms.TextInput(attrs={'class': 'form-control'}),
                    'Pai': forms.TextInput(attrs={'class': 'form-control'}),
                    'DataAdmissao': MeuDateInput(format='%Y-%m-%d',
@@ -144,3 +144,4 @@ class CadastraDemissao(forms.ModelForm):
     class Meta:
         model = Pessoal
         fields = ('DataDemissao',)
+        widgets = {'DataDemissao': MeuDateInput(format='%Y-%m-%d', attrs={'class': 'form-control'})}

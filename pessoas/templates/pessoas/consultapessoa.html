@@ -252,6 +252,25 @@
                     </footer>
                 </form>
             </div>
+            <div class="card-foto card-base2 card-pessoas card">
+                <header>
+                    <spaa><b>DEMISSÃO</b></spaa>
+                </header>
+                <form class="row g-3" method="post" action="{% url 'editademissao' %}">
+                    {% csrf_token %}
+                    <div class="col-md-12">
+                        <label for="id_DataDemissao" class="form-label">DATA DEMISSÃO:</label>
+                        {{ form_demissao.DataDemissao }}
+                        {{ form_demissao.DataDemissao.error }}
+                    </div>
+                    {{ form.idPessoal }}
+                    <input type="hidden" name="idPessoal" value="{{ itens.idPessoal }}" id="id_idPessoal">
+                    <footer>
+                        <button class="btn btn-primary btn-xs glyphicon glyphicon-repeat">
+                        </button>
+                    </footer>
+                </form>
+            </div>
         </main>
     </div>
     <!-- DIV MODAL -->

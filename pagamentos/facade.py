@@ -645,6 +645,7 @@ def html_minutascontracheque(mesreferencia, anoreferencia, idpessoal):
 def atualiza_cartaoponto(mesreferencia, anoreferencia, idpessoal):
     colaborador = facade.get_pessoal(idpessoal)
     admissao = colaborador[0].DataAdmissao
+    demissao = colaborador[0].DataDemissao
     totalextra = 0
     if int(anoreferencia) >= admissao.year and int(mesreferencia) >= admissao.month:
         minutas = select_minutas_contracheque(mesreferencia, anoreferencia, idpessoal)
@@ -666,6 +667,13 @@ def atualiza_cartaoponto(mesreferencia, anoreferencia, idpessoal):
                             obj.save(update_fields=['Saida'])
         totalextra = calcula_horas_extras(mesreferencia, anoreferencia, idpessoal)
         calcula_horas_atrazo(mesreferencia, anoreferencia, idpessoal)
+        if demissao:
+            cartao_ponto = busca_cartaoponto_referencia(mesreferencia, anoreferencia, idpessoal)
+            for itens in cartao_ponto:
+                obj = itens
+                if itens.Dia > demissao:
+                    obj.Ausencia = '-------'
+                    obj.save(update_fields=['Ausencia'])
     return totalextra
 
 
@@ -823,10 +831,15 @@ def calcula_faltas(mesreferencia, anoreferencia, idpessoal):
     dia, diafinal = periodo_cartaoponto(mesreferencia, anoreferencia)
     colaborador = facade.get_pessoal(idpessoal)
     admissao = colaborador[0].DataAdmissao
+    demissao = colaborador[0].DataDemissao
     mes_dias = 30
     if int(anoreferencia) == admissao.year and int(mesreferencia) == admissao.month:
         mes_dias -= admissao.day - 1
         dia = admissao
+    if int(anoreferencia) == demissao.year and int(mesreferencia) == demissao.month:
+        mes_dias -= 30 - demissao.day
+        diafinal = demissao
+    print(mes_dias)
     faltas = CartaoPonto.objects.filter(Dia__range=[dia, diafinal], idPessoal=idpessoal, Ausencia='FALTA').count()
     salario = get_salario(idpessoal)
     desconto = float(salario[0].Salario)/30*int(faltas)*2

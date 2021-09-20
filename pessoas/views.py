@@ -51,14 +51,6 @@ def edita_pessoa(request, idpessoa):
     return data
 
 
-def edita_demissao(request, idpessoa):
-    c_form = CadastraDemissao
-    c_idobj = idpessoa
-    c_url = f'/pessoas/editademissao{c_idobj}'
-    c_view = 'edita_demissao'
-    pass
-
-
 def excluipessoa(request, idpessoa):
     c_idobj = idpessoa
     c_url = '/pessoas/excluipessoa/{}/'.format(c_idobj)
@@ -136,9 +128,6 @@ def excluicontapessoa(request, idpescon):
 
 def consulta_pessoa(request, idpessoa):
     contexto = facade.create_pessoal_context(idpessoa)
-    print(contexto)
-    # if request.method == 'POST':
-    #     redirect('consultapessoa', idpessoa)
     return render(request, 'pessoas/consultapessoa.html', contexto)
 
 
@@ -170,6 +159,13 @@ def edita_salario(request):
     c_horas_mensais = float(request.POST.get('HorasMensais'))
     c_valetransporte = request.POST.get('ValeTransporte')
     facade.save_salario(c_pessoal, c_salario, c_horas_mensais, c_valetransporte)
+    return redirect('consultapessoa', c_pessoal)
+
+
+def edita_demissao(request):
+    c_pessoal = request.POST.get('idPessoal')
+    c_data_demissao = request.POST.get('DataDemissao')
+    facade.edita_data_demissao(c_pessoal, c_data_demissao)
     return redirect('consultapessoa', c_pessoal)
 
 

@@ -6,7 +6,7 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 from decimal import Decimal
 
-from pessoas.forms import CadastraSalario, CadastraVale
+from pessoas.forms import CadastraSalario, CadastraVale, CadastraDemissao
 from pessoas.models import Pessoal, Salario, DocPessoal, FonePessoal, ContaPessoal, Vales, ContraCheque, \
     ContraChequeItens, CartaoPonto
 from minutas.models import MinutaColaboradores
@@ -24,13 +24,15 @@ def create_pessoal_context(idpessoa: int):
     contapessoa = get_contapessoal(idpessoa)
     contracheque = get_contracheque(idpessoa)
     salario = get_salario(idpessoa)
+    instance_colaborador = get_pessoal(idpessoa).first()
     instance_salario = get_salario(idpessoa).first()
     formsalario = CadastraSalario(instance=instance_salario)
     formvale = CadastraVale()
+    form_demissao = CadastraDemissao(instance=instance_colaborador)
     minutas = MinutaColaboradores.objects.filter(idPessoal=idpessoa)
     context = {'colaborador': colaborador, 'docpessoa': docpessoa, 'fonepessoa': fonepessoa, 'contapessoa': contapessoa,
                'contracheque': contracheque, 'salario': salario, 'formsalario': formsalario, 'formvale': formvale,
-               'minutas': minutas}
+               'form_demissao': form_demissao, 'minutas': minutas}
     return context
 
 
@@ -116,6 +118,13 @@ def save_salario(idpessoal, salario, horasmensais, valetransporte):
         obj.ValeTransporte = valetransporte
         obj.idPessoal_id = idpessoal
     obj.save()
+
+
+def edita_data_demissao(idpessoal, data_demissao):
+    colaborador = Pessoal.objects.get(idPessoal=idpessoal)
+    obj = colaborador
+    obj.DataDemissao = data_demissao
+    obj.save(update_fields=['DataDemissao'])
 
 
 def create_vale(data, descricao, valor, idpessoal):
