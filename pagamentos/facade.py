@@ -343,7 +343,7 @@ def create_contracheque(mesreferencia, anoreferencia, valor, idpessoal):
 def create_contracheque_itens(descricao, valor, referencia, registro, idcontracheque):
     if float(valor) > 0:
         saldo = saldo_contracheque(idcontracheque)
-        if float(valor) < float(saldo['Liquido']) or descricao == 'SALARIO':
+        if float(valor) <= float(saldo['Liquido']) or descricao == 'SALARIO':
             if not busca_contrachequeitens(idcontracheque, descricao, registro):
                 obj = ContraChequeItens()
                 obj.Descricao = descricao
