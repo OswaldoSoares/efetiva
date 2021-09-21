@@ -12,6 +12,7 @@ from pagamentos.models import Recibo, ReciboItens
 from pessoas import facade
 from pessoas.forms import CadastraContraCheque, CadastraContraChequeItens, CadastraVale
 from pessoas.models import ContraCheque, ContraChequeItens, CartaoPonto, Salario, Vales, Pessoal, ContaPessoal
+from website.facade import Feriados
 
 meses = ['JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL', 'MAIO', 'JUNHO', 'JULHO', 'AGOSTO', 'SETEMBRO', 'OUTUBRO',
          'NOVEMBRO', 'DEZEMBRO']
@@ -369,9 +370,21 @@ def create_contracheque_itens_vales(idcliente, idvale, idcontracheque):
         obj.save()
 
 
+def busca_feriados(mesreferencia, anoreferencia):
+    lista_feriados = Feriados('Lista', 'Feriado')
+    lista_feriados = lista_feriados.__dict__['feriados']
+    dias_feriado_mes = []
+    for x in lista_feriados:
+        feriado = datetime.datetime.strptime(x, '%Y-%m-%d')
+        if int(anoreferencia) == feriado.year and int(mesreferencia) == feriado.month:
+            dias_feriado_mes.append(feriado.day)
+    return dias_feriado_mes
+
+
 def create_cartaoponto(mesreferencia, anoreferencia, idpessoal):
     colaborador = facade.get_pessoal(idpessoal)
     admissao = colaborador[0].DataAdmissao
+    dias_feriado_mes = busca_feriados(mesreferencia, anoreferencia)
     if not busca_cartaoponto_referencia(mesreferencia, anoreferencia, idpessoal):
         if int(anoreferencia) >= admissao.year:
             if int(mesreferencia) >= admissao.month:
@@ -388,6 +401,8 @@ def create_cartaoponto(mesreferencia, anoreferencia, idpessoal):
                         obj.Ausencia = dias[dia.weekday()]
                     else:
                         obj.Ausencia = ''
+                    if dia in dias_feriado_mes:
+                        obj.Ausencia = 'FERIADO'
                     if dia < admissao:
                         obj.Ausencia = '-------'
                     obj.idPessoal_id = idpessoal
@@ -667,8 +682,14 @@ def atualiza_cartaoponto(mesreferencia, anoreferencia, idpessoal):
                             obj.save(update_fields=['Saida'])
         totalextra = calcula_horas_extras(mesreferencia, anoreferencia, idpessoal)
         calcula_horas_atrazo(mesreferencia, anoreferencia, idpessoal)
+        cartao_ponto = busca_cartaoponto_referencia(mesreferencia, anoreferencia, idpessoal)
+        dias_feriado_mes = busca_feriados(mesreferencia, anoreferencia)
+        for itens in cartao_ponto:
+            obj = itens
+            if itens.Dia.day in dias_feriado_mes:
+                obj.Ausencia = 'FERIADO'
+                obj.save(update_fields=['Ausencia'])
         if demissao:
-            cartao_ponto = busca_cartaoponto_referencia(mesreferencia, anoreferencia, idpessoal)
             for itens in cartao_ponto:
                 obj = itens
                 if itens.Dia > demissao:
