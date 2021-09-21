@@ -857,9 +857,10 @@ def calcula_faltas(mesreferencia, anoreferencia, idpessoal):
     if int(anoreferencia) == admissao.year and int(mesreferencia) == admissao.month:
         mes_dias -= admissao.day - 1
         dia = admissao
-    if int(anoreferencia) == demissao.year and int(mesreferencia) == demissao.month:
-        mes_dias -= 30 - demissao.day
-        diafinal = demissao
+    if demissao:
+        if int(anoreferencia) == demissao.year and int(mesreferencia) == demissao.month:
+            mes_dias -= 30 - demissao.day
+            diafinal = demissao
     faltas = CartaoPonto.objects.filter(Dia__range=[dia, diafinal], idPessoal=idpessoal, Ausencia='FALTA').count()
     salario = get_salario(idpessoal)
     desconto = float(salario[0].Salario)/30*int(faltas)*2
