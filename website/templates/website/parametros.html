@@ -41,6 +41,27 @@
                 </footer>
                 {% endif %}
             </div>
+            <div class="card-base2">
+                <header>
+                    <span><b>FERIADOS</b></span>
+                </header>
+                <form class="row g-3" method="post" action="{% url 'criaferiado' %}">
+                    {% csrf_token %}
+                    {{ form_feriado.Chave }}
+                    <div class="col-md-12">
+                        <label for="id_DataFeriado" class="form-label">DATA FERIADO:</label>
+                        {{ form_feriado.Valor }}
+                        {{ form_feriado.Valor.error }}
+                    </div>
+                    <footer>
+                        <button class="btn btn-primary btn-xs glyphicon glyphicon-repeat">
+                        </button>
+                    </footer>
+                </form>
+            </div>
+            {% for x in lista_feriados.feriados %}
+                <br>{{ x }}
+            {% endfor %}
         </main>
     </div>
                 <!--<button class="btn btn-primary btn-xs glyphicon glyphicon-plus"-->

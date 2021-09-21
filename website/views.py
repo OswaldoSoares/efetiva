@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from veiculos.models import CategoriaVeiculo
 from .models import Parametros
@@ -44,3 +44,14 @@ def edita_parametro_tabela_padrao(request, idparametro):
     c_view = 'edita_parametro_tabela_padrao'
     data = facade.form_parametro(request, c_form, c_idobj, c_url, c_view)
     return data
+
+
+def cria_feriado(request):
+    c_chave = request.POST.get('Chave')
+    c_valor = request.POST.get('Valor')
+    facade.salva_parametro(c_chave, c_valor)
+    return redirect('parametro')
+
+
+def exclui_feriado(request):
+    pass

@@ -1,8 +1,22 @@
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 
+from website.forms import CadastraFeriado
 from .models import Parametros
 from clientes.facade import get_cliente
+
+
+class Feriados():
+    def __init__(self, chave, valor):
+        self.chave = chave
+        self.valor = valor
+        self.feriados = self.get_feriados()
+
+    @staticmethod
+    def get_feriados():
+        feriados = Parametros.objects.filter(Chave='FERIADO').order_by('-Valor')
+        lista = [itens.Valor for itens in feriados]
+        return lista
 
 
 def create_parametro_context():
@@ -10,7 +24,10 @@ def create_parametro_context():
     tabela_padrao_cliente = ''
     if tabela_padrao:
         tabela_padrao_cliente = get_cliente(tabela_padrao[0].Valor)
-    context = {'tabela_padrao': tabela_padrao, 'tabela_padrao_cliente': tabela_padrao_cliente}
+    lista_feriados = Feriados('Lista', 'Feriados')
+    form_feriado = CadastraFeriado()
+    context = {'tabela_padrao': tabela_padrao, 'tabela_padrao_cliente': tabela_padrao_cliente,
+               'form_feriado': form_feriado, 'lista_feriados': lista_feriados}
     return context
 
 
@@ -36,6 +53,14 @@ def get_tabela_padrao():
     :return:
     """
     return Parametros.objects.filter(Chave='TABELA PADRAO')
+
+
+def salva_parametro(chave, valor):
+    parametro = Parametros()
+    obj = parametro
+    obj.Chave = chave
+    obj.Valor = valor
+    obj.save()
 
 
 def form_parametro(request, c_form, c_idobj, c_url, c_view):

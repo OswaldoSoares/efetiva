@@ -770,7 +770,6 @@ def print_contracheque_context(idcontracheque, mesreferencia, anoreferencia, idp
                                                Registro='C').aggregate(Total=Sum('Valor'))
     debito = ContraChequeItens.objects.filter(idContraCheque=contracheque[0].idContraCheque,
                                               Registro='D').aggregate(Total=Sum('Valor'))
-
     if not credito['Total']:
         credito['Total'] = Decimal('0.00')
     if not debito['Total']:
@@ -839,7 +838,6 @@ def calcula_faltas(mesreferencia, anoreferencia, idpessoal):
     if int(anoreferencia) == demissao.year and int(mesreferencia) == demissao.month:
         mes_dias -= 30 - demissao.day
         diafinal = demissao
-    print(mes_dias)
     faltas = CartaoPonto.objects.filter(Dia__range=[dia, diafinal], idPessoal=idpessoal, Ausencia='FALTA').count()
     salario = get_salario(idpessoal)
     desconto = float(salario[0].Salario)/30*int(faltas)*2
@@ -855,7 +853,6 @@ def calcula_faltas(mesreferencia, anoreferencia, idpessoal):
 def calcula_horas_extras(mesreferencia, anoreferencia, idpessoal):
     salario = get_salario(idpessoal)
     totalextra = total_horas_extras(mesreferencia, anoreferencia, idpessoal)
-
     horazero = datetime.datetime.strptime('00:00:00', '%H:%M:%S').time()
     horazero = datetime.timedelta(hours=horazero.hour, minutes=horazero.minute)
     valorhoraextra = float(salario[0].Salario) / 30 / 9 / 60 / 60 * 1.5 * totalextra.seconds
