@@ -695,6 +695,7 @@ def atualiza_cartaoponto(mesreferencia, anoreferencia, idpessoal):
                 if itens.Dia > demissao:
                     obj.Ausencia = '-------'
                     obj.save(update_fields=['Ausencia'])
+            calcula_faltas(mesreferencia, anoreferencia, idpessoal)
     return totalextra
 
 
