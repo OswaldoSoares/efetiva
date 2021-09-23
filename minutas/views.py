@@ -208,7 +208,7 @@ def index_minuta(request):
 
 
 def consultaminuta(request, idmin):
-    # selecionada = MinutaSelecionada(idmin).__dict__
+    selecionada = MinutaSelecionada(idmin).__dict__
     # Cria queryset obj minuta - motorista - ajudante - ajudante quantidade
     minuta = Minuta.objects.filter(idMinuta=idmin)
     motorista_da_minuta = MinutaColaboradores.objects.filter(idMinuta=idmin, Cargo='MOTORISTA').annotate(
@@ -569,7 +569,7 @@ def consultaminuta(request, idmin):
         tabela_recebe_e_paga[str(item)]['id_hip'] = 'hi-%s-paga' % keys_nome_paga[index]
     # Cria contexto para enviar ao template
     contexto = {
-        # 'selecionada': selecionada,
+        'selecionada': selecionada,
         'tabela_recebe_e_paga': tabela_recebe_e_paga,
         'minuta': minuta,
         'motorista_da_minuta': motorista_da_minuta,

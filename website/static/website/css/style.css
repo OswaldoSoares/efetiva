@@ -2769,22 +2769,79 @@ main .fp-recibo-tabela .fp-recibo-print {
     transform: translateX(15px);
 }
 
-.nova {
-    font-size: 25px;
+
+.article-card {
+    background-color: antiquewhite;
+    color: #474747;
+    width: 300px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
 }
 
-.nova article i {
-    color: black;
+.article-card .article-minuta-numero {
+    height: 80px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align: center;
+    border: 1px solid black;
+    border-radius: 8px 8px 0 0;
+}
+
+.article-card .article-minuta-numero i {
+    width: 34%;
+    font-size: 40px;
+}
+
+.article-card .article-minuta-numero span {
+    width: 66%;
+    font-size: 70px;
+}
+
+.article-card .article-minuta-dados {
+    height: 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align: center;
+}
+
+.article-card .article-minuta-dados i {
+    width: 15%;
+    font-size: 15px;
+}
+
+.article-card .article-minuta-dados span {
+    width: 85%;
+    font-size: 15px;
+}
+
+.minuta {
+    background-color: blue;
+    font-size: 15px;
+    margin: 5px;
+    border: 1px solid black;
+}
+
+.minuta article i {
+    background-color: wheat;
+    color: var(--corprimaria);
+    border: 1px solid black;
+    margin: 5px;
+    padding: 5px;
     min-width: 50px;
     text-align: center;
+    font-size: 15px;
 }
 
-.nova article span {
-    background-color: olive;
+.minuta article span {
+    background-color: wheat;
     color: var(--corprimaria);
     display: inline-block;
-    width: 600px;
-    text-align: center;
+    width: 400px;
+    text-align: left;
+    font-size: 15px;
 }
 /*
 .pagamento-conteudo main {

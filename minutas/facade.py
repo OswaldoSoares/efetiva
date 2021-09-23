@@ -1,9 +1,15 @@
 from datetime import datetime, timedelta
-from decimal import Decimal
-from time import strptime
 
 from clientes.models import TabelaPerimetro, TabelaVeiculo, TabelaCapacidade, Tabela
 from minutas.models import MinutaColaboradores, Minuta, MinutaItens, MinutaNotas
+
+
+def nome_curto(nome):
+    apelido = nome.split()
+    if len(apelido) > 2:
+        del apelido[2:]
+        apelido = ' '.join(apelido)
+    return apelido
 
 
 class MinutaSelecionada:
@@ -389,6 +395,7 @@ class MinutaMotorista:
         motorista = MinutaColaboradores.objects.filter(idMinuta=idminuta, Cargo='MOTORISTA')
         lista = [{'idMinutaColaboradores': itens.idMinutaColaboradores, 'nome': itens.idPessoal.Nome}
                  for itens in motorista]
+        lista[0]['apelido'] = nome_curto(lista[0]['nome'])
         return lista
 
 
@@ -401,6 +408,8 @@ class MinutaAjudantes:
         ajudantes = MinutaColaboradores.objects.filter(idMinuta=idminuta, Cargo='AJUDANTE')
         lista = [{'idMinutaColaboradores': itens.idMinutaColaboradores, 'nome': itens.idPessoal.Nome,
                   'tipo': itens.idPessoal.TipoPgto} for itens in ajudantes]
+        for index, itens in enumerate(lista):
+            lista[index]['apelido'] = nome_curto(lista[index]['nome'])
         return lista
 
 
