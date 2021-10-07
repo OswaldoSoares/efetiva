@@ -140,8 +140,9 @@ class CadastraMinutaKMFinal(forms.ModelForm):
 
     class Meta:
         model = Minuta
-        fields = ('KMInicial', 'KMFinal',)
-        widgets = {'KMInicial': forms.HiddenInput(attrs={'class': 'formfieldshort'}),
+        fields = ('idMinuta', 'KMInicial', 'KMFinal',)
+        widgets = {'idMinuta': forms.HiddenInput(attrs={'class': 'formfieldshort'}),
+                   'KMInicial': forms.HiddenInput(attrs={'class': 'formfieldshort'}),
                    'KMFinal': forms.NumberInput(attrs={'class': 'formfieldshort'})}
 
 

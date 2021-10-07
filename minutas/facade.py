@@ -1,5 +1,7 @@
 from datetime import datetime, timedelta
 
+from django.http import JsonResponse
+
 from clientes.models import TabelaPerimetro, TabelaVeiculo, TabelaCapacidade, Tabela
 from minutas.models import MinutaColaboradores, Minuta, MinutaItens, MinutaNotas
 
@@ -17,6 +19,7 @@ def nome_curto(nome):
 class MinutaSelecionada:
     def __init__(self, idminuta):
         minuta = Minuta.objects.get(idMinuta=idminuta)
+        self.idminuta = minuta.idMinuta
         self.numero = minuta.Minuta
         self.data = minuta.DataMinuta
         self.hora_inicial = minuta.HoraInicial
@@ -42,8 +45,10 @@ class MinutaSelecionada:
         self.total_kms = self.total_kms()
 
     def total_kms(self):
-        minuta_selecionada = self.km_final - self.km_inicial
-        return minuta_selecionada
+        calculo_kms = self.km_final - self.km_inicial
+        if calculo_kms < 1:
+            calculo_kms = 0
+        return calculo_kms
 
     def total_ajudantes(self):
         self.total_ajudantes_avulso()
@@ -516,3 +521,33 @@ class MinutaFinanceiro:
 
     def checked_off(self):
         self.checked = False
+
+
+def get_minuta(idminuta):
+    return Minuta.objects.get(idMinuta=idminuta)
+
+
+def edita_km_final(idminuta, kmfinal):
+    minuta = get_minuta(idminuta)
+    obj = minuta
+    if kmfinal <= minuta.KMInicial:
+        obj.KMFinal = 0
+        mensagem = f'Você digitou {kmfinal}, mas a kilometrgem final tem que ser maior que {minuta.KMInicial}.'
+        tipo_mensagem = 'ERROR'
+    else:
+        obj.KMFinal = kmfinal
+        mensagem = 'A KILOMETRAGEM FINAL FOI ATUALIZADA.'
+        tipo_mensagem = 'SUCESSO'
+    obj.save(update_fields=['KMFinal'])
+    selecionada = MinutaSelecionada(idminuta)
+    total_kms = selecionada.total_kms
+    data = dict()
+    data['html_mensagem'] = mensagem
+    data['html_tipo_mensagem'] = tipo_mensagem
+    data['html_total_kms'] = f'{total_kms} KMs'
+    c_return = JsonResponse(data)
+    return c_return
+
+
+def forn_minuta():
+    pass

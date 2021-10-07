@@ -2,10 +2,11 @@ from io import BytesIO
 from textwrap import wrap
 from django.db.models import Value, Sum, Max, F
 from django.db.models.functions import Concat
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, get_object_or_404, get_list_or_404
 from django.shortcuts import render
 from django.template.loader import render_to_string
+from django.urls import reverse
 from rolepermissions.decorators import has_permission_decorator
 from reportlab.lib.colors import HexColor
 from reportlab.pdfgen import canvas
@@ -19,7 +20,7 @@ from .forms import CadastraMinuta, CadastraMinutaMotorista, CadastraMinutaAjudan
     CadastraMinutaKMInicial, CadastraMinutaKMFinal, CadastraMinutaHoraFinal, CadastraMinutaDespesa, \
     CadastraMinutaParametroDespesa, CadastraMinutaNota, CadastraComentarioMinuta, CadastraMinutaSaidaExraAjudante
 from .models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas
-
+from .facade import edita_km_final
 
 def convertemp(mm):
     """
@@ -323,6 +324,7 @@ def consultaminuta(request, idmin):
     formhorafinal = CadastraMinutaHoraFinal(instance=minutaform)
     formkminicial = CadastraMinutaKMInicial(instance=minutaform)
     formkmfinal = CadastraMinutaKMFinal(instance=minutaform)
+    form_km_final = CadastraMinutaKMFinal(instance=minutaform)
     comentarios = list(minuta.values('Comentarios')[0].values())[0]
     formcomentarios = CadastraComentarioMinuta(initial={'idMinuta': '29', 'Comentarios': comentarios})
     # Cria queryset notas e dassomas
@@ -582,6 +584,7 @@ def consultaminuta(request, idmin):
         'tabelaveiculo': tabelaveiculo,
         'formkminicial': formkminicial,
         'formkmfinal': formkmfinal,
+        'form_km_final': form_km_final,
         'formhorafinal': formhorafinal,
         'formsaidaextraajudante': formsaidaextraajudante,
         'formhoracobra': formhoracobra,
@@ -1131,6 +1134,16 @@ def editaminutakmfinal(request, idmin):
     else:
         form = CadastraMinutaKMFinal(instance=minuta)
     return salva_form(request, form, 'minutas/consultaminuta.html', idmin)
+
+
+def edita_minuta_km_final(request):
+    print(request.POST)
+    c_idminuta = request.POST.get('idMinuta')
+    c_idminuta = request.POST.get('idMinuta')
+    c_kmfinal = int(request.POST.get('KMFinal'))
+    c_idminuta = 654
+    data = edita_km_final(c_idminuta, c_kmfinal)
+    return data
 
 
 def editaminutahorafinal(request, idmin):

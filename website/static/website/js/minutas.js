@@ -235,6 +235,7 @@ $(document).ready(function(){
                 }
             }
         });
+        
     };
 
     $('.switch').each(function() {
@@ -273,4 +274,59 @@ $(document).ready(function(){
     $(".js-editaminutaentrega").click(loadForm);
     $(".js-excluiminutaentrega").click(loadForm);
 
+
+
+
+    $(document).on('submit', '#form-edita-km-final', function(event) {
+        event.preventDefault();
+        $(".div-sucesso").hide()
+        $(".div-erro").hide()
+        var url = $(this).attr('action') || action;
+        $.ajax({
+            type: $(this).attr('method'),
+            url: url,
+            data: $(this).serialize(),
+            success: function(data){
+                if (data.html_tipo_mensagem == 'ERROR') {
+                    $(".mensagem-erro").text(data.html_mensagem);
+                    mostraMensagemErro()
+                }
+                if (data.html_tipo_mensagem == 'SUCESSO') {
+                    $(".mensagem-sucesso").text(data.html_mensagem);
+                    mostraMensagemSucesso()
+                }
+                $(".total-kms").text(data.html_total_kms);
+                verificaTotalKMs()
+            },
+            error: function(error) {
+                console.log(error)
+            }
+        });
+    });
+
+    var verificaTotalKMs = function() {
+        if ($(".total-kms").text() == '0 KMs') {
+            $(".calcula-kms").slideUp(500)
+            $('#id_KMFinal').val(0)
+        } else {
+            $(".calcula-kms").slideDown(500)
+        }
+    }
+
+    var mostraMensagemErro = function() {
+        $(".div-erro").slideDown(500)
+        $(".div-erro").delay(5000).slideUp(500)        
+    }
+
+    var mostraMensagemSucesso = function() {
+        $(".div-sucesso").slideDown(500)
+        $(".div-sucesso").delay(5000).slideUp(500)        
+    }
+
+    verificaTotalKMs()
+    $(".div-sucesso").hide()
+    $(".div-erro").hide()
+
 });
+
+
