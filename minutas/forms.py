@@ -92,7 +92,7 @@ class CadastraMinutaVeiculo(forms.Form):
 class CadastraMinutaHoraFinal(forms.ModelForm):
     class Meta:
         model = Minuta
-        fields = {'idMinuta', 'HoraFinal'}
+        fields = {'HoraFinal'}
         widgets = {'HoraFinal': MeuTimeInput(attrs={'class': 'formfieldshort'})}
 
 

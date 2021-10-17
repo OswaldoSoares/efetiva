@@ -20,7 +20,7 @@ from .forms import CadastraMinuta, CadastraMinutaMotorista, CadastraMinutaAjudan
     CadastraMinutaKMInicial, CadastraMinutaKMFinal, CadastraMinutaHoraFinal, CadastraMinutaDespesa, \
     CadastraMinutaParametroDespesa, CadastraMinutaNota, CadastraComentarioMinuta, CadastraMinutaSaidaExraAjudante
 from .models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas
-from .facade import edita_km_final, edita_km_inicial
+from .facade import edita_hora_final, edita_km_final, edita_km_inicial
 
 def convertemp(mm):
     """
@@ -569,13 +569,13 @@ def consultaminuta(request, idmin):
         # Coluna 5 Paga - totais input hidden
         tabela_recebe_e_paga[str(item)]['id_hip'] = 'hi-%s-paga' % keys_nome_paga[index]
     # TODO MANTER NA CONSULTA REFATORADA
+    form_hora_final = CadastraMinutaHoraFinal(instance=minutaform)
     form_km_inicial = CadastraMinutaKMInicial(instance=minutaform)
     form_km_final = CadastraMinutaKMFinal(instance=minutaform)
     # Cria contexto para enviar ao template
     contexto = {
         # TODO MANTER NA CONSULTA REFATORADA
-        'selecionada': selecionada,
-        'form_km_inicial': form_km_inicial,
+        'selecionada': selecionada, 'form_hora_final': form_hora_final, 'form_km_inicial': form_km_inicial,
         'form_km_final': form_km_final,
 
 
@@ -1142,16 +1142,23 @@ def editaminutakmfinal(request, idmin):
     return salva_form(request, form, 'minutas/consultaminuta.html', idmin)
 
 
+def edita_minuta_hora_final(request):
+    c_idminuta = request.POST.get('idMinuta')
+    c_horafinal = request.POST.get('HoraFinal')
+    data = edita_hora_final(c_idminuta, c_horafinal)
+    return data
+
+
 def edita_minuta_km_inicial(request):
     c_idminuta = request.POST.get('idMinuta')
-    c_kminicial = int(request.POST.get('KMInicial'))
+    c_kminicial = request.POST.get('KMInicial')
     data = edita_km_inicial(c_idminuta, c_kminicial)
     return data
 
 
 def edita_minuta_km_final(request):
     c_idminuta = request.POST.get('idMinuta')
-    c_kmfinal = int(request.POST.get('KMFinal'))
+    c_kmfinal = request.POST.get('KMFinal')
     data = edita_km_final(c_idminuta, c_kmfinal)
     return data
 

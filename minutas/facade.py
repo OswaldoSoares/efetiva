@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from django.db.models import Max
+# from django.db.models import Max
 from django.http import JsonResponse
 
 from clientes.models import TabelaPerimetro, TabelaVeiculo, TabelaCapacidade, Tabela
@@ -43,6 +43,7 @@ class MinutaSelecionada:
         self.tabela_capacidade = ClienteTabelaCapacidade(minuta.idCliente).tabela
         self.valores_recebe = self.carrega_valores_recebe()
         self.total_horas = self.total_horas()
+        self.total_horas_str = self.total_horas_str()
         self.total_kms = self.total_kms()
 
     def total_kms(self):
@@ -67,7 +68,10 @@ class MinutaSelecionada:
         total_horas = self.total_horas()
         dezhoras = timedelta(days=0, hours=10, minutes=0)
         fator = 0.00
-        horas = str(total_horas)[0:2]
+        if total_horas < dezhoras:
+            horas = str(total_horas)[0:1]
+        else:
+            horas = str(total_horas)[0:2]
         minutos = str(total_horas)[3:5]
         if total_horas > dezhoras:
             fator_minuto = [1, 16, 31, 46, 59]
@@ -94,6 +98,13 @@ class MinutaSelecionada:
             if inicial < final:
                 periodo = final - inicial
         return periodo
+
+    def total_horas_str(self):
+        total_horas_str = str(self.total_horas)
+        if total_horas_str.__len__() == 7:
+            total_horas_str = f'0{total_horas_str}'
+        total_horas_str = total_horas_str[0:5]
+        return total_horas_str
 
     def horas_excede(self):
         excede = timedelta(hours=0, minutes=0)
@@ -528,22 +539,44 @@ def get_minuta(idminuta):
     return Minuta.objects.get(idMinuta=idminuta)
 
 
-def km_atual(idveiculo):
-    km_atual = Minuta.objects.filter(idVeiculo=idveiculo).aggregate(Max('KMFinal'))
-    return km_atual
+# def km_atual(idveiculo):
+#     km_atual = Minuta.objects.filter(idVeiculo=idveiculo).aggregate(Max('KMFinal'))
+#     return km_atual
 
 
-def edita_km_inicial(idminuta, kminicial):
-    minuta = get_minuta(idminuta)
-    obj = minuta
-    if kminicial >= minuta.KMFinal:
-        obj.KMInicial = kminicial
+def edita_hora_final(idminuta, hora_final):
+    obj = get_minuta(idminuta)
+    hora_final = datetime.strptime(hora_final, '%H:%M').time()
+    if hora_final <= obj.HoraInicial:
+        obj.HoraFinal = '00:00'
+        mensagem = f'VOCÊ DIGITOU {hora_final}, MAS A HORA FINAL TEM QUE SER MAIOR QUE {obj.HoraInicial}.'
+        tipo_mensagem = 'ERROR'
+    else:
+        obj.HoraFinal = hora_final
+        mensagem = 'A HORA FINAL FOI ATUALIZADA.'
+        tipo_mensagem = 'SUCESSO'
+    obj.save(update_fields=['HoraFinal'])
+    selecionada = MinutaSelecionada(idminuta)
+    total_horas_str = selecionada.total_horas_str
+    data = dict()
+    data['html_mensagem'] = mensagem
+    data['html_tipo_mensagem'] = tipo_mensagem
+    data['html_total_horas'] = f'{total_horas_str} Hs'
+    c_return = JsonResponse(data)
+    return c_return
+
+
+def edita_km_inicial(idminuta, km_inicial):
+    obj = get_minuta(idminuta)
+    km_inicial = int(km_inicial)
+    if km_inicial >= obj.KMFinal:
+        obj.KMInicial = km_inicial
         obj.KMFinal = 0
         mensagem = 'A KILOMETRAGEM INICIAL FOi ATUALIZADA, A KILOMETRAGEM FINAL FOI ZERADA'
         tipo_mensagem = 'SUCESSO'
         obj.save(update_fields=['KMInicial', 'KMFinal'])
     else:
-        obj.KMInicial = kminicial
+        obj.KMInicial = km_inicial
         mensagem = 'A KILOMETRAGEM INICIAL FOi ATUALIZADA.'
         tipo_mensagem = 'SUCESSO'
         obj.save(update_fields=['KMInicial'])
@@ -557,15 +590,15 @@ def edita_km_inicial(idminuta, kminicial):
     return c_return
 
 
-def edita_km_final(idminuta, kmfinal):
-    minuta = get_minuta(idminuta)
-    obj = minuta
-    if kmfinal <= minuta.KMInicial:
+def edita_km_final(idminuta, km_final):
+    obj = get_minuta(idminuta)
+    km_final = int(km_final)
+    if km_final <= obj.KMInicial:
         obj.KMFinal = 0
-        mensagem = f'VOCÊ DIGITOU {kmfinal}, MAS A KILOMETRAGEM FINAL TEM QUE SER MAIOR QUE {minuta.KMInicial}.'
+        mensagem = f'VOCÊ DIGITOU {km_final}, MAS A KILOMETRAGEM FINAL TEM QUE SER MAIOR QUE {obj.KMInicial}.'
         tipo_mensagem = 'ERROR'
     else:
-        obj.KMFinal = kmfinal
+        obj.KMFinal = km_final
         mensagem = 'A KILOMETRAGEM FINAL FOI ATUALIZADA.'
         tipo_mensagem = 'SUCESSO'
     obj.save(update_fields=['KMFinal'])

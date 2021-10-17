@@ -1,4 +1,92 @@
 $(document).ready(function(){
+    $(document).on('submit', '#form-edita-hora', function(event) {
+        event.preventDefault();
+        $(".div-sucesso").hide()
+        $(".div-erro").hide()
+        var url = $(this).attr('action') || action;
+        $.ajax({
+            type: $(this).attr('method'),
+            url: url,
+            data: $(this).serialize(),
+            success: function(data){
+                if (data.html_tipo_mensagem == 'ERROR') {
+                    $(".mensagem-erro").text(data.html_mensagem);
+                    mostraMensagemErro()
+                }
+                if (data.html_tipo_mensagem == 'SUCESSO') {
+                    $(".mensagem-sucesso").text(data.html_mensagem);
+                    mostraMensagemSucesso()
+                }
+                $(".total-horas").text(data.html_total_horas);
+                verificaTotalHoras()
+            },
+            error: function(error) {
+                console.log(error)
+            }
+        });
+    });
+
+    $(document).on('submit', '#form-edita-km', function(event) {
+        event.preventDefault();
+        $(".div-sucesso").hide()
+        $(".div-erro").hide()
+        var url = $(this).attr('action') || action;
+        $.ajax({
+            type: $(this).attr('method'),
+            url: url,
+            data: $(this).serialize(),
+            success: function(data){
+                if (data.html_tipo_mensagem == 'ERROR') {
+                    $(".mensagem-erro").text(data.html_mensagem);
+                    mostraMensagemErro()
+                }
+                if (data.html_tipo_mensagem == 'SUCESSO') {
+                    $(".mensagem-sucesso").text(data.html_mensagem);
+                    mostraMensagemSucesso()
+                }
+                $(".total-kms").text(data.html_total_kms);
+                verificaTotalKMs()
+            },
+            error: function(error) {
+                console.log(error)
+            }
+        });
+    });
+
+    var verificaTotalHoras = function() {
+        if ($(".total-horas").text() == '00:00 Hs') {
+            $(".calcula-horas").slideUp(500)
+            $('#id_HoraFinal').val('00:00')
+        } else {
+            $(".calcula-horas").slideDown(500)
+        }
+    }
+
+    var verificaTotalKMs = function() {
+        if ($(".total-kms").text() == '0 KMs') {
+            $(".calcula-kms").slideUp(500)
+            $('#id_KMFinal').val(0)
+        } else {
+            $(".calcula-kms").slideDown(500)
+        }
+    }
+
+    var mostraMensagemErro = function() {
+        $(".div-erro").slideDown(500)
+        $(".div-erro").delay(5000).slideUp(500)        
+    }
+
+    var mostraMensagemSucesso = function() {
+        $(".div-sucesso").slideDown(500)
+        $(".div-sucesso").delay(5000).slideUp(500)        
+    }
+
+    verificaTotalKMs()
+    verificaTotalHoras()
+    $(".div-sucesso").hide()
+    $(".div-erro").hide()
+
+
     // JQuery da Janela Modal
     $('#modal-formulario').on('shown.bs.modal', function () {
         setTimeout(function(){      // Delay para função loadCubagem, após janela estar carregada
@@ -275,84 +363,10 @@ $(document).ready(function(){
     $(".js-excluiminutaentrega").click(loadForm);
 
 
+    
 
-
-    $(document).on('submit', '#form-edita-km-inicial', function(event) {
-        event.preventDefault();
-        $(".div-sucesso").hide()
-        $(".div-erro").hide()
-        var url = $(this).attr('action') || action;
-        $.ajax({
-            type: $(this).attr('method'),
-            url: url,
-            data: $(this).serialize(),
-            success: function(data){
-                if (data.html_tipo_mensagem == 'ERROR') {
-                    $(".mensagem-erro").text(data.html_mensagem);
-                    mostraMensagemErro()
-                }
-                if (data.html_tipo_mensagem == 'SUCESSO') {
-                    $(".mensagem-sucesso").text(data.html_mensagem);
-                    mostraMensagemSucesso()
-                }
-                $(".total-kms").text(data.html_total_kms);
-                verificaTotalKMs()
-            },
-            error: function(error) {
-                console.log(error)
-            }
-        });
-    });
-
-    $(document).on('submit', '#form-edita-km-final', function(event) {
-        event.preventDefault();
-        $(".div-sucesso").hide()
-        $(".div-erro").hide()
-        var url = $(this).attr('action') || action;
-        $.ajax({
-            type: $(this).attr('method'),
-            url: url,
-            data: $(this).serialize(),
-            success: function(data){
-                if (data.html_tipo_mensagem == 'ERROR') {
-                    $(".mensagem-erro").text(data.html_mensagem);
-                    mostraMensagemErro()
-                }
-                if (data.html_tipo_mensagem == 'SUCESSO') {
-                    $(".mensagem-sucesso").text(data.html_mensagem);
-                    mostraMensagemSucesso()
-                }
-                $(".total-kms").text(data.html_total_kms);
-                verificaTotalKMs()
-            },
-            error: function(error) {
-                console.log(error)
-            }
-        });
-    });
-
-    var verificaTotalKMs = function() {
-        if ($(".total-kms").text() == '0 KMs') {
-            $(".calcula-kms").slideUp(500)
-            $('#id_KMFinal').val(0)
-        } else {
-            $(".calcula-kms").slideDown(500)
-        }
-    }
-
-    var mostraMensagemErro = function() {
-        $(".div-erro").slideDown(500)
-        $(".div-erro").delay(5000).slideUp(500)        
-    }
-
-    var mostraMensagemSucesso = function() {
-        $(".div-sucesso").slideDown(500)
-        $(".div-sucesso").delay(5000).slideUp(500)        
-    }
-
-    verificaTotalKMs()
-    $(".div-sucesso").hide()
-    $(".div-erro").hide()
+    
+    /*$(".total-horas").text(hora_minuto);*/
 
 });
 

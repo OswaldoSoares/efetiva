@@ -786,33 +786,24 @@
                 <span>{{ selecionada.hora_inicial }}</span>
                 <div></div>
             </div>
-            <form method="post" action="{% url 'editaminutahorafinal' selecionada.idminuta %}"
-                  class="js-edita-minuta-form">
+            <form class="html-hora-final" method="post" action="{% url 'editahorafinal' %}" id="form-edita-hora">
                 {% csrf_token %}
                 <div class="article-minuta-dados">
                     <i class="bi bi-moon-fill"></i>
                     <span>
-                        <section>
-                        {% for field in formhorafinal %}
+                        {% for field in form_hora_final %}
                             {{ field }}
                         {% endfor %}
-                        </section>
-                        {% if itens.StatusMinuta == 'ABERTA' %}
-                        <footer>
-                            {% if user|can:'hora_minuta' %}
-                            <button type="submit" class="btn btn-primary glyphicon glyphicon-save btn-xs"></button>
-                            {% endif %}
-                        </footer>
-                        {% endif %}
+                        <input type="hidden" name="idMinuta" value="{{ selecionada.idminuta }}">
                     </span>
                     <div>
-                        <button type="submit" class="btn btn-primary glyphicon glyphicon-save btn-xs"></button>
+                        <button type="submit" class="btn btn-primary btn-xs glyphicon glyphicon-save"></button>
                     </div>
                 </div>
             </form>
-            <div class="article-minuta-dados">
+            <div class="article-minuta-dados calcula-horas">
                 <i class="bi bi-clock-history"></i>
-                <span>{{ selecionada.total_horas }} Hs</span>
+                <span class="total-horas">{{ selecionada.total_horas_str }} Hs</span>
                 <div></div>
             </div>
             {% if selecionada.veiculo_solicitado %}
@@ -846,7 +837,7 @@
                       {{ selecionada.veiculo.Placa}}</span>
                 <div></div>
             </div>
-            <form class="html-km-inicial" method="post" action="{% url 'editakminicial' %}" id="form-edita-km-final">
+            <form class="html-km-inicial" method="post" action="{% url 'editakminicial' %}" id="form-edita-km">
                 {% csrf_token %}
                 <div class="article-minuta-dados">
                     <i class="bi bi-speedometer"></i>
@@ -861,7 +852,7 @@
                     </div>
                 </div>
             </form>
-            <form class="html-km-final" method="post" action="{% url 'editakmfinal' %}" id="form-edita-km-final">
+            <form class="html-km-final" method="post" action="{% url 'editakmfinal' %}" id="form-edita-km">
                 {% csrf_token %}
                 <div class="article-minuta-dados">
                     <i class="bi bi-speedometer"></i>
