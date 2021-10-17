@@ -20,7 +20,7 @@ from .forms import CadastraMinuta, CadastraMinutaMotorista, CadastraMinutaAjudan
     CadastraMinutaKMInicial, CadastraMinutaKMFinal, CadastraMinutaHoraFinal, CadastraMinutaDespesa, \
     CadastraMinutaParametroDespesa, CadastraMinutaNota, CadastraComentarioMinuta, CadastraMinutaSaidaExraAjudante
 from .models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas
-from .facade import edita_km_final
+from .facade import edita_km_final, edita_km_inicial
 
 def convertemp(mm):
     """
@@ -324,7 +324,6 @@ def consultaminuta(request, idmin):
     formhorafinal = CadastraMinutaHoraFinal(instance=minutaform)
     formkminicial = CadastraMinutaKMInicial(instance=minutaform)
     formkmfinal = CadastraMinutaKMFinal(instance=minutaform)
-    form_km_final = CadastraMinutaKMFinal(instance=minutaform)
     comentarios = list(minuta.values('Comentarios')[0].values())[0]
     formcomentarios = CadastraComentarioMinuta(initial={'idMinuta': '29', 'Comentarios': comentarios})
     # Cria queryset notas e dassomas
@@ -569,9 +568,17 @@ def consultaminuta(request, idmin):
         tabela_recebe_e_paga[str(item)]['id_top'] = 'to-%s-paga' % keys_nome_paga[index]
         # Coluna 5 Paga - totais input hidden
         tabela_recebe_e_paga[str(item)]['id_hip'] = 'hi-%s-paga' % keys_nome_paga[index]
+    # TODO MANTER NA CONSULTA REFATORADA
+    form_km_inicial = CadastraMinutaKMInicial(instance=minutaform)
+    form_km_final = CadastraMinutaKMFinal(instance=minutaform)
     # Cria contexto para enviar ao template
     contexto = {
+        # TODO MANTER NA CONSULTA REFATORADA
         'selecionada': selecionada,
+        'form_km_inicial': form_km_inicial,
+        'form_km_final': form_km_final,
+
+
         'tabela_recebe_e_paga': tabela_recebe_e_paga,
         'minuta': minuta,
         'motorista_da_minuta': motorista_da_minuta,
@@ -584,7 +591,6 @@ def consultaminuta(request, idmin):
         'tabelaveiculo': tabelaveiculo,
         'formkminicial': formkminicial,
         'formkmfinal': formkmfinal,
-        'form_km_final': form_km_final,
         'formhorafinal': formhorafinal,
         'formsaidaextraajudante': formsaidaextraajudante,
         'formhoracobra': formhoracobra,
@@ -1136,12 +1142,16 @@ def editaminutakmfinal(request, idmin):
     return salva_form(request, form, 'minutas/consultaminuta.html', idmin)
 
 
-def edita_minuta_km_final(request):
-    print(request.POST)
+def edita_minuta_km_inicial(request):
     c_idminuta = request.POST.get('idMinuta')
+    c_kminicial = int(request.POST.get('KMInicial'))
+    data = edita_km_inicial(c_idminuta, c_kminicial)
+    return data
+
+
+def edita_minuta_km_final(request):
     c_idminuta = request.POST.get('idMinuta')
     c_kmfinal = int(request.POST.get('KMFinal'))
-    c_idminuta = 654
     data = edita_km_final(c_idminuta, c_kmfinal)
     return data
 

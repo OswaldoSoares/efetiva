@@ -846,30 +846,21 @@
                       {{ selecionada.veiculo.Placa}}</span>
                 <div></div>
             </div>
-            <div class="article-minuta-dados">
-                <i class="bi bi-speedometer"></i>
-                <span>
-                    <form method="post" action=""
-                          class="js-edita-minuta-form">
-                        {% csrf_token %}
-                        <section>
-                        {% for field in formkminicial %}
+            <form class="html-km-inicial" method="post" action="{% url 'editakminicial' %}" id="form-edita-km-final">
+                {% csrf_token %}
+                <div class="article-minuta-dados">
+                    <i class="bi bi-speedometer"></i>
+                    <span>
+                        {% for field in form_km_inicial %}
                             {{ field }}
                         {% endfor %}
-                        </section>
-                        {% if itens.StatusMinuta == 'ABERTA' %}
-                        <footer>
-                            {% if user|can:'km_minuta' %}
-                            <button type="submit" class="btn btn-primary btn-xs glyphicon glyphicon-save"></button>
-                            {% endif %}
-                        </footer>
-                        {% endif %}
-                    </form>
-                </span>
-                <div>
-                    <button type="submit" class="btn btn-primary btn-xs glyphicon glyphicon-save"></button>
+                        <input type="hidden" name="idMinuta" value="{{ selecionada.idminuta }}">
+                    </span>
+                    <div>
+                        <button type="submit" class="btn btn-primary btn-xs glyphicon glyphicon-save"></button>
+                    </div>
                 </div>
-            </div>
+            </form>
             <form class="html-km-final" method="post" action="{% url 'editakmfinal' %}" id="form-edita-km-final">
                 {% csrf_token %}
                 <div class="article-minuta-dados">
@@ -878,6 +869,7 @@
                         {% for field in form_km_final %}
                             {{ field }}
                         {% endfor %}
+                        <input type="hidden" name="idMinuta" value="{{ selecionada.idminuta }}">
                     </span>
                     <div>
                         <button type="submit" class="btn btn-primary btn-xs glyphicon glyphicon-save"></button>
@@ -903,7 +895,7 @@
                 <i class="bi bi-person-plus-fill"></i>
                 <span>INSERE AJUDANTE</span>
                 <div>
-                    <button type="submit" class="btn btn-primary btn-xs glyphicon glyphicon-save"></button>
+                    <button type="submit" class="btn btn-success btn-xs glyphicon glyphicon-plus"></button>
                 </div>
             </div>
         </article>

@@ -133,17 +133,10 @@ class CadastraMinutaKMInicial(forms.ModelForm):
 
 
 class CadastraMinutaKMFinal(forms.ModelForm):
-    def clean(self):
-        cleaned_data = super(CadastraMinutaKMFinal, self).clean()
-        if cleaned_data.get('KMFinal') <= cleaned_data.get('KMInicial'):
-            raise ValidationError("A KM final não pode ser igual ou menor que a KM inicial")
-
     class Meta:
         model = Minuta
-        fields = ('idMinuta', 'KMInicial', 'KMFinal',)
-        widgets = {'idMinuta': forms.HiddenInput(attrs={'class': 'formfieldshort'}),
-                   'KMInicial': forms.HiddenInput(attrs={'class': 'formfieldshort'}),
-                   'KMFinal': forms.NumberInput(attrs={'class': 'formfieldshort'})}
+        fields = {'KMFinal'}
+        widgets = {'KMFinal': forms.NumberInput(attrs={'class': 'formfieldshort'})}
 
 
 class CadastraMinutaSaidaExraAjudante(forms.ModelForm):

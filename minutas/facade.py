@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 
+from django.db.models import Max
 from django.http import JsonResponse
 
 from clientes.models import TabelaPerimetro, TabelaVeiculo, TabelaCapacidade, Tabela
@@ -527,12 +528,41 @@ def get_minuta(idminuta):
     return Minuta.objects.get(idMinuta=idminuta)
 
 
+def km_atual(idveiculo):
+    km_atual = Minuta.objects.filter(idVeiculo=idveiculo).aggregate(Max('KMFinal'))
+    return km_atual
+
+
+def edita_km_inicial(idminuta, kminicial):
+    minuta = get_minuta(idminuta)
+    obj = minuta
+    if kminicial >= minuta.KMFinal:
+        obj.KMInicial = kminicial
+        obj.KMFinal = 0
+        mensagem = 'A KILOMETRAGEM INICIAL FOi ATUALIZADA, A KILOMETRAGEM FINAL FOI ZERADA'
+        tipo_mensagem = 'SUCESSO'
+        obj.save(update_fields=['KMInicial', 'KMFinal'])
+    else:
+        obj.KMInicial = kminicial
+        mensagem = 'A KILOMETRAGEM INICIAL FOi ATUALIZADA.'
+        tipo_mensagem = 'SUCESSO'
+        obj.save(update_fields=['KMInicial'])
+    selecionada = MinutaSelecionada(idminuta)
+    total_kms = selecionada.total_kms
+    data = dict()
+    data['html_mensagem'] = mensagem
+    data['html_tipo_mensagem'] = tipo_mensagem
+    data['html_total_kms'] = f'{total_kms} KMs'
+    c_return = JsonResponse(data)
+    return c_return
+
+
 def edita_km_final(idminuta, kmfinal):
     minuta = get_minuta(idminuta)
     obj = minuta
     if kmfinal <= minuta.KMInicial:
         obj.KMFinal = 0
-        mensagem = f'Você digitou {kmfinal}, mas a kilometrgem final tem que ser maior que {minuta.KMInicial}.'
+        mensagem = f'VOCÊ DIGITOU {kmfinal}, MAS A KILOMETRAGEM FINAL TEM QUE SER MAIOR QUE {minuta.KMInicial}.'
         tipo_mensagem = 'ERROR'
     else:
         obj.KMFinal = kmfinal
