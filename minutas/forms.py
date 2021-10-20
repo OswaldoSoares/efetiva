@@ -74,6 +74,13 @@ class CadastraMinutaAjudante(forms.ModelForm):
                    'Cargo': forms.HiddenInput()}
 
 
+class FormInsereAjudante(forms.ModelForm):
+    class Meta:
+        model = MinutaColaboradores
+        fields = {'idPessoal', 'idMinuta', 'Cargo'}
+        widgets = {'idPessoal': forms.Select(attrs={'class': 'formfields'})}
+
+
 class CadastraMinutaVeiculo(forms.Form):
     # Cria um queryset do Model Veiculo e adiciona um field "Virtual" concatenado (Veiculo)
     qs = Veiculo.objects.annotate(

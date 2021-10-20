@@ -1,2 +1,17 @@
-
-
+<form class="row g-3" method="post" action="{{ c_url }}" id="{{ c_idobj }}">
+{% csrf_token %}
+{% if c_view == 'insere_ajudante' %}
+    <div class="col-md-12">
+        <label for="id_idPessoal" class="form-label">NOME:</label>
+        <select name="idPessoal" class="formfields" required id=""id_idPessoal>
+            {% for ajudantes in ajudantes %}
+                <option value="{{ ajudantes.idPessoal }}">{{ ajudantes.Nome }}</option>
+            {% empty %}
+                <option value="">NENHUM AJUDANTE DISPONIVEL</option>
+            {% endfor %}
+        </select>
+        <input type="hidden" name="idMinuta" value="{{ c_idobj }}">
+        <input type="hidden" name="Cargo" value="AJUDANTE" >
+    </div>
+{% endif %}
+</form>

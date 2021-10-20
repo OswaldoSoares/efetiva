@@ -16,11 +16,13 @@ from decimal import Decimal
 from clientes.models import FoneContatoCliente, Tabela, TabelaVeiculo, TabelaCapacidade, TabelaPerimetro
 from minutas.facade import MinutaSelecionada, MinutaEntrega, MinutaDespesa
 from veiculos.models import Veiculo
-from .forms import CadastraMinuta, CadastraMinutaMotorista, CadastraMinutaAjudante, CadastraMinutaVeiculo, \
+from .forms import FormInsereAjudante, CadastraMinuta, CadastraMinutaMotorista, CadastraMinutaAjudante, \
+    CadastraMinutaVeiculo, \
     CadastraMinutaKMInicial, CadastraMinutaKMFinal, CadastraMinutaHoraFinal, CadastraMinutaDespesa, \
     CadastraMinutaParametroDespesa, CadastraMinutaNota, CadastraComentarioMinuta, CadastraMinutaSaidaExraAjudante
 from .models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas
-from .facade import edita_hora_final, edita_km_final, edita_km_inicial
+from .facade import forn_minuta, edita_hora_final, edita_km_final, edita_km_inicial, remove_colaborador, \
+    html_ajudantes, retorna_json
 
 def convertemp(mm):
     """
@@ -1142,27 +1144,6 @@ def editaminutakmfinal(request, idmin):
     return salva_form(request, form, 'minutas/consultaminuta.html', idmin)
 
 
-def edita_minuta_hora_final(request):
-    c_idminuta = request.POST.get('idMinuta')
-    c_horafinal = request.POST.get('HoraFinal')
-    data = edita_hora_final(c_idminuta, c_horafinal)
-    return data
-
-
-def edita_minuta_km_inicial(request):
-    c_idminuta = request.POST.get('idMinuta')
-    c_kminicial = request.POST.get('KMInicial')
-    data = edita_km_inicial(c_idminuta, c_kminicial)
-    return data
-
-
-def edita_minuta_km_final(request):
-    c_idminuta = request.POST.get('idMinuta')
-    c_kmfinal = request.POST.get('KMFinal')
-    data = edita_km_final(c_idminuta, c_kmfinal)
-    return data
-
-
 def editaminutahorafinal(request, idmin):
     minuta = get_object_or_404(Minuta, idMinuta=idmin)
     if request.method == 'POST':
@@ -1362,3 +1343,50 @@ def edita_minuta_saida_extra_ajudante(request, idminuta):
         obj.ExtraValorAjudante = request.POST.get('ExtraValorAjudante')
         obj.save(update_fields=['ExtraValorAjudante'])
     return redirect('consultaminuta', idminuta)
+
+
+def insere_ajudante(request):
+    print(request.GET)
+    print(request.POST)
+    c_forn = FormInsereAjudante
+    c_idobj = None
+    if request.method == 'GET':
+        c_idobj = request.GET.get('idobj')
+    elif request.method == 'POST':
+        c_idobj = request.POST.get('idMinuta')
+    c_url = '/minutas/insereajudante/'
+    c_view = 'insere_ajudante'
+    data = forn_minuta(request, c_forn, c_idobj, c_url, c_view)
+    return data
+
+
+def remove_ajudante(request):
+    print(request.GET)
+    c_idobj = request.GET.get('idMinutaColaboradores')
+    c_idminuta = request.GET.get('idMinuta')
+    remove_colaborador(c_idobj)
+    data = dict()
+    data = html_ajudantes(data, c_idminuta)
+    data = retorna_json(data)
+    return data
+
+
+def edita_minuta_hora_final(request):
+    c_idminuta = request.POST.get('idMinuta')
+    c_horafinal = request.POST.get('HoraFinal')
+    data = edita_hora_final(c_idminuta, c_horafinal)
+    return data
+
+
+def edita_minuta_km_inicial(request):
+    c_idminuta = request.POST.get('idMinuta')
+    c_kminicial = request.POST.get('KMInicial')
+    data = edita_km_inicial(c_idminuta, c_kminicial)
+    return data
+
+
+def edita_minuta_km_final(request):
+    c_idminuta = request.POST.get('idMinuta')
+    c_kmfinal = request.POST.get('KMFinal')
+    data = edita_km_final(c_idminuta, c_kmfinal)
+    return data

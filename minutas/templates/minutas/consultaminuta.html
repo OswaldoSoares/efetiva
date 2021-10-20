@@ -873,20 +873,27 @@
                 <div></div>
             </div>
             {% endif %}
-            {% for itens in selecionada.ajudantes %}
-            <div class="article-minuta-dados">
-                <i class="bi bi-person-plus-fill"></i>
-                <span>{{ itens.apelido }}</span>
-                <div>
-                    <button class="btn btn-danger btn-xs glyphicon glyphicon-trash"></button>
+            <div class="html-ajudante">
+                {% for ajudante in selecionada.ajudantes %}
+                <div class="article-minuta-dados">
+                    <i class="bi bi-person-plus-fill"></i>
+                    <span>{{ ajudante.apelido }}</span>
+                    <div>
+                        <button class="btn btn-danger btn-xs glyphicon glyphicon-trash remove-ajudante"
+                                idMinuta="{{ selecionada.idminuta }}"
+                                idMinutaColaboradores="{{ ajudante.idMinutaColaboradores }}" ></button>
+                    </div>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
             <div class="article-minuta-dados">
                 <i class="bi bi-person-plus-fill"></i>
                 <span>INSERE AJUDANTE</span>
                 <div>
-                    <button type="submit" class="btn btn-success btn-xs glyphicon glyphicon-plus"></button>
+                    <button type="button" class="btn btn-success btn-xs glyphicon glyphicon-plus"
+                    onclick="openMyModal(event); return false;" data-title="INSERE AJUDANTE"
+                    data-action="{% url 'insereajudante' %}" data-button-save-label="INSERIR"
+                    data-idminuta="{{ selecionada.idminuta }}"></button>
                 </div>
             </div>
         </article>
@@ -914,6 +921,28 @@
         <span>{{ selecionada }}</span>
     </div>
     -->
+
+    <!-- div modal nova -->
+    <div class="modal fade bd-example-modal-lg" id="MyModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title"><b>CADASTRO DE CLIENTE</b></h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">FECHAR</button>
+                    <button type="submit" class="btn btn-success btn-save">CRIAR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- DIV MODAL -->
     <div class="modal fade" id="modal-formulario" >
         <div class="modal-dialog">

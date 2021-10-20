@@ -2,9 +2,11 @@ from datetime import datetime, timedelta
 
 # from django.db.models import Max
 from django.http import JsonResponse
+from django.template.loader import render_to_string
 
 from clientes.models import TabelaPerimetro, TabelaVeiculo, TabelaCapacidade, Tabela
 from minutas.models import MinutaColaboradores, Minuta, MinutaItens, MinutaNotas
+from pessoas.models import Pessoal
 
 
 def nome_curto(nome):
@@ -425,7 +427,8 @@ class MinutaAjudantes:
 
     @staticmethod
     def get_ajudantes(idminuta):
-        ajudantes = MinutaColaboradores.objects.filter(idMinuta=idminuta, Cargo='AJUDANTE')
+        ajudantes = MinutaColaboradores.objects.filter(idMinuta=idminuta, Cargo='AJUDANTE').order_by(
+            'idPessoal')
         lista = [{'idMinutaColaboradores': itens.idMinutaColaboradores, 'nome': itens.idPessoal.Nome,
                   'tipo': itens.idPessoal.TipoPgto} for itens in ajudantes]
         if lista:
@@ -612,5 +615,42 @@ def edita_km_final(idminuta, km_final):
     return c_return
 
 
-def forn_minuta():
-    pass
+def ajudantes_disponiveis(idminuta):
+    ajudantes_minuta = MinutaColaboradores.objects.filter(idMinuta=idminuta, Cargo='AJUDANTE').values('idPessoal')
+    pessoas = Pessoal.objects.filter(StatusPessoal=True).exclude(idPessoal__in=ajudantes_minuta)
+    return pessoas
+
+
+def remove_colaborador(idminutacolaborador):
+    colaborador = MinutaColaboradores.objects.get(idMinutaColaboradores=idminutacolaborador)
+    colaborador.delete()
+
+
+def html_ajudantes(data, idminuta):
+    selecionada = MinutaSelecionada(idminuta)
+    data['html_ajudante'] = render_to_string('minutas/ajudantesminuta.html', {'selecionada': selecionada})
+    return data
+
+
+def retorna_json(data):
+    c_return = JsonResponse(data)
+    return c_return
+
+
+def forn_minuta(request, c_form, c_idobj, c_url, c_view):
+    print(c_form, c_idobj, c_url, c_view)
+    data = dict()
+    c_instance = None
+    if request.method == 'POST':
+        form = c_form(request.POST)
+        if form.is_valid():
+            form.save()
+        data = html_ajudantes(data, c_idobj)
+    else:
+        form = c_form(instance=c_instance)
+    ajudantes = ajudantes_disponiveis(c_idobj)
+    contexto = {'form': form, 'c_idobj': c_idobj, 'c_url': c_url, 'c_view': c_view, 'ajudantes': ajudantes}
+    data['html_form'] = render_to_string('minutas/formminuta.html', contexto, request=request)
+    data['c_view'] = c_view
+    c_return = JsonResponse(data)
+    return c_return
