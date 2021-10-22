@@ -81,7 +81,7 @@ class CadastraMinutaAjudante(forms.ModelForm):
                    'Cargo': forms.HiddenInput()}
 
 
-class FormInsereAjudante(forms.ModelForm):
+class FormInsereColaborador(forms.ModelForm):
     class Meta:
         model = MinutaColaboradores
         fields = {'idPessoal', 'idMinuta', 'Cargo'}

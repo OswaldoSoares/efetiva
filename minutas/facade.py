@@ -651,9 +651,26 @@ def ajudantes_disponiveis(idminuta):
     return pessoas
 
 
-def remove_colaborador(idminutacolaborador):
+def motoristas_disponiveis(idminuta):
+    pessoas = Pessoal.objects.filter(StatusPessoal=True).exclude(Categoria='AJUDANTE')
+    return pessoas
+
+
+def remove_colaborador(idminutacolaborador, idminuta, cargo):
     colaborador = MinutaColaboradores.objects.get(idMinutaColaboradores=idminutacolaborador)
     colaborador.delete()
+    data = dict()
+    if cargo == 'AJUDANTE':
+        data = html_ajudantes(data, idminuta)
+    elif cargo == 'MOTORISTA':
+        data = html_motorista(data, idminuta)
+    return data
+
+
+def html_motorista(data, idminuta):
+    selecionada = MinutaSelecionada(idminuta)
+    data['html_veiculo'] = render_to_string('minutas/veiculominuta.html', {'selecionada': selecionada})
+    return data
 
 
 def html_ajudantes(data, idminuta):
@@ -698,6 +715,9 @@ def forn_minuta(request, c_form, c_idobj, c_url, c_view):
             if c_view == 'insere_ajudante':
                 form.save()
                 data = html_ajudantes(data, c_idobj)
+            if c_view == 'insere_motorista':
+                form.save()
+                data = html_motorista(data, c_idobj)
             elif c_view == 'edita_minuta_veiculo_solicitado':
                 obj = get_minuta(c_idobj)
                 if request.POST.get('idCategoriaVeiculo'):
@@ -713,16 +733,18 @@ def forn_minuta(request, c_form, c_idobj, c_url, c_view):
     else:
         form = c_form(instance=c_instance)
     ajudantes = ajudantes_disponiveis(c_idobj)
-    contexto = {'form': form, 'c_idobj': c_idobj, 'c_url': c_url, 'c_view': c_view, 'ajudantes': ajudantes}
+    motoristas = motoristas_disponiveis(c_idobj)
+    contexto = {'form': form, 'c_idobj': c_idobj, 'c_url': c_url, 'c_view': c_view, 'ajudantes': ajudantes,
+                'motoristas': motoristas}
     data['html_form'] = render_to_string('minutas/formminuta.html', contexto, request=request)
     data['c_view'] = c_view
     data['html_mensagem'] = mensagem
     data['html_tipo_mensagem'] = tipo_mensagem
-    # if request.method == 'POST':
+    if request.method == 'POST':
     #     print(data['html_form'])
     #     print(data['c_view'])
     #     print(data['html_mensagem'])
     #     print(data['html_tipo_mensagem'])
-    #     print(data['html_veiculo'])
+        print(data['html_veiculo'])
     c_return = JsonResponse(data)
     return c_return

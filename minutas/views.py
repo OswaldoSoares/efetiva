@@ -16,13 +16,13 @@ from decimal import Decimal
 from clientes.models import FoneContatoCliente, Tabela, TabelaVeiculo, TabelaCapacidade, TabelaPerimetro
 from minutas.facade import MinutaSelecionada, MinutaEntrega, MinutaDespesa
 from veiculos.models import Veiculo
-from .forms import FormInsereAjudante, FormEditaVeiculoSolicitado, CadastraMinuta, CadastraMinutaMotorista, \
+from .forms import FormInsereColaborador, FormEditaVeiculoSolicitado, CadastraMinuta, CadastraMinutaMotorista, \
     CadastraMinutaAjudante, CadastraMinutaVeiculo, CadastraMinutaKMInicial, CadastraMinutaKMFinal, \
     CadastraMinutaHoraFinal, CadastraMinutaDespesa, \
     CadastraMinutaParametroDespesa, CadastraMinutaNota, CadastraComentarioMinuta, CadastraMinutaSaidaExraAjudante
 from .models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas
-from .facade import forn_minuta, edita_veiculo_solicitado, edita_hora_final, edita_km_final, edita_km_inicial, \
-    remove_colaborador, html_ajudantes, retorna_json
+from .facade import forn_minuta, edita_hora_final, edita_km_final, edita_km_inicial, remove_colaborador, \
+    html_ajudantes, retorna_json
 
 def convertemp(mm):
     """
@@ -1348,6 +1348,7 @@ def edita_minuta_saida_extra_ajudante(request, idminuta):
 
 def edita_minuta_veiculo_solicitado(request):
     c_form = FormEditaVeiculoSolicitado
+    c_idobj = None
     if request.method == 'GET':
         c_idobj = request.GET.get('idobj')
     elif request.method == 'POST':
@@ -1359,7 +1360,7 @@ def edita_minuta_veiculo_solicitado(request):
 
 
 def insere_ajudante(request):
-    c_form = FormInsereAjudante
+    c_form = FormInsereColaborador
     c_idobj = None
     if request.method == 'GET':
         c_idobj = request.GET.get('idobj')
@@ -1371,12 +1372,25 @@ def insere_ajudante(request):
     return data
 
 
-def remove_ajudante(request):
+def insere_motorista(request):
+    c_form = FormInsereColaborador
+    c_idobj = None
+    if request.method == 'GET':
+        c_idobj = request.GET.get('idobj')
+    elif request.method == 'POST':
+        c_idobj = request.POST.get('idMinuta')
+    c_url = '/minutas/inseremotorista/'
+    c_view = 'insere_motorista'
+    data = forn_minuta(request, c_form, c_idobj, c_url, c_view)
+    return data
+
+
+def remove_minuta_colaborador(request):
+    print(request.GET)
     c_idobj = request.GET.get('idMinutaColaboradores')
     c_idminuta = request.GET.get('idMinuta')
-    remove_colaborador(c_idobj)
-    data = dict()
-    data = html_ajudantes(data, c_idminuta)
+    c_cargo = request.GET.get('Cargo')
+    data = remove_colaborador(c_idobj, c_idminuta, c_cargo)
     data = retorna_json(data)
     return data
 

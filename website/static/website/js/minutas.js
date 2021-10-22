@@ -53,18 +53,24 @@ $(document).ready(function(){
         });
     });
 
-    $(document).on('click', '.remove-ajudante', function(event) {
+    $(document).on('click', '.remove-colaborador', function(event) {
         var idminutacolaboradores = $(this).attr('idMinutaColaboradores')
         var idminuta = $(this).attr('idMinuta')
+        var cargo = $(this).attr('Cargo')
         $.ajax({
             type: 'GET',
-            url: '/minutas/removeajudante',
+            url: '/minutas/removecolaborador',
             data: {
                 idMinutaColaboradores: idminutacolaboradores,
                 idMinuta: idminuta,
+                Cargo: cargo
             },
             success: function(data){
-                $('.html-ajudante').html(data['html_ajudante']);
+                if (cargo == 'AJUDANTE') {
+                    $('.html-ajudante').html(data['html_ajudante']);
+                } else if (cargo == 'MOTORISTA') {
+                    $('.html-veiculo').html(data['html_veiculo']);
+                }
             },
             error: function(error) {
                 console.log(error)
@@ -446,10 +452,11 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                     formAjaxSubmit(modal, url, cbAfterLoad, cbAfterSuccess);
                 } else {
                     $(modal).modal('hide');
-                    if (xhr['c_view'] == 'insere_ajudante') {
+                    if (xhr['c_view'] == 'insere_motorista') {
+                        $('.html-veiculo').html(xhr['html_veiculo']);
+                    } else if (xhr['c_view'] == 'insere_ajudante') {
                         $('.html-ajudante').html(xhr['html_ajudante']);
-                    }
-                    if (xhr['c_view'] == 'edita_minuta_veiculo_solicitado') {
+                    } else if (xhr['c_view'] == 'edita_minuta_veiculo_solicitado') {
                         if (xhr['html_tipo_mensagem'] == 'ERROR') {
                             $(".mensagem-erro").text(data.html_mensagem);
                             mostraMensagemErro()

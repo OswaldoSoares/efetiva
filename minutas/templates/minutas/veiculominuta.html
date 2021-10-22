@@ -1,18 +1,23 @@
 {% if selecionada.veiculo_solicitado %}
-{% for itens in selecionada.motorista %}
+{% for motorista in selecionada.motorista %}
 <div class="article-minuta-dados">
     <i class="bi bi-person-fill"></i>
-    <span>{{ itens.apelido }}</span>
+    <span>{{ motorista.apelido }}</span>
     <div>
-        <button class="btn btn-danger btn-xs glyphicon glyphicon-trash"></button>
+        <button class="btn btn-danger btn-xs glyphicon glyphicon-trash remove-colaborador"
+                idMinuta="{{ selecionada.idminuta }}" Cargo="MOTORISTA"
+                idMinutaColaboradores="{{ motorista.idMinutaColaboradores }}"></button>
     </div>
 </div>
 {% empty %}
 <div class="article-minuta-dados">
-    <i class="bi bi-person-plus-fill"></i>
+    <i class="bi bi-person-fill"></i>
     <span>INSERE MOTORISTA</span>
     <div>
-        <button type="submit" class="btn btn-success btn-xs glyphicon glyphicon-plus"></button>
+        <button type="button" class="btn btn-success btn-xs glyphicon glyphicon-plus"
+                onclick="openMyModal(event); return false;" data-title="INSERE MOTORISTA"
+                data-action="{% url 'inseremotorista' %}" data-button-save-label="INSERIR"
+                data-idminuta="{{ selecionada.idminuta }}"></button>
     </div>
 </div>
 {% endfor %}
