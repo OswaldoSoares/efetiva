@@ -1,13 +1,11 @@
-<div class="html-ajudante">
-    {% for ajudante in selecionada.ajudantes %}
-    <div class="article-minuta-dados">
-        <i class="bi bi-person-plus-fill"></i>
-        <span>{{ ajudante.apelido }}</span>
-        <div>
-            <button class="btn btn-danger btn-xs glyphicon glyphicon-trash remove-ajudante"
-                    idMinuta="{{ selecionada.idminuta }}"
-                    idMinutaColaboradores="{{ ajudante.idMinutaColaboradores }}"></button>
-        </div>
+{% for ajudante in selecionada.ajudantes %}
+<div class="article-minuta-dados">
+    <i class="bi bi-person-plus-fill"></i>
+    <span>{{ ajudante.apelido }}</span>
+    <div>
+        <button class="btn btn-danger btn-xs glyphicon glyphicon-trash remove-ajudante"
+                idMinuta="{{ selecionada.idminuta }}"
+                idMinutaColaboradores="{{ ajudante.idMinutaColaboradores }}"></button>
     </div>
-    {% endfor %}
 </div>
+{% endfor %}

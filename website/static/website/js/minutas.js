@@ -1,4 +1,30 @@
 $(document).ready(function(){
+    $(document).on('submit', '#form-edita-solicitado', function(event) {
+        event.preventDefault();
+        $(".div-sucesso").hide()
+        $(".div-erro").hide()
+        var url = $(this).attr('action') || action;
+        $.ajax({
+            type: $(this).attr('method'),
+            url: url,
+            data: $(this).serialize(),
+            success: function(data){
+                if (data.html_tipo_mensagem == 'ERROR') {
+                    $(".mensagem-erro").text(data.html_mensagem);
+                    mostraMensagemErro()
+                }
+                if (data.html_tipo_mensagem == 'SUCESSO') {
+                    $(".mensagem-sucesso").text(data.html_mensagem);
+                    mostraMensagemSucesso()
+                }
+                $('.html-veiculo').html(data['html_veiculo']);
+            },
+            error: function(error) {
+                console.log(error)
+            }
+        });
+    });
+
     $(document).on('submit', '#form-edita-hora', function(event) {
         event.preventDefault();
         $(".div-sucesso").hide()

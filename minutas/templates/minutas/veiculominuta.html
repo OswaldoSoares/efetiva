@@ -1,0 +1,60 @@
+{% if selecionada.veiculo_solicitado %}
+{% for itens in selecionada.motorista %}
+<div class="article-minuta-dados">
+    <i class="bi bi-person-fill"></i>
+    <span>{{ itens.apelido }}</span>
+    <div>
+        <button class="btn btn-danger btn-xs glyphicon glyphicon-trash"></button>
+    </div>
+</div>
+{% empty %}
+<div class="article-minuta-dados">
+    <i class="bi bi-person-plus-fill"></i>
+    <span>INSERE MOTORISTA</span>
+    <div>
+        <button type="submit" class="btn btn-success btn-xs glyphicon glyphicon-plus"></button>
+    </div>
+</div>
+{% endfor %}
+<div class="article-minuta-dados">
+    <i class="bi bi-truck"></i>
+    <span>{{ selecionada.veiculo.Marca }} {{ selecionada.veiculo.Modelo }} -
+          {{ selecionada.veiculo.Placa}}</span>
+    <div></div>
+</div>
+<form class="html-km-inicial" method="post" action="{% url 'editakminicial' %}" id="form-edita-km">
+    {% csrf_token %}
+    <div class="article-minuta-dados">
+        <i class="bi bi-speedometer"></i>
+        <span>
+            {% for field in form_km_inicial %}
+                {{ field }}
+            {% endfor %}
+            <input type="hidden" name="idMinuta" value="{{ selecionada.idminuta }}">
+        </span>
+        <div>
+            <button type="submit" class="btn btn-primary btn-xs glyphicon glyphicon-save"></button>
+        </div>
+    </div>
+</form>
+<form class="html-km-final" method="post" action="{% url 'editakmfinal' %}" id="form-edita-km">
+    {% csrf_token %}
+    <div class="article-minuta-dados">
+        <i class="bi bi-speedometer"></i>
+        <span>
+            {% for field in form_km_final %}
+                {{ field }}
+            {% endfor %}
+            <input type="hidden" name="idMinuta" value="{{ selecionada.idminuta }}">
+        </span>
+        <div>
+            <button type="submit" class="btn btn-primary btn-xs glyphicon glyphicon-save"></button>
+        </div>
+    </div>
+</form>
+<div class="article-minuta-dados calcula-kms">
+    <i class="bi bi-calculator"></i>
+    <span class="total-kms">{{ selecionada.total_kms }} KMs</span>
+    <div></div>
+</div>
+{% endif %}

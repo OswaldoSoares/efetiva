@@ -44,6 +44,13 @@ class CadastraMinuta(forms.ModelForm):
                 'class': 'formfieldstexto'}), 'StatusMinuta': forms.HiddenInput()}
 
 
+class FormEditaVeiculoSolicitado(forms.ModelForm):
+    class Meta:
+        model = Minuta
+        fields = ('idMinuta', 'idCategoriaVeiculo')
+        widgets = {'idCategoriaVeiculo': forms.Select(attrs={'class': 'formfields'})}
+
+
 class CadastraMinutaMotorista(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CadastraMinutaMotorista, self).__init__(*args, **kwargs)

@@ -2,11 +2,14 @@ from datetime import datetime, timedelta
 
 # from django.db.models import Max
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 
 from clientes.models import TabelaPerimetro, TabelaVeiculo, TabelaCapacidade, Tabela
+from minutas.forms import CadastraMinutaKMInicial, CadastraMinutaKMFinal
 from minutas.models import MinutaColaboradores, Minuta, MinutaItens, MinutaNotas
 from pessoas.models import Pessoal
+from veiculos.models import CategoriaVeiculo
 
 
 def nome_curto(nome):
@@ -542,9 +545,36 @@ def get_minuta(idminuta):
     return Minuta.objects.get(idMinuta=idminuta)
 
 
+def get_categoria(idcategoria):
+    return CategoriaVeiculo.objects.get(idCategoria=idcategoria)
+
+
 # def km_atual(idveiculo):
 #     km_atual = Minuta.objects.filter(idVeiculo=idveiculo).aggregate(Max('KMFinal'))
 #     return km_atual
+
+def edita_veiculo_solicitado(idminuta, idcategoriaveiculo):
+    obj = get_minuta(idminuta)
+    categoria = get_categoria(idcategoriaveiculo)
+    mensagem = None
+    tipo_mensagem = None
+    if categoria != obj.idCategoriaVeiculo:
+        obj.idCategoriaVeiculo = categoria
+        if obj.save(update_fields=['idCategoriaVeiculo']):
+            mensagem = 'O VEICULO SOLICITADO FOI ATUALIZADA.'
+            tipo_mensagem = 'SUCESSO'
+    selecionada = MinutaSelecionada(idminuta)
+    minuta = Minuta.objects.filter(idMinuta=idmin)
+    minutaform = get_object_or_404(minuta, idMinuta=idmin)
+    form_km_inicial = CadastraMinutaKMInicial(instance=minutaform)
+    form_km_final = CadastraMinutaKMFinal(instance=minutaform)
+    data = dict()
+    data['html_mensagem'] = mensagem
+    data['html_tipo_mensagem'] = tipo_mensagem
+    data['html_veiculo'] = render_to_string('minutas/veiculominuta.html', {'selecionada': selecionada},
+                                            {'form_km_inicial': form_km_inicial, 'form_km_final':form_km_final})
+    c_return = JsonResponse(data)
+    return c_return
 
 
 def edita_hora_final(idminuta, hora_final):

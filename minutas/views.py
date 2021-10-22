@@ -16,13 +16,13 @@ from decimal import Decimal
 from clientes.models import FoneContatoCliente, Tabela, TabelaVeiculo, TabelaCapacidade, TabelaPerimetro
 from minutas.facade import MinutaSelecionada, MinutaEntrega, MinutaDespesa
 from veiculos.models import Veiculo
-from .forms import FormInsereAjudante, CadastraMinuta, CadastraMinutaMotorista, CadastraMinutaAjudante, \
-    CadastraMinutaVeiculo, \
-    CadastraMinutaKMInicial, CadastraMinutaKMFinal, CadastraMinutaHoraFinal, CadastraMinutaDespesa, \
+from .forms import FormInsereAjudante, FormEditaVeiculoSolicitado, CadastraMinuta, CadastraMinutaMotorista, \
+    CadastraMinutaAjudante, CadastraMinutaVeiculo, CadastraMinutaKMInicial, CadastraMinutaKMFinal, \
+    CadastraMinutaHoraFinal, CadastraMinutaDespesa, \
     CadastraMinutaParametroDespesa, CadastraMinutaNota, CadastraComentarioMinuta, CadastraMinutaSaidaExraAjudante
 from .models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas
-from .facade import forn_minuta, edita_hora_final, edita_km_final, edita_km_inicial, remove_colaborador, \
-    html_ajudantes, retorna_json
+from .facade import forn_minuta, edita_veiculo_solicitado, edita_hora_final, edita_km_final, edita_km_inicial, \
+    remove_colaborador, html_ajudantes, retorna_json
 
 def convertemp(mm):
     """
@@ -571,14 +571,15 @@ def consultaminuta(request, idmin):
         # Coluna 5 Paga - totais input hidden
         tabela_recebe_e_paga[str(item)]['id_hip'] = 'hi-%s-paga' % keys_nome_paga[index]
     # TODO MANTER NA CONSULTA REFATORADA
+    form_veiculo_solicitado = FormEditaVeiculoSolicitado(instance=minutaform)
     form_hora_final = CadastraMinutaHoraFinal(instance=minutaform)
     form_km_inicial = CadastraMinutaKMInicial(instance=minutaform)
     form_km_final = CadastraMinutaKMFinal(instance=minutaform)
     # Cria contexto para enviar ao template
     contexto = {
         # TODO MANTER NA CONSULTA REFATORADA
-        'selecionada': selecionada, 'form_hora_final': form_hora_final, 'form_km_inicial': form_km_inicial,
-        'form_km_final': form_km_final,
+        'selecionada': selecionada, 'form_veiculo_solicitado': form_veiculo_solicitado,
+        'form_hora_final': form_hora_final, 'form_km_inicial': form_km_inicial, 'form_km_final': form_km_final,
 
 
         'tabela_recebe_e_paga': tabela_recebe_e_paga,
@@ -1345,9 +1346,14 @@ def edita_minuta_saida_extra_ajudante(request, idminuta):
     return redirect('consultaminuta', idminuta)
 
 
+def edita_minuta_veiculo_solicitado(request):
+    c_idminuta = request.POST.get('idMinuta')
+    c_idcategoriaveiculo = request.POST.get('idCategoriaVeiculo')
+    data = edita_veiculo_solicitado(c_idminuta, c_idcategoriaveiculo)
+    return data
+
+
 def insere_ajudante(request):
-    print(request.GET)
-    print(request.POST)
     c_forn = FormInsereAjudante
     c_idobj = None
     if request.method == 'GET':
@@ -1361,7 +1367,6 @@ def insere_ajudante(request):
 
 
 def remove_ajudante(request):
-    print(request.GET)
     c_idobj = request.GET.get('idMinutaColaboradores')
     c_idminuta = request.GET.get('idMinuta')
     remove_colaborador(c_idobj)
