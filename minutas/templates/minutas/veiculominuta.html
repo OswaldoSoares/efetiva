@@ -16,6 +16,7 @@
     </div>
 </div>
 {% endfor %}
+{% if selecionada.veiculo %}
 <div class="article-minuta-dados">
     <i class="bi bi-truck"></i>
     <span>{{ selecionada.veiculo.Marca }} {{ selecionada.veiculo.Modelo }} -
@@ -57,4 +58,5 @@
     <span class="total-kms">{{ selecionada.total_kms }} KMs</span>
     <div></div>
 </div>
+{% endif %}
 {% endif %}

@@ -47,7 +47,7 @@ class CadastraMinuta(forms.ModelForm):
 class FormEditaVeiculoSolicitado(forms.ModelForm):
     class Meta:
         model = Minuta
-        fields = ('idMinuta', 'idCategoriaVeiculo')
+        fields = ('idCategoriaVeiculo',)
         widgets = {'idCategoriaVeiculo': forms.Select(attrs={'class': 'formfields'})}
 
 

@@ -1,0 +1,23 @@
+{% if selecionada.veiculo_solicitado %}
+<div class="article-minuta-dados">
+    <i class="bi bi-chat-right-text"></i>
+    <span>{{ selecionada.veiculo_solicitado }}</span>
+    <div>
+       <button type="button" class="btn btn-success btn-xs glyphicon glyphicon-edit"
+               onclick="openMyModal(event); return false;" data-title="VEÍCULO SOLICITADO"
+               data-action="{% url 'editaveiculosolicitado' %}" data-button-save-label="EDITAR"
+               data-idminuta="{{ selecionada.idminuta }}"></button>
+    </div>
+</div>
+{% else %}
+<div class="article-minuta-dados">
+    <i class="bi bi-chat-right-text"></i>
+    <span>INSERE VEÍCULO SOLICITADO</span>
+    <div>
+        <button type="button" class="btn btn-success btn-xs glyphicon glyphicon-plus"
+               onclick="openMyModal(event); return false;" data-title="VEÍCULO SOLICITADO"
+               data-action="{% url 'editaveiculosolicitado' %}" data-button-save-label="EDITAR"
+               data-idminuta="{{ selecionada.idminuta }}"></button>
+    </div>
+</div>
+{% endif %}

@@ -14,4 +14,11 @@
         <input type="hidden" name="Cargo" value="AJUDANTE" >
     </div>
 {% endif %}
+{% if c_view == 'edita_minuta_veiculo_solicitado' %}
+    <div class="col-md-12">
+        <label for="id_idCategoriaVeiculo" class="form-label">VEÍCULO SOLICITADO:</label>
+        {{ form.idCategoriaVeiculo }}
+        <input type="hidden" name="idMinuta" value="{{ c_idobj }}">
+    </div>
+{% endif %}
 </form>

@@ -806,22 +806,9 @@
                 <span class="total-horas">{{ selecionada.total_horas_str }} Hs</span>
                 <div></div>
             </div>
-            <form class="html-veiculo-solicitado" method="post" action="{% url 'editaveiculosolicitado' %}"
-                  id="form-edita-solicitado">
-                {% csrf_token %}
-                <div class="article-minuta-dados">
-                    <i class="bi bi-chat-right-text"></i>
-                    <span class="col-md-8">
-                        {% for field in form_veiculo_solicitado %}
-                            {{ field }}
-                        {% endfor %}
-                        <input type="hidden" name="idMinuta" value="{{ selecionada.idminuta }}">
-                    </span>
-                    <div>
-                        <button type="submit" class="btn btn-primary btn-xs glyphicon glyphicon-save"></button>
-                    </div>
-                </div>
-            </form>
+            <div class="html-categoria">
+                {% include 'minutas/categoriaminuta.html' %}
+            </div>
             <div class="html-veiculo">
                 {% include 'minutas/veiculominuta.html' %}
             </div>

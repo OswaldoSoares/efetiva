@@ -1,30 +1,4 @@
 $(document).ready(function(){
-    $(document).on('submit', '#form-edita-solicitado', function(event) {
-        event.preventDefault();
-        $(".div-sucesso").hide()
-        $(".div-erro").hide()
-        var url = $(this).attr('action') || action;
-        $.ajax({
-            type: $(this).attr('method'),
-            url: url,
-            data: $(this).serialize(),
-            success: function(data){
-                if (data.html_tipo_mensagem == 'ERROR') {
-                    $(".mensagem-erro").text(data.html_mensagem);
-                    mostraMensagemErro()
-                }
-                if (data.html_tipo_mensagem == 'SUCESSO') {
-                    $(".mensagem-sucesso").text(data.html_mensagem);
-                    mostraMensagemSucesso()
-                }
-                $('.html-veiculo').html(data['html_veiculo']);
-            },
-            error: function(error) {
-                console.log(error)
-            }
-        });
-    });
-
     $(document).on('submit', '#form-edita-hora', function(event) {
         event.preventDefault();
         $(".div-sucesso").hide()
@@ -118,15 +92,7 @@ $(document).ready(function(){
         }
     }
 
-    var mostraMensagemErro = function() {
-        $(".div-erro").slideDown(500)
-        $(".div-erro").delay(5000).slideUp(500)        
-    }
-
-    var mostraMensagemSucesso = function() {
-        $(".div-sucesso").slideDown(500)
-        $(".div-sucesso").delay(5000).slideUp(500)        
-    }
+    
 
     verificaTotalKMs()
     verificaTotalHoras()
@@ -483,6 +449,25 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                     if (xhr['c_view'] == 'insere_ajudante') {
                         $('.html-ajudante').html(xhr['html_ajudante']);
                     }
+                    if (xhr['c_view'] == 'edita_minuta_veiculo_solicitado') {
+                        if (xhr['html_tipo_mensagem'] == 'ERROR') {
+                            $(".mensagem-erro").text(data.html_mensagem);
+                            mostraMensagemErro()
+                        }
+                        if (xhr['html_tipo_mensagem'] == 'SUCESSO') {
+                            $(".mensagem-sucesso").text(xhr['html_mensagem']);
+                            mostraMensagemSucesso()
+                            EscondeCategoria();
+                            $(".html-categoria").html(xhr['html_categoria']);
+                            MostraCategoria()
+                            if (xhr['html_veiculo'] == '') {
+                                EscondeVeiculo() 
+                            } else {
+                                $('.html-veiculo').html(xhr['html_veiculo']);
+                                MostraVeiculo()
+                            }
+                        }
+                    }
                     if (cbAfterSuccess) { cbAfterSuccess(modal); }
                 }
             },
@@ -496,4 +481,28 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
     });
 }
 
+var mostraMensagemErro = function() {
+    $(".div-erro").slideDown(500)
+    $(".div-erro").delay(5000).slideUp(500)        
+}
 
+var mostraMensagemSucesso = function() {
+    $(".div-sucesso").slideDown(500)
+    $(".div-sucesso").delay(5000).slideUp(500)        
+}
+
+var EscondeCategoria = function() {
+    $(".html-categoria").hide()
+}
+
+var MostraCategoria = function() {
+    $(".html-categoria").delay(1000).slideDown(500)
+}
+
+var EscondeVeiculo = function() {
+    $(".html-veiculo").slideUp(500)
+}
+
+var MostraVeiculo = function() {
+    $(".html-veiculo").delay(1000).slideDown(500)
+}

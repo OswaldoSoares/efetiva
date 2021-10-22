@@ -1347,14 +1347,19 @@ def edita_minuta_saida_extra_ajudante(request, idminuta):
 
 
 def edita_minuta_veiculo_solicitado(request):
-    c_idminuta = request.POST.get('idMinuta')
-    c_idcategoriaveiculo = request.POST.get('idCategoriaVeiculo')
-    data = edita_veiculo_solicitado(c_idminuta, c_idcategoriaveiculo)
+    c_form = FormEditaVeiculoSolicitado
+    if request.method == 'GET':
+        c_idobj = request.GET.get('idobj')
+    elif request.method == 'POST':
+        c_idobj = request.POST.get('idMinuta')
+    c_url = '/minutas/editaveiculosolicitado/'
+    c_view = 'edita_minuta_veiculo_solicitado'
+    data = forn_minuta(request, c_form, c_idobj, c_url, c_view)
     return data
 
 
 def insere_ajudante(request):
-    c_forn = FormInsereAjudante
+    c_form = FormInsereAjudante
     c_idobj = None
     if request.method == 'GET':
         c_idobj = request.GET.get('idobj')
@@ -1362,7 +1367,7 @@ def insere_ajudante(request):
         c_idobj = request.POST.get('idMinuta')
     c_url = '/minutas/insereajudante/'
     c_view = 'insere_ajudante'
-    data = forn_minuta(request, c_forn, c_idobj, c_url, c_view)
+    data = forn_minuta(request, c_form, c_idobj, c_url, c_view)
     return data
 
 

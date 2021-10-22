@@ -564,15 +564,15 @@ def edita_veiculo_solicitado(idminuta, idcategoriaveiculo):
             mensagem = 'O VEICULO SOLICITADO FOI ATUALIZADA.'
             tipo_mensagem = 'SUCESSO'
     selecionada = MinutaSelecionada(idminuta)
-    minuta = Minuta.objects.filter(idMinuta=idmin)
-    minutaform = get_object_or_404(minuta, idMinuta=idmin)
+    minuta = Minuta.objects.filter(idMinuta=idminuta)
+    minutaform = get_object_or_404(minuta, idMinuta=idminuta)
     form_km_inicial = CadastraMinutaKMInicial(instance=minutaform)
     form_km_final = CadastraMinutaKMFinal(instance=minutaform)
     data = dict()
     data['html_mensagem'] = mensagem
     data['html_tipo_mensagem'] = tipo_mensagem
     data['html_veiculo'] = render_to_string('minutas/veiculominuta.html', {'selecionada': selecionada},
-                                            {'form_km_inicial': form_km_inicial, 'form_km_final':form_km_final})
+                                            {'form_km_inicial': form_km_inicial, 'form_km_final': form_km_final})
     c_return = JsonResponse(data)
     return c_return
 
@@ -662,6 +662,25 @@ def html_ajudantes(data, idminuta):
     return data
 
 
+def html_categoria(data, idminuta):
+    selecionada = MinutaSelecionada(idminuta)
+    data['html_categoria'] = render_to_string('minutas/categoriaminuta.html', {'selecionada': selecionada})
+    data['html_veiculo'] = render_to_string('minutas/veiculominuta.html', {'selecionada': selecionada})
+    return data
+
+
+def html_veiculo(data, idminuta):
+    selecionada = MinutaSelecionada(idminuta)
+    # minuta = Minuta.objects.filter(idMinuta=idminuta)
+    # minutaform = get_object_or_404(minuta, idMinuta=idminuta)
+    # form_km_inicial = CadastraMinutaKMInicial(instance=minutaform)
+    # form_km_final = CadastraMinutaKMFinal(instance=minutaform)
+    contexto = {'selecionada': selecionada}
+    # contexto = {'selecionada': selecionada, 'form_km_inicial': form_km_inicial, 'form_km_final': form_km_final}
+    data['html_veiculo'] = render_to_string('minutas/veiculominuta.html', contexto)
+    return data
+
+
 def retorna_json(data):
     c_return = JsonResponse(data)
     return c_return
@@ -671,16 +690,39 @@ def forn_minuta(request, c_form, c_idobj, c_url, c_view):
     print(c_form, c_idobj, c_url, c_view)
     data = dict()
     c_instance = None
+    mensagem = None
+    tipo_mensagem = None
     if request.method == 'POST':
         form = c_form(request.POST)
         if form.is_valid():
-            form.save()
-        data = html_ajudantes(data, c_idobj)
+            if c_view == 'insere_ajudante':
+                form.save()
+                data = html_ajudantes(data, c_idobj)
+            elif c_view == 'edita_minuta_veiculo_solicitado':
+                obj = get_minuta(c_idobj)
+                if request.POST.get('idCategoriaVeiculo'):
+                    categoria = get_categoria(request.POST.get('idCategoriaVeiculo'))
+                    obj.idCategoriaVeiculo = categoria
+                    mensagem = 'O VEICULO SOLICITADO FOI ATUALIZADO.'
+                else:
+                    obj.idCategoriaVeiculo = None
+                    mensagem = 'O VEICULO SOLICITADO FOI REMOVIDO.'
+                obj.save(update_fields=['idCategoriaVeiculo'])
+                tipo_mensagem = 'SUCESSO'
+                data = html_categoria(data, c_idobj)
     else:
         form = c_form(instance=c_instance)
     ajudantes = ajudantes_disponiveis(c_idobj)
     contexto = {'form': form, 'c_idobj': c_idobj, 'c_url': c_url, 'c_view': c_view, 'ajudantes': ajudantes}
     data['html_form'] = render_to_string('minutas/formminuta.html', contexto, request=request)
     data['c_view'] = c_view
+    data['html_mensagem'] = mensagem
+    data['html_tipo_mensagem'] = tipo_mensagem
+    # if request.method == 'POST':
+    #     print(data['html_form'])
+    #     print(data['c_view'])
+    #     print(data['html_mensagem'])
+    #     print(data['html_tipo_mensagem'])
+    #     print(data['html_veiculo'])
     c_return = JsonResponse(data)
     return c_return
