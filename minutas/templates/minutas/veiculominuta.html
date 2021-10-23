@@ -9,18 +9,6 @@
                 idMinutaColaboradores="{{ motorista.idMinutaColaboradores }}"></button>
     </div>
 </div>
-{% empty %}
-<div class="article-minuta-dados">
-    <i class="bi bi-person-fill"></i>
-    <span>INSERE MOTORISTA</span>
-    <div>
-        <button type="button" class="btn btn-success btn-xs glyphicon glyphicon-plus"
-                onclick="openMyModal(event); return false;" data-title="INSERE MOTORISTA"
-                data-action="{% url 'inseremotorista' %}" data-button-save-label="INSERIR"
-                data-idminuta="{{ selecionada.idminuta }}"></button>
-    </div>
-</div>
-{% endfor %}
 {% if selecionada.veiculo %}
 <div class="article-minuta-dados">
     <i class="bi bi-truck"></i>
@@ -64,4 +52,16 @@
     <div></div>
 </div>
 {% endif %}
+{% empty %}
+<div class="article-minuta-dados">
+    <i class="bi bi-person-fill"></i>
+    <span>INSERE MOTORISTA</span>
+    <div>
+        <button type="button" class="btn btn-success btn-xs glyphicon glyphicon-plus"
+                onclick="openMyModal(event); return false;" data-title="INSERE MOTORISTA"
+                data-action="{% url 'inseremotorista' %}" data-button-save-label="INSERIR"
+                data-idminuta="{{ selecionada.idminuta }}"></button>
+    </div>
+</div>
+{% endfor %}
 {% endif %}

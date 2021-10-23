@@ -1390,7 +1390,7 @@ def remove_minuta_colaborador(request):
     c_idobj = request.GET.get('idMinutaColaboradores')
     c_idminuta = request.GET.get('idMinuta')
     c_cargo = request.GET.get('Cargo')
-    data = remove_colaborador(c_idobj, c_idminuta, c_cargo)
+    data = remove_colaborador(request, c_idobj, c_idminuta, c_cargo)
     data = retorna_json(data)
     return data
 

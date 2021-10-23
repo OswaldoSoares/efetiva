@@ -69,7 +69,9 @@ $(document).ready(function(){
                 if (cargo == 'AJUDANTE') {
                     $('.html-ajudante').html(data['html_ajudante']);
                 } else if (cargo == 'MOTORISTA') {
+                   EscondeVeiculo()
                     $('.html-veiculo').html(data['html_veiculo']);
+                    MostraVeiculo()
                 }
             },
             error: function(error) {
