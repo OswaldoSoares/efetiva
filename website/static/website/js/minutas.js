@@ -69,7 +69,7 @@ $(document).ready(function(){
                 if (cargo == 'AJUDANTE') {
                     $('.html-ajudante').html(data['html_ajudante']);
                 } else if (cargo == 'MOTORISTA') {
-                   EscondeVeiculo()
+                    EscondeVeiculo()
                     $('.html-veiculo').html(data['html_veiculo']);
                     MostraVeiculo()
                 }
@@ -82,23 +82,7 @@ $(document).ready(function(){
 
     
 
-    var verificaTotalHoras = function() {
-        if ($(".total-horas").text() == '00:00 Hs') {
-            $(".calcula-horas").slideUp(500)
-            $('#id_HoraFinal').val('00:00')
-        } else {
-            $(".calcula-horas").slideDown(500)
-        }
-    }
-
-    var verificaTotalKMs = function() {
-        if ($(".total-kms").text() == '0 KMs') {
-            $(".calcula-kms").slideUp(500)
-            $('#id_KMFinal').val(0)
-        } else {
-            $(".calcula-kms").slideDown(500)
-        }
-    }
+    
 
     
 
@@ -456,6 +440,7 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                     $(modal).modal('hide');
                     if (xhr['c_view'] == 'insere_motorista') {
                         $('.html-veiculo').html(xhr['html_veiculo']);
+                        verificaTotalKMs()
                     } else if (xhr['c_view'] == 'insere_ajudante') {
                         $('.html-ajudante').html(xhr['html_ajudante']);
                     } else if (xhr['c_view'] == 'edita_minuta_veiculo_solicitado') {
@@ -488,6 +473,24 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
             }
         });
     });
+}
+
+var verificaTotalHoras = function() {
+    if ($(".total-horas").text() == '00:00 Hs') {
+        $(".calcula-horas").slideUp(500)
+        $('#id_HoraFinal').val('00:00')
+    } else {
+        $(".calcula-horas").slideDown(500)
+    }
+}
+
+var verificaTotalKMs = function() {
+    if ($(".total-kms").text() == '0 KMs') {
+        $(".calcula-kms").slideUp(500)
+        $('#id_KMFinal').val(0)
+    } else {
+        $(".calcula-kms").slideDown(500)
+    }
 }
 
 var mostraMensagemErro = function() {

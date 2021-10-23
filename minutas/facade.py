@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 
 # from django.db.models import Max
+from django.db.models import Max
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
@@ -549,9 +550,10 @@ def get_categoria(idcategoria):
     return CategoriaVeiculo.objects.get(idCategoria=idcategoria)
 
 
-# def km_atual(idveiculo):
-#     km_atual = Minuta.objects.filter(idVeiculo=idveiculo).aggregate(Max('KMFinal'))
-#     return km_atual
+def km_atual(idveiculo):
+    km_final = Minuta.objects.filter(idVeiculo=idveiculo).aggregate(Max('KMFinal'))
+    return km_final
+
 
 def edita_veiculo_solicitado(request, idminuta, idcategoriaveiculo):
     obj = get_minuta(idminuta)
@@ -563,19 +565,23 @@ def edita_veiculo_solicitado(request, idminuta, idcategoriaveiculo):
         if obj.save(update_fields=['idCategoriaVeiculo']):
             mensagem = 'O VEICULO SOLICITADO FOI ATUALIZADA.'
             tipo_mensagem = 'SUCESSO'
+    contexto = cria_contexto(idminuta)
+    data = dict()
+    data['html_mensagem'] = mensagem
+    data['html_tipo_mensagem'] = tipo_mensagem
+    data['html_veiculo'] = render_to_string('minutas/veiculominuta.html', contexto, request=request)
+    c_return = JsonResponse(data)
+    return c_return
+
+
+def cria_contexto(idminuta):
     selecionada = MinutaSelecionada(idminuta)
     minuta = Minuta.objects.filter(idMinuta=idminuta)
     minutaform = get_object_or_404(minuta, idMinuta=idminuta)
     form_km_inicial = CadastraMinutaKMInicial(instance=minutaform)
     form_km_final = CadastraMinutaKMFinal(instance=minutaform)
-    data = dict()
-    data['html_mensagem'] = mensagem
-    data['html_tipo_mensagem'] = tipo_mensagem
-    data['html_veiculo'] = render_to_string('minutas/veiculominuta.html',
-                                            {'selecionada': selecionada, 'form_km_inicial': form_km_inicial,
-                                             'form_km_final': form_km_final}, request=request)
-    c_return = JsonResponse(data)
-    return c_return
+    contexto = {'selecionada': selecionada, 'form_km_inicial': form_km_inicial, 'form_km_final': form_km_final}
+    return contexto
 
 
 def edita_hora_final(idminuta, hora_final):
@@ -659,10 +665,12 @@ def motoristas_disponiveis():
 
 def veiculo_selecionado(idpessoal, idminuta):
     veiculo = Veiculo.objects.filter(Motorista=idpessoal)
+    km_inicial = km_atual(veiculo[0])
     if len(veiculo) == 1:
         obj = get_minuta(idminuta)
         obj.idVeiculo = veiculo[0]
-        obj.save(update_fields=['idVeiculo'])
+        obj.KMInicial = km_inicial['KMFinal__max']
+        obj.save(update_fields=['idVeiculo', 'KMInicial'])
 
 
 def remove_colaborador(request, idminutacolaborador, idminuta, cargo):
@@ -677,33 +685,26 @@ def remove_colaborador(request, idminutacolaborador, idminuta, cargo):
 
 
 def html_motorista(request, data, idminuta):
-    selecionada = MinutaSelecionada(idminuta)
-    data['html_veiculo'] = render_to_string('minutas/veiculominuta.html', {'selecionada': selecionada}, request=request)
+    contexto = cria_contexto(idminuta)
+    data['html_veiculo'] = render_to_string('minutas/veiculominuta.html', contexto, request=request)
     return data
 
 
 def html_ajudantes(request, data, idminuta):
-    selecionada = MinutaSelecionada(idminuta)
-    data['html_ajudante'] = render_to_string('minutas/ajudantesminuta.html', {'selecionada': selecionada},
-                                             request=request)
+    contexto = cria_contexto(idminuta)
+    data['html_ajudante'] = render_to_string('minutas/ajudantesminuta.html', contexto, request=request)
     return data
 
 
 def html_categoria(request, data, idminuta):
-    selecionada = MinutaSelecionada(idminuta)
-    data['html_categoria'] = render_to_string('minutas/categoriaminuta.html', {'selecionada': selecionada},
-                                              request=request)
-    data['html_veiculo'] = render_to_string('minutas/veiculominuta.html', {'selecionada': selecionada}, request=request)
+    contexto = cria_contexto(idminuta)
+    data['html_categoria'] = render_to_string('minutas/categoriaminuta.html', contexto, request=request)
+    data['html_veiculo'] = render_to_string('minutas/veiculominuta.html', contexto, request=request)
     return data
 
 
 def html_veiculo(request, data, idminuta):
-    selecionada = MinutaSelecionada(idminuta)
-    minuta = Minuta.objects.filter(idMinuta=idminuta)
-    minutaform = get_object_or_404(minuta, idMinuta=idminuta)
-    form_km_inicial = CadastraMinutaKMInicial(instance=minutaform)
-    form_km_final = CadastraMinutaKMFinal(instance=minutaform)
-    contexto = {'selecionada': selecionada, 'form_km_inicial': form_km_inicial, 'form_km_final': form_km_final}
+    contexto = cria_contexto(idminuta)
     data['html_veiculo'] = render_to_string('minutas/veiculominuta.html', contexto, request=request)
     return data
 

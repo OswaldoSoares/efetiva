@@ -1337,6 +1337,8 @@ def exclui_minuta(request, idminuta):
     return redirect('index_minuta')
 
 
+
+
 def edita_minuta_saida_extra_ajudante(request, idminuta):
     minutanotas = MinutaNotas.objects.filter(idMinuta=idminuta)
     for itens in minutanotas:
@@ -1386,7 +1388,6 @@ def insere_motorista(request):
 
 
 def remove_minuta_colaborador(request):
-    print(request.GET)
     c_idobj = request.GET.get('idMinutaColaboradores')
     c_idminuta = request.GET.get('idMinuta')
     c_cargo = request.GET.get('Cargo')
