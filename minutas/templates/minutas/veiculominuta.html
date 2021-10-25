@@ -1,7 +1,7 @@
 {% if selecionada.veiculo_solicitado %}
 {% for motorista in selecionada.motorista %}
 <div class="article-minuta-dados">
-    <i class="bi bi-person-fill"></i>
+    <i class="bi bi-person-square"></i>
     <span>{{ motorista.apelido }}</span>
     <div>
         <button class="btn btn-danger btn-xs glyphicon glyphicon-trash remove-colaborador"
@@ -59,7 +59,7 @@
 {% endif %}
 {% empty %}
 <div class="article-minuta-dados">
-    <i class="bi bi-person-fill"></i>
+    <i class="bi bi-person-square"></i>
     <span>INSERE MOTORISTA</span>
     <div>
         <button type="button" class="btn btn-success btn-xs glyphicon glyphicon-plus"

@@ -231,3 +231,12 @@ class FormInsereColaborador(forms.ModelForm):
         model = MinutaColaboradores
         fields = {'idMinuta', 'idPessoal', 'Cargo'}
         widgets = {'idPessoal': forms.Select(attrs={'class': 'formfields'})}
+
+
+class FormColetaEntregaObs(forms.ModelForm):
+    class Meta:
+        model = Minuta
+        fields = {'idMinuta', 'Coleta', 'Entrega', 'Obs'}
+        widgets = {'Coleta': forms.Textarea(attrs={'class': 'formfieldstexto'}),
+                   'Entrega': forms.Textarea(attrs={'class': 'formfieldstexto'}),
+                   'Obs': forms.Textarea(attrs={'class': 'formfieldstexto'})}

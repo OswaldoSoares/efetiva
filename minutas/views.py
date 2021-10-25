@@ -16,7 +16,8 @@ from decimal import Decimal
 from clientes.models import FoneContatoCliente, Tabela, TabelaVeiculo, TabelaCapacidade, TabelaPerimetro
 from minutas.facade import MinutaSelecionada, MinutaEntrega, MinutaDespesa
 from veiculos.models import Veiculo
-from .forms import FormInsereColaborador, FormEditaVeiculoSolicitado, FormEditaVeiculoEscolhido, CadastraMinuta, \
+from .forms import FormInsereColaborador, FormEditaVeiculoSolicitado, FormEditaVeiculoEscolhido, \
+    FormColetaEntregaObs, CadastraMinuta, \
     CadastraMinutaMotorista, CadastraMinutaAjudante, CadastraMinutaVeiculo, CadastraMinutaKMInicial, \
     CadastraMinutaKMFinal, CadastraMinutaHoraFinal, CadastraMinutaDespesa, CadastraMinutaParametroDespesa, \
     CadastraMinutaNota, CadastraComentarioMinuta, CadastraMinutaSaidaExraAjudante
@@ -1438,4 +1439,17 @@ def edita_minuta_km_final(request):
     c_idminuta = request.POST.get('idMinuta')
     c_kmfinal = request.POST.get('KMFinal')
     data = edita_km_final(c_idminuta, c_kmfinal)
+    return data
+
+
+def edita_minuta_coleta_entrega_obs(request):
+    c_form = FormColetaEntregaObs
+    c_idobj = None
+    if request.method == 'GET':
+        c_idobj = request.GET.get('idobj')
+    elif request.method == 'POST':
+        c_idobj = request.POST.get('idMinuta')
+    c_url = '/minutas/editacoletaentregaobs/'
+    c_view = 'edita_minuta_coleta_entrega_obs'
+    data = forn_minuta(request, c_form, c_idobj, c_url, c_view)
     return data

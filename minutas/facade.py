@@ -732,6 +732,12 @@ def html_filtro_veiculo(request, lista_veiculos):
     return c_return
 
 
+def html_coleta_entrega_obs(request, data, idminuta):
+    contexto = cria_contexto(idminuta)
+    data['html_coleta_entrega_obs'] = render_to_string('minutas/coletaentregaobsminuta.html', contexto, request=request)
+    return data
+
+
 def retorna_json(data):
     c_return = JsonResponse(data)
     return c_return
@@ -779,9 +785,20 @@ def forn_minuta(request, c_form, c_idobj, c_url, c_view):
                     mensagem = 'O VEICULO ESCOLHIDO FOI ATUALIZADO.'
                     tipo_mensagem = 'SUCESSO'
                     data = html_veiculo(request, data, c_idobj)
+            elif c_view == 'edita_minuta_coleta_entrega_obs':
+                obj = get_minuta(c_idobj)
+                obj.Entrega = request.POST.get('Entrega')
+                obj.Coleta = request.POST.get('Coleta')
+                obj.Obs = request.POST.get('Obs')
+                obj.save(update_fields=['Coleta', 'Entrega', 'Obs'])
+                mensagem = 'AS INFORMAÇÕES DE COLETA, ENTREGA E OBSERVAÇÕES FORAM ATUALIZADAS.'
+                tipo_mensagem = 'SUCESSO'
+                data = html_coleta_entrega_obs(request, data, c_idobj)
         else:
             print('Form não é valido')
     else:
+        if c_view == 'edita_minuta_coleta_entrega_obs':
+            c_instance = get_minuta(c_idobj)
         form = c_form(instance=c_instance)
     ajudantes = ajudantes_disponiveis(c_idobj)
     motoristas = motoristas_disponiveis()

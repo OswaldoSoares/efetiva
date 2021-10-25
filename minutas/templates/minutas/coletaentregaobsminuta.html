@@ -1,0 +1,38 @@
+<div class="article-minuta-dados article-info">
+    <i class="bi bi-upload"></i>
+    <span>
+        {% if selecionada.coleta != '' %}
+        {{ selecionada.coleta|slice:"0:80" }}
+        {% else %}
+        COLETA NÃO INFORMADA.
+        {% endif %}
+    </span>
+    <div></div>
+</div>
+<div class="article-minuta-dados article-info">
+    <i class="bi bi-download"></i>
+    <span>
+        {% if selecionada.entrega != '' %}
+        {{ selecionada.entrega|slice:"0:80" }}
+        {% else %}
+        ENTREGA NÃO INFORMADA.
+        {% endif %}
+    </span>
+    <div>
+        <button type="button" class="btn btn-success btn-xs glyphicon glyphicon-edit"
+                onclick="openMyModal(event); return false;" data-title="COLETA - ENTREGA - OBS"
+                data-action="{% url 'editacoletaentregaobs' %}" data-button-save-label="EDITA"
+                data-idminuta="{{ selecionada.idminuta }}"></button>
+    </div>
+</div>
+<div class="article-minuta-dados article-info">
+    <i class="bi bi-info-circle-fill"></i>
+    <span>
+        {% if selecionada.obs != '' %}
+        {{ selecionada.obs|slice:"0:80" }}
+        {% else %}
+        OBSERVAÇÕES NÃO INFORMADA
+        {% endif %}
+    </span>
+    <div></div>
+</div>

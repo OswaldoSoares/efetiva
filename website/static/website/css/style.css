@@ -2853,6 +2853,15 @@ main .fp-recibo-tabela .fp-recibo-print {
     font-size: 15px;
 }
 
+.article-card .article-info {
+    background-color: #666666;
+    color:white;
+}
+
+.article-card .article-info span {
+    font-size: 10px;
+}
+
 .mensagem {
     margin-left: 2.5%;
     width: 95%;

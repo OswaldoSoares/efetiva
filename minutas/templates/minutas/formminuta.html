@@ -57,4 +57,20 @@
         <input type="hidden" name="Cargo" value="AJUDANTE" >
     </div>
     {% endif %}
+
+    {% if c_view == 'edita_minuta_coleta_entrega_obs' %}
+    <div class="col-md-12">
+        <label for="id_Coleta" class="form-label">COLETA:</label>
+        {{ form.Coleta }}
+    </div>
+    <div class="col-md-12">
+        <label for="id_Entrega" class="form-label">ENTREGA:</label>
+        {{ form.Entrega }}
+    </div>
+    <div class="col-md-12">
+        <label for="id_Obs" class="form-label">OBS:</label>
+        {{ form.Obs }}
+    </div>
+    <input type="hidden" name="idMinuta" value="{{ c_idobj }}">
+    {% endif %}
 </form>

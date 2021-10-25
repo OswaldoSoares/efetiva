@@ -461,7 +461,9 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                 } else {
                     $(modal).modal('hide');
                     if (xhr['c_view'] == 'insere_motorista') {
+                        EscondeVeiculo()
                         $('.html-veiculo').html(xhr['html_veiculo']);
+                        MostraVeiculo()
                         verificaTotalKMs()
                     } else if (xhr['c_view'] == 'insere_ajudante') {
                         $('.html-ajudante').html(xhr['html_ajudante']);
@@ -481,19 +483,30 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                             } else {
                                 $('.html-veiculo').html(xhr['html_veiculo']);
                                 MostraVeiculo()
+                                verificaTotalKMs()
                             }
                         }
                     } else if (xhr['c_view'] == 'edita_minuta_veiculo_escolhido') {
+                        $(".mensagem-sucesso").text(xhr['html_mensagem']);
                         mostraMensagemSucesso()
                         EscondeVeiculo()
                         $('.html-veiculo').html(xhr['html_veiculo']);
                         MostraVeiculo()
+                        verificaTotalKMs()
+                    } else if (xhr['c_view'] == 'edita_minuta_coleta_entrega_obs') {
+                        $(".mensagem-sucesso").text(xhr['html_mensagem']);
+                        mostraMensagemSucesso()
+                        EscondeInfo()
+                        $('.html-coleta-entrega-obs').html(xhr['html_coleta_entrega_obs']);
+                        MostraInfo()
+                        verificaTotalKMs()
                     }
                     if (cbAfterSuccess) { cbAfterSuccess(modal); }
                 }
             },
             error: function(xhr, ajaxOptions, thrownError) {
-                console.log('SERVER ERROR: ' + thrownError);
+                $(".mensagem-erro").text(thrownError);
+                mostraMensagemErro()
             },
             complete: function() {
                 header.removeClass('loading');
@@ -544,4 +557,12 @@ var EscondeVeiculo = function() {
 
 var MostraVeiculo = function() {
     $(".html-veiculo").delay(1000).slideDown(500)
+}
+
+var EscondeInfo = function() {
+    $(".html-coleta-entrega-obs").hide()
+}
+
+var MostraInfo = function() {
+    $(".html-coleta-entrega-obs").delay(1000).slideDown(500)
 }
