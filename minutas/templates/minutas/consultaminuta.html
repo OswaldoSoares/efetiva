@@ -765,7 +765,7 @@
     {% endif %}
     {% endfor %}
     -->
-    <div class="">
+    <div class="article">
         <article class="article-card">
             <div class="article-minuta-numero">
                 <i class="bi bi-clipboard"></i>
@@ -829,8 +829,20 @@
                 {% include 'minutas/coletaentregaobsminuta.html' %}
             </div>
         </article>
-        <article>
-
+        <article class="article-card">
+            <div class="article-titulo">
+                <span>DESPESAS</span>
+            </div>
+            <div class="article-minuta-dados">
+                <i class="bi bi-bag-check-fill"></i>
+                <span>INSERE DESPESA</span>
+                <div>
+                    <button type="button" class="btn btn-success btn-xs glyphicon glyphicon-plus"
+                    onclick="openMyModal(event); return false;" data-title="INSERE AJUDANTE"
+                    data-action="{% url 'insereajudante' %}" data-button-save-label="INSERIR"
+                    data-idminuta="{{ selecionada.idminuta }}"></button>
+                </div>
+            </div>
         </article>
     </div>
     <!--

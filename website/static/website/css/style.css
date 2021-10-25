@@ -2770,6 +2770,13 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 
+.article {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: flex-start;
+}
+
 .article-card {
     background-color: #363636;
     color: white;
@@ -2860,6 +2867,22 @@ main .fp-recibo-tabela .fp-recibo-print {
 
 .article-card .article-info span {
     font-size: 10px;
+}
+
+.article-card .article-titulo {
+    background-color: var(--corprimaria);
+    color: #fff;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align: center;
+    border: 1px solid black;
+}
+
+.article-card .article-titulo span {
+    width: 100%;
+    font-size: 30px;
 }
 
 .mensagem {

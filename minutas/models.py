@@ -112,3 +112,19 @@ class MinutaNotas(models.Model):
         super(MinutaNotas, self).save(*args, **kwargs)
 
     objects = models.Manager()
+
+
+class CategoriaDespesa(models.Model):
+    idCategoriaDespesa = models.AutoField(primary_key=True)
+    Descricao = models.CharField(max_length=25)
+
+    def __str__(self):
+        return f'{self.Descricao}'
+
+    def save(self, *args, **kwargs):
+        if self.Descricao:
+            self.Descricao = self.Descricao.upper()
+
+        super(CategoriaDespesa, self).save(*args, **kwargs)
+
+    object = models.Manager()
