@@ -44,13 +44,6 @@ class CadastraMinuta(forms.ModelForm):
                 'class': 'formfieldstexto'}), 'StatusMinuta': forms.HiddenInput()}
 
 
-class FormEditaVeiculoSolicitado(forms.ModelForm):
-    class Meta:
-        model = Minuta
-        fields = ('idCategoriaVeiculo',)
-        widgets = {'idCategoriaVeiculo': forms.Select(attrs={'class': 'formfields'})}
-
-
 class CadastraMinutaMotorista(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CadastraMinutaMotorista, self).__init__(*args, **kwargs)
@@ -79,13 +72,6 @@ class CadastraMinutaAjudante(forms.ModelForm):
         labels = {'idPessoal': 'AJUDANTE'}
         widgets = {'idPessoal': forms.Select(attrs={'class': 'formfields'}), 'idMinuta': forms.HiddenInput(),
                    'Cargo': forms.HiddenInput()}
-
-
-class FormInsereColaborador(forms.ModelForm):
-    class Meta:
-        model = MinutaColaboradores
-        fields = {'idPessoal', 'idMinuta', 'Cargo'}
-        widgets = {'idPessoal': forms.Select(attrs={'class': 'formfields'})}
 
 
 class CadastraMinutaVeiculo(forms.Form):
@@ -224,3 +210,24 @@ class CadastraComentarioMinuta(forms.ModelForm):
         model = Minuta
         fields = {'Comentarios'}
         widgets = {'Comentarios': forms.Textarea(attrs={'rows': 5, 'class': 'comentarios'})}
+
+
+class FormEditaVeiculoSolicitado(forms.ModelForm):
+    class Meta:
+        model = Minuta
+        fields = ('idMinuta', 'idCategoriaVeiculo')
+        widgets = {'idCategoriaVeiculo': forms.Select(attrs={'class': 'formfields'})}
+
+
+class FormEditaVeiculoEscolhido(forms.ModelForm):
+    class Meta:
+        model = Minuta
+        fields = ('idMinuta', 'idCategoriaVeiculo')
+        widgets = {'idCategoriaVeiculo': forms.Select(attrs={'class': 'formfields'})}
+
+
+class FormInsereColaborador(forms.ModelForm):
+    class Meta:
+        model = MinutaColaboradores
+        fields = {'idMinuta', 'idPessoal', 'Cargo'}
+        widgets = {'idPessoal': forms.Select(attrs={'class': 'formfields'})}

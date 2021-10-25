@@ -2884,6 +2884,11 @@ main .fp-recibo-tabela .fp-recibo-print {
     justify-content: center;
 }
 
+.mensagem-erro,
+.mensagem-sucesso {
+    padding-left: 5px;
+}
+
 /*
 .pagamento-conteudo main {
     background-color: white;

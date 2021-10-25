@@ -418,8 +418,8 @@ class MinutaMotorista:
     @staticmethod
     def get_motorista(idminuta):
         motorista = MinutaColaboradores.objects.filter(idMinuta=idminuta, Cargo='MOTORISTA')
-        lista = [{'idMinutaColaboradores': itens.idMinutaColaboradores, 'nome': itens.idPessoal.Nome}
-                 for itens in motorista]
+        lista = [{'idMinutaColaboradores': itens.idMinutaColaboradores, 'nome': itens.idPessoal.Nome,
+                  'obj': itens.idPessoal} for itens in motorista]
         if lista:
             lista[0]['apelido'] = nome_curto(lista[0]['nome'])
         return lista
@@ -673,6 +673,21 @@ def veiculo_selecionado(idpessoal, idminuta):
         obj.save(update_fields=['idVeiculo', 'KMInicial'])
 
 
+def filtra_veiculo(idpessoal, opcao):
+    veiculos = []
+    if opcao == 'PROPRIO':
+        veiculos = Veiculo.objects.filter(Motorista=idpessoal).order_by('Marca', 'Modelo', 'Placa')
+    elif opcao == 'TRANSPORTADORA':
+        veiculos = Veiculo.objects.filter(Proprietario=17).order_by('Marca', 'Modelo', 'Placa')
+    elif opcao == 'CADASTRADOS':
+        veiculos = Veiculo.objects.all().order_by('Marca', 'Modelo', 'Placa')
+    lista_veiculos = []
+    for veiculo in veiculos:
+        descricao_veiculo = f'{veiculo.Marca} - {veiculo.Modelo} - {veiculo.Placa}'
+        lista_veiculos.append({'idVeiculo': veiculo.idVeiculo, 'Veiculo': descricao_veiculo})
+    return lista_veiculos
+
+
 def remove_colaborador(request, idminutacolaborador, idminuta, cargo):
     colaborador = MinutaColaboradores.objects.get(idMinutaColaboradores=idminutacolaborador)
     colaborador.delete()
@@ -709,6 +724,14 @@ def html_veiculo(request, data, idminuta):
     return data
 
 
+def html_filtro_veiculo(request, lista_veiculos):
+    data = dict()
+    contexto = {'lista_veiculos': lista_veiculos}
+    data['html_filtro'] = render_to_string('minutas/listaveiculosminuta.html', contexto, request=request)
+    c_return = JsonResponse(data)
+    return c_return
+
+
 def retorna_json(data):
     c_return = JsonResponse(data)
     return c_return
@@ -743,12 +766,29 @@ def forn_minuta(request, c_form, c_idobj, c_url, c_view):
                 obj.save(update_fields=['idCategoriaVeiculo'])
                 tipo_mensagem = 'SUCESSO'
                 data = html_categoria(request, data, c_idobj)
+            elif c_view == 'edita_minuta_veiculo_escolhido':
+                idveiculo = request.POST.get('idVeiculo')
+                if request.POST.get('idVeiculo'):
+                    veiculo = Veiculo.objects.filter(idVeiculo=idveiculo)
+                    km_inicial = km_atual(veiculo[0])
+                    if len(veiculo) == 1:
+                        obj = get_minuta(c_idobj)
+                        obj.idVeiculo = veiculo[0]
+                        obj.KMInicial = km_inicial['KMFinal__max']
+                        obj.save(update_fields=['idVeiculo', 'KMInicial'])
+                    mensagem = 'O VEICULO ESCOLHIDO FOI ATUALIZADO.'
+                    tipo_mensagem = 'SUCESSO'
+                    data = html_veiculo(request, data, c_idobj)
+        else:
+            print('Form não é valido')
     else:
         form = c_form(instance=c_instance)
     ajudantes = ajudantes_disponiveis(c_idobj)
     motoristas = motoristas_disponiveis()
+    idpessoal = request.GET.get('idPessoal')
+    lista_veiculos = []
     contexto = {'form': form, 'c_idobj': c_idobj, 'c_url': c_url, 'c_view': c_view, 'ajudantes': ajudantes,
-                'motoristas': motoristas}
+                'motoristas': motoristas, 'lista_veiculos': lista_veiculos, 'idpessoal': idpessoal}
     data['html_form'] = render_to_string('minutas/formminuta.html', contexto, request=request)
     data['c_view'] = c_view
     data['html_mensagem'] = mensagem

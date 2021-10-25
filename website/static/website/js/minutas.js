@@ -81,21 +81,41 @@ $(document).ready(function(){
     });
 
     
-
+    $('#MyModal').on('shown.bs.modal', function () {
+        setTimeout(function(){      // Delay para função loadCubagem, após janela estar carregada
+            $(".form-radio").click(function() {
+                $(".escolha-veiculo").fadeOut(500)
+                var filtro = $(this).val()
+                $.ajax({
+                    type: 'GET',
+                    url: '/minutas/filtraveiculoescolhido',
+                    data: {
+                        idobj: $('#idminuta').attr('idminuta'),
+                        idPessoal: $("#idpessoal").attr('idpessoal'),
+                        Filtro: filtro,
+                    },
+                    success: function(data){
+                        $(".html-escolhido").html(data['html_filtro'])
+                        $(".escolha-veiculo").fadeIn(500)
+                    },
+                    error: function(error) {
+                        console.log(error)
+                    }
+                });
+            });
+            $("#id_Propriedade").focus();   // Configura o foco inicial
+        }, 800);
+    });
     
-
-    
-
     verificaTotalKMs()
     verificaTotalHoras()
     $(".div-sucesso").hide()
     $(".div-erro").hide()
 
-
     // JQuery da Janela Modal
     $('#modal-formulario').on('shown.bs.modal', function () {
         setTimeout(function(){      // Delay para função loadCubagem, após janela estar carregada
-            $("#id_Propriedade").change(function(){
+            $("#id_Propriedade").change(function() {
                 var obj = $(this)
                 var propriedade = $(this).val();
                 var idminutacolaboradores = $(".js-excluiminutamotorista").attr("idminutacolaboradores");
@@ -383,13 +403,15 @@ function openMyModal(event) {
         url: url,
         data : { 
             idobj: $(event.target).data('idminuta'),
+            idPessoal: $(event.target).data('idpessoal'),
         }
     }).done(function(data, textStatus, jqXHR) {
         modal.find('.modal-body').html(data.html_form);
         modal.modal('show');
         formAjaxSubmit(modal, url, null, null);
     }).fail(function(jqXHR, textStatus, errorThrown) {
-        alert("SERVER ERROR: " + errorThrown);
+        $(".mensagem-erro").text(errorThrown);
+        mostraMensagemErro()
     });
 }
 
@@ -461,6 +483,11 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                                 MostraVeiculo()
                             }
                         }
+                    } else if (xhr['c_view'] == 'edita_minuta_veiculo_escolhido') {
+                        mostraMensagemSucesso()
+                        EscondeVeiculo()
+                        $('.html-veiculo').html(xhr['html_veiculo']);
+                        MostraVeiculo()
                     }
                     if (cbAfterSuccess) { cbAfterSuccess(modal); }
                 }
@@ -512,7 +539,7 @@ var MostraCategoria = function() {
 }
 
 var EscondeVeiculo = function() {
-    $(".html-veiculo").slideUp(500)
+    $(".html-veiculo").hide()
 }
 
 var MostraVeiculo = function() {

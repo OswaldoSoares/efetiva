@@ -14,7 +14,12 @@
     <i class="bi bi-truck"></i>
     <span>{{ selecionada.veiculo.Marca }} {{ selecionada.veiculo.Modelo }} -
           {{ selecionada.veiculo.Placa}}</span>
-    <div></div>
+    <div>
+        <button type="button" class="btn btn-success btn-xs glyphicon glyphicon-edit"
+               onclick="openMyModal(event); return false;" data-title="VEÍCULO"
+               data-action="{% url 'editaveiculoescolhido' %}" data-button-save-label="EDITAR"
+               data-idminuta="{{ selecionada.idminuta }}" data-idpessoal="{{ motorista.obj.idPessoal }}"></button>
+    </div>
 </div>
 <form class="html-km-inicial" method="post" action="{% url 'editakminicial' %}" id="form-edita-km">
     {% csrf_token %}

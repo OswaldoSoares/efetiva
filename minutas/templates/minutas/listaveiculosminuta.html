@@ -1,0 +1,10 @@
+<div class="col-md-12">
+    <label for="id_idVeiculo" class="form-label escolha-veiculo">VEÍCULO</label>
+    <select name="idVeiculo" class="formfields escolha-veiculo" required id="id_idVeiculo">
+        {% for veiculo in lista_veiculos %}
+            <option value="{{ veiculo.idVeiculo }}">{{ veiculo.Veiculo }}</option>
+        {% empty %}
+            <option value="">NENHUM VEÍCULO DISPONÍVEL</option>
+        {% endfor %}
+    </select>
+</div>

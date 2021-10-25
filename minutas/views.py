@@ -16,13 +16,14 @@ from decimal import Decimal
 from clientes.models import FoneContatoCliente, Tabela, TabelaVeiculo, TabelaCapacidade, TabelaPerimetro
 from minutas.facade import MinutaSelecionada, MinutaEntrega, MinutaDespesa
 from veiculos.models import Veiculo
-from .forms import FormInsereColaborador, FormEditaVeiculoSolicitado, CadastraMinuta, CadastraMinutaMotorista, \
-    CadastraMinutaAjudante, CadastraMinutaVeiculo, CadastraMinutaKMInicial, CadastraMinutaKMFinal, \
-    CadastraMinutaHoraFinal, CadastraMinutaDespesa, \
-    CadastraMinutaParametroDespesa, CadastraMinutaNota, CadastraComentarioMinuta, CadastraMinutaSaidaExraAjudante
+from .forms import FormInsereColaborador, FormEditaVeiculoSolicitado, FormEditaVeiculoEscolhido, CadastraMinuta, \
+    CadastraMinutaMotorista, CadastraMinutaAjudante, CadastraMinutaVeiculo, CadastraMinutaKMInicial, \
+    CadastraMinutaKMFinal, CadastraMinutaHoraFinal, CadastraMinutaDespesa, CadastraMinutaParametroDespesa, \
+    CadastraMinutaNota, CadastraComentarioMinuta, CadastraMinutaSaidaExraAjudante
 from .models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas
-from .facade import forn_minuta, edita_hora_final, edita_km_final, edita_km_inicial, remove_colaborador, \
-    html_ajudantes, retorna_json
+from .facade import forn_minuta, edita_hora_final, filtra_veiculo, html_filtro_veiculo, edita_km_final, \
+    edita_km_inicial, \
+    remove_colaborador, retorna_json
 
 def convertemp(mm):
     """
@@ -1358,6 +1359,29 @@ def edita_minuta_veiculo_solicitado(request):
     c_url = '/minutas/editaveiculosolicitado/'
     c_view = 'edita_minuta_veiculo_solicitado'
     data = forn_minuta(request, c_form, c_idobj, c_url, c_view)
+    return data
+
+
+def edita_minuta_veiculo_escolhido(request):
+    print(request.GET)
+    print(request.POST)
+    c_form = FormEditaVeiculoEscolhido
+    c_idobj = None
+    if request.method == 'GET':
+        c_idobj = request.GET.get('idobj')
+    elif request.method == 'POST':
+        c_idobj = request.POST.get('idMinuta')
+    c_url = '/minutas/editaveiculoescolhido/'
+    c_view = 'edita_minuta_veiculo_escolhido'
+    data = forn_minuta(request, c_form, c_idobj, c_url, c_view)
+    return data
+
+
+def filtra_minuta_veiculo_escolhido(request):
+    idpessoal = request.GET.get('idPessoal')
+    opcao = request.GET.get('Filtro')
+    lista_veiculos = filtra_veiculo(idpessoal, opcao)
+    data = html_filtro_veiculo(request, lista_veiculos)
     return data
 
 
