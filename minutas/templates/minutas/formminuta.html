@@ -46,7 +46,7 @@
     {% if c_view == 'insere_ajudante' %}
     <div class="col-md-12">
         <label for="id_idPessoal" class="form-label">NOME:</label>
-        <select name="idPessoal" class="formfields" required id="id_idPessoal">
+        <select name="idPessoal" class="form-control" required id="id_idPessoal">
             {% for ajudante in ajudantes %}
                 <option value="{{ ajudante.idPessoal }}">{{ ajudante.Nome }}</option>
             {% empty %}
@@ -71,6 +71,30 @@
         <label for="id_Obs" class="form-label">OBS:</label>
         {{ form.Obs }}
     </div>
+    <input type="hidden" name="idMinuta" value="{{ c_idobj }}">
+    {% endif %}
+
+    {% if c_view == 'insere_minuta_despesa' %}
+    <div class="col-md-6">
+        <label for="id_Descricao" class="form-label">DESCRIÇÃO:</label>
+        {{ form.Descricao }}
+        <datalist id="choices">
+            {% for choice in choices %}
+            <option value="{{ choice.Descricao }}">
+            {% endfor %}
+        </datalist>
+    </div>
+    <div class="col-md-6">
+        <label for="id_Valor">VALOR:</label>
+        {{ form.Valor }}
+    </div>
+    <div class="col-md-12">
+        <label for="id_Obs">OBSERVAÇÃO:</label>
+        {{ form.Obs }}
+    </div>
+    {{ form.TipoItens }}
+    {{ form.RecebePaga }}
+    {{ form.Tempo }}
     <input type="hidden" name="idMinuta" value="{{ c_idobj }}">
     {% endif %}
 </form>

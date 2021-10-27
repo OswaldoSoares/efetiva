@@ -1,5 +1,5 @@
 from django import forms
-from .models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas
+from .models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas, CategoriaDespesa
 from veiculos.models import Veiculo
 from pessoas.models import Pessoal
 from django.db.models import Value
@@ -230,7 +230,7 @@ class FormInsereColaborador(forms.ModelForm):
     class Meta:
         model = MinutaColaboradores
         fields = {'idMinuta', 'idPessoal', 'Cargo'}
-        widgets = {'idPessoal': forms.Select(attrs={'class': 'formfields'})}
+        widgets = {'idPessoal': forms.Select(attrs={'class': 'form-control'})}
 
 
 class FormColetaEntregaObs(forms.ModelForm):
@@ -240,3 +240,20 @@ class FormColetaEntregaObs(forms.ModelForm):
         widgets = {'Coleta': forms.Textarea(attrs={'class': 'formfieldstexto'}),
                    'Entrega': forms.Textarea(attrs={'class': 'formfieldstexto'}),
                    'Obs': forms.Textarea(attrs={'class': 'formfieldstexto'})}
+
+
+class FormInsereDespesa(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(FormInsereDespesa, self).__init__(*args, **kwargs)
+        self.fields['TipoItens'].initial = 'DESPESA'
+        self.fields['RecebePaga'].initial = 'R'
+        self.fields['Tempo'].initial = timedelta(days=0, hours=0, minutes=0)
+
+    class Meta:
+        model = MinutaItens
+        fields = {'idMinutaItens', 'Descricao', 'TipoItens', 'RecebePaga', 'Valor', 'Obs', 'Tempo', 'idMinuta'}
+        widgets = {'idMinutaItens': forms.HiddenInput(),
+                   'Descricao': forms.TextInput(attrs={'class': 'form-control', 'list': 'choices'}),
+                   'Valor': forms.NumberInput(attrs={'class': 'form-control'}),
+                   'Obs': forms.Textarea(attrs={'class': 'form-control campotexto'}),
+                   'TipoItens': forms.HiddenInput(), 'RecebePaga': forms.HiddenInput(), 'Tempo': forms.HiddenInput()}

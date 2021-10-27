@@ -2830,6 +2830,24 @@ main .fp-recibo-tabela .fp-recibo-print {
     font-size: 15px;
 }
 
+.article-card .article-minuta-dados span div {
+    width: 100%;
+    display: flex;
+    font-size: 12px;
+}
+
+.article-card .article-duas-linhas {
+    height: 40px;
+}
+
+.article-duas-linhas .despesa-linha-um {
+    justify-content: center;
+}
+
+.article-duas-linhas .despesa-linha-dois {
+    justify-content: left;
+}
+
 .article-card .article-minuta-dados div {
     width: 10%;
 }
@@ -2921,76 +2939,6 @@ main .fp-recibo-tabela .fp-recibo-print {
     padding-left: 5px;
 }
 
-/*
-.pagamento-conteudo main {
-    background-color: white;
-    width: 100%;
-    padding: 5px;
+.campotexto {
+    height: 50px;
 }
-.pagamento-conteudo main .pagamento-selecao {
-    width: 100%;
-    display: flex;
-}
-.pagamento-conteudo main .pagamento-selecao .pagamento-base-colaboradores {
-    background-color: var(--corprimaria);
-    color: var(--corsecundaria);
-    width:  60%;
-}
-.pagamento-conteudo main .pagamento-selecao .pagamento-base-itens {
-    background-color: var(--corsecundaria);
-    color: var(--corprimaria);
-    width:  40%;
-}
-.pagamento-list-colaboradores {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0px 5px;
-    font-size: 20px;
-}
-.pagamento-switch-colaboradores {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 10%;
-    height: 28px;
-    padding-top: 5px;
-} 
-.pagamento-dados-colaboradores {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 90%;
-    font-size: 20px;
-}
-.pagamento-dados-itens {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0px 5px;
-    width: 100%;
-    font-size: 20px;
-}
-.pagamento-switch-minuta {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 28px;
-    padding-top: 5px;
-} 
-.pagamento-dados-minuta {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 20%;
-    padding-right: 5px;
-}
-.pagamento-dados-valor {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 80%;
-}
-
-*/
-

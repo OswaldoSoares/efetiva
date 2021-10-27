@@ -1,0 +1,14 @@
+{% for despesa in selecionada.despesas %}
+<div class="article-minuta-dados article-duas-linhas">
+    <i class="bi bi-bag-check-fill"></i>
+    <span>
+        <div class="despesa-linha-um">{{ despesa.Descricao }} R$ {{ despesa.Valor }}</div>
+        <div class="despesa-linha-dois">{{ despesa.Obs|slice:"0:40" }}</div>
+    </span>
+    <div>
+        <button class="btn btn-danger btn-xs glyphicon glyphicon-trash remove-despesa"
+                idMinuta="{{ selecionada.idminuta }}" Cargo="AJUDANTE"
+                idMinutaItens="{{ despesa.idMinutaItens }}"></button>
+    </div>
+</div>
+{% endfor %}

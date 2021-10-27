@@ -833,18 +833,38 @@
             <div class="article-titulo">
                 <span>DESPESAS</span>
             </div>
+            <div class="html-despesa">
+                {% include 'minutas/despesaminuta.html' %}
+            </div>
             <div class="article-minuta-dados">
                 <i class="bi bi-bag-check-fill"></i>
                 <span>INSERE DESPESA</span>
                 <div>
                     <button type="button" class="btn btn-success btn-xs glyphicon glyphicon-plus"
-                    onclick="openMyModal(event); return false;" data-title="INSERE AJUDANTE"
-                    data-action="{% url 'insereajudante' %}" data-button-save-label="INSERIR"
+                    onclick="openMyModal(event); return false;" data-title="INSERE DESPESA"
+                    data-action="{% url 'inseredespesa' %}" data-button-save-label="INSERIR"
+                    data-idminuta="{{ selecionada.idminuta }}"></button>
+                </div>
+            </div>
+        </article>
+        <article class="article-card">
+            <div class="article-titulo">
+                <span>ENTREGAS</span>
+            </div>
+            <div class="article-minuta-dados">
+                <i class="bi bi-bag-check-fill"></i>
+                <span>INSERE ENTREGA</span>
+                <div>
+                    <button type="button" class="btn btn-success btn-xs glyphicon glyphicon-plus"
+                    onclick="openMyModal(event); return false;" data-title="INSERE DESPESA"
+                    data-action="{% url 'inseredespesa' %}" data-button-save-label="INSERIR"
                     data-idminuta="{{ selecionada.idminuta }}"></button>
                 </div>
             </div>
         </article>
     </div>
+
+    {{ selecionada }}
     <!--
     <div class="consulta base-card3">
         <span>.</span>

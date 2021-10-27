@@ -80,6 +80,26 @@ $(document).ready(function(){
         });
     });
 
+    $(document).on('click', '.remove-despesa', function(event) {
+        var idminutaitens = $(this).attr('idMinutaItens')
+        var idminuta = $(this).attr('idMinuta')
+        $.ajax({
+            type: 'GET',
+            url: '/minutas/removedespesa',
+            data: {
+                idMinutaItens: idminutaitens,
+                idMinuta: idminuta,
+            },
+            success: function(data){
+                EscondeDespesa()
+                $('.html-despesa').html(data['html_despesa']);
+                MostraDespesa()
+            },
+            error: function(error) {
+                console.log(error)
+            }
+        });
+    });
     
     $('#MyModal').on('shown.bs.modal', function () {
         setTimeout(function(){      // Delay para função loadCubagem, após janela estar carregada
@@ -500,6 +520,13 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                         $('.html-coleta-entrega-obs').html(xhr['html_coleta_entrega_obs']);
                         MostraInfo()
                         verificaTotalKMs()
+                    } else if (xhr['c_view'] == 'insere_minuta_despesa') {
+                        $(".mensagem-sucesso").text(xhr['html_mensagem']);
+                        mostraMensagemSucesso()
+                        EscondeDespesa()
+                        $('.html-despesa').html(xhr['html_despesa']);
+                        MostraDespesa()
+                        verificaTotalKMs()
                     }
                     if (cbAfterSuccess) { cbAfterSuccess(modal); }
                 }
@@ -565,4 +592,12 @@ var EscondeInfo = function() {
 
 var MostraInfo = function() {
     $(".html-coleta-entrega-obs").delay(1000).slideDown(500)
+}
+
+var EscondeDespesa = function() {
+    $(".html-despesa").hide()
+}
+
+var MostraDespesa = function() {
+    $(".html-despesa").delay(1000).slideDown(500)
 }

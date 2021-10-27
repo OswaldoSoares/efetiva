@@ -70,10 +70,21 @@ class MinutaItens(models.Model):
     Peso = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     ValorBase = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     Tempo = models.DurationField(default=0)
+    Obs = models.TextField(default=None, blank=True)
     idMinuta = models.ForeignKey(Minuta, on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'MinutaItens'
+
+    def __str__(self):
+        return f'{self.Descricao}'
+
+    def save(self, *args, **kwargs):
+        self.Descricao = self.Descricao.upper()
+        if self.Obs:
+            self.Obs = self.Obs.upper()
+
+        super(MinutaItens, self).save(*args, **kwargs)
 
     objects = models.Manager()
 
@@ -90,6 +101,7 @@ class MinutaNotas(models.Model):
     Bairro = models.CharField(max_length=255, blank=True, null=True)
     NotaGuia = models.CharField(max_length=10, blank=True, null=True, default='0')
     ExtraValorAjudante = models.IntegerField(default=0)
+    Obs = models.TextField(default=None, blank=True);
     idMinuta = models.ForeignKey(Minuta, on_delete=models.CASCADE)
 
     class Meta:

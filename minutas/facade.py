@@ -51,6 +51,7 @@ class MinutaSelecionada:
         self.total_horas = self.total_horas()
         self.total_horas_str = self.total_horas_str()
         self.total_kms = self.total_kms()
+        self.CategoriaDespesa = MinutaCategoriaDespesas().Categoria
 
     def total_kms(self):
         calculo_kms = self.km_final - self.km_inicial
@@ -448,9 +449,19 @@ class MinutaDespesa:
     @staticmethod
     def get_despesas(idminuta):
         despesas = MinutaItens.objects.filter(idMinuta=idminuta, TipoItens='DESPESA')
-        lista = [{'idMinutaItens': itens.idMinutaItens, 'Descricao': itens.Descricao, 'Valor': itens.Valor}
-                 for itens in despesas]
+        lista = [{'idMinutaItens': itens.idMinutaItens, 'Descricao': itens.Descricao, 'Valor': itens.Valor,
+                  'Obs': itens.Obs} for itens in despesas]
         return lista
+
+
+class MinutaCategoriaDespesas:
+    def __init__(self):
+        self.Categoria = self.get_despesas_descricao()
+
+    @staticmethod
+    def get_despesas_descricao():
+        categoria = MinutaItens.objects.filter(TipoItens='DESPESA').values('Descricao').distinct().order_by('Descricao')
+        return categoria
 
 
 class MinutaEntrega:
@@ -699,6 +710,14 @@ def remove_colaborador(request, idminutacolaborador, idminuta, cargo):
     return data
 
 
+def remove_despessa(request, idminutaitens, idminuta):
+    colaborador = MinutaItens.objects.get(idMinutaItens=idminutaitens)
+    colaborador.delete()
+    data = dict()
+    data = html_despesa(request, data, idminuta)
+    return data
+
+
 def html_motorista(request, data, idminuta):
     contexto = cria_contexto(idminuta)
     data['html_veiculo'] = render_to_string('minutas/veiculominuta.html', contexto, request=request)
@@ -737,6 +756,11 @@ def html_coleta_entrega_obs(request, data, idminuta):
     data['html_coleta_entrega_obs'] = render_to_string('minutas/coletaentregaobsminuta.html', contexto, request=request)
     return data
 
+
+def html_despesa(request, data, idminuta):
+    contexto = cria_contexto(idminuta)
+    data['html_despesa'] = render_to_string('minutas/despesaminuta.html', contexto, request=request)
+    return data
 
 def retorna_json(data):
     c_return = JsonResponse(data)
@@ -794,18 +818,29 @@ def forn_minuta(request, c_form, c_idobj, c_url, c_view):
                 mensagem = 'AS INFORMAÇÕES DE COLETA, ENTREGA E OBSERVAÇÕES FORAM ATUALIZADAS.'
                 tipo_mensagem = 'SUCESSO'
                 data = html_coleta_entrega_obs(request, data, c_idobj)
+            elif c_view == 'insere_minuta_despesa':
+                form.save()
+                mensagem = 'DESPESA INSERIDA.'
+                tipo_mensagem = 'SUCESSO'
+                data = html_despesa(request, data, c_idobj)
         else:
             print('Form não é valido')
     else:
         if c_view == 'edita_minuta_coleta_entrega_obs':
             c_instance = get_minuta(c_idobj)
+        if c_view == 'edita_minuta_insere_despesa':
+            c_instance = get_minuta(c_idobj)
+
         form = c_form(instance=c_instance)
     ajudantes = ajudantes_disponiveis(c_idobj)
     motoristas = motoristas_disponiveis()
     idpessoal = request.GET.get('idPessoal')
+    selecionada = MinutaSelecionada(c_idobj)
+    choices = MinutaItens.objects.filter(TipoItens='DESPESA').values('Descricao').distinct().order_by('Descricao')
     lista_veiculos = []
     contexto = {'form': form, 'c_idobj': c_idobj, 'c_url': c_url, 'c_view': c_view, 'ajudantes': ajudantes,
-                'motoristas': motoristas, 'lista_veiculos': lista_veiculos, 'idpessoal': idpessoal}
+                'motoristas': motoristas, 'lista_veiculos': lista_veiculos, 'idpessoal': idpessoal,
+                'selecionada': selecionada, 'choices': choices}
     data['html_form'] = render_to_string('minutas/formminuta.html', contexto, request=request)
     data['c_view'] = c_view
     data['html_mensagem'] = mensagem
