@@ -711,10 +711,18 @@ def remove_colaborador(request, idminutacolaborador, idminuta, cargo):
 
 
 def remove_despessa(request, idminutaitens, idminuta):
-    colaborador = MinutaItens.objects.get(idMinutaItens=idminutaitens)
-    colaborador.delete()
+    despesa = MinutaItens.objects.get(idMinutaItens=idminutaitens)
+    despesa.delete()
     data = dict()
     data = html_despesa(request, data, idminuta)
+    return data
+
+
+def remove_entrega(request, idminutanota, idminuta):
+    entrega = MinutaNotas.objects.get(idMinutaNotas=idminutanota)
+    entrega.delete()
+    data = dict()
+    data = html_entrega(request, data, idminuta)
     return data
 
 
@@ -761,6 +769,13 @@ def html_despesa(request, data, idminuta):
     contexto = cria_contexto(idminuta)
     data['html_despesa'] = render_to_string('minutas/despesaminuta.html', contexto, request=request)
     return data
+
+
+def html_entrega(request, data, idminuta):
+    contexto = cria_contexto(idminuta)
+    data['html_entrega'] = render_to_string('minutas/entregaminuta.html', contexto, request=request)
+    return data
+
 
 def retorna_json(data):
     c_return = JsonResponse(data)
@@ -823,6 +838,11 @@ def forn_minuta(request, c_form, c_idobj, c_url, c_view):
                 mensagem = 'DESPESA INSERIDA.'
                 tipo_mensagem = 'SUCESSO'
                 data = html_despesa(request, data, c_idobj)
+            elif c_view == 'insere_minuta_entrega':
+                form.save()
+                mensagem = 'ENTREGA INSERIDA.'
+                tipo_mensagem = 'SUCESSO'
+                data = html_entrega(request, data, c_idobj)
         else:
             print('Form não é valido')
     else:
@@ -836,11 +856,15 @@ def forn_minuta(request, c_form, c_idobj, c_url, c_view):
     motoristas = motoristas_disponiveis()
     idpessoal = request.GET.get('idPessoal')
     selecionada = MinutaSelecionada(c_idobj)
-    choices = MinutaItens.objects.filter(TipoItens='DESPESA').values('Descricao').distinct().order_by('Descricao')
+    despesas = MinutaItens.objects.filter(TipoItens='DESPESA').values('Descricao').distinct().order_by('Descricao')
+    entregas_bairro = MinutaNotas.objects.values('Bairro').distinct().order_by('Bairro')
+    entregas_cidade = MinutaNotas.objects.values('Cidade').distinct().order_by('Cidade')
+    entregas_nome = MinutaNotas.objects.values('Nome').distinct().order_by('Nome')
+    entregas_nota= MinutaNotas.objects.values('Nota').distinct().order_by('Nota')
     lista_veiculos = []
     contexto = {'form': form, 'c_idobj': c_idobj, 'c_url': c_url, 'c_view': c_view, 'ajudantes': ajudantes,
                 'motoristas': motoristas, 'lista_veiculos': lista_veiculos, 'idpessoal': idpessoal,
-                'selecionada': selecionada, 'choices': choices}
+                'selecionada': selecionada, 'despesas': despesas}
     data['html_form'] = render_to_string('minutas/formminuta.html', contexto, request=request)
     data['c_view'] = c_view
     data['html_mensagem'] = mensagem

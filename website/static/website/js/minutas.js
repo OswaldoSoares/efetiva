@@ -100,6 +100,27 @@ $(document).ready(function(){
             }
         });
     });
+
+    $(document).on('click', '.remove-entrega', function(event) {
+        var idminutanotas = $(this).attr('idMinutaNotas')
+        var idminuta = $(this).attr('idMinuta')
+        $.ajax({
+            type: 'GET',
+            url: '/minutas/removeentrega',
+            data: {
+                idMinutaNotas: idminutanotas,
+                idMinuta: idminuta,
+            },
+            success: function(data){
+                EscondeEntrega()
+                $('.html-entrega').html(data['html_entrega']);
+                MostraEntrega()
+            },
+            error: function(error) {
+                console.log(error)
+            }
+        });
+    });
     
     $('#MyModal').on('shown.bs.modal', function () {
         setTimeout(function(){      // Delay para função loadCubagem, após janela estar carregada
@@ -527,11 +548,18 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                         $('.html-despesa').html(xhr['html_despesa']);
                         MostraDespesa()
                         verificaTotalKMs()
+                    } else if (xhr['c_view'] == 'insere_minuta_entrega') {
+                        $(".mensagem-sucesso").text(xhr['html_mensagem']);
+                        mostraMensagemSucesso()
+                        EscondeEntrega()
+                        $('.html-entrega').html(xhr['html_entrega']);
+                        MostraEntrega()
+                        verificaTotalKMs()
                     }
                     if (cbAfterSuccess) { cbAfterSuccess(modal); }
                 }
             },
-            error: function(xhr, ajaxOptions, thrownError) {
+            error: function(xhr, ajaxOptions, thrownError) {s
                 $(".mensagem-erro").text(thrownError);
                 mostraMensagemErro()
             },
@@ -600,4 +628,12 @@ var EscondeDespesa = function() {
 
 var MostraDespesa = function() {
     $(".html-despesa").delay(1000).slideDown(500)
+}
+
+var EscondeEntrega = function() {
+    $(".html-entrega").hide()
+}
+
+var MostraEntrega = function() {
+    $(".html-entrega").delay(1000).slideDown(500)
 }

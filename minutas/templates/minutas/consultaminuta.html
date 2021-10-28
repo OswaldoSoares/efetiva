@@ -768,7 +768,7 @@
     <div class="article">
         <article class="article-card">
             <div class="article-minuta-numero">
-                <i class="bi bi-clipboard"></i>
+                <i class="bi bi-clipboard-data"></i>
                 <span>{{ selecionada.numero }}</span>
             </div>
             <div class="article-minuta-dados">
@@ -851,13 +851,16 @@
             <div class="article-titulo">
                 <span>ENTREGAS</span>
             </div>
+            <div class="html-entrega">
+                {% include 'minutas/entregaminuta.html' %}
+            </div>
             <div class="article-minuta-dados">
-                <i class="bi bi-bag-check-fill"></i>
+                <i class="bi bi-geo-alt-fill"></i>
                 <span>INSERE ENTREGA</span>
                 <div>
                     <button type="button" class="btn btn-success btn-xs glyphicon glyphicon-plus"
-                    onclick="openMyModal(event); return false;" data-title="INSERE DESPESA"
-                    data-action="{% url 'inseredespesa' %}" data-button-save-label="INSERIR"
+                    onclick="openMyModal(event); return false;" data-title="INSERE ENTREGA"
+                    data-action="{% url 'insereentrega' %}" data-button-save-label="INSERIR"
                     data-idminuta="{{ selecionada.idminuta }}"></button>
                 </div>
             </div>

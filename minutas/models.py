@@ -101,7 +101,6 @@ class MinutaNotas(models.Model):
     Bairro = models.CharField(max_length=255, blank=True, null=True)
     NotaGuia = models.CharField(max_length=10, blank=True, null=True, default='0')
     ExtraValorAjudante = models.IntegerField(default=0)
-    Obs = models.TextField(default=None, blank=True);
     idMinuta = models.ForeignKey(Minuta, on_delete=models.CASCADE)
 
     class Meta:
@@ -124,19 +123,3 @@ class MinutaNotas(models.Model):
         super(MinutaNotas, self).save(*args, **kwargs)
 
     objects = models.Manager()
-
-
-class CategoriaDespesa(models.Model):
-    idCategoriaDespesa = models.AutoField(primary_key=True)
-    Descricao = models.CharField(max_length=25)
-
-    def __str__(self):
-        return f'{self.Descricao}'
-
-    def save(self, *args, **kwargs):
-        if self.Descricao:
-            self.Descricao = self.Descricao.upper()
-
-        super(CategoriaDespesa, self).save(*args, **kwargs)
-
-    object = models.Manager()

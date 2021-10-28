@@ -1,0 +1,14 @@
+{% for entrega in selecionada.entregas %}
+<div class="article-minuta-dados article-tres-linhas">
+    <i class="bi bi-bag-check-fill"></i>
+    <span>
+        <div class="entrega-linha-um">{{ entrega.Nota }} R$ {{ entrega.Valor }}</div>
+        <div class="entrega-linha-dois">{{ entrega.Bairro }}</div>
+        <div class="entrega-linha-tres">{{ entrega.Bairro }}</div>
+    </span>
+    <div>
+        <button class="btn btn-danger btn-xs glyphicon glyphicon-trash remove-entrega"
+                idMinuta="{{ selecionada.idminuta }}" idMinutaNotas="{{ entrega.idMinutaNotas }}"></button>
+    </div>
+</div>
+{% endfor %}

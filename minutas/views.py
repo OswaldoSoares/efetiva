@@ -17,14 +17,14 @@ from clientes.models import FoneContatoCliente, Tabela, TabelaVeiculo, TabelaCap
 from minutas.facade import MinutaSelecionada, MinutaEntrega, MinutaDespesa
 from veiculos.models import Veiculo
 from .forms import FormInsereColaborador, FormEditaVeiculoSolicitado, FormEditaVeiculoEscolhido, \
-    FormColetaEntregaObs, FormInsereDespesa, CadastraMinuta, \
+    FormColetaEntregaObs, FormInsereDespesa, FormInsereEntrega, CadastraMinuta, \
     CadastraMinutaMotorista, CadastraMinutaAjudante, CadastraMinutaVeiculo, CadastraMinutaKMInicial, \
     CadastraMinutaKMFinal, CadastraMinutaHoraFinal, CadastraMinutaDespesa, CadastraMinutaParametroDespesa, \
     CadastraMinutaNota, CadastraComentarioMinuta, CadastraMinutaSaidaExraAjudante
 from .models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas
 from .facade import forn_minuta, edita_hora_final, filtra_veiculo, html_filtro_veiculo, edita_km_final, \
     edita_km_inicial, \
-    remove_colaborador, remove_despessa, retorna_json
+    remove_colaborador, remove_despessa, remove_entrega, retorna_json
 
 def convertemp(mm):
     """
@@ -1454,6 +1454,7 @@ def edita_minuta_coleta_entrega_obs(request):
     data = forn_minuta(request, c_form, c_idobj, c_url, c_view)
     return data
 
+
 def insere_minuta_despesa(request):
     c_form = FormInsereDespesa
     c_idobj = None
@@ -1468,9 +1469,29 @@ def insere_minuta_despesa(request):
 
 
 def remove_minuta_despesa(request):
-    print(request.GET)
     c_idobj = request.GET.get('idMinutaItens')
     c_idminuta = request.GET.get('idMinuta')
     data = remove_despessa(request, c_idobj, c_idminuta)
+    data = retorna_json(data)
+    return data
+
+
+def insere_minuta_entrega(request):
+    c_form = FormInsereEntrega
+    c_idobj = None
+    if request.method == 'GET':
+        c_idobj = request.GET.get('idobj')
+    elif request.method == 'POST':
+        c_idobj = request.POST.get('idMinuta')
+    c_url = '/minutas/insereentrega/'
+    c_view = 'insere_minuta_entrega'
+    data = forn_minuta(request, c_form, c_idobj, c_url, c_view)
+    return data
+
+
+def remove_minuta_entrega(request):
+    c_idobj = request.GET.get('idMinutaNotas')
+    c_idminuta = request.GET.get('idMinuta')
+    data = remove_entrega(request, c_idobj, c_idminuta)
     data = retorna_json(data)
     return data

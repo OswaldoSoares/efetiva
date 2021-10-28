@@ -1,5 +1,5 @@
 from django import forms
-from .models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas, CategoriaDespesa
+from .models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas
 from veiculos.models import Veiculo
 from pessoas.models import Pessoal
 from django.db.models import Value
@@ -253,7 +253,29 @@ class FormInsereDespesa(forms.ModelForm):
         model = MinutaItens
         fields = {'idMinutaItens', 'Descricao', 'TipoItens', 'RecebePaga', 'Valor', 'Obs', 'Tempo', 'idMinuta'}
         widgets = {'idMinutaItens': forms.HiddenInput(),
-                   'Descricao': forms.TextInput(attrs={'class': 'form-control', 'list': 'choices'}),
+                   'Descricao': forms.TextInput(attrs={'class': 'form-control', 'list': 'despesas'}),
                    'Valor': forms.NumberInput(attrs={'class': 'form-control'}),
                    'Obs': forms.Textarea(attrs={'class': 'form-control campotexto'}),
                    'TipoItens': forms.HiddenInput(), 'RecebePaga': forms.HiddenInput(), 'Tempo': forms.HiddenInput()}
+
+
+class FormInsereEntrega(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(FormInsereEntrega, self).__init__(*args, **kwargs)
+        self.fields['Estado'].initial = 'SP'
+        self.fields['Cidade'].initial = 'SÃO PAULO'
+
+    class Meta:
+        model = MinutaNotas
+        fields = {'idMinutaNotas', 'Nota', 'ValorNota', 'Peso', 'Volume', 'Nome', 'Bairro', 'Cidade', 'Estado',
+                  'NotaGuia', 'idMinuta'}
+        widgets = {'Nota': forms.TextInput(attrs={'class': 'form-control'}),
+                   'ValorNota': forms.NumberInput(attrs={'class': 'form-control'}),
+                   'Peso': forms.NumberInput(attrs={'class': 'form-control'}),
+                   'Volume': forms.NumberInput(attrs={'class': 'form-control'}),
+                   'NotaGuia': forms.TextInput(attrs={'class': 'form-control'}),
+                   'Nome': forms.TextInput(attrs={'class': 'form-control'}),
+                   'Estado': forms.TextInput(attrs={'class': 'form-control'}),
+                   'Cidade': forms.TextInput(attrs={'class': 'form-control'}),
+                   'Bairro': forms.TextInput(attrs={'class': 'form-control'}),
+                   }

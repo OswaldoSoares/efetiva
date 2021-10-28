@@ -78,9 +78,9 @@
     <div class="col-md-6">
         <label for="id_Descricao" class="form-label">DESCRIÇÃO:</label>
         {{ form.Descricao }}
-        <datalist id="choices">
-            {% for choice in choices %}
-            <option value="{{ choice.Descricao }}">
+        <datalist id="despesas">
+            {% for despesa in despesas %}
+            <option value="{{ despesa.Descricao }}">
             {% endfor %}
         </datalist>
     </div>
@@ -95,6 +95,51 @@
     {{ form.TipoItens }}
     {{ form.RecebePaga }}
     {{ form.Tempo }}
+    <input type="hidden" name="idMinuta" value="{{ c_idobj }}">
+    {% endif %}
+
+    {% if c_view == 'insere_minuta_entrega' %}
+    <div class="col-md-3">
+        <label for="id_Nota" class="form-label">Nota:</label>
+        {{ form.Nota }}
+        <datalist id="entregas_nota">
+            {% for entrega in entrega_notas %}
+            <option value="{{ entrega.Nota }}">
+            {% endfor %}
+        </datalist>
+    </div>
+    <div class="col-md-3">
+        <label for="id_Valor">VALOR DA NOTA:</label>
+        {{ form.ValorNota }}
+    </div>
+    <div class="col-md-3">
+        <label for="id_Peso">PESO:</label>
+        {{ form.Peso }}
+    </div>
+    <div class="col-md-3">
+        <label for="id_Volume">VOLUME:</label>
+        {{ form.Volume }}
+    </div>
+    <div class="col-md-3">
+        <label for="id_NotaGuia">NOTA GUIA:</label>
+        {{ form.NotaGuia }}
+    </div>
+        <div class="col-md-9">
+        <label for="id_Nome">RAZÃO SOCIAL:</label>
+        {{ form.Nome }}
+    </div>
+    <div class="col-md-1">
+        <label for="id_Estado">UF:</label>
+        {{ form.Estado }}
+    </div>
+    <div class="col-md-4">
+        <label for="id_Cidade">CIDADE:</label>
+        {{ form.Cidade }}
+    </div>
+    <div class="col-md-7">
+        <label for="id_Bairro">BAIRRO:</label>
+        {{ form.Bairro }}
+    </div>
     <input type="hidden" name="idMinuta" value="{{ c_idobj }}">
     {% endif %}
 </form>
