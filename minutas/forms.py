@@ -269,12 +269,12 @@ class FormInsereEntrega(forms.ModelForm):
         model = MinutaNotas
         fields = {'idMinutaNotas', 'Nota', 'ValorNota', 'Peso', 'Volume', 'Nome', 'Bairro', 'Cidade', 'Estado',
                   'NotaGuia', 'idMinuta'}
-        widgets = {'Nota': forms.TextInput(attrs={'class': 'form-control'}),
-                   'ValorNota': forms.NumberInput(attrs={'class': 'form-control'}),
-                   'Peso': forms.NumberInput(attrs={'class': 'form-control'}),
-                   'Volume': forms.NumberInput(attrs={'class': 'form-control'}),
-                   'NotaGuia': forms.TextInput(attrs={'class': 'form-control'}),
-                   'Nome': forms.TextInput(attrs={'class': 'form-control'}),
+        widgets = {'Nota': forms.TextInput(attrs={'class': 'form-control js-perimetro-hide'}),
+                   'ValorNota': forms.NumberInput(attrs={'class': 'form-control js-perimetro-hide'}),
+                   'Peso': forms.NumberInput(attrs={'class': 'form-control js-perimetro-hide'}),
+                   'Volume': forms.NumberInput(attrs={'class': 'form-control js-perimetro-hide'}),
+                   'NotaGuia': forms.TextInput(attrs={'class': 'form-control js-perimetro-hide'}),
+                   'Nome': forms.TextInput(attrs={'class': 'form-control js-perimetro-hide'}),
                    'Estado': forms.TextInput(attrs={'class': 'form-control'}),
                    'Cidade': forms.TextInput(attrs={'class': 'form-control'}),
                    'Bairro': forms.TextInput(attrs={'class': 'form-control'}),

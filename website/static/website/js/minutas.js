@@ -153,7 +153,7 @@ $(document).ready(function(){
     $(".div-sucesso").hide()
     $(".div-erro").hide()
 
-    // JQuery da Janela Modal
+    // JQuery da Janela Modal Antiho
     $('#modal-formulario').on('shown.bs.modal', function () {
         setTimeout(function(){      // Delay para função loadCubagem, após janela estar carregada
             $("#id_Propriedade").change(function() {
@@ -429,10 +429,31 @@ $(document).ready(function(){
     $(".js-excluiminutaentrega").click(loadForm);
 
 
-    
+    $(document).on('click', '#chk-perimetro', function(event) {
+        if ($('#chk-perimetro').is(':checked')) {
+            $('.js-perimetro-hide').hide();
+            $('#js-perimetro-div').removeClass('col-md-2');
+            $('#js-perimetro-div').addClass('col-md-12');
+            $('#id_Nota').val('PERIMETRO');
+            $('#id_Estado').focus();
+        } else {
+            $('.js-perimetro-hide').show();
+            $('#js-perimetro-div').removeClass('col-md-12');
+            $('#js-perimetro-div').addClass('col-md-2');
+            $('#id_Nota').val('');
+            $('#id_Nota').focus();
+        }
+    });
 
+    $(document).on('click', '#chk-saida', function(event) {
+        if ($('#chk-saida').is(":checked")) {
+            $('#id_Nota').val($('#label-chk-saida').attr('saida'))
+        } else {
+            $('#id_Nota').val('')
+        }
+    });
     
-    /*$(".total-horas").text(hora_minuto);*/
+   
 
 });
 

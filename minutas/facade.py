@@ -52,6 +52,7 @@ class MinutaSelecionada:
         self.total_horas_str = self.total_horas_str()
         self.total_kms = self.total_kms()
         self.CategoriaDespesa = MinutaCategoriaDespesas().Categoria
+        self.proxima_saida = self.entrega_saida()
 
     def total_kms(self):
         calculo_kms = self.km_final - self.km_inicial
@@ -144,6 +145,13 @@ class MinutaSelecionada:
                                  self.veiculo_solicitado]
         if filtro_tabela_veiculo:
             return filtro_tabela_veiculo[0]
+
+    def entrega_saida(self):
+        lista_notas = [itens['Nota'] for itens in self.entregas]
+        lista_saida = list(filter(lambda itens: 'SAIDA' in itens, lista_notas))
+        numero_saidas = len(lista_saida)
+        proxima_saida = f'{numero_saidas + 1}ª SAIDA'
+        return proxima_saida
 
     def carrega_valores_paga(self):
         hora_zero_timedelta = timedelta(hours=0, minutes=0)
@@ -780,6 +788,9 @@ def html_entrega(request, data, idminuta):
 def retorna_json(data):
     c_return = JsonResponse(data)
     return c_return
+
+
+
 
 
 def forn_minuta(request, c_form, c_idobj, c_url, c_view):
