@@ -24,15 +24,24 @@
         <div class="dados-nota">
             <div class="de-mercado">
                 {% if entrega.Nome %}
-                <span><i class="bi bi-shop"></i>{{ entrega.Nome }}</span>
+                <span><i class="bi bi-shop"></i> {{ entrega.Nome }}</span>
                 {% endif %}
             </div>
         </div>
         <div class="dados-nota">
             <div class="de-mercado">
-                {% if entrega.Local %}
+                {% if entrega.Bairro or entrega.Cidade or entrega.Estado %}
                 <span>
-                    <i class="bi bi-geo-alt-fill"></i>{{ entrega.Bairro }} - {{ entrega.Cidade }} - {{ entrega.estado }}
+                    <i class="bi bi-geo-alt-fill"></i>
+                    {% if entrega.Bairro %}
+                    {{ entrega.Bairro }} -
+                    {% endif %}
+                    {% if entrega.Cidade %}
+                    {{ entrega.Cidade }} -
+                    {% endif %}
+                    {% if entrega.Estado %}
+                    {{ entrega.Estado }}
+                    {% endif %}
                 </span>
                 {% endif %}
             </div>

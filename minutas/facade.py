@@ -480,7 +480,8 @@ class MinutaEntrega:
     def get_entregas(idminuta):
         entregas = MinutaNotas.objects.filter(idMinuta=idminuta)
         lista = [{'idMinutaNotas': itens.idMinutaNotas, 'Nota': itens.Nota, 'ValorNota': itens.ValorNota,
-                  'Peso': itens.Peso, 'Volume': itens.Volume} for itens in entregas]
+                  'Peso': itens.Peso, 'Volume': itens.Volume, 'Nome': itens.Nome, 'Bairro': itens.Bairro,
+                  'Cidade': itens.Cidade, 'Estado': itens.Estado} for itens in entregas]
         return lista
 
 
@@ -788,9 +789,6 @@ def html_entrega(request, data, idminuta):
 def retorna_json(data):
     c_return = JsonResponse(data)
     return c_return
-
-
-
 
 
 def forn_minuta(request, c_form, c_idobj, c_url, c_view):
