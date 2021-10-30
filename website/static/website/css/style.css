@@ -1,4 +1,4 @@
-{% load static %}
+/*{% load static %}*/
 :root {
     --corprimaria: #083c5d; /* #333a56 */
     --corsecundaria: #d7cec7; /* #eac67a #C0C0C0 #d7cec7 */
@@ -15,7 +15,7 @@
 }
 
 body {
-    background-color: #ffffe0;
+    background-color: #696969;
    /* background-image: url("/static/website/img/wallpaper.jpg");*/
     background-position: center center;
 	background-repeat: no-repeat;
@@ -91,7 +91,6 @@ nav ul {
     flex-direction: column;
     align-items: flex-start;
     justify-content: space-evenly;
-    padding-left: 15px;
     margin: 0;
 }
 
@@ -447,26 +446,27 @@ main .consulta .consulta-header {
     padding: 5px;
     margin: 0px;
 }
+
 .botaomenu:hover {
     background: #66CDAA;
     color: var(--corprimaria);
 }
+
 .botaomenu:focus {
     color: var(--corsecundaria);
     outline: none;
 }
+
 .botaomenu span {
     float: right;
 }
 
-/* minutas/index.html */
-
-/* pessoas/index.html */
 .containerimg {
     width: 100%;
     height: auto;
     margin: 0;
 }
+
 .containerimg img {
     max-width: 100%;
     min-width: auto;
@@ -493,6 +493,7 @@ main .consulta .consulta-header {
 .divformulario h4 {
     text-align: center;
 }
+
 .formfields,
 .formfieldstexto {
 	background: var(corfundo);
@@ -520,14 +521,6 @@ main .consulta .consulta-header {
     width: 82px;
     text-align: right;
     margin-left: 10px;
-}
-
-input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
-	-webkit-text-fill-color: #000;
-	-webkit-box-shadow: 0 0 0px 1000px #e8e8e8 inset;
-}
-::placeholder {
-	color: #a9a9a9;
 }
 
 /* */
@@ -1836,8 +1829,6 @@ main .usuario-out {
     background-color: var(--corterciaria);
 }
 
-
-
 .orcamento-conteudo {
     background-color: var(--corprimaria);
     width: 100%;
@@ -1847,7 +1838,6 @@ main .usuario-out {
     align-items: center;
     justify-content: center;
 }
-
 
 .orcamento-conteudo header h3 {
     color: var(--corsecundaria);
@@ -1862,10 +1852,6 @@ main .usuario-out {
     align-items: center;
     justify-content: space-between;
     padding: 5px;
-}
-
-.orcamento-filtro {
-
 }
 
 .orcamento-add-registro {
@@ -2770,87 +2756,252 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 
+/* =========================================== */
+/* CONSULTA MINUTA DESPESAS */
+/* =========================================== */
+
+
 .article {
+    margin: 0;
+    padding: 0%;
     display: flex;
     flex-direction: row;
     justify-content: left;
     align-items: flex-start;
 }
 
-.article-card {
-    background-color: #363636;
-    color: white;
-    width: 300px;
-    margin: 5px;
-    display: flex;
-    flex-direction: column;
+    .article-card {
+        margin: 5px;
+        display: flex;
+        flex-direction: column;
+    }
+
+        .ac-minuta {
+            background-color: #4f4f4f;
+            color: white;
+            min-width: 300px; 
+            border-radius: 10px;   
+        }
+
+            .ac-minuta .article-minuta-titulo {
+                background-color: #363636;
+                color: white;
+                height: 80px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                text-align: center;
+                border-radius: 10px 10px 0 0; 
+            }
+
+                .ac-minuta .article-minuta-titulo i {
+                    width: 34%;
+                    font-size: 40px;
+                }
+                
+                .ac-minuta .article-minuta-titulo span {
+                    width: 66%;
+                    font-size: 70px;
+                }
+
+                .ac-minuta .article-minuta-dados {
+                    height: 30px;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-evenly;
+                    align-items: center;
+                    text-align: center;
+                }
+
+                .ac-minuta .article-minuta-dados i {
+                    width: 15%;
+                    font-size: 20px;
+                }
+                
+                .ac-minuta .article-minuta-dados span {
+                    width: 75%;
+                    font-size: 15px;
+                }
+                
+                .ac-minuta .article-minuta-dados span div {
+                    width: 100%;
+                    display: flex;
+                    font-size: 12px;
+                }
+
+                .ac-minuta .article-minuta-dados div {
+                    width: 10%;
+                }
+
+                .ac-minuta .article-info  {
+                    background-color: #4f4f4f;
+                    color:white;
+                    border-radius: 0 0 10px 10px;
+                }
+
+                .ac-minuta .article-info span {
+                    font-size: 10px;
+                }
+
+        .ac-despesa {
+            background-color: #4f4f4f;
+            color: white;
+            width: 600px;
+            border-radius: 10px;
+        }
+
+            .ac-despesa .article-titulo {
+                background-color: #363636;
+                border-radius: 10px 10px 0 0;
+                width: 100%;
+                height: 40px;
+                padding: 0 10px 0 10px;
+                font-size: 15px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            .ac-despesa .article-descricao {
+                width: 100%;
+                padding: 0 10px 0 10px;
+                font-size: 15px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                text-justify: auto;
+                border-radius: 0 0 10px 10px;
+                margin-bottom: 10px;
+            }
+
+            .ac-despesa .article-descricao .descricao-despesa{
+                width: 100%;
+                /*padding: 0 10px 0 10px;*/
+                font-size: 15px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                align-items: flex-start;
+                text-justify: auto;
+            }
+
+            .ac-despesa .article-descricao .dados-despesa{
+                width: 100%;
+                font-size: 15px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: flex-start;
+                text-justify: auto;
+            }
+
+            .dados-despesa .dd-despesa {
+                width: 80%;
+            }
+
+            .dados-despesa .dd-valor {
+                width: 20%;
+                text-align: right;
+                padding-right: 5px;
+            }
+
+            .dados-despesa .dd-obs {
+                width: 83%;
+                padding-left: 17px;
+                text-align: justify;
+            }
+
+        .ac-entrega {
+            background-color: #4f4f4f;
+            color: white;
+            width: 600px;
+            border-radius: 10px;
+        }
+
+            .ac-entrega .article-titulo {
+                background-color: #363636;
+                border-radius: 10px 10px 0 0;
+                width: 100%;
+                height: 40px;
+                padding: 0 10px 0 10px;
+                font-size: 15px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            .ac-entrega .article-descricao {
+                width: 100%;
+                padding: 0 10px 0 10px;
+                font-size: 15px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                text-justify: auto;
+                border-radius: 0 0 10px 10px;
+                margin-bottom: 10px;
+            }
+
+            .ac-entrega .article-descricao .descricao-entrega {
+                width: 100%;
+                /*padding: 0 10px 0 10px;*/
+                font-size: 15px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                align-items: flex-start;
+                text-justify: auto;
+            }
+
+            .ac-entrega .article-descricao .dados-nota {
+                width: 100%;
+                /*padding: 0 10px 0 10px;*/
+                font-size: 15px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: flex-start;
+                text-justify: auto;
+            }
+
+            .dados-nota .de-nota {
+                width: 25%;
+            }
+
+            .dados-nota .de-numero {
+                width: 25%;
+                text-align: right;
+                padding-right: 5px;
+            }
+
+            .descricao-entrega .de-mercado {
+                width: 100%;
+            }
+
+        .div-i-button {
+            width: 20px;
+            text-align: right;
+        }
+
+
+.i-button {
+    color: yellow;
 }
 
-.article-card div span input {
-    color: #363636;
+.i-button:hover {
+    color: dodgerblue;
 }
 
-.article-card .article-minuta-numero {
-    background-color: var(--corprimaria);
-    color: #fff;
-    height: 80px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    text-align: center;
-    border: 1px solid black;
+.i-button-form {
+    background-color: #4f4f4f;
+    border: 0;
+    padding: 0;
 }
 
-.article-card .article-minuta-numero i {
-    width: 34%;
-    font-size: 40px;
-}
-
-.article-card .article-minuta-numero span {
-    width: 66%;
-    font-size: 70px;
-}
-
-.article-card .article-minuta-dados {
-    height: 30px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items: center;
-    text-align: center;
-}
-
-.article-card .article-minuta-dados i {
-    width: 15%;
-    font-size: 20px;
-}
-
-.article-card .article-minuta-dados span {
-    width: 75%;
-    font-size: 15px;
-}
-
-.article-card .article-minuta-dados span div {
-    width: 100%;
-    display: flex;
-    font-size: 12px;
-}
-
-.article-card .article-duas-linhas {
-    height: 40px;
-}
-
-.article-duas-linhas .despesa-linha-um {
-    justify-content: center;
-}
-
-.article-duas-linhas .despesa-linha-dois {
-    justify-content: left;
-}
-
-.article-card .article-minuta-dados div {
-    width: 10%;
-}
 
 .minuta {
     background-color: blue;
@@ -2878,30 +3029,9 @@ main .fp-recibo-tabela .fp-recibo-print {
     font-size: 15px;
 }
 
-.article-card .article-info {
-    background-color: #666666;
-    color:white;
-}
 
-.article-card .article-info span {
-    font-size: 10px;
-}
 
-.article-card .article-titulo {
-    background-color: var(--corprimaria);
-    color: #fff;
-    height: 40px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    text-align: center;
-    border: 1px solid black;
-}
 
-.article-card .article-titulo span {
-    width: 100%;
-    font-size: 30px;
-}
 
 .mensagem {
     margin-left: 2.5%;
@@ -2921,6 +3051,7 @@ main .fp-recibo-tabela .fp-recibo-print {
     padding: 5px;
     display: flex;
     justify-content: center;
+    border-radius: 10px;
 }
 
 .div-sucesso {
@@ -2932,6 +3063,7 @@ main .fp-recibo-tabela .fp-recibo-print {
     padding: 5px;
     display: flex;
     justify-content: center;
+    border-radius: 10px;
 }
 
 .mensagem-erro,
@@ -2942,3 +3074,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 .campotexto {
     height: 50px;
 }
+
+
+
+

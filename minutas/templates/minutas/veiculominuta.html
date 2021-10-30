@@ -4,9 +4,8 @@
     <i class="bi bi-person-square"></i>
     <span>{{ motorista.apelido }}</span>
     <div>
-        <button class="btn btn-danger btn-xs glyphicon glyphicon-trash remove-colaborador"
-                idMinuta="{{ selecionada.idminuta }}" Cargo="MOTORISTA"
-                idMinutaColaboradores="{{ motorista.idMinutaColaboradores }}"></button>
+        <i class="bi bi-trash i-button remove-colaborador" idMinuta="{{ selecionada.idminuta }}" Cargo="MOTORISTA"
+           idMinutaColaboradores="{{ motorista.idMinutaColaboradores }}"></i>
     </div>
 </div>
 {% if selecionada.veiculo %}
@@ -15,10 +14,9 @@
     <span>{{ selecionada.veiculo.Marca }} {{ selecionada.veiculo.Modelo }} -
           {{ selecionada.veiculo.Placa}}</span>
     <div>
-        <button type="button" class="btn btn-success btn-xs glyphicon glyphicon-edit"
-               onclick="openMyModal(event); return false;" data-title="VEÍCULO"
-               data-action="{% url 'editaveiculoescolhido' %}" data-button-save-label="EDITAR"
-               data-idminuta="{{ selecionada.idminuta }}" data-idpessoal="{{ motorista.obj.idPessoal }}"></button>
+        <i class="bi bi-pencil-square i-button" onclick="openMyModal(event); return false;" data-title="VEÍCULO"
+           data-action="{% url 'editaveiculoescolhido' %}" data-button-save-label="EDITAR"
+           data-idminuta="{{ selecionada.idminuta }}" data-idpessoal="{{ motorista.obj.idPessoal }}"></i>
     </div>
 </div>
 <form class="html-km-inicial" method="post" action="{% url 'editakminicial' %}" id="form-edita-km">
@@ -32,7 +30,7 @@
             <input type="hidden" name="idMinuta" value="{{ selecionada.idminuta }}">
         </span>
         <div>
-            <button type="submit" class="btn btn-primary btn-xs glyphicon glyphicon-save"></button>
+            <button type="submit" class="i-button-form"><i class="bi bi-save i-button"></i></button>
         </div>
     </div>
 </form>
@@ -47,7 +45,7 @@
             <input type="hidden" name="idMinuta" value="{{ selecionada.idminuta }}">
         </span>
         <div>
-            <button type="submit" class="btn btn-primary btn-xs glyphicon glyphicon-save"></button>
+            <button type="submit" class="i-button-form"><i class="bi bi-save i-button"></i></button>
         </div>
     </div>
 </form>
@@ -62,10 +60,9 @@
     <i class="bi bi-person-square"></i>
     <span>INSERE MOTORISTA</span>
     <div>
-        <button type="button" class="btn btn-success btn-xs glyphicon glyphicon-plus"
-                onclick="openMyModal(event); return false;" data-title="INSERE MOTORISTA"
-                data-action="{% url 'inseremotorista' %}" data-button-save-label="INSERIR"
-                data-idminuta="{{ selecionada.idminuta }}"></button>
+        <i class="bi bi-pencil-square i-button" onclick="openMyModal(event); return false;"
+           data-title="INSERE MOTORISTA" data-action="{% url 'inseremotorista' %}" data-button-save-label="INSERIR"
+           data-idminuta="{{ selecionada.idminuta }}"></i>
     </div>
 </div>
 {% endfor %}

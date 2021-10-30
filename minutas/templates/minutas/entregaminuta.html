@@ -1,14 +1,46 @@
 {% for entrega in selecionada.entregas %}
-<div class="article-minuta-dados article-tres-linhas">
-    <i class="bi bi-geo-alt-fill"></i>
-    <span>
-        <div class="entrega-linha-um">{{ entrega.Nota }} R$ {{ entrega.Valor }}</div>
-        <div class="entrega-linha-dois">{{ entrega.Bairro }}</div>
-        <div class="entrega-linha-tres">{{ entrega.Bairro }}</div>
-    </span>
-    <div>
-        <button class="btn btn-danger btn-xs glyphicon glyphicon-trash remove-entrega"
-                idMinuta="{{ selecionada.idminuta }}" idMinutaNotas="{{ entrega.idMinutaNotas }}"></button>
+<div class="article-descricao">
+    <div class="descricao-entrega">
+        <div class="dados-nota">
+            <div class="de-nota">
+                <span><i class="bi bi-file-text"></i> {{ entrega.Nota }}</span>
+            </div>
+             <div class="de-numero">
+                {% if entrega.ValorNota %}
+                <span>R$ {{ entrega.ValorNota }}</span>
+                {% endif %}
+            </div>
+             <div class="de-numero">
+                 {% if entrega.Peso %}
+                <span><i class="bi bi-truck-flatbed"></i> {{ entrega.Peso }}1</span>
+                 {% endif %}
+            </div>
+            <div class="de-numero">
+                {% if entrega.Volume %}
+                <span><i class="bi bi-grid-fill"></i> {{ entrega.Volume }}</span>
+                {% endif %}
+            </div>
+        </div>
+        <div class="dados-nota">
+            <div class="de-mercado">
+                {% if entrega.Nome %}
+                <span><i class="bi bi-shop"></i>{{ entrega.Nome }}</span>
+                {% endif %}
+            </div>
+        </div>
+        <div class="dados-nota">
+            <div class="de-mercado">
+                {% if entrega.Local %}
+                <span>
+                    <i class="bi bi-geo-alt-fill"></i>{{ entrega.Bairro }} - {{ entrega.Cidade }} - {{ entrega.estado }}
+                </span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="div-i-button">
+        <i class="bi bi-trash i-button remove-entrega" idMinuta="{{ selecionada.idminuta }}"
+           idMinutaNotas="{{ entrega.idMinutaNotas }}"></i>
     </div>
 </div>
 {% endfor %}

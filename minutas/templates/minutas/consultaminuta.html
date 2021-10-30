@@ -766,30 +766,30 @@
     {% endfor %}
     -->
     <div class="article">
-        <article class="article-card">
-            <div class="article-minuta-numero">
-                <i class="bi bi-clipboard-data"></i>
+        <article class="article-card ac-minuta">
+            <div class="article-minuta-titulo">
+                <i class="bi bi-file-text" title="NÚMERO MINUTA"></i>
                 <span>{{ selecionada.numero }}</span>
             </div>
             <div class="article-minuta-dados">
-                <i class="bi bi-building"></i>
+                <i class="bi bi-building" title="CLIENTE"></i>
                 <span>{{ selecionada.cliente }}</span>
                 <div></div>
             </div>
             <div class="article-minuta-dados">
-                <i class="bi bi-calendar"></i>
+                <i class="bi bi-calendar" title="DATA MINUTA"></i>
                 <span>{{ selecionada.data }}</span>
                 <div></div>
             </div>
             <div class="article-minuta-dados">
-                <i class="bi bi-brightness-high-fill"></i>
+                <i class="bi bi-brightness-high-fill" title="HORA INICIAL"></i>
                 <span>{{ selecionada.hora_inicial }}</span>
                 <div></div>
             </div>
             <form class="html-hora-final" method="post" action="{% url 'editahorafinal' %}" id="form-edita-hora">
                 {% csrf_token %}
                 <div class="article-minuta-dados">
-                    <i class="bi bi-moon-fill"></i>
+                    <i class="bi bi-moon-fill" title="HORA FINAL"></i>
                     <span>
                         {% for field in form_hora_final %}
                             {{ field }}
@@ -797,12 +797,12 @@
                         <input type="hidden" name="idMinuta" value="{{ selecionada.idminuta }}">
                     </span>
                     <div>
-                        <button type="submit" class="btn btn-primary btn-xs glyphicon glyphicon-save"></button>
+                        <button type="submit" class="i-button-form"><i class="bi bi-save i-button"></i></button>
                     </div>
                 </div>
             </form>
             <div class="article-minuta-dados calcula-horas">
-                <i class="bi bi-clock-history"></i>
+                <i class="bi bi-clock-history" title="DURAÇÃO"></i>
                 <span class="total-horas">{{ selecionada.total_horas_str }} Hs</span>
                 <div></div>
             </div>
@@ -816,55 +816,42 @@
                 {% include 'minutas/ajudantesminuta.html' %}
             </div>
             <div class="article-minuta-dados">
-                <i class="bi bi-person-plus-fill"></i>
+                <i class="bi bi-person-plus-fill" title="INSERE AJUDNTE"></i>
                 <span>INSERE AJUDANTE</span>
                 <div>
-                    <button type="button" class="btn btn-success btn-xs glyphicon glyphicon-plus"
-                    onclick="openMyModal(event); return false;" data-title="INSERE AJUDANTE"
-                    data-action="{% url 'insereajudante' %}" data-button-save-label="INSERIR"
-                    data-idminuta="{{ selecionada.idminuta }}"></button>
+                    <i class="bi bi-plus-square i-button" onclick="openMyModal(event); return false;"
+                       data-title="INSERE AJUDANTE" data-action="{% url 'insereajudante' %}"
+                       data-button-save-label="INSERIR" data-idminuta="{{ selecionada.idminuta }}"></i>
                 </div>
             </div>
             <div class="html-coleta-entrega-obs">
                 {% include 'minutas/coletaentregaobsminuta.html' %}
             </div>
         </article>
-        <article class="article-card">
-            <div class="article-titulo">
-                <span>DESPESAS</span>
-            </div>
-            <div class="html-despesa">
-                {% include 'minutas/despesaminuta.html' %}
-            </div>
-            <div class="article-minuta-dados">
-                <i class="bi bi-bag-check-fill"></i>
-                <span>INSERE DESPESA</span>
-                <div>
-                    <button type="button" class="btn btn-success btn-xs glyphicon glyphicon-plus"
-                    onclick="openMyModal(event); return false;" data-title="INSERE DESPESA"
-                    data-action="{% url 'inseredespesa' %}" data-button-save-label="INSERIR"
-                    data-idminuta="{{ selecionada.idminuta }}"></button>
+        <div class="article-despesa-entrega">
+            <article class="article-card ac-despesa">
+                <div class="article-titulo">
+                    <span>DESPESAS</span>
+                    <i class="bi bi-plus-square i-button" onclick="openMyModal(event); return false;"
+                       data-title="INSERE DESPESA" data-action="{% url 'inseredespesa' %}"
+                       data-button-save-label="INSERIR" data-idminuta="{{ selecionada.idminuta }}"></i>
                 </div>
-            </div>
-        </article>
-        <article class="article-card">
-            <div class="article-titulo">
-                <span>ENTREGAS</span>
-            </div>
-            <div class="html-entrega">
-                {% include 'minutas/entregaminuta.html' %}
-            </div>
-            <div class="article-minuta-dados">
-                <i class="bi bi-geo-alt-fill"></i>
-                <span>INSERE ENTREGA</span>
-                <div>
-                    <button type="button" class="btn btn-success btn-xs glyphicon glyphicon-plus"
-                    onclick="openMyModal(event); return false;" data-title="INSERE ENTREGA"
-                    data-action="{% url 'insereentrega' %}" data-button-save-label="INSERIR"
-                    data-idminuta="{{ selecionada.idminuta }}"></button>
+                <div class="html-despesa">
+                    {% include 'minutas/despesaminuta.html' %}
                 </div>
-            </div>
-        </article>
+            </article>
+            <article class="article-card ac-entrega">
+                <div class="article-titulo">
+                    <span>ENTREGAS</span>
+                    <i class="bi bi-plus-square i-button" onclick="openMyModal(event); return false;"
+                       data-title="INSERE ENTREGA" data-action="{% url 'insereentrega' %}"
+                       data-button-save-label="INSERIR" data-idminuta="{{ selecionada.idminuta }}"></i>
+                </div>
+                <div class="html-entrega">
+                    {% include 'minutas/entregaminuta.html' %}
+                </div>
+            </article>
+        </div>
     </div>
 
     <!--
