@@ -6,7 +6,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 
-from clientes.models import TabelaPerimetro, TabelaVeiculo, TabelaCapacidade, Tabela
+from clientes.models import TabelaPerimetro, TabelaVeiculo, TabelaCapacidade, Tabela, Cliente
 from minutas.forms import CadastraMinutaKMInicial, CadastraMinutaKMFinal
 from minutas.models import MinutaColaboradores, Minuta, MinutaItens, MinutaNotas
 from pessoas.models import Pessoal
@@ -53,6 +53,7 @@ class MinutaSelecionada:
         self.total_kms = self.total_kms()
         self.CategoriaDespesa = MinutaCategoriaDespesas().Categoria
         self.proxima_saida = self.entrega_saida()
+        self.status_minuta = minuta.StatusMinuta
 
     def total_kms(self):
         calculo_kms = self.km_final - self.km_inicial
@@ -570,6 +571,15 @@ def get_categoria(idcategoria):
     return CategoriaVeiculo.objects.get(idCategoria=idcategoria)
 
 
+def get_cliente(idcliente):
+    return Cliente.objects.get(idCliente=idcliente)
+
+
+def proxima_minuta():
+    numero_minuta = Minuta.objects.all().aggregate(Max('Minuta'))
+    return int(numero_minuta['Minuta__max']) + 1
+
+
 def km_atual(idveiculo):
     km_final = Minuta.objects.filter(idVeiculo=idveiculo).aggregate(Max('KMFinal'))
     return km_final
@@ -735,6 +745,12 @@ def remove_entrega(request, idminutanota, idminuta):
     return data
 
 
+def html_cliente_data(request, data, idminuta):
+    contexto = cria_contexto(idminuta)
+    data['html_cliente_data'] = render_to_string('minutas/clientedataminuta.html', contexto, request=request)
+    return data
+
+
 def html_motorista(request, data, idminuta):
     contexto = cria_contexto(idminuta)
     data['html_veiculo'] = render_to_string('minutas/veiculominuta.html', contexto, request=request)
@@ -800,6 +816,18 @@ def forn_minuta(request, c_form, c_idobj, c_url, c_view):
     if request.method == 'POST':
         form = c_form(request.POST)
         if form.is_valid():
+            if c_view == 'adiciona_minuta':
+                form.save()
+            if c_view == 'edita_minuta':
+                cliente = get_cliente(request.POST.get('idCliente'))
+                obj = get_minuta(c_idobj)
+                obj.idCliente = cliente
+                obj.DataMinuta = request.POST.get('DataMinuta')
+                obj.HoraInicial = request.POST.get('HoraInicial')
+                obj.save(update_fields=['idCliente', 'DataMinuta', 'HoraInicial'])
+                mensagem = 'OS ITENS CLIENTE, DATA E HORA INICIAL DA MINUTA FORAM ATUALIZADOS.'
+                tipo_mensagem = 'SUCESSO'
+                data = html_cliente_data(request, data, c_idobj)
             if c_view == 'insere_ajudante':
                 form.save()
                 data = html_ajudantes(request, data, c_idobj)
@@ -855,25 +883,32 @@ def forn_minuta(request, c_form, c_idobj, c_url, c_view):
         else:
             print('Form não é valido')
     else:
+        if c_view == 'edita_minuta':
+            c_instance = get_minuta(c_idobj)
         if c_view == 'edita_minuta_coleta_entrega_obs':
             c_instance = get_minuta(c_idobj)
         if c_view == 'edita_minuta_insere_despesa':
             c_instance = get_minuta(c_idobj)
-
+        c_instance = get_minuta(c_idobj)
         form = c_form(instance=c_instance)
-    ajudantes = ajudantes_disponiveis(c_idobj)
-    motoristas = motoristas_disponiveis()
-    idpessoal = request.GET.get('idPessoal')
-    selecionada = MinutaSelecionada(c_idobj)
-    despesas = MinutaItens.objects.filter(TipoItens='DESPESA').values('Descricao').distinct().order_by('Descricao')
-    entregas_bairro = MinutaNotas.objects.values('Bairro').distinct().order_by('Bairro')
-    entregas_cidade = MinutaNotas.objects.values('Cidade').distinct().order_by('Cidade')
-    entregas_nome = MinutaNotas.objects.values('Nome').distinct().order_by('Nome')
-    entregas_nota= MinutaNotas.objects.values('Nota').distinct().order_by('Nota')
-    lista_veiculos = []
-    contexto = {'form': form, 'c_idobj': c_idobj, 'c_url': c_url, 'c_view': c_view, 'ajudantes': ajudantes,
-                'motoristas': motoristas, 'lista_veiculos': lista_veiculos, 'idpessoal': idpessoal,
-                'selecionada': selecionada, 'despesas': despesas}
+    if c_idobj:
+        ajudantes = ajudantes_disponiveis(c_idobj)
+        motoristas = motoristas_disponiveis()
+        idpessoal = request.GET.get('idPessoal')
+        selecionada = MinutaSelecionada(c_idobj)
+        despesas = MinutaItens.objects.filter(TipoItens='DESPESA').values('Descricao').distinct().order_by('Descricao')
+        entregas_bairro = MinutaNotas.objects.values('Bairro').distinct().order_by('Bairro')
+        entregas_cidade = MinutaNotas.objects.values('Cidade').distinct().order_by('Cidade')
+        entregas_nome = MinutaNotas.objects.values('Nome').distinct().order_by('Nome')
+        entregas_nota= MinutaNotas.objects.values('Nota').distinct().order_by('Nota')
+        lista_veiculos = []
+        minuta = selecionada.numero
+        contexto = {'form': form, 'c_idobj': c_idobj, 'c_url': c_url, 'c_view': c_view, 'ajudantes': ajudantes,
+                    'motoristas': motoristas, 'lista_veiculos': lista_veiculos, 'idpessoal': idpessoal,
+                    'selecionada': selecionada, 'despesas': despesas, 'minuta': minuta}
+    else:
+        minuta = proxima_minuta()
+        contexto = {'form': form, 'c_idobj': c_idobj, 'c_url': c_url, 'c_view': c_view, 'minuta': minuta}
     data['html_form'] = render_to_string('minutas/formminuta.html', contexto, request=request)
     data['c_view'] = c_view
     data['html_mensagem'] = mensagem

@@ -522,6 +522,13 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                     formAjaxSubmit(modal, url, cbAfterLoad, cbAfterSuccess);
                 } else {
                     $(modal).modal('hide');
+                    if (xhr['c_view'] == 'edita_minuta') {
+                        $(".mensagem-sucesso").text(xhr['html_mensagem']);
+                        mostraMensagemSucesso()
+                        EscondeCliente()
+                        $('.html-cliente-data').html(xhr['html_cliente_data']);
+                        MostraCliente()
+                    }
                     if (xhr['c_view'] == 'insere_motorista') {
                         EscondeVeiculo()
                         $('.html-veiculo').html(xhr['html_veiculo']);
@@ -625,6 +632,14 @@ var EscondeCategoria = function() {
 
 var MostraCategoria = function() {
     $(".html-categoria").delay(1000).slideDown(500)
+}
+
+var EscondeCliente = function() {
+    $(".html-cliente-data").hide()
+}
+
+var MostraCliente = function() {
+    $(".html-cliente-data").delay(1000).slideDown(500)
 }
 
 var EscondeVeiculo = function() {

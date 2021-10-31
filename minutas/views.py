@@ -20,7 +20,7 @@ from .forms import FormInsereColaborador, FormEditaVeiculoSolicitado, FormEditaV
     FormColetaEntregaObs, FormInsereDespesa, FormInsereEntrega, CadastraMinuta, \
     CadastraMinutaMotorista, CadastraMinutaAjudante, CadastraMinutaVeiculo, CadastraMinutaKMInicial, \
     CadastraMinutaKMFinal, CadastraMinutaHoraFinal, CadastraMinutaDespesa, CadastraMinutaParametroDespesa, \
-    CadastraMinutaNota, CadastraComentarioMinuta, CadastraMinutaSaidaExraAjudante
+    CadastraMinutaNota, CadastraComentarioMinuta, CadastraMinutaSaidaExraAjudante, FormMinuta
 from .models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas
 from .facade import forn_minuta, edita_hora_final, filtra_veiculo, html_filtro_veiculo, edita_km_final, \
     edita_km_inicial, \
@@ -1339,6 +1339,28 @@ def exclui_minuta(request, idminuta):
     return redirect('index_minuta')
 
 
+def adiciona_minuta(request):
+    c_form = FormMinuta
+    c_idobj = None
+    c_url = '/minutas/adicionaminuta/'
+    c_view = 'adiciona_minuta'
+    data = forn_minuta(request, c_form, c_idobj, c_url, c_view)
+    return data
+
+
+def edita_minuta(request):
+    print(request.GET)
+    print(request.POST)
+    c_form = FormMinuta
+    c_idobj = None
+    if request.method == 'GET':
+        c_idobj = request.GET.get('idobj')
+    elif request.method == 'POST':
+        c_idobj = request.POST.get('idMinuta')
+    c_url = '/minutas/editaminuta/'
+    c_view = 'edita_minuta'
+    data = forn_minuta(request, c_form, c_idobj, c_url, c_view)
+    return data
 
 
 def edita_minuta_saida_extra_ajudante(request, idminuta):
@@ -1364,8 +1386,6 @@ def edita_minuta_veiculo_solicitado(request):
 
 
 def edita_minuta_veiculo_escolhido(request):
-    print(request.GET)
-    print(request.POST)
     c_form = FormEditaVeiculoEscolhido
     c_idobj = None
     if request.method == 'GET':

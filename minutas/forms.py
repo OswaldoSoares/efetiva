@@ -212,6 +212,20 @@ class CadastraComentarioMinuta(forms.ModelForm):
         widgets = {'Comentarios': forms.Textarea(attrs={'rows': 5, 'class': 'comentarios'})}
 
 
+class FormMinuta(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(FormMinuta, self).__init__(*args, **kwargs)
+        self.fields['DataMinuta'].initial = datetime.date.today()
+        self.fields['HoraInicial'].initial = '07:00'
+
+    class Meta:
+        model = Minuta
+        fields = {'idMinuta', 'Minuta', 'idCliente', 'DataMinuta', 'HoraInicial'}
+        widgets = {'Minuta': forms.HiddenInput(), 'idCliente': forms.Select(attrs={'class': 'form-control'}),
+                   'DataMinuta': MeuDateInput(format='%Y-%m-%d', attrs={'class': 'form-control'}),
+                   'HoraInicial': MeuTimeInput(attrs={'class': 'form-control'})}
+
+
 class FormEditaVeiculoSolicitado(forms.ModelForm):
     class Meta:
         model = Minuta

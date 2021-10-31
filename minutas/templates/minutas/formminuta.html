@@ -1,5 +1,25 @@
 <form class="row g-3" method="post" action="{{ c_url }}" id="{{ c_idobj }}">
 {% csrf_token %}
+    {% if c_view == 'adiciona_minuta' or c_view == 'edita_minuta' %}
+        <div class="col-md-7">
+            <label for="id_idCliente" class="form-label">CLIENTE:</label>
+            {{ form.idCliente }}
+            {{ form.idCliente.errors }}
+        </div>
+        <div class="col-md-3">
+            <label for="id_DataMinuta" class="form-label">DATA:</label>
+            {{ form.DataMinuta }}
+            {{ form.DataMinuta.errors }}
+        </div>
+        <div class="col-md-2">
+            <label for="id_HoraInicial" class="form-label">HORA INICIAL:</label>
+            {{ form.HoraInicial }}
+            {{ form.HoraInicial.errors }}
+        </div>
+        <input type="hidden" name="Minuta" value="{{ minuta }}">
+        <input type="hidden" name="idMinuta" value="{{ c_idobj }}">
+    {% endif %}
+
     {% if c_view == 'edita_minuta_veiculo_solicitado' %}
         <div class="col-md-12">
             <label for="id_idCategoriaVeiculo" class="form-label">VEÍCULO SOLICITADO:</label>

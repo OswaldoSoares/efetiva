@@ -8,13 +8,13 @@ from .views import index_minuta, criaminuta, editaminuta, imprimeminuta, conclui
     insere_motorista, insere_ajudante, \
     remove_minuta_colaborador, edita_minuta_hora_final, edita_minuta_km_inicial, edita_minuta_km_final, \
     edita_minuta_coleta_entrega_obs, insere_minuta_despesa, remove_minuta_despesa, insere_minuta_entrega, \
-    remove_minuta_entrega
+    remove_minuta_entrega, adiciona_minuta, edita_minuta
 
 
 urlpatterns = [
     path('', index_minuta, name='index_minuta'),
     path('criaminuta', criaminuta, name='criaminuta'),
-    path('editaminuta/<int:idmin>/', editaminuta, name='editaminuta'),
+    # path('editaminuta/<int:idmin>/', editaminuta, name='editaminuta'),
     path('imprimeminuta/<int:idmin>/', imprimeminuta, name='imprimeminuta'),
     path('concluiminuta/<int:idmin>/', conclui_minuta, name='concluiminuta'),
     path('fecha_minuta/<int:idmin>/', fecha_minuta, name='fecha_minuta'),
@@ -41,6 +41,8 @@ urlpatterns = [
     path('editaminutasaidaextraajudante/<int:idminuta>', edita_minuta_saida_extra_ajudante,
          name='editaminutasaidaextraajudante'),
 
+    path('adicionaminuta/', adiciona_minuta, name='adicionaminuta'),
+    path('editaminuta/', edita_minuta, name='editaminuta'),
     path('editahorafinal/', edita_minuta_hora_final, name='editahorafinal'),
     path('editaveiculosolicitado/', edita_minuta_veiculo_solicitado, name='editaveiculosolicitado'),
     path('inseremotorista/', insere_motorista, name='inseremotorista'),

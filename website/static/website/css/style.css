@@ -2804,14 +2804,14 @@ main .fp-recibo-tabela .fp-recibo-print {
                     font-size: 70px;
                 }
 
-                .ac-minuta .article-minuta-dados {
-                    height: 30px;
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: space-evenly;
-                    align-items: center;
-                    text-align: center;
-                }
+            .ac-minuta .article-minuta-dados {
+                height: 30px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-evenly;
+                align-items: center;
+                text-align: center;
+            }
 
                 .ac-minuta .article-minuta-dados i {
                     width: 15%;
@@ -2842,6 +2842,17 @@ main .fp-recibo-tabela .fp-recibo-print {
                 .ac-minuta .article-info span {
                     font-size: 10px;
                 }
+
+            .ac-minuta .article-minuta-rodape {
+                background-color: #363636;
+                height: 50px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-evenly;
+                align-items: center;
+                font-size: 30px;
+                border-radius: 0 0 10px 10px;
+            }
 
         .ac-despesa {
             background-color: #4f4f4f;
