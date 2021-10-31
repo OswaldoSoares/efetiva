@@ -779,9 +779,9 @@
                 <div class="article-minuta-dados">
                     <i class="bi bi-moon-fill" title="HORA FINAL"></i>
                     <span>
-                        {% for field in form_hora_final %}
-                            {{ field }}
-                        {% endfor %}
+                        <div class="div-input">
+                            {{ form_hora_final.HoraFinal }}
+                        </div>
                         <input type="hidden" name="idMinuta" value="{{ selecionada.idminuta }}">
                     </span>
                     <div>

@@ -93,7 +93,7 @@ class CadastraMinutaHoraFinal(forms.ModelForm):
     class Meta:
         model = Minuta
         fields = {'HoraFinal'}
-        widgets = {'HoraFinal': MeuTimeInput(attrs={'class': 'formfieldshort'})}
+        widgets = {'HoraFinal': MeuTimeInput(attrs={'class': 'form-control form-control-minuta'})}
 
 
 class CadastraMinutaHoraCobra(forms.ModelForm):
@@ -129,14 +129,14 @@ class CadastraMinutaKMInicial(forms.ModelForm):
     class Meta:
         model = Minuta
         fields = {'KMInicial'}
-        widgets = {'KMInicial': forms.NumberInput(attrs={'class': 'formfieldshort'})}
+        widgets = {'KMInicial': forms.NumberInput(attrs={'class': 'form-control form-control-minuta'})}
 
 
 class CadastraMinutaKMFinal(forms.ModelForm):
     class Meta:
         model = Minuta
         fields = {'KMFinal'}
-        widgets = {'KMFinal': forms.NumberInput(attrs={'class': 'formfieldshort'})}
+        widgets = {'KMFinal': forms.NumberInput(attrs={'class': 'form-control form-control-minuta'})}
 
 
 class CadastraMinutaSaidaExraAjudante(forms.ModelForm):

@@ -1,7 +1,7 @@
 {% for ajudante in selecionada.ajudantes %}
 <div class="article-minuta-dados">
     <i class="bi bi-person-plus-fill"></i>
-    <span>{{ ajudante.apelido }}</span>
+    <span title="{{ ajudante.nome }}">{{ ajudante.apelido }}</span>
     <div>
         <i class="bi bi-trash i-button remove-colaborador" idMinuta="{{ selecionada.idminuta }}" Cargo="AJUDANTE"
            idMinutaColaboradores="{{ ajudante.idMinutaColaboradores }}"></i>

@@ -2822,7 +2822,15 @@ main .fp-recibo-tabela .fp-recibo-print {
                     width: 75%;
                     font-size: 15px;
                 }
-                
+
+                .ac-minuta .article-minuta-dados .div-input {
+                    display: flex;
+                    width: 100%;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                }
+
                 .ac-minuta .article-minuta-dados span div {
                     width: 100%;
                     display: flex;
@@ -3011,6 +3019,13 @@ main .fp-recibo-tabela .fp-recibo-print {
     background-color: #4f4f4f;
     border: 0;
     padding: 0;
+}
+
+.form-control-minuta {
+    width: 50%;
+    height: 25px;
+    padding: 0 0.5rem; 
+    text-align: center;
 }
 
 

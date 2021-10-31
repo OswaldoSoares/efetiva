@@ -1349,8 +1349,6 @@ def adiciona_minuta(request):
 
 
 def edita_minuta(request):
-    print(request.GET)
-    print(request.POST)
     c_form = FormMinuta
     c_idobj = None
     if request.method == 'GET':

@@ -2,7 +2,7 @@
 {% for motorista in selecionada.motorista %}
 <div class="article-minuta-dados">
     <i class="bi bi-person-square"></i>
-    <span>{{ motorista.apelido }}</span>
+    <span title="{{ motorista.nome }}">{{ motorista.apelido }}</span>
     <div>
         <i class="bi bi-trash i-button remove-colaborador" idMinuta="{{ selecionada.idminuta }}" Cargo="MOTORISTA"
            idMinutaColaboradores="{{ motorista.idMinutaColaboradores }}"></i>
@@ -24,10 +24,10 @@
     <div class="article-minuta-dados">
         <i class="bi bi-speedometer"></i>
         <span>
-            {% for field in form_km_inicial %}
-                {{ field }}
-            {% endfor %}
-            <input type="hidden" name="idMinuta" value="{{ selecionada.idminuta }}">
+            <div class="div-input">
+                {{ form_km_inicial.KMInicial }}
+                <input type="hidden" name="idMinuta" value="{{ selecionada.idminuta }}">
+            </div>
         </span>
         <div>
             <button type="submit" class="i-button-form"><i class="bi bi-save i-button"></i></button>
@@ -39,10 +39,10 @@
     <div class="article-minuta-dados">
         <i class="bi bi-speedometer"></i>
         <span>
-            {% for field in form_km_final %}
-                {{ field }}
-            {% endfor %}
-            <input type="hidden" name="idMinuta" value="{{ selecionada.idminuta }}">
+            <div class="div-input">
+                {{ form_km_final.KMFinal }}
+                <input type="hidden" name="idMinuta" value="{{ selecionada.idminuta }}">
+            </div>
         </span>
         <div>
             <button type="submit" class="i-button-form"><i class="bi bi-save i-button"></i></button>
