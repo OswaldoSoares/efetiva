@@ -48,14 +48,15 @@ class MinutaSelecionada:
         self.tabela_perimetro = ClienteTabelaPerimetro(minuta.idCliente).tabela
         self.tabela_capacidade = ClienteTabelaCapacidade(minuta.idCliente).tabela
         self.valores_recebe = self.carrega_valores_recebe()
-        self.total_horas = self.total_horas()
+        self.total_horas = self.get_total_horas()
         self.total_horas_str = self.total_horas_str()
-        self.total_kms = self.total_kms()
+        self.total_kms = self.get_total_kms()
         self.CategoriaDespesa = MinutaCategoriaDespesas().Categoria
         self.proxima_saida = self.entrega_saida()
         self.status_minuta = minuta.StatusMinuta
+        self.pagamentos = self.carrega_valores_paga()
 
-    def total_kms(self):
+    def get_total_kms(self):
         calculo_kms = self.km_final - self.km_inicial
         if calculo_kms < 1:
             calculo_kms = 0
@@ -74,7 +75,7 @@ class MinutaSelecionada:
         return total_ajudantes_avulso
 
     def extra_ajudante_cobra(self):
-        total_horas = self.total_horas()
+        total_horas = self.get_total_horas()
         dezhoras = timedelta(days=0, hours=10, minutes=0)
         fator = 0.00
         if total_horas < dezhoras:
@@ -99,7 +100,7 @@ class MinutaSelecionada:
             saidas = len(self.entregas)
             return saidas
 
-    def total_horas(self):
+    def get_total_horas(self):
         periodo = timedelta(hours=0, minutes=0)
         if self.hora_final:
             inicial = datetime.combine(self.data, self.hora_inicial)
@@ -118,7 +119,7 @@ class MinutaSelecionada:
     def horas_excede(self):
         excede = timedelta(hours=0, minutes=0)
         minimo = timedelta(hours=0, minutes=0)
-        periodo = self.total_horas()
+        periodo = self.get_total_horas()
         filtro_tabela_veiculo = self.filtro_tabela_veiculo()
         if filtro_tabela_veiculo:
             minimo = timedelta(days=0, hours=filtro_tabela_veiculo['HoraMinimo'].hour,
@@ -158,7 +159,8 @@ class MinutaSelecionada:
         hora_zero_timedelta = timedelta(hours=0, minutes=0)
         hora_zero_time = datetime.strptime('00:00', '%H:%M').time()
         tabela_veiculo = self.filtro_tabela_veiculo()
-        valores_paga = dict({'valor_porcentagem': 0.00, 'minuta_porcentagem': 0.00, 'valor_hora': 0.00,
+        valores_paga = dict({'valor_porcentagem': 0.00, 'minuta_porcentagem': 0.00, 'total_porcentagem': 0.00,
+                             'valor_hora': 0.00,
                              'minuta_hora': hora_zero_time, 'valor_horaexcede': 100.00,
                              'minuta_horaexcede': hora_zero_timedelta,
                              'valor_kilometragem': 0.00, 'minuta_kilometragem': 0.00, 'valor_entregas': 0.00,
@@ -169,12 +171,13 @@ class MinutaSelecionada:
         if tabela_veiculo:
             valores_paga['valor_porcentagem'] = tabela_veiculo['PorcentagemPaga']
             valores_paga['minuta_porcentagem'] = self.total_notas()[0]
+            valores_paga['total_porcentagem'] = tabela_veiculo['PorcentagemPaga'] / 100 * self.total_notas()[0]
             valores_paga['valor_hora'] = self.filtro_tabela_veiculo()['HoraPaga']
             valores_paga['minuta_hora'] = self.filtro_tabela_veiculo()['HoraMinimo']
             valores_paga['valor_horaexcede'] = 100
             valores_paga['minuta_horaexcede'] = self.horas_excede()
             valores_paga['valor_kilometragem'] = self.filtro_tabela_veiculo()['KMPaga']
-            valores_paga['minuta_kilometragem'] = self.total_kms()
+            valores_paga['minuta_kilometragem'] = self.get_total_kms()
             valores_paga['valor_entregas'] = self.filtro_tabela_veiculo()['EntregaPaga']
             valores_paga['minuta_entregas'] = self.total_notas()[3]
             valores_paga['valor_entregaskg'] = self.filtro_tabela_veiculo()['EntregaKGPaga']
@@ -189,7 +192,7 @@ class MinutaSelecionada:
             else:
                 valores_paga['valor_capacidade'] = 0.00
             perimetro = [itens['PerimetroPaga'] for itens in self.tabela_perimetro if itens['PerimetroInicial'] <=
-                         self.total_kms() <= itens['PerimetroFinal']]
+                         self.get_total_kms() <= itens['PerimetroFinal']]
             if perimetro:
                 valores_paga['valor_perimetro'] = perimetro[0]
             else:
@@ -305,7 +308,7 @@ class MinutaSelecionada:
             valores_recebe['valor_horaexcede'] = 100
             valores_recebe['minuta_horaexcede'] = self.horas_excede()
             valores_recebe['valor_kilometragem'] = self.filtro_tabela_veiculo()['KMCobra']
-            valores_recebe['minuta_kilometragem'] = self.total_kms()
+            valores_recebe['minuta_kilometragem'] = self.get_total_kms()
             valores_recebe['valor_entregas'] = self.filtro_tabela_veiculo()['EntregaCobra']
             valores_recebe['minuta_entregas'] = self.total_notas()[3]
             valores_recebe['valor_entregaskg'] = self.filtro_tabela_veiculo()['EntregaKGCobra']
@@ -320,7 +323,7 @@ class MinutaSelecionada:
             else:
                 valores_recebe['valor_capacidade'] = 0.00
             perimetro = [itens['PerimetroCobra'] for itens in self.tabela_perimetro if itens['PerimetroInicial'] <=
-                         self.total_kms() <= itens['PerimetroFinal']]
+                         self.get_total_kms() <= itens['PerimetroFinal']]
             if perimetro:
                 valores_recebe['valor_perimetro'] = perimetro[0]
             else:
@@ -889,7 +892,6 @@ def forn_minuta(request, c_form, c_idobj, c_url, c_view):
             c_instance = get_minuta(c_idobj)
         if c_view == 'edita_minuta_insere_despesa':
             c_instance = get_minuta(c_idobj)
-        c_instance = get_minuta(c_idobj)
         form = c_form(instance=c_instance)
     if c_idobj:
         ajudantes = ajudantes_disponiveis(c_idobj)

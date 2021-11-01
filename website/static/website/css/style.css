@@ -2865,7 +2865,7 @@ main .fp-recibo-tabela .fp-recibo-print {
         .ac-despesa {
             background-color: #4f4f4f;
             color: white;
-            width: 600px;
+            width: 500px;
             border-radius: 10px;
         }
 
@@ -2935,7 +2935,7 @@ main .fp-recibo-tabela .fp-recibo-print {
         .ac-entrega {
             background-color: #4f4f4f;
             color: white;
-            width: 600px;
+            width: 500px;
             border-radius: 10px;
         }
 
@@ -3001,6 +3001,52 @@ main .fp-recibo-tabela .fp-recibo-print {
                 width: 100%;
             }
 
+        .ac-paga {
+            background-color: #4f4f4f;
+            color: white;
+            width: 400px; 
+            border-radius: 10px;   
+        }
+
+            .ac-paga .article-titulo {
+                background-color: #363636;
+                border-radius: 10px 10px 0 0;
+                width: 100%;
+                height: 40px;
+                padding: 0 10px 0 10px;
+                font-size: 15px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            .ac-paga .form-paga {
+                width: 100%;
+                height: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 5px;
+                margin: 5px 0;
+                font-size: 12px;
+            }
+
+            .ac-paga .form-label-paga {
+                text-align: right;
+                padding: 0;
+                margin: 0;
+            }
+
+            .ac-paga .form-control-paga {
+                width: 100px;
+                color: #363636;
+                height: 20px;
+                padding: 0 0.5rem; 
+                text-align: center;
+            }
+                
+
         .div-i-button {
             width: 20px;
             text-align: right;
@@ -3013,6 +3059,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 
 .i-button:hover {
     color: dodgerblue;
+    cursor: pointer;
 }
 
 .i-button-form {
@@ -3028,6 +3075,14 @@ main .fp-recibo-tabela .fp-recibo-print {
     text-align: center;
 }
 
+
+
+.form-readonly {
+    color: white;
+    padding: 0 0.5rem;
+    border: none;
+    text-align: left;
+}
 
 .minuta {
     background-color: blue;
@@ -3101,6 +3156,59 @@ main .fp-recibo-tabela .fp-recibo-print {
     height: 50px;
 }
 
+/* NEW SWITCH */
 
+.new-switch {
+    position: absolute;
+    margin-left: -9999px;
+    visibility: hidden;
+}
+
+    .new-switch + label {
+        display: block;
+        position: relative;
+        cursor: pointer;
+        outline: none;
+        user-select:none;
+    }
+
+    .new-switch--shadow + label {
+        padding: 2px;
+        width: 24px;
+        height: 12px;
+        background: #363636;
+    }
+
+        .new-switch--shadow + label:before,
+        .new-switch--shadow + label:after {
+            display: block;
+            position: absolute;
+            top: 1px;
+            left: 1px;
+            bottom: 1px;
+            content: '';
+        }
+
+        .new-switch--shadow + label:before {
+            right: 1px;
+            background-color: #4f4f4f;
+            border: 1px solid yellow;
+            transition: all 0.4s;
+        }
+
+        .new-switch--shadow + label:after {
+            width: 10px;
+            background-color: yellow;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s;
+        }
+
+        .new-switch--shadow:checked + label:before {
+            background-color: yellow;
+        }
+
+        .new-switch--shadow:checked + label:after {
+            transform: translateX(10px);
+        }
 
 

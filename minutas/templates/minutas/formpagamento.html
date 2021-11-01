@@ -1,0 +1,316 @@
+<form class="" method="post" action="{{ c_url }}" id="{{ c_idobj }}">
+{% csrf_token %}
+    <!-- Porcentagem -->
+    <div class="form-paga">
+        <span>PORCENTAGEM NOTA</span>
+        <input type="checkbox" class="new-switch new-switch--shadow" id="sw-taxaexpedicao-pg" checked="checked"
+               name="switch">
+        <label for="sw-taxaexpedicao-pg"></label>
+    </div>
+    <div class="form-paga" id="form-paga-porcentagem">
+        <div>
+            <span class="form-label-paga">%</span>
+            <input type="number" class="form-control-paga" name="field-a-porcentagem-pg" step="0.01"
+               value="{{ selecionada.pagamentos.valor_porcentagem|stringformat:'.2f' }}">
+        </div>
+        <div>
+            <span class="form-label-paga">R$</span>
+            <input type="number" class="form-control-paga" name="field-b-porcentagem-pg-valor"
+               value="{{ selecionada.pagamentos.minuta_porcentagem|stringformat:'.2f' }}">
+        </div>
+        <div>
+            <span>=</span>
+        </div>
+        <div>
+            <span class="form-label-paga">R$</span>
+            <input type="number" class="form-control-paga" name="total-porcentagem-pg"
+               value="{{ selecionada.pagamentos.total_porcentagem|stringformat:'.2f' }}" readonly="true">
+        </div>
+    </div>
+    <div class="form-paga">
+        <span>HORAS</span>
+        <input type="checkbox" class="new-switch new-switch--shadow" id="sw-horas-pg" checked="checked"
+               name="switch">
+        <label for="sw-horas-pg"></label>
+    </div>
+    <div class="form-paga" id="form-paga-horas">
+        <div>
+            <span class="form-label-paga">%</span>
+            <input type="number" class="form-control-paga" name="field-a-horas-pg" step="0.01"
+               value="{{ selecionada.pagamentos.valor_porcentagem|stringformat:'.2f' }}">
+        </div>
+        <div>
+            <span class="form-label-paga">R$</span>
+            <input type="number" class="form-control-paga" name="field-b-horas-pg"
+               value="{{ selecionada.pagamentos.minuta_porcentagem|stringformat:'.2f' }}">
+        </div>
+        <div>
+            <span>=</span>
+        </div>
+        <div>
+            <span class="form-label-paga">R$</span>
+            <input type="number" class="form-control-paga" name="total-horas-paga"
+               value="{{ selecionada.pagamentos.total_porcentagem|stringformat:'.2f' }}" readonly="true">
+        </div>
+    </div>
+    <div class="form-paga">
+        <span>HORAS EXCEDENTE</span>
+        <input type="checkbox" class="new-switch new-switch--shadow" id="sw-horasexcede-pg" checked="checked"
+               name="switch">
+        <label for="sw-horasexcede-pg"></label>
+    </div>
+    <div class="form-paga" id="form-paga-horasexcede">
+        <div>
+            <span class="form-label-paga">%</span>
+            <input type="number" class="form-control-paga" name="field-a-horasexcede-pg" step="0.01"
+               value="{{ selecionada.pagamentos.valor_porcentagem|stringformat:'.2f' }}">
+        </div>
+        <div>
+            <span class="form-label-paga">R$</span>
+            <input type="number" class="form-control-paga" name="field-a-horasexcede-pg"
+               value="{{ selecionada.pagamentos.minuta_porcentagem|stringformat:'.2f' }}">
+        </div>
+        <div>
+            <span>=</span>
+        </div>
+        <div>
+            <span class="form-label-paga">R$</span>
+            <input type="number" class="form-control-paga" name="total-horasexcede-paga"
+               value="{{ selecionada.pagamentos.total_porcentagem|stringformat:'.2f' }}" readonly="true">
+        </div>
+    </div>
+    <div class="form-paga">
+        <span>KILOMETRAGEM</span>
+        <input type="checkbox" class="new-switch new-switch--shadow" id="sw-kilometragem-pg" checked="checked"
+               name="switch">
+        <label for="sw-kilometragem-pg"></label>
+    </div>
+    <div class="form-paga" id="form-paga-kilometragem">
+        <div>
+            <span class="form-label-paga">%</span>
+            <input type="number" class="form-control-paga" name="field-a-kilometragem-pg" step="0.01"
+               value="{{ selecionada.pagamentos.valor_porcentagem|stringformat:'.2f' }}">
+        </div>
+        <div>
+            <span class="form-label-paga">R$</span>
+            <input type="number" class="form-control-paga" name="field-b-kilometragem-pg"
+               value="{{ selecionada.pagamentos.minuta_porcentagem|stringformat:'.2f' }}">
+        </div>
+        <div>
+            <span>=</span>
+        </div>
+        <div>
+            <span class="form-label-paga">R$</span>
+            <input type="number" class="form-control-paga" name="total-kilometragem-pg"
+               value="{{ selecionada.pagamentos.total_porcentagem|stringformat:'.2f' }}" readonly="true">
+        </div>
+    </div>
+    <div class="form-paga">
+        <span>ENTREGAS</span>
+        <input type="checkbox" class="new-switch new-switch--shadow" id="sw-entregas-pg" checked="checked"
+               name="switch">
+        <label for="sw-entregas-pg"></label>
+    </div>
+    <div class="form-paga" id="form-paga-entregas">
+        <div>
+            <span class="form-label-paga">%</span>
+            <input type="number" class="form-control-paga" name="field-a-entregas-pg" step="0.01"
+               value="{{ selecionada.pagamentos.valor_porcentagem|stringformat:'.2f' }}">
+        </div>
+        <div>
+            <span class="form-label-paga">R$</span>
+            <input type="number" class="form-control-paga" name="field-b-entregas-pg"
+               value="{{ selecionada.pagamentos.minuta_porcentagem|stringformat:'.2f' }}">
+        </div>
+        <div>
+            <span>=</span>
+        </div>
+        <div>
+            <span class="form-label-paga">R$</span>
+            <input type="number" class="form-control-paga" name="total-entregas-pg"
+               value="{{ selecionada.pagamentos.total_porcentagem|stringformat:'.2f' }}" readonly="true">
+        </div>
+    </div>
+    <div class="form-paga">
+        <span>ENTREGAS KG</span>
+        <input type="checkbox" class="new-switch new-switch--shadow" id="sw-entregaskg-pg" checked="checked"
+               name="switch">
+        <label for="sw-entregaskg-pg"></label>
+    </div>
+    <div class="form-paga" id="form-paga-entregaskg">
+        <div>
+            <span class="form-label-paga">%</span>
+            <input type="number" class="form-control-paga" name="field-a-entregaskg-pg" step="0.01"
+               value="{{ selecionada.pagamentos.valor_porcentagem|stringformat:'.2f' }}">
+        </div>
+        <div>
+            <span class="form-label-paga">R$</span>
+            <input type="number" class="form-control-paga" name="field-b-entregaskg-pg"
+               value="{{ selecionada.pagamentos.minuta_porcentagem|stringformat:'.2f' }}">
+        </div>
+        <div>
+            <span>=</span>
+        </div>
+        <div>
+            <span class="form-label-paga">R$</span>
+            <input type="number" class="form-control-paga" name="total-entregaskg-pg"
+               value="{{ selecionada.pagamentos.total_porcentagem|stringformat:'.2f' }}" readonly="true">
+        </div>
+    </div>
+    <div class="form-paga">
+        <span>ENTREGAS VOLUME</span>
+        <input type="checkbox" class="new-switch new-switch--shadow" id="sw-entregasvolume-pg" checked="checked"
+               name="switch">
+        <label for="sw-entregasvolume-pg"></label>
+    </div>
+    <div class="form-paga" id="form-paga-entregasvolume">
+        <div>
+            <span class="form-label-paga">%</span>
+            <input type="number" class="form-control-paga" name="field-a-entregasvolume-pg" step="0.01"
+               value="{{ selecionada.pagamentos.valor_porcentagem|stringformat:'.2f' }}">
+        </div>
+        <div>
+            <span class="form-label-paga">R$</span>
+            <input type="number" class="form-control-paga" name="field-b-entregasvolume-pg"
+               value="{{ selecionada.pagamentos.minuta_porcentagem|stringformat:'.2f' }}">
+        </div>
+        <div>
+            <span>=</span>
+        </div>
+        <div>
+            <span class="form-label-paga">R$</span>
+            <input type="number" class="form-control-paga" name="total-entregasvolume-pg"
+               value="{{ selecionada.pagamentos.total_porcentagem|stringformat:'.2f' }}" readonly="true">
+        </div>
+    </div>
+    <div class="form-paga">
+        <span>SAÍDA</span>
+        <input type="checkbox" class="new-switch new-switch--shadow" id="sw-saida-pg" checked="checked"
+               name="switch">
+        <label for="sw-saida-pg"></label>
+    </div>
+    <div class="form-paga" id="form-paga-saida">
+        <div>
+            <span class="form-label-paga">%</span>
+            <input type="number" class="form-control-paga" name="field-a-saida-pg" step="0.01"
+               value="{{ selecionada.pagamentos.valor_porcentagem|stringformat:'.2f' }}">
+        </div>
+        <div>
+            <span class="form-label-paga">R$</span>
+            <input type="number" class="form-control-paga" name="field-b-saida-pg"
+               value="{{ selecionada.pagamentos.minuta_porcentagem|stringformat:'.2f' }}">
+        </div>
+        <div>
+            <span>=</span>
+        </div>
+        <div>
+            <span class="form-label-paga">R$</span>
+            <input type="number" class="form-control-paga" name="total-saida-pg"
+               value="{{ selecionada.pagamentos.total_porcentagem|stringformat:'.2f' }}" readonly="true">
+        </div>
+    </div>
+    <div class="form-paga">
+        <span>CAPCIDADE PESO</span>
+        <input type="checkbox" class="new-switch new-switch--shadow" id="sw-capacidade-pg" checked="checked"
+               name="switch">
+        <label for="sw-capacidade-pg"></label>
+    </div>
+    <div class="form-paga" id="form-paga-capacidade">
+        <div>
+            <span class="form-label-paga">%</span>
+            <input type="number" class="form-control-paga" name="field-a-capacidade-pg" step="0.01"
+               value="{{ selecionada.pagamentos.valor_porcentagem|stringformat:'.2f' }}">
+        </div>
+        <div>
+            <span class="form-label-paga">R$</span>
+            <input type="number" class="form-control-paga" name="field-b-capacidade-pg"
+               value="{{ selecionada.pagamentos.minuta_porcentagem|stringformat:'.2f' }}">
+        </div>
+        <div>
+            <span>=</span>
+        </div>
+        <div>
+            <span class="form-label-paga">R$</span>
+            <input type="number" class="form-control-paga" name="total-capacidade-pg"
+               value="{{ selecionada.pagamentos.total_porcentagem|stringformat:'.2f' }}" readonly="true">
+        </div>
+    </div>
+    <div class="form-paga">
+        <span>PERIMETRO</span>
+        <input type="checkbox" class="new-switch new-switch--shadow" id="sw-perimetro-pg" checked="checked"
+               name="switch">
+        <label for="sw-perimetro-pg"></label>
+    </div>
+    <div class="form-paga" id="form-paga-perimetro">
+        <div>
+            <span class="form-label-paga">%</span>
+            <input type="number" class="form-control-paga" name="field-a-perimetro-pg" step="0.01"
+               value="{{ selecionada.pagamentos.valor_porcentagem|stringformat:'.2f' }}">
+        </div>
+        <div>
+            <span class="form-label-paga">R$</span>
+            <input type="number" class="form-control-paga" name="field-b-perimetro-pg"
+               value="{{ selecionada.pagamentos.minuta_porcentagem|stringformat:'.2f' }}">
+        </div>
+        <div>
+            <span>=</span>
+        </div>
+        <div>
+            <span class="form-label-paga">R$</span>
+            <input type="number" class="form-control-paga" name="total-perimetro-pg"
+               value="{{ selecionada.pagamentos.total_porcentagem|stringformat:'.2f' }}" readonly="true">
+        </div>
+    </div>
+    <div class="form-paga">
+        <span>PERNOITE</span>
+        <input type="checkbox" class="new-switch new-switch--shadow" id="sw-pernoite-pg" checked="checked"
+               name="switch">
+        <label for="sw-pernoite-pg"></label>
+    </div>
+    <div class="form-paga" id="form-paga-pernoite">
+        <div>
+            <span class="form-label-paga">%</span>
+            <input type="number" class="form-control-paga" name="field-a-pernoite-pg" step="0.01"
+               value="{{ selecionada.pagamentos.valor_porcentagem|stringformat:'.2f' }}">
+        </div>
+        <div>
+            <span class="form-label-paga">R$</span>
+            <input type="number" class="form-control-paga" name="field-b-pernoite-pg"
+               value="{{ selecionada.pagamentos.minuta_porcentagem|stringformat:'.2f' }}">
+        </div>
+        <div>
+            <span>=</span>
+        </div>
+        <div>
+            <span class="form-label-paga">R$</span>
+            <input type="number" class="form-control-paga" name="total-pernoite-pg"
+               value="{{ selecionada.pagamentos.total_porcentagem|stringformat:'.2f' }}" readonly="true">
+        </div>
+    </div>
+    <div class="form-paga">
+        <span>AJUDANTE</span>
+        <input type="checkbox" class="new-switch new-switch--shadow" id="sw-ajudante-pg" checked="checked"
+               name="switch">
+        <label for="sw-ajudante-pg"></label>
+    </div>
+    <div class="form-paga" id="form-paga-ajudante">
+        <div>
+            <span class="form-label-paga">%</span>
+            <input type="number" class="form-control-paga" name="field-a-ajudante-pg" step="0.01"
+               value="{{ selecionada.pagamentos.valor_porcentagem|stringformat:'.2f' }}">
+        </div>
+        <div>
+            <span class="form-label-paga">R$</span>
+            <input type="number" class="form-control-paga" name="field-b-ajudante-pg"
+               value="{{ selecionada.pagamentos.minuta_porcentagem|stringformat:'.2f' }}">
+        </div>
+        <div>
+            <span>=</span>
+        </div>
+        <div>
+            <span class="form-label-paga">R$</span>
+            <input type="number" class="form-control-paga" name="total-ajudante-paga"
+               value="{{ selecionada.pagamentos.total_porcentagem|stringformat:'.2f' }}" readonly="true">
+        </div>
+    </div>
+</form>

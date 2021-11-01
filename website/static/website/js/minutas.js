@@ -452,9 +452,114 @@ $(document).ready(function(){
             $('#id_Nota').val('')
         }
     });
-    
-   
 
+    $(document).on('change', '#sw-taxaexpedicao-pg', function(event) {
+        var visible = $('#form-paga-porcentagem').is(':visible')
+        if (visible) {
+            $('#form-paga-porcentagem').slideUp(500)
+        } else {
+            $('#form-paga-porcentagem').slideDown(500)
+        }
+    });
+
+    $(document).on('change', '#sw-horas-pg', function(event) {
+        var visible = $('#form-paga-horas').is(':visible')
+        if (visible) {
+            $('#form-paga-horas').slideUp(500)
+        } else {
+            $('#form-paga-horas').slideDown(500)
+        }
+    });
+
+    $(document).on('change', '#sw-horasexcede-pg', function(event) {
+        var visible = $('#form-paga-horasexcede').is(':visible')
+        if (visible) {
+            $('#form-paga-horasexcede').slideUp(500)
+        } else {
+            $('#form-paga-horasexcede').slideDown(500)
+        }
+    });
+
+    $(document).on('change', '#sw-kilometragem-pg', function(event) {
+        var visible = $('#form-paga-kilometragem').is(':visible')
+        if (visible) {
+            $('#form-paga-kilometragem').slideUp(500)
+        } else {
+            $('#form-paga-kilometragem').slideDown(500)
+        }
+    });
+
+    $(document).on('change', '#sw-entregas-pg', function(event) {
+        var visible = $('#form-paga-entregas').is(':visible')
+        if (visible) {
+            $('#form-paga-entregas').slideUp(500)
+        } else {
+            $('#form-paga-entregas').slideDown(500)
+        }
+    });
+
+    $(document).on('change', '#sw-entregaskg-pg', function(event) {
+        var visible = $('#form-paga-entregaskg').is(':visible')
+        if (visible) {
+            $('#form-paga-entregaskg').slideUp(500)
+        } else {
+            $('#form-paga-entregaskg').slideDown(500)
+        }
+    });
+
+    $(document).on('change', '#sw-entregasvolume-pg', function(event) {
+        var visible = $('#form-paga-entregasvolume').is(':visible')
+        if (visible) {
+            $('#form-paga-entregasvolume').slideUp(500)
+        } else {
+            $('#form-paga-entregavolume').slideDown(500)
+        }
+    });
+
+    $(document).on('change', '#sw-saida-pg', function(event) {
+        var visible = $('#form-paga-saida').is(':visible')
+        if (visible) {
+            $('#form-paga-saida').slideUp(500)
+        } else {
+            $('#form-paga-saida').slideDown(500)
+        }
+    });
+
+    $(document).on('change', '#sw-capacidade-pg', function(event) {
+        var visible = $('#form-paga-capacidade').is(':visible')
+        if (visible) {
+            $('#form-paga-capacidade').slideUp(500)
+        } else {
+            $('#form-paga-capacidade').slideDown(500)
+        }
+    });
+
+    $(document).on('change', '#sw-perimetro-pg', function(event) {
+        var visible = $('#form-paga-perimetro').is(':visible')
+        if (visible) {
+            $('#form-paga-perimetro').slideUp(500)
+        } else {
+            $('#form-paga-perimetro').slideDown(500)
+        }
+    });
+
+    $(document).on('change', '#sw-pernoite-pg', function(event) {
+        var visible = $('#form-paga-pernoite').is(':visible')
+        if (visible) {
+            $('#form-paga-pernoite').slideUp(500)
+        } else {
+            $('#form-paga-pernoite').slideDown(500)
+        }
+    });
+
+    $(document).on('change', '#sw-ajudante-pg', function(event) {
+        var visible = $('#form-paga-ajudante').is(':visible')
+        if (visible) {
+            $('#form-paga-ajudante').slideUp(500)
+        } else {
+            $('#form-paga-ajudante').slideDown(500)
+        }
+    });
 });
 
 function openMyModal(event) {
@@ -673,3 +778,4 @@ var EscondeEntrega = function() {
 var MostraEntrega = function() {
     $(".html-entrega").delay(1000).slideDown(500)
 }
+
