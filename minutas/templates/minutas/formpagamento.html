@@ -24,7 +24,7 @@
         <div>
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="total-porcentagem-pg"
-               value="{{ selecionada.pagamentos.total_porcentagem|stringformat:'.2f' }}" readonly="true">
+               value="{{ selecionada.pagamentos.total_porcentagem|stringformat:'.2f' }}" readonly>
         </div>
     </div>
     <div class="form-paga">
@@ -35,14 +35,14 @@
     </div>
     <div class="form-paga" id="form-paga-horas">
         <div>
-            <span class="form-label-paga">%</span>
+            <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="field-a-horas-pg" step="0.01"
-               value="{{ selecionada.pagamentos.valor_porcentagem|stringformat:'.2f' }}">
+               value="{{ selecionada.pagamentos.valor_hora|stringformat:'.2f' }}">
         </div>
         <div>
-            <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="field-b-horas-pg"
-               value="{{ selecionada.pagamentos.minuta_porcentagem|stringformat:'.2f' }}">
+            <span class="form-label-paga">HS</span>
+            <input type="time" class="form-control-paga" name="field-b-horas-pg"
+               value="{{ selecionada.pagamentos.minuta_hora }}">
         </div>
         <div>
             <span>=</span>
@@ -50,7 +50,7 @@
         <div>
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="total-horas-paga"
-               value="{{ selecionada.pagamentos.total_porcentagem|stringformat:'.2f' }}" readonly="true">
+               value="{{ selecionada.pagamentos.total_hora|stringformat:'.2f' }}" readonly>
         </div>
     </div>
     <div class="form-paga">
@@ -63,12 +63,12 @@
         <div>
             <span class="form-label-paga">%</span>
             <input type="number" class="form-control-paga" name="field-a-horasexcede-pg" step="0.01"
-               value="{{ selecionada.pagamentos.valor_porcentagem|stringformat:'.2f' }}">
+               value="{{ selecionada.pagamentos.valor_horaexcede|stringformat:'.2f' }}">
         </div>
         <div>
-            <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="field-a-horasexcede-pg"
-               value="{{ selecionada.pagamentos.minuta_porcentagem|stringformat:'.2f' }}">
+            <span class="form-label-paga">HS</span>
+            <input type="time" class="form-control-paga" name="field-a-horasexcede-pg"
+               value="{{ selecionada.pagamentos.minuta_horaexcede }}">
         </div>
         <div>
             <span>=</span>
@@ -76,7 +76,7 @@
         <div>
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="total-horasexcede-paga"
-               value="{{ selecionada.pagamentos.total_porcentagem|stringformat:'.2f' }}" readonly="true">
+               value="{{ selecionada.pagamentos.total_horaexcede|stringformat:'.2f' }}" readonly>
         </div>
     </div>
     <div class="form-paga">
@@ -87,14 +87,14 @@
     </div>
     <div class="form-paga" id="form-paga-kilometragem">
         <div>
-            <span class="form-label-paga">%</span>
+            <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="field-a-kilometragem-pg" step="0.01"
-               value="{{ selecionada.pagamentos.valor_porcentagem|stringformat:'.2f' }}">
+               value="{{ selecionada.pagamentos.valor_kilometragem|stringformat:'.2f' }}">
         </div>
         <div>
-            <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="field-b-kilometragem-pg"
-               value="{{ selecionada.pagamentos.minuta_porcentagem|stringformat:'.2f' }}">
+            <span class="form-label-paga">UN</span>
+            <input type="number" class="form-control-paga" name="field-b-kilometragem-pg" step="1.00"
+               value="{{ selecionada.pagamentos.minuta_kilometragem|stringformat:'.0f' }}">
         </div>
         <div>
             <span>=</span>
@@ -102,7 +102,7 @@
         <div>
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="total-kilometragem-pg"
-               value="{{ selecionada.pagamentos.total_porcentagem|stringformat:'.2f' }}" readonly="true">
+               value="{{ selecionada.pagamentos.total_kilometragem|stringformat:'.2f' }}" readonly>
         </div>
     </div>
     <div class="form-paga">
@@ -113,14 +113,14 @@
     </div>
     <div class="form-paga" id="form-paga-entregas">
         <div>
-            <span class="form-label-paga">%</span>
+            <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="field-a-entregas-pg" step="0.01"
-               value="{{ selecionada.pagamentos.valor_porcentagem|stringformat:'.2f' }}">
+               value="{{ selecionada.pagamentos.valor_entregas|stringformat:'.2f' }}">
         </div>
         <div>
-            <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="field-b-entregas-pg"
-               value="{{ selecionada.pagamentos.minuta_porcentagem|stringformat:'.2f' }}">
+            <span class="form-label-paga">UN</span>
+            <input type="number" class="form-control-paga" name="field-b-entregas-pg" step="1.00"
+               value="{{ selecionada.pagamentos.minuta_entregas|stringformat:'.0f' }}">
         </div>
         <div>
             <span>=</span>
@@ -128,7 +128,7 @@
         <div>
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="total-entregas-pg"
-               value="{{ selecionada.pagamentos.total_porcentagem|stringformat:'.2f' }}" readonly="true">
+               value="{{ selecionada.pagamentos.total_entregas|stringformat:'.2f' }}" readonly>
         </div>
     </div>
     <div class="form-paga">
@@ -139,14 +139,14 @@
     </div>
     <div class="form-paga" id="form-paga-entregaskg">
         <div>
-            <span class="form-label-paga">%</span>
+            <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="field-a-entregaskg-pg" step="0.01"
-               value="{{ selecionada.pagamentos.valor_porcentagem|stringformat:'.2f' }}">
+               value="{{ selecionada.pagamentos.valor_entregaskg|stringformat:'.2f' }}">
         </div>
         <div>
-            <span class="form-label-paga">R$</span>
+            <span class="form-label-paga">KG</span>
             <input type="number" class="form-control-paga" name="field-b-entregaskg-pg"
-               value="{{ selecionada.pagamentos.minuta_porcentagem|stringformat:'.2f' }}">
+               value="{{ selecionada.pagamentos.minuta_entregaskg|stringformat:'.2f' }}">
         </div>
         <div>
             <span>=</span>
@@ -154,7 +154,7 @@
         <div>
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="total-entregaskg-pg"
-               value="{{ selecionada.pagamentos.total_porcentagem|stringformat:'.2f' }}" readonly="true">
+               value="{{ selecionada.pagamentos.total_entregaskg|stringformat:'.2f' }}" readonly>
         </div>
     </div>
     <div class="form-paga">
@@ -165,14 +165,14 @@
     </div>
     <div class="form-paga" id="form-paga-entregasvolume">
         <div>
-            <span class="form-label-paga">%</span>
+            <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="field-a-entregasvolume-pg" step="0.01"
-               value="{{ selecionada.pagamentos.valor_porcentagem|stringformat:'.2f' }}">
+               value="{{ selecionada.pagamentos.valor_entregasvolume|stringformat:'.2f' }}">
         </div>
         <div>
-            <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="field-b-entregasvolume-pg"
-               value="{{ selecionada.pagamentos.minuta_porcentagem|stringformat:'.2f' }}">
+            <span class="form-label-paga">UN</span>
+            <input type="number" class="form-control-paga" name="field-b-entregasvolume-pg" step="1.00"
+               value="{{ selecionada.pagamentos.minuta_entregasvolume|stringformat:'.0f' }}">
         </div>
         <div>
             <span>=</span>
@@ -180,7 +180,7 @@
         <div>
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="total-entregasvolume-pg"
-               value="{{ selecionada.pagamentos.total_porcentagem|stringformat:'.2f' }}" readonly="true">
+               value="{{ selecionada.pagamentos.total_entregasvolume|stringformat:'.2f' }}">
         </div>
     </div>
     <div class="form-paga">
@@ -191,22 +191,16 @@
     </div>
     <div class="form-paga" id="form-paga-saida">
         <div>
-            <span class="form-label-paga">%</span>
-            <input type="number" class="form-control-paga" name="field-a-saida-pg" step="0.01"
-               value="{{ selecionada.pagamentos.valor_porcentagem|stringformat:'.2f' }}">
-        </div>
-        <div>
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="field-b-saida-pg"
-               value="{{ selecionada.pagamentos.minuta_porcentagem|stringformat:'.2f' }}">
+            <input type="number" class="form-control-paga" name="field-a-saida-pg" step="0.01"
+               value="{{ selecionada.pagamentos.valor_saida|stringformat:'.2f' }}">
         </div>
-        <div>
-            <span>=</span>
-        </div>
+        <div></div>
+        <div></div>
         <div>
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="total-saida-pg"
-               value="{{ selecionada.pagamentos.total_porcentagem|stringformat:'.2f' }}" readonly="true">
+               value="{{ selecionada.pagamentos.valor_saida|stringformat:'.2f' }}" readonly>
         </div>
     </div>
     <div class="form-paga">
@@ -217,22 +211,16 @@
     </div>
     <div class="form-paga" id="form-paga-capacidade">
         <div>
-            <span class="form-label-paga">%</span>
-            <input type="number" class="form-control-paga" name="field-a-capacidade-pg" step="0.01"
-               value="{{ selecionada.pagamentos.valor_porcentagem|stringformat:'.2f' }}">
-        </div>
-        <div>
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="field-b-capacidade-pg"
-               value="{{ selecionada.pagamentos.minuta_porcentagem|stringformat:'.2f' }}">
+            <input type="number" class="form-control-paga" name="field-a-capacidade-pg" step="0.01"
+               value="{{ selecionada.pagamentos.valor_capacidade|stringformat:'.2f' }}">
         </div>
-        <div>
-            <span>=</span>
-        </div>
+        <div></div>
+        <div></div>
         <div>
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="total-capacidade-pg"
-               value="{{ selecionada.pagamentos.total_porcentagem|stringformat:'.2f' }}" readonly="true">
+               value="{{ selecionada.pagamentos.valor_capacidade|stringformat:'.2f' }}" readonly>
         </div>
     </div>
     <div class="form-paga">
@@ -245,12 +233,12 @@
         <div>
             <span class="form-label-paga">%</span>
             <input type="number" class="form-control-paga" name="field-a-perimetro-pg" step="0.01"
-               value="{{ selecionada.pagamentos.valor_porcentagem|stringformat:'.2f' }}">
+               value="{{ selecionada.pagamentos.valor_perimetro|stringformat:'.2f' }}">
         </div>
         <div>
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="field-b-perimetro-pg"
-               value="{{ selecionada.pagamentos.minuta_porcentagem|stringformat:'.2f' }}">
+               value="{{ selecionada.pagamentos.minuta_perimetro|stringformat:'.2f' }}">
         </div>
         <div>
             <span>=</span>
@@ -258,7 +246,7 @@
         <div>
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="total-perimetro-pg"
-               value="{{ selecionada.pagamentos.total_porcentagem|stringformat:'.2f' }}" readonly="true">
+               value="{{ selecionada.pagamentos.total_perimetro|stringformat:'.2f' }}" readonly>
         </div>
     </div>
     <div class="form-paga">
@@ -271,12 +259,12 @@
         <div>
             <span class="form-label-paga">%</span>
             <input type="number" class="form-control-paga" name="field-a-pernoite-pg" step="0.01"
-               value="{{ selecionada.pagamentos.valor_porcentagem|stringformat:'.2f' }}">
+               value="{{ selecionada.pagamentos.valor_pernoite|stringformat:'.2f' }}">
         </div>
         <div>
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="field-b-pernoite-pg"
-               value="{{ selecionada.pagamentos.minuta_porcentagem|stringformat:'.2f' }}">
+               value="{{ selecionada.pagamentos.minuta_pernoite|stringformat:'.2f' }}">
         </div>
         <div>
             <span>=</span>
@@ -284,7 +272,7 @@
         <div>
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="total-pernoite-pg"
-               value="{{ selecionada.pagamentos.total_porcentagem|stringformat:'.2f' }}" readonly="true">
+               value="{{ selecionada.pagamentos.total_pernoite|stringformat:'.2f' }}" readonly>
         </div>
     </div>
     <div class="form-paga">
@@ -295,14 +283,14 @@
     </div>
     <div class="form-paga" id="form-paga-ajudante">
         <div>
-            <span class="form-label-paga">%</span>
+            <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="field-a-ajudante-pg" step="0.01"
-               value="{{ selecionada.pagamentos.valor_porcentagem|stringformat:'.2f' }}">
+               value="{{ selecionada.pagamentos.valor_ajudante|stringformat:'.2f' }}">
         </div>
         <div>
-            <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="field-b-ajudante-pg"
-               value="{{ selecionada.pagamentos.minuta_porcentagem|stringformat:'.2f' }}">
+            <span class="form-label-paga">UN</span>
+            <input type="number" class="form-control-paga" name="field-b-ajudante-pg" step="1.00"
+               value="{{ selecionada.pagamentos.minuta_ajudante|stringformat:'.0f' }}">
         </div>
         <div>
             <span>=</span>
@@ -310,7 +298,7 @@
         <div>
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="total-ajudante-paga"
-               value="{{ selecionada.pagamentos.total_porcentagem|stringformat:'.2f' }}" readonly="true">
+               value="{{ selecionada.pagamentos.total_ajudante|stringformat:'.2f' }}" readonly>
         </div>
     </div>
 </form>

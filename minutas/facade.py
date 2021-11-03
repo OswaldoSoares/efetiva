@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 
 # from django.db.models import Max
 from django.db.models import Max
@@ -48,6 +48,7 @@ class MinutaSelecionada:
         self.tabela_perimetro = ClienteTabelaPerimetro(minuta.idCliente).tabela
         self.tabela_capacidade = ClienteTabelaCapacidade(minuta.idCliente).tabela
         self.valores_recebe = self.carrega_valores_recebe()
+        self.valores_paga = self.carrega_valores_paga()
         self.total_horas = self.get_total_horas()
         self.total_horas_str = self.total_horas_str()
         self.total_kms = self.get_total_kms()
@@ -126,6 +127,11 @@ class MinutaSelecionada:
                                minutes=filtro_tabela_veiculo['HoraMinimo'].minute)
         if periodo > minimo:
             excede = periodo - minimo
+        excede_str = str(excede)
+        excede = datetime.strptime(excede_str, '%H:%M:%S')
+        if excede_str.__len__() == 7:
+            excede_str = f'0{excede_str}'
+        excede_str = excede_str[0:5]
         return excede
 
     def total_notas(self):
@@ -174,16 +180,26 @@ class MinutaSelecionada:
             valores_paga['total_porcentagem'] = tabela_veiculo['PorcentagemPaga'] / 100 * self.total_notas()[0]
             valores_paga['valor_hora'] = self.filtro_tabela_veiculo()['HoraPaga']
             valores_paga['minuta_hora'] = self.filtro_tabela_veiculo()['HoraMinimo']
+            # TODO
+            valores_paga['total_hora'] = calcula_valor_hora(100, self.filtro_tabela_veiculo()['HoraMinimo'],
+                                                            self.filtro_tabela_veiculo()['HoraPaga'])
             valores_paga['valor_horaexcede'] = 100
             valores_paga['minuta_horaexcede'] = self.horas_excede()
+            # TODO
+            valores_paga['total_horaexcede'] = calcula_valor_hora(100, self.horas_excede(),
+                                                                  self.filtro_tabela_veiculo()['HoraPaga'])
             valores_paga['valor_kilometragem'] = self.filtro_tabela_veiculo()['KMPaga']
             valores_paga['minuta_kilometragem'] = self.get_total_kms()
+            valores_paga['total_kilometragem'] = self.filtro_tabela_veiculo()['KMPaga'] * self.get_total_kms()
             valores_paga['valor_entregas'] = self.filtro_tabela_veiculo()['EntregaPaga']
             valores_paga['minuta_entregas'] = self.total_notas()[3]
+            valores_paga['total_entregas'] = self.filtro_tabela_veiculo()['EntregaPaga'] * self.total_notas()[3]
             valores_paga['valor_entregaskg'] = self.filtro_tabela_veiculo()['EntregaKGPaga']
             valores_paga['minuta_entregaskg'] = self.total_notas()[2]
+            valores_paga['total_entregaskg'] = self.filtro_tabela_veiculo()['EntregaKGPaga'] * self.total_notas()[2]
             valores_paga['valor_entregasvolume'] = self.filtro_tabela_veiculo()['EntregaVolumePaga']
             valores_paga['minuta_entregasvolume'] = self.total_notas()[1]
+            valores_paga['total_entregasvolume'] = self.filtro_tabela_veiculo()['EntregaVolumePaga'] * self.total_notas()[1]
             valores_paga['valor_saida'] = self.filtro_tabela_veiculo()['SaidaPaga']
             capacidade = [itens['CapacidadePaga'] for itens in self.tabela_capacidade if itens['CapacidadeInicial'] <=
                           self.total_kms() <= itens['CapacidadeFinal']]
@@ -201,6 +217,7 @@ class MinutaSelecionada:
             if self.total_ajudantes() > 0 and self.saidas_ajudante() > 0:
                 valores_paga['valor_ajudante'] = float(self.tabela[0]['AjudantePaga']) + 10.00
             valores_paga['minuta_ajudante'] = self.total_ajudantes_avulso()
+            valores_paga['total_ajudante'] = (float(self.tabela[0]['AjudantePaga']) + 10.00) * self.total_ajudantes_avulso() 
         return valores_paga
 
     def lista_pagamentos(self):
@@ -564,6 +581,16 @@ class MinutaFinanceiro:
 
     def checked_off(self):
         self.checked = False
+
+
+def calcula_valor_hora(porcentagem, horas, valor):
+    novo_valor = valor * porcentagem / 100
+    valor_hora = float(round(novo_valor, 2))
+    valor_minuto = float(round(novo_valor / 60, 2))
+    total_valor_hora = horas.hour * valor_hora
+    total_valor_minuto = horas.minute * valor_minuto
+    total = total_valor_hora + total_valor_minuto
+    return total
 
 
 def get_minuta(idminuta):
