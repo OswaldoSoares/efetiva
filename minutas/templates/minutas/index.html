@@ -83,6 +83,8 @@
                             <button class="btn btn-primary btn-xs glyphicon glyphicon-folder-open"
                                     onclick="window.location.href = '{% url 'consultaminuta' itens.idMinuta %}'">
                             </button>
+                            <i class="bi bi-folder"
+                               onclick="window.location.href = '{% url 'minuta' itens.idMinuta %}'"></i>
                         </td>
                     </tr>
                 {% endfor %}

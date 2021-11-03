@@ -213,7 +213,6 @@ def index_minuta(request):
 
 
 def consultaminuta(request, idmin):
-    selecionada = MinutaSelecionada(idmin).__dict__
     # Cria queryset obj minuta - motorista - ajudante - ajudante quantidade
     minuta = Minuta.objects.filter(idMinuta=idmin)
     motorista_da_minuta = MinutaColaboradores.objects.filter(idMinuta=idmin, Cargo='MOTORISTA').annotate(
@@ -572,18 +571,8 @@ def consultaminuta(request, idmin):
         tabela_recebe_e_paga[str(item)]['id_top'] = 'to-%s-paga' % keys_nome_paga[index]
         # Coluna 5 Paga - totais input hidden
         tabela_recebe_e_paga[str(item)]['id_hip'] = 'hi-%s-paga' % keys_nome_paga[index]
-    # TODO MANTER NA CONSULTA REFATORADA
-    form_veiculo_solicitado = FormEditaVeiculoSolicitado(instance=minutaform)
-    form_hora_final = CadastraMinutaHoraFinal(instance=minutaform)
-    form_km_inicial = CadastraMinutaKMInicial(instance=minutaform)
-    form_km_final = CadastraMinutaKMFinal(instance=minutaform)
     # Cria contexto para enviar ao template
     contexto = {
-        # TODO MANTER NA CONSULTA REFATORADA
-        'selecionada': selecionada, 'form_veiculo_solicitado': form_veiculo_solicitado,
-        'form_hora_final': form_hora_final, 'form_km_inicial': form_km_inicial, 'form_km_final': form_km_final,
-
-
         'tabela_recebe_e_paga': tabela_recebe_e_paga,
         'minuta': minuta,
         'motorista_da_minuta': motorista_da_minuta,
@@ -646,6 +635,20 @@ def consultaminuta(request, idmin):
         'numero_saidas_do_ajudante': numero_saidas_do_ajudante,
     }
     return render(request, 'minutas/consultaminuta.html', contexto)
+
+
+def minuta(request, idminuta):
+    selecionada = MinutaSelecionada(idminuta).__dict__
+    minuta = Minuta.objects.filter(idMinuta=idminuta)
+    minutaform = get_object_or_404(minuta, idMinuta=idminuta)
+    form_veiculo_solicitado = FormEditaVeiculoSolicitado(instance=minutaform)
+    form_hora_final = CadastraMinutaHoraFinal(instance=minutaform)
+    form_km_inicial = CadastraMinutaKMInicial(instance=minutaform)
+    form_km_final = CadastraMinutaKMFinal(instance=minutaform)
+    contexto = {
+        'selecionada': selecionada, 'form_veiculo_solicitado': form_veiculo_solicitado,
+        'form_hora_final': form_hora_final, 'form_km_inicial': form_km_inicial, 'form_km_final': form_km_final}
+    return render(request, 'minutas/minuta.html', contexto)
 
 
 def criaminuta(request):

@@ -1,0 +1,142 @@
+{% extends 'minutas/baseminutas.html' %}
+{% load permission_tags %}
+
+{% block title %}
+    Módulo Minutas
+{% endblock %}
+
+{% block mainminuta %}
+<main>
+    <div class="article">
+        <article class="article-card ac-minuta">
+            <div class="article-minuta-titulo">
+                <i class="bi bi-file-text" title="NÚMERO MINUTA"></i>
+                <span>{{ selecionada.numero }}</span>
+            </div>
+            <div class="html-cliente-data">
+                {% include 'minutas/clientedataminuta.html' %}
+            </div>
+            <form class="html-hora-final" method="post" action="{% url 'editahorafinal' %}" id="form-edita-hora">
+                {% csrf_token %}
+                <div class="article-minuta-dados">
+                    <i class="bi bi-moon-fill" title="HORA FINAL"></i>
+                    <span>
+                        <div class="div-input">
+                            {{ form_hora_final.HoraFinal }}
+                        </div>
+                        <input type="hidden" name="idMinuta" value="{{ selecionada.idminuta }}">
+                    </span>
+                    <div>
+                        <button type="submit" class="i-button-form"><i class="bi bi-save i-button"></i></button>
+                    </div>
+                </div>
+            </form>
+            <div class="article-minuta-dados calcula-horas">
+                <i class="bi bi-clock-history" title="DURAÇÃO"></i>
+                <span class="total-horas">{{ selecionada.total_horas_str }} Hs</span>
+                <div></div>
+            </div>
+            <div class="html-categoria">
+                {% include 'minutas/categoriaminuta.html' %}
+            </div>
+            <div class="html-veiculo">
+                {% include 'minutas/veiculominuta.html' %}
+            </div>
+            <div class="html-ajudante">
+                {% include 'minutas/ajudantesminuta.html' %}
+            </div>
+            <div class="article-minuta-dados">
+                <i class="bi bi-person-plus-fill" title="INSERE AJUDNTE"></i>
+                <span>INSERE AJUDANTE</span>
+                <div>
+                    <i class="bi bi-plus-square i-button" onclick="openMyModal(event); return false;"
+                       data-title="INSERE AJUDANTE" data-action="{% url 'insereajudante' %}"
+                       data-button-save-label="INSERIR" data-idminuta="{{ selecionada.idminuta }}"></i>
+                </div>
+            </div>
+            <div class="html-coleta-entrega-obs">
+                {% include 'minutas/coletaentregaobsminuta.html' %}
+            </div>
+            <div class="article-minuta-rodape">
+                {% if selecionada.status_minuta == 'FECHADA' or selecionada.status_minuta == 'CONCLUIDA'%}
+                {% if user|can:'estorna_minuta' %}
+                <i class="bi bi-box-arrow-left i-button"
+                   onclick="window.location.href = '{% url 'estorna_minuta' selecionada.idminuta %}'"></i>
+                {% endif %}
+                {% endif %}
+                {% if selecionada.status_minuta == 'ABERTA' %}
+                {% if user|can:'edita_minuta' %}
+                <i class="bi bi-pencil-square i-button" onclick="openMyModal(event); return false;"
+                   data-title="EDITA MINUTA" data-action="{% url 'editaminuta' %}" data-button-save-label="EDITAR"
+                   data-idminuta="{{ selecionada.idminuta }}"></i>
+                {% endif %}
+                {% endif %}
+                <i class="bi bi-printer i-button js-imprimeminuta" idminuta="{{ selecionada.idminuta }}"
+                        onclick="window.location.href = '{% url 'imprimeminuta' selecionada.idminuta %}'"></i>
+            </div>
+        </article>
+        <div class="article-despesa-entrega">
+            <article class="article-card ac-despesa">
+                <div class="article-titulo">
+                    <span>DESPESAS</span>
+                    <i class="bi bi-plus-square i-button" onclick="openMyModal(event); return false;"
+                       data-title="INSERE DESPESA" data-action="{% url 'inseredespesa' %}"
+                       data-button-save-label="INSERIR" data-idminuta="{{ selecionada.idminuta }}"></i>
+                </div>
+                <div class="html-despesa">
+                    {% include 'minutas/despesaminuta.html' %}
+                </div>
+            </article>
+            <article class="article-card ac-entrega">
+                <div class="article-titulo">
+                    <span>ENTREGAS</span>
+                    <i class="bi bi-plus-square i-button" onclick="openMyModal(event); return false;"
+                       data-title="INSERE ENTREGA" data-action="{% url 'insereentrega' %}"
+                       data-button-save-label="INSERIR" data-idminuta="{{ selecionada.idminuta }}"></i>
+                </div>
+                <div class="html-entrega">
+                    {% include 'minutas/entregaminuta.html' %}
+                </div>
+            </article>
+        </div>
+        <div class="article-card ac-paga">
+            <div class="article-titulo">
+                <span>PAGAMENTOS</span>
+            </div>
+            <div class="html-form-paga">
+                {% include 'minutas/formpagamento.html' %}
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <i class="bi bi-plus-square i-button" onclick="openMyModal(event); return false;"
+           data-title="CADASTRA MINUTA" data-action="{% url 'adicionaminuta' %}" data-button-save-label="SALVAR">
+            ADICIONA NOVA MINUTA</i>
+    </div>
+    <!--
+    {{ selecionada }}
+    -->
+
+    <!-- div modal -->
+    <div class="modal fade bd-example-modal-lg" id="MyModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title"><b>CADASTRO DE CLIENTE</b></h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">FECHAR</button>
+                    <button type="submit" class="btn btn-success btn-save">CRIAR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

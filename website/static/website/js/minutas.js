@@ -153,7 +153,7 @@ $(document).ready(function(){
     $(".div-sucesso").hide()
     $(".div-erro").hide()
 
-    // JQuery da Janela Modal Antiho
+    // JQuery da Janela Modal Antigo
     $('#modal-formulario').on('shown.bs.modal', function () {
         setTimeout(function(){      // Delay para função loadCubagem, após janela estar carregada
             $("#id_Propriedade").change(function() {
