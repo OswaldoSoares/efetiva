@@ -163,9 +163,10 @@ nav footer h6 {
     display: none;
 }
 
+/* Removido no novo  menu
 #chk:checked ~ .container .header-base {
     padding-left: 220px;
-}
+}*/
 
 #chk {
     display: none;
@@ -934,6 +935,7 @@ main .consulta .consulta-body {
 }
 
 /* Arquivo Base */
+/* removido no novo menu
 .header-base {
     background-color: var(--corprimaria);
 	width: 100vw;
@@ -947,7 +949,7 @@ main .consulta .consulta-body {
     padding-left: 70px;
     padding-right: 40px;
     z-index: 9997;
-}
+}*/
 
 .header-base h1 {
     margin: 0;
@@ -3212,3 +3214,37 @@ main .fp-recibo-tabela .fp-recibo-print {
         }
 
 
+/* BARRA SUPERIOR */
+.header-base {
+    background-color: black;
+	width: 100vw;
+    height: 7.5vh;
+    position: fixed;
+    top: 0;
+    margin: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 5px 50px 5px 50px;
+    z-index: 9997;
+}
+
+.nav-superior {
+    width: 80%;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 20px;
+}
+
+.i-button-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.i-button-nav span {
+    font-size: 11px;
+}
