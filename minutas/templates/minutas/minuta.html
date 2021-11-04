@@ -102,6 +102,7 @@
         <div class="article-card ac-paga">
             <div class="article-titulo">
                 <span>PAGAMENTOS</span>
+                <i class="bi bi-arrow-counterclockwise i-button" idminuta="{{ s_minuta.idminuta }}"></i>
             </div>
             <div class="html-form-paga">
                 {% include 'minutas/formpagamento.html' %}
@@ -114,6 +115,7 @@
            data-title="CADASTRA MINUTA" data-action="{% url 'adicionaminuta' %}" data-button-save-label="SALVAR">
             ADICIONA NOVA MINUTA</i>
     </div>
+    
     {{ s_minuta }}
 
     <!-- div modal -->

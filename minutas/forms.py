@@ -230,14 +230,14 @@ class FormEditaVeiculoSolicitado(forms.ModelForm):
     class Meta:
         model = Minuta
         fields = ('idMinuta', 'idCategoriaVeiculo')
-        widgets = {'idCategoriaVeiculo': forms.Select(attrs={'class': 'formfields'})}
+        widgets = {'idCategoriaVeiculo': forms.Select(attrs={'class': 'form-control'})}
 
 
 class FormEditaVeiculoEscolhido(forms.ModelForm):
     class Meta:
         model = Minuta
         fields = ('idMinuta', 'idCategoriaVeiculo')
-        widgets = {'idCategoriaVeiculo': forms.Select(attrs={'class': 'formfields'})}
+        widgets = {'idCategoriaVeiculo': forms.Select(attrs={'class': 'form-control'})}
 
 
 class FormInsereColaborador(forms.ModelForm):
@@ -251,9 +251,9 @@ class FormColetaEntregaObs(forms.ModelForm):
     class Meta:
         model = Minuta
         fields = {'idMinuta', 'Coleta', 'Entrega', 'Obs'}
-        widgets = {'Coleta': forms.Textarea(attrs={'class': 'formfieldstexto'}),
-                   'Entrega': forms.Textarea(attrs={'class': 'formfieldstexto'}),
-                   'Obs': forms.Textarea(attrs={'class': 'formfieldstexto'})}
+        widgets = {'Coleta': forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}),
+                   'Entrega': forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}),
+                   'Obs': forms.Textarea(attrs={'class': 'form-control', 'rows': '3'})}
 
 
 class FormInsereDespesa(forms.ModelForm):

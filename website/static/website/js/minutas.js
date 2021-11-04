@@ -560,6 +560,47 @@ $(document).ready(function(){
             $('#form-paga-ajud').slideDown(500)
         }
     });
+
+    function verificaSwitchPaga() {
+        if ($('#t_porc').val() == 0.00) {
+            $('#form-paga-porc').slideUp(500)
+        }
+        if ($('#t_hora').val() == 0.00) {
+            $('#form-paga-hora').slideUp(500)
+        }
+        if ($('#t_exce').val() == 0.00) {
+            $('#form-paga-exce').slideUp(500)
+        }
+        if ($('#t_kilm').val() == 0.00) {
+            $('#form-paga-kilm').slideUp(500)
+        }
+        if ($('#t_entr').val() == 0.00) {
+            $('#form-paga-entr').slideUp(500)
+        }
+        if ($('#t_enkg').val() == 0.00) {
+            $('#form-paga-enkg').slideUp(500)
+        }
+        if ($('#t_evol').val() == 0.00) {
+            $('#form-paga-evol').slideUp(500)
+        }
+        if ($('#t_said').val() == 0.00) {
+            $('#form-paga-said').slideUp(500)
+        }
+        if ($('#t_capa').val() == 0.00) {
+            $('#form-paga-capa').slideUp(500)
+        }
+        if ($('#t_peri').val() == 0.00) {
+            $('#form-paga-peri').slideUp(500)
+        }
+        if ($('#t_pnoi').val() == 0.00) {
+            $('#form-paga-pnoi').slideUp(500)
+        }
+        if ($('#t_ajud').val() == 0.00) {
+            $('#form-paga-ajud').slideUp(500)
+        }
+    };
+
+    verificaSwitchPaga();
 });
 
 function openMyModal(event) {

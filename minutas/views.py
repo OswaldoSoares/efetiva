@@ -1342,6 +1342,8 @@ def exclui_minuta(request, idminuta):
     return redirect('index_minuta')
 
 
+
+
 def adiciona_minuta(request):
     c_form = FormMinuta
     c_idobj = None
