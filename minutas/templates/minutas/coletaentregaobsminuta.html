@@ -1,8 +1,8 @@
 <div class="article-minuta-dados article-info">
     <i class="bi bi-upload" title="LOCAL COLETA"></i>
     <span>
-        {% if selecionada.coleta != '' %}
-        {{ selecionada.coleta|slice:"0:80" }}
+        {% if s_minuta.coleta != '' %}
+        {{ s_minuta.coleta|slice:"0:80" }}
         {% else %}
         COLETA NÃO INFORMADA.
         {% endif %}
@@ -12,8 +12,8 @@
 <div class="article-minuta-dados article-info">
     <i class="bi bi-download" title="LOCAL ENTREGA"></i>
     <span>
-        {% if selecionada.entrega != '' %}
-        {{ selecionada.entrega|slice:"0:80" }}
+        {% if s_minuta.entrega != '' %}
+        {{ s_minuta.entrega|slice:"0:80" }}
         {% else %}
         ENTREGA NÃO INFORMADA.
         {% endif %}
@@ -21,14 +21,14 @@
     <div>
         <i class="bi bi-pencil-square i-button" onclick="openMyModal(event); return false;"
            data-title="COLETA - ENTREGA - OBS" data-action="{% url 'editacoletaentregaobs' %}"
-           data-button-save-label="EDITA" data-idminuta="{{ selecionada.idminuta }}"></i>
+           data-button-save-label="EDITA" data-idminuta="{{ s_minuta.idminuta }}"></i>
     </div>
 </div>
 <div class="article-minuta-dados article-info">
     <i class="bi bi-info-circle-fill" title="OBSERVAÇÕES"></i>
     <span>
-        {% if selecionada.obs != '' %}
-        {{ selecionada.obs|slice:"0:80" }}
+        {% if s_minuta.obs != '' %}
+        {{ s_minuta.obs|slice:"0:80" }}
         {% else %}
         OBSERVAÇÕES NÃO INFORMADA
         {% endif %}

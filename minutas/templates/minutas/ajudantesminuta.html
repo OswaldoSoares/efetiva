@@ -1,9 +1,9 @@
-{% for ajudante in selecionada.ajudantes %}
+{% for ajudante in s_minuta.ajudantes %}
 <div class="article-minuta-dados">
     <i class="bi bi-person-plus-fill"></i>
     <span title="{{ ajudante.nome }}">{{ ajudante.apelido }}</span>
     <div>
-        <i class="bi bi-trash i-button remove-colaborador" idMinuta="{{ selecionada.idminuta }}" Cargo="AJUDANTE"
+        <i class="bi bi-trash i-button remove-colaborador" idMinuta="{{ s_minuta.idminuta }}" Cargo="AJUDANTE"
            idMinutaColaboradores="{{ ajudante.idMinutaColaboradores }}"></i>
     </div>
 </div>

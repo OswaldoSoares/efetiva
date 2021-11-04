@@ -638,7 +638,7 @@ def consultaminuta(request, idmin):
 
 
 def minuta(request, idminuta):
-    selecionada = MinutaSelecionada(idminuta).__dict__
+    s_minuta = MinutaSelecionada(idminuta).__dict__
     minuta = Minuta.objects.filter(idMinuta=idminuta)
     minutaform = get_object_or_404(minuta, idMinuta=idminuta)
     form_veiculo_solicitado = FormEditaVeiculoSolicitado(instance=minutaform)
@@ -646,7 +646,7 @@ def minuta(request, idminuta):
     form_km_inicial = CadastraMinutaKMInicial(instance=minutaform)
     form_km_final = CadastraMinutaKMFinal(instance=minutaform)
     contexto = {
-        'selecionada': selecionada, 'form_veiculo_solicitado': form_veiculo_solicitado,
+        's_minuta': s_minuta, 'form_veiculo_solicitado': form_veiculo_solicitado,
         'form_hora_final': form_hora_final, 'form_km_inicial': form_km_inicial, 'form_km_final': form_km_final}
     return render(request, 'minutas/minuta.html', contexto)
 

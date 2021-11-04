@@ -1,22 +1,22 @@
-{% if selecionada.veiculo_solicitado %}
-{% for motorista in selecionada.motorista %}
+{% if s_minuta.veiculo_solicitado %}
+{% for motorista in s_minuta.motorista %}
 <div class="article-minuta-dados">
     <i class="bi bi-person-square"></i>
     <span title="{{ motorista.nome }}">{{ motorista.apelido }}</span>
     <div>
-        <i class="bi bi-trash i-button remove-colaborador" idMinuta="{{ selecionada.idminuta }}" Cargo="MOTORISTA"
+        <i class="bi bi-trash i-button remove-colaborador" idMinuta="{{ s_minuta.idminuta }}" Cargo="MOTORISTA"
            idMinutaColaboradores="{{ motorista.idMinutaColaboradores }}"></i>
     </div>
 </div>
-{% if selecionada.veiculo %}
+{% if s_minuta.veiculo %}
 <div class="article-minuta-dados">
     <i class="bi bi-truck"></i>
-    <span>{{ selecionada.veiculo.Marca }} {{ selecionada.veiculo.Modelo }} -
-          {{ selecionada.veiculo.Placa}}</span>
+    <span>{{ s_minuta.veiculo.Marca }} {{ s_minuta.veiculo.Modelo }} -
+          {{ s_minuta.veiculo.Placa}}</span>
     <div>
         <i class="bi bi-pencil-square i-button" onclick="openMyModal(event); return false;" data-title="VEÍCULO"
            data-action="{% url 'editaveiculoescolhido' %}" data-button-save-label="EDITAR"
-           data-idminuta="{{ selecionada.idminuta }}" data-idpessoal="{{ motorista.obj.idPessoal }}"></i>
+           data-idminuta="{{ s_minuta.idminuta }}" data-idpessoal="{{ motorista.obj.idPessoal }}"></i>
     </div>
 </div>
 <form class="html-km-inicial" method="post" action="{% url 'editakminicial' %}" id="form-edita-km">
@@ -26,7 +26,7 @@
         <span>
             <div class="div-input">
                 {{ form_km_inicial.KMInicial }}
-                <input type="hidden" name="idMinuta" value="{{ selecionada.idminuta }}">
+                <input type="hidden" name="idMinuta" value="{{ s_minuta.idminuta }}">
             </div>
         </span>
         <div>
@@ -41,7 +41,7 @@
         <span>
             <div class="div-input">
                 {{ form_km_final.KMFinal }}
-                <input type="hidden" name="idMinuta" value="{{ selecionada.idminuta }}">
+                <input type="hidden" name="idMinuta" value="{{ s_minuta.idminuta }}">
             </div>
         </span>
         <div>
@@ -51,7 +51,7 @@
 </form>
 <div class="article-minuta-dados calcula-kms">
     <i class="bi bi-calculator"></i>
-    <span class="total-kms">{{ selecionada.total_kms }} KMs</span>
+    <span class="total-kms">{{ s_minuta.total_kms }} KMs</span>
     <div></div>
 </div>
 {% endif %}
@@ -62,7 +62,7 @@
     <div>
         <i class="bi bi-pencil-square i-button" onclick="openMyModal(event); return false;"
            data-title="INSERE MOTORISTA" data-action="{% url 'inseremotorista' %}" data-button-save-label="INSERIR"
-           data-idminuta="{{ selecionada.idminuta }}"></i>
+           data-idminuta="{{ s_minuta.idminuta }}"></i>
     </div>
 </div>
 {% endfor %}

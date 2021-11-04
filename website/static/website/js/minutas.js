@@ -453,111 +453,111 @@ $(document).ready(function(){
         }
     });
 
-    $(document).on('change', '#sw-taxaexpedicao-pg', function(event) {
-        var visible = $('#form-paga-porcentagem').is(':visible')
+    $(document).on('change', '#c_porc', function(event) {
+        var visible = $('#form-paga-porc').is(':visible')
         if (visible) {
-            $('#form-paga-porcentagem').slideUp(500)
+            $('#form-paga-porc').slideUp(500)
         } else {
-            $('#form-paga-porcentagem').slideDown(500)
+            $('#form-paga-porc').slideDown(500)
         }
     });
 
-    $(document).on('change', '#sw-horas-pg', function(event) {
-        var visible = $('#form-paga-horas').is(':visible')
+    $(document).on('change', '#c_hora', function(event) {
+        var visible = $('#form-paga-hora').is(':visible')
         if (visible) {
-            $('#form-paga-horas').slideUp(500)
+            $('#form-paga-hora').slideUp(500)
         } else {
-            $('#form-paga-horas').slideDown(500)
+            $('#form-paga-hora').slideDown(500)
         }
     });
 
-    $(document).on('change', '#sw-horasexcede-pg', function(event) {
-        var visible = $('#form-paga-horasexcede').is(':visible')
+    $(document).on('change', '#c_exce', function(event) {
+        var visible = $('#form-paga-exce').is(':visible')
         if (visible) {
-            $('#form-paga-horasexcede').slideUp(500)
+            $('#form-paga-exce').slideUp(500)
         } else {
-            $('#form-paga-horasexcede').slideDown(500)
+            $('#form-paga-exce').slideDown(500)
         }
     });
 
-    $(document).on('change', '#sw-kilometragem-pg', function(event) {
-        var visible = $('#form-paga-kilometragem').is(':visible')
+    $(document).on('change', '#c_kilm', function(event) {
+        var visible = $('#form-paga-kilm').is(':visible')
         if (visible) {
-            $('#form-paga-kilometragem').slideUp(500)
+            $('#form-paga-kilm').slideUp(500)
         } else {
-            $('#form-paga-kilometragem').slideDown(500)
+            $('#form-paga-kilm').slideDown(500)
         }
     });
 
-    $(document).on('change', '#sw-entregas-pg', function(event) {
-        var visible = $('#form-paga-entregas').is(':visible')
+    $(document).on('change', '#c_entr', function(event) {
+        var visible = $('#form-paga-entr').is(':visible')
         if (visible) {
-            $('#form-paga-entregas').slideUp(500)
+            $('#form-paga-entr').slideUp(500)
         } else {
-            $('#form-paga-entregas').slideDown(500)
+            $('#form-paga-entr').slideDown(500)
         }
     });
 
-    $(document).on('change', '#sw-entregaskg-pg', function(event) {
-        var visible = $('#form-paga-entregaskg').is(':visible')
+    $(document).on('change', '#c_enkg', function(event) {
+        var visible = $('#form-paga-enkg').is(':visible')
         if (visible) {
-            $('#form-paga-entregaskg').slideUp(500)
+            $('#form-paga-enkg').slideUp(500)
         } else {
-            $('#form-paga-entregaskg').slideDown(500)
+            $('#form-paga-enkg').slideDown(500)
         }
     });
 
-    $(document).on('change', '#sw-entregasvolume-pg', function(event) {
-        var visible = $('#form-paga-entregasvolume').is(':visible')
+    $(document).on('change', '#c_evol', function(event) {
+        var visible = $('#form-paga-evol').is(':visible')
         if (visible) {
-            $('#form-paga-entregasvolume').slideUp(500)
+            $('#form-paga-evol').slideUp(500)
         } else {
-            $('#form-paga-entregavolume').slideDown(500)
+            $('#form-paga-evol').slideDown(500)
         }
     });
 
-    $(document).on('change', '#sw-saida-pg', function(event) {
-        var visible = $('#form-paga-saida').is(':visible')
+    $(document).on('change', '#c_said', function(event) {
+        var visible = $('#form-paga-said').is(':visible')
         if (visible) {
-            $('#form-paga-saida').slideUp(500)
+            $('#form-paga-said').slideUp(500)
         } else {
-            $('#form-paga-saida').slideDown(500)
+            $('#form-paga-said').slideDown(500)
         }
     });
 
-    $(document).on('change', '#sw-capacidade-pg', function(event) {
-        var visible = $('#form-paga-capacidade').is(':visible')
+    $(document).on('change', '#c_capa', function(event) {
+        var visible = $('#form-paga-capa').is(':visible')
         if (visible) {
-            $('#form-paga-capacidade').slideUp(500)
+            $('#form-paga-capa').slideUp(500)
         } else {
-            $('#form-paga-capacidade').slideDown(500)
+            $('#form-paga-capa').slideDown(500)
         }
     });
 
-    $(document).on('change', '#sw-perimetro-pg', function(event) {
-        var visible = $('#form-paga-perimetro').is(':visible')
+    $(document).on('change', '#c_peri', function(event) {
+        var visible = $('#form-paga-peri').is(':visible')
         if (visible) {
-            $('#form-paga-perimetro').slideUp(500)
+            $('#form-paga-peri').slideUp(500)
         } else {
-            $('#form-paga-perimetro').slideDown(500)
+            $('#form-paga-peri').slideDown(500)
         }
     });
 
-    $(document).on('change', '#sw-pernoite-pg', function(event) {
-        var visible = $('#form-paga-pernoite').is(':visible')
+    $(document).on('change', '#c_pnoi', function(event) {
+        var visible = $('#form-paga-pnoi').is(':visible')
         if (visible) {
-            $('#form-paga-pernoite').slideUp(500)
+            $('#form-paga-pnoi').slideUp(500)
         } else {
-            $('#form-paga-pernoite').slideDown(500)
+            $('#form-paga-pnoi').slideDown(500)
         }
     });
 
-    $(document).on('change', '#sw-ajudante-pg', function(event) {
-        var visible = $('#form-paga-ajudante').is(':visible')
+    $(document).on('change', '#c_ajud', function(event) {
+        var visible = $('#form-paga-ajud').is(':visible')
         if (visible) {
-            $('#form-paga-ajudante').slideUp(500)
+            $('#form-paga-ajud').slideUp(500)
         } else {
-            $('#form-paga-ajudante').slideDown(500)
+            $('#form-paga-ajud').slideDown(500)
         }
     });
 });

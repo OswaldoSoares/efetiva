@@ -1,4 +1,4 @@
-{% for entrega in selecionada.entregas %}
+{% for entrega in s_minuta.entregas %}
 <div class="article-descricao">
     <div class="descricao-entrega">
         <div class="dados-nota">
@@ -48,7 +48,7 @@
         </div>
     </div>
     <div class="div-i-button">
-        <i class="bi bi-trash i-button remove-entrega" idMinuta="{{ selecionada.idminuta }}"
+        <i class="bi bi-trash i-button remove-entrega" idMinuta="{{ s_minuta.idminuta }}"
            idMinutaNotas="{{ entrega.idMinutaNotas }}"></i>
     </div>
 </div>

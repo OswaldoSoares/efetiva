@@ -1,11 +1,11 @@
-{% if selecionada.veiculo_solicitado %}
+{% if s_minuta.veiculo_solicitado %}
 <div class="article-minuta-dados">
     <i class="bi bi-chat-right-text"></i>
-    <span>{{ selecionada.veiculo_solicitado }}</span>
+    <span>{{ s_minuta.veiculo_solicitado }}</span>
     <div>
        <i class="bi bi-pencil-square i-button" data-dialog-class="modal-sm" onclick="openMyModal(event); return false;"
           data-title="VEÍCULO SOLICITADO" data-action="{% url 'editaveiculosolicitado' %}"
-          data-button-save-label="EDITAR" data-idminuta="{{ selecionada.idminuta }}"></i>
+          data-button-save-label="EDITAR" data-idminuta="{{ s_minuta.idminuta }}"></i>
     </div>
 </div>
 {% else %}
@@ -15,7 +15,7 @@
     <div>
         <i class="bi bi-plus-square i-button" onclick="openMyModal(event); return false;"
            data-title="VEÍCULO SOLICITADO" data-action="{% url 'editaveiculosolicitado' %}"
-           data-button-save-label="EDITAR" data-idminuta="{{ selecionada.idminuta }}"></i>
+           data-button-save-label="EDITAR" data-idminuta="{{ s_minuta.idminuta }}"></i>
     </div>
 </div>
 {% endif %}

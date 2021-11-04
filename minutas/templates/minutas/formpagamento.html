@@ -1,304 +1,315 @@
 <form class="" method="post" action="{{ c_url }}" id="{{ c_idobj }}">
 {% csrf_token %}
-    <!-- Porcentagem -->
     <div class="form-paga">
         <span>PORCENTAGEM NOTA</span>
-        <input type="checkbox" class="new-switch new-switch--shadow" id="sw-taxaexpedicao-pg" checked="checked"
+        <input type="checkbox" class="new-switch new-switch--shadow" id="c_porc"
+               {% if s_minuta.paga.c_porc %} checked="checked" {% endif %}
                name="switch">
-        <label for="sw-taxaexpedicao-pg"></label>
+        <label for="c_porc"></label>
     </div>
-    <div class="form-paga" id="form-paga-porcentagem">
+    <div class="form-paga" id="form-paga-porc">
         <div>
             <span class="form-label-paga">%</span>
-            <input type="number" class="form-control-paga" name="field-a-porcentagem-pg" step="0.01"
-               value="{{ selecionada.pagamentos.valor_porcentagem|stringformat:'.2f' }}">
+            <input type="number" class="form-control-paga" name="v_porc" step="0.01"
+               value="{{ s_minuta.paga.v_porc|stringformat:'.2f' }}">
         </div>
         <div>
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="field-b-porcentagem-pg-valor"
-               value="{{ selecionada.pagamentos.minuta_porcentagem|stringformat:'.2f' }}">
+            <input type="number" class="form-control-paga" name="m_porc"
+               value="{{ s_minuta.paga.m_porc|stringformat:'.2f' }}">
         </div>
         <div>
             <span>=</span>
         </div>
         <div>
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="total-porcentagem-pg"
-               value="{{ selecionada.pagamentos.total_porcentagem|stringformat:'.2f' }}" readonly>
+            <input type="number" class="form-control-paga" name="t_porc"
+               value="{{ s_minuta.paga.t_porc|stringformat:'.2f' }}" readonly>
         </div>
     </div>
     <div class="form-paga">
         <span>HORAS</span>
-        <input type="checkbox" class="new-switch new-switch--shadow" id="sw-horas-pg" checked="checked"
+        <input type="checkbox" class="new-switch new-switch--shadow" id="c_hora"
+               {% if s_minuta.paga.c_hora %} checked="checked" {% endif %}
                name="switch">
-        <label for="sw-horas-pg"></label>
+        <label for="c_hora"></label>
     </div>
-    <div class="form-paga" id="form-paga-horas">
+    <div class="form-paga" id="form-paga-hora">
         <div>
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="field-a-horas-pg" step="0.01"
-               value="{{ selecionada.pagamentos.valor_hora|stringformat:'.2f' }}">
+            <input type="number" class="form-control-paga" name="v_hora" step="0.01"
+               value="{{ s_minuta.paga.v_hora|stringformat:'.2f' }}">
         </div>
         <div>
             <span class="form-label-paga">HS</span>
-            <input type="time" class="form-control-paga" name="field-b-horas-pg"
-               value="{{ selecionada.pagamentos.minuta_hora }}">
+            <input type="time" class="form-control-paga" name="m_hora"
+               value="{{ s_minuta.paga.m_hora }}">
         </div>
         <div>
             <span>=</span>
         </div>
         <div>
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="total-horas-paga"
-               value="{{ selecionada.pagamentos.total_hora|stringformat:'.2f' }}" readonly>
+            <input type="number" class="form-control-paga" name="t_hora"
+               value="{{ s_minuta.paga.t_hora|stringformat:'.2f' }}" readonly>
         </div>
     </div>
     <div class="form-paga">
         <span>HORAS EXCEDENTE</span>
-        <input type="checkbox" class="new-switch new-switch--shadow" id="sw-horasexcede-pg" checked="checked"
+        <input type="checkbox" class="new-switch new-switch--shadow" id="c_exce"
+               {% if s_minuta.paga.c_exce %} checked="checked" {% endif %}
                name="switch">
-        <label for="sw-horasexcede-pg"></label>
+        <label for="c_exce"></label>
     </div>
-    <div class="form-paga" id="form-paga-horasexcede">
+    <div class="form-paga" id="form-paga-exce">
         <div>
             <span class="form-label-paga">%</span>
-            <input type="number" class="form-control-paga" name="field-a-horasexcede-pg" step="0.01"
-               value="{{ selecionada.pagamentos.valor_horaexcede|stringformat:'.2f' }}">
+            <input type="number" class="form-control-paga" name="v_exce" step="0.01"
+               value="{{ s_minuta.paga.v_exce|stringformat:'.2f' }}">
         </div>
         <div>
             <span class="form-label-paga">HS</span>
-            <input type="time" class="form-control-paga" name="field-a-horasexcede-pg"
-               value="{{ selecionada.pagamentos.minuta_horaexcede }}">
+            <input type="time" class="form-control-paga" name="m_exce"
+               value="{{ s_minuta.paga.m_exce }}">
         </div>
         <div>
             <span>=</span>
         </div>
         <div>
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="total-horasexcede-paga"
-               value="{{ selecionada.pagamentos.total_horaexcede|stringformat:'.2f' }}" readonly>
+            <input type="number" class="form-control-paga" name="t_exce"
+               value="{{ s_minuta.paga.t_exce|stringformat:'.2f' }}" readonly>
         </div>
     </div>
     <div class="form-paga">
         <span>KILOMETRAGEM</span>
-        <input type="checkbox" class="new-switch new-switch--shadow" id="sw-kilometragem-pg" checked="checked"
+        <input type="checkbox" class="new-switch new-switch--shadow" id="c_kilm"
+               {% if s_minuta.paga.c_kilm %} checked="checked" {% endif %}
                name="switch">
-        <label for="sw-kilometragem-pg"></label>
+        <label for="c_kilm"></label>
     </div>
-    <div class="form-paga" id="form-paga-kilometragem">
+    <div class="form-paga" id="form-paga-kilm">
         <div>
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="field-a-kilometragem-pg" step="0.01"
-               value="{{ selecionada.pagamentos.valor_kilometragem|stringformat:'.2f' }}">
+            <input type="number" class="form-control-paga" name="v_kilm" step="0.01"
+               value="{{ s_minuta.paga.v_kilm|stringformat:'.2f' }}">
         </div>
         <div>
             <span class="form-label-paga">UN</span>
-            <input type="number" class="form-control-paga" name="field-b-kilometragem-pg" step="1.00"
-               value="{{ selecionada.pagamentos.minuta_kilometragem|stringformat:'.0f' }}">
+            <input type="number" class="form-control-paga" name="m_kilm" step="1.00"
+               value="{{ s_minuta.paga.m_kilm|stringformat:'.0f' }}">
         </div>
         <div>
             <span>=</span>
         </div>
         <div>
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="total-kilometragem-pg"
-               value="{{ selecionada.pagamentos.total_kilometragem|stringformat:'.2f' }}" readonly>
+            <input type="number" class="form-control-paga" name="t_kilm"
+               value="{{ s_minuta.paga.t_kilm|stringformat:'.2f' }}" readonly>
         </div>
     </div>
     <div class="form-paga">
         <span>ENTREGAS</span>
-        <input type="checkbox" class="new-switch new-switch--shadow" id="sw-entregas-pg" checked="checked"
+        <input type="checkbox" class="new-switch new-switch--shadow" id="c_entr"
+               {% if s_minuta.paga.c_entr %} checked="checked" {% endif %}
                name="switch">
-        <label for="sw-entregas-pg"></label>
+        <label for="c_entr"></label>
     </div>
-    <div class="form-paga" id="form-paga-entregas">
+    <div class="form-paga" id="form-paga-entr">
         <div>
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="field-a-entregas-pg" step="0.01"
-               value="{{ selecionada.pagamentos.valor_entregas|stringformat:'.2f' }}">
+            <input type="number" class="form-control-paga" name="v_entr" step="0.01"
+               value="{{ s_minuta.paga.v_entr|stringformat:'.2f' }}">
         </div>
         <div>
             <span class="form-label-paga">UN</span>
-            <input type="number" class="form-control-paga" name="field-b-entregas-pg" step="1.00"
-               value="{{ selecionada.pagamentos.minuta_entregas|stringformat:'.0f' }}">
+            <input type="number" class="form-control-paga" name="m_entr" step="1.00"
+               value="{{ s_minuta.paga.m_entr|stringformat:'.0f' }}">
         </div>
         <div>
             <span>=</span>
         </div>
         <div>
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="total-entregas-pg"
-               value="{{ selecionada.pagamentos.total_entregas|stringformat:'.2f' }}" readonly>
+            <input type="number" class="form-control-paga" name="t_entr"
+               value="{{ s_minuta.paga.t_entr|stringformat:'.2f' }}" readonly>
         </div>
     </div>
     <div class="form-paga">
         <span>ENTREGAS KG</span>
-        <input type="checkbox" class="new-switch new-switch--shadow" id="sw-entregaskg-pg" checked="checked"
+        <input type="checkbox" class="new-switch new-switch--shadow" id="c_enkg"
+               {% if s_minuta.paga.c_enkg %} checked="checked" {% endif %}
                name="switch">
-        <label for="sw-entregaskg-pg"></label>
+        <label for="c_enkg"></label>
     </div>
-    <div class="form-paga" id="form-paga-entregaskg">
+    <div class="form-paga" id="form-paga-enkg">
         <div>
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="field-a-entregaskg-pg" step="0.01"
-               value="{{ selecionada.pagamentos.valor_entregaskg|stringformat:'.2f' }}">
+            <input type="number" class="form-control-paga" name="v_enkg" step="0.01"
+               value="{{ s_minuta.paga.v_enkg|stringformat:'.2f' }}">
         </div>
         <div>
             <span class="form-label-paga">KG</span>
-            <input type="number" class="form-control-paga" name="field-b-entregaskg-pg"
-               value="{{ selecionada.pagamentos.minuta_entregaskg|stringformat:'.2f' }}">
+            <input type="number" class="form-control-paga" name="m_enkg"
+               value="{{ s_minuta.paga.m_enkg|stringformat:'.2f' }}">
         </div>
         <div>
             <span>=</span>
         </div>
         <div>
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="total-entregaskg-pg"
-               value="{{ selecionada.pagamentos.total_entregaskg|stringformat:'.2f' }}" readonly>
+            <input type="number" class="form-control-paga" name="t_enkg"
+               value="{{ s_minuta.paga.t_enkg|stringformat:'.2f' }}" readonly>
         </div>
     </div>
     <div class="form-paga">
         <span>ENTREGAS VOLUME</span>
-        <input type="checkbox" class="new-switch new-switch--shadow" id="sw-entregasvolume-pg" checked="checked"
+        <input type="checkbox" class="new-switch new-switch--shadow" id="c_evol"
+               {% if s_minuta.paga.c_entragasvolume %} checked="checked" {% endif %}
                name="switch">
-        <label for="sw-entregasvolume-pg"></label>
+        <label for="c_evol"></label>
     </div>
-    <div class="form-paga" id="form-paga-entregasvolume">
+    <div class="form-paga" id="form-paga-evol">
         <div>
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="field-a-entregasvolume-pg" step="0.01"
-               value="{{ selecionada.pagamentos.valor_entregasvolume|stringformat:'.2f' }}">
+            <input type="number" class="form-control-paga" name="v_evol" step="0.01"
+               value="{{ s_minuta.paga.v_evol|stringformat:'.2f' }}">
         </div>
         <div>
             <span class="form-label-paga">UN</span>
-            <input type="number" class="form-control-paga" name="field-b-entregasvolume-pg" step="1.00"
-               value="{{ selecionada.pagamentos.minuta_entregasvolume|stringformat:'.0f' }}">
+            <input type="number" class="form-control-paga" name="m_evol" step="1.00"
+               value="{{ s_minuta.paga.m_evol|stringformat:'.0f' }}">
         </div>
         <div>
             <span>=</span>
         </div>
         <div>
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="total-entregasvolume-pg"
-               value="{{ selecionada.pagamentos.total_entregasvolume|stringformat:'.2f' }}">
+            <input type="number" class="form-control-paga" name="t_evol"
+               value="{{ s_minuta.paga.t_evol|stringformat:'.2f' }}">
         </div>
     </div>
     <div class="form-paga">
         <span>SAÍDA</span>
-        <input type="checkbox" class="new-switch new-switch--shadow" id="sw-saida-pg" checked="checked"
+        <input type="checkbox" class="new-switch new-switch--shadow" id="c_said"
+               {% if s_minuta.paga.c_said %} checked="checked" {% endif %}
                name="switch">
-        <label for="sw-saida-pg"></label>
+        <label for="c_said"></label>
     </div>
-    <div class="form-paga" id="form-paga-saida">
+    <div class="form-paga" id="form-paga-said">
         <div>
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="field-a-saida-pg" step="0.01"
-               value="{{ selecionada.pagamentos.valor_saida|stringformat:'.2f' }}">
+            <input type="number" class="form-control-paga" name="v_said" step="0.01"
+               value="{{ s_minuta.paga.v_said|stringformat:'.2f' }}">
         </div>
         <div></div>
         <div></div>
         <div>
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="total-saida-pg"
-               value="{{ selecionada.pagamentos.valor_saida|stringformat:'.2f' }}" readonly>
+            <input type="number" class="form-control-paga" name="t_said"
+               value="{{ s_minuta.paga.v_said|stringformat:'.2f' }}" readonly>
         </div>
     </div>
     <div class="form-paga">
         <span>CAPCIDADE PESO</span>
-        <input type="checkbox" class="new-switch new-switch--shadow" id="sw-capacidade-pg" checked="checked"
+        <input type="checkbox" class="new-switch new-switch--shadow" id="c_capa"
+               {% if s_minuta.paga.c_capa %} checked="checked" {% endif %}
                name="switch">
-        <label for="sw-capacidade-pg"></label>
+        <label for="c_capa"></label>
     </div>
-    <div class="form-paga" id="form-paga-capacidade">
+    <div class="form-paga" id="form-paga-capa">
         <div>
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="field-a-capacidade-pg" step="0.01"
-               value="{{ selecionada.pagamentos.valor_capacidade|stringformat:'.2f' }}">
+            <input type="number" class="form-control-paga" name="v_capa" step="0.01"
+               value="{{ s_minuta.paga.v_capa|stringformat:'.2f' }}">
         </div>
         <div></div>
         <div></div>
         <div>
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="total-capacidade-pg"
-               value="{{ selecionada.pagamentos.valor_capacidade|stringformat:'.2f' }}" readonly>
+            <input type="number" class="form-control-paga" name="t_capa"
+               value="{{ s_minuta.paga.v_capa|stringformat:'.2f' }}" readonly>
         </div>
     </div>
     <div class="form-paga">
         <span>PERIMETRO</span>
-        <input type="checkbox" class="new-switch new-switch--shadow" id="sw-perimetro-pg" checked="checked"
+        <input type="checkbox" class="new-switch new-switch--shadow" id="c_peri"
+               {% if s_minuta.paga.c_peri %} checked="checked" {% endif %}
                name="switch">
-        <label for="sw-perimetro-pg"></label>
+        <label for="c_peri"></label>
     </div>
-    <div class="form-paga" id="form-paga-perimetro">
+    <div class="form-paga" id="form-paga-peri">
         <div>
             <span class="form-label-paga">%</span>
-            <input type="number" class="form-control-paga" name="field-a-perimetro-pg" step="0.01"
-               value="{{ selecionada.pagamentos.valor_perimetro|stringformat:'.2f' }}">
+            <input type="number" class="form-control-paga" name="v_peri" step="0.01"
+               value="{{ s_minuta.paga.v_peri|stringformat:'.2f' }}">
         </div>
         <div>
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="field-b-perimetro-pg"
-               value="{{ selecionada.pagamentos.minuta_perimetro|stringformat:'.2f' }}">
+            <input type="number" class="form-control-paga" name="m_peri"
+               value="{{ s_minuta.paga.m_peri|stringformat:'.2f' }}">
         </div>
         <div>
             <span>=</span>
         </div>
         <div>
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="total-perimetro-pg"
-               value="{{ selecionada.pagamentos.total_perimetro|stringformat:'.2f' }}" readonly>
+            <input type="number" class="form-control-paga" name="t_peri"
+               value="{{ s_minuta.paga.t_peri|stringformat:'.2f' }}" readonly>
         </div>
     </div>
     <div class="form-paga">
         <span>PERNOITE</span>
-        <input type="checkbox" class="new-switch new-switch--shadow" id="sw-pernoite-pg" checked="checked"
+        <input type="checkbox" class="new-switch new-switch--shadow" id="c_pnoi"
+               {% if s_minuta.paga.c_pnoi %} checked="checked" {% endif %}
                name="switch">
-        <label for="sw-pernoite-pg"></label>
+        <label for="c_pnoi"></label>
     </div>
-    <div class="form-paga" id="form-paga-pernoite">
+    <div class="form-paga" id="form-paga-pnoi">
         <div>
             <span class="form-label-paga">%</span>
-            <input type="number" class="form-control-paga" name="field-a-pernoite-pg" step="0.01"
-               value="{{ selecionada.pagamentos.valor_pernoite|stringformat:'.2f' }}">
+            <input type="number" class="form-control-paga" name="v_pnoi" step="0.01"
+               value="{{ s_minuta.paga.v_pnoi|stringformat:'.2f' }}">
         </div>
         <div>
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="field-b-pernoite-pg"
-               value="{{ selecionada.pagamentos.minuta_pernoite|stringformat:'.2f' }}">
+            <input type="number" class="form-control-paga" name="m_pnoi"
+               value="{{ s_minuta.paga.m_pnoi|stringformat:'.2f' }}">
         </div>
         <div>
             <span>=</span>
         </div>
         <div>
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="total-pernoite-pg"
-               value="{{ selecionada.pagamentos.total_pernoite|stringformat:'.2f' }}" readonly>
+            <input type="number" class="form-control-paga" name="t_pnoi"
+               value="{{ s_minuta.paga.t_pnoi|stringformat:'.2f' }}" readonly>
         </div>
     </div>
     <div class="form-paga">
         <span>AJUDANTE</span>
-        <input type="checkbox" class="new-switch new-switch--shadow" id="sw-ajudante-pg" checked="checked"
+        <input type="checkbox" class="new-switch new-switch--shadow" id="c_ajud"
+               {% if s_minuta.paga.c_ajud %} checked="checked" {% endif %}
                name="switch">
-        <label for="sw-ajudante-pg"></label>
+        <label for="c_ajud"></label>
     </div>
-    <div class="form-paga" id="form-paga-ajudante">
+    <div class="form-paga" id="form-paga-ajud">
         <div>
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="field-a-ajudante-pg" step="0.01"
-               value="{{ selecionada.pagamentos.valor_ajudante|stringformat:'.2f' }}">
+            <input type="number" class="form-control-paga" name="v_ajud" step="0.01"
+               value="{{ s_minuta.paga.v_ajud|stringformat:'.2f' }}">
         </div>
         <div>
             <span class="form-label-paga">UN</span>
-            <input type="number" class="form-control-paga" name="field-b-ajudante-pg" step="1.00"
-               value="{{ selecionada.pagamentos.minuta_ajudante|stringformat:'.0f' }}">
+            <input type="number" class="form-control-paga" name="m_ajud" step="1.00"
+               value="{{ s_minuta.paga.m_ajud|stringformat:'.0f' }}">
         </div>
         <div>
             <span>=</span>
         </div>
         <div>
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="total-ajudante-paga"
-               value="{{ selecionada.pagamentos.total_ajudante|stringformat:'.2f' }}" readonly>
+            <input type="number" class="form-control-paga" name="t_ajud"
+               value="{{ s_minuta.paga.t_ajud|stringformat:'.2f' }}" readonly>
         </div>
     </div>
 </form>

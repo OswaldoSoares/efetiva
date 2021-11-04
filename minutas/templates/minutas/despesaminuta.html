@@ -1,4 +1,4 @@
-{% for despesa in selecionada.despesas %}
+{% for despesa in s_minuta.despesas %}
 <div class="article-descricao" >
     <div class="descricao-despesa">
         <div class="dados-despesa">
@@ -18,7 +18,7 @@
         </div>
     </div>
     <div class="div-i-button">
-        <i class="bi bi-trash i-button remove-despesa" idMinuta="{{ selecionada.idminuta }}"
+        <i class="bi bi-trash i-button remove-despesa" idMinuta="{{ s_minuta.idminuta }}"
            idMinutaItens="{{ despesa.idMinutaItens }}"></i>
     </div>
 </div>
