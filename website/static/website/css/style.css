@@ -3265,13 +3265,3 @@ main .fp-recibo-tabela .fp-recibo-print {
 .i-button-nav span {
     font-size: 11px;
 }
-
-
-.form-texto {
-    height: 50px;
-    line-height: 18px;
-}
-
-input[type=textarea] {
-    height: 50px;
-}

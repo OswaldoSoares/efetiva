@@ -165,38 +165,41 @@ class MinutaSelecionada:
                       self.total_kms() <= itens['CapacidadeFinal']]
         perimetro = [itens['PerimetroPaga'] for itens in self.tabela_perimetro if itens['PerimetroInicial'] <=
                      self.get_total_kms() <= itens['PerimetroFinal']]
+        phkesc = self.tabela[0]['phkescPaga']
         if tabela_veiculo:
             v_paga['v_porc'] = tabela_veiculo['PorcentagemPaga']
             v_paga['m_porc'] = self.total_notas()[0]
             v_paga['t_porc'] = tabela_veiculo['PorcentagemPaga'] / 100 * self.total_notas()[0]
-            v_paga['c_porc'] = True
+            v_paga['c_porc'] = True if int(phkesc[0:1]) else False
             v_paga['v_hora'] = self.filtro_tabela_veiculo()['HoraPaga']
             v_paga['m_hora'] = self.filtro_tabela_veiculo()['HoraMinimo']
             v_paga['t_hora'] = calcula_valor_hora(100, v_paga['m_hora'], v_paga['v_hora'])
-            v_paga['c_hora'] = True
+            v_paga['c_hora'] = True if int(phkesc[1:2]) else False
             v_paga['v_exce'] = 100
             v_paga['m_exce'] = self.horas_excede().time()
             v_paga['t_exce'] = calcula_valor_hora(100, v_paga['m_exce'], v_paga['v_hora'])
-            v_paga['c_exce'] = True
+            v_paga['c_exce'] = True if int(phkesc[1:2]) else False
             v_paga['v_kilm'] = self.filtro_tabela_veiculo()['KMPaga']
             v_paga['m_kilm'] = self.get_total_kms()
             v_paga['t_kilm'] = self.filtro_tabela_veiculo()['KMPaga'] * self.get_total_kms()
-            v_paga['c_kilm'] = True
+            v_paga['c_kilm'] = True if int(phkesc[2:3]) else False
             v_paga['v_entr'] = self.filtro_tabela_veiculo()['EntregaPaga']
             v_paga['m_entr'] = self.total_notas()[3]
             v_paga['t_entr'] = self.filtro_tabela_veiculo()['EntregaPaga'] * self.total_notas()[3]
-            v_paga['c_entr'] = True
+            v_paga['c_entr'] = True if int(phkesc[3:4]) else False
             v_paga['v_enkg'] = self.filtro_tabela_veiculo()['EntregaKGPaga']
             v_paga['m_enkg'] = self.total_notas()[2]
             v_paga['t_enkg'] = self.filtro_tabela_veiculo()['EntregaKGPaga'] * self.total_notas()[2]
-            v_paga['c_enkg'] = True
+            v_paga['c_enkg'] = True if int(phkesc[4:5]) else False
             v_paga['v_evol'] = self.filtro_tabela_veiculo()['EntregaVolumePaga']
             v_paga['m_evol'] = self.total_notas()[1]
             v_paga['t_evol'] = self.filtro_tabela_veiculo()['EntregaVolumePaga'] * self.total_notas()[1]
-            v_paga['c_evol'] = True
+            v_paga['c_evol'] = True if int(phkesc[5:6]) else False
             v_paga['v_said'] = self.filtro_tabela_veiculo()['SaidaPaga']
+            v_paga['c_said'] = True if int(phkesc[6:7]) else False
             if capacidade:
                 v_paga['v_capa'] = capacidade[0]
+            v_paga['c_capa'] = True if int(phkesc[7:8]) else False
             if perimetro:
                 v_paga['v_peri'] = perimetro[0]
             v_paga['v_ajud'] = self.tabela[0]['AjudantePaga']
@@ -256,6 +259,7 @@ class MinutaSelecionada:
             valores_recebe['valor_ajudante'] = self.extra_ajudante_cobra()
             valores_recebe['minuta_ajudante'] = self.total_ajudantes()
         return valores_recebe
+
 
 class MinutaMotorista:
     def __init__(self, idminuta):
