@@ -8,12 +8,12 @@
         <label for="c_porc"></label>
     </div>
     <div class="form-paga" id="form-paga-porc">
-        <div>
+        <div class="v_paga">
             <span class="form-label-paga">%</span>
             <input type="number" class="form-control-paga" name="v_porc" step="0.01"
                value="{{ s_minuta.paga.v_porc|stringformat:'.2f' }}">
         </div>
-        <div>
+        <div class="m_paga">
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="m_porc"
                value="{{ s_minuta.paga.m_porc|stringformat:'.2f' }}">
@@ -21,7 +21,7 @@
         <div>
             <span>=</span>
         </div>
-        <div>
+        <div class="t_paga">
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="t_porc"
                value="{{ s_minuta.paga.t_porc|stringformat:'.2f' }}" readonly>
@@ -35,12 +35,12 @@
         <label for="c_hora"></label>
     </div>
     <div class="form-paga" id="form-paga-hora">
-        <div>
+        <div class="v_paga">
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="v_hora" step="0.01"
                value="{{ s_minuta.paga.v_hora|stringformat:'.2f' }}">
         </div>
-        <div>
+        <div class="m_paga">
             <span class="form-label-paga">HS</span>
             <input type="time" class="form-control-paga" name="m_hora"
                value="{{ s_minuta.paga.m_hora }}">
@@ -48,7 +48,7 @@
         <div>
             <span>=</span>
         </div>
-        <div>
+        <div class="t_paga">
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="t_hora"
                value="{{ s_minuta.paga.t_hora|stringformat:'.2f' }}" readonly>
@@ -62,12 +62,12 @@
         <label for="c_exce"></label>
     </div>
     <div class="form-paga" id="form-paga-exce">
-        <div>
+        <div class="v_paga">
             <span class="form-label-paga">%</span>
             <input type="number" class="form-control-paga" name="v_exce" step="0.01"
                value="{{ s_minuta.paga.v_exce|stringformat:'.2f' }}">
         </div>
-        <div>
+        <div class="m_paga">
             <span class="form-label-paga">HS</span>
             <input type="time" class="form-control-paga" name="m_exce"
                value="{{ s_minuta.paga.m_exce }}">
@@ -75,7 +75,7 @@
         <div>
             <span>=</span>
         </div>
-        <div>
+        <div class="t_paga">
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="t_exce"
                value="{{ s_minuta.paga.t_exce|stringformat:'.2f' }}" readonly>
@@ -89,12 +89,12 @@
         <label for="c_kilm"></label>
     </div>
     <div class="form-paga" id="form-paga-kilm">
-        <div>
+        <div class="v_paga">
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="v_kilm" step="0.01"
                value="{{ s_minuta.paga.v_kilm|stringformat:'.2f' }}">
         </div>
-        <div>
+        <div class="m_paga">
             <span class="form-label-paga">UN</span>
             <input type="number" class="form-control-paga" name="m_kilm" step="1.00"
                value="{{ s_minuta.paga.m_kilm|stringformat:'.0f' }}">
@@ -102,7 +102,7 @@
         <div>
             <span>=</span>
         </div>
-        <div>
+        <div class="t_paga">
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="t_kilm"
                value="{{ s_minuta.paga.t_kilm|stringformat:'.2f' }}" readonly>
@@ -116,12 +116,12 @@
         <label for="c_entr"></label>
     </div>
     <div class="form-paga" id="form-paga-entr">
-        <div>
+        <div class="v_paga">
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="v_entr" step="0.01"
                value="{{ s_minuta.paga.v_entr|stringformat:'.2f' }}">
         </div>
-        <div>
+        <div class="m_paga">
             <span class="form-label-paga">UN</span>
             <input type="number" class="form-control-paga" name="m_entr" step="1.00"
                value="{{ s_minuta.paga.m_entr|stringformat:'.0f' }}">
@@ -129,7 +129,7 @@
         <div>
             <span>=</span>
         </div>
-        <div>
+        <div class="t_paga">
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="t_entr"
                value="{{ s_minuta.paga.t_entr|stringformat:'.2f' }}" readonly>
@@ -143,12 +143,12 @@
         <label for="c_enkg"></label>
     </div>
     <div class="form-paga" id="form-paga-enkg">
-        <div>
+        <div class="v_paga">
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="v_enkg" step="0.01"
                value="{{ s_minuta.paga.v_enkg|stringformat:'.2f' }}">
         </div>
-        <div>
+        <div class="m_paga">
             <span class="form-label-paga">KG</span>
             <input type="number" class="form-control-paga" name="m_enkg"
                value="{{ s_minuta.paga.m_enkg|stringformat:'.2f' }}">
@@ -156,7 +156,7 @@
         <div>
             <span>=</span>
         </div>
-        <div>
+        <div class="t_paga">
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="t_enkg"
                value="{{ s_minuta.paga.t_enkg|stringformat:'.2f' }}" readonly>
@@ -170,12 +170,12 @@
         <label for="c_evol"></label>
     </div>
     <div class="form-paga" id="form-paga-evol">
-        <div>
+        <div class="v_paga">
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="v_evol" step="0.01"
                value="{{ s_minuta.paga.v_evol|stringformat:'.2f' }}">
         </div>
-        <div>
+        <div class="m_paga">
             <span class="form-label-paga">UN</span>
             <input type="number" class="form-control-paga" name="m_evol" step="1.00"
                value="{{ s_minuta.paga.m_evol|stringformat:'.0f' }}">
@@ -183,7 +183,7 @@
         <div>
             <span>=</span>
         </div>
-        <div>
+        <div class="t_paga">
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="t_evol"
                value="{{ s_minuta.paga.t_evol|stringformat:'.2f' }}">
@@ -197,14 +197,14 @@
         <label for="c_said"></label>
     </div>
     <div class="form-paga" id="form-paga-said">
-        <div>
+        <div class="v_paga">
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="v_said" step="0.01"
                value="{{ s_minuta.paga.v_said|stringformat:'.2f' }}">
         </div>
         <div></div>
         <div></div>
-        <div>
+        <div class="t_paga">
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="t_said"
                value="{{ s_minuta.paga.v_said|stringformat:'.2f' }}" readonly>
@@ -218,14 +218,14 @@
         <label for="c_capa"></label>
     </div>
     <div class="form-paga" id="form-paga-capa">
-        <div>
+        <div class="v_paga">
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="v_capa" step="0.01"
                value="{{ s_minuta.paga.v_capa|stringformat:'.2f' }}">
         </div>
         <div></div>
         <div></div>
-        <div>
+        <div class="t_paga">
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="t_capa"
                value="{{ s_minuta.paga.v_capa|stringformat:'.2f' }}" readonly>
@@ -239,12 +239,12 @@
         <label for="c_peri"></label>
     </div>
     <div class="form-paga" id="form-paga-peri">
-        <div>
+        <div class="v_paga">
             <span class="form-label-paga">%</span>
             <input type="number" class="form-control-paga" name="v_peri" step="0.01"
                value="{{ s_minuta.paga.v_peri|stringformat:'.2f' }}">
         </div>
-        <div>
+        <div class="m_paga">
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="m_peri"
                value="{{ s_minuta.paga.m_peri|stringformat:'.2f' }}">
@@ -252,7 +252,7 @@
         <div>
             <span>=</span>
         </div>
-        <div>
+        <div class="t_paga">
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="t_peri"
                value="{{ s_minuta.paga.t_peri|stringformat:'.2f' }}" readonly>
@@ -266,12 +266,12 @@
         <label for="c_pnoi"></label>
     </div>
     <div class="form-paga" id="form-paga-pnoi">
-        <div>
+        <div class="v_paga">
             <span class="form-label-paga">%</span>
             <input type="number" class="form-control-paga" name="v_pnoi" step="0.01"
                value="{{ s_minuta.paga.v_pnoi|stringformat:'.2f' }}">
         </div>
-        <div>
+        <div class="m_paga">
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="m_pnoi"
                value="{{ s_minuta.paga.m_pnoi|stringformat:'.2f' }}">
@@ -279,7 +279,7 @@
         <div>
             <span>=</span>
         </div>
-        <div>
+        <div class="t_paga">
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="t_pnoi"
                value="{{ s_minuta.paga.t_pnoi|stringformat:'.2f' }}" readonly>
@@ -293,12 +293,12 @@
         <label for="c_ajud"></label>
     </div>
     <div class="form-paga" id="form-paga-ajud">
-        <div>
+        <div class="v_paga">
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="v_ajud" step="0.01"
                value="{{ s_minuta.paga.v_ajud|stringformat:'.2f' }}">
         </div>
-        <div>
+        <div class="m_paga">
             <span class="form-label-paga">UN</span>
             <input type="number" class="form-control-paga" name="m_ajud" step="1.00"
                value="{{ s_minuta.paga.m_ajud|stringformat:'.0f' }}">
@@ -306,7 +306,7 @@
         <div>
             <span>=</span>
         </div>
-        <div>
+        <div class="t_paga">
             <span class="form-label-paga">R$</span>
             <input type="number" class="form-control-paga" name="t_ajud"
                value="{{ s_minuta.paga.t_ajud|stringformat:'.2f' }}" readonly>
