@@ -960,21 +960,7 @@ main .consulta .consulta-body {
     font-weight: bold;
 }
 
-.header-login {
-    display: flex;
-    align-content: center;
-    justify-content: center;
-}
 
-.header-login a {
-    color: white;
-    font-size: 24px;
-}
-
-.header-login a:hover {
-    color: white;
-    text-decoration: none;
-}
 
 
 /* Modulo Faturamento */
@@ -3242,6 +3228,7 @@ main .fp-recibo-tabela .fp-recibo-print {
     top: 0;
     margin: 0;
     display: flex;
+    flex-wrap: wrap;
     align-items: flex-end;
     justify-content: space-between;
     padding: 5px 50px 5px 50px;
@@ -3251,11 +3238,55 @@ main .fp-recibo-tabela .fp-recibo-print {
 .nav-superior {
     width: 80%;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     flex-direction: row;
     justify-content: space-between;
     font-size: 20px;
 }
+
+.header-login {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+.header-login a {
+    color: white;
+    font-size: 24px;
+}
+
+.header-login a:hover {
+    color: white;
+    text-decoration: none;
+}
+
+@media screen and (max-width: 360px) {
+    .header-base {
+        height: auto;
+        padding: 0;
+        position: absolute;
+    }
+
+    .nav-superior {
+        width: 100%;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 25px;
+    }
+    
+    .nav-superior div {
+        width: 25%;
+        padding: 2px;
+    }
+
+    .header-login {
+        width: 100%;
+    }
+    
+}
+
+
 
 .i-button-nav {
     display: flex;
