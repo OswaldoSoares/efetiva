@@ -2777,12 +2777,13 @@ main .fp-recibo-tabela .fp-recibo-print {
         margin: 5px;
         display: flex;
         flex-direction: column;
+        justify-content: center;
     }
 
         .ac-minuta {
             background-color: #4f4f4f;
             color: white;
-            min-width: 360px; 
+            min-width: 350px; 
             border-radius: 10px;   
         }
 
