@@ -70,7 +70,7 @@ class MinutaItens(models.Model):
     Peso = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     ValorBase = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     Tempo = models.DurationField(default=0)
-    Obs = models.TextField(default=None, blank=True)
+    Obs = models.TextField(default='', blank=True)
     idMinuta = models.ForeignKey(Minuta, on_delete=models.CASCADE)
 
     class Meta:
