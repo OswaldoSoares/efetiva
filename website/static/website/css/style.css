@@ -3263,21 +3263,20 @@ main .fp-recibo-tabela .fp-recibo-print {
 
 @media screen and (max-width: 360px) {
     .header-base {
-        height: auto;
+        height: 100vh;
         padding: 0;
-        position: absolute;
     }
 
     .nav-superior {
         width: 100%;
         align-items: center;
         justify-content: space-between;
-        font-size: 25px;
+        font-size: 50px;
     }
     
     .nav-superior div {
-        width: 25%;
-        padding: 2px;
+        width: 50%;
+        padding: 5px;
     }
 
     .header-login {
