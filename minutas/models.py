@@ -1,12 +1,12 @@
 from django.db import models
-from pip._vendor.contextlib2 import nullcontext
+# from pip._vendor.contextlib2 import nullcontext
 from clientes.models import Cliente
 from faturamentos.models import Fatura
 from pagamentos.models import Recibo
 from pessoas.models import Pessoal
 from veiculos.models import CategoriaVeiculo, Veiculo
 import datetime
-from datetime import timedelta
+# from datetime import timedelta
 
 
 class Minuta(models.Model):
