@@ -265,11 +265,11 @@ class FormInsereDespesa(forms.ModelForm):
 
     class Meta:
         model = MinutaItens
-        fields = {'idMinutaItens', 'Descricao', 'TipoItens', 'RecebePaga', 'Valor', 'Tempo', 'idMinuta'}
+        fields = {'idMinutaItens', 'Descricao', 'TipoItens', 'RecebePaga', 'Valor', 'Obs', 'Tempo', 'idMinuta'}
         widgets = {'idMinutaItens': forms.HiddenInput(),
                    'Descricao': forms.TextInput(attrs={'class': 'form-control', 'list': 'despesas'}),
                    'Valor': forms.NumberInput(attrs={'class': 'form-control'}),
-                   # 'Obs': forms.Textarea(attrs={'class': 'form-control campotexto'}),
+                   'Obs': forms.Textarea(attrs={'class': 'form-control campotexto'}),
                    'TipoItens': forms.HiddenInput(), 'RecebePaga': forms.HiddenInput(), 'Tempo': forms.HiddenInput()}
 
 
