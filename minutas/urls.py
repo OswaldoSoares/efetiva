@@ -8,7 +8,7 @@ from .views import index_minuta, criaminuta, editaminuta, imprimeminuta, conclui
     insere_motorista, insere_ajudante, \
     remove_minuta_colaborador, edita_minuta_hora_final, edita_minuta_km_inicial, edita_minuta_km_final, \
     edita_minuta_coleta_entrega_obs, insere_minuta_despesa, remove_minuta_despesa, insere_minuta_entrega, \
-    remove_minuta_entrega, adiciona_minuta, edita_minuta, minuta
+    remove_minuta_entrega, adiciona_minuta, edita_minuta, minuta, atualiza_form_pg
 
 
 urlpatterns = [
@@ -58,4 +58,5 @@ urlpatterns = [
     path('removedespesa/', remove_minuta_despesa, name='removedespesa'),
     path('insereentrega/', insere_minuta_entrega, name='insereentrega'),
     path('removeentrega/', remove_minuta_entrega, name='removeentrega'),
+    path('atualizaformpg/', atualiza_form_pg, name='atualizaformpg'),
 ]

@@ -1,4 +1,4 @@
-<form class="" method="post" action="{{ c_url }}" id="{{ c_idobj }}">
+<form class="" method="post" action="teste" id="teste2">
 {% csrf_token %}
     <div class="form-paga">
         <span>PORCENTAGEM NOTA</span>
@@ -312,4 +312,5 @@
                value="{{ s_minuta.paga.t_ajud|stringformat:'.2f' }}" readonly>
         </div>
     </div>
+    <button type="submit">OK</button>
 </form>

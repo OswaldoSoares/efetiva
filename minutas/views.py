@@ -1344,6 +1344,11 @@ def exclui_minuta(request, idminuta):
 
 
 
+def atualiza_form_pg(request):
+    print(request.POST)
+    print(request.GET)
+
+
 def adiciona_minuta(request):
     c_form = FormMinuta
     c_idobj = None
