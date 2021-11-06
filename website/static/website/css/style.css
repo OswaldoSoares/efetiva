@@ -1791,6 +1791,12 @@ main .usuario-out {
     width: 800px;
 }
 
+@media (max-width: 800px) {
+    .modal-dialog {
+        width: 340px;
+    }
+}
+
 .modal-header {
     background-color: var(--corterciaria);
     color: white;
