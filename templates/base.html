@@ -23,60 +23,36 @@
         <label for="chk" class="glyphicon glyphicon-menu-hamburger"></label>
     </div>
     -->
+    <nav class="menu-nav-icons">
+        <a href="{% url 'index_website' %}">
+            <i class="bi bi-clipboard-data i-button i-button-nav"><span>Painel Geral</span></i></a>
+        <a href="{% url 'indexcliente' %}">
+            <i class="bi bi-building i-button i-button-nav"><span>Clientes</span></i></a>
+        <a href="{% url 'indexpessoal' %}">
+            <i class="bi bi-people i-button i-button-nav"><span>Colaboradores</span></i></a>
+        <a href="{% url 'index_despesas' %}">
+            <i class="bi bi-bag i-button i-button-nav"><span>Despesas</span></i></a>
+        <a href="{% url 'index_faturamento' %}">
+            <i class="bi bi-bank i-button i-button-nav"><span>Faturamento</span></i></a>
+        <a href="{% url 'index_minuta' %}">
+            <i class="bi bi-file-text i-button i-button-nav"><span>Minutas</span></i></a>
+        <a href="{% url 'indexorcamento' %}">
+            <i class="bi bi-layout-text-window-reverse i-button i-button-nav"><span>Orçamentos</span></i></a>
+        <a href="{% url 'parametro' %}">
+            <i class="bi bi-gear i-button i-button-nav"><span>Parametros</span></i></a>
+        <a href="{% url 'index_pagamento' %}">
+            <i class="bi bi-cash i-button i-button-nav"><span>Pagamentos</span></i></a>
+        <a href="{% url 'indexveiculo' %}">
+            <i class="bi bi-truck i-button i-button-nav"><span>Veículos</span></i></a>
+        {% if request.user.is_authenticated %}
+        <a href=" {% url 'logout' %}">
+            <i class="bi bi-person-circle i-button i-button-nav"><span>{{ user }}</span></i></a>
+        {% else %}
+        <a  href="{% url 'cadastrausuario' %}">
+            <i class="bi bi-person-circle i-button i-button-nav"><span>Cadastre-se</span></i></a>
+        {% endif %}
+    </nav>
     <div class="container">
-        <header class="header-base">
-            <div class="nav-superior">
-                <div>
-                    <i class="bi bi-clipboard-data i-button i-button-nav"
-                       onclick="window.location.href = '{% url 'index_website' %}'"><span>PAINEL GERAL</span></i>
-                </div>
-                <div>
-                    <i class="bi bi-building i-button i-button-nav"
-                       onclick="window.location.href = '{% url 'indexcliente' %}'"><span>CLIENTES</span></i>
-                </div>
-                <div>
-                    <i class="bi bi-people i-button i-button-nav"
-                       onclick="window.location.href = '{% url 'indexpessoal' %}'"><span>COLABORADORES</span></i>
-                </div>
-                <div>
-                    <i class="bi bi-bag i-button i-button-nav"
-                       onclick="window.location.href = '{% url 'index_despesas' %}'"><span>DESPESAS</span></i>
-                </div>
-                <div>
-                    <i class="bi bi-bank i-button i-button-nav"
-                       onclick="window.location.href = '{% url 'index_faturamento' %}'"><span>FATURAMENTO</span></i>
-                </div>
-                <div>
-                    <i class="bi bi-file-text i-button i-button-nav"
-                       onclick="window.location.href = '{% url 'index_minuta' %}'"><span>MINUTAS</span></i>
-                </div>
-                <div>
-                    <i class="bi bi-layout-text-window-reverse i-button i-button-nav"
-                       onclick="window.location.href = '{% url 'indexorcamento' %}'"><span>ORÇAMENTO</span></i>
-                </div>
-                <div>
-                    <i class="bi bi-gear i-button i-button-nav"
-                       onclick="window.location.href = '{% url 'parametro' %}'"><span>PARAMETROS</span></i>
-                </div>
-                <div>
-                    <i class="bi bi-cash i-button i-button-nav"
-                       onclick="window.location.href = '{% url 'index_pagamento' %}'"><span>PAGAMENTOS</span></i>
-                </div>
-                <div>
-                    <i class="bi bi-truck i-button i-button-nav"
-                       onclick="window.location.href = '{% url 'indexveiculo' %}'"><span>VEÍCULOS</span></i>
-                </div>
-
-            </div>
-            <div class="header-login">
-                {% if request.user.is_authenticated %}
-                <a href=" {% url 'logout' %}">{{ user }}</a>
-                {% else %}
-                <a  href="{% url 'cadastrausuario' %}">Cadastre-se</a>
-                {% endif %}
-            </div>
-
-        </header>
         <!--
         <nav>
             <header class="header_website">
@@ -103,7 +79,6 @@
             </div>
         </nav>
         -->
-
         <div class="conteudo">
             <div class="mensagem">
                 <div class="div-erro">
