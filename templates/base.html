@@ -18,36 +18,38 @@
 <body>
     {% load static %}
     <input type="checkbox" id="chk">
-    <i class="bi bi-three-dots-vertical" id="menu-dots"></i>
-    <nav class="menu-nav-icons">
-        <a href="{% url 'index_website' %}">
-            <i class="bi bi-clipboard-data"><span>Painel Geral</span></i></a>
-        <a href="{% url 'indexcliente' %}">
-            <i class="bi bi-building"><span>Clientes</span></i></a>
-        <a href="{% url 'indexpessoal' %}">
-            <i class="bi bi-people"><span>Colaboradores</span></i></a>
-        <a href="{% url 'index_despesas' %}">
-            <i class="bi bi-bag"><span>Despesas</span></i></a>
-        <a href="{% url 'index_faturamento' %}">
-            <i class="bi bi-bank"><span>Faturamento</span></i></a>
-        <a href="{% url 'index_minuta' %}">
-            <i class="bi bi-file-text"><span>Minutas</span></i></a>
-        <a href="{% url 'indexorcamento' %}">
-            <i class="bi bi-layout-text-window-reverse"><span>Orçamentos</span></i></a>
-        <a href="{% url 'parametro' %}">
-            <i class="bi bi-gear"><span>Parametros</span></i></a>
-        <a href="{% url 'index_pagamento' %}">
-            <i class="bi bi-cash"><span>Pagamentos</span></i></a>
-        <a href="{% url 'indexveiculo' %}">
-            <i class="bi bi-truck"><span>Veículos</span></i></a>
-        {% if request.user.is_authenticated %}
-        <a href=" {% url 'logout' %}">
-            <i class="bi bi-person-circle"><span>{{ user }}</span></i></a>
-        {% else %}
-        <a  href="{% url 'cadastrausuario' %}">
-            <i class="bi bi-person-circlev"><span>Cadastre-se</span></i></a>
-        {% endif %}
-    </nav>
+    <div class="menu">
+        <i class="bi bi-three-dots-vertical" id="menu-dots"></i>
+        <nav class="menu-nav-icons">
+            <a href="{% url 'index_website' %}">
+                <i class="bi bi-clipboard-data"><span>Painel Geral</span></i></a>
+            <a href="{% url 'indexcliente' %}">
+                <i class="bi bi-building"><span>Clientes</span></i></a>
+            <a href="{% url 'indexpessoal' %}">
+                <i class="bi bi-people"><span>Colaboradores</span></i></a>
+            <a href="{% url 'index_despesas' %}">
+                <i class="bi bi-bag"><span>Despesas</span></i></a>
+            <a href="{% url 'index_faturamento' %}">
+                <i class="bi bi-bank"><span>Faturamento</span></i></a>
+            <a href="{% url 'index_minuta' %}">
+                <i class="bi bi-file-text"><span>Minutas</span></i></a>
+            <a href="{% url 'indexorcamento' %}">
+                <i class="bi bi-layout-text-window-reverse"><span>Orçamentos</span></i></a>
+            <a href="{% url 'parametro' %}">
+                <i class="bi bi-gear"><span>Parametros</span></i></a>
+            <a href="{% url 'index_pagamento' %}">
+                <i class="bi bi-cash"><span>Pagamentos</span></i></a>
+            <a href="{% url 'indexveiculo' %}">
+                <i class="bi bi-truck"><span>Veículos</span></i></a>
+            {% if request.user.is_authenticated %}
+            <a href=" {% url 'logout' %}">
+                <i class="bi bi-person-circle"><span>{{ user }}</span></i></a>
+            {% else %}
+            <a  href="{% url 'cadastrausuario' %}">
+                <i class="bi bi-person-circlev"><span>Cadastre-se</span></i></a>
+            {% endif %}
+        </nav>
+    </div>
     <div class="container">       
         <div class="conteudo">
             <div class="mensagem">

@@ -3229,78 +3229,83 @@ main .fp-recibo-tabela .fp-recibo-print {
 
 /* BARRA SUPERIOR */
 
-.menu-nav-icons {
-    width: 100%;
+.menu {
+    background-color: #696969;
     position: fixed;
     top: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 0;
-    text-align: center;
+    width: 100%;
     z-index: 9000;
 }
 
-    .menu-nav-icons a {
-        display: inline-block;
-        color: yellow;
-        background-color: black;
-        font-size: 25px;
-        font-weight: bold;
-        box-shadow: 1px 3px 5px 0 rgba(0, 0, 0, 0.26);
-        text-decoration: none;
-        border-top: none;
-        width: 100px;
-        margin: 0px auto 0 auto;
-        padding: 10px 0;
-        box-sizing: border-box;
+    .menu .menu-nav-icons {
+        width: 100%;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 0;
+        text-align: center;
     }
 
-    .menu-nav-icons a:hover {
-        color: dodgerblue;
-    }
-
-    .menu-nav-icons a span {
-        display: block;
-        font-size: 12px;
-        font-weight: bold;
-        line-height: 2;
-        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-    }
-
-    #menu-dots {
-        display: none;
-    }
-
-    @media (max-width: 800px) {
-        .menu-nav-icons {
-            position: static;
-            width: 100%;
-        }
-
-        .menu-nav-icons a {
-            /*display: none;*/
-            text-align: left;
+        .menu .menu-nav-icons a {
+            display: inline-block;
             color: yellow;
             background-color: black;
-            font-size: 0px;
+            font-size: 25px;
             font-weight: bold;
+            box-shadow: 1px 3px 5px 0 rgba(0, 0, 0, 0.26);
             text-decoration: none;
-            width: 100%;
-            margin: 0;
-            padding: 0 5px;
+            border-top: none;
+            width: 100px;
+            margin: 0px auto 0 auto;
+            padding: 10px 0;
+            box-sizing: border-box;
+        }
+
+        .menu .menu-nav-icons a:hover {
+            color: dodgerblue;
+        }
+
+        .menu .menu-nav-icons a span {
+            display: block;
+            font-size: 12px;
+            font-weight: bold;
+            line-height: 2;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
         }
 
         #menu-dots {
-            background-color: black;
-            color: yellow;
-            display: block;
-            font-size: 20px;
-            padding: 5px;
+            display: none;
         }
 
-        #menu-dots:hover {
-            color: dodgerblue;
+        @media (max-width: 800px) {
+            .menu {
+                position: static;
+                width: 100%;
+            }
+
+                .menu .menu-nav-icons a {
+                    /*display: none;*/
+                    text-align: left;
+                    color: yellow;
+                    background-color: black;
+                    font-size: 0px;
+                    font-weight: bold;
+                    text-decoration: none;
+                    width: 100%;
+                    margin: 0;
+                    padding: 0 5px;
+                }
+
+                #menu-dots {
+                    background-color: black;
+                    color: yellow;
+                    display: block;
+                    font-size: 20px;
+                    padding: 5px;
+                }
+
+                #menu-dots:hover {
+                    color: dodgerblue;
+                }
         }
-    }
 
 .header-base {
     background-color: black;
