@@ -14,6 +14,8 @@ $(document).ready(function(){
                     mostraMensagemErro()
                 }
                 if (data.html_tipo_mensagem == 'SUCESSO') {
+                    alert(data['html_pagamento'])
+                    $('.html-form-paga').html(data['html_pagamento']);
                     $(".mensagem-sucesso").text(data.html_mensagem);
                     mostraMensagemSucesso()
                 }
@@ -41,6 +43,7 @@ $(document).ready(function(){
                     mostraMensagemErro()
                 }
                 if (data.html_tipo_mensagem == 'SUCESSO') {
+                    $('.html-form-paga').html(data['html_pagamento']);
                     $(".mensagem-sucesso").text(data.html_mensagem);
                     mostraMensagemSucesso()
                 }
@@ -66,6 +69,7 @@ $(document).ready(function(){
                 Cargo: cargo
             },
             success: function(data){
+                $('.html-form-paga').html(data['html_pagamento']);
                 if (cargo == 'AJUDANTE') {
                     $('.html-ajudante').html(data['html_ajudante']);
                 } else if (cargo == 'MOTORISTA') {
@@ -91,6 +95,7 @@ $(document).ready(function(){
                 idMinuta: idminuta,
             },
             success: function(data){
+                $('.html-form-paga').html(data['html_pagamento']);
                 EscondeDespesa()
                 $('.html-despesa').html(data['html_despesa']);
                 MostraDespesa()
@@ -112,6 +117,8 @@ $(document).ready(function(){
                 idMinuta: idminuta,
             },
             success: function(data){
+                $('.html-form-paga').html(data['html_pagamento']);
+                verificaSwitchPaga()
                 EscondeEntrega()
                 $('.html-entrega').html(data['html_entrega']);
                 MostraEntrega()
@@ -448,8 +455,10 @@ $(document).ready(function(){
     $(document).on('click', '#chk-saida', function(event) {
         if ($('#chk-saida').is(":checked")) {
             $('#id_Nota').val($('#label-chk-saida').attr('saida'))
+            $('#id_ValorNota').focus();
         } else {
             $('#id_Nota').val('')
+            $('#id_Nota').focus();
         }
     });
 
@@ -561,44 +570,7 @@ $(document).ready(function(){
         }
     });
 
-    function verificaSwitchPaga() {
-        if ($('#t_porc').val() == 0.00) {
-            $('#form-paga-porc').slideUp(500)
-        }
-        if ($('#t_hora').val() == 0.00) {
-            $('#form-paga-hora').slideUp(500)
-        }
-        if ($('#t_exce').val() == 0.00) {
-            $('#form-paga-exce').slideUp(500)
-        }
-        if ($('#t_kilm').val() == 0.00) {
-            $('#form-paga-kilm').slideUp(500)
-        }
-        if ($('#t_entr').val() == 0.00) {
-            $('#form-paga-entr').slideUp(500)
-        }
-        if ($('#t_enkg').val() == 0.00) {
-            $('#form-paga-enkg').slideUp(500)
-        }
-        if ($('#t_evol').val() == 0.00) {
-            $('#form-paga-evol').slideUp(500)
-        }
-        if ($('#t_said').val() == 0.00) {
-            $('#form-paga-said').slideUp(500)
-        }
-        if ($('#t_capa').val() == 0.00) {
-            $('#form-paga-capa').slideUp(500)
-        }
-        if ($('#t_peri').val() == 0.00) {
-            $('#form-paga-peri').slideUp(500)
-        }
-        if ($('#t_pnoi').val() == 0.00) {
-            $('#form-paga-pnoi').slideUp(500)
-        }
-        if ($('#t_ajud').val() == 0.00) {
-            $('#form-paga-ajud').slideUp(500)
-        }
-    };
+    
 
 
     function formAjaxPaga() {
@@ -692,6 +664,8 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                     formAjaxSubmit(modal, url, cbAfterLoad, cbAfterSuccess);
                 } else {
                     $(modal).modal('hide');
+                    $('.html-form-paga').html(xhr['html_pagamento']);
+                    verificaSwitchPaga()
                     if (xhr['c_view'] == 'edita_minuta') {
                         $(".mensagem-sucesso").text(xhr['html_mensagem']);
                         mostraMensagemSucesso()
@@ -787,6 +761,45 @@ var verificaTotalKMs = function() {
         $(".calcula-kms").slideDown(500)
     }
 }
+
+function verificaSwitchPaga() {
+    if ($('#c_porc').is(':not(:checked')) {
+        $('#form-paga-porc').slideUp(500)
+    }
+    if ($('#c_hora').is(':not(:checked')) {
+        $('#form-paga-hora').slideUp(500)
+    }
+    if ($('#c_exce').is(':not(:checked')) {
+        $('#form-paga-exce').slideUp(500)
+    }
+    if ($('#c_kilm').is(':not(:checked')) {
+        $('#form-paga-kilm').slideUp(500)
+    }
+    if ($('#c_entr').is(':not(:checked')) {
+        $('#form-paga-entr').slideUp(500)
+    }
+    if ($('#c_enkg').is(':not(:checked')) {
+        $('#form-paga-enkg').slideUp(500)
+    }
+    if ($('#c_evol').is(':not(:checked')) {
+        $('#form-paga-evol').slideUp(500)
+    }
+    if ($('#c_said').is(':not(:checked')) {
+        $('#form-paga-said').slideUp(500)
+    }
+    if ($('#c_capa').is(':not(:checked')) {
+        $('#form-paga-capa').slideUp(500)
+    }
+    if ($('#c_peri').is(':not(:checked')) {
+        $('#form-paga-peri').slideUp(500)
+    }
+    if ($('#c_pnoi').is(':not(:checked')) {
+        $('#form-paga-pnoi').slideUp(500)
+    }
+    if ($('#c_ajud').is(':not(:checked')) {
+        $('#form-paga-ajud').slideUp(500)
+    }
+};
 
 var mostraMensagemErro = function() {
     $(".div-erro").slideDown(500)
