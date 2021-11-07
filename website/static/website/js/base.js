@@ -7,8 +7,12 @@ if ($(window).width() <= 800) {
     $(".container").css('margin-top', '0')
 } else {
     $(".container").css('margin-top', '79px')
-}
+};
 
-$(document).on('click', '#menu-dots', function(event) {
-    $(".menu-nav-icons").css('display', 'block')
+$(document).on('click', '#menu-dots', function() {
+    if ($(".menu-nav-icons").is(':visible')) {
+        $(".menu-nav-icons").css('display', 'none')
+    } else {
+        $(".menu-nav-icons").css('display', 'block')
+    };
 });
