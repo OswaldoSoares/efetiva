@@ -70,14 +70,17 @@ $(document).ready(function(){
                 Cargo: cargo
             },
             success: function(data){
-                $('.html-form-paga').html(data['html_pagamento']);
                 if (cargo == 'AJUDANTE') {
                     $('.html-ajudante').html(data['html_ajudante']);
                 } else if (cargo == 'MOTORISTA') {
                     EscondeVeiculo()
                     $('.html-veiculo').html(data['html_veiculo']);
-                    MostraVeiculo()
+                    MostraVeiculo();
                 }
+                escondeFormPagamento()
+                $('.html-form-paga').html(data['html_pagamento']);
+                mostraFormPagamento()
+                verificaSwitchPaga();
             },
             error: function(error) {
                 console.log(error)
@@ -666,7 +669,9 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                 } else {
                     $(modal).modal('hide');
                     $('.html-form-paga').html(xhr['html_pagamento']);
-                    verificaSwitchPaga()
+                    escondeFormPagamento();
+                    verificaSwitchPaga();
+                    mostraFormPagamento();
                     if (xhr['c_view'] == 'adiciona_minuta') {
                         window.location.href = '/minutas/minuta/' + xhr['id_minuta_salva'] + '/'
                     } else if (xhr['c_view'] == 'edita_minuta') {
@@ -861,3 +866,10 @@ var MostraEntrega = function() {
     $(".html-entrega").delay(1000).slideDown(500)
 }
 
+var escondeFormPagamento =  function() {
+    $(".html-form-paga").hide()
+}
+
+var mostraFormPagamento =  function() {
+    $(".html-form-paga").slideDown(500)
+}

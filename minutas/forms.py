@@ -55,7 +55,7 @@ class CadastraMinutaMotorista(forms.ModelForm):
         model = MinutaColaboradores
         fields = ('idPessoal', 'idMinuta', 'Cargo')
         labels = {'idPessoal': 'MOTORISTA'}
-        widgets = {'idPessoal': forms.Select(attrs={'class': 'formfields'}), 'idMinuta': forms.HiddenInput(),
+        widgets = {'idPessoal': forms.Select(attrs={'class': 'form-control'}), 'idMinuta': forms.HiddenInput(),
                    'Cargo': forms.HiddenInput()}
 
 

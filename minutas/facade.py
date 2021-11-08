@@ -576,8 +576,8 @@ def motoristas_disponiveis():
 
 def veiculo_selecionado(idpessoal, idminuta):
     veiculo = Veiculo.objects.filter(Motorista=idpessoal)
-    km_inicial = km_atual(veiculo[0])
     if len(veiculo) == 1:
+        km_inicial = km_atual(veiculo[0])
         obj = get_minuta(idminuta)
         obj.idVeiculo = veiculo[0]
         obj.KMInicial = km_inicial['KMFinal__max']
@@ -607,6 +607,7 @@ def remove_colaborador(request, idminutacolaborador, idminuta, cargo):
         data = html_ajudantes(request, data, idminuta)
     elif cargo == 'MOTORISTA':
         data = html_motorista(request, data, idminuta)
+    data = html_pagamento(request, data, idminuta)
     return data
 
 

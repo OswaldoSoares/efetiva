@@ -51,7 +51,7 @@
     {% if c_view == 'insere_motorista' %}
         <div class="col-md-12">
             <label for="id_idPessoal" class="form-label">NOME:</label>
-            <select name="idPessoal" class="formfields" required id="id_idPessoa"l>
+            <select name="idPessoal" class="form-control required id="id_idPessoa"l>
                 {% for motorista in motoristas %}
                     <option value="{{ motorista.idPessoal }}">{{ motorista.Nome }}</option>
                 {% empty %}
