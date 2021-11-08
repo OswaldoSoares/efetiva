@@ -1452,7 +1452,7 @@ def remove_minuta_colaborador(request):
 def edita_minuta_hora_final(request):
     c_idminuta = request.POST.get('idMinuta')
     c_horafinal = request.POST.get('HoraFinal')
-    data = edita_hora_final(c_idminuta, c_horafinal)
+    data = edita_hora_final(request, c_idminuta, c_horafinal)
     return data
 
 

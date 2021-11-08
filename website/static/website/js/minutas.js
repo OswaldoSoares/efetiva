@@ -14,13 +14,16 @@ $(document).ready(function(){
                     mostraMensagemErro()
                 }
                 if (data.html_tipo_mensagem == 'SUCESSO') {
-                    alert(data['html_pagamento'])
                     $('.html-form-paga').html(data['html_pagamento']);
                     $(".mensagem-sucesso").text(data.html_mensagem);
                     mostraMensagemSucesso()
                 }
                 $(".total-horas").text(data.html_total_horas);
                 verificaTotalHoras()
+                escondeFormPagamento()
+                $('.html-form-paga').html(data['html_pagamento']);
+                mostraFormPagamento()
+                verificaSwitchPaga();
             },
             error: function(error) {
                 console.log(error)

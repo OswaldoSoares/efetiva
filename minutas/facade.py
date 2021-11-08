@@ -493,7 +493,7 @@ def cria_contexto(idminuta):
     return contexto
 
 
-def edita_hora_final(idminuta, hora_final):
+def edita_hora_final(request, idminuta, hora_final):
     obj = get_minuta(idminuta)
     hora_final = datetime.strptime(hora_final, '%H:%M').time()
     if hora_final <= obj.HoraInicial:
@@ -511,6 +511,7 @@ def edita_hora_final(idminuta, hora_final):
     data['html_mensagem'] = mensagem
     data['html_tipo_mensagem'] = tipo_mensagem
     data['html_total_horas'] = f'{total_horas_str} Hs'
+    data = html_pagamento(request, data, idminuta)
     c_return = JsonResponse(data)
     return c_return
 
@@ -795,10 +796,6 @@ def forn_minuta(request, c_form, c_idobj, c_url, c_view):
         idpessoal = request.GET.get('idPessoal')
         s_minuta = MinutaSelecionada(c_idobj)
         despesas = MinutaItens.objects.filter(TipoItens='DESPESA').values('Descricao').distinct().order_by('Descricao')
-        entregas_bairro = MinutaNotas.objects.values('Bairro').distinct().order_by('Bairro')
-        entregas_cidade = MinutaNotas.objects.values('Cidade').distinct().order_by('Cidade')
-        entregas_nome = MinutaNotas.objects.values('Nome').distinct().order_by('Nome')
-        entregas_nota= MinutaNotas.objects.values('Nota').distinct().order_by('Nota')
         lista_veiculos = []
         minuta = s_minuta.numero
         contexto = {'form': form, 'c_idobj': c_idobj, 'c_url': c_url, 'c_view': c_view, 'ajudantes': ajudantes,
