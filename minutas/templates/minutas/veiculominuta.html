@@ -11,8 +11,7 @@
 {% if s_minuta.veiculo %}
 <div class="article-minuta-dados">
     <i class="bi bi-truck"></i>
-    <span>{{ s_minuta.veiculo.Marca }} {{ s_minuta.veiculo.Modelo }} -
-          {{ s_minuta.veiculo.Placa}}</span>
+    <span>{{ s_minuta.veiculo.Modelo }} - {{ s_minuta.veiculo.Placa}}</span>
     <div>
         <i class="bi bi-pencil-square i-button" onclick="openMyModal(event); return false;" data-title="VEÍCULO"
            data-action="{% url 'editaveiculoescolhido' %}" data-button-save-label="EDITAR"
