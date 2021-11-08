@@ -515,7 +515,7 @@ def edita_hora_final(idminuta, hora_final):
     return c_return
 
 
-def edita_km_inicial(idminuta, km_inicial):
+def edita_km_inicial(request, idminuta, km_inicial):
     obj = get_minuta(idminuta)
     km_inicial = int(km_inicial)
     if km_inicial >= obj.KMFinal:
@@ -535,11 +535,12 @@ def edita_km_inicial(idminuta, km_inicial):
     data['html_mensagem'] = mensagem
     data['html_tipo_mensagem'] = tipo_mensagem
     data['html_total_kms'] = f'{total_kms} KMs'
+    data = html_pagamento(request, data, idminuta)
     c_return = JsonResponse(data)
     return c_return
 
 
-def edita_km_final(idminuta, km_final):
+def edita_km_final(request, idminuta, km_final):
     obj = get_minuta(idminuta)
     km_final = int(km_final)
     if km_final <= obj.KMInicial:
@@ -557,6 +558,7 @@ def edita_km_final(idminuta, km_final):
     data['html_mensagem'] = mensagem
     data['html_tipo_mensagem'] = tipo_mensagem
     data['html_total_kms'] = f'{total_kms} KMs'
+    data = html_pagamento(request, data, idminuta)
     c_return = JsonResponse(data)
     return c_return
 

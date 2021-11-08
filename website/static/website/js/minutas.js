@@ -43,10 +43,11 @@ $(document).ready(function(){
                     mostraMensagemErro()
                 }
                 if (data.html_tipo_mensagem == 'SUCESSO') {
-                    $('.html-form-paga').html(data['html_pagamento']);
                     $(".mensagem-sucesso").text(data.html_mensagem);
                     mostraMensagemSucesso()
                 }
+                $('.html-form-paga').html(data['html_pagamento']);
+                verificaSwitchPaga()
                 $(".total-kms").text(data.html_total_kms);
                 verificaTotalKMs()
             },

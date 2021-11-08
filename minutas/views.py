@@ -1459,14 +1459,14 @@ def edita_minuta_hora_final(request):
 def edita_minuta_km_inicial(request):
     c_idminuta = request.POST.get('idMinuta')
     c_kminicial = request.POST.get('KMInicial')
-    data = edita_km_inicial(c_idminuta, c_kminicial)
+    data = edita_km_inicial(request, c_idminuta, c_kminicial)
     return data
 
 
 def edita_minuta_km_final(request):
     c_idminuta = request.POST.get('idMinuta')
     c_kmfinal = request.POST.get('KMFinal')
-    data = edita_km_final(c_idminuta, c_kmfinal)
+    data = edita_km_final(request, c_idminuta, c_kmfinal)
     return data
 
 
