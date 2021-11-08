@@ -667,14 +667,15 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                     $(modal).modal('hide');
                     $('.html-form-paga').html(xhr['html_pagamento']);
                     verificaSwitchPaga()
-                    if (xhr['c_view'] == 'edita_minuta') {
+                    if (xhr['c_view'] == 'adiciona_minuta') {
+                        window.location.href = '/minutas/minuta/' + xhr['id_minuta_salva'] + '/'
+                    } else if (xhr['c_view'] == 'edita_minuta') {
                         $(".mensagem-sucesso").text(xhr['html_mensagem']);
                         mostraMensagemSucesso()
                         EscondeCliente()
                         $('.html-cliente-data').html(xhr['html_cliente_data']);
                         MostraCliente()
-                    }
-                    if (xhr['c_view'] == 'insere_motorista') {
+                    } else if (xhr['c_view'] == 'insere_motorista') {
                         EscondeVeiculo()
                         $('.html-veiculo').html(xhr['html_veiculo']);
                         MostraVeiculo()
