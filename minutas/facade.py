@@ -602,6 +602,11 @@ def filtra_veiculo(idpessoal, opcao):
 def remove_colaborador(request, idminutacolaborador, idminuta, cargo):
     colaborador = MinutaColaboradores.objects.get(idMinutaColaboradores=idminutacolaborador)
     colaborador.delete()
+    obj = get_minuta(idminuta)
+    obj.idVeiculo = None
+    obj.KMInicial = 0
+    obj.KMFinal = 0
+    obj.save(update_fields=['idVeiculo', 'KMInicial', 'KMFinal'])
     data = dict()
     if cargo == 'AJUDANTE':
         data = html_ajudantes(request, data, idminuta)
