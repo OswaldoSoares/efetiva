@@ -57,6 +57,7 @@ class MinutaSelecionada:
         self.status_minuta = minuta.StatusMinuta
         self.paga = self.carrega_valores_paga()
         self.paga_motorista = self.valor_total_motorista()
+        self.paga_minuta = self.valor_total_minuta()
 
     def get_total_kms(self):
         calculo_kms = self.km_final - self.km_inicial
@@ -240,6 +241,15 @@ class MinutaSelecionada:
         total += float(v_paga['m_peri'])
         total += float(v_paga['t_peri'])
         total += float(v_paga['t_pnoi'])
+        return total
+
+    def valor_total_minuta(self):
+        v_paga = self.paga
+        total = 0
+        total += float(v_paga['m_peri'])
+        total += float(v_paga['t_peri'])
+        total += float(v_paga['t_pnoi'])
+        total += float(v_paga['t_ajud'])
         return total
 
     def carrega_valores_recebe(self):

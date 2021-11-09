@@ -316,6 +316,14 @@
 
 {% if s_minuta.motorista or s_minuta.ajudantes %}
 <div class="linha-divisoria"></div>
+<div class="form-paga">
+    <span>TOTAL PAGAMENTOS DA MINUTA</span>
+    <div class="t_paga">
+        <span class="form-label-paga'">R$</span>
+        <input type="number" class="form-control-paga" name="t_ajud" id="t_ajud"
+        value="{{ s_minuta.paga_minuta|stringformat:'.2f' }}" readonly>
+    </div>
+</div>
 {% endif %}
 {% for motorista in s_minuta.motorista %}
 <div class="form-paga">
