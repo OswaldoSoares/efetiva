@@ -541,6 +541,7 @@ def edita_hora_final(request, idminuta, hora_final):
     data['html_tipo_mensagem'] = tipo_mensagem
     data['html_total_horas'] = f'{total_horas_str} Hs'
     data = html_pagamento(request, data, idminuta)
+    data = html_checklist(request, data, idminuta)
     c_return = JsonResponse(data)
     return c_return
 
@@ -566,6 +567,7 @@ def edita_km_inicial(request, idminuta, km_inicial):
     data['html_tipo_mensagem'] = tipo_mensagem
     data['html_total_kms'] = f'{total_kms} KMs'
     data = html_pagamento(request, data, idminuta)
+    data = html_checklist(request, data, idminuta)
     c_return = JsonResponse(data)
     return c_return
 
@@ -589,6 +591,7 @@ def edita_km_final(request, idminuta, km_final):
     data['html_tipo_mensagem'] = tipo_mensagem
     data['html_total_kms'] = f'{total_kms} KMs'
     data = html_pagamento(request, data, idminuta)
+    data = html_checklist(request, data, idminuta)
     c_return = JsonResponse(data)
     return c_return
 
@@ -643,6 +646,7 @@ def remove_colaborador(request, idminutacolaborador, idminuta, cargo):
     elif cargo == 'MOTORISTA':
         data = html_motorista(request, data, idminuta)
     data = html_pagamento(request, data, idminuta)
+    data = html_checklist(request, data, idminuta)
     return data
 
 
@@ -652,6 +656,7 @@ def remove_despessa(request, idminutaitens, idminuta):
     data = dict()
     data = html_despesa(request, data, idminuta)
     data = html_pagamento(request, data, idminuta)
+    data = html_checklist(request, data, idminuta)
     return data
 
 
@@ -661,6 +666,7 @@ def remove_entrega(request, idminutanota, idminuta):
     data = dict()
     data = html_entrega(request, data, idminuta)
     data = html_pagamento(request, data, idminuta)
+    data = html_checklist(request, data, idminuta)
     return data
 
 
@@ -724,6 +730,12 @@ def html_entrega(request, data, idminuta):
 def html_pagamento(request, data, idminuta):
     contexto = cria_contexto(idminuta)
     data['html_pagamento'] = render_to_string('minutas/formpagamento.html', contexto, request=request)
+    return data
+
+
+def html_checklist(request, data, idminuta):
+    contexto = cria_contexto(idminuta)
+    data['html_checklist'] = render_to_string('minutas/checklistminuta.html', contexto, request=request)
     return data
 
 
@@ -809,6 +821,7 @@ def forn_minuta(request, c_form, c_idobj, c_url, c_view):
                     tipo_mensagem = 'SUCESSO'
                     data = html_entrega(request, data, c_idobj)
                 data = html_pagamento(request, data, c_idobj)
+                data = html_checklist(request, data, c_idobj)
         else:
             print('Form não é valido')
     else:

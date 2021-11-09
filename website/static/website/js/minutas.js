@@ -14,16 +14,19 @@ $(document).ready(function(){
                     mostraMensagemErro()
                 }
                 if (data.html_tipo_mensagem == 'SUCESSO') {
-                    $('.html-form-paga').html(data['html_pagamento']);
                     $(".mensagem-sucesso").text(data.html_mensagem);
                     mostraMensagemSucesso()
                 }
                 $(".total-horas").text(data.html_total_horas);
-                verificaTotalHoras()
-                escondeFormPagamento()
+                verificaTotalHoras();
+                escondeFormPagamento();
                 $('.html-form-paga').html(data['html_pagamento']);
-                mostraFormPagamento()
+                mostraFormPagamento();
                 verificaSwitchPaga();
+                escondeChecklist();
+                $('.html-checklist').html(data['html_checklist']);
+                mostraChecklist();
+
             },
             error: function(error) {
                 console.log(error)
@@ -51,6 +54,9 @@ $(document).ready(function(){
                 }
                 $('.html-form-paga').html(data['html_pagamento']);
                 verificaSwitchPaga()
+                escondeChecklist();
+                $('.html-checklist').html(data['html_checklist']);
+                mostraChecklist();
                 $(".total-kms").text(data.html_total_kms);
                 verificaTotalKMs()
             },
@@ -83,6 +89,9 @@ $(document).ready(function(){
                 escondeFormPagamento()
                 $('.html-form-paga').html(data['html_pagamento']);
                 mostraFormPagamento()
+                escondeChecklist();
+                $('.html-checklist').html(data['html_checklist']);
+                mostraChecklist();
                 verificaSwitchPaga();
             },
             error: function(error) {
@@ -104,6 +113,9 @@ $(document).ready(function(){
             success: function(data) {
                 $('.html-form-paga').html(data['html_pagamento']);
                 verificaSwitchPaga();
+                escondeChecklist();
+                $('.html-checklist').html(data['html_checklist']);
+                mostraChecklist();
                 EscondeDespesa();
                 $('.html-despesa').html(data['html_despesa']);
                 MostraDespesa();
@@ -127,6 +139,9 @@ $(document).ready(function(){
             success: function(data){
                 $('.html-form-paga').html(data['html_pagamento']);
                 verificaSwitchPaga()
+                escondeChecklist();
+                $('.html-checklist').html(data['html_checklist']);
+                mostraChecklist();
                 EscondeEntrega()
                 $('.html-entrega').html(data['html_entrega']);
                 MostraEntrega()
@@ -676,6 +691,9 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                     escondeFormPagamento();
                     verificaSwitchPaga();
                     mostraFormPagamento();
+                    escondeChecklist();
+                    $('.html-checklist').html(xhr['html_checklist']);
+                    mostraChecklist();
                     if (xhr['c_view'] == 'adiciona_minuta') {
                         window.location.href = '/minutas/minuta/' + xhr['id_minuta_salva'] + '/'
                     } else if (xhr['c_view'] == 'edita_minuta') {
@@ -876,4 +894,12 @@ var escondeFormPagamento =  function() {
 
 var mostraFormPagamento =  function() {
     $(".html-form-paga").slideDown(500)
+}
+
+var escondeChecklist =  function() {
+    $(".html-checklist").hide()
+}
+
+var mostraChecklist =  function() {
+    $(".html-checklist").slideDown(500)
 }
