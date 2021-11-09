@@ -80,8 +80,8 @@
                 <div class="article-titulo">
                     <span>DESPESAS</span>
                     <i class="bi bi-plus-square i-button" onclick="openMyModal(event); return false;"
-                       data-title="INSERE DESPESA" data-action="{% url 'inseredespesa' %}"
-                       data-button-save-label="INSERIR" data-idminuta="{{ s_minuta.idminuta }}"></i>
+                    data-title="INSERE DESPESA" data-action="{% url 'inseredespesa' %}"
+                    data-button-save-label="INSERIR" data-idminuta="{{ s_minuta.idminuta }}"></i>
                 </div>
                 <div class="html-despesa">
                     {% include 'minutas/despesaminuta.html' %}
@@ -91,8 +91,8 @@
                 <div class="article-titulo">
                     <span>ENTREGAS</span>
                     <i class="bi bi-plus-square i-button" onclick="openMyModal(event); return false;"
-                       data-title="INSERE ENTREGA" data-action="{% url 'insereentrega' %}"
-                       data-button-save-label="INSERIR" data-idminuta="{{ s_minuta.idminuta }}"></i>
+                    data-title="INSERE ENTREGA" data-action="{% url 'insereentrega' %}"
+                    data-button-save-label="INSERIR" data-idminuta="{{ s_minuta.idminuta }}"></i>
                 </div>
                 <div class="html-entrega">
                     {% include 'minutas/entregaminuta.html' %}
@@ -109,14 +109,17 @@
             </div>
         </div>
     </div>
-
-    <div>
+    
+    
+    <div class="article-minuta-rodape  nova-minuta">
         <i class="bi bi-plus-square i-button" onclick="openMyModal(event); return false;"
            data-title="CADASTRA MINUTA" data-action="{% url 'adicionaminuta' %}" data-button-save-label="SALVAR">
             ADICIONA NOVA MINUTA</i>
     </div>
     
 
+    
+    <!--
         {{ s_minuta }}
     -->
 

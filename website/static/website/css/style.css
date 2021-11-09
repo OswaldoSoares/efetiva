@@ -2859,7 +2859,7 @@ main .fp-recibo-tabela .fp-recibo-print {
                 font-size: 30px;
                 border-radius: 0 0 10px 10px;
             }
-
+            
         .ac-despesa {
             background-color: #4f4f4f;
             color: white;
@@ -3030,6 +3030,13 @@ main .fp-recibo-tabela .fp-recibo-print {
                 font-size: 12px;
             }
 
+            .ac-paga .linha-divisoria {
+                background-color: #363636;
+                width: 100%;
+                height: 3px;
+            }
+            
+
             .ac-paga .form-label-paga {
                 text-align: right;
                 padding: 0;
@@ -3041,7 +3048,7 @@ main .fp-recibo-tabela .fp-recibo-print {
                 color: #363636;
                 height: 20px;
                 padding: 0 0.5rem; 
-                text-align: center;
+                text-align: right;
             }
 
             .ac-paga .v_paga,
@@ -3060,13 +3067,31 @@ main .fp-recibo-tabela .fp-recibo-print {
             .ac-paga .t_paga span {
                 padding: 0 2px;
             }
-                
+
+            .ac-paga .article-minuta-rodape {
+                background-color: #363636;
+                height: 50px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-evenly;
+                align-items: center;
+                font-size: 30px;
+                border-radius: 0 0 10px 10px;
+            }
 
         .div-i-button {
             width: 20px;
             text-align: right;
         }
 
+.nova-minuta {
+    width: 100%;
+    height: 20px;
+    font-size: 15px;
+    background-color: black;
+    text-align: center;
+    margin-right: 5px;
+}
 
 .i-button {
     color: yellow;
@@ -3083,14 +3108,18 @@ main .fp-recibo-tabela .fp-recibo-print {
     padding: 0;
 }
 
+.i-button-form-rodape {
+    background-color: #363636;
+    border: 0;
+    padding: 0;
+}
+
 .form-control-minuta {
     width: 50%;
     height: 25px;
     padding: 0 0.5rem; 
     text-align: center;
 }
-
-
 
 .form-readonly {
     color: white;
@@ -3172,7 +3201,6 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 /* NEW SWITCH */
-
 .new-switch {
     position: absolute;
     margin-left: -9999px;
@@ -3226,9 +3254,9 @@ main .fp-recibo-tabela .fp-recibo-print {
             transform: translateX(10px);
         }
 
-
-/* BARRA SUPERIOR */
-
+/* ============== */
+/* MENU SUPERIOR */
+/* ============== */
 .menu {
     background-color: #696969;
     position: fixed;
@@ -3352,16 +3380,3 @@ main .fp-recibo-tabela .fp-recibo-print {
     }
     
 }
-
-
-/*
-.i-button-nav {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.i-button-nav span {
-    font-size: 11px;
-}*/

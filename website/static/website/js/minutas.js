@@ -101,11 +101,12 @@ $(document).ready(function(){
                 idMinutaItens: idminutaitens,
                 idMinuta: idminuta,
             },
-            success: function(data){
+            success: function(data) {
                 $('.html-form-paga').html(data['html_pagamento']);
-                EscondeDespesa()
+                verificaSwitchPaga();
+                EscondeDespesa();
                 $('.html-despesa').html(data['html_despesa']);
-                MostraDespesa()
+                MostraDespesa();
             },
             error: function(error) {
                 console.log(error)

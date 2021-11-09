@@ -56,6 +56,7 @@ class MinutaSelecionada:
         self.proxima_saida = self.entrega_saida()
         self.status_minuta = minuta.StatusMinuta
         self.paga = self.carrega_valores_paga()
+        self.paga_motorista = self.valor_total_motorista()
 
     def get_total_kms(self):
         calculo_kms = self.km_final - self.km_inicial
@@ -204,6 +205,10 @@ class MinutaSelecionada:
                     v_paga['c_capa'] = True if int(phkesc[7:8]) else False
                     if perimetro:
                         v_paga['v_peri'] = perimetro[0]
+                        v_paga['c_peri'] = True
+                    v_paga = self.base_valor_perimetro(v_paga)
+                    v_paga['t_peri'] = float(v_paga['v_peri']) / 100 * float(v_paga['m_peri'])
+                    v_paga['m_pnoi'] = v_paga['m_peri']
             if self.total_ajudantes_avulso() > 0:
                 v_paga['v_ajud'] = float(self.tabela[0]['AjudantePaga'])
                 if int(self.entrega_saida()[0:1]) > 2:
@@ -212,6 +217,30 @@ class MinutaSelecionada:
                 v_paga['t_ajud'] = v_paga['v_ajud'] * self.total_ajudantes_avulso()
                 v_paga['c_ajud'] = True
         return v_paga
+
+    @staticmethod
+    def base_valor_perimetro(v_paga):
+        total = 0
+        total += float(v_paga['t_porc'])
+        total += float(v_paga['t_hora'])
+        total += float(v_paga['t_exce'])
+        total += float(v_paga['t_kilm'])
+        total += float(v_paga['t_entr'])
+        total += float(v_paga['t_enkg'])
+        total += float(v_paga['t_evol'])
+        total += float(v_paga['v_said'])
+        total += float(v_paga['v_capa'])
+        v_paga['m_peri'] = total
+        v_paga['m_pmoi'] = total
+        return v_paga
+
+    def valor_total_motorista(self):
+        v_paga = self.paga
+        total = 0
+        total += float(v_paga['m_peri'])
+        total += float(v_paga['t_peri'])
+        total += float(v_paga['t_pnoi'])
+        return total
 
     def carrega_valores_recebe(self):
         hora_zero_timedelta = timedelta(hours=0, minutes=0)
