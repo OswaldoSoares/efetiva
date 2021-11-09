@@ -3079,6 +3079,59 @@ main .fp-recibo-tabela .fp-recibo-print {
                 border-radius: 0 0 10px 10px;
             }
 
+        .ac-checklist {
+            background-color: #4f4f4f;
+            color: white;
+            width: 250px; 
+            border-radius: 10px;   
+        }
+
+            .ac-checklist .article-titulo {
+                background-color: #363636;
+                border-radius: 10px 10px 0 0;
+                width: 100%;
+                height: 40px;
+                padding: 0 10px 0 10px;
+                font-size: 15px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            .ac-checklist .check-item {
+                width: 100%;
+                height: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 5px;
+                margin: 5px 0;
+                font-size: 12px;
+            }
+
+            .ac-checklist span {
+                width: 80%;
+            }
+
+            .ac-checklist .checkbox {
+                display: flex;
+                align-items: center;
+                justify-content: space-evenly;
+                width: 20%;
+            }
+
+            .ac-checklist .article-minuta-rodape {
+                background-color: #363636;
+                height: 50px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-evenly;
+                align-items: center;
+                font-size: 30px;
+                border-radius: 0 0 10px 10px;
+            }
+        
         .div-i-button {
             width: 20px;
             text-align: right;
@@ -3154,7 +3207,13 @@ main .fp-recibo-tabela .fp-recibo-print {
     font-size: 15px;
 }
 
+.chk-green {
+    color:  lightgreen;
+}
 
+.chk-red {
+    color: lightcoral;
+}
 
 
 
