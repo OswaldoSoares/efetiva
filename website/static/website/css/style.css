@@ -2856,9 +2856,26 @@ main .fp-recibo-tabela .fp-recibo-print {
                 flex-direction: row;
                 justify-content: space-evenly;
                 align-items: center;
-                font-size: 30px;
+                font-size: 20px;
                 border-radius: 0 0 10px 10px;
             }
+
+            .ac-minuta .article-minuta-rodape i {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                font-size: 25px;
+                font-weight: bold;
+                line-height: 2;
+                padding-top: 5px;
+            }
+
+            .ac-minuta .article-minuta-rodape span {
+                font-size: 10px;
+                font-weight: bold;
+            }
+
             
         .ac-despesa {
             background-color: #4f4f4f;
@@ -3087,14 +3104,30 @@ main .fp-recibo-tabela .fp-recibo-print {
                 flex-direction: row;
                 justify-content: space-evenly;
                 align-items: center;
-                font-size: 30px;
+                font-size: 20px;
                 border-radius: 0 0 10px 10px;
+            }
+
+            .ac-paga .article-minuta-rodape i {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                font-size: 25px;
+                font-weight: bold;
+                line-height: 2;
+                padding-top: 5px;
+            }
+
+            .ac-paga .article-minuta-rodape span {
+                font-size: 10px;
+                font-weight: bold;
             }
 
         .ac-checklist {
             background-color: #4f4f4f;
             color: white;
-            width: 250px; 
+            width: 300px; 
             border-radius: 10px;   
         }
 
@@ -3122,10 +3155,6 @@ main .fp-recibo-tabela .fp-recibo-print {
                 font-size: 12px;
             }
 
-            .ac-checklist span {
-                width: 80%;
-            }
-
             .ac-checklist .checkbox {
                 display: flex;
                 align-items: center;
@@ -3140,8 +3169,24 @@ main .fp-recibo-tabela .fp-recibo-print {
                 flex-direction: row;
                 justify-content: space-evenly;
                 align-items: center;
-                font-size: 30px;
+                font-size: 20px;
                 border-radius: 0 0 10px 10px;
+            }
+
+            .ac-checklist .article-minuta-rodape i {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                font-size: 25px;
+                font-weight: bold;
+                line-height: 2;
+                padding-top: 5px;
+            }
+
+            .ac-checklist .article-minuta-rodape span {
+                font-size: 10px;
+                font-weight: bold;
             }
         
         .div-i-button {

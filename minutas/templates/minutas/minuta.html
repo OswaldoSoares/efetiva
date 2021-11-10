@@ -60,19 +60,20 @@
             <div class="article-minuta-rodape">
                 {% if s_minuta.status_minuta == 'FECHADA' or s_minuta.status_minuta == 'CONCLUIDA'%}
                 {% if user|can:'estorna_minuta' %}
-                <i class="bi bi-box-arrow-left i-button"
-                   onclick="window.location.href = '{% url 'estorna_minuta' s_minuta.idminuta %}'"></i>
+                <i class="bi bi-box-arrow-left i-button" onclick="window.location.href = '{% url 'estorna_minuta' s_minuta.idminuta %}'">
+                    <span>ESTORMA MINUTA</span></i>
                 {% endif %}
                 {% endif %}
                 {% if s_minuta.status_minuta == 'ABERTA' %}
                 {% if user|can:'edita_minuta' %}
                 <i class="bi bi-pencil-square i-button" onclick="openMyModal(event); return false;"
                    data-title="EDITA MINUTA" data-action="{% url 'editaminuta' %}" data-button-save-label="EDITAR"
-                   data-idminuta="{{ s_minuta.idminuta }}"></i>
+                   data-idminuta="{{ s_minuta.idminuta }}"><span>EDITA MINUTA</span></i>
                 {% endif %}
                 {% endif %}
                 <i class="bi bi-printer i-button js-imprimeminuta" idminuta="{{ s_minuta.idminuta }}"
-                        onclick="window.location.href = '{% url 'imprimeminuta' s_minuta.idminuta %}'"></i>
+                        onclick="window.location.href = '{% url 'imprimeminuta' s_minuta.idminuta %}'">
+                        <span>IMPRIME MINUTA</span></i>
             </div>
         </article>
         <div class="article-despesa-entrega">
@@ -121,10 +122,10 @@
     </div>
     
     
-    <div class="article-minuta-rodape  nova-minuta">
+    <div class="article-minuta-rodape">
         <i class="bi bi-plus-square i-button" onclick="openMyModal(event); return false;"
            data-title="CADASTRA MINUTA" data-action="{% url 'adicionaminuta' %}" data-button-save-label="SALVAR">
-            ADICIONA NOVA MINUTA</i>
+            <span>ADICIONA MINUTA</span></i>
     </div>
     
 
