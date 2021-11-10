@@ -23,8 +23,7 @@
         </div>
         <div class="t_paga">
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="t_porc" id="t_porc"
-               value="{{ s_minuta.paga.t_porc|stringformat:'.2f' }}" readonly>
+            <div class="total-paga">{{ s_minuta.paga.t_porc|stringformat:'.2f' }}</div>
         </div>
     </div>
     <div class="form-paga">
@@ -50,8 +49,7 @@
         </div>
         <div class="t_paga">
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="t_hora" id="t_hora"
-               value="{{ s_minuta.paga.t_hora|stringformat:'.2f' }}" readonly>
+            <div class="total-paga">{{ s_minuta.paga.t_hora|stringformat:'.2f' }}</div>
         </div>
     </div>
     <div class="form-paga">
@@ -77,8 +75,7 @@
         </div>
         <div class="t_paga">
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="t_exce" id="t_exce"
-               value="{{ s_minuta.paga.t_exce|stringformat:'.2f' }}" readonly>
+            <div class="total-paga">{{ s_minuta.paga.t_exce|stringformat:'.2f' }}</div>
         </div>
     </div>
     <div class="form-paga">
@@ -104,8 +101,7 @@
         </div>
         <div class="t_paga">
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="t_kilm" id="t_kilm"
-               value="{{ s_minuta.paga.t_kilm|stringformat:'.2f' }}" readonly>
+            <div class="total-paga">{{ s_minuta.paga.t_kilm|stringformat:'.2f' }}</div>
         </div>
     </div>
     <div class="form-paga">
@@ -131,8 +127,7 @@
         </div>
         <div class="t_paga">
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="t_entr" id="t_entr"
-               value="{{ s_minuta.paga.t_entr|stringformat:'.2f' }}" readonly>
+            <div class="total-paga">{{ s_minuta.paga.t_entr|stringformat:'.2f' }}</div>
         </div>
     </div>
     <div class="form-paga">
@@ -158,8 +153,7 @@
         </div>
         <div class="t_paga">
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="t_enkg" id="t_enkg"
-               value="{{ s_minuta.paga.t_enkg|stringformat:'.2f' }}" readonly>
+            <div class="total-paga">{{ s_minuta.paga.t_enkg|stringformat:'.2f' }}</div>
         </div>
     </div>
     <div class="form-paga">
@@ -185,8 +179,7 @@
         </div>
         <div class="t_paga">
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="t_evol" id="t_evol"
-               value="{{ s_minuta.paga.t_evol|stringformat:'.2f' }}" readonly>
+            <div class="total-paga">{{ s_minuta.paga.t_evol|stringformat:'.2f' }}</div>
         </div>
     </div>
     <div class="form-paga">
@@ -206,8 +199,7 @@
         <div></div>
         <div class="t_paga">
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="t_said" id="t_said"
-               value="{{ s_minuta.paga.v_said|stringformat:'.2f' }}" readonly>
+            <div class="total-paga">{{ s_minuta.paga.v_said|stringformat:'.2f' }}</div>
         </div>
     </div>
     <div class="form-paga">
@@ -227,8 +219,7 @@
         <div></div>
         <div class="t_paga">
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="t_capa" id="t_capa"
-               value="{{ s_minuta.paga.v_capa|stringformat:'.2f' }}" readonly>
+            <div class="total-paga">{{ s_minuta.paga.v_capa|stringformat:'.2f' }}</div>
         </div>
     </div>
     <div class="form-paga">
@@ -254,8 +245,7 @@
         </div>
         <div class="t_paga">
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="t_peri" id="t_peri"
-               value="{{ s_minuta.paga.t_peri|stringformat:'.2f' }}" readonly>
+            <div class="total-paga">{{ s_minuta.paga.t_peri|stringformat:'.2f' }}</div>
         </div>
     </div>
     <div class="form-paga">
@@ -281,8 +271,7 @@
         </div>
         <div class="t_paga">
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="t_pnoi" id="t_pnoi"
-               value="{{ s_minuta.paga.t_pnoi|stringformat:'.2f' }}" readonly>
+            <div class="total-paga">{{ s_minuta.paga.t_pnoi|stringformat:'.2f' }}</div>
         </div>
     </div>
     <div class="form-paga">
@@ -308,46 +297,40 @@
         </div>
         <div class="t_paga">
             <span class="form-label-paga">R$</span>
-            <input type="number" class="form-control-paga" name="t_ajud" id="t_ajud"
-               value="{{ s_minuta.paga.t_ajud|stringformat:'.2f' }}" readonly>
+            <div class="total-paga">{{ s_minuta.paga.t_ajud|stringformat:'.2f' }}</div>
         </div>
     </div>
+    {% if s_minuta.motorista or s_minuta.ajudantes %}
+    <div class="linha-divisoria"></div>
+    <div class="form-paga">
+        <span>TOTAL PAGAMENTOS DA MINUTA</span>
+        <div class="t_paga">
+            <span class="form-label-paga">R$</span>
+            <div class="total-paga">{{ s_minuta.paga_minuta|stringformat:'.2f' }}</div>
+        </div>
+    </div>
+    {% endif %}
+    {% for motorista in s_minuta.motorista %}
+    <div class="form-paga">
+        <span>{{ motorista.apelido }}</span>
+        <div class="t_paga">
+            <span class="form-label-paga">R$</span>
+            <div class="total-paga">{{ s_minuta.paga_motorista|stringformat:'.2f' }}</div>
+        </div>
+    </div>
+    {% endfor %}
+    {% for ajudante in s_minuta.ajudantes %}
+    {% if ajudante.tipo != 'MENSALISTA' %}
+    <div class="form-paga">
+        <span>{{ ajudante.apelido }}</span>
+        <div class="t_paga">
+            <span class="form-label-paga'">R$</span>
+            <div class="total-paga">{{ s_minuta.paga.v_ajud|stringformat:'.2f' }}</div>
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+    <div class="article-minuta-rodape">
+        <button type="submit" class="i-button-form-rodape"><i class="bi bi-credit-card i-button"></i></button>
+    </div>
 </form>
-
-{% if s_minuta.motorista or s_minuta.ajudantes %}
-<div class="linha-divisoria"></div>
-<div class="form-paga">
-    <span>TOTAL PAGAMENTOS DA MINUTA</span>
-    <div class="t_paga">
-        <span class="form-label-paga'">R$</span>
-        <input type="number" class="form-control-paga" name="t_ajud" id="t_ajud"
-        value="{{ s_minuta.paga_minuta|stringformat:'.2f' }}" readonly>
-    </div>
-</div>
-{% endif %}
-{% for motorista in s_minuta.motorista %}
-<div class="form-paga">
-    <span>{{ motorista.apelido }}</span>
-    <div class="t_paga">
-        <span class="form-label-paga'">R$</span>
-        <input type="number" class="form-control-paga" name="t_ajud" id="t_ajud"
-        value="{{ s_minuta.paga_motorista|stringformat:'.2f' }}" readonly>
-    </div>
-</div>
-{% endfor %}
-{% for ajudante in s_minuta.ajudantes %}
-{% if ajudante.tipo != 'MENSALISTA' %}
-<div class="form-paga">
-    <span>{{ ajudante.apelido }}</span>
-    <div class="t_paga">
-        <span class="form-label-paga'">R$</span>
-        <input type="number" class="form-control-paga" name="t_ajud" id="t_ajud"
-        value="{{ s_minuta.paga.v_ajud|stringformat:'.2f' }}" readonly>
-    </div>
-</div>
-{% endif %}
-{% endfor %}
-
-<div class="article-minuta-rodape">
-    <button type="submit" class="i-button-form-rodape"><i class="bi bi-credit-card i-button"></i></button>
-</div>

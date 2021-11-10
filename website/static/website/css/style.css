@@ -3068,6 +3068,18 @@ main .fp-recibo-tabela .fp-recibo-print {
                 padding: 0 2px;
             }
 
+            .ac-paga .total-paga {
+                background-color: white;
+                color: #363636;
+                width: 80px;
+                height: 20px;
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                padding-right: 5px;
+                margin-left: 1px;
+            }
+
             .ac-paga .article-minuta-rodape {
                 background-color: #363636;
                 height: 50px;
@@ -3214,8 +3226,6 @@ main .fp-recibo-tabela .fp-recibo-print {
 .chk-red {
     color: lightcoral;
 }
-
-
 
 .mensagem {
     margin-left: 2.5%;
