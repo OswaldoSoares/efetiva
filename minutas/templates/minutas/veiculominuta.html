@@ -4,8 +4,10 @@
         <i class="bi bi-person-square"></i>
         <span title="{{ motorista.nome }}">{{ motorista.apelido }}</span>
         <div>
+            {% if not s_minuta.paga_realizada %}
             <i class="bi bi-trash i-button remove-colaborador" idMinuta="{{ s_minuta.idminuta }}" Cargo="MOTORISTA"
             idMinutaColaboradores="{{ motorista.idMinutaColaboradores }}"></i>
+            {% endif %}
         </div>
     </div>
     {% if s_minuta.veiculo %}
@@ -13,9 +15,11 @@
         <i class="bi bi-truck"></i>
         <span>{{ s_minuta.veiculo.Modelo }} - {{ s_minuta.veiculo.Placa}}</span>
         <div>
+            {% if not s_minuta.paga_realizada %}
             <i class="bi bi-pencil-square i-button" onclick="openMyModal(event); return false;" data-title="VEÍCULO"
             data-action="{% url 'editaveiculoescolhido' %}" data-button-save-label="EDITAR"
             data-idminuta="{{ s_minuta.idminuta }}" data-idpessoal="{{ motorista.obj.idPessoal }}"></i>
+            {% endif %}
         </div>
     </div>
     <form class="html-km-inicial" method="post" action="{% url 'editakminicial' %}" id="form-edita-km">
@@ -29,7 +33,9 @@
                 </div>
             </span>
             <div>
+                {% if not s_minuta.paga_realizada %}
                 <button type="submit" class="i-button-form"><i class="bi bi-save i-button"></i></button>
+                {% endif %}
             </div>
         </div>
     </form>
@@ -44,7 +50,9 @@
                 </div>
             </span>
             <div>
+                {% if not s_minuta.paga_realizada %}
                 <button type="submit" class="i-button-form"><i class="bi bi-save i-button"></i></button>
+                {% endif %}
             </div>
         </div>
     </form>
@@ -58,9 +66,11 @@
         <i class="bi bi-truck"></i>
         <span>INSERE VEÍCULO</span>
         <div>
+            {% if not s_minuta.paga_realizada %}
             <i class="bi bi-plus-square i-button" onclick="openMyModal(event); return false;" data-title="VEÍCULO"
             data-action="{% url 'editaveiculoescolhido' %}" data-button-save-label="EDITAR"
             data-idminuta="{{ s_minuta.idminuta }}" data-idpessoal="{{ motorista.obj.idPessoal }}"></i>
+            {% endif %}
         </div>
     </div>    
     {% endif %}
@@ -69,9 +79,11 @@
         <i class="bi bi-person-square"></i>
         <span>INSERE MOTORISTA</span>
         <div>
+            {% if not s_minuta.paga_realizada %}
             <i class="bi bi-plus-square i-button" onclick="openMyModal(event); return false;"
             data-title="INSERE MOTORISTA" data-action="{% url 'inseremotorista' %}" data-button-save-label="INSERIR"
             data-idminuta="{{ s_minuta.idminuta }}"></i>
+            {% endif %}
         </div>
     </div>
 {% endfor %}

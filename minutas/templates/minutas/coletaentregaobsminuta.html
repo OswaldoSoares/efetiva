@@ -19,9 +19,11 @@
         {% endif %}
     </span>
     <div>
+        {% if not s_minuta.paga_realizada %}
         <i class="bi bi-pencil-square i-button" onclick="openMyModal(event); return false;"
            data-title="COLETA - ENTREGA - OBS" data-action="{% url 'editacoletaentregaobs' %}"
            data-button-save-label="EDITA" data-idminuta="{{ s_minuta.idminuta }}"></i>
+        {% endif %}
     </div>
 </div>
 <div class="article-minuta-dados article-info">

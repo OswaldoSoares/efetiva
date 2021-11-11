@@ -58,6 +58,7 @@ class MinutaSelecionada:
         self.paga = self.carrega_valores_paga()
         self.paga_motorista = self.valor_total_motorista()
         self.paga_minuta = self.valor_total_minuta()
+        self.paga_realizada = self.verifica_pagamento()
 
     def get_total_kms(self):
         calculo_kms = self.km_final - self.km_inicial
@@ -302,6 +303,10 @@ class MinutaSelecionada:
             valores_recebe['valor_ajudante'] = self.extra_ajudante_cobra()
             valores_recebe['minuta_ajudante'] = self.total_ajudantes()
         return valores_recebe
+
+    def verifica_pagamento(self):
+        paga = MinutaItens.objects.filter(TipoItens='PAGA', idMinuta=self.idminuta)
+        return True if paga else False
 
 
 class MinutaMotorista:

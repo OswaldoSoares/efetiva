@@ -48,8 +48,10 @@
         </div>
     </div>
     <div class="div-i-button">
+        {% if not s_minuta.paga_realizada %}
         <i class="bi bi-trash i-button remove-entrega" idMinuta="{{ s_minuta.idminuta }}"
            idMinutaNotas="{{ entrega.idMinutaNotas }}"></i>
+        {% endif %}
     </div>
 </div>
 {% endfor %}

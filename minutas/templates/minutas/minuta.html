@@ -27,7 +27,9 @@
                         <input type="hidden" name="idMinuta" value="{{ s_minuta.idminuta }}">
                     </span>
                     <div>
+                        {% if not s_minuta.paga_realizada %}
                         <button type="submit" class="i-button-form"><i class="bi bi-save i-button"></i></button>
+                        {% endif %}
                     </div>
                 </div>
             </form>
@@ -49,9 +51,11 @@
                 <i class="bi bi-person-plus-fill" title="INSERE AJUDNTE"></i>
                 <span>INSERE AJUDANTE</span>
                 <div>
+                    {% if not s_minuta.paga_realizada %}
                     <i class="bi bi-plus-square i-button" onclick="openMyModal(event); return false;"
                        data-title="INSERE AJUDANTE" data-action="{% url 'insereajudante' %}"
                        data-button-save-label="INSERIR" data-idminuta="{{ s_minuta.idminuta }}"></i>
+                    {% endif %}
                 </div>
             </div>
             <div class="html-coleta-entrega-obs">
@@ -65,10 +69,12 @@
                 {% endif %}
                 {% endif %}
                 {% if s_minuta.status_minuta == 'ABERTA' %}
+                {% if not s_minuta.paga_realizada %}
                 {% if user|can:'edita_minuta' %}
                 <i class="bi bi-pencil-square i-button" onclick="openMyModal(event); return false;"
                    data-title="EDITA MINUTA" data-action="{% url 'editaminuta' %}" data-button-save-label="EDITAR"
                    data-idminuta="{{ s_minuta.idminuta }}"><span>EDITA MINUTA</span></i>
+                {% endif %}
                 {% endif %}
                 {% endif %}
                 <i class="bi bi-printer i-button js-imprimeminuta" idminuta="{{ s_minuta.idminuta }}"
@@ -80,9 +86,11 @@
             <article class="article-card ac-despesa">
                 <div class="article-titulo">
                     <span>DESPESAS</span>
+                    {% if not s_minuta.paga_realizada %}
                     <i class="bi bi-plus-square i-button" onclick="openMyModal(event); return false;"
                     data-title="INSERE DESPESA" data-action="{% url 'inseredespesa' %}"
                     data-button-save-label="INSERIR" data-idminuta="{{ s_minuta.idminuta }}"></i>
+                    {% endif %}
                 </div>
                 <div class="html-despesa">
                     {% include 'minutas/despesaminuta.html' %}
@@ -91,9 +99,11 @@
             <article class="article-card ac-entrega">
                 <div class="article-titulo">
                     <span>ENTREGAS</span>
+                    {% if not s_minuta.paga_realizada %}
                     <i class="bi bi-plus-square i-button" onclick="openMyModal(event); return false;"
                     data-title="INSERE ENTREGA" data-action="{% url 'insereentrega' %}"
                     data-button-save-label="INSERIR" data-idminuta="{{ s_minuta.idminuta }}"></i>
+                    {% endif %}
                 </div>
                 <div class="html-entrega">
                     {% include 'minutas/entregaminuta.html' %}
@@ -113,7 +123,9 @@
         <div class="article-card ac-paga">
             <div class="article-titulo">
                 <span>PAGAMENTOS</span>
+                {% if not s_minuta.paga_realizada %}
                 <i class="bi bi-arrow-counterclockwise i-button" idminuta="{{ s_minuta.idminuta }}"></i>
+                {% endif %}
             </div>
             <div class="html-form-paga">
                 {% include 'minutas/formpagamento.html' %}

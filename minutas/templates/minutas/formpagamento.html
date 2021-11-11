@@ -332,8 +332,12 @@
     {% endif %}
     {% endfor %}
     <div class="article-minuta-rodape">
+        {% if not s_minuta.paga_realizada %}
         <button type="submit" class="i-button-form-rodape">
             <i class="bi bi-credit-card i-button"><span>GERA PAGAMENTOS</span></i>
         </button>
+        {% else %}
+        <i class="bi bi-reply-all i-button"><span>ESTORNA PAGAMENTOS</span></i>
+        {% endif %}
     </div>
 </form>
