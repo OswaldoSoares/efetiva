@@ -337,7 +337,8 @@
             <i class="bi bi-credit-card i-button"><span>GERA PAGAMENTOS</span></i>
         </button>
         {% else %}
-        <i class="bi bi-reply-all i-button"><span>ESTORNA PAGAMENTOS</span></i>
+        <i class="bi bi-reply-all i-button estorna-pagamentos" idMinuta="{{ s_minuta.idminuta }}">
+            <span>ESTORNA PAGAMENTOS</span></i>
         {% endif %}
     </div>
 </form>

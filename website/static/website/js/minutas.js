@@ -68,25 +68,33 @@ $(document).ready(function(){
 
     $(document).on('submit', '#form-gera-paga', function(event) {
         verificaTotalZero();
+        $(".container").hide()
         event.preventDefault();
-        $(".div-sucesso").hide()
-        $(".div-erro").hide()
         var url = $(this).attr('action') || action;
         $.ajax({
             type: $(this).attr('method'),
             url: url,
             data: $(this).serialize(),
             success: function(data){
-                if (data.html_tipo_mensagem == 'ERROR') {
-                    $(".mensagem-erro").text(data.html_mensagem);
-                    mostraMensagemErro()
-                }
-                if (data.html_tipo_mensagem == 'SUCESSO') {
-                    $(".mensagem-sucesso").text(data.html_mensagem);
-                    mostraMensagemSucesso()
-                }
-               
-
+                window.location.href = '/minutas/minuta/' + data['html_idminuta'] + '/'
+            },
+            error: function(error) {
+                console.log(error)
+            }
+        });
+    });
+    
+    $(document).on('click', '.estorna-pagamentos', function(event) {
+        $(".container").hide()
+        var idminuta = $(this).attr('idMinuta')
+        $.ajax({
+            type: 'GET',
+            url: '/minutas/estornapagamentos',
+            data: {
+                idMinuta: idminuta,
+            },
+            success: function(data){
+                window.location.href = '/minutas/minuta/' + data['html_idminuta'] + '/'    
             },
             error: function(error) {
                 console.log(error)

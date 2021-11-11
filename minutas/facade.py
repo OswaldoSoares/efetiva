@@ -558,6 +558,12 @@ def insere_minuta_item(descricao, tipoitens, recebepaga, valor, quantidade, porc
     obj.save()
 
 
+def estorna_paga(idminuta):
+    pagamentos = MinutaItens.objects.filter(TipoItens='PAGA', idMinuta=idminuta)
+    for i in pagamentos:
+        i.delete()
+
+
 def calcula_valor_hora(porcentagem, horas, valor):
     novo_valor = valor * porcentagem / 100
     valor_hora = float(round(novo_valor, 2))
