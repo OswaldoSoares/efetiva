@@ -3268,7 +3268,8 @@ main .fp-recibo-tabela .fp-recibo-print {
     color:  lightgreen;
 }
 
-.chk-red {
+.chk-red,
+.chk-red-conclui {
     color: lightcoral;
 }
 

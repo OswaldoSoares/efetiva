@@ -102,6 +102,25 @@ $(document).ready(function(){
         });
     });
 
+    $(document).on('click', '.conclui-minuta', function(event) {
+        var idminuta = $(this).attr('idMinuta')
+        $.ajax({
+            type: 'GET',
+            url: '/minutas/concluirminuta',
+            data: {
+                idMinuta: idminuta,
+            },
+            success: function(data){
+                escondeChecklist()
+                    $('.html-checklist').html(data['html_checklist']);
+                    mostraChecklist();    
+            },
+            error: function(error) {
+                console.log(error)
+            }
+        });
+    });
+
     $(document).on('click', '.remove-colaborador', function(event) {
         var idminutacolaboradores = $(this).attr('idMinutaColaboradores')
         var idminuta = $(this).attr('idMinuta')
@@ -656,6 +675,7 @@ $(document).ready(function(){
     };
 
     verificaSwitchPaga();
+    mostraChecklist();
 });
 
 function openMyModal(event) {
@@ -978,4 +998,7 @@ var escondeChecklist =  function() {
 
 var mostraChecklist =  function() {
     $(".html-checklist").slideDown(500)
+    $(".chk-red").each(function() {
+        $('.conclui-minuta').slideUp(500)
+    });
 }

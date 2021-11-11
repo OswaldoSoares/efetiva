@@ -107,15 +107,18 @@
 <div class="check-item">
     <span>CONCLUIR MINUTA</span>
     <div class="checkbox">
-        {% if s_minuta.st %}
+        {% if s_minuta.status_minuta == 'CONCLUIDA' %}
         <i class="bi bi-check-square chk-green"></i>
         {%  else %}
-        <i class="bi bi-square chk-red"></i>
+        <i class="bi bi-square chk-red-conclui"></i>
         {% endif %}
         <i class="bi bi-check-square"></i>
     </div>
 </div>
 
 <div class="article-minuta-rodape">
-    <i class="bi bi-check2-square i-button"><span>CONCLUI MINUTA</span></i>
+    {% if s_minuta.status_minuta == 'ABERTA' %}
+    <i class="bi bi-check2-square i-button conclui-minuta" idMinuta="{{ s_minuta.idminuta }}">
+        <span>CONCLUI MINUTA</span></i>
+    {% endif %}
 </div>

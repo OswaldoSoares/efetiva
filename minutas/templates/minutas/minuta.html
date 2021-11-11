@@ -13,74 +13,9 @@
                 <i class="bi bi-file-text" title="NÚMERO MINUTA"></i>
                 <span>{{ s_minuta.numero }}</span>
             </div>
-            <div class="html-cliente-data">
-                {% include 'minutas/clientedataminuta.html' %}
-            </div>
-            <form class="html-hora-final" method="post" action="{% url 'editahorafinal' %}" id="form-edita-hora">
-                {% csrf_token %}
-                <div class="article-minuta-dados">
-                    <i class="bi bi-moon-fill" title="HORA FINAL"></i>
-                    <span>
-                        <div class="div-input">
-                            {{ form_hora_final.HoraFinal }}
-                        </div>
-                        <input type="hidden" name="idMinuta" value="{{ s_minuta.idminuta }}">
-                    </span>
-                    <div>
-                        {% if not s_minuta.paga_realizada %}
-                        <button type="submit" class="i-button-form"><i class="bi bi-save i-button"></i></button>
-                        {% endif %}
-                    </div>
-                </div>
-            </form>
-            <div class="article-minuta-dados calcula-horas">
-                <i class="bi bi-clock-history" title="DURAÇÃO"></i>
-                <span class="total-horas">{{ s_minuta.total_horas_str }} Hs</span>
-                <div></div>
-            </div>
-            <div class="html-categoria">
-                {% include 'minutas/categoriaminuta.html' %}
-            </div>
-            <div class="html-veiculo">
-                {% include 'minutas/veiculominuta.html' %}
-            </div>
-            <div class="html-ajudante">
-                {% include 'minutas/ajudantesminuta.html' %}
-            </div>
-            <div class="article-minuta-dados">
-                <i class="bi bi-person-plus-fill" title="INSERE AJUDNTE"></i>
-                <span>INSERE AJUDANTE</span>
-                <div>
-                    {% if not s_minuta.paga_realizada %}
-                    <i class="bi bi-plus-square i-button" onclick="openMyModal(event); return false;"
-                       data-title="INSERE AJUDANTE" data-action="{% url 'insereajudante' %}"
-                       data-button-save-label="INSERIR" data-idminuta="{{ s_minuta.idminuta }}"></i>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="html-coleta-entrega-obs">
-                {% include 'minutas/coletaentregaobsminuta.html' %}
-            </div>
-            <div class="article-minuta-rodape">
-                {% if s_minuta.status_minuta == 'FECHADA' or s_minuta.status_minuta == 'CONCLUIDA'%}
-                {% if user|can:'estorna_minuta' %}
-                <i class="bi bi-box-arrow-left i-button" onclick="window.location.href = '{% url 'estorna_minuta' s_minuta.idminuta %}'">
-                    <span>ESTORMA MINUTA</span></i>
-                {% endif %}
-                {% endif %}
-                {% if s_minuta.status_minuta == 'ABERTA' %}
-                {% if not s_minuta.paga_realizada %}
-                {% if user|can:'edita_minuta' %}
-                <i class="bi bi-pencil-square i-button" onclick="openMyModal(event); return false;"
-                   data-title="EDITA MINUTA" data-action="{% url 'editaminuta' %}" data-button-save-label="EDITAR"
-                   data-idminuta="{{ s_minuta.idminuta }}"><span>EDITA MINUTA</span></i>
-                {% endif %}
-                {% endif %}
-                {% endif %}
-                <i class="bi bi-printer i-button js-imprimeminuta" idminuta="{{ s_minuta.idminuta }}"
-                        onclick="window.location.href = '{% url 'imprimeminuta' s_minuta.idminuta %}'">
-                        <span>IMPRIME MINUTA</span></i>
-            </div>
+            <div class="html-minuta">
+                {% include 'minutas/cardminuta.html' %}
+            </div>            
         </article>
         <div class="article-despesa-entrega">
             <article class="article-card ac-despesa">

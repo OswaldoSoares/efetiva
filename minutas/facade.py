@@ -211,13 +211,13 @@ class MinutaSelecionada:
                     v_paga = self.base_valor_perimetro(v_paga)
                     v_paga['t_peri'] = float(v_paga['v_peri']) / 100 * float(v_paga['m_peri'])
                     v_paga['m_pnoi'] = v_paga['m_peri']
-            if self.total_ajudantes_avulso() > 0:
-                v_paga['v_ajud'] = float(self.tabela[0]['AjudantePaga'])
-                if int(self.entrega_saida()[0:1]) > 2:
-                    v_paga['v_ajud'] = float(self.tabela[0]['AjudantePaga']) + 10.00
-                v_paga['m_ajud'] = self.total_ajudantes_avulso()
-                v_paga['t_ajud'] = v_paga['v_ajud'] * self.total_ajudantes_avulso()
-                v_paga['c_ajud'] = True
+        if self.total_ajudantes_avulso() > 0:
+            v_paga['v_ajud'] = float(self.tabela[0]['AjudantePaga'])
+            if int(self.entrega_saida()[0:1]) > 2:
+                v_paga['v_ajud'] = float(self.tabela[0]['AjudantePaga']) + 10.00
+            v_paga['m_ajud'] = self.total_ajudantes_avulso()
+            v_paga['t_ajud'] = v_paga['v_ajud'] * self.total_ajudantes_avulso()
+            v_paga['c_ajud'] = True
         return v_paga
 
     @staticmethod
@@ -562,6 +562,18 @@ def estorna_paga(idminuta):
     pagamentos = MinutaItens.objects.filter(TipoItens='PAGA', idMinuta=idminuta)
     for i in pagamentos:
         i.delete()
+
+
+def novo_status_minuta(request, idminuta, novo_status):
+    minuta = get_minuta(idminuta)
+    obj = minuta
+    obj.StatusMinuta = novo_status
+    obj.save(update_fields=['StatusMinuta'])
+    data = dict()
+    data = html_checklist(request, data, idminuta)
+    c_return = retorna_json(data)
+    return c_return
+
 
 
 def calcula_valor_hora(porcentagem, horas, valor):

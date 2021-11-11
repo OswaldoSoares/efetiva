@@ -24,7 +24,7 @@ from .forms import FormInsereColaborador, FormEditaVeiculoSolicitado, FormEditaV
 from .models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas
 from .facade import forn_minuta, edita_hora_final, filtra_veiculo, html_filtro_veiculo, edita_km_final, \
     edita_km_inicial, \
-    remove_colaborador, remove_despessa, remove_entrega, retorna_json, prepara_itens, estorna_paga
+    remove_colaborador, remove_despessa, remove_entrega, retorna_json, prepara_itens, estorna_paga, novo_status_minuta
 
 def convertemp(mm):
     """
@@ -1370,6 +1370,12 @@ def adiciona_minuta(request):
     c_url = '/minutas/adicionaminuta/'
     c_view = 'adiciona_minuta'
     data = forn_minuta(request, c_form, c_idobj, c_url, c_view)
+    return data
+
+
+def concluir_minuta(request):
+    c_idminuta = request.GET.get('idMinuta')
+    data = novo_status_minuta(request, c_idminuta, 'CONCLUIDA')
     return data
 
 
