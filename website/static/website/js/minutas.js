@@ -66,6 +66,34 @@ $(document).ready(function(){
         });
     });
 
+    $(document).on('submit', '#form-gera-paga', function(event) {
+        verificaTotalZero();
+        event.preventDefault();
+        $(".div-sucesso").hide()
+        $(".div-erro").hide()
+        var url = $(this).attr('action') || action;
+        $.ajax({
+            type: $(this).attr('method'),
+            url: url,
+            data: $(this).serialize(),
+            success: function(data){
+                if (data.html_tipo_mensagem == 'ERROR') {
+                    $(".mensagem-erro").text(data.html_mensagem);
+                    mostraMensagemErro()
+                }
+                if (data.html_tipo_mensagem == 'SUCESSO') {
+                    $(".mensagem-sucesso").text(data.html_mensagem);
+                    mostraMensagemSucesso()
+                }
+               
+
+            },
+            error: function(error) {
+                console.log(error)
+            }
+        });
+    });
+
     $(document).on('click', '.remove-colaborador', function(event) {
         var idminutacolaboradores = $(this).attr('idMinutaColaboradores')
         var idminuta = $(this).attr('idMinuta')
@@ -828,6 +856,46 @@ function verificaSwitchPaga() {
     if ($('#c_ajud').is(':not(:checked')) {
         $('#form-paga-ajud').slideUp(500)
     }
+};
+
+function verificaTotalZero() {
+    if ($('#t_porc').text() == 0.00) {
+        $('#c_porc').prop('checked', false)
+    }
+    if ($('#t_hora').text() == 0.00) {
+        $('#c_hora').prop('checked', false)
+    }
+    if ($('#t_exce').text() == 0.00) {
+        $('#c_exce').prop('checked', false)
+    }
+    if ($('#t_kilm').text() == 0.00) {
+        $('#c_kilm').prop('checked', false)
+    }
+    if ($('#t_entr').text() == 0.00) {
+        $('#c_entr').prop('checked', false)
+    }
+    if ($('#t_enkg').text() == 0.00) {
+        $('#c_enkg').prop('checked', false)
+    }
+    if ($('#t_evol').text() == 0.00) {
+        $('#c_evol').prop('checked', false)
+    }
+    if ($('#t_said').text() == 0.00) {
+        $('#c_said').prop('checked', false)
+    }
+    if ($('#t_capa').text() == 0.00) {
+        $('#c_capa').prop('checked', false)
+    }
+    if ($('#t_peri').text() == 0.00) {
+        $('#c_peri').prop('checked', false)
+    }
+    if ($('#t_pnoi').text() == 0.00) {
+        $('#c_pnoi').prop('checked', false)
+    }
+    if ($('#t_ajud').text() == 0.00) {
+        $('#c_ajud').prop('checked', false)
+    }
+    verificaSwitchPaga();
 };
 
 var mostraMensagemErro = function() {

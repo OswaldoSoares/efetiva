@@ -1,10 +1,11 @@
-<form class="" method="post" action="teste" id="teste2">
+<form class="" method="post" action="{% url 'gerapagamentos' %}" id="form-gera-paga">
 {% csrf_token %}
+    <input type="hidden" name="idminuta" value="{{ s_minuta.idminuta }}" id="id_idminuta">
     <div class="form-paga">
         <span>PORCENTAGEM NOTA</span>
         <input type="checkbox" class="new-switch new-switch--shadow" id="c_porc"
                {% if s_minuta.paga.c_porc %} checked="checked" {% endif %}
-               name="switch">
+               name="s_porc">
         <label for="c_porc"></label>
     </div>
     <div class="form-paga" id="form-paga-porc">
@@ -23,14 +24,14 @@
         </div>
         <div class="t_paga">
             <span class="form-label-paga">R$</span>
-            <div class="total-paga">{{ s_minuta.paga.t_porc|stringformat:'.2f' }}</div>
+            <div class="total-paga" id="t_porc">{{ s_minuta.paga.t_porc|stringformat:'.2f' }}</div>
         </div>
     </div>
     <div class="form-paga">
         <span>HORAS</span>
         <input type="checkbox" class="new-switch new-switch--shadow" id="c_hora"
                {% if s_minuta.paga.c_hora %} checked="checked" {% endif %}
-               name="switch">
+               name="s_hora">
         <label for="c_hora"></label>
     </div>
     <div class="form-paga" id="form-paga-hora">
@@ -49,14 +50,14 @@
         </div>
         <div class="t_paga">
             <span class="form-label-paga">R$</span>
-            <div class="total-paga">{{ s_minuta.paga.t_hora|stringformat:'.2f' }}</div>
+            <div class="total-paga" id="t_hora">{{ s_minuta.paga.t_hora|stringformat:'.2f' }}</div>
         </div>
     </div>
     <div class="form-paga">
         <span>HORAS EXCEDENTE</span>
         <input type="checkbox" class="new-switch new-switch--shadow" id="c_exce"
                {% if s_minuta.paga.c_exce %} checked="checked" {% endif %}
-               name="switch">
+               name="s_exce">
         <label for="c_exce"></label>
     </div>
     <div class="form-paga" id="form-paga-exce">
@@ -75,14 +76,14 @@
         </div>
         <div class="t_paga">
             <span class="form-label-paga">R$</span>
-            <div class="total-paga">{{ s_minuta.paga.t_exce|stringformat:'.2f' }}</div>
+            <div class="total-paga" id="t_exce">{{ s_minuta.paga.t_exce|stringformat:'.2f' }}</div>
         </div>
     </div>
     <div class="form-paga">
         <span>KILOMETRAGEM</span>
         <input type="checkbox" class="new-switch new-switch--shadow" id="c_kilm"
                {% if s_minuta.paga.c_kilm %} checked="checked" {% endif %}
-               name="switch">
+               name="s_kilm">
         <label for="c_kilm"></label>
     </div>
     <div class="form-paga" id="form-paga-kilm">
@@ -101,14 +102,14 @@
         </div>
         <div class="t_paga">
             <span class="form-label-paga">R$</span>
-            <div class="total-paga">{{ s_minuta.paga.t_kilm|stringformat:'.2f' }}</div>
+            <div class="total-paga" id="t_kilm">{{ s_minuta.paga.t_kilm|stringformat:'.2f' }}</div>
         </div>
     </div>
     <div class="form-paga">
         <span>ENTREGAS</span>
         <input type="checkbox" class="new-switch new-switch--shadow" id="c_entr"
                {% if s_minuta.paga.c_entr %} checked="checked" {% endif %}
-               name="switch">
+               name="s_entr">
         <label for="c_entr"></label>
     </div>
     <div class="form-paga" id="form-paga-entr">
@@ -127,14 +128,14 @@
         </div>
         <div class="t_paga">
             <span class="form-label-paga">R$</span>
-            <div class="total-paga">{{ s_minuta.paga.t_entr|stringformat:'.2f' }}</div>
+            <div class="total-paga" id="t_entr">{{ s_minuta.paga.t_entr|stringformat:'.2f' }}</div>
         </div>
     </div>
     <div class="form-paga">
         <span>ENTREGAS KG</span>
         <input type="checkbox" class="new-switch new-switch--shadow" id="c_enkg"
                {% if s_minuta.paga.c_enkg %} checked="checked" {% endif %}
-               name="switch">
+               name="s_enkg">
         <label for="c_enkg"></label>
     </div>
     <div class="form-paga" id="form-paga-enkg">
@@ -153,14 +154,14 @@
         </div>
         <div class="t_paga">
             <span class="form-label-paga">R$</span>
-            <div class="total-paga">{{ s_minuta.paga.t_enkg|stringformat:'.2f' }}</div>
+            <div class="total-paga" id="t_enkg">{{ s_minuta.paga.t_enkg|stringformat:'.2f' }}</div>
         </div>
     </div>
     <div class="form-paga">
         <span>ENTREGAS VOLUME</span>
         <input type="checkbox" class="new-switch new-switch--shadow" id="c_evol"
                {% if s_minuta.paga.c_evol %} checked="checked" {% endif %}
-               name="switch">
+               name="s_evol">
         <label for="c_evol"></label>
     </div>
     <div class="form-paga" id="form-paga-evol">
@@ -179,14 +180,14 @@
         </div>
         <div class="t_paga">
             <span class="form-label-paga">R$</span>
-            <div class="total-paga">{{ s_minuta.paga.t_evol|stringformat:'.2f' }}</div>
+            <div class="total-paga" id="t_evol">{{ s_minuta.paga.t_evol|stringformat:'.2f' }}</div>
         </div>
     </div>
     <div class="form-paga">
         <span>SAÍDA</span>
         <input type="checkbox" class="new-switch new-switch--shadow" id="c_said"
                {% if s_minuta.paga.c_said %} checked="checked" {% endif %}
-               name="switch">
+               name="s_said">
         <label for="c_said"></label>
     </div>
     <div class="form-paga" id="form-paga-said">
@@ -199,14 +200,14 @@
         <div></div>
         <div class="t_paga">
             <span class="form-label-paga">R$</span>
-            <div class="total-paga">{{ s_minuta.paga.v_said|stringformat:'.2f' }}</div>
+            <div class="total-paga" id="t_said">{{ s_minuta.paga.v_said|stringformat:'.2f' }}</div>
         </div>
     </div>
     <div class="form-paga">
         <span>CAPCIDADE PESO</span>
         <input type="checkbox" class="new-switch new-switch--shadow" id="c_capa"
                {% if s_minuta.paga.c_capa %} checked="checked" {% endif %}
-               name="switch">
+               name="s_capa">
         <label for="c_capa"></label>
     </div>
     <div class="form-paga" id="form-paga-capa">
@@ -219,14 +220,14 @@
         <div></div>
         <div class="t_paga">
             <span class="form-label-paga">R$</span>
-            <div class="total-paga">{{ s_minuta.paga.v_capa|stringformat:'.2f' }}</div>
+            <div class="total-paga" id="t_capa">{{ s_minuta.paga.v_capa|stringformat:'.2f' }}</div>
         </div>
     </div>
     <div class="form-paga">
         <span>PERIMETRO</span>
         <input type="checkbox" class="new-switch new-switch--shadow" id="c_peri"
                {% if s_minuta.paga.c_peri %} checked="checked" {% endif %}
-               name="switch">
+               name="s_peri">
         <label for="c_peri"></label>
     </div>
     <div class="form-paga" id="form-paga-peri">
@@ -245,14 +246,14 @@
         </div>
         <div class="t_paga">
             <span class="form-label-paga">R$</span>
-            <div class="total-paga">{{ s_minuta.paga.t_peri|stringformat:'.2f' }}</div>
+            <div class="total-paga" id="t_peri">{{ s_minuta.paga.t_peri|stringformat:'.2f' }}</div>
         </div>
     </div>
     <div class="form-paga">
         <span>PERNOITE</span>
         <input type="checkbox" class="new-switch new-switch--shadow" id="c_pnoi"
                {% if s_minuta.paga.c_pnoi %} checked="checked" {% endif %}
-               name="switch">
+               name="s_pnoi">
         <label for="c_pnoi"></label>
     </div>
     <div class="form-paga" id="form-paga-pnoi">
@@ -271,14 +272,14 @@
         </div>
         <div class="t_paga">
             <span class="form-label-paga">R$</span>
-            <div class="total-paga">{{ s_minuta.paga.t_pnoi|stringformat:'.2f' }}</div>
+            <div class="total-paga" id="t_pnoi">{{ s_minuta.paga.t_pnoi|stringformat:'.2f' }}</div>
         </div>
     </div>
     <div class="form-paga">
         <span>AJUDANTE</span>
         <input type="checkbox" class="new-switch new-switch--shadow" id="c_ajud"
                {% if s_minuta.paga.c_ajud %} checked="checked" {% endif %}
-               name="switch">
+               name="s_ajud">
         <label for="c_ajud"></label>
     </div>
     <div class="form-paga" id="form-paga-ajud">
@@ -297,7 +298,7 @@
         </div>
         <div class="t_paga">
             <span class="form-label-paga">R$</span>
-            <div class="total-paga">{{ s_minuta.paga.t_ajud|stringformat:'.2f' }}</div>
+            <div class="total-paga" id="t_ajud">{{ s_minuta.paga.t_ajud|stringformat:'.2f' }}</div>
         </div>
     </div>
     {% if s_minuta.motorista or s_minuta.ajudantes %}

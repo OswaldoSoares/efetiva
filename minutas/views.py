@@ -24,7 +24,7 @@ from .forms import FormInsereColaborador, FormEditaVeiculoSolicitado, FormEditaV
 from .models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas
 from .facade import forn_minuta, edita_hora_final, filtra_veiculo, html_filtro_veiculo, edita_km_final, \
     edita_km_inicial, \
-    remove_colaborador, remove_despessa, remove_entrega, retorna_json
+    remove_colaborador, remove_despessa, remove_entrega, retorna_json, prepara_itens
 
 def convertemp(mm):
     """
@@ -1348,6 +1348,37 @@ def atualiza_form_pg(request):
     print(request.POST)
     print(request.GET)
 
+
+def gera_pagamentos(request):
+    print(request.POST)
+    if request.POST.get('s_porc'):
+        print('PORCENTAGEM')
+    if request.POST.get('s_hora'):
+        print('HORA')
+    if request.POST.get('s_exce'):
+        print('HORA EXCEDENTE')
+    if request.POST.get('s_kilm'):
+        print('KILOMETRAGEM')
+    if request.POST.get('s_entr'):
+        print('ENTREGA')
+    if request.POST.get('s_enkg'):
+        print('ENTREGA KG')
+    if request.POST.get('s_evol'):
+        print('ENTREGA VOLUME')
+    if request.POST.get('s_said'):
+        print('SAÍDA')
+    if request.POST.get('s_capa'):
+        print('CAPACIDADE')
+    if request.POST.get('s_peri'):
+        print('PERIMETRO')
+    if request.POST.get('s_pnoi'):
+        print('PERNOITE')
+    if request.POST.get('s_ajud'):
+        print('AJUDANTE')
+    prepara_itens(request)
+    data = dict()
+    data['html_mensagem'] = 'OK'
+    return JsonResponse(data)
 
 def adiciona_minuta(request):
     c_form = FormMinuta
