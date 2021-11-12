@@ -13,12 +13,21 @@
 <div class="check-item">
     <span>VEÍCULO SOLICITADO</span>
     <div class="checkbox">
+        {% if s_minuta.entregas %}
+        {% if s_minuta.veiculo_solicitado %}
+        <i class="bi bi-check-square chk-green"></i>
+        {%  else %}
+        <i class="bi bi-square chk-red"></i>
+        {% endif %}
+        <i class="bi bi-check-square"></i>
+        {% else %}
         {% if s_minuta.veiculo_solicitado %}
         <i class="bi bi-check-square chk-green"></i>
         {%  else %}
         <i class="bi bi-square chk-green"></i>
         {% endif %}
         <i class="bi bi-square"></i>
+        {% endif %}
     </div>
 </div>
 

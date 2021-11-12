@@ -1002,3 +1002,4 @@ var mostraChecklist =  function() {
         $('.conclui-minuta').slideUp(500)
     });
 }
+

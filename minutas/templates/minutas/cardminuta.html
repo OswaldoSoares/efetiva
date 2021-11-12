@@ -50,7 +50,8 @@
 <div class="article-minuta-rodape">
     {% if s_minuta.status_minuta == 'FECHADA' or s_minuta.status_minuta == 'CONCLUIDA'%}
     {% if user|can:'estorna_minuta' %}
-    <i class="bi bi-box-arrow-left i-button" onclick="window.location.href = '{% url 'estorna_minuta' s_minuta.idminuta %}'">
+    <i class="bi bi-box-arrow-left i-button"
+       onclick="window.location.href = '{% url 'estorna_minuta' s_minuta.idminuta %}'">
         <span>ESTORMA MINUTA</span></i>
     {% endif %}
     {% endif %}

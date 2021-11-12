@@ -55,3 +55,21 @@
     </div>
 </div>
 {% endfor %}
+<div class="article-minuta-rodape">
+    {% if s_minuta.entregas %}
+    <div class="dados-rodape">
+        <span><i class="bi bi-geo-alt-fill"></i> {{ s_minuta.t_entregas.total_entregas }}</span>
+    </div>
+    <div class="dados-rodape">
+        <span>R$ {{ s_minuta.t_entregas.valor_entregas }}</span>
+    </div>
+     <div class="dados-rodape">
+        <span><i class="bi bi-truck-flatbed"></i> {{ s_minuta.t_entregas.peso_entregas }}</span>
+    </div>
+    <div class="dados-rodape">
+        <span><i class="bi bi-grid-fill"></i> {{ s_minuta.t_entregas.volume_entregas }}</span>
+    </div>
+    {% else %}
+    <span>ENTREGAS NÃO REGISTRADAS</span>
+    {% endif %}
+</div>

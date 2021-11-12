@@ -42,7 +42,10 @@ class MinutaSelecionada:
         self.km_inicial = minuta.KMInicial
         self.km_final = minuta.KMFinal
         self.despesas = MinutaDespesa(idminuta).descricao
+        self.t_despesas = self.total_despesas()
+        print(self.t_despesas)
         self.entregas = MinutaEntrega(idminuta).nota
+        self.t_entregas = self.total_notas()
         self.tabela = ClienteTabela(minuta.idCliente).tabela
         self.tabela_veiculo = ClienteTabelaVeiculo(minuta.idCliente).tabela
         self.tabela_perimetro = ClienteTabelaPerimetro(minuta.idCliente).tabela
@@ -135,11 +138,18 @@ class MinutaSelecionada:
         return excede
 
     def total_notas(self):
-        valor_entregas = sum([itens['ValorNota'] for itens in self.entregas])
-        volume_entregas = sum([itens['Volume'] for itens in self.entregas])
-        peso_entregas = sum([itens['Peso'] for itens in self.entregas])
-        total_entregas = len(self.entregas)
-        return valor_entregas, volume_entregas, peso_entregas, total_entregas
+        d_total_notas = dict()
+        d_total_notas['valor_entregas'] = sum([itens['ValorNota'] for itens in self.entregas])
+        d_total_notas['volume_entregas'] = sum([itens['Volume'] for itens in self.entregas])
+        d_total_notas['peso_entregas'] = sum([itens['Peso'] for itens in self.entregas])
+        d_total_notas['total_entregas'] = len(self.entregas)
+        return d_total_notas
+
+    def total_despesas(self):
+        d_total_despesas = dict()
+        d_total_despesas['valor_despesas'] = sum([itens['Valor'] for itens in self.despesas])
+        d_total_despesas['total_despesas'] = len(self.despesas)
+        return d_total_despesas
 
     @staticmethod
     def saldo_porcentagem_nota(porcento, valor):
@@ -173,8 +183,8 @@ class MinutaSelecionada:
             if self.motorista:
                 if self.motorista[0]['obj'].TipoPgto != 'MENSALISTA':
                     v_paga['v_porc'] = tabela_veiculo['PorcentagemPaga']
-                    v_paga['m_porc'] = self.total_notas()[0]
-                    v_paga['t_porc'] = tabela_veiculo['PorcentagemPaga'] / 100 * self.total_notas()[0]
+                    v_paga['m_porc'] = self.t_entregas['valor_entregas']
+                    v_paga['t_porc'] = tabela_veiculo['PorcentagemPaga'] / 100 * v_paga['m_porc']
                     v_paga['c_porc'] = True if int(phkesc[0:1]) else False
                     v_paga['v_hora'] = self.filtro_tabela_veiculo()['HoraPaga']
                     v_paga['m_hora'] = self.filtro_tabela_veiculo()['HoraMinimo']
@@ -189,16 +199,16 @@ class MinutaSelecionada:
                     v_paga['t_kilm'] = self.filtro_tabela_veiculo()['KMPaga'] * self.get_total_kms()
                     v_paga['c_kilm'] = True if int(phkesc[2:3]) else False
                     v_paga['v_entr'] = self.filtro_tabela_veiculo()['EntregaPaga']
-                    v_paga['m_entr'] = self.total_notas()[3]
-                    v_paga['t_entr'] = self.filtro_tabela_veiculo()['EntregaPaga'] * self.total_notas()[3]
+                    v_paga['m_entr'] = self.t_entregas['total_entregas']
+                    v_paga['t_entr'] = self.filtro_tabela_veiculo()['EntregaPaga'] * v_paga['m_entr']
                     v_paga['c_entr'] = True if int(phkesc[3:4]) else False
                     v_paga['v_enkg'] = self.filtro_tabela_veiculo()['EntregaKGPaga']
-                    v_paga['m_enkg'] = self.total_notas()[2]
-                    v_paga['t_enkg'] = self.filtro_tabela_veiculo()['EntregaKGPaga'] * self.total_notas()[2]
+                    v_paga['m_enkg'] = self.t_entregas['peso_entregas']
+                    v_paga['t_enkg'] = self.filtro_tabela_veiculo()['EntregaKGPaga'] * v_paga['m_enkg']
                     v_paga['c_enkg'] = True if int(phkesc[4:5]) else False
                     v_paga['v_evol'] = self.filtro_tabela_veiculo()['EntregaVolumePaga']
-                    v_paga['m_evol'] = self.total_notas()[1]
-                    v_paga['t_evol'] = self.filtro_tabela_veiculo()['EntregaVolumePaga'] * self.total_notas()[1]
+                    v_paga['m_evol'] = self.t_entregas['volume_entregas']
+                    v_paga['t_evol'] = self.filtro_tabela_veiculo()['EntregaVolumePaga'] * v_paga['m_evol']
                     v_paga['c_evol'] = True if int(phkesc[5:6]) else False
                     v_paga['v_said'] = self.filtro_tabela_veiculo()['SaidaPaga']
                     v_paga['c_said'] = True if int(phkesc[6:7]) else False
@@ -269,12 +279,12 @@ class MinutaSelecionada:
             valores_recebe = dict()
             valores_recebe['valor_taxaexpedicao'] = self.tabela[0]['TaxaExpedicao']
             valores_recebe['valor_seguro'] = 0.23
-            valores_recebe['minuta_seguro'] = self.total_notas()[0]
+            valores_recebe['minuta_seguro'] = self.total_notas()['valor_entregas']
             if self.filtro_tabela_veiculo():
                 valores_recebe['valor_porcentagem'] = self.filtro_tabela_veiculo()['PorcentagemCobra']
             else:
                 valores_recebe['valor_porcentagem'] = 0.00
-            valores_recebe['minuta_porcentagem'] = self.total_notas()[0]
+            valores_recebe['minuta_porcentagem'] = self.t_entregas['valor_entregas']
             valores_recebe['valor_hora'] = self.filtro_tabela_veiculo()['HoraCobra']
             valores_recebe['minuta_hora'] = self.filtro_tabela_veiculo()['HoraMinimo']
             valores_recebe['valor_horaexcede'] = 100
@@ -282,11 +292,11 @@ class MinutaSelecionada:
             valores_recebe['valor_kilometragem'] = self.filtro_tabela_veiculo()['KMCobra']
             valores_recebe['minuta_kilometragem'] = self.get_total_kms()
             valores_recebe['valor_entregas'] = self.filtro_tabela_veiculo()['EntregaCobra']
-            valores_recebe['minuta_entregas'] = self.total_notas()[3]
+            valores_recebe['minuta_entregas'] = self.t_entregas['total_entregas']
             valores_recebe['valor_entregaskg'] = self.filtro_tabela_veiculo()['EntregaKGCobra']
-            valores_recebe['minuta_entregaskg'] = self.total_notas()[2]
+            valores_recebe['minuta_entregaskg'] = self.total_notas()['peso_entregas']
             valores_recebe['valor_entregasvolume'] = self.filtro_tabela_veiculo()['EntregaVolumeCobra']
-            valores_recebe['minuta_entregasvolume'] = self.total_notas()[1]
+            valores_recebe['minuta_entregasvolume'] = self.total_notas()['volume_entregas']
             valores_recebe['valor_saida'] = self.filtro_tabela_veiculo()['SaidaCobra']
             capacidade = [itens['CapacidadeCobra'] for itens in self.tabela_capacidade if itens['CapacidadeInicial'] <=
                           self.total_kms() <= itens['CapacidadeFinal']]
@@ -431,24 +441,6 @@ class ClienteTabelaCapacidade:
                   'CapacidadeFinal': itens.CapacidadeFinal, 'CapacidadeCobra': itens.CapacidadeCobra,
                   'CapacidadePaga': itens.CapacidadePaga} for itens in capacidades]
         return lista
-
-
-class MinutaFinanceiro:
-    def __init__(self, descricao, chave_descricao, tipo_valor_tabela, valor_tabela, tipo_valor_minuta, valor_minuta):
-        self.descricao = descricao
-        self.chave_descricao = chave_descricao
-        self.tipo_valor_tabela = tipo_valor_tabela
-        self.valor_tabela = valor_tabela
-        self.tipo_valor_minuta = tipo_valor_minuta
-        self.valor_minuta = valor_minuta
-        self.saldo = 0.00
-        self.checked = False
-
-    def checked_on(self):
-        self.checked = True
-
-    def checked_off(self):
-        self.checked = False
 
 
 def cria_dict_paga():

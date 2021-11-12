@@ -25,3 +25,15 @@
     </div>
 </div>
 {% endfor %}
+<div class="article-minuta-rodape">
+    {% if s_minuta.despesas %}
+    <div class="dados-rodape">
+        <span><i class="bi bi-file-text"></i> {{ s_minuta.t_despesas.total_despesas }}</span>
+    </div>
+    <div class="dados-rodape">
+        <span>R$ {{ s_minuta.t_despesas.valor_despesas }}</span>
+    </div>
+    {% else %}
+    <span>DESPESAS NÃO REGISTRADAS</span>
+    {% endif %}
+</div>

@@ -28,16 +28,27 @@ body {
     max-height: 93vh;
 }
 
-body .container {
-    margin-top: 100px;
+.meu-container {
+    margin-top: 79px;
 	padding: 0;
     width: 100%;
-    height: 100%;
 	display: flex;
     align-items: center;
     justify-content: flex-start;    
     overflow: visible;
 }
+
+    @media (max-width: 1099px) {
+        .meu-container {
+            margin-top: 158px;
+        }
+    }
+
+    @media (max-width: 800px) {
+        .meu-container {
+            margin-top: 0;
+        }
+    }
 
 .conteudo {
     width: 100%;
@@ -145,30 +156,6 @@ nav footer h6 {
     transition: all .4s;
     z-index: 9999;
 }
-
-.menu-icone label:hover {
-    background-color: var(--corprimaria);
-    color: var(--corterciaria);
-}
-
-#chk:checked ~ .container nav {
-    display: flex;
-    transition: 0.4s ease all;
-}
-
-#chk:checked ~ .container .conteudo {
-    margin-left: 180px;
-}
-
-#chk:checked ~ .menu-icone label {
-    margin-left: 180px;
-    display: none;
-}
-
-/* Removido no novo  menu
-#chk:checked ~ .container .header-base {
-    padding-left: 220px;
-}*/
 
 #chk {
     display: none;
@@ -464,13 +451,13 @@ main .consulta .consulta-header {
     float: right;
 }
 
-.containerimg {
+.meu-containerimg {
     width: 100%;
     height: auto;
     margin: 0;
 }
 
-.containerimg img {
+.meu-containerimg img {
     max-width: 100%;
     min-width: auto;
     max-height: 150px;
@@ -1866,7 +1853,7 @@ main .usuario-out {
     flex-wrap: wrap;
 }
 
-.orcamento-container-card {
+.orcamento-meu-container-card {
     width: 25%;
     padding: 5px;
 }
@@ -1879,25 +1866,25 @@ main .usuario-out {
 }
 
 @media only screen and (max-width: 1600px) {
-    .orcamento-container-card {
+    .orcamento-meu-container-card {
         width: 25%;
     }
 }
 
 @media only screen and (max-width: 1260px) {
-    .orcamento-container-card {
+    .orcamento-meu-container-card {
         width: 25%;
     }
 }
 
 @media only screen and (max-width: 960px) {
-    .orcamento-container-card {
+    .orcamento-meu-container-card {
         width: 50%;
     }
 }
 
 @media only screen and (max-width: 660px) {
-    .orcamento-container-card {
+    .orcamento-meu-container-card {
         width: 100%;
     }
 }
@@ -2944,7 +2931,59 @@ main .fp-recibo-tabela .fp-recibo-print {
             .dados-despesa .dd-obs {
                 width: 83%;
                 padding-left: 17px;
-                text-align: justify;
+                text-align: left;
+                font-size: 12px;
+            }
+
+            .ac-despesa .article-minuta-rodape {
+                background-color: #363636;
+                height: 30px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-evenly;
+                align-items: center;
+                font-size: 20px;
+                border-radius: 0 0 10px 10px;
+            }
+
+            .ac-despesa .article-minuta-rodape .dados-rodape {
+                width: 50%;
+                text-align: center;
+            }
+
+            .ac-despesa .article-minuta-rodape span {
+                font-size: 12px;
+                font-style: italic;
+            }
+
+            .ac-despesa .article-minuta-rodape .dados-rodape span {
+                font-size: 15px;
+                font-style: italic;
+            }
+
+            @media (max-width: 800px) {
+                .ac-despesa {
+                    width: 340px;
+                }
+
+                    .ac-despesa .article-descricao .dados-despesa {
+                        flex-direction: column;
+                    }
+
+                    .ac-despesa .dd-despesa {
+                        width: 100%;
+                    }
+
+                    .ac-despesa .dd-valor {
+                        width: 100%;
+                        text-align: left;
+                    }
+
+                    .ac-despesa .article-minuta-rodape .dados-rodape span {
+                        font-size: 12px;
+                        font-style: italic;
+                    }
+
             }
 
         .ac-entrega {
@@ -3013,7 +3052,58 @@ main .fp-recibo-tabela .fp-recibo-print {
             }
 
             .descricao-entrega .de-mercado {
+                font-size: 12px;
                 width: 100%;
+            }
+
+            .ac-entrega .article-minuta-rodape {
+                background-color: #363636;
+                height: 30px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-evenly;
+                align-items: center;
+                font-size: 20px;
+                border-radius: 0 0 10px 10px;
+            }
+
+            .ac-entrega .article-minuta-rodape .dados-rodape {
+                width: 25%;
+                text-align: center;
+            }
+
+            .ac-entrega .article-minuta-rodape span {
+                font-size: 12px;
+                font-style: italic;
+            }
+
+            .ac-entrega .article-minuta-rodape .dados-rodape span {
+                font-size: 15px;
+                font-style: italic;
+            }
+
+            @media (max-width: 800px) {
+                .ac-entrega {
+                    width: 340px;
+                }
+
+                .ac-entrega .article-descricao .dados-nota {
+                    flex-direction: column;
+                }
+
+                .ac-entrega .de-nota {
+                    width: 100%;
+                }
+
+                .ac-entrega .de-numero {
+                    width: 100%;
+                    text-align: left;
+                }
+
+                .ac-entrega .article-minuta-rodape .dados-rodape span {
+                    font-size: 12px;
+                    font-style: italic;
+                }
             }
 
         .ac-paga {
@@ -3127,7 +3217,7 @@ main .fp-recibo-tabela .fp-recibo-print {
         .ac-checklist {
             background-color: #4f4f4f;
             color: white;
-            width: 300px; 
+            width: 340px; 
             border-radius: 10px;   
         }
 
@@ -3418,7 +3508,7 @@ main .fp-recibo-tabela .fp-recibo-print {
             display: none;
         }
 
-        @media (max-width: 800px) {
+                @media (max-width: 800px) {
             .menu {
                 position: static;
                 width: 100%;
