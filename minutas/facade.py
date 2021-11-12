@@ -43,7 +43,6 @@ class MinutaSelecionada:
         self.km_final = minuta.KMFinal
         self.despesas = MinutaDespesa(idminuta).descricao
         self.t_despesas = self.total_despesas()
-        print(self.t_despesas)
         self.entregas = MinutaEntrega(idminuta).nota
         self.t_entregas = self.total_notas()
         self.tabela = ClienteTabela(minuta.idCliente).tabela
@@ -742,15 +741,15 @@ def filtra_veiculo(idpessoal, opcao):
 def remove_colaborador(request, idminutacolaborador, idminuta, cargo):
     colaborador = MinutaColaboradores.objects.get(idMinutaColaboradores=idminutacolaborador)
     colaborador.delete()
-    obj = get_minuta(idminuta)
-    obj.idVeiculo = None
-    obj.KMInicial = 0
-    obj.KMFinal = 0
-    obj.save(update_fields=['idVeiculo', 'KMInicial', 'KMFinal'])
     data = dict()
     if cargo == 'AJUDANTE':
         data = html_ajudantes(request, data, idminuta)
     elif cargo == 'MOTORISTA':
+        obj = get_minuta(idminuta)
+        obj.idVeiculo = None
+        obj.KMInicial = 0
+        obj.KMFinal = 0
+        obj.save(update_fields=['idVeiculo', 'KMInicial', 'KMFinal'])
         data = html_motorista(request, data, idminuta)
     data = html_pagamento(request, data, idminuta)
     data = html_checklist(request, data, idminuta)

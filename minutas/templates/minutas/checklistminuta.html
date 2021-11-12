@@ -103,12 +103,17 @@
 <div class="check-item">
     <span>GERAR PAGAMENTOS</span>
     <div class="checkbox">
-        {% if s_minuta.paga_realizada %}
-        <i class="bi bi-check-square chk-green"></i>
-        {%  else %}
-        <i class="bi bi-square chk-red"></i>
+        {% if s_minuta.paga_minuta %}
+            {% if s_minuta.paga_realizada %}
+                <i class="bi bi-check-square chk-green"></i>
+            {%  else %}
+                <i class="bi bi-square chk-red-gera-paga"></i>
+            {% endif %}
+            <i class="bi bi-check-square"></i>
+        {% else %}
+            <i class="bi bi-square chk-green"></i>
+            <i class="bi bi-square"></i>
         {% endif %}
-        <i class="bi bi-check-square"></i>
     </div>
 </div>
 {% endif %}

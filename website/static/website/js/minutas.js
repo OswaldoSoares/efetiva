@@ -1001,5 +1001,8 @@ var mostraChecklist =  function() {
     $(".chk-red").each(function() {
         $('.conclui-minuta').slideUp(500)
     });
+    $(".chk-red-gera-paga").each(function() {
+        $('.conclui-minuta').slideUp(500)
+    });
 }
 
