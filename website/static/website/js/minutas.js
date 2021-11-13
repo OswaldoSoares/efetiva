@@ -648,32 +648,6 @@ $(document).ready(function(){
         }
     });
 
-    
-
-
-    function formAjaxPaga() {
-        var form = $('#teste2');
-        $.ajax({
-            type: 'POST',
-            url: '/minutas/atulizaformpg/',
-            data: form.serialize(),
-            success: function(xhr, ajaxOptions, thrownError) {
-                if ($(xhr['html_form']).find('.errorlist').length > 0) {
-                    /*formAjaxSubmit(modal, url, cbAfterLoad, cbAfterSuccess);*/
-                } else {
-                    if (cbAfterSuccess) { cbAfterSuccess(modal); }
-                }
-            },
-            error: function(xhr, ajaxOptions, thrownError) {s
-                $(".mensagem-erro").text(thrownError);
-                mostraMensagemErro()
-            },
-            complete: function() {
-                header.removeClass('loading');
-            }
-        });
-    };
-
     verificaSwitchPaga();
     mostraChecklist();
 });
