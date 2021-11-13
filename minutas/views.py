@@ -24,7 +24,8 @@ from .forms import FormInsereColaborador, FormEditaVeiculoSolicitado, FormEditaV
 from .models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas
 from .facade import forn_minuta, edita_hora_final, filtra_veiculo, html_filtro_veiculo, edita_km_final, \
     edita_km_inicial, \
-    remove_colaborador, remove_despessa, remove_entrega, retorna_json, prepara_itens, estorna_paga, novo_status_minuta
+    remove_colaborador, remove_despessa, remove_entrega, retorna_json, prepara_itens, estorna_paga, \
+    novo_status_minuta, MinutasStatus
 
 def convertemp(mm):
     """
@@ -194,6 +195,11 @@ def index_minuta(request):
     :param request:
     :return:
     """
+    aberta = ''
+    m_aberta = MinutasStatus('ABERTA').minutas
+    m_concluida = MinutasStatus('CONCLUIDA').minutas
+    m_fechada = MinutasStatus('FECHADA').minutas
+    faturada = Minuta.objects.filter(StatusMinuta='FATURADA')
     meu_filtro_minuta = request.GET.get('filtrominuta')
     meu_filtro_status = request.GET.get('filtrostatus')
     if meu_filtro_minuta:
@@ -204,11 +210,13 @@ def index_minuta(request):
         else:
             minuta = Minuta.objects.filter(StatusMinuta=meu_filtro_status).order_by('-Minuta')
     else:
-        minuta = Minuta.objects.filter(StatusMinuta='ABERTA')
+        minuta = Minuta.objects.filter(StatusMinuta='ABERTA').values()
     minuta_status = Minuta.objects.all().values_list('StatusMinuta', flat=True)
     minuta_status = sorted(list(dict.fromkeys(minuta_status)))
     minutacolaboradores = MinutaColaboradores.objects.filter(Cargo='MOTORISTA')
-    return render(request, 'minutas/index.html', {'minuta': minuta, 'minuta_status': minuta_status,
+    return render(request, 'minutas/index.html', {'m_aberta': m_aberta, 'm_concluida': m_concluida,
+                                                  'm_fechada': m_fechada, 'faturada': faturada, 'minuta': minuta,
+                                                  'minuta_status': minuta_status,
                                                   'minutacolaboradores': minutacolaboradores})
 
 

@@ -18,7 +18,10 @@ def nome_curto(nome):
     if nome:
         apelido = nome.split()
     if len(apelido) > 2:
-        del apelido[2:]
+        if len(apelido[1]) > 2:
+            del apelido[2:]
+        else:
+            del apelido[3:]
         apelido = ' '.join(apelido)
     return apelido
 
@@ -440,6 +443,26 @@ class ClienteTabelaCapacidade:
                   'CapacidadeFinal': itens.CapacidadeFinal, 'CapacidadeCobra': itens.CapacidadeCobra,
                   'CapacidadePaga': itens.CapacidadePaga} for itens in capacidades]
         return lista
+
+
+class MinutasStatus:
+    def __init__(self, status_minuta):
+        self.minutas = self.get_minutas_abertas(status_minuta)
+
+    @staticmethod
+    def get_minutas_abertas(status_minuta):
+        abertas = Minuta.objects.filter(StatusMinuta=status_minuta)
+        lista = [{'idMinuta': m.idMinuta, 'Minuta': m.Minuta, 'Cliente': m.idCliente, 'Data': m.DataMinuta,
+                  'Hora': m.HoraInicial, 'Veiculo': m.idVeiculo} for m in abertas]
+        for x in lista:
+            if x['Veiculo']:
+                x['Veiculo'] = f"{x['Veiculo'].Modelo} - {x['Veiculo'].Placa}"
+            motorista = MinutaColaboradores.objects.filter(idMinuta_id=x['idMinuta'], Cargo='MOTORISTA')
+            if motorista:
+                x['Motorista'] = nome_curto(motorista[0].idPessoal.Nome)
+            else:
+                x['Motorista'] = None
+        return(lista)
 
 
 def cria_dict_paga():

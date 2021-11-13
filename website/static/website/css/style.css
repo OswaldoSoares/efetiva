@@ -2761,6 +2761,96 @@ main .fp-recibo-tabela .fp-recibo-print {
         justify-content: center;
     }
 
+        .ac-lista {
+            background-color: #4f4f4f;
+            color: #ffffff;
+            min-width: 70%;
+            display: flex;
+            border-radius: 10px;
+        }
+        
+            .ac-lista .article-minuta-titulo {
+                background-color: #363636;
+                color: white;
+                height: 50px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                text-align: center;
+                border-radius: 10px 10px 0 0; 
+            }
+            
+            .ac-lista .ac-minuta-base {
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                text-align: center;
+            }
+
+                .ac-lista .article-minuta-titulo span {
+                    width: 100%;
+                    font-size: 30px;
+                }
+
+                .ac-lista .ac-itens {
+                    width: 80%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: flex-start;
+                }
+                
+                .ac-lista .dados-minuta {
+                    width: 100%;
+                    padding: 1px 0 1px 5px;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    align-items: center;
+                    text-align: center;
+                }
+
+                .ac-lista .dados-minuta .linha-minuta {
+                    width: 50%;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: left;
+                    align-items: center;
+                    padding-right: 10px;
+                }
+
+                .ac-lista .dados-minuta i {
+                    font-size: 18px;
+                    color: white;
+                }
+
+                .ac-lista .dados-minuta i span {
+                    font-size: 15px;
+                    color: white;
+                    padding-right: 5px;
+                }
+
+                .ac-lista .icones-minuta {
+                    width: 20%;
+                    height: 25px;
+                    padding: 3px 0;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-evenly;
+                    align-items: center;
+                }
+
+                .ac-lista .icones-minuta i {
+                    font-size: 18px;
+                }
+
+            .ac-lista .linha-divisoria {
+                background-color: #363636;
+                width: 100%;
+                height: 3px;
+            }
+
         .ac-minuta {
             background-color: #4f4f4f;
             color: white;
