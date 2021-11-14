@@ -197,8 +197,11 @@ def index_minuta(request):
     """
     aberta = ''
     m_aberta = MinutasStatus('ABERTA').minutas
+    t_aberta = len(m_aberta)
     m_concluida = MinutasStatus('CONCLUIDA').minutas
+    t_concluida = len(m_concluida)
     m_fechada = MinutasStatus('FECHADA').minutas
+    t_fechada = len(m_fechada)
     faturada = Minuta.objects.filter(StatusMinuta='FATURADA')
     meu_filtro_minuta = request.GET.get('filtrominuta')
     meu_filtro_status = request.GET.get('filtrostatus')
@@ -215,7 +218,9 @@ def index_minuta(request):
     minuta_status = sorted(list(dict.fromkeys(minuta_status)))
     minutacolaboradores = MinutaColaboradores.objects.filter(Cargo='MOTORISTA')
     return render(request, 'minutas/index.html', {'m_aberta': m_aberta, 'm_concluida': m_concluida,
-                                                  'm_fechada': m_fechada, 'faturada': faturada, 'minuta': minuta,
+                                                  'm_fechada': m_fechada, 't_aberta': t_aberta,
+                                                  't_concluida': t_concluida, 't_fechada': t_fechada,
+                                                  'faturada': faturada, 'minuta': minuta,
                                                   'minuta_status': minuta_status,
                                                   'minutacolaboradores': minutacolaboradores})
 

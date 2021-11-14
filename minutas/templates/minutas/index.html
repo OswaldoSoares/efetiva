@@ -66,7 +66,15 @@
                 <div class="linha-divisoria"></div>
                 {% endfor %}
                 <div class="article-minuta-rodape">
-                    <span> MINUTAS ABERTAS </span>
+                    {% if t_aberta %}
+                        {% if t_aberta == 1 %}
+                        <span>{{ t_aberta }} MINUTA ABERTA </span>
+                        {% else %}
+                        <span>{{ t_aberta }} MINUTAS ABERTAS </span>
+                        {% endif %}
+                    {% else %}
+                    <span>NENHUMA MINUTA ABERTA </span>
+                    {% endif %}
                 </div>
             </article>
             <article class="article-card ac-lista">
@@ -125,7 +133,15 @@
                 <div class="linha-divisoria"></div>
                 {% endfor %}
                 <div class="article-minuta-rodape">
-                    <span> MINUTAS CONCLUÍDAS </span>
+                    {% if t_concluida %}
+                        {% if t_concluida == 1 %}
+                        <span>{{ t_concluida }} MINUTA CONCLUÍDA </span>
+                        {% else %}
+                        <span>{{ t_concluida }} MINUTAS CONCLUÍDAS </span>
+                        {% endif %}
+                    {% else %}
+                    <span>NENHUMA MINUTA CONCLUÍDA </span>
+                    {% endif %}
                 </div>
             </article>
             <article class="article-card ac-lista">
@@ -184,7 +200,15 @@
                 <div class="linha-divisoria"></div>
                 {% endfor %}
                 <div class="article-minuta-rodape">
-                    <span> MINUTAS FECHADAS </span>
+                    {% if t_fechada %}
+                        {% if t_fechada == 1 %}
+                        <span>{{ t_fechada }} MINUTA FECHADA </span>
+                        {% else %}
+                        <span>{{ t_fechada }} MINUTAS FECHADAS </span>
+                        {% endif %}
+                    {% else %}
+                    <span>NENHUMA MINUTA FECHADA </span>
+                    {% endif %}
                 </div>
             </article>
         </div>
