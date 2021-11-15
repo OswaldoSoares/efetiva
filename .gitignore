@@ -8,3 +8,5 @@ minutas/functions.py
 desktop.ini
 *.json
 geckodriver.log
+mysql.cnf
+transefetiva/settings/development.py

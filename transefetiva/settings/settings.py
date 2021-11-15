@@ -26,7 +26,7 @@ SECRET_KEY = '-l-u+z*d%x-8edq9ef+v2uc9*ko#p2z&dij-h@^j71^)0kic5)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -90,19 +90,19 @@ WSGI_APPLICATION = 'transefetiva.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'USER': 'root',
-        'PASSWORD': 'S1c9c1p0',
-        'SERVER': 'localhost',
-        'PORT': '3306',
-        'NAME': 'transefetiva',
-        'options': {
-            'init_command': 'SET foreing_key_checks = 0',
-        }
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'USER': 'root',
+#         'PASSWORD': 'S1c9c1p0',
+#         'SERVER': 'localhost',
+#         'PORT': '3306',
+#         'NAME': 'transefetiva',
+#         'options': {
+#             'init_command': 'SET foreing_key_checks = 0',
+#         }
+#     }
+# }
 
 
 # Password validation
