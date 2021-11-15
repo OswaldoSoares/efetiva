@@ -164,7 +164,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 br_formats.DATE_FORMAT = 'd/m/Y'
 
-django_heroku.settings(locals())
 
 # Permissões - DJANGO-ROLE-PERMISSIONS
 ROLEPERMISSIONS_MODULE = 'transefetiva.roles'
