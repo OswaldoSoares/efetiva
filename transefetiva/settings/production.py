@@ -1,4 +1,5 @@
-from transefetiva.settings.settings import *
+from transefetiva.settings.settings import BASE_DIR, INSTALLED_APPS, MIDDLEWARE, ROOT_URLCONF, TEMPLATES, \
+    WSGI_APPLICATION, AUTH_PASSWORD_VALIDATORS, LANGUAGE_CODE, TIME_ZONE, USE_I18N, USE_L10N, USE_TZ
 import os
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -13,7 +14,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'OPTIONS': {
-            'read_default_file':  os.path.join(BASE_DIR, 'mysql.cnf'),
+            'read_default_file':  '/transefetiva/auth/mysql.cnf',
         },
     },
 }
