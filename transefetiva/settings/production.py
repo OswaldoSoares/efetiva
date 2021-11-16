@@ -1,6 +1,6 @@
 from .settings import *
 
-with open('/app/auth/secret_key.txt') as f:
+with open('/auth/secret_key.txt') as f:
     SECRET_KEY = f.read().strip()
 
 DEBUG = True
