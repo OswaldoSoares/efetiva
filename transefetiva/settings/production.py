@@ -4,6 +4,7 @@ import os
 # SECRET_KEY = os.environ['SECRET_KEY']
 DEBUG = True
 ALLOWED_HOSTS = ['159.223.191.6']
+print(SECRET_KEY)
 
 DATABASES = {
     'default': {
