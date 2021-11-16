@@ -1,16 +1,8 @@
-from transefetiva.settings.settings import BASE_DIR, INSTALLED_APPS, MIDDLEWARE, ROOT_URLCONF, TEMPLATES, \
-    WSGI_APPLICATION, AUTH_PASSWORD_VALIDATORS, LANGUAGE_CODE, TIME_ZONE, USE_I18N, USE_L10N, USE_TZ, br_formats, \
-    EMAIL_BACKEND, EMAIL_HOST, EMAIL_HOST_PASSWORD, EMAIL_HOST_USER, EMAIL_PORT, EMAIL_USE_TLS, LOGIN_REDIRECT_URL, \
-    LOGIN_URL, LOGOUT_REDIRECT_URL, MEDIA_ROOT, MEDIA_URL, ROLEPERMISSIONS_MODULE, ROLEPERMISSIONS_REGISTER_ADMIN
+from .settings import *
 import os
 
-# SECURITY WARNING: keep the secret key used in production secret!
-with open('/transefetiva/auth/secret_key.txt') as f:
-    SECRET_KEY = f.read().strip()
-
-# SECURITY WARNING: don't run with debug turned on in production!
+SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 DEBUG = True
-
 ALLOWED_HOSTS = ['159.223.191.6']
 
 DATABASES = {
@@ -21,9 +13,6 @@ DATABASES = {
         },
     },
 }
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
 STATIS_ROOT = '/transefetiva/site/public/static'
