@@ -6,7 +6,7 @@ with open('/transefetiva/auth/secret_key.txt') as f:
 
 print(SECRET_KEY)
 
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = ['159.223.191.6']
 
 DATABASES = {
