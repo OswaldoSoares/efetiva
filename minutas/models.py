@@ -29,7 +29,7 @@ class Minuta(models.Model):
     idFatura = models.ForeignKey(Fatura, on_delete=models.PROTECT, blank=True, null=True)
 
     class Meta:
-        db_table = 'Minuta'
+        db_table = 'minuta'
         ordering = ['Minuta']
 
     def __str__(self):
@@ -54,7 +54,7 @@ class MinutaColaboradores(models.Model):
     idRecibo = models.ForeignKey(Recibo, on_delete=models.PROTECT, null=True)
 
     class Meta:
-        db_table = 'MinutaColaboradores'
+        db_table = 'minutacolaboradores'
 
     objects = models.Manager()
 
@@ -74,7 +74,7 @@ class MinutaItens(models.Model):
     idMinuta = models.ForeignKey(Minuta, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'MinutaItens'
+        db_table = 'minutaitens'
 
     def __str__(self):
         return f'{self.Descricao}'
@@ -104,7 +104,7 @@ class MinutaNotas(models.Model):
     idMinuta = models.ForeignKey(Minuta, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'MinutaNotas'
+        db_table = 'minutanotas'
 
     def __str__(self):
         return str(self.Nota)

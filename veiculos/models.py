@@ -6,7 +6,7 @@ class CategoriaVeiculo(models.Model):
     Categoria = models.CharField(max_length=15)
 
     class Meta:
-        db_table = 'CategoriaVeiculo'
+        db_table = 'categoriaveiculo'
         ordering = ['Categoria']
 
     def __str__(self):

@@ -27,7 +27,7 @@ class Orcamento(models.Model):
     idFormaPagamento = models.ForeignKey(FormaPagamento, on_delete=models.PROTECT)
 
     class Meta:
-        db_table = 'Orcamento'
+        db_table = 'orcamento'
         ordering = ['DataOrcamento']
 
     def save(self, *args, **kwargs):

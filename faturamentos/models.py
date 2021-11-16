@@ -13,6 +13,6 @@ class Fatura(models.Model):
     Comentario = models.TextField(blank=True, null=True)
 
     class Meta:
-        db_table = 'Fatura'
+        db_table = 'fatura'
 
     objects = models.Manager()

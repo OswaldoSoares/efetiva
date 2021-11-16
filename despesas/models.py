@@ -12,7 +12,7 @@ class Abastecimento(models.Model):
     idVeiculo = models.ForeignKey(Veiculo, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'Despesas_Abastecimento'
+        db_table = 'abastecimento'
 
     def __str__(self):
         return str(self.idAbastecimento)

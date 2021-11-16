@@ -30,7 +30,7 @@ class Pessoal(models.Model):
     Foto = models.ImageField(upload_to=get_file_path, null=True, blank=True)
 
     class Meta:
-        db_table = 'Pessoal'
+        db_table = 'pessoal'
         ordering = ['Nome']
 
     def __str__(self):
@@ -60,7 +60,7 @@ class DocPessoal(models.Model):
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'DocPessoal'
+        db_table = 'docpessoal'
         ordering = ['TipoDocumento']
 
     def __str__(self):
@@ -77,7 +77,7 @@ class FonePessoal(models.Model):
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'FonePessoal'
+        db_table = 'fonepessoal'
         ordering = ['TipoFone']
 
     def __str__(self):
@@ -103,7 +103,7 @@ class ContaPessoal(models.Model):
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'ContaPessoal'
+        db_table = 'contapessoal'
         ordering = ['idPessoal', 'Banco', 'Agencia', 'Conta', 'PIX']
 
     def __str__(self):
@@ -130,7 +130,7 @@ class HorasTrabalhadas(models.Model):
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'HorasTrabalhadas'
+        db_table = 'horastrabalhadas'
         ordering = ['idPessoal', 'Data', 'Minuta']
 
     def __str__(self):
@@ -149,7 +149,7 @@ class Vales(models.Model):
     idRecibo = models.ForeignKey('pagamentos.Recibo', on_delete=models.PROTECT, blank=True, null=True)
 
     class Meta:
-        db_table = 'Vales'
+        db_table = 'vales'
         ordering = ['idPessoal', 'Data', 'Descricao']
 
     def __str__(self):
@@ -171,7 +171,7 @@ class Salario(models.Model):
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.PROTECT, default=1)
 
     class Meta:
-        db_table = 'Salario'
+        db_table = 'salario'
         ordering = ['idPessoal']
 
     def __str__(self):
@@ -189,7 +189,7 @@ class ContraCheque(models.Model):
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'ContraCheque'
+        db_table = 'contracheque'
         ordering = ['-idContraCheque']
 
     def __str__(self):

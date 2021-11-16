@@ -44,7 +44,7 @@ class FoneContatoCliente(models.Model):
     idCliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'FoneContatoCliente'
+        db_table = 'fonecontatocliente'
         ordering = ['Contato']
 
     def __str__(self):
@@ -67,7 +67,7 @@ class EMailContatoCliente(models.Model):
     idCliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'EmailContatoCliente'
+        db_table = 'emailcontatocliente'
         ordering = ['Contato']
 
     def __str__(self):
@@ -95,7 +95,7 @@ class Cobranca(models.Model):
     idCliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'Cobranca'
+        db_table = 'cobranca'
         ordering = ['Nome']
 
     def __str__(self):
@@ -119,7 +119,7 @@ class FormaPagamento(models.Model):
     Dias = models.IntegerField(default=1)
 
     class Meta:
-        db_table = 'FormaPagamento'
+        db_table = 'formapagamento'
         ordering = ['Forma', 'Dias']
 
     def __str__(self):
@@ -146,7 +146,7 @@ class Tabela(models.Model):
     idCliente = models.OneToOneField(Cliente, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'Tabela'
+        db_table = 'tabela'
 
     def __str__(self):
         return str(self.idFormaPagamento)
@@ -177,7 +177,7 @@ class TabelaVeiculo(models.Model):
     idCliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'TabelaVeiculo'
+        db_table = 'tabelaveiculo'
         ordering = ['idCategoriaVeiculo']
 
     def __str__(self):
@@ -195,7 +195,7 @@ class TabelaCapacidade(models.Model):
     idCliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'TabelaCapacidade'
+        db_table = 'tabelacapacidade'
         ordering = ['idTabelaCapacidade']
 
     objects = models.Manager()
@@ -210,7 +210,7 @@ class TabelaPerimetro(models.Model):
     idCliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'TabelaPerimetro'
+        db_table = 'tabelaperimetro'
         ordering = ['idTabelaPerimetro']
 
     objects = models.Manager()

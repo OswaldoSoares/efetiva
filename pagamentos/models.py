@@ -14,7 +14,7 @@ class Recibo(models.Model):
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.PROTECT)
 
     class Meta:
-        db_table = 'Recibo'
+        db_table = 'recibo'
 
     objects = models.Manager()
 
@@ -25,6 +25,6 @@ class ReciboItens(models.Model):
     idRecibo = models.ForeignKey(Recibo, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'ReciboItens'
+        db_table = 'reciboitens'
 
     objects = models.Manager()

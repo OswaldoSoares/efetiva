@@ -7,7 +7,7 @@ class Parametros(models.Model):
     Valor = models.CharField(max_length=100)
 
     class Meta:
-        db_table = 'Parametros'
+        db_table = 'parametros'
         ordering = ['Chave']
 
     def save(self, *args, **kwargs):
