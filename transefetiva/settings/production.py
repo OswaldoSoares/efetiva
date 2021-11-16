@@ -3,8 +3,6 @@ from .settings import *
 with open('/app/auth/secret_key.txt') as f:
     SECRET_KEY = f.read().strip()
 
-print(SECRET_KEY)
-
 DEBUG = False
 ALLOWED_HOSTS = ['192.81.215.116']
 
@@ -12,7 +10,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'OPTIONS': {
-            'read_default_file':  '/transefetiva/auth/mysql.cnf',
+            'read_default_file':  '/app/auth/mysql.cnf',
         },
     },
 }
