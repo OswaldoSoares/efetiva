@@ -17,7 +17,7 @@ from django.conf.locale.pt_BR import formats as br_formats
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 print(BASE_DIR)
-BASE_DIR = BASE_DIR[2:]
+BASE_DIR = BASE_DIR[5:]
 print(BASE_DIR)
 
 
