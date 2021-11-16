@@ -20,3 +20,6 @@ DATABASES = {
 
 STATIC_URL = '/static/'
 STATIS_ROOT = '/transefetiva/site/public/static'
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
