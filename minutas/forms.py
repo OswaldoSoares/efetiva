@@ -76,10 +76,10 @@ class CadastraMinutaAjudante(forms.ModelForm):
 
 class CadastraMinutaVeiculo(forms.Form):
     # Cria um queryset do Model Veiculo e adiciona um field "Virtual" concatenado (Veiculo)
-    # qs = Veiculo.objects.annotate(
-    #     Veiculo=Concat('Marca', Value(' - '), 'Modelo', Value(' - '), 'Placa')).filter(Motorista=0)
-    # choice = [('0', 'Selecione um item da lista...')] + [(x.idVeiculo, x.Veiculo) for x in qs]
-    choice =[('0', '0')]
+    qs = Veiculo.objects.annotate(
+        veiculo=Concat('Marca', Value(' - '), 'Modelo', Value(' - '), 'Placa')).filter(Motorista=0)
+    choice = [('0', 'Selecione um item da lista...')] + [(x.idVeiculo, x.Veiculo) for x in qs]
+    # choice =[('0', '0')]
 
     idMinuta = forms.IntegerField(widget=forms.HiddenInput())
     Propriedade = forms.CharField(label='PROPRIEDADE', widget=forms.Select(choices=(

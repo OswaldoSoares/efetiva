@@ -41,7 +41,7 @@ class Veiculo(models.Model):
     Categoria = models.ForeignKey(CategoriaVeiculo, on_delete=models.PROTECT)
 
     class Meta:
-        db_table = 'Veiculo'
+        db_table = 'veiculo'
         ordering = ['Placa']
 
     def __str__(self):
