@@ -16,7 +16,7 @@ DATABASES = {
 }
 
 STATIC_URL = '/static/'
-STATIS_ROOT = '/transefetiva/site/public/static'
+STATIS_ROOT = '/app/site/public/static'
 
 # SECURE_HSTS_SECONDS = 15780000
 # SECURE_HSTS_INCLUDE_SUBDOMAINS = True
