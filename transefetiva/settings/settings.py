@@ -138,18 +138,18 @@ USE_TZ = True
 # USE_THOUSAND_SEPARATOR = True
 
 
-# Configuração de E-Mails
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.terra.com.br'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'financeiro.efetiva@terra.com.br'
-EMAIL_HOST_PASSWORD = 'mau159753'
-
-# LOGIN
-LOGIN_REDIRECT_URL = 'index_website'
-LOGIN_URL = 'login'
-LOGOUT_REDIRECT_URL = 'login'
+# # Configuração de E-Mails
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_USE_TLS = True
+# EMAIL_HOST = 'smtp.terra.com.br'
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = 'financeiro.efetiva@terra.com.br'
+# EMAIL_HOST_PASSWORD = 'mau159753'
+#
+# # LOGIN
+# LOGIN_REDIRECT_URL = 'index_website'
+# LOGIN_URL = 'login'
+# LOGOUT_REDIRECT_URL = 'login'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
