@@ -16,7 +16,7 @@ class Cliente(models.Model):
     Site = models.CharField(max_length=40, blank=True)
 
     class Meta:
-        db_table = 'Cliente'
+        db_table = 'cliente'
         ordering = ['Fantasia']
 
     def __str__(self):
