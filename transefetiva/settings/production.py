@@ -4,13 +4,13 @@ with open('/efetiva/auth/secret_key.txt') as f:
     SECRET_KEY = f.read().strip()
 
 DEBUG = True
-ALLOWED_HOSTS = ['192.81.215.116']
+ALLOWED_HOSTS = ['157.245.136.205']
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'OPTIONS': {
-            'read_default_file':  '/efetiva/auth/mysql.cnf',
+            'read_default_file': '/efetiva/auth/mysql.cnf',
         },
     },
 }
