@@ -12,3 +12,5 @@ mysql.cnf
 transefetiva/settings/development.py
 manage.py
 staticfiles
+auth/
+site/
