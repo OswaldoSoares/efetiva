@@ -1,5 +1,5 @@
 from transefetiva.settings.settings import BASE_DIR, INSTALLED_APPS, MIDDLEWARE, ROOT_URLCONF, TEMPLATES, \
-    WSGI_APPLICATION, AUTH_PASSWORD_VALIDATORS, LANGUAGE_CODE, TIME_ZONE, USE_I18N, USE_L10N, USE_TZ
+    WSGI_APPLICATION, AUTH_PASSWORD_VALIDATORS, LANGUAGE_CODE, TIME_ZONE, USE_I18N, USE_L10N, USE_TZ, br_formats
 import os
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -18,3 +18,9 @@ DATABASES = {
         },
     },
 }
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/3.0/howto/static-files/
+
+STATIC_URL = '/static/'
+STATIS_ROOT = '/transefetiva/site/public/static'
