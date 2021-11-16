@@ -37,19 +37,19 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-    # apps de terceiros
-    'rolepermissions',
-    # meus apps
-    'clientes',
-    'despesas',
-    'faturamentos',
-    'minutas',
-    'orcamentos',
-    'pagamentos',
-    'pessoas',
-    'usuarios.apps.UsuariosConfig',
-    'veiculos',
-    'website',
+    # # apps de terceiros
+    # 'rolepermissions',
+    # # meus apps
+    # 'clientes',
+    # 'despesas',
+    # 'faturamentos',
+    # 'minutas',
+    # 'orcamentos',
+    # 'pagamentos',
+    # 'pessoas',
+    # 'usuarios.apps.UsuariosConfig',
+    # 'veiculos',
+    # 'website',
 ]
 
 MIDDLEWARE = [
