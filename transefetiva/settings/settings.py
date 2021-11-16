@@ -73,7 +73,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            'templates'
+            'templates', '/efetiva/transefetriva'
         ],
         'APP_DIRS': True,
         'OPTIONS': {
