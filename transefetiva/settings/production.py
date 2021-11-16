@@ -1,6 +1,3 @@
-from .settings import *
-import os
-
 with open('/transefetiva/auth/secret_key.txt') as f:
     SECRET_KEY = f.read().strip()
 
