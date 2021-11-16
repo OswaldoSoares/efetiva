@@ -5,7 +5,7 @@ from transefetiva.settings.settings import BASE_DIR, INSTALLED_APPS, MIDDLEWARE,
 import os
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SOME_SECRET_KEY")
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
