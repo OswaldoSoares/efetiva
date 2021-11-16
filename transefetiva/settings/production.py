@@ -1,10 +1,13 @@
 from .settings import *
 import os
 
-# SECRET_KEY = os.environ['SECRET_KEY']
+with open('/transefetiva/auth/secret_key.txt') as f:
+    SECRET_KEY = f.read().strip()
+
+print(SECRET_KEY)
+
 DEBUG = True
 ALLOWED_HOSTS = ['159.223.191.6']
-print(SECRET_KEY)
 
 DATABASES = {
     'default': {
