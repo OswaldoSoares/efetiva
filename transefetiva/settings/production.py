@@ -1,10 +1,12 @@
-with open('/transefetiva/auth/secret_key.txt') as f:
+from .settings import *
+
+with open('/app/auth/secret_key.txt') as f:
     SECRET_KEY = f.read().strip()
 
 print(SECRET_KEY)
 
 DEBUG = False
-ALLOWED_HOSTS = ['159.223.191.6']
+ALLOWED_HOSTS = ['192.81.215.116']
 
 DATABASES = {
     'default': {
