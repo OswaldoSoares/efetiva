@@ -10,3 +10,4 @@ desktop.ini
 geckodriver.log
 mysql.cnf
 transefetiva/settings/development.py
+manage.py
