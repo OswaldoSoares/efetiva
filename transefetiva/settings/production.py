@@ -5,7 +5,7 @@ from transefetiva.settings.settings import BASE_DIR, INSTALLED_APPS, MIDDLEWARE,
 import os
 
 # SECURITY WARNING: keep the secret key used in production secret!
-with open('/transefetiva/auth/secrett_key.txt') as f:
+with open('/transefetiva/auth/secret_key.txt') as f:
     SECRET_KEY = f.read().strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
