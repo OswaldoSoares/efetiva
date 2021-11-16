@@ -3,7 +3,7 @@ from .settings import *
 with open('/app/auth/secret_key.txt') as f:
     SECRET_KEY = f.read().strip()
 
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['192.81.215.116']
 
 DATABASES = {
