@@ -3,7 +3,7 @@ from .settings import *
 with open('/efetiva/auth/secret_key.txt') as f:
     SECRET_KEY = f.read().strip()
 
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = ['137.184.201.225']
 
 DATABASES = {
