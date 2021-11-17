@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Módulo Faturamentos {% endblock %}
+
+{% block main %}
+    <div class="conteudo-base">
+        {% block mainfaturamento %}
+        {% endblock %}
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript"
+            src="{% static 'website/js/faturamentos.js' %}">
+    </script>
+{% endblock %}

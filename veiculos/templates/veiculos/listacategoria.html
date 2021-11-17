@@ -1,0 +1,30 @@
+{% extends 'veiculos/baseveiculos.html' %}
+
+{% block title %}
+    Módulo Veículos
+{% endblock %}
+
+{% block mainveiculos %}
+    <div class="card_categoria">
+        <div class="card_titulo">
+            <h6><b>CATEGORIAS CADASTRADAS</b></h6>
+        </div>
+        <div class="card_categoriadados">
+            {% for itens in categoria %}
+                <div class="card_categorialista">
+                    <p>{{ itens.Categoria }}</p>
+                </div>
+                <div class="excluicategoria">
+                    <button class="btn btn-danger btn-xs" onclick="window.location.href = '{% url 'exclui_categoria_veiculos' itens.idCategoria %}';">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                </div>
+                <div class="excluicategoria">
+                    <button class="btn btn-success btn-xs" onclick="window.location.href = '{% url 'atualiza_categoria_veiculos' itens.idCategoria %}';">
+                        <span class="glyphicon glyphicon-edit"></span>
+                    </button>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

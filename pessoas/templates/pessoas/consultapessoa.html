@@ -1,0 +1,306 @@
+{% extends 'pessoas/basepessoas.html' %}
+
+{% block title %}
+    Módulo Colaboradores
+{% endblock %}
+
+{% block mainpessoal %}
+<main>
+    {% for itens in colaborador %}
+    <div class="consulta">
+        <header class="consulta-header">
+            <div class="consulta_headertitulo">
+                <p><b>{{ itens.Nome }} - {{ itens.DataNascimento }} {% if itens.DataAdmissao %}
+                    - ADMISSÃO: {{ itens.DataAdmissao }} {% endif %}</b></p>
+            </div>
+            <div class="consulta_headerbtn">
+                <button class="btn btn-success glyphicon glyphicon-edit" onclick="openMyModal(event); return false;"
+                        data-title="EDITA CADASTRO DE COLABORADOR"
+                        data-action="{% url 'editapessoa' itens.idPessoal %}"
+                        data-button-save-label="ALTERAR">
+                </button>
+                {% if not minutas %}
+                <button class="btn btn-danger glyphicon glyphicon-trash" onclick="openMyModal(event); return false;"
+                        data-title="EXCLUI CADASTRO DE COLABORADOR"
+                        data-action="{% url 'excluipessoa' itens.idPessoal %}"
+                        data-button-save-label="EXCLUIR">
+                </button>
+                {% endif %}
+            </div>
+            <div class="consulta-header-dados">
+                <p><b>{{ itens.Endereco }} - {{ itens.Bairro }} - {{ itens.Cidade }} - {{ itens.Estado }}</b></p>
+                <p><b>{{ itens.Categoria }}</b></p>
+                <p><b>{{ itens.TipoPgto }}</b></p>
+            </div>
+        </header>
+        <main>
+            <div class="card-foto card-base2 card-pessoas card">
+                <header>
+                    <spaa><b>FOTO</b></spaa>
+                </header>
+                <section>
+                    <figure class="containerimg">
+                            <img src="/media/{{ itens.Foto }}" alt="">
+                    </figure>
+                </section>
+            </div>
+            {% if docpessoa %}
+            {% for itensdoc in docpessoa %}
+            <div class="card-doc card-base2 card-pessoas card">
+                <header>
+                    <span><b>DOCUMENTO</b></span>
+                </header>
+                <section>
+                    <div class="section-itens">
+                        <span><b>DOCUMENTO:</b></span>
+                        <span><b>{{ itensdoc.TipoDocumento }}</b></span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>NÚMERO:</b></span>
+                        <span><b>{{ itensdoc.Documento }}</b></span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>EMISSÃO / VENCIMENTO:</b></span>
+                        <span><b>{{ itensdoc.Data }}</b></span>
+                    </div>
+                </section>
+                <footer>
+                    <div>
+                        <button class="btn btn-primary btn-xs js-criadocpessoa"
+                                idpessoal="{{ itens.idPessoal }}" data-url="{% url 'criadocpessoa' %}">
+                            <span class="glyphicon glyphicon-plus"></span>
+                        </button>
+                        <button class="btn btn-danger btn-xs js-excluidocpessoa"
+                                iddocpessoal="{{ itensdoc.idDocPessoal }}"
+                                data-url="{% url 'excluidocpessoa' itensdoc.idDocPessoal %}">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </div>
+                </footer>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="card-doc card-base2 card-pessoas card">
+                <header>
+                    <span><b>DOCUMENTO</b></span>
+                </header>
+                <section>
+                    <span><b>NENHUM DOCUMENTO CADASTRADO</b></span>
+                </section>
+                <footer>
+                    <button class="btn btn-primary btn-xs js-criadocpessoa"
+                            idpessoal="{{ itens.idPessoal }}" data-url="{% url 'criadocpessoa' %}">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </footer>
+            </div>
+            {% endif %}
+            {% if fonepessoa %}
+            {% for itensfone in fonepessoa %}
+            <div class="card-fone card-base2 card=pessoas card">
+                <header>
+                    <span><b>TELEFONE</b></span>
+                </header>
+                <section>
+                    <div class="section-itens">
+                        <span><b>NÚMERO:</b></span>
+                        <span><b>{{ itensfone.Fone }}</b></span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>DESCRIÇÃO:</b></span>
+                        <span><b>{{ itensfone.TipoFone }}</b></span>
+                    </div>
+                    {% if itensfone.Contato %}
+                    <div class="section-itens">
+                        <span><b>CONTATO:</b></span>
+                        <span><b>{{ itensfone.Contato }}</b></span>
+                    </div>
+                    {% endif %}
+                </section>
+                <footer>
+                    <div>
+                        <button class="btn btn-primary btn-xs js-criafonepessoa"
+                               idpessoal="{{ itens.idPessoal }}" data-url="{% url 'criafonepessoa' %}">
+                            <span class="glyphicon glyphicon-plus"></span>
+                        </button>
+                        <button class="btn btn-danger btn-xs js-excluifonepessoa"
+                                idfonepessoal="{{ itensfone.idFonePessoal }}"
+                                data-url="{% url 'excluifonepessoa' itensfone.idFonePessoal %}">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </div>
+                </footer>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="card-fone card-base2 card=pessoas card">
+                <header>
+                    <span><b>TELEFONE</b></span>
+                </header>
+                <section>
+                    <div class="section-itens">
+                        <span><b>NENHUM TELEEFONE CADASTRADO</b></span>
+                    </div>
+                </section>
+                <footer>
+                    <button class="btn btn-primary btn-xs js-criafonepessoa"
+                           idpessoal="{{ itens.idPessoal }}" data-url="{% url 'criafonepessoa' %}">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </footer>
+            </div>
+            {% endif %}
+            {% if contapessoa %}
+            {% for itensconta in contapessoa %}
+            <div class="card-conta card-base2 card-pessoas card">
+                <header>
+                    <span><b>CONTA BANCÁRIA</b></span>
+                </header>
+                <section>
+                    {% if itensconta.Banco %}
+                    <div class="section-itens">
+                        <span><b>BANCO:</b></span>
+                        <span><b>{{ itensconta.Banco }}</b></span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>AGÊNCIA:</b></span>
+                        <span><b>{{ itensconta.Agencia }}</b></span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>TIPO CONTA:</b></span>
+                        <span><b>{{ itensconta.TipoConta }}</b></span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>CONTA:</b></span>
+                        <span><b>{{ itensconta.Conta }}</b></span>
+                    </div>
+                    {% endif %}
+                    <div class="section-itens">
+                        <span><b>PIX:</b></span>
+                        <span><b>{{ itensconta.PIX }}</b></span>
+                    </div>
+                    {% if itensconta.Titular %}
+                    <div class="section-itens">
+                        <span><b>TITULAR:</b></span>
+                        <span><b>{{ itensconta.Titular }}</b></span>
+                    </div>
+                    <div class="section-itens">
+                        <span><b>CPF:</b></span>
+                        <span><b>{{ itensconta.CPF }}</b></span>
+                    </div>
+                    {% endif %}
+                </section>
+                <footer>
+                    <div>
+                        <button class="btn btn-primary btn-xs js-criacontapessoa"
+                               idpessoal="{{ itens.idPessoal }}" data-url="{% url 'criacontapessoa' %}">
+                            <span class="glyphicon glyphicon-plus"></span>
+                        </button>
+                        <button class="btn btn-danger btn-xs js-excluicontapessoa"
+                                idcontapessoal="{{ itensconta.idContaPessoal }}"
+                                data-url="{% url 'excluicontapessoa' itensconta.idContaPessoal %}">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </div>
+                </footer>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="card-conta card-base2 card-pessoas card">
+                <header>
+                    <span><b>CONTA BANCÁRIA</b></span>
+                </header>
+                <section>
+                    <div class="section-itens">
+                        <span><b>NENHUMA CONTA CADASTRADA</b></span>
+                    </div>
+                </section>
+                <footer>
+                    <button class="btn btn-primary btn-xs js-criacontapessoa"
+                           idpessoal="{{ itens.idPessoal }}" data-url="{% url 'criacontapessoa' %}">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </footer>
+            </div>
+            {% endif %}
+            <div class="card-base3">
+                <header>
+                    <span><b>SALÁRIO BASE</b></span>
+                </header>
+                <form class="row g-3" method="post" action="{% url 'editasalario' %}">
+                    {% csrf_token %}
+                    <div class="col-md-4">
+                        <label for="id_Salario" class="form-label">SALÁRIO:</label>
+                        {{ formsalario.Salario }}
+                        {{ formsalario.Salario.error }}
+                    </div>
+                    <div class="col-md-4">
+                        <label for="id_HorasMensais" class="form-label">HORAS MENSAIS:</label>
+                        {{ formsalario.HorasMensais }}
+                        {{ formsalario.HorasMensais.error }}
+                    </div>
+                    <div class="col-md-4">
+                        <label for="id_ValeTransporte" class="form-label">VALE TRANSPORTE:</label>
+                        {{ formsalario.ValeTransporte }}
+                        {{ formsalario.ValeTransporte.error }}
+                    </div>
+                    {{ form.idPessoal }}
+                    <input type="hidden" name="idPessoal" value="{{ itens.idPessoal }}" id="id_idPessoalv">
+                    <footer>
+                        <button class="btn btn-primary btn-xs glyphicon glyphicon-repeat">
+                        </button>
+                    </footer>
+                </form>
+            </div>
+            <div class="card-foto card-base2 card-pessoas card">
+                <header>
+                    <spaa><b>DEMISSÃO</b></spaa>
+                </header>
+                <form class="row g-3" method="post" action="{% url 'editademissao' %}">
+                    {% csrf_token %}
+                    <div class="col-md-12">
+                        <label for="id_DataDemissao" class="form-label">DATA DEMISSÃO:</label>
+                        {{ form_demissao.DataDemissao }}
+                        {{ form_demissao.DataDemissao.error }}
+                    </div>
+                    {{ form.idPessoal }}
+                    <input type="hidden" name="idPessoal" value="{{ itens.idPessoal }}" id="id_idPessoal">
+                    <footer>
+                        <button class="btn btn-primary btn-xs glyphicon glyphicon-repeat">
+                        </button>
+                    </footer>
+                </form>
+            </div>
+        </main>
+    </div>
+    <!-- DIV MODAL -->
+    <div class="modal fade bd-example-modal-lg" id="MyModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title"><b>CADASTRO DE COLABORADORES</b></h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">FECHAR</button>
+                    <button type="submit" class="btn btn-success btn-save">CRIAR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- DIV MODAL -->
+    <div class="modal fade" id="modal-formulario" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</main>
+{% endblock %}

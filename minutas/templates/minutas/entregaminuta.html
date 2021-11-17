@@ -1,0 +1,75 @@
+{% for entrega in s_minuta.entregas %}
+<div class="article-descricao">
+    <div class="descricao-entrega">
+        <div class="dados-nota">
+            <div class="de-nota">
+                <span><i class="bi bi-file-text"></i> {{ entrega.Nota }}</span>
+            </div>
+             <div class="de-numero">
+                {% if entrega.ValorNota %}
+                <span>R$ {{ entrega.ValorNota }}</span>
+                {% endif %}
+            </div>
+             <div class="de-numero">
+                 {% if entrega.Peso %}
+                <span><i class="bi bi-truck-flatbed"></i> {{ entrega.Peso }}</span>
+                 {% endif %}
+            </div>
+            <div class="de-numero">
+                {% if entrega.Volume %}
+                <span><i class="bi bi-grid-fill"></i> {{ entrega.Volume }}</span>
+                {% endif %}
+            </div>
+        </div>
+        <div class="dados-nota">
+            <div class="de-mercado">
+                {% if entrega.Nome %}
+                <span><i class="bi bi-shop"></i> {{ entrega.Nome }}</span>
+                {% endif %}
+            </div>
+        </div>
+        <div class="dados-nota">
+            <div class="de-mercado">
+                {% if entrega.Bairro or entrega.Cidade or entrega.Estado %}
+                <span>
+                    <i class="bi bi-geo-alt-fill"></i>
+                    {% if entrega.Bairro %}
+                    {{ entrega.Bairro }} -
+                    {% endif %}
+                    {% if entrega.Cidade %}
+                    {{ entrega.Cidade }} -
+                    {% endif %}
+                    {% if entrega.Estado %}
+                    {{ entrega.Estado }}
+                    {% endif %}
+                </span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="div-i-button">
+        {% if not s_minuta.paga_realizada %}
+        <i class="bi bi-trash i-button remove-entrega" idMinuta="{{ s_minuta.idminuta }}"
+           idMinutaNotas="{{ entrega.idMinutaNotas }}"></i>
+        {% endif %}
+    </div>
+</div>
+{% endfor %}
+<div class="article-minuta-rodape">
+    {% if s_minuta.entregas %}
+    <div class="dados-rodape">
+        <span><i class="bi bi-geo-alt-fill"></i> {{ s_minuta.t_entregas.total_entregas }}</span>
+    </div>
+    <div class="dados-rodape">
+        <span>R$ {{ s_minuta.t_entregas.valor_entregas }}</span>
+    </div>
+     <div class="dados-rodape">
+        <span><i class="bi bi-truck-flatbed"></i> {{ s_minuta.t_entregas.peso_entregas }}</span>
+    </div>
+    <div class="dados-rodape">
+        <span><i class="bi bi-grid-fill"></i> {{ s_minuta.t_entregas.volume_entregas }}</span>
+    </div>
+    {% else %}
+    <span>ENTREGAS NÃO REGISTRADAS</span>
+    {% endif %}
+</div>

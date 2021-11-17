@@ -1,0 +1,36 @@
+<div class="pa-saldo">
+    <table class="pa-tabela">
+        <tr>
+            <td class="pa-titulo">NOME</td>
+            <td class="pa-titulo">SALDO</td>
+            <td class="pa-titulo">VALES</td>
+            <td class="pa-titulo">TOTAL VALES</td>
+            <td></td>
+        </tr>
+        {% for itens in saldo %}
+        <tr>
+            <td class="pa-nome" data-toggle="tooltip" data-placement="top" title="{{ itens.Nome }}">
+                {{ itens.Nome|truncatechars:25 }}</td>
+            <td class="pa-valor">R$ {{ itens.Saldo|floatformat:2 }}</td>
+            <td class="pa-valor saldovale" id="vale_{{ itens.idPessoal }}">R$ {{ itens.ValeSelect|floatformat:2 }}</td>
+            <td class="pa-valor">R$ {{ itens.ValeTotal|floatformat:2 }}</td>
+            <td class="pa-button">
+                <button class="btn btn-info btn-xs glyphicon glyphicon-ok selecionar-saldoavulso"
+                        data-url="{% url 'selecionasaldoavulso' %}" datainicial="{{ datainicial }}"
+                        datafinal="{{ datafinal }}" idpessoal="{{ itens.idPessoal }}">
+                </button>
+            </td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td class="pa-valor">Total</td>
+            <td class="pa-valor">R$ {{ saldototal|floatformat:2 }}</td>
+            <td class="pa-valor" id="totalvales">R$ {{ totalselect|floatformat:2 }}</td>
+            <td class="pa-valor">R$ {{ saldovales|floatformat:2 }}</td>
+            <td></td>
+        </tr>
+    </table>
+    <div class="pa-vales"></div>
+    <div class="pa-recibos"></div>
+</div>
+<div class="pa-minutas"></div>

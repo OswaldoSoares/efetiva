@@ -1,0 +1,287 @@
+{% extends 'base.html' %}
+
+{% block title %} Módulo Clientes {% endblock %}
+
+{% block main %}
+    <div class="conteudo-base">
+        {% block maincliente %}
+        {% endblock %}
+    </div>
+{% endblock %}
+
+{% block script %}
+<script>
+    $(document).ready(function(){
+        var pc = $(".phkesccobra").text().substring(0,1);
+        var hc = $(".phkesccobra").text().substring(1,2);
+        var kc = $(".phkesccobra").text().substring(2,3);
+        var ec = $(".phkesccobra").text().substring(3,4);
+        var sc = $(".phkesccobra").text().substring(4,5);
+        var cc = $(".phkesccobra").text().substring(5,6);
+        var ekc = $(".phkesccobra").text().substring(6,7);
+        var evc = $(".phkesccobra").text().substring(7,8);
+
+        var pp = $(".phkescpaga").text().substring(0,1);
+        var hp = $(".phkescpaga").text().substring(1,2);
+        var kp = $(".phkescpaga").text().substring(2,3);
+        var ep = $(".phkescpaga").text().substring(3,4);
+        var sp = $(".phkescpaga").text().substring(4,5);
+        var cp = $(".phkescpaga").text().substring(5,6);
+        var ekp = $(".phkescpaga").text().substring(6,7);
+        var evp = $(".phkescpaga").text().substring(7,8);
+
+        if (pc == 1) {$("#switch-porcentagem-cobra").attr('checked', 'checked')};
+        if (hc == 1) {$("#switch-hora-cobra").attr('checked', 'checked')};
+        if (kc == 1) {$("#switch-kilometragem-cobra").attr('checked', 'checked')};
+        if (ec == 1) {$("#switch-entrega-cobra").attr('checked', 'checked')};
+        if (sc == 1) {$("#switch-saida-cobra").attr('checked', 'checked')};
+        if (cc == 1) {$("#switch-capacidade-cobra").attr('checked', 'checked')};
+        if (ekc == 1) {$("#switch-entregakg-cobra").attr('checked', 'checked')};
+        if (evc == 1) {$("#switch-entregavolume-cobra").attr('checked', 'checked')};
+
+        if (pp == 1) {$("#switch-porcentagem-paga").attr('checked', 'checked')};
+        if (hp == 1) {$("#switch-hora-paga").attr('checked', 'checked')};
+        if (kp == 1) {$("#switch-kilometragem-paga").attr('checked', 'checked')};
+        if (ep == 1) {$("#switch-entrega-paga").attr('checked', 'checked')};
+        if (sp == 1) {$("#switch-saida-paga").attr('checked', 'checked')};
+        if (cp == 1) {$("#switch-capacidade-paga").attr('checked', 'checked')};
+        if (ekp == 1) {$("#switch-entregakg-paga").attr('checked', 'checked')};
+        if (evp == 1) {$("#switch-entregavolume-paga").attr('checked', 'checked')};
+
+        var loadForm = function(){
+            var idclick = $(this).attr("idclick");
+
+            var obj = $(this);
+            var idcliente = $(this).attr("idcliente");
+            var idemailcliente = $(this).attr("idemailcliente");
+            var idfonecliente = $(this).attr("idfonecliente");
+            var idcobrancacliente = $(this).attr("idcobrancacliente");
+            var idtabelacliente = $(this).attr("idtabelacliente");
+            var idtabelaveiculo = $(this).attr("idtabelaveiculo");
+            var idcategoriaveiculo = $(this).attr("idveiculo");
+            var idtabelacapacidade = $(this).attr("idtabelacapacidade");
+            var idtabelaperimetro = $(this).attr("idtabelaperimetro");
+
+            $.ajax({
+                url: obj.attr("data-url"),
+                type: 'get',
+                dataType: 'json',
+                data: {
+                    idcliente: idcliente,
+                    idcategoriaveiculo: idcategoriaveiculo,
+                },
+                beforeSend: function(){
+                    $("#modal-formulario .modal-content").html("");
+                    $("#modal-formulario").modal("show");
+                },
+                success: function(data){
+                    $("#modal-formulario .modal-content").html(data.html_form);
+
+                    if (idclick == 'cliente') {
+                        $("#id_Fantasia").focus();
+                    } else if (idclick == 'clienteemail') {
+                        $("#id_Contato").focus();
+                    } else if (idclick == 'clientefone') {
+                        $("#id_Contato").focus();
+                    } else if (idclick == 'clientecobranca') {
+                        $("#id_Nome").focus();
+                    } else if (idclick == 'clientetabela') {
+                        $("#id_Comissao").focus();
+                    } else if (idclick == 'clientetabelaveiculo') {
+                        $("#id_PorcentagemCobra").focus();
+                    } else if (idclick == 'clientetabelacapacidade') {
+                        $("#id_CapacidadeInicial").focus();
+                    } else if (idclick == 'clientetabelaperimetro') {
+                        $("#id_PerimetroInicial").focus();
+                    };
+
+                    $(".js-edita-cliente-form").attr('action', "{% url 'editacliente' 0 %}".replace(/0/, idcliente));
+                    $(".js-exclui-cliente-form").attr('action', "{% url 'excluicliente' 0 %}".replace(/0/, idcliente));
+                    $(".js-edita-emailcliente-form").attr('action', "{% url 'editaemailcliente' 0 %}".replace(/0/, idemailcliente));
+                    $(".js-exclui-emailcliente-form").attr('action', "{% url 'excluiemailcliente' 0 %}".replace(/0/, idemailcliente));
+                    $(".js-edita-fonecliente-form").attr('action', "{% url 'editafonecliente' 0 %}".replace(/0/, idfonecliente));
+                    $(".js-exclui-fonecliente-form").attr('action', "{% url 'excluifonecliente' 0 %}".replace(/0/, idfonecliente));
+                    $(".js-edita-cobrancacliente-form").attr('action', "{% url 'editacobrancacliente' 0 %}".replace(/0/, idcobrancacliente));
+                    $(".js-exclui-cobrancacliente-form").attr('action', "{% url 'excluicobrancacliente' 0 %}".replace(/0/, idcobrancacliente));
+                    $(".js-edita-tabelacliente-form").attr('action', "{% url 'editatabelacliente' 0 %}".replace(/0/, idtabelacliente));
+                    $(".js-edita-tabelaveiculo-form").attr('action', "{% url 'editatabelaveiculo' 0 %}".replace(/0/, idtabelaveiculo));
+                    $(".js-edita-tabelacapacidade-form").attr('action', "{% url 'editatabelacapacidade' 0 %}".replace(/0/, idtabelacapacidade));
+                    $(".js-exclui-tabelacapacidade-form").attr('action', "{% url 'excluitabelacapacidade' 0 %}".replace(/0/, idtabelacapacidade));
+                    $(".js-edita-tabelaperimetro-form").attr('action', "{% url 'editatabelaperimetro' 0 %}".replace(/0/, idtabelaperimetro));
+                    $(".js-exclui-tabelaperimetro-form").attr('action', "{% url 'excluitabelaperimetro' 0 %}".replace(/0/, idtabelaperimetro));
+                }
+            });
+        };
+
+        $(".js-criacliente").click(loadForm);
+        $(".js-editacliente").click(loadForm);
+        $(".js-excluicliente").click(loadForm);
+        $(".js-criaemailcliente").click(loadForm);
+        $(".js-editaemailcliente").click(loadForm);
+        $(".js-excluiemailcliente").click(loadForm);
+        $(".js-criafonecliente").click(loadForm);
+        $(".js-editafonecliente").click(loadForm);
+        $(".js-excluifonecliente").click(loadForm);
+        $(".js-criacobrancacliente").click(loadForm);
+        $(".js-editacobrancacliente").click(loadForm);
+        $(".js-excluicobrancacliente").click(loadForm);
+        $(".js-criatabelacliente").click(loadForm);
+        $(".js-editatabelacliente").click(loadForm);
+        $(".js-criatabelaveiculo").click(loadForm);
+        $(".js-editatabelaveiculo").click(loadForm);
+        $(".js-criatabelacapacidade").click(loadForm);
+        $(".js-editatabelacapacidade").click(loadForm);
+        $(".js-excluitabelacapacidade").click(loadForm);
+        $(".js-criatabelaperimetro").click(loadForm);
+        $(".js-editatabelaperimetro").click(loadForm);
+        $(".js-excluitabelaperimetro").click(loadForm);
+    });
+
+    function initModalDialog(event, modal_element) {
+        /*
+            You can customize the modal layout specifing optional "data" attributes
+            in the element (either <a> or <button>) which triggered the event;
+            "modal_element" identifies the modal HTML element.
+
+            Sample call:
+
+            <a href=""
+               data-title="Set value"
+               data-subtitle="Insert the new value to be assigned to the Register"
+               data-dialog-class="modal-lg"
+               data-icon="fa-keyboard-o"
+               data-button-save-label="Save"
+               onclick="openModalDialog(event, '#modal_generic'); return false;">
+                <i class="fa fa-keyboard-o" style="pointer-events: none;"></i> Open generic modal (no contents)
+            </a>
+        */
+        var modal = $(modal_element);
+        var target = $(event.target);
+
+        var title = target.data('title') || '';
+        var subtitle = target.data('subtitle') || '';
+        // either "modal-lg" or "modal-sm" or nothing
+        var dialog_class = (target.data('dialog-class') || '') + ' modal-dialog';
+        var icon_class = (target.data('icon') || 'fa-laptop') + ' fa modal-icon';
+        var button_save_label = target.data('button-save-label') || 'Save changes';
+
+        modal.find('.modal-dialog').attr('class', dialog_class);
+        modal.find('.modal-title').text(title);
+        modal.find('.modal-subtitle').text(subtitle);
+        modal.find('.modal-header .title-wrapper i').attr('class', icon_class);
+        modal.find('.modal-footer .btn-save').text(button_save_label);
+        modal.find('.modal-body').html('');
+
+        // Annotate with target (just in case)
+        modal.data('target', target);
+
+        return modal;
+    }
+
+    function openMyModal(event) {
+        var modal = initModalDialog(event, '#MyModal');
+        var url = $(event.target).data('action');
+        var idobj = $(event.target).data('idobj');
+        var idcliente = $(event.target).data('idcliente');
+        var idcategoriaveiculo = $(event.target).data('idcategoriaveiculo');
+        console.log(idcategoriaveiculo)
+        
+        $.ajax({
+            type: "GET",
+            url: url,
+            data : {
+                idobj: idobj,
+                idcliente: idcliente,
+                idcategoriaveiculo: idcategoriaveiculo,
+            }
+        }).done(function(data, textStatus, jqXHR) {
+            modal.find('.modal-body').html(data.html_form);
+            modal.modal('show');
+            formAjaxSubmit(modal, url, null, null);
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            alert("SERVER ERROR: " + errorThrown);
+        });
+    }
+
+    /*function afterModalLoad(modal) {
+        console.log('modal %o loaded', modal);
+    }
+
+    function afterModalSuccess(modal) {
+        console.log('modal %o succeeded', modal);
+    }*/
+
+    function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
+        var form = modal.find('.modal-body form');
+        var header = $(modal).find('.modal-header');
+
+        // use footer save button, if available
+        var btn_save = modal.find('.modal-footer .btn-save');
+        if (btn_save) {
+            modal.find('.modal-body form .form-submit-row').hide();
+            btn_save.off().on('click', function(event) {
+                modal.find('.modal-body form').submit();
+            });
+        }
+        if (cbAfterLoad) { cbAfterLoad(modal); }
+
+        // Give focus to first visible form field
+        modal.find('form input:visible').first().focus();
+
+        // bind to the form’s submit event
+        $(form).on('submit', function(event) {
+
+            // prevent the form from performing its default submit action
+            event.preventDefault();
+            header.addClass('loading');
+
+            var url = $(this).attr('action') || action;
+            console.log($(this).attr('idobj'))
+            console.log($(this).attr('idcliente'))
+
+            // serialize the form’s content and send via an AJAX call
+            // using the form’s defined action and method
+            $.ajax({
+                type: $(this).attr('method'),
+                url: url,
+                idobj: $(this).attr('idobj'),
+                idcliente: $(this).attr('idcliente'),
+                data: $(this).serialize(),
+                success: function(xhr, ajaxOptions, thrownError) {
+                    // If the server sends back a successful response,
+                    // we need to further check the HTML received
+
+                    // update the modal body with the new form
+                    $(modal).find('.modal-body').html(xhr['html_form']);
+
+                    // If xhr contains any field errors,
+                    // the form did not validate successfully,
+                    // so we keep it open for further editing
+                    if ($(xhr['html_form']).find('.errorlist').length > 0) {
+                        formAjaxSubmit(modal, url, cbAfterLoad, cbAfterSuccess);
+                    } else {
+                        // otherwise, we've done and can close the modal
+                        $(modal).modal('hide');
+                        if (xhr['c_view'] == 'exclui_cliente') {
+                            window.location.href = '/clientes/'
+                        } else {
+                            window.location.href = "/clientes/consultacliente/" + xhr['save_id']
+                        } 
+                        
+                        if (cbAfterSuccess) { cbAfterSuccess(modal); }
+                    }
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    console.log('SERVER ERROR: ' + thrownError);
+                },
+                complete: function() {
+                    header.removeClass('loading');
+                }
+            });
+
+        });
+
+    }
+
+</script>
+{% endblock %}

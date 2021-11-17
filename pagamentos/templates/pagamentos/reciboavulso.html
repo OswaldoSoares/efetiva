@@ -1,0 +1,40 @@
+<div class="fp-recibo-tabela">
+    {% if recibos %}
+    <table class="fp-tabela">
+        <tr>
+            <td colspan="4">
+                <b>RECIBOS</b>
+            </td>
+        </tr>
+        <tr>
+            <td class="fp-recibo-titulo">DIA</td>
+            <td class="fp-recibo-titulo">RECIBO</td>
+            <td class="fp-recibo-titulo">VALOR</td>
+            <td class="fp-recibo-titulo"></td>
+            <td class="fp-recibo-titulo"></td>
+        </tr>
+            {% for itens in recibos %}
+                <tr>
+                    <td class="fp-recibo-dia">{{ itens.DataRecibo }}</td>
+                    <td class="fp-recibo-recibo">{{ itens.Recibo }}</td>
+                    <td class="fp-recibo-valor" id="valor_{{ value.idRecibos }}_Vale">R$ {{ itens.ValorRecibo }}</td>
+                    <td class="fp-recibo-estorna">
+                        <button class="btn btn-danger btn-xs glyphicon glyphicon-backward estorna-recibo"
+                                data-url="{% url 'excluirecibo' %}" idrecibo="{{ itens.idRecibo }}"
+                                datainicial="{{ datainicial }}" datafinal="{{ datafinal }}"
+                                idpessoal="{{ itens.idPessoal }}">
+                        </button>
+                    </td>
+                    <td class="fp-recibo-print">
+                        <a class="btn btn-warning btn-xs glyphicon glyphicon-print"
+                           href="{% url 'imprimerecibo' %}?idrecibo={{ itens.idRecibo }}"
+                           target="_blank">
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+    </table>
+    {% else %}
+    <span>NENHUM RECIBO ENCONTRADO</span>
+    {% endif %}
+</div>

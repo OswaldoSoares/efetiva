@@ -1,0 +1,174 @@
+<form class="row g-3" method="post" action="{{ c_url }}" id="{{ c_idobj }}">
+{% csrf_token %}
+    {% if c_view == 'adiciona_minuta' or c_view == 'edita_minuta' %}
+        <div class="col-md-7">
+            <label for="id_idCliente" class="form-label">CLIENTE:</label>
+            {{ form.idCliente }}
+            {{ form.idCliente.errors }}
+        </div>
+        <div class="col-md-3">
+            <label for="id_DataMinuta" class="form-label">DATA:</label>
+            {{ form.DataMinuta }}
+            {{ form.DataMinuta.errors }}
+        </div>
+        <div class="col-md-2">
+            <label for="id_HoraInicial" class="form-label">HORA INICIAL:</label>
+            {{ form.HoraInicial }}
+            {{ form.HoraInicial.errors }}
+        </div>
+        <input type="hidden" name="Minuta" value="{{ minuta }}">
+        <input type="hidden" name="idMinuta" value="{{ c_idobj }}">
+    {% endif %}
+
+    {% if c_view == 'edita_minuta_veiculo_solicitado' %}
+        <div class="col-md-12">
+            <label for="id_idCategoriaVeiculo" class="form-label">VEÍCULO SOLICITADO:</label>
+            {{ form.idCategoriaVeiculo }}
+            <input type="hidden" name="idMinuta" value="{{ c_idobj }}">
+        </div>
+    {% endif %}
+
+    {% if c_view == 'edita_minuta_veiculo_escolhido' %}
+    <input type="hidden" value="{{ idpessoal }}" idpessoal="{{ idpessoal }}" name="idPessoal" id="idpessoal">
+    <input type="hidden" value="{{ c_idobj }}" idinuta="{{ c_idobj }}" name="idMinuta" id="idminuta">
+    <div class="col-md-4">
+        <input type="radio" value="PROPRIO" id="proprio" class="form-radio" name="veiculo">
+        <label for="proprio">PRÓPRIO</label>
+    </div>
+    <div class="col-md-4">
+        <input type="radio" value="TRANSPORTADORA" id="transportadora" class="form-radio" name="veiculo">
+        <label for="transportadora">TRANSPORTADORA</label>
+    </div>
+    <div class="col-md-4">
+        <input type="radio" value="CADASTRADOS" id="cadastrado" class="form-radio" name="veiculo">
+        <label for="cadastrado">CADASTRADOS</label>
+    </div>
+    <div class="html-escolhido">
+        {% include 'minutas/listaveiculosminuta.html' %}
+    </div>
+    {% endif %}
+
+    {% if c_view == 'insere_motorista' %}
+        <div class="col-md-12">
+            <label for="id_idPessoal" class="form-label">NOME:</label>
+            <select name="idPessoal" class="form-control required id="id_idPessoa"l>
+                {% for motorista in motoristas %}
+                    <option value="{{ motorista.idPessoal }}">{{ motorista.Nome }}</option>
+                {% empty %}
+                    <option value="">NENHUM MOTORISTA DISPONIVEL</option>
+                {% endfor %}
+            </select>
+            <input type="hidden" name="idMinuta" value="{{ c_idobj }}">
+            <input type="hidden" name="Cargo" value="MOTORISTA" >
+        </div>
+    {% endif %}
+
+    {% if c_view == 'insere_ajudante' %}
+    <div class="col-md-12">
+        <label for="id_idPessoal" class="form-label">NOME:</label>
+        <select name="idPessoal" class="form-control" required id="id_idPessoal">
+            {% for ajudante in ajudantes %}
+                <option value="{{ ajudante.idPessoal }}">{{ ajudante.Nome }}</option>
+            {% empty %}
+                <option value="">NENHUM AJUDANTE DISPONIVEL</option>
+            {% endfor %}
+        </select>
+        <input type="hidden" name="idMinuta" value="{{ c_idobj }}">
+        <input type="hidden" name="Cargo" value="AJUDANTE" >
+    </div>
+    {% endif %}
+
+    {% if c_view == 'edita_minuta_coleta_entrega_obs' %}
+    <div class="col-md-12">
+        <label for="id_Coleta" class="form-label">COLETA:</label>
+        {{ form.Coleta }}
+    </div>
+    <div class="col-md-12">
+        <label for="id_Entrega" class="form-label">ENTREGA:</label>
+        {{ form.Entrega }}
+    </div>
+    <div class="col-md-12">
+        <label for="id_Obs" class="form-label">OBS:</label>
+        {{ form.Obs }}
+    </div>
+    <input type="hidden" name="idMinuta" value="{{ c_idobj }}">
+    {% endif %}
+
+    {% if c_view == 'insere_minuta_despesa' %}
+    <div class="col-md-6">
+        <label for="id_Descricao" class="form-label">DESCRIÇÃO:</label>
+        {{ form.Descricao }}
+        <datalist id="despesas">
+            {% for despesa in despesas %}
+            <option value="{{ despesa.Descricao }}">
+            {% endfor %}
+        </datalist>
+    </div>
+    <div class="col-md-6">
+        <label for="id_Valor">VALOR:</label>
+        {{ form.Valor }}
+    </div>
+    <div class="col-md-12">
+        <label for="id_Obs">OBSERVAÇÃO:</label>
+        {{ form.Obs }}
+    </div>
+    {{ form.TipoItens }}
+    {{ form.RecebePaga }}
+    {{ form.Tempo }}
+    <input type="hidden" name="idMinuta" value="{{ c_idobj }}">
+    {% endif %}
+
+    {% if c_view == 'insere_minuta_entrega' %}
+    <div class="col-md-2" id="js-perimetro-div">
+        <input type="checkbox" id="chk-perimetro" value="proxima" class="chk-perimetro">
+        <label for="chk-perimetro">PERIMETRO:</label>
+    </div>
+    <div class="col-md-10">
+        <input type="checkbox" id="chk-saida" value="proxima" class="js-perimetro-hide">
+        <label for="chk-saida" id="label-chk-saida" class="form-label js-perimetro-hide"
+               saida="{{ s_minuta.proxima_saida }}">{{ s_minuta.proxima_saida }}:</label>
+    </div>
+    <div class="col-md-4">
+        <label for="id_Nota" class="form-label js-perimetro-hide">NOTA:</label>
+        {{ form.Nota }}
+        <datalist id="entregas_nota">
+            {% for entrega in entrega_notas %}
+            <option value="{{ entrega.Nota }}">
+            {% endfor %}
+        </datalist>
+    </div>
+    <div class="col-md-3">
+        <label for="id_Valor" class="form-label js-perimetro-hide">VALOR NOTA:</label>
+        {{ form.ValorNota }}
+    </div>
+    <div class="col-md-3">
+        <label for="id_Peso" class="form-label js-perimetro-hide">PESO:</label>
+        {{ form.Peso }}
+    </div>
+    <div class="col-md-2">
+        <label for="id_Volume" class="form-label js-perimetro-hide">VOLUME:</label>
+        {{ form.Volume }}
+    </div>
+    <div class="col-md-3">
+        <label for="id_NotaGuia" class="form-label js-perimetro-hide">NOTA GUIA:</label>
+        {{ form.NotaGuia }}
+    </div>
+        <div class="col-md-9">
+        <label for="id_Nome" class="form-label js-perimetro-hide">RAZÃO SOCIAL:</label>
+        {{ form.Nome }}
+    </div>
+    <div class="col-md-1">
+        <label for="id_Estado" class="form-label">UF:</label>
+        {{ form.Estado }}
+    </div>
+    <div class="col-md-4">
+        <label for="id_Cidade" class="form-label">CIDADE:</label>
+        {{ form.Cidade }}
+    </div>
+    <div class="col-md-7">
+        <label for="id_Bairro" class="form-label">BAIRRO:</label>
+        {{ form.Bairro }}
+    </div>
+    <input type="hidden" name="idMinuta" value="{{ c_idobj }}">
+    {% endif %}
+</form>

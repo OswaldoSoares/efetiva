@@ -1,0 +1,23 @@
+<form method="post" action="{% url 'excluidocpessoa' 0 %}" class="js-exclui-docpessoa-form">
+    {% csrf_token %}
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title"><b>DOCUMENTO DO COLABORADOR</b></h4>
+    </div>
+    <div class="modal-body">
+        <div class="divformulario">
+            <h4 class="card-text">Você tem certeza que deseja excluir o registro abaixo?</h4>
+            <br>
+            <p>TIPO DE DOCUMENTO: <b>{{ docpessoa.TipoDocumento }}</b>.</p>
+            <p>DOCUMENTO: <b>{{ docpessoa.Documento }}</b>.</p>
+            <p>DATA EMISSÃO OU VENCIMENTO: <b>{{ docpessoa.Data }}</b>.</p>
+            <p>COLABORADOR: {{ docpessoa.idPessoal }}.</p>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" data-dismiss="modal">CANCELAR</button>
+        <button type="submit" class="btn btn-danger" id="excluicliente" idcobranca="">EXCLUIR</button>
+    </div>
+</form>

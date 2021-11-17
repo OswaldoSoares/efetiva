@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Módulo Orçamento {% endblock %}
+
+{% block main %}
+    <div class="conteudo-base">
+        {% block mainorcamento %}
+        {% endblock %}
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'website/js/orcamento.js' %}"></script>
+{% endblock %}

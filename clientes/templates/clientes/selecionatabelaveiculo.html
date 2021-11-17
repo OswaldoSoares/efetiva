@@ -1,0 +1,46 @@
+{% for itens in selecionatabelaveiculo %}
+    <table class="tabelaveiculo" id="tabelaveiculomostra" idtabelaveiculomostra="{{ itens.idTabelaVeiculo }}">
+        <thead>
+            <tr>
+                {% for itensveiculo in selecionaveiculo%}
+                    <th>{{ itensveiculo.Categoria }}</th>
+                {% endfor %}
+                <th>RECEBE</th>
+                <th>PAGA</th>
+                <th>MÍNIMO</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="alinhaesquerda"><p>PORCENTAGEM DA NOTA</p></td>
+                <td class="alinhadireita">{{ itens.PorcentagemCobra }} %</td>
+                <td class="alinhadireita">{{ itens.PorcentagemPaga }} %</td>
+                <td class="alinhacenter">-</td>
+            </tr>
+            <tr>
+                <td class="alinhaesquerdaa"><p>HORA</p></td>
+                <td class="alinhadireita">R$ {{ itens.HoraCobra }}</td>
+                <td class="alinhadireita">R$ {{ itens.HoraPaga }}</td>
+                <td class="alinhacenter">{{ itens.HoraMinimo }}</td>
+            </tr>
+            <tr>
+                <td class="alinhaesquerdaa"><p>KILOMETRAGEM</p></td>
+                <td class="alinhadireita">R$ {{ itens.KMCobra }}</td>
+                <td class="alinhadireita">R$ {{ itens.KMPaga }}</td>
+                <td class="alinhacenter">{{ itens.KMMinimo }}</td>
+            </tr>
+            <tr>
+                <td class="alinhaesquerdaa"><p>ENTREGAS</p></td>
+                <td class="alinhadireita">R$ {{ itens.EntregaCobra }}</td>
+                <td class="alinhadireita">R$ {{ itens.EntregaPaga }}</td>
+                <td class="alinhacenter">{{ itens.EntregaMinimo }}</td>
+            </tr>
+            <tr>
+                <td class="alinhaesquerdaa"><p>SAÍDA</p></td>
+                <td class="alinhadireita">R$ {{ itens.SaidaCobra }}</td>
+                <td class="alinhadireita">R$ {{ itens.SaidaPaga }}</td>
+                <td class="alinhacenter">-</td>
+            </tr>
+        </tbody>
+    </table>
+{% endfor %}

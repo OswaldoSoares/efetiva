@@ -1,0 +1,28 @@
+<section class="dados-minuta">
+    <span><b>MINUTA {{ minuta.Minuta }}</b></span>
+    {% if motorista %}
+    <span><b>MOTORISTA {{ motorista.Nome }}</b></span>
+    {% endif %}
+</section>
+<section class="dados-minuta">
+    {% if minuta.idCategoriaVeiculo %}
+    <span><b>SOLICITADO {{ minuta.idCategoriaVeiculo }}</b></span>
+    {% endif %}
+    {% if minuta.idVeiculo %}
+    <span><b>VEICULO {{ minuta.idVeiculo.Marca }} {{ minuta.idVeiculo.Modelo }} - {{ minuta.idVeiculo.Placa }}</b></span>
+    {% endif %}
+</section>
+<section class="minuta-fatura">
+    {% if minutaitens %}
+        {% for itens in minutaitens %}
+            <section class="itens-minuta">
+                <p>{{ itens.Descricao }} <b>R$ {{ itens.Valor }}.</b></p>
+            </section>
+        {% endfor %}
+    {% endif %}
+</section>
+{% if minuta.Comentarios %}
+    <section class="comentarios-fatura">
+        <p><b>Comentários:</b> {{ minuta.Comentarios }}</p>
+    </section>
+{% endif %}

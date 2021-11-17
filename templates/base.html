@@ -1,0 +1,78 @@
+<!doctype html>
+{% load static %}
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!--<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+          integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="{% static 'website/css/style.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    {% load static %}
+    <input type="checkbox" id="chk">
+    <div class="menu">
+        <i class="bi bi-three-dots-vertical" id="menu-dots"></i>
+        <nav class="menu-nav-icons">
+            <a href="{% url 'index_website' %}">
+                <i class="bi bi-clipboard-data"><span>Painel Geral</span></i></a>
+            <a href="{% url 'indexcliente' %}">
+                <i class="bi bi-building"><span>Clientes</span></i></a>
+            <a href="{% url 'indexpessoal' %}">
+                <i class="bi bi-people"><span>Colaboradores</span></i></a>
+            <a href="{% url 'index_despesas' %}">
+                <i class="bi bi-bag"><span>Despesas</span></i></a>
+            <a href="{% url 'index_faturamento' %}">
+                <i class="bi bi-bank"><span>Faturamento</span></i></a>
+            <a href="{% url 'index_minuta' %}">
+                <i class="bi bi-file-text"><span>Minutas</span></i></a>
+            <a href="{% url 'indexorcamento' %}">
+                <i class="bi bi-layout-text-window-reverse"><span>Orçamentos</span></i></a>
+            <a href="{% url 'parametro' %}">
+                <i class="bi bi-gear"><span>Parametros</span></i></a>
+            <a href="{% url 'index_pagamento' %}">
+                <i class="bi bi-cash"><span>Pagamentos</span></i></a>
+            <a href="{% url 'indexveiculo' %}">
+                <i class="bi bi-truck"><span>Veículos</span></i></a>
+            {% if request.user.is_authenticated %}
+            <a href=" {% url 'logout' %}">
+                <i class="bi bi-person-circle"><span>{{ user }}</span></i></a>
+            {% else %}
+            <a  href="{% url 'cadastrausuario' %}">
+                <i class="bi bi-person-circlev"><span>Cadastre-se</span></i></a>
+            {% endif %}
+        </nav>
+    </div>
+    <div class="meu-container">       
+        <div class="conteudo">
+            <div class="mensagem">
+                <div class="div-erro">
+                    <span><b>ERROR:</b></span><span class="mensagem-erro"></span>
+                </div>
+                <div class="div-sucesso">
+                    <span><b>SUCESSO:</b></span><span class="mensagem-sucesso"></span>
+                </div>
+            </div>
+            <section>
+                {% block dashboard %}
+                {% endblock %}
+                {% block main %}
+                {% endblock %}
+            </section>
+        </div>
+    </div>
+    <script src="{% static 'website/js/jquery-3.5.1.min.js' %}"></script>
+    <script src="{% static 'website/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'website/js/base.js' %}"></script>
+    {% block script %}
+    {% endblock %}
+</body>
+</html>
+
