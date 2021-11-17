@@ -4,7 +4,7 @@ with open('/efetiva/auth/secret_key.txt') as f:
     SECRET_KEY = f.read().strip()
 
 DEBUG = False
-ALLOWED_HOSTS = ['137.184.201.225']
+ALLOWED_HOSTS = ['137.184.201.225', 'www.transefetiva.com.br', 'transefetiva.com.br']
 
 DATABASES = {
     'default': {
@@ -23,7 +23,7 @@ MEDIA_ROOT = '/efetiva/site/public/media'
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
-SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = False
 
 SECURE_HSTS_SECONDS = 15780000
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
