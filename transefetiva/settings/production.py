@@ -10,7 +10,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'OPTIONS': {
-            'read_default_file': '/eftiva/auth/mysql.cnf',
+            'read_default_file': '/efetiva/auth/mysql.cnf',
         },
     },
 }
