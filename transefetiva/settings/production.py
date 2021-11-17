@@ -20,7 +20,7 @@ STATIC_ROOT = '/efetiva/site/public/static'
 print(STATIC_ROOT)
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'site/public/media')
+MEDIA_ROOT = os.path.join('site/public/media')
 print(MEDIA_ROOT)
 
 SESSION_COOKIE_SECURE = True
