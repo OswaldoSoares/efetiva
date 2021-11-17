@@ -17,11 +17,9 @@ DATABASES = {
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/efetiva/site/public/static'
-print(STATIC_ROOT)
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = '/efetiva/site/public/media'
-print(MEDIA_ROOT)
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
