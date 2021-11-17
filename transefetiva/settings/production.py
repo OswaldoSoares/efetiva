@@ -4,7 +4,7 @@ with open('/efetiva/auth/secret_key.txt') as f:
     SECRET_KEY = f.read().strip()
 
 DEBUG = True
-ALLOWED_HOSTS = ['157.245.136.205']
+ALLOWED_HOSTS = ['137.184.201.225']
 
 DATABASES = {
     'default': {
