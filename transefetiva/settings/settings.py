@@ -42,7 +42,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(os.path.dirname(BASE_DIR), 'templates'),
+            '/efetiva/templates',
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -55,7 +55,6 @@ TEMPLATES = [
         },
     },
 ]
-print(TEMPLATES)
 
 WSGI_APPLICATION = 'transefetiva.wsgi.application'
 
