@@ -2756,7 +2756,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 
 .index-minuta .col-01 {
     width: 70%;
-    padding: 0 5px 0 0;
+    padding: 0;
 }
 
 @media (max-width: 800px) {
@@ -2784,6 +2784,7 @@ main .fp-recibo-tabela .fp-recibo-print {
         flex-direction: column;
         justify-content: center;
         margin-top: 5px;
+        margin-right: 5px;
     }
 
         .ac-lista {

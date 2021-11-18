@@ -68,19 +68,11 @@
         </div>
     </div>
     
-    <div class="article-minuta-rodape">
+    <div class="adicionar-minuta">
         <i class="bi bi-plus-square i-button" onclick="openMyModal(event); return false;"
            data-title="CADASTRA MINUTA" data-action="{% url 'adicionaminuta' %}" data-button-save-label="SALVAR">
             ADICIONA MINUTA</i>
     </div>
-    
-
-        <i class="bi bi-pencil-square i-button" onclick="openMyModal(event); return false;"
-        data-title="EDITA MINUTA" data-action="{% url 'editaminuta' %}" data-button-save-label="EDITAR"
-        data-idminuta="{{ s_minuta.idminuta }}"><span>EDITA MINUTA</span></i>
-    
-
-
 
     <!-- div modal -->
     <div class="modal fade bd-example-modal-lg" id="MyModal" tabindex="-1">
