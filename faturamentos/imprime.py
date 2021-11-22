@@ -78,12 +78,8 @@ def imprime_cabecalho(pdf, fatura_selecionada):
     fatura_vemcimento = fatura_selecionada[0].VencimentoFatura.strftime("%d/%m/%Y")
     fatura_valor = 'R$ {}'.format(fatura_selecionada[0].ValorFatura).replace('.', ',')
     pdf.roundRect(convertemp(10), convertemp(10), convertemp(190), convertemp(277), 10)
-    url = staticfiles_storage.path('transportadora.jpg')
-    print(url)
-    url = STATIC_ROOT('transportadora.jpg')
-    print(url)
-    # end = website/static/website/img/transportadora.jpg
-    pdf.drawImage(STATIC_ROOT('transportadora.jpg'), convertemp(12), convertemp(265), convertemp(40), convertemp(20))
+    url = f'{STATIC_ROOT}/transportadora.jpg'
+    pdf.drawImage(url, convertemp(12), convertemp(265), convertemp(40),; convertemp(20))
     pdf.setFont("Times-Bold", 18)
     pdf.drawString(convertemp(54), convertemp(279), 'TRANSEFETIVA TRANSPORTE - EIRELLI - ME')
     pdf.setFont("Times-Roman", 12)
