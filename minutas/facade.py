@@ -266,6 +266,67 @@ class MinutaSelecionada:
         return total
 
     def carrega_valores_recebe(self):
+        v_paga = cria_dict_paga()
+        tabela_veiculo = self.filtro_tabela_veiculo()
+        capacidade = [itens['CapacidadePaga'] for itens in self.tabela_capacidade if itens['CapacidadeInicial'] <=
+                      self.total_kms() <= itens['CapacidadeFinal']]
+        perimetro = [itens['PerimetroPaga'] for itens in self.tabela_perimetro if itens['PerimetroInicial'] <=
+                     self.get_total_kms() <= itens['PerimetroFinal']]
+        phkesc = self.tabela[0]['phkescPaga']
+        if tabela_veiculo:
+            if self.motorista:
+                if self.motorista[0]['obj'].TipoPgto != 'MENSALISTA':
+                    v_paga['v_porc'] = tabela_veiculo['PorcentagemPaga']
+                    v_paga['m_porc'] = self.t_entregas['valor_entregas']
+                    v_paga['t_porc'] = tabela_veiculo['PorcentagemPaga'] / 100 * v_paga['m_porc']
+                    v_paga['c_porc'] = True if int(phkesc[0:1]) else False
+                    v_paga['v_hora'] = self.filtro_tabela_veiculo()['HoraPaga']
+                    v_paga['m_hora'] = self.filtro_tabela_veiculo()['HoraMinimo']
+                    v_paga['t_hora'] = calcula_valor_hora(100, v_paga['m_hora'], v_paga['v_hora'])
+                    v_paga['c_hora'] = True if int(phkesc[1:2]) else False
+                    v_paga['v_exce'] = 100
+                    v_paga['m_exce'] = self.horas_excede().time()
+                    v_paga['t_exce'] = calcula_valor_hora(100, v_paga['m_exce'], v_paga['v_hora'])
+                    v_paga['c_exce'] = True if int(phkesc[1:2]) else False
+                    v_paga['v_kilm'] = self.filtro_tabela_veiculo()['KMPaga']
+                    v_paga['m_kilm'] = self.get_total_kms()
+                    v_paga['t_kilm'] = self.filtro_tabela_veiculo()['KMPaga'] * self.get_total_kms()
+                    v_paga['c_kilm'] = True if int(phkesc[2:3]) else False
+                    v_paga['v_entr'] = self.filtro_tabela_veiculo()['EntregaPaga']
+                    v_paga['m_entr'] = self.t_entregas['total_entregas']
+                    v_paga['t_entr'] = self.filtro_tabela_veiculo()['EntregaPaga'] * v_paga['m_entr']
+                    v_paga['c_entr'] = True if int(phkesc[3:4]) else False
+                    v_paga['v_enkg'] = self.filtro_tabela_veiculo()['EntregaKGPaga']
+                    v_paga['m_enkg'] = self.t_entregas['peso_entregas']
+                    v_paga['t_enkg'] = self.filtro_tabela_veiculo()['EntregaKGPaga'] * v_paga['m_enkg']
+                    v_paga['c_enkg'] = True if int(phkesc[4:5]) else False
+                    v_paga['v_evol'] = self.filtro_tabela_veiculo()['EntregaVolumePaga']
+                    v_paga['m_evol'] = self.t_entregas['volume_entregas']
+                    v_paga['t_evol'] = self.filtro_tabela_veiculo()['EntregaVolumePaga'] * v_paga['m_evol']
+                    v_paga['c_evol'] = True if int(phkesc[5:6]) else False
+                    v_paga['v_said'] = self.filtro_tabela_veiculo()['SaidaPaga']
+                    v_paga['c_said'] = True if int(phkesc[6:7]) else False
+                    if capacidade:
+                        v_paga['v_capa'] = capacidade[0]
+                    v_paga['c_capa'] = True if int(phkesc[7:8]) else False
+                    if perimetro:
+                        v_paga['v_peri'] = perimetro[0]
+                        v_paga['c_peri'] = True
+                    v_paga = self.base_valor_perimetro(v_paga)
+                    v_paga['t_peri'] = float(v_paga['v_peri']) / 100 * float(v_paga['m_peri'])
+                    v_paga['m_pnoi'] = v_paga['m_peri']
+        if self.total_ajudantes_avulso() > 0:
+            v_paga['v_ajud'] = float(self.tabela[0]['AjudantePaga'])
+            if int(self.entrega_saida()[0:1]) > 2:
+                v_paga['v_ajud'] = float(self.tabela[0]['AjudantePaga']) + 10.00
+            v_paga['m_ajud'] = self.total_ajudantes_avulso()
+            v_paga['t_ajud'] = v_paga['v_ajud'] * self.total_ajudantes_avulso()
+            v_paga['c_ajud'] = True
+        return v_paga
+
+
+
+
         hora_zero_timedelta = timedelta(hours=0, minutes=0)
         hora_zero_time = datetime.strptime('00:00', '%H:%M').time()
         tabela_veiculo = self.filtro_tabela_veiculo()
@@ -488,6 +549,32 @@ def cria_dict_paga():
                    'c_enkg': False, 'c_evol': False, 'c_said': False, 'c_capa': False, 'c_peri': False, 
                    'c_pnoi': False, 'c_ajud': False})
     return v_paga
+
+
+def cria_dict_recebe():
+    """
+    Cria um dicionario com valores zerados para receitas da minuta
+    v_ = Valores das Tabelas do cliente
+    m_ = Dados recuperados da Minuta
+    t_ = total
+    c_ = usado para configurar os checkbox do html
+    porc = porcentagem, hora = hora minimo, exce = hora excedente, kilm = kilometragem, entr = entregas,
+    enkg = entregas kg, evol = entregas volume, said = saida, capa = capacidade(peso), peri = perimetro,
+    pnoi = pernoite, ajud = ajudante
+    :return: dicionario v_paga = valores pagamento
+    """
+    hora_zero_time = datetime.strptime('00:00', '%H:%M').time()
+    v_recebe = dict({'v_taxa': 0.00, 'v_segu': 0.00, 'm_segu': 0.00, 't_segu': 0.00, 'v_porc': 0.00, 'm_porc': 0.00,
+                     't_porc': 0.00, 'v_hora': 0.00, 'm_hora': hora_zero_time, 't_hora': 0.00, 'v_exce': 0.00,
+                     'm_exce': hora_zero_time, 't_exce': 0.00, 'v_kilm': 0.00, 'm_kilm': 0.00, 't_kilm': 0.00,
+                     'v_entr': 0.00, 'm_entr': 0.00, 't_entr': 0.00, 'v_enkg': 0.00, 'm_enkg': 0.00, 't_enkg': 0.00,
+                     'v_evol': 0.00, 'm_evol': 0.00, 't_evol': 0.00, 'v_said': 0.00, 'v_capa': 0.00, 'v_peri': 0.00,
+                     'm_peri': 0.00, 't_peri': 0.00, 'v_pnoi': 0.00, 'm_pnoi': 0.00, 't_pnoi': 0.00, 'v_ajud': 0.00,
+                     'm_ajud': 0.00, 't_ajud': 0.00, 'c_taxa': False, 'c_segu': False, 'c_porc': False,
+                     'c_hora': False, 'c_exce': False, 'c_kilm': False, 'c_entr': False, 'c_enkg': False,
+                     'c_evol': False, 'c_said': False, 'c_capa': False, 'c_peri': False, 'c_pnoi': False,
+                     'c_ajud': False})
+    return v_recebe
 
 
 def prepara_itens(request):
