@@ -208,7 +208,7 @@ class ContraChequeItens(models.Model):
     idContraCheque = models.ForeignKey(ContraCheque, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'ContraChequeItens'
+        db_table = 'contrachequeitens'
         ordering = ['Descricao']
 
     def __str__(self):
@@ -232,7 +232,7 @@ class CartaoPonto(models.Model):
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'CartaoPonto'
+        db_table = 'cartaoponto'
         ordering = ['Dia']
 
     def __str__(self):
