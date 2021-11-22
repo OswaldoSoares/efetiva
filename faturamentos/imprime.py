@@ -1,5 +1,4 @@
 from django.http import HttpResponse
-from django.contrib.staticfiles.storage import staticfiles_storage
 from reportlab.pdfgen import canvas
 from reportlab.lib.colors import HexColor
 from reportlab.platypus import Paragraph
@@ -10,7 +9,6 @@ from minutas.views import convertemp
 from minutas.models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas
 from clientes.models import Cliente, TabelaPerimetro
 from .models import Fatura
-from transefetiva.settings.production import STATIC_ROOT
 
 
 def decricao_servico(dict_servicos, perimetro_inicial, perimetro_final):
@@ -78,8 +76,8 @@ def imprime_cabecalho(pdf, fatura_selecionada):
     fatura_vemcimento = fatura_selecionada[0].VencimentoFatura.strftime("%d/%m/%Y")
     fatura_valor = 'R$ {}'.format(fatura_selecionada[0].ValorFatura).replace('.', ',')
     pdf.roundRect(convertemp(10), convertemp(10), convertemp(190), convertemp(277), 10)
-    url = f'{STATIC_ROOT}/transportadora.jpg'
-    pdf.drawImage(url, convertemp(12), convertemp(265), convertemp(40),; convertemp(20))
+    pdf.drawImage('site/public/static/transportadora.jpg', convertemp(12), convertemp(265), convertemp(40),
+                  convertemp(20))
     pdf.setFont("Times-Bold", 18)
     pdf.drawString(convertemp(54), convertemp(279), 'TRANSEFETIVA TRANSPORTE - EIRELLI - ME')
     pdf.setFont("Times-Roman", 12)
