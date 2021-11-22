@@ -76,7 +76,7 @@ def imprime_cabecalho(pdf, fatura_selecionada):
     fatura_vemcimento = fatura_selecionada[0].VencimentoFatura.strftime("%d/%m/%Y")
     fatura_valor = 'R$ {}'.format(fatura_selecionada[0].ValorFatura).replace('.', ',')
     pdf.roundRect(convertemp(10), convertemp(10), convertemp(190), convertemp(277), 10)
-    pdf.drawImage('efetiva/site/static/website/img/transportadora.jpg', convertemp(12), convertemp(265),
+    pdf.drawImage('efetiva/site/public/static/website/img/transportadora.jpg', convertemp(12), convertemp(265),
                   convertemp(40), convertemp(20))
     pdf.setFont("Times-Bold", 18)
     pdf.drawString(convertemp(54), convertemp(279), 'TRANSEFETIVA TRANSPORTE - EIRELLI - ME')
