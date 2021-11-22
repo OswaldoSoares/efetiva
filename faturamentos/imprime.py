@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.contrib.staticfiles.storage import staticfiles_storage
 from reportlab.pdfgen import canvas
 from reportlab.lib.colors import HexColor
 from reportlab.platypus import Paragraph
@@ -76,6 +77,8 @@ def imprime_cabecalho(pdf, fatura_selecionada):
     fatura_vemcimento = fatura_selecionada[0].VencimentoFatura.strftime("%d/%m/%Y")
     fatura_valor = 'R$ {}'.format(fatura_selecionada[0].ValorFatura).replace('.', ',')
     pdf.roundRect(convertemp(10), convertemp(10), convertemp(190), convertemp(277), 10)
+    url = staticfiles_storage.path('transportadora.jpg')
+    print(url)
     pdf.drawImage('website/static/website/img/transportadora.jpg', convertemp(12), convertemp(265), convertemp(40),
                   convertemp(20))
     pdf.setFont("Times-Bold", 18)

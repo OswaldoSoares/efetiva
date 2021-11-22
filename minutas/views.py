@@ -719,6 +719,7 @@ def imprimeminuta(request, idmin):
         pdf.roundRect(convertemp(10), convertemp(10), convertemp(190), convertemp(277), 10)
         # ----
         url = static('transportadora.jpg')
+        print(url)
         pdf.drawImage(url, convertemp(12), convertemp(265), convertemp(40), convertemp(20))
         pdf.setFont("Times-Bold", 18)
         pdf.drawString(convertemp(56), convertemp(279), 'TRANSEFETIVA TRANSPORTE - EIRELLI - ME')
