@@ -10,6 +10,7 @@ from minutas.views import convertemp
 from minutas.models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas
 from clientes.models import Cliente, TabelaPerimetro
 from .models import Fatura
+from transefetiva.settings.production import STATIC_ROOT
 
 
 def decricao_servico(dict_servicos, perimetro_inicial, perimetro_final):
@@ -78,6 +79,8 @@ def imprime_cabecalho(pdf, fatura_selecionada):
     fatura_valor = 'R$ {}'.format(fatura_selecionada[0].ValorFatura).replace('.', ',')
     pdf.roundRect(convertemp(10), convertemp(10), convertemp(190), convertemp(277), 10)
     url = staticfiles_storage.path('transportadora.jpg')
+    print(url)
+    url = STATIC_ROOT('transportadora.jpg')
     print(url)
     pdf.drawImage('website/static/website/img/transportadora.jpg', convertemp(12), convertemp(265), convertemp(40),
                   convertemp(20))
