@@ -102,6 +102,7 @@ def salvaminutaitens(descricao, tipoitens, recebepaga, valor, quantidade, porcen
     obj.ValorBase = valorbase
     obj.Tempo = hora_timedelta
     obj.idMinuta_id = idminuta
+    obj.Obs = ''
     obj.save()
     return True
 
@@ -984,13 +985,15 @@ def fecha_minuta(request, idmin):
     dados_descricao_despesa_recebe = request.POST.getlist('descricao-despesa-recebe')
     dados_valor_despesa_recebe = request.POST.getlist('valor-despesa-recebe')
     for index, itens in enumerate(dados_descricao_despesa_recebe, start=0):
-        salvaminutaitens(dados_descricao_despesa_recebe[index], 'DESPESA', 'R', dados_valor_despesa_recebe[index], 0,
-                         0.00, 0.00, 0.00, '00:00', idmin)
+        float(dados_valor_despesa_recebe[index].replace(',', '.'))
+        salvaminutaitens(dados_descricao_despesa_recebe[index], 'DESPESA', 'R',
+                         float(dados_valor_despesa_recebe[index].replace(',', '.')), 0, 0.00, 0.00, 0.00, '00:00', idmin)
     dados_descricao_despesa_paga = request.POST.getlist('descricao-despesa-paga')
     dados_valor_despesa_paga = request.POST.getlist('valor-despesa-paga')
     for index, itens in enumerate(dados_descricao_despesa_paga, start=0):
-        salvaminutaitens(dados_descricao_despesa_paga[index], 'REEMBOLSO', 'P', dados_valor_despesa_paga[index], 0,
-                         0.00, 0.00, 0.00, '00:00', idmin)
+        float(dados_valor_despesa_paga[index].replace(',', '.'))
+        salvaminutaitens(dados_descricao_despesa_paga[index], 'REEMBOLSO', 'P',
+                         float(dados_valor_despesa_paga[index].replace(',', '.')), 0, 0.00, 0.00, 0.00, '00:00', idmin)
     minuta_itens = MinutaItens.objects.filter(idMinuta_id=idmin)
     for itens in minuta_itens:
         if itens.Valor == 0:
