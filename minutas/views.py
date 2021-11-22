@@ -6,6 +6,7 @@ from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, get_object_or_404, get_list_or_404
 from django.shortcuts import render
 from django.template.loader import render_to_string
+from django.templatetags.static import static
 from django.urls import reverse
 from rolepermissions.decorators import has_permission_decorator
 from reportlab.lib.colors import HexColor
@@ -717,8 +718,8 @@ def imprimeminuta(request, idmin):
 
         pdf.roundRect(convertemp(10), convertemp(10), convertemp(190), convertemp(277), 10)
         # ----
-        pdf.drawImage('website/static/website/img/transportadora.jpg', convertemp(12), convertemp(265), convertemp(40),
-                      convertemp(20))
+        url = static('transportadora.jpg')
+        pdf.drawImage(url, convertemp(12), convertemp(265), convertemp(40), convertemp(20))
         pdf.setFont("Times-Bold", 18)
         pdf.drawString(convertemp(56), convertemp(279), 'TRANSEFETIVA TRANSPORTE - EIRELLI - ME')
         pdf.setFont("Times-Roman", 12)
