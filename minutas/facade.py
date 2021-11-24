@@ -495,7 +495,7 @@ class MinutasStatus:
                 x['Motorista'] = nome_curto(motorista[0].idPessoal.Nome)
             else:
                 x['Motorista'] = None
-        return(lista)
+        return lista
 
 
 def cria_dict_paga():
@@ -648,7 +648,6 @@ def novo_status_minuta(request, idminuta, novo_status):
     return c_return
 
 
-
 def calcula_valor_hora(porcentagem, horas, valor):
     novo_valor = valor * porcentagem / 100
     valor_hora = float(round(novo_valor, 2))
@@ -728,6 +727,7 @@ def edita_hora_final(request, idminuta, hora_final):
     data['html_mensagem'] = mensagem
     data['html_tipo_mensagem'] = tipo_mensagem
     data['html_total_horas'] = f'{total_horas_str} Hs'
+    data = html_recebimento(request, data, idminuta)
     data = html_pagamento(request, data, idminuta)
     data = html_checklist(request, data, idminuta)
     c_return = JsonResponse(data)
@@ -754,6 +754,7 @@ def edita_km_inicial(request, idminuta, km_inicial):
     data['html_mensagem'] = mensagem
     data['html_tipo_mensagem'] = tipo_mensagem
     data['html_total_kms'] = f'{total_kms} KMs'
+    data = html_recebimento(request, data, idminuta)
     data = html_pagamento(request, data, idminuta)
     data = html_checklist(request, data, idminuta)
     c_return = JsonResponse(data)
@@ -778,6 +779,7 @@ def edita_km_final(request, idminuta, km_final):
     data['html_mensagem'] = mensagem
     data['html_tipo_mensagem'] = tipo_mensagem
     data['html_total_kms'] = f'{total_kms} KMs'
+    data = html_recebimento(request, data, idminuta)
     data = html_pagamento(request, data, idminuta)
     data = html_checklist(request, data, idminuta)
     c_return = JsonResponse(data)
@@ -833,6 +835,7 @@ def remove_colaborador(request, idminutacolaborador, idminuta, cargo):
         obj.KMFinal = 0
         obj.save(update_fields=['idVeiculo', 'KMInicial', 'KMFinal'])
         data = html_motorista(request, data, idminuta)
+    data = html_recebimento(request, data, idminuta)
     data = html_pagamento(request, data, idminuta)
     data = html_checklist(request, data, idminuta)
     return data
@@ -843,6 +846,7 @@ def remove_despessa(request, idminutaitens, idminuta):
     despesa.delete()
     data = dict()
     data = html_despesa(request, data, idminuta)
+    data = html_recebimento(request, data, idminuta)
     data = html_pagamento(request, data, idminuta)
     data = html_checklist(request, data, idminuta)
     return data
@@ -853,6 +857,7 @@ def remove_entrega(request, idminutanota, idminuta):
     entrega.delete()
     data = dict()
     data = html_entrega(request, data, idminuta)
+    data = html_recebimento(request, data, idminuta)
     data = html_pagamento(request, data, idminuta)
     data = html_checklist(request, data, idminuta)
     return data
@@ -912,6 +917,12 @@ def html_despesa(request, data, idminuta):
 def html_entrega(request, data, idminuta):
     contexto = cria_contexto(idminuta)
     data['html_entrega'] = render_to_string('minutas/entregaminuta.html', contexto, request=request)
+    return data
+
+
+def html_recebimento(request, data, idminuta):
+    contexto = cria_contexto(idminuta)
+    data['html_recebimento'] = render_to_string('minutas/formrecebimento.html', contexto, request=request)
     return data
 
 
@@ -1008,6 +1019,7 @@ def forn_minuta(request, c_form, c_idobj, c_url, c_view):
                     mensagem = 'ENTREGA INSERIDA.'
                     tipo_mensagem = 'SUCESSO'
                     data = html_entrega(request, data, c_idobj)
+                data = html_recebimento(request, data, c_idobj)
                 data = html_pagamento(request, data, c_idobj)
                 data = html_checklist(request, data, c_idobj)
         else:

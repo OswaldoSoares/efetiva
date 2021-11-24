@@ -19,9 +19,10 @@ $(document).ready(function(){
                 }
                 $(".total-horas").text(data.html_total_horas);
                 verificaTotalHoras();
-                escondeFormPagamento();
+                escondeFormFinanceiro();
                 $('.html-form-paga').html(data['html_pagamento']);
-                mostraFormPagamento();
+                $('.html-form-recebe').html(data['html_recebimento']);
+                mostraFormFinanceiro();
                 verificaSwitchPaga();
                 verificaSwitchRecebe();
                 escondeChecklist();
@@ -53,7 +54,10 @@ $(document).ready(function(){
                     $(".mensagem-sucesso").text(data.html_mensagem);
                     mostraMensagemSucesso()
                 }
+                escondeFormFinanceiro();
                 $('.html-form-paga').html(data['html_pagamento']);
+                $('.html-form-recebe').html(data['html_recebimento']);
+                mostraFormFinanceiro();
                 verificaSwitchPaga();
                 verificaSwitchRecebe();
                 escondeChecklist();
@@ -143,9 +147,10 @@ $(document).ready(function(){
                     $('.html-veiculo').html(data['html_veiculo']);
                     MostraVeiculo();
                 }
-                escondeFormPagamento()
+                escondeFormFinanceiro()
                 $('.html-form-paga').html(data['html_pagamento']);
-                mostraFormPagamento()
+                $('.html-form-recebe').html(data['html_recebimento']);
+                mostraFormFinanceiro()
                 escondeChecklist();
                 $('.html-checklist').html(data['html_checklist']);
                 mostraChecklist();
@@ -169,8 +174,12 @@ $(document).ready(function(){
                 idMinuta: idminuta,
             },
             success: function(data) {
+                escondeFormFinanceiro();
                 $('.html-form-paga').html(data['html_pagamento']);
+                $('.html-form-recebe').html(data['html_recebimento']);
+                mostraFormFinanceiro();
                 verificaSwitchPaga();
+                verificaSwitchRecebe();
                 escondeChecklist();
                 $('.html-checklist').html(data['html_checklist']);
                 mostraChecklist();
@@ -195,7 +204,10 @@ $(document).ready(function(){
                 idMinuta: idminuta,
             },
             success: function(data){
+                escondeFormFinanceiro();
                 $('.html-form-paga').html(data['html_pagamento']);
+                $('.html-form-recebe').html(data['html_recebimento']);
+                mostraFormFinanceiro();
                 verificaSwitchPaga();
                 verificaSwitchRecebe();
                 escondeChecklist();
@@ -544,7 +556,7 @@ $(document).ready(function(){
         }
     });
 
-    $(document).on('change', '#c_porc', function(event) {
+    $(document).on('change', '#c_paga_porc', function(event) {
         var visible = $('#form-paga-porc').is(':visible')
         if (visible) {
             $('#form-paga-porc').slideUp(500)
@@ -553,7 +565,7 @@ $(document).ready(function(){
         }
     });
 
-    $(document).on('change', '#c_hora', function(event) {
+    $(document).on('change', '#c_paga_hora', function(event) {
         var visible = $('#form-paga-hora').is(':visible')
         if (visible) {
             $('#form-paga-hora').slideUp(500)
@@ -562,7 +574,7 @@ $(document).ready(function(){
         }
     });
 
-    $(document).on('change', '#c_exce', function(event) {
+    $(document).on('change', '#c_paga_exce', function(event) {
         var visible = $('#form-paga-exce').is(':visible')
         if (visible) {
             $('#form-paga-exce').slideUp(500)
@@ -571,7 +583,7 @@ $(document).ready(function(){
         }
     });
 
-    $(document).on('change', '#c_kilm', function(event) {
+    $(document).on('change', '#c_paga_kilm', function(event) {
         var visible = $('#form-paga-kilm').is(':visible')
         if (visible) {
             $('#form-paga-kilm').slideUp(500)
@@ -580,7 +592,7 @@ $(document).ready(function(){
         }
     });
 
-    $(document).on('change', '#c_entr', function(event) {
+    $(document).on('change', '#c_paga_entr', function(event) {
         var visible = $('#form-paga-entr').is(':visible')
         if (visible) {
             $('#form-paga-entr').slideUp(500)
@@ -589,7 +601,7 @@ $(document).ready(function(){
         }
     });
 
-    $(document).on('change', '#c_enkg', function(event) {
+    $(document).on('change', '#c_paga_enkg', function(event) {
         var visible = $('#form-paga-enkg').is(':visible')
         if (visible) {
             $('#form-paga-enkg').slideUp(500)
@@ -598,7 +610,7 @@ $(document).ready(function(){
         }
     });
 
-    $(document).on('change', '#c_evol', function(event) {
+    $(document).on('change', '#c_paga_evol', function(event) {
         var visible = $('#form-paga-evol').is(':visible')
         if (visible) {
             $('#form-paga-evol').slideUp(500)
@@ -607,7 +619,7 @@ $(document).ready(function(){
         }
     });
 
-    $(document).on('change', '#c_said', function(event) {
+    $(document).on('change', '#c_paga_said', function(event) {
         var visible = $('#form-paga-said').is(':visible')
         if (visible) {
             $('#form-paga-said').slideUp(500)
@@ -616,7 +628,7 @@ $(document).ready(function(){
         }
     });
 
-    $(document).on('change', '#c_capa', function(event) {
+    $(document).on('change', '#c_paga_capa', function(event) {
         var visible = $('#form-paga-capa').is(':visible')
         if (visible) {
             $('#form-paga-capa').slideUp(500)
@@ -625,7 +637,7 @@ $(document).ready(function(){
         }
     });
 
-    $(document).on('change', '#c_peri', function(event) {
+    $(document).on('change', '#c_paga_peri', function(event) {
         var visible = $('#form-paga-peri').is(':visible')
         if (visible) {
             $('#form-paga-peri').slideUp(500)
@@ -634,7 +646,7 @@ $(document).ready(function(){
         }
     });
 
-    $(document).on('change', '#c_pnoi', function(event) {
+    $(document).on('change', '#c_paga_pnoi', function(event) {
         var visible = $('#form-paga-pnoi').is(':visible')
         if (visible) {
             $('#form-paga-pnoi').slideUp(500)
@@ -643,7 +655,7 @@ $(document).ready(function(){
         }
     });
 
-    $(document).on('change', '#c_ajud', function(event) {
+    $(document).on('change', '#c_paga_ajud', function(event) {
         var visible = $('#form-paga-ajud').is(':visible')
         if (visible) {
             $('#form-paga-ajud').slideUp(500)
@@ -722,11 +734,12 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                     formAjaxSubmit(modal, url, cbAfterLoad, cbAfterSuccess);
                 } else {
                     $(modal).modal('hide');
+                    escondeFormFinanceiro();
                     $('.html-form-paga').html(xhr['html_pagamento']);
-                    escondeFormPagamento();
+                    $('.html-form-recebe').html(xhr['html_recebimento']);
+                    mostraFormFinanceiro();
                     verificaSwitchPaga();
                     verificaSwitchRecebe();
-                    mostraFormPagamento();
                     escondeChecklist();
                     $('.html-checklist').html(xhr['html_checklist']);
                     mostraChecklist();
@@ -1050,12 +1063,14 @@ var MostraEntrega = function() {
     $(".html-entrega").delay(1000).slideDown(500)
 }
 
-var escondeFormPagamento =  function() {
+var escondeFormFinanceiro =  function() {
     $(".html-form-paga").hide()
+    $(".html-form-recebe").hide()
 }
 
-var mostraFormPagamento =  function() {
+var mostraFormFinanceiro =  function() {
     $(".html-form-paga").slideDown(500)
+    $(".html-form-recebe").slideDown(500)
 }
 
 var escondeChecklist =  function() {
