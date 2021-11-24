@@ -23,6 +23,7 @@ $(document).ready(function(){
                 $('.html-form-paga').html(data['html_pagamento']);
                 mostraFormPagamento();
                 verificaSwitchPaga();
+                verificaSwitchRecebe();
                 escondeChecklist();
                 $('.html-checklist').html(data['html_checklist']);
                 mostraChecklist();
@@ -53,7 +54,8 @@ $(document).ready(function(){
                     mostraMensagemSucesso()
                 }
                 $('.html-form-paga').html(data['html_pagamento']);
-                verificaSwitchPaga()
+                verificaSwitchPaga();
+                verificaSwitchRecebe();
                 escondeChecklist();
                 $('.html-checklist').html(data['html_checklist']);
                 mostraChecklist();
@@ -148,6 +150,7 @@ $(document).ready(function(){
                 $('.html-checklist').html(data['html_checklist']);
                 mostraChecklist();
                 verificaSwitchPaga();
+                verificaSwitchRecebe();
             },
             error: function(error) {
                 console.log(error)
@@ -193,7 +196,8 @@ $(document).ready(function(){
             },
             success: function(data){
                 $('.html-form-paga').html(data['html_pagamento']);
-                verificaSwitchPaga()
+                verificaSwitchPaga();
+                verificaSwitchRecebe();
                 escondeChecklist();
                 $('.html-checklist').html(data['html_checklist']);
                 mostraChecklist();
@@ -649,6 +653,7 @@ $(document).ready(function(){
     });
 
     verificaSwitchPaga();
+    verificaSwitchRecebe();
     mostraChecklist();
 });
 
@@ -720,6 +725,7 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                     $('.html-form-paga').html(xhr['html_pagamento']);
                     escondeFormPagamento();
                     verificaSwitchPaga();
+                    verificaSwitchRecebe();
                     mostraFormPagamento();
                     escondeChecklist();
                     $('.html-checklist').html(xhr['html_checklist']);
@@ -822,80 +828,162 @@ var verificaTotalKMs = function() {
 }
 
 function verificaSwitchPaga() {
-    if ($('#c_porc').is(':not(:checked')) {
+    if ($('#c_paga_porc').is(':not(:checked')) {
         $('#form-paga-porc').slideUp(500)
     }
-    if ($('#c_hora').is(':not(:checked')) {
+    if ($('#c_paga_hora').is(':not(:checked')) {
         $('#form-paga-hora').slideUp(500)
     }
-    if ($('#c_exce').is(':not(:checked')) {
+    if ($('#c_paga_exce').is(':not(:checked')) {
         $('#form-paga-exce').slideUp(500)
     }
-    if ($('#c_kilm').is(':not(:checked')) {
+    if ($('#c_paga_kilm').is(':not(:checked')) {
         $('#form-paga-kilm').slideUp(500)
     }
-    if ($('#c_entr').is(':not(:checked')) {
+    if ($('#c_paga_entr').is(':not(:checked')) {
         $('#form-paga-entr').slideUp(500)
     }
-    if ($('#c_enkg').is(':not(:checked')) {
+    if ($('#c_paga_enkg').is(':not(:checked')) {
         $('#form-paga-enkg').slideUp(500)
     }
-    if ($('#c_evol').is(':not(:checked')) {
+    if ($('#c_paga_evol').is(':not(:checked')) {
         $('#form-paga-evol').slideUp(500)
     }
-    if ($('#c_said').is(':not(:checked')) {
+    if ($('#c_paga_said').is(':not(:checked')) {
         $('#form-paga-said').slideUp(500)
     }
-    if ($('#c_capa').is(':not(:checked')) {
+    if ($('#c_paga_capa').is(':not(:checked')) {
         $('#form-paga-capa').slideUp(500)
     }
-    if ($('#c_peri').is(':not(:checked')) {
+    if ($('#c_paga_peri').is(':not(:checked')) {
         $('#form-paga-peri').slideUp(500)
     }
-    if ($('#c_pnoi').is(':not(:checked')) {
+    if ($('#c_paga_pnoi').is(':not(:checked')) {
         $('#form-paga-pnoi').slideUp(500)
     }
-    if ($('#c_ajud').is(':not(:checked')) {
+    if ($('#c_paga_ajud').is(':not(:checked')) {
         $('#form-paga-ajud').slideUp(500)
     }
 };
 
+function verificaSwitchRecebe() {
+    if ($('#c_recebe_porc').is(':not(:checked')) {
+        $('#form-recebe-porc').slideUp(500)
+    }
+    if ($('#c_recebe_hora').is(':not(:checked')) {
+        $('#form-recebe-hora').slideUp(500)
+    }
+    if ($('#c_recebe_exce').is(':not(:checked')) {
+        $('#form-recebe-exce').slideUp(500)
+    }
+    if ($('#c_recebe_kilm').is(':not(:checked')) {
+        $('#form-recebe-kilm').slideUp(500)
+    }
+    if ($('#c_recebe_entr').is(':not(:checked')) {
+        $('#form-recebe-entr').slideUp(500)
+    }
+    if ($('#c_recebe_enkg').is(':not(:checked')) {
+        $('#form-recebe-enkg').slideUp(500)
+    }
+    if ($('#c_recebe_evol').is(':not(:checked')) {
+        $('#form-recebe-evol').slideUp(500)
+    }
+    if ($('#c_recebe_said').is(':not(:checked')) {
+        $('#form-recebe-said').slideUp(500)
+    }
+    if ($('#c_recebe_capa').is(':not(:checked')) {
+        $('#form-recebe-capa').slideUp(500)
+    }
+    if ($('#c_recebe_peri').is(':not(:checked')) {
+        $('#form-recebe-peri').slideUp(500)
+    }
+    if ($('#c_recebe_pnoi').is(':not(:checked')) {
+        $('#form-recebe-pnoi').slideUp(500)
+    }
+    if ($('#c_recebe_ajud').is(':not(:checked')) {
+        $('#form-recebe-ajud').slideUp(500)
+    }
+};
+
 function verificaTotalZero() {
-    if ($('#t_porc').text() == 0.00) {
-        $('#c_porc').prop('checked', false)
+    if ($('#t_recebe_taxa').text() == 0.00) {
+        $('#c_recebe_taxa').prop('checked', false)
     }
-    if ($('#t_hora').text() == 0.00) {
-        $('#c_hora').prop('checked', false)
+    if ($('#t_recebe_segu').text() == 0.00) {
+        $('#c_recebe_segu').prop('checked', false)
     }
-    if ($('#t_exce').text() == 0.00) {
-        $('#c_exce').prop('checked', false)
+    if ($('#t_recebe_porc').text() == 0.00) {
+        $('#c_recebe_porc').prop('checked', false)
     }
-    if ($('#t_kilm').text() == 0.00) {
-        $('#c_kilm').prop('checked', false)
+    if ($('#t_recebe_hora').text() == 0.00) {
+        $('#c_recebe_hora').prop('checked', false)
     }
-    if ($('#t_entr').text() == 0.00) {
-        $('#c_entr').prop('checked', false)
+    if ($('#t_recebe_exce').text() == 0.00) {
+        $('#c_recebe_exce').prop('checked', false)
     }
-    if ($('#t_enkg').text() == 0.00) {
-        $('#c_enkg').prop('checked', false)
+    if ($('#t_recebe_kilm').text() == 0.00) {
+        $('#c_recebe_kilm').prop('checked', false)
     }
-    if ($('#t_evol').text() == 0.00) {
-        $('#c_evol').prop('checked', false)
+    if ($('#t_recebe_entr').text() == 0.00) {
+        $('#c_recebe_entr').prop('checked', false)
     }
-    if ($('#t_said').text() == 0.00) {
-        $('#c_said').prop('checked', false)
+    if ($('#t_recebe_enkg').text() == 0.00) {
+        $('#c_recebe_enkg').prop('checked', false)
     }
-    if ($('#t_capa').text() == 0.00) {
-        $('#c_capa').prop('checked', false)
+    if ($('#t_recebe_evol').text() == 0.00) {
+        $('#c_recebe_evol').prop('checked', false)
     }
-    if ($('#t_peri').text() == 0.00) {
-        $('#c_peri').prop('checked', false)
+    if ($('#t_recebe_said').text() == 0.00) {
+        $('#c_recebe_said').prop('checked', false)
     }
-    if ($('#t_pnoi').text() == 0.00) {
-        $('#c_pnoi').prop('checked', false)
+    if ($('#t_recebe_capa').text() == 0.00) {
+        $('#c_recebe_capa').prop('checked', false)
     }
-    if ($('#t_ajud').text() == 0.00) {
-        $('#c_ajud').prop('checked', false)
+    if ($('#t_recebe_peri').text() == 0.00) {
+        $('#c_recebe_peri').prop('checked', false)
+    }
+    if ($('#t_recebe_pnoi').text() == 0.00) {
+        $('#c_recebe_pnoi').prop('checked', false)
+    }
+    if ($('#t_recebe_ajud').text() == 0.00) {
+        $('#c_recebe_ajud').prop('checked', false)
+    }
+    verificaSwitchRecebe();
+    if ($('#t_paga_porc').text() == 0.00) {
+        $('#c_paga_porc').prop('checked', false)
+    }
+    if ($('#t_paga_hora').text() == 0.00) {
+        $('#_pagac_hora').prop('checked', false)
+    }
+    if ($('#t_paga_exce').text() == 0.00) {
+        $('#c_paga_exce').prop('checked', false)
+    }
+    if ($('#t_paga_kilm').text() == 0.00) {
+        $('#c_paga_kilm').prop('checked', false)
+    }
+    if ($('#t_paga_entr').text() == 0.00) {
+        $('#c_paga_entr').prop('checked', false)
+    }
+    if ($('#t_paga_enkg').text() == 0.00) {
+        $('#c_paga_enkg').prop('checked', false)
+    }
+    if ($('#t_paga_evol').text() == 0.00) {
+        $('#c_paga_evol').prop('checked', false)
+    }
+    if ($('#t_paga_said').text() == 0.00) {
+        $('#c_paga_said').prop('checked', false)
+    }
+    if ($('#t_paga_capa').text() == 0.00) {
+        $('#c_paga_capa').prop('checked', false)
+    }
+    if ($('#t_paga_peri').text() == 0.00) {
+        $('#c_paga_peri').prop('checked', false)
+    }
+    if ($('#t_paga_pnoi').text() == 0.00) {
+        $('#c_paga_pnoi').prop('checked', false)
+    }
+    if ($('#t_paga_ajud').text() == 0.00) {
+        $('#c_paga_ajud').prop('checked', false)
     }
     verificaSwitchPaga();
 };

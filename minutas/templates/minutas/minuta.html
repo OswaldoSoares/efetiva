@@ -55,7 +55,7 @@
             </article>
         </div>
 
-        <div class="article-card ac-paga">
+        <div class="article-card ac-finan">
             <div class="article-titulo">
                 <span>PAGAMENTOS</span>
             </div>
@@ -63,7 +63,9 @@
                 {% include 'minutas/formpagamento.html' %}
             </div>
         </div>
-        <div class="article-card ac-paga">
+
+        {% if user|can:'demonstrativo_minuta' %}
+        <div class="article-card ac-finan">
             <div class="article-titulo">
                 <span>RECEITAS</span>
             </div>
@@ -71,6 +73,7 @@
                 {% include 'minutas/formrecebimento.html' %}
             </div>
         </div>
+        {% endif %}
     </div>
     
     <div class="adicionar-minuta">

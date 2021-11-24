@@ -3249,14 +3249,14 @@ main .fp-recibo-tabela .fp-recibo-print {
                 }
             }
 
-        .ac-paga {
+        .ac-finan {
             background-color: #4f4f4f;
             color: white;
             width: 340px; 
             border-radius: 10px;   
         }
 
-            .ac-paga .article-titulo {
+            .ac-finan .article-titulo {
                 background-color: #363636;
                 border-radius: 10px 10px 0 0;
                 width: 100%;
@@ -3269,7 +3269,7 @@ main .fp-recibo-tabela .fp-recibo-print {
                 align-items: center;
             }
             
-            .ac-paga .form-paga {
+            .ac-finan .form-finan {
                 width: 100%;
                 height: 20px;
                 display: flex;
@@ -3280,20 +3280,21 @@ main .fp-recibo-tabela .fp-recibo-print {
                 font-size: 12px;
             }
 
-            .ac-paga .linha-divisoria {
+            .ac-finan .linha-divisoria {
                 background-color: #363636;
                 width: 100%;
                 height: 3px;
             }
             
-
-            .ac-paga .form-label-paga {
+            .ac-finan .form-label-recebe,
+            .ac-finan .form-label-paga {
                 text-align: right;
                 padding: 0;
                 margin: 0;
             }
 
-            .ac-paga .form-control-paga {
+            .ac-finan .form-control-recebe,
+            .ac-finan .form-control-paga {
                 width: 80px;
                 color: #363636;
                 height: 20px;
@@ -3301,9 +3302,12 @@ main .fp-recibo-tabela .fp-recibo-print {
                 text-align: right;
             }
 
-            .ac-paga .v_paga,
-            .ac-paga .m_paga,
-            .ac-paga .t_paga {
+            .ac-finan .v_recebe,
+            .ac-finan .m_recebe,
+            .ac-finan .t_recebe,
+            .ac-finan .v_paga,
+            .ac-finan .m_paga,
+            .ac-finan .t_paga {
                 background-color: dodgerblue;
                 display: flex;
                 align-items: flex-end;
@@ -3312,13 +3316,17 @@ main .fp-recibo-tabela .fp-recibo-print {
                 width: 31%;
             }
 
-            .ac-paga .v_paga span,
-            .ac-paga .m_paga span,
-            .ac-paga .t_paga span {
+            .ac-finan .v_recebe span,
+            .ac-finan .m_recebe span,
+            .ac-finan .t_recebe span,
+            .ac-finan .v_paga span,
+            .ac-finan .m_paga span,
+            .ac-finan .t_paga span {
                 padding: 0 2px;
             }
 
-            .ac-paga .total-paga {
+            .ac-finan .total-recebe,
+            .ac-finan .total-paga {
                 background-color: white;
                 color: #363636;
                 width: 80px;
@@ -3330,7 +3338,7 @@ main .fp-recibo-tabela .fp-recibo-print {
                 margin-left: 1px;
             }
 
-            .ac-paga .article-minuta-rodape {
+            .ac-finan .article-minuta-rodape {
                 background-color: #363636;
                 height: 50px;
                 display: flex;
@@ -3341,7 +3349,7 @@ main .fp-recibo-tabela .fp-recibo-print {
                 border-radius: 0 0 10px 10px;
             }
 
-            .ac-paga .article-minuta-rodape i {
+            .ac-finan .article-minuta-rodape i {
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
@@ -3352,7 +3360,7 @@ main .fp-recibo-tabela .fp-recibo-print {
                 padding-top: 5px;
             }
 
-            .ac-paga .article-minuta-rodape span {
+            .ac-finan .article-minuta-rodape span {
                 font-size: 10px;
                 font-weight: bold;
             }
