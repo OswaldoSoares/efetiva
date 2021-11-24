@@ -65,6 +65,7 @@ class MinutaSelecionada:
         self.paga_minuta = self.valor_total_minuta()
         self.paga_realizada = self.verifica_pagamento()
         self.recebe = self.carrega_valores_recebe()
+        self.recebe_minuta = self.valor_recebe_total_minuta()
 
     def get_total_kms(self):
         calculo_kms = self.km_final - self.km_inicial
@@ -275,11 +276,11 @@ class MinutaSelecionada:
                      self.get_total_kms() <= itens['PerimetroFinal']]
         phkesc = self.tabela[0]['phkescCobra']
         v_recebe['v_taxa'] = self.tabela[0]['TaxaExpedicao']
-        v_recebe['v_segu'] = 0.00
         if tabela_veiculo:
             if self.motorista:
+                v_recebe['v_segu'] = float(0.00)
                 v_recebe['m_segu'] = self.t_entregas['valor_entregas']
-                v_recebe['t_segu'] = v_recebe['v_segu'] / 100 * v_recebe['m_segu']
+                v_recebe['t_segu'] = v_recebe['v_segu'] / 100 * float(v_recebe['m_segu'])
                 v_recebe['v_porc'] = tabela_veiculo['PorcentagemCobra']
                 v_recebe['m_porc'] = self.t_entregas['valor_entregas']
                 v_recebe['t_porc'] = tabela_veiculo['PorcentagemCobra'] / 100 * v_recebe['m_porc']
@@ -319,67 +320,32 @@ class MinutaSelecionada:
                 v_recebe = self.base_valor_perimetro(v_recebe)
                 v_recebe['t_peri'] = float(v_recebe['v_peri']) / 100 * float(v_recebe['m_peri'])
                 v_recebe['m_pnoi'] = v_recebe['m_peri']
-        if self.total_ajudantes_avulso() > 0:
+        if self.total_ajudantes() > 0:
             v_recebe['v_ajud'] = float(self.tabela[0]['AjudanteCobra'])
-            if int(self.entrega_saida()[0:1]) > 2:
-                v_recebe['v_ajud'] = float(self.tabela[0]['AjudanteCobra']) + 10.00
-            v_recebe['m_ajud'] = self.total_ajudantes_avulso()
-            v_recebe['t_ajud'] = v_recebe['v_ajud'] * self.total_ajudantes_avulso()
+            # TODO Hora Extra ajudante cobra
+            v_recebe['m_ajud'] = self.total_ajudantes()
+            v_recebe['t_ajud'] = v_recebe['v_ajud'] * v_recebe['m_ajud']
             v_recebe['c_ajud'] = True
         return v_recebe
 
-
-
-
-        hora_zero_timedelta = timedelta(hours=0, minutes=0)
-        hora_zero_time = datetime.strptime('00:00', '%H:%M').time()
-        tabela_veiculo = self.filtro_tabela_veiculo()
-        valores_recebe = dict({'valor_taxaexpedicao': 0.00, 'valor_seguro': 0.00, 'minuta_seguro': 0.00,
-                               'valor_porcentagem': 0.00, 'minuta_porcentagem': 0.00, 'valor_hora': 0.00,
-                               'minuta_hora': hora_zero_time, 'valor_horaexcede': 100.00,
-                               'minuta_horaexcede': hora_zero_timedelta, 'valor_kilometragem': 0.00,
-                               'minuta_kilometragem': 0.00, 'valor_entregas': 0.00, 'minuta_entregas': 0.00,
-                               'valor_entregaskg': 0.00, 'minuta_entregaskg': 0.00, 'valor_entregasvolume': 0.00,
-                               'minuta_entregasvolume': 0.00, 'valor_saida': 0.00, 'valor_capacidade': 0.00,
-                               'valor_perimetro': 0.00, 'valor_ajudante': 0.00, 'minuta_ajudante': 0.00})
-        if tabela_veiculo:
-            valores_recebe = dict()
-            valores_recebe['valor_taxaexpedicao'] = self.tabela[0]['TaxaExpedicao']
-            valores_recebe['valor_seguro'] = 0.23
-            valores_recebe['minuta_seguro'] = self.total_notas()['valor_entregas']
-            if self.filtro_tabela_veiculo():
-                valores_recebe['valor_porcentagem'] = self.filtro_tabela_veiculo()['PorcentagemCobra']
-            else:
-                valores_recebe['valor_porcentagem'] = 0.00
-            valores_recebe['minuta_porcentagem'] = self.t_entregas['valor_entregas']
-            valores_recebe['valor_hora'] = self.filtro_tabela_veiculo()['HoraCobra']
-            valores_recebe['minuta_hora'] = self.filtro_tabela_veiculo()['HoraMinimo']
-            valores_recebe['valor_horaexcede'] = 100
-            valores_recebe['minuta_horaexcede'] = self.horas_excede()
-            valores_recebe['valor_kilometragem'] = self.filtro_tabela_veiculo()['KMCobra']
-            valores_recebe['minuta_kilometragem'] = self.get_total_kms()
-            valores_recebe['valor_entregas'] = self.filtro_tabela_veiculo()['EntregaCobra']
-            valores_recebe['minuta_entregas'] = self.t_entregas['total_entregas']
-            valores_recebe['valor_entregaskg'] = self.filtro_tabela_veiculo()['EntregaKGCobra']
-            valores_recebe['minuta_entregaskg'] = self.total_notas()['peso_entregas']
-            valores_recebe['valor_entregasvolume'] = self.filtro_tabela_veiculo()['EntregaVolumeCobra']
-            valores_recebe['minuta_entregasvolume'] = self.total_notas()['volume_entregas']
-            valores_recebe['valor_saida'] = self.filtro_tabela_veiculo()['SaidaCobra']
-            capacidade = [itens['CapacidadeCobra'] for itens in self.tabela_capacidade if itens['CapacidadeInicial'] <=
-                          self.total_kms() <= itens['CapacidadeFinal']]
-            if capacidade:
-                valores_recebe['valor_capacidade'] = capacidade[0]
-            else:
-                valores_recebe['valor_capacidade'] = 0.00
-            perimetro = [itens['PerimetroCobra'] for itens in self.tabela_perimetro if itens['PerimetroInicial'] <=
-                         self.get_total_kms() <= itens['PerimetroFinal']]
-            if perimetro:
-                valores_recebe['valor_perimetro'] = perimetro[0]
-            else:
-                valores_recebe['valor_perimetro'] = 0.00
-            valores_recebe['valor_ajudante'] = self.extra_ajudante_cobra()
-            valores_recebe['minuta_ajudante'] = self.total_ajudantes()
-        return valores_recebe
+    def valor_recebe_total_minuta(self):
+        v_recebe = self.recebe
+        total = 0
+        total += float(v_recebe['v_taxa'])
+        total += float(v_recebe['t_segu'])
+        total += float(v_recebe['t_porc'])
+        total += float(v_recebe['t_hora'])
+        total += float(v_recebe['t_exce'])
+        total += float(v_recebe['t_kilm'])
+        total += float(v_recebe['t_entr'])
+        total += float(v_recebe['t_enkg'])
+        total += float(v_recebe['t_evol'])
+        total += float(v_recebe['v_said'])
+        total += float(v_recebe['v_capa'])
+        total += float(v_recebe['t_peri'])
+        total += float(v_recebe['t_pnoi'])
+        total += float(v_recebe['t_ajud'])
+        return total
 
     def verifica_pagamento(self):
         paga = MinutaItens.objects.filter(TipoItens='PAGA', idMinuta=self.idminuta)
@@ -684,7 +650,7 @@ def novo_status_minuta(request, idminuta, novo_status):
 def calcula_valor_hora(porcentagem, horas, valor):
     novo_valor = valor * porcentagem / 100
     valor_hora = float(round(novo_valor, 2))
-    valor_minuto = float(round(novo_valor / 60, 2))
+    valor_minuto = float(round(novo_valor / 60, 5))
     total_valor_hora = horas.hour * valor_hora
     total_valor_minuto = horas.minute * valor_minuto
     total = total_valor_hora + total_valor_minuto
