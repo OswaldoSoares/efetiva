@@ -807,8 +807,6 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
     });
 }
 
-
-
 var verificaTotalHoras = function() {
     if ($(".total-horas").text() == '00:00 Hs') {
         $(".calcula-horas").slideUp(500)
@@ -867,6 +865,12 @@ function verificaSwitchPaga() {
 };
 
 function verificaSwitchRecebe() {
+    if ($('#c_recebe_taxa').is(':not(:checked')) {
+        $('#form-recebe-taxa').slideUp(500)
+    }
+    if ($('#c_recebe_segu').is(':not(:checked')) {
+        $('#form-recebe-segu').slideUp(500)
+    }
     if ($('#c_recebe_porc').is(':not(:checked')) {
         $('#form-recebe-porc').slideUp(500)
     }

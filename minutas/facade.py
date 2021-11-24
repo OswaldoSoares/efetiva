@@ -276,11 +276,13 @@ class MinutaSelecionada:
                      self.get_total_kms() <= itens['PerimetroFinal']]
         phkesc = self.tabela[0]['phkescCobra']
         v_recebe['v_taxa'] = self.tabela[0]['TaxaExpedicao']
+        v_recebe['c_taxa'] = True if self.tabela[0]['TaxaExpedicao'] > 0 else False
         if tabela_veiculo:
             if self.motorista:
                 v_recebe['v_segu'] = float(0.00)
                 v_recebe['m_segu'] = self.t_entregas['valor_entregas']
                 v_recebe['t_segu'] = v_recebe['v_segu'] / 100 * float(v_recebe['m_segu'])
+                v_recebe['c_segu'] = True if self.t_entregas['valor_entregas'] > 0 else False
                 v_recebe['v_porc'] = tabela_veiculo['PorcentagemCobra']
                 v_recebe['m_porc'] = self.t_entregas['valor_entregas']
                 v_recebe['t_porc'] = tabela_veiculo['PorcentagemCobra'] / 100 * v_recebe['m_porc']
