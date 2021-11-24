@@ -17,6 +17,40 @@
                 {% include 'minutas/cardminuta.html' %}
             </div>            
         </article>
+
+        {% if user|can:'demonstrativo_minuta' %}
+        <div class="article-card ac-finan">
+            <div class="article-titulo">
+                <span>RECEITAS</span>
+            </div>
+            <div class="html-form-recebe">
+                {% include 'minutas/formrecebimento.html' %}
+            </div>
+        </div>
+        {% endif %}
+
+        <div>
+        <div class="article-card ac-finan">
+            <div class="article-titulo">
+                <span>PAGAMENTOS</span>
+            </div>
+            <div class="html-form-paga">
+                {% include 'minutas/formpagamento.html' %}
+            </div>
+        </div>
+
+        {% if s_minuta.status_minuta != 'FATURADA' %}
+        <article class="article-card ac-checklist">
+            <div class="article-titulo">
+                <span>CHECK LIST</span>
+            </div>
+            <div class="html-checklist">
+                {% include 'minutas/checklistminuta.html' %}
+            </div>
+        </article>
+        {% endif %}
+        </div>
+
         <div class="article-despesa-entrega">
             <article class="article-card ac-despesa">
                 <div class="article-titulo">
@@ -44,36 +78,7 @@
                     {% include 'minutas/entregaminuta.html' %}
                 </div>
             </article>
-            
-            <article class="article-card ac-checklist">
-                <div class="article-titulo">
-                    <span>CHECK LIST</span>
-                </div>
-                <div class="html-checklist">
-                    {% include 'minutas/checklistminuta.html' %}
-                </div>
-            </article>
         </div>
-
-        <div class="article-card ac-finan">
-            <div class="article-titulo">
-                <span>PAGAMENTOS</span>
-            </div>
-            <div class="html-form-paga">
-                {% include 'minutas/formpagamento.html' %}
-            </div>
-        </div>
-
-        {% if user|can:'demonstrativo_minuta' %}
-        <div class="article-card ac-finan">
-            <div class="article-titulo">
-                <span>RECEITAS</span>
-            </div>
-            <div class="html-form-recebe">
-                {% include 'minutas/formrecebimento.html' %}
-            </div>
-        </div>
-        {% endif %}
     </div>
     
     <div class="adicionar-minuta">
