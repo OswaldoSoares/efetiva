@@ -312,6 +312,7 @@
     </div>
     {% endif %}
     {% for motorista in s_minuta.motorista %}
+    {% if motorista.obj.TipoPgto != 'MENSALISTA' %}
     <div class="form-finan">
         <span>{{ motorista.apelido }}</span>
         <div class="t_paga">
@@ -319,6 +320,7 @@
             <div class="total-paga">{{ s_minuta.paga_motorista|stringformat:'.2f' }}</div>
         </div>
     </div>
+    {% endif %}
     {% endfor %}
     {% for ajudante in s_minuta.ajudantes %}
     {% if ajudante.tipo != 'MENSALISTA' %}

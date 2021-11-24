@@ -176,8 +176,8 @@ def imprime_fatura_pdf(fatura):
             minuta_hora_inicial, minuta_hora_final))
         pdf.setFont("Times-Roman", 10)
         pdf.setFillColor(HexColor("#0000FF"))
-        pdf.drawRightString(convertemp(198), convertemp(linha), 'VALOR: R$ {:.2f}'.format(minuta_valor).replace('.',
-                                                                                                                ','))
+        pdf.drawRightString(convertemp(198), convertemp(linha),
+                            'VALOR: R$ {:.2f}'.format(minuta_valor).replace('.', ','))
         pdf.setFillColor(HexColor("#000000"))
         coleta_entrega = None
         if minutas[index].Coleta and minutas[index].Entrega:
