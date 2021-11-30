@@ -347,6 +347,27 @@
             <div class="total-recebe" id="t_recebe_ajud">{{ s_minuta.recebe.t_ajud|stringformat:'.2f' }}</div>
         </div>
     </div>
+    {% for despesa in s_minuta.despesas %}
+        <div class="form-finan">
+            <span>{{ despesa.Descricao }}</span>
+            <input type="checkbox" class="new-switch new-switch--shadow" id="c_recebe_desp{{ despesa.idMinutaItens }}"
+                   checked="checked" name="s_desp">
+            <label for="c_recebe_desp{{ despesa.idMinutaItens }}"></label>
+        </div>
+        <div class="form-finan">
+            <div class="v_recebe">
+                <span class="form-label-recebe">R$</span>
+                <input type="number" class="form-control-recebe" name="m_desp{{ despesa.idMinutaItens }}"
+                       step="0.01" value="{{ despesa.Valor|stringformat:'.2f' }}">
+            </div>
+            <div></div>
+            <div></div>
+            <div class="t_recebe">
+                <span class="form-label-recebe">R$</span>
+                <div class="total-recebe" id="t_recebe_desp{{ despesa.idMinutaItens }}">{{ despesa.Valor }}</div>
+            </div>
+        </div>
+    {% endfor %}
     {% if s_minuta.motorista or s_minuta.ajudantes %}
     <div class="linha-divisoria"></div>
     <div class="form-finan">
