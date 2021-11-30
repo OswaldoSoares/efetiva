@@ -347,6 +347,7 @@ class MinutaSelecionada:
         total += float(v_recebe['t_peri'])
         total += float(v_recebe['t_pnoi'])
         total += float(v_recebe['t_ajud'])
+        total += float(self.t_despesas['valor_despesas'])
         return total
 
     def verifica_pagamento(self):
