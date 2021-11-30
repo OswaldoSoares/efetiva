@@ -3,7 +3,7 @@
     <input type="hidden" name="idminuta" value="{{ s_minuta.idminuta }}" id="id_idminuta">
     <div class="form-finan">
         <span>TAXA DE EXPEDIÇÃO</span>
-        <input type="checkbox" class="new-switch new-switch--shadow" id="c_recebe_taxa"
+        <input type="checkbox" class="new-switch new-switch--shadow c_recebe" id="c_recebe_taxa"
                {% if s_minuta.recebe.c_taxa %} checked="checked" {% endif %}
                name="s_taxa">
         <label for="c_recebe_taxa"></label>
@@ -23,7 +23,7 @@
     </div>
     <div class="form-finan">
         <span>SEGURO</span>
-        <input type="checkbox" class="new-switch new-switch--shadow" id="c_recebe_segu"
+        <input type="checkbox" class="new-switch new-switch--shadow c_recebe" id="c_recebe_segu"
                {% if s_minuta.recebe.c_segu %} checked="checked" {% endif %}
                name="s_segu">
         <label for="c_recebe_segu"></label>
@@ -49,7 +49,7 @@
     </div>
     <div class="form-finan">
         <span>PORCENTAGEM NOTA</span>
-        <input type="checkbox" class="new-switch new-switch--shadow" id="c_recebe_porc"
+        <input type="checkbox" class="new-switch new-switch--shadow c_recebe" id="c_recebe_porc"
                {% if s_minuta.recebe.c_porc %} checked="checked" {% endif %}
                name="s_porc">
         <label for="c_recebe_porc"></label>
@@ -75,7 +75,7 @@
     </div>
     <div class="form-finan">
         <span>HORAS</span>
-        <input type="checkbox" class="new-switch new-switch--shadow" id="c_recebe_hora"
+        <input type="checkbox" class="new-switch new-switch--shadow c_recebe" id="c_recebe_hora"
                {% if s_minuta.recebe.c_hora %} checked="checked" {% endif %}
                name="s_hora">
         <label for="c_recebe_hora"></label>
@@ -101,7 +101,7 @@
     </div>
     <div class="form-finan">
         <span>HORAS EXCEDENTE</span>
-        <input type="checkbox" class="new-switch new-switch--shadow" id="c_recebe_exce"
+        <input type="checkbox" class="new-switch new-switch--shadow c_recebe" id="c_recebe_exce"
                {% if s_minuta.recebe.c_exce %} checked="checked" {% endif %}
                name="s_exce">
         <label for="c_recebe_exce"></label>
@@ -127,7 +127,7 @@
     </div>
     <div class="form-finan">
         <span>KILOMETRAGEM</span>
-        <input type="checkbox" class="new-switch new-switch--shadow" id="c_recebe_kilm"
+        <input type="checkbox" class="new-switch new-switch--shadow c_recebe" id="c_recebe_kilm"
                {% if s_minuta.recebe.c_kilm %} checked="checked" {% endif %}
                name="s_kilm">
         <label for="c_recebe_kilm"></label>
@@ -153,7 +153,7 @@
     </div>
     <div class="form-finan">
         <span>ENTREGAS</span>
-        <input type="checkbox" class="new-switch new-switch--shadow" id="c_recebe_entr"
+        <input type="checkbox" class="new-switch new-switch--shadow c_recebe" id="c_recebe_entr"
                {% if s_minuta.recebe.c_entr %} checked="checked" {% endif %}
                name="s_entr">
         <label for="c_recebe_entr"></label>
@@ -179,7 +179,7 @@
     </div>
     <div class="form-finan">
         <span>ENTREGAS KG</span>
-        <input type="checkbox" class="new-switch new-switch--shadow" id="c_recebe_enkg"
+        <input type="checkbox" class="new-switch new-switch--shadow c_recebe" id="c_recebe_enkg"
                {% if s_minuta.recebe.c_enkg %} checked="checked" {% endif %}
                name="s_enkg">
         <label for="c_recebe_enkg"></label>
@@ -205,7 +205,7 @@
     </div>
     <div class="form-finan">
         <span>ENTREGAS VOLUME</span>
-        <input type="checkbox" class="new-switch new-switch--shadow" id="c_recebe_evol"
+        <input type="checkbox" class="new-switch new-switch--shadow c_recebe" id="c_recebe_evol"
                {% if s_minuta.recebe.c_evol %} checked="checked" {% endif %}
                name="s_evol">
         <label for="c_recebe_evol"></label>
@@ -231,7 +231,7 @@
     </div>
     <div class="form-finan">
         <span>SAÍDA</span>
-        <input type="checkbox" class="new-switch new-switch--shadow" id="c_recebe_said"
+        <input type="checkbox" class="new-switch new-switch--shadow c_recebe" id="c_recebe_said"
                {% if s_minuta.recebe.c_said %} checked="checked" {% endif %}
                name="s_said">
         <label for="c_recebe_said"></label>
@@ -251,7 +251,7 @@
     </div>
     <div class="form-finan">
         <span>CAPCIDADE PESO</span>
-        <input type="checkbox" class="new-switch new-switch--shadow" id="c_recebe_capa"
+        <input type="checkbox" class="new-switch new-switch--shadow c_recebe" id="c_recebe_capa"
                {% if s_minuta.recebe.c_capa %} checked="checked" {% endif %}
                name="s_capa">
         <label for="c_recebe_capa"></label>
@@ -271,7 +271,7 @@
     </div>
     <div class="form-finan">
         <span>PERIMETRO</span>
-        <input type="checkbox" class="new-switch new-switch--shadow" id="c_recebe_peri"
+        <input type="checkbox" class="new-switch new-switch--shadow c_recebe" id="c_recebe_peri"
                {% if s_minuta.recebe.c_peri %} checked="checked" {% endif %}
                name="s_peri">
         <label for="c_recebe_peri"></label>
@@ -297,7 +297,7 @@
     </div>
     <div class="form-finan">
         <span>PERNOITE</span>
-        <input type="checkbox" class="new-switch new-switch--shadow" id="c_recebe_pnoi"
+        <input type="checkbox" class="new-switch new-switch--shadow c_recebe" id="c_recebe_pnoi"
                {% if s_minuta.recebe.c_pnoi %} checked="checked" {% endif %}
                name="s_pnoi">
         <label for="c_recebe_pnoi"></label>
@@ -323,7 +323,7 @@
     </div>
     <div class="form-finan">
         <span>AJUDANTE</span>
-        <input type="checkbox" class="new-switch new-switch--shadow" id="c_recebe_ajud"
+        <input type="checkbox" class="new-switch new-switch--shadow c_recebe" id="c_recebe_ajud"
                {% if s_minuta.recebe.c_ajud %} checked="checked" {% endif %}
                name="s_ajud">
         <label for="c_recebe_ajud"></label>
@@ -350,11 +350,11 @@
     {% for despesa in s_minuta.despesas %}
         <div class="form-finan">
             <span>{{ despesa.Descricao }}</span>
-            <input type="checkbox" class="new-switch new-switch--shadow" id="c_recebe_desp{{ despesa.idMinutaItens }}"
-                   checked="checked" name="s_desp">
+            <input type="checkbox" class="new-switch new-switch--shadow c_recebe"
+                   id="c_recebe_desp{{ despesa.idMinutaItens }}" checked="checked" name="s_desp">
             <label for="c_recebe_desp{{ despesa.idMinutaItens }}"></label>
         </div>
-        <div class="form-finan">
+        <div class="form-finan" id="form-recebe-desp{{ despesa.idMinutaItens }}">
             <div class="v_recebe">
                 <span class="form-label-recebe">R$</span>
                 <input type="number" class="form-control-recebe" name="m_desp{{ despesa.idMinutaItens }}"

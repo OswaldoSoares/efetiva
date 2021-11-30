@@ -546,6 +546,7 @@ $(document).ready(function(){
         }
     });
 
+    
     $(document).on('click', '#chk-saida', function(event) {
         if ($('#chk-saida').is(":checked")) {
             $('#id_Nota').val($('#label-chk-saida').attr('saida'))
@@ -555,114 +556,26 @@ $(document).ready(function(){
             $('#id_Nota').focus();
         }
     });
-
-    $(document).on('change', '#c_paga_porc', function(event) {
-        var visible = $('#form-paga-porc').is(':visible')
+    
+    $(document).on('change', '.c_paga', function() {
+        var switch_change = $(this).attr('id').substring(7)
+        var visible = $('#form-paga-'+switch_change).is(':visible')
         if (visible) {
-            $('#form-paga-porc').slideUp(500)
+            $('#form-paga-'+switch_change).slideUp(500)
         } else {
-            $('#form-paga-porc').slideDown(500)
+            $('#form-paga-'+switch_change).slideDown(500)
         }
-    });
+    })
 
-    $(document).on('change', '#c_paga_hora', function(event) {
-        var visible = $('#form-paga-hora').is(':visible')
+    $(document).on('change', '.c_recebe', function() {
+        var switch_change = $(this).attr('id').substring(9)
+        var visible = $('#form-recebe-'+switch_change).is(':visible')
         if (visible) {
-            $('#form-paga-hora').slideUp(500)
+            $('#form-recebe-'+switch_change).slideUp(500)
         } else {
-            $('#form-paga-hora').slideDown(500)
+            $('#form-recebe-'+switch_change).slideDown(500)
         }
-    });
-
-    $(document).on('change', '#c_paga_exce', function(event) {
-        var visible = $('#form-paga-exce').is(':visible')
-        if (visible) {
-            $('#form-paga-exce').slideUp(500)
-        } else {
-            $('#form-paga-exce').slideDown(500)
-        }
-    });
-
-    $(document).on('change', '#c_paga_kilm', function(event) {
-        var visible = $('#form-paga-kilm').is(':visible')
-        if (visible) {
-            $('#form-paga-kilm').slideUp(500)
-        } else {
-            $('#form-paga-kilm').slideDown(500)
-        }
-    });
-
-    $(document).on('change', '#c_paga_entr', function(event) {
-        var visible = $('#form-paga-entr').is(':visible')
-        if (visible) {
-            $('#form-paga-entr').slideUp(500)
-        } else {
-            $('#form-paga-entr').slideDown(500)
-        }
-    });
-
-    $(document).on('change', '#c_paga_enkg', function(event) {
-        var visible = $('#form-paga-enkg').is(':visible')
-        if (visible) {
-            $('#form-paga-enkg').slideUp(500)
-        } else {
-            $('#form-paga-enkg').slideDown(500)
-        }
-    });
-
-    $(document).on('change', '#c_paga_evol', function(event) {
-        var visible = $('#form-paga-evol').is(':visible')
-        if (visible) {
-            $('#form-paga-evol').slideUp(500)
-        } else {
-            $('#form-paga-evol').slideDown(500)
-        }
-    });
-
-    $(document).on('change', '#c_paga_said', function(event) {
-        var visible = $('#form-paga-said').is(':visible')
-        if (visible) {
-            $('#form-paga-said').slideUp(500)
-        } else {
-            $('#form-paga-said').slideDown(500)
-        }
-    });
-
-    $(document).on('change', '#c_paga_capa', function(event) {
-        var visible = $('#form-paga-capa').is(':visible')
-        if (visible) {
-            $('#form-paga-capa').slideUp(500)
-        } else {
-            $('#form-paga-capa').slideDown(500)
-        }
-    });
-
-    $(document).on('change', '#c_paga_peri', function(event) {
-        var visible = $('#form-paga-peri').is(':visible')
-        if (visible) {
-            $('#form-paga-peri').slideUp(500)
-        } else {
-            $('#form-paga-peri').slideDown(500)
-        }
-    });
-
-    $(document).on('change', '#c_paga_pnoi', function(event) {
-        var visible = $('#form-paga-pnoi').is(':visible')
-        if (visible) {
-            $('#form-paga-pnoi').slideUp(500)
-        } else {
-            $('#form-paga-pnoi').slideDown(500)
-        }
-    });
-
-    $(document).on('change', '#c_paga_ajud', function(event) {
-        var visible = $('#form-paga-ajud').is(':visible')
-        if (visible) {
-            $('#form-paga-ajud').slideUp(500)
-        } else {
-            $('#form-paga-ajud').slideDown(500)
-        }
-    });
+    })
 
     verificaSwitchPaga();
     verificaSwitchRecebe();
