@@ -562,16 +562,18 @@ $(document).ready(function(){
         var visible = $('#form-paga-'+switch_change).is(':visible')
         if (visible) {
             $('#form-paga-'+switch_change).slideUp(500)
+            $('#t_paga_'+switch_change).text('0,00')
         } else {
             $('#form-paga-'+switch_change).slideDown(500)
         }
     })
-
+    
     $(document).on('change', '.c_recebe', function() {
         var switch_change = $(this).attr('id').substring(9)
         var visible = $('#form-recebe-'+switch_change).is(':visible')
         if (visible) {
             $('#form-recebe-'+switch_change).slideUp(500)
+            $('#t_recebe_'+switch_change).text('0,00')
         } else {
             $('#form-recebe-'+switch_change).slideDown(500)
         }
