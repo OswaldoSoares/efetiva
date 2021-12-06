@@ -10,8 +10,8 @@
     </div>
     <div class="form-finan" id="form-recebe-taxa">
         <div class="v_recebe">
-            <span class="form-label-recebe">%</span>
-            <input type="number" class="form-control-recebe" name="v_taxa" step="0.01"
+            <span class="form-label-recebe">R$</span>
+            <input type="text" class="form-control-recebe" name="v_taxa" id="v_taxa"
                value="{{ s_minuta.recebe.v_taxa|stringformat:'.2f' }}">
         </div>
         <div></div>
@@ -31,12 +31,12 @@
     <div class="form-finan" id="form-recebe-segu">
         <div class="v_recebe">
             <span class="form-label-recebe">%</span>
-            <input type="number" class="form-control-recebe" name="v_segu" step="0.01"
+            <input type="text" class="form-control-recebe" name="v_segu" id="v_segu"
                value="{{ s_minuta.recebe.v_segu|stringformat:'.2f' }}">
         </div>
         <div class="m_recebe">
             <span class="form-label-recebe">R$</span>
-            <input type="number" class="form-control-recebe" name="m_segu"
+            <input type="text" class="form-control-recebe" name="m_segu" id="m_segu"
                value="{{ s_minuta.recebe.m_segu|stringformat:'.2f' }}">
         </div>
         <div>
@@ -57,12 +57,12 @@
     <div class="form-finan" id="form-recebe-porc">
         <div class="v_recebe">
             <span class="form-label-recebe">%</span>
-            <input type="number" class="form-control-recebe" name="v_porc" step="0.01"
+            <input type="text" class="form-control-recebe" name="v_porc" id="v_porc"
                value="{{ s_minuta.recebe.v_porc|stringformat:'.2f' }}">
         </div>
         <div class="m_recebe">
             <span class="form-label-recebe">R$</span>
-            <input type="number" class="form-control-recebe" name="m_porc"
+            <input type="text" class="form-control-recebe" name="m_porc" id="m_porc"
                value="{{ s_minuta.recebe.m_porc|stringformat:'.2f' }}">
         </div>
         <div>
@@ -83,12 +83,12 @@
     <div class="form-finan" id="form-recebe-hora">
         <div class="v_recebe">
             <span class="form-label-recebe">R$</span>
-            <input type="number" class="form-control-recebe" name="v_hora" step="0.01"
+            <input type="text" class="form-control-recebe" name="v_hora" id="v_hora"
                value="{{ s_minuta.recebe.v_hora|stringformat:'.2f' }}">
         </div>
         <div class="m_recebe">
             <span class="form-label-recebe">HS</span>
-            <input type="time" class="form-control-recebe" name="m_hora"
+            <input type="time" class="form-control-recebe" name="m_hora" id="m_hora"
                value="{{ s_minuta.recebe.m_hora }}">
         </div>
         <div>
@@ -109,12 +109,12 @@
     <div class="form-finan" id="form-recebe-exce">
         <div class="v_recebe">
             <span class="form-label-recebe">%</span>
-            <input type="number" class="form-control-recebe" name="v_exce" step="0.01"
+            <input type="text" class="form-control-recebe" name="v_exce" id="v_exce"
                value="{{ s_minuta.recebe.v_exce|stringformat:'.2f' }}">
         </div>
         <div class="m_recebe">
             <span class="form-label-recebe">HS</span>
-            <input type="time" class="form-control-recebe" name="m_exce"
+            <input type="time" class="form-control-recebe" name="m_exce" id="m_exce"
                value="{{ s_minuta.recebe.m_exce }}">
         </div>
         <div>
@@ -135,12 +135,12 @@
     <div class="form-finan" id="form-recebe-kilm">
         <div class="v_recebe">
             <span class="form-label-recebe">R$</span>
-            <input type="number" class="form-control-recebe" name="v_kilm" step="0.01"
+            <input type="text" class="form-control-recebe" name="v_kilm" id="v_kilm"
                value="{{ s_minuta.recebe.v_kilm|stringformat:'.2f' }}">
         </div>
         <div class="m_recebe">
             <span class="form-label-recebe">UN</span>
-            <input type="number" class="form-control-recebe" name="m_kilm" step="1.00"
+            <input type="text" class="form-control-recebe" name="m_kilm" id="m_kilm"
                value="{{ s_minuta.recebe.m_kilm|stringformat:'.0f' }}">
         </div>
         <div>
@@ -161,12 +161,12 @@
     <div class="form-finan" id="form-recebe-entr">
         <div class="v_recebe">
             <span class="form-label-recebe">R$</span>
-            <input type="number" class="form-control-recebe" name="v_entr" step="0.01"
+            <input type="text" class="form-control-recebe" name="v_entr" id="v_entr"
                value="{{ s_minuta.recebe.v_entr|stringformat:'.2f' }}">
         </div>
         <div class="m_recebe">
             <span class="form-label-recebe">UN</span>
-            <input type="number" class="form-control-recebe" name="m_entr" step="1.00"
+            <input type="text" class="form-control-recebe" name="m_entr" id="m_entr"
                value="{{ s_minuta.recebe.m_entr|stringformat:'.0f' }}">
         </div>
         <div>
@@ -187,12 +187,12 @@
     <div class="form-finan" id="form-recebe-enkg">
         <div class="v_recebe">
             <span class="form-label-recebe">R$</span>
-            <input type="number" class="form-control-recebe" name="v_enkg" step="0.01"
+            <input type="text" class="form-control-recebe" name="v_enkg" id="v_enkg"
                value="{{ s_minuta.recebe.v_enkg|stringformat:'.2f' }}">
         </div>
         <div class="m_recebe">
             <span class="form-label-recebe">KG</span>
-            <input type="number" class="form-control-recebe" name="m_enkg"
+            <input type="text" class="form-control-recebe" name="m_enkg" id="m_enkg"
                value="{{ s_minuta.recebe.m_enkg|stringformat:'.2f' }}">
         </div>
         <div>
@@ -213,12 +213,12 @@
     <div class="form-finan" id="form-recebe-evol">
         <div class="v_recebe">
             <span class="form-label-recebe">R$</span>
-            <input type="number" class="form-control-recebe" name="v_evol" step="0.01"
+            <input type="text" class="form-control-recebe" name="v_evol" id="v_evol"
                value="{{ s_minuta.recebe.v_evol|stringformat:'.2f' }}">
         </div>
         <div class="m_recebe">
             <span class="form-label-recebe">UN</span>
-            <input type="number" class="form-control-recebe" name="m_evol" step="1.00"
+            <input type="text" class="form-control-recebe" name="m_evol" id="m_evol"
                value="{{ s_minuta.recebe.m_evol|stringformat:'.0f' }}">
         </div>
         <div>
@@ -239,7 +239,7 @@
     <div class="form-finan" id="form-recebe-said">
         <div class="v_recebe">
             <span class="form-label-recebe">R$</span>
-            <input type="number" class="form-control-recebe" name="v_said" step="0.01"
+            <input type="text" class="form-control-recebe" name="v_said" id="v_said"
                value="{{ s_minuta.recebe.v_said|stringformat:'.2f' }}">
         </div>
         <div></div>
@@ -259,7 +259,7 @@
     <div class="form-finan" id="form-recebe-capa">
         <div class="v_recebe">
             <span class="form-label-recebe">R$</span>
-            <input type="number" class="form-control-recebe" name="v_capa" step="0.01"
+            <input type="text" class="form-control-recebe" name="v_capa" id="v_capa"
                value="{{ s_minuta.recebe.v_capa|stringformat:'.2f' }}">
         </div>
         <div></div>
@@ -279,12 +279,12 @@
     <div class="form-finan" id="form-recebe-peri">
         <div class="v_recebe">
             <span class="form-label-recebe">%</span>
-            <input type="number" class="form-control-recebe" name="v_peri" step="0.01"
+            <input type="text" class="form-control-recebe" name="v_peri" id="v_peri"
                value="{{ s_minuta.recebe.v_peri|stringformat:'.2f' }}">
         </div>
         <div class="m_recebe">
             <span class="form-label-recebe">R$</span>
-            <input type="number" class="form-control-recebe" name="m_peri"
+            <input type="text" class="form-control-recebe" name="m_peri" id="m_peri"
                value="{{ s_minuta.recebe.m_peri|stringformat:'.2f' }}">
         </div>
         <div>
@@ -305,12 +305,12 @@
     <div class="form-finan" id="form-recebe-pnoi">
         <div class="v_recebe">
             <span class="form-label-recebe">%</span>
-            <input type="number" class="form-control-recebe" name="v_pnoi" step="0.01"
+            <input type="text" class="form-control-recebe" name="v_pnoi" id="v_pnoi"
                value="{{ s_minuta.recebe.v_pnoi|stringformat:'.2f' }}">
         </div>
         <div class="m_recebe">
             <span class="form-label-recebe">R$</span>
-            <input type="number" class="form-control-recebe" name="m_pnoi"
+            <input type="text" class="form-control-recebe" name="m_pnoi" id="m_pnoi"
                value="{{ s_minuta.recebe.m_pnoi|stringformat:'.2f' }}">
         </div>
         <div>
@@ -331,12 +331,12 @@
     <div class="form-finan" id="form-recebe-ajud">
         <div class="v_recebe">
             <span class="form-label-recebe">R$</span>
-            <input type="number" class="form-control-recebe" name="v_ajud" step="0.01"
+            <input type="text" class="form-control-recebe" name="v_ajud" id="v_ajud"
                value="{{ s_minuta.recebe.v_ajud|stringformat:'.2f' }}">
         </div>
         <div class="m_recebe">
             <span class="form-label-recebe">UN</span>
-            <input type="number" class="form-control-recebe" name="m_ajud" step="1.00"
+            <input type="text" class="form-control-recebe" name="m_ajud" id="m_ajud"
                value="{{ s_minuta.recebe.m_ajud|stringformat:'.0f' }}">
         </div>
         <div>
@@ -357,8 +357,8 @@
         <div class="form-finan" id="form-recebe-desp{{ despesa.idMinutaItens }}">
             <div class="v_recebe">
                 <span class="form-label-recebe">R$</span>
-                <input type="number" class="form-control-recebe" name="m_desp{{ despesa.idMinutaItens }}"
-                       step="0.01" value="{{ despesa.Valor|stringformat:'.2f' }}">
+                <input type="text" class="form-control-recebe" name="m_desp{{ despesa.idMinutaItens }}"
+                       value="{{ despesa.Valor|stringformat:'.2f' }}">
             </div>
             <div></div>
             <div></div>
@@ -374,7 +374,7 @@
         <span>TOTAL RCEITAS DA MINUTA</span>
         <div class="t_recebe">
             <span class="form-label-recebe">R$</span>
-            <div class="total-recebe">{{ s_minuta.recebe_minuta|stringformat:'.2f' }}</div>
+            <div class="total" id="totalrecebe">{{ s_minuta.recebe_minuta|stringformat:'.2f' }}</div>
         </div>
     </div>
     {% endif %}

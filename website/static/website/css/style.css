@@ -3325,6 +3325,7 @@ main .fp-recibo-tabela .fp-recibo-print {
                 padding: 0 2px;
             }
 
+            .ac-finan .total, 
             .ac-finan .total-recebe,
             .ac-finan .total-paga {
                 background-color: white;

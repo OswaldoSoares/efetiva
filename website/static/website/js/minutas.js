@@ -574,15 +574,156 @@ $(document).ready(function(){
         if (visible) {
             $('#form-recebe-'+switch_change).slideUp(500)
             $('#t_recebe_'+switch_change).text('0,00')
+            somaReceita();
         } else {
             $('#form-recebe-'+switch_change).slideDown(500)
+            var valor_digitado = $('#v_'+switch_change).val()            
+            verificaElemento('v_'+switch_change, valor_digitado)
+            $('#v_'+switch_change).select()            
         }
+    })
+
+    $(document).on('change', '.form-control-recebe', function() {
+        // Cria as variaveis como o nome do atributo e com valor 0
+        var element_select = $(this).attr('name')
+        var valor_digitado = '0,00'
+        // Verifica se o valor do elemento e inteiro se for acrescenta o ',00' ao final - Bug do plugin mask e altera a
+        // variavel valor_digitado
+        if ($(this).val() % 1 === 0) {
+            valor_digitado = $(this).val()+',00'
+            $(this).val(valor_digitado)
+        } else {
+            valor_digitado = $(this).val()
+        }
+        verificaElemento(element_select, valor_digitado)
     })
 
     verificaSwitchPaga();
     verificaSwitchRecebe();
     mostraChecklist();
+    formatMask();
+    
 });
+
+function verificaElemento(element_select, valor_digitado) {
+    function calculaPorcentagem(v_porcentagem, v_valor ) {
+        var valor1 = parseFloat(v_porcentagem.replace('.','').replace(',','.')) / 100
+        var valor2 = parseFloat(v_valor.replace('.','').replace(',','.'))
+        var valor3 = (valor1 * valor2).toFixed(2)
+
+        return valor3
+    }
+
+    function calculaMultiplo(v_valor1, v_valor2) {
+        var valor1 = parseFloat(v_valor1.replace('.','').replace(',','.'))
+        var valor2 = parseFloat(v_valor2.replace('.','').replace(',','.'))
+        var valor3 = (valor1 * valor2).toFixed(2)
+
+        return valor3
+    }
+
+    function calculaHora(v_porcentagem, v_valor1, v_hora) {
+        var horas = v_hora.substring(0, 2)
+        var minutos = v_hora.substring(3, 5)
+        var valor_hora = (parseFloat(v_porcentagem.replace('.','').replace(',','.')) / 100 * parseFloat(v_valor1.replace('.','').replace(',','.')))
+        var valor_minuto = (valor_hora / 60)
+        var valor_total = ((valor_hora * horas) + (valor_minuto * minutos)).toFixed(2)
+
+        return(valor_total)
+    }
+    // verifica o elemento e realiza as operações, quando necessárias para retornar o total
+    if (element_select == 'v_taxa') {
+        $('#t_recebe_taxa').text(valor_digitado)
+    } else if (element_select == 'v_segu' || element_select == 'm_segu') {
+        $('#t_recebe_segu').text(calculaPorcentagem($('#v_segu').val(), $('#m_segu').val()))
+    } else if (element_select == 'v_porc' || element_select == 'm_porc') {
+        $('#t_recebe_porc').text(calculaPorcentagem($('#v_porc').val(), $('#m_porc').val()))
+    } else if (element_select == 'v_hora' || element_select == 'm_hora') {
+        $('#t_recebe_hora').text(calculaHora('100', $('#v_hora').val(), $('#m_hora').val()))
+    } else if (element_select == 'v_exce' || element_select == 'm_exce') {
+        $('#t_recebe_exce').text(calculaHora($('#v_exce').val(), $('#v_hora').val(), $('#m_exce').val()))
+    } else if (element_select == 'v_kilm' || element_select == 'm_kilm') {
+        $('#t_recebe_kilm').text(calculaMultiplo($('#v_kilm').val(), $('#m_kilm').val()))
+    } else if (element_select == 'v_entr' || element_select == 'm_entr') {
+        $('#t_recebe_entr').text(calculaMultiplo($('#v_entr').val(), $('#m_entr').val()))
+    } else if (element_select == 'v_enkg' || element_select == 'm_enkg') {
+        $('#t_recebe_enkg').text(calculaMultiplo($('#v_enkg').val(), $('#m_enkg').val()))
+    } else if (element_select == 'v_evol' || element_select == 'm_evol') {
+        $('#t_recebe_evol').text(calculaMultiplo($('#v_evol').val(), $('#m_evol').val()))
+    } else if (element_select == 'v_said') {
+        $('#t_recebe_said').text(valor_digitado)
+    } else if (element_select == 'v_capa') {
+        $('#t_recebe_capa').text(valor_digitado)
+    } else if (element_select == 'v_peri' || element_select == 'm_peri') {
+        $('#t_recebe_peri').text(calculaPorcentagem($('#v_peri').val(), $('#m_peri').val()))
+    } else if (element_select == 'v_pnoi' || element_select == 'm_pnoi') {
+        $('#t_recebe_pnoi').text(calculaPorcentagem($('#v_pnoi').val(), $('#m_pnoi').val()))
+    } else if (element_select == 'v_ajud' || element_select == 'm_ajud') {
+        $('#t_recebe_ajud').text(calculaMultiplo($('#v_ajud').val(), $('#m_ajud').val()))
+    }
+    // recarrega mask
+    formatUnmask();
+    formatMask();
+    // Faz a soma geral com os valores atualizados 
+    somaReceita(); 
+}
+
+function formatMask() {
+    $('#v_taxa').mask('#.##0,00', {reverse: true})
+    $('#v_segu').mask('#.##0,00', {reverse: true})
+    $('#m_segu').mask('#.##0,00', {reverse: true})
+    $('#v_porc').mask('#.##0,00', {reverse: true})
+    $('#m_porc').mask('#.##0,00', {reverse: true})
+    $('#v_hora').mask('#.##0,00', {reverse: true})
+    $('#v_exce').mask('#.##0,00', {reverse: true})
+    $('#v_kilm').mask('#.##0,00', {reverse: true})
+    $('#m_kilm').mask('#.##0', {reverse: true})
+    $('#v_entr').mask('#.##0,00', {reverse: true})
+    $('#m_entr').mask('#.##0', {reverse: true})
+    $('#v_enkg').mask('#.##0,00', {reverse: true})
+    $('#m_enkg').mask('#.##0,00', {reverse: true})
+    $('#v_evol').mask('#.##0,00', {reverse: true})
+    $('#m_evol').mask('#.##0', {reverse: true})
+    $('#v_said').mask('#.##0,00', {reverse: true})
+    $('#v_capa').mask('#.##0,00', {reverse: true})
+    $('#v_peri').mask('#.##0,00', {reverse: true})
+    $('#m_peri').mask('#.##0,00', {reverse: true})
+    $('#v_pnoi').mask('#.##0,00', {reverse: true})
+    $('#m_pnoi').mask('#.##0,00', {reverse: true})
+    $('#v_ajud').mask('#.##0,00', {reverse: true})
+    $('#m_ajud').mask('#.##0', {reverse: true})
+    $("#totalrecebe").mask('#.##0,00', {reverse: true})
+    $('.total-recebe').mask('#.##0,00', {reverse: true})
+}
+
+function formatUnmask() {
+    $('#v_taxa').unmask()
+    $('#v_segu').unmask()
+    $('#m_segu').unmask()
+    $('#v_porc').unmask()
+    $('#m_porc').unmask()
+    $('#v_hora').unmask()
+    $('#v_exce').unmask()
+    $('#v_kilm').unmask()
+    $('#m_kilm').unmask()
+    $('#v_entr').unmask()
+    $('#m_entr').unmask()
+    $('#v_enkg').unmask()
+    $('#m_enkg').unmask()
+    $('#v_evol').unmask()
+    $('#m_evol').unmask()
+    $('#v_said').unmask()
+    $('#v_capa').unmask()
+    $('#v_peri').unmask()
+    $('#m_peri').unmask()
+    $('#v_pnoi').unmask()
+    $('#m_pnoi').unmask()
+    $('#v_ajud').unmask()
+    $('#m_ajud').unmask()
+    $("#totalrecebe").unmask()
+    $('.total-recebe').unmask()
+}
+
 
 function openMyModal(event) {
     var modal = initModalDialog(event, '#MyModal');
@@ -733,6 +874,17 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
             }
         });
     });
+}
+
+var somaReceita = function() {
+    /*$('.total-recebe').mask('#.##0,00', {reverse: true})*/
+    var valor_receita = 0.00;
+    $(".total-recebe").each(function() {
+        valor_receita += parseFloat($(this).text().replace('.','').replace(',','.'))
+    });
+    $("#totalrecebe").text(valor_receita.toFixed(2))
+    $("#totalrecebe").unmask()
+    $("#totalrecebe").mask('#.##0,00', {reverse: true})
 }
 
 var verificaTotalHoras = function() {
