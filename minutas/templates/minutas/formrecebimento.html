@@ -357,8 +357,8 @@
         <div class="form-finan" id="form-recebe-desp{{ despesa.idMinutaItens }}">
             <div class="v_recebe">
                 <span class="form-label-recebe">R$</span>
-                <input type="text" class="form-control-recebe" name="m_desp{{ despesa.idMinutaItens }}"
-                       value="{{ despesa.Valor|stringformat:'.2f' }}">
+                <input type="text" class="form-control-recebe v_desp" name="v_desp{{ despesa.idMinutaItens }}"
+                       id="v_desp{{ despesa.idMinutaItens }}" value="{{ despesa.Valor|stringformat:'.2f' }}">
             </div>
             <div></div>
             <div></div>

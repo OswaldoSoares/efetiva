@@ -586,6 +586,10 @@ $(document).ready(function(){
     $(document).on('change', '.form-control-recebe', function() {
         // Cria as variaveis como o nome do atributo e com valor 0
         var element_select = $(this).attr('name')
+        /*alert(element_select.substring(0, 5))
+        if (element_select.substring(0, 5) == 'v_desp') {
+            alert(element_select)
+        }*/
         var valor_digitado = '0,00'
         // Verifica se o valor do elemento e inteiro se for acrescenta o ',00' ao final - Bug do plugin mask e altera a
         // variavel valor_digitado
@@ -660,6 +664,8 @@ function verificaElemento(element_select, valor_digitado) {
         $('#t_recebe_pnoi').text(calculaPorcentagem($('#v_pnoi').val(), $('#m_pnoi').val()))
     } else if (element_select == 'v_ajud' || element_select == 'm_ajud') {
         $('#t_recebe_ajud').text(calculaMultiplo($('#v_ajud').val(), $('#m_ajud').val()))
+    } else if (element_select.substring(0, 6) == 'v_desp') {
+        $('#t_recebe_'+element_select.substring(2)).text(valor_digitado)
     }
     // recarrega mask
     formatUnmask();
@@ -692,8 +698,9 @@ function formatMask() {
     $('#m_pnoi').mask('#.##0,00', {reverse: true})
     $('#v_ajud').mask('#.##0,00', {reverse: true})
     $('#m_ajud').mask('#.##0', {reverse: true})
-    $("#totalrecebe").mask('#.##0,00', {reverse: true})
+    $('.v_desp').mask('#.##0,00', {reverse: true})
     $('.total-recebe').mask('#.##0,00', {reverse: true})
+    $("#totalrecebe").mask('#.##0,00', {reverse: true})
 }
 
 function formatUnmask() {
@@ -720,8 +727,9 @@ function formatUnmask() {
     $('#m_pnoi').unmask()
     $('#v_ajud').unmask()
     $('#m_ajud').unmask()
-    $("#totalrecebe").unmask()
+    $('#v_desp').unmask()
     $('.total-recebe').unmask()
+    $("#totalrecebe").unmask()
 }
 
 
