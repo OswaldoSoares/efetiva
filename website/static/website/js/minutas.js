@@ -19,16 +19,10 @@ $(document).ready(function(){
                 }
                 $(".total-horas").text(data.html_total_horas);
                 verificaTotalHoras();
-                escondeFormFinanceiro();
-                $('.html-form-paga').html(data['html_pagamento']);
-                $('.html-form-recebe').html(data['html_recebimento']);
-                mostraFormFinanceiro();
-                verificaSwitchPaga();
-                verificaSwitchRecebe();
+                recarregaFinanceiro(data['html_pagamento'], data['html_recebimento'])
                 escondeChecklist();
                 $('.html-checklist').html(data['html_checklist']);
                 mostraChecklist();
-
             },
             error: function(error) {
                 console.log(error)
@@ -54,12 +48,7 @@ $(document).ready(function(){
                     $(".mensagem-sucesso").text(data.html_mensagem);
                     mostraMensagemSucesso()
                 }
-                escondeFormFinanceiro();
-                $('.html-form-paga').html(data['html_pagamento']);
-                $('.html-form-recebe').html(data['html_recebimento']);
-                mostraFormFinanceiro();
-                verificaSwitchPaga();
-                verificaSwitchRecebe();
+                recarregaFinanceiro(data['html_pagamento'], data['html_recebimento'])
                 escondeChecklist();
                 $('.html-checklist').html(data['html_checklist']);
                 mostraChecklist();
@@ -147,15 +136,10 @@ $(document).ready(function(){
                     $('.html-veiculo').html(data['html_veiculo']);
                     MostraVeiculo();
                 }
-                escondeFormFinanceiro()
-                $('.html-form-paga').html(data['html_pagamento']);
-                $('.html-form-recebe').html(data['html_recebimento']);
-                mostraFormFinanceiro()
+                recarregaFinanceiro(data['html_pagamento'], data['html_recebimento'])
                 escondeChecklist();
                 $('.html-checklist').html(data['html_checklist']);
                 mostraChecklist();
-                verificaSwitchPaga();
-                verificaSwitchRecebe();
             },
             error: function(error) {
                 console.log(error)
@@ -174,12 +158,7 @@ $(document).ready(function(){
                 idMinuta: idminuta,
             },
             success: function(data) {
-                escondeFormFinanceiro();
-                $('.html-form-paga').html(data['html_pagamento']);
-                $('.html-form-recebe').html(data['html_recebimento']);
-                mostraFormFinanceiro();
-                verificaSwitchPaga();
-                verificaSwitchRecebe();
+                recarregaFinanceiro(data['html_pagamento'], data['html_recebimento'])
                 escondeChecklist();
                 $('.html-checklist').html(data['html_checklist']);
                 mostraChecklist();
@@ -204,12 +183,7 @@ $(document).ready(function(){
                 idMinuta: idminuta,
             },
             success: function(data){
-                escondeFormFinanceiro();
-                $('.html-form-paga').html(data['html_pagamento']);
-                $('.html-form-recebe').html(data['html_recebimento']);
-                mostraFormFinanceiro();
-                verificaSwitchPaga();
-                verificaSwitchRecebe();
+                recarregaFinanceiro(data['html_pagamento'], data['html_recebimento'])
                 escondeChecklist();
                 $('.html-checklist').html(data['html_checklist']);
                 mostraChecklist();
@@ -545,7 +519,6 @@ $(document).ready(function(){
             $('#id_Nota').focus();
         }
     });
-
     
     $(document).on('click', '#chk-saida', function(event) {
         if ($('#chk-saida').is(":checked")) {
@@ -586,10 +559,6 @@ $(document).ready(function(){
     $(document).on('change', '.form-control-recebe', function() {
         // Cria as variaveis como o nome do atributo e com valor 0
         var element_select = $(this).attr('name')
-        /*alert(element_select.substring(0, 5))
-        if (element_select.substring(0, 5) == 'v_desp') {
-            alert(element_select)
-        }*/
         var valor_digitado = '0,00'
         // Verifica se o valor do elemento e inteiro se for acrescenta o ',00' ao final - Bug do plugin mask e altera a
         // variavel valor_digitado
@@ -672,6 +641,20 @@ function verificaElemento(element_select, valor_digitado) {
     formatMask();
     // Faz a soma geral com os valores atualizados 
     somaReceita(); 
+}
+
+function recarregaFinanceiro(html_paga, html_recebe) {
+    $(".html-form-paga").hide();
+    $(".html-form-recebe").hide();
+    $('.html-form-paga').html(html_paga);
+    $('.html-form-recebe').html(html_recebe);
+    formatUnmask();
+    formatMask();
+    somaReceita();
+    $(".html-form-paga").slideDown(500);
+    $(".html-form-recebe").slideDown(500);
+    verificaSwitchPaga();
+    verificaSwitchRecebe();
 }
 
 function formatMask() {
@@ -798,12 +781,7 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                     formAjaxSubmit(modal, url, cbAfterLoad, cbAfterSuccess);
                 } else {
                     $(modal).modal('hide');
-                    escondeFormFinanceiro();
-                    $('.html-form-paga').html(xhr['html_pagamento']);
-                    $('.html-form-recebe').html(xhr['html_recebimento']);
-                    mostraFormFinanceiro();
-                    verificaSwitchPaga();
-                    verificaSwitchRecebe();
+                    recarregaFinanceiro(xhr['html_pagamento'], xhr['html_recebimento'])
                     escondeChecklist();
                     $('.html-checklist').html(xhr['html_checklist']);
                     mostraChecklist();
@@ -1136,16 +1114,6 @@ var EscondeEntrega = function() {
 
 var MostraEntrega = function() {
     $(".html-entrega").delay(1000).slideDown(500)
-}
-
-var escondeFormFinanceiro =  function() {
-    $(".html-form-paga").hide()
-    $(".html-form-recebe").hide()
-}
-
-var mostraFormFinanceiro =  function() {
-    $(".html-form-paga").slideDown(500)
-    $(".html-form-recebe").slideDown(500)
 }
 
 var escondeChecklist =  function() {
