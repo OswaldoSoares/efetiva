@@ -644,8 +644,8 @@ function verificaElemento(element_select, valor_digitado) {
 }
 
 function recarregaFinanceiro(html_paga, html_recebe) {
-    $(".html-form-paga").hide();
-    $(".html-form-recebe").hide();
+    $(".html-form-paga").hide(500);
+    $(".html-form-recebe").hide(500);
     $('.html-form-paga').html(html_paga);
     $('.html-form-recebe').html(html_recebe);
     formatUnmask();
