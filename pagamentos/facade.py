@@ -387,7 +387,7 @@ def create_cartaoponto(mesreferencia, anoreferencia, idpessoal):
     dias_feriado_mes = busca_feriados(mesreferencia, anoreferencia)
     if not busca_cartaoponto_referencia(mesreferencia, anoreferencia, idpessoal):
         if int(anoreferencia) >= admissao.year:
-            if int(mesreferencia) >= admissao.month:
+            if int(mesreferencia) >= admissao.month or int(anoreferencia) > admissao.year:
                 admissao = datetime.datetime(admissao.year, admissao.month, admissao.day)
                 referencia = calendar.monthrange(int(anoreferencia), int(mesreferencia))
                 for x in range(1, referencia[1]+1):
