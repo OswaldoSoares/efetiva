@@ -662,40 +662,44 @@ def atualiza_cartaoponto(mesreferencia, anoreferencia, idpessoal):
     admissao = colaborador[0].DataAdmissao
     demissao = colaborador[0].DataDemissao
     totalextra = 0
-    if int(anoreferencia) >= admissao.year and int(mesreferencia) >= admissao.month:
-        minutas = select_minutas_contracheque(mesreferencia, anoreferencia, idpessoal)
-        for x in minutas:
-            cartaoponto = CartaoPonto.objects.get(Dia=x['idMinuta_id__DataMinuta'], idPessoal_id=x['idPessoal'])
-            obj = cartaoponto
-            horaentrada = datetime.datetime.strptime('07:00:00', '%H:%M:%S').time()
-            horasaida = datetime.datetime.strptime('17:00:00', '%H:%M:%S').time()
-            if obj.Alteracao == 'ROBOT' and obj.Ausencia != 'FALTA':
-                if x['idMinuta_id__HoraInicial']:
-                    if x['idMinuta_id__HoraInicial'] != obj.Entrada:
-                        if x['idMinuta_id__HoraInicial'] < horaentrada:
-                            obj.Entrada = x['idMinuta_id__HoraInicial']
-                            obj.save(update_fields=['Entrada'])
-                if x['idMinuta_id__HoraFinal']:
-                    if x['idMinuta_id__HoraFinal'] != obj.Saida:
-                        if x['idMinuta_id__HoraFinal'] > horasaida:
-                            obj.Saida = x['idMinuta_id__HoraFinal']
-                            obj.save(update_fields=['Saida'])
-        totalextra = calcula_horas_extras(mesreferencia, anoreferencia, idpessoal)
-        calcula_horas_atrazo(mesreferencia, anoreferencia, idpessoal)
-        cartao_ponto = busca_cartaoponto_referencia(mesreferencia, anoreferencia, idpessoal)
-        dias_feriado_mes = busca_feriados(mesreferencia, anoreferencia)
-        for itens in cartao_ponto:
-            obj = itens
-            if itens.Dia.day in dias_feriado_mes:
-                obj.Ausencia = 'FERIADO'
-                obj.save(update_fields=['Ausencia'])
-        if demissao:
+    if int(anoreferencia) >= admissao.year:
+        if int(mesreferencia) >= admissao.month or int(anoreferencia) > admissao.year:
+            minutas = select_minutas_contracheque(mesreferencia, anoreferencia, idpessoal)
+            for x in minutas:
+                cartaoponto = CartaoPonto.objects.get(Dia=x['idMinuta_id__DataMinuta'], idPessoal_id=x['idPessoal'])
+                obj = cartaoponto
+                horaentrada = datetime.datetime.strptime('07:00:00', '%H:%M:%S').time()
+                horasaida = datetime.datetime.strptime('17:00:00', '%H:%M:%S').time()
+                if obj.Alteracao == 'ROBOT' and obj.Ausencia != 'FALTA':
+                    if x['idMinuta_id__HoraInicial']:
+                        if x['idMinuta_id__HoraInicial'] != obj.Entrada:
+                            if x['idMinuta_id__HoraInicial'] < horaentrada:
+                                obj.Entrada = x['idMinuta_id__HoraInicial']
+                                obj.save(update_fields=['Entrada'])
+                    if x['idMinuta_id__HoraFinal']:
+                        if x['idMinuta_id__HoraFinal'] != obj.Saida:
+                            if x['idMinuta_id__HoraFinal'] > horasaida:
+                                obj.Saida = x['idMinuta_id__HoraFinal']
+                                obj.save(update_fields=['Saida'])
+            totalextra = calcula_horas_extras(mesreferencia, anoreferencia, idpessoal)
+            calcula_horas_atrazo(mesreferencia, anoreferencia, idpessoal)
+            cartao_ponto = busca_cartaoponto_referencia(mesreferencia, anoreferencia, idpessoal)
+            dias_feriado_mes = busca_feriados(mesreferencia, anoreferencia)
+            print(dias_feriado_mes)
             for itens in cartao_ponto:
                 obj = itens
-                if itens.Dia > demissao:
-                    obj.Ausencia = '-------'
+                if itens.Dia.day in dias_feriado_mes:
+                    print(itens.Dia.day)
+                    print(obj.idCartaoPonto)
+                    obj.Ausencia = 'FERIADO'
                     obj.save(update_fields=['Ausencia'])
-            calcula_faltas(mesreferencia, anoreferencia, idpessoal)
+            if demissao:
+                for itens in cartao_ponto:
+                    obj = itens
+                    if itens.Dia > demissao:
+                        obj.Ausencia = '-------'
+                        obj.save(update_fields=['Ausencia'])
+                calcula_faltas(mesreferencia, anoreferencia, idpessoal)
     return totalextra
 
 
