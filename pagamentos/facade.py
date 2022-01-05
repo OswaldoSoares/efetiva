@@ -309,7 +309,7 @@ def create_contracheque(mesreferencia, anoreferencia, valor, idpessoal):
     colaborador = facade.get_pessoal(idpessoal)
     admissao = colaborador[0].DataAdmissao
     if int(anoreferencia) >= admissao.year:
-        if int(mesreferencia) >= admissao.month:
+        if int(mesreferencia) >= admissao.month or int(anoreferencia) > admissao.year:
             salario = get_salario(idpessoal)
             contracheque = busca_contracheque(meses[int(mesreferencia)-1], anoreferencia, idpessoal)
             if not contracheque:

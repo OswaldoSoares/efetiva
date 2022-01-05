@@ -23,6 +23,8 @@ def nome_curto(nome):
         else:
             del apelido[3:]
         apelido = ' '.join(apelido)
+    else:
+        apelido = nome
     return apelido
 
 
