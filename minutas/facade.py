@@ -68,6 +68,7 @@ class MinutaSelecionada:
         self.paga_realizada = self.verifica_pagamento()
         self.recebe = self.carrega_valores_recebe()
         self.recebe_minuta = self.valor_recebe_total_minuta()
+        self.recebe_realizada = self.verifica_recebimentos()
 
     def get_total_kms(self):
         calculo_kms = self.km_final - self.km_inicial
@@ -356,6 +357,9 @@ class MinutaSelecionada:
         paga = MinutaItens.objects.filter(TipoItens='PAGA', idMinuta=self.idminuta)
         return True if paga else False
 
+    def verifica_recebimentos(self):
+        recebe = MinutaItens.objects.filter(TipoItens='RECEBE', idMinuta=self.idminuta)
+        return True if recebe else False
 
 class MinutaMotorista:
     def __init__(self, idminuta):
@@ -499,6 +503,27 @@ class MinutasStatus:
             else:
                 x['Motorista'] = None
         return lista
+
+
+def FiltroClientes():
+    filtro = Minuta.objects.all().order_by('idCliente__Fantasia').values('idCliente__Fantasia').distinct()
+    return filtro
+
+
+def FiltroColaboradores():
+    filtro = MinutaColaboradores.objects.all().order_by('idPessoal__Nome').values('idPessoal__Nome').distinct()
+    return filtro
+
+
+def FiltroVeiculos():
+    filtro = Minuta.objects.all().order_by('idVeiculo__Marca', 'idVeiculo__Modelo', 'idVeiculo__Placa').values(
+        'idVeiculo__Marca', 'idVeiculo__Modelo', 'idVeiculo__Placa').distinct()
+    return filtro
+
+
+def FiltroCidades():
+    filtro = MinutaNotas.objects.all().values('Cidade', 'Estado').order_by('Cidade', 'Estado').distinct()
+    return filtro
 
 
 def cria_dict_paga():

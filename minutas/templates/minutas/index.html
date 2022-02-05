@@ -6,211 +6,205 @@
 <main class="index-minuta">
     <div class="col-01">
         <div class="article">
-            <article class="article-card ac-lista">
-                <div class="article-minuta-titulo">
-                    <span>ABERTA</span>
-                </div>
-                {% for minutas in m_aberta %}
-                <div class="ac-minuta-base">
-                    <div class="ac-itens">
-                        <div class="dados-minuta">
-                            <div class="linha-minuta"> 
-                                <i class="bi bi-file-text">
-                                    <span>{{ minutas.Minuta }}</span> 
-                                    <span>{{ minutas.Data }}</span>
-                                    <span>{{ minutas.Hora }}</span>
-                                </i> 
+            {% if t_aberta %}
+                <article class="article-card ac-lista">
+                    <div class="article-minuta-titulo">
+                        <span>ABERTA</span>
+                    </div>
+                    {% for minutas in m_aberta %}
+                    <div class="ac-minuta-base">
+                        <div class="ac-itens">
+                            <div class="dados-minuta">
+                                <div class="linha-minuta">
+                                    <i class="bi bi-file-text">
+                                        <span>{{ minutas.Minuta }}</span>
+                                        <span>{{ minutas.Data }}</span>
+                                        <span>{{ minutas.Hora }}</span>
+                                    </i>
+                                </div>
+                                <div class="linha-minuta">
+                                    <i class="bi bi-building">
+                                        <span>{{ minutas.Cliente }}</span>
+                                    </i>
+                                </div>
                             </div>
-                            <div class="linha-minuta">
-                                <i class="bi bi-building">
-                                    <span>{{ minutas.Cliente }}</span>
-                                </i>
+                            <div class="dados-minuta">
+                                <div class="linha-minuta linha-motorista">
+                                    {% if minutas.Motorista %}
+                                    <i class="bi bi-person-square">
+                                        <span>{{ minutas.Motorista }}</span>
+                                    </i>
+                                    {% endif %}
+                                </div>
+                                <div class="linha-minuta linha-motorista">
+                                    {% if minutas.Veiculo %}
+                                    <i class="bi bi-truck">
+                                        <span>{{ minutas.Veiculo }}</span>
+                                    </i>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
-                        <div class="dados-minuta">
-                            <div class="linha-minuta linha-motorista">
-                                {% if minutas.Motorista %}
-                                <i class="bi bi-person-square">
-                                    <span>{{ minutas.Motorista }}</span>
-                                </i>
-                                {% endif %}
-                            </div>
-                            <div class="linha-minuta linha-motorista">
-                                {% if minutas.Veiculo %}
-                                <i class="bi bi-truck">
-                                    <span>{{ minutas.Veiculo }}</span>
-                                </i>
-                                {% endif %}
-                            </div>
+                        <div class="icones-minuta">
+                            {% if itens.StatusMinuta == 'FECHADA' or itens.StatusMinuta == 'CONCLUIDA'%}
+                            {% if user|can:'estorna_minuta' %}
+                            <i class="bi bi-reply-all i-button"
+                                onclick="window.location.href = '{% url 'estorna_minuta' minutas.idMinuta %}'">
+                            </i>
+                            {% endif %}
+                            {% endif %}
+                            <i class="bi bi-printer i-button"
+                                    onclick="window.location.href = '{% url 'imprimeminuta' minutas.idMinuta %}'">
+                            </i>
+                            <i class="bi bi-folder i-button"
+                                    onclick="window.location.href = '{% url 'consultaminuta' minutas.idMinuta %}'">
+                            </i>
+                            <i class="bi bi-folder i-button"
+                                    onclick="window.location.href = '{% url 'minuta' minutas.idMinuta %}'">
+                            </i>
                         </div>
                     </div>
-                    <div class="icones-minuta">
-                        {% if itens.StatusMinuta == 'FECHADA' or itens.StatusMinuta == 'CONCLUIDA'%}
-                        {% if user|can:'estorna_minuta' %}
-                        <i class="bi bi-reply-all i-button"
-                            onclick="window.location.href = '{% url 'estorna_minuta' minutas.idMinuta %}'">
-                        </i>
-                        {% endif %}
-                        {% endif %}
-                        <i class="bi bi-printer i-button"
-                                onclick="window.location.href = '{% url 'imprimeminuta' minutas.idMinuta %}'">
-                        </i>
-                        <i class="bi bi-folder i-button"
-                                onclick="window.location.href = '{% url 'consultaminuta' minutas.idMinuta %}'">
-                        </i>
-                        <i class="bi bi-folder i-button"
-                                onclick="window.location.href = '{% url 'minuta' minutas.idMinuta %}'">
-                        </i>
-                    </div>
-                </div>
-                <div class="linha-divisoria"></div>
-                {% endfor %}
-                <div class="article-minuta-rodape">
-                    {% if t_aberta %}
+                    <div class="linha-divisoria"></div>
+                    {% endfor %}
+                    <div class="article-minuta-rodape">
                         {% if t_aberta == 1 %}
                         <span>{{ t_aberta }} MINUTA ABERTA </span>
                         {% else %}
                         <span>{{ t_aberta }} MINUTAS ABERTAS </span>
                         {% endif %}
-                    {% else %}
-                    <span>NENHUMA MINUTA ABERTA </span>
-                    {% endif %}
-                </div>
-            </article>
-            <article class="article-card ac-lista">
-                <div class="article-minuta-titulo">
-                    <span>CONCLUÍDA</span>
-                </div>
-                {% for minutas in m_concluida %}
-                <div class="ac-minuta-base">
-                    <div class="ac-itens">
-                        <div class="dados-minuta">
-                            <div class="linha-minuta"> 
-                                <i class="bi bi-file-text">
-                                    <span>{{ minutas.Minuta }}</span> 
-                                    <span>{{ minutas.Data }}</span>
-                                    <span>{{ minutas.Hora }}</span>
-                                </i> 
+                    </div>
+                </article>
+            {% endif %}
+            {% if t_concluida %}
+                <article class="article-card ac-lista">
+                    <div class="article-minuta-titulo">
+                        <span>CONCLUÍDA</span>
+                    </div>
+                    {% for minutas in m_concluida %}
+                    <div class="ac-minuta-base">
+                        <div class="ac-itens">
+                            <div class="dados-minuta">
+                                <div class="linha-minuta">
+                                    <i class="bi bi-file-text">
+                                        <span>{{ minutas.Minuta }}</span>
+                                        <span>{{ minutas.Data }}</span>
+                                        <span>{{ minutas.Hora }}</span>
+                                    </i>
+                                </div>
+                                <div class="linha-minuta">
+                                    <i class="bi bi-building">
+                                        <span>{{ minutas.Cliente }}</span>
+                                    </i>
+                                </div>
                             </div>
-                            <div class="linha-minuta">
-                                <i class="bi bi-building">
-                                    <span>{{ minutas.Cliente }}</span>
-                                </i>
+                            <div class="dados-minuta">
+                                <div class="linha-minuta linha-motorista">
+                                    {% if minutas.Motorista %}
+                                    <i class="bi bi-person-square">
+                                        <span>{{ minutas.Motorista }}</span>
+                                    </i>
+                                    {% endif %}
+                                </div>
+                                <div class="linha-minuta linha-motorista">
+                                    {% if minutas.Veiculo %}
+                                    <i class="bi bi-truck">
+                                        <span>{{ minutas.Veiculo }}</span>
+                                    </i>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
-                        <div class="dados-minuta">
-                            <div class="linha-minuta linha-motorista">
-                                {% if minutas.Motorista %}
-                                <i class="bi bi-person-square">
-                                    <span>{{ minutas.Motorista }}</span>
-                                </i>
-                                {% endif %}
-                            </div>
-                            <div class="linha-minuta linha-motorista">
-                                {% if minutas.Veiculo %}
-                                <i class="bi bi-truck">
-                                    <span>{{ minutas.Veiculo }}</span>
-                                </i>
-                                {% endif %}
-                            </div>
+                        <div class="icones-minuta">
+                            <i class="bi bi-reply-all i-button"
+                                    onclick="window.location.href = '{% url 'estorna_minuta' minutas.idMinuta %}'">
+                            </i>
+                            <i class="bi bi-printer i-button"
+                                    onclick="window.location.href = '{% url 'imprimeminuta' minutas.idMinuta %}'">
+                            </i>
+                            <i class="bi bi-folder i-button"
+                                    onclick="window.location.href = '{% url 'consultaminuta' minutas.idMinuta %}'">
+                            </i>
+                            <i class="bi bi-folder i-button"
+                                    onclick="window.location.href = '{% url 'minuta' minutas.idMinuta %}'">
+                            </i>
                         </div>
                     </div>
-                    <div class="icones-minuta">
-                        <i class="bi bi-reply-all i-button"
-                                onclick="window.location.href = '{% url 'estorna_minuta' minutas.idMinuta %}'">
-                        </i>
-                        <i class="bi bi-printer i-button"
-                                onclick="window.location.href = '{% url 'imprimeminuta' minutas.idMinuta %}'">
-                        </i>
-                        <i class="bi bi-folder i-button"
-                                onclick="window.location.href = '{% url 'consultaminuta' minutas.idMinuta %}'">
-                        </i>
-                        <i class="bi bi-folder i-button"
-                                onclick="window.location.href = '{% url 'minuta' minutas.idMinuta %}'">
-                        </i>
-                    </div>
-                </div>
-                <div class="linha-divisoria"></div>
-                {% endfor %}
-                <div class="article-minuta-rodape">
-                    {% if t_concluida %}
+                    <div class="linha-divisoria"></div>
+                    {% endfor %}
+                    <div class="article-minuta-rodape">
                         {% if t_concluida == 1 %}
                         <span>{{ t_concluida }} MINUTA CONCLUÍDA </span>
                         {% else %}
                         <span>{{ t_concluida }} MINUTAS CONCLUÍDAS </span>
                         {% endif %}
-                    {% else %}
-                    <span>NENHUMA MINUTA CONCLUÍDA </span>
-                    {% endif %}
-                </div>
-            </article>
-            <article class="article-card ac-lista">
-                <div class="article-minuta-titulo">
-                    <span>FECHADA</span>
-                </div>
-                {% for minutas in m_fechada %}
-                <div class="ac-minuta-base">
-                    <div class="ac-itens">
-                        <div class="dados-minuta">
-                            <div class="linha-minuta"> 
-                                <i class="bi bi-file-text">
-                                    <span>{{ minutas.Minuta }}</span> 
-                                    <span>{{ minutas.Data }}</span>
-                                    <span>{{ minutas.Hora }}</span>
-                                </i> 
+                    </div>
+                </article>
+            {% endif %}
+            {% if t_fechada %}
+                <article class="article-card ac-lista">
+                    <div class="article-minuta-titulo">
+                        <span>FECHADA</span>
+                    </div>
+                    {% for minutas in m_fechada %}
+                    <div class="ac-minuta-base">
+                        <div class="ac-itens">
+                            <div class="dados-minuta">
+                                <div class="linha-minuta">
+                                    <i class="bi bi-file-text">
+                                        <span>{{ minutas.Minuta }}</span>
+                                        <span>{{ minutas.Data }}</span>
+                                        <span>{{ minutas.Hora }}</span>
+                                    </i>
+                                </div>
+                                <div class="linha-minuta">
+                                    <i class="bi bi-building">
+                                        <span>{{ minutas.Cliente }}</span>
+                                    </i>
+                                </div>
                             </div>
-                            <div class="linha-minuta">
-                                <i class="bi bi-building">
-                                    <span>{{ minutas.Cliente }}</span>
-                                </i>
+                            <div class="dados-minuta">
+                                <div class="linha-minuta linha-motorista">
+                                    {% if minutas.Motorista %}
+                                    <i class="bi bi-person-square">
+                                        <span>{{ minutas.Motorista }}</span>
+                                    </i>
+                                    {% endif %}
+                                </div>
+                                <div class="linha-minuta linha-motorista">
+                                    {% if minutas.Veiculo %}
+                                    <i class="bi bi-truck">
+                                        <span>{{ minutas.Veiculo }}</span>
+                                    </i>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
-                        <div class="dados-minuta">
-                            <div class="linha-minuta linha-motorista">
-                                {% if minutas.Motorista %}
-                                <i class="bi bi-person-square">
-                                    <span>{{ minutas.Motorista }}</span>
-                                </i>
-                                {% endif %}
-                            </div>
-                            <div class="linha-minuta linha-motorista">
-                                {% if minutas.Veiculo %}
-                                <i class="bi bi-truck">
-                                    <span>{{ minutas.Veiculo }}</span>
-                                </i>
-                                {% endif %}
-                            </div>
+                        <div class="icones-minuta">
+                            <i class="bi bi-reply-all i-button"
+                                    onclick="window.location.href = '{% url 'estorna_minuta' minutas.idMinuta %}'">
+                            </i>
+                            <i class="bi bi-printer i-button"
+                                    onclick="window.location.href = '{% url 'imprimeminuta' minutas.idMinuta %}'">
+                            </i>
+                            <i class="bi bi-folder i-button"
+                                    onclick="window.location.href = '{% url 'consultaminuta' minutas.idMinuta %}'">
+                            </i>
+                            <i class="bi bi-folder i-button"
+                                    onclick="window.location.href = '{% url 'minuta' minutas.idMinuta %}'">
+                            </i>
                         </div>
                     </div>
-                    <div class="icones-minuta">
-                        <i class="bi bi-reply-all i-button"
-                                onclick="window.location.href = '{% url 'estorna_minuta' minutas.idMinuta %}'">
-                        </i>
-                        <i class="bi bi-printer i-button"
-                                onclick="window.location.href = '{% url 'imprimeminuta' minutas.idMinuta %}'">
-                        </i>
-                        <i class="bi bi-folder i-button"
-                                onclick="window.location.href = '{% url 'consultaminuta' minutas.idMinuta %}'">
-                        </i>
-                        <i class="bi bi-folder i-button"
-                                onclick="window.location.href = '{% url 'minuta' minutas.idMinuta %}'">
-                        </i>
-                    </div>
-                </div>
-                <div class="linha-divisoria"></div>
-                {% endfor %}
-                <div class="article-minuta-rodape">
-                    {% if t_fechada %}
+                    <div class="linha-divisoria"></div>
+                    {% endfor %}
+                    <div class="article-minuta-rodape">
                         {% if t_fechada == 1 %}
                         <span>{{ t_fechada }} MINUTA FECHADA </span>
                         {% else %}
                         <span>{{ t_fechada }} MINUTAS FECHADAS </span>
                         {% endif %}
-                    {% else %}
-                    <span>NENHUMA MINUTA FECHADA </span>
-                    {% endif %}
-                </div>
-            </article>
+                    </div>
+                </article>
+            {% endif %}
         </div>
     </div>    
     <div class="col-02">
@@ -219,6 +213,25 @@
                data-title="CADASTRA MINUTA" data-action="{% url 'adicionaminuta' %}" data-button-save-label="SALVAR">
                 NOVA MINUTA</i>
         </div>
+        <article class="article-card">
+            <div class="article-titulo">
+                <span>CONSULTAS</span>
+            </div>
+            <div>
+                <div>
+                    <i class="bi bi-caret-right-fill">CLIENTES</i>
+                </div>
+                <div>
+                    <i class="bi bi-caret-right-fill">COLABORADORES</i>
+                </div>
+                <div>
+                    <i class="bi bi-caret-right-fill">VEÍCULOS</i>
+                </div>
+                <div>
+                    <i class="bi bi-caret-right-fill">ENTREGA</i>
+                </div>
+            </div>
+        </article>
     </div>
 
     <!-- div modal -->

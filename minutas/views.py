@@ -26,7 +26,7 @@ from .models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas
 from .facade import forn_minuta, edita_hora_final, filtra_veiculo, html_filtro_veiculo, edita_km_final, \
     edita_km_inicial, \
     remove_colaborador, remove_despessa, remove_entrega, retorna_json, prepara_itens, estorna_paga, \
-    novo_status_minuta, MinutasStatus
+    novo_status_minuta, MinutasStatus, FiltroClientes, FiltroColaboradores, FiltroVeiculos, FiltroCidades
 
 def convertemp(mm):
     """
@@ -206,6 +206,10 @@ def index_minuta(request):
     t_concluida = len(m_concluida)
     m_fechada = MinutasStatus('FECHADA').minutas
     t_fechada = len(m_fechada)
+    filtro_cliente = FiltroClientes()
+    filtro_colaborador = FiltroColaboradores()
+    filtro_veiculo = FiltroVeiculos()
+    filtro_cidade = FiltroCidades()
     faturada = Minuta.objects.filter(StatusMinuta='FATURADA')
     meu_filtro_minuta = request.GET.get('filtrominuta')
     meu_filtro_status = request.GET.get('filtrostatus')
@@ -224,6 +228,9 @@ def index_minuta(request):
     return render(request, 'minutas/index.html', {'m_aberta': m_aberta, 'm_concluida': m_concluida,
                                                   'm_fechada': m_fechada, 't_aberta': t_aberta,
                                                   't_concluida': t_concluida, 't_fechada': t_fechada,
+                                                  'filtro_cliente': filtro_cliente,
+                                                  'filtro_colaborador': filtro_colaborador,
+                                                  'filtro_veiculo': filtro_veiculo, 'filtro_cidade': filtro_cidade,
                                                   'faturada': faturada, 'minuta': minuta,
                                                   'minuta_status': minuta_status,
                                                   'minutacolaboradores': minutacolaboradores})

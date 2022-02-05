@@ -1,0 +1,5 @@
+{% for filtro in filtro_veiculo %}
+{% if filtro.idVeiculo__Placa %}
+<p>{{ filtro.idVeiculo__Marca }} - {{ filtro.idVeiculo__Modelo }} - {{ filtro.idVeiculo__Placa }}</p>
+{% endif %}
+{% endfor %}

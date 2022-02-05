@@ -30,25 +30,25 @@
         {% endif %}
 
         <div>
-        <div class="article-card ac-finan">
-            <div class="article-titulo">
-                <span>PAGAMENTOS</span>
+            <div class="article-card ac-finan">
+                <div class="article-titulo">
+                    <span>PAGAMENTOS</span>
+                </div>
+                <div class="html-form-paga">
+                    {% include 'minutas/formpagamento.html' %}
+                </div>
             </div>
-            <div class="html-form-paga">
-                {% include 'minutas/formpagamento.html' %}
-            </div>
-        </div>
 
-        {% if s_minuta.status_minuta != 'FATURADA' %}
-        <article class="article-card ac-checklist">
-            <div class="article-titulo">
-                <span>CHECK LIST</span>
-            </div>
-            <div class="html-checklist">
-                {% include 'minutas/checklistminuta.html' %}
-            </div>
-        </article>
-        {% endif %}
+            {% if s_minuta.status_minuta != 'FATURADA' %}
+            <article class="article-card ac-checklist">
+                <div class="article-titulo">
+                    <span>CHECK LIST</span>
+                </div>
+                <div class="html-checklist">
+                    {% include 'minutas/checklistminuta.html' %}
+                </div>
+            </article>
+            {% endif %}
         </div>
 
         <div class="article-despesa-entrega">
@@ -86,6 +86,8 @@
            data-title="CADASTRA MINUTA" data-action="{% url 'adicionaminuta' %}" data-button-save-label="SALVAR">
             ADICIONA MINUTA</i>
     </div>
+
+
 
     <!-- div modal -->
     <div class="modal fade bd-example-modal-lg" id="MyModal" tabindex="-1">
