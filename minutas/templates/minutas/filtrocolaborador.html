@@ -1,3 +1,6 @@
-{% for filtro in filtro_colaborador %}
-<i class="bi bi-caret-right-fill">{{ filtro.idPessoal__Nome }}</i>
-{% endfor %}
+<div class="filtro-dados fd-colaborador">
+    {% for filtro in filtro_colaborador %}
+    <i class="bi bi-person-square i-button" title="COLABORADOR">
+    <span>{{ filtro.idPessoal__Nome }}</span></i>
+    {% endfor %}
+</div>

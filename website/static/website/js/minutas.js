@@ -196,6 +196,70 @@ $(document).ready(function(){
             }
         });
     });
+
+    $(document).on('click', '.list-cliente', function(event) {
+        $(".fd-colaborador").hide()
+        $(".list-colaborador").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
+        $(".fd-veiculo").hide()
+        $(".list-veiculo").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
+        $(".fd-entrega-cidade").hide()
+        $(".list-entrega-cidade").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
+        if ($('.fd-cliente').is(':hidden')) {
+            $(".fd-cliente").show()
+            $(this).removeClass("bi-caret-right-fill").addClass("bi-caret-down-fill");
+        } else {
+            $(".fd-cliente").hide()
+            $(this).removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
+        }
+    });
+
+     $(document).on('click', '.list-colaborador', function(event) {
+        $(".fd-cliente").hide()
+        $(".list-cliente").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
+        $(".fd-veiculo").hide()
+        $(".list-veiculo").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
+        $(".fd-entrega-cidade").hide()
+        $(".list-entrega-cidade").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
+        if ($('.fd-colaborador').is(':hidden')) {
+            $(".fd-colaborador").show()
+            $(this).removeClass("bi-caret-right-fill").addClass("bi-caret-down-fill");
+        } else {
+            $(".fd-colaborador").hide()
+            $(this).removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
+        }
+    });
+
+    $(document).on('click', '.list-veiculo', function(event) {
+        $(".fd-cliente").hide()
+        $(".list-cliente").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
+        $(".fd-colaborador").hide()
+        $(".list-colaborador").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
+        $(".fd-entrega-cidade").hide()
+        $(".list-entrega-cidade").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
+        if ($('.fd-veiculo').is(':hidden')) {
+            $(".fd-veiculo").show()
+            $(this).removeClass("bi-caret-right-fill").addClass("bi-caret-down-fill");
+        } else {
+            $(".fd-veiculo").hide()
+            $(this).removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
+        }
+    });
+
+    $(document).on('click', '.list-entrega-cidade', function(event) {
+        $(".fd-cliente").hide()
+        $(".list-cliente").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
+        $(".fd-colaborador").hide()
+        $(".list-colaborador").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
+        $(".fd-veiculo").hide()
+        $(".list-veiculo").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
+        if ($('.fd-entrega-cidade').is(':hidden')) {
+            $(".fd-entrega-cidade").show()
+            $(this).removeClass("bi-caret-right-fill").addClass("bi-caret-down-fill");
+        } else {
+            $(".fd-entrega-cidade").hide()
+            $(this).removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
+        }
+    });
     
     $('#MyModal').on('shown.bs.modal', function () {
         setTimeout(function(){      // Delay para função loadCubagem, após janela estar carregada
@@ -227,6 +291,7 @@ $(document).ready(function(){
     verificaTotalHoras()
     $(".div-sucesso").hide()
     $(".div-erro").hide()
+    $(".filtro-dados").hide()
 
     // JQuery da Janela Modal Antigo
     $('#modal-formulario').on('shown.bs.modal', function () {

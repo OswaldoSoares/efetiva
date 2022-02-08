@@ -2904,6 +2904,16 @@ main .fp-recibo-tabela .fp-recibo-print {
                 font-weight: bold;
             }
 
+            .filtro-container {
+                padding-left: 10px;
+            }
+
+                .filtro-dados {
+                    display: flex;
+                    flex-direction: column;
+                    padding-left: 30px;
+                }
+
         .ac-minuta {
             background-color: #4f4f4f;
             color: white;

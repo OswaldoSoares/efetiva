@@ -1,0 +1,8 @@
+<div class="filtro-dados fd-entrega-cidade">
+    {% for filtro in filtro_cidade %}
+    {% if filtro.Cidade %}
+    <i class="bi bi-geo-alt-fill i-button" title="VEICULO">
+    <span>{{ filtro.Cidade }} - {{ filtro.Estado }}</span></i>
+    {% endif %}
+    {% endfor %}
+</div>

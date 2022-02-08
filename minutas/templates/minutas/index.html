@@ -213,24 +213,29 @@
                data-title="CADASTRA MINUTA" data-action="{% url 'adicionaminuta' %}" data-button-save-label="SALVAR">
                 NOVA MINUTA</i>
         </div>
-        <article class="article-card">
-            <div class="article-titulo">
+        <article class="article-card ac-lista">
+            <div class="article-minuta-titulo">
                 <span>CONSULTAS</span>
             </div>
-            <div>
-                <div>
-                    <i class="bi bi-caret-right-fill">CLIENTES</i>
+            <div class="filtro-container">
+                <div class="article-filtro">
+                    <i class="bi bi-caret-right-fill i-button list-cliente">CLIENTES</i>
                     {% include 'minutas/filtrocliente.html' %}
                 </div>
                 <div>
-                    <i class="bi bi-caret-right-fill">COLABORADORES</i>
+                    <i class="bi bi-caret-right-fill i-button list-colaborador">COLABORADORES</i>
+                    {% include 'minutas/filtrocolaborador.html' %}
                 </div>
                 <div>
-                    <i class="bi bi-caret-right-fill">VEÍCULOS</i>
+                    <i class="bi bi-caret-right-fill i-button list-veiculo">VEÍCULOS</i>
+                    {% include 'minutas/filtroveiculo.html' %}
                 </div>
                 <div>
-                    <i class="bi bi-caret-right-fill">ENTREGA</i>
+                    <i class="bi bi-caret-right-fill i-button list-entrega-cidade">ENTREGAS - CIDADES</i>
+                    {% include 'minutas/filtroentregacidade.html' %}
                 </div>
+            </div>
+            <div class="article-minuta-rodape">
             </div>
         </article>
     </div>
