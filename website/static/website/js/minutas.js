@@ -260,6 +260,41 @@ $(document).ready(function(){
             $(this).removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
         }
     });
+
+
+    $(document).on('click', '.filtro-cliente', function(event) {
+        $(".filtro-lista").each(function() {
+            $(this).addClass("i-button")
+        });
+        if ($(".minutas-atual").is(":hidden")) {
+            $(".minutas-consulta").fadeOut(500)
+        } else {
+            $(".minutas-atual").fadeOut(500)
+        }
+
+        $(this).removeClass("i-button")
+        var filtro = $(this).attr('data-filtro')
+        var filtro_consula = $(this).attr('data-filtro-consulta')
+        var meses = $(this).attr('data-meses')
+        var anos = $(this).attr('data-anos')
+        $.ajax({
+            type: 'GET',
+            url: '/minutas/filtraminuta',
+            data: {
+                Filtro: filtro,
+                FiltroConsulta: filtro_consula,
+                Meses: meses,
+                Anos: anos,
+            },
+            success: function(data){
+                $(".minutas-consulta").html(data['html_filtra_minuta'])
+                $(".minutas-consulta").fadeIn(500)
+            },
+            error: function(error) {
+                console.log(error)
+            }
+        });
+    });
     
     $('#MyModal').on('shown.bs.modal', function () {
         setTimeout(function(){      // Delay para função loadCubagem, após janela estar carregada
@@ -292,6 +327,7 @@ $(document).ready(function(){
     $(".div-sucesso").hide()
     $(".div-erro").hide()
     $(".filtro-dados").hide()
+    $(".minutas-consulta").hide()
 
     // JQuery da Janela Modal Antigo
     $('#modal-formulario').on('shown.bs.modal', function () {

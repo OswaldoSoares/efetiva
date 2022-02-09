@@ -5,7 +5,7 @@
 
 <main class="index-minuta">
     <div class="col-01">
-        <div class="article">
+        <div class="article minutas-atual">
             {% if t_aberta %}
                 <article class="article-card ac-lista">
                     <div class="article-minuta-titulo">
@@ -206,7 +206,10 @@
                 </article>
             {% endif %}
         </div>
-    </div>    
+        <div class="article minutas-consulta">
+                {% include 'minutas/filtraminuta.html' %}
+        </div>
+    </div>
     <div class="col-02">
         <div class="i-adicionar-minuta">
             <i class="bi bi-plus-square i-button" onclick="openMyModal(event); return false;"

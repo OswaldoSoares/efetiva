@@ -26,7 +26,8 @@ from .models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas
 from .facade import forn_minuta, edita_hora_final, filtra_veiculo, html_filtro_veiculo, edita_km_final, \
     edita_km_inicial, \
     remove_colaborador, remove_despessa, remove_entrega, retorna_json, prepara_itens, estorna_paga, \
-    novo_status_minuta, MinutasStatus, FiltroClientes, FiltroColaboradores, FiltroVeiculos, FiltroCidades
+    novo_status_minuta, MinutasStatus, filtro_clientes, filtro_colaboradores, filtro_veiculos, filtro_cidades, \
+    filtra_consulta
 
 def convertemp(mm):
     """
@@ -206,10 +207,10 @@ def index_minuta(request):
     t_concluida = len(m_concluida)
     m_fechada = MinutasStatus('FECHADA').minutas
     t_fechada = len(m_fechada)
-    filtro_cliente = FiltroClientes()
-    filtro_colaborador = FiltroColaboradores()
-    filtro_veiculo = FiltroVeiculos()
-    filtro_cidade = FiltroCidades()
+    filtro_cliente = filtro_clientes()
+    filtro_colaborador = filtro_colaboradores()
+    filtro_veiculo = filtro_veiculos()
+    filtro_cidade = filtro_cidades()
     faturada = Minuta.objects.filter(StatusMinuta='FATURADA')
     meu_filtro_minuta = request.GET.get('filtrominuta')
     meu_filtro_status = request.GET.get('filtrostatus')
@@ -1376,6 +1377,9 @@ def exclui_minuta(request, idminuta):
 
 
 
+
+
+
 def atualiza_form_pg(request):
     print(request.POST)
     print(request.GET)
@@ -1402,6 +1406,15 @@ def adiciona_minuta(request):
     c_url = '/minutas/adicionaminuta/'
     c_view = 'adiciona_minuta'
     data = forn_minuta(request, c_form, c_idobj, c_url, c_view)
+    return data
+
+
+def filtra_minuta(request):
+    c_filtro = request.GET.get('Filtro')
+    c_filtro_consulta = request.GET.get('FiltroConsulta')
+    c_meses = request.GET.get('Meses')
+    c_anos = request.GET.get('Anos')
+    data = filtra_consulta(request, c_filtro, c_filtro_consulta, c_meses, c_anos)
     return data
 
 

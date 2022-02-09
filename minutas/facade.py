@@ -1,4 +1,5 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
+from dateutil.relativedelta import relativedelta
 
 # from django.db.models import Max
 from django.db.models import Max
@@ -505,25 +506,49 @@ class MinutasStatus:
         return lista
 
 
-def FiltroClientes():
+def filtro_clientes():
     filtro = Minuta.objects.all().order_by('idCliente__Fantasia').values('idCliente__Fantasia').distinct()
     return filtro
 
 
-def FiltroColaboradores():
+def filtro_colaboradores():
     filtro = MinutaColaboradores.objects.all().order_by('idPessoal__Nome').values('idPessoal__Nome').distinct()
     return filtro
 
 
-def FiltroVeiculos():
+def filtro_veiculos():
     filtro = Minuta.objects.all().order_by('idVeiculo__Marca', 'idVeiculo__Modelo', 'idVeiculo__Placa').values(
         'idVeiculo__Marca', 'idVeiculo__Modelo', 'idVeiculo__Placa').distinct()
     return filtro
 
 
-def FiltroCidades():
+def filtro_cidades():
     filtro = MinutaNotas.objects.all().values('Cidade', 'Estado').order_by('Cidade', 'Estado').distinct()
     return filtro
+
+
+def filtra_consulta(request, filtro, filtro_consulta, meses, anos):
+    data = dict()
+    dia_hoje = date.today()
+    mes_anterior = dia_hoje - relativedelta(years=int(anos), months=int(meses), day=1)
+    minutas = None
+    if filtro_consulta == 'Clientes':
+        minutas = Minuta.objects.filter(idCliente__Fantasia=filtro, DataMinuta__gte=mes_anterior).order_by(
+            '-DataMinuta')
+    lista = [{'idMinuta': m.idMinuta, 'Minuta': m.Minuta, 'Cliente': m.idCliente, 'Data': m.DataMinuta,
+              'Hora': m.HoraInicial, 'Veiculo': m.idVeiculo} for m in minutas]
+    for x in lista:
+        if x['Veiculo']:
+            x['Veiculo'] = f"{x['Veiculo'].Modelo} - {x['Veiculo'].Placa}"
+        motorista = MinutaColaboradores.objects.filter(idMinuta_id=x['idMinuta'], Cargo='MOTORISTA')
+        if motorista:
+            x['Motorista'] = nome_curto(motorista[0].idPessoal.Nome)
+        else:
+            x['Motorista'] = None
+    contexto = {'lista': lista}
+    data['html_filtra_minuta'] = render_to_string('minutas/filtraminuta.html', contexto, request=request)
+    c_return = JsonResponse(data)
+    return c_return
 
 
 def cria_dict_paga():

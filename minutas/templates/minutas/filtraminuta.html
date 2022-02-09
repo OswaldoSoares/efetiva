@@ -1,0 +1,64 @@
+<article class="article-card ac-lista">
+    <div class="article-minuta-titulo seleciona-periodo">
+        <i class="bi bi-calendar-minus"> 01 MÊS</i>
+        <i class="bi bi-calendar-minus i-button"> 04 MÊSES</i>
+        <i class="bi bi-calendar-minus i-button"> 06 MÊSES</i>
+        <i class="bi bi-calendar-minus i-button"> 01 ANO</i>
+        <i class="bi bi-calendar-minus i-button"> 02 ANOS</i>
+    </div>
+    {% for minutas in lista %}
+    <div class="ac-minuta-base">
+        <div class="ac-itens">
+            <div class="dados-minuta">
+                <div class="linha-minuta">
+                    <i class="bi bi-file-text">
+                        <span>{{ minutas.Minuta }}</span>
+                        <span>{{ minutas.Data }}</span>
+                        <span>{{ minutas.Hora }}</span>
+                    </i>
+                </div>
+                <div class="linha-minuta">
+                    <i class="bi bi-building">
+                        <span>{{ minutas.Cliente }}</span>
+                    </i>
+                </div>
+            </div>
+            <div class="dados-minuta">
+                <div class="linha-minuta linha-motorista">
+                    {% if minutas.Motorista %}
+                    <i class="bi bi-person-square">
+                        <span>{{ minutas.Motorista }}</span>
+                    </i>
+                    {% endif %}
+                </div>
+                <div class="linha-minuta linha-motorista">
+                    {% if minutas.Veiculo %}
+                    <i class="bi bi-truck">
+                        <span>{{ minutas.Veiculo }}</span>
+                    </i>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="icones-minuta">
+            <i class="bi bi-printer i-button"
+                    onclick="window.location.href = '{% url 'imprimeminuta' minutas.idMinuta %}'">
+            </i>
+            <i class="bi bi-folder i-button"
+                    onclick="window.location.href = '{% url 'consultaminuta' minutas.idMinuta %}'">
+            </i>
+            <i class="bi bi-folder i-button"
+                    onclick="window.location.href = '{% url 'minuta' minutas.idMinuta %}'">
+            </i>
+        </div>
+    </div>
+    <div class="linha-divisoria"></div>
+    {% endfor %}
+    <div class="article-minuta-rodape">
+        {% if t_fechada == 1 %}
+        <span>{{ t_fechada }} MINUTA FECHADA </span>
+        {% else %}
+        <span>{{ t_fechada }} MINUTAS FECHADAS </span>
+        {% endif %}
+    </div>
+</article>

@@ -2805,7 +2805,8 @@ main .fp-recibo-tabela .fp-recibo-print {
                 text-align: center;
                 border-radius: 10px 10px 0 0; 
             }
-            
+
+
             .ac-lista .ac-minuta-base {
                 width: 100%;
                 display: flex;
@@ -2813,6 +2814,15 @@ main .fp-recibo-tabela .fp-recibo-print {
                 align-items: center;
                 text-align: center;
             }
+
+                .ac-lista .seleciona-periodo {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding-left: 30px;
+                    padding-right: 30px;
+                }
 
                 .ac-lista .article-minuta-titulo span {
                     width: 100%;
