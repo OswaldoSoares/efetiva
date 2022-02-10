@@ -530,6 +530,10 @@ def filtro_cidades():
 def filtra_consulta(request, filtro, filtro_consulta, meses, anos):
     data = dict()
     dia_hoje = date.today()
+    if not meses:
+        meses = 0
+    if not anos:
+        anos = 100
     mes_anterior = dia_hoje - relativedelta(years=int(anos), months=int(meses), day=1)
     minutas = None
     if filtro_consulta == 'Clientes':
@@ -545,7 +549,7 @@ def filtra_consulta(request, filtro, filtro_consulta, meses, anos):
             x['Motorista'] = nome_curto(motorista[0].idPessoal.Nome)
         else:
             x['Motorista'] = None
-    contexto = {'lista': lista}
+    contexto = {'lista': lista, 'filtro': filtro, 'filtro_consulta': filtro_consulta}
     data['html_filtra_minuta'] = render_to_string('minutas/filtraminuta.html', contexto, request=request)
     c_return = JsonResponse(data)
     return c_return

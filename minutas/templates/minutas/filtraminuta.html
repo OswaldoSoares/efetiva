@@ -1,10 +1,17 @@
 <article class="article-card ac-lista">
     <div class="article-minuta-titulo seleciona-periodo">
-        <i class="bi bi-calendar-minus"> 01 MÊS</i>
-        <i class="bi bi-calendar-minus i-button"> 04 MÊSES</i>
-        <i class="bi bi-calendar-minus i-button"> 06 MÊSES</i>
-        <i class="bi bi-calendar-minus i-button"> 01 ANO</i>
-        <i class="bi bi-calendar-minus i-button"> 02 ANOS</i>
+        <i class="bi bi-calendar-minus filtro-periodo" data-filtro="{{ filtro }}"
+           data-filtro-consulta="{{ filtro_consulta }}" data-meses="1" data-anos="0" > 01 MÊS</i>
+        <i class="bi bi-calendar-minus i-button filtro-periodo" data-filtro="{{ filtro }}"
+           data-filtro-consulta="{{ filtro_consulta }}" data-meses="4" data-anos="0"> 04 MÊSES</i>
+        <i class="bi bi-calendar-minus i-button filtro-periodo" data-filtro="{{ filtro }}"
+           data-filtro-consulta="{{ filtro_consulta }}" data-meses="6" data-anos="0"> 06 MÊSES</i>
+        <i class="bi bi-calendar-minus i-button filtro-periodo" data-filtro="{{ filtro }}"
+           data-filtro-consulta="{{ filtro_consulta }}" data-meses="0" data-anos="1"> 01 ANO</i>
+        <i class="bi bi-calendar-minus i-button filtro-periodo" data-filtro="{{ filtro }}"
+           data-filtro-consulta="{{ filtro_consulta }}" data-meses="0" data-anos="2"> 02 ANOS</i>
+        <i class="bi bi-calendar-minus i-button filtro-periodo" data-filtro="{{ filtro }}"
+           data-filtro-consulta="{{ filtro_consulta }}"> TODAS</i>
     </div>
     {% for minutas in lista %}
     <div class="ac-minuta-base">

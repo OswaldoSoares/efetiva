@@ -267,11 +267,10 @@ $(document).ready(function(){
             $(this).addClass("i-button")
         });
         if ($(".minutas-atual").is(":hidden")) {
-            $(".minutas-consulta").fadeOut(500)
+            $(".minutas-consulta").fadeOut(100)
         } else {
-            $(".minutas-atual").fadeOut(500)
+            $(".minutas-atual").fadeOut(100)
         }
-
         $(this).removeClass("i-button")
         var filtro = $(this).attr('data-filtro')
         var filtro_consula = $(this).attr('data-filtro-consulta')
@@ -288,14 +287,47 @@ $(document).ready(function(){
             },
             success: function(data){
                 $(".minutas-consulta").html(data['html_filtra_minuta'])
-                $(".minutas-consulta").fadeIn(500)
+                $(".minutas-consulta").fadeIn(1000)
             },
             error: function(error) {
                 console.log(error)
             }
         });
     });
-    
+
+    $(document).on('click', '.filtro-periodo', function(event) {
+        $(".minutas-consulta").fadeOut(500)
+        var filtro = $(this).attr('data-filtro')
+        var filtro_consula = $(this).attr('data-filtro-consulta')
+        var meses = $(this).attr('data-meses')
+        var anos = $(this).attr('data-anos')
+        var menu_selecionado = $(this)
+        $.ajax({
+            type: 'GET',
+            url: '/minutas/filtraminuta',
+            data: {
+                Filtro: filtro,
+                FiltroConsulta: filtro_consula,
+                Meses: meses,
+                Anos: anos,
+            },
+            success: function(data){
+                $(".minutas-consulta").html(data['html_filtra_minuta'])
+                $(".filtro-periodo").each(function() {
+                    if ($(this).text() == menu_selecionado.text()) {
+                        $(this).removeClass("i-button")
+                    } else {
+                        $(this).addClass("i-button")
+                    }
+                });
+                $(".minutas-consulta").fadeIn(1000)
+            },
+            error: function(error) {
+                console.log(error)
+            }
+        })
+    });
+
     $('#MyModal').on('shown.bs.modal', function () {
         setTimeout(function(){      // Delay para função loadCubagem, após janela estar carregada
             $(".form-radio").click(function() {
@@ -678,6 +710,12 @@ $(document).ready(function(){
     formatMask();
     
 });
+
+function filtroMenuSelecionado(item) {
+    alert($(item).attr('class'))
+    $(item).removeClass('i-button')
+    alert($(item).attr('class'))
+}
 
 function verificaElemento(element_select, valor_digitado) {
     function calculaPorcentagem(v_porcentagem, v_valor ) {
