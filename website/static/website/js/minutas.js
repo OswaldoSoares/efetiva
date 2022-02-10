@@ -262,14 +262,14 @@ $(document).ready(function(){
     });
 
 
-    $(document).on('click', '.filtro-cliente', function(event) {
+    $(document).on('click', '.filtro-consulta', function(event) {
         $(".filtro-lista").each(function() {
             $(this).addClass("i-button")
         });
         if ($(".minutas-atual").is(":hidden")) {
-            $(".minutas-consulta").fadeOut(100)
+            $(".minutas-consulta").fadeOut(500)
         } else {
-            $(".minutas-atual").fadeOut(100)
+            $(".minutas-atual").fadeOut(500)
         }
         $(this).removeClass("i-button")
         var filtro = $(this).attr('data-filtro')

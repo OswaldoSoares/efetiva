@@ -539,6 +539,8 @@ def filtra_consulta(request, filtro, filtro_consulta, meses, anos):
     if filtro_consulta == 'Clientes':
         minutas = Minuta.objects.filter(idCliente__Fantasia=filtro, DataMinuta__gte=mes_anterior).order_by(
             '-DataMinuta')
+    elif filtro_consulta == 'Veiculos':
+        minutas = Minuta.objects.filter(idVeiculo__Placa=filtro, DataMinuta__gte=mes_anterior).order_by('-DataMinuta')
     lista = [{'idMinuta': m.idMinuta, 'Minuta': m.Minuta, 'Cliente': m.idCliente, 'Data': m.DataMinuta,
               'Hora': m.HoraInicial, 'Veiculo': m.idVeiculo} for m in minutas]
     for x in lista:

@@ -1,7 +1,8 @@
 <div class="filtro-dados fd-veiculo">
     {% for filtro in filtro_veiculo %}
     {% if filtro.idVeiculo__Placa %}
-    <i class="bi bi-truck i-button" title="VEICULO">
+    <i class="bi bi-truck i-button filtro-consulta filtro-lista" title="VEICULO"
+       data-filtro="{{ filtro.idVeiculo__Placa }}" data-filtro-consulta="Veiculos" data-meses="1" data-anos="0">
     <span>{{ filtro.idVeiculo__Marca }} - {{ filtro.idVeiculo__Modelo }} - {{ filtro.idVeiculo__Placa }}</span></i>
     {% endif %}
     {% endfor %}
