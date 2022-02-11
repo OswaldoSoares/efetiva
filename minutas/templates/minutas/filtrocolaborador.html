@@ -1,6 +1,7 @@
 <div class="filtro-dados fd-colaborador">
     {% for filtro in filtro_colaborador %}
-    <i class="bi bi-person-square i-button" title="COLABORADOR">
+    <i class="bi bi-person-square i-button filtro-consulta filtro-lista" title="COLABORADOR"
+       data-filtro="{{ filtro.idPessoal__Nome }}" data-filtro-consulta="Colaboradores" data-meses="1" data-anos="0">
     <span>{{ filtro.idPessoal__Nome }}</span></i>
     {% endfor %}
 </div>

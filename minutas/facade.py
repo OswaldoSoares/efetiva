@@ -362,6 +362,7 @@ class MinutaSelecionada:
         recebe = MinutaItens.objects.filter(TipoItens='RECEBE', idMinuta=self.idminuta)
         return True if recebe else False
 
+
 class MinutaMotorista:
     def __init__(self, idminuta):
         self.nome = self.get_motorista(idminuta)
@@ -535,14 +536,30 @@ def filtra_consulta(request, filtro, filtro_consulta, meses, anos):
     if not anos:
         anos = 100
     mes_anterior = dia_hoje - relativedelta(years=int(anos), months=int(meses), day=1)
-    minutas = None
+    lista = []
     if filtro_consulta == 'Clientes':
         minutas = Minuta.objects.filter(idCliente__Fantasia=filtro, DataMinuta__gte=mes_anterior).order_by(
             '-DataMinuta')
+        lista = [{'idMinuta': m.idMinuta, 'Minuta': m.Minuta, 'Cliente': m.idCliente, 'Data': m.DataMinuta,
+                  'Hora': m.HoraInicial, 'Veiculo': m.idVeiculo} for m in minutas]
+    elif filtro_consulta == 'Colaboradores':
+        minutas = MinutaColaboradores.objects.filter(
+            idPessoal__Nome=filtro, idMinuta_id__DataMinuta__gte=mes_anterior).order_by('-idMinuta__DataMinuta')
+        lista = [{'idMinuta': m.idMinuta_id, 'Minuta': m.idMinuta.Minuta, 'Cliente': m.idMinuta.idCliente,
+                  'Data': m.idMinuta.DataMinuta, 'Hora': m.idMinuta.HoraInicial, 'Veiculo': m.idMinuta.idVeiculo} for
+                 m in minutas]
     elif filtro_consulta == 'Veiculos':
         minutas = Minuta.objects.filter(idVeiculo__Placa=filtro, DataMinuta__gte=mes_anterior).order_by('-DataMinuta')
-    lista = [{'idMinuta': m.idMinuta, 'Minuta': m.Minuta, 'Cliente': m.idCliente, 'Data': m.DataMinuta,
-              'Hora': m.HoraInicial, 'Veiculo': m.idVeiculo} for m in minutas]
+        lista = [{'idMinuta': m.idMinuta, 'Minuta': m.Minuta, 'Cliente': m.idCliente, 'Data': m.DataMinuta,
+                  'Hora': m.HoraInicial, 'Veiculo': m.idVeiculo} for m in minutas]
+    elif filtro_consulta == 'Entregas_Cidades':
+        local = filtro.split(' *** ')
+        minutas = MinutaNotas.objects.filter(
+            Cidade=local[0], Estado=local[1], idMinuta_id__DataMinuta__gte=mes_anterior).order_by(
+            '-idMinuta__DataMinuta')
+        lista = [{'idMinuta': m.idMinuta_id, 'Minuta': m.idMinuta.Minuta, 'Cliente': m.idMinuta.idCliente,
+                  'Data': m.idMinuta.DataMinuta, 'Hora': m.idMinuta.HoraInicial, 'Veiculo': m.idMinuta.idVeiculo} for
+                 m in minutas]
     for x in lista:
         if x['Veiculo']:
             x['Veiculo'] = f"{x['Veiculo'].Modelo} - {x['Veiculo'].Placa}"
