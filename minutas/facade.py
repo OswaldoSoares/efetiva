@@ -568,7 +568,8 @@ def filtra_consulta(request, filtro, filtro_consulta, meses, anos):
             x['Motorista'] = nome_curto(motorista[0].idPessoal.Nome)
         else:
             x['Motorista'] = None
-    contexto = {'lista': lista, 'filtro': filtro, 'filtro_consulta': filtro_consulta}
+    t_lista = lista.__len__()
+    contexto = {'lista': lista, 'filtro': filtro, 'filtro_consulta': filtro_consulta, 't_lista': t_lista}
     data['html_filtra_minuta'] = render_to_string('minutas/filtraminuta.html', contexto, request=request)
     c_return = JsonResponse(data)
     return c_return
