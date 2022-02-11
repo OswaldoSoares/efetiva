@@ -267,10 +267,11 @@ $(document).ready(function(){
             $(this).addClass("i-button")
         });
         if ($(".minutas-atual").is(":hidden")) {
-            $(".minutas-consulta").fadeOut(500)
+            $(".minutas-consulta").hide()
         } else {
-            $(".minutas-atual").fadeOut(500)
+            $(".minutas-atual").hide()
         }
+        $(".box-loader").show()
         $(this).removeClass("i-button")
         var filtro = $(this).attr('data-filtro')
         var filtro_consula = $(this).attr('data-filtro-consulta')
@@ -287,7 +288,8 @@ $(document).ready(function(){
             },
             success: function(data){
                 $(".minutas-consulta").html(data['html_filtra_minuta'])
-                $(".minutas-consulta").fadeIn(1000)
+                $(".box-loader").hide()
+                $(".minutas-consulta").show()
             },
             error: function(error) {
                 console.log(error)
@@ -297,6 +299,7 @@ $(document).ready(function(){
 
     $(document).on('click', '.filtro-periodo', function(event) {
         $(".minutas-consulta").fadeOut(500)
+        $(".box-loader").show()
         var filtro = $(this).attr('data-filtro')
         var filtro_consula = $(this).attr('data-filtro-consulta')
         var meses = $(this).attr('data-meses')
@@ -320,6 +323,7 @@ $(document).ready(function(){
                         $(this).addClass("i-button")
                     }
                 });
+                $(".box-loader").hide()
                 $(".minutas-consulta").fadeIn(1000)
             },
             error: function(error) {
@@ -360,6 +364,7 @@ $(document).ready(function(){
     $(".div-erro").hide()
     $(".filtro-dados").hide()
     $(".minutas-consulta").hide()
+    $(".box-loader").hide()
 
     // JQuery da Janela Modal Antigo
     $('#modal-formulario').on('shown.bs.modal', function () {

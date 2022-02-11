@@ -3782,3 +3782,35 @@ main .fp-recibo-tabela .fp-recibo-print {
     }
     
 }
+
+.box-loader {
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.loader {
+    margin: auto;
+    border: 10px solid #696969;
+    border-radius: 50%;
+    border-top: 10px solid dodgerblue;
+    border-bottom: 10px solid dodgerblue;
+    border-left: 10px solid white;
+    border-right: 10px solid white;
+    width: 150px;
+    height: 150px;
+    animation: spinner 0.75s linear infinite;
+}
+
+@keyframes spinner {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.box-loader span {
+    padding-top: 20px;
+    font-size: 14px;
+    color: white;
+}
