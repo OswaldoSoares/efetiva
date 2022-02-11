@@ -298,7 +298,7 @@ $(document).ready(function(){
     });
 
     $(document).on('click', '.filtro-periodo', function(event) {
-        $(".minutas-consulta").fadeOut(500)
+        $(".minutas-consulta").hide()
         $(".box-loader").show()
         var filtro = $(this).attr('data-filtro')
         var filtro_consula = $(this).attr('data-filtro-consulta')
@@ -324,7 +324,7 @@ $(document).ready(function(){
                     }
                 });
                 $(".box-loader").hide()
-                $(".minutas-consulta").fadeIn(1000)
+                $(".minutas-consulta").show()
             },
             error: function(error) {
                 console.log(error)
