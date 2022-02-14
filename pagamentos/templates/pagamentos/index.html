@@ -34,6 +34,7 @@
             <div class="fp-base"><!-- Comentário: arquivo folhapgto.html --></div>
         </main>
     </div>
+    {% if user|can:'pagamentos_avulso' %}
     <div class="pagamento-conteudo avulsos">
         <header class="titulo-mensalistas">
             <h3>PAGAMENTO AVULSOS</h3>
@@ -63,6 +64,8 @@
             <div class="pa-saldo-minutas"></div>
         </main>
     </div>
+    {% endif %}
+    {% if user|can:'pagamentos_vales' %}
     <div class="pagamento-conteudo vales">
         <header class="titulo-mensalistas">
             <h3>CADASTRO DE VALES</h3>
@@ -98,6 +101,7 @@
             </div>
         </main>
     </div>
+    {% endif %}
 </main>
 <!-- DIV MODAL -->
 <div class="modal fade bd-example-modal-lg" id="MyModal" tabindex="-1">

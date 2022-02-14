@@ -10,7 +10,7 @@ from .print import print_contracheque, print_recibo
 from django.db.models import F, ExpressionWrapper, DecimalField
 
 
-@has_permission_decorator('modulo_faturamento')
+@has_permission_decorator('modulo_pagamentos')
 def index_pagamento(request):
     contexto = facade.create_context_formcontracheque()
     contextovales = facade.cria_contexto_pagamentos()

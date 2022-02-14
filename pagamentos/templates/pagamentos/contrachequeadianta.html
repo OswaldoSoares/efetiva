@@ -1,3 +1,4 @@
+{% load permission_tags %}
 <form class="row g-3 form-cria-contrachequeitens" method="post" action="{% url 'criacontrachequeitens' %}">
     {% csrf_token %}
     <div class="col-md-3">
@@ -15,8 +16,10 @@
     <input type="hidden" name="AnoReferencia" value="{{ itens.AnoReferencia }}" id="AnoReferencia-ad">
     <input type="hidden" name="idPessoal" value="{{ itens.idPessoal_id }}" id="idPessoal_ad">
     {% endfor %}
+    {% if user|can:'pagamentos_folha' %}
     <div class="col-md-4">
         <button class="btn btn-primary glyphicon glyphicon-save">
         </button>
     </div>
+    {% endif %}
 </form>

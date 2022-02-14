@@ -1,3 +1,4 @@
+{% load permission_tags %}
 <div class="fp-folha">
     <table class="fp-tabela">
         <tr>
@@ -23,10 +24,12 @@
         {% endfor %}
         <tr>
             <td class="fp-button">
+                {% if user|can:'pagamentos_folha' %}
                 <button class="btn btn-warning" data-url="{% url 'criafolha' %}" id="gerar-folha"
                         mesreferencia="{{ referencia.MesReferencia }}"
                         anoreferencia="{{ referencia.AnoReferencia }}">GERAR FOLHA DE PAGAMENTO
                 </button>
+                {% endif %}
             </td>
             <td class="fp-valor">R$ {{ totalsalario }}</td>
             <td class="fp-valor">R$ {{ totalfolha }}</td>

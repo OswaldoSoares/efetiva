@@ -46,6 +46,9 @@ fechar_minuta = 'fechar_minuta'
 cria_veiculo = 'cria_veiculo'
 edita_veiculo = 'edita_veiculo'
 exclui_veiculo = 'exclui_veiculo'
+pagamentos_folha = 'pagamentos_folha'
+pagamentos_avulso = 'pagamentos_avulso'
+pagamentos_vales = 'pagamentos_vales'
 
 
 class Diretor(AbstractUserRole):
@@ -96,6 +99,9 @@ class Diretor(AbstractUserRole):
         cria_veiculo: True,
         edita_veiculo: True,
         exclui_veiculo: True,
+        pagamentos_folha: True,
+        pagamentos_avulso: True,
+        pagamentos_vales: True,
     }
 
 
@@ -105,6 +111,7 @@ class Secretaria(AbstractUserRole):
         modulo_clientes: True,
         modulo_colaboradores: True,
         modulo_minutas: True,
+        modulo_pagamentos: True,
         modulo_veiculos: True,
         cria_cliente: True,
         edit_cliente: True,
@@ -134,6 +141,8 @@ class Secretaria(AbstractUserRole):
         cria_veiculo: True,
         edita_veiculo: True,
         exclui_veiculo: True,
+        pagamentos_avulso: True,
+        pagamentos_vales: True,
     }
 
 
