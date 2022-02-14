@@ -545,9 +545,10 @@ def filtra_consulta(request, filtro, filtro_consulta, meses, anos):
     elif filtro_consulta == 'Colaboradores':
         minutas = MinutaColaboradores.objects.filter(
             idPessoal__Nome=filtro, idMinuta_id__DataMinuta__gte=mes_anterior).order_by('-idMinuta__DataMinuta')
-        lista = [{'idMinuta': m.idMinuta_id, 'Minuta': m.idMinuta.Minuta, 'Cliente': m.idMinuta.idCliente,
+        lista_base = [{'idMinuta': m.idMinuta_id, 'Minuta': m.idMinuta.Minuta, 'Cliente': m.idMinuta.idCliente,
                   'Data': m.idMinuta.DataMinuta, 'Hora': m.idMinuta.HoraInicial, 'Veiculo': m.idMinuta.idVeiculo} for
                  m in minutas]
+        lista = ({x['idMinuta']: x for x in lista_base}.values())
     elif filtro_consulta == 'Veiculos':
         minutas = Minuta.objects.filter(idVeiculo__Placa=filtro, DataMinuta__gte=mes_anterior).order_by('-DataMinuta')
         lista = [{'idMinuta': m.idMinuta, 'Minuta': m.Minuta, 'Cliente': m.idCliente, 'Data': m.DataMinuta,
@@ -557,9 +558,17 @@ def filtra_consulta(request, filtro, filtro_consulta, meses, anos):
         minutas = MinutaNotas.objects.filter(
             Cidade=local[0], Estado=local[1], idMinuta_id__DataMinuta__gte=mes_anterior).order_by(
             '-idMinuta__DataMinuta')
-        lista = [{'idMinuta': m.idMinuta_id, 'Minuta': m.idMinuta.Minuta, 'Cliente': m.idMinuta.idCliente,
+        lista_base = [{'idMinuta': m.idMinuta_id, 'Minuta': m.idMinuta.Minuta, 'Cliente': m.idMinuta.idCliente,
                   'Data': m.idMinuta.DataMinuta, 'Hora': m.idMinuta.HoraInicial, 'Veiculo': m.idMinuta.idVeiculo} for
                  m in minutas]
+        lista = ({x['idMinuta']: x for x in lista_base}.values())
+    elif filtro_consulta == 'Destinatarios':
+        minutas = MinutaNotas.objects.filter(Nome__contains=filtro, idMinuta_id__DataMinuta__gte=mes_anterior).order_by(
+            '-idMinuta__DataMinuta').distinct()
+        lista_base = [{'idMinuta': m.idMinuta_id, 'Minuta': m.idMinuta.Minuta, 'Cliente': m.idMinuta.idCliente,
+                  'Data': m.idMinuta.DataMinuta, 'Hora': m.idMinuta.HoraInicial, 'Veiculo': m.idMinuta.idVeiculo} for
+                 m in minutas]
+        lista = ({x['idMinuta']: x for x in lista_base}.values())
     for x in lista:
         if x['Veiculo']:
             x['Veiculo'] = f"{x['Veiculo'].Modelo} - {x['Veiculo'].Placa}"

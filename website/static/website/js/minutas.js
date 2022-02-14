@@ -204,6 +204,8 @@ $(document).ready(function(){
         $(".list-veiculo").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
         $(".fd-entrega-cidade").hide()
         $(".list-entrega-cidade").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
+        $(".filtro-destinatario").hide()
+        $(".digita-destinatario").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
         if ($('.fd-cliente').is(':hidden')) {
             $(".fd-cliente").show()
             $(this).removeClass("bi-caret-right-fill").addClass("bi-caret-down-fill");
@@ -220,6 +222,8 @@ $(document).ready(function(){
         $(".list-veiculo").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
         $(".fd-entrega-cidade").hide()
         $(".list-entrega-cidade").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
+        $(".filtro-destinatario").hide()
+        $(".digita-destinatario").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
         if ($('.fd-colaborador').is(':hidden')) {
             $(".fd-colaborador").show()
             $(this).removeClass("bi-caret-right-fill").addClass("bi-caret-down-fill");
@@ -236,6 +240,8 @@ $(document).ready(function(){
         $(".list-colaborador").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
         $(".fd-entrega-cidade").hide()
         $(".list-entrega-cidade").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
+        $(".filtro-destinatario").hide()
+        $(".digita-destinatario").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
         if ($('.fd-veiculo').is(':hidden')) {
             $(".fd-veiculo").show()
             $(this).removeClass("bi-caret-right-fill").addClass("bi-caret-down-fill");
@@ -252,6 +258,8 @@ $(document).ready(function(){
         $(".list-colaborador").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
         $(".fd-veiculo").hide()
         $(".list-veiculo").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
+        $(".filtro-destinatario").hide()
+        $(".digita-destinatario").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
         if ($('.fd-entrega-cidade').is(':hidden')) {
             $(".fd-entrega-cidade").show()
             $(this).removeClass("bi-caret-right-fill").addClass("bi-caret-down-fill");
@@ -261,6 +269,23 @@ $(document).ready(function(){
         }
     });
 
+    $(document).on('click', '.digita-destinatario', function(event) {
+        $(".fd-cliente").hide()
+        $(".list-cliente").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
+        $(".fd-colaborador").hide()
+        $(".list-colaborador").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
+        $(".fd-veiculo").hide()
+        $(".list-veiculo").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
+        $(".fd-entrega-cidade").hide()
+        $(".list-entrega-cidade").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
+        if ($('.filtro-destinatario').is(':hidden')) {
+            $(".filtro-destinatario").show()
+            $(this).removeClass("bi-caret-right-fill").addClass("bi-caret-down-fill");
+        } else {
+            $(".filtro-destinatario").hide()
+            $(this).removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
+        }
+    });
 
     $(document).on('click', '.filtro-consulta', function(event) {
         $(".filtro-lista").each(function() {
@@ -332,6 +357,41 @@ $(document).ready(function(){
         })
     });
 
+    $(document).on('click', '.search-destinatario', function(event) {
+        $(".filtro-lista").each(function() {
+            $(this).addClass("i-button")
+        });
+        if ($(".minutas-atual").is(":hidden")) {
+            $(".minutas-consulta").hide()
+        } else {
+            $(".minutas-atual").hide()
+        }
+        $(".box-loader").show()
+        var filtro = $(".text-search").val()
+        var filtro_consula = $(this).attr('data-filtro-consulta')
+        var meses = $(this).attr('data-meses')
+        var anos = $(this).attr('data-anos')
+        var menu_selecionado = $(this)
+        $.ajax({
+            type: 'GET',
+            url: '/minutas/filtraminuta',
+            data: {
+                Filtro: filtro,
+                FiltroConsulta: filtro_consula,
+                Meses: meses,
+                Anos: anos,
+            },
+            success: function(data){
+                $(".minutas-consulta").html(data['html_filtra_minuta'])
+                $(".box-loader").hide()
+                $(".minutas-consulta").show()
+            },
+            error: function(error) {
+                console.log(error)
+            }
+        })
+    });
+
     $('#MyModal').on('shown.bs.modal', function () {
         setTimeout(function(){      // Delay para função loadCubagem, após janela estar carregada
             $(".form-radio").click(function() {
@@ -365,6 +425,7 @@ $(document).ready(function(){
     $(".filtro-dados").hide()
     $(".minutas-consulta").hide()
     $(".box-loader").hide()
+    $(".filtro-destinatario").hide()
 
     // JQuery da Janela Modal Antigo
     $('#modal-formulario').on('shown.bs.modal', function () {
