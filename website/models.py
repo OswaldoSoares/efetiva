@@ -17,3 +17,11 @@ class Parametros(models.Model):
         super(Parametros, self).save(*args, **kwargs)
 
     objects = models.Manager()
+
+
+class FileUpload(models.Model):
+    idFileUpload = models.AutoField(primary_key=True)
+    Descricao = models.CharField(max_length=50)
+    upLoadFile = models.FileField(upload_to='upload_files/')
+    DateUpload = models.DateTimeField(auto_now=True)
+    
