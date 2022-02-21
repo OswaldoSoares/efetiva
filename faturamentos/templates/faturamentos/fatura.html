@@ -1,0 +1,14 @@
+{% extends 'faturamentos/basefaturamentos.html' %}
+{% load static %}
+
+{% block mainfaturamento %}
+<main>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text">
+        <input type="file" name="uploadedFile">
+        <input type="submit" value="upload">
+    </form>
+</main>
+{% endblock %}
+
