@@ -67,7 +67,8 @@
                     <button class="btn btn-primary btn-xs glyphicon glyphicon-envelope"
                             onclick="window.location.href = '{% url 'emailfatura' itens.idFatura %}'">
                     </button>
-                    <i class="bi bi-cloud-arrow-up i-button" idFatura="{{ itens.Fatura }}">
+                    <i class="bi bi-cloud-arrow-up i-button js-fatura" data-url="{% url 'fatura' %}"
+                       data-idobj="{{ itens.Fatura }}">
                     </i>
                 </footer>
             </div>

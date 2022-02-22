@@ -190,3 +190,10 @@ def email_fatura(request, idfatura):
     email.attach(nome_arquivo, fatura_pdf)
     email.send()
     return redirect('index_faturamento')
+
+
+def fatura(request):
+    c_idobj = request.GET.get('idFatura')
+    contexto = {'c_idobj': c_idobj}
+    data = render_to_string('faturamentos/fatura.html', contexto)
+    return HttpResponse(data)
