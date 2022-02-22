@@ -1,6 +1,7 @@
 from django import forms
 from .models import Parametros
 from clientes.facade import create_select_cliente
+from website.models import FileUpload
 
 
 parametros_chave = [
@@ -47,3 +48,12 @@ class CadastraParametroTabelaPadrao(forms.ModelForm):
         fields = ['idParametro', 'Chave', 'Valor']
         widgets = {'Chave': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'True'}),
                    'Valor': forms.Select(choices=fantasia, attrs={'class': 'form-control'})}
+
+
+class FormFileUpload(forms.ModelForm):
+    class Meta:
+        model = FileUpload
+        fields = ['DescricaoUpload', 'uploadFile']
+        widgets = {'DescricaoUpload': forms.TextInput(attrs={'class': 'form-control'}),
+                   'uploadFile': forms.FileInput(),
+                   }

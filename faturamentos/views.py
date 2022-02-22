@@ -6,6 +6,7 @@ from django.core.mail import EmailMessage
 from rolepermissions.decorators import has_permission_decorator
 
 from faturamentos.facade import FaturaSelecionada, retorna_json
+from website.forms import FormFileUpload
 from .models import Fatura
 from .forms import PagaFatura
 from minutas.models import Minuta, MinutaItens, MinutaColaboradores
@@ -195,6 +196,13 @@ def email_fatura(request, idfatura):
 
 
 def fatura(request, idfatura):
+    if request.method == 'POST':
+        print(request.FILES['uploadFile'])
+        form = FormFileUpload(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+    else:
+        form = FormFileUpload()
     s_fatura = FaturaSelecionada(idfatura).__dict__
-    contexto = {'s_fatura': s_fatura}
+    contexto = {'s_fatura': s_fatura, 'form': form}
     return render(request, 'faturamentos/fatura.html', contexto)

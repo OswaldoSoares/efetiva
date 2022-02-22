@@ -3,12 +3,20 @@
 
 {% block mainfaturamento %}
 <main>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <input type="text">
-        <input type="file" name="uploadedFile">
-        <input type="submit" value="upload">
+        <div class="col-md-6">
+            <label for="id_DescricaoUpload">Descrição do arquivo</label>
+            {{ form.DescricaoUpload }}
+            {{ form.DescricaoUpload.errors }}
+        </div>
+        <div class="col-md-6">
+            <label for="id_uploadFile">arquivo</label>
+            {{ form.uploadFile}}
+            {{ form.uploadFile.errors }}
+        <div class="col-md-12">
+            <input type="submit" value="upload">
+        </div>
     </form>
 </main>
 {% endblock %}
-

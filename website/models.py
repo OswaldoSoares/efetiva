@@ -21,16 +21,16 @@ class Parametros(models.Model):
 
 class FileUpload(models.Model):
     idFileUpload = models.AutoField(primary_key=True)
-    Descricao = models.CharField(max_length=50)
-    upLoadFile = models.FileField(upload_to='upload_files/')
+    DescricaoUpload = models.CharField(max_length=50)
+    uploadFile = models.FileField(upload_to='upload_files/')
     DateUpload = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = 'fileupload'
-        ordering = ['Descricao']
+        ordering = ['DescricaoUpload']
 
     def save(self, *args, **kwargs):
-        self.Descricao = self.Descricao.upper()
+        self.DescricaoUpload = self.DescricaoUpload.upper()
 
         super(FileUpload, self).save(*args, **kwargs)
 
