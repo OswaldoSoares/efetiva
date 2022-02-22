@@ -16,4 +16,4 @@ site/
 transefetiva/wsgi.py
 transefetiva/asgi.py
 manage.py
-
+transefetiva/settings/.env

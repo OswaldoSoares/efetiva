@@ -39,6 +39,14 @@ STATIC_ROOT = '/efetiva/site/public/static'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = '/efetiva/site/public/media'
 
+# Configuração de E-Mails
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST = config('EMAIL_HOST', '')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', '')
+
 # SESSION_COOKIE_SECURE = True
 # CSRF_COOKIE_SECURE = True
 # SECURE_SSL_REDIRECT = False

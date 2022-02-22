@@ -1,4 +1,5 @@
 import os
+from decouple import config
 from django.conf.locale.pt_BR import formats as br_formats
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
