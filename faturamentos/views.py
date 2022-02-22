@@ -202,7 +202,8 @@ def fatura(request, idfatura):
         if form.is_valid():
             form.save()
     else:
-        form = FormFileUpload()
+        v_descricao = f'NOTA FISCAL - FATURA {str(idfatura).zfill(6)}'
+        form = FormFileUpload(initial={'DescricaoUpload': v_descricao})
     s_fatura = FaturaSelecionada(idfatura).__dict__
     contexto = {'s_fatura': s_fatura, 'form': form}
     return render(request, 'faturamentos/fatura.html', contexto)
