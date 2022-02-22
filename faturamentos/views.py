@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 from django.db.models import Sum, Max, Count
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from rolepermissions.decorators import has_permission_decorator
+
+from faturamentos.facade import FaturaSelecionada, retorna_json
 from .models import Fatura
 from .forms import PagaFatura
 from minutas.models import Minuta, MinutaItens, MinutaColaboradores
@@ -192,8 +194,7 @@ def email_fatura(request, idfatura):
     return redirect('index_faturamento')
 
 
-def fatura(request):
-    c_idobj = request.GET.get('idFatura')
-    contexto = {'c_idobj': c_idobj}
-    data = render_to_string('faturamentos/fatura.html', contexto)
-    return HttpResponse(data)
+def fatura(request, idfatura):
+    s_fatura = FaturaSelecionada(idfatura).__dict__
+    contexto = {'s_fatura': s_fatura}
+    return render(request, 'faturamentos/fatura.html', contexto)

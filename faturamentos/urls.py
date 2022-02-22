@@ -12,5 +12,5 @@ urlpatterns = [
     path('imprimefatura/<int:idfatura>/', imprime_fatura, name='imprimefatura'),
     path('emailfatura/<int:idfatura>/', email_fatura, name='emailfatura'),
 
-    path('fatura', fatura, name='fatura'),
+    path('fatura/<int:idfatura>/', fatura, name='fatura'),
 ]

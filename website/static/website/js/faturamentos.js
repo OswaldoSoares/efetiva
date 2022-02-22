@@ -83,22 +83,4 @@ $(document).ready(function(){
 
     $(".js-pagafatura").click(loadForm);
 
-    $(".js-fatura").on('click', function() {
-        var data_url = $(this).attr('data-url')
-        var data_idobj = $(this).attr('data-obj')
-        $.ajax({
-            url: data_url,
-            type: 'get',
-            data: {
-                idobj: data_idobj,
-            },
-            beforeSend: function() {
-    
-            },
-            success: function() {
-                alert(data)
-            },
-        });
-    });
-
 });

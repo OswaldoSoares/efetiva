@@ -16,9 +16,9 @@
                 <span>VALOR <b>R$ {{ itens.Valor }}</b></span>
                 <span>TOTAL DE MINUTAS <b>{{ itens.Quantidade }}</b></span>
                 <footer>
-                    <button class="btn btn-primary btn-xs glyphicon glyphicon-folder-open"
-                            onclick="window.location.href = '{% url 'minutasfaturarcliente' itens.idCliente %}'">
-                    </button>
+                    <a class="btn btn-primary btn-xs glyphicon glyphicon-folder-open"
+                       href="{% url 'minutasfaturarcliente' itens.idCliente %}">
+                    </a>
                 </footer>
             </div>
             {% endfor %}
@@ -54,9 +54,9 @@
                 <span>TOTAL DE MINUTAS <b>{{ itens.TotalMinutas }}</b></span>
                 <footer>
                     {% if itens.StatusMinuta != 'ABERTA' %}
-                    <button class="btn btn-danger btn-xs glyphicon glyphicon-backward"
-                            onclick="window.location.href = '{% url 'estornafatura' itens.idFatura %}'">
-                    </button>
+                    <a class="btn btn-danger btn-xs glyphicon glyphicon-backward"
+                       href="{% url 'estornafatura' itens.idFatura %}">
+                    </a>
                     {% endif %}
                     <a class="btn btn-warning btn-xs glyphicon glyphicon-print" href =
                             "{% url 'imprimefatura' itens.idFatura %}" target="_blank">
@@ -64,12 +64,12 @@
                     <button class="btn btn-success btn-xs js-pagafatura glyphicon glyphicon-usd"
                             idfatura="{{ itens.Fatura }}" data-url="{% url 'pagafatura' itens.Fatura %}">
                     </button>
-                    <button class="btn btn-primary btn-xs glyphicon glyphicon-envelope"
-                            onclick="window.location.href = '{% url 'emailfatura' itens.idFatura %}'">
-                    </button>
-                    <i class="bi bi-cloud-arrow-up i-button js-fatura" data-url="{% url 'fatura' %}"
-                       data-idobj="{{ itens.Fatura }}">
-                    </i>
+                    <a class="btn btn-primary btn-xs glyphicon glyphicon-envelope"
+                            href="{% url 'emailfatura' itens.idFatura %}">
+                    </a>
+                    <a class="bi bi-cloud-arrow-up i-button js-fatura"
+                       href="{% url 'fatura' itens.Fatura %}">
+                    </a>
                 </footer>
             </div>
             {% endfor %}
@@ -126,9 +126,9 @@
                         <td class="direita">R$ {{ pagas.minuta__idFatura__ValorPagamento }}</td>
                         <td class="centro">{{ pagas.minutas }}</td>
                         <td class="direita">
-                            <button class="btn btn-danger btn-xs glyphicon glyphicon-backward"
-                                    onclick="window.location.href = '{% url 'estornafatura' pagas.minuta__idFatura__idFatura %}'">
-                            </button>
+                            <a class="btn btn-danger btn-xs glyphicon glyphicon-backward"
+                               href="{% url 'estornafatura' pagas.minuta__idFatura__idFatura %}">
+                            </a>
                             <a class="btn btn-warning btn-xs glyphicon glyphicon-print" href =
                                     "{% url 'imprimefatura' pagas.minuta__idFatura__idFatura %}" target="_blank">
                             </a>
