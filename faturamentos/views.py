@@ -196,7 +196,7 @@ def email_fatura(request, idfatura):
 
 
 def fatura(request, idfatura):
-    v_descricao = f'boleto_fatura_{str(idfatura).zfill(6)}'
+    v_descricao = f'nf_fatura_{str(idfatura).zfill(6)}'
     if request.method == 'POST':
         ext_file = request.FILES['uploadFile'].name.split(".")[-1]
         name_file = f'{v_descricao}.{ext_file}'

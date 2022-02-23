@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 from faturamentos.models import Fatura
 from minutas.models import Minuta
+from website.models import FileUpload
 
 
 class FaturaSelecionada:
@@ -17,6 +18,8 @@ class FaturaSelecionada:
         self.data_pagamento = fatura.DataPagamento
         self.comentario = fatura.Comentario
         self.minutas_fatura = MinutasFatura(v_idfatura).minutas
+        self.notas_fatura = NotasFatura(v_idfatura).notas
+        self.boletos_fatura = BoletosFatura(v_idfatura).boletos
 
 
 class MinutasFatura:
@@ -28,6 +31,26 @@ class MinutasFatura:
         minutas = Minuta.objects.filter(idFatura=v_idfatura)
         lista = [{'idMinuta': itens.idMinuta, 'Minuta': itens.Minuta} for itens in minutas]
         return lista
+
+
+class NotasFatura:
+    def __init__(self, v_idfatura):
+        self.notas = self.get_notas(v_idfatura)
+
+    @staticmethod
+    def get_notas(v_idfatura):
+        notas = FileUpload.objects.filter(DescricaoUpload=f'NF_FATURA_{str(v_idfatura).zfill(6)}')
+        return notas
+
+
+class BoletosFatura:
+    def __init__(self, v_idfatura):
+        self.boletos = self.get_boletos(v_idfatura)
+
+    @staticmethod
+    def get_boletos(v_idfatura):
+        boletos = FileUpload.objects.filter(DescricaoUpload=f'BOLETO_FATURA_{str(v_idfatura).zfill(6)}')
+        return boletos
 
 
 def retorna_json(data):
