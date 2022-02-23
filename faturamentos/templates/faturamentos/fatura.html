@@ -3,18 +3,18 @@
 
 {% block mainfaturamento %}
 <main>
-    <form method="post" enctype="multipart/form-data">
+    <form class="row g-3" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <div class="col-md-6">
+        <div class="col-md-4">
             <label for="id_DescricaoUpload">Descrição do arquivo</label>
             {{ form.DescricaoUpload }}
             {{ form.DescricaoUpload.errors }}
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
             <label for="id_uploadFile">arquivo</label>
             {{ form.uploadFile}}
             {{ form.uploadFile.errors }}
-        <div class="col-md-12">
+        <div class="col-md-4">
             <input type="submit" value="upload">
         </div>
     </form>

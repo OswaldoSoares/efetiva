@@ -55,5 +55,5 @@ class FormFileUpload(forms.ModelForm):
         model = FileUpload
         fields = ['DescricaoUpload', 'uploadFile']
         widgets = {'DescricaoUpload': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'True'}),
-                   'uploadFile': forms.FileInput(),
+                   'uploadFile': forms.FileInput(attrs={'class': 'form-control'}),
                    }

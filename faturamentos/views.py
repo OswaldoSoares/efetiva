@@ -196,13 +196,15 @@ def email_fatura(request, idfatura):
 
 
 def fatura(request, idfatura):
+    v_descricao = f'boleto_fatura_{str(idfatura).zfill(6)}'
     if request.method == 'POST':
-        print(request.FILES['uploadFile'])
+        ext_file = request.FILES['uploadFile'].name.split(".")[-1]
+        name_file = f'{v_descricao}.{ext_file}'
+        request.FILES['uploadFile'].name = name_file
         form = FormFileUpload(request.POST, request.FILES)
         if form.is_valid():
             form.save()
     else:
-        v_descricao = f'NOTA FISCAL - FATURA {str(idfatura).zfill(6)}'
         form = FormFileUpload(initial={'DescricaoUpload': v_descricao})
     s_fatura = FaturaSelecionada(idfatura).__dict__
     contexto = {'s_fatura': s_fatura, 'form': form}
