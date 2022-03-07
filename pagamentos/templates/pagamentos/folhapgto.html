@@ -11,12 +11,12 @@
         <tr>
             <td class="fp-nome" data-toggle="tooltip" data-placement="top" title="{{ keys }}">
                 {{ keys|truncatechars:25 }}</td>
-            <td class="fp-valor">R$ {{ values.Salario }}</td>
-            <td class="fp-valor">R$ {{ values.Liquido }}</td>
-            <td class="fp-button">
-                {% if values.ContraCheque %}
-                <button class="btn btn-info btn-xs glyphicon glyphicon-ok selecionar-contracheque"
-                        data-url="{% url 'selecionacontracheque' %}" idpessoal="{{ values.idPessoal }}">
+                <td class="fp-valor">R$ {{ values.Salario }}</td>
+                <td class="fp-valor">R$ {{ values.Liquido }}</td>
+                <td class="fp-button">
+                    {% if values.ContraCheque %}
+                    <button class="btn btn-info btn-xs glyphicon glyphicon-ok selecionar-contracheque"
+                    data-url="{% url 'selecionacontracheque' %}" idpessoal="{{ values.idPessoal }}">
                 </button>
                 {% endif %}
             </td>
@@ -24,12 +24,12 @@
         {% endfor %}
         <tr>
             <td class="fp-button">
-                <!--user|can:'pagamentos_folha'-->
+                {% if user|can:'pagamentos_folha' %}
                 <button class="btn btn-warning" data-url="{% url 'criafolha' %}" id="gerar-folha"
                         mesreferencia="{{ referencia.MesReferencia }}"
                         anoreferencia="{{ referencia.AnoReferencia }}">GERAR FOLHA DE PAGAMENTO
                 </button>
-                <!-- endif -->
+                {% endif %}
             </td>
             <td class="fp-valor">R$ {{ totalsalario }}</td>
             <td class="fp-valor">R$ {{ totalfolha }}</td>

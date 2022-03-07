@@ -148,10 +148,10 @@ class Secretaria(AbstractUserRole):
 
 class Motorista(AbstractUserRole):
     available_permissions = {
-        modulo_minutas: True,
-        hora_minuta: True,
-        km_minuta: True,
-        despesa_minuta: True,
-        entrega_minuta: True,
-        comentario_minuta: True,
+        # modulo_minutas: True,
+        # hora_minuta: True,
+        # km_minuta: True,
+        # despesa_minuta: True,
+        # entrega_minuta: True,
+        # comentario_minuta: True,
     }
