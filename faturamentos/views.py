@@ -5,8 +5,8 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from rolepermissions.decorators import has_permission_decorator
 
-from faturamentos.facade import FaturaSelecionada, retorna_json
-from website.forms import FormFileUpload
+from faturamentos.facade import FaturaSelecionada, form_fatura, retorna_json
+from website.models import FileUpload
 from .models import Fatura
 from .forms import PagaFatura
 from minutas.models import Minuta, MinutaItens, MinutaColaboradores
@@ -196,16 +196,26 @@ def email_fatura(request, idfatura):
 
 
 def fatura(request, idfatura):
-    v_descricao = f'nf_fatura_{str(idfatura).zfill(6)}'
+    mensagem = None
+    mensagem_tipo = None
     if request.method == 'POST':
-        ext_file = request.FILES['uploadFile'].name.split(".")[-1]
-        name_file = f'{v_descricao}.{ext_file}'
-        request.FILES['uploadFile'].name = name_file
-        form = FormFileUpload(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-    else:
-        form = FormFileUpload(initial={'DescricaoUpload': v_descricao})
+        if request.FILES:
+            if request.POST.get('tipo') == 'NOTA':
+                v_descricao = f'fatura_{str(idfatura).zfill(6)}_nf'
+            elif request.POST.get('tipo') == 'BOLETO':
+                v_descricao = f'fatura_{str(idfatura).zfill(6)}_boleto'
+            ext_file = request.FILES['uploadFile'].name.split(".")[-1]
+            name_file = f'{v_descricao}.{ext_file}'
+            request.FILES['uploadFile'].name = name_file
+            obj = FileUpload()
+            obj.DescricaoUpload = v_descricao
+            obj.uploadFile = request.FILES['uploadFile']
+            if obj.save():
+                mensagem = 'Arquivo enviado ao servidor com sucesso'
+                mensagem_tipo = 'SUCESSO'
+        else:
+            mensagem = 'Arquivo não selecionado'
+            mensagem_tipo = 'ERROR'
     s_fatura = FaturaSelecionada(idfatura).__dict__
-    contexto = {'s_fatura': s_fatura, 'form': form}
+    contexto = {'s_fatura': s_fatura, 'mensagem': mensagem, 'mensagem_tipo': mensagem_tipo,}
     return render(request, 'faturamentos/fatura.html', contexto)

@@ -3,20 +3,34 @@
 
 {% block mainfaturamento %}
 <main>
-    <form class="row g-3" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="col-md-4">
-            <label for="id_DescricaoUpload">Descrição do arquivo</label>
-            {{ form.DescricaoUpload }}
-            {{ form.DescricaoUpload.errors }}
+    <article class="article-card">
+        <div class="article-card-titulo">
+            <span>UPLOAD ARQUIVOS</span>
         </div>
-        <div class="col-md-4">
-            <label for="id_uploadFile">arquivo</label>
-            {{ form.uploadFile}}
-            {{ form.uploadFile.errors }}
-        <div class="col-md-4">
-            <input type="submit" value="upload">
+        <div class="article-card-body">
+            <form class="file-body" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" name="uploadFile" class="file js-file-nota" id="filenota" value="">
+                <label for="filenota" class="bi bi-folder i-button custonBtn radius-left"></label>
+                <span class="filenameTxt js-notaTxt">Selecionar nota fiscal.</span>
+                <input type="hidden" name="idobj" value="{{ s_fatura.idfatura }}">
+                <input type="hidden" name="tipo" value="NOTA">
+                <button type="submit" class="bi bi-cloud-arrow-up i-button custonBtn radius-right"></button>
+            </form>
+            <form class="file-body" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" name="uploadFile" class="file js-file-boleto" id="fileboleto" value="">
+                <label for="fileboleto" class="bi bi-folder i-button custonBtn radius-left"></label>
+                <span class="filenameTxt js-boletoTxt">Selecionar boleto.</span>
+                <input type="hidden" name="idobj" value="{{ s_fatura.idfatura }}">
+                <input type="hidden" name="tipo" value="BOLETO">
+                <button type="submit" class="bi bi-cloud-arrow-up i-button custonBtn radius-right"></button>
+            </form>
+            
         </div>
-    </form>
+        <div class="article-card-footer">
+            <i class="bi bi-trash-square i-button"></i>            
+        </div>
+    </article>
 </main>
 {% endblock %}

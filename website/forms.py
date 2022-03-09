@@ -48,12 +48,3 @@ class CadastraParametroTabelaPadrao(forms.ModelForm):
         fields = ['idParametro', 'Chave', 'Valor']
         widgets = {'Chave': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'True'}),
                    'Valor': forms.Select(choices=fantasia, attrs={'class': 'form-control'})}
-
-
-class FormFileUpload(forms.ModelForm):
-    class Meta:
-        model = FileUpload
-        fields = ['DescricaoUpload', 'uploadFile']
-        widgets = {'DescricaoUpload': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'True'}),
-                   'uploadFile': forms.FileInput(attrs={'class': 'form-control'}),
-                   }

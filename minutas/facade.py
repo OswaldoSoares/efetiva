@@ -1030,7 +1030,6 @@ def retorna_json(data):
 
 
 def forn_minuta(request, c_form, c_idobj, c_url, c_view):
-    print(c_form, c_idobj, c_url, c_view)
     data = dict()
     c_instance = None
     mensagem = None

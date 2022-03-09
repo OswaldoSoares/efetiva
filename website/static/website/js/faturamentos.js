@@ -1,4 +1,23 @@
 $(document).ready(function(){
+    $('.js-file-nota').on('change', function() {
+        if ($('.js-file-nota').val()) {
+            $('.js-notaTxt').text($('.js-file-nota').val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]);
+        } else {
+            $('.js-notaTxt').text('Selecionar nota fiscal.');
+        }
+    });
+
+    $('.js-file-boleto').on('change', function() {
+        if ($('.js-file-boleto').val()) {
+            $('.js-boletoTxt').text($('.js-file-boleto').val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]);
+        } else {
+            $('.js-boletoTxt').text('Selecionar boleto.');
+        }
+    });
+
+
+
+
     var buscaDados = function(minuta){
         var minuta = minuta;
         var idcliente = 9;

@@ -5,6 +5,12 @@
     --corterciaria: deeppink;
     --corsidebar: #CD6090;
     --corfundo: white;
+    --color1: #363636;
+    --color2: #4f4f4f;
+    --color3: yellow;
+    --color4: dodgerblue;
+    --color5: deeppink;
+    --color6: white;
 }
 /* Arquivo base.html */
 * {
@@ -2788,6 +2794,17 @@ main .fp-recibo-tabela .fp-recibo-print {
         margin-right: 5px;
     }
 
+        .article-titulo {
+            background-color: #363636;
+            color: white;
+            height: 50px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            text-align: center;
+            border-radius: 10px 10px 0 0; 
+        }
+
         .ac-lista {
             background-color: #4f4f4f;
             color: #ffffff;
@@ -3826,4 +3843,108 @@ main .fp-recibo-tabela .fp-recibo-print {
     padding-top: 20px;
     font-size: 14px;
     color: white;
+}
+
+
+/* CARD */
+.article {
+    margin: 0;
+    padding: 0%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: left;
+    align-items: flex-start;
+}
+
+    .article-card {
+        width: 300px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-top: 5px;
+        margin-right: 5px;
+    }
+
+        .article-card-titulo {
+            background-color: var(--color1);
+            color: white;
+            height: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px 10px 0 0; 
+        }
+
+        .article-card-titulo span {
+            color: var(--color6)
+            
+        }
+
+        .article-card-body {
+            background-color: var(--color2);
+        }
+
+        .article-card-body form {
+            padding: 0 5px;
+        }
+
+        .article-card-footer {
+            background-color: var(--color1);
+            height: 30px;
+            border-radius: 0 0 10px 10px;
+        }
+
+.file {
+    top: 0;
+    left: 0;
+    width: 0.1px;
+    height: 0.1px;
+    position: absolute;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.file-body {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.custonBtn {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    background-color: var(--color1);
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .radius-left {
+        border-radius: 10px 0 0 10px;
+    }
+
+    .radius-right {
+        border-radius: 0 10px 10px 0;
+    }
+
+.filenameTxt {
+    min-width: 200px;
+    max-width: 200px;
+    height: 40px;
+    padding: 0 10px;
+    font-family: sans-serif;
+    color: white;
+    border: 2px solid var(--color1);
+    display: flex;
+    align-items: center;
+    justify-content: left;
 }
