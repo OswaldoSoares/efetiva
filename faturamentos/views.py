@@ -196,8 +196,8 @@ def email_fatura(request, idfatura):
 
 
 def fatura(request, idfatura):
-    mensagem = None
-    mensagem_tipo = None
+    text_mensagem = None
+    type_mensagem = None
     if request.method == 'POST':
         if request.FILES:
             if request.POST.get('tipo') == 'NOTA':
@@ -210,12 +210,16 @@ def fatura(request, idfatura):
             obj = FileUpload()
             obj.DescricaoUpload = v_descricao
             obj.uploadFile = request.FILES['uploadFile']
-            if obj.save():
-                mensagem = 'Arquivo enviado ao servidor com sucesso'
-                mensagem_tipo = 'SUCESSO'
+            try:
+                obj.save()
+                text_mensagem = 'Arquivo enviado ao servidor com sucesso'
+                type_mensagem = 'SUCESSO'
+            except:
+                text_mensagem = 'Falha ao salvar seu arquivo, tente novamente'
+                type_mensagem = 'ERROR'
         else:
-            mensagem = 'Arquivo não selecionado'
-            mensagem_tipo = 'ERROR'
+            text_mensagem = 'Arquivo não selecionado'
+            type_mensagem = 'ERROR'
     s_fatura = FaturaSelecionada(idfatura).__dict__
-    contexto = {'s_fatura': s_fatura, 'mensagem': mensagem, 'mensagem_tipo': mensagem_tipo,}
+    contexto = {'s_fatura': s_fatura, 'text_mensagem': text_mensagem, 'type_mensagem': type_mensagem,}
     return render(request, 'faturamentos/fatura.html', contexto)

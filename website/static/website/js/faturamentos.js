@@ -15,8 +15,19 @@ $(document).ready(function(){
         }
     });
 
-
-
+    var text_mensagem = $('.text-mensagem').text()
+    var type_mensagem = $('.type-mensagem').text()
+    if (type_mensagem != 'None') {
+        if (type_mensagem == 'ERROR') {
+            $('.mensagem-erro').text(text_mensagem)
+            $(".div-erro").slideDown(500)
+            $(".div-erro").delay(5000).slideUp(500) 
+        } else if (type_mensagem == 'SUCESSO') {
+            $('.mensagem-sucesso').text(text_mensagem)
+            $(".div-sucesso").slideDown(500)
+            $(".div-sucesso").delay(5000).slideUp(500) 
+        }
+    }
 
     var buscaDados = function(minuta){
         var minuta = minuta;

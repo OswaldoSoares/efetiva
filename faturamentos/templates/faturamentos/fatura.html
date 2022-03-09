@@ -3,6 +3,10 @@
 
 {% block mainfaturamento %}
 <main>
+    <div class="save-mensagem" hidden="true">
+        <text class="text-mensagem">{{ text_mensagem }}</text>
+        <text class="type-mensagem">{{ type_mensagem }}</text>
+    </div>
     <article class="article-card">
         <div class="article-card-titulo">
             <span>UPLOAD ARQUIVOS</span>
@@ -26,7 +30,6 @@
                 <input type="hidden" name="tipo" value="BOLETO">
                 <button type="submit" class="bi bi-cloud-arrow-up i-button custonBtn radius-right"></button>
             </form>
-            
         </div>
         <div class="article-card-footer">
             <i class="bi bi-trash-square i-button"></i>            
