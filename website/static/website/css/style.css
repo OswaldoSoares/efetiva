@@ -3928,15 +3928,16 @@ main .fp-recibo-tabela .fp-recibo-print {
     justify-content: center;
 }
 
-    .radius-left {
-        border-radius: 10px 0 0 10px;
-    }
+.radius-left {
+    border-radius: 10px 0 0 10px;
+}
 
-    .radius-right {
-        border-radius: 0 10px 10px 0;
-    }
+.radius-right {
+    border-radius: 0 10px 10px 0;
+}
 
 .filenameTxt {
+    background-color: black;
     min-width: 200px;
     max-width: 200px;
     height: 40px;

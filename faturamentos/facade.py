@@ -1,3 +1,4 @@
+import os
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from faturamentos.models import Fatura
@@ -39,7 +40,7 @@ class NotasFatura:
 
     @staticmethod
     def get_notas(v_idfatura):
-        notas = FileUpload.objects.filter(DescricaoUpload=f'NF_FATURA_{str(v_idfatura).zfill(6)}')
+        notas = FileUpload.objects.filter(DescricaoUpload=f'Fatura_{str(v_idfatura).zfill(6)}_nf')
         return notas
 
 
@@ -49,7 +50,7 @@ class BoletosFatura:
 
     @staticmethod
     def get_boletos(v_idfatura):
-        boletos = FileUpload.objects.filter(DescricaoUpload=f'BOLETO_FATURA_{str(v_idfatura).zfill(6)}')
+        boletos = FileUpload.objects.filter(DescricaoUpload=f'Fatura_{str(v_idfatura).zfill(6)}_boleto')
         return boletos
 
 
@@ -61,6 +62,17 @@ def retorna_json(data):
 def nome_arquivo_nota(id_fatura):
     v_descricao = f'fatura_{str(id_fatura).zfill(6)}_nf'
     return v_descricao
+
+
+def delete_arquivo(request, id_fileupload, id_fatura):
+    data = dict()
+    nota = FileUpload.objects.get(idFileUpload=id_fileupload)
+    nota.delete()
+    os.remove(nota.uploadFile.path)
+    s_fatura = FaturaSelecionada(id_fatura).__dict__
+    contexto = {'s_fatura': s_fatura}
+    data['html_file'] = render_to_string('faturamentos/fatura_file.html', contexto, request=request)
+    return retorna_json(data)
 
 
 def form_fatura(request, v_form, v_idobj, v_url, v_view):

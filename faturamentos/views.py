@@ -5,7 +5,7 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from rolepermissions.decorators import has_permission_decorator
 
-from faturamentos.facade import FaturaSelecionada, form_fatura, retorna_json
+from faturamentos.facade import FaturaSelecionada, delete_arquivo, form_fatura, retorna_json
 from website.models import FileUpload
 from .models import Fatura
 from .forms import PagaFatura
@@ -223,3 +223,14 @@ def fatura(request, idfatura):
     s_fatura = FaturaSelecionada(idfatura).__dict__
     contexto = {'s_fatura': s_fatura, 'text_mensagem': text_mensagem, 'type_mensagem': type_mensagem,}
     return render(request, 'faturamentos/fatura.html', contexto)
+
+
+def print_file(request):
+    pass
+
+
+def delete_file(request):
+    v_idobj = request.GET.get('idobj')
+    v_idfatura = request.GET.get('idfatura')
+    data = delete_arquivo(request, v_idobj, v_idfatura)
+    return data    

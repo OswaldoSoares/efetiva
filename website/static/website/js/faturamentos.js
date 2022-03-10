@@ -1,4 +1,18 @@
 $(document).ready(function(){
+    var text_mensagem = $('.text-mensagem').text()
+    var type_mensagem = $('.type-mensagem').text()
+    if (type_mensagem != 'None') {
+        if (type_mensagem == 'ERROR') {
+            $('.mensagem-erro').text(text_mensagem)
+            $(".div-erro").slideDown(500)
+            $(".div-erro").delay(5000).slideUp(500) 
+        } else if (type_mensagem == 'SUCESSO') {
+            $('.mensagem-sucesso').text(text_mensagem)
+            $(".div-sucesso").slideDown(500)
+            $(".div-sucesso").delay(5000).slideUp(500) 
+        }
+    }
+
     $('.js-file-nota').on('change', function() {
         if ($('.js-file-nota').val()) {
             $('.js-notaTxt').text($('.js-file-nota').val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]);
@@ -15,19 +29,38 @@ $(document).ready(function(){
         }
     });
 
-    var text_mensagem = $('.text-mensagem').text()
-    var type_mensagem = $('.type-mensagem').text()
-    if (type_mensagem != 'None') {
-        if (type_mensagem == 'ERROR') {
-            $('.mensagem-erro').text(text_mensagem)
-            $(".div-erro").slideDown(500)
-            $(".div-erro").delay(5000).slideUp(500) 
-        } else if (type_mensagem == 'SUCESSO') {
-            $('.mensagem-sucesso').text(text_mensagem)
-            $(".div-sucesso").slideDown(500)
-            $(".div-sucesso").delay(5000).slideUp(500) 
-        }
-    }
+    $('.js-print-file').on('click', function() {
+        var idobj = $(this).data('idobj')
+
+        $.ajax({
+            url: '/faturamentos/print_file',
+            type: 'GET',
+            data: {
+                idobj: idobj,
+            }
+        });
+    });
+
+    $('.js-delete-file').on('click', function() {
+        var idobj = $(this).data('idobj')
+        var idfatura = $(this).data('idfatura')
+        $.ajax({
+            url: '/faturamentos/delete_file',
+            type: 'GET',
+            data: {
+                idobj: idobj,
+                idfatura: idfatura,
+            },
+            beforeSend: function() {
+                $('.article-card-body').fadeOut('500')
+                $('.article-card-body').html('')
+            },
+            success: function(data) {
+                $('.article-card-body').html(data['html_file'])
+                $('.article-card-body').fadeIn('500')
+            }
+        });
+    });
 
     var buscaDados = function(minuta){
         var minuta = minuta;
