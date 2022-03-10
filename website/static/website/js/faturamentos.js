@@ -29,26 +29,7 @@ $(document).ready(function(){
         }
     });
 
-    $('.js-delete-file').on('click', function() {
-        var idobj = $(this).data('idobj')
-        var idfatura = $(this).data('idfatura')
-        $.ajax({
-            url: '/faturamentos/delete_file',
-            type: 'GET',
-            data: {
-                idobj: idobj,
-                idfatura: idfatura,
-            },
-            beforeSend: function() {
-                $('.article-card-body').fadeOut('500')
-                $('.article-card-body').html('')
-            },
-            success: function(data) {
-                $('.article-card-body').html(data['html_file'])
-                $('.article-card-body').fadeIn('500')
-            }
-        });
-    });
+    
 
     var buscaDados = function(minuta){
         var minuta = minuta;
@@ -134,4 +115,22 @@ $(document).ready(function(){
 
     $(".js-pagafatura").click(loadForm);
 
+});
+
+$('.js-delete-file').on('click', function() {
+    var idobj = $(this).data('idobj')
+    var idfatura = $(this).data('idfatura')
+    $.ajax({
+        url: '/faturamentos/delete_file',
+        type: 'GET',
+        data: {
+            idobj: idobj,
+            idfatura: idfatura,
+        },
+        beforeSend: function() {
+        },
+        success: function(data) {
+            window.location.href = '/faturamentos/fatura/' + data['idfatura'] + '/'
+        }
+    });
 });

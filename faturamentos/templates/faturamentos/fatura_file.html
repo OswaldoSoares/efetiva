@@ -1,7 +1,7 @@
 {% if s_fatura.notas_fatura %}
     {% for notas in s_fatura.notas_fatura %}
         <div class="file-body">
-            <a class="bi bi-printer i-button custonBtn radius-left" href="{{ notas.uploadFile.url }}" target="_blank"></a>
+            <a class="bi bi-download i-button custonBtn radius-left" href="{{ notas.uploadFile.url }}" target="_blank"></a>
             <span class="filenameTxt">{{ notas.DescricaoUpload }}</span>
             <i class="bi bi-trash i-button custonBtn radius-right js-delete-file" data-idobj="{{ notas.idFileUpload }}" data-idfatura="{{ s_fatura.idfatura }}"></i>
         </div>
@@ -20,7 +20,7 @@
 {% if s_fatura.boletos_fatura %}
     {% for boletos in s_fatura.boletos_fatura %}
         <div class="file-body">
-            <a class="bi bi-printer i-button custonBtn radius-left" href="{{ boletos.uploadFile.url }}" target="_blank"></a>
+            <a class="bi bi-download i-button custonBtn radius-left" href="{{ boletos.uploadFile.url }}" target="_blank"></a>
             <span class="filenameTxt">{{ boletos.DescricaoUpload }}</span>
             <i class="bi bi-trash i-button custonBtn radius-right js-delete-file" data-idobj="{{ boletos.idFileUpload }}" data-idfatura="{{ s_fatura.idfatura }}"></i>
         </div>

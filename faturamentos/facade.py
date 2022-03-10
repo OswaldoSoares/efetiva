@@ -69,9 +69,7 @@ def delete_arquivo(request, id_fileupload, id_fatura):
     nota = FileUpload.objects.get(idFileUpload=id_fileupload)
     nota.delete()
     os.remove(nota.uploadFile.path)
-    s_fatura = FaturaSelecionada(id_fatura).__dict__
-    contexto = {'s_fatura': s_fatura}
-    data['html_file'] = render_to_string('faturamentos/fatura_file.html', contexto, request=request)
+    data['idfatura'] = id_fatura
     return retorna_json(data)
 
 
