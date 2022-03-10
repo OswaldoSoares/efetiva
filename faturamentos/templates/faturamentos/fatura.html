@@ -9,10 +9,16 @@
     </div>
     <article class="article-card">
         <div class="article-card-titulo">
-            <span>{{ s_fatura.fatura }}</span>
+            <span>FATURA {{ s_fatura.fatura }}</span>
         </div>
         <div class="article-card-body">
-
+            <div class="itens-body">
+                <div class="itens-fatura">{{ s_fatura.cliente_fatura.Fantasia }}</div>
+                <div class="itens-fatura">DATA {{ s_fatura.data_fatura }}</div>
+                <div class="itens-fatura">VALOR R$ {{ s_fatura.valor_fatura }}</div>
+                <div class="itens-fatura">TOTAL DE MINUTAS {{ s_fatura.quantidade_minutas }}</div>
+                <div class="itens-fatura">VENCIMENTO {{ s_fatura.vencimento_fatura }}</div>
+            </div>
         </div>
         <div class="article-card-footer">
             

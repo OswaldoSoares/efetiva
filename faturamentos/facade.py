@@ -21,6 +21,8 @@ class FaturaSelecionada:
         self.minutas_fatura = MinutasFatura(v_idfatura).minutas
         self.notas_fatura = NotasFatura(self.fatura).notas
         self.boletos_fatura = BoletosFatura(self.fatura).boletos
+        self.cliente_fatura = ClienteFatura(v_idfatura).cliente
+        self.quantidade_minutas = len(self.minutas_fatura)
 
 
 class MinutasFatura:
@@ -30,7 +32,7 @@ class MinutasFatura:
     @staticmethod
     def get_minutas(v_idfatura):
         minutas = Minuta.objects.filter(idFatura=v_idfatura)
-        lista = [{'idMinuta': itens.idMinuta, 'Minuta': itens.Minuta} for itens in minutas]
+        lista = [{'idMinuta': itens.idMinuta, 'Minuta': itens.Minuta, 'idCliente': itens.idCliente} for itens in minutas]
         return lista
 
 
@@ -52,6 +54,17 @@ class BoletosFatura:
     def get_boletos(v_fatura):
         boletos = FileUpload.objects.filter(DescricaoUpload=f'Fatura_{str(v_fatura).zfill(6)}_boleto')
         return boletos
+
+
+class ClienteFatura:
+    def __init__(self, v_idfatura):
+        self.cliente = self.get_cliente(v_idfatura)
+
+    @staticmethod
+    def get_cliente(v_idfatura):
+        minutas = Minuta.objects.filter(idFatura=v_idfatura)
+        cliente = minutas[0].idCliente
+        return cliente
 
 
 def get_fatura(v_idfatura):
