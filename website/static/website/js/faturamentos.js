@@ -29,6 +29,26 @@ $(document).ready(function(){
         }
     });
 
+    $('.js-delete-file').on('click', function() {
+        var idobj = $(this).data('idobj')
+        var idfatura = $(this).data('idfatura')
+        $.ajax({
+            url: '/faturamentos/delete_file',
+            type: 'GET',
+            data: {
+                idobj: idobj,
+                idfatura: idfatura,
+            },
+            beforeSend: function() {
+            },
+            success: function(data) {
+                window.location.href = '/faturamentos/fatura/' + data['idfatura'] + '/'
+            }
+        });
+    });
+
+    
+
     
 
     var buscaDados = function(minuta){
@@ -115,22 +135,4 @@ $(document).ready(function(){
 
     $(".js-pagafatura").click(loadForm);
 
-});
-
-$('.js-delete-file').on('click', function() {
-    var idobj = $(this).data('idobj')
-    var idfatura = $(this).data('idfatura')
-    $.ajax({
-        url: '/faturamentos/delete_file',
-        type: 'GET',
-        data: {
-            idobj: idobj,
-            idfatura: idfatura,
-        },
-        beforeSend: function() {
-        },
-        success: function(data) {
-            window.location.href = '/faturamentos/fatura/' + data['idfatura'] + '/'
-        }
-    });
 });

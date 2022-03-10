@@ -59,9 +59,30 @@ def retorna_json(data):
     return c_return
 
 
-def nome_arquivo_nota(id_fatura):
-    v_descricao = f'fatura_{str(id_fatura).zfill(6)}_nf'
-    return v_descricao
+def salva_arquivo(request, msg, idfatura):
+    if request.method == 'POST':
+        if request.FILES:
+            if request.POST.get('tipo') == 'NOTA':
+                v_descricao = f'Fatura_{str(idfatura).zfill(6)}_nf'
+            elif request.POST.get('tipo') == 'BOLETO':
+                v_descricao = f'Fatura_{str(idfatura).zfill(6)}_boleto'
+            ext_file = request.FILES['uploadFile'].name.split(".")[-1]
+            name_file = f'{v_descricao}.{ext_file}'
+            request.FILES['uploadFile'].name = name_file
+            obj = FileUpload()
+            obj.DescricaoUpload = v_descricao
+            obj.uploadFile = request.FILES['uploadFile']
+            try:
+                obj.save()
+                msg['text_mensagem'] = 'Arquivo enviado ao servidor com sucesso'
+                msg['type_mensagem'] = 'SUCESSO'
+            except:
+                msg['text_mensagem'] = 'Falha ao salvar seu arquivo, tente novamente'
+                msg['type_mensagem'] = 'ERROR'
+        else:
+            msg['text_mensagem'] = 'Arquivo não selecionado'
+            msg['type_mensagem'] = 'ERROR'
+    return msg
 
 
 def delete_arquivo(request, id_fileupload, id_fatura):
@@ -77,24 +98,10 @@ def form_fatura(request, v_form, v_idobj, v_url, v_view):
     data = dict()
     v_instance = None
     form = None
-    print(v_url)
     if request.method == 'POST':
-        if v_view == 'upload_nota':
-            v_descricao = nome_arquivo_nota(v_idobj)
-            print(request.FILES['uploadFile'].name)
-            ext_file = request.FILES['uploadFile'].name.split(".")[-1]
-            name_file = f'{v_descricao}.{ext_file}'
-            request.FILES['uploadFile'].name = name_file
-            form = v_form(request.POST, request.FILES)
-        if form.is_valid():
-            print(form)
-            # form.save()
+        pass
     else:
-        if v_view == 'upload_nota':
-            v_descricao = nome_arquivo_nota(v_idobj)
-            form = v_form(instance=v_instance, initial={'DescricaoUpload': v_descricao})
-        else:
-            form = v_form(instance=v_instance)
+        form = v_form(instance=v_instance)
     contexto = {'form': form, 'v_idobj': v_idobj, 'v_view': v_view, 'v_url': v_url}
     data['html_form'] = render_to_string('faturamentos/form_fatura.html', contexto, request=request)
     return retorna_json(data)

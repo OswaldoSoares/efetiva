@@ -5,7 +5,7 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from rolepermissions.decorators import has_permission_decorator
 
-from faturamentos.facade import FaturaSelecionada, delete_arquivo, form_fatura, retorna_json
+from faturamentos.facade import FaturaSelecionada, delete_arquivo, form_fatura, retorna_json, salva_arquivo
 from website.models import FileUpload
 from .models import Fatura
 from .forms import PagaFatura
@@ -196,37 +196,11 @@ def email_fatura(request, idfatura):
 
 
 def fatura(request, idfatura):
-    text_mensagem = None
-    type_mensagem = None
-    if request.method == 'POST':
-        if request.FILES:
-            if request.POST.get('tipo') == 'NOTA':
-                v_descricao = f'fatura_{str(idfatura).zfill(6)}_nf'
-            elif request.POST.get('tipo') == 'BOLETO':
-                v_descricao = f'fatura_{str(idfatura).zfill(6)}_boleto'
-            ext_file = request.FILES['uploadFile'].name.split(".")[-1]
-            name_file = f'{v_descricao}.{ext_file}'
-            request.FILES['uploadFile'].name = name_file
-            obj = FileUpload()
-            obj.DescricaoUpload = v_descricao
-            obj.uploadFile = request.FILES['uploadFile']
-            try:
-                obj.save()
-                text_mensagem = 'Arquivo enviado ao servidor com sucesso'
-                type_mensagem = 'SUCESSO'
-            except:
-                text_mensagem = 'Falha ao salvar seu arquivo, tente novamente'
-                type_mensagem = 'ERROR'
-        else:
-            text_mensagem = 'Arquivo não selecionado'
-            type_mensagem = 'ERROR'
+    msg = {'text_mensagem': None, 'type_mensagem': None}
+    msg = salva_arquivo(request, msg, idfatura)
     s_fatura = FaturaSelecionada(idfatura).__dict__
-    contexto = {'s_fatura': s_fatura, 'text_mensagem': text_mensagem, 'type_mensagem': type_mensagem,}
+    contexto = {'s_fatura': s_fatura, 'msg': msg}
     return render(request, 'faturamentos/fatura.html', contexto)
-
-
-def print_file(request):
-    pass
 
 
 def delete_file(request):
