@@ -207,4 +207,4 @@ def delete_file(request):
     v_idobj = request.GET.get('idobj')
     v_idfatura = request.GET.get('idfatura')
     data = delete_arquivo(request, v_idobj, v_idfatura)
-    return data    
+    return data

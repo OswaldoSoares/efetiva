@@ -19,8 +19,8 @@ class FaturaSelecionada:
         self.data_pagamento = fatura.DataPagamento
         self.comentario = fatura.Comentario
         self.minutas_fatura = MinutasFatura(v_idfatura).minutas
-        self.notas_fatura = NotasFatura(v_idfatura).notas
-        self.boletos_fatura = BoletosFatura(v_idfatura).boletos
+        self.notas_fatura = NotasFatura(self.fatura).notas
+        self.boletos_fatura = BoletosFatura(self.fatura).boletos
 
 
 class MinutasFatura:
@@ -35,23 +35,29 @@ class MinutasFatura:
 
 
 class NotasFatura:
-    def __init__(self, v_idfatura):
-        self.notas = self.get_notas(v_idfatura)
+    def __init__(self, v_fatura):
+        self.notas = self.get_notas(v_fatura)
 
     @staticmethod
-    def get_notas(v_idfatura):
-        notas = FileUpload.objects.filter(DescricaoUpload=f'Fatura_{str(v_idfatura).zfill(6)}_nf')
+    def get_notas(v_fatura):
+        notas = FileUpload.objects.filter(DescricaoUpload=f'Fatura_{str(v_fatura).zfill(6)}_nf')
         return notas
 
 
 class BoletosFatura:
-    def __init__(self, v_idfatura):
-        self.boletos = self.get_boletos(v_idfatura)
+    def __init__(self, v_fatura):
+        self.boletos = self.get_boletos(v_fatura)
 
     @staticmethod
-    def get_boletos(v_idfatura):
-        boletos = FileUpload.objects.filter(DescricaoUpload=f'Fatura_{str(v_idfatura).zfill(6)}_boleto')
+    def get_boletos(v_fatura):
+        boletos = FileUpload.objects.filter(DescricaoUpload=f'Fatura_{str(v_fatura).zfill(6)}_boleto')
         return boletos
+
+
+def get_fatura(v_idfatura):
+    fatura = Fatura.objects.filter(idFatura=v_idfatura)
+    lista = [{'idfatura': itens.idFatura, 'fatura': itens.Fatura, 'datafatura': itens.DataFatura, 'valorfatura': itens.ValorFatura, 'vencimentofatura': itens.VencimentoFatura, 'statusfatura': itens.StatusFatura, 'datapagamento': itens.DataPagamento, 'valorpagamento': itens.ValorPagamento, 'comentario': itens.Comentario} for itens in fatura]
+    return lista
 
 
 def retorna_json(data):
@@ -59,13 +65,15 @@ def retorna_json(data):
     return c_return
 
 
-def salva_arquivo(request, msg, idfatura):
+def salva_arquivo(request, msg, v_idfatura):
+    fatura = get_fatura(v_idfatura)
+    numero_fatura = fatura[0]['fatura']
     if request.method == 'POST':
         if request.FILES:
             if request.POST.get('tipo') == 'NOTA':
-                v_descricao = f'Fatura_{str(idfatura).zfill(6)}_nf'
+                v_descricao = f'Fatura_{str(numero_fatura).zfill(6)}_nf'
             elif request.POST.get('tipo') == 'BOLETO':
-                v_descricao = f'Fatura_{str(idfatura).zfill(6)}_boleto'
+                v_descricao = f'Fatura_{str(numero_fatura).zfill(6)}_boleto'
             ext_file = request.FILES['uploadFile'].name.split(".")[-1]
             name_file = f'{v_descricao}.{ext_file}'
             request.FILES['uploadFile'].name = name_file
