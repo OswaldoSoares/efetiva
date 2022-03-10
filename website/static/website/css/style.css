@@ -3512,13 +3512,17 @@ main .fp-recibo-tabela .fp-recibo-print {
     margin-right: 5px;
 }
 
-.i-button {
-    color: yellow;
+.i-button,
+.i-button:active,
+.i-button:focus {
+    color: var(--color3);
+    text-decoration: none;
 }
 
 .i-button:hover {
     color: dodgerblue;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .i-button-form {

@@ -29,18 +29,6 @@ $(document).ready(function(){
         }
     });
 
-    $('.js-print-file').on('click', function() {
-        var idobj = $(this).data('idobj')
-
-        $.ajax({
-            url: '/faturamentos/print_file',
-            type: 'GET',
-            data: {
-                idobj: idobj,
-            }
-        });
-    });
-
     $('.js-delete-file').on('click', function() {
         var idobj = $(this).data('idobj')
         var idfatura = $(this).data('idfatura')
