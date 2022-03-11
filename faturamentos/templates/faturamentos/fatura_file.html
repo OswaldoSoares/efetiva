@@ -1,38 +1,37 @@
-{% if s_fatura.notas_fatura %}
+{{ s_fatura.total_notas }}
+{% if s_fatura.total_notas > 0 %}
     {% for notas in s_fatura.notas_fatura %}
-        <div class="file-body">
-            <a class="bi bi-download i-button custonBtn radius-left" href="{{ notas.uploadFile.url }}" target="_blank"></a>
-            <span class="filenameTxt">{{ notas.DescricaoUpload }}</span>
-            <i class="bi bi-trash i-button custonBtn radius-right js-delete-file" data-idobj="{{ notas.idFileUpload }}" data-idfatura="{{ s_fatura.idfatura }}"></i>
-        </div>
+    <div class="file-body">
+        <a class="bi bi-download i-button custonBtn radius-left" href="{{ notas.uploadFile.url }}" target="_blank"></a>
+        <span class="filenameTxt">{{ notas.DescricaoUpload }}</span>
+        <i class="bi bi-trash i-button custonBtn radius-right js-delete-file" data-idobj="{{ notas.idFileUpload }}" data-idfatura="{{ s_fatura.idfatura }}"></i>
+    </div>
     {% endfor %}
-{% else %}
-    <form class="file-body" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="file" name="uploadFile" class="file js-file-nota" id="filenota" value="">
-        <label for="filenota" class="bi bi-folder i-button custonBtn radius-left"></label>
-        <span class="filenameTxt js-notaTxt">Selecionar nota fiscal.</span>
-        <input type="hidden" name="idobj" value="{{ s_fatura.idfatura }}">
-        <input type="hidden" name="tipo" value="NOTA">
-        <button type="submit" class="bi bi-cloud-arrow-up i-button custonBtn radius-right"></button>
-    </form>
 {% endif %}
-{% if s_fatura.boletos_fatura %}
-    {% for boletos in s_fatura.boletos_fatura %}
-        <div class="file-body">
-            <a class="bi bi-download i-button custonBtn radius-left" href="{{ boletos.uploadFile.url }}" target="_blank"></a>
-            <span class="filenameTxt">{{ boletos.DescricaoUpload }}</span>
-            <i class="bi bi-trash i-button custonBtn radius-right js-delete-file" data-idobj="{{ boletos.idFileUpload }}" data-idfatura="{{ s_fatura.idfatura }}"></i>
-        </div>
-    {% endfor %}
-{% else %}
-    <form class="file-body" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="file" name="uploadFile" class="file js-file-boleto" id="fileboleto" value="">
-        <label for="fileboleto" class="bi bi-folder i-button custonBtn radius-left"></label>
-        <span class="filenameTxt js-boletoTxt">Selecionar boleto.</span>
-        <input type="hidden" name="idobj" value="{{ s_fatura.idfatura }}">
-        <input type="hidden" name="tipo" value="BOLETO">
-        <button type="submit" class="bi bi-cloud-arrow-up i-button custonBtn radius-right"></button>
-    </form>
+{% if s_fatura.total_boletos %}
+{% for boletos in s_fatura.boletos_fatura %}
+<div class="file-body">
+    <a class="bi bi-download i-button custonBtn radius-left" href="{{ boletos.uploadFile.url }}" target="_blank"></a>
+    <span class="filenameTxt">{{ boletos.DescricaoUpload }}</span>
+    <i class="bi bi-trash i-button custonBtn radius-right js-delete-file" data-idobj="{{ boletos.idFileUpload }}" data-idfatura="{{ s_fatura.idfatura }}"></i>
+</div>
+{% endfor %}
 {% endif %}
+<form class="file-body" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="uploadFile" class="file js-file-nota" id="filenota" value="">
+    <label for="filenota" class="bi bi-folder i-button custonBtn radius-left"></label>
+    <span class="filenameTxt js-notaTxt">Selecionar nota fiscal.</span>
+    <input type="hidden" name="idobj" value="{{ s_fatura.idfatura }}">
+    <input type="hidden" name="tipo" value="NOTA">
+    <button type="submit" class="bi bi-cloud-arrow-up i-button custonBtn radius-right"></button>
+</form>
+<form class="file-body" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="uploadFile" class="file js-file-boleto" id="fileboleto" value="">
+    <label for="fileboleto" class="bi bi-folder i-button custonBtn radius-left"></label>
+    <span class="filenameTxt js-boletoTxt">Selecionar boleto.</span>
+    <input type="hidden" name="idobj" value="{{ s_fatura.idfatura }}">
+    <input type="hidden" name="tipo" value="BOLETO">
+    <button type="submit" class="bi bi-cloud-arrow-up i-button custonBtn radius-right"></button>
+</form>

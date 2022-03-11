@@ -5,7 +5,7 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from rolepermissions.decorators import has_permission_decorator
 
-from faturamentos.facade import FaturaSelecionada, delete_arquivo, form_fatura, retorna_json, salva_arquivo
+from faturamentos.facade import FaturaSelecionada, delete_arquivo, salva_arquivo
 from website.models import FileUpload
 from .models import Fatura
 from .forms import PagaFatura

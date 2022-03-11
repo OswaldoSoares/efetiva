@@ -19,10 +19,12 @@ class FaturaSelecionada:
         self.data_pagamento = fatura.DataPagamento
         self.comentario = fatura.Comentario
         self.minutas_fatura = MinutasFatura(v_idfatura).minutas
+        self.total_minutas = len(self.minutas_fatura)
         self.notas_fatura = NotasFatura(self.fatura).notas
+        self.total_notas = len(self.notas_fatura)
         self.boletos_fatura = BoletosFatura(self.fatura).boletos
+        self.total_boletos = len(self.boletos_fatura)
         self.cliente_fatura = ClienteFatura(v_idfatura).cliente
-        self.quantidade_minutas = len(self.minutas_fatura)
 
 
 class MinutasFatura:
@@ -42,7 +44,7 @@ class NotasFatura:
 
     @staticmethod
     def get_notas(v_fatura):
-        notas = FileUpload.objects.filter(DescricaoUpload=f'Fatura_{str(v_fatura).zfill(6)}_nf')
+        notas = FileUpload.objects.filter(DescricaoUpload__startswith=f'FATURA_{str(v_fatura).zfill(6)}_NF')
         return notas
 
 
@@ -52,7 +54,7 @@ class BoletosFatura:
 
     @staticmethod
     def get_boletos(v_fatura):
-        boletos = FileUpload.objects.filter(DescricaoUpload=f'Fatura_{str(v_fatura).zfill(6)}_boleto')
+        boletos = FileUpload.objects.filter(DescricaoUpload__startswith=f'FATURA_{str(v_fatura).zfill(6)}_BOLETO')
         return boletos
 
 
@@ -79,14 +81,16 @@ def retorna_json(data):
 
 
 def salva_arquivo(request, msg, v_idfatura):
-    fatura = get_fatura(v_idfatura)
-    numero_fatura = fatura[0]['fatura']
+    fatura = FaturaSelecionada(v_idfatura).__dict__
+    numero_f = fatura['fatura']
+    total_n = fatura['total_notas']
+    total_b = fatura['total_boletos']
     if request.method == 'POST':
         if request.FILES:
             if request.POST.get('tipo') == 'NOTA':
-                v_descricao = f'Fatura_{str(numero_fatura).zfill(6)}_nf'
+                v_descricao = f'Fatura_{str(numero_f).zfill(6)}_nf_{str(total_n + 1).zfill(2)}'
             elif request.POST.get('tipo') == 'BOLETO':
-                v_descricao = f'Fatura_{str(numero_fatura).zfill(6)}_boleto'
+                v_descricao = f'Fatura_{str(numero_f).zfill(6)}_boleto_{str(total_b + 1).zfill(2)}'
             ext_file = request.FILES['uploadFile'].name.split(".")[-1]
             name_file = f'{v_descricao}.{ext_file}'
             request.FILES['uploadFile'].name = name_file
