@@ -1,4 +1,5 @@
 import os
+import re
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from faturamentos.models import Fatura
@@ -80,17 +81,31 @@ def retorna_json(data):
     return c_return
 
 
+def nome_arquivo(request, notas, boletos, v_fatura):
+    lista_notas = []
+    lista_boletos = []
+    seguencia = [itens + 1 for itens in range(99)]
+    for itens in notas:
+        lista_notas.append(int(itens.DescricaoUpload[-2:]))
+    lista_notas = sorted(lista_notas)
+    for itens in boletos:
+        lista_boletos.append(int(itens.DescricaoUpload[-2:]))
+    lista_notas = sorted(lista_notas)
+    lista_boletos = sorted(lista_boletos)
+    proxima_nota = str(list(set(seguencia) - set(lista_notas))[0]).zfill(2)
+    proximo_boleto = str(list(set(seguencia) - set(lista_boletos))[0]).zfill(2)
+    if request.POST.get('tipo') == 'NOTA':
+        descricao = f'Fatura_{str(v_fatura).zfill(6)}_nf_{proxima_nota}'
+    elif request.POST.get('tipo') == 'BOLETO':
+        descricao = f'Fatura_{str(v_fatura).zfill(6)}_boleto_{proximo_boleto}'
+    return descricao
+
+
 def salva_arquivo(request, msg, v_idfatura):
     fatura = FaturaSelecionada(v_idfatura).__dict__
-    numero_f = fatura['fatura']
-    total_n = fatura['total_notas']
-    total_b = fatura['total_boletos']
     if request.method == 'POST':
         if request.FILES:
-            if request.POST.get('tipo') == 'NOTA':
-                v_descricao = f'Fatura_{str(numero_f).zfill(6)}_nf_{str(total_n + 1).zfill(2)}'
-            elif request.POST.get('tipo') == 'BOLETO':
-                v_descricao = f'Fatura_{str(numero_f).zfill(6)}_boleto_{str(total_b + 1).zfill(2)}'
+            v_descricao = nome_arquivo(request, fatura['notas_fatura'], fatura['boletos_fatura'], fatura['fatura'])
             ext_file = request.FILES['uploadFile'].name.split(".")[-1]
             name_file = f'{v_descricao}.{ext_file}'
             request.FILES['uploadFile'].name = name_file
