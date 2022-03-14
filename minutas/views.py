@@ -727,11 +727,11 @@ def imprimeminuta(request, idmin):
         pdf.roundRect(convertemp(10), convertemp(10), convertemp(190), convertemp(277), 10)
         # ----
         # development
-        # pdf.drawImage('website/static/website/img/transportadora.jpg', convertemp(12), convertemp(265),
-        #               convertemp(40),convertemp(20))
+        pdf.drawImage('website/static/website/img/transportadora.jpg', convertemp(12), convertemp(265),
+                      convertemp(40),convertemp(20))
         # production
-        pdf.drawImage('efetiva/site/public/static/website/img/transportadora.jpg', convertemp(12), convertemp(265),
-                      convertemp(40), convertemp(20))
+        # pdf.drawImage('efetiva/site/public/static/website/img/transportadora.jpg', convertemp(12), convertemp(265),
+                    #   convertemp(40), convertemp(20))
         pdf.setFont("Times-Bold", 18)
         pdf.drawString(convertemp(56), convertemp(279), 'TRANSEFETIVA TRANSPORTE - EIRELLI - ME')
         pdf.setFont("Times-Roman", 12)

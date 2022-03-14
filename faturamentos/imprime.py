@@ -9,6 +9,9 @@ from minutas.views import convertemp
 from minutas.models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas
 from clientes.models import Cliente, TabelaPerimetro
 from .models import Fatura
+from website.models import FileUpload
+from django.core.files import File
+from django.core.files.base import ContentFile
 
 
 def decricao_servico(dict_servicos, perimetro_inicial, perimetro_final):
@@ -76,8 +79,10 @@ def imprime_cabecalho(pdf, fatura_selecionada):
     fatura_vemcimento = fatura_selecionada[0].VencimentoFatura.strftime("%d/%m/%Y")
     fatura_valor = 'R$ {}'.format(fatura_selecionada[0].ValorFatura).replace('.', ',')
     pdf.roundRect(convertemp(10), convertemp(10), convertemp(190), convertemp(277), 10)
-    pdf.drawImage('efetiva/site/public/static/website/img/transportadora.jpg', convertemp(12), convertemp(265),
-                  convertemp(40), convertemp(20))
+    pdf.drawImage('website/static/website/img/transportadora.jpg', convertemp(12), convertemp(265),
+                      convertemp(40),convertemp(20))
+    # pdf.drawImage('efetiva/site/public/static/website/img/transportadora.jpg', convertemp(12), convertemp(265),
+    #               convertemp(40), convertemp(20))
     pdf.setFont("Times-Bold", 18)
     pdf.drawString(convertemp(54), convertemp(279), 'TRANSEFETIVA TRANSPORTE - EIRELLI - ME')
     pdf.setFont("Times-Roman", 12)
@@ -102,14 +107,22 @@ def imprime_cabecalho(pdf, fatura_selecionada):
 
 def imprime_fatura_pdf(fatura):
     fatura_selecionada = Fatura.objects.filter(idFatura=fatura)
+    descricao_arquivo = f'Fatura_{str(fatura_selecionada[0].Fatura).zfill(6)}_fatura.pdf'
+    arquivo = FileUpload.objects.get(DescricaoUpload=descricao_arquivo)
+    if not arquivo:
+        obj = FileUpload()
+        obj.DescricaoUpload = descricao_arquivo
+        obj.save()
+        arquivo = FileUpload.objects.get(DescricaoUpload=descricao_arquivo)
     minutas = Minuta.objects.filter(idFatura=fatura).order_by('DataMinuta')
     tabelaperimetro = TabelaPerimetro.objects.filter(idCliente=minutas[0].idCliente_id)
     perimetro_inicial = 0
     perimetro_final = 0
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'filename="FATURA {}.pdf"'.format(fatura_selecionada[0].Fatura)
+    response['Content-Disposition'] = f'filename={descricao_arquivo}'
     buffer = BytesIO()
     pdf = canvas.Canvas(buffer)
+    # Start writing the PDF here - Aqui começa a escrita do PDF
     styles_claro = ParagraphStyle('claro', fontName='Times-Roman', fontSize=8, leading=9, alignment=TA_JUSTIFY)
     styles_escuro = ParagraphStyle('escuro', fontName='Times-Roman', fontSize=8, leading=9, alignment=TA_JUSTIFY,
                                    backColor='#EEE9E9')
@@ -298,10 +311,14 @@ def imprime_fatura_pdf(fatura):
             linha = 250.8
     pagina = pdf.getPageNumber()
     pdf.drawCentredString(convertemp(105), convertemp(11), 'PÁGINA {}'.format(pagina))
-    pdf.setTitle('Fatura.pdf')
-    pdf.save()
+    # End writing the PDF here - Aqui termina a escrita do PDF
+    pdf.setTitle(descricao_arquivo)
+    pdf.save()   
     buffer.seek(0)
     pdf = buffer.getvalue()
     buffer.close()
+    print(arquivo.idFileUpload)
+    obj = FileUpload.objects.get(idFileUpload=arquivo.idFileUpload)
+    obj.uploadFile.save(descricao_arquivo, ContentFile(pdf))
     response.write(pdf)
     return [response, pdf]
