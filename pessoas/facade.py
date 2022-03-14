@@ -280,7 +280,7 @@ def form_pessoa(request, c_form, c_idobj, c_url, c_view, idpessoal):
             else:
                 data['save_id'] = save_id.idPessoal_id
         else:
-            print(form)
+            pass
     else:
         form = c_form(instance=c_instance)
     context = {'form': form, 'c_idobj': c_idobj, 'c_url': c_url, 'c_view': c_view, 'idpessoal': idpessoal}

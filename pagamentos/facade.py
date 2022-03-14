@@ -685,12 +685,9 @@ def atualiza_cartaoponto(mesreferencia, anoreferencia, idpessoal):
             calcula_horas_atrazo(mesreferencia, anoreferencia, idpessoal)
             cartao_ponto = busca_cartaoponto_referencia(mesreferencia, anoreferencia, idpessoal)
             dias_feriado_mes = busca_feriados(mesreferencia, anoreferencia)
-            print(dias_feriado_mes)
             for itens in cartao_ponto:
                 obj = itens
                 if itens.Dia.day in dias_feriado_mes:
-                    print(itens.Dia.day)
-                    print(obj.idCartaoPonto)
                     obj.Ausencia = 'FERIADO'
                     obj.save(update_fields=['Ausencia'])
             if demissao:
@@ -779,9 +776,6 @@ def html_cartaoponto(mesreferencia, anoreferencia, idpessoal):
 
 def html_vale(idpessoal, tipopgto, idcontracheque):
     dict_vale, saldo_vale_select = get_vales_select(idpessoal, idcontracheque)
-    # print(dict_vale)
-    # for x in dict_vale.items():
-    #     print(x[1]['Descricao'])
     context = {'dict_vale': dict_vale, 'idPessoal': idpessoal, 'TipoPgto': tipopgto, 'idcontracheque': idcontracheque}
     c_return = render_to_string('pagamentos/vale.html', context)
     return c_return

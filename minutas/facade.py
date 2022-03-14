@@ -1108,7 +1108,7 @@ def forn_minuta(request, c_form, c_idobj, c_url, c_view):
                 data = html_pagamento(request, data, c_idobj)
                 data = html_checklist(request, data, c_idobj)
         else:
-            print('Form não é valido')
+            pass
     else:
         if c_view == 'edita_minuta':
             c_instance = get_minuta(c_idobj)
@@ -1135,11 +1135,5 @@ def forn_minuta(request, c_form, c_idobj, c_url, c_view):
     data['c_view'] = c_view
     data['html_mensagem'] = mensagem
     data['html_tipo_mensagem'] = tipo_mensagem
-    # if request.method == 'POST':
-    #     print(data['html_form'])
-    #     print(data['c_view'])
-    #     print(data['html_mensagem'])
-    #     print(data['html_tipo_mensagem'])
-    #     print(data['html_veiculo'])
     c_return = JsonResponse(data)
     return c_return

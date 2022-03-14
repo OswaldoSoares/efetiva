@@ -20,6 +20,5 @@ def form_despesa(request, c_form, c_idobj, c_url, c_view):
     form = c_form(instance=c_instance)
     contexto = {'form': form, 'c_idobj': c_idobj, 'c_url': c_url, 'c_view': c_view}
     data['html_html'] = render_to_string('despesas/formdespesa.html', contexto, request=request)
-    print(data)
     c_return = JsonResponse(data)
     return c_return

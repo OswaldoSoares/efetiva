@@ -317,7 +317,6 @@ def imprime_fatura_pdf(fatura):
     buffer.seek(0)
     pdf = buffer.getvalue()
     buffer.close()
-    print(arquivo.idFileUpload)
     obj = FileUpload.objects.get(idFileUpload=arquivo.idFileUpload)
     obj.uploadFile.save(descricao_arquivo, ContentFile(pdf))
     response.write(pdf)

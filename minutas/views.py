@@ -1381,9 +1381,7 @@ def exclui_minuta(request, idminuta):
 
 
 def atualiza_form_pg(request):
-    print(request.POST)
-    print(request.GET)
-
+    pass
 
 def gera_pagamentos(request):
     prepara_itens(request)
