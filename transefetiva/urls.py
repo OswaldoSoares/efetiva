@@ -40,7 +40,8 @@ urlpatterns = [
     path('usuarios/', include(usuarios_urls)),
     path('veiculos/', include(veiculos_urls)),
     path('', include(website_urls)),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)\
-              + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+print(urlpatterns)
 
 handler403 = 'usuarios.views.my_403_template'
