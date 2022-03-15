@@ -34,7 +34,7 @@ TEMPLATES = [
 ]
 
 STATIC_URL = '/static/'
-# STATIC_ROOT = '/efetiva/site/public/static'
+STATIC_ROOT = '/efetiva/site/public/static'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = '/efetiva/site/public/media'
