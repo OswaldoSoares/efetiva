@@ -10,8 +10,8 @@ from minutas.models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas
 from clientes.models import Cliente, TabelaPerimetro
 from .models import Fatura
 from website.models import FileUpload
-from django.core.files import File
 from django.core.files.base import ContentFile
+from transefetiva.settings.production import STATIC_ROOT
 
 
 def decricao_servico(dict_servicos, perimetro_inicial, perimetro_final):
@@ -78,20 +78,19 @@ def imprime_cabecalho(pdf, fatura_selecionada):
     fatura_numero = fatura_selecionada[0].Fatura
     fatura_vemcimento = fatura_selecionada[0].VencimentoFatura.strftime("%d/%m/%Y")
     fatura_valor = 'R$ {}'.format(fatura_selecionada[0].ValorFatura).replace('.', ',')
+    url = f'{STATIC_ROOT}/transportadora.jpg'
+    print(url)
     pdf.roundRect(convertemp(10), convertemp(10), convertemp(190), convertemp(277), 10)
-    pdf.drawImage('website/static/website/img/transportadora.jpg', convertemp(12), convertemp(265),
-                      convertemp(40),convertemp(20))
+    pdf.drawImage(url, convertemp(12), convertemp(265), convertemp(40),convertemp(20))
     # pdf.drawImage('efetiva/site/public/static/website/img/transportadora.jpg', convertemp(12), convertemp(265),
     #               convertemp(40), convertemp(20))
     pdf.setFont("Times-Bold", 18)
     pdf.drawString(convertemp(54), convertemp(279), 'TRANSEFETIVA TRANSPORTE - EIRELLI - ME')
     pdf.setFont("Times-Roman", 12)
-    pdf.drawString(convertemp(53), convertemp(273), 'RUA OLIMPIO PORTUGAL, 245 - MOOCA - SÃO PAULO - SP - CEP '
-                                                    '03112-010')
+    pdf.drawString(convertemp(53), convertemp(273), 'RUA OLIMPIO PORTUGAL, 245 - MOOCA - SÃO PAULO - SP - CEP 03112-010')
     pdf.setFont("Times-Roman", 12)
     pdf.drawString(convertemp(68), convertemp(268), '(11) 2305-0582 - (11) 2305-0583 - WHATSAPP (11) 94167-0583')
-    pdf.drawString(convertemp(65), convertemp(263), 'e-mail: transefetiva@terra.com.br - '
-                                                    'operacional.efetiva@terra.com.br')
+    pdf.drawString(convertemp(65), convertemp(263), 'e-mail: transefetiva@terra.com.br - operacional.efetiva@terra.com.br')
     pdf.line(convertemp(10), convertemp(260), convertemp(200), convertemp(260))
     pdf.setFillColor(HexColor("#B0C4DE"))
     pdf.setStrokeColor(HexColor("#B0C4DE"))

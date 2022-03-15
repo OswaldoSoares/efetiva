@@ -1,11 +1,12 @@
 {% extends 'faturamentos/basefaturamentos.html' %}
-
+{% load static %}
 {% block mainfaturamento %}
 <main>
     {% if fatura %}
     <div class="faturas">
         <header>
             <h2>FECHADAS - AGUARDANDO FATURAMENTO</h2>
+            <img scr="{% static 'website/img/transportadora.jpg' %}">
         </header>
         <main>
             {% for itens in fatura %}
