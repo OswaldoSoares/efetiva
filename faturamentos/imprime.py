@@ -78,7 +78,7 @@ def imprime_cabecalho(pdf, fatura_selecionada):
     fatura_numero = fatura_selecionada[0].Fatura
     fatura_vemcimento = fatura_selecionada[0].VencimentoFatura.strftime("%d/%m/%Y")
     fatura_valor = 'R$ {}'.format(fatura_selecionada[0].ValorFatura).replace('.', ',')
-    url = f'{STATIC_ROOT}/img/transportadora.jpg'
+    url = f'{STATIC_ROOT}/transportadora.jpg'
     pdf.roundRect(convertemp(10), convertemp(10), convertemp(190), convertemp(277), 10)
     pdf.drawImage(url, convertemp(12), convertemp(265), convertemp(40),convertemp(20))
     # pdf.drawImage('efetiva/site/public/static/website/img/transportadora.jpg', convertemp(12), convertemp(265),
