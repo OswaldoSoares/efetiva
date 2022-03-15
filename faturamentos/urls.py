@@ -10,8 +10,9 @@ urlpatterns = [
     path('pagafatura/<int:idfatura>/', paga_fatura, name='pagafatura'),
     path('estornapagamentofatura/<int:idfatura>/', estorna_fatura, name='estornapagamentofatura'),
     path('imprimefatura/<int:idfatura>/', imprime_fatura, name='imprimefatura'),
-    path('emailfatura/<int:idfatura>/', email_fatura, name='emailfatura'),
+
 
     path('fatura/<int:idfatura>/', fatura, name='fatura'),
+    path('email_fatura', email_fatura, name='email_fatura'),
     path('delete_file', delete_file, name='delete_file')
 ]

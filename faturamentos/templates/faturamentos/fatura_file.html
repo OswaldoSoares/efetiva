@@ -1,14 +1,17 @@
-{{ s_fatura.total_notas }}
-{% if s_fatura.total_notas > 0 %}
-    {% for notas in s_fatura.notas_fatura %}
-    <div class="file-body">
-        <a class="bi bi-download i-button custonBtn radius-left" href="{{ notas.uploadFile.url }}" target="_blank"></a>
-        <span class="filenameTxt">{{ notas.DescricaoUpload }}</span>
-        <i class="bi bi-trash i-button custonBtn radius-right js-delete-file" data-idobj="{{ notas.idFileUpload }}" data-idfatura="{{ s_fatura.idfatura }}"></i>
-    </div>
-    {% endfor %}
-{% endif %}
-{% if s_fatura.total_boletos %}
+{% for file in s_fatura.file_fatura %}
+<div class="file-body">
+    <a class="bi bi-download i-button custonBtn radius-left" href="{{ file.uploadFile.url }}" target="_blank"></a>
+    <span class="filenameTxt">{{ file.DescricaoUpload }}</span>
+    <i class="custonBtn radius-right"></i>
+</div>
+{% endfor %}
+{% for notas in s_fatura.notas_fatura %}
+<div class="file-body">
+    <a class="bi bi-download i-button custonBtn radius-left" href="{{ notas.uploadFile.url }}" target="_blank"></a>
+    <span class="filenameTxt">{{ notas.DescricaoUpload }}</span>
+    <i class="bi bi-trash i-button custonBtn radius-right js-delete-file" data-idobj="{{ notas.idFileUpload }}" data-idfatura="{{ s_fatura.idfatura }}"></i>
+</div>
+{% endfor %}
 {% for boletos in s_fatura.boletos_fatura %}
 <div class="file-body">
     <a class="bi bi-download i-button custonBtn radius-left" href="{{ boletos.uploadFile.url }}" target="_blank"></a>
@@ -16,7 +19,6 @@
     <i class="bi bi-trash i-button custonBtn radius-right js-delete-file" data-idobj="{{ boletos.idFileUpload }}" data-idfatura="{{ s_fatura.idfatura }}"></i>
 </div>
 {% endfor %}
-{% endif %}
 <form class="file-body" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <input type="file" name="uploadFile" class="file js-file-nota" id="filenota" value="">

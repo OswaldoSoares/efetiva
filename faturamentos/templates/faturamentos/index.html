@@ -59,15 +59,9 @@
                        href="{% url 'estornafatura' itens.idFatura %}">
                     </a>
                     {% endif %}
-                    <a class="btn btn-warning btn-xs glyphicon glyphicon-print" href =
-                            "{% url 'imprimefatura' itens.idFatura %}" target="_blank">
-                    </a>
                     <button class="btn btn-success btn-xs js-pagafatura glyphicon glyphicon-usd"
                             idfatura="{{ itens.Fatura }}" data-url="{% url 'pagafatura' itens.Fatura %}">
                     </button>
-                    <a class="btn btn-primary btn-xs glyphicon glyphicon-envelope"
-                            href="{% url 'emailfatura' itens.idFatura %}">
-                    </a>
                     <a class="bi bi-cloud-arrow-up i-button js-fatura"
                        href="{% url 'fatura' itens.idFatura %}">
                     </a>

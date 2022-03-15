@@ -2,6 +2,8 @@ import os
 import re
 from django.http import JsonResponse
 from django.template.loader import render_to_string
+from django.core.mail import EmailMessage
+from clientes.models import EMailContatoCliente
 from faturamentos.models import Fatura
 from minutas.models import Minuta
 from website.models import FileUpload
@@ -22,10 +24,10 @@ class FaturaSelecionada:
         self.minutas_fatura = MinutasFatura(v_idfatura).minutas
         self.total_minutas = len(self.minutas_fatura)
         self.notas_fatura = NotasFatura(self.fatura).notas
-        self.total_notas = len(self.notas_fatura)
         self.boletos_fatura = BoletosFatura(self.fatura).boletos
-        self.total_boletos = len(self.boletos_fatura)
+        self.file_fatura = FileFatura(self.fatura).file
         self.cliente_fatura = ClienteFatura(v_idfatura).cliente
+        self.email_fatura = ClienteEmail(self.cliente_fatura).email
 
 
 class MinutasFatura:
@@ -59,6 +61,16 @@ class BoletosFatura:
         return boletos
 
 
+class FileFatura:
+    def __init__(self, v_fatura):
+        self.file = self.get_file(v_fatura)
+
+    @staticmethod
+    def get_file(v_fatura):
+        file = FileUpload.objects.filter(DescricaoUpload=f'FATURA_{str(v_fatura).zfill(6)}_FATURA.PDF')
+        return file
+
+
 class ClienteFatura:
     def __init__(self, v_idfatura):
         self.cliente = self.get_cliente(v_idfatura)
@@ -68,6 +80,16 @@ class ClienteFatura:
         minutas = Minuta.objects.filter(idFatura=v_idfatura)
         cliente = minutas[0].idCliente
         return cliente
+
+class ClienteEmail:
+    def __init__(self, cliente):
+        self.email = self.get_email(cliente)
+
+    @staticmethod
+    def get_email(cliente):
+        email = EMailContatoCliente.objects.filter(idCliente_id=cliente, RecebeFatura=1)
+        lista = [itens.EMail for itens in email]
+        return lista
 
 
 def get_fatura(v_idfatura):
@@ -79,6 +101,34 @@ def get_fatura(v_idfatura):
 def retorna_json(data):
     c_return = JsonResponse(data)
     return c_return
+
+
+def envia_email(v_idobj, v_emails):
+    data = dict()
+    s_fatura = FaturaSelecionada(v_idobj)
+    emails_to = v_emails
+    emails_to = emails_to.replace(',', '')
+    emails_to = emails_to.split()
+    contexto = {'numero_fatura': str(s_fatura.fatura).zfill(6)}
+    subject = f'Fatura nº {str(s_fatura.fatura).zfill(6)}'
+    html_message = render_to_string('faturamentos/emailfatura.html', contexto)
+    from_email = 'Transefetiva Transportes <financeiro.efetiva@terra.com.br>'
+    to = emails_to
+    email = EmailMessage(subject, html_message, from_email, to)
+    email.content_subtype = 'html'
+    for itens in s_fatura.file_fatura:
+        email.attach_file(itens.uploadFile.path)
+    for itens in s_fatura.notas_fatura:
+        email.attach_file(itens.uploadFile.path)
+    for itens in s_fatura.boletos_fatura:
+        email.attach_file(itens.uploadFile.path)
+    if email.send():
+        data['text_mensagem'] = 'E-Mail enviado com sucesso.'
+        data['type_mensagem'] = 'SUCESSO'
+    else:
+        data['text_mensagem'] = 'Falha ao enviar e-mail, tente novamente'
+        data['type_mensagem'] = 'ERROR'
+    return retorna_json(data)
 
 
 def nome_arquivo(request, notas, boletos, v_fatura):

@@ -3891,15 +3891,24 @@ main .fp-recibo-tabela .fp-recibo-print {
             background-color: var(--color2);
         }
 
+        
         .article-card-body form {
             padding: 0 5px;
         }
-
+        
         .article-card-footer {
             background-color: var(--color1);
             height: 30px;
             border-radius: 0 0 10px 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
         }
+
+    .fatura-email {
+        width: 500px;
+    }
 /* Card end */
 
 
@@ -3975,4 +3984,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 /* Fatura itens end */
 
-
+.dstk {
+    color: var(--color4);
+    font-size: 16px;
+}

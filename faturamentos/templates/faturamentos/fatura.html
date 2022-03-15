@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block mainfaturamento %}
-<main>
+<main class="article">
     <div class="save-mensagem" hidden="true">
         <text class="text-mensagem">{{ msg.text_mensagem }}</text>
         <text class="type-mensagem">{{ msg.type_mensagem }}</text>
@@ -10,18 +10,25 @@
     <article class="article-card">
         <div class="article-card-titulo">
             <span>FATURA {{ s_fatura.fatura }}</span>
+            {% if s_fatura.status_fatura == 'ABERTA' %}
+            <div AGUARDANDO class="itens-fatura dstk"><i>AGUARDANDO PAGAMENTO</i></div>
+            {% elif s_fatura.status_fatura == 'PAGA' %}
+            <div FATURA class="itens-fatura dstk"><i>FATURA PAGA</i></div>
+            {% endif %}
         </div>
         <div class="article-card-body">
             <div class="itens-body">
                 <div class="itens-fatura">{{ s_fatura.cliente_fatura.Fantasia }}</div>
-                <div class="itens-fatura">DATA {{ s_fatura.data_fatura }}</div>
-                <div class="itens-fatura">VALOR R$ {{ s_fatura.valor_fatura }}</div>
-                <div class="itens-fatura">TOTAL DE MINUTAS {{ s_fatura.total_minutas }}</div>
-                <div class="itens-fatura">VENCIMENTO {{ s_fatura.vencimento_fatura }}</div>
+                <div class="itens-fatura"><i>DATA</i> {{ s_fatura.data_fatura }}</div>
+                <div VALOR class="itens-fatura"><i>VALOR</i> R$ {{ s_fatura.valor_fatura }}</div>
+                <div TOTAL class="itens-fatura"><i>TOTAL DE MINUTAS</i> {{ s_fatura.total_minutas }}</div>
+                <div VENCIMENTO class="itens-fatura"><i>VENCIMENTO</i> {{ s_fatura.vencimento_fatura }}</div>
             </div>
         </div>
         <div class="article-card-footer">
-            
+            {% if s_minuta.file_fatura %}
+            <a class="bi bi-printer i-button" href = "{% url 'imprimefatura' s_fatura.idfatura %}" target="_blank"></a>
+            {% endif %}
         </div>
     </article>
     <article class="article-card">
@@ -33,6 +40,20 @@
         </div>
         <div class="article-card-footer">
             <i class="bi bi-trash-square i-button"></i>            
+        </div>
+    </article>
+    <article class="article-card fatura-email">
+        <div class="article-card-titulo">
+            <span>E-MAIL</span>
+        </div>
+        <div class="article-card-body">
+            <label for="email">Contatos</label>
+            <input type="email" class="form-control" name="emails" value="
+                {% for email in s_fatura.email_fatura %} {{ email }}, {% endfor %}" id="email">
+            </input>
+        </div>
+        <div class="article-card-footer">
+            <i class="bi bi-envelope-open i-button js-send-email" data-idobj="{{ s_fatura.idfatura }}"></i>
         </div>
     </article>
 </main>

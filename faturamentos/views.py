@@ -2,10 +2,9 @@ from django.shortcuts import render, redirect
 from django.db.models import Sum, Max, Count
 from django.http import HttpResponse, JsonResponse
 from django.template.loader import render_to_string
-from django.core.mail import EmailMessage
 from rolepermissions.decorators import has_permission_decorator
 
-from faturamentos.facade import FaturaSelecionada, delete_arquivo, salva_arquivo
+from faturamentos.facade import FaturaSelecionada, delete_arquivo, envia_email, salva_arquivo
 from website.models import FileUpload
 from .models import Fatura
 from .forms import PagaFatura
@@ -172,27 +171,11 @@ def imprime_fatura(request, idfatura):
     return response
 
 
-def email_fatura(request, idfatura):
-    fatura = Fatura.objects.filter(idFatura=idfatura)
-    numero_fatura = [item.Fatura for item in fatura]
-    numero_fatura = numero_fatura[0]
-    cliente = Cliente.objects.filter(minuta__idFatura=idfatura)
-    idcliente = [item.idCliente for item in cliente]
-    idcliente = idcliente[0]
-    emails_to = EMailContatoCliente.objects.filter(idCliente_id=idcliente, RecebeFatura=1)
-    lista_emails = [item.EMail for item in emails_to]
-    contexto = {'numero_fatura': str(numero_fatura)}
-    subject = 'Fatura nº {}'.format(numero_fatura)
-    html_message = render_to_string('faturamentos/emailfatura.html', contexto)
-    from_email = 'Transefetiva Transportes <financeiro.efetiva@terra.com.br>'
-    to = lista_emails
-    email = EmailMessage(subject, html_message, from_email, to)
-    email.content_subtype = 'html'
-    fatura_pdf = imprime_fatura_pdf(idfatura)[1]
-    nome_arquivo = 'FATURA {}.pdf'.format(numero_fatura)
-    email.attach(nome_arquivo, fatura_pdf)
-    email.send()
-    return redirect('index_faturamento')
+def email_fatura(request):
+    v_idobj = request.GET.get('idobj')
+    v_emails = request.GET.get('emails')
+    data = envia_email(v_idobj, v_emails)
+    return data
 
 
 def fatura(request, idfatura):

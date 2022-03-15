@@ -47,7 +47,32 @@ $(document).ready(function(){
         });
     });
 
-    
+    $('.js-send-email').on('click', function() {
+        var idobj = $('.js-send-email').data('idobj')
+        var emails = $('#email').val()
+        $.ajax({
+            url: '/faturamentos/email_fatura',
+            type: 'GET',
+            data: {
+                idobj: idobj,
+                emails: emails,
+            },
+            beforeSend: function(){
+
+            },
+            success: function(data){
+                if (data['type_mensagem'] == 'ERROR') {
+                    $('.mensagem-erro').text(data['text_mensagem'])
+                    $(".div-erro").slideDown(500)
+                    $(".div-erro").delay(5000).slideUp(500) 
+                } else if (data['type_mensagem'] == 'SUCESSO') {
+                    $('.mensagem-sucesso').text(data['text_mensagem'])
+                    $(".div-sucesso").slideDown(500)
+                    $(".div-sucesso").delay(5000).slideUp(500) 
+                }    
+            },
+        });
+    });
 
     
 
