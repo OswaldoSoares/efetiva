@@ -11,7 +11,7 @@ from clientes.models import Cliente, TabelaPerimetro
 from .models import Fatura
 from website.models import FileUpload
 from django.core.files.base import ContentFile
-from transefetiva.settings.settings import STATIC_ROOT
+from transefetiva.settings.production import STATIC_ROOT
 
 
 def decricao_servico(dict_servicos, perimetro_inicial, perimetro_final):
