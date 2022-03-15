@@ -8,6 +8,7 @@ from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.templatetags.static import static
 from django.urls import reverse
+from transefetiva.settings.settings import STATIC_ROOT
 from rolepermissions.decorators import has_permission_decorator
 from reportlab.lib.colors import HexColor
 from reportlab.pdfgen import canvas
@@ -724,20 +725,15 @@ def imprimeminuta(request, idmin):
         # Draw things on the PDF. Here's where the PDF generation happens.
         # See the ReportLab documentation for the full list of functionality.
 
+        url = f'{STATIC_ROOT}/website/img/transportadora.jpg'
         pdf.roundRect(convertemp(10), convertemp(10), convertemp(190), convertemp(277), 10)
-        # ----
-        # development
-        pdf.drawImage('website/static/website/img/transportadora.jpg', convertemp(12), convertemp(265),
-                      convertemp(40),convertemp(20))
-        # production
-        # pdf.drawImage('efetiva/site/public/static/website/img/transportadora.jpg', convertemp(12), convertemp(265),
-                    #   convertemp(40), convertemp(20))
+        pdf.drawImage(url, convertemp(12), convertemp(265), convertemp(40),convertemp(20))
         pdf.setFont("Times-Bold", 18)
         pdf.drawString(convertemp(56), convertemp(279), 'TRANSEFETIVA TRANSPORTE - EIRELLI - ME')
         pdf.setFont("Times-Roman", 12)
-        pdf.drawString(convertemp(57), convertemp(273), 'RUA GUARATINGUETÁ, 276 - MOOCA - SÃO PAULO - SP - CEP 03112-080')
+        pdf.drawString(convertemp(53), convertemp(273), 'RUA OLIMPIO PORTUGAL, 245 - MOOCA - SÃO PAULO - SP - CEP 03112-010')
         pdf.setFont("Times-Roman", 12)
-        pdf.drawString(convertemp(70), convertemp(268), '(11) 2305-0582 - (11) 2305-0583 - WHATSAPP (11) 94167-0583')
+        pdf.drawString(convertemp(70), convertemp(268), '(11) 2305-0582 - WHATSAPP (11) 94167-0583')
         pdf.drawString(convertemp(67), convertemp(263), 'e-mail: transefetiva@terra.com.br - '
                                                         'operacional.efetiva@terra.com.br')
         pdf.line(convertemp(10), convertemp(260), convertemp(200), convertemp(260))

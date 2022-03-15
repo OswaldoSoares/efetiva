@@ -88,7 +88,7 @@ def imprime_cabecalho(pdf, fatura_selecionada):
     pdf.setFont("Times-Roman", 12)
     pdf.drawString(convertemp(53), convertemp(273), 'RUA OLIMPIO PORTUGAL, 245 - MOOCA - SÃO PAULO - SP - CEP 03112-010')
     pdf.setFont("Times-Roman", 12)
-    pdf.drawString(convertemp(68), convertemp(268), '(11) 2305-0582 - (11) 2305-0583 - WHATSAPP (11) 94167-0583')
+    pdf.drawString(convertemp(68), convertemp(268), '(11) 2305-0582 - WHATSAPP (11) 94167-0583')
     pdf.drawString(convertemp(65), convertemp(263), 'e-mail: transefetiva@terra.com.br - operacional.efetiva@terra.com.br')
     pdf.line(convertemp(10), convertemp(260), convertemp(200), convertemp(260))
     pdf.setFillColor(HexColor("#B0C4DE"))
