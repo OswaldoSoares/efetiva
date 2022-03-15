@@ -107,7 +107,8 @@ def envia_email(v_idobj, v_emails):
     data = dict()
     s_fatura = FaturaSelecionada(v_idobj)
     emails_to = v_emails
-    emails_to = emails_to.replace(',', '')
+    emails_to = emails_to.replace(' ', '')
+    emails_to = emails_to.replace(',', ' ')
     emails_to = emails_to.split()
     contexto = {'numero_fatura': str(s_fatura.fatura).zfill(6)}
     subject = f'Fatura nº {str(s_fatura.fatura).zfill(6)}'
