@@ -3982,6 +3982,12 @@ main .fp-recibo-tabela .fp-recibo-print {
 .itens-fatura {
     color: var(--color6)
 }
+
+.itens-email {
+    color: var(--color6);
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
 /* Fatura itens end */
 
 .dstk {

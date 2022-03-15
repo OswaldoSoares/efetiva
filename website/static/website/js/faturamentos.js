@@ -50,12 +50,14 @@ $(document).ready(function(){
     $('.js-send-email').on('click', function() {
         var idobj = $('.js-send-email').data('idobj')
         var emails = $('#email').val()
+        var texto = $('#text').val()
         $.ajax({
             url: '/faturamentos/email_fatura',
             type: 'GET',
             data: {
                 idobj: idobj,
                 emails: emails,
+                texto: texto,
             },
             beforeSend: function(){
 

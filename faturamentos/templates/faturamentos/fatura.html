@@ -47,10 +47,15 @@
             <span>E-MAIL</span>
         </div>
         <div class="article-card-body">
-            <label for="email">Contatos</label>
-            <input type="email" class="form-control" name="emails" value="
-                {% for email in s_fatura.email_fatura %} {{ email }}, {% endfor %}" id="email">
-            </input>
+            <div class="col-md-12 itens-email">
+                <label for="email">Para: (Separar os e-mails dos destinatários com virgula)</label>
+                <input type="email" class="form-control" name="emails" value="
+                {% for email in s_fatura.email_fatura %} {{ email }}, {% endfor %}" id="email"></input>
+            </div>
+            <div class="col-md-12 itens-email">
+                <label for="text">Mensagem: (Será inserida junto com a mensagem padrão)</label>
+                <textarea class="form-control" cols="40" rows="5" name="text" id="text"></textarea>
+            </div>
         </div>
         <div class="article-card-footer">
             <i class="bi bi-envelope-open i-button js-send-email" data-idobj="{{ s_fatura.idfatura }}"></i>
