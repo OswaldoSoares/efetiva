@@ -174,7 +174,8 @@ def imprime_fatura(request, idfatura):
 def email_fatura(request):
     v_idobj = request.GET.get('idobj')
     v_emails = request.GET.get('emails')
-    data = envia_email(v_idobj, v_emails)
+    v_texto = request.GET.get('texto')
+    data = envia_email(v_idobj, v_emails, v_texto)
     return data
 
 

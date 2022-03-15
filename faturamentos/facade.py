@@ -103,14 +103,14 @@ def retorna_json(data):
     return c_return
 
 
-def envia_email(v_idobj, v_emails):
+def envia_email(v_idobj, v_emails, v_texto):
     data = dict()
     s_fatura = FaturaSelecionada(v_idobj)
     emails_to = v_emails
     emails_to = emails_to.replace(' ', '')
     emails_to = emails_to.replace(',', ' ')
     emails_to = emails_to.split()
-    contexto = {'numero_fatura': str(s_fatura.fatura).zfill(6)}
+    contexto = {'numero_fatura': str(s_fatura.fatura).zfill(6), 'texto': v_texto}
     subject = f'Fatura nº {str(s_fatura.fatura).zfill(6)}'
     html_message = render_to_string('faturamentos/emailfatura.html', contexto)
     from_email = 'Transefetiva Transportes <financeiro.efetiva@terra.com.br>'
