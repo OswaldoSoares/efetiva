@@ -1,43 +1,42 @@
 {% extends 'faturamentos/basefaturamentos.html' %}
 {% load static %}
+{% load humanize %}
 {% block mainfaturamento %}
 <main>
     {% if fatura %}
-    <div class="faturas">
-        <header>
-            <h2>FECHADAS - AGUARDANDO FATURAMENTO</h2>
-            <img scr="{% static 'website/img/transportadora.jpg' %}">
-        </header>
-        <main>
+    <article class="article-card card-fechada">
+        <div class="article-card-titulo">
+            <span>FECHADAS</span>
+        </div>
+        <div class="article-card-body">
             {% for itens in fatura %}
-            <div class="card-faturar card-base1">
-                <header>
+            <div class="fechada-body">
+                <div class="itens-cliente">
                     <span><b>{{ itens.Fantasia }}</b></span>
-                </header>
-                <span>VALOR <b>R$ {{ itens.Valor }}</b></span>
-                <span>TOTAL DE MINUTAS <b>{{ itens.Quantidade }}</b></span>
-                <footer>
-                    <a class="btn btn-primary btn-xs glyphicon glyphicon-folder-open"
-                       href="{% url 'minutasfaturarcliente' itens.idCliente %}">
-                    </a>
-                </footer>
+                </div>
+                <div class="itens-fechada">
+                    <span class="if-minutas"><b>{{ itens.Quantidade|stringformat:"03d" }}</b><i> MINUTA{{ itens.Quantidade|stringformat:"03d"|pluralize|upper }}</i></span>
+                    <span class="if-valor"><b>R$ {{ itens.Valor|intcomma }}</b></span>
+                    <a class="if-button bi bi-folder2-open i-button" href="{% url 'minutasfaturarcliente' itens.idCliente %}"> </a>
+                </div>
             </div>
+            <div class="linha-divisoria"></div>
             {% endfor %}
-        </main>
-        <footer class="rodape">
-            {% for itens in fatura %}
+        </div>
+        <div class="article-card-footer">
+            <div>
+                {% for itens in fatura %}
                 {% if forloop.last %}
-                    {% if forloop.counter == 1 %}
-                        <h5> {{ forloop.counter }} CLIENTE AGUARDANDO FATURAMENTO</h5>
-                    {% else %}
-                        <h5> {{ forloop.counter }} CLIENTES AGUARDANDO FATURAMENTO</h5>
-                    {% endif %}
+                <span> {{ forloop.counter }} CLIENTE{{ forloop.counter|pluralize|upper }}</span>
                 {% endif %}
-            {% endfor %}
-            <h5>TOTAL A FATURAR R$ {{ total_fatura.ValorTotal }}</h5>
-        </footer>
-    </div>
+                {% endfor %}
+            </div>
+            <div>
+                <span>TOTAL R$ {{ total_fatura.ValorTotal|intcomma }}</span>
+            </div>
+        </div>
     {% endif %}
+    </article>
     {% if faturada %}
     <div class="faturas">
         <header>

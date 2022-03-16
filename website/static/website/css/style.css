@@ -2910,7 +2910,7 @@ main .fp-recibo-tabela .fp-recibo-print {
                     font-size: 18px;
                 }
 
-            .ac-lista .linha-divisoria {
+            .linha-divisoria {
                 background-color: #363636;
                 width: 100%;
                 height: 3px;
@@ -3914,6 +3914,7 @@ main .fp-recibo-tabela .fp-recibo-print {
             height: 30px;
             border-radius: 0 0 10px 10px;
             display: flex;
+            flex-direction: row;
             justify-content: center;
             align-items: center;
             font-size: 18px;
@@ -3922,10 +3923,80 @@ main .fp-recibo-tabela .fp-recibo-print {
         .article-card-footer span {
             color: var(--color6);
             font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
         }
 
     .fatura-email {
         width: 500px;
+    }
+
+    .card-fechada {
+        width: 500px;
+    }
+    
+    
+    .fechada-body {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+    }
+    
+    
+    .fechada-body .itens-cliente {
+        /* background-color: green; */
+        color: var(--color6);
+        padding: 0 5px;
+        width: 40%;
+        display: flex;
+        justify-content: start;
+    }
+    
+    .fechada-body .itens-fechada {
+        /* background-color: blue; */
+        color: var(--color6);
+        width: 60%;
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .fechada-body .itens-fechada .if-minutas {
+        width: 45%;
+        text-align: left;
+        padding-left: 5px;
+    }
+    
+    .fechada-body .itens-fechada .if-valor {
+        width: 45%;
+        text-align: right;
+        padding-right: 5px;
+    }
+    
+    .fechada-body .itens-fechada .if-button {
+        width: 10%;
+        text-align: center;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    
+    @media (max-width: 499px) {
+        .card-fechada {
+            width: 100%;
+        }
+
+        .fechada-body {
+            flex-direction: column;
+        }
+
+        .fechada-body .itens-fechada,
+        .fechada-body .itens-cliente {
+            width: 100%
+        }
     }
 /* Card end */
 
@@ -3989,6 +4060,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 
 /* Fatura itens start */
 .itens-body {
+    color: var(--color6);
     width: 100%;
     display: flex;
     flex-direction: column;

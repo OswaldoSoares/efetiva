@@ -19,7 +19,7 @@ from .imprime import imprime_fatura_pdf
 def index_faturamento(request):
     fatura = Cliente.objects.values('idCliente', 'Fantasia').filter(
         minuta__StatusMinuta='FECHADA', minuta__Valor__gt='0.00').annotate(Valor=Sum(
-        'minuta__Valor'), Quantidade=Count('minuta__Minuta'))
+        'minuta__Valor'), Quantidade=Count('minuta__Minuta')).order_by('Fantasia')
     total_fatura = Minuta.objects.filter(StatusMinuta='FECHADA').aggregate(
         ValorTotal=Sum('Valor'), Quantidade=Count('Minuta'))
     faturada = Fatura.objects.filter(StatusFatura='ABERTA').annotate(TotalMinutas=Count('minuta')).exclude(
