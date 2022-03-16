@@ -3818,11 +3818,18 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .box-loader {
-    padding: 50px;
+    background-color: deeppink;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    margin: 0;
     display: flex;
+    flex-wrap: wrap;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    z-index: 9998;
 }
 
 .loader {
@@ -3847,6 +3854,7 @@ main .fp-recibo-tabela .fp-recibo-print {
     padding-top: 20px;
     font-size: 14px;
     color: white;
+    margin-bottom: 50px;
 }
 
 

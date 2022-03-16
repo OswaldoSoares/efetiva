@@ -1056,7 +1056,7 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                     if (cbAfterSuccess) { cbAfterSuccess(modal); }
                 }
             },
-            error: function(xhr, ajaxOptions, thrownError) {s
+            error: function(xhr, ajaxOptions, thrownError) {
                 $(".mensagem-erro").text(thrownError);
                 mostraMensagemErro()
             },

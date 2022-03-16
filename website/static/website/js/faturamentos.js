@@ -1,4 +1,6 @@
 $(document).ready(function(){
+    $('.box-loader').hide()
+
     var text_mensagem = $('.text-mensagem').text()
     var type_mensagem = $('.type-mensagem').text()
     if (type_mensagem != 'None') {
@@ -60,9 +62,12 @@ $(document).ready(function(){
                 texto: texto,
             },
             beforeSend: function(){
-
+                $('.text-loader').text('Aguarde, enviando e-mail...')
+                $('.box-loader').fadeIn(50);
             },
             success: function(data){
+                $('.box-loader').hide();
+                $('.text-loader').text('Aguarde...')
                 if (data['type_mensagem'] == 'ERROR') {
                     $('.mensagem-erro').text(data['text_mensagem'])
                     $(".div-erro").slideDown(500)
@@ -72,6 +77,10 @@ $(document).ready(function(){
                     $(".div-sucesso").slideDown(500)
                     $(".div-sucesso").delay(5000).slideUp(500) 
                 }    
+            },
+            error: function(data) {
+                $('.box-loader').hide();
+                $('.text-loader').text('Aguarde...')
             },
         });
     });
