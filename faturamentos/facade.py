@@ -110,6 +110,31 @@ def get_fatura(v_idfatura):
     return lista
 
 
+def salva_pagamento(request, v_idfatura, v_data, v_valor):
+    data = dict()
+    fatura = Fatura.objects.get(idFatura=v_idfatura)
+    obj = Fatura()
+    obj.idFatura = fatura.idFatura
+    obj.DataPagamento = v_data
+    obj.ValorPagamento = v_valor
+    obj.StatusFatura = 'PAGA'
+    if obj.save(update_fields=['DataPagamento', 'ValorPagamento', 'StatusFatura']):
+        data['text_mensagem'] = 'Falha ao enviar e-mail, tente novamente'
+        data['type_mensagem'] = 'ERROR'
+    else:
+        data['type_mensagem'] = 'SUCESSO'
+    return retorna_json(data)
+    # if request.method == 'POST':
+    #     form = PagaFatura(request.POST, instance=fatura)
+    #     if form.is_valid():
+    #         form.save()
+    #         return redirect('index_faturamento')
+    # else:
+    #     form = PagaFatura(initial={'ValorPagamento': fatura.ValorFatura, 'DataPagamento': date.today(),
+    #                                'StatusFatura': 'PAGA'}, instance=fatura)
+    # contexto = {'form': form, 'idfatura': idfatura}
+    # data['html_form'] = render_to_string('faturamentos/pagafatura.html', contexto, request=request)
+
 def retorna_json(data):
     c_return = JsonResponse(data)
     return c_return

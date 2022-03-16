@@ -59,9 +59,6 @@
                        href="{% url 'estornafatura' itens.idFatura %}">
                     </a>
                     {% endif %}
-                    <button class="btn btn-success btn-xs js-pagafatura glyphicon glyphicon-usd"
-                            idfatura="{{ itens.Fatura }}" data-url="{% url 'pagafatura' itens.Fatura %}">
-                    </button>
                     <a class="bi bi-cloud-arrow-up i-button js-fatura"
                        href="{% url 'fatura' itens.idFatura %}">
                     </a>
@@ -88,18 +85,6 @@
         <header>
             <h2> FATURAS PAGAS</h2>
         </header>
-        <div class="nav_filtro">
-            <div>
-                <div class="filtro">
-                    <form>
-                        <input type="text" class="filtrotexto" placeholder="FILTRAR FANTASIA..." name="filtrofantasia"/>
-                        <button type="" class="btn btn-info glyphicon glyphicon-search"></button>
-                    </form>
-                </div>
-            </div>
-            <div class="add_registro">
-            </div>
-        </div>
         <div class="tabela-base">
             <table class="tabela">
                 <thead>
@@ -124,9 +109,9 @@
                             <a class="btn btn-danger btn-xs glyphicon glyphicon-backward"
                                href="{% url 'estornafatura' pagas.minuta__idFatura__idFatura %}">
                             </a>
-                            <a class="btn btn-warning btn-xs glyphicon glyphicon-print" href =
+                            <!-- <a class="btn btn-warning btn-xs glyphicon glyphicon-print" href =
                                     "{% url 'imprimefatura' pagas.minuta__idFatura__idFatura %}" target="_blank">
-                            </a>
+                            </a> -->
                         </td>
                     </tr>
                     {% endfor %}

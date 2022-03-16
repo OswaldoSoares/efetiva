@@ -85,6 +85,41 @@ $(document).ready(function(){
         });
     });
 
+    $('.js-paga-fatura').on('click', function() {
+        var idobj = $('.js-paga-fatura').data('idobj')
+        var datapagto = $('#dt_paga').val()
+        var valorpago = $('#vl_paga').val()
+        $.ajax({
+            url: '/faturamentos/paga_fatura',
+            type: 'GET',
+            data: {
+                idobj: idobj,
+                datapagto: datapagto,
+                valorpago: valorpago,
+            },
+            beforeSend: function(){
+                $('.text-loader').text('Aguarde, processando pagamento...')
+                $('.box-loader').fadeIn(50);
+            },
+            success: function(data){
+                $('.box-loader').hide();
+                $('.text-loader').text('Aguarde...')
+                if (data['type_mensagem'] == 'ERROR') {
+                    $('.mensagem-erro').text(data['text_mensagem'])
+                    $(".div-erro").slideDown(500)
+                    $(".div-erro").delay(5000).slideUp(500) 
+                } else if (data['type_mensagem'] == 'SUCESSO') {
+                    $('.mensagem-sucesso').text(data['text_mensagem'])
+                    $(".div-sucesso").slideDown(500)
+                    $(".div-sucesso").delay(5000).slideUp(500) 
+                }
+            },
+            error: function(error) {
+
+            },
+        });
+    });
+
     if ($('.body-email').height() > $('.body-file').height()) {
         $('.body-file').height($('.body-email').height())
         $('.body-fatura').height($('.body-email').height())

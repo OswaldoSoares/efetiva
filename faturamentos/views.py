@@ -4,7 +4,7 @@ from django.http import HttpResponse, JsonResponse
 from django.template.loader import render_to_string
 from rolepermissions.decorators import has_permission_decorator
 
-from faturamentos.facade import FaturaSelecionada, delete_arquivo, envia_email, salva_arquivo
+from faturamentos.facade import FaturaSelecionada, delete_arquivo, envia_email, salva_arquivo, salva_pagamento
 from website.models import FileUpload
 from .models import Fatura
 from .forms import PagaFatura
@@ -151,19 +151,25 @@ def estorna_fatura(request, idfatura):
     return redirect('index_faturamento')
 
 
-def paga_fatura(request, idfatura):
+def paga_fatura(request):
     data = dict()
-    fatura = Fatura.objects.get(Fatura=idfatura)
-    if request.method == 'POST':
-        form = PagaFatura(request.POST, instance=fatura)
-        if form.is_valid():
-            form.save()
-            return redirect('index_faturamento')
-    else:
-        form = PagaFatura(initial={'ValorPagamento': fatura.ValorFatura, 'DataPagamento': date.today(),
-                                   'StatusFatura': 'PAGA'}, instance=fatura)
-    contexto = {'form': form, 'idfatura': idfatura}
-    data['html_form'] = render_to_string('faturamentos/pagafatura.html', contexto, request=request)
+    print(request.GET)
+    v_idobj = request.GET.get('idobj')
+    v_datapagto = request.GET.get('datapagto')
+    v_valorpago = request.GET.get('valorpago')
+    data = salva_pagamento(request, v_idobj, v_datapagto, v_valorpago)
+    return data
+    # fatura = Fatura.objects.get(Fatura=idfatura)
+    # if request.method == 'POST':
+    #     form = PagaFatura(request.POST, instance=fatura)
+    #     if form.is_valid():
+    #         form.save()
+    #         return redirect('index_faturamento')
+    # else:
+    #     form = PagaFatura(initial={'ValorPagamento': fatura.ValorFatura, 'DataPagamento': date.today(),
+    #                                'StatusFatura': 'PAGA'}, instance=fatura)
+    # contexto = {'form': form, 'idfatura': idfatura}
+    # data['html_form'] = render_to_string('faturamentos/pagafatura.html', contexto, request=request)
     return JsonResponse(data)
 
 

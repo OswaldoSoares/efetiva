@@ -3883,16 +3883,21 @@ main .fp-recibo-tabela .fp-recibo-print {
             color: white;
             height: 50px;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             border-radius: 10px 10px 0 0;
             font-size: 22px; 
         }
 
         .article-card-titulo span {
             color: var(--color6)
-            
+        }
+
+        .article-card-titulo div {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10px 0 30px;
         }
 
         .article-card-body {

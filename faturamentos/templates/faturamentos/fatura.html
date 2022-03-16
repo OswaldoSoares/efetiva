@@ -10,15 +10,18 @@
     <div>
         <article class="article-card">
             <div class="article-card-titulo">
-                <span>FATURA {{ s_fatura.fatura }}</span>
+                <div>
+                    <span>FATURA {{ s_fatura.fatura }}</span>
+                    <i class="bi bi-arrow-left-square i-button"></i>
+                </div>
             </div>
             <div class="article-card-body body-fatura">
                 <div class="itens-body">
-                    {% if s_fatura.status_fatura == 'ABERTA' %}
+                    <!-- {% if s_fatura.status_fatura == 'ABERTA' %}
                     <div AGUARDANDO class="itens-fatura dstk"><i>AGUARDANDO PAGAMENTO</i></div>
                     {% elif s_fatura.status_fatura == 'PAGA' %}
                     <div FATURA class="itens-fatura dstk"><i>FATURA PAGA</i></div>
-                    {% endif %}
+                    {% endif %} -->
                     <div class="itens-fatura">{{ s_fatura.cliente_fatura.Fantasia }}</div>
                     <div class="itens-fatura"><i>DATA - </i> {{ s_fatura.data_fatura }}</div>
                     <div VALOR class="itens-fatura"><i>VALOR - </i> R$ {{ s_fatura.valor_fatura }}</div>
@@ -43,20 +46,33 @@
         </article>
         <article class="article-card">
             <div class="article-card-titulo">
+                {% if s_fatura.status_fatura == 'ABERTA' %}
                 <span>PAGAR FATURA</span>
+                {% else %}
+                <span>FATURA PAGA</span>
+                {% endif %}
             </div>
             <div class="article-card-body">
+                {% if s_fatura.status_fatura == 'PAGA' %}
+                <div class="itens-body">
+                    <div class="itens-fatura"><i>DATA DO PAGAMENTO</i> {{ s_fatura.data_pagamento }}</div>
+                    <div class="itens-fatura"><i>VALOR PAGO</i> {{ s_fatura.valor_pagamento }}</div>
+                </div>
+                {% else %}
                 <div class="col-md-12 itens-paga">
                     <label for="dt_paga">DATA DO PAGAMENTO:</label>
                     <input type="date" class="form-control" id="dt_paga" value="{{ hoje }}" >
                 </div>
                 <div class="col-md-12 itens-paga">
                     <label for="vl_paga">VALOR PAGO:</label>
-                    <input type="text" class="form-control" id="vl_paga" value="{{ s_fatura.valor_fatura }}">
+                    <input type="number" class="form-control" id="vl_paga" value="{{ s_fatura.valor_fatura|stringformat:'.2f' }}">
                 </div>
+                {% endif %}
             </div>
             <div class="article-card-footer">
-                <i class="bi bi-currency-dollar i-button"></i>
+                {% if s_fatura.status_fatura == 'ABERTA' %}
+                <i class="bi bi-currency-dollar i-button js-paga-fatura" data-idobj="{{ s_fatura.idfatura }}"></i>
+                {% endif %}
             </div>
         </article>
     </div>
@@ -87,7 +103,8 @@
             </div>
         </div>
         <div class="article-card-footer">
-            <i class="bi bi-envelope-open i-button js-send-email" data-idobj="{{ s_fatura.idfatura }}"></i>
+            <i class="bi bi-cursor i-button js-send-email" data-idobj="{{ s_fatura.idfatura }}"></i>
+            <i class="bi bi-envelope i-button js-send-email" data-idobj="{{ s_fatura.idfatura }}"></i>
         </div>
     </article>
 </main>
