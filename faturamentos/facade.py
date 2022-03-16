@@ -123,13 +123,30 @@ def envia_email(v_idobj, v_emails, v_texto):
         email.attach_file(itens.uploadFile.path)
     for itens in s_fatura.boletos_fatura:
         email.attach_file(itens.uploadFile.path)
-    if email.send():
-        data['text_mensagem'] = 'E-Mail enviado com sucesso.'
-        data['type_mensagem'] = 'SUCESSO'
-    else:
-        data['text_mensagem'] = 'Falha ao enviar e-mail, tente novamente'
+    list_check = verifica_emails(emails_to)
+    if 0 in list_check:
+        data['text_mensagem'] = 'Verifique os e-mails se estão corretos e se estão separados com virgula'
         data['type_mensagem'] = 'ERROR'
+    else:
+        if email.send():
+            data['text_mensagem'] = 'E-Mail enviado com sucesso.'
+            data['type_mensagem'] = 'SUCESSO'
+        else:
+            data['text_mensagem'] = 'Falha ao enviar e-mail, tente novamente'
+            data['type_mensagem'] = 'ERROR'
     return retorna_json(data)
+
+
+def verifica_emails(email_list):
+    import re
+    regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+    list_check = []
+    for itens in email_list:
+        if(re.search(regex, itens)):
+            list_check.append(1)
+        else:
+            list_check.append(0)
+    return list_check
 
 
 def nome_arquivo(request, notas, boletos, v_fatura):
