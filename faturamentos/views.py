@@ -184,7 +184,8 @@ def fatura(request, idfatura):
     msg = {'text_mensagem': None, 'type_mensagem': None}
     msg = salva_arquivo(request, msg, idfatura)
     s_fatura = FaturaSelecionada(idfatura).__dict__
-    contexto = {'s_fatura': s_fatura, 'msg': msg}
+    hoje = date.today().strftime('%Y-%m-%d')
+    contexto = {'s_fatura': s_fatura, 'msg': msg, 'hoje': hoje,}
     return render(request, 'faturamentos/fatura.html', contexto)
 
 

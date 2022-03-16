@@ -7,39 +7,59 @@
         <text class="text-mensagem">{{ msg.text_mensagem }}</text>
         <text class="type-mensagem">{{ msg.type_mensagem }}</text>
     </div>
-    <article class="article-card">
-        <div class="article-card-titulo">
-            <span>FATURA {{ s_fatura.fatura }}</span>
-        </div>
-        <div class="article-card-body body-fatura">
-            <div class="itens-body">
-                {% if s_fatura.status_fatura == 'ABERTA' %}
-                <div AGUARDANDO class="itens-fatura dstk"><i>AGUARDANDO PAGAMENTO</i></div>
-                {% elif s_fatura.status_fatura == 'PAGA' %}
-                <div FATURA class="itens-fatura dstk"><i>FATURA PAGA</i></div>
-                {% endif %}
-                <div class="itens-fatura">{{ s_fatura.cliente_fatura.Fantasia }}</div>
-                <div class="itens-fatura"><i>DATA - </i> {{ s_fatura.data_fatura }}</div>
-                <div VALOR class="itens-fatura"><i>VALOR - </i> R$ {{ s_fatura.valor_fatura }}</div>
-                <div TOTAL class="itens-fatura"><i>TOTAL DE MINUTAS - </i> {{ s_fatura.total_minutas }}</div>
-                <div VENCIMENTO class="itens-fatura"><i>VENCIMENTO - </i> {{ s_fatura.vencimento_fatura }}</div>
+    <div>
+        <article class="article-card">
+            <div class="article-card-titulo">
+                <span>FATURA {{ s_fatura.fatura }}</span>
             </div>
-        </div>
-        <div class="article-card-footer">
-            {% if not s_fatura.file_fatura %}
-            <a class="bi bi-printer i-button" href = "{% url 'imprimefatura' s_fatura.idfatura %}" target="_blank"></a>
-            {% endif %}
-            {% if s_fatura.status_fatura == 'ABERTA' %}
-                {% if s_fatura.dias_vencimento > 0 %}
-                <span>{{ s_fatura.dias_vencimento }} DIA{{ s_fatura.dias_vencimento|pluralize|upper }} PARA O VENCIMENTO</span>
-                {% elif s_fatura.dias_vencimento == 0 %}
-                <span>VENCE HOJE</span>
-                {% else %}
-                <span>VENCEU A {{ s_fatura.dias_vencimento|slugify|slice:"1:" }} DIA{{ s_fatura.dias_vencimento|slugify|slice:"1:"|pluralize|upper }}</span>
+            <div class="article-card-body body-fatura">
+                <div class="itens-body">
+                    {% if s_fatura.status_fatura == 'ABERTA' %}
+                    <div AGUARDANDO class="itens-fatura dstk"><i>AGUARDANDO PAGAMENTO</i></div>
+                    {% elif s_fatura.status_fatura == 'PAGA' %}
+                    <div FATURA class="itens-fatura dstk"><i>FATURA PAGA</i></div>
+                    {% endif %}
+                    <div class="itens-fatura">{{ s_fatura.cliente_fatura.Fantasia }}</div>
+                    <div class="itens-fatura"><i>DATA - </i> {{ s_fatura.data_fatura }}</div>
+                    <div VALOR class="itens-fatura"><i>VALOR - </i> R$ {{ s_fatura.valor_fatura }}</div>
+                    <div TOTAL class="itens-fatura"><i>TOTAL DE MINUTAS - </i> {{ s_fatura.total_minutas }}</div>
+                    <div VENCIMENTO class="itens-fatura"><i>VENCIMENTO - </i> {{ s_fatura.vencimento_fatura }}</div>
+                </div>
+            </div>
+            <div class="article-card-footer">
+                {% if not s_fatura.file_fatura %}
+                <a class="bi bi-printer i-button" href = "{% url 'imprimefatura' s_fatura.idfatura %}" target="_blank"></a>
                 {% endif %}
-            {% endif %}
-        </div>
-    </article>
+                {% if s_fatura.status_fatura == 'ABERTA' %}
+                    {% if s_fatura.dias_vencimento > 0 %}
+                    <span>{{ s_fatura.dias_vencimento }} DIA{{ s_fatura.dias_vencimento|pluralize|upper }} PARA O VENCIMENTO</span>
+                    {% elif s_fatura.dias_vencimento == 0 %}
+                    <span>VENCE HOJE</span>
+                    {% else %}
+                    <span>VENCEU A {{ s_fatura.dias_vencimento|slugify|slice:"1:" }} DIA{{ s_fatura.dias_vencimento|slugify|slice:"1:"|pluralize|upper }}</span>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </article>
+        <article class="article-card">
+            <div class="article-card-titulo">
+                <span>PAGAR FATURA</span>
+            </div>
+            <div class="article-card-body">
+                <div class="col-md-12 itens-paga">
+                    <label for="dt_paga">DATA DO PAGAMENTO:</label>
+                    <input type="date" class="form-control" id="dt_paga" value="{{ hoje }}" >
+                </div>
+                <div class="col-md-12 itens-paga">
+                    <label for="vl_paga">VALOR PAGO:</label>
+                    <input type="text" class="form-control" id="vl_paga" value="{{ s_fatura.valor_fatura }}">
+                </div>
+            </div>
+            <div class="article-card-footer">
+                <i class="bi bi-currency-dollar i-button"></i>
+            </div>
+        </article>
+    </div>
     <article class="article-card">
         <div class="article-card-titulo">
             <span>SALVA ARQUIVOS</span>
@@ -57,12 +77,12 @@
         </div>
         <div class="article-card-body body-email">
             <div class="col-md-12 itens-email">
-                <label for="email">Para: (Separar os e-mails dos destinatários com virgula)</label>
+                <label for="email">PARA: (Separar os e-mails dos destinatários com virgula)</label>
                 <input type="email" class="form-control" name="emails" value="
                 {% for email in s_fatura.email_fatura %} {{ email }}, {% endfor %}" id="email"></input>
             </div>
             <div class="col-md-12 itens-email">
-                <label for="text">Mensagem: (Será inserida junto com a mensagem padrão)</label>
+                <label for="text">MENSAGEM: (Será inserida junto com a mensagem padrão)</label>
                 <textarea class="form-control" cols="40" rows="6" name="text" id="text"></textarea>
             </div>
         </div>
