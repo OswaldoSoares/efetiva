@@ -1,7 +1,6 @@
 $(document).ready(function(){
-        
-        
-    });
+    $('.box-loader').hide()
+});
 
     function initModalDialog(event, modal_element) {
         /*

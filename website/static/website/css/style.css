@@ -3906,13 +3906,17 @@ main .fp-recibo-tabela .fp-recibo-print {
         
         .article-card-footer {
             background-color: var(--color1);
-            color: var(--color6);
             height: 30px;
             border-radius: 0 0 10px 10px;
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 18px;
+        }
+        
+        .article-card-footer span {
+            color: var(--color6);
+            font-size: 14px;
         }
 
     .fatura-email {

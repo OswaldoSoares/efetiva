@@ -1,5 +1,6 @@
 $(".div-sucesso").hide()
 $(".div-erro").hide()
+$(".box-loader").hide()
 
 function openMyModal(event) {
     var modal = initModalDialog(event, '#MyModal');
