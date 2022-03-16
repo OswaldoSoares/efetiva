@@ -85,7 +85,13 @@ $(document).ready(function(){
         });
     });
 
-    
+    if ($('.body-email').height() > $('.body-file').height()) {
+        $('.body-file').height($('.body-email').height())
+        $('.body-fatura').height($('.body-email').height())
+    } else {
+        $('.body-email').height($('.body-file').height())
+        $('.body-fatura').height($('.body-file').height())
+    }
 
     var buscaDados = function(minuta){
         var minuta = minuta;
