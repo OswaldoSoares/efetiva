@@ -1,3 +1,4 @@
+from datetime import date
 import os
 import re
 from django.http import JsonResponse
@@ -28,6 +29,7 @@ class FaturaSelecionada:
         self.file_fatura = FileFatura(self.fatura).file
         self.cliente_fatura = ClienteFatura(v_idfatura).cliente
         self.email_fatura = ClienteEmail(self.cliente_fatura).email
+        self.dias_vencimento = DiasVencimento(self.vencimento_fatura).dias
 
 
 class MinutasFatura:
@@ -90,6 +92,16 @@ class ClienteEmail:
         email = EMailContatoCliente.objects.filter(idCliente_id=cliente, RecebeFatura=1)
         lista = [itens.EMail for itens in email]
         return lista
+
+
+class DiasVencimento:
+    def __init__(self, vencimento):
+        self.dias = self.get_dias(vencimento)
+
+    @staticmethod
+    def get_dias(vencimento):
+        dias = vencimento - date.today()
+        return dias.days
 
 
 def get_fatura(v_idfatura):

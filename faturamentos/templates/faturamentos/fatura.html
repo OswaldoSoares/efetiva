@@ -26,8 +26,17 @@
             </div>
         </div>
         <div class="article-card-footer">
-            {% if s_minuta.file_fatura %}
+            {% if not s_fatura.file_fatura %}
             <a class="bi bi-printer i-button" href = "{% url 'imprimefatura' s_fatura.idfatura %}" target="_blank"></a>
+            {% endif %}
+            {% if s_fatura.status_fatura == 'ABERTA' %}
+                {% if s_fatura.dias_vencimento > 0 %}
+                <span>{{ s_fatura.dias_vencimento }} DIA{{ s_fatura.dias_vencimento|pluralize|upper }} PARA O VENCIMENTO</span>
+                {% elif s_fatura.dias_vencimento == 0 %}
+                <span>VENCE HOJE</span>
+                {% else %}
+                <span>VENCEU A {{ s_fatura.dias_vencimento|slugify|slice:"1:" }} DIA{{ s_fatura.dias_vencimento|slugify|slice:"1:"|pluralize|upper }}</span>
+                {% endif %}
             {% endif %}
         </div>
     </article>

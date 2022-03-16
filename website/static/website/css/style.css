@@ -3906,6 +3906,7 @@ main .fp-recibo-tabela .fp-recibo-print {
         
         .article-card-footer {
             background-color: var(--color1);
+            color: var(--color6);
             height: 30px;
             border-radius: 0 0 10px 10px;
             display: flex;
