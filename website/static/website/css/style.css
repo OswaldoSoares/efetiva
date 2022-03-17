@@ -3869,6 +3869,10 @@ main .fp-recibo-tabela .fp-recibo-print {
     align-items: flex-start;
 }
 
+    .article-coluna {
+        width: 305px;
+    }
+
     .article-card {
         width: 300px;
         display: flex;
@@ -3917,27 +3921,34 @@ main .fp-recibo-tabela .fp-recibo-print {
             flex-direction: row;
             justify-content: center;
             align-items: center;
+            justify-content: center;
             font-size: 18px;
         }
         
         .article-card-footer span {
             color: var(--color6);
             font-size: 14px;
+        }
+        
+        .footer-between {
+            width: 100%;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 20px;
+            padding: 0 20px; 
         }
 
     .fatura-email {
         width: 500px;
     }
 
+    .card-faturada,
     .card-fechada {
         width: 500px;
     }
     
-    
+    .faturada-body,
+    .body-adicional,
     .fechada-body {
         width: 100%;
         display: flex;
@@ -3947,7 +3958,20 @@ main .fp-recibo-tabela .fp-recibo-print {
         font-size: 16px;
     }
     
+    .faturada-body {
+        flex-direction: column;
+    }
     
+    .faturada-body .itens-vence {
+        width: 100%;
+        color: var(--color6);
+        padding: 0 5px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .body-adicional .itens-cliente,
     .fechada-body .itens-cliente {
         /* background-color: green; */
         color: var(--color6);
@@ -3957,6 +3981,7 @@ main .fp-recibo-tabela .fp-recibo-print {
         justify-content: start;
     }
     
+    .body-adicional .itens-fechada,
     .fechada-body .itens-fechada {
         /* background-color: blue; */
         color: var(--color6);
@@ -3965,27 +3990,31 @@ main .fp-recibo-tabela .fp-recibo-print {
         justify-content: space-between;
     }
     
+    .body-adicional .itens-fechada .if-minutas,
     .fechada-body .itens-fechada .if-minutas {
         width: 45%;
         text-align: left;
         padding-left: 5px;
     }
     
+    .body-adicional .itens-fechada .if-valor,
     .fechada-body .itens-fechada .if-valor {
         width: 45%;
         text-align: right;
         padding-right: 5px;
     }
     
+    .body-adicional .itens-fechada .if-button,
     .fechada-body .itens-fechada .if-button {
         width: 10%;
         text-align: center;
         padding-left: 5px;
         padding-right: 5px;
     }
-    
+
     @media (max-width: 499px) {
-        .card-fechada {
+        .article-coluna,
+        .article-card {
             width: 100%;
         }
 

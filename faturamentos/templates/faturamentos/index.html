@@ -2,7 +2,7 @@
 {% load static %}
 {% load humanize %}
 {% block mainfaturamento %}
-<main>
+<main class="article">
     {% if fatura %}
     <article class="article-card card-fechada">
         <div class="article-card-titulo">
@@ -24,60 +24,69 @@
             {% endfor %}
         </div>
         <div class="article-card-footer">
-            <div>
-                {% for itens in fatura %}
-                {% if forloop.last %}
-                <span> {{ forloop.counter }} CLIENTE{{ forloop.counter|pluralize|upper }}</span>
-                {% endif %}
-                {% endfor %}
-            </div>
-            <div>
-                <span>TOTAL R$ {{ total_fatura.ValorTotal|intcomma }}</span>
+            <div class="footer-between">
+                <div>
+                    {% for itens in fatura %}
+                    {% if forloop.last %}
+                    <span> {{ forloop.counter|stringformat:"03d" }} CLIENTE{{ forloop.counter|pluralize|upper }}</span>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <div>
+                    <span>TOTAL R$ {{ total_fatura.ValorTotal|intcomma }}</span>
+                </div>
             </div>
         </div>
     {% endif %}
     </article>
     {% if faturada %}
-    <div class="faturas">
-        <header>
-            <h2>FATURADAS - AGUARDANDO PAGAMENTO</h2>
-        </header>
-        <main>
+    <article class="article-card card-faturada">
+        <div class="article-card-titulo">
+            <span>FATURADAS</span>
+        </div>
+        <div class="article-card-body">
             {% for itens in faturada %}
-            <div class="card-faturada">
-                <header>
-                    <span><b>{{ itens.minuta__idCliente__Fantasia }}</b></span>
-                    <span><b>FATURA {{ itens.Fatura }}</b></span>
-                </header>
-                <span>VENCIMENTO <b>{{ itens.VencimentoFatura }}</b></span>
-                <span>VALOR <b>R$ {{ itens.ValorFatura }}</b></span>
-                <span>TOTAL DE MINUTAS <b>{{ itens.TotalMinutas }}</b></span>
-                <footer>
-                    {% if itens.StatusMinuta != 'ABERTA' %}
-                    <a class="btn btn-danger btn-xs glyphicon glyphicon-backward"
-                       href="{% url 'estornafatura' itens.idFatura %}">
-                    </a>
-                    {% endif %}
-                    <a class="bi bi-cloud-arrow-up i-button js-fatura"
-                       href="{% url 'fatura' itens.idFatura %}">
-                    </a>
-                </footer>
+            <div class="faturada-body">
+                <div class="itens-vence">
+                    <span><b>FATURA {{ itens.Fatura|stringformat:"06d" }}</b></spans=>
+                    <span><b>{{ itens.VencimentoFatura }}</b></span>
+                </div>
+                <div class="body-adicional">
+                    <div class="itens-cliente">
+                        <span><b>{{ itens.minuta__idCliente__Fantasia }}</b></span>
+                    </div>
+                    <div class="itens-fechada">
+                        <span class="if-minutas"><b>{{ itens.TotalMinutas|stringformat:"03d" }}</b> MINUTA{{ itens.TotalMinutas|stringformat:"03d"|pluralize|upper }} </span>
+                        <span class="if-valor"><b>R$ {{ itens.ValorFatura|intcomma }}</b></span>
+                        <!-- {% if itens.StatusMinuta != 'ABERTA' %}
+                        <a class="btn btn-danger btn-xs glyphicon glyphicon-backward"
+                            href="{% url 'estornafatura' itens.idFatura %}">
+                        </a>
+                        {% endif %} -->
+                        <a class="if-button bi bi-folder2-open i-button js-fatura"
+                        href="{% url 'fatura' itens.idFatura %}">
+                        </a>
+                    </div>
+                </div>
             </div>
+            <div class="linha-divisoria"></div>
             {% endfor %}
-        </main>
-        <footer class="rodape">
-            {% for itens in faturada %}
-                {% if forloop.last %}
-                    {% if forloop.counter == 1 %}
-                        <h5> {{ forloop.counter }} FATURA AGUARDANDO PAGAMENTO</h5>
-                    {% else %}
-                        <h5> {{ forloop.counter }} FATURAS AGUARDANDO PAGAMENTO</h5>
+        </div>
+        <div class="article-card-footer">
+            <div class="footer-between">
+                <div>
+                    {% for itens in faturada %}
+                    {% if forloop.last %}
+                    <span> {{ forloop.counter|stringformat:"03d" }} FATURA{{ forloop.counter|pluralize|upper }}</span>
                     {% endif %}
-                {% endif %}
-            {% endfor %}
-            <h5>TOTAL A RECEBER R$ {{ total_faturada.ValorTotal }}</h5>
-        </footer>
-    </div>
+                    {% endfor %}
+                </div>
+                <div>
+                    <span>TOTAL R$ {{ total_faturada.ValorTotal|intcomma }}</span>
+                </div>
+            </div>
+        </div>
+    </article>
     {% endif %}
     {% if paga %}
     <div class="faturas">

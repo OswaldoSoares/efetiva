@@ -128,6 +128,12 @@ $(document).ready(function(){
         $('.body-fatura').height($('.body-file').height())
     }
 
+    if ($('.faturada-body').height() > $('.fechada-body').height()) {
+        $('.fechada-body').height($('.faturada-body').height())
+    } else {
+        $('.faturada-body').height($('.fechada-body').height())
+    }
+
     var buscaDados = function(minuta){
         var minuta = minuta;
         var idcliente = 9;

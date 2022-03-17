@@ -1,5 +1,6 @@
 {% extends 'faturamentos/basefaturamentos.html' %}
 {% load static %}
+{% load humanize %}
 
 {% block mainfaturamento %}
 <main class="article">
@@ -7,24 +8,19 @@
         <text class="text-mensagem">{{ msg.text_mensagem }}</text>
         <text class="type-mensagem">{{ msg.type_mensagem }}</text>
     </div>
-    <div>
+    <div class="article-coluna">
         <article class="article-card">
             <div class="article-card-titulo">
                 <div>
-                    <span>FATURA {{ s_fatura.fatura }}</span>
+                    <span>FATURA {{ s_fatura.fatura|stringformat:"06d" }}</span>
                     <i class="bi bi-arrow-left-square i-button"></i>
                 </div>
             </div>
             <div class="article-card-body body-fatura">
                 <div class="itens-body">
-                    <!-- {% if s_fatura.status_fatura == 'ABERTA' %}
-                    <div AGUARDANDO class="itens-fatura dstk"><i>AGUARDANDO PAGAMENTO</i></div>
-                    {% elif s_fatura.status_fatura == 'PAGA' %}
-                    <div FATURA class="itens-fatura dstk"><i>FATURA PAGA</i></div>
-                    {% endif %} -->
                     <div class="itens-fatura">{{ s_fatura.cliente_fatura.Fantasia }}</div>
                     <div class="itens-fatura"><i>DATA - </i> {{ s_fatura.data_fatura }}</div>
-                    <div VALOR class="itens-fatura"><i>VALOR - </i> R$ {{ s_fatura.valor_fatura }}</div>
+                    <div VALOR class="itens-fatura"><i>VALOR - </i> R$ {{ s_fatura.valor_fatura|intcomma }}</div>
                     <div TOTAL class="itens-fatura"><i>TOTAL DE MINUTAS - </i> {{ s_fatura.total_minutas }}</div>
                     <div VENCIMENTO class="itens-fatura"><i>VENCIMENTO - </i> {{ s_fatura.vencimento_fatura }}</div>
                 </div>
