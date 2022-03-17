@@ -48,7 +48,7 @@
             {% for itens in faturada %}
             <div class="faturada-body">
                 <div class="itens-vence">
-                    <span><b>FATURA {{ itens.Fatura|stringformat:"06d" }}</b></spans=>
+                    <span><b>FATURA {{ itens.Fatura|stringformat:"06d" }}</b></span>
                     <span><b>{{ itens.VencimentoFatura }}</b></span>
                 </div>
                 <div class="body-adicional">
@@ -88,7 +88,7 @@
         </div>
     </article>
     {% endif %}
-    {% if paga %}
+    <!-- {% if paga %}
     <div class="faturas">
         <header>
             <h2> FATURAS PAGAS</h2>
@@ -117,9 +117,9 @@
                             <a class="btn btn-danger btn-xs glyphicon glyphicon-backward"
                                href="{% url 'estornafatura' pagas.minuta__idFatura__idFatura %}">
                             </a>
-                            <!-- <a class="btn btn-warning btn-xs glyphicon glyphicon-print" href =
+                            <a class="btn btn-warning btn-xs glyphicon glyphicon-print" href =
                                     "{% url 'imprimefatura' pagas.minuta__idFatura__idFatura %}" target="_blank">
-                            </a> -->
+                            </a>
                         </td>
                     </tr>
                     {% endfor %}
@@ -127,7 +127,7 @@
             </table>
         </div>
     </div>
-    {%  endif %}
+    {%  endif %} -->
     <!-- DIV MODAL -->
     <div class="modal fade" id="modal-formulario" >
         <div class="modal-dialog">
