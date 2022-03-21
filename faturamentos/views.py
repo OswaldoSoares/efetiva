@@ -16,23 +16,14 @@ from .imprime import imprime_fatura_pdf
 
 @has_permission_decorator('modulo_faturamento')
 def index_faturamento(request):
-    fatura = Cliente.objects.values('idCliente', 'Fantasia').filter(
-        minuta__StatusMinuta='FECHADA', minuta__Valor__gt='0.00').annotate(Valor=Sum(
-        'minuta__Valor'), Quantidade=Count('minuta__Minuta')).order_by('Fantasia')
-    total_fatura = Minuta.objects.filter(StatusMinuta='FECHADA').aggregate(
-        ValorTotal=Sum('Valor'), Quantidade=Count('Minuta'))
-    faturada = Fatura.objects.filter(StatusFatura='ABERTA').annotate(TotalMinutas=Count('minuta')).exclude(
-        TotalMinutas=0).values('minuta__idCliente__Fantasia', 'idFatura', 'Fatura', 'VencimentoFatura',
-                               'ValorFatura', 'TotalMinutas').order_by('VencimentoFatura')
-    total_faturada = Fatura.objects.filter(StatusFatura='ABERTA').aggregate(
-        ValorTotal=Sum('ValorFatura'), Quantidade=Count('Fatura'))
-    paga = Cliente.objects.filter(minuta__idFatura__StatusFatura='PAGA').values(
-        'minuta__idFatura__Fatura', 'Fantasia', 'minuta__idFatura__ValorPagamento',
-        'minuta__idFatura__DataPagamento', 'minuta__idFatura__idFatura'). annotate(minutas=Count(
-        'minuta__idFatura__Fatura')).order_by('-minuta__idFatura__Fatura')
-    return render(request, 'faturamentos/index.html', {'fatura': fatura, 'faturada': faturada, 'total_fatura':
-        total_fatura, 'total_faturada': total_faturada, 'paga': paga})
-
+    vencimentos = FaturaVencimento().__dict__['dias_vencimentos']
+    fatura = Cliente.objects.values('idCliente', 'Fantasia').filter( minuta__StatusMinuta='FECHADA', minuta__Valor__gt='0.00').annotate(Valor=Sum('minuta__Valor'), Quantidade=Count('minuta__Minuta')).order_by('Fantasia')
+    total_fatura = Minuta.objects.filter(StatusMinuta='FECHADA').aggregate( ValorTotal=Sum('Valor'), Quantidade=Count('Minuta'))
+    faturada = Fatura.objects.filter(StatusFatura='ABERTA').annotate(TotalMinutas=Count('minuta')).exclude(TotalMinutas=0).values('minuta__idCliente__Fantasia', 'idFatura', 'Fatura', 'VencimentoFatura', 'ValorFatura', 'TotalMinutas').order_by('VencimentoFatura')
+    total_faturada = Fatura.objects.filter(StatusFatura='ABERTA').aggregate( ValorTotal=Sum('ValorFatura'), Quantidade=Count('Fatura'))
+    paga = Cliente.objects.filter(minuta__idFatura__StatusFatura='PAGA').values('minuta__idFatura__Fatura', 'Fantasia', 'minuta__idFatura__ValorPagamento',
+    'minuta__idFatura__DataPagamento', 'minuta__idFatura__idFatura'). annotate(minutas=Count( 'minuta__idFatura__Fatura')).order_by('-minuta__idFatura__Fatura')
+    return render(request, 'faturamentos/index.html', {'fatura': fatura, 'faturada': faturada, 'total_fatura': total_fatura, 'total_faturada': total_faturada, 'paga': paga, 'vencimentos': vencimentos})
 
 def minutas_faturar_cliente(request, idcli):
     minutas_faturar = Minuta.objects.values('Minuta', 'DataMinuta', 'Valor').filter(idCliente=idcli,
@@ -189,8 +180,7 @@ def fatura(request, idfatura):
     msg = {'text_mensagem': None, 'type_mensagem': None}
     msg = salva_arquivo(request, msg, idfatura)
     s_fatura = FaturaSelecionada(idfatura).__dict__
-    s_vencimentos = FaturaVencimento('ABC').__dict__
-    print(s_vencimentos)
+    s_vencimentos = FaturaVencimento().__dict__
     hoje = date.today().strftime('%Y-%m-%d')
     contexto = {'s_fatura': s_fatura, 'msg': msg, 'hoje': hoje,}
     return render(request, 'faturamentos/fatura.html', contexto)

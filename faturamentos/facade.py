@@ -1,4 +1,5 @@
 from datetime import date
+from decimal import Decimal
 import os
 import re
 from django.http import JsonResponse
@@ -130,13 +131,19 @@ class Vencimentos:
         lista = [{'data': itens.VencimentoFatura, 'valor': itens.ValorFatura, 'dias': str(itens.dias.days)} for itens in v_queryset]
         lista_soma = []
         for itens in lista:
+            if int(itens['dias']) < 0:
+                status = 'VENCIDA'
+            elif int(itens['dias']) == 0:
+                status = 'HOJE'
+            else:
+                status = 'VENCER'
             lista_diaria = list(filter(lambda x: x['dias'] == itens['dias'], lista))
-            soma = 0.00
+            soma = Decimal()
             for x in lista_diaria:
-                soma += float(x['valor'])
+                soma += x['valor']
             verifica_lista_soma = next((i for i, x in enumerate(lista_soma) if x['dias'] == itens['dias']), None)
-            if not verifica_lista_soma:
-                lista_soma.append({'data': itens['data'], 'valor': soma, 'dias': itens['dias']})
+            if verifica_lista_soma == None:
+                lista_soma.append({'data': itens['data'], 'valor': soma, 'dias': itens['dias'], 'status': status})
         return lista_soma
 
 

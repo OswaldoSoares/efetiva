@@ -1,5 +1,29 @@
 $(document).ready(function(){
     $('.box-loader').hide()
+    
+    /**
+     * Percorre todos os cards e deixa o body do mesmo tamanho (somento os que estão no mesmo "position top" do primiro card)
+     */
+    // TODO: Implementar para cards que não estiverem no mesmo "position top" do primeiro
+    var maxHeight = 0;
+    var topPosition = 0;
+    var tamanho_card_body = function() {
+        $('.js-card-body').each(function(index) {
+            if (index === 0) {
+                topPosition = $(this).position().top
+            }
+            var thisH = $(this).height();
+            if (thisH > maxHeight) {
+                maxHeight = thisH
+            }
+        });
+        $('.js-card-body').each(function() {
+            if ($(this).position().top == topPosition) {
+                $(this).height(maxHeight)
+            }
+        });
+    }
+    tamanho_card_body();
 
     var text_mensagem = $('.text-mensagem').text()
     var type_mensagem = $('.type-mensagem').text()
@@ -128,11 +152,6 @@ $(document).ready(function(){
         $('.body-fatura').height($('.body-file').height())
     }
 
-    if ($('.faturada-body').height() > $('.fechada-body').height()) {
-        $('.fechada-body').height($('.faturada-body').height())
-    } else {
-        $('.faturada-body').height($('.fechada-body').height())
-    }
 
     var buscaDados = function(minuta){
         var minuta = minuta;
@@ -218,4 +237,5 @@ $(document).ready(function(){
 
     $(".js-pagafatura").click(loadForm);
 
+    
 });
