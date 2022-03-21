@@ -3,8 +3,7 @@ from django.db.models import Sum, Max, Count
 from django.http import HttpResponse, JsonResponse
 from django.template.loader import render_to_string
 from rolepermissions.decorators import has_permission_decorator
-
-from faturamentos.facade import FaturaSelecionada, delete_arquivo, envia_email, salva_arquivo, salva_pagamento
+from faturamentos.facade import FaturaSelecionada, FaturaVencimento, delete_arquivo, envia_email, salva_arquivo, salva_pagamento
 from website.models import FileUpload
 from .models import Fatura
 from .forms import PagaFatura
@@ -190,6 +189,8 @@ def fatura(request, idfatura):
     msg = {'text_mensagem': None, 'type_mensagem': None}
     msg = salva_arquivo(request, msg, idfatura)
     s_fatura = FaturaSelecionada(idfatura).__dict__
+    s_vencimentos = FaturaVencimento('ABC').__dict__
+    print(s_vencimentos)
     hoje = date.today().strftime('%Y-%m-%d')
     contexto = {'s_fatura': s_fatura, 'msg': msg, 'hoje': hoje,}
     return render(request, 'faturamentos/fatura.html', contexto)

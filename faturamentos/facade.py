@@ -4,6 +4,7 @@ import re
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
+from django.db.models import ExpressionWrapper, F, DurationField, DateField, Value
 from clientes.models import EMailContatoCliente
 from faturamentos.models import Fatura
 from minutas.models import Minuta
@@ -104,6 +105,41 @@ class DiasVencimento:
         return dias.days
 
 
+class FaturaVencimento:
+    def __init__(self):
+        self.hoje = date.today()
+        self.dias_vencimentos = Vencimentos(self.hoje).dias
+
+
+class Vencimentos:
+    def __init__(self, v_hoje: date) -> list:
+        self.dias = self.get_vencimentos(v_hoje)
+
+    @staticmethod
+    def get_vencimentos(v_hoje: date) -> list:
+        """Retorna uma lista com as datas de vencimentos das fatura em aberto, com valores somados por data e o numero de dias referente ao dia de hoje.
+
+        Args:
+            v_hoje (date): Data de hoje
+
+        Returns:
+            list: Lista de dicionarios contendo os itens data, valor(somado por dia) e dias
+        """
+        v_queryset = Fatura.objects.annotate(hoje_field=ExpressionWrapper(Value(v_hoje), output_field=DateField())).filter(StatusFatura='ABERTA')
+        v_queryset = v_queryset.annotate(dias=ExpressionWrapper(F('VencimentoFatura') - F('hoje_field'), output_field=DurationField())).order_by('dias')
+        lista = [{'data': itens.VencimentoFatura, 'valor': itens.ValorFatura, 'dias': str(itens.dias.days)} for itens in v_queryset]
+        lista_soma = []
+        for itens in lista:
+            lista_diaria = list(filter(lambda x: x['dias'] == itens['dias'], lista))
+            soma = 0.00
+            for x in lista_diaria:
+                soma += float(x['valor'])
+            verifica_lista_soma = next((i for i, x in enumerate(lista_soma) if x['dias'] == itens['dias']), None)
+            if not verifica_lista_soma:
+                lista_soma.append({'data': itens['data'], 'valor': soma, 'dias': itens['dias']})
+        return lista_soma
+
+
 def get_fatura(v_idfatura):
     fatura = Fatura.objects.filter(idFatura=v_idfatura)
     lista = [{'idfatura': itens.idFatura, 'fatura': itens.Fatura, 'datafatura': itens.DataFatura, 'valorfatura': itens.ValorFatura, 'vencimentofatura': itens.VencimentoFatura, 'statusfatura': itens.StatusFatura, 'datapagamento': itens.DataPagamento, 'valorpagamento': itens.ValorPagamento, 'comentario': itens.Comentario} for itens in fatura]
@@ -175,7 +211,6 @@ def envia_email(v_idobj, v_emails, v_texto):
 
 
 def verifica_emails(email_list):
-    import re
     regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
     list_check = []
     for itens in email_list:
