@@ -215,8 +215,8 @@ def envia_email(v_idobj, v_emails, v_texto):
     html_message = render_to_string('faturamentos/emailfatura.html', contexto)
     from_email = 'Transefetiva Transportes <financeiro.efetiva@terra.com.br>'
     to = emails_to
-    bcc = 'transefetiva@terra.com.br'
-    email = EmailMessage(subject, html_message, from_email, to)
+    bcc = ['transefetiva@terra.com.br']
+    email = EmailMessage(subject, html_message, from_email, to, bcc)
     email.content_subtype = 'html'
     for itens in s_fatura.file_fatura:
         email.attach_file(itens.uploadFile.path)
@@ -240,7 +240,8 @@ def envia_email(v_idobj, v_emails, v_texto):
 
 def verifica_emails(email_list):
     # regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
-    regex = '^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$'
+    # regex = '^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+\.)?$'
+    regex = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
     list_check = []
     for itens in email_list:
         if(re.search(regex, itens)):
