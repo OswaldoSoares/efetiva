@@ -1,5 +1,6 @@
 from datetime import date
 from decimal import Decimal
+from multiprocessing import context
 import os
 import re
 from django.http import JsonResponse
@@ -9,6 +10,7 @@ from django.db.models import ExpressionWrapper, F, DurationField, DateField, Val
 from clientes.models import EMailContatoCliente
 from faturamentos.models import Fatura
 from minutas.models import Minuta
+from minutas.views import minuta
 from website.models import FileUpload
 
 
@@ -85,6 +87,7 @@ class ClienteFatura:
         cliente = minutas[0].idCliente
         return cliente
 
+
 class ClienteEmail:
     def __init__(self, cliente):
         self.email = self.get_email(cliente)
@@ -151,6 +154,23 @@ def get_fatura(v_idfatura):
     fatura = Fatura.objects.filter(idFatura=v_idfatura)
     lista = [{'idfatura': itens.idFatura, 'fatura': itens.Fatura, 'datafatura': itens.DataFatura, 'valorfatura': itens.ValorFatura, 'vencimentofatura': itens.VencimentoFatura, 'statusfatura': itens.StatusFatura, 'datapagamento': itens.DataPagamento, 'valorpagamento': itens.ValorPagamento, 'comentario': itens.Comentario} for itens in fatura]
     return lista
+
+
+def get_fatura_pagas(v_idcliente):
+    faturas = Minuta.objects.filter(idFatura__StatusFatura='PAGA', idCliente=v_idcliente).order_by('-idFatura__DataPagamento').values('idFatura', 'idFatura__Fatura', 'idFatura__DataPagamento', 'idFatura__ValorPagamento').distinct()
+    return faturas
+
+
+def html_clientes_paga(faturas):
+    data = dict()
+    contexto = {'faturas': faturas}
+    data['html_faturas'] = render_to_string('faturamentos/fatura_paga_cliente.html', contexto)
+    return retorna_json(data)
+
+
+def get_clientes_faturas_pagas():
+    faturas = Minuta.objects.filter(idFatura__StatusFatura='PAGA').order_by('idCliente__Fantasia').values('idCliente__Fantasia', 'idCliente').distinct()
+    return faturas
 
 
 def salva_pagamento(request, v_idfatura, v_data, v_valor):

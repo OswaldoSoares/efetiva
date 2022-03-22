@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import index_faturamento, minutas_faturar_cliente, cria_div_selecionada, cria_fatura, estorna_fatura, paga_fatura, imprime_fatura, email_fatura, fatura, delete_file
+from .views import index_faturamento, minutas_faturar_cliente, cria_div_selecionada, cria_fatura, estorna_fatura, paga_fatura, imprime_fatura, email_fatura, fatura, delete_file, cliente_fatura
 
 urlpatterns = [
     path('', index_faturamento, name='index_faturamento'),
@@ -15,5 +15,6 @@ urlpatterns = [
     path('paga_fatura', paga_fatura, name='paga_fatura'),
     path('fatura/<int:idfatura>/', fatura, name='fatura'),
     path('email_fatura', email_fatura, name='email_fatura'),
-    path('delete_file', delete_file, name='delete_file')
+    path('delete_file', delete_file, name='delete_file'),
+    path('cliente_fatura', cliente_fatura, name='cliente_fatura')
 ]

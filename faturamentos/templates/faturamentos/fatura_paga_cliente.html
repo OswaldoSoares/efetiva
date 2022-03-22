@@ -1,0 +1,14 @@
+{% load humanize %}
+{% for itens in faturas %}
+<div class="lista-faturas">
+    <div class="itens-paga">
+        <span class="ip-fatura"><b>{{ itens.idFatura__Fatura|stringformat:"04d" }} </b></span>
+        <span class="ip-data"><b>{{ itens.idFatura__DataPagamento }}</b></span>
+        <span class="ip-valor"><b>R$ {{ itens.idFatura__ValorPagamento|intcomma }}</b></span>
+        <a class="ip-button bi bi-folder2-open i-button" href="{% url 'fatura' itens.idFatura %}"> </a>
+    </div>
+    {% if not forloop.last %}
+    <div class="linha-divisoria"></div>
+    {% endif %}
+</div>
+{% endfor %}

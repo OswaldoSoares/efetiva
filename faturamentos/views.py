@@ -3,7 +3,7 @@ from django.db.models import Sum, Max, Count
 from django.http import HttpResponse, JsonResponse
 from django.template.loader import render_to_string
 from rolepermissions.decorators import has_permission_decorator
-from faturamentos.facade import FaturaSelecionada, FaturaVencimento, delete_arquivo, envia_email, salva_arquivo, salva_pagamento
+from faturamentos.facade import FaturaSelecionada, FaturaVencimento, delete_arquivo, envia_email, get_clientes_faturas_pagas, get_fatura_pagas, html_clientes_paga, salva_arquivo, salva_pagamento
 from website.models import FileUpload
 from .models import Fatura
 from .forms import PagaFatura
@@ -17,18 +17,17 @@ from .imprime import imprime_fatura_pdf
 @has_permission_decorator('modulo_faturamento')
 def index_faturamento(request):
     vencimentos = FaturaVencimento().__dict__['dias_vencimentos']
+    faturas_pagas_cliente = get_clientes_faturas_pagas()
     fatura = Cliente.objects.values('idCliente', 'Fantasia').filter( minuta__StatusMinuta='FECHADA', minuta__Valor__gt='0.00').annotate(Valor=Sum('minuta__Valor'), Quantidade=Count('minuta__Minuta')).order_by('Fantasia')
     total_fatura = Minuta.objects.filter(StatusMinuta='FECHADA').aggregate( ValorTotal=Sum('Valor'), Quantidade=Count('Minuta'))
     faturada = Fatura.objects.filter(StatusFatura='ABERTA').annotate(TotalMinutas=Count('minuta')).exclude(TotalMinutas=0).values('minuta__idCliente__Fantasia', 'idFatura', 'Fatura', 'VencimentoFatura', 'ValorFatura', 'TotalMinutas').order_by('VencimentoFatura')
     total_faturada = Fatura.objects.filter(StatusFatura='ABERTA').aggregate( ValorTotal=Sum('ValorFatura'), Quantidade=Count('Fatura'))
     paga = Cliente.objects.filter(minuta__idFatura__StatusFatura='PAGA').values('minuta__idFatura__Fatura', 'Fantasia', 'minuta__idFatura__ValorPagamento',
     'minuta__idFatura__DataPagamento', 'minuta__idFatura__idFatura'). annotate(minutas=Count( 'minuta__idFatura__Fatura')).order_by('-minuta__idFatura__Fatura')
-    return render(request, 'faturamentos/index.html', {'fatura': fatura, 'faturada': faturada, 'total_fatura': total_fatura, 'total_faturada': total_faturada, 'paga': paga, 'vencimentos': vencimentos})
+    return render(request, 'faturamentos/index.html', {'fatura': fatura, 'faturada': faturada, 'total_fatura': total_fatura, 'total_faturada': total_faturada, 'paga': paga, 'vencimentos': vencimentos, 'faturas_pagas_cliente': faturas_pagas_cliente})
 
 def minutas_faturar_cliente(request, idcli):
-    minutas_faturar = Minuta.objects.values('Minuta', 'DataMinuta', 'Valor').filter(idCliente=idcli,
-                                                                                    StatusMinuta='FECHADA',
-                                                                                    Valor__gt='0.00')
+    minutas_faturar = Minuta.objects.values('Minuta', 'DataMinuta', 'Valor').filter(idCliente=idcli, StatusMinuta='FECHADA', Valor__gt='0.00')
     minuta = Minuta.objects.filter(idCliente=idcli, StatusMinuta='FECHADA')
     minutaitens = MinutaItens.objects.filter(RecebePaga='R').order_by('-TipoItens')
     ultima_fatura = Fatura.objects.aggregate(UltimaFatura=Max('Fatura'))
@@ -38,10 +37,7 @@ def minutas_faturar_cliente(request, idcli):
         ultima_fatura['UltimaFatura'] += 1
     tabela = Tabela.objects.get(idCliente=idcli)
     dia_vencimento = (date.today() + timedelta(days=tabela.idFormaPagamento.Dias)).strftime('%Y-%m-%d')
-    return render(request, 'faturamentos/minutasfaturarcliente.html', {'minuta': minuta, 'minutaitens': minutaitens,
-                                                                       'minutas_faturar': minutas_faturar,
-                                                                       'ultima_fatura': ultima_fatura, 'dia_vencimento':
-                                                                           dia_vencimento})
+    return render(request, 'faturamentos/minutasfaturarcliente.html', {'minuta': minuta, 'minutaitens': minutaitens, 'minutas_faturar': minutas_faturar, 'ultima_fatura': ultima_fatura, 'dia_vencimento': dia_vencimento})
 
 
 def cria_div_selecionada(request):
@@ -160,7 +156,7 @@ def paga_fatura(request):
     #                                'StatusFatura': 'PAGA'}, instance=fatura)
     # contexto = {'form': form, 'idfatura': idfatura}
     # data['html_form'] = render_to_string('faturamentos/pagafatura.html', contexto, request=request)
-    return JsonResponse(data)
+    # return JsonResponse(data)
 
 
 def imprime_fatura(idfatura):
@@ -180,7 +176,6 @@ def fatura(request, idfatura):
     msg = {'text_mensagem': None, 'type_mensagem': None}
     msg = salva_arquivo(request, msg, idfatura)
     s_fatura = FaturaSelecionada(idfatura).__dict__
-    s_vencimentos = FaturaVencimento().__dict__
     hoje = date.today().strftime('%Y-%m-%d')
     contexto = {'s_fatura': s_fatura, 'msg': msg, 'hoje': hoje,}
     return render(request, 'faturamentos/fatura.html', contexto)
@@ -190,4 +185,11 @@ def delete_file(request):
     v_idobj = request.GET.get('idobj')
     v_idfatura = request.GET.get('idfatura')
     data = delete_arquivo(request, v_idobj, v_idfatura)
+    return data
+
+
+def cliente_fatura(request):
+    v_idobj = request.GET.get('idobj')
+    faturas = get_fatura_pagas(v_idobj)
+    data = html_clientes_paga(faturas)
     return data

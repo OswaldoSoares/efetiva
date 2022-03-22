@@ -1,13 +1,13 @@
 $(document).ready(function(){
     $('.box-loader').hide()
-    
+
     /**
      * Percorre todos os cards e deixa o body do mesmo tamanho (somento os que estão no mesmo "position top" do primiro card)
      */
     // TODO: Implementar para cards que não estiverem no mesmo "position top" do primeiro
     var maxHeight = 0;
     var topPosition = 0;
-    var tamanho_card_body = function() {
+    var tamanhoCardBody = function() {
         $('.js-card-body').each(function(index) {
             if (index === 0) {
                 topPosition = $(this).position().top
@@ -23,7 +23,7 @@ $(document).ready(function(){
             }
         });
     }
-    tamanho_card_body();
+    tamanhoCardBody();
 
     var text_mensagem = $('.text-mensagem').text()
     var type_mensagem = $('.type-mensagem').text()
@@ -121,11 +121,11 @@ $(document).ready(function(){
                 datapagto: datapagto,
                 valorpago: valorpago,
             },
-            beforeSend: function(){
+            beforeSend: function() {
                 $('.text-loader').text('Aguarde, processando pagamento...')
                 $('.box-loader').fadeIn(50);
             },
-            success: function(data){
+            success: function(data) {
                 $('.box-loader').hide();
                 $('.text-loader').text('Aguarde...')
                 if (data['type_mensagem'] == 'ERROR') {
@@ -143,6 +143,37 @@ $(document).ready(function(){
             },
         });
     });
+
+    $('.js-cliente-faturas').on('click', function () {
+        var vElementSel = $(this)
+        var idobj = $(this).data('idobj')
+        var vElement = $('.cl-'+$(this).data('idobj'))
+        if ($(vElement).is(':hidden')) {
+            $.ajax({
+                url: '/faturamentos/cliente_fatura',
+                type: 'GET',
+                data: {
+                    idobj: idobj,
+                },
+                beforeSend: function() {
+                    escondeFaturasPagas()
+                },
+                success: function(data) {
+                    $(vElementSel).removeClass("bi-caret-right-fill").addClass("bi-caret-down-fill");
+                    $(vElement).html(data['html_faturas'])
+                    $(vElement).fadeIn(500)
+                },
+                error: function(error) {
+    
+                },
+            });
+        } else {
+            $(vElementSel).removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
+            escondeFaturasPagas()
+        }
+    });
+
+    
 
     if ($('.body-email').height() > $('.body-file').height()) {
         $('.body-file').height($('.body-email').height())
@@ -236,6 +267,16 @@ $(document).ready(function(){
     };
 
     $(".js-pagafatura").click(loadForm);
-
-    
+    escondeFaturasPagas()
 });
+
+var escondeFaturasPagas = function() {
+    $('.js-div-pagas').each(function() {
+        $(this).fadeOut('500')
+        $(this).html('')
+        $(this).hide()
+    });
+    $('.js-cliente-faturas').each(function() {
+        $(this).removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
+    });
+}

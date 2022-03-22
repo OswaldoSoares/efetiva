@@ -12,7 +12,7 @@
         <article class="article-card">
             <div class="article-card-titulo">
                 <div>
-                    <span>FATURA {{ s_fatura.fatura|stringformat:"06d" }}</span>
+                    <span>FATURA {{ s_fatura.fatura|stringformat:"04d" }}</span>
                     <a class="bi bi-arrow-left-square i-button" href="{% url 'estornafatura' s_fatura.idfatura %}"></a>
                 </div>
             </div>
@@ -52,7 +52,7 @@
                 {% if s_fatura.status_fatura == 'PAGA' %}
                 <div class="itens-body">
                     <div class="itens-fatura"><i>DATA DO PAGAMENTO</i> {{ s_fatura.data_pagamento }}</div>
-                    <div class="itens-fatura"><i>VALOR PAGO</i> {{ s_fatura.valor_pagamento }}</div>
+                    <div class="itens-fatura"><i>VALOR PAGO R$</i> {{ s_fatura.valor_pagamento|intcomma }}</div>
                 </div>
                 {% else %}
                 <div class="col-md-12 itens-paga">
