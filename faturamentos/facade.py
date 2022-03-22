@@ -238,7 +238,8 @@ def envia_email(v_idobj, v_emails, v_texto):
 
 
 def verifica_emails(email_list):
-    regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+    # regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+    regex = '^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$'
     list_check = []
     for itens in email_list:
         if(re.search(regex, itens)):
