@@ -122,12 +122,10 @@ def imprime_fatura_pdf(fatura):
     pdf = canvas.Canvas(buffer)
     # Start writing the PDF here - Aqui começa a escrita do PDF
     styles_claro = ParagraphStyle('claro', fontName='Times-Roman', fontSize=8, leading=9, alignment=TA_JUSTIFY)
-    styles_escuro = ParagraphStyle('escuro', fontName='Times-Roman', fontSize=8, leading=9, alignment=TA_JUSTIFY,
-                                   backColor='#EEE9E9')
+    styles_escuro = ParagraphStyle('escuro', fontName='Times-Roman', fontSize=8, leading=9, alignment=TA_JUSTIFY, backColor='#EEE9E9')
     cliente = Cliente.objects.filter(idCliente=minutas[0].idCliente_id)
     cliente_nome = cliente[0].Nome
-    cliente_endereco = '{} - {} - {} - {} - {}'.format(cliente[0].Endereco, cliente[0].Bairro, cliente[0].CEP,
-                                                       cliente[0].Cidade, cliente[0].Estado)
+    cliente_endereco = '{} - {} - {} - {} - {}'.format(cliente[0].Endereco, cliente[0].Bairro, cliente[0].CEP, cliente[0].Cidade, cliente[0].Estado)
     cliente_docs = None
     if cliente[0].CNPJ and cliente[0].IE:
         cliente_docs = 'CNPJ {} - IE {}'.format(cliente[0].CNPJ, cliente[0].IE)
@@ -177,8 +175,7 @@ def imprime_fatura_pdf(fatura):
         pdf.setFillColor(HexColor("#000000"))
         pdf.drawCentredString(convertemp(105), convertemp(linha), 'MINUTA: {}'.format(minuta_numero))
         if minuta_placa:
-            pdf.drawRightString(convertemp(198), convertemp(linha), 'VEÍCULO: {} - {}'.format(minuta_veiculo,
-                                                                                              minuta_placa))
+            pdf.drawRightString(convertemp(198), convertemp(linha), 'VEÍCULO: {} - {}'.format(minuta_veiculo, minuta_placa))
         linha -= 4
         pdf.setFont("Times-Roman", 8)
         if minuta_motorista:
@@ -187,8 +184,7 @@ def imprime_fatura_pdf(fatura):
             minuta_hora_inicial, minuta_hora_final))
         pdf.setFont("Times-Roman", 10)
         pdf.setFillColor(HexColor("#0000FF"))
-        pdf.drawRightString(convertemp(198), convertemp(linha),
-                            'VALOR: R$ {:.2f}'.format(minuta_valor).replace('.', ','))
+        pdf.drawRightString(convertemp(198), convertemp(linha), 'VALOR: R$ {:.2f}'.format(minuta_valor).replace('.', ','))
         pdf.setFillColor(HexColor("#000000"))
         coleta_entrega = None
         if minutas[index].Coleta and minutas[index].Entrega:
@@ -212,9 +208,7 @@ def imprime_fatura_pdf(fatura):
             para.wrapOn(pdf, convertemp(186), convertemp(297))
             linha -= para.height * 0.352777
             para.drawOn(pdf, convertemp(12), convertemp(linha))
-        notas_dados = MinutaNotas.objects.values('Nota', 'ValorNota', 'Peso', 'Volume', 'Bairro', 'Cidade', 'Nome',
-                                                 'NotaGuia').filter(idMinuta=minutas[index].idMinuta,
-                                                                    NotaGuia='0').exclude(Nota='PERIMETRO')
+        notas_dados = MinutaNotas.objects.values('Nota', 'ValorNota', 'Peso', 'Volume', 'Bairro', 'Cidade', 'Nome', 'NotaGuia').filter(idMinuta=minutas[index].idMinuta, NotaGuia='0').exclude(Nota='PERIMETRO')
         idminuta = minutas[index].idMinuta
         notas = 'NOTA(S): '
         if notas_dados:
@@ -243,8 +237,7 @@ def imprime_fatura_pdf(fatura):
                             notasguia_peso = ' PESO {}'.format(itensnotasguia['Peso'])
                         if itensnotasguia['Volume'] > 0:
                             notasguia_volume = ' VOLUME {}'.format(itensnotasguia['Volume'])
-                        notasguia = notasguia + '{}{}{}{}'.format(notasguia_nota, notasguia_valor, notasguia_peso,
-                                                                 notasguia_volume)
+                        notasguia = notasguia + '{}{}{}{}'.format(notasguia_nota, notasguia_valor, notasguia_peso, notasguia_volume)
                 notas_bairro = ''
                 if itensnotas['Bairro']:
                     notas_bairro = ' - {}'.format(itensnotas['Bairro'])
@@ -260,8 +253,7 @@ def imprime_fatura_pdf(fatura):
             para.wrapOn(pdf, convertemp(186), convertemp(297))
             linha -= para.height * 0.352777
             para.drawOn(pdf, convertemp(12), convertemp(linha))
-        notas_perimetro = MinutaNotas.objects.values('Cidade').filter(idMinuta=minutas[index].idMinuta).exclude(
-            Cidade='SÃO PAULO')
+        notas_perimetro = MinutaNotas.objects.values('Cidade').filter(idMinuta=minutas[index].idMinuta).exclude( Cidade='SÃO PAULO')
         cidades = 'CIDADE(S):'
         if notas_perimetro:
             for itensperimetro in notas_perimetro:

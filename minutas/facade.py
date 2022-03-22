@@ -700,8 +700,7 @@ def prepara_itens(request):
         insere_minuta_item('AJUDANTE', 'PAGA', 'P', valor, unidade, 0.00, 0.00, base, hora_zero, idminuta, obs)
 
 
-def insere_minuta_item(descricao, tipoitens, recebepaga, valor, quantidade, porcento, peso, valorbase, tempo,
-                       idminuta, obs):
+def insere_minuta_item(descricao, tipoitens, recebepaga, valor, quantidade, porcento, peso, valorbase, tempo, idminuta, obs):
     obj = MinutaItens()
     obj.Descricao = descricao
     obj.TipoItens = tipoitens

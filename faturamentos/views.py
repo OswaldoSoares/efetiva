@@ -90,7 +90,7 @@ def cria_fatura(request):
                 obj.idCategoriaVeiculo = minuta.idCategoriaVeiculo
                 obj.idVeiculo = minuta.idVeiculo
                 obj.save()
-        imprime_fatura(fatura.idFatura)
+        imprime_fatura(request, fatura.idFatura)
     return redirect('index_faturamento')
 
 
@@ -148,7 +148,7 @@ def paga_fatura(request):
     return data
 
 
-def imprime_fatura(idfatura):
+def imprime_fatura(request, idfatura):
     response = imprime_fatura_pdf(idfatura)[0]
     return response
 
