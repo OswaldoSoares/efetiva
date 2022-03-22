@@ -3958,7 +3958,7 @@ main .fp-recibo-tabela .fp-recibo-print {
     .article-esquerda .card-vencimento,
     .article-esquerda .card-faturada,
     .article-esquerda .card-fechada {
-        min-width: 500px;
+        width: 500px;
     }
 
     .article-direita .card-paga {
@@ -4107,7 +4107,14 @@ main .fp-recibo-tabela .fp-recibo-print {
 
     @media (max-width: 499px) {
         .article-coluna,
-        .article-card {
+        .article-card,
+        .article-esquerda,
+        .article-esquerda .card-fechada,
+        .article-esquerda .card-faturada,
+        .article-esquerda .card-vencimento,
+        .article-direita,
+        .article-direita .card-paga,
+        .vencimento-body {
             width: 100%;
         }
 
