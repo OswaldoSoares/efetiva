@@ -1,4 +1,4 @@
-import email
+# import email
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 
@@ -6,7 +6,7 @@ from website.forms import CadastraFeriado
 from .models import Parametros
 from clientes.facade import get_cliente
 
-from imap_tools import MailBox, AND
+# from imap_tools import MailBox, AND
 
 
 class Feriados():
@@ -96,13 +96,13 @@ def form_exclui_parametro(request, c_idobj, c_url, c_view):
     return c_return
 
 
-def conecta_imap():
-    usuario = 'operacional.efetiva@terra.com.br'
-    senha = 'mau159753'
+# def conecta_imap():
+#     usuario = 'operacional.efetiva@terra.com.br'
+#     senha = 'xxxxx'
 
-    meu_email = MailBox('imap.terra.com.br').login(usuario, senha)
+#     meu_email = MailBox('imap.terra.com.br').login(usuario, senha)
 
-    lista_emails = meu_email.fetch(AND(from_='faturamento@fulgor1923.com.br'))
-    for x in lista_emails:
-        print(x.text)
-    return lista_emails
+#     lista_emails = meu_email.fetch(AND(from_='faturamento@fulgor1923.com.br'))
+#     for x in lista_emails:
+#         print(x.text)
+#     return lista_emails
