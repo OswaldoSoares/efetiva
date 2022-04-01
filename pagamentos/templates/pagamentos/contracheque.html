@@ -39,12 +39,12 @@
                        target="_blank">
                     </a>
                     {% endif %}
-                    {% if user|can:'pagamentos_folha' %}
+                    {% comment %} {% if user|can:'pagamentos_folha' %} {% endcomment %}
                     <button class="btn btn-danger btn-xs glyphicon glyphicon-remove remove-item"
                             data-url="{% url 'excluicontrachequeitens' %}"
                             idcontracheque="{{ itens.idContraCheque_id }}" descricao="{{ itens.Descricao }}" registro="{{ itens.Registro }}" idpessoal="{{ itenscc.idPessoal_id }}">
                     </button>
-                    {% endif %}
+                    {% comment %} {% endif %} {% endcomment %}
                 </div>
                 {% endif %}
             </div>
