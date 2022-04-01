@@ -24,12 +24,12 @@
         {% endfor %}
         <tr>
             <td class="fp-button">
-                {% if user|can:'pagamentos_folha' %}
+                {% comment %} {% if user|can:'pagamentos_folha' %} {% endcomment %}
                 <button class="btn btn-warning" data-url="{% url 'criafolha' %}" id="gerar-folha"
                         mesreferencia="{{ referencia.MesReferencia }}"
                         anoreferencia="{{ referencia.AnoReferencia }}">GERAR FOLHA DE PAGAMENTO
                 </button>
-                {% endif %}
+                {% comment %} {% endif %} {% endcomment %}
             </td>
             <td class="fp-valor">R$ {{ totalsalario }}</td>
             <td class="fp-valor">R$ {{ totalfolha }}</td>

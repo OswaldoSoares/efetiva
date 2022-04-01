@@ -19,10 +19,10 @@
     <input type="hidden" name="AnoReferencia" value="{{ itens.AnoReferencia }}" id="AnoReferencia">
     <input type="hidden" name="idPessoal" value="{{ itens.idPessoal_id }}" id="idPessoal">
     {%  endfor %}
-    {% if user|can:'pagamentos_folha' %}
+    {% comment %} {% if user|can:'pagamentos_folha' %} {% endcomment %}
     <div class="col-sm-1">
         <button class="btn btn-primary glyphicon glyphicon-save">
         </button>
     </div>
-    {% endif %}
+    {% comment %} {% endif %} {% endcomment %}
 </form>
