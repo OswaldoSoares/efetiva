@@ -148,7 +148,8 @@ class FaturaVencimento:
 
         @staticmethod
         def get_vencimentos(v_hoje: date) -> list:
-            """Retorna uma lista com as datas de vencimentos das fatura em aberto, com valores somados por data e o numero de dias referente ao dia de hoje.
+            """Retorna uma lista com as datas de vencimentos das fatura em aberto,
+            com valores somados por data e o numero de dias referente ao dia de hoje.
 
             Args:
                 v_hoje (date): Data de hoje
@@ -196,6 +197,65 @@ class FaturaVencimento:
                             "valor": soma,
                             "dias": itens["dias"],
                             "status": status,
+                        }
+                    )
+            return lista_soma
+
+
+class FaturaPagas:
+    def __init__(self):
+        self.hoje = date.today()
+        self.dias_pagas = self.Pagas(self.hoje).dias
+
+    class Pagas:
+        def __init__(self, v_hoje: date) -> list:
+            self.dias = self.get_pagas(v_hoje)
+
+        @staticmethod
+        def get_pagas(v_hoje: date) -> list:
+            """Retorna uma lista com as datas das fatura recebidas,
+            com valores somados por data e o numero de dias referente ao dia de hoje.
+
+            Args:
+                v_hoje (date): Data de hoje
+
+            Returns:
+                list: Lista de dicionarios contendo os itens data, valor(somado por dia) e dias
+            """
+            v_queryset = Fatura.objects.annotate(
+                hoje_field=ExpressionWrapper(Value(v_hoje), output_field=DateField())
+            ).filter(StatusFatura="PAGA")
+            v_queryset = v_queryset.annotate(
+                dias=ExpressionWrapper(
+                    F("hoje_field") - F("DataPagamento"),
+                    output_field=DurationField(),
+                )
+            ).order_by("dias")
+            lista = [
+                {
+                    "data": itens.DataPagamento,
+                    "valor": itens.ValorFatura,
+                    "dias": str(itens.dias.days),
+                }
+                for itens in v_queryset
+            ]
+            lista_soma = []
+            for itens in lista:
+                lista_diaria = list(filter(lambda x: x["dias"] == itens["dias"], lista))
+                soma = Decimal()
+                for x in lista_diaria:
+                    soma += x["valor"]
+                verifica_lista_soma = next(
+                    (i for i, x in enumerate(lista_soma) if x["dias"] == itens["dias"]),
+                    None,
+                )
+                if verifica_lista_soma == None:
+                    lista_soma.append(
+                        {
+                            "data": itens["data"],
+                            "valor": soma,
+                            "dias": itens["dias"],
+                            "status": "PAGA",
                         }
                     )
             return lista_soma
