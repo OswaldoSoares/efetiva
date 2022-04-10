@@ -1,17 +1,19 @@
+import os
+import re
 from datetime import date
 from decimal import Decimal
 from multiprocessing import context
-import os
-import re
+
+from clientes.models import EMailContatoCliente
+from django.core.mail import EmailMessage
+from django.db.models import DateField, DurationField, ExpressionWrapper, F, Value
 from django.http import JsonResponse
 from django.template.loader import render_to_string
-from django.core.mail import EmailMessage
-from django.db.models import ExpressionWrapper, F, DurationField, DateField, Value
-from clientes.models import EMailContatoCliente
-from faturamentos.models import Fatura
 from minutas.models import Minuta
 from minutas.views import minuta
 from website.models import FileUpload
+
+from faturamentos.models import EmailEnviado, Fatura
 
 
 class FaturaSelecionada:
@@ -33,7 +35,26 @@ class FaturaSelecionada:
         self.file_fatura = FileFatura(self.fatura).file
         self.cliente_fatura = ClienteFatura(v_idfatura).cliente
         self.email_fatura = ClienteEmail(self.cliente_fatura).email
+        self.email_enviado = Enviado(v_idfatura).enviados
         self.dias_vencimento = DiasVencimento(self.vencimento_fatura).dias
+
+
+class Enviado:
+    def __init__(self, v_idfatura):
+        self.enviados = self.get_enviados(v_idfatura)
+
+    @staticmethod
+    def get_enviados(v_idfatura):
+        enviados = EmailEnviado.objects.filter(idFatura=v_idfatura)
+        lista = [
+            {
+                "DataEnviado": itens.DataEnviado,
+                "EmailsEnviado": itens.EmailsEnviado,
+                "MensagemAdicional": itens.MensagemAdicional,
+            }
+            for itens in enviados
+        ]
+        return lista
 
 
 class MinutasFatura:
@@ -43,7 +64,14 @@ class MinutasFatura:
     @staticmethod
     def get_minutas(v_idfatura):
         minutas = Minuta.objects.filter(idFatura=v_idfatura)
-        lista = [{'idMinuta': itens.idMinuta, 'Minuta': itens.Minuta, 'idCliente': itens.idCliente} for itens in minutas]
+        lista = [
+            {
+                "idMinuta": itens.idMinuta,
+                "Minuta": itens.Minuta,
+                "idCliente": itens.idCliente,
+            }
+            for itens in minutas
+        ]
         return lista
 
 
@@ -53,7 +81,9 @@ class NotasFatura:
 
     @staticmethod
     def get_notas(v_fatura):
-        notas = FileUpload.objects.filter(DescricaoUpload__startswith=f'FATURA_{str(v_fatura).zfill(6)}_NF')
+        notas = FileUpload.objects.filter(
+            DescricaoUpload__startswith=f"FATURA_{str(v_fatura).zfill(6)}_NF"
+        )
         return notas
 
 
@@ -63,7 +93,9 @@ class BoletosFatura:
 
     @staticmethod
     def get_boletos(v_fatura):
-        boletos = FileUpload.objects.filter(DescricaoUpload__startswith=f'FATURA_{str(v_fatura).zfill(6)}_BOLETO')
+        boletos = FileUpload.objects.filter(
+            DescricaoUpload__startswith=f"FATURA_{str(v_fatura).zfill(6)}_BOLETO"
+        )
         return boletos
 
 
@@ -73,7 +105,9 @@ class FileFatura:
 
     @staticmethod
     def get_file(v_fatura):
-        file = FileUpload.objects.filter(DescricaoUpload=f'FATURA_{str(v_fatura).zfill(6)}_FATURA.PDF')
+        file = FileUpload.objects.filter(
+            DescricaoUpload=f"FATURA_{str(v_fatura).zfill(6)}_FATURA.PDF"
+        )
         return file
 
 
@@ -129,47 +163,100 @@ class Vencimentos:
         Returns:
             list: Lista de dicionarios contendo os itens data, valor(somado por dia) e dias
         """
-        v_queryset = Fatura.objects.annotate(hoje_field=ExpressionWrapper(Value(v_hoje), output_field=DateField())).filter(StatusFatura='ABERTA')
-        v_queryset = v_queryset.annotate(dias=ExpressionWrapper(F('VencimentoFatura') - F('hoje_field'), output_field=DurationField())).order_by('dias')
-        lista = [{'data': itens.VencimentoFatura, 'valor': itens.ValorFatura, 'dias': str(itens.dias.days)} for itens in v_queryset]
+        v_queryset = Fatura.objects.annotate(
+            hoje_field=ExpressionWrapper(Value(v_hoje), output_field=DateField())
+        ).filter(StatusFatura="ABERTA")
+        v_queryset = v_queryset.annotate(
+            dias=ExpressionWrapper(
+                F("VencimentoFatura") - F("hoje_field"), output_field=DurationField()
+            )
+        ).order_by("dias")
+        lista = [
+            {
+                "data": itens.VencimentoFatura,
+                "valor": itens.ValorFatura,
+                "dias": str(itens.dias.days),
+            }
+            for itens in v_queryset
+        ]
         lista_soma = []
         for itens in lista:
-            if int(itens['dias']) < 0:
-                status = 'VENCIDA'
-            elif int(itens['dias']) == 0:
-                status = 'HOJE'
+            if int(itens["dias"]) < 0:
+                status = "VENCIDA"
+            elif int(itens["dias"]) == 0:
+                status = "HOJE"
             else:
-                status = 'VENCER'
-            lista_diaria = list(filter(lambda x: x['dias'] == itens['dias'], lista))
+                status = "VENCER"
+            lista_diaria = list(filter(lambda x: x["dias"] == itens["dias"], lista))
             soma = Decimal()
             for x in lista_diaria:
-                soma += x['valor']
-            verifica_lista_soma = next((i for i, x in enumerate(lista_soma) if x['dias'] == itens['dias']), None)
+                soma += x["valor"]
+            verifica_lista_soma = next(
+                (i for i, x in enumerate(lista_soma) if x["dias"] == itens["dias"]),
+                None,
+            )
             if verifica_lista_soma == None:
-                lista_soma.append({'data': itens['data'], 'valor': soma, 'dias': itens['dias'], 'status': status})
+                lista_soma.append(
+                    {
+                        "data": itens["data"],
+                        "valor": soma,
+                        "dias": itens["dias"],
+                        "status": status,
+                    }
+                )
         return lista_soma
 
 
 def get_fatura(v_idfatura):
     fatura = Fatura.objects.filter(idFatura=v_idfatura)
-    lista = [{'idfatura': itens.idFatura, 'fatura': itens.Fatura, 'datafatura': itens.DataFatura, 'valorfatura': itens.ValorFatura, 'vencimentofatura': itens.VencimentoFatura, 'statusfatura': itens.StatusFatura, 'datapagamento': itens.DataPagamento, 'valorpagamento': itens.ValorPagamento, 'comentario': itens.Comentario} for itens in fatura]
+    lista = [
+        {
+            "idfatura": itens.idFatura,
+            "fatura": itens.Fatura,
+            "datafatura": itens.DataFatura,
+            "valorfatura": itens.ValorFatura,
+            "vencimentofatura": itens.VencimentoFatura,
+            "statusfatura": itens.StatusFatura,
+            "datapagamento": itens.DataPagamento,
+            "valorpagamento": itens.ValorPagamento,
+            "comentario": itens.Comentario,
+        }
+        for itens in fatura
+    ]
     return lista
 
 
 def get_fatura_pagas(v_idcliente):
-    faturas = Minuta.objects.filter(idFatura__StatusFatura='PAGA', idCliente=v_idcliente).order_by('-idFatura__DataPagamento').values('idFatura', 'idFatura__Fatura', 'idFatura__DataPagamento', 'idFatura__ValorPagamento').distinct()
+    faturas = (
+        Minuta.objects.filter(idFatura__StatusFatura="PAGA", idCliente=v_idcliente)
+        .order_by("-idFatura__DataPagamento")
+        .values(
+            "idFatura",
+            "idFatura__Fatura",
+            "idFatura__DataPagamento",
+            "idFatura__ValorPagamento",
+        )
+        .distinct()
+    )
     return faturas
 
 
 def html_clientes_paga(faturas):
     data = dict()
-    contexto = {'faturas': faturas}
-    data['html_faturas'] = render_to_string('faturamentos/fatura_paga_cliente.html', contexto)
+    contexto = {"faturas": faturas}
+    data["html_faturas"] = render_to_string(
+        "faturamentos/fatura_paga_cliente.html", contexto
+    )
     return retorna_json(data)
 
 
 def get_clientes_faturas_pagas():
-    faturas = Minuta.objects.filter(idFatura__StatusFatura='PAGA').order_by('idCliente__Fantasia').values('idCliente__Fantasia', 'idCliente').distinct()
+    faturas = (
+        Minuta.objects.filter(idFatura__StatusFatura="PAGA")
+        .order_by("idCliente__Fantasia")
+        .values("idCliente__Fantasia", "idCliente")
+        .distinct()
+    )
     return faturas
 
 
@@ -180,12 +267,12 @@ def salva_pagamento(request, v_idfatura, v_data, v_valor):
     obj.idFatura = fatura.idFatura
     obj.DataPagamento = v_data
     obj.ValorPagamento = v_valor
-    obj.StatusFatura = 'PAGA'
-    if obj.save(update_fields=['DataPagamento', 'ValorPagamento', 'StatusFatura']):
-        data['text_mensagem'] = 'Falha ao enviar e-mail, tente novamente'
-        data['type_mensagem'] = 'ERROR'
+    obj.StatusFatura = "PAGA"
+    if obj.save(update_fields=["DataPagamento", "ValorPagamento", "StatusFatura"]):
+        data["text_mensagem"] = "Falha ao enviar e-mail, tente novamente"
+        data["type_mensagem"] = "ERROR"
     else:
-        data['type_mensagem'] = 'SUCESSO'
+        data["type_mensagem"] = "SUCESSO"
     return retorna_json(data)
     # if request.method == 'POST':
     #     form = PagaFatura(request.POST, instance=fatura)
@@ -198,6 +285,7 @@ def salva_pagamento(request, v_idfatura, v_data, v_valor):
     # contexto = {'form': form, 'idfatura': idfatura}
     # data['html_form'] = render_to_string('faturamentos/pagafatura.html', contexto, request=request)
 
+
 def retorna_json(data):
     c_return = JsonResponse(data)
     return c_return
@@ -207,17 +295,18 @@ def envia_email(v_idobj, v_emails, v_texto):
     data = dict()
     s_fatura = FaturaSelecionada(v_idobj)
     emails_to = v_emails
-    emails_to = emails_to.replace(' ', '')
-    emails_to = emails_to.replace(',', ' ')
+    emails_to = emails_to.replace(" ", "")
+    emails_to = emails_to.replace(",", " ")
     emails_to = emails_to.split()
-    contexto = {'numero_fatura': str(s_fatura.fatura).zfill(6), 'texto': v_texto}
-    subject = f'Fatura nº {str(s_fatura.fatura).zfill(6)}'
-    html_message = render_to_string('faturamentos/emailfatura.html', contexto)
-    from_email = 'Transefetiva Transportes <financeiro.efetiva@terra.com.br>'
+    contexto = {"numero_fatura": str(s_fatura.fatura).zfill(6), "texto": v_texto}
+    subject = f"Fatura nº {str(s_fatura.fatura).zfill(6)}"
+    html_message = render_to_string("faturamentos/emailfatura.html", contexto)
+    from_email = "Transefetiva Transportes <financeiro.efetiva@terra.com.br>"
     to = emails_to
-    bcc = ['transefetiva@terra.com.br']
+    bcc = ["transefetiva@terra.com.br"]
+    bcc = None
     email = EmailMessage(subject, html_message, from_email, to, bcc)
-    email.content_subtype = 'html'
+    email.content_subtype = "html"
     for itens in s_fatura.file_fatura:
         email.attach_file(itens.uploadFile.path)
     for itens in s_fatura.notas_fatura:
@@ -226,16 +315,29 @@ def envia_email(v_idobj, v_emails, v_texto):
         email.attach_file(itens.uploadFile.path)
     list_check = verifica_emails(emails_to)
     if 0 in list_check:
-        data['text_mensagem'] = 'Verifique os e-mails se estão corretos e se estão separados com virgula'
-        data['type_mensagem'] = 'ERROR'
+        data[
+            "text_mensagem"
+        ] = "Verifique os e-mails se estão corretos e se estão separados com virgula"
+        data["type_mensagem"] = "ERROR"
     else:
         if email.send():
-            data['text_mensagem'] = 'E-Mail enviado com sucesso.'
-            data['type_mensagem'] = 'SUCESSO'
+            data["text_mensagem"] = "E-Mail enviado com sucesso."
+            data["type_mensagem"] = "SUCESSO"
+            salva_envio(v_idobj, emails_to, v_texto)
         else:
-            data['text_mensagem'] = 'Falha ao enviar e-mail, tente novamente'
-            data['type_mensagem'] = 'ERROR'
+            data["text_mensagem"] = "Falha ao enviar e-mail, tente novamente"
+            data["type_mensagem"] = "ERROR"
     return retorna_json(data)
+
+
+def salva_envio(v_idobj, v_emails, v_texto):
+    print(v_idobj, v_emails, v_texto)
+    obj = EmailEnviado()
+    obj.EmailsEnviado = v_emails
+    obj.MensagemAdicional = v_texto
+    obj.idFatura_id = int(v_idobj)
+    if obj.save():
+        print("OK")
 
 
 def verifica_emails(email_list):
@@ -244,7 +346,7 @@ def verifica_emails(email_list):
     regex = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
     list_check = []
     for itens in email_list:
-        if(re.search(regex, itens)):
+        if re.search(regex, itens):
             list_check.append(1)
         else:
             list_check.append(0)
@@ -264,34 +366,39 @@ def nome_arquivo(request, notas, boletos, v_fatura):
     lista_boletos = sorted(lista_boletos)
     proxima_nota = str(list(set(seguencia) - set(lista_notas))[0]).zfill(2)
     proximo_boleto = str(list(set(seguencia) - set(lista_boletos))[0]).zfill(2)
-    if request.POST.get('tipo') == 'NOTA':
-        descricao = f'Fatura_{str(v_fatura).zfill(6)}_nf_{proxima_nota}'
-    elif request.POST.get('tipo') == 'BOLETO':
-        descricao = f'Fatura_{str(v_fatura).zfill(6)}_boleto_{proximo_boleto}'
+    if request.POST.get("tipo") == "NOTA":
+        descricao = f"Fatura_{str(v_fatura).zfill(6)}_nf_{proxima_nota}"
+    elif request.POST.get("tipo") == "BOLETO":
+        descricao = f"Fatura_{str(v_fatura).zfill(6)}_boleto_{proximo_boleto}"
     return descricao
 
 
 def salva_arquivo(request, msg, v_idfatura):
     fatura = FaturaSelecionada(v_idfatura).__dict__
-    if request.method == 'POST':
+    if request.method == "POST":
         if request.FILES:
-            v_descricao = nome_arquivo(request, fatura['notas_fatura'], fatura['boletos_fatura'], fatura['fatura'])
-            ext_file = request.FILES['uploadFile'].name.split(".")[-1]
-            name_file = f'{v_descricao}.{ext_file}'
-            request.FILES['uploadFile'].name = name_file
+            v_descricao = nome_arquivo(
+                request,
+                fatura["notas_fatura"],
+                fatura["boletos_fatura"],
+                fatura["fatura"],
+            )
+            ext_file = request.FILES["uploadFile"].name.split(".")[-1]
+            name_file = f"{v_descricao}.{ext_file}"
+            request.FILES["uploadFile"].name = name_file
             obj = FileUpload()
             obj.DescricaoUpload = v_descricao
-            obj.uploadFile = request.FILES['uploadFile']
+            obj.uploadFile = request.FILES["uploadFile"]
             try:
                 obj.save()
-                msg['text_mensagem'] = 'Arquivo enviado ao servidor com sucesso'
-                msg['type_mensagem'] = 'SUCESSO'
+                msg["text_mensagem"] = "Arquivo enviado ao servidor com sucesso"
+                msg["type_mensagem"] = "SUCESSO"
             except:
-                msg['text_mensagem'] = 'Falha ao salvar seu arquivo, tente novamente'
-                msg['type_mensagem'] = 'ERROR'
+                msg["text_mensagem"] = "Falha ao salvar seu arquivo, tente novamente"
+                msg["type_mensagem"] = "ERROR"
         else:
-            msg['text_mensagem'] = 'Arquivo não selecionado'
-            msg['type_mensagem'] = 'ERROR'
+            msg["text_mensagem"] = "Arquivo não selecionado"
+            msg["type_mensagem"] = "ERROR"
     return msg
 
 
@@ -300,7 +407,7 @@ def delete_arquivo(request, id_fileupload, id_fatura):
     nota = FileUpload.objects.get(idFileUpload=id_fileupload)
     nota.delete()
     os.remove(nota.uploadFile.path)
-    data['idfatura'] = id_fatura
+    data["idfatura"] = id_fatura
     return retorna_json(data)
 
 
@@ -308,10 +415,12 @@ def form_fatura(request, v_form, v_idobj, v_url, v_view):
     data = dict()
     v_instance = None
     form = None
-    if request.method == 'POST':
+    if request.method == "POST":
         pass
     else:
         form = v_form(instance=v_instance)
-    contexto = {'form': form, 'v_idobj': v_idobj, 'v_view': v_view, 'v_url': v_url}
-    data['html_form'] = render_to_string('faturamentos/form_fatura.html', contexto, request=request)
+    contexto = {"form": form, "v_idobj": v_idobj, "v_view": v_view, "v_url": v_url}
+    data["html_form"] = render_to_string(
+        "faturamentos/form_fatura.html", contexto, request=request
+    )
     return retorna_json(data)

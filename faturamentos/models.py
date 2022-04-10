@@ -1,6 +1,5 @@
-from datetime import datetime
-
 from django.db import models
+from django.utils import timezone
 
 
 class Fatura(models.Model):
@@ -22,9 +21,10 @@ class Fatura(models.Model):
 
 class EmailEnviado(models.Model):
     idEmailEnviado = models.AutoField(primary_key=True)
-    DataEnviado = models.DateField(default=datetime.now, blank=True)
+    DataEnviado = models.DateTimeField(default=timezone.now, blank=True)
     EmailsEnviado = models.CharField(max_length=250)
     MensagemAdicional = models.TextField(blank=True, null=True)
+    idFatura = models.ForeignKey(Fatura, on_delete=models.CASCADE)
 
     class Meta:
         db_table = "email_enviado"

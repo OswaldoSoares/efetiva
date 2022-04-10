@@ -99,8 +99,11 @@
             </div>
         </div>
         <div class="article-card-footer">
-            <i class="bi bi-cursor i-button js-send-email" data-idobj="{{ s_fatura.idfatura }}"></i>
+            {% if s_fatura.email_enviado %}
             <i class="bi bi-envelope i-button js-send-email" data-idobj="{{ s_fatura.idfatura }}"></i>
+            {% else %}
+            <i class="bi bi-cursor i-button js-send-email" data-idobj="{{ s_fatura.idfatura }}"></i>
+            {% endif %}
         </div>
     </article>
 </main>
