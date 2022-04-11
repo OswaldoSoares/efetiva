@@ -31,7 +31,9 @@ from .models import Fatura
 @has_permission_decorator("modulo_faturamento")
 def index_faturamento(request):
     vencimentos = FaturaVencimento().__dict__["dias_vencimentos"]
-    recebimentos = FaturaPagas().__dict__["dias_pagas"]
+    pagas = FaturaPagas().__dict__
+    recebimentos_dias = pagas["dias_pagos"]
+    recebimentos_meses = pagas["meses_pagos"]
     faturas_pagas_cliente = get_clientes_faturas_pagas()
     fatura = (
         Cliente.objects.values("idCliente", "Fantasia")
@@ -81,7 +83,8 @@ def index_faturamento(request):
             "total_faturada": total_faturada,
             "paga": paga,
             "vencimentos": vencimentos,
-            "recebimentos": recebimentos,
+            "recebimentos_dias": recebimentos_dias,
+            "recebimentos_meses": recebimentos_meses,
             "faturas_pagas_cliente": faturas_pagas_cliente,
         },
     )

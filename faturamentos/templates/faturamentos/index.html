@@ -124,13 +124,13 @@
             </div>
         </article>
         {% endif %}
-        {% if recebimentos %}
+        {% if recebimentos_dias %}
         <article class="article-card card-vencimento">
             <div class="article-card-titulo">
                 <span>RECEBIMENTOS ANTERIORES</span>
             </div>
             <div class="article-card-body js-card-body">
-                {% for itens in recebimentos %}
+                {% for itens in recebimentos_dias %}
                 <div class="vencimento-body">
                     <div class="itens-data">
                         <span class="ib-data"><b>{{ itens.data }}</b></span>
@@ -139,11 +139,25 @@
                         {% if itens.status == 'HOJE' %}
                         <span class="ib-dias"><b>PAGO {{ itens.status }}</b></span>
                         {% else %}
-                        <span class="ib-dias"><b>{{ itens.dias }} DIA{{ itens.dias|pluralize|upper }} A VENCER</b></span>
+                        <span class="ib-dias"><b>{{ itens.dias }} DIA{{ itens.dias|pluralize|upper }}</b></span>
                         {% endif %}
                     </div>
                     <div class="itens-valor">
                         <span class="ib-valor"><b>R$ {{ itens.valor|intcomma }}</b></span>
+                    </div>
+                </div>
+                <div class="linha-divisoria"></div>
+                {% endfor %}
+                {% for itens in recebimentos_meses %}
+                <div class="vencimento-body">
+                    <div class="itens-data">
+                        <span class="ib-data"><b>{{ itens.mes }}</b></span>
+                    </div>
+                    <div class="itens-dias">
+                        
+                    </div>
+                    <div class="itens-valor">
+                        <span class="ib-valor"><b>R$ {{ itens.total|intcomma }}</b></span>
                     </div>
                 </div>
                 {% if not forloop.last %}

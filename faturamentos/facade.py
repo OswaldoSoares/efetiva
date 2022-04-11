@@ -1,3 +1,4 @@
+import locale
 import os
 import re
 from datetime import date
@@ -5,12 +6,12 @@ from decimal import Decimal
 from multiprocessing import context
 
 from clientes.models import EMailContatoCliente
+from dateutil.relativedelta import relativedelta
 from django.core.mail import EmailMessage
-from django.db.models import DateField, DurationField, ExpressionWrapper, F, Value
+from django.db.models import DateField, DurationField, ExpressionWrapper, F, Sum, Value
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from minutas.models import Minuta
-from minutas.views import minuta
 from website.models import FileUpload
 
 from faturamentos.models import EmailEnviado, Fatura
@@ -205,11 +206,13 @@ class FaturaVencimento:
 class FaturaPagas:
     def __init__(self):
         self.hoje = date.today()
-        self.dias_pagas = self.Pagas(self.hoje).dias
+        self.dias_pagos = self.DiasPagas(self.hoje).dias_pagos
+        self.meses_pagos = self.MesesPagas(self.hoje).meses_pagos
+        # self.anos_pagos = self.AnosPagas(self.hoje)
 
-    class Pagas:
+    class DiasPagas:
         def __init__(self, v_hoje: date) -> list:
-            self.dias = self.get_pagas(v_hoje)
+            self.dias_pagos = self.get_pagas(v_hoje)
 
         @staticmethod
         def get_pagas(v_hoje: date) -> list:
@@ -222,9 +225,14 @@ class FaturaPagas:
             Returns:
                 list: Lista de dicionarios contendo os itens data, valor(somado por dia) e dias
             """
+            meses = 1
+            anos = 0
+            mes_anterior = v_hoje - relativedelta(
+                years=int(anos), months=int(meses), day=1
+            )
             v_queryset = Fatura.objects.annotate(
                 hoje_field=ExpressionWrapper(Value(v_hoje), output_field=DateField())
-            ).filter(StatusFatura="PAGA")
+            ).filter(StatusFatura="PAGA", DataPagamento__gte=mes_anterior)
             v_queryset = v_queryset.annotate(
                 dias=ExpressionWrapper(
                     F("hoje_field") - F("DataPagamento"),
@@ -260,6 +268,43 @@ class FaturaPagas:
                     )
             return lista_soma
 
+    class MesesPagas:
+        def __init__(self, v_hoje: date) -> list:
+            self.meses_pagos = self.get_meses(v_hoje)
+
+        @staticmethod
+        def get_meses(v_hoje: date) -> list:
+            meses = 1
+            anos = 0
+            mes_anterior = v_hoje - relativedelta(
+                years=int(anos), months=int(meses), day=1
+            )
+            mes_antes = []
+            mes_atual = mes_anterior
+            for x in range(11):
+                ultimo_dia = mes_atual + relativedelta(days=-1)
+                mes_atual = mes_atual - relativedelta(
+                    years=int(anos), months=int(meses), day=1
+                )
+                v_queryset = (
+                    Fatura.objects.values("StatusFatura")
+                    .order_by("StatusFatura")
+                    .annotate(total=Sum("ValorPagamento"))
+                    .filter(
+                        StatusFatura="PAGA",
+                        DataPagamento__gte=mes_atual,
+                        DataPagamento__lte=ultimo_dia,
+                    )
+                )
+                locale.setlocale(locale.LC_TIME, "pt_BR.utf-8")
+                mes_antes.append(
+                    {
+                        "mes": mes_atual.strftime("%B/%Y").title(),
+                        "total": v_queryset[0]["total"],
+                    }
+                )
+            return mes_antes
+
 
 def delete_arquivo(request, id_fileupload, id_fatura):
     data = dict()
@@ -283,7 +328,6 @@ def envia_email(v_idobj, v_emails, v_texto):
     from_email = "Transefetiva Transportes <financeiro.efetiva@terra.com.br>"
     to = emails_to
     bcc = ["transefetiva@terra.com.br"]
-    bcc = None
     email = EmailMessage(subject, html_message, from_email, to, bcc)
     email.content_subtype = "html"
     for itens in s_fatura.file_fatura:
