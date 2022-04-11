@@ -296,7 +296,7 @@ class FaturaPagas:
                         DataPagamento__lte=ultimo_dia,
                     )
                 )
-                # locale.setlocale(locale.LC_TIME, "pt_BR.utf-8")
+                locale.setlocale(locale.LC_TIME, "pt_BR.UTF-8")
                 mes_antes.append(
                     {
                         "mes": mes_atual.strftime("%B/%Y").title(),
