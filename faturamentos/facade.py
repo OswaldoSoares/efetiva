@@ -225,14 +225,10 @@ class FaturaPagas:
             Returns:
                 list: Lista de dicionarios contendo os itens data, valor(somado por dia) e dias
             """
-            meses = 1
-            anos = 0
-            mes_anterior = v_hoje - relativedelta(
-                years=int(anos), months=int(meses), day=1
-            )
+            mes_atual = v_hoje - relativedelta(years=0, months=0, day=1)
             v_queryset = Fatura.objects.annotate(
                 hoje_field=ExpressionWrapper(Value(v_hoje), output_field=DateField())
-            ).filter(StatusFatura="PAGA", DataPagamento__gte=mes_anterior)
+            ).filter(StatusFatura="PAGA", DataPagamento__gte=mes_atual)
             v_queryset = v_queryset.annotate(
                 dias=ExpressionWrapper(
                     F("hoje_field") - F("DataPagamento"),
@@ -274,18 +270,11 @@ class FaturaPagas:
 
         @staticmethod
         def get_meses(v_hoje: date) -> list:
-            meses = 1
-            anos = 0
-            mes_anterior = v_hoje - relativedelta(
-                years=int(anos), months=int(meses), day=1
-            )
-            mes_antes = []
-            mes_atual = mes_anterior
-            for x in range(11):
+            mes_atual = v_hoje - relativedelta(years=0, months=0, day=1)
+            meses = []
+            for x in range(12):
                 ultimo_dia = mes_atual + relativedelta(days=-1)
-                mes_atual = mes_atual - relativedelta(
-                    years=int(anos), months=int(meses), day=1
-                )
+                mes_atual = mes_atual - relativedelta(years=0, months=1, day=1)
                 v_queryset = (
                     Fatura.objects.values("StatusFatura")
                     .order_by("StatusFatura")
@@ -297,13 +286,13 @@ class FaturaPagas:
                     )
                 )
                 # locale.setlocale(locale.LC_ALL, "pt_BR.UTF-8")
-                mes_antes.append(
+                meses.append(
                     {
                         "mes": mes_atual.strftime("%B/%Y").title(),
                         "total": v_queryset[0]["total"],
                     }
                 )
-            return mes_antes
+            return meses
 
 
 def delete_arquivo(request, id_fileupload, id_fatura):
