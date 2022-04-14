@@ -251,7 +251,7 @@ def get_recibo_id(idrecibo):
 
 def calcula_total_vales(idpessoal):
     totalvales = Vales.objects.filter(
-        idPessoal=idpessoal, Pago=False, idRecibo_id__isnull="True"
+        idPessoal=idpessoal, Pago=False, idRecibo_id="144"
     ).aggregate(ValorTotal=Sum("Valor"))
     return totalvales["ValorTotal"]
 
@@ -329,6 +329,7 @@ def create_folha(mesreferencia, anoreferencia):
 
 
 def create_pagamento_avulso(datainicial, datafinal, idpessoal, vales):
+    print("teste de test")
     recibo = []
     minutas = (
         MinutaColaboradores.objects.filter(
