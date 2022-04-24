@@ -32,6 +32,7 @@ $(document).on('click', '.js-seleciona-mes-ano', function(event) {
         },
         beforeSend: function(){
             $('.js-folha').fadeOut(500)
+            $('.js-cartao-ponto').fadeOut(500)
         },
         success: function(data){
             $('.js-folha').html(data.html_folha)

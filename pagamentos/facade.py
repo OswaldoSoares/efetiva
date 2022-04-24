@@ -74,7 +74,11 @@ class FolhaContraCheque:
         lista = []
         for itens in v_funcionarios:
             lista_cartao_ponto = cartao_ponto(
-                itens.idPessoal, v_primeiro_dia_mes, v_ultimo_dia_mes
+                itens.idPessoal,
+                v_primeiro_dia_mes,
+                v_ultimo_dia_mes,
+                itens.DataAdmissao,
+                itens.DataDemissao,
             )
             lista_contra_cheque = contra_cheque(itens.idPessoal, v_mes, v_ano)
             lista_contra_cheque_itens = []
@@ -102,10 +106,16 @@ class FolhaContraCheque:
         return lista
 
 
-def cartao_ponto(v_idpessoal, v_primeiro_dia_mes, v_ultimo_dia_mes):
+def cartao_ponto(
+    v_idpessoal, v_primeiro_dia_mes, v_ultimo_dia_mes, v_admissao, v_demissao
+):
     v_cartao_ponto = CartaoPonto.objects.filter(
         Dia__range=[v_primeiro_dia_mes, v_ultimo_dia_mes], idPessoal=v_idpessoal
     )
+    if not v_cartao_ponto:
+        v_cartao_ponto = create_cartao_ponto(
+            v_idpessoal, v_primeiro_dia_mes, v_ultimo_dia_mes, v_admissao, v_demissao
+        )
     lista = [
         {
             "idcartaolista": itens.idCartaoPonto,
@@ -171,7 +181,7 @@ class FolhaVale:
 
 def seleciona_mes_ano_folha() -> list:
     """Cria uma lista com os Meses/Anos, para selecionar o mês da folha de
-    pagamento.O Mês/Ano máximo será o próximo mês da data atual e o Mês/Ano
+    pagamento. O Mês/Ano máximo será o próximo mês da data atual e o Mês/Ano
     minimo será Janeiro/2021.
 
     Returns:
@@ -204,7 +214,6 @@ def html_cartao_ponto(v_contexto):
     data["html_cartao_ponto"] = render_to_string(
         "pagamentos/html_cartao_ponto.html", contexto
     )
-    print(data)
     return JsonResponse(data)
 
 
@@ -213,6 +222,40 @@ def cria_contexto_pagamentos():
     v_mes_ano = seleciona_mes_ano_folha()
     contexto = {"formvales": formvales, "mes_ano": v_mes_ano}
     return contexto
+
+
+def create_cartao_ponto(
+    v_idpessoal, v_primeiro_dia_mes, v_ultimo_dia_mes, v_admissao, v_demissao
+):
+    # colaborador = facade.get_pessoal(idpessoal)
+    # admissao = colaborador[0].DataAdmissao
+    # TODO Alterar class feriados
+    lista_feriados = Feriados("Lista", "Feriado")
+    lista_feriados = lista_feriados.__dict__["feriados"]
+    dia = v_primeiro_dia_mes
+    while dia < v_ultimo_dia_mes + relativedelta(days=1):
+        obj = CartaoPonto()
+        obj.Dia = dia
+        obj.Entrada = "07:00"
+        obj.Saida = "17:00"
+        if dia.weekday() == 5 or dia.weekday() == 6:
+            obj.Ausencia = dias[dia.weekday()]
+        else:
+            obj.Ausencia = ""
+        if dia in lista_feriados:
+            obj.Ausencia = "FERIADO"
+        if dia.date() < v_admissao:
+            obj.Ausencia = "-------"
+        if v_demissao:
+            if dia.date() > v_demissao:
+                obj.Ausencia = "-------"
+        obj.idPessoal_id = v_idpessoal
+        dia = dia + relativedelta(days=1)
+        obj.save()
+    v_cartao_ponto = CartaoPonto.objects.filter(
+        Dia__range=[v_primeiro_dia_mes, v_ultimo_dia_mes], idPessoal=v_idpessoal
+    )
+    return v_cartao_ponto
 
 
 def create_context(mesreferencia, anoreferencia):
@@ -489,7 +532,6 @@ def create_folha(mesreferencia, anoreferencia):
 
 
 def create_pagamento_avulso(datainicial, datafinal, idpessoal, vales):
-    print("teste de test")
     recibo = []
     minutas = (
         MinutaColaboradores.objects.filter(
@@ -695,6 +737,7 @@ def busca_feriados(mesreferencia, anoreferencia):
     return dias_feriado_mes
 
 
+# TODO Função será excluida após refatoração 24-04-2022
 def create_cartaoponto(mesreferencia, anoreferencia, idpessoal):
     colaborador = facade.get_pessoal(idpessoal)
     admissao = colaborador[0].DataAdmissao
