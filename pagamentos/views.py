@@ -247,3 +247,15 @@ def imprime_recibo(request):
     contexto = facade.print_recibo(c_idrecibo)
     response = print_recibo(contexto)
     return response
+
+
+def seleciona_mes_ano(request):
+    v_mes_ano = request.GET.get("mes_ano")
+    data = facade.html_folha_pagamento(v_mes_ano)
+    return data
+
+
+def dados(request):
+    v_contexto = request.GET.get("dados")
+    data = facade.html_cartao_ponto(v_contexto)
+    return data

@@ -1,11 +1,15 @@
+import ast
 import calendar
 import datetime
+import json
 from decimal import Decimal
 
+from dateutil.relativedelta import relativedelta
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import DecimalField, ExpressionWrapper, F, Max, Min, Sum
 from django.http import JsonResponse
 from django.template.loader import render_to_string
+from minutas.facade import nome_curto
 from minutas.models import MinutaColaboradores, MinutaItens
 from pessoas import facade
 from pessoas.forms import CadastraContraCheque, CadastraContraChequeItens, CadastraVale
@@ -50,9 +54,164 @@ dias = [
 estado_swith_vales = dict()
 
 
+class FolhaContraCheque:
+    def __init__(self, v_mes, v_ano):
+        self.ano = v_ano
+        self.funcionarios = self.get_funcionarios(v_mes, v_ano)
+        self.mes = v_mes
+        self.paga = False
+        self.total = Decimal(1.00)
+
+    @staticmethod
+    def get_funcionarios(v_mes, v_ano):
+        v_primeiro_dia_mes = datetime.datetime.strptime(
+            f"1-{int(v_mes)}-{int(v_ano)}", "%d-%m-%Y"
+        )
+        v_ultimo_dia_mes = v_primeiro_dia_mes + relativedelta(months=+1, days=-1)
+        v_funcionarios = Pessoal.objects.filter(
+            TipoPgto="MENSALISTA", DataAdmissao__lte=v_ultimo_dia_mes
+        ).exclude(DataDemissao__gte=v_ultimo_dia_mes)
+        lista = []
+        for itens in v_funcionarios:
+            lista_cartao_ponto = cartao_ponto(
+                itens.idPessoal, v_primeiro_dia_mes, v_ultimo_dia_mes
+            )
+            lista_contra_cheque = contra_cheque(itens.idPessoal, v_mes, v_ano)
+            lista_contra_cheque_itens = []
+            if lista_contra_cheque:
+                lista_contra_cheque_itens = contra_cheque_itens(
+                    lista_contra_cheque[0]["idcontracheque"]
+                )
+            v_salario, v_conducao = salario_conducao(itens.idPessoal)
+            lista.append(
+                {
+                    "admissao": itens.DataAdmissao,
+                    "bloqueado": itens.StatusPessoal,
+                    "cartao_ponto": lista_cartao_ponto,
+                    "categoria": itens.Categoria,
+                    "conducao": v_conducao,
+                    "contra_cheque": lista_contra_cheque,
+                    "contra_cheque_itens": lista_contra_cheque_itens,
+                    "demissao": itens.DataDemissao,
+                    "idpessoal": itens.idPessoal,
+                    "nome": itens.Nome,
+                    "nome_curto": nome_curto(itens.Nome),
+                    "salario": v_salario,
+                }
+            )
+        return lista
+
+
+def cartao_ponto(v_idpessoal, v_primeiro_dia_mes, v_ultimo_dia_mes):
+    v_cartao_ponto = CartaoPonto.objects.filter(
+        Dia__range=[v_primeiro_dia_mes, v_ultimo_dia_mes], idPessoal=v_idpessoal
+    )
+    lista = [
+        {
+            "idcartaolista": itens.idCartaoPonto,
+            "alteracao": itens.Alteracao,
+            "ausencia": itens.Ausencia,
+            "dia": itens.Dia,
+            "entrada": itens.Entrada,
+            "saida": itens.Saida,
+        }
+        for itens in v_cartao_ponto
+    ]
+    return lista
+
+
+def contra_cheque(v_idpessoal, v_mes, v_ano):
+    v_contra_cheque = ContraCheque.objects.filter(
+        idPessoal=v_idpessoal, MesReferencia=meses[int(v_mes) - 1], AnoReferencia=v_ano
+    )
+    lista = [
+        {
+            "idcontracheque": itens.idContraCheque,
+            "valor": itens.Valor,
+            "pago": itens.Pago,
+        }
+        for itens in v_contra_cheque
+    ]
+    return lista
+
+
+def contra_cheque_itens(v_contra_cheque):
+    v_contra_cheque_itens = ContraChequeItens.objects.filter(
+        idContraCheque=v_contra_cheque
+    )
+    lista = [
+        {
+            "descricao": itens.Descricao,
+            "valor": itens.Valor,
+            "registro": itens.Registro,
+            "referencia": itens.Referencia,
+        }
+        for itens in v_contra_cheque_itens
+    ]
+    return lista
+
+
+def salario_conducao(v_idpessoal):
+    v_salario_conducao = Salario.objects.filter(idPessoal=v_idpessoal)
+    return v_salario_conducao[0].Salario, v_salario_conducao[0].ValeTransporte
+
+
+class FolhaFuncionarios:
+    def __init__(self, v_nome):
+        self.vales = FolhaVale("oswaldo")
+
+
+class FolhaVale:
+    def __init__(self, v_nome):
+        self.data = "2020-01-01"
+        self.descricao = "VALE"
+        self.nome = v_nome
+        self.valor = Decimal(1.00)
+
+
+def seleciona_mes_ano_folha() -> list:
+    """Cria uma lista com os Meses/Anos, para selecionar o mês da folha de
+    pagamento.O Mês/Ano máximo será o próximo mês da data atual e o Mês/Ano
+    minimo será Janeiro/2021.
+
+    Returns:
+        list: Lista com valores dos Meses e anos
+    """
+    v_data_primeira_folha = datetime.datetime.strptime("31-12-2020", "%d-%m-%Y")
+    v_hoje = datetime.datetime.today()
+    v_primeiro_dia_mes = v_hoje + relativedelta(day=1)
+    lista_mes_ano = []
+    while v_primeiro_dia_mes > v_data_primeira_folha:
+        lista_mes_ano.append(datetime.datetime.strftime(v_primeiro_dia_mes, "%B/%Y"))
+        v_primeiro_dia_mes = v_primeiro_dia_mes - relativedelta(months=1)
+    return lista_mes_ano
+
+
+def html_folha_pagamento(v_mes_ano):
+    data = dict()
+    v_date = datetime.datetime.strptime(v_mes_ano, "%B/%Y")
+    v_mes = datetime.datetime.strftime(v_date, "%m")
+    v_ano = datetime.datetime.strftime(v_date, "%Y")
+    v_folha = FolhaContraCheque(v_mes, v_ano).__dict__
+    contexto = {"v_folha": v_folha}
+    data["html_folha"] = render_to_string("pagamentos/html_folha.html", contexto)
+    return JsonResponse(data)
+
+
+def html_cartao_ponto(v_contexto):
+    data = dict()
+    contexto = eval(v_contexto)
+    data["html_cartao_ponto"] = render_to_string(
+        "pagamentos/html_cartao_ponto.html", contexto
+    )
+    print(data)
+    return JsonResponse(data)
+
+
 def cria_contexto_pagamentos():
     formvales = CadastraVale()
-    contexto = {"formvales": formvales}
+    v_mes_ano = seleciona_mes_ano_folha()
+    contexto = {"formvales": formvales, "mes_ano": v_mes_ano}
     return contexto
 
 
@@ -101,6 +260,7 @@ def create_context(mesreferencia, anoreferencia):
 
 def create_context_formcontracheque():
     formcontracheque = CadastraContraCheque()
+
     contexto = {"formcontracheque": formcontracheque}
     return contexto
 

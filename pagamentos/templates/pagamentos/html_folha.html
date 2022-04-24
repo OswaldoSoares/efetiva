@@ -1,0 +1,18 @@
+<article class="article-card html-folha">
+    {% if v_folha %}
+    <div class="article-card-titulo">
+        <span>FOLHA</span>
+    </div>
+    <div class="article-card-body">
+        {% for itens in v_folha.funcionarios %}
+        <div class='itensfolha'>
+            <span>{{ itens.nome_curto }}</span>
+        </div>
+        <i class="bi bi-trash i-button js-dados" data-dados="{{ itens }}"></i>
+        {% endfor %}
+    </div>
+    <div class="article-card-footer">
+    </div>
+    {% endif %}
+</article>
+{% include 'pagamentos/html_cartao_ponto.html'%}

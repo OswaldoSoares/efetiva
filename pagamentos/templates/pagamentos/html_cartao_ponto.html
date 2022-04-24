@@ -1,0 +1,57 @@
+<article class="article-card html-cartao-ponto">
+    <div class="article-card-titulo">
+        <span>CARTÃO DE PONTO</span>
+    </div>
+    <div class="article-card-body">
+        {% for dias in cartao_ponto %}
+        <div class="itens-cartao-ponto">
+            <div class="cp-dia">{{ dias.Dia }}</div>
+            {% if dias.Ausencia %}
+            <div class="cp-buttom"><span class="btn btn-dark btn-xs glyphicon glyphicon-sunglasses"></span></d>
+            <div class="cp-hora" colspan="2">{{ dias.Ausencia }}</div>
+            <div class="cp-buttom">
+                {% if dias.Ausencia == 'FALTA' %}
+                {% comment %} <button class="btn btn-danger btn-xs glyphicon glyphicon-ban-circle altera-falta"
+                        data-url="{% url 'inserefalta' %}" mesreferencia="{{ mesreferencia }}"
+                        anoreferencia="{{ anoreferencia }}" idpessoal="{{ idpessoal }}"
+                        idcartaoponto="{{ dias.idCartaoPonto }}">
+                </button> {% endcomment %}
+                {% else %}
+                <span class="btn btn-dark btn-xs glyphicon glyphicon-sunglasses"></span>
+                {% endif %}
+            </div>2
+            {% else %}
+            <div  class="cp-buttom">
+                {% comment %} <button class="btn btn-primary btn-xs glyphicon glyphicon-pencil"
+                        onclick="openMyModal(event); return false" data-button-save-label="ALTERAR"
+                        data-action="{% url 'editacartaoponto' dias.idCartaoPonto  %}" data-title="EDITA CARTÃO DE PONTO"
+                        data-mesreferencia="{{ mesreferencia }}" data-anoreferencia="{{ anoreferencia }}"
+                        data-idpessoal="{{ idpessoal }}" data-idcartaoponto="{{ dias.idCartaoPonto }}">
+                </button> {% endcomment %}
+            </div>
+            {% if dias.Entrada|time:"H:i" > '07:00' %}
+            <div class="cp-horaatrazo">{{ dias.Entrada }}</div>
+            {% elif dias.Entrada|time:"H:i" == '07:00' %}
+            <div class="cp-horapadrao">{{ dias.Entrada }}</div>
+            {% elif dias.Entrada|time:"H:i" < '07:00' %}
+            <div class="cp-horaextra">{{ dias.Entrada }}</div>
+            {% endif %}
+            {% if dias.Saida|time:"H:i" > '17:00' %}
+            <div class="cp-horaextra">{{ dias.Saida }}</div>
+            {% else %}
+            <div class="cp-horapadrao">{{ dias.Saida }}</div>
+            {% endif %}
+            <div class="cp-buttom">
+                {% comment %} <button class="btn btn-success btn-xs glyphicon glyphicon-user altera-falta"
+                        data-url="{% url 'inserefalta' %}" mesreferencia="{{ mesreferencia }}"
+                        anoreferencia="{{ anoreferencia }}" idpessoal="{{ idpessoal }}"
+                        idcartaoponto="{{ dias.idCartaoPonto }}">
+                </button> {% endcomment %}
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    <div class="article-card-footer">
+    </div>
+</article>

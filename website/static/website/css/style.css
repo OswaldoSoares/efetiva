@@ -4130,6 +4130,27 @@ main .fp-recibo-tabela .fp-recibo-print {
 /* Card end */
 
 
+.card-mes-ano {
+    width: 300px;
+}
+
+    .card-mes-ano .article-card-body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .card-mes-ano .article-card-body .select-mes-ano {
+        width: 85%;
+        margin: 10px 0 10px 5px;
+    }
+
+    .card-mes-ano .article-card-body .button-mes-ano {
+        width: 15%;
+        font-size: 26px;
+        text-align: center;
+    }
+
 /* File upload start */
 .file {
     top: 0;

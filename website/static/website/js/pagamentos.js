@@ -21,6 +21,45 @@ $(document).on('change', '#id_AnoReferencia', function(event) {
     $(".fp-adiantamento").hide();
 });
 
+$(document).on('click', '.js-seleciona-mes-ano', function(event) {
+    v_mes_ano = $('.select-mes-ano option:selected').text()
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: '/pagamentos/seleciona_mes_ano',
+        data: {
+            mes_ano: v_mes_ano,
+        },
+        beforeSend: function(){
+            $('.html-folha').fadeOut(500)
+        },
+        success: function(data){
+            $('.html-folha').html(data.html_folha)
+            $('.html-folha').fadeIn(500)
+        },
+    });
+});
+
+$(document).on('click', '.js-dados', function(event) {
+    v_dados = $(this).data('dados')
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: '/pagamentos/dados',
+        data: {
+            dados: v_dados,
+        },
+        beforeSend: function(){
+            $('.html-cartao-ponto').fadeOut(500)
+        },
+        success: function(data){
+            $('.html-cartao-ponto').html(data.html_cartao_ponto)
+            console.log($('.html-cartao-ponto').html())
+            $('.html-cartao-ponto').fadeIn(500)
+        },
+    });
+});
+
 $(document).on('change', '.switchmini', function(event) {
     var idpessoalconcatenado = '#vale_' + $(this).attr('idpessoal')
     if ($(this).attr('tipopgto') == 'mensalista'){
