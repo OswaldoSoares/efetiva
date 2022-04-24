@@ -1,18 +1,23 @@
-<article class="article-card html-folha">
-    {% if v_folha %}
-    <div class="article-card-titulo">
-        <span>FOLHA</span>
-    </div>
-    <div class="article-card-body">
-        {% for itens in v_folha.funcionarios %}
-        <div class='itensfolha'>
+{% load humanize %}
+{% if v_folha %}
+<div class="article-card-titulo card-folha">
+    <span>FOLHA</span>
+</div>
+<div class="article-card-body">
+    {% for itens in v_folha.funcionarios %}
+    <div class="itens-folha">
+        <div class="item-nome">
             <span>{{ itens.nome_curto }}</span>
         </div>
-        <i class="bi bi-trash i-button js-dados" data-dados="{{ itens }}"></i>
-        {% endfor %}
+        <div class="item-salario">
+            <spam>R$ {{ itens.salario|intcomma }}</span>
+        </div>
+        <div class="item-button">
+            <i class="bi bi-folder-symlink i-button js-dados" data-dados="{{ itens }}"></i>
+        </div>
     </div>
-    <div class="article-card-footer">
-    </div>
-    {% endif %}
-</article>
-{% include 'pagamentos/html_cartao_ponto.html'%}
+    {% endfor %}
+</div>
+<div class="article-card-footer">
+</div>
+{% endif %}

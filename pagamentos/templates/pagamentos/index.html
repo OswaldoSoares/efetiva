@@ -48,11 +48,11 @@
                         {% csrf_token %}
                         <div class="col-md-4">
                             <input type="date" class="form-control" value="{{ periodo.DataInicial }}"
-                                   name="DataInicial" id="id_DataInicial">
+                                name="DataInicial" id="id_DataInicial">
                         </div>
                         <div class="col-md-4">
                             <input type="date" class="form-control" value="{{ periodo.DataFinal }}"
-                                   name="DataFinal" id="id_DataFinal">
+                                name="DataFinal" id="id_DataFinal">
                         </div>
                         <div class="col-md-4">
                             <button class="btn btn-primary glyphicon glyphicon-save"></button>
@@ -102,24 +102,33 @@
         </main>
     </div>
     {% endif %} {% endcomment %}
-    <article class="article-card card-mes-ano">
-        <div class="article-card-titulo">
-            <span>FOLHA PAGAMENTO</span>
-        </div>
-        <div class="article-card-body">
-            <select name='meses', id='meses' class='select-mes-ano form-control'>
-                {% for itens in mes_ano %}
-                <option value='{{ itens }}'>{{ itens|upper }}</option>
-                {% endfor %}
-            </select>
-            <div class="button-mes-ano">
-                <i class="bi bi-clipboard-check i-button js-seleciona-mes-ano"></i>
+    <div>
+        <article class="article-card card-mes-ano">
+            <div class="article-card-titulo">
+                <span>FOLHA PAGAMENTO</span>
             </div>
-        </div>
-        <div class="article-card-footer">
-        </div>
-    </article>
-    {% include 'pagamentos/html_folha.html' %}
+            <div class="article-card-body">
+                <select name='meses', id='meses' class='select-mes-ano form-control'>
+                    {% for itens in mes_ano %}
+                    <option value='{{ itens }}'>{{ itens|upper }}</option>
+                    {% endfor %}
+                </select>
+                <div class="button-mes-ano">
+                    <i class="bi bi-clipboard-check i-button js-seleciona-mes-ano"></i>
+                </div>
+            </div>
+            <div class="article-card-footer">
+            </div>
+        </article>
+        <article class="article-card card-folha js-folha">
+        {% include 'pagamentos/html_folha.html' %}
+        </article>
+    </div>
+    <div>
+        <article class="article-card card-cartao-ponto js-cartao-ponto">
+        {% include 'pagamentos/html_cartao_ponto.html'%}
+        </article>
+    </div>
 </main>
 <!-- DIV MODAL -->
 <div class="modal fade bd-example-modal-lg" id="MyModal" tabindex="-1">

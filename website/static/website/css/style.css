@@ -4151,6 +4151,69 @@ main .fp-recibo-tabela .fp-recibo-print {
         text-align: center;
     }
 
+    .card-folha {
+        width: 300px;
+    }
+
+        .card-folha .itens-folha {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color6);
+        }
+
+        .card-folha .itens-folha .item-nome {
+            width: 50%;
+            text-align: left;
+        }
+
+        .card-folha .itens-folha .item-salario {
+            width: 40%;
+            text-align: right;
+        }
+
+        .card-folha .itens-folha .item-button {
+            width: 10%;
+            text-align: center;
+        }
+
+    .card-cartao-ponto {
+        width: 300px;
+    }
+
+        .card-cartao-ponto .itens-cartao-ponto {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color6);
+        }
+
+            .card-cartao-ponto .itens-cartao-ponto .item-dia {
+                /* background-color: red;  */
+                width: 30%;
+                text-align: center;
+            }
+            
+            .card-cartao-ponto .itens-cartao-ponto .item-button {
+                /* background-color: green; */
+                width: 10%;
+                text-align: center;
+            }
+            
+            .card-cartao-ponto .itens-cartao-ponto .item-hora {
+                /* background-color: blue; */
+                width: 20%;
+                text-align: center;
+            
+            }   
+            .card-cartao-ponto .itens-cartao-ponto .item-ausencia {
+                /* background-color: yellow; */
+                width: 40%;
+                text-align: center;
+            }   
+
 /* File upload start */
 .file {
     top: 0;

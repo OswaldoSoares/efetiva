@@ -31,11 +31,11 @@ $(document).on('click', '.js-seleciona-mes-ano', function(event) {
             mes_ano: v_mes_ano,
         },
         beforeSend: function(){
-            $('.html-folha').fadeOut(500)
+            $('.js-folha').fadeOut(500)
         },
         success: function(data){
-            $('.html-folha').html(data.html_folha)
-            $('.html-folha').fadeIn(500)
+            $('.js-folha').html(data.html_folha)
+            $('.js-folha').fadeIn(500)
         },
     });
 });
@@ -50,12 +50,11 @@ $(document).on('click', '.js-dados', function(event) {
             dados: v_dados,
         },
         beforeSend: function(){
-            $('.html-cartao-ponto').fadeOut(500)
+            $('.js-cartao-ponto').fadeOut(500)
         },
         success: function(data){
-            $('.html-cartao-ponto').html(data.html_cartao_ponto)
-            console.log($('.html-cartao-ponto').html())
-            $('.html-cartao-ponto').fadeIn(500)
+            $('.js-cartao-ponto').html(data.html_cartao_ponto)
+            $('.js-cartao-ponto').fadeIn(500)
         },
     });
 });
