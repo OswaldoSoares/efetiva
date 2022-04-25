@@ -266,3 +266,15 @@ def ausencia_falta(request):
     v_mes_ano = request.GET.get("mes_ano")
     data = facade.altera_ausencia_falta(v_idcartaoponto, v_mes_ano)
     return data
+
+
+def altera_horario_cartao_ponto(request):
+    v_idcartaoponto = request.GET.get("idcartaoponto")
+    v_idpessoal = request.GET.get("idPessoal")
+    v_mes_ano = request.GET.get("mes_ano")
+    if request.method == "POST":
+        v_idcartaoponto = request.POST.get("idcartaoponto")
+        v_idpessoal = request.POST.get("idPessoal")
+        v_mes_ano = request.POST.get("mes_ano")
+    data = facade.form_modal_horario(request, v_idcartaoponto, v_idpessoal, v_mes_ano)
+    return data

@@ -22,6 +22,7 @@ from pessoas.models import (
 )
 from website.facade import Feriados
 
+from pagamentos.forms import CadastraCartaoPonto
 from pagamentos.models import Recibo, ReciboItens
 
 meses = [
@@ -1545,6 +1546,34 @@ def lista_mensaalista_ativos():
 
 def list_avulsos_ativo():
     return facade.get_pessoal_nao_mensalista_ativo()
+
+
+def form_modal_horario(request, v_idcartaoponto, v_idpessoal, v_mes_ano):
+    data = dict()
+    c_instance = None
+    if v_idcartaoponto:
+        c_instance = CartaoPonto.objects.get(idCartaoPonto=v_idcartaoponto)
+    if request.method == "POST":
+        form = CadastraCartaoPonto(request.POST, instance=c_instance)
+        if form.is_valid():
+            form.save()
+            data = html_folha_pagamento(v_mes_ano)
+            return data
+    else:
+        form = CadastraCartaoPonto(instance=c_instance)
+    context = {
+        "url": "/pagamentos/altera_horario_cartao_ponto",
+        "view": "altera_horario_cartao_ponto",
+        "form": form,
+        "idcartaoponto": v_idcartaoponto,
+        "idpessoal": v_idpessoal,
+        "mes_ano": v_mes_ano,
+    }
+    data["html_form"] = render_to_string(
+        "pagamentos/formpagamento.html", context, request=request
+    )
+    c_return = JsonResponse(data)
+    return c_return
 
 
 def form_pagamento(
