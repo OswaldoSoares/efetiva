@@ -70,7 +70,7 @@ class FolhaContraCheque:
         v_ultimo_dia_mes = v_primeiro_dia_mes + relativedelta(months=+1, days=-1)
         v_funcionarios = Pessoal.objects.filter(
             TipoPgto="MENSALISTA", DataAdmissao__lte=v_ultimo_dia_mes
-        ).exclude(DataDemissao__gte=v_ultimo_dia_mes)
+        ).exclude(DataDemissao__lte=v_primeiro_dia_mes)
         lista = []
         for itens in v_funcionarios:
             lista_cartao_ponto = cartao_ponto(
