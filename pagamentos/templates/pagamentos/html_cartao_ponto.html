@@ -10,7 +10,7 @@
             <span>{{ dias.dia }}</span>
         </div>
         <div class="item-button">
-            {% comment %} <i class="bi bi-sunglasses"></i> {% endcomment %}
+            <i class="bi bi-sunglasses"></i>
         </div>
         <div class="item-ausencia">
             <span>{{ dias.ausencia }}</span>
@@ -24,14 +24,10 @@
         </div>
         <div class="item-button">
             {% if dias.ausencia == 'FALTA' %}
-            <i class="bi bi-calendar-check i-button"></i>
-            {% comment %} <button class="btn btn-danger btn-xs glyphicon glyphicon-ban-circle altera-falta"
-            data-url="{% url 'inserefalta' %}" mesreferencia="{{ mesreferencia }}"
-            anoreferencia="{{ anoreferencia }}" idpessoal="{{ idpessoal }}"
-            idcartaoponto="{{ dias.idCartaoPonto }}">
-            </button> {% endcomment %}
+            <i class="bi bi-calendar-x i-button js-altera-falta"
+            idpessoal="{{ idpessoal }}" idcartaoponto="{{ dias.idcartaoponto }}"></i>
             {% else %}
-            {% comment %} <i class="bi bi-sunglasses"></i> {% endcomment %}
+            <i class="bi bi-sunglasses"></i>
             {% endif %}
         </div>
     </div>
@@ -65,12 +61,8 @@
             <i class="bi bi-check-all"></i>
         </div>
         <div class="item-button">
-            <i class="bi bi-calendar-x i-button"></i>
-            {% comment %} <button class="btn btn-success btn-xs glyphicon glyphicon-user altera-falta"
-                    data-url="{% url 'inserefalta' %}" mesreferencia="{{ mesreferencia }}"
-                    anoreferencia="{{ anoreferencia }}" idpessoal="{{ idpessoal }}"
-                    idcartaoponto="{{ dias.idCartaoPonto }}">
-            </button> {% endcomment %}
+            <i class="bi bi-calendar-check i-button js-altera-falta"
+            idpessoal="{{ idpessoal }}" idcartaoponto="{{ dias.idcartaoponto }}"></i>
         </div>
     </div>
     {% endif %}

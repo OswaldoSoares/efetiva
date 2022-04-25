@@ -13,7 +13,7 @@
             <spam>R$ {{ itens.salario|intcomma }}</span>
         </div>
         <div class="item-button">
-            <i class="bi bi-folder-symlink i-button js-dados" data-dados="{{ itens }}"></i>
+            <i class="bi bi-folder-symlink i-button js-dados" id="{{ itens.idpessoal }}" data-dados="{{ itens }}"></i>
         </div>
     </div>
     {% endfor %}

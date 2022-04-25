@@ -259,3 +259,10 @@ def dados(request):
     v_contexto = request.GET.get("dados")
     data = facade.html_cartao_ponto(v_contexto)
     return data
+
+
+def ausencia_falta(request):
+    v_idcartaoponto = request.GET.get("idcartaoponto")
+    v_mes_ano = request.GET.get("mes_ano")
+    data = facade.altera_ausencia_falta(v_idcartaoponto, v_mes_ano)
+    return data

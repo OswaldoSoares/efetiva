@@ -1,7 +1,5 @@
-import ast
 import calendar
 import datetime
-import json
 from decimal import Decimal
 
 from dateutil.relativedelta import relativedelta
@@ -118,7 +116,7 @@ def cartao_ponto(
         )
     lista = [
         {
-            "idcartaolista": itens.idCartaoPonto,
+            "idcartaoponto": itens.idCartaoPonto,
             "alteracao": itens.Alteracao,
             "ausencia": itens.Ausencia,
             "dia": itens.Dia,
@@ -256,6 +254,22 @@ def create_cartao_ponto(
         Dia__range=[v_primeiro_dia_mes, v_ultimo_dia_mes], idPessoal=v_idpessoal
     )
     return v_cartao_ponto
+
+
+def altera_ausencia_falta(v_idcartaoponto, v_mes_ano):
+    cartaoponto = CartaoPonto.objects.get(idCartaoPonto=v_idcartaoponto)
+    obj = cartaoponto
+    if obj.Ausencia == "FALTA":
+        obj.Ausencia = ""
+        obj.Alteracao = "ROBOT"
+    else:
+        obj.Ausencia = "FALTA"
+        obj.Alteracao = "ROBOT"
+    obj.Entrada = "07:00:00"
+    obj.Saida = "17:00:00"
+    obj.save(update_fields=["Ausencia", "Alteracao", "Entrada", "Saida"])
+    data = html_folha_pagamento(v_mes_ano)
+    return data
 
 
 def create_context(mesreferencia, anoreferencia):

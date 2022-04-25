@@ -31,12 +31,12 @@ $(document).on('click', '.js-seleciona-mes-ano', function(event) {
             mes_ano: v_mes_ano,
         },
         beforeSend: function(){
-            $('.js-folha').fadeOut(500)
-            $('.js-cartao-ponto').fadeOut(500)
+            $('.js-folha').fadeOut(10)
+            $('.js-cartao-ponto').fadeOut(10)
         },
         success: function(data){
             $('.js-folha').html(data.html_folha)
-            $('.js-folha').fadeIn(500)
+            $('.js-folha').fadeIn(10)
         },
     });
 });
@@ -51,12 +51,36 @@ $(document).on('click', '.js-dados', function(event) {
             dados: v_dados,
         },
         beforeSend: function(){
-            $('.js-cartao-ponto').fadeOut(500)
+            $('.js-cartao-ponto').fadeOut(10)
         },
         success: function(data){
             $('.js-cartao-ponto').html(data.html_cartao_ponto)
-            $('.js-cartao-ponto').fadeIn(500)
+            $('.js-cartao-ponto').fadeIn(10)
         },
+    });
+});
+
+$(document).on('click', '.js-altera-falta', function(event) {
+    var v_mes_ano = $('.select-mes-ano option:selected').text()
+    var v_idcartaoponto = $(this).attr('idcartaoponto')
+    var v_id = $(this).attr('idpessoal')
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: '/pagamentos/ausencia_falta',
+        data: {
+            mes_ano: v_mes_ano,
+            idcartaoponto: v_idcartaoponto,
+        },
+        beforeSend: function(){
+        },
+        success: function(data){
+            $('.js-folha').html(data.html_folha)
+            $('#'+v_id).click()
+        },
+        error: function(error, data) {
+            console.log(error)
+        }
     });
 });
 

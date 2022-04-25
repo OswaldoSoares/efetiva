@@ -2,6 +2,7 @@ from django.urls import path
 
 from .views import (
     apagar_tudo,
+    ausencia_falta,
     cria_contrachequeitens,
     cria_contrachequeitensvale,
     cria_folha,
@@ -64,4 +65,5 @@ urlpatterns = [
     path("apaga", apagar_tudo, name="apaga"),
     path("seleciona_mes_ano", seleciona_mes_ano, name="seleciona_mes_ano"),
     path("dados", dados, name="dados"),
+    path('ausencia_falta', ausencia_falta, name='ausencia_falta'),
 ]
