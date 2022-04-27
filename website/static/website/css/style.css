@@ -4289,6 +4289,18 @@ main .fp-recibo-tabela .fp-recibo-print {
     text-align: center;
 }
 
+.card-cartao-ponto .itens-cartao-ponto .item-atrazo {
+    color: lightcoral;
+}
+
+.card-cartao-ponto .itens-cartao-ponto .item-padrao {
+    color: var(--color6);
+}
+
+.card-cartao-ponto .itens-cartao-ponto .item-extra {
+    color: lightgreen;
+}
+
 .card-cartao-ponto .itens-cartao-ponto .item-ausencia {
     /* background-color: yellow; */
     width: 40%;

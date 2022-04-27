@@ -50,15 +50,15 @@
       ></i>
     </div>
     {% if dias.entrada|time:"H:i" > '07:00' %}
-    <div class="item-hora atrazo">{{ dias.entrada }}</div>
+    <div class="item-hora item-atrazo">{{ dias.entrada }}</div>
     {% elif dias.entrada|time:"H:i" == '07:00' %}
-    <div class="item-hora padrao">{{ dias.entrada }}</div>
+    <div class="item-hora item-padrao">{{ dias.entrada }}</div>
     {% elif dias.entrada|time:"H:i" < '07:00' %}
-    <div class="item-hora extra">{{ dias.entrada }}</div>
+    <div class="item-hora item-extra">{{ dias.entrada }}</div>
     {% endif %} {% if dias.saida|time:"H:i" > '17:00' %}
-    <div class="item-hora extra">{{ dias.saida }}</div>
+    <div class="item-hora item-extra">{{ dias.saida }}</div>
     {% else %}
-    <div class="item-hora padrao">{{ dias.saida }}</div>
+    <div class="item-hora item-padrao">{{ dias.saida }}</div>
     {% endif %}
     <div class="item-button">
       <i class="bi bi-check-all"></i>
