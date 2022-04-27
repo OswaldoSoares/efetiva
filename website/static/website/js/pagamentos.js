@@ -41,6 +41,11 @@ $(document).on("click", ".js-seleciona-mes-ano", function(event) {
     });
 });
 
+$(document).on("change", ".select-mes-ano", function(event) {
+    $(".js-folha").fadeOut(10);
+    $(".js-cartao-ponto").fadeOut(10);
+});
+
 $(document).on("click", ".js-dados", function(event) {
     v_dados = $(this).data("dados");
     $.ajax({

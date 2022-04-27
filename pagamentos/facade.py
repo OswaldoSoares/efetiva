@@ -112,9 +112,14 @@ def cartao_ponto(
         Dia__range=[v_primeiro_dia_mes, v_ultimo_dia_mes], idPessoal=v_idpessoal
     )
     if not v_cartao_ponto:
-        v_cartao_ponto = create_cartao_ponto(
+        create_cartao_ponto(
             v_idpessoal, v_primeiro_dia_mes, v_ultimo_dia_mes, v_admissao, v_demissao
         )
+    else:
+        update_cartao_ponto(v_cartao_ponto, v_admissao, v_demissao)
+    v_cartao_ponto = CartaoPonto.objects.filter(
+        Dia__range=[v_primeiro_dia_mes, v_ultimo_dia_mes], idPessoal=v_idpessoal
+    )
     lista = [
         {
             "idcartaoponto": itens.idCartaoPonto,
@@ -239,22 +244,77 @@ def create_cartao_ponto(
         obj.Saida = "17:00"
         if dia.weekday() == 5 or dia.weekday() == 6:
             obj.Ausencia = dias[dia.weekday()]
+            obj.Conducao = False
         else:
             obj.Ausencia = ""
-        if dia in lista_feriados:
+            obj.Conducao = True
+        if datetime.datetime.strftime(dia, "%Y-%m-%d") in lista_feriados:
             obj.Ausencia = "FERIADO"
+            obj.Conducao = False
         if dia.date() < v_admissao:
             obj.Ausencia = "-------"
+            obj.Conducao = False
         if v_demissao:
             if dia.date() > v_demissao:
                 obj.Ausencia = "-------"
+                obj.Conducao = False
         obj.idPessoal_id = v_idpessoal
         dia = dia + relativedelta(days=1)
         obj.save()
-    v_cartao_ponto = CartaoPonto.objects.filter(
-        Dia__range=[v_primeiro_dia_mes, v_ultimo_dia_mes], idPessoal=v_idpessoal
-    )
-    return v_cartao_ponto
+
+
+def update_cartao_ponto(v_cartao_ponto, v_admissao, v_demissao):
+    lista_feriados = Feriados("Lista", "Feriado")
+    lista_feriados = lista_feriados.__dict__["feriados"]
+    for itens in v_cartao_ponto:
+        dia_str = datetime.datetime.strftime(itens.Dia, "%Y-%m-%d")
+        cartaoponto = CartaoPonto.objects.get(idCartaoPonto=itens.idCartaoPonto)
+        obj = cartaoponto
+        if dia_str in lista_feriados and itens.Ausencia != "FERIADO":
+            obj.Ausencia = "FERIADO"
+            obj.Alteracao = "ROBOT"
+            obj.Conducao = False
+            obj.Entrada = "07:00:00"
+            obj.Saida = "17:00:00"
+        if itens.Dia < v_admissao:
+            if itens.Ausencia != "-------":
+                obj.Ausencia = "-------"
+                obj.Conducao = False
+                obj.Alteracao = "ROBOT"
+                obj.Entrada = "07:00:00"
+                obj.Saida = "17:00:00"
+        else:
+            if itens.Ausencia == "-------":
+                if itens.Dia.weekday() == 5 or itens.Dia.weekday() == 6:
+                    obj.Ausencia = dias[itens.Dia.weekday()]
+                    obj.Conducao = False
+                else:
+                    obj.Ausencia = ""
+                    obj.Conducao = True
+                obj.Alteracao = "ROBOT"
+                obj.Entrada = "07:00:00"
+                obj.Saida = "17:00:00"
+        if v_demissao:
+            if itens.Dia > v_demissao:
+                if obj.Ausencia != "-------":
+                    obj.Ausencia = "-------"
+                    obj.Conducao = False
+                    obj.Alteracao = "ROBOT"
+                    obj.Entrada = "07:00:00"
+                    obj.Saida = "17:00:00"
+                    # else:
+                    #     if itens.Dia.weekday() == 5 or itens.Dia.weekday() == 6:
+                    #         obj.Ausencia = dias[itens.Dia.weekday()]
+                    #         obj.Conducao = False
+                    #     else:
+                    #         obj.Ausencia = ""
+                    #         obj.Conducao = True
+                    #     obj.Alteracao = "ROBOT"
+                    #     obj.Entrada = "07:00:00"
+                    #     obj.Saida = "17:00:00"
+        obj.save(
+            update_fields=["Ausencia", "Alteracao", "Entrada", "Saida", "Conducao"]
+        )
 
 
 def altera_ausencia_falta(v_idcartaoponto, v_mes_ano):
@@ -263,12 +323,14 @@ def altera_ausencia_falta(v_idcartaoponto, v_mes_ano):
     if obj.Ausencia == "FALTA":
         obj.Ausencia = ""
         obj.Alteracao = "ROBOT"
+        obj.Conducao = True
     else:
         obj.Ausencia = "FALTA"
         obj.Alteracao = "ROBOT"
+        obj.Conducao = False
     obj.Entrada = "07:00:00"
     obj.Saida = "17:00:00"
-    obj.save(update_fields=["Ausencia", "Alteracao", "Entrada", "Saida"])
+    obj.save(update_fields=["Ausencia", "Alteracao", "Entrada", "Saida", "Conducao"])
     data = html_folha_pagamento(v_mes_ano)
     return data
 

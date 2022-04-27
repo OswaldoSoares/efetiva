@@ -1,5 +1,6 @@
-from django.db import models
 import os
+
+from django.db import models
 
 
 def get_file_path(instance, filename):
@@ -17,8 +18,8 @@ class Pessoal(models.Model):
     Endereco = models.CharField(max_length=60, blank=True)
     Bairro = models.CharField(max_length=20, blank=True)
     CEP = models.CharField(max_length=9, blank=True)
-    Cidade = models.CharField(max_length=25, blank=True, default='SÃO PAULO')
-    Estado = models.CharField(max_length=2, blank=True, default='SP')
+    Cidade = models.CharField(max_length=25, blank=True, default="SÃO PAULO")
+    Estado = models.CharField(max_length=2, blank=True, default="SP")
     DataNascimento = models.DateField(blank=True, null=True)
     Mae = models.CharField(max_length=50, blank=True, null=True)
     Pai = models.CharField(max_length=50, blank=True, null=True)
@@ -30,8 +31,8 @@ class Pessoal(models.Model):
     Foto = models.ImageField(upload_to=get_file_path, null=True, blank=True)
 
     class Meta:
-        db_table = 'pessoal'
-        ordering = ['Nome']
+        db_table = "pessoal"
+        ordering = ["Nome"]
 
     def __str__(self):
         return self.Nome
@@ -60,8 +61,8 @@ class DocPessoal(models.Model):
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'docpessoal'
-        ordering = ['TipoDocumento']
+        db_table = "docpessoal"
+        ordering = ["TipoDocumento"]
 
     def __str__(self):
         return self.TipoDocumento
@@ -77,8 +78,8 @@ class FonePessoal(models.Model):
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'fonepessoal'
-        ordering = ['TipoFone']
+        db_table = "fonepessoal"
+        ordering = ["TipoFone"]
 
     def __str__(self):
         return self.TipoFone
@@ -103,8 +104,8 @@ class ContaPessoal(models.Model):
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'contapessoal'
-        ordering = ['idPessoal', 'Banco', 'Agencia', 'Conta', 'PIX']
+        db_table = "contapessoal"
+        ordering = ["idPessoal", "Banco", "Agencia", "Conta", "PIX"]
 
     def __str__(self):
         return self.Banco
@@ -130,8 +131,8 @@ class HorasTrabalhadas(models.Model):
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'horastrabalhadas'
-        ordering = ['idPessoal', 'Data', 'Minuta']
+        db_table = "horastrabalhadas"
+        ordering = ["idPessoal", "Data", "Minuta"]
 
     def __str__(self):
         return self.idHorasTrabalhadas
@@ -146,11 +147,13 @@ class Vales(models.Model):
     Valor = models.DecimalField(decimal_places=2, max_digits=7, default=1.00)
     Pago = models.BooleanField(default=False)
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.PROTECT, default=1)
-    idRecibo = models.ForeignKey('pagamentos.Recibo', on_delete=models.PROTECT, blank=True, null=True)
+    idRecibo = models.ForeignKey(
+        "pagamentos.Recibo", on_delete=models.PROTECT, blank=True, null=True
+    )
 
     class Meta:
-        db_table = 'vales'
-        ordering = ['idPessoal', 'Data', 'Descricao']
+        db_table = "vales"
+        ordering = ["idPessoal", "Data", "Descricao"]
 
     def __str__(self):
         return self.Descricao
@@ -171,8 +174,8 @@ class Salario(models.Model):
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.PROTECT, default=1)
 
     class Meta:
-        db_table = 'salario'
-        ordering = ['idPessoal']
+        db_table = "salario"
+        ordering = ["idPessoal"]
 
     def __str__(self):
         return str(self.Salario)
@@ -189,11 +192,11 @@ class ContraCheque(models.Model):
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'contracheque'
-        ordering = ['-idContraCheque']
+        db_table = "contracheque"
+        ordering = ["-idContraCheque"]
 
     def __str__(self):
-        return f'{self.MesReferencia}/{self.AnoReferencia}'
+        return f"{self.MesReferencia}/{self.AnoReferencia}"
 
     objects = models.Manager()
 
@@ -208,8 +211,8 @@ class ContraChequeItens(models.Model):
     idContraCheque = models.ForeignKey(ContraCheque, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'contrachequeitens'
-        ordering = ['Descricao']
+        db_table = "contrachequeitens"
+        ordering = ["Descricao"]
 
     def __str__(self):
         return self.Descricao
@@ -228,15 +231,16 @@ class CartaoPonto(models.Model):
     Entrada = models.TimeField()
     Saida = models.TimeField()
     Ausencia = models.CharField(max_length=7, blank=True)
-    Alteracao = models.CharField(max_length=6, default='ROBOT')
+    Alteracao = models.CharField(max_length=6, default="ROBOT")
+    Conducao = models.BooleanField(default=False)
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'cartaoponto'
-        ordering = ['Dia']
+        db_table = "cartaoponto"
+        ordering = ["Dia"]
 
     def __str__(self):
-        return str(self.idPessoal)
+        return str(self.idPessoal, self.Dia)
 
     def save(self, *args, **kwargs):
         if self.Ausencia:
