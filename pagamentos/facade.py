@@ -270,12 +270,6 @@ def update_cartao_ponto(v_cartao_ponto, v_admissao, v_demissao):
         dia_str = datetime.datetime.strftime(itens.Dia, "%Y-%m-%d")
         cartaoponto = CartaoPonto.objects.get(idCartaoPonto=itens.idCartaoPonto)
         obj = cartaoponto
-        if dia_str in lista_feriados and itens.Ausencia != "FERIADO":
-            obj.Ausencia = "FERIADO"
-            obj.Alteracao = "ROBOT"
-            obj.Conducao = False
-            obj.Entrada = "07:00:00"
-            obj.Saida = "17:00:00"
         if itens.Dia < v_admissao:
             if itens.Ausencia != "-------":
                 obj.Ausencia = "-------"
@@ -284,16 +278,23 @@ def update_cartao_ponto(v_cartao_ponto, v_admissao, v_demissao):
                 obj.Entrada = "07:00:00"
                 obj.Saida = "17:00:00"
         else:
-            if itens.Ausencia == "-------":
-                if itens.Dia.weekday() == 5 or itens.Dia.weekday() == 6:
-                    obj.Ausencia = dias[itens.Dia.weekday()]
-                    obj.Conducao = False
-                else:
-                    obj.Ausencia = ""
-                    obj.Conducao = True
+            if dia_str in lista_feriados and itens.Ausencia != "FERIADO":
+                obj.Ausencia = "FERIADO"
                 obj.Alteracao = "ROBOT"
+                obj.Conducao = False
                 obj.Entrada = "07:00:00"
                 obj.Saida = "17:00:00"
+            else:
+                if itens.Ausencia == "-------":
+                    if itens.Dia.weekday() == 5 or itens.Dia.weekday() == 6:
+                        obj.Ausencia = dias[itens.Dia.weekday()]
+                        obj.Conducao = False
+                    else:
+                        obj.Ausencia = ""
+                        obj.Conducao = True
+                    obj.Alteracao = "ROBOT"
+                    obj.Entrada = "07:00:00"
+                    obj.Saida = "17:00:00"
         if v_demissao:
             if itens.Dia > v_demissao:
                 if obj.Ausencia != "-------":
@@ -302,16 +303,6 @@ def update_cartao_ponto(v_cartao_ponto, v_admissao, v_demissao):
                     obj.Alteracao = "ROBOT"
                     obj.Entrada = "07:00:00"
                     obj.Saida = "17:00:00"
-                    # else:
-                    #     if itens.Dia.weekday() == 5 or itens.Dia.weekday() == 6:
-                    #         obj.Ausencia = dias[itens.Dia.weekday()]
-                    #         obj.Conducao = False
-                    #     else:
-                    #         obj.Ausencia = ""
-                    #         obj.Conducao = True
-                    #     obj.Alteracao = "ROBOT"
-                    #     obj.Entrada = "07:00:00"
-                    #     obj.Saida = "17:00:00"
         obj.save(
             update_fields=["Ausencia", "Alteracao", "Entrada", "Saida", "Conducao"]
         )
