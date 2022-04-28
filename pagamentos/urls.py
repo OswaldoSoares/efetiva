@@ -3,6 +3,7 @@ from django.urls import path
 from .views import (
     altera_horario_cartao_ponto,
     apagar_tudo,
+    atestada,
     ausencia_falta,
     cria_contrachequeitens,
     cria_contrachequeitensvale,
@@ -72,4 +73,5 @@ urlpatterns = [
         altera_horario_cartao_ponto,
         name="altera_horario_cartao_ponto",
     ),
+    path('atestada', atestada, name='atestada') 
 ]

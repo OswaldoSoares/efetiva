@@ -88,6 +88,29 @@ $(document).on("click", ".js-altera-falta", function(event) {
     });
 });
 
+$(document).on("click", ".js-atestada", function(event) {
+    var v_mes_ano = $(".select-mes-ano option:selected").text();
+    var v_idcartaoponto = $(this).attr("idcartaoponto");
+    var v_idpessoal = $(this).attr("idpessoal");
+    $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: "/pagamentos/atestada",
+        data: {
+            mes_ano: v_mes_ano,
+            idcartaoponto: v_idcartaoponto,
+        },
+        beforeSend: function() {},
+        success: function(data) {
+            $(".js-folha").html(data.html_folha);
+            $("#" + v_idpessoal).click();
+        },
+        error: function(error, data) {
+            console.log(error);
+        },
+    });
+});
+
 $(document).on("change", ".switchmini", function(event) {
     var idpessoalconcatenado = "#vale_" + $(this).attr("idpessoal");
     if ($(this).attr("tipopgto") == "mensalista") {

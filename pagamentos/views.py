@@ -278,3 +278,10 @@ def altera_horario_cartao_ponto(request):
         v_mes_ano = request.POST.get("mes_ano")
     data = facade.form_modal_horario(request, v_idcartaoponto, v_idpessoal, v_mes_ano)
     return data
+
+
+def atestada(request):
+    v_idcartaoponto = request.GET.get("idcartaoponto")
+    v_mes_ano = request.GET.get("mes_ano")
+    data = facade.falta_remunerada(v_idcartaoponto, v_mes_ano)
+    return data
