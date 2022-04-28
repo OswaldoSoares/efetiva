@@ -233,6 +233,7 @@ class CartaoPonto(models.Model):
     Ausencia = models.CharField(max_length=7, blank=True)
     Alteracao = models.CharField(max_length=6, default="ROBOT")
     Conducao = models.BooleanField(default=False)
+    Remunerado = models.BooleanField(default=True)
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
 
     class Meta:

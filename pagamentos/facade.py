@@ -128,6 +128,7 @@ def cartao_ponto(
             "dia": itens.Dia,
             "entrada": itens.Entrada,
             "saida": itens.Saida,
+            'transporte': itens.Conducao,
         }
         for itens in v_cartao_ponto
     ]
