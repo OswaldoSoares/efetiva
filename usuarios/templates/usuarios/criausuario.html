@@ -2,21 +2,31 @@
 {% load static %}
 
 {% block mainusuario %}
-<main class="tela-login">
-    <div class="usuario">
-        <header>
-            <span>{{ titulo }}</span>
-        </header>
+<main class="article form-login">
+    <div class="article-card">
+        <div class="article-card-titulo">
+            <span>CADASTRO</span>
+        </div>
         <form method="post">
-            {% csrf_token %}
-            <section>
-            {{ form }}
-            </section>
-            <footer>
-                <button type="submit" class="btn btn-primary">
-                    ACESSAR
+            <div class="article-card-body">
+                {% csrf_token %}
+                <div class="item-form">
+                    {{ form }}
+                </div>
+                <div class="item-form">
+                    {{ form.username }}
+                </div>
+                <div class="item-form">
+                    <label for='id_password' class="form-label">SENHA:</label>
+                </div>
+                <div class="item-form">
+                    {{ form.password }}
+                </div>
+            </div>
+            <div class="article-card-footer">
+                <button type="submit" class="bi bi-person-check-fill i-button">
                 </button>
-            </footer>
+            </div>
         </form>
     </div>
 </main>

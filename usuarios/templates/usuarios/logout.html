@@ -2,23 +2,30 @@
 {% load static %}
 
 {% block mainusuario %}
-<main class="tela-login">
-    <div class="usuario">
-        <header>
+<main class="article form-logout">
+    <div class="article-card">
+        <div class="article-card-titulo">
             <span>LOGOUT</span>
-        </header>
-        <section>
-        {% csrf_token %}
-            <div class="usuario-out">
-                <h3>{{ user }} você está logado!</h3>
-                <span><a href="{% url 'senha' %}">ALTERAR SUA SENHA</a></span>
+        </div>
+        <form method="post">
+            <div class="article-card-body">
+                {% csrf_token %}
+                <div class="item-form">
+                    <span>{{ user }}</span>
+                </div>
+                <div class="item-form">
+                    <span>Você está logado!</span>
+                </div>
+                <div class="item-form">
+                    <a href="{% url 'senha' %}" class="bi bi-key i-button">
+                        mudar senha
+                    </a>
+                </div>
             </div>
-        </section>
-        <footer>
-            <button class="btn btn-primary">
-                <a href="{% url 'sair' %}">SAIR</a>
-            </button>
-        </footer>
+            <div class="article-card-footer">
+                <a href="{% url 'sair' %}" class="bi bi-door-open i-button"></a>
+            </div>
+        </form>
     </div>
 </main>
 {% endblock %}

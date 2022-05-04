@@ -43,7 +43,7 @@ body {
 .meu-container {
     margin-top: 79px;
     padding: 0;
-    width: 100%;
+    width: 100vw;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -67,91 +67,6 @@ body {
     height: 100%;
     margin: 0;
 }
-
-
-/*
-
-nav {
-    width: 180px;
-    min-width: 180px;
-    height: 100%;
-    background-color: var(--corsecundaria);
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    z-index: 9998 ;
-}
-
-nav header {
-    background-color: var(--corprimaria);
-    color: var(--corsecundaria);
-    width: 180px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding-top: 5px;
-}
-
-nav header h6 {
-    font-size: 14px;
-}
-
-nav .menu {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-nav ul {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: space-evenly;
-    margin: 0;
-}
-
-nav .menu a {
-    font-size: 17px;
-    color: var(--corprimaria);
-    transition: .4s;
-}
-nav .menu li:hover a {
-    color: var(--corterciaria);
-    padding-left: 15px;
-    text-decoration: none;
-}
-
-nav .menu i {
-    margin: 0;
-    padding: 0;
-}
-
-nav footer {
-    background-color: var(--corprimaria);
-    color: var(--corsecundaria);
-    width: 180px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding-top: 5px;
-}
-
-nav footer h6 {
-    font-size: 14px;
-    margin:  5px;
-    padding: 0;
-}*/
 
 .menu-icone label {
     position: fixed;
@@ -1018,23 +933,6 @@ main .consulta .consulta-body {
 
 /* Arquivo Base */
 
-
-/* removido no novo menu
-.header-base {
-    background-color: var(--corprimaria);
-	width: 100vw;
-    height: 7vh;
-    position: fixed;
-    top: 0;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-left: 70px;
-    padding-right: 40px;
-    z-index: 9997;
-}*/
-
 .header-base h1 {
     margin: 0;
     padding: 0;
@@ -1048,7 +946,7 @@ main .consulta .consulta-body {
 /* Modulo Faturamento */
 
 .conteudo-base {
-    height: 100%;
+    height: calc(100vh - 12vh);
     overflow: hidden;
     margin: 5px;
     padding: 0px;
@@ -1749,13 +1647,8 @@ main .minutas-selecionadas .auto-minuta .comentarios-fatura p {
     padding: 0;
 }
 
-.tela-login {
-    display: flex;
-    align-items: flex-center;
-    justify-content: center;
-}
 
-main .usuario {
+/* main .usuario {
     background-color: var(--corfundo);
     color: var(--corprimaria);
     width: 350px;
@@ -1826,7 +1719,7 @@ main .usuario-out {
     text-align: center;
     margin-bottom: 10px;
     font-size: 10px;
-}
+} */
 
 @media only screen and (max-width: 1600px) {
     main .card-columns {
@@ -4305,6 +4198,42 @@ main .fp-recibo-tabela .fp-recibo-print {
     /* background-color: yellow; */
     width: 40%;
     text-align: center;
+}
+
+
+/* Card - Form-Login */
+
+.form-login,
+.form-logout {
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.form-login .article-card .article-card-body .item-form {
+    padding: 0 10px;
+    padding-bottom: 5px;
+}
+
+.form-login .article-card .article-card-body .item-form label {
+    margin-top: 5px;
+    color: var(--color6);
+}
+
+.form-login .article-card .article-card-footer button {
+    background-color: var(--color1);
+    border: none;
+}
+
+.form-logout .article-card .article-card-body .item-form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color6);
+    padding: 5px 0;
 }
 
 
