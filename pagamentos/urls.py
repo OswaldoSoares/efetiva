@@ -10,7 +10,6 @@ from .views import (
     cria_folha,
     cria_pagamento,
     cria_vale,
-    dados,
     edita_cartaoponto,
     exclui_contrachequeitens,
     exclui_contrachequeitensvale,
@@ -23,6 +22,7 @@ from .views import (
     manutencao,
     seleciona_contracheque,
     seleciona_folha,
+    seleciona_funcionario,
     seleciona_mes_ano,
     seleciona_periodo,
     seleciona_saldoavulso,
@@ -66,12 +66,12 @@ urlpatterns = [
     path("manutencao", manutencao),
     path("apaga", apagar_tudo, name="apaga"),
     path("seleciona_mes_ano", seleciona_mes_ano, name="seleciona_mes_ano"),
-    path("dados", dados, name="dados"),
+    path("seleciona_funcionario", seleciona_funcionario, name="seleciona_funcionario"),
     path("ausencia_falta", ausencia_falta, name="ausencia_falta"),
     path(
         "altera_horario_cartao_ponto",
         altera_horario_cartao_ponto,
         name="altera_horario_cartao_ponto",
     ),
-    path('atestada', atestada, name='atestada') 
+    path("atestada", atestada, name="atestada"),
 ]

@@ -4,19 +4,22 @@
   <span>FOLHA</span>
 </div>
 <div class="article-card-body">
-  {% for itens in v_folha.funcionarios %}
+  {% for key, value in v_folha.funcionarios.items %}
   <div class="itens-folha">
     <div class="item-nome">
-      <span>{{ itens.nome_curto }}</span>
+      <span>{{ key }}</span>
     </div>
     <div class="item-salario">
-      <span>R$ {{ itens.salario|intcomma }}</span>
+      <span>R$ {{ value.salario|intcomma }}</span>
     </div>
     <div class="item-button">
       <i
-        class="bi bi-folder-symlink i-button js-dados"
-        id="{{ itens.idpessoal }}"
-        data-dados="{{ itens }}"
+        class="bi bi-folder-symlink i-button js-seleciona-funcionario"
+        data-idpessoal="{{ value.idpessoal }}"
+        data-admissao="{{ value.admissao }}"
+        data-demissao="{{ value.demissao }}"
+        data-mes="{{ v_folha.mes }}"
+        data-ano="{{ v_folha.ano }}"
       ></i>
     </div>
   </div>

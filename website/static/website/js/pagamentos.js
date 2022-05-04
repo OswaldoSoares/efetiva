@@ -46,14 +46,22 @@ $(document).on("change", ".select-mes-ano", function(event) {
     $(".js-cartao-ponto").fadeOut(10);
 });
 
-$(document).on("click", ".js-dados", function(event) {
-    v_dados = $(this).data("dados");
+$(document).on("click", ".js-seleciona-funcionario", function(event) {
+    v_mes = $(this).data("mes");
+    v_ano = $(this).data("ano");
+    v_idpessoal = $(this).data("idpessoal");
+    v_admissao = $(this).data("admissao");
+    v_demissao = $(this).data("demissao");
     $.ajax({
         type: "GET",
         dataType: "json",
-        url: "/pagamentos/dados",
+        url: "/pagamentos/seleciona_funcionario",
         data: {
-            dados: v_dados,
+            mes: v_mes,
+            ano: v_ano,
+            idpessoal: v_idpessoal,
+            admissao: v_admissao,
+            demissao: v_demissao,
         },
         beforeSend: function() {
             $(".js-cartao-ponto").fadeOut(10);
@@ -68,7 +76,8 @@ $(document).on("click", ".js-dados", function(event) {
 $(document).on("click", ".js-altera-falta", function(event) {
     var v_mes_ano = $(".select-mes-ano option:selected").text();
     var v_idcartaoponto = $(this).attr("idcartaoponto");
-    var v_idpessoal = $(this).attr("idpessoal");
+    var v_admissao = $('#admissao').data('admissao');
+    var v_demissao = $('#demissao').data('demissao');
     $.ajax({
         type: "GET",
         dataType: "json",
@@ -76,11 +85,15 @@ $(document).on("click", ".js-altera-falta", function(event) {
         data: {
             mes_ano: v_mes_ano,
             idcartaoponto: v_idcartaoponto,
+            admissao: v_admissao,
+            demissao: v_demissao,
         },
-        beforeSend: function() {},
+        beforeSend: function() {
+            $(".js-cartao-ponto").fadeOut(10);
+        },
         success: function(data) {
-            $(".js-folha").html(data.html_folha);
-            $("#" + v_idpessoal).click();
+            $(".js-cartao-ponto").html(data.html_cartao_ponto);
+            $(".js-cartao-ponto").fadeIn(10);
         },
         error: function(error, data) {
             console.log(error);
@@ -91,7 +104,8 @@ $(document).on("click", ".js-altera-falta", function(event) {
 $(document).on("click", ".js-atestada", function(event) {
     var v_mes_ano = $(".select-mes-ano option:selected").text();
     var v_idcartaoponto = $(this).attr("idcartaoponto");
-    var v_idpessoal = $(this).attr("idpessoal");
+    var v_admissao = $('#admissao').data('admissao');
+    var v_demissao = $('#demissao').data('demissao');
     $.ajax({
         type: "GET",
         dataType: "json",
@@ -99,11 +113,15 @@ $(document).on("click", ".js-atestada", function(event) {
         data: {
             mes_ano: v_mes_ano,
             idcartaoponto: v_idcartaoponto,
+            admissao: v_admissao,
+            demissao: v_demissao,
         },
-        beforeSend: function() {},
+        beforeSend: function() {
+            $(".js-cartao-ponto").fadeOut(10);
+        },
         success: function(data) {
-            $(".js-folha").html(data.html_folha);
-            $("#" + v_idpessoal).click();
+            $(".js-cartao-ponto").html(data.html_cartao_ponto);
+            $(".js-cartao-ponto").fadeIn(10);
         },
         error: function(error, data) {
             console.log(error);
@@ -540,20 +558,18 @@ $(".div-fade-avulso").click(function() {
 function openMyModal(event) {
     var modal = initModalDialog(event, "#MyModal");
     var url = $(event.target).data("action");
-    var idcartaoponto = $(event.target).data("idcartaoponto");
-    // var mesreferencia = $(event.target).data("mesreferencia");
-    // var anoreferencia = $(event.target).data("anoreferencia");
-    var idpessoal = $(event.target).data("idpessoal");
     var v_mes_ano = $(".select-mes-ano option:selected").text();
+    var v_idcartaoponto = $(event.target).data("idcartaoponto");
+    var v_admissao = $('#admissao').data('admissao');
+    var v_demissao = $('#demissao').data('demissao');
     $.ajax({
             type: "GET",
             url: url,
             data: {
-                idcartaoponto: idcartaoponto,
-                // MesReferencia: mesreferencia,
-                // AnoReferencia: anoreferencia,
-                idPessoal: idpessoal,
-                mes_ano: v_mes_ano
+                mes_ano: v_mes_ano,
+                idcartaoponto: v_idcartaoponto,
+                admissao: v_admissao,
+                demissao: v_demissao,
             },
         })
         .done(function(data, textStatus, jqXHR) {
@@ -602,7 +618,6 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
         event.preventDefault();
         header.addClass("loading");
         var url = $(this).attr("action") || action;
-        var idpessoal = $(this).attr("idpessoal")
         $.ajax({
             type: $(this).attr("method"),
             url: url,
@@ -614,8 +629,8 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                     formAjaxSubmit(modal, url, cbAfterLoad, cbAfterSuccess);
                 } else {
                     $(modal).modal("hide");
-                    $(".js-folha").html(xhr.html_folha);
-                    $("#" + idpessoal).click();
+                    $(".js-cartao-ponto").html(xhr.html_cartao_ponto);
+                    $(".js-cartao-ponto").fadeIn(10);
 
                     $(".fp-base").html(xhr.html_folha);
                     $(".fp-contracheque").html("");
