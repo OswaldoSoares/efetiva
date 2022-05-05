@@ -261,7 +261,10 @@ def seleciona_funcionario(request):
     v_idpessoal = request.GET.get("idpessoal")
     v_admissao = request.GET.get("admissao")
     v_demissao = request.GET.get("demissao")
-    data = facade.html_cartao_ponto(v_mes, v_ano, v_idpessoal, v_admissao, v_demissao)
+    v_salario_base = request.GET.get("salario_base")
+    data = facade.html_cartao_ponto(
+        v_mes, v_ano, v_idpessoal, v_admissao, v_demissao, v_salario_base
+    )
     return data
 
 
@@ -270,8 +273,9 @@ def ausencia_falta(request):
     v_mes_ano = request.GET.get("mes_ano")
     v_admissao = request.GET.get("admissao")
     v_demissao = request.GET.get("demissao")
+    v_salario_base = request.GET.get("salario_base")
     data = facade.altera_ausencia_falta(
-        v_idcartaoponto, v_mes_ano, v_admissao, v_demissao
+        v_idcartaoponto, v_mes_ano, v_admissao, v_demissao, v_salario_base
     )
     return data
 
@@ -282,14 +286,22 @@ def altera_horario_cartao_ponto(request):
     v_admissao = request.GET.get("admissao")
     v_demissao = request.GET.get("demissao")
     v_idpessoal = None
+    v_salario_base = request.GET.get("salario_base")
     if request.method == "POST":
         v_mes_ano = request.POST.get("mes_ano")
         v_idcartaoponto = request.POST.get("idcartaoponto")
         v_admissao = request.POST.get("admissao")
         v_demissao = request.POST.get("demissao")
         v_idpessoal = request.POST.get("idPessoal")
+        v_salario_base = request.POST.get("salario_base")
     data = facade.form_modal_horario(
-        request, v_idcartaoponto, v_mes_ano, v_admissao, v_demissao, v_idpessoal
+        request,
+        v_idcartaoponto,
+        v_mes_ano,
+        v_admissao,
+        v_demissao,
+        v_idpessoal,
+        v_salario_base,
     )
     return data
 
@@ -299,5 +311,8 @@ def atestada(request):
     v_mes_ano = request.GET.get("mes_ano")
     v_admissao = request.GET.get("admissao")
     v_demissao = request.GET.get("demissao")
-    data = facade.falta_remunerada(v_idcartaoponto, v_mes_ano, v_admissao, v_demissao)
+    v_salario_base = request.GET.get("salario_base")
+    data = facade.falta_remunerada(
+        v_idcartaoponto, v_mes_ano, v_admissao, v_demissao, v_salario_base
+    )
     return data

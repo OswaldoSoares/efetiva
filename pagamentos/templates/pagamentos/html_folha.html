@@ -10,7 +10,7 @@
       <span>{{ key }}</span>
     </div>
     <div class="item-salario">
-      <span>R$ {{ value.salario|intcomma }}</span>
+      <span>R$ {{ value.salario_base|intcomma }}</span>
     </div>
     <div class="item-button">
       <i
@@ -20,6 +20,7 @@
         data-demissao="{{ value.demissao }}"
         data-mes="{{ v_folha.mes }}"
         data-ano="{{ v_folha.ano }}"
+        data-salario="{{ value.salario_base }}"
       ></i>
     </div>
   </div>

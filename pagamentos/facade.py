@@ -75,41 +75,20 @@ class FolhaContraCheque:
         ).exclude(DataDemissao__lte=v_primeiro_dia_mes)
         lista = dict()
         for itens in v_funcionarios:
-            # lista_cartao_ponto = cartao_ponto(
-            #     itens.idPessoal,
-            #     v_primeiro_dia_mes,
-            #     v_ultimo_dia_mes,
-            #     itens.DataAdmissao,
-            #     itens.DataDemissao,
-            # )
-            # lista_contra_cheque = contra_cheque(itens.idPessoal, v_mes, v_ano)
-            # if lista_contra_cheque:
-            #     lista_contra_cheque_itens = contra_cheque_itens(
-            #         lista_contra_cheque[0]["idcontracheque"]
-            #     )
-            # lista_cartao_ponto = []
-            # lista_contra_cheque = []
-            # lista_contra_cheque_itens = []
-            v_salario, v_conducao = salario_conducao(itens.idPessoal)
-            # v_dias_falta = dias_falta(lista_cartao_ponto)
-            # v_dias_remunerado = dias_remunerado(lista_cartao_ponto)
-            # v_dias_transporte = dias_transporte(lista_cartao_ponto)
+            v_salario_base, v_conducao = salario_conducao(itens.idPessoal)
             lista[nome_curto(itens.Nome)] = {
                 "admissao": itens.DataAdmissao,
                 "bloqueado": itens.StatusPessoal,
-                # "cartao_ponto": lista_cartao_ponto,
                 "categoria": itens.Categoria,
                 "conducao": v_conducao,
-                # "contra_cheque": lista_contra_cheque,
-                # "contra_cheque_itens": lista_contra_cheque_itens,
+                "contra_cheque": contra_cheque(
+                    itens.idPessoal, v_mes, v_ano, v_salario_base
+                ),
                 "demissao": itens.DataDemissao,
-                # "dias_falta": v_dias_falta,
-                # "dias_remunerado": v_dias_remunerado,
-                # "dias_transporte": v_dias_transporte,
                 "idpessoal": itens.idPessoal,
                 "nome": itens.Nome,
                 "nome_curto": nome_curto(itens.Nome),
-                "salario": v_salario,
+                "salario_base": v_salario_base,
             }
         return lista
 
@@ -170,28 +149,60 @@ def cartao_ponto(
         }
         for itens in v_cartao_ponto
     ]
+    # "dias_falta": v_dias_falta,
+    # "dias_remunerado": v_dias_remunerado,
+    # "dias_transporte": v_dias_transporte,
     return lista
 
 
-def contra_cheque(v_idpessoal, v_mes, v_ano):
+def contra_cheque(v_idpessoal, v_mes, v_ano, v_salario_base):
     v_contra_cheque = ContraCheque.objects.filter(
-        idPessoal=v_idpessoal, MesReferencia=meses[int(v_mes) - 1], AnoReferencia=v_ano
+        idPessoal=v_idpessoal,
+        MesReferencia=meses[int(v_mes) - 1],
+        AnoReferencia=v_ano,
+    ).values("idContraCheque", "Valor", "Pago")
+    if not v_contra_cheque:
+        create_contra_cheque(v_idpessoal, v_mes, v_ano)
+        v_contra_cheque = ContraCheque.objects.filter(
+            idPessoal=v_idpessoal,
+            MesReferencia=meses[int(v_mes) - 1],
+            AnoReferencia=v_ano,
+        ).values("idContraCheque", "Valor", "Pago")
+    v_contra_cheque_itens = contra_cheque_itens(
+        v_contra_cheque[0]["idContraCheque"], v_salario_base
     )
-    lista = [
-        {
-            "idcontracheque": itens.idContraCheque,
-            "valor": itens.Valor,
-            "pago": itens.Pago,
+    print(v_contra_cheque_itens)
+    dict_contra_cheque = {
+        v_idpessoal: {
+            "idcontracheque": v_contra_cheque[0]["idContraCheque"],
+            "valor": v_contra_cheque[0]["Valor"],
+            "pago": v_contra_cheque[0]["Pago"],
         }
-        for itens in v_contra_cheque
-    ]
-    return lista
+    }
+    return dict_contra_cheque
 
 
-def contra_cheque_itens(v_contra_cheque):
+def create_contra_cheque(v_idpessoal, v_mes, v_ano):
+    v_salario = Salario.objects.get(idPessoal=v_idpessoal)
+    obj = ContraCheque()
+    obj.MesReferencia = meses[int(v_mes) - 1]
+    obj.AnoReferencia = v_ano
+    obj.Valor = v_salario.Salario
+    obj.idPessoal_id = v_idpessoal
+    obj.save()
+
+
+def contra_cheque_itens(v_idcontracheque, v_salario_base):
     v_contra_cheque_itens = ContraChequeItens.objects.filter(
-        idContraCheque=v_contra_cheque
+        idContraCheque=v_idcontracheque
     )
+    if not v_contra_cheque_itens:
+        create_contra_cheque_itens(
+            v_idcontracheque, "SALARIO", v_salario_base, "C", "30d"
+        )
+        v_contra_cheque_itens = ContraChequeItens.objects.filter(
+            idContraCheque=v_idcontracheque
+        )
     lista = [
         {
             "descricao": itens.Descricao,
@@ -202,6 +213,18 @@ def contra_cheque_itens(v_contra_cheque):
         for itens in v_contra_cheque_itens
     ]
     return lista
+
+
+def create_contra_cheque_itens(
+    v_idcontracheque, v_descricao, v_valor, v_registro, v_referencia
+):
+    obj = ContraChequeItens()
+    obj.Descricao = v_descricao
+    obj.Valor = v_valor
+    obj.Referencia = v_referencia
+    obj.Registro = v_registro
+    obj.idContraCheque_id = v_idcontracheque
+    obj.save()
 
 
 def salario_conducao(v_idpessoal):
@@ -228,7 +251,7 @@ def seleciona_mes_ano_folha() -> list:
     minimo será Janeiro/2021.
 
     Returns:
-        list: Lista com valores dos Meses e anos
+        list: Lista com valores dos Meses e Anos
     """
     v_data_primeira_folha = datetime.datetime.strptime("31-12-2020", "%d-%m-%Y")
     v_hoje = datetime.datetime.today()
@@ -256,7 +279,9 @@ def html_folha_pagamento(v_mes_ano):
     return JsonResponse(data)
 
 
-def html_cartao_ponto(v_mes, v_ano, v_idpessoal, v_admissao, v_demissao):
+def html_cartao_ponto(
+    v_mes, v_ano, v_idpessoal, v_admissao, v_demissao, v_salario_base
+):
     data = dict()
     v_primeiro_dia_mes, v_ultimo_dia_mes = extremos_mes(v_mes, v_ano)
     v_admissao = datetime.datetime.strptime(v_admissao, "%d/%m/%Y")
@@ -273,6 +298,8 @@ def html_cartao_ponto(v_mes, v_ano, v_idpessoal, v_admissao, v_demissao):
     data["html_cartao_ponto"] = render_to_string(
         "pagamentos/html_cartao_ponto.html", contexto
     )
+    v_contra_cheque = contra_cheque(v_idpessoal, v_mes, v_ano, v_salario_base)
+    # v_contra_cheque_itens = contra_cheque_itens()
     return JsonResponse(data)
 
 
@@ -370,7 +397,9 @@ def update_cartao_ponto(v_cartao_ponto, v_admissao, v_demissao):
         )
 
 
-def altera_ausencia_falta(v_idcartaoponto, v_mes_ano, v_admissao, v_demissao):
+def altera_ausencia_falta(
+    v_idcartaoponto, v_mes_ano, v_admissao, v_demissao, v_salario_base
+):
     v_mes, v_ano = converter_mes_ano(v_mes_ano)
     v_cartao_ponto = CartaoPonto.objects.get(idCartaoPonto=v_idcartaoponto)
     obj = v_cartao_ponto
@@ -397,11 +426,15 @@ def altera_ausencia_falta(v_idcartaoponto, v_mes_ano, v_admissao, v_demissao):
         ]
     )
     v_idpessoal = v_cartao_ponto.idPessoal
-    data = html_cartao_ponto(v_mes, v_ano, v_idpessoal, v_admissao, v_demissao)
+    data = html_cartao_ponto(
+        v_mes, v_ano, v_idpessoal, v_admissao, v_demissao, v_salario_base
+    )
     return data
 
 
-def falta_remunerada(v_idcartaoponto, v_mes_ano, v_admissao, v_demissao):
+def falta_remunerada(
+    v_idcartaoponto, v_mes_ano, v_admissao, v_demissao, v_salario_base
+):
     v_mes, v_ano = converter_mes_ano(v_mes_ano)
     v_cartao_ponto = CartaoPonto.objects.get(idCartaoPonto=v_idcartaoponto)
     obj = v_cartao_ponto
@@ -416,7 +449,9 @@ def falta_remunerada(v_idcartaoponto, v_mes_ano, v_admissao, v_demissao):
             obj.Remunerado = True
     obj.save(update_fields=["Alteracao", "Remunerado"])
     v_idpessoal = v_cartao_ponto.idPessoal
-    data = html_cartao_ponto(v_mes, v_ano, v_idpessoal, v_admissao, v_demissao)
+    data = html_cartao_ponto(
+        v_mes, v_ano, v_idpessoal, v_admissao, v_demissao, v_salario_base
+    )
     return data
 
 
@@ -1730,7 +1765,13 @@ def list_avulsos_ativo():
 
 
 def form_modal_horario(
-    request, v_idcartaoponto, v_mes_ano, v_admissao, v_demissao, v_idpessoal
+    request,
+    v_idcartaoponto,
+    v_mes_ano,
+    v_admissao,
+    v_demissao,
+    v_idpessoal,
+    v_salario_base,
 ):
     data = dict()
     v_mes, v_ano = converter_mes_ano(v_mes_ano)
@@ -1741,7 +1782,9 @@ def form_modal_horario(
         form = CadastraCartaoPonto(request.POST, instance=c_instance)
         if form.is_valid():
             form.save()
-            data = html_cartao_ponto(v_mes, v_ano, v_idpessoal, v_admissao, v_demissao)
+            data = html_cartao_ponto(
+                v_mes, v_ano, v_idpessoal, v_admissao, v_demissao, v_salario_base
+            )
             return data
     else:
         form = CadastraCartaoPonto(instance=c_instance)

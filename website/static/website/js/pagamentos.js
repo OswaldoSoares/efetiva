@@ -52,6 +52,7 @@ $(document).on("click", ".js-seleciona-funcionario", function(event) {
     v_idpessoal = $(this).data("idpessoal");
     v_admissao = $(this).data("admissao");
     v_demissao = $(this).data("demissao");
+    v_salario_base = $(this).data("salario");
     $.ajax({
         type: "GET",
         dataType: "json",
@@ -62,6 +63,7 @@ $(document).on("click", ".js-seleciona-funcionario", function(event) {
             idpessoal: v_idpessoal,
             admissao: v_admissao,
             demissao: v_demissao,
+            salario_base: v_salario_base,
         },
         beforeSend: function() {
             $(".js-cartao-ponto").fadeOut(10);
