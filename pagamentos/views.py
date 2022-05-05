@@ -277,7 +277,6 @@ def ausencia_falta(request):
 
 
 def altera_horario_cartao_ponto(request):
-    print(request.POST)
     v_mes_ano = request.GET.get("mes_ano")
     v_idcartaoponto = request.GET.get("idcartaoponto")
     v_admissao = request.GET.get("admissao")

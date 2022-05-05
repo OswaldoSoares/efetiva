@@ -20,7 +20,7 @@ from pessoas.models import (
     Salario,
     Vales,
 )
-from website.facade import Feriados
+from website.facade import DiasFeriados, Feriados
 
 from pagamentos.forms import CadastraCartaoPonto
 from pagamentos.models import Recibo, ReciboItens
@@ -286,11 +286,7 @@ def cria_contexto_pagamentos():
 def create_cartao_ponto(
     v_idpessoal, v_primeiro_dia_mes, v_ultimo_dia_mes, v_admissao, v_demissao
 ):
-    # colaborador = facade.get_pessoal(idpessoal)
-    # admissao = colaborador[0].DataAdmissao
-    # TODO Alterar class feriados
-    lista_feriados = Feriados("Lista", "Feriado")
-    lista_feriados = lista_feriados.__dict__["feriados"]
+    feriados = DiasFeriados().__dict__["feriados"]
     dia = v_primeiro_dia_mes
     while dia < v_ultimo_dia_mes + relativedelta(days=1):
         obj = CartaoPonto()
@@ -304,15 +300,15 @@ def create_cartao_ponto(
         else:
             obj.Ausencia = ""
             obj.Conducao = True
-        if datetime.datetime.strftime(dia, "%Y-%m-%d") in lista_feriados:
+        if dia.date() in feriados:
             obj.Ausencia = "FERIADO"
             obj.Conducao = False
-        if dia.date() < v_admissao:
+        if dia < v_admissao:
             obj.Ausencia = "-------"
             obj.Conducao = False
             obj.Remunerado = False
-        if v_demissao:
-            if dia.date() > v_demissao:
+        if not v_demissao == "None":
+            if dia > v_demissao:
                 obj.Ausencia = "-------"
                 obj.Conducao = False
                 obj.Remunerado = False
@@ -322,10 +318,8 @@ def create_cartao_ponto(
 
 
 def update_cartao_ponto(v_cartao_ponto, v_admissao, v_demissao):
-    lista_feriados = Feriados("Lista", "Feriado")
-    lista_feriados = lista_feriados.__dict__["feriados"]
+    feriados = DiasFeriados().__dict__["feriados"]
     for itens in v_cartao_ponto:
-        dia_str = datetime.datetime.strftime(itens.Dia, "%d/%m/%Y")
         cartaoponto = CartaoPonto.objects.get(idCartaoPonto=itens.idCartaoPonto)
         obj = cartaoponto
         if itens.Dia < v_admissao.date():
@@ -337,25 +331,24 @@ def update_cartao_ponto(v_cartao_ponto, v_admissao, v_demissao):
                 obj.Entrada = "07:00:00"
                 obj.Saida = "17:00:00"
         else:
-            if dia_str in lista_feriados and itens.Ausencia != "FERIADO":
+            if itens.Ausencia == "-------":
+                if itens.Dia.weekday() == 5 or itens.Dia.weekday() == 6:
+                    obj.Ausencia = dias[itens.Dia.weekday()]
+                    obj.Conducao = False
+                else:
+                    obj.Ausencia = ""
+                    obj.Conducao = True
+                obj.Remunerado = True
+                obj.Alteracao = "ROBOT"
+                obj.Entrada = "07:00:00"
+                obj.Saida = "17:00:00"
+            if itens.Dia in feriados and itens.Ausencia != "FERIADO":
                 obj.Ausencia = "FERIADO"
                 obj.Alteracao = "ROBOT"
                 obj.Conducao = False
                 obj.Remunerado = True
                 obj.Entrada = "07:00:00"
                 obj.Saida = "17:00:00"
-            else:
-                if itens.Ausencia == "-------":
-                    if itens.Dia.weekday() == 5 or itens.Dia.weekday() == 6:
-                        obj.Ausencia = dias[itens.Dia.weekday()]
-                        obj.Conducao = False
-                    else:
-                        obj.Ausencia = ""
-                        obj.Conducao = True
-                    obj.Remunerado = True
-                    obj.Alteracao = "ROBOT"
-                    obj.Entrada = "07:00:00"
-                    obj.Saida = "17:00:00"
         if not v_demissao == "None":
             if itens.Dia > v_demissao.date():
                 if obj.Ausencia != "-------":
