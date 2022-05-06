@@ -25,13 +25,13 @@
       {% endif %}
     </div>
     <div class="item-vencimentos">
-      {% if cc.registro == 'C' %} R$ {{ cc.valor|floatformat:2|intcomma }} 
+      {% if cc.registro == 'C' %} R$ {{ cc.valor|intcomma }} 
       {% else %}
       <span>.</span>
       {% endif %}
     </div>
     <div class="item-descontos">
-      {% if cc.registro == 'D' %} R$ {{ cc.valor|floatformat:2|intcomma }} 
+      {% if cc.registro == 'D' %} R$ {{ cc.valor|intcomma }} 
       {% else %}
       <span>.</span>
       {% endif %}
@@ -43,10 +43,18 @@
     <div class="item-descricao item-vazio-top"><span>.</span></div>
     <div class="item-referencia item-vazio-top"><span>.</span></div>
     <div class="item-vencimentos">
+      {% if vencimentos.soma > 0 %}
+      R$ {{ vencimentos.soma|intcomma }}
+      {% else %}
       R$ {{ vencimentos.soma|floatformat:2|intcomma }}
+      {% endif %}
     </div>
     <div class="item-descontos">
+      {% if descontos.soma > 0 %}
+      R$ {{ descontos.soma|intcomma }}
+      {% else %}
       R$ {{ descontos.soma|floatformat:2|intcomma }}
+      {% endif %}
     </div>
     <div class="item-botoes"><span>.</span></div>
   </div>
@@ -56,7 +64,12 @@
     <div class="item-vencimentos item-ultima-linha">
       A RECEBER <i class="bi bi-arrow-right"></i>
     </div>
-    <div class="item-descontos item-ultima-linha">R$ {{ saldo|floatformat:2|intcomma }}</div>
+    <div class="item-descontos item-ultima-linha">
+      {% if saldo > 0%}
+      R$ {{ saldo|intcomma }}</div>
+      {% else %}
+      R$ {{ saldo|floatformat:2|intcomma }}</div>
+      {% endif %}
     <div class="item-botoes item-ultima-linha"><i class="bi bi-printer i-button"></i></div>
   </div>
 </div>

@@ -93,25 +93,25 @@ class FolhaContraCheque:
         return lista
 
 
-def dias_falta(v_lista_cartao_ponto):
+def dias_falta(v_cartao_ponto):
     dias = 0
-    for itens in v_lista_cartao_ponto:
+    for itens in v_cartao_ponto:
         if itens["ausencia"] == "FALTA" and itens["alteracao"] == "ROBOT":
             dias += 1
     return dias
 
 
-def dias_remunerado(v_lista_cartao_ponto):
+def dias_remunerado(v_cartao_ponto):
     dias = 0
-    for itens in v_lista_cartao_ponto:
+    for itens in v_cartao_ponto:
         if itens["remunerado"]:
             dias += 1
     return dias
 
 
-def dias_transporte(v_lista_cartao_ponto):
+def dias_transporte(v_cartao_ponto):
     dias = 0
-    for itens in v_lista_cartao_ponto:
+    for itens in v_cartao_ponto:
         if itens["transporte"]:
             dias += 1
     return dias
@@ -149,13 +149,12 @@ def cartao_ponto(
         }
         for itens in v_cartao_ponto
     ]
-    # "dias_falta": v_dias_falta,
-    # "dias_remunerado": v_dias_remunerado,
-    # "dias_transporte": v_dias_transporte,
     return lista
 
 
-def contra_cheque(v_idpessoal, v_mes, v_ano, v_salario_base):
+def contra_cheque(v_idpessoal, v_mes, v_ano, v_dias_remunerado, v_dias_transporte):
+    v_salario_base = Salario.objects.get(idPessoal=v_idpessoal)
+    v_salario_base.Salario
     v_contra_cheque = ContraCheque.objects.filter(
         idPessoal=v_idpessoal,
         MesReferencia=meses[int(v_mes) - 1],
@@ -169,7 +168,10 @@ def contra_cheque(v_idpessoal, v_mes, v_ano, v_salario_base):
             AnoReferencia=v_ano,
         ).values("idContraCheque", "Valor", "Pago")
     lista_contra_cheque_itens = contra_cheque_itens(
-        v_contra_cheque[0]["idContraCheque"], v_salario_base
+        v_contra_cheque[0]["idContraCheque"],
+        v_salario_base.Salario,
+        v_dias_remunerado,
+        v_dias_transporte,
     )
     vencimentos, descontos, saldo = totais_contra_cheque(
         v_contra_cheque[0]["idContraCheque"]
@@ -194,7 +196,9 @@ def create_contra_cheque(v_idpessoal, v_mes, v_ano):
     obj.save()
 
 
-def contra_cheque_itens(v_idcontracheque, v_salario_base):
+def contra_cheque_itens(
+    v_idcontracheque, v_salario_base, v_dias_remunerado, v_dias_transporte
+):
     v_contra_cheque_itens = ContraChequeItens.objects.filter(
         idContraCheque=v_idcontracheque
     )
@@ -202,30 +206,65 @@ def contra_cheque_itens(v_idcontracheque, v_salario_base):
         create_contra_cheque_itens(
             v_idcontracheque, "SALARIO", v_salario_base, "C", "30d"
         )
-        v_contra_cheque_itens = ContraChequeItens.objects.filter(
-            idContraCheque=v_idcontracheque
+    if v_dias_remunerado < 30:
+        v_cci = ContraChequeItens.objects.filter(
+            idContraCheque=v_idcontracheque, Descricao="SALARIO"
         )
+        salario = v_salario_base / 30 * int(v_dias_remunerado)
+        if v_cci:
+            obj = v_cci[0]
+            obj.Valor = salario
+            obj.Referencia = f"{v_dias_remunerado}d"
+            obj.save(update_fields=["Valor", "Referencia"])
+    if v_dias_transporte > 0:
+        v_cci = ContraChequeItens.objects.filter(
+            idContraCheque=v_idcontracheque, Descricao="VALE TRANSPORTE"
+        )
+        conducao = Decimal(8.80) * int(v_dias_transporte)
+        if v_cci:
+            obj = v_cci[0]
+            obj.Valor = conducao
+            obj.Referencia = f"{v_dias_transporte}d"
+            obj.save(update_fields=["Valor", "Referencia"])
+        else:
+            create_contra_cheque_itens(
+                v_idcontracheque,
+                "VALE TRANSPORTE",
+                conducao,
+                "C",
+                f"{v_dias_transporte}d",
+            )
+    v_contra_cheque_itens = ContraChequeItens.objects.filter(
+        idContraCheque=v_idcontracheque
+    )
     lista = [
         {
-            "descricao": itens.Descricao,
-            "valor": itens.Valor,
-            "registro": itens.Registro,
-            "referencia": itens.Referencia,
+            "descricao": i.Descricao,
+            "valor": i.Valor,
+            "registro": i.Registro,
+            "referencia": i.Referencia,
         }
-        for itens in v_contra_cheque_itens
+        for i in v_contra_cheque_itens
     ]
     return lista
 
 
-def create_contra_cheque_itens(
-    v_idcontracheque, v_descricao, v_valor, v_registro, v_referencia
-):
+def create_contra_cheque_itens(id: int, des: str, val: str, reg: str, ref: str) -> None:
+    """Salva novo item do contra cheque no Banco de Dados
+
+    Args:
+        id (int): id do Contra Cheque
+        des (str): Descrição do Item
+        val (str): Valor do Item
+        reg (str): Registro do Item - Débito ou Crédito
+        ref (str): Referencia do Item
+    """
     obj = ContraChequeItens()
-    obj.Descricao = v_descricao
-    obj.Valor = v_valor
-    obj.Referencia = v_referencia
-    obj.Registro = v_registro
-    obj.idContraCheque_id = v_idcontracheque
+    obj.Descricao = des
+    obj.Valor = val
+    obj.Referencia = ref
+    obj.Registro = reg
+    obj.idContraCheque_id = id
     obj.save()
 
 
@@ -283,37 +322,55 @@ def html_folha_pagamento(v_mes_ano):
 
 def html_cartao_ponto(
     v_mes, v_ano, v_idpessoal, v_admissao, v_demissao, v_salario_base
-):
+) -> JsonResponse:
+    """Gera html do Card Cartão de Ponto e do Card Contra Cheque
+
+    Abreviaturas utilizadas nesta função:
+        v_pdm = variavel primeiro dia do mes
+        v_udm = variavel ultimo dia do mes
+        v_cp = variavel cartão de ponto
+        v_cc = variavel contra cheque
+        v_cci = variavel contra cheque itens
+        v_tv = variavel total dos vencimentos
+        v_td = variavel total dos descontos
+        v_st = variavel saldo total
+
+    Args:
+        v_mes (_type_): _description_
+        v_ano (_type_): _description_
+        v_idpessoal (_type_): _description_
+        v_admissao (_type_): _description_
+        v_demissao (_type_): _description_
+        v_salario_base (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     data = dict()
-    v_primeiro_dia_mes, v_ultimo_dia_mes = extremos_mes(v_mes, v_ano)
+    v_salario_base_n = Salario.objects.get(idPessoal=v_idpessoal)
+    v_pdm, v_udm = extremos_mes(v_mes, v_ano)
     v_admissao = datetime.datetime.strptime(v_admissao, "%d/%m/%Y")
     if not v_demissao == "None":
         v_demissao = datetime.datetime.strptime(v_demissao, "%d/%m/%Y")
-    v_cartao_ponto = cartao_ponto(
-        v_idpessoal, v_primeiro_dia_mes, v_ultimo_dia_mes, v_admissao, v_demissao
-    )
+    v_cp = cartao_ponto(v_idpessoal, v_pdm, v_udm, v_admissao, v_demissao)
     contexto = {
-        "cartao_ponto": v_cartao_ponto,
+        "cartao_ponto": v_cp,
         "admissao": v_admissao,
         "demissao": v_demissao,
     }
     data["html_cartao_ponto"] = render_to_string(
         "pagamentos/html_cartao_ponto.html", contexto
     )
-    (
-        v_contra_cheque,
-        v_contra_cheque_itens,
-        v_vencimentos,
-        v_descontos,
-        v_saldo,
-    ) = contra_cheque(v_idpessoal, v_mes, v_ano, v_salario_base)
-
+    v_df = dias_falta(v_cp)
+    v_dr = dias_remunerado(v_cp)
+    v_dt = dias_transporte(v_cp)
+    v_cc, v_cci, v_tv, v_td, v_st = contra_cheque(v_idpessoal, v_mes, v_ano, v_dr, v_dt)
     contexto = {
-        "contra_cheque": v_contra_cheque,
-        "contra_cheque_itens": v_contra_cheque_itens,
-        "vencimentos": v_vencimentos,
-        "descontos": v_descontos,
-        "saldo": v_saldo,
+        "contra_cheque": v_cc,
+        "contra_cheque_itens": v_cci,
+        "vencimentos": v_tv,
+        "descontos": v_td,
+        "saldo": v_st,
     }
     data["html_contra_cheque"] = render_to_string(
         "pagamentos/html_contra_cheque.html", contexto
