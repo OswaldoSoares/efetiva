@@ -14,6 +14,7 @@
     --color4: dodgerblue;
     --color5: deeppink;
     --color6: white;
+    --color7: #696969;
 }
 
 
@@ -27,7 +28,7 @@
 }
 
 body {
-    background-color: #696969;
+    background-color: var(--color7);
     /*background-image: url("/static/website/img/wallpaper.jpg");*/
     background-position: center center;
     background-repeat: no-repeat;
@@ -4217,6 +4218,7 @@ main .fp-recibo-tabela .fp-recibo-print {
     width: 35%;
     padding: 0 5px;
     text-align: left;
+    border: 1px solid var(--color7)
 }
 
 .card-contra-cheque .itens-contra-cheque .item-referencia {
@@ -4224,6 +4226,7 @@ main .fp-recibo-tabela .fp-recibo-print {
     width: 15%;
     padding: 0 5px;
     text-align: center;
+    border: 1px solid var(--color7)
 }
 
 .card-contra-cheque .itens-contra-cheque .item-vencimentos {
@@ -4231,6 +4234,7 @@ main .fp-recibo-tabela .fp-recibo-print {
     width: 20%;
     padding: 0 5px;
     text-align: right;
+    border: 1px solid var(--color7)
 }
 
 .card-contra-cheque .itens-contra-cheque .item-descontos {
@@ -4238,16 +4242,40 @@ main .fp-recibo-tabela .fp-recibo-print {
     width: 20%;
     padding: 0 5px;
     text-align: right;
+    border: 1px solid var(--color7)
 }
 
 .card-contra-cheque .itens-contra-cheque .item-botoes {
     /* background-color: black; */
     width: 10%;
     text-align: center;
+    border: 1px solid var(--color7)
 }
 
 .card-contra-cheque .itens-contra-cheque .item-titulo {
+    border: 1px solid var(--color2);
+    border-bottom: 1px solid var(--color7);
     text-align: center;
+}
+
+.card-contra-cheque .itens-contra-cheque .item-vazio-top {
+    border: 1px solid var(--color2);
+    border-top: 1px solid var(--color7);
+}
+
+.card-contra-cheque .itens-contra-cheque .item-vazio-bottom {
+    border: 1px solid var(--color2);
+}
+
+.card-contra-cheque .itens-contra-cheque .item-ultima-linha {
+    border: 1px solid var(--color2);
+    border-top: 1px solid var(--color7);
+    border-left: 1px solid var(--color7);
+    border-right: 1px solid var(--color7);
+}
+
+.card-contra-cheque .itens-contra-cheque span {
+    color: var(--color2)
 }
 
 

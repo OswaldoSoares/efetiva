@@ -1,4 +1,4 @@
-{% if contra_cheque_itens %}
+{% load humanize %} {% if contra_cheque_itens %}
 <div class="article-card-titulo card-contra-cheque">
   <span>CONTRA CHEQUE</span>
 </div>
@@ -8,38 +8,56 @@
     <div class="item-referencia item-titulo">REFERÊNCIA</div>
     <div class="item-vencimentos item-titulo">VENCIMENTOS</div>
     <div class="item-descontos item-titulo">DESCONTOS</div>
-    <div class="item-botoes"></div>
+    <div class="item-botoes item-titulo"><span>.</span></div>
   </div>
   {% for cc in contra_cheque_itens %}
   <div class="itens-contra-cheque">
     <div class="item-descricao">
-      <span>{{ cc.descricao }}</span>
+        {% if cc.descricao|length > 25 %}
+        {{ cc.descricao|slice:"0:25" }} ...
+        {% else %}
+        {{ cc.descricao }}
+        {% endif %}
     </div>
     <div class="item-referencia">
-      <span>{{ cc.referencia }}</span>
+      {% if cc.referencia %} {{ cc.referencia }} {% else %}
+      <span>.</span>
+      {% endif %}
     </div>
     <div class="item-vencimentos">
-      {% if cc.registro == 'C' %} {{ cc.valor }} {% endif %}
+      {% if cc.registro == 'C' %} R$ {{ cc.valor|floatformat:2|intcomma }} 
+      {% else %}
+      <span>.</span>
+      {% endif %}
     </div>
     <div class="item-descontos">
-      {% if cc.registro == 'D' %} {{ cc.valor }} {% endif %}
+      {% if cc.registro == 'D' %} R$ {{ cc.valor|floatformat:2|intcomma }} 
+      {% else %}
+      <span>.</span>
+      {% endif %}
     </div>
-    <div class="item-botoes"></div>
+    <div class="item-botoes"><i class="bi bi-printer"></i></div>
   </div>
   {% endfor %}
   <div class="itens-contra-cheque">
-    <div class="item-descricao"></div>
-    <div class="item-referencia"></div>
-    <div class="item-vencimentos"></div>
-    <div class="item-descontos"></div>
-    <div class="item-botoes"></div>
+    <div class="item-descricao item-vazio-top"><span>.</span></div>
+    <div class="item-referencia item-vazio-top"><span>.</span></div>
+    <div class="item-vencimentos">
+      R$ {{ vencimentos.soma|floatformat:2|intcomma }}
+    </div>
+    <div class="item-descontos">
+      R$ {{ descontos.soma|floatformat:2|intcomma }}
+    </div>
+    <div class="item-botoes"><span>.</span></div>
   </div>
   <div class="itens-contra-cheque">
-    <div class="item-descricao"></div>
-    <div class="item-referencia"></div>
-    <div class="item-vencimentos"></div>
-    <div class="item-descontos">SALDO</div>
-    <div class="item-botoes"></div>
+    <div class="item-descricao item-vazio-bottom"><span>.</span></div>
+    <div class="item-referencia item-vazio-bottom"><span>.</span></div>
+    <div class="item-vencimentos item-ultima-linha">
+      A RECEBER <i class="bi bi-arrow-right"></i>
+    </div>
+    <div class="item-descontos item-ultima-linha">R$ {{ saldo|floatformat:2|intcomma }}</div>
+    <div class="item-botoes item-ultima-linha"><i class="bi bi-printer i-button"></i></div>
   </div>
 </div>
 <div class="article-card-footer"></div>

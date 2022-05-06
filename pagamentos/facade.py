@@ -81,9 +81,9 @@ class FolhaContraCheque:
                 "bloqueado": itens.StatusPessoal,
                 "categoria": itens.Categoria,
                 "conducao": v_conducao,
-                "contra_cheque": contra_cheque(
-                    itens.idPessoal, v_mes, v_ano, v_salario_base
-                ),
+                # "contra_cheque": contra_cheque(
+                #     itens.idPessoal, v_mes, v_ano, v_salario_base
+                # ),
                 "demissao": itens.DataDemissao,
                 "idpessoal": itens.idPessoal,
                 "nome": itens.Nome,
@@ -171,6 +171,9 @@ def contra_cheque(v_idpessoal, v_mes, v_ano, v_salario_base):
     lista_contra_cheque_itens = contra_cheque_itens(
         v_contra_cheque[0]["idContraCheque"], v_salario_base
     )
+    vencimentos, descontos, saldo = totais_contra_cheque(
+        v_contra_cheque[0]["idContraCheque"]
+    )
     dict_contra_cheque = {
         v_idpessoal: {
             "idcontracheque": v_contra_cheque[0]["idContraCheque"],
@@ -178,7 +181,7 @@ def contra_cheque(v_idpessoal, v_mes, v_ano, v_salario_base):
             "pago": v_contra_cheque[0]["Pago"],
         }
     }
-    return dict_contra_cheque, lista_contra_cheque_itens
+    return dict_contra_cheque, lista_contra_cheque_itens, vencimentos, descontos, saldo
 
 
 def create_contra_cheque(v_idpessoal, v_mes, v_ano):
@@ -297,17 +300,40 @@ def html_cartao_ponto(
     data["html_cartao_ponto"] = render_to_string(
         "pagamentos/html_cartao_ponto.html", contexto
     )
-    v_contra_cheque, v_contra_cheque_itens = contra_cheque(
-        v_idpessoal, v_mes, v_ano, v_salario_base
-    )
+    (
+        v_contra_cheque,
+        v_contra_cheque_itens,
+        v_vencimentos,
+        v_descontos,
+        v_saldo,
+    ) = contra_cheque(v_idpessoal, v_mes, v_ano, v_salario_base)
+
     contexto = {
         "contra_cheque": v_contra_cheque,
         "contra_cheque_itens": v_contra_cheque_itens,
+        "vencimentos": v_vencimentos,
+        "descontos": v_descontos,
+        "saldo": v_saldo,
     }
     data["html_contra_cheque"] = render_to_string(
         "pagamentos/html_contra_cheque.html", contexto
     )
     return JsonResponse(data)
+
+
+def totais_contra_cheque(v_idcontracheque):
+    vencimentos = ContraChequeItens.objects.filter(
+        idContraCheque=v_idcontracheque, Registro="C"
+    ).aggregate(soma=Sum("Valor"))
+    descontos = ContraChequeItens.objects.filter(
+        idContraCheque=v_idcontracheque, Registro="D"
+    ).aggregate(soma=Sum("Valor"))
+    if not vencimentos["soma"]:
+        vencimentos["soma"] = Decimal(0.00)
+    if not descontos["soma"]:
+        descontos["soma"] = Decimal(0.00)
+    saldo = vencimentos["soma"] - descontos["soma"]
+    return vencimentos, descontos, saldo
 
 
 def cria_contexto_pagamentos():
