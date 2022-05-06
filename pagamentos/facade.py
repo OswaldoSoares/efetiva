@@ -168,10 +168,9 @@ def contra_cheque(v_idpessoal, v_mes, v_ano, v_salario_base):
             MesReferencia=meses[int(v_mes) - 1],
             AnoReferencia=v_ano,
         ).values("idContraCheque", "Valor", "Pago")
-    v_contra_cheque_itens = contra_cheque_itens(
+    lista_contra_cheque_itens = contra_cheque_itens(
         v_contra_cheque[0]["idContraCheque"], v_salario_base
     )
-    print(v_contra_cheque_itens)
     dict_contra_cheque = {
         v_idpessoal: {
             "idcontracheque": v_contra_cheque[0]["idContraCheque"],
@@ -179,7 +178,7 @@ def contra_cheque(v_idpessoal, v_mes, v_ano, v_salario_base):
             "pago": v_contra_cheque[0]["Pago"],
         }
     }
-    return dict_contra_cheque
+    return dict_contra_cheque, lista_contra_cheque_itens
 
 
 def create_contra_cheque(v_idpessoal, v_mes, v_ano):
@@ -298,8 +297,16 @@ def html_cartao_ponto(
     data["html_cartao_ponto"] = render_to_string(
         "pagamentos/html_cartao_ponto.html", contexto
     )
-    v_contra_cheque = contra_cheque(v_idpessoal, v_mes, v_ano, v_salario_base)
-    # v_contra_cheque_itens = contra_cheque_itens()
+    v_contra_cheque, v_contra_cheque_itens = contra_cheque(
+        v_idpessoal, v_mes, v_ano, v_salario_base
+    )
+    contexto = {
+        "contra_cheque": v_contra_cheque,
+        "contra_cheque_itens": v_contra_cheque_itens,
+    }
+    data["html_contra_cheque"] = render_to_string(
+        "pagamentos/html_contra_cheque.html", contexto
+    )
     return JsonResponse(data)
 
 

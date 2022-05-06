@@ -1,21 +1,46 @@
 {% if contra_cheque_itens %}
-<div class="article-card-titulo">
+<div class="article-card-titulo card-contra-cheque">
   <span>CONTRA CHEQUE</span>
 </div>
 <div class="article-card-body">
-  {% for itens in contra_cheque_itens %}
   <div class="itens-contra-cheque">
-    <div class="item-Descricao">
-      <span>{{ itens }}</span>
+    <div class="item-descricao item-titulo">DESCRIÇÃO</div>
+    <div class="item-referencia item-titulo">REFERÊNCIA</div>
+    <div class="item-vencimentos item-titulo">VENCIMENTOS</div>
+    <div class="item-descontos item-titulo">DESCONTOS</div>
+    <div class="item-botoes"></div>
+  </div>
+  {% for cc in contra_cheque_itens %}
+  <div class="itens-contra-cheque">
+    <div class="item-descricao">
+      <span>{{ cc.descricao }}</span>
     </div>
     <div class="item-referencia">
-      <span>{{ itens }}</span>
+      <span>{{ cc.referencia }}</span>
     </div>
-    <div class="item-vencimentos"></div>
-    <div class="item-descontos"></div>
-    {% endif %}
+    <div class="item-vencimentos">
+      {% if cc.registro == 'C' %} {{ cc.valor }} {% endif %}
+    </div>
+    <div class="item-descontos">
+      {% if cc.registro == 'D' %} {{ cc.valor }} {% endif %}
+    </div>
+    <div class="item-botoes"></div>
   </div>
   {% endfor %}
+  <div class="itens-contra-cheque">
+    <div class="item-descricao"></div>
+    <div class="item-referencia"></div>
+    <div class="item-vencimentos"></div>
+    <div class="item-descontos"></div>
+    <div class="item-botoes"></div>
+  </div>
+  <div class="itens-contra-cheque">
+    <div class="item-descricao"></div>
+    <div class="item-referencia"></div>
+    <div class="item-vencimentos"></div>
+    <div class="item-descontos">SALDO</div>
+    <div class="item-botoes"></div>
+  </div>
 </div>
 <div class="article-card-footer"></div>
 {% endif %}

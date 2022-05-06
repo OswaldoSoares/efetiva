@@ -4200,6 +4200,56 @@ main .fp-recibo-tabela .fp-recibo-print {
     text-align: center;
 }
 
+.card-contra-cheque {
+    width: 600px;
+}
+
+.card-contra-cheque .itens-contra-cheque {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color6);
+}
+
+.card-contra-cheque .itens-contra-cheque .item-descricao {
+    /* background-color: red; */
+    width: 35%;
+    padding: 0 5px;
+    text-align: left;
+}
+
+.card-contra-cheque .itens-contra-cheque .item-referencia {
+    /* background-color: yellow; */
+    width: 15%;
+    padding: 0 5px;
+    text-align: center;
+}
+
+.card-contra-cheque .itens-contra-cheque .item-vencimentos {
+    /* background-color: blue; */
+    width: 20%;
+    padding: 0 5px;
+    text-align: right;
+}
+
+.card-contra-cheque .itens-contra-cheque .item-descontos {
+    /* background-color: green; */
+    width: 20%;
+    padding: 0 5px;
+    text-align: right;
+}
+
+.card-contra-cheque .itens-contra-cheque .item-botoes {
+    /* background-color: black; */
+    width: 10%;
+    text-align: center;
+}
+
+.card-contra-cheque .itens-contra-cheque .item-titulo {
+    text-align: center;
+}
+
 
 /* Card - Form-Login */
 

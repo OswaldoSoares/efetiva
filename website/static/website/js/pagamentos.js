@@ -67,10 +67,13 @@ $(document).on("click", ".js-seleciona-funcionario", function(event) {
         },
         beforeSend: function() {
             $(".js-cartao-ponto").fadeOut(10);
+            $(".js-contra-cheque").fadeOut(10);
         },
         success: function(data) {
             $(".js-cartao-ponto").html(data.html_cartao_ponto);
             $(".js-cartao-ponto").fadeIn(10);
+            $(".js-contra-cheque").html(data.html_contra_cheque);
+            $(".js-contra-cheque").fadeIn(10);
         },
     });
 });
