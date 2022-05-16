@@ -1,9 +1,48 @@
-{% load humanize %} {% if contra_cheque_itens %}
+{% load humanize %}
+{% if nome %}
 <div class="article-card-titulo">
+  <span>{{ nome }}</span>
 </div>
 <div class="article-card-body">
+  <div class="itens-funcionario">
+    <div class="item-admissao">
+      DATA DA ADMISSÃO: {{ admissao }}
+    </div>
+    {% if demissao %}
+    <div class="item-demissao">
+      DATA DA DEMISSÃO: {{ demissao }}
+    </div>
+    {% endif %}
+  </div>
 </div>
 <div class="article-card-footer"></div>
+{% endif %}
+{% if not adiantamento %}
+<div class="article-card-titulo">
+  <span>ADIANTAMENTO</span>
+</div>
+<div class="article-card-body">
+  <div class="itens-funcionario">
+    <div class="item-adiantamento">
+      <form class='row g-3 js-gera-adiantamento' method="post" action="{% url 'adiantamento' %}">
+        {% csrf_token %}
+        <input type="number" name="valor_adiantamento" id="adiantamento" class="form-control" value="0.00"></input>
+        <input type="hidden" name="descricao" value="ADIANTAMENTO" id="id_Descricao_adiantamento">
+        <input type="hidden" name="registro" value="D" id="id_Registro_adiantamento">
+        <input type="hidden" name="idContraCheque" value="{{ contra_cheque.idcontracheque }}" id="id_idContraCheque_adiantamento">
+        <input type="hidden" name="mes_ano" value="" id="mes_ano_adiantamento">
+        <input type="hidden" name="idPessoal" value="{{ contra_cheque.idpessoal }}" id="idPessoal_adiantamento">
+        <div class="button-mes-ano">
+          <button class="bi bi-clipboard-check i-button"
+          data-idpessoal="{{ idpessoal }}" data-idcontracheque='{{ idcontracheque }}'></button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="article-card-footer"></div>
+{% endif %}
+{% if contra_cheque_itens %}
 <div class="article-card-titulo card-contra-cheque">
   <span>CONTRA CHEQUE</span>
 </div>
@@ -15,33 +54,41 @@
     <div class="item-descontos item-titulo">DESCONTOS</div>
     <div class="item-botoes item-titulo"><span>.</span></div>
   </div>
-  {% for cc in contra_cheque_itens %}
+  {% for cci in contra_cheque_itens %}
   <div class="itens-contra-cheque">
     <div class="item-descricao">
-        {% if cc.descricao|length > 25 %}
-        {{ cc.descricao|slice:"0:25" }} ...
+        {% if cci.descricao|length > 25 %}
+        {{ cci.descricao|slice:"0:25" }} ...
         {% else %}
-        {{ cc.descricao }}
+        {{ cci.descricao }}
         {% endif %}
     </div>
     <div class="item-referencia">
-      {% if cc.referencia %} {{ cc.referencia }} {% else %}
+      {% if cci.referencia %} {{ cci.referencia }} {% else %}
       <span>.</span>
       {% endif %}
     </div>
     <div class="item-vencimentos">
-      {% if cc.registro == 'C' %} R$ {{ cc.valor|intcomma }} 
+      {% if cci.registro == 'C' %} R$ {{ cci.valor|intcomma }} 
       {% else %}
       <span>.</span>
       {% endif %}
     </div>
     <div class="item-descontos">
-      {% if cc.registro == 'D' %} R$ {{ cc.valor|intcomma }} 
+      {% if cci.registro == 'D' %} R$ {{ cci.valor|intcomma }} 
       {% else %}
       <span>.</span>
       {% endif %}
     </div>
-    <div class="item-botoes"><i class="bi bi-printer"></i></div>
+    <div class="item-botoes">
+      {% if cci.descricao == 'ADIANTAMENTO' %}
+        <i class="bi bi-printer i-button"></i>
+        <i class="bi bi-trash i-button js-exclui-contra-cheque-item"
+        data-idcontrachequeitem="{{ cci.idcontrachequeitens }}"></i>
+      {% else %}
+      <span>.</span>
+      {% endif %}
+    </div>
   </div>
   {% endfor %}
   <div class="itens-contra-cheque">

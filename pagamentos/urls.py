@@ -1,6 +1,7 @@
 from django.urls import path
 
 from .views import (
+    adiantamento,
     altera_horario_cartao_ponto,
     apagar_tudo,
     atestada,
@@ -74,4 +75,5 @@ urlpatterns = [
         name="altera_horario_cartao_ponto",
     ),
     path("atestada", atestada, name="atestada"),
+    path('adiantamento', adiantamento, name='adiantamento')
 ]

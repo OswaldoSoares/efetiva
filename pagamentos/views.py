@@ -256,18 +256,16 @@ def seleciona_mes_ano(request):
 
 
 def seleciona_funcionario(request):
-    _mes = request.GET.get("mes")
-    _ano = request.GET.get("ano")
     _mes_ano = request.GET.get("mes_ano")
     _id_pes = request.GET.get("idpessoal")
-    data = facade.html_cartao_ponto(_mes_ano, _id_pes)
+    data = facade.html_cartao_ponto(request, _mes_ano, _id_pes)
     return data
 
 
 def ausencia_falta(request):
     _id_cp = request.GET.get("idcartaoponto")
     _mes_ano = request.GET.get("mes_ano")
-    data = facade.altera_ausencia_falta(_id_cp, _mes_ano)
+    data = facade.altera_ausencia_falta(request, _id_cp, _mes_ano)
     return data
 
 
@@ -286,5 +284,19 @@ def altera_horario_cartao_ponto(request):
 def atestada(request):
     _id_cp = request.GET.get("idcartaoponto")
     _mes_ano = request.GET.get("mes_ano")
-    data = facade.falta_remunerada(_id_cp, _mes_ano)
+    data = facade.falta_remunerada(request, _id_cp, _mes_ano)
+    return data
+
+
+def adiantamento(request):
+    print(request.POST)
+    _descricao = request.POST.get("descricao")
+    _valor = request.POST.get("valor_adiantamento")
+    _registro = request.POST.get("registro")
+    _idcontracheque = request.POST.get("idContraCheque")
+    print(_descricao, _valor, _registro, _idcontracheque)
+    facade.create_contracheque_itens(_descricao, _valor, "", _registro, _idcontracheque)
+    _mes_ano = request.POST.get("mes_ano")
+    _id_pes = request.POST.get("idPessoal")
+    data = facade.html_cartao_ponto(request, _mes_ano, _id_pes)
     return data

@@ -67,6 +67,7 @@ $(document).on("click", ".js-seleciona-funcionario", function(event) {
             $(".js-cartao-ponto").html(data.html_cartao_ponto);
             $(".js-cartao-ponto").fadeIn(10);
             $(".js-contra-cheque").html(data.html_contra_cheque);
+            $('#mes_ano_adiantamento').val(v_mes_ano)
             $(".js-contra-cheque").fadeIn(10);
         },
     });
@@ -91,6 +92,7 @@ $(document).on("click", ".js-altera-falta", function(event) {
             $(".js-cartao-ponto").html(data.html_cartao_ponto);
             $(".js-cartao-ponto").fadeIn(10);
             $(".js-contra-cheque").html(data.html_contra_cheque);
+            $('#mes_ano_adiantamento').val(v_mes_ano)
             $(".js-contra-cheque").fadeIn(10);
         },
         error: function(error, data) {
@@ -118,12 +120,30 @@ $(document).on("click", ".js-atestada", function(event) {
             $(".js-cartao-ponto").html(data.html_cartao_ponto);
             $(".js-cartao-ponto").fadeIn(10);
             $(".js-contra-cheque").html(data.html_contra_cheque);
+            $('#mes_ano_adiantamento').val(v_mes_ano)
             $(".js-contra-cheque").fadeIn(10);
         },
         error: function(error, data) {
             console.log(error);
         },
     });
+});
+
+$(document).on('submit', '.js-gera-adiantamento', function(event) {
+    event.preventDefault();
+    $.ajax({
+        type: $(this).attr('method'),
+        url: '/pagamentos/adiantamento',
+        data: $(this).serialize(),
+        beforeSend: function() {
+            $(".js-contra-cheque").fadeOut(10);
+        },
+        success: function(data) {
+            $(".js-contra-cheque").html(data.html_contra_cheque);
+            $('#mes_ano_adiantamento').val(v_mes_ano)
+            $(".js-contra-cheque").fadeIn(10);
+        },
+    })
 });
 
 $(document).on("change", ".switchmini", function(event) {
