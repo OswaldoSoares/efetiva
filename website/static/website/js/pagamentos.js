@@ -33,6 +33,7 @@ $(document).on("click", ".js-seleciona-mes-ano", function(event) {
         beforeSend: function() {
             $(".js-folha").fadeOut(10);
             $(".js-cartao-ponto").fadeOut(10);
+            $(".js-contra-cheque").fadeOut(10);
         },
         success: function(data) {
             $(".js-folha").html(data.html_folha);
@@ -44,26 +45,19 @@ $(document).on("click", ".js-seleciona-mes-ano", function(event) {
 $(document).on("change", ".select-mes-ano", function(event) {
     $(".js-folha").fadeOut(10);
     $(".js-cartao-ponto").fadeOut(10);
+    $(".js-contra-cheque").fadeOut(10);
 });
 
 $(document).on("click", ".js-seleciona-funcionario", function(event) {
-    v_mes = $(this).data("mes");
-    v_ano = $(this).data("ano");
+    v_mes_ano = $(".select-mes-ano option:selected").text();
     v_idpessoal = $(this).data("idpessoal");
-    v_admissao = $(this).data("admissao");
-    v_demissao = $(this).data("demissao");
-    v_salario_base = $(this).data("salario");
     $.ajax({
         type: "GET",
         dataType: "json",
         url: "/pagamentos/seleciona_funcionario",
         data: {
-            mes: v_mes,
-            ano: v_ano,
+            mes_ano: v_mes_ano,
             idpessoal: v_idpessoal,
-            admissao: v_admissao,
-            demissao: v_demissao,
-            salario_base: v_salario_base,
         },
         beforeSend: function() {
             $(".js-cartao-ponto").fadeOut(10);
@@ -81,8 +75,6 @@ $(document).on("click", ".js-seleciona-funcionario", function(event) {
 $(document).on("click", ".js-altera-falta", function(event) {
     var v_mes_ano = $(".select-mes-ano option:selected").text();
     var v_idcartaoponto = $(this).attr("idcartaoponto");
-    var v_admissao = $('#admissao').data('admissao');
-    var v_demissao = $('#demissao').data('demissao');
     $.ajax({
         type: "GET",
         dataType: "json",
@@ -90,8 +82,6 @@ $(document).on("click", ".js-altera-falta", function(event) {
         data: {
             mes_ano: v_mes_ano,
             idcartaoponto: v_idcartaoponto,
-            admissao: v_admissao,
-            demissao: v_demissao,
         },
         beforeSend: function() {
             $(".js-cartao-ponto").fadeOut(10);
@@ -112,8 +102,6 @@ $(document).on("click", ".js-altera-falta", function(event) {
 $(document).on("click", ".js-atestada", function(event) {
     var v_mes_ano = $(".select-mes-ano option:selected").text();
     var v_idcartaoponto = $(this).attr("idcartaoponto");
-    var v_admissao = $('#admissao').data('admissao');
-    var v_demissao = $('#demissao').data('demissao');
     $.ajax({
         type: "GET",
         dataType: "json",
@@ -121,8 +109,6 @@ $(document).on("click", ".js-atestada", function(event) {
         data: {
             mes_ano: v_mes_ano,
             idcartaoponto: v_idcartaoponto,
-            admissao: v_admissao,
-            demissao: v_demissao,
         },
         beforeSend: function() {
             $(".js-cartao-ponto").fadeOut(10);
@@ -571,16 +557,12 @@ function openMyModal(event) {
     var url = $(event.target).data("action");
     var v_mes_ano = $(".select-mes-ano option:selected").text();
     var v_idcartaoponto = $(event.target).data("idcartaoponto");
-    var v_admissao = $('#admissao').data('admissao');
-    var v_demissao = $('#demissao').data('demissao');
     $.ajax({
             type: "GET",
             url: url,
             data: {
                 mes_ano: v_mes_ano,
                 idcartaoponto: v_idcartaoponto,
-                admissao: v_admissao,
-                demissao: v_demissao,
             },
         })
         .done(function(data, textStatus, jqXHR) {
@@ -642,6 +624,8 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                     $(modal).modal("hide");
                     $(".js-cartao-ponto").html(xhr.html_cartao_ponto);
                     $(".js-cartao-ponto").fadeIn(10);
+                    $(".js-contra-cheque").html(xhr.html_contra_cheque);
+                    $(".js-contra-cheque").fadeIn(10);
 
                     $(".fp-base").html(xhr.html_folha);
                     $(".fp-contracheque").html("");

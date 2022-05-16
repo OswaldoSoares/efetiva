@@ -105,15 +105,10 @@
 <div class="article-card-footer"></div>
 {% endif %}
 {% if admissao %}
-  <div id="admissao" data-admissao="{{ admissao|date:"d/m/Y" }}">
-    {{ admissao|date:"d/m/Y" }}
+  <div id="admissao" data-admissao="{{ admissao }}">
   </div>
   {% endif %}
 {% if demissao %}
-  <div id="demissao" data-demissao="{{ demissao|date:"d/m/Y" }}">
-    {{ demissao|date:"d/m/Y" }}
+  <div id="demissao" data-demissao="{{ demissao }}">
   </div>
 {% endif %}
-{{ dias_falta }}
-{{ dias_remunerado }}
-{{ dias_transporte }}
