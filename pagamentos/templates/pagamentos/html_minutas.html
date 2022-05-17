@@ -3,24 +3,34 @@
     <span>MINUTAS</span>
 </div>
 <div class="article-card-body">
-    <div class="item-titulo"><span>DATA</span></div>
-    <div class="item-titulo"><span>MINUTA</span></div>
-    <div class="item-titulo"><span>CLIENTE</span></div>
-    <div class="item-titulo"><span>INICIO</span></div>
-    <div class="item-titulo"><span>FIM</span></div>
-    <div class="item-titulo"><span>EXTRA</span></div>
+    <div class="itens-minutas-pagamento">
+        <div class="item-titulo item-data"><span>DIA</span></div>
+        <div class="item-titulo item-minuta"><span>Nº</span></div>
+        <div class="item-titulo item-cliente"><span>CLIENTE</span></div>
+        <div class="item-titulo item-inicio"><span>INICIO</span></div>
+        <div class="item-titulo item-fim"><span>FIM</span></div>
+        <div class="item-titulo item-extra"><span>EXTRA</span></div>
+    </div>
     {% for itens in minutas %}
-        <div class="item-data">{{ itens.data_minuta }}</div>
-        <div class="item-minuta">{{ itens.minuta }}</div>
+    <div class="itens-minutas-pagamento">
+        <div class="item-data">{{ itens.data_minuta|date:"d" }}</div>
+        <div class="item-minuta">0{{ itens.minuta }}</div>
         <div class="item-cliente">{{ itens.fantasia }}</div>
         <div class="item-inicio">{{ itens.hora_inicial }}</div>
         <div class="item-fim">{{ itens.hora_final }}</div>
         {% if itens.hora_extra != '00:00' %}
-            <div class="item-extra">{{ itens.hora_extra }}</div>
+        <div class="item-extra">{{ itens.hora_extra }}</div>
         {% else %}
-            <div class="item-extra"></div>
+        <div class="item-extra"><i class='bi bi-x-circle'></i></div>
         {% endif %}
+    </div>
     {% endfor %}
 </div>
-<div class="article-card-footer"></div>
+<div class="article-card-footer">
+    {% for itens in minutas %}
+    {% if forloop.last %}
+    <span><b>{{ forloop.counter|stringformat:"02d" }} MINUTA{{ forloop.counter|pluralize|upper }}</b></span>
+    {% endif %}
+    {% endfor %}
+</div>
 {% endif %}

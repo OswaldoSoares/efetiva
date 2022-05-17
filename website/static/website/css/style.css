@@ -4278,6 +4278,52 @@ main .fp-recibo-tabela .fp-recibo-print {
     color: var(--color2)
 }
 
+.card-minutas-pagamento {
+    width: 360px;
+}
+
+.card-minutas-pagamento .itens-minutas-pagamento {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color6);
+}
+
+.card-minutas-pagamento .itens-minutas-pagamento .item-data {
+    width: 8%;
+    text-align: center;
+}
+
+.card-minutas-pagamento .itens-minutas-pagamento .item-minuta {
+    width: 13%;
+    text-align: center;
+}
+
+.card-minutas-pagamento .itens-minutas-pagamento .item-cliente {
+    width: 44%;
+    text-align: left;
+}
+
+.card-minutas-pagamento .itens-minutas-pagamento .item-inicio {
+    width: 11%;
+    text-align: center;
+}
+
+.card-minutas-pagamento .itens-minutas-pagamento .item-fim {
+    width: 11%;
+    text-align: center;
+}
+
+.card-minutas-pagamento .itens-minutas-pagamento .item-extra {
+    width: 13%;
+    text-align: center;
+}
+
+.card-minutas-pagamento .itens-minutas-pagamento .item-titulo {
+    text-align: center;
+}
+
 
 /* Card - Form-Login */
 
