@@ -45,10 +45,7 @@ $(document).on("click", ".js-seleciona-mes-ano", function(event) {
 
 $(document).on("change", ".select-mes-ano", function(event) {
     $(".js-folha").fadeOut(10);
-    $(".js-funcionario-pagamento").fadeOut(10);
-    $(".js-cartao-ponto").fadeOut(10);
-    $(".js-contra-cheque").fadeOut(10);
-    $(".js-minutas-pagamento").fadeOut(10);
+    EscondeCards();
 });
 
 $(document).on("click", ".js-seleciona-funcionario", function(event) {
@@ -63,28 +60,39 @@ $(document).on("click", ".js-seleciona-funcionario", function(event) {
             idpessoal: v_idpessoal,
         },
         beforeSend: function() {
-            $(".js-funcionario-pagamento").fadeOut(10);
-            $(".js-cartao-ponto").fadeOut(10);
-            $(".js-contra-cheque").fadeOut(10);
-            $(".js-adiantamento").fadeOut(10)
-            $(".js-minutas-pagamento").fadeOut(10)
+            EscondeCards();
         },
         success: function(data) {
-            $(".js-funcionario-pagamento").html(data.html_funcionario);
-            $(".js-funcionario-pagamento").fadeIn(10);
-            $(".js-cartao-ponto").html(data.html_cartao_ponto);
-            $(".js-cartao-ponto").fadeIn(10);
-            $(".js-contra-cheque").html(data.html_contra_cheque);
-            $(".js-contra-cheque").fadeIn(10);
-            $(".js-adiantamento").html(data.html_adiantamento)
-            $(".js-adiantamento").fadeIn(10)
-            $(".js-minutas-pagamento").html(data.html_minutas)
-            $(".js-minutas-pagamento").fadeIn(10)
-            $('#mes_ano').val(v_mes_ano)
-            $('#mes_ano_adiantamento').val(v_mes_ano)
+            MostraCards(data, v_mes_ano);
         },
     });
 });
+
+function EscondeCards() {
+    $(".js-funcionario-pagamento").fadeOut(10);
+    $(".js-cartao-ponto").fadeOut(10);
+    $(".js-itens-contra-cheque").fadeOut(10);
+    $(".js-contra-cheque").fadeOut(10);
+    $(".js-adiantamento").fadeOut(10)
+    $(".js-minutas-pagamento").fadeOut(10)
+}
+
+function MostraCards(data, v_mes_ano) {
+    $(".js-funcionario-pagamento").html(data.html_funcionario);
+    $(".js-funcionario-pagamento").fadeIn(10);
+    $(".js-cartao-ponto").html(data.html_cartao_ponto);
+    $(".js-cartao-ponto").fadeIn(10);
+    $(".js-itens-contra-cheque").html(data.html_itens_contra_cheque);
+    $(".js-itens-contra-cheque").fadeIn(10);
+    $(".js-contra-cheque").html(data.html_contra_cheque);
+    $(".js-contra-cheque").fadeIn(10);
+    $(".js-adiantamento").html(data.html_adiantamento)
+    $(".js-adiantamento").fadeIn(10)
+    $(".js-minutas-pagamento").html(data.html_minutas)
+    $(".js-minutas-pagamento").fadeIn(10)
+    $('#mes_ano').val(v_mes_ano)
+    $('#mes_ano_adiantamento').val(v_mes_ano)
+}
 
 $(document).on("click", ".js-altera-falta", function(event) {
     var v_mes_ano = $(".select-mes-ano option:selected").text();
@@ -98,16 +106,10 @@ $(document).on("click", ".js-altera-falta", function(event) {
             idcartaoponto: v_idcartaoponto,
         },
         beforeSend: function() {
-            $(".js-cartao-ponto").fadeOut(10);
-            $(".js-contra-cheque").fadeOut(10);
+            EscondeCards();
         },
         success: function(data) {
-            $(".js-cartao-ponto").html(data.html_cartao_ponto);
-            $(".js-cartao-ponto").fadeIn(10);
-            $(".js-contra-cheque").html(data.html_contra_cheque);
-            $('#mes_ano').val(v_mes_ano)
-            $('#mes_ano_adiantamento').val(v_mes_ano)
-            $(".js-contra-cheque").fadeIn(10);
+            MostraCards(data, v_mes_ano);
         },
         error: function(error, data) {
             console.log(error);
@@ -127,16 +129,10 @@ $(document).on("click", ".js-atestada", function(event) {
             idcartaoponto: v_idcartaoponto,
         },
         beforeSend: function() {
-            $(".js-cartao-ponto").fadeOut(10);
-            $(".js-contra-cheque").fadeOut(10);
+            EscondeCards();
         },
         success: function(data) {
-            $(".js-cartao-ponto").html(data.html_cartao_ponto);
-            $(".js-cartao-ponto").fadeIn(10);
-            $(".js-contra-cheque").html(data.html_contra_cheque);
-            $('#mes_ano').val(v_mes_ano)
-            $('#mes_ano_adiantamento').val(v_mes_ano)
-            $(".js-contra-cheque").fadeIn(10);
+            MostraCards(data, v_mes_ano);
         },
         error: function(error, data) {
             console.log(error);
@@ -152,13 +148,10 @@ $(document).on('submit', '.js-gera-adiantamento', function(event) {
         url: '/pagamentos/adiantamento',
         data: $(this).serialize(),
         beforeSend: function() {
-            $(".js-contra-cheque").fadeOut(10);
+            EscondeCards();
         },
         success: function(data) {
-            $(".js-contra-cheque").html(data.html_contra_cheque);
-            $('#mes_ano').val(v_mes_ano);
-            $('#mes_ano_adiantamento').val(v_mes_ano);
-            $(".js-contra-cheque").fadeIn(10);
+            MostraCards(data, v_mes_ano);
         },
     })
 });
@@ -171,13 +164,10 @@ $(document).on('submit', '.js-gera-contra-cheque-itens', function(event) {
         url: '/pagamentos/adiciona_contra_cheque_itens',
         data: $(this).serialize(),
         beforeSend: function() {
-            $(".js-contra-cheque").fadeOut(10);
+            EscondeCards();
         },
         success: function(data) {
-            $(".js-contra-cheque").html(data.html_contra_cheque);
-            $('#mes_ano').val(v_mes_ano);
-            $('#mes_ano_adiantamento').val(v_mes_ano);
-            $(".js-contra-cheque").fadeIn(10);
+            MostraCards(data, v_mes_ano);
         },
     })
 });
@@ -196,13 +186,10 @@ $(document).on('click', '.js-exclui-contra-cheque-itens', function(event) {
             idpessoal: v_idpessoal,
         },
         beforeSend: function() {
-            $(".js-contra-cheque").fadeOut(10);
+            EscondeCards();
         },
         success: function(data) {
-            $(".js-contra-cheque").html(data.html_contra_cheque);
-            $('#mes_ano').val(v_mes_ano);
-            $('#mes_ano_adiantamento').val(v_mes_ano);
-            $(".js-contra-cheque").fadeIn(10);
+            MostraCards(data, v_mes_ano);
         },
     });
 });

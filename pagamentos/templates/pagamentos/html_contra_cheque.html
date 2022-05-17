@@ -98,41 +98,4 @@
 </div>
 <div class="article-card-footer"></div>
 {% endif %}
-<div class="article-card-titulo">
-  <span>NOVO ITEM</span>
-</div>
-<div class="article-card-body">
-  <div class="itens-funcionario">
-    <div class="item-adiantamento">
-      <form class='row g-3 js-gera-contra-cheque-itens' method="post"
-      action="{% url 'adiantamento' %}">
-        {% csrf_token %}
-        <div class="col-md-5">
-          <input type="text" class="form-control" name="descricao" id="id_descricao">
-        </div>
-        <div class="col-md-3">
-          <input type="number" class="form-control" name="valor" id="id_valor"
-          value="0.00" step="0.01">
-        </div>
-        <div class="col-md-3">
-          <select class="form-control" name="registro" id="id_registro">
-            <option value="C">CRÉDITO</option>
-            <option value="D" selected>DÉBITO</option>
-          </select>
-        </div>
-        <input type="hidden" name="idContraCheque"
-        value="{{ contra_cheque.idcontracheque }}" id="id_idContraCheque">
-        <input type="hidden" name="mes_ano" value="" id="mes_ano">
-        <input type="hidden" name="idPessoal" value="{{ contra_cheque.idpessoal }}"
-        id="idPessoal">
-        <div class="col-md-1">
-          <button class="bi bi-clipboard-check i-button"
-          data-idpessoal="{{ idpessoal }}" data-idcontracheque='{{ idcontracheque }}'>
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-<div class="article-card-footer"></div>
 {% endif %}

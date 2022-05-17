@@ -4337,6 +4337,45 @@ main .fp-recibo-tabela .fp-recibo-print {
     padding: 0 5px;
 }
 
+.card-itens-contra-cheque {
+    width: 600px;
+}
+
+.card-itens-contra-cheque .item-contra-cheque-itens form {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-itens-contra-cheque .item-contra-cheque-itens form .item-descricao {
+    width: 50%;
+    padding: 10px 5px;
+}
+
+.card-itens-contra-cheque .item-contra-cheque-itens form .item-valor {
+    width: 21%;
+    padding: 10px 5px;
+}
+
+.card-itens-contra-cheque .item-contra-cheque-itens form .item-registro {
+    width: 21%;
+    padding: 10px 5px;
+}
+
+.card-itens-contra-cheque .item-contra-cheque-itens form .button-save {
+    width: 8%;
+    padding: 10px 5px;
+    font-size: 26px;
+    text-align: center;
+}
+
+.card-itens-contra-cheque .item-contra-cheque-itens form .button-save button {
+    background-color: var(--color2);
+    border: none;
+}
+
 .card-adiantamento {
     width: 360px;
 }
@@ -4351,11 +4390,12 @@ main .fp-recibo-tabela .fp-recibo-print {
 
 .card-adiantamento .item-adiantamento form .valor-adiantamento {
     width: 85%;
-    margin: 10px 0 10px 5px;
+    padding: 10px 5px;
 }
 
 .card-adiantamento .item-adiantamento form .button-save {
     width: 15%;
+    padding: 10px 5px;
     font-size: 26px;
     text-align: center;
 }
