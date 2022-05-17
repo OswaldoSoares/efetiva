@@ -140,10 +140,34 @@ $(document).on('submit', '.js-gera-adiantamento', function(event) {
         },
         success: function(data) {
             $(".js-contra-cheque").html(data.html_contra_cheque);
-            $('#mes_ano_adiantamento').val(v_mes_ano)
+            $('#mes_ano_adiantamento').val(v_mes_ano);
             $(".js-contra-cheque").fadeIn(10);
         },
     })
+});
+
+$(document).on('click', '.js-exclui-contra-cheque-itens', function(event) {
+    var v_idcontrachequeitens = $(this).data('idcontrachequeitens')
+    var v_mes_ano = $(".select-mes-ano option:selected").text();
+    var v_idpessoal = $(this).data("idpessoal");
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: '/pagamentos/remove_contra_cheque_itens',
+        data: {
+            idcontrachequeitens: v_idcontrachequeitens,
+            mes_ano: v_mes_ano,
+            idpessoal: v_idpessoal,
+        },
+        beforeSend: function() {
+            $(".js-contra-cheque").fadeOut(10);
+        },
+        success: function(data) {
+            $(".js-contra-cheque").html(data.html_contra_cheque);
+            $('#mes_ano_adiantamento').val(v_mes_ano);
+            $(".js-contra-cheque").fadeIn(10);
+        },
+    });
 });
 
 $(document).on("change", ".switchmini", function(event) {

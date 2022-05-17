@@ -21,6 +21,7 @@ from .views import (
     index_pagamento,
     inserefalta,
     manutencao,
+    remove_contra_cheque_itens,
     seleciona_contracheque,
     seleciona_folha,
     seleciona_funcionario,
@@ -75,5 +76,10 @@ urlpatterns = [
         name="altera_horario_cartao_ponto",
     ),
     path("atestada", atestada, name="atestada"),
-    path('adiantamento', adiantamento, name='adiantamento')
+    path("adiantamento", adiantamento, name="adiantamento"),
+    path(
+        "remove_contra_cheque_itens",
+        remove_contra_cheque_itens,
+        name="remove_contra_cheque_itens",
+    ),
 ]
