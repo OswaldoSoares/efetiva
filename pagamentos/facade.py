@@ -366,6 +366,7 @@ def html_cartao_ponto(request, _mes_ano, _id) -> JsonResponse:
     _cc = contra_cheque(_var)
     _var["id_contra_cheque"] = _cc["idcontracheque"]
     atrazo(_var)
+    hora_extra(_var)
     _adiantamento = False
     if busca_item_contra_cheque(_var["id_contra_cheque"], "ADIANTAMENTO"):
         _adiantamento = True
@@ -386,6 +387,23 @@ def html_cartao_ponto(request, _mes_ano, _id) -> JsonResponse:
         "pagamentos/html_contra_cheque.html", contexto, request=request
     )
     return JsonResponse(data)
+
+
+def hora_extra(_var):
+    _id_cc = _var["id_contra_cheque"]
+    _tempo_extra, _acrescimo_extra = calcula_extras(_var)
+    print(_tempo_extra, _acrescimo_extra)
+    _obj = busca_item_contra_cheque(_id_cc, "HORA EXTRA")
+    if _obj:
+        if not f"{_obj.Valor:.2f}" == f"{_acrescimo_extra:.2f}":
+            update_contra_cheque_itens(_obj, _tempo_extra, _acrescimo_extra)
+        if _acrescimo_extra == 0:
+            delete_contra_cheque_itens(_obj.idContraChequeItens)
+    else:
+        if _acrescimo_extra > 0:
+            create_contra_cheque_itens(
+                _id_cc, "HORA EXTRA", _acrescimo_extra, "C", _tempo_extra
+            )
 
 
 def atrazo(_var):
@@ -609,6 +627,27 @@ def verifica_falta(v_cartao_ponto):
                         faltas -= 1
                         if faltas == 0:
                             break
+
+
+def calcula_extras(_var):
+    _id_pes = _var["id_pessoal"]
+    _sb = _var["salario_base"]
+    _pdm = _var["primeiro_dia"]
+    _udm = _var["ultimo_dia"]
+    _cp = CartaoPonto.objects.filter(Dia__range=[_pdm, _udm], idPessoal=_id_pes)
+    _hz = datetime.timedelta(hours=0, minutes=0)
+    _te = _hz
+    for x in _cp:
+        _he = datetime.datetime.strptime("07:00:00", "%H:%M:%S").time()
+        _he = datetime.timedelta(hours=_he.hour, minutes=_he.minute)
+        _hfe = datetime.timedelta(hours=x.Entrada.hour, minutes=x.Entrada.minute)
+        _te += _he - _hfe if _hfe < _he else _hz
+        _hs = datetime.datetime.strptime("17:00:00", "%H:%M:%S").time()
+        _hs = datetime.timedelta(hours=_hs.hour, minutes=_hs.minute)
+        _hfs = datetime.timedelta(hours=x.Saida.hour, minutes=x.Saida.minute)
+        _te += _hfs - _hs if _hfs > _he else _hz
+    _vda = Decimal(_sb) / 30 / 9 / 60 / 60 * Decimal(1.5) * _te.seconds
+    return _te, _vda
 
 
 def calcula_atrazo(_var):

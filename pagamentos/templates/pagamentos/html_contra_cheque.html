@@ -86,6 +86,11 @@
         <i class="bi bi-trash i-button js-exclui-contra-cheque-itens"
         data-idcontrachequeitens="{{ cci.idcontrachequeitens }}"
         data-idpessoal="{{ contra_cheque.idpessoal }}"></i>
+      {% elif cci.descricao == 'VALE TRANSPORTE' %}
+        <i class="bi bi-printer i-button"></i>
+        {% comment %} <i class="bi bi-trash i-button js-exclui-contra-cheque-itens"
+        data-idcontrachequeitens="{{ cci.idcontrachequeitens }}"
+        data-idpessoal="{{ contra_cheque.idpessoal }}"></i> {% endcomment %}
       {% else %}
       <span>.</span>
       {% endif %}
