@@ -382,9 +382,16 @@ def html_cartao_ponto(request, _mes_ano, _id) -> JsonResponse:
         "descontos": _td,
         "saldo": _st,
         "adiantamento": _adiantamento,
+        "dias_admitido": dias_admitido(_var),
+        'valor_dia': _var['salario_base'] / 30,
+        'valor_hora': _var["salario_base"] / 30 / 9,
+        "valor_extra": _var["salario_base"] / 30 / 9 * Decimal(1.5),
     }
     data["html_contra_cheque"] = render_to_string(
         "pagamentos/html_contra_cheque.html", contexto, request=request
+    )
+    data["html_funcionario"] = render_to_string(
+        "pagamentos/html_funcionario.html", contexto, request=request
     )
     minutas = minutas_contra_cheque(_var)
     contexto = {"minutas": minutas}
@@ -392,6 +399,17 @@ def html_cartao_ponto(request, _mes_ano, _id) -> JsonResponse:
         "pagamentos/html_minutas.html", contexto, request=request
     )
     return JsonResponse(data)
+
+
+def dias_admitido(_var):
+    _da = _var["admissao"]
+    _dd = _var["demissao"]
+    _dh = datetime.datetime.now().date()
+    if _dd:
+        _dias = _dd - _da
+    else:
+        _dias = _dh - _da
+    return _dias.days
 
 
 def hora_extra(_var):

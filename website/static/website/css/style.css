@@ -4324,6 +4324,19 @@ main .fp-recibo-tabela .fp-recibo-print {
     text-align: center;
 }
 
+.card-funcionario-pagamento {
+    width: 300px
+}
+
+.card-funcionario-pagamento .itens-funcionario-pagamento {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--color6);
+    padding: 0 5px;
+}
+
 
 /* Card - Form-Login */
 
