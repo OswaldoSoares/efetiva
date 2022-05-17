@@ -1,0 +1,26 @@
+{% if minutas %}
+<div class="article-card-titulo">
+    <span>MINUTAS</span>
+</div>
+<div class="article-card-body">
+    <div class="item-titulo"><span>DATA</span></div>
+    <div class="item-titulo"><span>MINUTA</span></div>
+    <div class="item-titulo"><span>CLIENTE</span></div>
+    <div class="item-titulo"><span>INICIO</span></div>
+    <div class="item-titulo"><span>FIM</span></div>
+    <div class="item-titulo"><span>EXTRA</span></div>
+    {% for itens in minutas %}
+        <div class="item-data">{{ itens.data_minuta }}</div>
+        <div class="item-minuta">{{ itens.minuta }}</div>
+        <div class="item-cliente">{{ itens.fantasia }}</div>
+        <div class="item-inicio">{{ itens.hora_inicial }}</div>
+        <div class="item-fim">{{ itens.hora_final }}</div>
+        {% if itens.hora_extra != '00:00' %}
+            <div class="item-extra">{{ itens.hora_extra }}</div>
+        {% else %}
+            <div class="item-extra"></div>
+        {% endif %}
+    {% endfor %}
+</div>
+<div class="article-card-footer"></div>
+{% endif %}

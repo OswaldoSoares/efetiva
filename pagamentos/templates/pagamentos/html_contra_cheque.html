@@ -102,8 +102,8 @@
   {% for cci in contra_cheque_itens %}
   <div class="itens-contra-cheque">
     <div class="item-descricao">
-        {% if cci.descricao|length > 24 %}
-        {{ cci.descricao|slice:"0:24" }} ...
+        {% if cci.descricao|length > 22 %}
+        {{ cci.descricao|slice:"0:22" }} ...
         {% else %}
         {{ cci.descricao }}
         {% endif %}

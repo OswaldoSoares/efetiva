@@ -46,6 +46,7 @@ $(document).on("change", ".select-mes-ano", function(event) {
     $(".js-folha").fadeOut(10);
     $(".js-cartao-ponto").fadeOut(10);
     $(".js-contra-cheque").fadeOut(10);
+    $(".js-minutas-pagamento").fadeOut(10);
 });
 
 $(document).on("click", ".js-seleciona-funcionario", function(event) {
@@ -62,6 +63,7 @@ $(document).on("click", ".js-seleciona-funcionario", function(event) {
         beforeSend: function() {
             $(".js-cartao-ponto").fadeOut(10);
             $(".js-contra-cheque").fadeOut(10);
+            $(".js-minutas-pagamento").fadeOut(10)
         },
         success: function(data) {
             $(".js-cartao-ponto").html(data.html_cartao_ponto);
@@ -70,6 +72,8 @@ $(document).on("click", ".js-seleciona-funcionario", function(event) {
             $('#mes_ano').val(v_mes_ano)
             $('#mes_ano_adiantamento').val(v_mes_ano)
             $(".js-contra-cheque").fadeIn(10);
+            $(".js-minutas-pagamento").html(data.html_minutas)
+            $(".js-minutas-pagamento").fadeIn(10)
         },
     });
 });

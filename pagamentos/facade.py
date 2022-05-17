@@ -386,13 +386,17 @@ def html_cartao_ponto(request, _mes_ano, _id) -> JsonResponse:
     data["html_contra_cheque"] = render_to_string(
         "pagamentos/html_contra_cheque.html", contexto, request=request
     )
+    minutas = minutas_contra_cheque(_var)
+    contexto = {"minutas": minutas}
+    data["html_minutas"] = render_to_string(
+        "pagamentos/html_minutas.html", contexto, request=request
+    )
     return JsonResponse(data)
 
 
 def hora_extra(_var):
     _id_cc = _var["id_contra_cheque"]
     _tempo_extra, _acrescimo_extra = calcula_extras(_var)
-    print(_tempo_extra, _acrescimo_extra)
     _obj = busca_item_contra_cheque(_id_cc, "HORA EXTRA")
     if _obj:
         if not f"{_obj.Valor:.2f}" == f"{_acrescimo_extra:.2f}":
@@ -448,6 +452,41 @@ def totais_contra_cheque(_var):
         _descontos["soma"] = Decimal(0.00)
     _saldo = _vencimentos["soma"] - _descontos["soma"]
     return _vencimentos, _descontos, _saldo
+
+
+def minutas_contra_cheque(_var):
+    _pdm = _var["primeiro_dia"]
+    _udm = _var["ultimo_dia"]
+    minutas = MinutaColaboradores.objects.filter(
+        idPessoal=_var["id_pessoal"], idMinuta_id__DataMinuta__range=(_pdm, _udm)
+    ).exclude(idMinuta_id__StatusMinuta="ABERTA")
+    lista = []
+    _he = datetime.timedelta(hours=7, minutes=0)
+    _hs = datetime.timedelta(hours=17, minutes=0)
+    for x in minutas:
+        _hez = datetime.timedelta(hours=0, minutes=0)
+        _hi = x.idMinuta.HoraInicial
+        _hi = datetime.timedelta(hours=_hi.hour, minutes=_hi.minute)
+        if _hi < _he:
+            _hez = _he - _hi
+        _hsz = datetime.timedelta(hours=0, minutes=0)
+        if x.idMinuta.HoraFinal:
+            _hf = x.idMinuta.HoraFinal
+            _hf = datetime.timedelta(hours=_hf.hour, minutes=_hf.minute)
+            if _hf > _hs:
+                _hsz = _hf - _hs
+        extra = _hez + _hsz
+        lista.append(
+            {
+                "data_minuta": x.idMinuta.DataMinuta,
+                "minuta": x.idMinuta.Minuta,
+                "fantasia": x.idMinuta.idCliente.Fantasia,
+                "hora_inicial": x.idMinuta.HoraInicial,
+                "hora_final": x.idMinuta.HoraFinal,
+                "hora_extra": str(extra)[:-3].zfill(5),
+            }
+        )
+    return lista
 
 
 def cria_contexto_pagamentos():
