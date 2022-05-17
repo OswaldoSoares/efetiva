@@ -67,6 +67,7 @@ $(document).on("click", ".js-seleciona-funcionario", function(event) {
             $(".js-cartao-ponto").html(data.html_cartao_ponto);
             $(".js-cartao-ponto").fadeIn(10);
             $(".js-contra-cheque").html(data.html_contra_cheque);
+            $('#mes_ano').val(v_mes_ano)
             $('#mes_ano_adiantamento').val(v_mes_ano)
             $(".js-contra-cheque").fadeIn(10);
         },
@@ -92,6 +93,7 @@ $(document).on("click", ".js-altera-falta", function(event) {
             $(".js-cartao-ponto").html(data.html_cartao_ponto);
             $(".js-cartao-ponto").fadeIn(10);
             $(".js-contra-cheque").html(data.html_contra_cheque);
+            $('#mes_ano').val(v_mes_ano)
             $('#mes_ano_adiantamento').val(v_mes_ano)
             $(".js-contra-cheque").fadeIn(10);
         },
@@ -120,6 +122,7 @@ $(document).on("click", ".js-atestada", function(event) {
             $(".js-cartao-ponto").html(data.html_cartao_ponto);
             $(".js-cartao-ponto").fadeIn(10);
             $(".js-contra-cheque").html(data.html_contra_cheque);
+            $('#mes_ano').val(v_mes_ano)
             $('#mes_ano_adiantamento').val(v_mes_ano)
             $(".js-contra-cheque").fadeIn(10);
         },
@@ -131,6 +134,7 @@ $(document).on("click", ".js-atestada", function(event) {
 
 $(document).on('submit', '.js-gera-adiantamento', function(event) {
     event.preventDefault();
+    var v_mes_ano = $('#mes_ano_adiantamento').val();
     $.ajax({
         type: $(this).attr('method'),
         url: '/pagamentos/adiantamento',
@@ -140,6 +144,26 @@ $(document).on('submit', '.js-gera-adiantamento', function(event) {
         },
         success: function(data) {
             $(".js-contra-cheque").html(data.html_contra_cheque);
+            $('#mes_ano').val(v_mes_ano);
+            $('#mes_ano_adiantamento').val(v_mes_ano);
+            $(".js-contra-cheque").fadeIn(10);
+        },
+    })
+});
+
+$(document).on('submit', '.js-gera-contra-cheque-itens', function(event) {
+    event.preventDefault();
+    var v_mes_ano = $('#mes_ano').val();
+    $.ajax({
+        type: $(this).attr('method'),
+        url: '/pagamentos/adiciona_contra_cheque_itens',
+        data: $(this).serialize(),
+        beforeSend: function() {
+            $(".js-contra-cheque").fadeOut(10);
+        },
+        success: function(data) {
+            $(".js-contra-cheque").html(data.html_contra_cheque);
+            $('#mes_ano').val(v_mes_ano);
             $('#mes_ano_adiantamento').val(v_mes_ano);
             $(".js-contra-cheque").fadeIn(10);
         },
@@ -164,12 +188,14 @@ $(document).on('click', '.js-exclui-contra-cheque-itens', function(event) {
         },
         success: function(data) {
             $(".js-contra-cheque").html(data.html_contra_cheque);
+            $('#mes_ano').val(v_mes_ano);
             $('#mes_ano_adiantamento').val(v_mes_ano);
             $(".js-contra-cheque").fadeIn(10);
         },
     });
 });
 
+// TODO Excluir daqui para baixo após terminar refatoração
 $(document).on("change", ".switchmini", function(event) {
     var idpessoalconcatenado = "#vale_" + $(this).attr("idpessoal");
     if ($(this).attr("tipopgto") == "mensalista") {

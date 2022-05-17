@@ -300,6 +300,18 @@ def adiantamento(request):
     return data
 
 
+def adiciona_contra_cheque_itens(request):
+    _descricao = request.POST.get("descricao")
+    _valor = request.POST.get("valor")
+    _registro = request.POST.get("registro")
+    _idcontracheque = request.POST.get("idContraCheque")
+    facade.create_contracheque_itens(_descricao, _valor, "", _registro, _idcontracheque)
+    _mes_ano = request.POST.get("mes_ano")
+    _id_pes = request.POST.get("idPessoal")
+    data = facade.html_cartao_ponto(request, _mes_ano, _id_pes)
+    return data
+
+
 def remove_contra_cheque_itens(request):
     _id_cci = request.GET.get("idcontrachequeitens")
     facade.delete_contra_cheque_itens(_id_cci)

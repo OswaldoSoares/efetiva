@@ -2,6 +2,7 @@ from django.urls import path
 
 from .views import (
     adiantamento,
+    adiciona_contra_cheque_itens,
     altera_horario_cartao_ponto,
     apagar_tudo,
     atestada,
@@ -67,16 +68,41 @@ urlpatterns = [
     path("imprimecontracheque/", imprime_contracheque, name="imprimecontracheque"),
     path("manutencao", manutencao),
     path("apaga", apagar_tudo, name="apaga"),
-    path("seleciona_mes_ano", seleciona_mes_ano, name="seleciona_mes_ano"),
-    path("seleciona_funcionario", seleciona_funcionario, name="seleciona_funcionario"),
-    path("ausencia_falta", ausencia_falta, name="ausencia_falta"),
+    path(
+        "seleciona_mes_ano",
+        seleciona_mes_ano,
+        name="seleciona_mes_ano",
+    ),
+    path(
+        "seleciona_funcionario",
+        seleciona_funcionario,
+        name="seleciona_funcionario",
+    ),
+    path(
+        "ausencia_falta",
+        ausencia_falta,
+        name="ausencia_falta",
+    ),
     path(
         "altera_horario_cartao_ponto",
         altera_horario_cartao_ponto,
         name="altera_horario_cartao_ponto",
     ),
-    path("atestada", atestada, name="atestada"),
-    path("adiantamento", adiantamento, name="adiantamento"),
+    path(
+        "atestada",
+        atestada,
+        name="atestada",
+    ),
+    path(
+        "adiantamento",
+        adiantamento,
+        name="adiantamento",
+    ),
+    path(
+        "adiciona_contra_cheque_itens",
+        adiciona_contra_cheque_itens,
+        name="adiciona_contra_cheque_itens",
+    ),
     path(
         "remove_contra_cheque_itens",
         remove_contra_cheque_itens,
