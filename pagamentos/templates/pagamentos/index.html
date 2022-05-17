@@ -155,7 +155,7 @@
         <span>FOLHA PAGAMENTO</span>
       </div>
       <div class="article-card-body">
-        <select name="meses" , id="meses" class="select-mes-ano form-control">
+        <select name="meses" id="meses" class="select-mes-ano form-control">
           {% for itens in mes_ano %}
           <option value="{{ itens }}">{{ itens|upper }}</option>
           {% endfor %}
@@ -184,6 +184,9 @@
     </article>
   </div>
   <div>
+    <article class="article-card card-adiantamento js-adiantamento">
+      {% include 'pagamentos/html_adiantamento.html' %}
+    </article>
     <article class="article-card card-minutas-pagamento js-minutas-pagamento">
       {% include 'pagamentos/html_minutas.html' %}
     </article>

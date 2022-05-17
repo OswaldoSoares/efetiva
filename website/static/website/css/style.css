@@ -4337,6 +4337,34 @@ main .fp-recibo-tabela .fp-recibo-print {
     padding: 0 5px;
 }
 
+.card-adiantamento {
+    width: 360px;
+}
+
+.card-adiantamento .item-adiantamento form {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-adiantamento .item-adiantamento form .valor-adiantamento {
+    width: 85%;
+    margin: 10px 0 10px 5px;
+}
+
+.card-adiantamento .item-adiantamento form .button-save {
+    width: 15%;
+    font-size: 26px;
+    text-align: center;
+}
+
+.card-adiantamento .item-adiantamento form .button-save button {
+    background-color: var(--color2);
+    border: none;
+}
+
 
 /* Card - Form-Login */
 

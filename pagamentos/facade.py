@@ -352,14 +352,6 @@ def html_cartao_ponto(request, _mes_ano, _id) -> JsonResponse:
     _var["mes"], _var["ano"] = converter_mes_ano(_mes_ano)
     _var["primeiro_dia"], _var["ultimo_dia"] = extremos_mes(_var["mes"], _var["ano"])
     _carto_ponto = cartao_ponto(_var)
-    contexto = {
-        "cartao_ponto": _carto_ponto,
-        "admissao": _var["admissao"],
-        "demissao": _var["demissao"],
-    }
-    data["html_cartao_ponto"] = render_to_string(
-        "pagamentos/html_cartao_ponto.html", contexto
-    )
     _var["dias_falta"] = dias_falta(_carto_ponto)
     _var["dias_remunerado"] = dias_remunerado(_carto_ponto)
     _var["dias_transporte"] = dias_transporte(_carto_ponto)
@@ -372,7 +364,9 @@ def html_cartao_ponto(request, _mes_ano, _id) -> JsonResponse:
         _adiantamento = True
     _cci = contra_cheque_itens(_var)
     _tv, _td, _st = totais_contra_cheque(_var)
+    minutas = minutas_contra_cheque(_var)
     contexto = {
+        "cartao_ponto": _carto_ponto,
         "nome": _var["nome_curto"],
         "admissao": _var["admissao"],
         "demissao": _var["demissao"],
@@ -383,18 +377,23 @@ def html_cartao_ponto(request, _mes_ano, _id) -> JsonResponse:
         "saldo": _st,
         "adiantamento": _adiantamento,
         "dias_admitido": dias_admitido(_var),
-        'valor_dia': _var['salario_base'] / 30,
-        'valor_hora': _var["salario_base"] / 30 / 9,
+        "valor_dia": _var["salario_base"] / 30,
+        "valor_hora": _var["salario_base"] / 30 / 9,
         "valor_extra": _var["salario_base"] / 30 / 9 * Decimal(1.5),
+        "minutas": minutas,
     }
-    data["html_contra_cheque"] = render_to_string(
-        "pagamentos/html_contra_cheque.html", contexto, request=request
-    )
     data["html_funcionario"] = render_to_string(
         "pagamentos/html_funcionario.html", contexto, request=request
     )
-    minutas = minutas_contra_cheque(_var)
-    contexto = {"minutas": minutas}
+    data["html_cartao_ponto"] = render_to_string(
+        "pagamentos/html_cartao_ponto.html", contexto
+    )
+    data["html_contra_cheque"] = render_to_string(
+        "pagamentos/html_contra_cheque.html", contexto, request=request
+    )
+    data["html_adiantamento"] = render_to_string(
+        "pagamentos/html_adiantamento.html", contexto, request=request
+    )
     data["html_minutas"] = render_to_string(
         "pagamentos/html_minutas.html", contexto, request=request
     )
