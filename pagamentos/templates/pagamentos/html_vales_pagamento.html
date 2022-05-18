@@ -7,10 +7,13 @@
     {% for itens in vales %}
         <div class="item-vales">
             <div class="item-botoes">
-                {% if itens.check %}
-                <i class="bi bi-check-circle i-button"></i>
+                {% if itens.checked %}
+                <i class="bi bi-currency-dollar"></i>
                 {% else %}
-                <i class="bi bi-x-circle i-button"></i>
+                <i class="bi bi-x-circle i-button js-seleciona-vale"
+                data-idvales="{{ itens.idvales }}"
+                data-idPessoal="{{ contra_cheque.idpessoal }}"
+                data-idcontracheque="{{ contra_cheque.idcontracheque }}"></i>
                 {% endif %}
             </div>
             <div class="item-data">
@@ -27,7 +30,9 @@
                 <span>R$ {{ itens.valor|intcomma }}</span>
             </div>
             <div class="item-botoes">
-                <i class="bi bi-trash i-button"></i>
+                <i class="bi bi-trash i-button js-exclui-vale"
+                data-idvales="{{ itens.idvales }}"
+                data-idPessoal="{{ contra_cheque.idpessoal }}"></i>
             </div>
         </div>
     {% endfor %}

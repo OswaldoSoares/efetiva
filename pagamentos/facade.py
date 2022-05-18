@@ -242,7 +242,9 @@ def contra_cheque_itens(_var):
     return lista
 
 
-def create_contra_cheque_itens(id: int, des: str, val: str, reg: str, ref: str) -> None:
+def create_contra_cheque_itens(
+    id: int, des: str, val: str, reg: str, ref: str, id_val: str
+) -> None:
     """Salva novo item do contra cheque no Banco de Dados
 
     Args:
@@ -258,6 +260,7 @@ def create_contra_cheque_itens(id: int, des: str, val: str, reg: str, ref: str) 
     obj.Referencia = ref
     obj.Registro = reg
     obj.idContraCheque_id = id
+    obj.Vales_id = id_val
     obj.save()
 
 
@@ -366,11 +369,14 @@ def html_cartao_ponto(request, _mes_ano, _id) -> JsonResponse:
     _tv, _td, _st = totais_contra_cheque(_var)
     minutas = minutas_contra_cheque(_var)
     vales = vales_funcionario(_var)
+    hoje = datetime.datetime.today()
+    hoje = datetime.datetime.strftime(hoje, "%Y-%m-%d")
     contexto = {
         "cartao_ponto": _carto_ponto,
         "nome": _var["nome_curto"],
         "admissao": _var["admissao"],
         "demissao": _var["demissao"],
+        "categoria": _var["categoria"],
         "contra_cheque": _cc,
         "contra_cheque_itens": _cci,
         "vencimentos": _tv,
@@ -383,6 +389,7 @@ def html_cartao_ponto(request, _mes_ano, _id) -> JsonResponse:
         "valor_extra": _var["salario_base"] / 30 / 9 * Decimal(1.5),
         "minutas": minutas,
         "vales": vales,
+        "hoje": hoje,
     }
     data["html_funcionario"] = render_to_string(
         "pagamentos/html_funcionario.html", contexto, request=request
@@ -414,17 +421,31 @@ def html_cartao_ponto(request, _mes_ano, _id) -> JsonResponse:
 def vales_funcionario(_var):
     _id_pes = _var["id_pessoal"]
     vale = Vales.objects.filter(idPessoal=_id_pes, Pago=False)
-    lista = [
-        {
-            "idvales": x.idVales,
-            "data": x.Data,
-            "descricao": x.Descricao,
-            "valor": x.Valor,
-            "checked": False,
-        }
-        for x in vale
-    ]
+    lista = []
+    for x in vale:
+        _checked = False
+        if ContraChequeItens.objects.filter(Vales_id=x.idVales):
+            _checked = True
+        lista.append(
+            {
+                "idvales": x.idVales,
+                "data": x.Data,
+                "descricao": x.Descricao,
+                "valor": x.Valor,
+                "checked": _checked,
+            }
+        )
     return lista
+
+
+def insere_vale_contra_cheque(_id_val, _id_cc):
+    vale = Vales.objects.get(idVales=_id_val)
+    create_contra_cheque_itens(_id_cc, vale.Descricao, vale.Valor, "D", "", _id_val)
+
+
+def delete_vales(_id_val):
+    vale = Vales.objects.get(idVales=_id_val)
+    vale.delete()
 
 
 def dias_admitido(_var):

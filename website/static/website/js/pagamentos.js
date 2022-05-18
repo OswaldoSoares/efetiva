@@ -33,9 +33,7 @@ $(document).on("click", ".js-seleciona-mes-ano", function(event) {
         },
         beforeSend: function() {
             $(".js-folha").fadeOut(10);
-            $(".js-cartao-ponto").fadeOut(10);
-            $(".js-funcionario-pagamento").fadeOut(10);
-            $(".js-contra-cheque").fadeOut(10);
+            EscondeCards();
         },
         success: function(data) {
             $(".js-folha").html(data.html_folha);
@@ -203,7 +201,7 @@ $(document).on('click', '.js-exclui-contra-cheque-itens', function(event) {
 
 $(document).on('submit', '.js-gera-vales', function(event) {
     event.preventDefault();
-    var v_mes_ano = $('#mes_ano').val();
+    var v_mes_ano = $(".select-mes-ano option:selected").text();
     $.ajax({
         type: $(this).attr('method'),
         url: '/pagamentos/adiciona_vales',
@@ -215,6 +213,52 @@ $(document).on('submit', '.js-gera-vales', function(event) {
             MostraCards(data, v_mes_ano);
         },
     });
+});
+
+$(document).on('click', '.js-seleciona-vale', function(event) {
+    var v_idvales = $(this).data('idvales')
+    var v_mes_ano = $(".select-mes-ano option:selected").text();
+    var v_idpessoal = $(this).data("idpessoal");
+    var v_idcontracheque = $(this).data('idcontracheque')
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: '/pagamentos/seleciona_vales',
+        data: {
+            idvales: v_idvales,
+            mes_ano: v_mes_ano,
+            idpessoal: v_idpessoal,
+            idcontracheque: v_idcontracheque
+        },
+        beforeSend: function() {
+            EscondeCards();
+        },
+        success: function(data) {
+            MostraCards(data, v_mes_ano);
+        },
+    })
+});
+
+$(document).on('click', '.js-exclui-vale', function(event) {
+    var v_idvales = $(this).data('idvales')
+    var v_mes_ano = $(".select-mes-ano option:selected").text();
+    var v_idpessoal = $(this).data("idpessoal");
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: '/pagamentos/remove_vales',
+        data: {
+            idvales: v_idvales,
+            mes_ano: v_mes_ano,
+            idpessoal: v_idpessoal,
+        },
+        beforeSend: function() {
+            EscondeCards();
+        },
+        success: function(data) {
+            MostraCards(data, v_mes_ano);
+        },
+    })
 });
 
 // TODO Excluir daqui para baixo após terminar refatoração

@@ -24,12 +24,14 @@ from .views import (
     inserefalta,
     manutencao,
     remove_contra_cheque_itens,
+    remove_vales,
     seleciona_contracheque,
     seleciona_folha,
     seleciona_funcionario,
     seleciona_mes_ano,
     seleciona_periodo,
     seleciona_saldoavulso,
+    seleciona_vales,
 )
 
 urlpatterns = [
@@ -109,5 +111,19 @@ urlpatterns = [
         remove_contra_cheque_itens,
         name="remove_contra_cheque_itens",
     ),
-    path('adiciona_vales', adiciona_vales, name='adiciona_vales',),
+    path(
+        "adiciona_vales",
+        adiciona_vales,
+        name="adiciona_vales",
+    ),
+    path(
+        "seleciona_vales",
+        seleciona_vales,
+        name="seleciona_vales",
+    ),
+    path(
+        "remove_vales",
+        remove_vales,
+        name="remove_vales",
+    ),
 ]
