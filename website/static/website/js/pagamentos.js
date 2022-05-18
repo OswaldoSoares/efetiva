@@ -5,6 +5,7 @@ $(document).ready(function() {
     $(".down-folha").hide();
     $(".down-avulso").hide();
     $('[data-toggle="tooltip"]').tooltip();
+    $('#id_data').val('2022-05-18')
 });
 
 $(document).on("change", "#id_MesReferencia", function(event) {
@@ -73,6 +74,7 @@ function EscondeCards() {
     $(".js-cartao-ponto").fadeOut(10);
     $(".js-itens-contra-cheque").fadeOut(10);
     $(".js-contra-cheque").fadeOut(10);
+    $(".js-vales").fadeOut(10)
     $(".js-adiantamento").fadeOut(10)
     $(".js-minutas-pagamento").fadeOut(10)
 }
@@ -86,6 +88,8 @@ function MostraCards(data, v_mes_ano) {
     $(".js-itens-contra-cheque").fadeIn(10);
     $(".js-contra-cheque").html(data.html_contra_cheque);
     $(".js-contra-cheque").fadeIn(10);
+    $(".js-vales").html(data.html_vales)
+    $(".js-vales").fadeIn(10)
     $(".js-adiantamento").html(data.html_adiantamento)
     $(".js-adiantamento").fadeIn(10)
     $(".js-minutas-pagamento").html(data.html_minutas)

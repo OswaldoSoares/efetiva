@@ -4405,6 +4405,50 @@ main .fp-recibo-tabela .fp-recibo-print {
     border: none;
 }
 
+.card-vales {
+    width: 600px;
+}
+
+.card-vales .item-vales {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-vales .item-vales .item-descricao {
+    width: 100%;
+    padding: 10px 5px 5px 5px;
+}
+
+.card-vales .item-vales .item-data {
+    width: 31%;
+    padding: 5px 5px 10px 5px;
+}
+
+.card-vales .item-vales .item-valor {
+    width: 31%;
+    padding: 5px 5px 10px 5px;
+}
+
+.card-vales .item-vales .item-parcelas {
+    width: 30%;
+    padding: 5px 5px 10px 5px;
+}
+
+.card-vales .item-vales .button-save {
+    width: 8%;
+    padding: 5px 5px 10px 5px;
+    font-size: 26px;
+    text-align: center;
+}
+
+.card-vales .item-vales .button-save button {
+    background-color: var(--color2);
+    border: none;
+}
+
 
 /* Card - Form-Login */
 
