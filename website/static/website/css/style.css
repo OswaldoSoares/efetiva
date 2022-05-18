@@ -4214,7 +4214,6 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-contra-cheque .itens-contra-cheque .item-descricao {
-    /* background-color: red; */
     width: 35%;
     padding: 0 5px;
     text-align: left;
@@ -4222,7 +4221,6 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-contra-cheque .itens-contra-cheque .item-referencia {
-    /* background-color: yellow; */
     width: 15%;
     padding: 0 5px;
     text-align: center;
@@ -4230,7 +4228,6 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-contra-cheque .itens-contra-cheque .item-vencimentos {
-    /* background-color: blue; */
     width: 20%;
     padding: 0 5px;
     text-align: right;
@@ -4238,7 +4235,6 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-contra-cheque .itens-contra-cheque .item-descontos {
-    /* background-color: green; */
     width: 20%;
     padding: 0 5px;
     text-align: right;
@@ -4246,7 +4242,6 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-contra-cheque .itens-contra-cheque .item-botoes {
-    /* background-color: black; */
     width: 10%;
     text-align: center;
     border: 1px solid var(--color7)
@@ -4447,6 +4442,39 @@ main .fp-recibo-tabela .fp-recibo-print {
 .card-vales .item-vales .button-save button {
     background-color: var(--color2);
     border: none;
+}
+
+.card-vales-pagamento {
+    width: 360px;
+}
+
+.card-vales-pagamento .item-vales {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    color: var(--color6);
+}
+
+.card-vales-pagamento .item-vales .item-data {
+    width: 22%;
+    text-align: left;
+}
+
+.card-vales-pagamento .item-vales .item-descricao {
+    width: 43%;
+    text-align: left;
+}
+
+.card-vales-pagamento .item-vales .item-valor {
+    width: 23%;
+    text-align: right;
+}
+
+.card-vales-pagamento .item-vales .item-botoes {
+    width: 6%;
+    text-align: center;
 }
 
 

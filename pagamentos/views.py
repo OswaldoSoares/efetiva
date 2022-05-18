@@ -308,6 +308,8 @@ def adiciona_contra_cheque_itens(request):
     facade.create_contracheque_itens(_descricao, _valor, "", _registro, _idcontracheque)
     _mes_ano = request.POST.get("mes_ano")
     _id_pes = request.POST.get("idPessoal")
+    print(_mes_ano)
+    print(type(_mes_ano))
     data = facade.html_cartao_ponto(request, _mes_ano, _id_pes)
     return data
 
@@ -317,5 +319,19 @@ def remove_contra_cheque_itens(request):
     facade.delete_contra_cheque_itens(_id_cci)
     _mes_ano = request.GET.get("mes_ano")
     _id_pes = request.GET.get("idpessoal")
+    data = facade.html_cartao_ponto(request, _mes_ano, _id_pes)
+    return data
+
+
+def adiciona_vales(request):
+    _descricao = request.POST.get("descricao")
+    _data = request.POST.get("data")
+    _valor = request.POST.get("valor")
+    _parcelas = request.POST.get("parcelas")
+    _id_pes = request.POST.get("idPessoal")
+    data = facade.create_vales(_descricao, _data, _valor, _parcelas, _id_pes)
+    _mes_ano = request.POST.get("mes_ano")
+    print(_mes_ano)
+    print(type(_mes_ano))
     data = facade.html_cartao_ponto(request, _mes_ano, _id_pes)
     return data

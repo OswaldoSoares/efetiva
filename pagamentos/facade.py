@@ -365,6 +365,7 @@ def html_cartao_ponto(request, _mes_ano, _id) -> JsonResponse:
     _cci = contra_cheque_itens(_var)
     _tv, _td, _st = totais_contra_cheque(_var)
     minutas = minutas_contra_cheque(_var)
+    vales = vales_funcionario(_var)
     contexto = {
         "cartao_ponto": _carto_ponto,
         "nome": _var["nome_curto"],
@@ -381,6 +382,7 @@ def html_cartao_ponto(request, _mes_ano, _id) -> JsonResponse:
         "valor_hora": _var["salario_base"] / 30 / 9,
         "valor_extra": _var["salario_base"] / 30 / 9 * Decimal(1.5),
         "minutas": minutas,
+        "vales": vales,
     }
     data["html_funcionario"] = render_to_string(
         "pagamentos/html_funcionario.html", contexto, request=request
@@ -403,7 +405,26 @@ def html_cartao_ponto(request, _mes_ano, _id) -> JsonResponse:
     data["html_minutas"] = render_to_string(
         "pagamentos/html_minutas.html", contexto, request=request
     )
+    data["html_vales_pagamento"] = render_to_string(
+        "pagamentos/html_vales_pagamento.html", contexto, request=request
+    )
     return JsonResponse(data)
+
+
+def vales_funcionario(_var):
+    _id_pes = _var["id_pessoal"]
+    vale = Vales.objects.filter(idPessoal=_id_pes, Pago=False)
+    lista = [
+        {
+            "idvales": x.idVales,
+            "data": x.Data,
+            "descricao": x.Descricao,
+            "valor": x.Valor,
+            "checked": False,
+        }
+        for x in vale
+    ]
+    return lista
 
 
 def dias_admitido(_var):
@@ -510,6 +531,22 @@ def minutas_contra_cheque(_var):
             }
         )
     return lista
+
+
+def create_vales(_des, _dat, _val, _par, _id_pes):
+    if int(_par) > 0:
+        for x in range(int(_par)):
+            obj = Vales()
+            obj.Data = _dat
+            if int(_par) == 1:
+                obj.Descricao = _des
+            else:
+                obj.Descricao = (
+                    f"{_des} {str(x + 1).zfill(2)}/{_par.zfill(2)} PARCELADO"
+                )
+            obj.Valor = Decimal(_val) / int(_par)
+            obj.idPessoal_id = _id_pes
+            obj.save()
 
 
 def cria_contexto_pagamentos():

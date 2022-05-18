@@ -3,6 +3,7 @@ from django.urls import path
 from .views import (
     adiantamento,
     adiciona_contra_cheque_itens,
+    adiciona_vales,
     altera_horario_cartao_ponto,
     apagar_tudo,
     atestada,
@@ -108,4 +109,5 @@ urlpatterns = [
         remove_contra_cheque_itens,
         name="remove_contra_cheque_itens",
     ),
+    path('adiciona_vales', adiciona_vales, name='adiciona_vales',),
 ]

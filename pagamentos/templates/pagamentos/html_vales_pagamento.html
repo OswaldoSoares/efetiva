@@ -1,0 +1,42 @@
+{% load humanize %}
+{% if nome %}
+<div class="article-card-titulo">
+    <span>VALES</span>
+</div>
+<div class="article-card-body">
+    {% for itens in vales %}
+        <div class="item-vales">
+            <div class="item-botoes">
+                {% if itens.check %}
+                <i class="bi bi-check-circle i-button"></i>
+                {% else %}
+                <i class="bi bi-x-circle i-button"></i>
+                {% endif %}
+            </div>
+            <div class="item-data">
+                <span>{{ itens.data }}</span>
+            </div>
+            <div class="item-descricao">
+                {% if itens.descricao|length > 17 %}
+                <span>{{ itens.descricao|slice:"0:17" }}...</span>
+                {% else %}
+                <span>{{ itens.descricao }}</span>
+                {% endif %}
+            </div>
+            <div class="item-valor">
+                <span>R$ {{ itens.valor|intcomma }}</span>
+            </div>
+            <div class="item-botoes">
+                <i class="bi bi-trash i-button"></i>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+<div class="article-card-footer">
+    {% for itens in vales %}
+    {% if forloop.last %}
+    <span><b>{{ forloop.counter|stringformat:"02d" }} VALE{{ forloop.counter|pluralize|upper }}</b></span>
+    {% endif %}
+    {% endfor %}
+</div>
+{% endif %}
