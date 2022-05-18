@@ -38,7 +38,7 @@ body {
     background-size: cover;
     background-attachment: fixed;
     font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
-    max-height: 93vh;
+    /* max-height: 93vh; */
 }
 
 .meu-container {
@@ -947,7 +947,7 @@ main .consulta .consulta-body {
 /* Modulo Faturamento */
 
 .conteudo-base {
-    height: calc(100vh - 12vh);
+    /* height: calc(100vh - 12vh); */
     overflow: hidden;
     margin: 5px;
     padding: 0px;

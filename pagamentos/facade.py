@@ -189,7 +189,7 @@ def contra_cheque(_var: dict) -> dict:
 def create_contra_cheque(_id_pes, _mes, _ano):
     v_salario = Salario.objects.get(idPessoal=_id_pes)
     obj = ContraCheque()
-    obj.MesReferencia = meses[int(_mes) - 1]
+    obj.MesReferencia = _mes
     obj.AnoReferencia = _ano
     obj.Valor = v_salario.Salario
     obj.idPessoal_id = _id_pes
@@ -536,12 +536,12 @@ def create_cartao_ponto(
         if dia.date() in feriados:
             obj.Ausencia = "FERIADO"
             obj.Conducao = False
-        if dia < v_admissao:
+        if dia.date() < v_admissao:
             obj.Ausencia = "-------"
             obj.Conducao = False
             obj.Remunerado = False
-        if not v_demissao == "None":
-            if dia > v_demissao:
+        if not v_demissao is None:
+            if dia.date() > v_demissao:
                 obj.Ausencia = "-------"
                 obj.Conducao = False
                 obj.Remunerado = False
