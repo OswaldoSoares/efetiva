@@ -43,12 +43,16 @@
         <i class="bi bi-pin-angle"></i>
         <i class="bi bi-pin-angle"></i>
       {% elif cci.descricao == 'ADIANTAMENTO' %}
-        <i class="bi bi-printer i-button"></i>
+        <a class="bi bi-printer i-button"
+        href="{% url 'print_contra_cheque_adiantamento' %}?idcc={{ contra_cheque.idcontracheque }}"
+        target="_blank"></a>
         <i class="bi bi-trash i-button js-exclui-contra-cheque-itens"
         data-idcontrachequeitens="{{ cci.idcontrachequeitens }}"
         data-idpessoal="{{ contra_cheque.idpessoal }}"></i>
         {% elif cci.descricao == 'VALE TRANSPORTE' %}
-        <i class="bi bi-printer i-button"></i>
+        <a class="bi bi-printer i-button"
+        href="{% url 'print_contra_cheque_transporte' %}?idcc={{ contra_cheque.idcontracheque }}"
+        target="_blank"></a>
         <i class="bi bi-pin-angle"></i>
         {% else %}
         <i class="bi bi-pin-angle"></i>
@@ -92,7 +96,9 @@
       R$ {{ saldo|floatformat:2|intcomma }}</div>
       {% endif %}
     <div class="item-botoes item-ultima-linha">
-      <i class="bi bi-printer i-button"></i>
+      <a class="bi bi-printer i-button"
+      href="{% url 'print_contra_cheque_pagamento' %}?idcc={{ contra_cheque.idcontracheque }}"
+      target="_blank"></a>
     </div>
   </div>
 </div>

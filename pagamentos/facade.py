@@ -763,6 +763,68 @@ def verifica_falta(v_cartao_ponto):
                             break
 
 
+# TODO Melhorar codigo
+def imprime_contra_cheque_pagamento(_id_cc, tipo):
+    _cc = ContraCheque.objects.filter(idContraCheque=_id_cc)
+    _var = dict()
+    get_pessoa(_cc[0].idPessoal_id, _var)
+    _mes = meses.index(_cc[0].MesReferencia) + 1
+    _ano = _cc[0].AnoReferencia
+    _var["mes"], _var["ano"] = _mes, _ano
+    _var["primeiro_dia"], _var["ultimo_dia"] = extremos_mes(_var["mes"], _var["ano"])
+    # minutas = minutas_contra_cheque(_var)
+    minutas = select_minutas_contracheque(_mes, _ano, _cc[0].idPessoal_id)
+    _carto_ponto = cartao_ponto(_var)
+    _var["dias_falta"] = dias_falta(_carto_ponto)
+    _var["dias_remunerado"] = dias_remunerado(_carto_ponto)
+    _var["dias_transporte"] = dias_transporte(_carto_ponto)
+    _var["id_contra_cheque"] = _id_cc
+    atrazo(_var)
+    hora_extra(_var)
+    _cci = contra_cheque_itens(_var)
+    _tv, _td, _st = totais_contra_cheque(_var)
+    if tipo == "adian":
+        credito = ContraChequeItens.objects.filter(
+            idContraCheque=_id_cc, Descricao="ADIANTAMENTO", Registro="D"
+        ).aggregate(Total=Sum("Valor"))
+        debito = dict()
+        debito["Total"] = Decimal("0.00")
+    elif tipo == "transp":
+        credito = ContraChequeItens.objects.filter(
+            idContraCheque=_id_cc, Descricao="VALE TRANSPORTE", Registro="C"
+        ).aggregate(Total=Sum("Valor"))
+        debito = dict()
+        debito["Total"] = Decimal("0.00")
+    else:
+        credito = ContraChequeItens.objects.filter(
+            idContraCheque=_id_cc, Registro="C"
+        ).aggregate(Total=Sum("Valor"))
+        debito = ContraChequeItens.objects.filter(
+            idContraCheque=_id_cc, Registro="D"
+        ).aggregate(Total=Sum("Valor"))
+    # if not debito:
+    totais = {
+        "Credito": credito["Total"],
+        "Debito": debito["Total"],
+        "Liquido": credito["Total"] - debito["Total"],
+    }
+    vales = vales_funcionario(_var)
+    hoje = datetime.datetime.today()
+    hoje = datetime.datetime.strftime(hoje, "%Y-%m-%d")
+    colaborador = facade.get_pessoal(_cc[0].idPessoal_id)
+    contrachequeitens = facade.get_contracheque_itens(_id_cc)
+    contexto = {
+        "contracheque": _cc,
+        "contrachequeitens": contrachequeitens,
+        "colaborador": colaborador,
+        "totais": totais,
+        "minutas": minutas,
+        "salario_base": str(_var["salario_base"]),
+        "cartao_ponto": _carto_ponto,
+    }
+    return contexto
+
+
 def calcula_extras(_var):
     _id_pes = _var["id_pessoal"]
     _sb = _var["salario_base"]
@@ -1287,6 +1349,7 @@ def create_contracheque_itens(descricao, valor, referencia, registro, idcontrach
     if float(valor) > 0:
         saldo = saldo_contracheque(idcontracheque)
         if float(valor) <= float(saldo["Liquido"]) or descricao == "SALARIO":
+            print("Teste - Cheguei aqui, estou eu")
             if not busca_contrachequeitens(idcontracheque, descricao, registro):
                 obj = ContraChequeItens()
                 obj.Descricao = descricao

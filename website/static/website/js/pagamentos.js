@@ -300,6 +300,7 @@ $(document).on('click', '.js-exclui-vale', function(event) {
     })
 });
 
+
 // TODO Excluir daqui para baixo após terminar refatoração
 $(document).on("change", ".switchmini", function(event) {
     var idpessoalconcatenado = "#vale_" + $(this).attr("idpessoal");

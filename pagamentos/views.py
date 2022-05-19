@@ -350,3 +350,24 @@ def remove_vales(request):
     _id_pes = request.GET.get("idpessoal")
     data = facade.html_cartao_ponto(request, _mes_ano, _id_pes)
     return data
+
+
+def print_contra_cheque_adiantamento(request):
+    _id_cc = request.GET.get("idcc")
+    contexto = facade.imprime_contra_cheque_pagamento(_id_cc, "adian")
+    response = print_contracheque(contexto, "ADIANTAMENTO")
+    return response
+
+
+def print_contra_cheque_pagamento(request):
+    _id_cc = request.GET.get("idcc")
+    contexto = facade.imprime_contra_cheque_pagamento(_id_cc, "paga")
+    response = print_contracheque(contexto, "CONTRACHEQUE")
+    return response
+
+
+def print_contra_cheque_transporte(request):
+    _id_cc = request.GET.get("idcc")
+    contexto = facade.imprime_contra_cheque_pagamento(_id_cc, "transp")
+    response = print_contracheque(contexto, "VALE TRANSPORTE")
+    return response

@@ -23,6 +23,9 @@ from .views import (
     index_pagamento,
     inserefalta,
     manutencao,
+    print_contra_cheque_adiantamento,
+    print_contra_cheque_pagamento,
+    print_contra_cheque_transporte,
     remove_contra_cheque_itens,
     remove_vales,
     seleciona_contracheque,
@@ -125,5 +128,20 @@ urlpatterns = [
         "remove_vales",
         remove_vales,
         name="remove_vales",
+    ),
+    path(
+        "print_contra_cheque_pagamento",
+        print_contra_cheque_pagamento,
+        name="print_contra_cheque_pagamento",
+    ),
+    path(
+        "print_contra_cheque_adiantamento",
+        print_contra_cheque_adiantamento,
+        name="print_contra_cheque_adiantamento",
+    ),
+    path(
+        "print_contra_cheque_transporte",
+        print_contra_cheque_transporte,
+        name="print_contra_cheque_transporte",
     ),
 ]
