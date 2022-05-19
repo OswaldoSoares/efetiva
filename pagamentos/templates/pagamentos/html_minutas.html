@@ -1,8 +1,9 @@
-{% if minutas %}
+{% if nome %}
 <div class="article-card-titulo">
     <span>MINUTAS</span>
 </div>
 <div class="article-card-body">
+    {% if minutas %}
     <div class="itens-minutas-pagamento">
         <div class="item-titulo item-data"><span>DIA</span></div>
         <div class="item-titulo item-minuta"><span>Nº</span></div>
@@ -25,6 +26,9 @@
         {% endif %}
     </div>
     {% endfor %}
+    {% else %}
+    <div class="itens-minutas-pagamento"><span>NENHUMA MINUTA ENCONTRADA</span></div>
+    {% endif %}
 </div>
 <div class="article-card-footer">
     {% for itens in minutas %}

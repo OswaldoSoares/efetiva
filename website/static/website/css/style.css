@@ -2768,14 +2768,6 @@ main .fp-recibo-tabela .fp-recibo-print {
     align-items: flex-start;
 }
 
-.article-card {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin-top: 5px;
-    margin-right: 5px;
-}
-
 .article-titulo {
     background-color: #363636;
     color: white;
@@ -4285,6 +4277,10 @@ main .fp-recibo-tabela .fp-recibo-print {
     color: var(--color6);
 }
 
+.card-minutas-pagamento .itens-minutas-pagamento span {
+    padding: 5px;
+}
+
 .card-minutas-pagamento .itens-minutas-pagamento .item-data {
     width: 8%;
     text-align: center;
@@ -4375,27 +4371,32 @@ main .fp-recibo-tabela .fp-recibo-print {
     width: 360px;
 }
 
-.card-adiantamento .item-adiantamento form {
+.card-adiantamento .item-adiantamento {
     width: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    color: var(--color6);
 }
 
-.card-adiantamento .item-adiantamento form .valor-adiantamento {
+.card-adiantamento .item-adiantamento span {
+    padding: 5px;
+}
+
+.card-adiantamento .item-adiantamento .valor-adiantamento {
     width: 85%;
     padding: 10px 5px;
 }
 
-.card-adiantamento .item-adiantamento form .button-save {
+.card-adiantamento .item-adiantamento .button-save {
     width: 15%;
     padding: 10px 5px;
     font-size: 26px;
     text-align: center;
 }
 
-.card-adiantamento .item-adiantamento form .button-save button {
+.card-adiantamento .item-adiantamento .button-save button {
     background-color: var(--color2);
     border: none;
 }
@@ -4455,6 +4456,10 @@ main .fp-recibo-tabela .fp-recibo-print {
     align-items: center;
     justify-content: center;
     color: var(--color6);
+}
+
+.card-vales-pagamento .item-vales span {
+    padding: 5px;
 }
 
 .card-vales-pagamento .item-vales .item-data {

@@ -4,6 +4,7 @@
     <span>VALES</span>
 </div>
 <div class="article-card-body">
+    {% if vales %}
     {% for itens in vales %}
         <div class="item-vales">
             <div class="item-botoes">
@@ -36,6 +37,9 @@
             </div>
         </div>
     {% endfor %}
+    {% else %}
+        <div class="item-vales"><span>NENHUM VALE ENCONTRADO</span></div>
+    {% endif %}
 </div>
 <div class="article-card-footer">
     {% for itens in vales %}
