@@ -1,7 +1,57 @@
 {% extends 'pagamentos/basepagamentos.html' %} {% load permission_tags %}
 {% block mainpagamento %}
 <main class="article">
-  {% comment %}
+  <div>
+    <article class="article-card card-mes-ano">
+      <div class="article-card-titulo">
+        <span>FOLHA PAGAMENTO</span>
+      </div>
+      <div class="article-card-body">
+        <select name="meses" id="meses" class="select-mes-ano form-control">
+          {% for itens in mes_ano %}
+          <option value="{{ itens }}">{{ itens|upper }}</option>
+          {% endfor %}
+        </select>
+        <div class="button-mes-ano">
+          <i class="bi bi-clipboard-check i-button js-seleciona-mes-ano"></i>
+        </div>
+      </div>
+      <div class="article-card-footer"></div>
+    </article>
+    <article class="article-card card-folha js-folha">
+      {% include 'pagamentos/html_folha.html' %}
+    </article>
+    <article class="article-card card-funcionario-pagamento js-funcionario-pagamento">
+      {% include 'pagamentos/html_funcionario.html' %}
+    </article>
+  </div>
+  <div>
+    <article class="article-card card-cartao-ponto js-cartao-ponto">
+      {% include 'pagamentos/html_cartao_ponto.html' %}
+    </article>
+  </div>
+  <div>
+    <article class="article-card card-itens-contra-cheque js-itens-contra-cheque">
+      {% include 'pagamentos/html_itens_contra_cheque.html' %}
+    </article>
+    <article class="article-card card-vales js-vales">
+      {% include 'pagamentos/html_vales.html' %}
+    </article>
+    <article class="article-card card-contra-cheque js-contra-cheque">
+      {% include 'pagamentos/html_contra_cheque.html' %}
+    </article>
+  </div>
+  <div>
+    <article class="article-card card-adiantamento js-adiantamento">
+      {% include 'pagamentos/html_adiantamento.html' %}
+    </article>
+    <article class="article-card card-minutas-pagamento js-minutas-pagamento">
+      {% include 'pagamentos/html_minutas.html' %}
+    </article>
+    <article class="article-card card-vales-pagamento js-vales-pagamento">
+      {% include 'pagamentos/html_vales_pagamento.html' %}
+    </article>
+  </div>
   <div class="pagamento-conteudo mensalistas">
     <header class="titulo-mensalistas">
       <h3>FOLHA DE PAGAMENTO MENSALISTAS</h3>
@@ -23,12 +73,10 @@
           >
             {% csrf_token %}
             <div class="col-md-4">
-              {{ formcontracheque.MesReferencia }} {{
-              formcontracheque.MesReferencia.error }}
+              {{ formcontracheque.MesReferencia }} {{ formcontracheque.MesReferencia.error }}
             </div>
             <div class="col-md-4">
-              {{ formcontracheque.AnoReferencia }} {{
-              formcontracheque.AnoReferencia.error }}
+              {{ formcontracheque.AnoReferencia }} {{ formcontracheque.AnoReferencia.error }}
             </div>
             <input type="hidden" name="Valor" value="0.00" id="id_Valor" />
             <input
@@ -148,59 +196,10 @@
       </div>
     </main>
   </div>
-  {% endif %} {% endcomment %}
-  <div>
-    <article class="article-card card-mes-ano">
-      <div class="article-card-titulo">
-        <span>FOLHA PAGAMENTO</span>
-      </div>
-      <div class="article-card-body">
-        <select name="meses" id="meses" class="select-mes-ano form-control">
-          {% for itens in mes_ano %}
-          <option value="{{ itens }}">{{ itens|upper }}</option>
-          {% endfor %}
-        </select>
-        <div class="button-mes-ano">
-          <i class="bi bi-clipboard-check i-button js-seleciona-mes-ano"></i>
-        </div>
-      </div>
-      <div class="article-card-footer"></div>
-    </article>
-    <article class="article-card card-folha js-folha">
-      {% include 'pagamentos/html_folha.html' %}
-    </article>
-    <article class="article-card card-funcionario-pagamento js-funcionario-pagamento">
-      {% include 'pagamentos/html_funcionario.html' %}
-    </article>
-  </div>
-  <div>
-    <article class="article-card card-cartao-ponto js-cartao-ponto">
-      {% include 'pagamentos/html_cartao_ponto.html' %}
-    </article>
-  </div>
-  <div>
-    <article class="article-card card-itens-contra-cheque js-itens-contra-cheque">
-      {% include 'pagamentos/html_itens_contra_cheque.html' %}
-    </article>
-    <article class="article-card card-vales js-vales">
-      {% include 'pagamentos/html_vales.html' %}
-    </article>
-    <article class="article-card card-contra-cheque js-contra-cheque">
-      {% include 'pagamentos/html_contra_cheque.html' %}
-    </article>
-  </div>
-  <div>
-    <article class="article-card card-adiantamento js-adiantamento">
-      {% include 'pagamentos/html_adiantamento.html' %}
-    </article>
-    <article class="article-card card-minutas-pagamento js-minutas-pagamento">
-      {% include 'pagamentos/html_minutas.html' %}
-    </article>
-    <article class="article-card card-vales-pagamento js-vales-pagamento">
-      {% include 'pagamentos/html_vales_pagamento.html' %}
-    </article>
-  </div>
+  {% endif %}
 </main>
+
+
 <!-- DIV MODAL -->
 <div class="modal fade bd-example-modal-lg" id="MyModal" tabindex="-1">
   <div class="modal-dialog modal-lg modal-dialog-centered">

@@ -44,7 +44,7 @@ body {
 .meu-container {
     margin-top: 79px;
     padding: 0;
-    width: 100vw;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -4491,8 +4491,7 @@ main .fp-recibo-tabela .fp-recibo-print {
     margin-left: auto;
     margin-right: auto;
     position: relative;
-    top: 50%;
-    transform: translateY(-50%);
+    margin-top: 150px;
 }
 
 .form-login .article-card .article-card-body .item-form {
