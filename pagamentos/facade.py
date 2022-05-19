@@ -203,7 +203,7 @@ def contra_cheque_itens(_var):
     _dt = _var["dias_transporte"]
     v_contra_cheque_itens = ContraChequeItens.objects.filter(idContraCheque=_id_cc)
     if not v_contra_cheque_itens:
-        create_contra_cheque_itens(_id_cc, "SALARIO", _sb, "C", "30d")
+        create_contra_cheque_itens(_id_cc, "SALARIO", _sb, "C", "30d", "0")
     if _dr < 30:
         v_cci = ContraChequeItens.objects.filter(
             idContraCheque=_id_cc, Descricao="SALARIO"
@@ -226,7 +226,7 @@ def contra_cheque_itens(_var):
             obj.save(update_fields=["Valor", "Referencia"])
         else:
             create_contra_cheque_itens(
-                _id_cc, "VALE TRANSPORTE", conducao, "C", f"{_dt}d"
+                _id_cc, "VALE TRANSPORTE", conducao, "C", f"{_dt}d", "0"
             )
     v_contra_cheque_itens = ContraChequeItens.objects.filter(idContraCheque=_id_cc)
     lista = [
@@ -354,6 +354,7 @@ def html_cartao_ponto(request, _mes_ano, _id) -> JsonResponse:
     get_pessoa(_id, _var)
     _var["mes"], _var["ano"] = converter_mes_ano(_mes_ano)
     _var["primeiro_dia"], _var["ultimo_dia"] = extremos_mes(_var["mes"], _var["ano"])
+    minutas = minutas_contra_cheque(_var)
     _carto_ponto = cartao_ponto(_var)
     _var["dias_falta"] = dias_falta(_carto_ponto)
     _var["dias_remunerado"] = dias_remunerado(_carto_ponto)
@@ -367,7 +368,6 @@ def html_cartao_ponto(request, _mes_ano, _id) -> JsonResponse:
         _adiantamento = True
     _cci = contra_cheque_itens(_var)
     _tv, _td, _st = totais_contra_cheque(_var)
-    minutas = minutas_contra_cheque(_var)
     vales = vales_funcionario(_var)
     hoje = datetime.datetime.today()
     hoje = datetime.datetime.strftime(hoje, "%Y-%m-%d")
@@ -471,7 +471,7 @@ def hora_extra(_var):
     else:
         if _acrescimo_extra > 0:
             create_contra_cheque_itens(
-                _id_cc, "HORA EXTRA", _acrescimo_extra, "C", _tempo_extra
+                _id_cc, "HORA EXTRA", _acrescimo_extra, "C", _tempo_extra, "0"
             )
 
 
@@ -534,12 +534,26 @@ def minutas_contra_cheque(_var):
         _hi = datetime.timedelta(hours=_hi.hour, minutes=_hi.minute)
         if _hi < _he:
             _hez = _he - _hi
+            _cp = CartaoPonto.objects.get(
+                Dia=x.idMinuta.DataMinuta, idPessoal=_var["id_pessoal"]
+            )
+            obj = _cp
+            obj.Entrada = x.idMinuta.HoraInicial
+            if obj.Alteracao == "ROBOT":
+                obj.save(update_fields=["Entrada"])
         _hsz = datetime.timedelta(hours=0, minutes=0)
         if x.idMinuta.HoraFinal:
             _hf = x.idMinuta.HoraFinal
             _hf = datetime.timedelta(hours=_hf.hour, minutes=_hf.minute)
             if _hf > _hs:
                 _hsz = _hf - _hs
+                _cp = CartaoPonto.objects.get(
+                    Dia=x.idMinuta.DataMinuta, idPessoal=_var["id_pessoal"]
+                )
+                obj = _cp
+                obj.Saida = x.idMinuta.HoraFinal
+                if obj.Alteracao == "ROBOT":
+                    obj.save(update_fields=["Saida"])
         extra = _hez + _hsz
         lista.append(
             {
