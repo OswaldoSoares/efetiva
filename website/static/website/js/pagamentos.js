@@ -5,7 +5,8 @@ $(document).ready(function() {
     $(".down-folha").hide();
     $(".down-avulso").hide();
     $('[data-toggle="tooltip"]').tooltip();
-    $('#id_data').val('2022-05-18')
+    $('#id_data').val('2022-05-18');
+    tamanhoCardBody();
 });
 
 $(document).on("change", "#id_MesReferencia", function(event) {
@@ -21,6 +22,43 @@ $(document).on("change", "#id_AnoReferencia", function(event) {
     $(".fp-adiantamento").html("");
     $(".fp-adiantamento").hide();
 });
+
+var maxHeight = 0;
+var topPosition = 0;
+var tamanhoCardBody = function() {
+    var topPosition = $('.card-mes-ano').position().top
+    var cci_top = $('.js-itens-contra-cheque').position().top
+    var adi_top = $('.js-adiantamento').position().top
+    var fun_top = $('.js-funcionario-pagamento').position().top
+    var fun_hei = $('.js-body-funcionario').height()
+    var fun_area = fun_top + fun_hei
+    var car_top = $('.js-cartao-ponto').position().top
+    var car_hei = $('.js-body-cartao-ponto').height()
+    var car_area = car_top + car_hei
+    var coc_top = $('.js-contra-cheque').position().top
+    var coc_hei = $('.js-body-contra-cheque').height()
+    var coc_area = coc_top + coc_hei
+    var val_top = $('.js-vales-pagamento').position().top
+    var val_hei = $('.js-body-vales-pagamento').height()
+    var val_area = val_top + val_hei
+
+    if (car_top == topPosition && cci_top == topPosition && adi_top == topPosition) {
+        var areas = [fun_area, car_area, coc_area, val_area]
+        maior = Math.max(...areas)
+        $('.js-body-funcionario').height(maior - fun_top)
+        $('.js-body-cartao-ponto').height(maior - car_top)
+        $('.js-body-contra-cheque').height(maior - coc_top)
+        $('.js-body-vales-pagamento').height(maior - val_top)
+    }
+
+    if (car_top == topPosition && cci_top == topPosition) {
+        var areas = [fun_area, car_area, coc_area]
+        maior = Math.max(...areas)
+        $('.js-body-funcionario').height(maior - fun_top)
+        $('.js-body-cartao-ponto').height(maior - car_top)
+        $('.js-body-contra-cheque').height(maior - coc_top)
+    }
+}
 
 $(document).on("click", ".js-seleciona-mes-ano", function(event) {
     v_mes_ano = $(".select-mes-ano option:selected").text();
@@ -97,6 +135,7 @@ function MostraCards(data, v_mes_ano) {
     $(".js-vales-pagamento").fadeIn(10)
     $('#mes_ano').val(v_mes_ano)
     $('#mes_ano_adiantamento').val(v_mes_ano)
+    tamanhoCardBody();
 }
 
 $(document).on("click", ".js-altera-falta", function(event) {
