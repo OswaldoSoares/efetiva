@@ -5,7 +5,7 @@ $(document).on('submit', '.form-cria-contrachequeitens', function(event) {
         type: $(this).attr('method'),
         url: url,
         data: $(this).serialize(),
-        success: function(data){
+        success: function(data) {
             $(".fp-base").html(data.html_folha)
             $(".fp-minutas").html(data.html_minutascontracheque);
             $(".fp-vales").html(data.html_vales);
@@ -23,14 +23,29 @@ $(document).on('submit', '.form-cria-contrachequeitens', function(event) {
     });
 });
 
+$(document).on('submit', '.js-gera-multas', function(event) {
+    event.preventDefault();
+    $.ajax({
+        type: $(this).attr('method'),
+        url: '/despesas/adiciona_multa',
+        data: $(this).serialize(),
+        beforeSend: function() {
+            $(".box-loader").show();
+        },
+        success: function(data) {
+            $(".card-multas").html(data.html_form_multas)
+            $(".box-loader").hide();
+        },
+    });
+});
+
 function openMyModal(event) {
     var modal = initModalDialog(event, '#MyModal');
     var url = $(event.target).data('action');
     $.ajax({
         type: "GET",
         url: url,
-        data : {
-        }
+        data: {}
     }).done(function(data, textStatus, jqXHR) {
         modal.find('.modal-body').html(data.html_form);
         modal.modal('show');

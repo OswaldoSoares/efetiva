@@ -1,0 +1,249 @@
+<form class="js-gera-multas" method="post" action="">
+    <div class="article-card-titulo">
+        <span>MULTAS</span>
+    </div>
+    <div class="article-card-body">
+        {% csrf_token %}
+        <div class="item-multa">
+            <div class="item-form">
+                <div class="button">
+                    <i class="bi bi-file-earmark-binary"></i>
+                </div>
+                <div class="item-field item-ait">
+                    {% if request.POST %}
+                    <input class="form-control" name="ait" type="text"
+                    value="{{ request.POST.ait }}"
+                    id='ait' placeholder="NÚMERO AIT">
+                    {% else %}
+                    <input class="form-control" name="ait" type="text"
+                    id='ait' placeholder="NÚMERO AIT">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="item-form">
+                {% if erro_ait %}
+                <div class="error">
+                    <span>{{ erro_ait }}<span>
+                </div>
+                {% endif %}
+            </div>
+        </div>    
+        <div class="item-multa">
+            <div class="item-form">
+                <div class="button">
+                    <i class="bi bi-file-richtext"></i>
+                </div>
+                <div class="item-field item-doc">
+                    {% if request.POST %}
+                    <input class="form-control" name="doc" type="text"
+                    value="{{ request.POST.doc }}"
+                    id="doc" placeholder="NÚMERO DOC">
+                    {% else %}
+                    <input class="form-control" name="doc" type="text"
+                    id="doc" placeholder="NÚMERO DOC">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="item-form">
+                {% if erro_doc %}
+                <div class="error">
+                    <span>{{ erro_doc }}<span>
+                </div>
+                {% endif %}
+            </div>
+        </div>    
+        <div class="item-multa">
+            <div class="item-form">
+                <div class="button">
+                    <i class="bi bi-calendar"></i>
+                </div>
+                <div class="item-field item-data">
+                    {% if request.POST %}
+                    <input class="form-control" name="data" type="date"
+                    value={{ request.POST.data }} id="data">
+                    {% else %}
+                    <input class="form-control" name="data" type="date"
+                    value={{ hoje }} id="data">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="item-form">
+                {% if erro_data %}
+                <div class="error">
+                    <span>{{ erro_data }}<span>
+                </div>
+                {% endif %}
+            </div>
+        </div>    
+        <div class="item-multa">
+            <div class="item-form">
+                <div class="button">
+                    <i class="bi bi-clock"></i>
+                </div>
+                <div class="item-field item-hora">
+                    {% if request.POST %}
+                    <input class="form-control" name="hora" type="time"
+                    value="{{ request.POST.hora }}" id="hora">
+                    {% else %}
+                    <input class="form-control" name="hora" type="time"
+                    value="07:00" id="hora">
+                    {% endif %}
+                </div>
+            </div>
+        </div>    
+        <div class="item-multa">
+            <div class="item-form">
+                <div class="button">
+                    <i class="bi bi-question-diamond"></i>
+                </div>
+                <div class="item-field item-infracao">
+                    {% if request.POST %}
+                    <textarea class="form-control" name="infracao"
+                    id="infracao" cols="40" rows="2"
+                    placeholder="INFRAÇÃO">{{ request.POST.infracao }}</textarea>
+                    {% else %}
+                    <textarea class="form-control" name="infracao" id="infracao"
+                    cols="40" rows="2" placeholder="INFRAÇÃO"></textarea>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="item-form">
+                {% if erro_infracao %}
+                <div class="error">
+                    <span>{{ erro_infracao }}<span>
+                </div>
+                {% endif %}
+            </div>
+        </div>    
+        <div class="item-multa">
+            <div class="item-form">
+                <div class="button">
+                    <i class="bi bi-geo-alt"></i>
+                </div>
+                <div class="item-field item-local">
+                    {% if request.POST %}
+                    <textarea class="form-control" name="local"
+                    id="local" cols="40" rows="2"
+                    placeholder="LOCAL DA INFRAÇÃO">{{ request.POST.local }}</textarea>
+                    {% else %}
+                    <textarea class="form-control" name="local" id="local"
+                    cols="40" rows="2" placeholder="LOCAL DA INFRAÇÃO"></textarea>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="item-form">
+                {% if erro_local %}
+                <div class="error">
+                    <span>{{ erro_local }}<span>
+                </div>
+                {% endif %}
+            </div>
+        </div>    
+        <div class="item-multa">
+            <div class="item-form">
+                <div class="button">
+                    <i class="bi bi-currency-dollar"></i>
+                </div>
+                <div class="item-field item-valor">
+                    {% if request.POST %}
+                    <input class="form-control" name="valor" type="number"
+                    value="{{ request.POST.valor }}" step="0.01" id="valor">
+                    {% else %}
+                    <input class="form-control" name="valor" type="number"
+                    value="0.00" step="0.01" id="valor">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="item-form">
+                {% if erro_valor %}
+                <div class="error">
+                    <span>{{ erro_valor }}<span>
+                </div>
+                {% endif %}
+            </div>
+        </div>    
+        <div class="item-multa">
+            <div class="item-form">
+                <div class="button">
+                    <i class="bi bi-calendar-date"></i>
+                </div>
+                <div class="item-field item-vencimento">
+                    {% if request.POST %}
+                    <input class="form-control" name="vencimento" type="date"
+                    value={{ request.POST.vencimento }} id="vencimento">
+                    {% else %}
+                    <input class="form-control" name="vencimento" type="date"
+                    value={{ hoje }} id="vencimento">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="item-form">
+                {% if erro_vencimento %}
+                <div class="error">
+                    <span>{{ erro_vencimento }}<span>
+                </div>
+                {% endif %}
+            </div>
+        </div>    
+        <div class="item-multa">
+            <div class="item-form">
+                <div class="button">
+                    <i class="bi bi-truck"></i>
+                </div>
+                <div class="item-field item-veiculo">
+                    <select class="form-control" name="veiculo" id="veiculo">
+                        <option value="">SELECIONE UM VEICULO</option>
+                        {% for veiculo in veiculos %}
+                        {% if request.POST.veiculo == veiculo.idVeiculo|stringformat:'.0f' %}
+                        <option value="{{ veiculo.idVeiculo }}" selected>{{ veiculo.Placa }}</option>
+                        {% else %}
+                        <option value="{{ veiculo.idVeiculo }}">{{ veiculo.Placa }}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="item-form">
+                {% if erro_veiculo %}
+                <div class="error">
+                    <span>{{ erro_veiculo }}<span>
+                </div>
+                {% endif %}
+            </div>
+        </div>    
+        <div class="item-multa">
+            <div class="item-form">
+                <div class="button">
+                    <i class="bi bi-credit-card"></i>
+                </div>
+                <div class="item-field item-desconta">
+                    <select class="form-control" name="desconta" id="desconta">
+                        {% if request.POST.desconta == "True" %}
+                        <option value="">SELECIONE QUEM PAGA</option>
+                        <option value="False">EMPRESA</option>
+                        <option value="True" selected>MOTORISTA</option>
+                        {% elif request.POST.desconta == "False" %}
+                        <option value="">SELECIONE QUEM PAGA</option>
+                        <option value="False" selected>EMPRESA</option>
+                        <option value="True">MOTORISTA</option>
+                        {% else %}
+                        <option value="">SELECIONE QUEM PAGA</option>
+                        <option value="False">EMPRESA</option>
+                        <option value="True">MOTORISTA</option>
+                        {% endif %}
+                    </select>
+                </div>
+            </div>
+            <div class="item-form">
+                {% if erro_desconta %}
+                <div class="error">
+                    <span>{{ erro_desconta }}<span>
+                </div>
+                {% endif %}
+            </div>
+        </div>    
+    </div>
+    <div class="article-card-footer">
+        <button class='bi bi-save2 i-button'></button>
+    </div>
+</form>

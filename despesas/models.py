@@ -38,7 +38,6 @@ class Multas(models.Model):
     HoraMulta = models.TimeField(default=datetime.time(0))
     ValorMulta = models.DecimalField(decimal_places=2, max_digits=9)
     Vencimento = models.DateField(default=0)
-    DataPagamento = models.DateField(default=0)
     Infracao = models.CharField(max_length=100)
     Local = models.CharField(max_length=240)
     Pago = models.BooleanField(default=False)
