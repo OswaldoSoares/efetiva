@@ -11,9 +11,15 @@ from despesas.models import Abastecimento, Multas
 def create_despesas_context():
     abastecimento = get_abastecimento_all()
     veiculos = Veiculo.objects.all()
+    multas = Multas.objects.filter(Pago=False).order_by("-Vencimento")
     hoje = datetime.datetime.today()
     hoje = datetime.datetime.strftime(hoje, "%Y-%m-%d")
-    context = {"abastecimento": abastecimento, "veiculos": veiculos, "hoje": hoje}
+    context = {
+        "abastecimento": abastecimento,
+        "veiculos": veiculos,
+        "hoje": hoje,
+        "multas": multas,
+    }
     return context
 
 

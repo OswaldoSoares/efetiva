@@ -1,0 +1,39 @@
+<div class="article-card-titulo">
+    <span>MULTAS A PAGAR</span>
+</div>
+<div class="article-card-body">
+    <div class="item-multa">
+        <div class="item-titulo item-vencimento">VENCIMENTO</div>
+        <div class="item-titulo item-valor">VALOR</div>
+        <div class="item-titulo item-ait">NÚMERO AIT</div>
+        <div class="item-titulo item-doc">NÚMERO DOC</div>
+        <div class="item-titulo item-data">DATA</div>
+        <div class="item-titulo item-veiculo">VEÍCULO</div>
+        <div class="item-titulo item-desconta">PAGADOR</div>
+    </div>
+    {% for multa in multas %}
+    <div class="item-multa">
+        <div class="item-vencimento">{{ multa.Vencimento }}</div>
+        <div class="item-valor">R$ {{ multa.ValorMulta }}</div>
+        <div class="item-ait">{{ multa.NumeroAIT }}</div>
+        <div class="item-doc">{{ multa.NumeroDOC }}</div>
+        <div class="item-data">{{ multa.DataMulta }}</div>
+        <div class="item-veiculo">{{ multa.idVeiculo.Placa }}</div>
+        <div class="item-desconta">{{ multa.DescontaMotorista }}</div>
+        <div class="item-button">
+            <i class="bi bi-x-circle i-button"></i>
+            <i class="bi bi-x-circle i-button"></i>
+        </div>
+    </div>
+    <div class="item-multa">
+        <div class="item-infracao">{{ multa.Infracao }} - {{ multa.Local }}</div>
+    </div>
+    {% endfor %}
+</div>
+<div class="article-card-footer">
+    {% for multa in multas %}
+    {% if forloop.last %}
+    <span><b>{{ forloop.counter|stringformat:"02d" }} MULTA{{ forloop.counter|pluralize|upper }}</b></span>
+    {% endif %}
+    {% endfor %}
+</div>
