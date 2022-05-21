@@ -7,16 +7,16 @@
         <div class="item-multa">
             <div class="item-form">
                 <div class="button">
-                    <i class="bi bi-file-earmark-binary"></i>
+                    <i class="bi bi-file-richtext"></i>
                 </div>
-                <div class="item-field item-ait">
+                <div class="item-field item-doc">
                     {% if request.POST %}
-                    <input class="form-control" name="ait" type="text"
-                    value="{{ request.POST.ait }}"
-                    id='ait' placeholder="NÚMERO AIT">
+                    <input class="form-control" name="doc" type="text"
+                    value="{{ request.POST.doc }}"
+                    id="doc" placeholder="NÚMERO NOTIF./PENALIDADE">
                     {% else %}
-                    <input class="form-control" name="ait" type="text"
-                    id='ait' placeholder="NÚMERO AIT">
+                    <input class="form-control" name="doc" type="text"
+                    id="doc" placeholder="NÚMERO NOTIF./PENALIDADE">
                     {% endif %}
                 </div>
             </div>
@@ -31,16 +31,16 @@
         <div class="item-multa">
             <div class="item-form">
                 <div class="button">
-                    <i class="bi bi-file-richtext"></i>
+                    <i class="bi bi-file-earmark-binary"></i>
                 </div>
-                <div class="item-field item-doc">
+                <div class="item-field item-ait">
                     {% if request.POST %}
-                    <input class="form-control" name="doc" type="text"
-                    value="{{ request.POST.doc }}"
-                    id="doc" placeholder="NÚMERO DOC">
+                    <input class="form-control" name="ait" type="text"
+                    value="{{ request.POST.ait }}"
+                    id='ait' placeholder="NÚMERO AIT">
                     {% else %}
-                    <input class="form-control" name="doc" type="text"
-                    id="doc" placeholder="NÚMERO DOC">
+                    <input class="form-control" name="ait" type="text"
+                    id='ait' placeholder="NÚMERO AIT">
                     {% endif %}
                 </div>
             </div>
