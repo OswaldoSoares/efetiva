@@ -487,7 +487,7 @@ def atrazo(_var):
     else:
         if _desconto_atrazo > 0:
             create_contra_cheque_itens(
-                _id_cc, "ATRAZO", _desconto_atrazo, "D", _tempo_atrazo
+                _id_cc, "ATRAZO", _desconto_atrazo, "D", _tempo_atrazo, '0'
             )
 
 
