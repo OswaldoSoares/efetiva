@@ -487,7 +487,7 @@ def atrazo(_var):
     else:
         if _desconto_atrazo > 0:
             create_contra_cheque_itens(
-                _id_cc, "ATRAZO", _desconto_atrazo, "D", _tempo_atrazo, '0'
+                _id_cc, "ATRAZO", _desconto_atrazo, "D", _tempo_atrazo, "0"
             )
 
 
@@ -768,6 +768,10 @@ def imprime_contra_cheque_pagamento(_id_cc, tipo):
     _cc = ContraCheque.objects.filter(idContraCheque=_id_cc)
     _var = dict()
     get_pessoa(_cc[0].idPessoal_id, _var)
+    _banco = ContaPessoal.objects.filter(idPessoal=_var["id_pessoal"])
+    _vc = False
+    if len(_banco) > 1:
+        _vc = True
     _mes = meses.index(_cc[0].MesReferencia) + 1
     _ano = _cc[0].AnoReferencia
     _var["mes"], _var["ano"] = _mes, _ano
@@ -821,6 +825,8 @@ def imprime_contra_cheque_pagamento(_id_cc, tipo):
         "minutas": minutas,
         "salario_base": str(_var["salario_base"]),
         "cartao_ponto": _carto_ponto,
+        "banco": _banco,
+        "mais_banco": _vc,
     }
     return contexto
 
@@ -1349,7 +1355,6 @@ def create_contracheque_itens(descricao, valor, referencia, registro, idcontrach
     if float(valor) > 0:
         saldo = saldo_contracheque(idcontracheque)
         if float(valor) <= float(saldo["Liquido"]) or descricao == "SALARIO":
-            print("Teste - Cheguei aqui, estou eu")
             if not busca_contrachequeitens(idcontracheque, descricao, registro):
                 obj = ContraChequeItens()
                 obj.Descricao = descricao

@@ -185,6 +185,15 @@ def print_contracheque(contexto, tipoimpressao):
                         "{}".format(itens.Valor).replace(".", ","),
                     )
                     linhaitens += 4.1
+        pdf.setFont("Times-Roman", 8)
+        if contexto["mais_banco"]:
+            pdf.drawString(cmp(6), cmp(linha - 124), "*")
+        pdf.drawString(
+            cmp(8),
+            cmp(linha - 124),
+            f"PIX: {contexto['banco'][0].PIX} - BANCO: {contexto['banco'][0].Banco} - AG: {contexto['banco'][0].Agencia} - CONTA {contexto['banco'][0].Conta} - {contexto['banco'][0].TipoConta}",
+        )
+        pdf.setFont("Times-Roman", 11)
         pdf.drawRightString(
             cmp(142.6),
             cmp(linha - 124),
