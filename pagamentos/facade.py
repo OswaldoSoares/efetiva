@@ -204,20 +204,22 @@ def contra_cheque_itens(_var):
     v_contra_cheque_itens = ContraChequeItens.objects.filter(idContraCheque=_id_cc)
     if not v_contra_cheque_itens:
         create_contra_cheque_itens(_id_cc, "SALARIO", _sb, "C", "30d", "0")
-    if _dr < 30:
+    if _dr < 31:
         v_cci = ContraChequeItens.objects.filter(
             idContraCheque=_id_cc, Descricao="SALARIO"
         )
+        if _dr == int(datetime.datetime.strftime(_var["ultimo_dia"], "%d")):
+            _dr = 30
         salario = _sb / 30 * int(_dr)
         if v_cci:
             obj = v_cci[0]
             obj.Valor = salario
             obj.Referencia = f"{_dr}d"
             obj.save(update_fields=["Valor", "Referencia"])
+    v_cci = ContraChequeItens.objects.filter(
+        idContraCheque=_id_cc, Descricao="VALE TRANSPORTE"
+    )
     if _dt > 0:
-        v_cci = ContraChequeItens.objects.filter(
-            idContraCheque=_id_cc, Descricao="VALE TRANSPORTE"
-        )
         conducao = Decimal(8.80) * int(_dt)
         if v_cci:
             obj = v_cci[0]
@@ -228,6 +230,9 @@ def contra_cheque_itens(_var):
             create_contra_cheque_itens(
                 _id_cc, "VALE TRANSPORTE", conducao, "C", f"{_dt}d", "0"
             )
+    else:
+        if v_cci:
+            delete_contra_cheque_itens(v_cci[0].idContraChequeItens)
     v_contra_cheque_itens = ContraChequeItens.objects.filter(idContraCheque=_id_cc)
     lista = [
         {
