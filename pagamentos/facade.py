@@ -206,7 +206,7 @@ def contra_cheque_itens(_var):
     v_contra_cheque_itens = ContraChequeItens.objects.filter(idContraCheque=_id_cc)
     if not v_contra_cheque_itens:
         create_contra_cheque_itens(_id_cc, "SALARIO", _sb, "C", "30d", "0")
-    if _dr < 31:
+    if _dr < 32:
         v_cci = ContraChequeItens.objects.filter(
             idContraCheque=_id_cc, Descricao="SALARIO"
         )
