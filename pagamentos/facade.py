@@ -7,7 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import DecimalField, ExpressionWrapper, F, Max, Min, Sum
 from django.http import JsonResponse
 from django.template.loader import render_to_string
-from minutas.facade import nome_curto
+from minutas.facade import nome_curto, nome_curto_underscore
 from minutas.models import MinutaColaboradores, MinutaItens
 from pessoas import facade
 from pessoas.forms import CadastraContraCheque, CadastraContraChequeItens, CadastraVale
@@ -21,6 +21,7 @@ from pessoas.models import (
     Vales,
 )
 from website.facade import DiasFeriados, Feriados
+from website.models import FileUpload
 
 from pagamentos.forms import CadastraCartaoPonto
 from pagamentos.models import Recibo, ReciboItens
@@ -97,6 +98,7 @@ def get_pessoa(_id_pes, _var):
         _var["id_pessoal"] = x.idPessoal
         _var["nome"] = x.Nome
         _var["nome_curto"] = nome_curto(x.Nome)
+        _var["nome_curto_u"] = nome_curto_underscore(x.Nome)
         _var["salario_base"] = _sb
     return _var
 
@@ -376,9 +378,15 @@ def html_cartao_ponto(request, _mes_ano, _id) -> JsonResponse:
     vales = vales_funcionario(_var)
     hoje = datetime.datetime.today()
     hoje = datetime.datetime.strftime(hoje, "%Y-%m-%d")
+    files = FileUpload.objects.filter(
+        DescricaoUpload__startswith=f"{_var['nome_curto_u']}_MES_{_var['mes']}_{_var['ano']}_COMPROVANTE"
+    )
+    print(f"{_var['nome_curto_u']}_MES_{_var['mes']}_{_var['ano']}_COMPROVANTE")
+    print(len(files))
     contexto = {
         "cartao_ponto": _carto_ponto,
         "nome": _var["nome_curto"],
+        "nome_underscore": _var["nome_curto_u"],
         "admissao": _var["admissao"],
         "demissao": _var["demissao"],
         "categoria": _var["categoria"],
@@ -395,9 +403,13 @@ def html_cartao_ponto(request, _mes_ano, _id) -> JsonResponse:
         "minutas": minutas,
         "vales": vales,
         "hoje": hoje,
+        "files": files,
     }
     data["html_funcionario"] = render_to_string(
         "pagamentos/html_funcionario.html", contexto, request=request
+    )
+    data["html_files_pagamento"] = render_to_string(
+        "pagamentos/html_files.html", contexto, request=request
     )
     data["html_cartao_ponto"] = render_to_string(
         "pagamentos/html_cartao_ponto.html", contexto, request=request
@@ -421,6 +433,44 @@ def html_cartao_ponto(request, _mes_ano, _id) -> JsonResponse:
         "pagamentos/html_vales_pagamento.html", contexto, request=request
     )
     return JsonResponse(data)
+
+
+def nome_arquivo(_nome_curto, _mes_ano):
+    _mes, _ano = converter_mes_ano(_mes_ano)
+    lista = []
+    files = FileUpload.objects.filter(
+        DescricaoUpload__startswith=f"{_nome_curto}_MES_{_mes}_{_ano}_COMPROVANTE"
+    )
+    seguencia = [itens + 1 for itens in range(99)]
+    for itens in files:
+        lista.append(int(itens.DescricaoUpload[-2:]))
+    lista = sorted(lista)
+    proxima_nota = str(list(set(seguencia) - set(lista))[0]).zfill(2)
+    descricao = f"{_nome_curto}_MES_{_mes}_{_ano}_COMPROVANTE_{proxima_nota}"
+    return descricao
+
+
+def salva_arquivo(_arquivo, _descricao):
+    msg = dict()
+    ext_file = _arquivo.name.split(".")[-1]
+    name_file = f"{_descricao}.{ext_file}"
+    _arquivo.name = name_file
+    obj = FileUpload()
+    obj.DescricaoUpload = _descricao
+    obj.uploadFile = _arquivo
+    try:
+        obj.save()
+        msg["text_mensagem"] = "Arquivo enviado ao servidor com sucesso"
+        msg["type_mensagem"] = "SUCESSO"
+    except:
+        msg["text_mensagem"] = "Falha ao salvar seu arquivo, tente novamente"
+        msg["type_mensagem"] = "ERROR"
+
+
+def exclui_arquivo(_id_file):
+    file = FileUpload.objects.filter(idFileUpload=_id_file)
+    if file:
+        file.delete()
 
 
 def vales_funcionario(_var):

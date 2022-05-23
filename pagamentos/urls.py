@@ -13,6 +13,7 @@ from .views import (
     cria_folha,
     cria_pagamento,
     cria_vale,
+    delete_file,
     edita_cartaoponto,
     exclui_contrachequeitens,
     exclui_contrachequeitensvale,
@@ -28,6 +29,7 @@ from .views import (
     print_contra_cheque_transporte,
     remove_contra_cheque_itens,
     remove_vales,
+    salva_file,
     seleciona_contracheque,
     seleciona_folha,
     seleciona_funcionario,
@@ -144,4 +146,10 @@ urlpatterns = [
         print_contra_cheque_transporte,
         name="print_contra_cheque_transporte",
     ),
+    path(
+        "salva_file",
+        salva_file,
+        name="salva_file",
+    ),
+    path ('delete_file', delete_file, name='delete_file',),
 ]

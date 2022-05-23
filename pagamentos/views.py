@@ -371,3 +371,24 @@ def print_contra_cheque_transporte(request):
     contexto = facade.imprime_contra_cheque_pagamento(_id_cc, "transp")
     response = print_contracheque(contexto, "VALE TRANSPORTE")
     return response
+
+
+def salva_file(request):
+    _mes_ano = request.POST.get("mes_ano")
+    _id_pes = request.POST.get("idpessoal")
+    _nome_curto = request.POST.get("nome_curto")
+    if request.FILES:
+        _arquivo = request.FILES["arquivo"]
+        _descricao = facade.nome_arquivo(_nome_curto, _mes_ano)
+        facade.salva_arquivo(_arquivo, _descricao)
+    data = facade.html_cartao_ponto(request, _mes_ano, _id_pes)
+    return data
+
+
+def delete_file(request):
+    _id_fu = request.GET.get('idfileupload')
+    facade.exclui_arquivo(_id_fu)
+    _mes_ano = request.GET.get("mes_ano")
+    _id_pes = request.GET.get("idpessoal")
+    data = facade.html_cartao_ponto(request, _mes_ano, _id_pes)
+    return data

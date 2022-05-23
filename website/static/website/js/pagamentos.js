@@ -114,6 +114,7 @@ function EscondeCards() {
     $(".js-adiantamento").fadeOut(10)
     $(".js-minutas-pagamento").fadeOut(10)
     $(".js-vales-pagamento").fadeOut(10)
+    $(".js-files-pagamento").fadeOut(10)
 }
 
 function MostraCards(data, v_mes_ano) {
@@ -133,6 +134,8 @@ function MostraCards(data, v_mes_ano) {
     $(".js-minutas-pagamento").fadeIn(10)
     $(".js-vales-pagamento").html(data.html_vales_pagamento)
     $(".js-vales-pagamento").fadeIn(10)
+    $(".js-files-pagamento").html(data.html_files_pagamento)
+    $(".js-files-pagamento").fadeIn(10)
     $('#mes_ano').val(v_mes_ano)
     $('#mes_ano_adiantamento').val(v_mes_ano)
     tamanhoCardBody();
@@ -300,6 +303,64 @@ $(document).on('click', '.js-exclui-vale', function(event) {
     })
 });
 
+$(document).on('change', '.js-file-pagamento', function() {
+    if ($('.js-file-pagamento').val()) {
+        $('.js-comprovanteTxt').text($('.js-file-pagamento').val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]);
+    } else {
+        $('.js-comprovanteTxt').text('Selecionar comprovante.');
+    }
+});
+
+$(document).on('submit', '.js-salva-file', function(event) {
+    event.preventDefault();
+    var _formData = new FormData();
+    var _arquivo = $("#filecomprovante").get(0).files[0]
+    var _csrf_token = $('input[name="csrfmiddlewaretoken"]').val()
+    var _nome_curto = $("#id_nome_curto").val()
+    var _mes_ano = $(".select-mes-ano option:selected").text();
+    var _idpessoal = $("#idpessoal").val()
+    _formData.append("arquivo", _arquivo);
+    _formData.append("csrfmiddlewaretoken", _csrf_token);
+    _formData.append("nome_curto", _nome_curto);
+    _formData.append("mes_ano", _mes_ano);
+    _formData.append("idpessoal", _idpessoal);
+    $.ajax({
+        type: $(this).attr('method'),
+        url: '/pagamentos/salva_file',
+        data: _formData,
+        cache: false,
+        processData: false,
+        contentType: false,
+        enctype: 'multipart/form-data',
+        beforeSend: function() {
+            EscondeCards();
+        },
+        success: function(data) {
+            MostraCards(data, v_mes_ano);
+        },
+    });
+});
+
+$(document).on('click', '.js-delete-file', function() {
+    var _idfileupload = $(this).data('idfileupload')
+    var _mes_ano = $(".select-mes-ano option:selected").text();
+    var _idpessoal = $(this).data('idpessoal')
+    $.ajax({
+        url: '/pagamentos/delete_file',
+        type: 'GET',
+        data: {
+            idfileupload: _idfileupload,
+            mes_ano: _mes_ano,
+            idpessoal: _idpessoal,
+        },
+        beforeSend: function() {
+            EscondeCards()
+        },
+        success: function(data) {
+            MostraCards(data, _mes_ano)
+        }
+    });
+});
 
 // TODO Excluir daqui para baixo após terminar refatoração
 $(document).on("change", ".switchmini", function(event) {

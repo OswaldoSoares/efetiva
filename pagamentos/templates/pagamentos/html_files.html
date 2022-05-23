@@ -1,0 +1,37 @@
+{% if nome %}
+<div class="article-card-titulo">
+    <span>SALVA ARQUIVOS</span>
+</div>
+<div class="article-card-body body-file">
+    {% for file in files %}
+    <div class="file-body">
+        <a class="bi bi-download i-button custonBtn radius-left"
+        href="{{ file.uploadFile.url }}" target="_blank"></a>
+        <span class="filenameTxt">{{ file.DescricaoUpload }}</span>
+        <i class="bi bi-trash i-button custonBtn radius-right js-delete-file"
+        data-idfileupload="{{ file.idFileUpload }}"
+        data-idpessoal="{{ contra_cheque.idpessoal }}"></i>
+    </div>
+    {% endfor %}
+    <form class="file-body js-salva-file" method="post"
+    enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="uploadFile" class="file js-file-pagamento"
+        id="filecomprovante" value="">
+        <label for="filecomprovante"
+        class="bi bi-folder i-button custonBtn radius-left"></label>
+        <span class="filenameTxt js-comprovanteTxt">
+            Selecionar comprovante.
+        </span>
+        <input type="hidden" value="{{ nome_underscore }}"
+        id="id_nome_curto" name="nome_curto">
+        <input type="hidden" value="{{ contra_cheque.idpessoal }}"
+        id="idpessoal" name="idpessoal">
+        <button type="submit"
+        class="bi bi-cloud-arrow-up i-button custonBtn radius-right"></button>
+    </form>
+</div>
+<div class="article-card-footer">
+    <i class="bi bi-trash-square i-button"></i>            
+</div>
+{% endif %}
