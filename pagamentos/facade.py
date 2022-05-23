@@ -221,8 +221,12 @@ def contra_cheque_itens(_var):
     v_cci = ContraChequeItens.objects.filter(
         idContraCheque=_id_cc, Descricao="VALE TRANSPORTE"
     )
+    print(_var["conducao"])
+    if _var["conducao"] == Decimal(0.00):
+        print("Dentro", _var["conducao"])
+        _dt = 0
     if _dt > 0:
-        conducao = Decimal(8.80) * int(_dt)
+        conducao = _var["conducao"] * int(_dt)
         if v_cci:
             obj = v_cci[0]
             obj.Valor = conducao
@@ -381,8 +385,6 @@ def html_cartao_ponto(request, _mes_ano, _id) -> JsonResponse:
     files = FileUpload.objects.filter(
         DescricaoUpload__startswith=f"{_var['nome_curto_u']}_MES_{_var['mes']}_{_var['ano']}_COMPROVANTE"
     )
-    print(f"{_var['nome_curto_u']}_MES_{_var['mes']}_{_var['ano']}_COMPROVANTE")
-    print(len(files))
     contexto = {
         "cartao_ponto": _carto_ponto,
         "nome": _var["nome_curto"],
