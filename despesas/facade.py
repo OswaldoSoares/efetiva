@@ -3,6 +3,8 @@ from decimal import Decimal
 
 from django.http import JsonResponse
 from django.template.loader import render_to_string
+from minutas.facade import nome_curto
+from minutas.models import Minuta, MinutaColaboradores
 from veiculos.models import Veiculo
 
 from despesas.models import Abastecimento, Multas
@@ -130,3 +132,36 @@ def save_multa(request):
         obj.DescontaMotorista = True
     obj.idVeiculo_id = request.POST.get("veiculo")
     obj.save()
+
+
+def busca_minutas_multa(_id_vei, _date):
+    _date = datetime.datetime.strptime(_date, "%Y-%m-%d")
+    minutas = Minuta.objects.filter(idVeiculo_id=_id_vei, DataMinuta=_date)
+    lista = []
+    for x in minutas:
+        morotista = MinutaColaboradores.objects.get(
+            idMinuta_id=x.idMinuta, Cargo="MOTORISTA"
+        )
+        lista.append(
+            {
+                "minuta": x.Minuta,
+                "inicio": x.HoraInicial,
+                "final": x.HoraFinal,
+                "fantasia": x.idCliente.Fantasia,
+                "motorista": nome_curto(morotista.idPessoal.Nome),
+                "demissao": morotista.idPessoal.DataDemissao,
+            }
+        )
+    return lista
+
+
+def html_minutas_multa(request, _mm):
+    data = dict()
+    minutas = Minuta.objects.all()
+    contexto = {
+        "minutas": _mm,
+    }
+    data["html_minutas_multa"] = render_to_string(
+        "despesas/html_minutas_multa.html", contexto, request=request
+    )
+    return JsonResponse(data)

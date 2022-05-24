@@ -39,6 +39,31 @@ $(document).on('submit', '.js-gera-multas', function(event) {
     });
 });
 
+$(document).on('focusout', '#hora', function() {
+    var _id_veiculo = $("#veiculo option:selected").val();
+    var _date = $('#data').val();
+    var _hora = $('#hora').val();
+    if (_id_veiculo != '') {
+        $.ajax({
+            type: 'GET',
+            url: '/despesas/minutas_multa',
+            data: {
+                idveiculo: _id_veiculo,
+                date: _date,
+                hora: _hora,
+            },
+            beforeSend: function() {
+                $('.card-minutas-multa').fadeOut(10)
+            },
+            success: function(data) {
+                $('.card-minutas-multa').html(data.html_minutas_multa)
+                $('.card-minutas-multa').fadeIn(10)
+            },
+        });
+    }
+});
+
+
 function openMyModal(event) {
     var modal = initModalDialog(event, '#MyModal');
     var url = $(event.target).data('action');

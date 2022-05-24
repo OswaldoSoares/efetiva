@@ -1,0 +1,16 @@
+<div class="article-card-titulo">
+    <span>MINUTAS DATA MULTA</span>
+</div>
+<div class="article-card-body">
+    <div class="itens-minuta">
+    {% for minuta in minutas %}
+        <div class="item-minuta">{{ minuta.minuta }}</div>
+        <div class="item-inicio">{{ minuta.inicio }}</div>
+        <div class="item-final">{{ minuta.final }}</div>
+        <div class="item-fantasia">{{ minuta.fantasia }}</div>
+        <div class="item-motorista">{{ minuta.motorista }}</div>
+        <div class="item-demissao">{{ minuta.demissao }}</div>
+    {% endfor %}
+    </div>
+</div>
+<div class="article-card-footer"></div>

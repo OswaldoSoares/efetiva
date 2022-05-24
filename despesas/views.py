@@ -25,3 +25,12 @@ def adiciona_multa(request):
     _var = dict(request.POST)
     data = facade.valida_multa(request, _var)
     return data
+
+
+def minutas_multa(request):
+    print(request.GET)
+    _id_vei = request.GET.get("idveiculo")
+    _date = request.GET.get("date")
+    _mm = facade.busca_minutas_multa(_id_vei, _date)
+    data = facade.html_minutas_multa(request, _mm)
+    return data

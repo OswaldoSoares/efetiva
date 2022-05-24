@@ -7,6 +7,71 @@
         <div class="item-multa">
             <div class="item-form">
                 <div class="button">
+                    <i class="bi bi-truck"></i>
+                </div>
+                <div class="item-field item-veiculo">
+                    <select class="form-control" name="veiculo" id="veiculo">
+                        <option value="">SELECIONE UM VEICULO</option>
+                        {% for veiculo in veiculos %}
+                        {% if request.POST.veiculo == veiculo.idVeiculo|stringformat:'.0f' %}
+                        <option value="{{ veiculo.idVeiculo }}" selected>{{ veiculo.Placa }}</option>
+                        {% else %}
+                        <option value="{{ veiculo.idVeiculo }}">{{ veiculo.Placa }}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="item-form">
+                {% if erro_veiculo %}
+                <div class="error">
+                    <span>{{ erro_veiculo }}<span>
+                </div>
+                {% endif %}
+            </div>
+        </div> 
+        <div class="item-multa">
+            <div class="item-form">
+                <div class="button">
+                    <i class="bi bi-calendar"></i>
+                </div>
+                <div class="item-field item-data">
+                    {% if request.POST %}
+                    <input class="form-control" name="data" type="date"
+                    value={{ request.POST.data }} id="data">
+                    {% else %}
+                    <input class="form-control" name="data" type="date"
+                    value={{ hoje }} id="data">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="item-form">
+                {% if erro_data %}
+                <div class="error">
+                    <span>{{ erro_data }}<span>
+                </div>
+                {% endif %}
+            </div>
+        </div>    
+        <div class="item-multa">
+            <div class="item-form">
+                <div class="button">
+                    <i class="bi bi-clock"></i>
+                </div>
+                <div class="item-field item-hora">
+                    {% if request.POST %}
+                    <input class="form-control" name="hora" type="time"
+                    value="{{ request.POST.hora }}" id="hora">
+                    {% else %}
+                    <input class="form-control" name="hora" type="time"
+                    value="07:00" id="hora">
+                    {% endif %}
+                </div>
+            </div>
+        </div>   
+        <div class="item-multa">
+            <div class="item-form">
+                <div class="button">
                     <i class="bi bi-file-richtext"></i>
                 </div>
                 <div class="item-field item-doc">
@@ -50,45 +115,6 @@
                     <span>{{ erro_doc }}<span>
                 </div>
                 {% endif %}
-            </div>
-        </div>    
-        <div class="item-multa">
-            <div class="item-form">
-                <div class="button">
-                    <i class="bi bi-calendar"></i>
-                </div>
-                <div class="item-field item-data">
-                    {% if request.POST %}
-                    <input class="form-control" name="data" type="date"
-                    value={{ request.POST.data }} id="data">
-                    {% else %}
-                    <input class="form-control" name="data" type="date"
-                    value={{ hoje }} id="data">
-                    {% endif %}
-                </div>
-            </div>
-            <div class="item-form">
-                {% if erro_data %}
-                <div class="error">
-                    <span>{{ erro_data }}<span>
-                </div>
-                {% endif %}
-            </div>
-        </div>    
-        <div class="item-multa">
-            <div class="item-form">
-                <div class="button">
-                    <i class="bi bi-clock"></i>
-                </div>
-                <div class="item-field item-hora">
-                    {% if request.POST %}
-                    <input class="form-control" name="hora" type="time"
-                    value="{{ request.POST.hora }}" id="hora">
-                    {% else %}
-                    <input class="form-control" name="hora" type="time"
-                    value="07:00" id="hora">
-                    {% endif %}
-                </div>
             </div>
         </div>    
         <div class="item-multa">
@@ -181,32 +207,6 @@
                 {% if erro_vencimento %}
                 <div class="error">
                     <span>{{ erro_vencimento }}<span>
-                </div>
-                {% endif %}
-            </div>
-        </div>    
-        <div class="item-multa">
-            <div class="item-form">
-                <div class="button">
-                    <i class="bi bi-truck"></i>
-                </div>
-                <div class="item-field item-veiculo">
-                    <select class="form-control" name="veiculo" id="veiculo">
-                        <option value="">SELECIONE UM VEICULO</option>
-                        {% for veiculo in veiculos %}
-                        {% if request.POST.veiculo == veiculo.idVeiculo|stringformat:'.0f' %}
-                        <option value="{{ veiculo.idVeiculo }}" selected>{{ veiculo.Placa }}</option>
-                        {% else %}
-                        <option value="{{ veiculo.idVeiculo }}">{{ veiculo.Placa }}</option>
-                        {% endif %}
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
-            <div class="item-form">
-                {% if erro_veiculo %}
-                <div class="error">
-                    <span>{{ erro_veiculo }}<span>
                 </div>
                 {% endif %}
             </div>
