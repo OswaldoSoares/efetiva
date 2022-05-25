@@ -4598,6 +4598,10 @@ main .fp-recibo-tabela .fp-recibo-print {
     border-bottom: 1px solid var(--color7)
 }
 
+.icofont-bus-alt-2 {
+    font-size: 16px;
+}
+
 
 /* Card - Form-Login */
 

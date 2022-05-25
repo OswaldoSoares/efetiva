@@ -17,6 +17,9 @@
       <span>{{ dias.ausencia }}</span>
     </div>
     <div class="item-button">
+      <i class="bi bi-house"></i>
+    </div>
+    <div class="item-button">
       {% if dias.remunerado %}
       <i
         class="bi bi-currency-dollar i-button js-atestada"
@@ -76,6 +79,16 @@
     {% else %}
     <div class="item-hora item-padrao">{{ dias.saida }}</div>
     {% endif %}
+    <div class="item-button">
+      {% comment %} {{ dias.transporte }} {% endcomment %}
+      {% if dias.transporte %}
+      <i class="icofont-bus-alt-2 i-button js-altera-veiculo"
+        idpessoal="{{ idpessoal }}"
+        idcartaoponto="{{ dias.idcartaoponto }}"></i>
+      {% else %}
+      <i class="icofont-bicycle-alt-1 i-button"></i>
+      {% endif %}
+    </div>
     <div class="item-button">
       {% if dias.remunerado %}
       <i

@@ -135,7 +135,7 @@ def cartao_ponto(_var):
     _dem = _var["demissao"]
     _cp = CartaoPonto.objects.filter(Dia__range=[_pdm, _udm], idPessoal=_id_pes)
     if not _cp:
-        create_cartao_ponto(_id_pes, _pdm, _udm, _adm, _dem)
+        create_cartao_ponto(_id_pes, _pdm, _udm, _adm, _dem, _var)
     else:
         _var["cartao_ponto"] = _cp
         update_cartao_ponto(_var)
@@ -221,9 +221,7 @@ def contra_cheque_itens(_var):
     v_cci = ContraChequeItens.objects.filter(
         idContraCheque=_id_cc, Descricao="VALE TRANSPORTE"
     )
-    print(_var["conducao"])
     if _var["conducao"] == Decimal(0.00):
-        print("Dentro", _var["conducao"])
         _dt = 0
     if _dt > 0:
         conducao = _var["conducao"] * int(_dt)
@@ -649,7 +647,7 @@ def cria_contexto_pagamentos():
 
 
 def create_cartao_ponto(
-    v_idpessoal, v_primeiro_dia_mes, v_ultimo_dia_mes, v_admissao, v_demissao
+    v_idpessoal, v_primeiro_dia_mes, v_ultimo_dia_mes, v_admissao, v_demissao, _var
 ):
     feriados = DiasFeriados().__dict__["feriados"]
     dia = v_primeiro_dia_mes
@@ -664,7 +662,10 @@ def create_cartao_ponto(
             obj.Conducao = False
         else:
             obj.Ausencia = ""
-            obj.Conducao = True
+            if _var["conducao"] == Decimal(0.00):
+                obj.Conducao = False
+            else:
+                obj.Conducao = True
         if dia.date() in feriados:
             obj.Ausencia = "FERIADO"
             obj.Conducao = False
@@ -717,6 +718,8 @@ def update_cartao_ponto(_var):
                 obj.Remunerado = True
                 obj.Entrada = "07:00:00"
                 obj.Saida = "17:00:00"
+            if _var["conducao"] == Decimal(0.00):
+                obj.Conducao = False
         if not _dem is None:
             if x.Dia > _dem:
                 if obj.Ausencia != "-------":
@@ -726,6 +729,7 @@ def update_cartao_ponto(_var):
                     obj.Alteracao = "ROBOT"
                     obj.Entrada = "07:00:00"
                     obj.Saida = "17:00:00"
+        
         obj.save(
             update_fields=[
                 "Ausencia",
