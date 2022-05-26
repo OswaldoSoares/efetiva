@@ -127,6 +127,14 @@ def dias_transporte(_cp):
     return dias
 
 
+def dias_carro_empresa(_cp):
+    dias = 0
+    for itens in _cp:
+        if itens["carro_empresa"]:
+            dias += 1
+    return dias
+
+
 def cartao_ponto(_var):
     _id_pes = _var["id_pessoal"]
     _pdm = _var["primeiro_dia"]
@@ -152,6 +160,7 @@ def cartao_ponto(_var):
             "saida": x.Saida,
             "transporte": x.Conducao,
             "remunerado": x.Remunerado,
+            "carro_empresa": x.CarroEmpresa,
         }
         for x in _cp
     ]
@@ -203,6 +212,7 @@ def contra_cheque_itens(_var):
     _sb = _var["salario_base"]
     _dr = _var["dias_remunerado"]
     _dt = _var["dias_transporte"]
+    _dce = _var["dias_carro_empresa"]
     v_contra_cheque_itens = ContraChequeItens.objects.filter(idContraCheque=_id_cc)
     if not v_contra_cheque_itens:
         create_contra_cheque_itens(_id_cc, "SALARIO", _sb, "C", "30d", "0")
@@ -221,6 +231,7 @@ def contra_cheque_itens(_var):
     v_cci = ContraChequeItens.objects.filter(
         idContraCheque=_id_cc, Descricao="VALE TRANSPORTE"
     )
+    _dt = _dt - _dce
     if _var["conducao"] == Decimal(0.00):
         _dt = 0
     if _dt > 0:
@@ -368,6 +379,7 @@ def html_cartao_ponto(request, _mes_ano, _id) -> JsonResponse:
     _var["dias_falta"] = dias_falta(_carto_ponto)
     _var["dias_remunerado"] = dias_remunerado(_carto_ponto)
     _var["dias_transporte"] = dias_transporte(_carto_ponto)
+    _var["dias_carro_empresa"] = dias_carro_empresa(_carto_ponto)
     _cc = contra_cheque(_var)
     _var["id_contra_cheque"] = _cc["idcontracheque"]
     atrazo(_var)
@@ -729,7 +741,7 @@ def update_cartao_ponto(_var):
                     obj.Alteracao = "ROBOT"
                     obj.Entrada = "07:00:00"
                     obj.Saida = "17:00:00"
-        
+
         obj.save(
             update_fields=[
                 "Ausencia",
@@ -790,6 +802,19 @@ def falta_remunerada(request, _id_cp, _mes_ano):
     return data
 
 
+def altera_carro_empresa(request, _id_cp, _mes_ano):
+    _cp = CartaoPonto.objects.get(idCartaoPonto=_id_cp)
+    obj = _cp
+    if obj.CarroEmpresa == True:
+        obj.CarroEmpresa = False
+    else:
+        obj.CarroEmpresa = True
+    obj.save(update_fields=["CarroEmpresa"])
+    _id_pes = _cp.idPessoal_id
+    data = html_cartao_ponto(request, _mes_ano, _id_pes)
+    return data
+
+
 def verifica_falta(v_cartao_ponto):
     faltas = len(v_cartao_ponto.filter(Ausencia__exact="FALTA", Alteracao="ROBOT"))
     for itens in v_cartao_ponto:
@@ -843,6 +868,7 @@ def imprime_contra_cheque_pagamento(_id_cc, tipo):
     _var["dias_falta"] = dias_falta(_carto_ponto)
     _var["dias_remunerado"] = dias_remunerado(_carto_ponto)
     _var["dias_transporte"] = dias_transporte(_carto_ponto)
+    _var["dias_carro_empresa"] = dias_carro_empresa(_carto_ponto)
     _var["id_contra_cheque"] = _id_cc
     atrazo(_var)
     hora_extra(_var)

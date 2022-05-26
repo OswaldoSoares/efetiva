@@ -288,6 +288,13 @@ def atestada(request):
     return data
 
 
+def carro_empresa(request):
+    _id_cp = request.GET.get("idcartaoponto")
+    _mes_ano = request.GET.get("mes_ano")
+    data = facade.altera_carro_empresa(request, _id_cp, _mes_ano)
+    return data
+
+
 def adiantamento(request):
     _descricao = request.POST.get("descricao")
     _valor = request.POST.get("valor_adiantamento")
@@ -386,7 +393,7 @@ def salva_file(request):
 
 
 def delete_file(request):
-    _id_fu = request.GET.get('idfileupload')
+    _id_fu = request.GET.get("idfileupload")
     facade.exclui_arquivo(_id_fu)
     _mes_ano = request.GET.get("mes_ano")
     _id_pes = request.GET.get("idpessoal")

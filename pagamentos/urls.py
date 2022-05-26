@@ -8,6 +8,7 @@ from .views import (
     apagar_tudo,
     atestada,
     ausencia_falta,
+    carro_empresa,
     cria_contrachequeitens,
     cria_contrachequeitensvale,
     cria_folha,
@@ -151,5 +152,14 @@ urlpatterns = [
         salva_file,
         name="salva_file",
     ),
-    path ('delete_file', delete_file, name='delete_file',),
+    path(
+        "delete_file",
+        delete_file,
+        name="delete_file",
+    ),
+    path(
+        "carro_empresa",
+        carro_empresa,
+        name="carro_empresa",
+    ),
 ]

@@ -164,6 +164,29 @@ $(document).on("click", ".js-altera-falta", function(event) {
     });
 });
 
+$(document).on("click", ".js-altera-carro-empresa", function(event) {
+    var v_mes_ano = $(".select-mes-ano option:selected").text();
+    var v_idcartaoponto = $(this).attr("idcartaoponto");
+    $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: "/pagamentos/carro_empresa",
+        data: {
+            mes_ano: v_mes_ano,
+            idcartaoponto: v_idcartaoponto,
+        },
+        beforeSend: function() {
+            EscondeCards();
+        },
+        success: function(data) {
+            MostraCards(data, v_mes_ano);
+        },
+        error: function(error, data) {
+            console.log(error);
+        },
+    });
+});
+
 $(document).on("click", ".js-atestada", function(event) {
     var v_mes_ano = $(".select-mes-ano option:selected").text();
     var v_idcartaoponto = $(this).attr("idcartaoponto");
