@@ -135,6 +135,14 @@ def dias_carro_empresa(_cp):
     return dias
 
 
+def dias_trabalhado(_cp):
+    dias = 0
+    for itens in _cp:
+        if itens["ausencia"] == "":
+            dias += 1
+    return dias
+
+
 def cartao_ponto(_var):
     _id_pes = _var["id_pessoal"]
     _pdm = _var["primeiro_dia"]
@@ -380,6 +388,7 @@ def html_cartao_ponto(request, _mes_ano, _id) -> JsonResponse:
     _var["dias_remunerado"] = dias_remunerado(_carto_ponto)
     _var["dias_transporte"] = dias_transporte(_carto_ponto)
     _var["dias_carro_empresa"] = dias_carro_empresa(_carto_ponto)
+    _var["dias_trabalhado"] = dias_trabalhado(_carto_ponto)
     _cc = contra_cheque(_var)
     _var["id_contra_cheque"] = _cc["idcontracheque"]
     atrazo(_var)
@@ -409,6 +418,9 @@ def html_cartao_ponto(request, _mes_ano, _id) -> JsonResponse:
         "saldo": _st,
         "adiantamento": _adiantamento,
         "dias_admitido": dias_admitido(_var),
+        "dias_remunerado": _var["dias_remunerado"],
+        "dias_trabalhado": _var["dias_trabalhado"],
+        "dias_transporte": _var["dias_transporte"] - _var["dias_carro_empresa"],
         "valor_dia": _var["salario_base"] / 30,
         "valor_hora": _var["salario_base"] / 30 / 9,
         "valor_extra": _var["salario_base"] / 30 / 9 * Decimal(1.5),

@@ -21,6 +21,9 @@
     <article class="article-card card-folha js-folha">
       {% include 'pagamentos/html_folha.html' %}
     </article>
+    <article class="article-card card-adiantamento js-adiantamento">
+      {% include 'pagamentos/html_adiantamento.html' %}
+    </article>
     <article class="article-card card-funcionario-pagamento js-funcionario-pagamento">
       {% include 'pagamentos/html_funcionario.html' %}
     </article>
@@ -41,13 +44,12 @@
       {% include 'pagamentos/html_contra_cheque.html' %}
     </article>
   </div>
-  <div>
-    <article class="article-card card-files js-files-pagamento">
-      {% include 'pagamentos/html_files.html' %}
-    </article>
-    <article class="article-card card-adiantamento js-adiantamento">
-      {% include 'pagamentos/html_adiantamento.html' %}
-    </article>
+  <div class="div-quatro">
+    <div>
+      <article class="article-card card-files js-files-pagamento">
+        {% include 'pagamentos/html_files.html' %}
+      </article>
+    </div>
     <article class="article-card card-minutas-pagamento js-minutas-pagamento">
       {% include 'pagamentos/html_minutas.html' %}
     </article>
@@ -55,7 +57,7 @@
       {% include 'pagamentos/html_vales_pagamento.html' %}
     </article>
   </div>
-  <div class="pagamento-conteudo mensalistas">
+  {% comment %} <div class="pagamento-conteudo mensalistas">
     <header class="titulo-mensalistas">
       <h3>FOLHA DE PAGAMENTO MENSALISTAS</h3>
       <button
@@ -99,7 +101,7 @@
       </div>
       <div class="fp-base"><!-- Comentário: arquivo folhapgto.html --></div>
     </main>
-  </div>
+  </div> {% endcomment %}
   {% if user|can:'pagamentos_avulso' %}
   <div class="pagamento-conteudo avulsos">
     <header class="titulo-mensalistas">

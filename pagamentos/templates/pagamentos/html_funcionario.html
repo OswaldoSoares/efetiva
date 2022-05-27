@@ -33,6 +33,18 @@
         <span>VALOR HORA EXTRA:</span>
         <span>R$ {{ valor_extra|stringformat:'.2f' }}</span>
     </div>
+    <div class="itens-funcionario-pagamento">
+        <span>DIAS REMUNERADO:</span>
+        <span>{{ dias_remunerado }}</span>
+    </div>
+    <div class="itens-funcionario-pagamento">
+        <span>DIAS TRABALHADO:</span>
+        <span>{{ dias_trabalhado }}</span>
+    </div>
+    <div class="itens-funcionario-pagamento">
+        <span>DIAS CONDUÇÃO:</span>
+        <span>{{ dias_transporte }}</span>
+    </div>
 </div>
 <div class="article-card-footer"></div>
 {% endif %}

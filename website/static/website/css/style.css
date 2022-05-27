@@ -4368,7 +4368,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-adiantamento {
-    width: 360px;
+    width: 300px;
 }
 
 .card-adiantamento .item-adiantamento {
@@ -4598,8 +4598,30 @@ main .fp-recibo-tabela .fp-recibo-print {
     border-bottom: 1px solid var(--color7)
 }
 
+.card-files {
+    width: 360px;
+}
+
 .icofont-bus-alt-2 {
     font-size: 16px;
+}
+
+.div-quatro {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+@media screen and (max-width: 1589px) {
+    .div-quatro {
+        flex-direction: row;
+    }
+    .card-files,
+    .card-minutas-pagamento,
+    .card-vales-pagamento {
+        width: 400px;
+    }
 }
 
 

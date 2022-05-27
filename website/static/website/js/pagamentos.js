@@ -28,6 +28,9 @@ var topPosition = 0;
 var tamanhoCardBody = function() {
     var topPosition = $('.card-mes-ano').position().top
     var cci_top = $('.js-itens-contra-cheque').position().top
+    var fil_top = $('.js-files-pagamento').position().top
+    var fil_hei = $('.js-body-files-pagamento').height()
+    var fil_area = fil_top + fil_hei
     var adi_top = $('.js-adiantamento').position().top
     var fun_top = $('.js-funcionario-pagamento').position().top
     var fun_hei = $('.js-body-funcionario').height()
@@ -38,11 +41,14 @@ var tamanhoCardBody = function() {
     var coc_top = $('.js-contra-cheque').position().top
     var coc_hei = $('.js-body-contra-cheque').height()
     var coc_area = coc_top + coc_hei
+    var min_top = $('.js-minutas-pagamento').position().top
+    var min_hei = $('.js-body-minutas-pagamento').height()
+    var min_area = min_top + min_hei
     var val_top = $('.js-vales-pagamento').position().top
     var val_hei = $('.js-body-vales-pagamento').height()
     var val_area = val_top + val_hei
 
-    if (car_top == topPosition && cci_top == topPosition && adi_top == topPosition) {
+    if (car_top == topPosition && cci_top == topPosition && fil_top == topPosition) {
         var areas = [fun_area, car_area, coc_area, val_area]
         maior = Math.max(...areas)
         $('.js-body-funcionario').height(maior - fun_top)
@@ -57,6 +63,14 @@ var tamanhoCardBody = function() {
         $('.js-body-funcionario').height(maior - fun_top)
         $('.js-body-cartao-ponto').height(maior - car_top)
         $('.js-body-contra-cheque').height(maior - coc_top)
+    }
+
+    if ($(window).width() < 1590) {
+        var areas = [fil_area, min_area, val_area]
+        maior = Math.max(...areas)
+        $('.js-body-files-pagamento').height(maior - fil_top)
+        $('.js-body-minutas-pagamento').height(maior - min_top)
+        $('.js-body-vales-pagamento').height(maior - val_top)
     }
 }
 
