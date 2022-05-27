@@ -1,106 +1,111 @@
 {% load humanize %}
+{% load permission_tags %}
 {% if nome %}
 {% if contra_cheque_itens %}
 <div class="article-card-titulo card-contra-cheque">
   <span>CONTRA CHEQUE</span>
 </div>
 <div class="article-card-body js-body-contra-cheque">
-  <div class="itens-contra-cheque">
-    <div class="item-descricao item-titulo">DESCRIÇÃO</div>
-    <div class="item-referencia item-titulo">REFERÊNCIA</div>
-    <div class="item-vencimentos item-titulo">VENCIMENTOS</div>
-    <div class="item-descontos item-titulo">DESCONTOS</div>
-    <div class="item-botoes item-titulo"><span>.</span></div>
-  </div>
-  {% for cci in contra_cheque_itens %}
-  <div class="itens-contra-cheque">
-    <div class="item-descricao">
-        {% if cci.descricao|length > 22 %}
-        {{ cci.descricao|slice:"0:22" }} ...
-        {% else %}
-        {{ cci.descricao }}
+  {% if user|can:'pagamentos_folha' %}
+    <div class="itens-contra-cheque">
+      <div class="item-descricao item-titulo">DESCRIÇÃO</div>
+      <div class="item-referencia item-titulo">REFERÊNCIA</div>
+      <div class="item-vencimentos item-titulo">VENCIMENTOS</div>
+      <div class="item-descontos item-titulo">DESCONTOS</div>
+      <div class="item-botoes item-titulo"><span>.</span></div>
+    </div>
+    {% for cci in contra_cheque_itens %}
+    <div class="itens-contra-cheque">
+      <div class="item-descricao">
+          {% if cci.descricao|length > 22 %}
+          {{ cci.descricao|slice:"0:22" }} ...
+          {% else %}
+          {{ cci.descricao }}
+          {% endif %}
+      </div>
+      <div class="item-referencia">
+        {% if cci.referencia %} {{ cci.referencia }} {% else %}
+        <span>.</span>
         {% endif %}
-    </div>
-    <div class="item-referencia">
-      {% if cci.referencia %} {{ cci.referencia }} {% else %}
-      <span>.</span>
-      {% endif %}
-    </div>
-    <div class="item-vencimentos">
-      {% if cci.registro == 'C' %} R$ {{ cci.valor|intcomma }} 
-      {% else %}
-      <span>.</span>
-      {% endif %}
-    </div>
-    <div class="item-descontos">
-      {% if cci.registro == 'D' %} R$ {{ cci.valor|intcomma }} 
-      {% else %}
-      <span>.</span>
-      {% endif %}
-    </div>
-    <div class="item-botoes">
-      {% if cci.descricao == 'SALARIO' or cci.descricao == 'ATRAZO' or cci.descricao == 'HORA EXTRA' %}
-        <i class="bi bi-pin-angle"></i>
-        <i class="bi bi-pin-angle"></i>
-      {% elif cci.descricao == 'ADIANTAMENTO' %}
-        <a class="bi bi-printer i-button"
-        href="{% url 'print_contra_cheque_adiantamento' %}?idcc={{ contra_cheque.idcontracheque }}"
-        target="_blank"></a>
-        <i class="bi bi-trash i-button js-exclui-contra-cheque-itens"
-        data-idcontrachequeitens="{{ cci.idcontrachequeitens }}"
-        data-idpessoal="{{ contra_cheque.idpessoal }}"></i>
-        {% elif cci.descricao == 'VALE TRANSPORTE' %}
-        <a class="bi bi-printer i-button"
-        href="{% url 'print_contra_cheque_transporte' %}?idcc={{ contra_cheque.idcontracheque }}"
-        target="_blank"></a>
-        <i class="bi bi-pin-angle"></i>
+      </div>
+      <div class="item-vencimentos">
+        {% if cci.registro == 'C' %} R$ {{ cci.valor|intcomma }} 
         {% else %}
-        <i class="bi bi-pin-angle"></i>
-        <i class="bi bi-trash i-button js-exclui-contra-cheque-itens"
-        data-idcontrachequeitens="{{ cci.idcontrachequeitens }}"
-        data-idpessoal="{{ contra_cheque.idpessoal }}"></i>
-      {% comment %} <span>.</span> {% endcomment %}
-      {% endif %}
+        <span>.</span>
+        {% endif %}
+      </div>
+      <div class="item-descontos">
+        {% if cci.registro == 'D' %} R$ {{ cci.valor|intcomma }} 
+        {% else %}
+        <span>.</span>
+        {% endif %}
+      </div>
+      <div class="item-botoes">
+        {% if cci.descricao == 'SALARIO' or cci.descricao == 'ATRAZO' or cci.descricao == 'HORA EXTRA' %}
+          <i class="bi bi-pin-angle"></i>
+          <i class="bi bi-pin-angle"></i>
+        {% elif cci.descricao == 'ADIANTAMENTO' %}
+          <a class="bi bi-printer i-button"
+          href="{% url 'print_contra_cheque_adiantamento' %}?idcc={{ contra_cheque.idcontracheque }}"
+          target="_blank"></a>
+          <i class="bi bi-trash i-button js-exclui-contra-cheque-itens"
+          data-idcontrachequeitens="{{ cci.idcontrachequeitens }}"
+          data-idpessoal="{{ contra_cheque.idpessoal }}"></i>
+          {% elif cci.descricao == 'VALE TRANSPORTE' %}
+          <a class="bi bi-printer i-button"
+          href="{% url 'print_contra_cheque_transporte' %}?idcc={{ contra_cheque.idcontracheque }}"
+          target="_blank"></a>
+          <i class="bi bi-pin-angle"></i>
+          {% else %}
+          <i class="bi bi-pin-angle"></i>
+          <i class="bi bi-trash i-button js-exclui-contra-cheque-itens"
+          data-idcontrachequeitens="{{ cci.idcontrachequeitens }}"
+          data-idpessoal="{{ contra_cheque.idpessoal }}"></i>
+        {% comment %} <span>.</span> {% endcomment %}
+        {% endif %}
+      </div>
     </div>
-  </div>
-  {% endfor %}
-  <div class="itens-contra-cheque">
-    <div class="item-descricao item-vazio-top"><span>.</span></div>
-    <div class="item-referencia item-vazio-top"><span>.</span></div>
-    <div class="item-vencimentos">
-      {% if vencimentos.soma > 0 %}
-      R$ {{ vencimentos.soma|intcomma }}
-      {% else %}
-      R$ {{ vencimentos.soma|floatformat:2|intcomma }}
-      {% endif %}
+    {% endfor %}
+    <div class="itens-contra-cheque">
+      <div class="item-descricao item-vazio-top"><span>.</span></div>
+      <div class="item-referencia item-vazio-top"><span>.</span></div>
+      <div class="item-vencimentos">
+        {% if vencimentos.soma > 0 %}
+        R$ {{ vencimentos.soma|intcomma }}
+        {% else %}
+        R$ {{ vencimentos.soma|floatformat:2|intcomma }}
+        {% endif %}
+      </div>
+      <div class="item-descontos">
+        {% if descontos.soma > 0 %}
+        R$ {{ descontos.soma|intcomma }}
+        {% else %}
+        R$ {{ descontos.soma|floatformat:2|intcomma }}
+        {% endif %}
+      </div>
+      <div class="item-botoes"><span>.</span></div>
     </div>
-    <div class="item-descontos">
-      {% if descontos.soma > 0 %}
-      R$ {{ descontos.soma|intcomma }}
-      {% else %}
-      R$ {{ descontos.soma|floatformat:2|intcomma }}
-      {% endif %}
+    <div class="itens-contra-cheque">
+      <div class="item-descricao item-vazio-bottom"><span>.</span></div>
+      <div class="item-referencia item-vazio-bottom"><span>.</span></div>
+      <div class="item-vencimentos item-ultima-linha">
+        A RECEBER <i class="bi bi-arrow-right"></i>
+      </div>
+      <div class="item-descontos item-ultima-linha">
+        {% if saldo > 0%}
+        R$ {{ saldo|intcomma }}</div>
+        {% else %}
+        R$ {{ saldo|floatformat:2|intcomma }}</div>
+        {% endif %}
+      <div class="item-botoes item-ultima-linha">
+        <a class="bi bi-printer i-button"
+        href="{% url 'print_contra_cheque_pagamento' %}?idcc={{ contra_cheque.idcontracheque }}"
+        target="_blank"></a>
+      </div>
     </div>
-    <div class="item-botoes"><span>.</span></div>
-  </div>
-  <div class="itens-contra-cheque">
-    <div class="item-descricao item-vazio-bottom"><span>.</span></div>
-    <div class="item-referencia item-vazio-bottom"><span>.</span></div>
-    <div class="item-vencimentos item-ultima-linha">
-      A RECEBER <i class="bi bi-arrow-right"></i>
-    </div>
-    <div class="item-descontos item-ultima-linha">
-      {% if saldo > 0%}
-      R$ {{ saldo|intcomma }}</div>
-      {% else %}
-      R$ {{ saldo|floatformat:2|intcomma }}</div>
-      {% endif %}
-    <div class="item-botoes item-ultima-linha">
-      <a class="bi bi-printer i-button"
-      href="{% url 'print_contra_cheque_pagamento' %}?idcc={{ contra_cheque.idcontracheque }}"
-      target="_blank"></a>
-    </div>
-  </div>
+  {% else %}
+    <div class='ponto'>.</div>
+  {% endif %}
 </div>
 <div class="article-card-footer"></div>
 {% endif %}

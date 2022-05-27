@@ -1,8 +1,10 @@
+{% load permission_tags %}
 {% if nome %}
 <div class="article-card-titulo">
   <span>ADICIONAR ITEM</span>
 </div>
 <div class="article-card-body">
+  {% if user|can:'pagamentos_folha' %}
     <div class="item-contra-cheque-itens">
       <form class="js-gera-contra-cheque-itens" method="post"
       action="{% url 'adiantamento' %}">
@@ -32,6 +34,9 @@
         </div>
       </form>
     </div>
+  {% else %}
+    <div class="ponto">.</div>
+  {% endif %}
 </div>
 <div class="article-card-footer"></div>
 {% endif %}

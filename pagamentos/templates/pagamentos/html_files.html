@@ -1,3 +1,4 @@
+{% load permission_tags %}
 {% if nome %}
 <div class="article-card-titulo">
     <span>SALVA ARQUIVOS</span>
@@ -8,9 +9,13 @@
         <a class="bi bi-download i-button custonBtn radius-left"
         href="{{ file.uploadFile.url }}" target="_blank"></a>
         <span class="filenameTxt">{{ file.DescricaoUpload }}</span>
+        {% if user|can:'pagamentos_folha' %}
         <i class="bi bi-trash i-button custonBtn radius-right js-delete-file"
         data-idfileupload="{{ file.idFileUpload }}"
         data-idpessoal="{{ contra_cheque.idpessoal }}"></i>
+        {% else %}
+        <i class="custonBtn radius-right"></i>
+        {% endif %}
     </div>
     {% endfor %}
     <form class="file-body js-salva-file" method="post"

@@ -4482,6 +4482,10 @@ main .fp-recibo-tabela .fp-recibo-print {
     text-align: center;
 }
 
+.ponto {
+    color: var(--color2)
+}
+
 
 /* Card - Despesas */
 
