@@ -402,7 +402,7 @@ def html_cartao_ponto(request, _mes_ano, _id) -> JsonResponse:
     hoje = datetime.datetime.today()
     hoje = datetime.datetime.strftime(hoje, "%Y-%m-%d")
     files = FileUpload.objects.filter(
-        DescricaoUpload__startswith=f"{_var['nome_curto_u']}_MES_{_var['mes']}_{_var['ano']}_COMPROVANTE"
+        DescricaoUpload__startswith=f"{_var['nome_curto_u']}_MES_{_var['mes']}_{_var['ano']}"
     )
     contexto = {
         "cartao_ponto": _carto_ponto,
@@ -459,18 +459,24 @@ def html_cartao_ponto(request, _mes_ano, _id) -> JsonResponse:
     return JsonResponse(data)
 
 
-def nome_arquivo(_nome_curto, _mes_ano):
+def nome_arquivo(_nome_curto, _mes_ano, _tipo):
     _mes, _ano = converter_mes_ano(_mes_ano)
+    if _tipo == "adiantamento":
+        _tipo_file = "ADIANTAMENTO"
+    elif _tipo == "contracheque":
+        _tipo_file = "CONTRA-CHEQUE"
+    else:
+        _tipo_file = "DIVERSOS"
     lista = []
     files = FileUpload.objects.filter(
-        DescricaoUpload__startswith=f"{_nome_curto}_MES_{_mes}_{_ano}_COMPROVANTE"
+        DescricaoUpload__startswith=f"{_nome_curto}_MES_{_mes}_{_ano}_{_tipo_file}"
     )
     seguencia = [itens + 1 for itens in range(99)]
     for itens in files:
         lista.append(int(itens.DescricaoUpload[-2:]))
     lista = sorted(lista)
     proxima_nota = str(list(set(seguencia) - set(lista))[0]).zfill(2)
-    descricao = f"{_nome_curto}_MES_{_mes}_{_ano}_COMPROVANTE_{proxima_nota}"
+    descricao = f"{_nome_curto}_MES_{_mes}_{_ano}_{_tipo_file}_{proxima_nota}"
     return descricao
 
 

@@ -8,7 +8,7 @@
     <div class="file-body">
         <a class="bi bi-download i-button custonBtn radius-left"
         href="{{ file.uploadFile.url }}" target="_blank"></a>
-        <span class="filenameTxt">{{ file.DescricaoUpload }}</span>
+        <span class="filenameTxt">{{ file.DescricaoUpload|cut:nome_underscore|slice:'13:' }}</span>
         {% if user|can:'pagamentos_folha' %}
         <i class="bi bi-trash i-button custonBtn radius-right js-delete-file"
         data-idfileupload="{{ file.idFileUpload }}"
@@ -19,14 +19,48 @@
     </div>
     {% endfor %}
     <form class="file-body js-salva-file" method="post"
-    enctype="multipart/form-data">
+    enctype="multipart/form-data" data-tipo="adiantamento">
         {% csrf_token %}
-        <input type="file" name="uploadFile" class="file js-file-pagamento"
-        id="filecomprovante" value="">
-        <label for="filecomprovante"
+        <input type="file" name="uploadFile" class="file js-file-adiantamento"
+        id="file_adiantamento" value="">
+        <label for="file_adiantamento"
         class="bi bi-folder i-button custonBtn radius-left"></label>
-        <span class="filenameTxt js-comprovanteTxt">
-            Selecionar comprovante.
+        <span class="filenameTxt js-adiantamentoTxt">
+            Comprovante Adiantamento.
+        </span>
+        <input type="hidden" value="{{ nome_underscore }}"
+        id="id_nome_curto" name="nome_curto">
+        <input type="hidden" value="{{ contra_cheque.idpessoal }}"
+        id="idpessoal" name="idpessoal">
+        <button type="submit"
+        class="bi bi-cloud-arrow-up i-button custonBtn radius-right"></button>
+    </form>
+    <form class="file-body js-salva-file" method="post"
+    enctype="multipart/form-data" data-tipo="contracheque">
+        {% csrf_token %}
+        <input type="file" name="uploadFile" class="file js-file-contracheque"
+        id="file_contracheque" value="">
+        <label for="file_contracheque"
+        class="bi bi-folder i-button custonBtn radius-left"></label>
+        <span class="filenameTxt js-contrachequeTxt">
+            Comprovante Contra Cheque.
+        </span>
+        <input type="hidden" value="{{ nome_underscore }}"
+        id="id_nome_curto" name="nome_curto">
+        <input type="hidden" value="{{ contra_cheque.idpessoal }}"
+        id="idpessoal" name="idpessoal">
+        <button type="submit"
+        class="bi bi-cloud-arrow-up i-button custonBtn radius-right"></button>
+    </form>
+    <form class="file-body js-salva-file" method="post"
+    enctype="multipart/form-data" data-tipo="diversos">
+        {% csrf_token %}
+        <input type="file" name="uploadFile" class="file js-file-diversos"
+        id="file_diversos" value="">
+        <label for="file_diversos"
+        class="bi bi-folder i-button custonBtn radius-left"></label>
+        <span class="filenameTxt js-diversosTxt">
+            Comprovante Diversos.
         </span>
         <input type="hidden" value="{{ nome_underscore }}"
         id="id_nome_curto" name="nome_curto">

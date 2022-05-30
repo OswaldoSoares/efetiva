@@ -57,12 +57,14 @@ var tamanhoCardBody = function() {
         $('.js-body-vales-pagamento').height(maior - val_top)
     }
 
-    if (car_top == topPosition && cci_top == topPosition) {
-        var areas = [fun_area, car_area, coc_area]
-        maior = Math.max(...areas)
-        $('.js-body-funcionario').height(maior - fun_top)
-        $('.js-body-cartao-ponto').height(maior - car_top)
-        $('.js-body-contra-cheque').height(maior - coc_top)
+    if (fil_top != topPosition) {
+        if (car_top == topPosition && cci_top == topPosition) {
+            var areas = [fun_area, car_area, coc_area]
+            maior = Math.max(...areas)
+            $('.js-body-funcionario').height(maior - fun_top)
+            $('.js-body-cartao-ponto').height(maior - car_top)
+            $('.js-body-contra-cheque').height(maior - coc_top)
+        }
     }
 
     if ($(window).width() < 1590) {
@@ -340,18 +342,35 @@ $(document).on('click', '.js-exclui-vale', function(event) {
     })
 });
 
-$(document).on('change', '.js-file-pagamento', function() {
-    if ($('.js-file-pagamento').val()) {
-        $('.js-comprovanteTxt').text($('.js-file-pagamento').val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]);
+$(document).on('change', '.js-file-contracheque', function() {
+    if ($('.js-file-contracheque').val()) {
+        $('.js-contrachequeTxt').text($('.js-file-contracheque').val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]);
     } else {
-        $('.js-comprovanteTxt').text('Selecionar comprovante.');
+        $('.js-contrachequeTxt').text('Selecionar comprovante.');
+    }
+});
+
+$(document).on('change', '.js-file-adiantamento', function() {
+    if ($('.js-file-adiantamento').val()) {
+        $('.js-adiantamentoTxt').text($('.js-file-adiantamento').val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]);
+    } else {
+        $('.js-adiantamentoTxt').text('Selecionar comprovante.');
+    }
+});
+
+$(document).on('change', '.js-file-diversos', function() {
+    if ($('.js-file-diversos').val()) {
+        $('.js-diversosTxt').text($('.js-file-diversos').val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]);
+    } else {
+        $('.js-diversosTxt').text('Selecionar comprovante.');
     }
 });
 
 $(document).on('submit', '.js-salva-file', function(event) {
     event.preventDefault();
     var _formData = new FormData();
-    var _arquivo = $("#filecomprovante").get(0).files[0]
+    var _tipo_comprovante = $(this).data('tipo');
+    var _arquivo = $("#file_" + _tipo_comprovante).get(0).files[0]
     var _csrf_token = $('input[name="csrfmiddlewaretoken"]').val()
     var _nome_curto = $("#id_nome_curto").val()
     var _mes_ano = $(".select-mes-ano option:selected").text();
@@ -361,6 +380,7 @@ $(document).on('submit', '.js-salva-file', function(event) {
     _formData.append("nome_curto", _nome_curto);
     _formData.append("mes_ano", _mes_ano);
     _formData.append("idpessoal", _idpessoal);
+    _formData.append("tipo_comprovante", _tipo_comprovante);
     $.ajax({
         type: $(this).attr('method'),
         url: '/pagamentos/salva_file',

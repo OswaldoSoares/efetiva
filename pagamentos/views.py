@@ -381,12 +381,17 @@ def print_contra_cheque_transporte(request):
 
 
 def salva_file(request):
+    print(request.POST)
+    print(request.FILES)
     _mes_ano = request.POST.get("mes_ano")
     _id_pes = request.POST.get("idpessoal")
     _nome_curto = request.POST.get("nome_curto")
+    _tipo = request.POST["tipo_comprovante"]
+    print(_tipo)
     if request.FILES:
         _arquivo = request.FILES["arquivo"]
-        _descricao = facade.nome_arquivo(_nome_curto, _mes_ano)
+        _descricao = facade.nome_arquivo(_nome_curto, _mes_ano, _tipo)
+        print(_descricao)
         facade.salva_arquivo(_arquivo, _descricao)
     data = facade.html_cartao_ponto(request, _mes_ano, _id_pes)
     return data
