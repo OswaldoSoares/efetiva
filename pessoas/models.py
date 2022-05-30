@@ -251,3 +251,24 @@ class CartaoPonto(models.Model):
         super(CartaoPonto, self).save(*args, **kwargs)
 
     objects = models.Manager()
+
+
+class Agenda(models.Model):
+    idAgenda = models.AutoField(primary_key=True)
+    Dia = models.DateField()
+    Descricao = models.TextField(max_length=240)
+    idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = "agenda"
+        ordering = ["Dia"]
+
+    def __str__(self):
+        return str(self.idPessoal, self.Dia)
+
+    def save(self, *args, **kwargs):
+        self.Descricao = self.Descricao.upper()
+
+        super(Agenda, self).save(*args, **kwargs)
+
+    objects = models.Manager()
