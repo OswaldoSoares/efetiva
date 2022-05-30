@@ -131,6 +131,7 @@ function EscondeCards() {
     $(".js-minutas-pagamento").fadeOut(10)
     $(".js-vales-pagamento").fadeOut(10)
     $(".js-files-pagamento").fadeOut(10)
+    $(".js-agenda-pagamento").fadeOut(10)
 }
 
 function MostraCards(data, v_mes_ano) {
@@ -152,6 +153,8 @@ function MostraCards(data, v_mes_ano) {
     $(".js-vales-pagamento").fadeIn(10)
     $(".js-files-pagamento").html(data.html_files_pagamento)
     $(".js-files-pagamento").fadeIn(10)
+    $(".js-agenda-pagamento").html(data.html_agenda_pagamento)
+    $(".js-agenda-pagamento").fadeIn(10)
     $('#mes_ano').val(v_mes_ano)
     $('#mes_ano_adiantamento').val(v_mes_ano)
     tamanhoCardBody();

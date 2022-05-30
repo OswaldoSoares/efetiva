@@ -456,6 +456,9 @@ def html_cartao_ponto(request, _mes_ano, _id) -> JsonResponse:
     data["html_vales_pagamento"] = render_to_string(
         "pagamentos/html_vales_pagamento.html", contexto, request=request
     )
+    data["html_agenda_pagamento"] = render_to_string(
+        "pagamentos/html_agenda.html", contexto, request=request
+    )
     return JsonResponse(data)
 
 

@@ -1,0 +1,29 @@
+{% if nome %}
+<div class="article-card-titulo">
+    <span>ADICIONAR AGENDA</span>
+</div>
+<div class="article-card-body">
+    <form class="js-gera-agenda" method="post" action="{}">
+        {% csrf_token %}
+        <div class="item-agenda">
+            <div class="item-descricao">
+                <textarea class="form-control" name="descricao" cols="40"
+                rows="3" id="id_descricao" placeholder="DESCRIÇÃO"></textarea>
+            </div>
+        </div>
+        <div class="item-agenda item-between">
+            <div class="item-data">
+                <input type="date" class="form-control"
+                name="data" id="id_data" value={{ hoje }}>
+            </div>
+            <input type="hidden" name="mes_ano" value="" id="mes_ano">
+            <input type="hidden" name="idPessoal"
+            value="{{ contra_cheque.idpessoal }}" id="idPessoal">
+            <div class="button-save">
+                <button class="bi bi-save2 i-button"></button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="article-card-footer"></div>
+{% endif %}

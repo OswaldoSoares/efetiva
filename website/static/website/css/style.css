@@ -4482,6 +4482,47 @@ main .fp-recibo-tabela .fp-recibo-print {
     text-align: center;
 }
 
+.div-cinco {
+    width: 100%;
+}
+
+.card-agenda {
+    width: 300px;
+}
+
+.card-agenda .item-agenda {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    color: var(--color6);
+}
+
+.card-agenda .item-agenda .item-descricao {
+    width: 100%;
+    padding: 10px 5px 5px 5px;
+}
+
+.card-agenda .item-agenda .item-data {
+    width: 200px;
+    padding: 5px 5px 10px 5px;
+}
+
+.card-agenda .item-agenda .button-save {
+    padding-right: 5px;
+    font-size: 26px;
+}
+
+.card-agenda .item-agenda .button-save button {
+    background-color: var(--color2);
+    border: none;
+}
+
+.card-agenda .item-between {
+    justify-content: space-between;
+}
+
 .ponto {
     color: var(--color2)
 }
