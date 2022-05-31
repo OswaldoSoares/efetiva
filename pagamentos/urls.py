@@ -2,12 +2,14 @@ from django.urls import path
 
 from .views import (
     adiantamento,
+    adiciona_agenda,
     adiciona_contra_cheque_itens,
     adiciona_vales,
     altera_horario_cartao_ponto,
     apagar_tudo,
     atestada,
     ausencia_falta,
+    carrega_agenda,
     carro_empresa,
     cria_contrachequeitens,
     cria_contrachequeitensvale,
@@ -16,6 +18,7 @@ from .views import (
     cria_vale,
     delete_file,
     edita_cartaoponto,
+    exclui_agenda,
     exclui_contrachequeitens,
     exclui_contrachequeitensvale,
     exclui_recibo,
@@ -161,5 +164,20 @@ urlpatterns = [
         "carro_empresa",
         carro_empresa,
         name="carro_empresa",
+    ),
+    path(
+        "adiciona_agenda",
+        adiciona_agenda,
+        name="adiciona_agenda",
+    ),
+    path(
+        "carrega_agenda",
+        carrega_agenda,
+        name="carrega_agenda",
+    ),
+    path(
+        "exclui_agenda",
+        exclui_agenda,
+        name="exclui_agenda",
     ),
 ]

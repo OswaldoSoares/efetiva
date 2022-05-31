@@ -132,6 +132,7 @@ function EscondeCards() {
     $(".js-vales-pagamento").fadeOut(10)
     $(".js-files-pagamento").fadeOut(10)
     $(".js-agenda-pagamento").fadeOut(10)
+    $(".js-itens-agenda-pagamento").fadeOut(10)
 }
 
 function MostraCards(data, v_mes_ano) {
@@ -155,8 +156,11 @@ function MostraCards(data, v_mes_ano) {
     $(".js-files-pagamento").fadeIn(10)
     $(".js-agenda-pagamento").html(data.html_agenda_pagamento)
     $(".js-agenda-pagamento").fadeIn(10)
+    $(".js-itens-agenda-pagamento").html(data.html_itens_agenda_pagamento)
+    $(".js-itens-agenda-pagamento").fadeIn(10)
     $('#mes_ano').val(v_mes_ano)
     $('#mes_ano_adiantamento').val(v_mes_ano)
+    $('#mes_ano_agenda').val(v_mes_ano)
     tamanhoCardBody();
 }
 
@@ -260,6 +264,69 @@ $(document).on('submit', '.js-gera-contra-cheque-itens', function(event) {
         },
     });
 });
+
+$(document).on('submit', '.js-gera-agenda', function(event) {
+    event.preventDefault();
+    var v_mes_ano = $(".select-mes-ano option:selected").text();
+    $.ajax({
+        type: $(this).attr('method'),
+        url: '/pagamentos/adiciona_agenda',
+        data: $(this).serialize(),
+        beforeSend: function() {
+            EscondeCards();
+        },
+        success: function(data) {
+            MostraCards(data, v_mes_ano);
+        },
+    });
+});
+
+$(document).on('click', '.js-carrega-agenda', function() {
+    var _idagenda = $(this).data('idagenda')
+    var _mes_ano = $(".select-mes-ano option:selected").text();
+    var _idpessoal = $(this).data("idpessoal");
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: '/pagamentos/carrega_agenda',
+        data: {
+            idagenda: _idagenda,
+            mes_ano: _mes_ano,
+            idpessoal: _idpessoal
+        },
+        beforeSend: function() {
+            EscondeCards()
+        },
+        success: function(data) {
+            MostraCards(data, _mes_ano)
+            $(".js-agenda-pagamento").html(data.html_agenda_pagamento)
+        }
+    })
+
+})
+
+$(document).on('click', '.js-exclui-agenda', function() {
+    var _idagenda = $(this).data('idagenda')
+    var _mes_ano = $(".select-mes-ano option:selected").text();
+    var _idpessoal = $(this).data("idpessoal");
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: '/pagamentos/exclui_agenda',
+        data: {
+            idagenda: _idagenda,
+            mes_ano: _mes_ano,
+            idpessoal: _idpessoal
+        },
+        beforeSend: function() {
+            EscondeCards()
+        },
+        success: function(data) {
+            MostraCards(data, _mes_ano)
+        }
+    })
+
+})
 
 $(document).on('click', '.js-exclui-contra-cheque-itens', function(event) {
     var v_idcontrachequeitens = $(this).data('idcontrachequeitens')

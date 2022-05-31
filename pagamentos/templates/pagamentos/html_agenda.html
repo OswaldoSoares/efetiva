@@ -7,18 +7,39 @@
         {% csrf_token %}
         <div class="item-agenda">
             <div class="item-descricao">
+                {% if editar %}
+                {% for x in agenda %}
+                <textarea class="form-control" name="descricao" cols="40"
+                rows="3" id="id_descricao" placeholder="DESCRIÇÃO">{{ x.Descricao }}
+                </textarea>
+                {% endfor %}
+                {% else %}
                 <textarea class="form-control" name="descricao" cols="40"
                 rows="3" id="id_descricao" placeholder="DESCRIÇÃO"></textarea>
+                {% endif %}
             </div>
         </div>
         <div class="item-agenda item-between">
             <div class="item-data">
+                {% if editar %}
+                {% for x in agenda %}
+                <input type="date" class="form-control"
+                name="data" id="id_data" value={{ x.Dia|date:'Y-m-d' }}>
+                {% endfor %}
+                {% else %}
                 <input type="date" class="form-control"
                 name="data" id="id_data" value={{ hoje }}>
+                {% endif %}
             </div>
-            <input type="hidden" name="mes_ano" value="" id="mes_ano">
+            <input type="hidden" name="mes_ano" value="{{ mes_ano }}"
+            id="mes_ano_agenda">
             <input type="hidden" name="idPessoal"
-            value="{{ contra_cheque.idpessoal }}" id="idPessoal">
+            value="{{ idpessoal }}" id="idPessoal">
+            {% if editar %}
+            {% for x in agenda %}
+            <input type="hidden" name="idAgenda" value="{{ x.idAgenda }}">
+            {% endfor %}
+            {% endif %}
             <div class="button-save">
                 <button class="bi bi-save2 i-button"></button>
             </div>

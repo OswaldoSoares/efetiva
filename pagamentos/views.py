@@ -381,17 +381,13 @@ def print_contra_cheque_transporte(request):
 
 
 def salva_file(request):
-    print(request.POST)
-    print(request.FILES)
     _mes_ano = request.POST.get("mes_ano")
     _id_pes = request.POST.get("idpessoal")
     _nome_curto = request.POST.get("nome_curto")
     _tipo = request.POST["tipo_comprovante"]
-    print(_tipo)
     if request.FILES:
         _arquivo = request.FILES["arquivo"]
         _descricao = facade.nome_arquivo(_nome_curto, _mes_ano, _tipo)
-        print(_descricao)
         facade.salva_arquivo(_arquivo, _descricao)
     data = facade.html_cartao_ponto(request, _mes_ano, _id_pes)
     return data
@@ -400,6 +396,37 @@ def salva_file(request):
 def delete_file(request):
     _id_fu = request.GET.get("idfileupload")
     facade.exclui_arquivo(_id_fu)
+    _mes_ano = request.GET.get("mes_ano")
+    _id_pes = request.GET.get("idpessoal")
+    data = facade.html_cartao_ponto(request, _mes_ano, _id_pes)
+    return data
+
+
+def adiciona_agenda(request):
+    _descricao = request.POST.get("descricao")
+    _data = request.POST.get("data")
+    _id_pes = request.POST.get("idPessoal")
+    if request.POST.get("idAgenda"):
+        _id_age = request.POST.get("idAgenda")
+        facade.update_agenda(_descricao, _data, _id_age)
+    else:
+        data = facade.create_agenda(_descricao, _data, _id_pes)
+    _mes_ano = request.POST.get("mes_ano")
+    data = facade.html_cartao_ponto(request, _mes_ano, _id_pes)
+    return data
+
+
+def carrega_agenda(request):
+    _id_age = request.GET.get("idagenda")
+    _mes_ano = request.GET.get("mes_ano")
+    _id_pes = request.GET.get("idpessoal")
+    data = facade.read_agenda(request, _id_age, _id_pes, _mes_ano)
+    return data
+
+
+def exclui_agenda(request):
+    _id_age = request.GET.get("idagenda")
+    facade.delete_agenda(_id_age)
     _mes_ano = request.GET.get("mes_ano")
     _id_pes = request.GET.get("idpessoal")
     data = facade.html_cartao_ponto(request, _mes_ano, _id_pes)

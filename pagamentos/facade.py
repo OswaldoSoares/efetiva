@@ -12,6 +12,7 @@ from minutas.models import MinutaColaboradores, MinutaItens
 from pessoas import facade
 from pessoas.forms import CadastraContraCheque, CadastraContraChequeItens, CadastraVale
 from pessoas.models import (
+    Agenda,
     CartaoPonto,
     ContaPessoal,
     ContraCheque,
@@ -404,10 +405,16 @@ def html_cartao_ponto(request, _mes_ano, _id) -> JsonResponse:
     files = FileUpload.objects.filter(
         DescricaoUpload__startswith=f"{_var['nome_curto_u']}_MES_{_var['mes']}_{_var['ano']}"
     )
+    agenda = Agenda.objects.filter(
+        idPessoal=_var["id_pessoal"],
+        Dia__range=[_var["primeiro_dia"], _var["ultimo_dia"]],
+    )
     contexto = {
         "cartao_ponto": _carto_ponto,
+        "mes_ano": _mes_ano,
         "nome": _var["nome_curto"],
         "nome_underscore": _var["nome_curto_u"],
+        "idpessoal": _var["id_pessoal"],
         "admissao": _var["admissao"],
         "demissao": _var["demissao"],
         "categoria": _var["categoria"],
@@ -428,6 +435,7 @@ def html_cartao_ponto(request, _mes_ano, _id) -> JsonResponse:
         "vales": vales,
         "hoje": hoje,
         "files": files,
+        "agenda": agenda,
     }
     data["html_funcionario"] = render_to_string(
         "pagamentos/html_funcionario.html", contexto, request=request
@@ -458,6 +466,9 @@ def html_cartao_ponto(request, _mes_ano, _id) -> JsonResponse:
     )
     data["html_agenda_pagamento"] = render_to_string(
         "pagamentos/html_agenda.html", contexto, request=request
+    )
+    data["html_itens_agenda_pagamento"] = render_to_string(
+        "pagamentos/html_itens_agenda.html", contexto, request=request
     )
     return JsonResponse(data)
 
@@ -670,6 +681,46 @@ def create_vales(_des, _dat, _val, _par, _id_pes):
             obj.Valor = Decimal(_val) / int(_par)
             obj.idPessoal_id = _id_pes
             obj.save()
+
+
+def create_agenda(_des, _dat, _id_pes):
+    if not _des == "":
+        obj = Agenda()
+        obj.Dia = _dat
+        obj.Descricao = _des
+        obj.idPessoal_id = _id_pes
+        obj.save()
+
+
+def update_agenda(_des, _dat, _id_age):
+    agenda = Agenda.objects.get(idAgenda=_id_age)
+    obj = agenda
+    obj.Dia = _dat
+    obj.Descricao = _des
+    obj.save(update_fields=["Dia", "Descricao"])
+
+
+def read_agenda(request, _id_age, _id_pes, _mes_ano):
+    _var = dict()
+    get_pessoa(_id_pes, _var)
+    data = dict()
+    agenda = Agenda.objects.filter(idAgenda=_id_age)
+    contexto = {
+        "agenda": agenda,
+        "nome": _var["nome_curto"],
+        "editar": True,
+        "idpessoal": _var["id_pessoal"],
+        "mes_ano": _mes_ano,
+    }
+    data["html_agenda_pagamento"] = render_to_string(
+        "pagamentos/html_agenda.html", contexto, request=request
+    )
+    return JsonResponse(data)
+
+
+def delete_agenda(_id_age):
+    agenda = Agenda.objects.filter(idAgenda=_id_age)
+    agenda.delete()
 
 
 def cria_contexto_pagamentos():

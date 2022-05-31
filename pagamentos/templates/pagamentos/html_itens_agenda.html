@@ -1,0 +1,26 @@
+{% if nome %}
+<div class="article-card-titulo">
+    <span>AGENDA</span>
+</div>
+<div class="article-card-body">
+    {% for x in agenda %}
+    <div class="itens-agenda">
+        <div class="item-data">
+            <span>{{ x.Dia }}</span>
+        </div>
+        <div class="item-descricao">
+            <span>{{ x.Descricao }}</span>            
+        </div>
+        <div class="item-botoes">
+            <i class="bi bi-pencil-square i-button js-carrega-agenda"
+            data-idagenda="{{ x.idAgenda }}" data-idpessoal="{{ x.idPessoal_id }}">
+            </i>
+            <i class="bi bi-trash i-button js-exclui-agenda"
+            data-idagenda="{{ x.idAgenda }}" data-idpessoal="{{ x.idPessoal_id }}">
+            </i>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<div class="article-card-footer"></div>
+{% endif %}

@@ -4483,7 +4483,10 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .div-cinco {
-    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
 }
 
 .card-agenda {
@@ -4521,6 +4524,35 @@ main .fp-recibo-tabela .fp-recibo-print {
 
 .card-agenda .item-between {
     justify-content: space-between;
+}
+
+.card-itens-agenda {
+    width: 600px;
+}
+
+.card-itens-agenda .itens-agenda {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    color: var(--color6);
+    border-bottom: 1px solid var(--color7);
+}
+
+.card-itens-agenda .itens-agenda .item-data {
+    width: 15%;
+    text-align: center;
+}
+
+.card-itens-agenda .itens-agenda .item-descricao {
+    width: 75%;
+    text-align: left;
+}
+
+.card-itens-agenda .itens-agenda .item-botoes {
+    width: 10%;
+    text-align: center;
 }
 
 .ponto {
