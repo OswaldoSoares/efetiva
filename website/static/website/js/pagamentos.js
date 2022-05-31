@@ -47,6 +47,15 @@ var tamanhoCardBody = function() {
     var val_top = $('.js-vales-pagamento').position().top
     var val_hei = $('.js-body-vales-pagamento').height()
     var val_area = val_top + val_hei
+    var sal_top = $('.js-saldo').position().top
+    var sal_hei = $('.js-body-saldo').height()
+    var sal_area = sal_top + sal_hei
+    var age_top = $('.js-agenda-pagamento').position().top
+    var age_hei = $('.js-body-agenda-pagamento').height()
+    var age_area = age_top + age_hei
+    var iag_top = $('.js-itens-agenda-pagamento').position().top
+    var iag_hei = $('.js-body-itens-agenda-pagamento').height()
+    var iag_area = iag_top + iag_hei
 
     if (car_top == topPosition && cci_top == topPosition && fil_top == topPosition) {
         var areas = [fun_area, car_area, coc_area, val_area]
@@ -73,7 +82,14 @@ var tamanhoCardBody = function() {
         $('.js-body-files-pagamento').height(maior - fil_top)
         $('.js-body-minutas-pagamento').height(maior - min_top)
         $('.js-body-vales-pagamento').height(maior - val_top)
+
     }
+
+    var areas = [sal_area, age_area, iag_area]
+    maior = Math.max(...areas)
+    $('.js-body-saldo').height(maior - sal_top)
+    $('.js-body-agenda-pagamento').height(maior - age_top)
+    $('.js-body-itens-agenda-pagamento').height(maior - iag_top)
 }
 
 $(document).on("click", ".js-seleciona-mes-ano", function(event) {
@@ -87,17 +103,21 @@ $(document).on("click", ".js-seleciona-mes-ano", function(event) {
         },
         beforeSend: function() {
             $(".js-folha").fadeOut(10);
+            $(".js-saldo").fadeOut(10);
             EscondeCards();
         },
         success: function(data) {
             $(".js-folha").html(data.html_folha);
             $(".js-folha").fadeIn(10);
+            $(".js-saldo").html(data.html_saldo);
+            $(".js-saldo").fadeIn(10);
         },
     });
 });
 
 $(document).on("change", ".select-mes-ano", function(event) {
     $(".js-folha").fadeOut(10);
+    $(".js-saldo").fadeOut(10);
     EscondeCards();
 });
 

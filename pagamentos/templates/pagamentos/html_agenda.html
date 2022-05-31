@@ -2,7 +2,7 @@
 <div class="article-card-titulo">
     <span>ADICIONAR AGENDA</span>
 </div>
-<div class="article-card-body">
+<div class="article-card-body js-body-agenda-pagamento">
     <form class="js-gera-agenda" method="post" action="{}">
         {% csrf_token %}
         <div class="item-agenda">
@@ -15,7 +15,7 @@
                 {% endfor %}
                 {% else %}
                 <textarea class="form-control" name="descricao" cols="40"
-                rows="3" id="id_descricao" placeholder="DESCRIÇÃO"></textarea>
+                rows="5" id="id_descricao" placeholder="DESCRIÇÃO"></textarea>
                 {% endif %}
             </div>
         </div>

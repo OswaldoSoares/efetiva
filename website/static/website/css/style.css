@@ -4527,7 +4527,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-itens-agenda {
-    width: 600px;
+    width: 500px;
 }
 
 .card-itens-agenda .itens-agenda {
@@ -4541,18 +4541,58 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-itens-agenda .itens-agenda .item-data {
-    width: 15%;
+    width: 20%;
     text-align: center;
 }
 
 .card-itens-agenda .itens-agenda .item-descricao {
-    width: 75%;
+    width: 70%;
     text-align: left;
 }
 
 .card-itens-agenda .itens-agenda .item-botoes {
     width: 10%;
     text-align: center;
+}
+
+.card-saldo-pagamento {
+    width: 400px;
+}
+
+.card-saldo-pagamento .itens-saldo {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    color: var(--color6);
+}
+
+.card-saldo-pagamento .itens-saldo .item-titulo {
+    text-align: center;
+}
+
+.card-saldo-pagamento .itens-saldo .item-nome {
+    width: 40%;
+    padding-left: 5px;
+    text-align: left;
+}
+
+.card-saldo-pagamento .itens-saldo .item-adiantamento {
+    width: 30%;
+    padding-right: 5px;
+    text-align: right;
+}
+
+.card-saldo-pagamento .itens-saldo .item-pagamento {
+    width: 30%;
+    padding-right: 5px;
+    text-align: right;
+}
+
+.card-saldo-pagamento .article-card-footer {
+    color: var(--color6);
+    font-size: 14px;
 }
 
 .ponto {

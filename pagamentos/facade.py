@@ -67,7 +67,8 @@ class FolhaContraCheque:
         self.funcionarios = self.get_funcionarios(_mes, _ano)
         self.mes = _mes
         self.paga = False
-        self.total = Decimal(1.00)
+        self.total_adiantamento = self.get_total_adiantamento(self.funcionarios)
+        self.total_pagamento = self.get_total_pagamento(self.funcionarios)
 
     @staticmethod
     def get_funcionarios(_mes, _ano):
@@ -82,8 +83,45 @@ class FolhaContraCheque:
                 "idpessoal": itens.idPessoal,
                 "nome_curto": nome_curto(itens.Nome),
                 "salario_base": v_salario_base,
+                "adiantamento": v_salario_base * 40 / 100,
+                "saldo_mes": get_saldo_folha(itens.idPessoal, _mes, _ano),
             }
         return lista
+
+    @staticmethod
+    def get_total_adiantamento(funcionarios):
+        total_adiantamento = Decimal(0.00)
+        for x in funcionarios:
+            total_adiantamento += funcionarios[x]["adiantamento"]
+        return total_adiantamento
+
+    @staticmethod
+    def get_total_pagamento(funcionarios):
+        total_pagamento = Decimal(0.00)
+        for x in funcionarios:
+            total_pagamento += funcionarios[x]["saldo_mes"]
+        return total_pagamento
+
+
+def get_saldo_folha(_id_pes, _mes, _ano):
+    _var = dict()
+    get_pessoa(_id_pes, _var)
+    _var["mes"] = _mes
+    _var["ano"] = _ano
+    _cc = contra_cheque(_var)
+    _id_cc = _cc["idcontracheque"]
+    _vencimentos = ContraChequeItens.objects.filter(
+        idContraCheque=_id_cc, Registro="C"
+    ).aggregate(soma=Sum("Valor"))
+    _descontos = ContraChequeItens.objects.filter(
+        idContraCheque=_id_cc, Registro="D"
+    ).aggregate(soma=Sum("Valor"))
+    if not _vencimentos["soma"]:
+        _vencimentos["soma"] = Decimal(0.00)
+    if not _descontos["soma"]:
+        _descontos["soma"] = Decimal(0.00)
+    _saldo = _vencimentos["soma"] - _descontos["soma"]
+    return _saldo
 
 
 def get_pessoa(_id_pes, _var):
@@ -349,6 +387,7 @@ def html_folha_pagamento(_mes_ano):
     _folha = FolhaContraCheque(_mes, _ano).__dict__
     contexto = {"v_folha": _folha}
     data["html_folha"] = render_to_string("pagamentos/html_folha.html", contexto)
+    data["html_saldo"] = render_to_string("pagamentos/html_saldo.html", contexto)
     return JsonResponse(data)
 
 
