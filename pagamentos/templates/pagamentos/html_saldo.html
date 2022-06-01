@@ -1,34 +1,51 @@
 {% load humanize %}
-{% if v_folha %}
 {% load permission_tags %}
-<div class="article-card-titulo">
-    <span>SALDO A PAGAR</span>
-</div>
-<div class="article-card-body js-body-saldo">
-    {% comment %} {% if user|can:'pagamentos_folha' %} {% endcomment %}
-        <div class="itens-saldo">
-            <div class="item-titulo item-nome"></div>
-            <div class="item-titulo item-adiantamento">ADIANTAMENTO</div>
-            <div class="item-titulo item-pagamento">PAGAMENTO</div>
-        </div>
-        {% for key, value in v_folha.funcionarios.items %}
-        <div class="itens-saldo">
-            <div class="item-nome">{{ key }}</div>
-            <div class="item-adiantamento">R$ {{ value.adiantamento|intcomma }}</div>
-            <div class="item-pagamento">R$ {{ value.saldo_mes|intcomma }}</div>
-        </div>
-        {% endfor %}
-    {% comment %} {% else %}
-        <div class="ponto">.</div>
-    {% endif %} {% endcomment %}
-</div>
-<div class="article-card-footer">
-    <div class="itens-saldo">
-        <div class="item-nome">
-            {{ v_folha.funcionarios|length }} FUNCIONÁRIO{{ v_folha.funcionarios|length|pluralize|upper }}
-        </div>
-        <div class="item-adiantamento">R$ {{ v_folha.total_adiantamento|intcomma }}</div>
-        <div class="item-pagamento">R$ {{ v_folha.total_pagamento |intcomma}}</div>
+{% if v_folha %}
+    <div class="article-card-titulo">
+        <span>SALDO A PAGAR</span>
     </div>
-</div>
+    <div class="article-card-body js-body-saldo">
+        {% if user|can:'pagamentos_folha' %}
+            <div class="itens-saldo">
+                <div class="item-titulo item-nome">
+                    NOME
+                </div>
+                <div class="item-titulo item-adiantamento">
+                    ADIANTAMENTO
+                </div>
+                <div class="item-titulo item-pagamento">
+                    PAGAMENTO
+                </div>
+            </div>
+            {% for key, value in v_folha.funcionarios.items %}
+                <div class="itens-saldo">
+                    <div class="item-nome">{{ key }}</div>
+                    <div class="item-adiantamento">
+                        R$ {{ value.adiantamento|intcomma }}
+                    </div>
+                    <div class="item-pagamento">
+                        R$ {{ value.saldo_mes|intcomma }}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="ponto">.</div>
+        {% endif %}
+    </div>
+    <div class="article-card-footer">
+        {% if user|can:'pagamentos_folha' %}
+            <div class="itens-saldo">
+                <div class="item-nome">
+                    {{ v_folha.funcionarios|length }}
+                    FUNCIONÁRIO{{ v_folha.funcionarios|length|pluralize|upper }}
+                </div>
+                <div class="item-adiantamento">
+                    R$ {{ v_folha.total_adiantamento|intcomma }}
+                </div>
+                <div class="item-pagamento">
+                    R$ {{ v_folha.total_pagamento |intcomma}}
+                </div>
+            </div>
+        {% endif %}
+    </div>
 {% endif %}

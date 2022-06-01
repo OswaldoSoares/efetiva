@@ -1,3 +1,4 @@
+// TODO Remove função - Folha Antiga
 $(document).ready(function() {
     window.MesReferencia = "";
     window.AnoReferencia = "";
@@ -5,10 +6,11 @@ $(document).ready(function() {
     $(".down-folha").hide();
     $(".down-avulso").hide();
     $('[data-toggle="tooltip"]').tooltip();
-    $('#id_data').val('2022-05-18');
+    // TODO Mantem para Folha Nova
     tamanhoCardBody();
 });
 
+// TODO Remove função - Folha Antiga
 $(document).on("change", "#id_MesReferencia", function(event) {
     $(".fp-base").html("");
     $(".fp-contrachequeitens").html("");
@@ -16,6 +18,7 @@ $(document).on("change", "#id_MesReferencia", function(event) {
     $(".fp-adiantamento").hide();
 });
 
+// TODO Remove função - Folha Antiga
 $(document).on("change", "#id_AnoReferencia", function(event) {
     $(".fp-base").html("");
     $(".fp-contrachequeitens").html("");
@@ -23,15 +26,20 @@ $(document).on("change", "#id_AnoReferencia", function(event) {
     $(".fp-adiantamento").hide();
 });
 
+
 var maxHeight = 0;
 var topPosition = 0;
 var tamanhoCardBody = function() {
     var topPosition = $('.card-mes-ano').position().top
     var cci_top = $('.js-itens-contra-cheque').position().top
+    var cci_hei = $('.js-body-itens-contra-cheque').height()
+    var cci_area = cci_top + cci_hei
     var fil_top = $('.js-files-pagamento').position().top
     var fil_hei = $('.js-body-files-pagamento').height()
     var fil_area = fil_top + fil_hei
-        // var adi_top = $('.js-adiantamento').position().top
+    var adi_top = $('.js-adiantamento').position().top
+    var adi_hei = $('.js-body-adiantamento').height()
+    var adi_area = adi_top + adi_hei
     var fun_top = $('.js-funcionario-pagamento').position().top
     var fun_hei = $('.js-body-funcionario').height()
     var fun_area = fun_top + fun_hei
@@ -44,9 +52,12 @@ var tamanhoCardBody = function() {
     var min_top = $('.js-minutas-pagamento').position().top
     var min_hei = $('.js-body-minutas-pagamento').height()
     var min_area = min_top + min_hei
-    var val_top = $('.js-vales-pagamento').position().top
-    var val_hei = $('.js-body-vales-pagamento').height()
-    var val_area = val_top + val_hei
+    var lva_top = $('.js-lista-vales').position().top
+    var lva_hei = $('.js-body-lista-vales').height()
+    var lva_area = lva_top + lva_hei
+    var cva_top = $('.js-cria-vales').position().top
+    var cva_hei = $('.js-body-cria-vales').height()
+    var cva_area = cva_top + cva_hei
     var sal_top = $('.js-saldo').position().top
     var sal_hei = $('.js-body-saldo').height()
     var sal_area = sal_top + sal_hei
@@ -57,39 +68,38 @@ var tamanhoCardBody = function() {
     var iag_hei = $('.js-body-itens-agenda-pagamento').height()
     var iag_area = iag_top + iag_hei
 
-    if (car_top == topPosition && cci_top == topPosition && fil_top == topPosition) {
-        var areas = [fun_area, car_area, coc_area, val_area]
+    if (car_top == topPosition && coc_top == topPosition && fil_top == topPosition) {
+        var areas = [adi_area, fun_area, iag_area, cci_area]
         maior = Math.max(...areas)
+        $('.js-body-adiantamento').height(maior - adi_top)
         $('.js-body-funcionario').height(maior - fun_top)
-        $('.js-body-cartao-ponto').height(maior - car_top)
-        $('.js-body-contra-cheque').height(maior - coc_top)
-        $('.js-body-vales-pagamento').height(maior - val_top)
+        $('.js-body-itens-agenda-pagamento').height(maior - iag_top)
+        $('.js-body-itens-contra-cheque').height(maior - cci_top)
     }
 
     if (fil_top != topPosition) {
-        if (car_top == topPosition && cci_top == topPosition) {
-            var areas = [fun_area, car_area, coc_area]
+        if (car_top == topPosition && coc_top == topPosition) {
+            var areas = [adi_area, fun_area, iag_area]
             maior = Math.max(...areas)
+            $('.js-body-adiantamento').height(maior - adi_top)
             $('.js-body-funcionario').height(maior - fun_top)
-            $('.js-body-cartao-ponto').height(maior - car_top)
-            $('.js-body-contra-cheque').height(maior - coc_top)
+            $('.js-body-itens-agenda-pagamento').height(maior - iag_top)
         }
     }
 
-    if ($(window).width() < 1590) {
-        var areas = [fil_area, min_area, val_area]
+    if ($(window).width() < 1630) {
+        var areas = [fil_area, cva_area, age_area]
         maior = Math.max(...areas)
         $('.js-body-files-pagamento').height(maior - fil_top)
-        $('.js-body-minutas-pagamento').height(maior - min_top)
-        $('.js-body-vales-pagamento').height(maior - val_top)
-
+        $('.js-body-cria-vales').height(maior - cva_top)
+        $('.js-body-agenda-pagamento').height(maior - age_top)
     }
 
-    var areas = [sal_area, age_area, iag_area]
-    maior = Math.max(...areas)
-    $('.js-body-saldo').height(maior - sal_top)
-    $('.js-body-agenda-pagamento').height(maior - age_top)
-    $('.js-body-itens-agenda-pagamento').height(maior - iag_top)
+    // var areas = [sal_area, age_area, iag_area]
+    // maior = Math.max(...areas)
+    // $('.js-body-saldo').height(maior - sal_top)
+    // $('.js-body-agenda-pagamento').height(maior - age_top)
+    // $('.js-body-itens-agenda-pagamento').height(maior - iag_top)
 }
 
 $(document).on("click", ".js-seleciona-mes-ano", function(event) {
@@ -102,23 +112,30 @@ $(document).on("click", ".js-seleciona-mes-ano", function(event) {
             mes_ano: v_mes_ano,
         },
         beforeSend: function() {
-            $(".js-folha").fadeOut(10);
-            $(".js-saldo").fadeOut(10);
-            EscondeCards();
+            $('.box-loader').show()
         },
         success: function(data) {
             $(".js-folha").html(data.html_folha);
-            $(".js-folha").fadeIn(10);
             $(".js-saldo").html(data.html_saldo);
-            $(".js-saldo").fadeIn(10);
+            $('.box-loader').hide()
         },
     });
 });
 
 $(document).on("change", ".select-mes-ano", function(event) {
-    $(".js-folha").fadeOut(10);
-    $(".js-saldo").fadeOut(10);
-    EscondeCards();
+    $(".js-folha").html('');
+    $(".js-saldo").html('');
+    $(".js-funcionario-pagamento").html('');
+    $(".js-cartao-ponto").html('');
+    $(".js-itens-contra-cheque").html('');
+    $(".js-contra-cheque").html('');
+    $(".js-cria-vales").html('')
+    $(".js-adiantamento").html('')
+    $(".js-minutas-pagamento").html('')
+    $(".js-lista-vales").html('')
+    $(".js-files-pagamento").html('')
+    $(".js-agenda-pagamento").html('')
+    $(".js-itens-agenda-pagamento").html('');
 });
 
 $(document).on("click", ".js-seleciona-funcionario", function(event) {
@@ -136,51 +153,31 @@ $(document).on("click", ".js-seleciona-funcionario", function(event) {
             EscondeCards();
         },
         success: function(data) {
-            MostraCards(data, v_mes_ano);
+            AtualizaHtmls(data, v_mes_ano);
         },
     });
 });
 
 function EscondeCards() {
-    $(".js-funcionario-pagamento").fadeOut(10);
-    $(".js-cartao-ponto").fadeOut(10);
-    $(".js-itens-contra-cheque").fadeOut(10);
-    $(".js-contra-cheque").fadeOut(10);
-    $(".js-vales").fadeOut(10)
-    $(".js-adiantamento").fadeOut(10)
-    $(".js-minutas-pagamento").fadeOut(10)
-    $(".js-vales-pagamento").fadeOut(10)
-    $(".js-files-pagamento").fadeOut(10)
-    $(".js-agenda-pagamento").fadeOut(10)
-    $(".js-itens-agenda-pagamento").fadeOut(10)
+    $('.box-loader').show()
 }
 
-function MostraCards(data, v_mes_ano) {
+function AtualizaHtmls(data, v_mes_ano) {
     $(".js-funcionario-pagamento").html(data.html_funcionario);
-    $(".js-funcionario-pagamento").fadeIn(10);
     $(".js-cartao-ponto").html(data.html_cartao_ponto);
-    $(".js-cartao-ponto").fadeIn(10);
     $(".js-itens-contra-cheque").html(data.html_itens_contra_cheque);
-    $(".js-itens-contra-cheque").fadeIn(10);
     $(".js-contra-cheque").html(data.html_contra_cheque);
-    $(".js-contra-cheque").fadeIn(10);
-    $(".js-vales").html(data.html_vales)
-    $(".js-vales").fadeIn(10)
+    $(".js-cria-vales").html(data.html_vales)
     $(".js-adiantamento").html(data.html_adiantamento)
-    $(".js-adiantamento").fadeIn(10)
     $(".js-minutas-pagamento").html(data.html_minutas)
-    $(".js-minutas-pagamento").fadeIn(10)
-    $(".js-vales-pagamento").html(data.html_vales_pagamento)
-    $(".js-vales-pagamento").fadeIn(10)
+    $(".js-lista-vales").html(data.html_vales_pagamento)
     $(".js-files-pagamento").html(data.html_files_pagamento)
-    $(".js-files-pagamento").fadeIn(10)
     $(".js-agenda-pagamento").html(data.html_agenda_pagamento)
-    $(".js-agenda-pagamento").fadeIn(10)
     $(".js-itens-agenda-pagamento").html(data.html_itens_agenda_pagamento)
-    $(".js-itens-agenda-pagamento").fadeIn(10)
     $('#mes_ano').val(v_mes_ano)
     $('#mes_ano_adiantamento').val(v_mes_ano)
     $('#mes_ano_agenda').val(v_mes_ano)
+    $('.box-loader').hide()
     tamanhoCardBody();
 }
 
@@ -199,7 +196,7 @@ $(document).on("click", ".js-altera-falta", function(event) {
             EscondeCards();
         },
         success: function(data) {
-            MostraCards(data, v_mes_ano);
+            AtualizaHtmls(data, v_mes_ano);
         },
         error: function(error, data) {
             console.log(error);
@@ -222,7 +219,7 @@ $(document).on("click", ".js-altera-carro-empresa", function(event) {
             EscondeCards();
         },
         success: function(data) {
-            MostraCards(data, v_mes_ano);
+            AtualizaHtmls(data, v_mes_ano);
         },
         error: function(error, data) {
             console.log(error);
@@ -245,7 +242,7 @@ $(document).on("click", ".js-atestada", function(event) {
             EscondeCards();
         },
         success: function(data) {
-            MostraCards(data, v_mes_ano);
+            AtualizaHtmls(data, v_mes_ano);
         },
         error: function(error, data) {
             console.log(error);
@@ -264,7 +261,7 @@ $(document).on('submit', '.js-gera-adiantamento', function(event) {
             EscondeCards();
         },
         success: function(data) {
-            MostraCards(data, v_mes_ano);
+            AtualizaHtmls(data, v_mes_ano);
         },
     });
 });
@@ -280,7 +277,7 @@ $(document).on('submit', '.js-gera-contra-cheque-itens', function(event) {
             EscondeCards();
         },
         success: function(data) {
-            MostraCards(data, v_mes_ano);
+            AtualizaHtmls(data, v_mes_ano);
         },
     });
 });
@@ -296,7 +293,7 @@ $(document).on('submit', '.js-gera-agenda', function(event) {
             EscondeCards();
         },
         success: function(data) {
-            MostraCards(data, v_mes_ano);
+            AtualizaHtmls(data, v_mes_ano);
         },
     });
 });
@@ -318,8 +315,9 @@ $(document).on('click', '.js-carrega-agenda', function() {
             EscondeCards()
         },
         success: function(data) {
-            MostraCards(data, _mes_ano)
+            AtualizaHtmls(data, _mes_ano)
             $(".js-agenda-pagamento").html(data.html_agenda_pagamento)
+            tamanhoCardBody()
         }
     })
 
@@ -342,7 +340,7 @@ $(document).on('click', '.js-exclui-agenda', function() {
             EscondeCards()
         },
         success: function(data) {
-            MostraCards(data, _mes_ano)
+            AtualizaHtmls(data, _mes_ano)
         }
     })
 
@@ -365,7 +363,7 @@ $(document).on('click', '.js-exclui-contra-cheque-itens', function(event) {
             EscondeCards();
         },
         success: function(data) {
-            MostraCards(data, v_mes_ano);
+            AtualizaHtmls(data, v_mes_ano);
         },
     });
 });
@@ -381,7 +379,7 @@ $(document).on('submit', '.js-gera-vales', function(event) {
             EscondeCards();
         },
         success: function(data) {
-            MostraCards(data, v_mes_ano);
+            AtualizaHtmls(data, v_mes_ano);
         },
     });
 });
@@ -405,7 +403,7 @@ $(document).on('click', '.js-seleciona-vale', function(event) {
             EscondeCards();
         },
         success: function(data) {
-            MostraCards(data, v_mes_ano);
+            AtualizaHtmls(data, v_mes_ano);
         },
     })
 });
@@ -427,7 +425,7 @@ $(document).on('click', '.js-exclui-vale', function(event) {
             EscondeCards();
         },
         success: function(data) {
-            MostraCards(data, v_mes_ano);
+            AtualizaHtmls(data, v_mes_ano);
         },
     })
 });
@@ -483,7 +481,7 @@ $(document).on('submit', '.js-salva-file', function(event) {
             EscondeCards();
         },
         success: function(data) {
-            MostraCards(data, v_mes_ano);
+            AtualizaHtmls(data, v_mes_ano);
         },
     });
 });
@@ -504,7 +502,7 @@ $(document).on('click', '.js-delete-file', function() {
             EscondeCards()
         },
         success: function(data) {
-            MostraCards(data, _mes_ano)
+            AtualizaHtmls(data, _mes_ano)
         }
     });
 });

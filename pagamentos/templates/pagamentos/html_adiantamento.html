@@ -1,35 +1,46 @@
+{% load permission_tags %}
 {% if nome %}
-<div class="article-card-titulo">
-    <span>ADIANTAMENTO</span>
-</div>
-<div class="article-card-body">
-    {% if not adiantamento %}
-    <form class='js-gera-adiantamento' method="post"
-    action="{% url 'adiantamento' %}">
-    {% csrf_token %}
-        <div class="item-adiantamento">
-            <input type="hidden" name="descricao" value="ADIANTAMENTO"
-            id="id_Descricao_adiantamento">
-            <div class="valor-adiantamento">
-                <input type="number" name="valor_adiantamento" id="id_valor_adiantamento"
-                class="form-control" value="0.00" step="0.01"></input>
-            </div>
-            <input type="hidden" name="registro" value="D" id="id_Registro_adiantamento">
-            <input type="hidden" name="idContraCheque"
-            value="{{ contra_cheque.idcontracheque }}" id="id_idContraCheque_adiantamento">
-            <input type="hidden" name="mes_ano" value="" id="mes_ano_adiantamento">
-            <input type="hidden" name="idPessoal" value="{{ contra_cheque.idpessoal }}"
-            id="idPessoal_adiantamento">
-            <div class="button-save">
-                <button class="bi bi-save2 i-button"
-                data-idpessoal="{{ idpessoal }}" data-idcontracheque='{{ idcontracheque }}'>
-                </button>
-            </div>
-        </div>
-    </form>
-    {% else %}
-    <div class="item-adiantamento"><span>ADIANTAMENTO JÁ CADASTRADO</span></div>
-    {% endif %}
-</div>
+    <div class="article-card-titulo">
+        <span>ADIANTAMENTO</span>
+    </div>
+    <div class="article-card-body js-body-adiantamento">
+        {% if user|can:'pagamentos_folha' %}
+            {% if not adiantamento %}
+                <form class='js-gera-adiantamento' method="post"
+                action="{% url 'adiantamento' %}">
+                {% csrf_token %}
+                    <div class="item-adiantamento">
+                        <input type="hidden" name="descricao" value="ADIANTAMENTO"
+                        id="id_Descricao_adiantamento">
+                        <div class="valor-adiantamento">
+                            <input type="number" name="valor_adiantamento"
+                            id="id_valor_adiantamento" class="form-control"
+                            value="0.00" step="0.01"></input>
+                        </div>
+                        <input type="hidden" name="registro"
+                        value="D" id="id_Registro_adiantamento">
+                        <input type="hidden" name="idContraCheque"
+                        value="{{ contra_cheque.idcontracheque }}"
+                        id="id_idContraCheque_adiantamento">
+                        <input type="hidden" name="mes_ano"
+                        value="" id="mes_ano_adiantamento">
+                        <input type="hidden" name="idPessoal"
+                        value="{{ contra_cheque.idpessoal }}"
+                        id="idPessoal_adiantamento">
+                        <div class="button-save">
+                            <button class="bi bi-save2 i-button"
+                            data-idpessoal="{{ idpessoal }}"
+                            data-idcontracheque='{{ idcontracheque }}'>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            {% else %}
+                <div class="item-adiantamento"><span>ADIANTAMENTO JÁ CADASTRADO</span></div>
+            {% endif %}
+        {% else %}
+            <div class="ponto">.</div>
+        {% endif %}
+    </div>
 <div class="article-card-footer"></div>
 {% endif %}

@@ -1,7 +1,7 @@
 {% extends 'pagamentos/basepagamentos.html' %} {% load permission_tags %}
 {% block mainpagamento %}
 <main class="article">
-  <div>
+  <div class="div-um">
     <article class="article-card card-mes-ano">
       <div class="article-card-titulo">
         <span>FOLHA PAGAMENTO</span>
@@ -21,54 +21,50 @@
     <article class="article-card card-folha js-folha">
       {% include 'pagamentos/html_folha.html' %}
     </article>
-    {% if user|can:'pagamentos_folha' %}
-      <article class="article-card card-adiantamento js-adiantamento">
-        {% include 'pagamentos/html_adiantamento.html' %}
-      </article>
-    {% endif %}
+    <article class="article-card card-saldo-pagamento js-saldo">
+      {% include 'pagamentos/html_saldo.html' %}
+    </article>
+    <article class="article-card card-adiantamento js-adiantamento">
+      {% include 'pagamentos/html_adiantamento.html' %}
+    </article>
+  </div>
+  <div class='div-dois'>
+    <article class="article-card card-cartao-ponto js-cartao-ponto">
+      {% include 'pagamentos/html_cartao_ponto.html' %}
+    </article>
     <article class="article-card card-funcionario-pagamento js-funcionario-pagamento">
       {% include 'pagamentos/html_funcionario.html' %}
     </article>
   </div>
-  <div>
-    <article class="article-card card-cartao-ponto js-cartao-ponto">
-      {% include 'pagamentos/html_cartao_ponto.html' %}
-    </article>
-  </div>
-  <div>
-    <article class="article-card card-itens-contra-cheque js-itens-contra-cheque">
-      {% include 'pagamentos/html_itens_contra_cheque.html' %}
-    </article>
-    <article class="article-card card-vales js-vales">
-      {% include 'pagamentos/html_vales.html' %}
-    </article>
+  <div class='div-tres'>
     <article class="article-card card-contra-cheque js-contra-cheque">
       {% include 'pagamentos/html_contra_cheque.html' %}
     </article>
-  </div>
-  <div class="div-quatro">
-    <div>
-      <article class="article-card card-files js-files-pagamento">
-        {% include 'pagamentos/html_files.html' %}
-      </article>
-    </div>
     <article class="article-card card-minutas-pagamento js-minutas-pagamento">
       {% include 'pagamentos/html_minutas.html' %}
     </article>
-    <article class="article-card card-vales-pagamento js-vales-pagamento">
+    <article class="article-card card-vales-pagamento js-lista-vales">
       {% include 'pagamentos/html_vales_pagamento.html' %}
-    </article>
-  </div>
-  <div class="div-cinco">
-    <article class="article-card card-saldo-pagamento js-saldo">
-      {% include 'pagamentos/html_saldo.html' %}
-    </article>
-    <article class="article-card card-agenda js-agenda-pagamento">
-      {% include 'pagamentos/html_agenda.html' %}
     </article>
     <article class="article-card card-itens-agenda js-itens-agenda-pagamento">
       {% include 'pagamentos/html_itens_agenda.html' %}
     </article>
+  </div>
+  <div class="div-quatro">
+    <article class="article-card card-files js-files-pagamento">
+      {% include 'pagamentos/html_files.html' %}
+    </article>
+    <article class="article-card card-vales js-cria-vales">
+      {% include 'pagamentos/html_vales.html' %}
+    </article>
+    <article class="article-card card-agenda js-agenda-pagamento">
+      {% include 'pagamentos/html_agenda.html' %}
+    </article>
+    <article class="article-card card-itens-contra-cheque js-itens-contra-cheque">
+      {% include 'pagamentos/html_itens_contra_cheque.html' %}
+    </article>
+  </div>
+  <div class="div-cinco">
   </div>
   {% comment %} <div class="pagamento-conteudo mensalistas">
     <header class="titulo-mensalistas">
@@ -164,7 +160,8 @@
       <div class="pa-saldo-minutas"></div>
     </main>
   </div>
-  {% endif %} {% if user|can:'pagamentos_vales' %}
+  {% endif %}
+  {% if user|can:'pagamentos_vales' %}
   <div class="pagamento-conteudo vales">
     <header class="titulo-mensalistas">
       <h3>CADASTRO DE VALES</h3>

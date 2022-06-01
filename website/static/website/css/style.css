@@ -4097,7 +4097,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 /* Card end */
 
 .card-mes-ano {
-    width: 300px;
+    width: 400px;
 }
 
 .card-mes-ano .article-card-body {
@@ -4118,7 +4118,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-folha {
-    width: 300px;
+    width: 400px;
 }
 
 .card-folha .itens-folha {
@@ -4194,7 +4194,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-contra-cheque {
-    width: 600px;
+    width: 500px;
 }
 
 .card-contra-cheque .itens-contra-cheque {
@@ -4206,35 +4206,35 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-contra-cheque .itens-contra-cheque .item-descricao {
-    width: 35%;
+    width: 39%;
     padding: 0 5px;
     text-align: left;
     border: 1px solid var(--color7)
 }
 
 .card-contra-cheque .itens-contra-cheque .item-referencia {
-    width: 15%;
+    width: 14%;
     padding: 0 5px;
     text-align: center;
     border: 1px solid var(--color7)
 }
 
 .card-contra-cheque .itens-contra-cheque .item-vencimentos {
-    width: 20%;
+    width: 19%;
     padding: 0 5px;
     text-align: right;
     border: 1px solid var(--color7)
 }
 
 .card-contra-cheque .itens-contra-cheque .item-descontos {
-    width: 20%;
+    width: 19%;
     padding: 0 5px;
     text-align: right;
     border: 1px solid var(--color7)
 }
 
 .card-contra-cheque .itens-contra-cheque .item-botoes {
-    width: 10%;
+    width: 9%;
     text-align: center;
     border: 1px solid var(--color7)
 }
@@ -4243,6 +4243,7 @@ main .fp-recibo-tabela .fp-recibo-print {
     border: 1px solid var(--color2);
     border-bottom: 1px solid var(--color7);
     text-align: center;
+    font-size: 12px;
 }
 
 .card-contra-cheque .itens-contra-cheque .item-vazio-top {
@@ -4261,12 +4262,16 @@ main .fp-recibo-tabela .fp-recibo-print {
     border-right: 1px solid var(--color7);
 }
 
+.card-contra-cheque .itens-contra-cheque .item-a-receber {
+    font-size: 12px;
+}
+
 .card-contra-cheque .itens-contra-cheque span {
     color: var(--color2)
 }
 
 .card-minutas-pagamento {
-    width: 360px;
+    width: 500px;
 }
 
 .card-minutas-pagamento .itens-minutas-pagamento {
@@ -4316,7 +4321,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-funcionario-pagamento {
-    width: 300px
+    width: 300px;
 }
 
 .card-funcionario-pagamento .itens-funcionario-pagamento {
@@ -4329,10 +4334,10 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-itens-contra-cheque {
-    width: 600px;
+    width: 400px;
 }
 
-.card-itens-contra-cheque .item-contra-cheque-itens form {
+.card-itens-contra-cheque .item-contra-cheque-itens {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -4340,35 +4345,35 @@ main .fp-recibo-tabela .fp-recibo-print {
     justify-content: center;
 }
 
-.card-itens-contra-cheque .item-contra-cheque-itens form .item-descricao {
+.card-itens-contra-cheque .item-contra-cheque-itens .item-descricao {
+    width: 100%;
+    padding: 10px 5px;
+}
+
+.card-itens-contra-cheque .item-contra-cheque-itens .item-valor {
+    width: 40%;
+    padding: 10px 5px;
+}
+
+.card-itens-contra-cheque .item-contra-cheque-itens .item-registro {
     width: 50%;
     padding: 10px 5px;
 }
 
-.card-itens-contra-cheque .item-contra-cheque-itens form .item-valor {
-    width: 21%;
-    padding: 10px 5px;
-}
-
-.card-itens-contra-cheque .item-contra-cheque-itens form .item-registro {
-    width: 21%;
-    padding: 10px 5px;
-}
-
-.card-itens-contra-cheque .item-contra-cheque-itens form .button-save {
-    width: 8%;
+.card-itens-contra-cheque .item-contra-cheque-itens .button-save {
+    width: 10%;
     padding: 10px 5px;
     font-size: 26px;
     text-align: center;
 }
 
-.card-itens-contra-cheque .item-contra-cheque-itens form .button-save button {
+.card-itens-contra-cheque .item-contra-cheque-itens .button-save button {
     background-color: var(--color2);
     border: none;
 }
 
 .card-adiantamento {
-    width: 300px;
+    width: 400px;
 }
 
 .card-adiantamento .item-adiantamento {
@@ -4402,7 +4407,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-vales {
-    width: 600px;
+    width: 400px;
 }
 
 .card-vales .item-vales {
@@ -4419,22 +4424,22 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-vales .item-vales .item-data {
-    width: 31%;
+    width: 35%;
     padding: 5px 5px 10px 5px;
 }
 
 .card-vales .item-vales .item-valor {
-    width: 31%;
+    width: 26%;
     padding: 5px 5px 10px 5px;
 }
 
 .card-vales .item-vales .item-parcelas {
-    width: 30%;
+    width: 29%;
     padding: 5px 5px 10px 5px;
 }
 
 .card-vales .item-vales .button-save {
-    width: 8%;
+    width: 10%;
     padding: 5px 5px 10px 5px;
     font-size: 26px;
     text-align: center;
@@ -4446,7 +4451,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-vales-pagamento {
-    width: 360px;
+    width: 500px;
 }
 
 .card-vales-pagamento .item-vales {
@@ -4490,7 +4495,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-agenda {
-    width: 300px;
+    width: 400px;
 }
 
 .card-agenda .item-agenda {
@@ -4568,10 +4573,6 @@ main .fp-recibo-tabela .fp-recibo-print {
     color: var(--color6);
 }
 
-.card-saldo-pagamento .itens-saldo .item-titulo {
-    text-align: center;
-}
-
 .card-saldo-pagamento .itens-saldo .item-nome {
     width: 40%;
     padding-left: 5px;
@@ -4588,6 +4589,11 @@ main .fp-recibo-tabela .fp-recibo-print {
     width: 30%;
     padding-right: 5px;
     text-align: right;
+}
+
+.card-saldo-pagamento .itens-saldo .item-titulo {
+    text-align: center;
+    font-size: 12px;
 }
 
 .card-saldo-pagamento .article-card-footer {
@@ -4716,7 +4722,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-files {
-    width: 360px;
+    width: 400px;
 }
 
 .icofont-bus-alt-2 {
@@ -4728,16 +4734,12 @@ main .fp-recibo-tabela .fp-recibo-print {
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
+    flex-wrap: wrap;
 }
 
-@media screen and (max-width: 1589px) {
+@media screen and (max-width: 1629px) {
     .div-quatro {
         flex-direction: row;
-    }
-    .card-files,
-    .card-minutas-pagamento,
-    .card-vales-pagamento {
-        width: 400px;
     }
 }
 

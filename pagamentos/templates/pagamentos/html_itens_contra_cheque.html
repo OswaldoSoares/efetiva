@@ -3,16 +3,18 @@
 <div class="article-card-titulo">
   <span>ADICIONAR ITEM</span>
 </div>
-<div class="article-card-body">
+<div class="article-card-body js-body-itens-contra-cheque">
   {% if user|can:'pagamentos_folha' %}
+  <form class="js-gera-contra-cheque-itens" method="post"
+  action="{% url 'adiantamento' %}">
+  {% csrf_token %}
     <div class="item-contra-cheque-itens">
-      <form class="js-gera-contra-cheque-itens" method="post"
-      action="{% url 'adiantamento' %}">
-        {% csrf_token %}
-        <div class="item-descricao">
-          <input type="text" class="form-control" name="descricao"
-          id="id_descricao" placeholder="DESCRICÃO">
-        </div>
+      <div class="item-descricao">
+        <input type="text" class="form-control" name="descricao"
+        id="id_descricao" placeholder="DESCRICÃO">
+      </div>
+    </div>
+    <div class="item-contra-cheque-itens">
         <div class="item-valor">
           <input type="number" class="form-control" name="valor"
           id="id_valor" value="0.00" step="0.01">
