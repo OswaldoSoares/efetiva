@@ -101,17 +101,25 @@ def valida_multa(request, _var):
     if not _desconta:
         msg["erro_desconta"] = "Obrigatório selecionar quem paga a multa."
         error = True
+    # valida linha LinhaDigitavel
+    _linha = f'{request.POST.get("linha1")}{request.POST.get("linha2")}'
+    _linha = _linha.replace(".", "")
+    _linha = _linha.replace(" ", "")
+    if not len(_linha) == 47:
+        msg["erro_linha"] = "A quantidade de digitos tem que ser igual a 47."
+        error = True
     contexto = create_despesas_context()
     contexto.update(msg)
+    contexto.update({"error": error})
     data["html_form_multas"] = render_to_string(
         "despesas/html_form_multas.html", contexto, request=request
     )
     if not error:
-        save_multa(request)
+        save_multa(request, _linha)
     return JsonResponse(data)
 
 
-def save_multa(request):
+def save_multa(request, _linha):
     obj = Multas()
     obj.NumeroAIT = request.POST.get("ait")
     obj.NumeroDOC = request.POST.get("doc")
@@ -123,6 +131,7 @@ def save_multa(request):
     obj.Vencimento = datetime.datetime.strptime(
         request.POST.get("vencimento"), "%Y-%m-%d"
     ).date()
+    obj.LinhaDigitavel = request.POST.get("linha_digitavel")
     obj.DataPagamento = datetime.datetime.strptime(
         request.POST.get("vencimento"), "%Y-%m-%d"
     ).date()
@@ -131,7 +140,13 @@ def save_multa(request):
     if request.POST.get("desconta"):
         obj.DescontaMotorista = True
     obj.idVeiculo_id = request.POST.get("veiculo")
-    obj.save()
+    obj.LinhaDigitavel = _linha
+    if obj.save():
+        print("oi")
+        print(request.POST.get["ait"])
+        print(request.POST.get["veiculo"])
+        print(request.POST.get["data"])
+        print(request.POST.get["ait"])
 
 
 def busca_minutas_multa(_id_vei, _date):
@@ -157,7 +172,6 @@ def busca_minutas_multa(_id_vei, _date):
 
 def html_minutas_multa(request, _mm):
     data = dict()
-    minutas = Minuta.objects.all()
     contexto = {
         "minutas": _mm,
     }

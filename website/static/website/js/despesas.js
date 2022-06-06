@@ -1,3 +1,12 @@
+$(document).ready(function() {
+    CarregaMask()
+})
+
+var CarregaMask = function() {
+    $("#linha1").mask('#####.##### #####.###### #####.######');
+    $("#linha2").mask('# ##############');
+}
+
 $(document).on('submit', '.form-cria-contrachequeitens', function(event) {
     event.preventDefault();
     var url = $(this).attr('action') || action;
@@ -34,6 +43,7 @@ $(document).on('submit', '.js-gera-multas', function(event) {
         },
         success: function(data) {
             $(".card-multas").html(data.html_form_multas)
+            CarregaMask()
             $(".box-loader").hide();
         },
     });

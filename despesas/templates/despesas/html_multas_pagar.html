@@ -28,6 +28,14 @@
     <div class="item-multa">
         <div class="item-infracao">{{ multa.Infracao }} - {{ multa.Local }}</div>
     </div>
+    <div class="item-multa">
+        <div class="item-linha">
+            {{ multa.LinhaDigitavel|slice:"0:5" }}.{{ multa.LinhaDigitavel|slice:"5:10" }}
+            {{ multa.LinhaDigitavel|slice:"10:15" }}.{{ multa.LinhaDigitavel|slice:"15:21" }}
+            {{ multa.LinhaDigitavel|slice:"21:26" }}.{{ multa.LinhaDigitavel|slice:"26:32" }}
+            {{ multa.LinhaDigitavel|slice:"32:33" }} {{ multa.LinhaDigitavel|slice:"33:" }}
+        </div>
+    </div>
     {% endfor %}
 </div>
 <div class="article-card-footer">

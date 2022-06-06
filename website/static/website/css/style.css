@@ -4609,7 +4609,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 /* Card - Despesas */
 
 .card-multas {
-    width: 300px;
+    width: 350px;
 }
 
 .card-multas .item-multa {
@@ -4640,6 +4640,10 @@ main .fp-recibo-tabela .fp-recibo-print {
     align-items: center;
     justify-content: center;
     padding: 5px;
+}
+
+.card-multas .item-multa .item-form .item-field .linha-digitavel {
+    width: 100%;
 }
 
 .card-multas .item-multa .item-form .error {
@@ -4713,11 +4717,16 @@ main .fp-recibo-tabela .fp-recibo-print {
     width: 100%;
     text-align: left;
     padding: 0 5px;
-    border-bottom: 1px solid var(--color7)
 }
 
 .card-multas-pagar .item-multa .item-titulo {
     text-align: center;
+}
+
+.card-multas-pagar .item-multa .item-linha {
+    width: 100%;
+    padding-left: 5px;
+    text-align: left;
     border-bottom: 1px solid var(--color7)
 }
 

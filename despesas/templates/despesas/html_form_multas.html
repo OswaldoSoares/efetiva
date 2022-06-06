@@ -13,8 +13,12 @@
                     <select class="form-control" name="veiculo" id="veiculo">
                         <option value="">SELECIONE UM VEICULO</option>
                         {% for veiculo in veiculos %}
-                        {% if request.POST.veiculo == veiculo.idVeiculo|stringformat:'.0f' %}
-                        <option value="{{ veiculo.idVeiculo }}" selected>{{ veiculo.Placa }}</option>
+                        {% if error %}
+                            {% if request.POST.veiculo == veiculo.idVeiculo|stringformat:'.0f' %}
+                            <option value="{{ veiculo.idVeiculo }}" selected>{{ veiculo.Placa }}</option>
+                            {% else %}
+                            <option value="{{ veiculo.idVeiculo }}">{{ veiculo.Placa }}</option>
+                            {% endif %}
                         {% else %}
                         <option value="{{ veiculo.idVeiculo }}">{{ veiculo.Placa }}</option>
                         {% endif %}
@@ -36,7 +40,7 @@
                     <i class="bi bi-calendar"></i>
                 </div>
                 <div class="item-field item-data">
-                    {% if request.POST %}
+                    {% if error %}
                     <input class="form-control" name="data" type="date"
                     value={{ request.POST.data }} id="data">
                     {% else %}
@@ -59,7 +63,7 @@
                     <i class="bi bi-clock"></i>
                 </div>
                 <div class="item-field item-hora">
-                    {% if request.POST %}
+                    {% if error %}
                     <input class="form-control" name="hora" type="time"
                     value="{{ request.POST.hora }}" id="hora">
                     {% else %}
@@ -75,7 +79,7 @@
                     <i class="bi bi-file-richtext"></i>
                 </div>
                 <div class="item-field item-doc">
-                    {% if request.POST %}
+                    {% if error %}
                     <input class="form-control" name="doc" type="text"
                     value="{{ request.POST.doc }}"
                     id="doc" placeholder="NÚMERO NOTIF./PENALIDADE">
@@ -99,7 +103,7 @@
                     <i class="bi bi-file-earmark-binary"></i>
                 </div>
                 <div class="item-field item-ait">
-                    {% if request.POST %}
+                    {% if error %}
                     <input class="form-control" name="ait" type="text"
                     value="{{ request.POST.ait }}"
                     id='ait' placeholder="NÚMERO AIT">
@@ -123,7 +127,7 @@
                     <i class="bi bi-question-diamond"></i>
                 </div>
                 <div class="item-field item-infracao">
-                    {% if request.POST %}
+                    {% if error %}
                     <textarea class="form-control" name="infracao"
                     id="infracao" cols="40" rows="2"
                     placeholder="INFRAÇÃO">{{ request.POST.infracao }}</textarea>
@@ -147,7 +151,7 @@
                     <i class="bi bi-geo-alt"></i>
                 </div>
                 <div class="item-field item-local">
-                    {% if request.POST %}
+                    {% if error %}
                     <textarea class="form-control" name="local"
                     id="local" cols="40" rows="2"
                     placeholder="LOCAL DA INFRAÇÃO">{{ request.POST.local }}</textarea>
@@ -171,7 +175,7 @@
                     <i class="bi bi-currency-dollar"></i>
                 </div>
                 <div class="item-field item-valor">
-                    {% if request.POST %}
+                    {% if error %}
                     <input class="form-control" name="valor" type="number"
                     value="{{ request.POST.valor }}" step="0.01" id="valor">
                     {% else %}
@@ -194,7 +198,7 @@
                     <i class="bi bi-calendar-date"></i>
                 </div>
                 <div class="item-field item-vencimento">
-                    {% if request.POST %}
+                    {% if error %}
                     <input class="form-control" name="vencimento" type="date"
                     value={{ request.POST.vencimento }} id="vencimento">
                     {% else %}
@@ -218,14 +222,16 @@
                 </div>
                 <div class="item-field item-desconta">
                     <select class="form-control" name="desconta" id="desconta">
-                        {% if request.POST.desconta == "True" %}
-                        <option value="">SELECIONE QUEM PAGA</option>
-                        <option value="False">EMPRESA</option>
-                        <option value="True" selected>MOTORISTA</option>
-                        {% elif request.POST.desconta == "False" %}
-                        <option value="">SELECIONE QUEM PAGA</option>
-                        <option value="False" selected>EMPRESA</option>
-                        <option value="True">MOTORISTA</option>
+                        {% if error %}
+                            {% if request.POST.desconta == "True" %}
+                            <option value="">SELECIONE QUEM PAGA</option>
+                            <option value="False">EMPRESA</option>
+                            <option value="True" selected>MOTORISTA</option>
+                            {% elif request.POST.desconta == "False" %}
+                            <option value="">SELECIONE QUEM PAGA</option>
+                            <option value="False" selected>EMPRESA</option>
+                            <option value="True">MOTORISTA</option>
+                            {% endif %}
                         {% else %}
                         <option value="">SELECIONE QUEM PAGA</option>
                         <option value="False">EMPRESA</option>
@@ -238,6 +244,41 @@
                 {% if erro_desconta %}
                 <div class="error">
                     <span>{{ erro_desconta }}<span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="item-multa">
+            <div class="item-form">
+                <div class="button">
+                    <i class="bi bi-upc"></i>
+                </div>
+                <div class="item-field item-linha">
+                    <div class="linha-digitavel">
+                        {% if error %}
+                        <input class="form-control" name="linha1" type="text"
+                        id="linha1" maxlength="37"
+                        value="{{ request.POST.linha1 }}"
+                        placeholder="00000.00000 00000.000000 00000.000000">
+                        <input class="form-control" name="linha2" type="text"
+                        id="linha2" maxlength="16"
+                        value="{{ request.POST.linha2 }}"
+                        placeholder="0 00000000000000">
+                        {% else %}
+                        <input class="form-control" name="linha1" type="text"
+                        id="linha1" maxlength="37" value=""
+                        placeholder="00000.00000 00000.000000 00000.000000">
+                        <input class="form-control" name="linha2" type="text"
+                        id="linha2" maxlength="16" value=""
+                        placeholder="0 00000000000000">
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="item-form">
+                {% if erro_linha %}
+                <div class="error">
+                    <span>{{ erro_linha }}<span>
                 </div>
                 {% endif %}
             </div>
