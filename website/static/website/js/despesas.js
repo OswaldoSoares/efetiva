@@ -5,6 +5,8 @@ $(document).ready(function() {
 var CarregaMask = function() {
     $("#linha1").mask('#####.##### #####.###### #####.######');
     $("#linha2").mask('# ##############');
+    $("#linhasp1").mask('###########.# ###########.#');
+    $("#linhasp2").mask('###########.# ###########.#');
 }
 
 $(document).on('submit', '.form-cria-contrachequeitens', function(event) {
@@ -49,6 +51,40 @@ $(document).on('submit', '.js-gera-multas', function(event) {
     });
 });
 
+$(document).on('click', '.js-edita-multas', function() {
+    var _id_multa = $(this).data('idmulta')
+    $.ajax({
+        type: 'GET',
+        url: '/despesas/edita_multa',
+        data: {
+            idMulta: _id_multa,
+        },
+        beforeSend: function() {
+
+        },
+        success: function(data) {
+
+        },
+    });
+});
+
+$(document).on('click', '.js-exclui-multas', function() {
+    var _id_multa = $(this).data('idmulta')
+    $.ajax({
+        type: 'GET',
+        url: '/despesas/exclui_multa',
+        data: {
+            idMulta: _id_multa,
+        },
+        beforeSend: function() {
+
+        },
+        success: function(data) {
+
+        },
+    });
+});
+
 $(document).on('focusout', '#hora', function() {
     var _id_veiculo = $("#veiculo option:selected").val();
     var _date = $('#data').val();
@@ -66,6 +102,7 @@ $(document).on('focusout', '#hora', function() {
                 $('.card-minutas-multa').fadeOut(10)
             },
             success: function(data) {
+                $('#idpessoal').val(data.idpessoal)
                 $('.card-minutas-multa').html(data.html_minutas_multa)
                 $('.card-minutas-multa').fadeIn(10)
             },

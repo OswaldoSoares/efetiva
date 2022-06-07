@@ -5,6 +5,8 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 from minutas.facade import nome_curto
 from minutas.models import Minuta, MinutaColaboradores
+from pagamentos.facade import create_vales
+from pessoas.models import Vales
 from veiculos.models import Veiculo
 
 from despesas.models import Abastecimento, Multas
@@ -12,15 +14,44 @@ from despesas.models import Abastecimento, Multas
 
 def create_despesas_context():
     abastecimento = get_abastecimento_all()
-    veiculos = Veiculo.objects.all()
+    veiculos = Veiculo.objects.filter(Proprietario_id=17)
     multas = Multas.objects.filter(Pago=False).order_by("-Vencimento")
+    lista = []
+    for x in multas:
+        multa = f"MULTA - {x.NumeroDOC}"
+        motorista = None
+        if x.DescontaMotorista:
+            motorista = Vales.objects.filter(Descricao__startswith=multa)
+            if motorista:
+                motorista = nome_curto(motorista[0].idPessoal.Nome)
+            else:
+                motorista = "VALE NÃO ENCONTRADO"
+        lista.append(
+            {
+                "id_multa": x.idMulta,
+                "vencimento": x.Vencimento,
+                "valor": x.ValorMulta,
+                "doc": x.NumeroDOC,
+                "ait": x.NumeroAIT,
+                "data": x.DataMulta,
+                "hora": x.HoraMulta,
+                "placa": x.idVeiculo.Placa,
+                "infracao": x.Infracao,
+                "local": x.Local,
+                "digitavel": x.LinhaDigitavel,
+                "digitavel_sp": x.LinhaDigitavelSP,
+                "desconta": x.DescontaMotorista,
+                "motorista": motorista,
+            }
+        )
+    print(lista)
     hoje = datetime.datetime.today()
     hoje = datetime.datetime.strftime(hoje, "%Y-%m-%d")
     context = {
         "abastecimento": abastecimento,
         "veiculos": veiculos,
         "hoje": hoje,
-        "multas": multas,
+        "multas": lista,
     }
     return context
 
@@ -101,13 +132,23 @@ def valida_multa(request, _var):
     if not _desconta:
         msg["erro_desconta"] = "Obrigatório selecionar quem paga a multa."
         error = True
-    # valida linha LinhaDigitavel
-    _linha = f'{request.POST.get("linha1")}{request.POST.get("linha2")}'
-    _linha = _linha.replace(".", "")
-    _linha = _linha.replace(" ", "")
-    if not len(_linha) == 47:
-        msg["erro_linha"] = "A quantidade de digitos tem que ser igual a 47."
+    # TODO Linha Digitavel Boleto
+    _linha = None
+    # # valida linha LinhaDigitavel
+    # _linha = f'{request.POST.get("linha1")}{request.POST.get("linha2")}'
+    # _linha = _linha.replace(".", "")
+    # _linha = _linha.replace(" ", "")
+    # if not len(_linha) == 47:
+    #     msg["erro_linha"] = "A quantidade de digitos tem que ser igual a 47."
+    #     error = True
+    # valida linha LinhaDigitavel SP
+    _linha_sp = f'{request.POST.get("linhasp1")}{request.POST.get("linhasp2")}'
+    _linha_sp = _linha_sp.replace(".", "")
+    _linha_sp = _linha_sp.replace(" ", "")
+    if not len(_linha_sp) == 48:
+        msg["erro_linha_sp"] = "A quantidade de digitos tem que ser igual a 48."
         error = True
+    _id_pes = request.POST.get("idpessoal")
     contexto = create_despesas_context()
     contexto.update(msg)
     contexto.update({"error": error})
@@ -115,11 +156,11 @@ def valida_multa(request, _var):
         "despesas/html_form_multas.html", contexto, request=request
     )
     if not error:
-        save_multa(request, _linha)
+        save_multa(request, _linha, _linha_sp, _id_pes)
     return JsonResponse(data)
 
 
-def save_multa(request, _linha):
+def save_multa(request, _linha, _linha_sp, _id_pes):
     obj = Multas()
     obj.NumeroAIT = request.POST.get("ait")
     obj.NumeroDOC = request.POST.get("doc")
@@ -137,16 +178,31 @@ def save_multa(request, _linha):
     ).date()
     obj.Infracao = request.POST.get("infracao")
     obj.Local = request.POST.get("local")
-    if request.POST.get("desconta"):
-        obj.DescontaMotorista = True
+    obj.DescontaMotorista = request.POST.get("desconta")
     obj.idVeiculo_id = request.POST.get("veiculo")
     obj.LinhaDigitavel = _linha
-    if obj.save():
-        print("oi")
-        print(request.POST.get["ait"])
-        print(request.POST.get["veiculo"])
-        print(request.POST.get["data"])
-        print(request.POST.get["ait"])
+    obj.LinhaDigitavelSP = _linha_sp
+    obj.save()
+    if obj.DescontaMotorista == "True":
+        create_vale_multa(obj, _id_pes)
+
+
+def update_multa(_id_mul):
+    pass
+
+
+def delete_multa(_id_mul):
+    multa = Multas.objects.filter(idMulta=_id_mul)
+    multa.delete()
+
+
+def create_vale_multa(_obj, _id_pes):
+    if _id_pes:
+        _des = f"Multa - {_obj.NumeroDOC}"
+        _dat = datetime.datetime.today().date()
+        _val = _obj.ValorMulta
+        _par = 1
+        create_vales(_des, _dat, _val, _par, _id_pes)
 
 
 def busca_minutas_multa(_id_vei, _date):
@@ -164,6 +220,7 @@ def busca_minutas_multa(_id_vei, _date):
                 "final": x.HoraFinal,
                 "fantasia": x.idCliente.Fantasia,
                 "motorista": nome_curto(morotista.idPessoal.Nome),
+                "idpessoal": morotista.idPessoal_id,
                 "demissao": morotista.idPessoal.DataDemissao,
             }
         )
@@ -178,4 +235,5 @@ def html_minutas_multa(request, _mm):
     data["html_minutas_multa"] = render_to_string(
         "despesas/html_minutas_multa.html", contexto, request=request
     )
+    data["idpessoal"] = _mm[0]["idpessoal"]
     return JsonResponse(data)

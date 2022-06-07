@@ -248,7 +248,8 @@
                 {% endif %}
             </div>
         </div>
-        <div class="item-multa">
+        {% comment %} TODO Linha digitavel Boletos {% endcomment %}
+        {% comment %} <div class="item-multa">
             <div class="item-form">
                 <div class="button">
                     <i class="bi bi-upc"></i>
@@ -282,7 +283,43 @@
                 </div>
                 {% endif %}
             </div>
-        </div>    
+        </div>     {% endcomment %}
+        <div class="item-multa">
+            <div class="item-form">
+                <div class="button">
+                    <i class="bi bi-upc-scan"></i>
+                </div>
+                <div class="item-field item-linha">
+                    <div class="linha-digitavel">
+                        {% if error %}
+                        <input class="form-control" name="linhasp1" type="text"
+                        id="linhasp1" maxlength="27"
+                        value="{{ request.POST.linhasp1 }}"
+                        placeholder="00000000000.0 00000000000.0">
+                        <input class="form-control" name="linhasp2" type="text"
+                        id="linhasp2" maxlength="27"
+                        value="{{ request.POST.linhasp2 }}"
+                        placeholder="00000000000.0 00000000000.0">
+                        {% else %}
+                        <input class="form-control" name="linhasp1" type="text"
+                        id="linhasp1" maxlength="27" value=""
+                        placeholder="00000000000.0 00000000000.0">
+                        <input class="form-control" name="linhasp2" type="text"
+                        id="linhasp2" maxlength="27" value=""
+                        placeholder="00000000000.0 00000000000.0">
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="item-form">
+                {% if erro_linha_sp %}
+                <div class="error">
+                    <span>{{ erro_linha_sp }}<span>
+                </div>
+                {% endif %}
+            </div>
+        </div>   
+        <input type="hidden" name="idpessoal" value="" id="idpessoal"> 
     </div>
     <div class="article-card-footer">
         <button class='bi bi-save2 i-button'></button>

@@ -15,6 +15,7 @@
     --color5: deeppink;
     --color6: white;
     --color7: #696969;
+    --color8: #F5DEB3;
 }
 
 
@@ -4609,7 +4610,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 /* Card - Despesas */
 
 .card-multas {
-    width: 350px;
+    width: 300px;
 }
 
 .card-multas .item-multa {
@@ -4666,7 +4667,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-multas-pagar {
-    width: 650px;
+    width: 700px;
 }
 
 .card-multas-pagar .item-multa {
@@ -4680,54 +4681,74 @@ main .fp-recibo-tabela .fp-recibo-print {
 
 .card-multas-pagar .item-multa .item-vencimento {
     width: 15%;
-    text-align: center;
+    text-align: left;
+    padding-left: 5px;
+    border-top: 1px solid var(--color7);
 }
 
 .card-multas-pagar .item-multa .item-valor {
-    width: 14%;
+    width: 13%;
     text-align: right;
-}
-
-.card-multas-pagar .item-multa .item-ait {
-    width: 15%;
-    text-align: center;
+    padding-right: 5px;
+    border-top: 1px solid var(--color7);
 }
 
 .card-multas-pagar .item-multa .item-doc {
-    width: 15%;
-    text-align: center;
+    width: 18%;
+    text-align: left;
+    padding-left: 5px;
+    border-top: 1px solid var(--color7);
+}
+
+.card-multas-pagar .item-multa .item-ait {
+    width: 18%;
+    text-align: left;
+    padding-left: 5px;
+    border-top: 1px solid var(--color7);
 }
 
 .card-multas-pagar .item-multa .item-data {
-    width: 14%;
+    width: 23%;
     text-align: center;
+    padding-left: 5px;
+    border-top: 1px solid var(--color7);
 }
 
 .card-multas-pagar .item-multa .item-veiculo {
-    width: 15%;
-    text-align: center;
-}
-
-.card-multas-pagar .item-multa .item-desconta {
-    width: 12%;
-    text-align: center;
+    width: 13%;
+    text-align: right;
+    padding-right: 5px;
+    border-top: 1px solid var(--color7);
 }
 
 .card-multas-pagar .item-multa .item-infracao {
-    width: 100%;
+    width: 70%;
     text-align: left;
-    padding: 0 5px;
+    padding-left: 5px;
 }
 
-.card-multas-pagar .item-multa .item-titulo {
-    text-align: center;
+.card-multas-pagar .item-multa .item-desconta {
+    width: 30%;
+    padding-right: 5px;
+    text-align: right;
 }
 
 .card-multas-pagar .item-multa .item-linha {
-    width: 100%;
+    width: 80%;
     padding-left: 5px;
+    padding-bottom: 5px;
     text-align: left;
-    border-bottom: 1px solid var(--color7)
+}
+
+.card-multas-pagar .item-multa .item-button {
+    width: 20%;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    text-align: right;
+}
+
+.i-button-null {
+    color: var(--color8)
 }
 
 .card-files {

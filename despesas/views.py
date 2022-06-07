@@ -27,8 +27,16 @@ def adiciona_multa(request):
     return data
 
 
+def edita_multa(request):
+    _id_mul = request.GET.get("idMulta")
+
+
+def exclui_multa(request):
+    _id_mul = request.GET.get("idMulta")
+    facade.delete_multa(_id_mul)
+
+
 def minutas_multa(request):
-    print(request.GET)
     _id_vei = request.GET.get("idveiculo")
     _date = request.GET.get("date")
     _mm = facade.busca_minutas_multa(_id_vei, _date)
