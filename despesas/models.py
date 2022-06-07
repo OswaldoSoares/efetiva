@@ -39,6 +39,7 @@ class Multas(models.Model):
     ValorMulta = models.DecimalField(decimal_places=2, max_digits=9)
     Vencimento = models.DateField(default=0)
     LinhaDigitavel = models.CharField(max_length=47, blank=True, null=True)
+    LinhaDigitavelSP = models.CharField(max_length=48, blank=True, null=True)
     Infracao = models.CharField(max_length=100)
     Local = models.CharField(max_length=240)
     Pago = models.BooleanField(default=False)
