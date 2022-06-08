@@ -1045,7 +1045,7 @@ def calcula_extras(_var):
         _hs = datetime.datetime.strptime("17:00:00", "%H:%M:%S").time()
         _hs = datetime.timedelta(hours=_hs.hour, minutes=_hs.minute)
         _hfs = datetime.timedelta(hours=x.Saida.hour, minutes=x.Saida.minute)
-        _te += _hfs - _hs if _hfs > _he else _hz
+        _te += _hfs - _hs if _hfs > _hs else _hz
     _vda = Decimal(_sb) / 30 / 9 / 60 / 60 * Decimal(1.5) * _te.seconds
     return _te, _vda
 
