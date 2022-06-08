@@ -149,19 +149,6 @@ def valida_multa(request):
         error = True
     return error, msg
 
-    # _id_pes = request.POST.get("idpessoal")
-    # contexto = create_despesas_context()
-    # contexto.update(msg)
-    # contexto.update({"error": error})
-    # data = read_multa(request, None)
-    # # data["html_form_multas"] = render_to_string(
-    # #     "despesas/html_form_multas.html", contexto, request=request
-    # # )
-    # if not error:
-    #     save_multa(request, _linha, _linha_sp, _id_pes)
-    # # return JsonResponse(data)
-    # return data
-
 
 def save_multa(request, _linha, _linha_sp, _id_pes):
     obj = Multas()
@@ -230,12 +217,17 @@ def read_multa(request, _id_mul):
         desconta_motorista = request.POST.get("desconta")
         data_pagamento = None
         idveiculo = int(request.POST.get("veiculo"))
+        _linha = None
         linha_digitavel = None
         _linha_sp = f'{request.POST.get("linhasp1")}{request.POST.get("linhasp2")}'
         _linha_sp = _linha_sp.replace(".", "")
         _linha_sp = _linha_sp.replace(" ", "")
         linha_digitavel_sp = _linha_sp
+        _id_pes = request.POST.get("idpessoal")
+        print(_id_pes)
         error, msg = valida_multa(request)
+        if not error:
+            save_multa(request, _linha, _linha_sp, _id_pes)
     multa = dict()
     multa["idmulta"] = idmulta
     multa["numero_doc"] = numero_doc
@@ -252,7 +244,6 @@ def read_multa(request, _id_mul):
     multa["idveiculo"] = idveiculo
     multa["linha_digitavel"] = linha_digitavel
     multa["linha_digitavel_sp"] = linha_digitavel_sp
-
     data = dict()
     contexto = {"multa": multa, "veiculos": veiculos, "error": error}
     contexto.update(msg)
@@ -268,11 +259,13 @@ def delete_multa(_id_mul):
 
 
 def create_vale_multa(_obj, _id_pes):
+    print(_id_pes)
     if _id_pes:
         _des = f"Multa - {_obj.NumeroDOC}"
         _dat = datetime.datetime.today().date()
         _val = _obj.ValorMulta
         _par = 1
+        print(_des, _dat, _val, _par, _id_pes)
         create_vales(_des, _dat, _val, _par, _id_pes)
 
 
@@ -307,4 +300,5 @@ def html_minutas_multa(request, _mm):
         "despesas/html_minutas_multa.html", contexto, request=request
     )
     data["idpessoal"] = _mm[0]["idpessoal"]
+    print(data["idpessoal"])
     return JsonResponse(data)

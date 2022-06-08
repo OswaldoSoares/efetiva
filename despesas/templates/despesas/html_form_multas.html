@@ -259,9 +259,9 @@
                     <i class="bi bi-credit-card i-button-null"></i>
                 </div>
                 <div class="item-field item-desconta">
+                    {{ multa.desconta_motorista }}
                     <select class="form-control" name="desconta" id="desconta">
                         {% if multa %}
-                            <option value="">{{ multa.desconta_motorista }}</option>
                             {% if multa.desconta_motorista == "True" %}
                             <option value="">SELECIONE QUEM PAGA</option>
                             <option value="False">EMPRESA</option>
@@ -270,8 +270,12 @@
                             <option value="">SELECIONE QUEM PAGA</option>
                             <option value="False" selected>EMPRESA</option>
                             <option value="True">MOTORISTA</option>
+                            {% else %}
+                            <option value="">SELECIONE QUEM PAGA</option>
+                            <option value="False">EMPRESA</option>
+                            <option value="True">MOTORISTA</option>
                             {% endif %}
-                        {% comment %} {% if error %}
+                            {% comment %} {% if error %}
                             {% if request.POST.desconta == "True" %}
                             <option value="">SELECIONE QUEM PAGA</option>
                             <option value="False">EMPRESA</option>
@@ -282,9 +286,9 @@
                             <option value="True">MOTORISTA</option>
                             {% endif %} {% endcomment %}
                         {% else %}
-                        <option value="">SELECIONE QUEM PAGA</option>
-                        <option value="False">EMPRESA</option>
-                        <option value="True">MOTORISTA</option>
+                            <option value="">SELECIONE QUEM PAGA</option>
+                            <option value="False">EMPRESA</option>
+                            <option value="True">MOTORISTA</option>
                         {% endif %}
                     </select>
                 </div>

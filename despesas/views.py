@@ -22,6 +22,7 @@ def cria_abastecimento(request):
 
 
 def adiciona_multa(request):
+    print(request.POST)
     data = facade.read_multa(request, None)
     return data
 
