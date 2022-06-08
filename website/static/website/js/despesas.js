@@ -70,19 +70,20 @@ $(document).on('click', '.js-edita-multas', function() {
 
 $(document).on('click', '.js-exclui-multas', function() {
     var _id_multa = $(this).data('idmulta')
-    $.ajax({
-        type: 'GET',
-        url: '/despesas/exclui_multa',
-        data: {
-            idMulta: _id_multa,
-        },
-        beforeSend: function() {
+    alert('você clicou para deletar')
+        // $.ajax({
+        //     type: 'GET',
+        //     url: '/despesas/exclui_multa',
+        //     data: {
+        //         idMulta: _id_multa,
+        //     },
+        //     beforeSend: function() {
 
-        },
-        success: function(data) {
+    //     },
+    //     success: function(data) {
 
-        },
-    });
+    //     },
+    // });
 });
 
 $(document).on('focusout', '#hora', function() {

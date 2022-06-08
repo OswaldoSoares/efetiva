@@ -29,6 +29,7 @@ def adiciona_multa(request):
 
 def edita_multa(request):
     _id_mul = request.GET.get("idMulta")
+    facade.update_multa(request, _id_mul)
 
 
 def exclui_multa(request):

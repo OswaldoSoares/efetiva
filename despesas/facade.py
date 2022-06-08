@@ -73,6 +73,8 @@ def form_despesa(request, c_form, c_idobj, c_url, c_view):
 
 
 def valida_multa(request, _var):
+    read_multa(request, None)
+    print(request.POST)
     msg = dict()
     data = dict()
     error = False
@@ -187,8 +189,65 @@ def save_multa(request, _linha, _linha_sp, _id_pes):
         create_vale_multa(obj, _id_pes)
 
 
-def update_multa(_id_mul):
-    pass
+def update_multa(request, _id_mul):
+    multa = Multas.objects.filter(idMulta=_id_mul)
+    read_multa(request, _id_mul)
+
+
+def read_multa(request, _id_mul):
+    if _id_mul:
+        multa = Multas.objects.get(idMulta=_id_mul)
+        idmulta = multa.idMulta
+        numero_doc = multa.NumeroDOC
+        numero_ait = multa.NumeroAIT
+        data_multa = multa.DataMulta
+        hora_multa = multa.HoraMulta
+        valor_multa = multa.ValorMulta
+        vencimento = multa.Vencimento
+        infracao = multa.Infracao
+        local = multa.Local
+        pago = multa.Pago
+        desconta_motorista = multa.DescontaMotorista
+        data_pagamento = multa.DataPagamento
+        idveiculo = multa.idVeiculo_id
+        linha_digitavel = multa.LinhaDigitavel
+        linha_digitavel_sp = multa.LinhaDigitavelSP
+    else:
+        idmulta = None
+        numero_doc = request.POST.get("doc")
+        numero_ait = request.POST.get("ait")
+        data_multa = request.POST.get("data")
+        hora_multa = request.POST.get("hora")
+        valor_multa = request.POST.get("valor")
+        vencimento = request.POST.get("vencimento")
+        infracao = request.POST.get("infracao")
+        local = request.POST.get("local")
+        pago = None
+        desconta_motorista = request.POST.get("desconta")
+        data_pagamento = None
+        idveiculo = request.POST.get("veiculo")
+        linha_digitavel = None
+        _linha_sp = f'{request.POST.get("linhasp1")}{request.POST.get("linhasp2")}'
+        _linha_sp = _linha_sp.replace(".", "")
+        _linha_sp = _linha_sp.replace(" ", "")
+        linha_digitavel_sp = _linha_sp
+    multa = dict()
+    multa["idmulta"] = idmulta
+    multa["numero_doc"] = numero_doc
+    multa["numero_ait"] = numero_ait
+    multa["data_multa"] = data_multa
+    multa["hora_multa"] = hora_multa
+    multa["valor_multa"] = valor_multa
+    multa["vencimento"] = vencimento
+    multa["infracao"] = infracao
+    multa["local"] = local
+    multa["pago"] = pago
+    multa["desconta_motorista"] = desconta_motorista
+    multa["data_pagamento"] = data_pagamento
+    multa["idveiculo"] = idveiculo
+    multa["linha_digitavel"] = linha_digitavel
+    multa["linha_digitavel_sp"] = linha_digitavel_sp
+    print(multa)
 
 
 def delete_multa(_id_mul):
