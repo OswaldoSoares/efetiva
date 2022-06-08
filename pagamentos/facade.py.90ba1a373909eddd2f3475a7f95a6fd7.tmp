@@ -422,6 +422,7 @@ def html_cartao_ponto(request, _mes_ano, _id) -> JsonResponse:
     get_pessoa(_id, _var)
     _var["mes"], _var["ano"] = converter_mes_ano(_mes_ano)
     _var["primeiro_dia"], _var["ultimo_dia"] = extremos_mes(_var["mes"], _var["ano"])
+    # TODO Necessário inverter as posições do _cartao_ponto e Minutas
     _cartao_ponto = cartao_ponto(_var)
     minutas = minutas_contra_cheque(_var)
     _var["dias_falta"] = dias_falta(_cartao_ponto)
