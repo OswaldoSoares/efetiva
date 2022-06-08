@@ -22,14 +22,14 @@ def cria_abastecimento(request):
 
 
 def adiciona_multa(request):
-    _var = dict(request.POST)
-    data = facade.valida_multa(request, _var)
+    data = facade.read_multa(request, None)
     return data
 
 
 def edita_multa(request):
     _id_mul = request.GET.get("idMulta")
-    facade.update_multa(request, _id_mul)
+    data = facade.read_multa(request, _id_mul)
+    return data
 
 
 def exclui_multa(request):

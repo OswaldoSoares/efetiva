@@ -72,11 +72,8 @@ def form_despesa(request, c_form, c_idobj, c_url, c_view):
     return c_return
 
 
-def valida_multa(request, _var):
-    read_multa(request, None)
-    print(request.POST)
+def valida_multa(request):
     msg = dict()
-    data = dict()
     error = False
     # Valida Número AIT
     _ait = request.POST.get("ait")
@@ -94,7 +91,6 @@ def valida_multa(request, _var):
     if _data >= _hoje:
         msg["erro_data"] = "Data da infração tem que ser anterior a hoje."
         error = True
-    _hora = request.POST.get("hora")
     # Valida infração
     _infracao = request.POST.get("infracao")
     if not _infracao:
@@ -126,7 +122,8 @@ def valida_multa(request, _var):
         error = True
     # Valida veículo da infração
     _veiculo = request.POST.get("veiculo")
-    if not _veiculo:
+    print(_veiculo)
+    if int(_veiculo) == 0:
         msg["erro_veiculo"] = "Obrigatório selecionar um veículo."
         error = True
     # Valida quem paga a infração
@@ -150,16 +147,20 @@ def valida_multa(request, _var):
     if not len(_linha_sp) == 48:
         msg["erro_linha_sp"] = "A quantidade de digitos tem que ser igual a 48."
         error = True
-    _id_pes = request.POST.get("idpessoal")
-    contexto = create_despesas_context()
-    contexto.update(msg)
-    contexto.update({"error": error})
-    data["html_form_multas"] = render_to_string(
-        "despesas/html_form_multas.html", contexto, request=request
-    )
-    if not error:
-        save_multa(request, _linha, _linha_sp, _id_pes)
-    return JsonResponse(data)
+    return error, msg
+
+    # _id_pes = request.POST.get("idpessoal")
+    # contexto = create_despesas_context()
+    # contexto.update(msg)
+    # contexto.update({"error": error})
+    # data = read_multa(request, None)
+    # # data["html_form_multas"] = render_to_string(
+    # #     "despesas/html_form_multas.html", contexto, request=request
+    # # )
+    # if not error:
+    #     save_multa(request, _linha, _linha_sp, _id_pes)
+    # # return JsonResponse(data)
+    # return data
 
 
 def save_multa(request, _linha, _linha_sp, _id_pes):
@@ -191,19 +192,22 @@ def save_multa(request, _linha, _linha_sp, _id_pes):
 
 def update_multa(request, _id_mul):
     multa = Multas.objects.filter(idMulta=_id_mul)
-    read_multa(request, _id_mul)
+    dados_multa = read_multa(request, _id_mul)
 
 
 def read_multa(request, _id_mul):
+    veiculos = Veiculo.objects.filter(Proprietario_id=17)
+    error = False
+    msg = dict()
     if _id_mul:
         multa = Multas.objects.get(idMulta=_id_mul)
         idmulta = multa.idMulta
         numero_doc = multa.NumeroDOC
         numero_ait = multa.NumeroAIT
-        data_multa = multa.DataMulta
+        data_multa = datetime.datetime.strftime(multa.DataMulta, "%Y-%m-%d")
         hora_multa = multa.HoraMulta
-        valor_multa = multa.ValorMulta
-        vencimento = multa.Vencimento
+        valor_multa = str(multa.ValorMulta)
+        vencimento = datetime.datetime.strftime(multa.Vencimento, "%Y-%m-%d")
         infracao = multa.Infracao
         local = multa.Local
         pago = multa.Pago
@@ -225,12 +229,13 @@ def read_multa(request, _id_mul):
         pago = None
         desconta_motorista = request.POST.get("desconta")
         data_pagamento = None
-        idveiculo = request.POST.get("veiculo")
+        idveiculo = int(request.POST.get("veiculo"))
         linha_digitavel = None
         _linha_sp = f'{request.POST.get("linhasp1")}{request.POST.get("linhasp2")}'
         _linha_sp = _linha_sp.replace(".", "")
         _linha_sp = _linha_sp.replace(" ", "")
         linha_digitavel_sp = _linha_sp
+        error, msg = valida_multa(request)
     multa = dict()
     multa["idmulta"] = idmulta
     multa["numero_doc"] = numero_doc
@@ -247,7 +252,14 @@ def read_multa(request, _id_mul):
     multa["idveiculo"] = idveiculo
     multa["linha_digitavel"] = linha_digitavel
     multa["linha_digitavel_sp"] = linha_digitavel_sp
-    print(multa)
+
+    data = dict()
+    contexto = {"multa": multa, "veiculos": veiculos, "error": error}
+    contexto.update(msg)
+    data["html_form_multas"] = render_to_string(
+        "despesas/html_form_multas.html", contexto, request=request
+    )
+    return JsonResponse(data)
 
 
 def delete_multa(_id_mul):
