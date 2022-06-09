@@ -22,14 +22,25 @@ def cria_abastecimento(request):
 
 
 def adiciona_multa(request):
-    print(request.POST)
-    data = facade.read_multa(request, None)
+    _id_mul = request.POST.get("idMulta")
+    error, msg = facade.valida_multa(request)
+    multa = facade.read_multa_post(request)
+    if not error:
+        if _id_mul:
+            facade.update_multa(multa, _id_mul)
+        else:
+            facade.save_multa(multa)
+        multa = dict()
+    data = facade.html_form_multas(request, multa, error, msg)
     return data
 
 
 def edita_multa(request):
     _id_mul = request.GET.get("idMulta")
-    data = facade.read_multa(request, _id_mul)
+    print(_id_mul)
+    error, msg = False, dict()
+    multa = facade.read_multa_database(_id_mul)
+    data = facade.html_form_multas(request, multa, error, msg)
     return data
 
 

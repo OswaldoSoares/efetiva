@@ -19,14 +19,8 @@
                             {% else %}
                             <option value="{{ veiculo.idVeiculo }}">{{ veiculo.Placa }}</option>
                             {% endif %}
-                        {% comment %} {% if error %}
-                            {% if request.POST.veiculo == veiculo.idVeiculo|stringformat:'.0f' %}
-                            <option value="{{ veiculo.idVeiculo }}" selected>{{ veiculo.Placa }}</option>
-                            {% else %}
-                            <option value="{{ veiculo.idVeiculo }}">{{ veiculo.Placa }}</option>
-                            {% endif %} {% endcomment %}
                         {% else %}
-                        <option value="{{ veiculo.idVeiculo }}">{{ veiculo.Placa }}</option>
+                            <option value="{{ veiculo.idVeiculo }}">{{ veiculo.Placa }}</option>
                         {% endif %}
                         {% endfor %}
                     </select>
@@ -49,9 +43,6 @@
                     {% if multa %}
                     <input class="form-control" name="data" type="date"
                     value={{ multa.data_multa }} id="data">
-                    {% comment %} {% if error %}
-                    <input class="form-control" name="data" type="date"
-                    value={{ request.POST.data }} id="data"> {% endcomment %}
                     {% else %}
                     <input class="form-control" name="data" type="date"
                     value={{ hoje }} id="data">
@@ -75,9 +66,6 @@
                     {% if multa %}
                     <input class="form-control" name="hora" type="time"
                     value="{{ multa.hora_multa }}" id="hora">
-                    {% comment %} {% if error %}
-                    <input class="form-control" name="hora" type="time"
-                    value="{{ request.POST.hora }}" id="hora"> {% endcomment %}
                     {% else %}
                     <input class="form-control" name="hora" type="time"
                     value="07:00" id="hora">
@@ -95,14 +83,6 @@
                     <input class="form-control" name="doc" type="text"
                     value="{{ multa.numero_doc }}"
                     id="doc" placeholder="NÚMERO NOTIF./PENALIDADE">
-                    {% comment %} {% if error %}
-                    <input class="form-control" name="doc" type="text"
-                    value="{{ request.POST.doc }}"
-                    id="doc" placeholder="NÚMERO NOTIF./PENALIDADE">
-                    {% if error %}
-                    <input class="form-control" name="doc" type="text"
-                    value="{{ request.POST.doc }}"
-                    id="doc" placeholder="NÚMERO NOTIF./PENALIDADE"> {% endcomment %}
                     {% else %}
                     <input class="form-control" name="doc" type="text"
                     id="doc" placeholder="NÚMERO NOTIF./PENALIDADE">
@@ -127,10 +107,6 @@
                     <input class="form-control" name="ait" type="text"
                     value="{{ multa.numero_ait }}"
                     id='ait' placeholder="NÚMERO AIT">
-                    {% comment %} {% if error %}
-                    <input class="form-control" name="ait" type="text"
-                    value="{{ request.POST.ait }}"
-                    id='ait' placeholder="NÚMERO AIT"> {% endcomment %}
                     {% else %}
                     <input class="form-control" name="ait" type="text"
                     id='ait' placeholder="NÚMERO AIT">
@@ -155,10 +131,6 @@
                     <textarea class="form-control" name="infracao"
                     id="infracao" cols="40" rows="2"
                     placeholder="INFRAÇÃO">{{ multa.infracao }}</textarea>
-                    {% comment %} {% if error %}
-                    <textarea class="form-control" name="infracao"
-                    id="infracao" cols="40" rows="2"
-                    placeholder="INFRAÇÃO">{{ request.POST.infracao }}</textarea> {% endcomment %}
                     {% else %}
                     <textarea class="form-control" name="infracao" id="infracao"
                     cols="40" rows="2" placeholder="INFRAÇÃO"></textarea>
@@ -183,10 +155,6 @@
                     <textarea class="form-control" name="local"
                     id="local" cols="40" rows="2"
                     placeholder="LOCAL DA INFRAÇÃO">{{ multa.local }}</textarea>
-                    {% comment %} {% if error %}
-                    <textarea class="form-control" name="local"
-                    id="local" cols="40" rows="2"
-                    placeholder="LOCAL DA INFRAÇÃO">{{ request.POST.local }}</textarea> {% endcomment %}
                     {% else %}
                     <textarea class="form-control" name="local" id="local"
                     cols="40" rows="2" placeholder="LOCAL DA INFRAÇÃO"></textarea>
@@ -210,9 +178,6 @@
                     {% if multa %}
                     <input class="form-control" name="valor" type="number"
                     value="{{ multa.valor_multa }}" step="0.01" id="valor">
-                    {% comment %} {% if error %}
-                    <input class="form-control" name="valor" type="number"
-                    value="{{ request.POST.valor }}" step="0.01" id="valor"> {% endcomment %}
                     {% else %}
                     <input class="form-control" name="valor" type="number"
                     value="0.00" step="0.01" id="valor">
@@ -236,9 +201,6 @@
                     {% if multa %}
                     <input class="form-control" name="vencimento" type="date"
                     value={{ multa.vencimento }} id="vencimento">
-                    {% comment %} {% if error %}
-                    <input class="form-control" name="vencimento" type="date"
-                    value={{ request.POST.vencimento }} id="vencimento"> {% endcomment %}
                     {% else %}
                     <input class="form-control" name="vencimento" type="date"
                     value={{ hoje }} id="vencimento">
@@ -259,32 +221,17 @@
                     <i class="bi bi-credit-card i-button-null"></i>
                 </div>
                 <div class="item-field item-desconta">
-                    {{ multa.desconta_motorista }}
                     <select class="form-control" name="desconta" id="desconta">
                         {% if multa %}
-                            {% if multa.desconta_motorista == "True" %}
-                            <option value="">SELECIONE QUEM PAGA</option>
-                            <option value="False">EMPRESA</option>
-                            <option value="True" selected>MOTORISTA</option>
-                            {% elif multa.desconta_motorista == "False" %}
-                            <option value="">SELECIONE QUEM PAGA</option>
-                            <option value="False" selected>EMPRESA</option>
-                            <option value="True">MOTORISTA</option>
-                            {% else %}
-                            <option value="">SELECIONE QUEM PAGA</option>
-                            <option value="False">EMPRESA</option>
-                            <option value="True">MOTORISTA</option>
+                            {% if multa.desconta_motorista %}
+                                <option value="">SELECIONE QUEM PAGA</option>
+                                <option value="False">EMPRESA</option>
+                                <option value="True" selected>MOTORISTA</option>
+                            {% elif not multa.desconta_motorista %}
+                                <option value="">SELECIONE QUEM PAGA</option>
+                                <option value="False" selected>EMPRESA</option>
+                                <option value="True">MOTORISTA</option>
                             {% endif %}
-                            {% comment %} {% if error %}
-                            {% if request.POST.desconta == "True" %}
-                            <option value="">SELECIONE QUEM PAGA</option>
-                            <option value="False">EMPRESA</option>
-                            <option value="True" selected>MOTORISTA</option>
-                            {% elif request.POST.desconta == "False" %}
-                            <option value="">SELECIONE QUEM PAGA</option>
-                            <option value="False" selected>EMPRESA</option>
-                            <option value="True">MOTORISTA</option>
-                            {% endif %} {% endcomment %}
                         {% else %}
                             <option value="">SELECIONE QUEM PAGA</option>
                             <option value="False">EMPRESA</option>
@@ -353,15 +300,6 @@
                         id="linhasp2" maxlength="27"
                         value="{{ multa.linha_digitavel_sp|slice:'24:' }}"
                         placeholder="00000000000.0 00000000000.0">
-                        {% comment %} {% if error %}
-                        <input class="form-control" name="linhasp1" type="text"
-                        id="linhasp1" maxlength="27"
-                        value="{{ request.POST.linhasp1 }}"
-                        placeholder="00000000000.0 00000000000.0">
-                        <input class="form-control" name="linhasp2" type="text"
-                        id="linhasp2" maxlength="27"
-                        value="{{ request.POST.linhasp2 }}"
-                        placeholder="00000000000.0 00000000000.0"> {% endcomment %}
                         {% else %}
                         <input class="form-control" name="linhasp1" type="text"
                         id="linhasp1" maxlength="27" value=""
@@ -382,6 +320,7 @@
             </div>
         </div>   
         <input type="hidden" name="idpessoal" value="" id="idpessoal"> 
+        <input type="hidden" name="idMulta" value="{{ multa.idmulta }}" id="idMulta"> 
     </div>
     <div class="article-card-footer">
         <button class='bi bi-save2 i-button'></button>

@@ -122,7 +122,6 @@ def valida_multa(request):
         error = True
     # Valida veículo da infração
     _veiculo = request.POST.get("veiculo")
-    print(_veiculo)
     if int(_veiculo) == 0:
         msg["erro_veiculo"] = "Obrigatório selecionar um veículo."
         error = True
@@ -150,101 +149,102 @@ def valida_multa(request):
     return error, msg
 
 
-def save_multa(request, _linha, _linha_sp, _id_pes):
+def save_multa(multa):
     obj = Multas()
-    obj.NumeroAIT = request.POST.get("ait")
-    obj.NumeroDOC = request.POST.get("doc")
-    obj.DataMulta = datetime.datetime.strptime(
-        request.POST.get("data"), "%Y-%m-%d"
-    ).date()
-    obj.HoraMulta = datetime.datetime.strptime(request.POST.get("hora"), "%H:%M").time()
-    obj.ValorMulta = request.POST.get("valor")
-    obj.Vencimento = datetime.datetime.strptime(
-        request.POST.get("vencimento"), "%Y-%m-%d"
-    ).date()
-    obj.LinhaDigitavel = request.POST.get("linha_digitavel")
+    obj.NumeroAIT = multa["numero_ait"]
+    obj.NumeroDOC = multa["numero_doc"]
+    obj.DataMulta = datetime.datetime.strptime(multa["data_multa"], "%Y-%m-%d").date()
+    obj.HoraMulta = datetime.datetime.strptime(multa["hora_multa"], "%H:%M").time()
+    obj.ValorMulta = multa["valor_multa"]
+    obj.Vencimento = datetime.datetime.strptime(multa["vencimento"], "%Y-%m-%d").date()
+    obj.Infracao = multa["infracao"]
+    obj.Local = multa["local"]
+    obj.DescontaMotorista = multa["desconta_motorista"]
+    obj.idVeiculo_id = multa["idveiculo"]
+    obj.LinhaDigitavel = multa["linha_digitavel"]
+    obj.LinhaDigitavelSP = multa["linha_digitavel_sp"]
     obj.DataPagamento = datetime.datetime.strptime(
-        request.POST.get("vencimento"), "%Y-%m-%d"
+        multa["vencimento"], "%Y-%m-%d"
     ).date()
-    obj.Infracao = request.POST.get("infracao")
-    obj.Local = request.POST.get("local")
-    obj.DescontaMotorista = request.POST.get("desconta")
-    obj.idVeiculo_id = request.POST.get("veiculo")
-    obj.LinhaDigitavel = _linha
-    obj.LinhaDigitavelSP = _linha_sp
     obj.save()
     if obj.DescontaMotorista == "True":
-        create_vale_multa(obj, _id_pes)
+        create_vale_multa(obj, multa["idpessoal"])
 
 
-def update_multa(request, _id_mul):
-    multa = Multas.objects.filter(idMulta=_id_mul)
-    dados_multa = read_multa(request, _id_mul)
+def update_multa(multa, _id_mul):
+    multa_selecionada = Multas.objects.get(idMulta=_id_mul)
+    obj = Multas(multa_selecionada)
+    obj.idMulta = multa_selecionada.idMulta
+    obj.NumeroAIT = multa["numero_ait"]
+    obj.NumeroDOC = multa["numero_doc"]
+    obj.DataMulta = datetime.datetime.strptime(multa["data_multa"], "%Y-%m-%d").date()
+    obj.HoraMulta = datetime.datetime.strptime(multa["hora_multa"], "%H:%M").time()
+    obj.ValorMulta = multa["valor_multa"]
+    obj.Vencimento = datetime.datetime.strptime(multa["vencimento"], "%Y-%m-%d").date()
+    obj.Infracao = multa["infracao"]
+    obj.Local = multa["local"]
+    obj.DescontaMotorista = multa["desconta_motorista"]
+    obj.idVeiculo_id = multa["idveiculo"]
+    obj.LinhaDigitavel = multa["linha_digitavel"]
+    obj.LinhaDigitavelSP = multa["linha_digitavel_sp"]
+    obj.DataPagamento = datetime.datetime.strptime(
+        multa["vencimento"], "%Y-%m-%d"
+    ).date()
+    obj.save()
+    if obj.DescontaMotorista == "True":
+        create_vale_multa(obj, multa["idpessoal"])
 
 
-def read_multa(request, _id_mul):
-    veiculos = Veiculo.objects.filter(Proprietario_id=17)
-    error = False
-    msg = dict()
-    if _id_mul:
-        multa = Multas.objects.get(idMulta=_id_mul)
-        idmulta = multa.idMulta
-        numero_doc = multa.NumeroDOC
-        numero_ait = multa.NumeroAIT
-        data_multa = datetime.datetime.strftime(multa.DataMulta, "%Y-%m-%d")
-        hora_multa = multa.HoraMulta
-        valor_multa = str(multa.ValorMulta)
-        vencimento = datetime.datetime.strftime(multa.Vencimento, "%Y-%m-%d")
-        infracao = multa.Infracao
-        local = multa.Local
-        pago = multa.Pago
-        desconta_motorista = multa.DescontaMotorista
-        data_pagamento = multa.DataPagamento
-        idveiculo = multa.idVeiculo_id
-        linha_digitavel = multa.LinhaDigitavel
-        linha_digitavel_sp = multa.LinhaDigitavelSP
-    else:
-        idmulta = None
-        numero_doc = request.POST.get("doc")
-        numero_ait = request.POST.get("ait")
-        data_multa = request.POST.get("data")
-        hora_multa = request.POST.get("hora")
-        valor_multa = request.POST.get("valor")
-        vencimento = request.POST.get("vencimento")
-        infracao = request.POST.get("infracao")
-        local = request.POST.get("local")
-        pago = None
-        desconta_motorista = request.POST.get("desconta")
-        data_pagamento = None
-        idveiculo = int(request.POST.get("veiculo"))
-        _linha = None
-        linha_digitavel = None
-        _linha_sp = f'{request.POST.get("linhasp1")}{request.POST.get("linhasp2")}'
-        _linha_sp = _linha_sp.replace(".", "")
-        _linha_sp = _linha_sp.replace(" ", "")
-        linha_digitavel_sp = _linha_sp
-        _id_pes = request.POST.get("idpessoal")
-        print(_id_pes)
-        error, msg = valida_multa(request)
-        if not error:
-            save_multa(request, _linha, _linha_sp, _id_pes)
-    multa = dict()
-    multa["idmulta"] = idmulta
-    multa["numero_doc"] = numero_doc
-    multa["numero_ait"] = numero_ait
-    multa["data_multa"] = data_multa
-    multa["hora_multa"] = hora_multa
-    multa["valor_multa"] = valor_multa
-    multa["vencimento"] = vencimento
-    multa["infracao"] = infracao
-    multa["local"] = local
-    multa["pago"] = pago
-    multa["desconta_motorista"] = desconta_motorista
-    multa["data_pagamento"] = data_pagamento
-    multa["idveiculo"] = idveiculo
-    multa["linha_digitavel"] = linha_digitavel
-    multa["linha_digitavel_sp"] = linha_digitavel_sp
+def read_multa_post(request):
+    multa_post = dict()
+    multa_post["idmulta"] = request.POST.get("idMulta")
+    multa_post["numero_doc"] = request.POST.get("doc")
+    multa_post["numero_ait"] = request.POST.get("ait")
+    multa_post["data_multa"] = request.POST.get("data")
+    multa_post["hora_multa"] = request.POST.get("hora")
+    multa_post["valor_multa"] = request.POST.get("valor")
+    multa_post["vencimento"] = request.POST.get("vencimento")
+    multa_post["infracao"] = request.POST.get("infracao")
+    multa_post["local"] = request.POST.get("local")
+    multa_post["desconta_motorista"] = request.POST.get("desconta")
+    multa_post["idveiculo"] = int(request.POST.get("veiculo"))
+    multa_post["linha_digitavel"] = None
+    _linha_sp = f'{request.POST.get("linhasp1")}{request.POST.get("linhasp2")}'
+    _linha_sp = _linha_sp.replace(".", "")
+    _linha_sp = _linha_sp.replace(" ", "")
+    multa_post["linha_digitavel_sp"] = _linha_sp
+    multa_post["idpessoal"] = request.POST.get("idpessoal")
+    return multa_post
+
+
+def read_multa_database(_id_mul):
+    multa = Multas.objects.get(idMulta=_id_mul)
+    multa_database = dict()
+    multa_database["idmulta"] = multa.idMulta
+    multa_database["numero_doc"] = multa.NumeroDOC
+    multa_database["numero_ait"] = multa.NumeroAIT
+    multa_database["data_multa"] = datetime.datetime.strftime(
+        multa.DataMulta, "%Y-%m-%d"
+    )
+    multa_database["hora_multa"] = multa.HoraMulta
+    multa_database["valor_multa"] = str(multa.ValorMulta)
+    multa_database["vencimento"] = datetime.datetime.strftime(
+        multa.Vencimento, "%Y-%m-%d"
+    )
+    multa_database["infracao"] = multa.Infracao
+    multa_database["local"] = multa.Local
+    multa_database["pago"] = multa.Pago
+    multa_database["desconta_motorista"] = multa.DescontaMotorista
+    multa_database["data_pagamento"] = multa.DataPagamento
+    multa_database["idveiculo"] = multa.idVeiculo_id
+    multa_database["linha_digitavel"] = multa.LinhaDigitavel
+    multa_database["linha_digitavel_sp"] = multa.LinhaDigitavelSP
+    return multa_database
+
+
+def html_form_multas(request, multa, error, msg):
     data = dict()
+    veiculos = Veiculo.objects.filter(Proprietario_id=17)
     contexto = {"multa": multa, "veiculos": veiculos, "error": error}
     contexto.update(msg)
     data["html_form_multas"] = render_to_string(
@@ -271,23 +271,25 @@ def create_vale_multa(_obj, _id_pes):
 
 def busca_minutas_multa(_id_vei, _date):
     _date = datetime.datetime.strptime(_date, "%Y-%m-%d")
-    minutas = Minuta.objects.filter(idVeiculo_id=_id_vei, DataMinuta=_date)
+    minutas = Minuta.objects.filter(DataMinuta=_date)
     lista = []
     for x in minutas:
-        morotista = MinutaColaboradores.objects.get(
+        motorista = MinutaColaboradores.objects.filter(
             idMinuta_id=x.idMinuta, Cargo="MOTORISTA"
         )
-        lista.append(
-            {
-                "minuta": x.Minuta,
-                "inicio": x.HoraInicial,
-                "final": x.HoraFinal,
-                "fantasia": x.idCliente.Fantasia,
-                "motorista": nome_curto(morotista.idPessoal.Nome),
-                "idpessoal": morotista.idPessoal_id,
-                "demissao": morotista.idPessoal.DataDemissao,
-            }
-        )
+        print(motorista)
+        if len(motorista) > 0:
+            lista.append(
+                {
+                    "minuta": x.Minuta,
+                    "inicio": x.HoraInicial,
+                    "final": x.HoraFinal,
+                    "fantasia": x.idCliente.Fantasia,
+                    "motorista": nome_curto(motorista[0].idPessoal.Nome),
+                    "idpessoal": motorista[0].idPessoal_id,
+                    "demissao": motorista[0].idPessoal.DataDemissao,
+                }
+            )
     return lista
 
 
@@ -299,6 +301,9 @@ def html_minutas_multa(request, _mm):
     data["html_minutas_multa"] = render_to_string(
         "despesas/html_minutas_multa.html", contexto, request=request
     )
-    data["idpessoal"] = _mm[0]["idpessoal"]
+    if _mm:
+        data["idpessoal"] = _mm[0]["idpessoal"]
+    else:
+        data["idpessoal"] = 0
     print(data["idpessoal"])
     return JsonResponse(data)
