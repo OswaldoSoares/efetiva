@@ -260,7 +260,9 @@ def contra_cheque_itens(_var):
     _dr = _var["dias_remunerado"]
     _dt = _var["dias_transporte"]
     _dce = _var["dias_carro_empresa"]
-    v_contra_cheque_itens = ContraChequeItens.objects.filter(idContraCheque=_id_cc)
+    v_contra_cheque_itens = ContraChequeItens.objects.filter(
+        idContraCheque=_id_cc, Descricao="SALARIO"
+    )
     if not v_contra_cheque_itens:
         create_contra_cheque_itens(_id_cc, "SALARIO", _sb, "C", "30d", "0")
     if _dr < 32:
@@ -423,8 +425,8 @@ def html_cartao_ponto(request, _mes_ano, _id) -> JsonResponse:
     _var["mes"], _var["ano"] = converter_mes_ano(_mes_ano)
     _var["primeiro_dia"], _var["ultimo_dia"] = extremos_mes(_var["mes"], _var["ano"])
     # TODO Necessário inverter as posições do _cartao_ponto e Minutas
-    _cartao_ponto = cartao_ponto(_var)
     minutas = minutas_contra_cheque(_var)
+    _cartao_ponto = cartao_ponto(_var)
     _var["dias_falta"] = dias_falta(_cartao_ponto)
     _var["dias_remunerado"] = dias_remunerado(_cartao_ponto)
     _var["dias_transporte"] = dias_transporte(_cartao_ponto)
@@ -1011,7 +1013,8 @@ def imprime_contra_cheque_pagamento(_id_cc, tipo):
         debito = ContraChequeItens.objects.filter(
             idContraCheque=_id_cc, Registro="D"
         ).aggregate(Total=Sum("Valor"))
-    # if not debito:
+        if debito["Total"] == None:
+            debito["Total"] = Decimal("0.00")
     totais = {
         "Credito": credito["Total"],
         "Debito": debito["Total"],
