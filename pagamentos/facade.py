@@ -665,6 +665,7 @@ def minutas_contra_cheque(_var):
         idPessoal=_var["id_pessoal"], idMinuta_id__DataMinuta__range=(_pdm, _udm)
     ).exclude(idMinuta_id__StatusMinuta="ABERTA")
     lista = []
+    lista_filtrada = []
     _he = datetime.timedelta(hours=7, minutes=0)
     _hs = datetime.timedelta(hours=17, minutes=0)
     for x in minutas:
@@ -694,16 +695,21 @@ def minutas_contra_cheque(_var):
                 if obj.Alteracao == "ROBOT":
                     obj.save(update_fields=["Saida"])
         extra = _hez + _hsz
-        lista.append(
-            {
-                "data_minuta": x.idMinuta.DataMinuta,
-                "minuta": x.idMinuta.Minuta,
-                "fantasia": x.idMinuta.idCliente.Fantasia,
-                "hora_inicial": x.idMinuta.HoraInicial,
-                "hora_final": x.idMinuta.HoraFinal,
-                "hora_extra": str(extra)[:-3].zfill(5),
-            }
+        verifica_lista = next(
+            (i for i, y in enumerate(lista) if y["minuta"] == x.idMinuta.Minuta),
+            None,
         )
+        if verifica_lista == None:
+            lista.append(
+                {
+                    "data_minuta": x.idMinuta.DataMinuta,
+                    "minuta": x.idMinuta.Minuta,
+                    "fantasia": x.idMinuta.idCliente.Fantasia,
+                    "hora_inicial": x.idMinuta.HoraInicial,
+                    "hora_final": x.idMinuta.HoraFinal,
+                    "hora_extra": str(extra)[:-3].zfill(5),
+                }
+            )
     return lista
 
 
