@@ -302,8 +302,11 @@ def print_contracheque(contexto, tipoimpressao):
                 pdf.drawCentredString(
                     cmp(15), cmp(linha), f"{dia['dia'].strftime('%d/%m/%Y')}"
                 )
-                pdf.drawCentredString(cmp(35), cmp(linha), f"{dia['entrada']}")
-                pdf.drawCentredString(cmp(50), cmp(linha), f"{dia['saida']}")
+                if dia["ausencia"] == "":
+                    pdf.drawCentredString(cmp(35), cmp(linha), f"{dia['entrada']}")
+                    pdf.drawCentredString(cmp(50), cmp(linha), f"{dia['saida']}")
+                else:
+                    pdf.drawCentredString(cmp(42.5), cmp(linha), f"{dia['ausencia']}")
                 linha -= 4
             pdf.rect(cmp(5), cmp(linha + 3), cmp(55), cmp(numerodias * 4 + 5), fill=0)
 
