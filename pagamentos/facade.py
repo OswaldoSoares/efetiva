@@ -383,42 +383,32 @@ def converter_mes_ano(_mes_ano):
     return _mes, _ano
 
 
-def html_folha_pagamento(_mes_ano):
+def create_contexto_folha(request, _mes_ano: str) -> JsonResponse:
     data = dict()
     _mes, _ano = converter_mes_ano(_mes_ano)
     _folha = FolhaContraCheque(_mes, _ano).__dict__
     contexto = {"v_folha": _folha}
-    data["html_folha"] = render_to_string("pagamentos/html_folha.html", contexto)
-    data["html_saldo"] = render_to_string("pagamentos/html_saldo.html", contexto)
+    html_folha(request, contexto, data)
+    html_saldo(request, contexto, data)
+    html_adiantamento(request, contexto, data)
     return JsonResponse(data)
 
 
-def html_cartao_ponto(request, _mes_ano, _id) -> JsonResponse:
-    # TODO Alteração a fazr no DocString
-    """Gera html do Card Cartão de Ponto e do Card Contra Cheque
+def html_saldo(request, contexto, data):
+    data["html_saldo"] = render_to_string(
+        "pagamentos/html_saldo.html", contexto, request=request
+    )
+    return data
 
-    Abreviaturas utilizadas nesta função:
-        v_pdm: variavel primeiro dia do mes
-        v_udm: variavel ultimo dia do mes
-        v_cp: variavel cartão de ponto
-        v_cc: variavel contra cheque
-        v_cci: variavel contra cheque itens
-        v_tv: variavel total dos vencimentos
-        v_td: variavel total dos descontos
-        v_st: variavel saldo total
-        v_sb: variavel salario base
 
-    Args:
-        _mes (_type_): _description_
-        _ano (_type_): _description_
-        _idpessoal (_type_): _description_
-        _admissao (_type_): _description_
-        _demissao (_type_): _description_
-        _salario_base (_type_): _description_
+def html_folha(request, contexto, data):
+    data["html_folha"] = render_to_string(
+        "pagamentos/html_folha.html", contexto, request=request
+    )
+    return data
 
-    Returns:
-        _type_: _description_
-    """
+
+def create_contexto_funcionario(request, _mes_ano, _id) -> JsonResponse:
     data = dict()
     _var = dict()
     get_pessoa(_id, _var)
@@ -479,40 +469,93 @@ def html_cartao_ponto(request, _mes_ano, _id) -> JsonResponse:
         "files": files,
         "agenda": agenda,
     }
+    html_cartao_ponto(request, contexto, data)
+    html_funcionario(request, contexto, data)
+    html_contra_cheque(request, contexto, data)
+    html_minutas(request, contexto, data)
+    html_vales_pagamento(request, contexto, data)
+    html_agenda_pagamento(request, contexto, data)
+    html_files_pagamento(request, contexto, data)
+    html_vales(request, contexto, data)
+    html_itens_agenda_pagamento(request, contexto, data)
+    return JsonResponse(data)
+
+
+def html_funcionario(request, contexto, data):
     data["html_funcionario"] = render_to_string(
         "pagamentos/html_funcionario.html", contexto, request=request
     )
+    return data
+
+
+def html_files_pagamento(request, contexto, data):
     data["html_files_pagamento"] = render_to_string(
         "pagamentos/html_files.html", contexto, request=request
     )
+    return data
+
+
+def html_cartao_ponto(request, contexto, data):
     data["html_cartao_ponto"] = render_to_string(
         "pagamentos/html_cartao_ponto.html", contexto, request=request
     )
+    return data
+
+
+def html_itens_contra_cheque(request, contexto, data):
     data["html_itens_contra_cheque"] = render_to_string(
         "pagamentos/html_itens_contra_cheque.html", contexto, request=request
     )
+    return data
+
+
+def html_contra_cheque(request, contexto, data):
     data["html_contra_cheque"] = render_to_string(
         "pagamentos/html_contra_cheque.html", contexto, request=request
     )
+    return data
+
+
+def html_vales(request, contexto, data):
     data["html_vales"] = render_to_string(
         "pagamentos/html_vales.html", contexto, request=request
     )
+    return data
+
+
+def html_adiantamento(request, contexto, data):
     data["html_adiantamento"] = render_to_string(
-        "pagamentos/html_adiantamento.html", contexto, request=request
+        "pagamentos/html_adiantamento_automatico.html", contexto, request=request
     )
+    return data
+
+
+def html_minutas(request, contexto, data):
     data["html_minutas"] = render_to_string(
         "pagamentos/html_minutas.html", contexto, request=request
     )
+    return data
+
+
+def html_vales_pagamento(request, contexto, data):
     data["html_vales_pagamento"] = render_to_string(
         "pagamentos/html_vales_pagamento.html", contexto, request=request
     )
+    return data
+
+
+def html_agenda_pagamento(request, contexto, data):
     data["html_agenda_pagamento"] = render_to_string(
         "pagamentos/html_agenda.html", contexto, request=request
     )
+    return data
+
+
+def html_itens_agenda_pagamento(request, contexto, data):
     data["html_itens_agenda_pagamento"] = render_to_string(
         "pagamentos/html_itens_agenda.html", contexto, request=request
     )
-    return JsonResponse(data)
+    return data
 
 
 def nome_arquivo(_nome_curto, _mes_ano, _tipo):
@@ -1039,6 +1082,28 @@ def imprime_contra_cheque_pagamento(_id_cc, tipo):
     return contexto
 
 
+def adiantamento_automatico(_mes_ano):
+    _mes, _ano = converter_mes_ano(_mes_ano)
+    _folha = FolhaContraCheque(_mes, _ano).__dict__["funcionarios"]
+    _funcionarios = []
+    for x in _folha:
+        _funcionarios.append(x)
+    _mes = meses[int(_mes) - 1]
+    for x in _funcionarios:
+        _id_pes = _folha[x]["idpessoal"]
+        _valor = _folha[x]["adiantamento"]
+        _contra_cheque = ContraCheque.objects.filter(
+            idPessoal=_id_pes, MesReferencia=_mes, AnoReferencia=_ano
+        ).values("idContraCheque")
+        _id_cc = _contra_cheque[0]["idContraCheque"]
+        if busca_item_contra_cheque(_id_cc, "ADIANTAMENTO") == None:
+            create_contracheque_itens("ADIANTAMENTO", _valor, "", "D", _id_cc)
+            print("não")
+        else:
+            print("sim")
+    return _folha
+
+
 def calcula_extras(_var):
     _id_pes = _var["id_pessoal"]
     _sb = _var["salario_base"]
@@ -1120,47 +1185,48 @@ def busca_item_contra_cheque(v_id: int, v_des: str):
     return obj
 
 
-def create_context(mesreferencia, anoreferencia):
-    mensalistas = lista_mensaalista_ativos()
-    folha = {}
-    referencia = {"MesReferencia": mesreferencia, "AnoReferencia": anoreferencia}
-    totalsalario = 0.00
-    totalfolha = 0.00
-    if mesreferencia in meses:
-        mes = mesreferencia
-    else:
-        mes = meses[int(mesreferencia) - 1]
-    for itens in mensalistas:
-        folha[itens.Nome] = {
-            "Salario": "0,00",
-            "Liquido": "0,00",
-            "ContraCheque": False,
-            "CartaoPonto": False,
-            "idPessoal": itens.idPessoal,
-        }
-        salario = get_salario(itens.idPessoal)
-        totalsalario += float(salario[0].Salario)
-        folha[itens.Nome]["Salario"] = salario[0].Salario
-        contracheque = get_contrachequereferencia(
-            mesreferencia, anoreferencia, itens.idPessoal
-        )
-        if contracheque:
-            totais = saldo_contracheque(contracheque[0].idContraCheque)
-            folha[itens.Nome]["Liquido"] = totais["Liquido"]
-            totalfolha += float(totais["Liquido"])
-        if busca_contracheque(mes, anoreferencia, itens.idPessoal):
-            folha[itens.Nome]["ContraCheque"] = True
-        if busca_cartaoponto_referencia(mesreferencia, anoreferencia, itens.idPessoal):
-            folha[itens.Nome]["CartaoPonto"] = True
-    totalsalario = "{0:.2f}".format(totalsalario).replace(".", ",")
-    totalfolha = "{0:.2f}".format(totalfolha).replace(".", ",")
-    contexto = {
-        "folha": folha,
-        "referencia": referencia,
-        "totalsalario": totalsalario,
-        "totalfolha": totalfolha,
-    }
-    return contexto
+# TODO Exclui antiga folha
+# def create_context(mesreferencia, anoreferencia):
+#     mensalistas = lista_mensaalista_ativos()
+#     folha = {}
+#     referencia = {"MesReferencia": mesreferencia, "AnoReferencia": anoreferencia}
+#     totalsalario = 0.00
+#     totalfolha = 0.00
+#     if mesreferencia in meses:
+#         mes = mesreferencia
+#     else:
+#         mes = meses[int(mesreferencia) - 1]
+#     for itens in mensalistas:
+#         folha[itens.Nome] = {
+#             "Salario": "0,00",
+#             "Liquido": "0,00",
+#             "ContraCheque": False,
+#             "CartaoPonto": False,
+#             "idPessoal": itens.idPessoal,
+#         }
+#         salario = get_salario(itens.idPessoal)
+#         totalsalario += float(salario[0].Salario)
+#         folha[itens.Nome]["Salario"] = salario[0].Salario
+#         contracheque = get_contrachequereferencia(
+#             mesreferencia, anoreferencia, itens.idPessoal
+#         )
+#         if contracheque:
+#             totais = saldo_contracheque(contracheque[0].idContraCheque)
+#             folha[itens.Nome]["Liquido"] = totais["Liquido"]
+#             totalfolha += float(totais["Liquido"])
+#         if busca_contracheque(mes, anoreferencia, itens.idPessoal):
+#             folha[itens.Nome]["ContraCheque"] = True
+#         if busca_cartaoponto_referencia(mesreferencia, anoreferencia, itens.idPessoal):
+#             folha[itens.Nome]["CartaoPonto"] = True
+#     totalsalario = "{0:.2f}".format(totalsalario).replace(".", ",")
+#     totalfolha = "{0:.2f}".format(totalfolha).replace(".", ",")
+#     contexto = {
+#         "folha": folha,
+#         "referencia": referencia,
+#         "totalsalario": totalsalario,
+#         "totalfolha": totalfolha,
+#     }
+#     return contexto
 
 
 def create_context_formcontracheque():
@@ -2028,10 +2094,11 @@ def altera_falta(mesreferencia, anoreferencia, idpessoal, idcartaoponto, request
     return c_return
 
 
-def html_folha(mesreferencia, anoreferencia):
-    contexto = create_context(mesreferencia, anoreferencia)
-    c_return = render_to_string("pagamentos/folhapgto.html", contexto)
-    return c_return
+# TODO Exclui antiga folha
+# def html_folha(mesreferencia, anoreferencia):
+#     contexto = create_context(mesreferencia, anoreferencia)
+#     c_return = render_to_string("pagamentos/folhapgto.html", contexto)
+#     return c_return
 
 
 def html_contracheque(mesreferencia, anoreferencia, idpessoal):

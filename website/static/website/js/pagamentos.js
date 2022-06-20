@@ -117,6 +117,7 @@ $(document).on("click", ".js-seleciona-mes-ano", function(event) {
         success: function(data) {
             $(".js-folha").html(data.html_folha);
             $(".js-saldo").html(data.html_saldo);
+            $(".js-adiantamento").html(data.html_adiantamento);
             $('.box-loader').hide()
         },
     });
@@ -257,6 +258,24 @@ $(document).on('submit', '.js-gera-adiantamento', function(event) {
         type: $(this).attr('method'),
         url: '/pagamentos/adiantamento',
         data: $(this).serialize(),
+        beforeSend: function() {
+            EscondeCards();
+        },
+        success: function(data) {
+            AtualizaHtmls(data, v_mes_ano);
+        },
+    });
+});
+
+
+$(document).on('click', '.js-gera-adiantamento-automatico', function() {
+    var v_mes_ano = $(".select-mes-ano option:selected").text();
+    $.ajax({
+        type: $(this).attr('method'),
+        url: '/pagamentos/adiantamento_automatico',
+        data: {
+            mes_ano: v_mes_ano,
+        },
         beforeSend: function() {
             EscondeCards();
         },
