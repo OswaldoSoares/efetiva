@@ -162,7 +162,7 @@
     </main>
   </div>
   {% endif %}
-  {% if user|can:'pagamentos_vales' %}
+  {% comment %} {% if user|can:'pagamentos_vales' %}
   <div class="pagamento-conteudo vales">
     <header class="titulo-mensalistas">
       <h3>CADASTRO DE VALES</h3>
@@ -212,7 +212,7 @@
       </div>
     </main>
   </div>
-  {% endif %}
+  {% endif %} {% endcomment %}
 </main>
 
 
