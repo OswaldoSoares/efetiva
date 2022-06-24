@@ -3,6 +3,7 @@ import datetime
 from decimal import Decimal
 
 from dateutil.relativedelta import relativedelta
+from despesas.models import Multas
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import DecimalField, ExpressionWrapper, F, Max, Min, Sum
 from django.http import JsonResponse
@@ -1157,6 +1158,21 @@ def imprime_contra_cheque_pagamento(_id_cc, tipo):
     hoje = datetime.datetime.strftime(hoje, "%Y-%m-%d")
     colaborador = facade.get_pessoal(_cc[0].idPessoal_id)
     contrachequeitens = facade.get_contracheque_itens(_id_cc)
+    lista_multas = []
+    for x in contrachequeitens:
+        if x.Descricao[0:8] == "MULTA - ":
+            multas = Multas.objects.filter(NumeroDOC=x.Descricao[8:])
+            for y in multas:
+                lista_multas.append(
+                    {
+                        "numero_doc": y.NumeroDOC,
+                        "data": y.DataMulta,
+                        "hora": y.HoraMulta,
+                        "infracao": y.Infracao,
+                        "local": y.Local,
+                        "placa": y.idVeiculo.Placa,
+                    }
+                )
     contexto = {
         "contracheque": _cc,
         "contrachequeitens": contrachequeitens,
@@ -1167,6 +1183,7 @@ def imprime_contra_cheque_pagamento(_id_cc, tipo):
         "cartao_ponto": _carto_ponto,
         "banco": _banco,
         "mais_banco": _vc,
+        "multas": lista_multas,
     }
     return contexto
 

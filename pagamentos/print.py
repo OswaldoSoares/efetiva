@@ -223,23 +223,24 @@ def print_contracheque(contexto, tipoimpressao):
     # pdf.setLineWidth(0.5)
     if tipoimpressao == "CONTRACHEQUE":
         if contexto["minutas"]:
-            linha = 135
+            linha = 140
             numerominutas = len(contexto["minutas"])
             pdf.setFont("Times-Roman", 9)
-            pdf.rect(cmp(65), cmp(linha), cmp(140), cmp(6), fill=0)
+            # pdf.rect(cmp(65), cmp(linha), cmp(140), cmp(6), fill=0)
             pdf.drawCentredString(
                 cmp(135),
-                cmp(linha + 1.5),
-                "{} - {}".format(len(contexto["minutas"]), "MINUTAS"),
+                cmp(linha + 0.5),
+                "AGENDA",
+                # "{} - {}".format(len(contexto["minutas"]), "MINUTAS"),
             )
-            linha -= 4
-            pdf.setFont("Times-Roman", 9)
-            pdf.drawCentredString(cmp(75), cmp(linha), "{}".format("DATA"))
-            pdf.drawCentredString(cmp(100), cmp(linha), "{}".format("MINUTA"))
-            pdf.drawCentredString(cmp(130), cmp(linha), "{}".format("CLIENTE"))
-            pdf.drawCentredString(cmp(165), cmp(linha), "{}".format("INICIO"))
-            pdf.drawCentredString(cmp(180), cmp(linha), "{}".format("FIM"))
-            pdf.drawCentredString(cmp(195), cmp(linha), "{}".format("EXTRA"))
+            # linha -= 4
+            # pdf.setFont("Times-Roman", 9)
+            # pdf.drawCentredString(cmp(75), cmp(linha), "{}".format("DATA"))
+            # pdf.drawCentredString(cmp(100), cmp(linha), "{}".format("MINUTA"))
+            # pdf.drawCentredString(cmp(130), cmp(linha), "{}".format("CLIENTE"))
+            # pdf.drawCentredString(cmp(165), cmp(linha), "{}".format("INICIO"))
+            # pdf.drawCentredString(cmp(180), cmp(linha), "{}".format("FIM"))
+            # pdf.drawCentredString(cmp(195), cmp(linha), "{}".format("EXTRA"))
             pdf.line(cmp(65), cmp(linha - 1), cmp(205), cmp(linha - 1))
             linha -= 4
             for minutas in contexto["minutas"]:
@@ -285,8 +286,31 @@ def print_contracheque(contexto, tipoimpressao):
                 cmp(numerominutas * 4 + 5),
                 fill=0,
             )
+        if contexto["multas"]:
+            numeromultas = len(contexto["multas"])
+            linha -= 4
+            for multas in contexto["multas"]:
+                pdf.setFont("Times-Roman", 7)
+                pdf.drawString(cmp(67), cmp(linha), f"DOC - {multas['numero_doc']}")
+                pdf.drawString(cmp(90), cmp(linha), f"{multas['placa']}")
+                pdf.drawString(
+                    cmp(105),
+                    cmp(linha),
+                    f"{multas['data'].strftime('%d/%m/%Y')} - {multas['hora'].strftime('%H:%M')}",
+                )
+                pdf.drawString(cmp(130), cmp(linha), f"INFRAÇÃO: {multas['infracao']}")
+                linha -= 3
+                pdf.drawString(cmp(67), cmp(linha), f"LOCAL: {multas['local']}")
+                linha -= 4
+            pdf.rect(
+                cmp(65),
+                cmp(linha + 3),
+                cmp(140),
+                cmp(numeromultas * 3 + 4),
+                fill=0,
+            )
         if contexto["cartao_ponto"]:
-            linha = 135
+            linha = 138
             numerodias = len(contexto["cartao_ponto"])
             pdf.setFont("Times-Roman", 9)
             pdf.rect(cmp(5), cmp(linha), cmp(55), cmp(6), fill=0)
@@ -309,7 +333,6 @@ def print_contracheque(contexto, tipoimpressao):
                     pdf.drawCentredString(cmp(42.5), cmp(linha), f"{dia['ausencia']}")
                 linha -= 4
             pdf.rect(cmp(5), cmp(linha + 3), cmp(55), cmp(numerodias * 4 + 5), fill=0)
-
     pdf.setFont("Times-Roman", 9)
     pdf.setFillColor(HexColor("#808080"))
     pdf.line(cmp(0), cmp(148.5), cmp(210), cmp(148.5))
