@@ -249,53 +249,72 @@ def imprime_recibo(request):
     return response
 
 
-# TODO EXCLUIR FUNÇÕES NÃO UTILIZADAS ACIMA
+# TODO EXCLUIR FUNÇÕES ACIMA NÃO UTILIZADAS
 def seleciona_mes_ano(request):
     _mes_ano = request.GET.get("mes_ano")
-    data = facade.create_contexto_folha(request, _mes_ano)
+    contexto = facade.create_contexto_folha(_mes_ano)
+    data = facade.create_data_seleciona_mes_ano(request, contexto)
     return data
 
 
 def seleciona_funcionario(request):
     _mes_ano = request.GET.get("mes_ano")
     _id_pes = request.GET.get("idpessoal")
-    data = facade.create_contexto_funcionario(request, _mes_ano, _id_pes)
+    contexto = facade.create_contexto_funcionario(_mes_ano, _id_pes)
+    data = facade.create_data_seleciona_funcionario(request, contexto)
     return data
 
 
 def ausencia_falta(request):
-    _id_cp = request.GET.get("idcartaoponto")
     _mes_ano = request.GET.get("mes_ano")
-    data = facade.altera_ausencia_falta(request, _id_cp, _mes_ano)
+    _id_pes = request.GET.get("idpessoal")
+    _id_cp = request.GET.get("idcartaoponto")
+    facade.altera_ausencia_falta(_id_cp)
+    contexto = facade.create_contexto_funcionario(_mes_ano, _id_pes)
+    contexto.update(facade.create_contexto_folha(_mes_ano))
+    data = facade.create_data_ausencia_falta(request, contexto)
     return data
 
 
 def altera_horario_cartao_ponto(request):
     _mes_ano = request.GET.get("mes_ano")
     _id_cp = request.GET.get("idcartaoponto")
-    _id_pes = None
     if request.method == "POST":
         _mes_ano = request.POST.get("mes_ano")
-        _id_cp = request.POST.get("idcartaoponto")
         _id_pes = request.POST.get("idPessoal")
-    data = facade.form_modal_horario(request, _id_cp, _mes_ano, _id_pes)
+        _id_cp = request.POST.get("idcartaoponto")
+        data = facade.form_modal_horario(request, _id_cp, _mes_ano)
+        contexto = facade.create_contexto_funcionario(_mes_ano, _id_pes)
+        contexto.update(facade.create_contexto_folha(_mes_ano))
+        data = facade.create_data_altera_horario(request, contexto)
+    else:
+        data = facade.form_modal_horario(request, _id_cp, _mes_ano)
     return data
 
 
 def atestada(request):
-    _id_cp = request.GET.get("idcartaoponto")
     _mes_ano = request.GET.get("mes_ano")
-    data = facade.falta_remunerada(request, _id_cp, _mes_ano)
+    _id_pes = request.GET.get("idpessoal")
+    _id_cp = request.GET.get("idcartaoponto")
+    facade.falta_remunerada(_id_cp)
+    contexto = facade.create_contexto_funcionario(_mes_ano, _id_pes)
+    contexto.update(facade.create_contexto_folha(_mes_ano))
+    data = facade.create_data_atestada(request, contexto)
     return data
 
 
 def carro_empresa(request):
-    _id_cp = request.GET.get("idcartaoponto")
     _mes_ano = request.GET.get("mes_ano")
-    data = facade.altera_carro_empresa(request, _id_cp, _mes_ano)
+    _id_pes = request.GET.get("idpessoal")
+    _id_cp = request.GET.get("idcartaoponto")
+    facade.altera_carro_empresa(_id_cp)
+    contexto = facade.create_contexto_funcionario(_mes_ano, _id_pes)
+    contexto.update(facade.create_contexto_folha(_mes_ano))
+    data = facade.create_data_altera_carro(request, contexto)
     return data
 
 
+# TODO Excluir esta função após criação do adiantamento automático
 def adiantamento(request):
     _descricao = request.POST.get("descricao")
     _valor = request.POST.get("valor_adiantamento")
@@ -311,8 +330,8 @@ def adiantamento(request):
 def adiantamento_automatico(request):
     _mes_ano = request.GET.get("mes_ano")
     facade.adiantamento_automatico(_mes_ano)
-    data = dict()
-    data = JsonResponse(data)
+    contexto = facade.create_contexto_folha(_mes_ano)
+    data = facade.create_data_seleciona_mes_ano(request, contexto)
     return data
 
 
@@ -324,7 +343,9 @@ def adiciona_contra_cheque_itens(request):
     facade.create_contracheque_itens(_descricao, _valor, "", _registro, _idcontracheque)
     _mes_ano = request.POST.get("mes_ano")
     _id_pes = request.POST.get("idPessoal")
-    data = facade.create_contexto_funcionario(request, _mes_ano, _id_pes)
+    contexto = facade.create_contexto_funcionario(_mes_ano, _id_pes)
+    contexto.update(facade.create_contexto_folha(_mes_ano))
+    data = facade.create_data_cci(request, contexto)
     return data
 
 
@@ -333,7 +354,9 @@ def remove_contra_cheque_itens(request):
     facade.delete_contra_cheque_itens(_id_cci)
     _mes_ano = request.GET.get("mes_ano")
     _id_pes = request.GET.get("idpessoal")
-    data = facade.create_contexto_funcionario(request, _mes_ano, _id_pes)
+    contexto = facade.create_contexto_funcionario(_mes_ano, _id_pes)
+    contexto.update(facade.create_contexto_folha(_mes_ano))
+    data = facade.create_data_cci(request, contexto)
     return data
 
 
@@ -345,7 +368,9 @@ def adiciona_vales(request):
     _id_pes = request.POST.get("idPessoal")
     data = facade.create_vales(_descricao, _data, _valor, _parcelas, _id_pes)
     _mes_ano = request.POST.get("mes_ano")
-    data = facade.create_contexto_funcionario(request, _mes_ano, _id_pes)
+    contexto = facade.create_contexto_funcionario(_mes_ano, _id_pes)
+    contexto.update(facade.create_contexto_folha(_mes_ano))
+    data = facade.create_data_vale(request, contexto)
     return data
 
 
@@ -355,7 +380,9 @@ def seleciona_vales(request):
     facade.insere_vale_contra_cheque(_id_val, _id_cc)
     _mes_ano = request.GET.get("mes_ano")
     _id_pes = request.GET.get("idpessoal")
-    data = facade.create_contexto_funcionario(request, _mes_ano, _id_pes)
+    contexto = facade.create_contexto_funcionario(_mes_ano, _id_pes)
+    contexto.update(facade.create_contexto_folha(_mes_ano))
+    data = facade.create_data_seleciona_vale(request, contexto)
     return data
 
 
@@ -364,7 +391,9 @@ def remove_vales(request):
     facade.delete_vales(_id_val)
     _mes_ano = request.GET.get("mes_ano")
     _id_pes = request.GET.get("idpessoal")
-    data = facade.create_contexto_funcionario(request, _mes_ano, _id_pes)
+    contexto = facade.create_contexto_funcionario(_mes_ano, _id_pes)
+    contexto.update(facade.create_contexto_folha(_mes_ano))
+    data = facade.create_data_remove_vale(request, contexto)
     return data
 
 
@@ -398,7 +427,9 @@ def salva_file(request):
         _arquivo = request.FILES["arquivo"]
         _descricao = facade.nome_arquivo(_nome_curto, _mes_ano, _tipo)
         facade.salva_arquivo(_arquivo, _descricao)
-    data = facade.create_contexto_funcionario(request, _mes_ano, _id_pes)
+    contexto = facade.create_contexto_funcionario(_mes_ano, _id_pes)
+    contexto.update(facade.create_contexto_folha(_mes_ano))
+    data = facade.create_data_save_file(request, contexto)
     return data
 
 
@@ -407,7 +438,9 @@ def delete_file(request):
     facade.exclui_arquivo(_id_fu)
     _mes_ano = request.GET.get("mes_ano")
     _id_pes = request.GET.get("idpessoal")
-    data = facade.create_contexto_funcionario(request, _mes_ano, _id_pes)
+    contexto = facade.create_contexto_funcionario(_mes_ano, _id_pes)
+    contexto.update(facade.create_contexto_folha(_mes_ano))
+    data = facade.create_data_delete_file(request, contexto)
     return data
 
 
@@ -419,9 +452,11 @@ def adiciona_agenda(request):
         _id_age = request.POST.get("idAgenda")
         facade.update_agenda(_descricao, _data, _id_age)
     else:
-        data = facade.create_agenda(_descricao, _data, _id_pes)
+        facade.create_agenda(_descricao, _data, _id_pes)
     _mes_ano = request.POST.get("mes_ano")
-    data = facade.create_contexto_funcionario(request, _mes_ano, _id_pes)
+    contexto = facade.create_contexto_funcionario(_mes_ano, _id_pes)
+    contexto.update(facade.create_contexto_folha(_mes_ano))
+    data = facade.create_data_gera_agenda(request, contexto)
     return data
 
 
@@ -438,5 +473,7 @@ def exclui_agenda(request):
     facade.delete_agenda(_id_age)
     _mes_ano = request.GET.get("mes_ano")
     _id_pes = request.GET.get("idpessoal")
-    data = facade.create_contexto_funcionario(request, _mes_ano, _id_pes)
+    contexto = facade.create_contexto_funcionario(_mes_ano, _id_pes)
+    contexto.update(facade.create_contexto_folha(_mes_ano))
+    data = facade.create_data_delete_agenda(request, contexto)
     return data

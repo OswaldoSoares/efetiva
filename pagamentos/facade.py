@@ -383,11 +383,15 @@ def converter_mes_ano(_mes_ano):
     return _mes, _ano
 
 
-def create_contexto_folha(request, _mes_ano: str) -> JsonResponse:
-    data = dict()
+def create_contexto_folha(_mes_ano: str) -> JsonResponse:
     _mes, _ano = converter_mes_ano(_mes_ano)
     _folha = FolhaContraCheque(_mes, _ano).__dict__
     contexto = {"v_folha": _folha}
+    return contexto
+
+
+def create_data_seleciona_mes_ano(request, contexto):
+    data = dict()
     html_folha(request, contexto, data)
     html_saldo(request, contexto, data)
     html_adiantamento(request, contexto, data)
@@ -408,8 +412,7 @@ def html_folha(request, contexto, data):
     return data
 
 
-def create_contexto_funcionario(request, _mes_ano, _id) -> JsonResponse:
-    data = dict()
+def create_contexto_funcionario(_mes_ano, _id) -> JsonResponse:
     _var = dict()
     get_pessoa(_id, _var)
     _var["mes"], _var["ano"] = converter_mes_ano(_mes_ano)
@@ -469,6 +472,11 @@ def create_contexto_funcionario(request, _mes_ano, _id) -> JsonResponse:
         "files": files,
         "agenda": agenda,
     }
+    return contexto
+
+
+def create_data_seleciona_funcionario(request, contexto):
+    data = dict()
     html_cartao_ponto(request, contexto, data)
     html_funcionario(request, contexto, data)
     html_contra_cheque(request, contexto, data)
@@ -477,6 +485,96 @@ def create_contexto_funcionario(request, _mes_ano, _id) -> JsonResponse:
     html_agenda_pagamento(request, contexto, data)
     html_files_pagamento(request, contexto, data)
     html_vales(request, contexto, data)
+    html_itens_agenda_pagamento(request, contexto, data)
+    html_itens_contra_cheque(request, contexto, data)
+    return JsonResponse(data)
+
+
+def create_data_ausencia_falta(request, contexto):
+    data = dict()
+    html_cartao_ponto(request, contexto, data)
+    html_funcionario(request, contexto, data)
+    html_contra_cheque(request, contexto, data)
+    html_saldo(request, contexto, data)
+    return JsonResponse(data)
+
+
+def create_data_altera_horario(request, contexto):
+    data = dict()
+    html_cartao_ponto(request, contexto, data)
+    html_contra_cheque(request, contexto, data)
+    html_saldo(request, contexto, data)
+    return JsonResponse(data)
+
+
+def create_data_atestada(request, contexto):
+    data = dict()
+    html_cartao_ponto(request, contexto, data)
+    html_funcionario(request, contexto, data)
+    html_contra_cheque(request, contexto, data)
+    html_saldo(request, contexto, data)
+    return JsonResponse(data)
+
+
+def create_data_altera_carro(request, contexto):
+    data = dict()
+    html_cartao_ponto(request, contexto, data)
+    html_funcionario(request, contexto, data)
+    html_contra_cheque(request, contexto, data)
+    html_saldo(request, contexto, data)
+    return JsonResponse(data)
+
+
+def create_data_cci(request, contexto):
+    data = dict()
+    html_contra_cheque(request, contexto, data)
+    html_saldo(request, contexto, data)
+    html_vales_pagamento(request, contexto, data)
+    return JsonResponse(data)
+
+
+def create_data_vale(request, contexto):
+    data = dict()
+    html_vales(request, contexto, data)
+    html_vales_pagamento(request, contexto, data)
+    return JsonResponse(data)
+
+
+def create_data_seleciona_vale(request, contexto):
+    data = dict()
+    html_contra_cheque(request, contexto, data)
+    html_saldo(request, contexto, data)
+    html_vales_pagamento(request, contexto, data)
+    return JsonResponse(data)
+
+
+def create_data_remove_vale(request, contexto):
+    data = dict()
+    html_vales_pagamento(request, contexto, data)
+    return JsonResponse(data)
+
+
+def create_data_save_file(request, contexto):
+    data = dict()
+    html_files_pagamento(request, contexto, data)
+    return JsonResponse(data)
+
+
+def create_data_delete_file(request, contexto):
+    data = dict()
+    html_files_pagamento(request, contexto, data)
+    return JsonResponse(data)
+
+
+def create_data_gera_agenda(request, contexto):
+    data = dict()
+    html_agenda_pagamento(request, contexto, data)
+    html_itens_agenda_pagamento(request, contexto, data)
+    return JsonResponse(data)
+
+
+def create_data_delete_agenda(request, contexto):
+    data = dict()
     html_itens_agenda_pagamento(request, contexto, data)
     return JsonResponse(data)
 
@@ -917,7 +1015,7 @@ def update_cartao_ponto(_var):
         )
 
 
-def altera_ausencia_falta(request, _id_cp, _mes_ano):
+def altera_ausencia_falta(_id_cp):
     _cp = CartaoPonto.objects.get(idCartaoPonto=_id_cp)
     obj = _cp
     if obj.Ausencia == "FALTA":
@@ -942,12 +1040,9 @@ def altera_ausencia_falta(request, _id_cp, _mes_ano):
             "Remunerado",
         ]
     )
-    _id_pes = _cp.idPessoal_id
-    data = html_cartao_ponto(request, _mes_ano, _id_pes)
-    return data
 
 
-def falta_remunerada(request, _id_cp, _mes_ano):
+def falta_remunerada(_id_cp):
     _cp = CartaoPonto.objects.get(idCartaoPonto=_id_cp)
     obj = _cp
     if obj.Ausencia == "FALTA":
@@ -960,12 +1055,9 @@ def falta_remunerada(request, _id_cp, _mes_ano):
         else:
             obj.Remunerado = True
     obj.save(update_fields=["Alteracao", "Remunerado"])
-    _id_pes = _cp.idPessoal_id
-    data = html_cartao_ponto(request, _mes_ano, _id_pes)
-    return data
 
 
-def altera_carro_empresa(request, _id_cp, _mes_ano):
+def altera_carro_empresa(_id_cp):
     _cp = CartaoPonto.objects.get(idCartaoPonto=_id_cp)
     obj = _cp
     if obj.CarroEmpresa == True:
@@ -973,9 +1065,6 @@ def altera_carro_empresa(request, _id_cp, _mes_ano):
     else:
         obj.CarroEmpresa = True
     obj.save(update_fields=["CarroEmpresa"])
-    _id_pes = _cp.idPessoal_id
-    data = html_cartao_ponto(request, _mes_ano, _id_pes)
-    return data
 
 
 def verifica_falta(v_cartao_ponto):
@@ -2463,7 +2552,7 @@ def list_avulsos_ativo():
     return facade.get_pessoal_nao_mensalista_ativo()
 
 
-def form_modal_horario(request, _id_cp, _mes_ano, _id_pes):
+def form_modal_horario(request, _id_cp, _mes_ano):
     data = dict()
     c_instance = None
     if _id_cp:
@@ -2472,8 +2561,6 @@ def form_modal_horario(request, _id_cp, _mes_ano, _id_pes):
         form = CadastraCartaoPonto(request.POST, instance=c_instance)
         if form.is_valid():
             form.save()
-            data = html_cartao_ponto(request, _mes_ano, _id_pes)
-            return data
     else:
         form = CadastraCartaoPonto(instance=c_instance)
     _url = "/pagamentos/altera_horario_cartao_ponto"

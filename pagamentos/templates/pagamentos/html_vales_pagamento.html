@@ -31,9 +31,13 @@
                 <span>R$ {{ itens.valor|intcomma }}</span>
             </div>
             <div class="item-botoes">
-                <i class="bi bi-trash i-button js-exclui-vale"
-                data-idvales="{{ itens.idvales }}"
-                data-idPessoal="{{ contra_cheque.idpessoal }}"></i>
+                {% if itens.checked %}
+                    <i class="bi bi-trash"></i>
+                {% else %}
+                    <i class="bi bi-trash i-button js-exclui-vale"
+                    data-idvales="{{ itens.idvales }}"
+                    data-idPessoal="{{ contra_cheque.idpessoal }}"></i>
+                {% endif %}
             </div>
         </div>
     {% endfor %}

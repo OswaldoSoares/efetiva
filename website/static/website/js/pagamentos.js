@@ -94,12 +94,6 @@ var tamanhoCardBody = function() {
         $('.js-body-cria-vales').height(maior - cva_top)
         $('.js-body-agenda-pagamento').height(maior - age_top)
     }
-
-    // var areas = [sal_area, age_area, iag_area]
-    // maior = Math.max(...areas)
-    // $('.js-body-saldo').height(maior - sal_top)
-    // $('.js-body-agenda-pagamento').height(maior - age_top)
-    // $('.js-body-itens-agenda-pagamento').height(maior - iag_top)
 }
 
 $(document).on("click", ".js-seleciona-mes-ano", function(event) {
@@ -126,12 +120,12 @@ $(document).on("click", ".js-seleciona-mes-ano", function(event) {
 $(document).on("change", ".select-mes-ano", function(event) {
     $(".js-folha").html('');
     $(".js-saldo").html('');
+    $(".js-adiantamento").html('')
     $(".js-funcionario-pagamento").html('');
     $(".js-cartao-ponto").html('');
     $(".js-itens-contra-cheque").html('');
     $(".js-contra-cheque").html('');
     $(".js-cria-vales").html('')
-    $(".js-adiantamento").html('')
     $(".js-minutas-pagamento").html('')
     $(".js-lista-vales").html('')
     $(".js-files-pagamento").html('')
@@ -151,40 +145,30 @@ $(document).on("click", ".js-seleciona-funcionario", function(event) {
             idpessoal: v_idpessoal,
         },
         beforeSend: function() {
-            EscondeCards();
+            $('.box-loader').show();
         },
         success: function(data) {
-            AtualizaHtmls(data, v_mes_ano);
+            $(".js-funcionario-pagamento").html(data.html_funcionario);
+            $(".js-cartao-ponto").html(data.html_cartao_ponto);
+            $(".js-itens-contra-cheque").html(data.html_itens_contra_cheque);
+            $(".js-contra-cheque").html(data.html_contra_cheque);
+            $(".js-cria-vales").html(data.html_vales);
+            $(".js-adiantamento").html(data.html_adiantamento);
+            $(".js-minutas-pagamento").html(data.html_minutas);
+            $(".js-lista-vales").html(data.html_vales_pagamento);
+            $(".js-files-pagamento").html(data.html_files_pagamento);
+            $(".js-agenda-pagamento").html(data.html_agenda_pagamento);
+            $(".js-itens-agenda-pagamento").html(data.html_itens_agenda_pagamento);
+            $('.box-loader').hide();
+            tamanhoCardBody();
         },
     });
 });
 
-function EscondeCards() {
-    $('.box-loader').show()
-}
-
-function AtualizaHtmls(data, v_mes_ano) {
-    $(".js-funcionario-pagamento").html(data.html_funcionario);
-    $(".js-cartao-ponto").html(data.html_cartao_ponto);
-    $(".js-itens-contra-cheque").html(data.html_itens_contra_cheque);
-    $(".js-contra-cheque").html(data.html_contra_cheque);
-    $(".js-cria-vales").html(data.html_vales)
-    $(".js-adiantamento").html(data.html_adiantamento)
-    $(".js-minutas-pagamento").html(data.html_minutas)
-    $(".js-lista-vales").html(data.html_vales_pagamento)
-    $(".js-files-pagamento").html(data.html_files_pagamento)
-    $(".js-agenda-pagamento").html(data.html_agenda_pagamento)
-    $(".js-itens-agenda-pagamento").html(data.html_itens_agenda_pagamento)
-    $('#mes_ano').val(v_mes_ano)
-    $('#mes_ano_adiantamento').val(v_mes_ano)
-    $('#mes_ano_agenda').val(v_mes_ano)
-    $('.box-loader').hide()
-    tamanhoCardBody();
-}
-
 $(document).on("click", ".js-altera-falta", function(event) {
     var v_mes_ano = $(".select-mes-ano option:selected").text();
     var v_idcartaoponto = $(this).attr("idcartaoponto");
+    var v_idpessoal = $(this).attr("idpessoal");
     $.ajax({
         type: "GET",
         dataType: "json",
@@ -192,12 +176,18 @@ $(document).on("click", ".js-altera-falta", function(event) {
         data: {
             mes_ano: v_mes_ano,
             idcartaoponto: v_idcartaoponto,
+            idpessoal: v_idpessoal,
         },
         beforeSend: function() {
-            EscondeCards();
+            $('.box-loader').show()
         },
         success: function(data) {
-            AtualizaHtmls(data, v_mes_ano);
+            $(".js-cartao-ponto").html(data.html_cartao_ponto);
+            $(".js-funcionario-pagamento").html(data.html_funcionario);
+            $(".js-contra-cheque").html(data.html_contra_cheque);
+            $(".js-saldo").html(data.html_saldo);
+            $('.box-loader').hide()
+            tamanhoCardBody();
         },
         error: function(error, data) {
             console.log(error);
@@ -208,6 +198,7 @@ $(document).on("click", ".js-altera-falta", function(event) {
 $(document).on("click", ".js-altera-carro-empresa", function(event) {
     var v_mes_ano = $(".select-mes-ano option:selected").text();
     var v_idcartaoponto = $(this).attr("idcartaoponto");
+    var v_idpessoal = $(this).attr("idpessoal");
     $.ajax({
         type: "GET",
         dataType: "json",
@@ -215,12 +206,18 @@ $(document).on("click", ".js-altera-carro-empresa", function(event) {
         data: {
             mes_ano: v_mes_ano,
             idcartaoponto: v_idcartaoponto,
+            idpessoal: v_idpessoal,
         },
         beforeSend: function() {
-            EscondeCards();
+            $('.box-loader').show()
         },
         success: function(data) {
-            AtualizaHtmls(data, v_mes_ano);
+            $(".js-cartao-ponto").html(data.html_cartao_ponto);
+            $(".js-funcionario-pagamento").html(data.html_funcionario);
+            $(".js-contra-cheque").html(data.html_contra_cheque);
+            $(".js-saldo").html(data.html_saldo);
+            $('.box-loader').hide()
+            tamanhoCardBody();
         },
         error: function(error, data) {
             console.log(error);
@@ -231,6 +228,7 @@ $(document).on("click", ".js-altera-carro-empresa", function(event) {
 $(document).on("click", ".js-atestada", function(event) {
     var v_mes_ano = $(".select-mes-ano option:selected").text();
     var v_idcartaoponto = $(this).attr("idcartaoponto");
+    var v_idpessoal = $(this).attr("idpessoal");
     $.ajax({
         type: "GET",
         dataType: "json",
@@ -238,12 +236,18 @@ $(document).on("click", ".js-atestada", function(event) {
         data: {
             mes_ano: v_mes_ano,
             idcartaoponto: v_idcartaoponto,
+            idpessoal: v_idpessoal
         },
         beforeSend: function() {
-            EscondeCards();
+            $('.box-loader').show()
         },
         success: function(data) {
-            AtualizaHtmls(data, v_mes_ano);
+            $(".js-cartao-ponto").html(data.html_cartao_ponto);
+            $(".js-funcionario-pagamento").html(data.html_funcionario);
+            $(".js-contra-cheque").html(data.html_contra_cheque);
+            $(".js-saldo").html(data.html_saldo);
+            $('.box-loader').hide();
+            tamanhoCardBody();
         },
         error: function(error, data) {
             console.log(error);
@@ -259,10 +263,10 @@ $(document).on('submit', '.js-gera-adiantamento', function(event) {
         url: '/pagamentos/adiantamento',
         data: $(this).serialize(),
         beforeSend: function() {
-            EscondeCards();
+            $('.box-loader').show()
         },
         success: function(data) {
-            AtualizaHtmls(data, v_mes_ano);
+            $('.box-loader').hide()
         },
     });
 });
@@ -277,26 +281,43 @@ $(document).on('click', '.js-gera-adiantamento-automatico', function() {
             mes_ano: v_mes_ano,
         },
         beforeSend: function() {
-            EscondeCards();
+            $('.box-loader').show()
         },
         success: function(data) {
-            AtualizaHtmls(data, v_mes_ano);
+            $(".js-folha").html(data.html_folha);
+            $(".js-saldo").html(data.html_saldo);
+            $(".js-adiantamento").html(data.html_adiantamento);
+            $(".js-funcionario-pagamento").html('');
+            $(".js-cartao-ponto").html('');
+            $(".js-itens-contra-cheque").html('');
+            $(".js-contra-cheque").html('');
+            $(".js-cria-vales").html('')
+            $(".js-minutas-pagamento").html('')
+            $(".js-lista-vales").html('')
+            $(".js-files-pagamento").html('')
+            $(".js-agenda-pagamento").html('')
+            $(".js-itens-agenda-pagamento").html('');
+            $('.box-loader').hide()
+            tamanhoCardBody();
         },
     });
 });
 
 $(document).on('submit', '.js-gera-contra-cheque-itens', function(event) {
     event.preventDefault();
-    var v_mes_ano = $('#mes_ano').val();
+    var v_mes_ano = $(".select-mes-ano option:selected").text();
     $.ajax({
         type: $(this).attr('method'),
         url: '/pagamentos/adiciona_contra_cheque_itens',
         data: $(this).serialize(),
         beforeSend: function() {
-            EscondeCards();
+            $('.box-loader').show()
         },
         success: function(data) {
-            AtualizaHtmls(data, v_mes_ano);
+            $(".js-contra-cheque").html(data.html_contra_cheque);
+            $(".js-saldo").html(data.html_saldo);
+            $('.box-loader').hide()
+            tamanhoCardBody();
         },
     });
 });
@@ -309,10 +330,13 @@ $(document).on('submit', '.js-gera-agenda', function(event) {
         url: '/pagamentos/adiciona_agenda',
         data: $(this).serialize(),
         beforeSend: function() {
-            EscondeCards();
+            $('.box-loader').show()
         },
         success: function(data) {
-            AtualizaHtmls(data, v_mes_ano);
+            $(".js-agenda-pagamento").html(data.html_agenda_pagamento)
+            $(".js-itens-agenda-pagamento").html(data.html_itens_agenda_pagamento)
+            $('.box-loader').hide()
+            tamanhoCardBody();
         },
     });
 });
@@ -331,12 +355,12 @@ $(document).on('click', '.js-carrega-agenda', function() {
             idpessoal: _idpessoal
         },
         beforeSend: function() {
-            EscondeCards()
+            $('.box-loader').show()
         },
         success: function(data) {
-            AtualizaHtmls(data, _mes_ano)
             $(".js-agenda-pagamento").html(data.html_agenda_pagamento)
-            tamanhoCardBody()
+            $('.box-loader').hide()
+            tamanhoCardBody();
         }
     })
 
@@ -356,10 +380,12 @@ $(document).on('click', '.js-exclui-agenda', function() {
             idpessoal: _idpessoal
         },
         beforeSend: function() {
-            EscondeCards()
+            $('.box-loader').show()
         },
         success: function(data) {
-            AtualizaHtmls(data, _mes_ano)
+            $(".js-itens-agenda-pagamento").html(data.html_itens_agenda_pagamento)
+            $('.box-loader').hide()
+            tamanhoCardBody();
         }
     })
 
@@ -379,10 +405,14 @@ $(document).on('click', '.js-exclui-contra-cheque-itens', function(event) {
             idpessoal: v_idpessoal,
         },
         beforeSend: function() {
-            EscondeCards();
+            $('.box-loader').show()
         },
         success: function(data) {
-            AtualizaHtmls(data, v_mes_ano);
+            $(".js-contra-cheque").html(data.html_contra_cheque);
+            $(".js-saldo").html(data.html_saldo);
+            $(".js-lista-vales").html(data.html_vales_pagamento)
+            $('.box-loader').hide()
+            tamanhoCardBody();
         },
     });
 });
@@ -395,10 +425,13 @@ $(document).on('submit', '.js-gera-vales', function(event) {
         url: '/pagamentos/adiciona_vales',
         data: $(this).serialize(),
         beforeSend: function() {
-            EscondeCards();
+            $('.box-loader').show()
         },
         success: function(data) {
-            AtualizaHtmls(data, v_mes_ano);
+            $(".js-cria-vales").html(data.html_vales)
+            $(".js-lista-vales").html(data.html_vales_pagamento)
+            $('.box-loader').hide()
+            tamanhoCardBody();
         },
     });
 });
@@ -419,10 +452,14 @@ $(document).on('click', '.js-seleciona-vale', function(event) {
             idcontracheque: v_idcontracheque
         },
         beforeSend: function() {
-            EscondeCards();
+            $('.box-loader').show()
         },
         success: function(data) {
-            AtualizaHtmls(data, v_mes_ano);
+            $(".js-contra-cheque").html(data.html_contra_cheque);
+            $(".js-saldo").html(data.html_saldo);
+            $(".js-lista-vales").html(data.html_vales_pagamento);
+            $('.box-loader').hide()
+            tamanhoCardBody();
         },
     })
 });
@@ -441,10 +478,12 @@ $(document).on('click', '.js-exclui-vale', function(event) {
             idpessoal: v_idpessoal,
         },
         beforeSend: function() {
-            EscondeCards();
+            $('.box-loader').show()
         },
         success: function(data) {
-            AtualizaHtmls(data, v_mes_ano);
+            $(".js-lista-vales").html(data.html_vales_pagamento)
+            $('.box-loader').hide()
+            tamanhoCardBody();
         },
     })
 });
@@ -497,10 +536,12 @@ $(document).on('submit', '.js-salva-file', function(event) {
         contentType: false,
         enctype: 'multipart/form-data',
         beforeSend: function() {
-            EscondeCards();
+            $('.box-loader').show()
         },
         success: function(data) {
-            AtualizaHtmls(data, v_mes_ano);
+            $(".js-files-pagamento").html(data.html_files_pagamento)
+            $('.box-loader').hide()
+            tamanhoCardBody();
         },
     });
 });
@@ -518,10 +559,12 @@ $(document).on('click', '.js-delete-file', function() {
             idpessoal: _idpessoal,
         },
         beforeSend: function() {
-            EscondeCards()
+            $('.box-loader').show()
         },
         success: function(data) {
-            AtualizaHtmls(data, _mes_ano)
+            $(".js-files-pagamento").html(data.html_files_pagamento)
+            $('.box-loader').hide()
+            tamanhoCardBody();
         }
     });
 });
@@ -1024,24 +1067,8 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                 } else {
                     $(modal).modal("hide");
                     $(".js-cartao-ponto").html(xhr.html_cartao_ponto);
-                    $(".js-cartao-ponto").fadeIn(10);
                     $(".js-contra-cheque").html(xhr.html_contra_cheque);
-                    $(".js-contra-cheque").fadeIn(10);
-
-                    $(".fp-base").html(xhr.html_folha);
-                    $(".fp-contracheque").html("");
-                    $(".fp-contracheque").html(xhr.html_contracheque);
-                    $(".fp-cartaoponto").html("");
-                    $(".fp-cartaoponto").html(xhr.html_cartaoponto);
-                    $(".fp-adiantamento").html("");
-                    $(".fp-adiantamento").html(xhr.html_formccadianta);
-                    $(".fp-minutas").html("");
-                    $(".fp-minutas").html(xhr.html_minutascontracheque);
-                    $(".fp-vales").html("");
-                    $(".fp-vales").html(xhr.html_vales);
-                    if (xhr.html_adiantamento == true) {
-                        $(".fp-adiantamento").hide();
-                    }
+                    $(".js-saldo").html(xhr.html_saldo);
                     if (cbAfterSuccess) {
                         cbAfterSuccess(modal);
                     }
