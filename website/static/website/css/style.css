@@ -4747,6 +4747,71 @@ main .fp-recibo-tabela .fp-recibo-print {
     text-align: right;
 }
 
+.card-minutas-multa {
+    width: 700px;
+}
+
+.card-minutas-multa .itens-minuta {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    color: var(--color6)
+}
+
+.card-minutas-multa .itens-minuta .item-veiculo {
+    /* background-color: green; */
+    width: 15%;
+    text-align: left;
+    padding: 0 5px;
+    border-top: 1px solid var(--color7);
+}
+
+.card-minutas-multa .itens-minuta .item-minuta {
+    /* background-color: red; */
+    width: 15%;
+    text-align: center;
+    padding: 0 5px;
+    border-top: 1px solid var(--color7);
+}
+
+.card-minutas-multa .itens-minuta .item-horario {
+    /* background-color: green; */
+    width: 20%;
+    padding: 0 5px;
+    text-align: center;
+    border-top: 1px solid var(--color7);
+}
+
+.card-minutas-multa .itens-minuta .item-fantasia {
+    /* background-color: red; */
+    width: 30%;
+    text-align: left;
+    padding: 0 5px;
+    border-top: 1px solid var(--color7);
+}
+
+.card-minutas-multa .itens-minuta .item-motorista {
+    /* background-color: green; */
+    width: 80%;
+    text-align: left;
+    padding: 0 5px;
+    /* border-top: 1px solid var(--color7); */
+}
+
+.card-minutas-multa .itens-minuta .item-demissao {
+    /* background-color: red; */
+    width: 20%;
+    text-align: center;
+    padding: 0 5px;
+    /* border-top: 1px solid var(--color7); */
+}
+
+.card-minutas-multa .itens-minuta .item-demissao-top {
+    border-top: 1px solid var(--color7);
+}
+
 .i-button-null {
     color: var(--color8)
 }

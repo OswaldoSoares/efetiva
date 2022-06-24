@@ -277,17 +277,19 @@ def busca_minutas_multa(_id_vei, _date):
         motorista = MinutaColaboradores.objects.filter(
             idMinuta_id=x.idMinuta, Cargo="MOTORISTA"
         )
-        print(motorista)
         if len(motorista) > 0:
             lista.append(
                 {
                     "minuta": x.Minuta,
                     "inicio": x.HoraInicial,
                     "final": x.HoraFinal,
+                    "data_minuta": x.DataMinuta,
                     "fantasia": x.idCliente.Fantasia,
                     "motorista": nome_curto(motorista[0].idPessoal.Nome),
                     "idpessoal": motorista[0].idPessoal_id,
                     "demissao": motorista[0].idPessoal.DataDemissao,
+                    "admissao": motorista[0].idPessoal.DataAdmissao,
+                    "placa": x.idVeiculo.Placa,
                 }
             )
     return lista

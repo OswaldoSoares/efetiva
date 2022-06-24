@@ -1,16 +1,51 @@
+{% if minutas %}
 <div class="article-card-titulo">
-    <span>MINUTAS DATA MULTA</span>
+    {% with minutas|first as minuta %}
+    <span>MINUTAS DO DIA {{ minuta.data_minuta }}</span>
+    {% endwith %}
 </div>
 <div class="article-card-body">
-    <div class="itens-minuta">
     {% for minuta in minutas %}
-        <div class="item-minuta">{{ minuta.minuta }}</div>
-        <div class="item-inicio">{{ minuta.inicio }}</div>
-        <div class="item-final">{{ minuta.final }}</div>
-        <div class="item-fantasia">{{ minuta.fantasia }}</div>
-        <div class="item-motorista">{{ minuta.motorista }}</div>
-        <div class="item-demissao">{{ minuta.demissao }}</div>
-    {% endfor %}
+    <div class="itens-minuta">
+        <div class="item-veiculo">
+            <i class="bi bi-truck i-button-null"></i>
+            {{ minuta.placa }}
+        </div>
+        <div class="item-minuta">
+            <i class="bi bi-file-text i-button-null"></i>
+            {{ minuta.minuta }}
+        </div>
+        <div class="item-horario">
+            <i class="bi bi-clock i-button-null"></i>
+            {{ minuta.inicio }} - {{ minuta.final }}
+        </div>
+        <div class="item-fantasia">
+            <i class="bi bi-building i-button-null"></i>
+            {{ minuta.fantasia }}
+        </div>
+        <div class="item-demissao item-demissao-top">
+            {% if minuta.demissao %}
+            <span class="chk-red">DEMISSÃO</span>
+            {% else %}
+            <span class="chk-green">ADMISSÃO</span>
+            {% endif %}
+        </div>
     </div>
+    <div class="itens-minuta">
+        <div class="item-motorista">
+            <i class="bi bi-person-square i-button-null"></i>
+            {{ minuta.motorista }}
+        </div>
+        <div class="item-demissao">
+            <i class="bi bi-calendar i-button-null"></i>
+            {% if minuta.demissao %}
+            {{ minuta.demissao }}
+            {% else %}
+            {{ minuta.admissao }}
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
 </div>
 <div class="article-card-footer"></div>
+{% endif %}

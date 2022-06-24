@@ -5,11 +5,13 @@
     <article class="article-card card-multas">
         {% include 'despesas/html_form_multas.html' %}
     </article>
-    <article class="article-card card-multas-pagar">
-        {% include 'despesas/html_multas_pagar.html' %}
-    </article>
-    <article class="article-card card-minutas-multa">
-        {% include 'despesas/html_minutas_multa.html' %}
-    </article>
+    <div>
+        <article class="article-card card-multas-pagar">
+            {% include 'despesas/html_multas_pagar.html' %}
+        </article>
+        <article class="article-card card-minutas-multa">
+            {% include 'despesas/html_minutas_multa.html' %}
+        </article>
+    </div>
 </main>
 {% endblock %}
