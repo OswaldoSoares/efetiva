@@ -1158,6 +1158,29 @@ def imprime_contra_cheque_pagamento(_id_cc, tipo):
     hoje = datetime.datetime.strftime(hoje, "%Y-%m-%d")
     colaborador = facade.get_pessoal(_cc[0].idPessoal_id)
     contrachequeitens = facade.get_contracheque_itens(_id_cc)
+    lista_agenda_minuta = []
+    agenda = Agenda.objects.filter(
+        idPessoal=_var["id_pessoal"],
+        Dia__range=[_var["primeiro_dia"], _var["ultimo_dia"]],
+    )
+    print(minutas)
+    for x in agenda:
+        lista_agenda_minuta.append({"dia": x.Dia, "descricao": x.Descricao})
+    for x in minutas:
+        lista_agenda_minuta.append(
+            {
+                "dia": x["idMinuta_id__DataMinuta"],
+                "descricao": "minuta",
+                "minuta": x["idMinuta_id__Minuta"],
+                "cliente": x["idMinuta_id__idCliente__Fantasia"],
+                "inicio": x["idMinuta_id__HoraInicial"],
+                "final": x["idMinuta_id__HoraFinal"],
+                "extra": x["Extra"],
+            }
+        )
+    newlist = sorted(lista_agenda_minuta, key=lambda d: d["dia"])
+    print(newlist)
+
     lista_multas = []
     for x in contrachequeitens:
         if x.Descricao[0:8] == "MULTA - ":
