@@ -54,7 +54,7 @@ def valida_multa(request):
     # Valida Número DOC
     _doc = request.POST.get("doc")
     if not _doc:
-        msg["erro_doc"] = "Obrigatório o número DOC."
+        msg["erro_doc"] = "Obrigatório o número da penalidade."
         error = True
     # Valida Data da infração
     _data = datetime.datetime.strptime(request.POST.get("data"), "%Y-%m-%d").date()
@@ -214,24 +214,30 @@ def read_multa_database(_id_mul):
     return multa_database
 
 
-def html_form_multas(request, multa, error, msg):
-    data = dict()
-    veiculos = Veiculo.objects.filter(Proprietario_id=17)
-    contexto = {"multa": multa, "veiculos": veiculos, "error": error}
-    contexto.update(msg)
+def html_form_multas(request, contexto, data):
     data["html_form_multas"] = render_to_string(
         "despesas/html_form_multas.html", contexto, request=request
     )
+    return data
+
+
+def create_data_form_multa(request, contexto):
+    data = dict()
+    html_form_multas(request, contexto, data)
+    html_multas_pagar(request, contexto, data)
     return JsonResponse(data)
 
 
-def html_multas_pagar(request):
-    data = dict()
-    multas = multas_pagar()
-    contexto = {"multas": multas}
+def html_multas_pagar(request, contexto, data):
     data["html_multas_pagar"] = render_to_string(
         "despesas/html_multas_pagar.html", contexto, request=request
     )
+    return data
+
+
+def create_data_multas_pagar(request, contexto):
+    data = dict()
+    html_multas_pagar(request, contexto, data)
     return JsonResponse(data)
 
 

@@ -31,23 +31,29 @@ def adiciona_multa(request):
         else:
             facade.save_multa(multa)
         multa = dict()
-    data = facade.html_form_multas(request, multa, error, msg)
+    contexto = facade.create_despesas_context()
+    contexto.update({"multa": multa, "error": error})
+    contexto.update(msg)
+    data = facade.create_data_form_multa(request, contexto)
     return data
 
 
 def edita_multa(request):
     _id_mul = request.GET.get("idMulta")
-    print(_id_mul)
     error, msg = False, dict()
     multa = facade.read_multa_database(_id_mul)
-    data = facade.html_form_multas(request, multa, error, msg)
+    contexto = facade.create_despesas_context()
+    contexto.update({"multa": multa, "error": error})
+    contexto.update(msg)
+    data = facade.create_data_form_multa(request, contexto)
     return data
 
 
 def exclui_multa(request):
     _id_mul = request.GET.get("idMulta")
     facade.delete_multa(_id_mul)
-    data = facade.html_multas_pagar(request)
+    contexto = facade.create_despesas_context()
+    data = facade.create_data_multas_pagar(request, contexto)
     return data
 
 
