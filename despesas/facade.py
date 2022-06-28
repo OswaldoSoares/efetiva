@@ -228,6 +228,14 @@ def create_data_form_multa(request, contexto):
     return JsonResponse(data)
 
 
+def create_data_edita_multa(request, contexto):
+    data = dict()
+    html_form_multas(request, contexto, data)
+    html_multas_pagar(request, contexto, data)
+    html_minutas_multa(request, contexto, data)
+    return JsonResponse(data)
+
+
 def html_multas_pagar(request, contexto, data):
     data["html_multas_pagar"] = render_to_string(
         "despesas/html_multas_pagar.html", contexto, request=request
@@ -290,7 +298,7 @@ def create_vale_multa(_obj, _id_pes):
         create_vales(_des, _dat, _val, _par, _id_pes)
 
 
-def busca_minutas_multa(_id_vei, _date):
+def busca_minutas_multa(_date):
     _date = datetime.datetime.strptime(_date, "%Y-%m-%d")
     minutas = Minuta.objects.filter(DataMinuta=_date)
     lista = []
@@ -316,17 +324,14 @@ def busca_minutas_multa(_id_vei, _date):
     return lista
 
 
-def html_minutas_multa(request, _mm):
-    data = dict()
-    contexto = {
-        "minutas": _mm,
-    }
+def html_minutas_multa(request, contexto, data):
     data["html_minutas_multa"] = render_to_string(
         "despesas/html_minutas_multa.html", contexto, request=request
     )
-    if _mm:
-        data["idpessoal"] = _mm[0]["idpessoal"]
-    else:
-        data["idpessoal"] = 0
-    print(data["idpessoal"])
+    return data
+
+
+def create_data_minutas_multa(request, contexto):
+    data = dict()
+    html_minutas_multa(request, contexto, data)
     return JsonResponse(data)

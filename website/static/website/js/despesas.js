@@ -41,6 +41,7 @@ $(document).on('click', '.js-edita-multas', function() {
         success: function(data) {
             $(".card-multas").html(data.html_form_multas)
             $(".card-multas-pagar").html(data.html_multas_pagar)
+            $('.card-minutas-multa').html(data.html_minutas_multa)
             CarregaMask()
             $(".box-loader").hide();
         },

@@ -42,10 +42,11 @@ def edita_multa(request):
     _id_mul = request.GET.get("idMulta")
     error, msg = False, dict()
     multa = facade.read_multa_database(_id_mul)
+    _mm = facade.busca_minutas_multa(multa["data_multa"])
     contexto = facade.create_despesas_context()
-    contexto.update({"multa": multa, "error": error})
+    contexto.update({"multa": multa, "error": error, "minutas": _mm})
     contexto.update(msg)
-    data = facade.create_data_form_multa(request, contexto)
+    data = facade.create_data_edita_multa(request, contexto)
     return data
 
 
@@ -58,8 +59,8 @@ def exclui_multa(request):
 
 
 def minutas_multa(request):
-    _id_vei = request.GET.get("idveiculo")
     _date = request.GET.get("date")
-    _mm = facade.busca_minutas_multa(_id_vei, _date)
-    data = facade.html_minutas_multa(request, _mm)
+    _mm = facade.busca_minutas_multa(_date)
+    contexto = {"minutas": _mm}
+    data = facade.create_data_minutas_multa(request, contexto)
     return data
