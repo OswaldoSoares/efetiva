@@ -1,51 +1,59 @@
-{% if minutas %}
+{% if dia %}
 <div class="article-card-titulo">
     {% with minutas|first as minuta %}
-    <span>MINUTAS DO DIA {{ minuta.data_minuta }}</span>
+    <span>MINUTAS DO DIA {{ dia|date:"d/m/Y - l"|upper }}</span>
     {% endwith %}
 </div>
 <div class="article-card-body">
-    {% for minuta in minutas %}
-    <div class="itens-minuta">
-        <div class="item-veiculo">
-            <i class="bi bi-truck i-button-null"></i>
-            {{ minuta.placa }}
+    {% if minutas %}
+        {% for minuta in minutas %}
+        <div class="itens-minuta">
+            <div class="item-veiculo">
+                <i class="bi bi-truck i-button-null"></i>
+                {{ minuta.placa }}
+            </div>
+            <div class="item-minuta">
+                <i class="bi bi-file-text i-button-null"></i>
+                {{ minuta.minuta }}
+            </div>
+            <div class="item-horario">
+                <i class="bi bi-clock i-button-null"></i>
+                {{ minuta.inicio }} - {{ minuta.final }}
+            </div>
+            <div class="item-fantasia">
+                <i class="bi bi-building i-button-null"></i>
+                {{ minuta.fantasia }}
+            </div>
+            <div class="item-demissao item-demissao-top">
+                {% if minuta.demissao %}
+                <span class="chk-red">DEMISSÃO</span>
+                {% else %}
+                <span class="chk-green">ADMISSÃO</span>
+                {% endif %}
+            </div>
         </div>
-        <div class="item-minuta">
-            <i class="bi bi-file-text i-button-null"></i>
-            {{ minuta.minuta }}
+        <div class="itens-minuta">
+            <div class="item-motorista">
+                <i class="bi bi-person-square i-button-null"></i>
+                {{ minuta.motorista }}
+            </div>
+            <div class="item-demissao">
+                <i class="bi bi-calendar i-button-null"></i>
+                {% if minuta.demissao %}
+                {{ minuta.demissao }}
+                {% else %}
+                {{ minuta.admissao }}
+                {% endif %}
+            </div>
         </div>
-        <div class="item-horario">
-            <i class="bi bi-clock i-button-null"></i>
-            {{ minuta.inicio }} - {{ minuta.final }}
+        {% endfor %}
+    {% else %}
+        <div class="itens-minuta">
+            <div class='item-vazio'>
+                <i class="bi bi-x-octagon"></i>
+            </div>
         </div>
-        <div class="item-fantasia">
-            <i class="bi bi-building i-button-null"></i>
-            {{ minuta.fantasia }}
-        </div>
-        <div class="item-demissao item-demissao-top">
-            {% if minuta.demissao %}
-            <span class="chk-red">DEMISSÃO</span>
-            {% else %}
-            <span class="chk-green">ADMISSÃO</span>
-            {% endif %}
-        </div>
-    </div>
-    <div class="itens-minuta">
-        <div class="item-motorista">
-            <i class="bi bi-person-square i-button-null"></i>
-            {{ minuta.motorista }}
-        </div>
-        <div class="item-demissao">
-            <i class="bi bi-calendar i-button-null"></i>
-            {% if minuta.demissao %}
-            {{ minuta.demissao }}
-            {% else %}
-            {{ minuta.admissao }}
-            {% endif %}
-        </div>
-    </div>
-    {% endfor %}
+    {% endif %}
 </div>
 <div class="article-card-footer"></div>
 {% endif %}

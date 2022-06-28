@@ -4812,6 +4812,13 @@ main .fp-recibo-tabela .fp-recibo-print {
     border-top: 1px solid var(--color7);
 }
 
+.card-minutas-multa .itens-minuta .item-vazio {
+    text-align: center;
+    color: lightcoral;
+    font-size: 20px;
+    padding: 5px;
+}
+
 .i-button-null {
     color: var(--color8)
 }

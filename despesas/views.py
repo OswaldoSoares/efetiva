@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
@@ -43,8 +45,10 @@ def edita_multa(request):
     error, msg = False, dict()
     multa = facade.read_multa_database(_id_mul)
     _mm = facade.busca_minutas_multa(multa["data_multa"])
+    dia = datetime.datetime.strptime(multa["data_multa"], "%Y-%m-%d")
     contexto = facade.create_despesas_context()
     contexto.update({"multa": multa, "error": error, "minutas": _mm})
+    contexto.update({"minutas": _mm, "dia": dia})
     contexto.update(msg)
     data = facade.create_data_edita_multa(request, contexto)
     return data
@@ -61,6 +65,7 @@ def exclui_multa(request):
 def minutas_multa(request):
     _date = request.GET.get("date")
     _mm = facade.busca_minutas_multa(_date)
-    contexto = {"minutas": _mm}
+    dia = datetime.datetime.strptime(_date, "%Y-%m-%d")
+    contexto = {"minutas": _mm, "dia": dia}
     data = facade.create_data_minutas_multa(request, contexto)
     return data

@@ -21,6 +21,7 @@ $(document).on('submit', '.js-gera-multas', function(event) {
         success: function(data) {
             $(".card-multas").html(data.html_form_multas)
             $(".card-multas-pagar").html(data.html_multas_pagar)
+            $('.card-minutas-multa').html('')
             CarregaMask()
             $(".box-loader").hide();
         },
