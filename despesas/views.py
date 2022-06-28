@@ -47,6 +47,8 @@ def edita_multa(request):
 def exclui_multa(request):
     _id_mul = request.GET.get("idMulta")
     facade.delete_multa(_id_mul)
+    data = facade.html_multas_pagar(request)
+    return data
 
 
 def minutas_multa(request):

@@ -15,43 +15,14 @@ from despesas.models import Abastecimento, Multas
 def create_despesas_context():
     abastecimento = get_abastecimento_all()
     veiculos = Veiculo.objects.filter(Proprietario_id=17)
-    multas = Multas.objects.filter(Pago=False).order_by("-Vencimento")
-    lista = []
-    for x in multas:
-        multa = f"MULTA - {x.NumeroDOC}"
-        motorista = None
-        if x.DescontaMotorista:
-            motorista = Vales.objects.filter(Descricao__startswith=multa)
-            if motorista:
-                motorista = nome_curto(motorista[0].idPessoal.Nome)
-            else:
-                motorista = "VALE NÃO ENCONTRADO"
-        lista.append(
-            {
-                "id_multa": x.idMulta,
-                "vencimento": x.Vencimento,
-                "valor": x.ValorMulta,
-                "doc": x.NumeroDOC,
-                "ait": x.NumeroAIT,
-                "data": x.DataMulta,
-                "hora": x.HoraMulta,
-                "placa": x.idVeiculo.Placa,
-                "infracao": x.Infracao,
-                "local": x.Local,
-                "digitavel": x.LinhaDigitavel,
-                "digitavel_sp": x.LinhaDigitavelSP,
-                "desconta": x.DescontaMotorista,
-                "motorista": motorista,
-            }
-        )
-    print(lista)
+    multas = multas_pagar()
     hoje = datetime.datetime.today()
     hoje = datetime.datetime.strftime(hoje, "%Y-%m-%d")
     context = {
         "abastecimento": abastecimento,
         "veiculos": veiculos,
         "hoje": hoje,
-        "multas": lista,
+        "multas": multas,
     }
     return context
 
@@ -167,6 +138,7 @@ def save_multa(multa):
         multa["vencimento"], "%Y-%m-%d"
     ).date()
     obj.save()
+    print(obj.DescontaMotorista)
     if obj.DescontaMotorista == "True":
         create_vale_multa(obj, multa["idpessoal"])
 
@@ -251,6 +223,49 @@ def html_form_multas(request, multa, error, msg):
         "despesas/html_form_multas.html", contexto, request=request
     )
     return JsonResponse(data)
+
+
+def html_multas_pagar(request):
+    data = dict()
+    multas = multas_pagar()
+    contexto = {"multas": multas}
+    data["html_multas_pagar"] = render_to_string(
+        "despesas/html_multas_pagar.html", contexto, request=request
+    )
+    return JsonResponse(data)
+
+
+def multas_pagar():
+    multas = Multas.objects.filter(Pago=False).order_by("-Vencimento")
+    lista = []
+    for x in multas:
+        multa = f"MULTA - {x.NumeroDOC}"
+        motorista = None
+        if x.DescontaMotorista:
+            motorista = Vales.objects.filter(Descricao__startswith=multa)
+            if motorista:
+                motorista = nome_curto(motorista[0].idPessoal.Nome)
+            else:
+                motorista = "VALE NÃO ENCONTRADO"
+        lista.append(
+            {
+                "id_multa": x.idMulta,
+                "vencimento": x.Vencimento,
+                "valor": x.ValorMulta,
+                "doc": x.NumeroDOC,
+                "ait": x.NumeroAIT,
+                "data": x.DataMulta,
+                "hora": x.HoraMulta,
+                "placa": x.idVeiculo.Placa,
+                "infracao": x.Infracao,
+                "local": x.Local,
+                "digitavel": x.LinhaDigitavel,
+                "digitavel_sp": x.LinhaDigitavelSP,
+                "desconta": x.DescontaMotorista,
+                "motorista": motorista,
+            }
+        )
+    return lista
 
 
 def delete_multa(_id_mul):

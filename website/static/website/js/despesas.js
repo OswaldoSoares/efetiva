@@ -9,31 +9,6 @@ var CarregaMask = function() {
     $("#linhasp2").mask('###########.# ###########.#');
 }
 
-$(document).on('submit', '.form-cria-contrachequeitens', function(event) {
-    event.preventDefault();
-    var url = $(this).attr('action') || action;
-    $.ajax({
-        type: $(this).attr('method'),
-        url: url,
-        data: $(this).serialize(),
-        success: function(data) {
-            $(".fp-base").html(data.html_folha)
-            $(".fp-minutas").html(data.html_minutascontracheque);
-            $(".fp-vales").html(data.html_vales);
-            $(".fp-contrachequeitens").html(data.html_formccitens);
-            $(".fp-adiantamento").html(data.html_formccadianta);
-            if (data.html_adiantamento == true) {
-                $(".fp-adiantamento").hide();
-            }
-            $(".fp-contracheque").html(data.html_contracheque);
-            $(".fp-cartaoponto").html(data.html_cartaoponto);
-        },
-        error: function(error) {
-            console.log(error)
-        }
-    });
-});
-
 $(document).on('submit', '.js-gera-multas', function(event) {
     event.preventDefault();
     $.ajax({
@@ -45,6 +20,7 @@ $(document).on('submit', '.js-gera-multas', function(event) {
         },
         success: function(data) {
             $(".card-multas").html(data.html_form_multas)
+            $(".card-multas-pagar").html(data.html_multas_pagar)
             CarregaMask()
             $(".box-loader").hide();
         },
@@ -60,11 +36,13 @@ $(document).on('click', '.js-edita-multas', function() {
             idMulta: _id_multa,
         },
         beforeSend: function() {
-
+            $(".box-loader").show();
         },
         success: function(data) {
             $(".card-multas").html(data.html_form_multas)
+            $(".card-multas-pagar").html(data.html_multas_pagar)
             CarregaMask()
+            $(".box-loader").hide();
         },
     });
 });
@@ -78,9 +56,11 @@ $(document).on('click', '.js-exclui-multas', function() {
             idMulta: _id_multa,
         },
         beforeSend: function() {
-
+            $('.box-loader').show()
         },
         success: function(data) {
+            $(".card-multas-pagar").html(data.html_multas_pagar)
+            $('.box-loader').hide()
 
         },
     });
