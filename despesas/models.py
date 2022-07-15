@@ -62,3 +62,29 @@ class Multas(models.Model):
         super(Multas, self).save(*args, **kwargs)
 
     objects = models.Manager()
+
+
+class Despesas(models.Model):
+    id_Despesa = models.AutoField(primary_key=True)
+    Cedente = models.CharField(max_length=200)
+    Categoria = models.CharField(max_length=100)
+    SubCategoria = models.CharField(max_length=100)
+    Valor = models.DecimalField(decimal_places=2, max_digits=8, default=0)
+    Vencimento = models.DateField(default=0)
+    DataPgto = models.DateField(default=0)
+    ValorPago = models.DecimalField(decimal_places=2, max_digits=8, default=0)
+
+    class Meta:
+        db_table = "despesas"
+
+    def __str__(self):
+        return str(self.id_Despesa)
+
+    def save(self, *args, **kwargs):
+        self.Cedente = self.Cedente.upper()
+        self.Categoria = self.Categoria.upper()
+        self.SubCategoria = self.SubCategoria.upper()
+
+        super(Despesas, self).save(*args, **kwargs)
+
+    objects = models.Manager()
