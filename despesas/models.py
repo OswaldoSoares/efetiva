@@ -67,8 +67,9 @@ class Multas(models.Model):
 class Despesas(models.Model):
     id_Despesa = models.AutoField(primary_key=True)
     Cedente = models.CharField(max_length=200)
-    Categoria = models.CharField(max_length=100)
-    SubCategoria = models.CharField(max_length=100)
+    Categoria = models.CharField(max_length=100, blank=True)
+    SubCategoria = models.CharField(max_length=100, blank=True)
+    Descricao = models.TextField(blank=True)
     Valor = models.DecimalField(decimal_places=2, max_digits=8, default=0)
     Vencimento = models.DateField(default=0)
     DataPgto = models.DateField(default=0)
@@ -84,6 +85,7 @@ class Despesas(models.Model):
         self.Cedente = self.Cedente.upper()
         self.Categoria = self.Categoria.upper()
         self.SubCategoria = self.SubCategoria.upper()
+        self.Descricao = self.Descricao.upper()
 
         super(Despesas, self).save(*args, **kwargs)
 

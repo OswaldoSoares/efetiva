@@ -69,3 +69,15 @@ def minutas_multa(request):
     contexto = {"minutas": _mm, "dia": dia}
     data = facade.create_data_minutas_multa(request, contexto)
     return data
+
+
+def adiciona_despesa(request):
+    pass
+
+
+def edita_despesa(request):
+    pass
+
+
+def exclui_despesa(request):
+    pass

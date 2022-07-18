@@ -28,6 +28,26 @@ $(document).on('submit', '.js-gera-multas', function(event) {
     });
 });
 
+
+$(document).on('submit', '.js-gera-despesas', function(event) {
+    event.preventDefault();
+    $.ajax({
+        type: $(this).attr('method'),
+        url: '/despesas/adiciona_despesa',
+        data: $(this).serialize(),
+        beforeSend: function() {
+            $(".box-loader").show();
+        },
+        success: function(data) {
+            $(".card-despesas").html(data.html_form_despesas)
+                // $(".card-multas-pagar").html(data.html_multas_pagar)
+                // $('.card-minutas-multa').html('')
+            CarregaMask()
+            $(".box-loader").hide();
+        },
+    });
+});
+
 $(document).on('click', '.js-edita-multas', function() {
     var _id_multa = $(this).data('idmulta')
     $.ajax({
