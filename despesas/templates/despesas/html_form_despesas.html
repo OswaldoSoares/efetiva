@@ -27,7 +27,20 @@
                     <i class="bi bi-tag i-button-null"></i>
                 </div>
                 <div class="item-field">
-                    <input class="form-control" type="text" name="categoria" placeholder="CATEGORIA">
+                    <select class="form-control" name="categoria" id="categoria">
+                        <option value="0">SELECIONE UMA CATEGORIA</option>
+                        {% for categoria in categorias %}
+                        {% if multa %}
+                            {% if multa.idveiculo == veiculo.idVeiculo %}
+                            <option value="{{ veiculo.idVeiculo }}" selected>{{ veiculo.Placa }}</option>
+                            {% else %}
+                            <option value="{{ veiculo.idVeiculo }}">{{ veiculo.Placa }}</option>
+                            {% endif %}
+                        {% else %}
+                            <option value="{{ categoria.idCategoria }}">{{ categoria.Categoria }}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
                 </div>
             </div>
             <div class="item-form">
@@ -44,7 +57,20 @@
                     <i class="bi bi-tags i-button-null"></i>
                 </div>
                 <div class="item-field">
-                    <input class="form-control" type="text" name="subcategoria" placeholder="SUB-CATEGORIA">
+                    <select class="form-control" name="veiculo" id="veiculo">
+                        <option value="0">SELECIONE UMA SUB-CATEGORIA</option>
+                        {% for subcategoria in subcategorias %}
+                        {% if multa %}
+                            {% if multa.idveiculo == veiculo.idVeiculo %}
+                            <option value="{{ categoria.idVeiculo }}" selected>{{ categoria.Placa }}</option>
+                            {% else %}
+                            <option value="{{ categoria.idVeiculo }}">{{ categoria.Placa }}</option>
+                            {% endif %}
+                        {% else %}
+                            <option value="{{ categoria.idSubCategoria }}">{{ categoria.SubCategoria }}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
                 </div>
             </div>
             <div class="item-form">

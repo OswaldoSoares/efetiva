@@ -90,3 +90,40 @@ class Despesas(models.Model):
         super(Despesas, self).save(*args, **kwargs)
 
     objects = models.Manager()
+
+
+class Categoria(models.Model):
+    idCategoria = models.AutoField(primary_key=True)
+    Categoria = models.CharField(max_length=100)
+
+    class Meta:
+        db_table = "despesas_categoria"
+
+    def __str__(self):
+        return str(self.Categoria)
+
+    def save(self, *args, **kwargs):
+        self.Categoria = self.Categoria.upper()
+
+        super(Categoria, self).save(*args, **kwargs)
+
+    objects = models.Manager()
+
+
+class SubCategoria(models.Model):
+    idSubCategoria = models.AutoField(primary_key=True)
+    SubCategoria = models.CharField(max_length=100)
+    idCategoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = "despesas_subcategoria"
+
+    def __str__(self):
+        return str(self.SubCategoria)
+
+    def save(self, *args, **kwargs):
+        self.SubCategoria = self.SubCategoria.upper()
+
+        super(SubCategoria, self).save(*args, **kwargs)
+
+    objects = models.Manager()

@@ -1,0 +1,29 @@
+<form class="js-gera-categorias" method="post" action="">
+    {% csrf_token %}
+    <div class="article-card-titulo">
+        <span>CATEGORIAS</span>
+    </div>
+    <div class="article-card-body">
+        <div class="item-categoria">
+            <div class="item-form">
+                <div class="button">
+                    <i class="bi bi-tag i-button-null"></i>
+                </div>
+                <div class="item-field">
+                    <input class="form-control" type="text"
+                    name="categoria" placeholder="CATEGORIA">
+                </div>
+            </div>
+            <div class="item-form">
+                {% if erro_categoria %}
+                <div class="error">
+                    <span>{{ erro_categoria }}<span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="article-card-footer">
+        <button class="bi bi-save2 i-button"></button>
+    </div>
+</form>

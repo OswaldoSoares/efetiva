@@ -4872,6 +4872,59 @@ main .fp-recibo-tabela .fp-recibo-print {
     }
 }
 
+.card-categoria {
+    width: 300px;
+}
+
+.card-categoria .item-categoria {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-categoria .item-categoria .item-form {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-categoria .item-categoria .item-form .button {
+    width: 10%;
+    font-size: 20px;
+    text-align: center;
+    color: var(--color6);
+}
+
+.card-categoria .item-categoria .item-form .item-field {
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+}
+
+.card-categoria .item-categoria .item-form .error {
+    width: 100%;
+    color: var(--color4);
+    padding-left: 10%;
+    font-size: 12px;
+    text-align: center;
+}
+
+.card-categoria .article-card-footer button {
+    background-color: var(--color1);
+    border: none;
+}
+
+@media screen and (max-width: 360px) {
+    .card-categoria {
+        width: 100%;
+    }
+}
+
 .i-button-null {
     color: var(--color8)
 }
