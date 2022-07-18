@@ -86,6 +86,24 @@ $(document).on('submit', '.js-gera-subcategorias', function(event) {
     });
 });
 
+$(document).on('change', '.js-categoria', function() {
+    var _id_categoria = $(this).val()
+    $.ajax({
+        type: 'GET',
+        url: '/despesas/carrega_subcategoria',
+        data: {
+            idcategoria: _id_categoria,
+        },
+        beforeSend: function() {
+            $(".box-loader").show();
+        },
+        success: function(data) {
+            $("#subcategoria").html(data.html_choice_subcategorias)
+            $(".box-loader").hide();
+        },
+    });
+});
+
 $(document).on('click', '.js-edita-multas', function() {
     var _id_multa = $(this).data('idmulta')
     $.ajax({

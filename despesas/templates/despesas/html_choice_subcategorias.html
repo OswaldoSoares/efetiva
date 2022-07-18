@@ -1,0 +1,10 @@
+<div class="item-field">
+    <select class="form-control" name="subcategoria" id="subcategoria">
+        <option value="0">SELECIONE UMA SUB-CATEGORIA</option>
+        {% for subcategoria in subcategorias %}
+            <option value="{{ subcategoria.idsubcategoria }}">
+                {{ subcategoria.subcategoria }}
+            </option>
+        {% endfor %}
+    </select>
+</div>

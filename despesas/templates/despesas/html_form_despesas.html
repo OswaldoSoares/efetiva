@@ -27,7 +27,7 @@
                     <i class="bi bi-tag i-button-null"></i>
                 </div>
                 <div class="item-field">
-                    <select class="form-control" name="categoria" id="categoria">
+                    <select class="form-control js-categoria" name="categoria" id="categoria">
                         <option value="0">SELECIONE UMA CATEGORIA</option>
                         {% for categoria in categorias %}
                         {% if multa %}
@@ -57,7 +57,7 @@
                     <i class="bi bi-tags i-button-null"></i>
                 </div>
                 <div class="item-field">
-                    <select class="form-control" name="veiculo" id="veiculo">
+                    <select class="form-control" name="subcategoria" id="subcategoria">
                         <option value="0">SELECIONE UMA SUB-CATEGORIA</option>
                         {% for subcategoria in subcategorias %}
                         {% if multa %}
@@ -67,7 +67,9 @@
                             <option value="{{ categoria.idVeiculo }}">{{ categoria.Placa }}</option>
                             {% endif %}
                         {% else %}
-                            <option value="{{ categoria.idSubCategoria }}">{{ categoria.SubCategoria }}</option>
+                            <option value="{{ subcategoria.idsubcategoria }}">
+                                {{ subcategoria.subcategoria }}
+                            </option>
                         {% endif %}
                         {% endfor %}
                     </select>

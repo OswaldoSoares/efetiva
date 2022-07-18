@@ -364,12 +364,12 @@ def valida_despesa(request):
         error = True
     # Valida Categoria
     _categoria = request.POST.get("categoria")
-    if not _categoria:
+    if int(_categoria) == 0:
         msg["erro_categoria"] = "Obrigatório selecionar uma categoria."
         error = True
     # Valida SubCategoria
     _subcategoria = request.POST.get("subcategoria")
-    if not _subcategoria:
+    if int(_subcategoria) == 0:
         msg["erro_subcategoria"] = "Obrigatório selecionar uma sub-categoria."
         error = True
     # Valida descrição
@@ -444,6 +444,17 @@ def html_form_categoria(request, contexto, data):
     return data
 
 
+def create_contexto_subcategoria(_cat):
+    subcategorias = SubCategorias.objects.filter(idCategoria_id=_cat).order_by(
+        "SubCategoria"
+    )
+    lista = [
+        {"idsubcategoria": x.idSubCategoria, "subcategoria": x.SubCategoria}
+        for x in subcategorias
+    ]
+    return lista
+
+
 def save_subcategoria(_cat):
     obj = SubCategorias()
     obj.idCategoria_id = _cat["categoria"]
@@ -485,4 +496,18 @@ def html_form_subcategoria(request, contexto, data):
     data["html_form_subcategorias"] = render_to_string(
         "despesas/html_form_subcategorias.html", contexto, request=request
     )
+    return data
+
+
+def create_data_choice_subcategoria(request, contexto):
+    data = dict()
+    html_choice_subcategoria(request, contexto, data)
+    return JsonResponse(data)
+
+
+def html_choice_subcategoria(request, contexto, data):
+    data["html_choice_subcategorias"] = render_to_string(
+        "despesas/html_choice_subcategorias.html", contexto, request=request
+    )
+    print(data["html_choice_subcategorias"])
     return data

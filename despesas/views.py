@@ -114,15 +114,21 @@ def adiciona_categoria(request):
 
 
 def adiciona_subcategoria(request):
-    print(request.POST)
     error, msg = facade.valida_subcategoria(request)
-    print(error, msg)
     if not error:
         subcategoria = facade.read_subcategoria_post(request)
         facade.save_subcategoria(subcategoria)
     contexto = {"error": error}
     contexto.update(msg)
     categorias = facade.create_contexto_categoria()
-    contexto.update({'categorias': categorias})
+    contexto.update({"categorias": categorias})
     data = facade.create_data_form_subcategoria(request, contexto)
+    return data
+
+
+def carrega_subcategoria(request):
+    _id_cat = request.GET.get("idcategoria")
+    subcategorias = facade.create_contexto_subcategoria(_id_cat)
+    contexto = {"subcategorias": subcategorias}
+    data = facade.create_data_choice_subcategoria(request, contexto)
     return data

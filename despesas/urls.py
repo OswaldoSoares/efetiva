@@ -5,6 +5,7 @@ from .views import (
     adiciona_despesa,
     adiciona_multa,
     adiciona_subcategoria,
+    carrega_subcategoria,
     cria_abastecimento,
     edita_despesa,
     edita_multa,
@@ -61,5 +62,10 @@ urlpatterns = [
         "adiciona_subcategoria",
         adiciona_subcategoria,
         name="adiciona_subcategoria",
+    ),
+    path(
+        "carrega_subcategoria",
+        carrega_subcategoria,
+        name="carrega_subcategoria",
     ),
 ]
