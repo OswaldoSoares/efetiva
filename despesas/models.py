@@ -92,7 +92,7 @@ class Despesas(models.Model):
     objects = models.Manager()
 
 
-class Categoria(models.Model):
+class Categorias(models.Model):
     idCategoria = models.AutoField(primary_key=True)
     Categoria = models.CharField(max_length=100)
 
@@ -105,15 +105,15 @@ class Categoria(models.Model):
     def save(self, *args, **kwargs):
         self.Categoria = self.Categoria.upper()
 
-        super(Categoria, self).save(*args, **kwargs)
+        super(Categorias, self).save(*args, **kwargs)
 
     objects = models.Manager()
 
 
-class SubCategoria(models.Model):
+class SubCategorias(models.Model):
     idSubCategoria = models.AutoField(primary_key=True)
     SubCategoria = models.CharField(max_length=100)
-    idCategoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
+    idCategoria = models.ForeignKey(Categorias, on_delete=models.CASCADE)
 
     class Meta:
         db_table = "despesas_subcategoria"
@@ -124,6 +124,6 @@ class SubCategoria(models.Model):
     def save(self, *args, **kwargs):
         self.SubCategoria = self.SubCategoria.upper()
 
-        super(SubCategoria, self).save(*args, **kwargs)
+        super(SubCategorias, self).save(*args, **kwargs)
 
     objects = models.Manager()

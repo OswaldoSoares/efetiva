@@ -1,8 +1,10 @@
 from django.urls import path
 
 from .views import (
+    adiciona_categoria,
     adiciona_despesa,
     adiciona_multa,
+    adiciona_subcategoria,
     cria_abastecimento,
     edita_despesa,
     edita_multa,
@@ -49,5 +51,15 @@ urlpatterns = [
         "exclui_despesa",
         exclui_despesa,
         name="exclui_despesa",
+    ),
+    path(
+        "adiciona_categoria",
+        adiciona_categoria,
+        name="adiciona_categoria",
+    ),
+    path(
+        "adiciona_subcategoria",
+        adiciona_subcategoria,
+        name="adiciona_subcategoria",
     ),
 ]

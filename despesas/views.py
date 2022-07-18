@@ -12,6 +12,9 @@ from .forms import CadastraAbastecimento
 @login_required(login_url="login")
 def index_despesas(request):
     contexto = facade.create_despesas_context()
+    categorias = facade.create_contexto_categoria()
+    contexto.update({"categorias": categorias})
+    print(contexto)
     return render(request, "despesas/index.html", contexto)
 
 
@@ -97,3 +100,29 @@ def edita_despesa(request):
 
 def exclui_despesa(request):
     pass
+
+
+def adiciona_categoria(request):
+    error, msg = facade.valida_categoria(request)
+    if not error:
+        categoria = facade.read_categoria_post(request)
+        facade.save_categoria(categoria)
+    contexto = {"error": error}
+    contexto.update(msg)
+    data = facade.create_data_form_categoria(request, contexto)
+    return data
+
+
+def adiciona_subcategoria(request):
+    print(request.POST)
+    error, msg = facade.valida_subcategoria(request)
+    print(error, msg)
+    if not error:
+        subcategoria = facade.read_subcategoria_post(request)
+        facade.save_subcategoria(subcategoria)
+    contexto = {"error": error}
+    contexto.update(msg)
+    categorias = facade.create_contexto_categoria()
+    contexto.update({'categorias': categorias})
+    data = facade.create_data_form_subcategoria(request, contexto)
+    return data

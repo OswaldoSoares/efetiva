@@ -9,7 +9,7 @@ from pagamentos.facade import create_vales
 from pessoas.models import Vales
 from veiculos.models import Veiculo
 
-from despesas.models import Abastecimento, Multas
+from despesas.models import Abastecimento, Categorias, Despesas, Multas, SubCategorias
 
 
 def create_despesas_context():
@@ -312,7 +312,6 @@ def create_vale_multa(_obj, _id_pes):
         _dat = datetime.datetime.today().date()
         _val = _obj.ValorMulta
         _par = 1
-        print(_des, _dat, _val, _par, _id_pes)
         create_vales(_des, _dat, _val, _par, _id_pes)
 
 
@@ -397,5 +396,93 @@ def html_form_despesas(request, contexto, data):
     data["html_form_despesas"] = render_to_string(
         "despesas/html_form_despesas.html", contexto, request=request
     )
-    print(data)
+    return data
+
+
+def create_contexto_categoria():
+    categorias = Categorias.objects.all().order_by("Categoria")
+    lista = [
+        {"idcategoria": x.idCategoria, "categoria": x.Categoria} for x in categorias
+    ]
+    return lista
+
+
+def save_categoria(_cat):
+    obj = Categorias()
+    obj.Categoria = _cat["categoria"]
+    obj.save()
+
+
+def valida_categoria(request):
+    msg = dict()
+    error = False
+    # Valida Categoria
+    _categoria = request.POST.get("categoria")
+    if not _categoria:
+        msg["erro_categoria"] = "Obrigatório inserir uma categoria."
+        error = True
+    return error, msg
+
+
+def read_categoria_post(request):
+    categoria_post = dict()
+    categoria_post["idcategoria"] = request.POST.get("idMulta")
+    categoria_post["categoria"] = request.POST.get("categoria")
+    return categoria_post
+
+
+def create_data_form_categoria(request, contexto):
+    data = dict()
+    html_form_categoria(request, contexto, data)
+    return JsonResponse(data)
+
+
+def html_form_categoria(request, contexto, data):
+    data["html_form_categorias"] = render_to_string(
+        "despesas/html_form_categorias.html", contexto, request=request
+    )
+    return data
+
+
+def save_subcategoria(_cat):
+    obj = SubCategorias()
+    obj.idCategoria_id = _cat["categoria"]
+    obj.SubCategoria = _cat["subcategoria"]
+    obj.save()
+
+
+def valida_subcategoria(request):
+    msg = dict()
+    error = False
+    # Valida Categoria
+    _categoria = request.POST.get("categoria")
+    if int(_categoria) == 0:
+        msg["erro_categoria"] = "Obrigatório inserir uma categoria."
+        error = True
+    # Valida SubCategoria
+    _subcategoria = request.POST.get("subcategoria")
+    if not _subcategoria:
+        msg["erro_subcategoria"] = "Obrigatório inserir uma subcategoria."
+        error = True
+    return error, msg
+
+
+def read_subcategoria_post(request):
+    subcategoria_post = dict()
+    subcategoria_post["idsubcategoria"] = request.POST.get("idMulta")
+    subcategoria_post["categoria"] = request.POST.get("categoria")
+    subcategoria_post["subcategoria"] = request.POST.get("subcategoria")
+    return subcategoria_post
+
+
+def create_data_form_subcategoria(request, contexto):
+    data = dict()
+    html_form_subcategoria(request, contexto, data)
+    return JsonResponse(data)
+
+
+def html_form_subcategoria(request, contexto, data):
+    data["html_form_subcategorias"] = render_to_string(
+        "despesas/html_form_subcategorias.html", contexto, request=request
+    )
     return data

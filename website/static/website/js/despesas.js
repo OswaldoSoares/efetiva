@@ -48,6 +48,44 @@ $(document).on('submit', '.js-gera-despesas', function(event) {
     });
 });
 
+$(document).on('submit', '.js-gera-categorias', function(event) {
+    event.preventDefault();
+    $.ajax({
+        type: $(this).attr('method'),
+        url: '/despesas/adiciona_categoria',
+        data: $(this).serialize(),
+        beforeSend: function() {
+            $(".box-loader").show();
+        },
+        success: function(data) {
+            $(".card-categoria").html(data.html_form_categorias)
+                // $(".card-multas-pagar").html(data.html_multas_pagar)
+                // $('.card-minutas-multa').html('')
+            CarregaMask()
+            $(".box-loader").hide();
+        },
+    });
+});
+
+$(document).on('submit', '.js-gera-subcategorias', function(event) {
+    event.preventDefault();
+    $.ajax({
+        type: $(this).attr('method'),
+        url: '/despesas/adiciona_subcategoria',
+        data: $(this).serialize(),
+        beforeSend: function() {
+            $(".box-loader").show();
+        },
+        success: function(data) {
+            $(".card-subcategoria").html(data.html_form_subcategorias)
+                // $(".card-multas-pagar").html(data.html_multas_pagar)
+                // $('.card-minutas-multa').html('')
+            CarregaMask()
+            $(".box-loader").hide();
+        },
+    });
+});
+
 $(document).on('click', '.js-edita-multas', function() {
     var _id_multa = $(this).data('idmulta')
     $.ajax({

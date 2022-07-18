@@ -1,4 +1,4 @@
-<form class="js-gera-categorias" method="post" action="">
+<form class="js-gera-subcategorias" method="post" action="">
     {% csrf_token %}
     <div class="article-card-titulo">
         <span>SUB-CATEGORIAS</span>
@@ -20,7 +20,7 @@
                             <option value="{{ veiculo.idVeiculo }}">{{ veiculo.Placa }}</option>
                             {% endif %}
                         {% else %}
-                            <option value="{{ categoria.idCategoria }}">{{ categoria.Categoria }}</option>
+                            <option value="{{ categoria.idcategoria }}">{{ categoria.categoria }}</option>
                         {% endif %}
                         {% endfor %}
                     </select>
