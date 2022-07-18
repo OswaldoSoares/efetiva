@@ -1,6 +1,7 @@
 import datetime
 
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.shortcuts import render
 
 from despesas import facade
@@ -72,7 +73,22 @@ def minutas_multa(request):
 
 
 def adiciona_despesa(request):
-    pass
+    _id_des = request.POST.get("idMulta")
+    error, msg = facade.valida_despesa(request)
+    contexto = {"error": error}
+    contexto.update(msg)
+    # multa = facade.read_multa_post(request)
+    # if not error:
+    #     if _id_des:
+    #         facade.update_multa(multa, _id_des)
+    #     else:
+    #         facade.save_multa(multa)
+    #     multa = dict()
+    # contexto = facade.create_despesas_context()
+    # contexto.update({"multa": multa, "error": error})
+    # contexto.update(msg)
+    data = facade.create_data_form_despesa(request, contexto)
+    return data
 
 
 def edita_despesa(request):

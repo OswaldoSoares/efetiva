@@ -13,6 +13,13 @@
                     <input class="form-control" type="text" name="cedente" placeholder="CEDENTE">
                 </div>
             </div>
+            <div class="item-form">
+                {% if erro_cedente %}
+                <div class="error">
+                    <span>{{ erro_cedente }}<span>
+                </div>
+                {% endif %}
+            </div>
         </div>
         <div class="item-despesa">
             <div class="item-form">
@@ -22,6 +29,13 @@
                 <div class="item-field">
                     <input class="form-control" type="text" name="categoria" placeholder="CATEGORIA">
                 </div>
+            </div>
+            <div class="item-form">
+                {% if erro_categoria %}
+                <div class="error">
+                    <span>{{ erro_categoria }}<span>
+                </div>
+                {% endif %}
             </div>
         </div>
         <div class="item-despesa">
@@ -33,6 +47,13 @@
                     <input class="form-control" type="text" name="subcategoria" placeholder="SUB-CATEGORIA">
                 </div>
             </div>
+            <div class="item-form">
+                {% if erro_subcategoria %}
+                <div class="error">
+                    <span>{{ erro_subcategoria }}<span>
+                </div>
+                {% endif %}
+            </div>
         </div>
         <div class="item-despesa">
             <div class="item-form">
@@ -43,6 +64,13 @@
                     <textarea class="form-control" type="text" name="descricao" placeholder="DESCRIÇÃO"></textarea>
                 </div>
             </div>
+            <div class="item-form">
+                {% if erro_descricao %}
+                <div class="error">
+                    <span>{{ erro_descricao }}<span>
+                </div>
+                {% endif %}
+            </div>
         </div>
         <div class="item-despesa">
             <div class="item-form">
@@ -52,6 +80,13 @@
                 <div class="item-field">
                     <input class="form-control" type="number" name="valor" step="0.01" value="0.00">
                 </div>
+            </div>
+            <div class="item-form">
+                {% if erro_valor %}
+                <div class="error">
+                    <span>{{ erro_valor }}<span>
+                </div>
+                {% endif %}
             </div>
         </div>
         <div class="item-despesa">

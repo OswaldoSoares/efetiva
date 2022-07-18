@@ -353,3 +353,49 @@ def create_data_minutas_multa(request, contexto):
     data = dict()
     html_minutas_multa(request, contexto, data)
     return JsonResponse(data)
+
+
+def valida_despesa(request):
+    msg = dict()
+    error = False
+    # Valida Cedente
+    _cedente = request.POST.get("cedente")
+    if not _cedente:
+        msg["erro_cedente"] = "Obrigatório o nome do cedente."
+        error = True
+    # Valida Categoria
+    _categoria = request.POST.get("categoria")
+    if not _categoria:
+        msg["erro_categoria"] = "Obrigatório selecionar uma categoria."
+        error = True
+    # Valida SubCategoria
+    _subcategoria = request.POST.get("subcategoria")
+    if not _subcategoria:
+        msg["erro_subcategoria"] = "Obrigatório selecionar uma sub-categoria."
+        error = True
+    # Valida descrição
+    _descricao = request.POST.get("descricao")
+    if not _descricao:
+        msg["erro_descricao"] = "Obrigatório inserir a descrição da despesa."
+        error = True
+    # Valida valor
+    _valor = request.POST.get("valor")
+    if Decimal(_valor) < Decimal("0.01"):
+        msg["erro_valor"] = "Obrigatório o valor da despesa."
+        error = True
+    return error, msg
+
+
+def create_data_form_despesa(request, contexto):
+    data = dict()
+    html_form_despesas(request, contexto, data)
+    # html_multas_pagar(request, contexto, data)
+    return JsonResponse(data)
+
+
+def html_form_despesas(request, contexto, data):
+    data["html_form_despesas"] = render_to_string(
+        "despesas/html_form_despesas.html", contexto, request=request
+    )
+    print(data)
+    return data
