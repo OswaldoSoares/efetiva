@@ -64,34 +64,6 @@ class Multas(models.Model):
     objects = models.Manager()
 
 
-class Despesas(models.Model):
-    id_Despesa = models.AutoField(primary_key=True)
-    Cedente = models.CharField(max_length=200)
-    Categoria = models.CharField(max_length=100, blank=True)
-    SubCategoria = models.CharField(max_length=100, blank=True)
-    Descricao = models.TextField(blank=True)
-    Valor = models.DecimalField(decimal_places=2, max_digits=8, default=0)
-    Vencimento = models.DateField(default=0)
-    DataPgto = models.DateField(default=0)
-    ValorPago = models.DecimalField(decimal_places=2, max_digits=8, default=0)
-
-    class Meta:
-        db_table = "despesas"
-
-    def __str__(self):
-        return str(self.id_Despesa)
-
-    def save(self, *args, **kwargs):
-        self.Cedente = self.Cedente.upper()
-        self.Categoria = self.Categoria.upper()
-        self.SubCategoria = self.SubCategoria.upper()
-        self.Descricao = self.Descricao.upper()
-
-        super(Despesas, self).save(*args, **kwargs)
-
-    objects = models.Manager()
-
-
 class Categorias(models.Model):
     idCategoria = models.AutoField(primary_key=True)
     Categoria = models.CharField(max_length=100)
@@ -125,5 +97,33 @@ class SubCategorias(models.Model):
         self.SubCategoria = self.SubCategoria.upper()
 
         super(SubCategorias, self).save(*args, **kwargs)
+
+    objects = models.Manager()
+
+
+class Despesas(models.Model):
+    id_Despesa = models.AutoField(primary_key=True)
+    Cedente = models.CharField(max_length=200)
+    Categoria = models.ForeignKey(Categorias, on_delete=models.CASCADE)
+    SubCategoria = models.ForeignKey(SubCategorias, on_delete=models.CASCADE)
+    Descricao = models.TextField(blank=True)
+    Valor = models.DecimalField(decimal_places=2, max_digits=8, default=0)
+    Vencimento = models.DateField(default=0)
+    DataPgto = models.DateField(default=0)
+    ValorPago = models.DecimalField(decimal_places=2, max_digits=8, default=0)
+
+    class Meta:
+        db_table = "despesas"
+
+    def __str__(self):
+        return str(self.id_Despesa)
+
+    def save(self, *args, **kwargs):
+        self.Cedente = self.Cedente.upper()
+        self.Categoria = self.Categoria.upper()
+        self.SubCategoria = self.SubCategoria.upper()
+        self.Descricao = self.Descricao.upper()
+
+        super(Despesas, self).save(*args, **kwargs)
 
     objects = models.Manager()
