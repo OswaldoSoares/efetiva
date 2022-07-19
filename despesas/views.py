@@ -14,7 +14,6 @@ def index_despesas(request):
     contexto = facade.create_despesas_context()
     categorias = facade.create_contexto_categoria()
     contexto.update({"categorias": categorias})
-    print(contexto)
     return render(request, "despesas/index.html", contexto)
 
 
@@ -76,20 +75,24 @@ def minutas_multa(request):
 
 
 def adiciona_despesa(request):
-    _id_des = request.POST.get("idMulta")
     error, msg = facade.valida_despesa(request)
     contexto = {"error": error}
     contexto.update(msg)
-    # multa = facade.read_multa_post(request)
-    # if not error:
-    #     if _id_des:
-    #         facade.update_multa(multa, _id_des)
-    #     else:
-    #         facade.save_multa(multa)
-    #     multa = dict()
-    # contexto = facade.create_despesas_context()
-    # contexto.update({"multa": multa, "error": error})
-    # contexto.update(msg)
+    despesa = facade.read_despesa_post(request)
+    if not error:
+        #     if _id_des:
+        #         facade.update_multa(multa, _id_des)
+        #     else:
+        facade.save_despesa(despesa)
+        despesa = dict()
+    contexto = facade.create_despesas_context()
+    categorias = facade.create_contexto_categoria()
+    contexto.update({"categorias": categorias})
+    if despesa:
+        subcategorias = facade.create_contexto_subcategoria(despesa["categoria"])
+        contexto.update({"subcategorias": subcategorias})
+    contexto.update({"despesa": despesa, "error": error})
+    contexto.update(msg)
     data = facade.create_data_form_despesa(request, contexto)
     return data
 

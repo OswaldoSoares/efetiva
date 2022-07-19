@@ -120,8 +120,6 @@ class Despesas(models.Model):
 
     def save(self, *args, **kwargs):
         self.Cedente = self.Cedente.upper()
-        self.Categoria = self.Categoria.upper()
-        self.SubCategoria = self.SubCategoria.upper()
         self.Descricao = self.Descricao.upper()
 
         super(Despesas, self).save(*args, **kwargs)

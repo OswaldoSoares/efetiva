@@ -354,6 +354,18 @@ def create_data_minutas_multa(request, contexto):
     return JsonResponse(data)
 
 
+def save_despesa(_des):
+    obj = Despesas()
+    obj.Cedente = _des["cedente"]
+    obj.Categoria_id = _des["categoria"]
+    obj.SubCategoria_id = _des["subcategoria"]
+    obj.Descricao = _des["descricao"]
+    obj.Valor = _des["valor"]
+    obj.Vencimento = datetime.datetime.strptime(_des["vencimento"], "%Y-%m-%d").date()
+    obj.DataPgto = datetime.datetime.strptime("2001-01-01", "%Y-%m-%d").date()
+    obj.save()
+
+
 def valida_despesa(request):
     msg = dict()
     error = False
@@ -383,6 +395,17 @@ def valida_despesa(request):
         msg["erro_valor"] = "Obrigatório o valor da despesa."
         error = True
     return error, msg
+
+
+def read_despesa_post(request):
+    despesa_post = dict()
+    despesa_post["cedente"] = request.POST.get("cedente")
+    despesa_post["categoria"] = int(request.POST.get("categoria"))
+    despesa_post["subcategoria"] = int(request.POST.get("subcategoria"))
+    despesa_post["descricao"] = request.POST.get("descricao")
+    despesa_post["valor"] = request.POST.get("valor")
+    despesa_post["vencimento"] = request.POST.get("vencimento")
+    return despesa_post
 
 
 def create_data_form_despesa(request, contexto):
@@ -509,5 +532,4 @@ def html_choice_subcategoria(request, contexto, data):
     data["html_choice_subcategorias"] = render_to_string(
         "despesas/html_choice_subcategorias.html", contexto, request=request
     )
-    print(data["html_choice_subcategorias"])
     return data

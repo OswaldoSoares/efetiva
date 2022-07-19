@@ -10,7 +10,14 @@
                     <i class="bi bi-building i-button-null"></i>
                 </div>
                 <div class="item-field">
-                    <input class="form-control" type="text" name="cedente" placeholder="CEDENTE">
+                    {% if despesa %}
+                    <input class="form-control" type="text"
+                    name="cedente" placeholder="CEDENTE"
+                    value="{{ despesa.cedente }}">
+                    {% else %}
+                    <input class="form-control" type="text"
+                    name="cedente" placeholder="CEDENTE">
+                    {% endif %}
                 </div>
             </div>
             <div class="item-form">
@@ -30,14 +37,20 @@
                     <select class="form-control js-categoria" name="categoria" id="categoria">
                         <option value="0">SELECIONE UMA CATEGORIA</option>
                         {% for categoria in categorias %}
-                        {% if multa %}
-                            {% if multa.idveiculo == veiculo.idVeiculo %}
-                            <option value="{{ veiculo.idVeiculo }}" selected>{{ veiculo.Placa }}</option>
+                        {% if despesa %}
+                            {% if despesa.categoria == categoria.idcategoria %}
+                            <option value="{{ categoria.idcategoria }}" selected>
+                                {{ categoria.categoria }}
+                            </option>
                             {% else %}
-                            <option value="{{ veiculo.idVeiculo }}">{{ veiculo.Placa }}</option>
+                            <option value="{{ categoria.idcategoria }}">
+                                {{ categoria.categoria }}
+                            </option>
                             {% endif %}
                         {% else %}
-                            <option value="{{ categoria.idcategoria }}">{{ categoria.categoria }}</option>
+                            <option value="{{ categoria.idcategoria }}">
+                                {{ categoria.categoria }}
+                            </option>
                         {% endif %}
                         {% endfor %}
                     </select>
@@ -60,11 +73,15 @@
                     <select class="form-control" name="subcategoria" id="subcategoria">
                         <option value="0">SELECIONE UMA SUB-CATEGORIA</option>
                         {% for subcategoria in subcategorias %}
-                        {% if multa %}
-                            {% if multa.idveiculo == veiculo.idVeiculo %}
-                            <option value="{{ categoria.idVeiculo }}" selected>{{ categoria.Placa }}</option>
+                        {% if despesa %}
+                            {% if despesa.subcategoria == subcategoria.idsubcategoria %}
+                            <option value="{{ subcategoria.idsubcategoria }}" selected>
+                                {{ subcategoria.subcategoria }}
+                            </option>
                             {% else %}
-                            <option value="{{ categoria.idVeiculo }}">{{ categoria.Placa }}</option>
+                            <option value="{{ subcategoria.idsubcategoria }}">
+                                {{ subcategoria.subcategoria }}
+                            </option>
                             {% endif %}
                         {% else %}
                             <option value="{{ subcategoria.idsubcategoria }}">
@@ -89,7 +106,14 @@
                     <i class="bi bi-file-text i-button-null"></i>
                 </div>
                 <div class="item-field">
-                    <textarea class="form-control" type="text" name="descricao" placeholder="DESCRIÇÃO"></textarea>
+                    {% if despesa %}
+                    <textarea class="form-control" type="text"
+                    name="descricao" placeholder="DESCRIÇÃO">{{ despesa.descricao }}
+                    </textarea>
+                    {% else %}
+                    <textarea class="form-control" type="text"
+                    name="descricao" placeholder="DESCRIÇÃO"></textarea>
+                    {% endif %}
                 </div>
             </div>
             <div class="item-form">
@@ -106,7 +130,13 @@
                     <i class="bi bi-currency-dollar i-button-null"></i>
                 </div>
                 <div class="item-field">
-                    <input class="form-control" type="number" name="valor" step="0.01" value="0.00">
+                    {% if despesa %}
+                    <input class="form-control" type="number"
+                    name="valor" step="0.01" value="{{ despesa.valor }}">
+                    {% else %}
+                    <input class="form-control" type="number"
+                    name="valor" step="0.01" value="0.00">
+                    {% endif %}
                 </div>
             </div>
             <div class="item-form">
@@ -123,7 +153,13 @@
                     <i class="bi bi-calendar-date i-button-null"></i>
                 </div>
                 <div class="item-field">
-                    <input class="form-control" type="date" name="vencimento" value="{{ hoje }}">
+                    {% if despesa %}
+                    <input class="form-control" type="date"
+                    name="vencimento" value="{{ despesa.vencimento }}">
+                    {% else %}
+                    <input class="form-control" type="date"
+                    name="vencimento" value="{{ hoje }}">
+                    {% endif %}
                 </div>
             </div>
         </div>
