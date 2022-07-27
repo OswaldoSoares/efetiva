@@ -1,0 +1,206 @@
+<form class="js-gera-notas-cliente" method="post" action="">
+    {% csrf_token %}
+    <div class="article-card-titulo">
+        <span>{{ cliente }}</span>
+    </div>
+    <div class="article-card-body">
+        <div class="item-nota">
+            <div class="item-form">
+                <div class="button" title="LOCAL DE COLETA">
+                    <i class="bi bi-building i-button-null"></i>
+                </div>
+                <div class="item-field">
+                    <select class="form-control js-cliente" name="cliente" id="cliente">
+                        <option value="0">SELECIONE LOCAL COLETA</option>
+                        {% if despesa %}
+                            {% if despesa.categoria == categoria.idcategoria %}
+                            <option value="{{ cliente.idcliente }}" selected>
+                                {{ cliente.fantasia }}
+                            </option>
+                            {% else %}
+                            <option value="{{ cliente.idcliente }}">
+                                {{ cliente.fantasia }}
+                            </option>
+                            {% endif %}
+                        {% else %}
+                            <option value="1">{{ cliente }}</option>
+                            <option value="2">DESTINATÁRIO</option>
+                        {% endif %}
+                    </select>
+                </div>
+            </div>
+            <div class="item-form">
+                {% if erro_categoria %}
+                <div class="error">
+                    <span>{{ erro_categoria }}<span>
+                </div>
+                {% endif %}
+            </div>
+
+
+
+            <div class="item-form">
+                <div class="button" title="DATA DA COLETA">
+                    <i class="bi bi-calendar i-button-null"></i>
+                </div>
+                <div class="item-field">
+                    <input class="form-control" type="date"
+                    name="datacoleta" value={{ hoje }}>
+                </div>
+            </div>
+            <div class="item-form">
+                {% if erro_datacoleta %}
+                <div class="error">
+                    <span>{{ erro_datacoleta }}<span>
+                </div>
+                {% endif %}
+            </div>
+            <div class="item-form">
+                <div class="button" title="NÚMERO DA NOTA">
+                    <i class="bi bi-file-text i-button-null"></i>
+                </div>
+                <div class="item-field">
+                    <input class="form-control" type="text"
+                    name="numeronota" placeholder="NÚMERO DA NOTA">
+                </div>
+            </div>
+            <div class="item-form">
+                {% if error_numeronota %}
+                <div class="error">
+                    <span>{{ error_numeronota }}<span>
+                </div>
+                {% endif %}
+            </div>
+            <div class="item-form">
+                <div class="button" title="LOCAL DA ENTREGA">
+                    <i class="bi bi-shop i-button-null"></i>
+                </div>
+                <div class="item-field">
+                    <input class="form-control" type="text"
+                    name="destinatario" placeholder="DESTINATÁRIO">
+                </div>
+            </div>
+            <div class="item-form">
+                {% if error_destinatario %}
+                <div class="error">
+                    <span>{{ error_destinatario }}<span>
+                </div>
+                {% endif %}
+            </div>
+            <div class="item-form">
+                <div class="button" title="ENDEREÇO DA ENTREGA">
+                    <i class="bi bi-geo-alt-fill i-button-null"></i>
+                </div>
+                <div class="item-field">
+                    <input class="form-control" type="text"
+                    name="endereco" placeholder="ENDEREÇO">
+                </div>
+            </div>
+            <div class="item-form">
+                {% if error_endereco %}
+                <div class="error">
+                    <span>{{ error_endereco }}<span>
+                </div>
+                {% endif %}
+            </div>
+            <div class="item-form">
+                <div class="button" title="BAIRRO DA ENTREGA">
+                    <i class="bi bi-geo-alt-fill i-button-null"></i>
+                </div>
+                <div class="item-field">
+                    <input class="form-control" type="text"
+                    name="bairro" placeholder="BAIRRO">
+                </div>
+            </div>
+            <div class="item-form">
+                {% if error_bairro %}
+                <div class="error">
+                    <span>{{ error_bairro }}<span>
+                </div>
+                {% endif %}
+            </div>
+            <div class="item-form">
+                <div class="button" title="CIDADE DA ENTREGA">
+                    <i class="bi bi-geo-alt-fill i-button-null"></i>
+                </div>
+                <div class="item-field">
+                    <input class="form-control" type="text"
+                    name="cidade" placeholder="CIDADE">
+                </div>
+            </div>
+            <div class="item-form">
+                {% if error_cidade %}
+                <div class="error">
+                    <span>{{ error_cidade }}<span>
+                </div>
+                {% endif %}
+            </div>
+            <div class="item-form">
+                <div class="button" title="ESTADO DA ENTREGA">
+                    <i class="bi bi-geo-alt-fill i-button-null"></i>
+                </div>
+                <div class="item-field">
+                    <input class="form-control" type="text"
+                    name="estado" placeholder="ESTADO">
+                </div>
+            </div>
+            <div class="item-form">
+                {% if error_estado %}
+                <div class="error">
+                    <span>{{ error_estado }}<span>
+                </div>
+                {% endif %}
+            </div>
+            <div class="item-form">
+                <div class="button" title="VOLUME">
+                    <i class="bi bi-grid-fill i-button-null"></i>
+                </div>
+                <div class="item-field">
+                    <input class="form-control" type="number"
+                    name="volume" step="1.00" value="0">
+                </div>
+            </div>
+            <div class="item-form">
+                {% if error_volume %}
+                <div class="error">
+                    <span>{{ error_volume }}<span>
+                </div>
+                {% endif %}
+            </div>
+            <div class="item-form">
+                <div class="button" title="PESO">
+                    <i class="bi bi-truck-flatbed i-button-null"></i>
+                </div>
+                <div class="item-field">
+                    <input class="form-control" type="number"
+                    name="peso" step="0.01" value="0.00">
+                </div>
+            </div>
+            <div class="item-form">
+                {% if error_peso %}
+                <div class="error">
+                    <span>{{ error_peso }}<span>
+                </div>
+                {% endif %}
+            </div>
+            <div class="item-form">
+                <div class="button" title="VALOR">
+                    <i class="bi bi-currency-dollar i-button-null"></i>
+                </div>
+                <div class="item-field">
+                    <input class="form-control" type="number"
+                    name="valor" step="0.01" value="0.00">
+                </div>
+            </div>
+            <div class="item-form">
+                {% if error_valor %}
+                <div class="error">
+                    <span>{{ error_valor }}<span>
+                </div>
+                {% endif %}
+            </div>
+    </div>
+    <div class="article-card-footer">
+        <button class="bi bi-save2 i-button"></button>
+    </div>
+</form>

@@ -1,0 +1,47 @@
+<form class="js-seleciona-cliente" method="post" action="">
+    {% csrf_token %}
+    <div class="article-card-titulo">
+        <span>CLIENTES</span>
+    </div>
+    <div class="article-card-body">
+        <div class="item-cliente">
+            <div class="item-form">
+                <div class="button">
+                    <i class="bi bi-building i-button-null"></i>
+                </div>
+                <div class="item-field">
+                    <select class="form-control js-cliente" name="cliente" id="cliente">
+                        <option value="0">SELECIONE UM CLIENTE</option>
+                        {% for cliente in clientes %}
+                        {% if despesa %}
+                            {% if despesa.categoria == categoria.idcategoria %}
+                            <option value="{{ cliente.idcliente }}" selected>
+                                {{ cliente.fantasia }}
+                            </option>
+                            {% else %}
+                            <option value="{{ cliente.idcliente }}">
+                                {{ cliente.fantasia }}
+                            </option>
+                            {% endif %}
+                        {% else %}
+                            <option value="{{ cliente.idcliente }}">
+                                {{ cliente.fantasia }}
+                            </option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="item-form">
+                {% if erro_categoria %}
+                <div class="error">
+                    <span>{{ erro_categoria }}<span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="article-card-footer">
+        <button class="bi bi-save2 i-button"></button>
+    </div>
+</form>

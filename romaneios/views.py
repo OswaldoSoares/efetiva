@@ -1,6 +1,19 @@
 from django.shortcuts import render
 
+from romaneios import facade
+
 
 def index_romaneio(request):
-    print(request)
-    pass
+    clientes = facade.create_contexto_seleciona_cliente()
+    contexto = {"clientes": clientes}
+    return render(request, "romaneios/index.html", contexto)
+
+
+def seleciona_cliente(request):
+    id_cli = request.POST.get("cliente")
+    notas = facade.create_contexto_seleciona_notas(id_cli)
+    cliente = facade.create_contexto_cliente(id_cli)
+    hoje = facade.hoje
+    contexto = {"notas": notas, "cliente": cliente, "hoje": hoje}
+    data = facade.create_data_cliente_selecionado(request, contexto)
+    return data

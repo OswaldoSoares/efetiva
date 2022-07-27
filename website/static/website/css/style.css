@@ -4872,6 +4872,112 @@ main .fp-recibo-tabela .fp-recibo-print {
     }
 }
 
+.card-romaneios-cliente {
+    width: 300px;
+}
+
+.card-romaneios-cliente .item-cliente {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-romaneios-cliente .item-cliente .item-form {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-romaneios-cliente .item-cliente .item-form .button {
+    width: 10%;
+    font-size: 20px;
+    text-align: center;
+    color: var(--color6);
+}
+
+.card-romaneios-cliente .item-cliente .item-form .item-field {
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+}
+
+.card-romaneios-cliente .item-cliente .item-form .error {
+    width: 100%;
+    color: var(--color4);
+    padding-left: 10%;
+    font-size: 12px;
+    text-align: center;
+}
+
+.card-romaneios-cliente .article-card-footer button {
+    background-color: var(--color1);
+    border: none;
+}
+
+@media screen and (max-width: 360px) {
+    .card-romaneios-cliente {
+        width: 100%;
+    }
+}
+
+.card-form-notas-cliente {
+    width: 300px;
+}
+
+.card-form-notas-cliente .item-nota {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-form-notas-cliente .item-nota .item-form {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-form-notas-cliente .item-nota .item-form .button {
+    width: 10%;
+    font-size: 20px;
+    text-align: center;
+    color: var(--color6);
+}
+
+.card-form-notas-cliente .item-nota .item-form .item-field {
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+}
+
+.card-form-notas-cliente .item-nota .item-form .error {
+    width: 100%;
+    color: var(--color4);
+    padding-left: 10%;
+    font-size: 12px;
+    text-align: center;
+}
+
+.card-form-notas-cliente .article-card-footer button {
+    background-color: var(--color1);
+    border: none;
+}
+
+@media screen and (max-width: 360px) {
+    .card-form-notas-cliente {
+        width: 100%;
+    }
+}
+
 .card-categoria,
 .card-subcategoria {
     width: 300px;

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Módulo Romaneios {% endblock %}
+
+{% block main %}
+    <div class="conteudo-base">
+        {% block mainromaneios %}
+        {% endblock %}
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript"
+            src="{% static 'website/js/romaneios.js' %}">
+    </script>
+{% endblock %}
