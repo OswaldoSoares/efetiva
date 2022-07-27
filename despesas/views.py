@@ -14,6 +14,8 @@ def index_despesas(request):
     contexto = facade.create_despesas_context()
     categorias = facade.create_contexto_categoria()
     contexto.update({"categorias": categorias})
+    despesas_pagar = facade.create_contexto_despesas()
+    contexto.update({"despesas_pagar": despesas_pagar})
     return render(request, "despesas/index.html", contexto)
 
 

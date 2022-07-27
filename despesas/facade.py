@@ -533,3 +533,19 @@ def html_choice_subcategoria(request, contexto, data):
         "despesas/html_choice_subcategorias.html", contexto, request=request
     )
     return data
+
+
+def create_contexto_despesas():
+    despesas = Despesas.objects.filter(DataPgto="2001-01-01").order_by("-Vencimento")
+    lista = [
+        {
+            "id_despesa": x.id_Despesa,
+            "cedente": x.Cedente,
+            "categoria": x.Categoria,
+            "subcategoria": x.SubCategoria,
+            "valor": x.Valor,
+            "vencimento": x.Vencimento,
+        }
+        for x in despesas
+    ]
+    return lista

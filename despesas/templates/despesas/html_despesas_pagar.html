@@ -1,0 +1,78 @@
+<div class="article-card-titulo">
+    <span>DESPESAS A PAGAR</span>
+</div>
+<div class="article-card-body">
+    {% for despesas in despesas_pagar %}
+    <div class="item-despesas">
+        <div class="item-vencimento" title="Data de Vencimento">
+            <i class="bi bi-calendar-date i-button-null"></i> {{ despesa.vencimento }}
+        </div>
+        <div class="item-valor" title="Valor da Despesa">
+            <i class="bi bi-currency-dollar i-button-null"></i> R$ {{ despesa.valor }}
+        </div>
+        <div class="item-doc" title="Cedente">
+            <i class="bi bi-file-richtext i-button-null"></i> {{ despesa.cedente }}
+        </div>
+        <div class="item-ait" title="Categoria">
+            <i class="bi bi-file-earmark-binary i-button-null"></i> {{ despesa.categoria }}
+        </div>
+        <div class="item-data" title="Data e Hora da Multa">
+            <i class="bi bi-calendar i-button-null"></i> {{ despesa.valor }} 
+        </div>
+        <div class="item-veiculo" title="Placa do Veículo Multado">
+            <i class="bi bi-truck i-button-null"></i> {{ despesa.placa }}
+        </div>
+    </div>
+    <div class="item-multa">
+        <div class="item-infracao" title="Tipo de Infração e Localização">
+            <i class="bi bi-question-diamond i-button-null"></i> {{ multa.infracao }} 
+            <i class="bi bi-geo-alt i-button-null"></i> {{ multa.local }}
+        </div>
+        <div class="item-desconta" title="Motorista Infrator">
+            {% if multa.desconta %}
+            {{ multa.motorista }}
+            {% else %}
+            EMPRESA
+            {% endif %}
+        </div>
+    </div>
+    {% comment %} {% if multa.LinhaDigitavel %}
+    <div class="item-multa">
+        <div class="item-linha" title="Linha Digitável">
+            {{ multa.LinhaDigitavel|slice:"0:5" }}.{{ multa.LinhaDigitavel|slice:"5:10" }}
+            {{ multa.LinhaDigitavel|slice:"10:15" }}.{{ multa.LinhaDigitavel|slice:"15:21" }}
+            {{ multa.LinhaDigitavel|slice:"21:26" }}.{{ multa.LinhaDigitavel|slice:"26:32" }}
+            {{ multa.LinhaDigitavel|slice:"32:33" }} {{ multa.LinhaDigitavel|slice:"33:" }}
+        </div>
+    </div>
+    {% endif %} {% endcomment %}
+    <div class="item-multa" title="Linha Digitável">
+        <div class="item-linha">
+            {% if multa.digitavel_sp %}
+            <i class="bi bi-upc-scan i-button-null"></i>
+            {{ multa.digitavel_sp|slice:"0:11" }}.{{ multa.digitavel_sp|slice:"11:12" }}
+            {{ multa.digitavel_sp|slice:"12:23" }}.{{ multa.digitavel_sp|slice:"23:24" }}
+            {{ multa.digitavel_sp|slice:"24:35" }}.{{ multa.digitavel_sp|slice:"35:36" }}
+            {{ multa.digitavel_sp|slice:"36:47" }}.{{ multa.digitavel_sp|slice:"47:" }}
+            {% endif %}
+        </div>
+        <div class="item-button">
+            <i class="bi bi-upc-scan i-button
+            js-copia-linha" title="Cópia Linha Digitável"></i>
+            <i class="bi bi-pencil-square i-button
+            js-edita-multas" title="Edita Multa"
+            data-idmulta={{ multa.id_multa }}></i>
+            <i class="bi bi-trash i-button
+            js-exclui-multas" title="Exlui Multa"
+            data-idmulta={{ multa.id_multa }}></i>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<div class="article-card-footer">
+    {% for multa in multas %}
+    {% if forloop.last %}
+    <span><b>{{ forloop.counter|stringformat:"02d" }} MULTA{{ forloop.counter|pluralize|upper }}</b></span>
+    {% endif %}
+    {% endfor %}
+</div>

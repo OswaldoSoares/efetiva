@@ -4933,6 +4933,11 @@ main .fp-recibo-tabela .fp-recibo-print {
     }
 }
 
+.card-despesas-pagar {
+    width: 700px;
+    background-color: red;
+}
+
 .i-button-null {
     color: var(--color8)
 }
