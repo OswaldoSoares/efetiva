@@ -104,6 +104,22 @@
                 {% endif %}
             </div>
             <div class="item-form">
+                <div class="button" title="CEP DA ENTREGA">
+                    <i class="bi bi-geo-alt-fill i-button-null"></i>
+                </div>
+                <div class="item-field">
+                    <input class="form-control" type="text"
+                    name="cep" placeholder="CEP">
+                </div>
+            </div>
+            <div class="item-form">
+                {% if error_cep %}
+                <div class="error">
+                    <span>{{ error_cep }}<span>
+                </div>
+                {% endif %}
+            </div>
+            <div class="item-form">
                 <div class="button" title="BAIRRO DA ENTREGA">
                     <i class="bi bi-geo-alt-fill i-button-null"></i>
                 </div>

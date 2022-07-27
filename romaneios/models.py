@@ -9,6 +9,7 @@ class NotasClientes(models.Model):
     NumeroNota = models.CharField(max_length=15, default=0)
     Destinatario = models.CharField(max_length=200, blank=True, null=True)
     Endereco = models.CharField(max_length=200, blank=True, null=True)
+    CEP = models.CharField(max_length=8, blank=True, null=True)
     Bairro = models.CharField(max_length=100, blank=True, null=True)
     Cidade = models.CharField(max_length=30, default="SÃO PAULO")
     Estado = models.CharField(max_length=2, default="SP")
