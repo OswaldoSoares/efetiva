@@ -1,11 +1,13 @@
-from django.db import models
+import datetime
+
 # from pip._vendor.contextlib2 import nullcontext
 from clientes.models import Cliente
+from django.db import models
 from faturamentos.models import Fatura
 from pagamentos.models import Recibo
 from pessoas.models import Pessoal
 from veiculos.models import CategoriaVeiculo, Veiculo
-import datetime
+
 # from datetime import timedelta
 
 
@@ -20,17 +22,23 @@ class Minuta(models.Model):
     KMInicial = models.IntegerField(default=0)
     KMFinal = models.IntegerField(default=0)
     Obs = models.TextField(blank=True)
-    StatusMinuta = models.CharField(max_length=10, default='ABERTA')
+    StatusMinuta = models.CharField(max_length=10, default="ABERTA")
     Valor = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    Comentarios = models.TextField(default='', blank=True)
+    Comentarios = models.TextField(default="", blank=True)
     idCliente = models.ForeignKey(Cliente, on_delete=models.PROTECT)
-    idCategoriaVeiculo = models.ForeignKey(CategoriaVeiculo, on_delete=models.PROTECT, blank=True, null=True)
-    idVeiculo = models.ForeignKey(Veiculo, on_delete=models.PROTECT, blank=True, null=True)
-    idFatura = models.ForeignKey(Fatura, on_delete=models.PROTECT, blank=True, null=True)
+    idCategoriaVeiculo = models.ForeignKey(
+        CategoriaVeiculo, on_delete=models.PROTECT, blank=True, null=True
+    )
+    idVeiculo = models.ForeignKey(
+        Veiculo, on_delete=models.PROTECT, blank=True, null=True
+    )
+    idFatura = models.ForeignKey(
+        Fatura, on_delete=models.PROTECT, blank=True, null=True
+    )
 
     class Meta:
-        db_table = 'minuta'
-        ordering = ['Minuta']
+        db_table = "minuta"
+        ordering = ["Minuta"]
 
     def __str__(self):
         return str(self.Minuta)
@@ -54,7 +62,7 @@ class MinutaColaboradores(models.Model):
     idRecibo = models.ForeignKey(Recibo, on_delete=models.PROTECT, null=True)
 
     class Meta:
-        db_table = 'minutacolaboradores'
+        db_table = "minutacolaboradores"
 
     objects = models.Manager()
 
@@ -70,14 +78,14 @@ class MinutaItens(models.Model):
     Peso = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     ValorBase = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     Tempo = models.DurationField(default=0)
-    Obs = models.TextField(default='', blank=True, null=True)
+    Obs = models.TextField(default="", blank=True, null=True)
     idMinuta = models.ForeignKey(Minuta, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'minutaitens'
+        db_table = "minutaitens"
 
     def __str__(self):
-        return f'{self.Descricao}'
+        return f"{self.Descricao}"
 
     def save(self, *args, **kwargs):
         self.Descricao = self.Descricao.upper()
@@ -91,20 +99,20 @@ class MinutaItens(models.Model):
 
 class MinutaNotas(models.Model):
     idMinutaNotas = models.AutoField(primary_key=True)
-    Nota = models.CharField(max_length=10)
+    Nota = models.CharField(max_length=100)
     ValorNota = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     Peso = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     Volume = models.IntegerField(default=0)
-    Nome =  models.CharField(max_length=60, blank=True, null=True)
-    Estado = models.CharField(max_length=2, default='SP')
-    Cidade = models.CharField(max_length=30, default='SÃO PAULO')
+    Nome = models.CharField(max_length=60, blank=True, null=True)
+    Estado = models.CharField(max_length=2, default="SP")
+    Cidade = models.CharField(max_length=30, default="SÃO PAULO")
     Bairro = models.CharField(max_length=255, blank=True, null=True)
-    NotaGuia = models.CharField(max_length=10, blank=True, null=True, default='0')
+    NotaGuia = models.CharField(max_length=10, blank=True, null=True, default="0")
     ExtraValorAjudante = models.IntegerField(default=0)
     idMinuta = models.ForeignKey(Minuta, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'minutanotas'
+        db_table = "minutanotas"
 
     def __str__(self):
         return str(self.Nota)
