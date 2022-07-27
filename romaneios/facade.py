@@ -38,7 +38,45 @@ def html_form_notas_cliente(request, contexto, data):
     )
     return data
 
+
 def hoje():
     hoje = datetime.datetime.today()
     hoje = datetime.datetime.strftime(hoje, "%Y-%m-%d")
     return hoje
+
+
+def read_nota_post(request):
+    nota_post = dict()
+    nota_post["local_coleta"] = request.POST.get("localcoleta")
+    nota_post["data_coleta"] = request.POST.get("datacoleta")
+    nota_post["numero_nota"] = request.POST.get("numeronota")
+    nota_post["destinatario"] = request.POST.get("destinatario")
+    nota_post["endereco"] = request.POST.get("endereco")
+    nota_post["cep"] = request.POST.get("cep")
+    nota_post["bairro"] = request.POST.get("bairro")
+    nota_post["cidade"] = request.POST.get("cidade")
+    nota_post["estado"] = request.POST.get("estado")
+    nota_post["volume"] = int(request.POST.get("volume"))
+    nota_post["peso"] = Decimal(request.POST.get("peso"))
+    nota_post["valor"] = Decimal(request.POST.get("valor"))
+    nota_post["idcliente"] = request.POST.get("cliente")
+    return nota_post
+
+
+def save_notas_cliente(nota):
+    obj = NotasClientes()
+    obj.LocalColeta = nota["local_coleta"]
+    obj.DataColeta = nota["data_coleta"]
+    obj.NumeroNota = nota["numero_nota"]
+    obj.Destinatario = nota["destinatario"]
+    obj.Endereco = nota["endereco"]
+    obj.CEP = nota["cep"]
+    obj.Bairro = nota["bairro"]
+    obj.Cidade = nota["cidade"]
+    obj.Estado = nota["estado"]
+    obj.Volume = nota["volume"]
+    obj.Peso = nota["peso"]
+    obj.Valor = nota["valor"]
+    obj.StatusNota = "COLETAR"
+    obj.idCliente_id = nota["idcliente"]
+    obj.save()

@@ -14,7 +14,7 @@ class NotasClientes(models.Model):
     Cidade = models.CharField(max_length=30, default="SÃO PAULO")
     Estado = models.CharField(max_length=2, default="SP")
     Volume = models.IntegerField(default=0)
-    Peso = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    Peso = models.DecimalField(max_digits=9, decimal_places=3, default=0)
     Valor = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     StatusNota = models.CharField(max_length=15)
     Historico = models.TextField(default="", blank=True, null=True)
@@ -29,7 +29,7 @@ class NotasClientes(models.Model):
     def save(self, *args, **kwargs):
         self.LocalColeta = self.LocalColeta.upper()
         self.NumeroNota = self.NumeroNota.upper()
-        self.Descricao = self.Descricao.upper()
+        self.Destinatario = self.Destinatario.upper()
         self.Endereco = self.Endereco.upper()
         self.Bairro = self.Bairro.upper()
         self.Cidade = self.Cidade.upper()

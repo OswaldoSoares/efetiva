@@ -10,7 +10,8 @@
                     <i class="bi bi-building i-button-null"></i>
                 </div>
                 <div class="item-field">
-                    <select class="form-control js-cliente" name="cliente" id="cliente">
+                    <select class="form-control js-cliente"
+                    name="localcoleta" id="localcoleta">
                         <option value="0">SELECIONE LOCAL COLETA</option>
                         {% if despesa %}
                             {% if despesa.categoria == categoria.idcategoria %}
@@ -23,8 +24,12 @@
                             </option>
                             {% endif %}
                         {% else %}
-                            <option value="1">{{ cliente }}</option>
-                            <option value="2">DESTINATÁRIO</option>
+                            <option value={{ cliente }}>
+                                {{ cliente }}
+                            </option>
+                            <option value="DESTINATÁRIO">
+                                DESTINATÁRIO
+                            </option>
                         {% endif %}
                     </select>
                 </div>
@@ -108,7 +113,7 @@
                     <i class="bi bi-geo-alt-fill i-button-null"></i>
                 </div>
                 <div class="item-field">
-                    <input class="form-control" type="text"
+                    <input class="form-control" type="text" maxlength="8"
                     name="cep" placeholder="CEP">
                 </div>
             </div>
@@ -141,7 +146,7 @@
                 </div>
                 <div class="item-field">
                     <input class="form-control" type="text"
-                    name="cidade" placeholder="CIDADE">
+                    name="cidade" value="SÃO PAULO">
                 </div>
             </div>
             <div class="item-form">
@@ -157,7 +162,7 @@
                 </div>
                 <div class="item-field">
                     <input class="form-control" type="text"
-                    name="estado" placeholder="ESTADO">
+                    name="estado" value="SP">
                 </div>
             </div>
             <div class="item-form">
@@ -189,7 +194,7 @@
                 </div>
                 <div class="item-field">
                     <input class="form-control" type="number"
-                    name="peso" step="0.01" value="0.00">
+                    name="peso" step="0.001" value="0.00">
                 </div>
             </div>
             <div class="item-form">
@@ -215,6 +220,7 @@
                 </div>
                 {% endif %}
             </div>
+            <input type="hidden" name="cliente" value="{{ idcliente }}">
     </div>
     <div class="article-card-footer">
         <button class="bi bi-save2 i-button"></button>
