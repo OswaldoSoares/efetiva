@@ -15,8 +15,8 @@ def create_contexto_seleciona_cliente():
     return lista
 
 
-def create_contexto_seleciona_notas(id_cli):
-    notas = NotasClientes.objects.filter(idCliente=id_cli)
+def create_contexto_seleciona_notas(id_cli, sort_nota):
+    notas = NotasClientes.objects.filter(idCliente=id_cli).order_by(sort_nota)
     lista = [
         {
             "local_coleta": x.LocalColeta,
