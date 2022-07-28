@@ -17,8 +17,32 @@ def create_contexto_seleciona_cliente():
 
 def create_contexto_seleciona_notas(id_cli):
     notas = NotasClientes.objects.filter(idCliente=id_cli)
-    lista = [{notas: x.NumeroNota} for x in notas]
-    return notas
+    lista = [
+        {
+            "local_coleta": x.LocalColeta,
+            "data_coleta": x.DataColeta,
+            "numero_nota": x.NumeroNota,
+            "destinatario": x.Destinatario,
+            "endereco": x.Endereco
+            + " "
+            + x.Bairro
+            + " "
+            + x.CEP[0:5]
+            + "-"
+            + x.CEP[5:]
+            + " "
+            + x.Cidade
+            + " "
+            + x.Estado,
+            "volume": x.Volume,
+            "peso": x.Peso,
+            "valor": x.Valor,
+            "statusnota": x.StatusNota,
+            "historico": x.Historico,
+        }
+        for x in notas
+    ]
+    return lista
 
 
 def create_contexto_cliente(id_cli):
@@ -28,8 +52,16 @@ def create_contexto_cliente(id_cli):
 
 def create_data_cliente_selecionado(request, contexto):
     data = dict()
+    html_lista_notas_cliente(request, contexto, data)
     html_form_notas_cliente(request, contexto, data)
     return JsonResponse(data)
+
+
+def html_lista_notas_cliente(request, contexto, data):
+    data["html_lista_notas_cliente"] = render_to_string(
+        "romaneios/html_lista_notas_cliente.html", contexto, request=request
+    )
+    return data
 
 
 def html_form_notas_cliente(request, contexto, data):

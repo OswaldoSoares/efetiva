@@ -1,0 +1,55 @@
+{% load humanize %}
+<div class="article-card-titulo">
+    <span>NOTAS</span>
+</div>
+<div class="article-card-body">
+    {% for nota in notas %}
+    <div class="item-nota">
+        <div class="item-numero" title="Número Nota">
+            <i class="bi bi-file-text i-button-null"></i> {{ nota.numero_nota }}
+        </div>
+        <div class="item-data" title="Data da Coleta">
+            <i class="bi bi-calendar i-button-null"></i> {{ nota.data_coleta }}
+        </div>
+        <div class="item-local" title="Local da Coleta">
+            <i class="bi bi-building i-button-null"></i> {{ nota.local_coleta }}
+        </div>
+        <div class="item-volume" title="Volume">
+            <i class="bi bi-grid-fill i-button-null"></i> {{ nota.volume }}
+        </div>
+        <div class="item-peso" title="Peso">
+            <i class="bi bi-truck-flatbed i-button-null"></i> {{ nota.peso }}
+        </div>
+        <div class="item-valor" title="Valor">
+            <i class="bi bi-currency-dollar i-button-null"></i> R$ {{ nota.valor|intcomma }}
+        </div>
+    </div>
+    <div class="item-nota">
+        <div class="item-destinatario" title="Destinatário">
+            <i class="bi bi-shop i-button-null"></i> {{ nota.destinatario }}
+        </div>
+        <div class="item-button">
+            <i class="bi bi-upc-scan i-button
+            js-historico" title=""></i>
+            <i class="bi bi-pencil-square i-button
+            js-edita-notas-cliente" title="Edita Nota"
+            data-idmulta={{ multa.id_multa }}></i>
+            <i class="bi bi-trash i-button
+            js-exclui-notas-cliente" title="Exlui Nota"
+            data-idmulta={{ multa.id_multa }}></i>
+        </div>
+    </div>
+    <div class="item-nota">
+        <div class="item-endereco" title="Endereço">
+            <i class="bi bi-geo-alt i-button-null"></i> {{ nota.endereco }}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<div class="article-card-footer">
+    {% for multa in multas %}
+    {% if forloop.last %}
+    <span><b>{{ forloop.counter|stringformat:"02d" }} MULTA{{ forloop.counter|pluralize|upper }}</b></span>
+    {% endif %}
+    {% endfor %}
+</div>
