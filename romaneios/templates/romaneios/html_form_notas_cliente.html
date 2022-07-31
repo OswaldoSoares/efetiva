@@ -1,3 +1,4 @@
+{% load humanize %}
 <form class="js-gera-notas-cliente" method="post" action="">
     {% csrf_token %}
     <div class="article-card-titulo">
@@ -13,7 +14,7 @@
                     <select class="form-control js-cliente"
                     name="localcoleta" id="localcoleta">
                         <option value="0">SELECIONE LOCAL COLETA</option>
-                        {% if despesa %}
+                        {% if notas_form %}
                             {% if despesa.categoria == categoria.idcategoria %}
                             <option value="{{ cliente.idcliente }}" selected>
                                 {{ cliente.fantasia }}
@@ -35,9 +36,9 @@
                 </div>
             </div>
             <div class="item-form">
-                {% if erro_categoria %}
+                {% if erro_local_coleta %}
                 <div class="error">
-                    <span>{{ erro_categoria }}<span>
+                    <span>{{ erro_local_coleta }}<span>
                 </div>
                 {% endif %}
             </div>
@@ -49,8 +50,13 @@
                     <i class="bi bi-calendar i-button-null"></i>
                 </div>
                 <div class="item-field">
+                    {% if nota_form %}
+                    <input class="form-control" type="date"
+                    name="datacoleta" value={{ nota_form.data_coleta }}>
+                    {% else %}
                     <input class="form-control" type="date"
                     name="datacoleta" value={{ hoje }}>
+                    {% endif %}
                 </div>
             </div>
             <div class="item-form">
@@ -65,8 +71,14 @@
                     <i class="bi bi-file-text i-button-null"></i>
                 </div>
                 <div class="item-field">
+                    {% if nota_form %}
+                    <input class="form-control" type="text"
+                    name="numeronota" placeholder="NÚMERO DA NOTA"
+                    value="{{ nota_form.numero_nota }}">
+                    {% else %}
                     <input class="form-control" type="text"
                     name="numeronota" placeholder="NÚMERO DA NOTA">
+                    {% endif %}
                 </div>
             </div>
             <div class="item-form">
@@ -81,8 +93,14 @@
                     <i class="bi bi-shop i-button-null"></i>
                 </div>
                 <div class="item-field">
+                    {% if nota_form %}
+                    <input class="form-control" type="text"
+                    name="destinatario" placeholder="DESTINATÁRIO"
+                    value="{{ nota_form.numero_nota }}">
+                    {% else %}
                     <input class="form-control" type="text"
                     name="destinatario" placeholder="DESTINATÁRIO">
+                    {% endif %}
                 </div>
             </div>
             <div class="item-form">
@@ -97,8 +115,14 @@
                     <i class="bi bi-geo-alt-fill i-button-null"></i>
                 </div>
                 <div class="item-field">
+                    {% if nota_form %}
+                    <input class="form-control" type="text"
+                    name="endereco" placeholder="ENDEREÇO"
+                    value="{{ nota_form.endereco }}">
+                    {% else %}
                     <input class="form-control" type="text"
                     name="endereco" placeholder="ENDEREÇO">
+                    {% endif %}
                 </div>
             </div>
             <div class="item-form">
@@ -113,8 +137,14 @@
                     <i class="bi bi-geo-alt-fill i-button-null"></i>
                 </div>
                 <div class="item-field">
+                    {% if nota_form %}
+                    <input class="form-control" type="text" maxlength="8"
+                    name="cep" placeholder="CEP"
+                    value="{{ nota_form.cep }}">
+                    {% else %}
                     <input class="form-control" type="text" maxlength="8"
                     name="cep" placeholder="CEP">
+                    {% endif %}
                 </div>
             </div>
             <div class="item-form">
@@ -129,8 +159,14 @@
                     <i class="bi bi-geo-alt-fill i-button-null"></i>
                 </div>
                 <div class="item-field">
+                    {% if nota_form %}
+                    <input class="form-control" type="text"
+                    name="bairro" placeholder="BAIRRO"
+                    value="{{ nota_form.bairro }}">
+                    {% else %}
                     <input class="form-control" type="text"
                     name="bairro" placeholder="BAIRRO">
+                    {% endif %}
                 </div>
             </div>
             <div class="item-form">
@@ -145,8 +181,14 @@
                     <i class="bi bi-geo-alt-fill i-button-null"></i>
                 </div>
                 <div class="item-field">
+                    {% if nota_form %}
+                    <input class="form-control" type="text"
+                    name="cidade" value="SÃO PAULO"
+                    value="{{ nota_form.cidade }}">
+                    {% else %}
                     <input class="form-control" type="text"
                     name="cidade" value="SÃO PAULO">
+                    {% endif %}
                 </div>
             </div>
             <div class="item-form">
@@ -161,8 +203,13 @@
                     <i class="bi bi-geo-alt-fill i-button-null"></i>
                 </div>
                 <div class="item-field">
+                    {% if nota_form %}
+                    <input class="form-control" type="text"
+                    name="estado" value="{{ nota_form.estado }}">
+                    {% else %}
                     <input class="form-control" type="text"
                     name="estado" value="SP">
+                    {% endif %}
                 </div>
             </div>
             <div class="item-form">
@@ -177,8 +224,13 @@
                     <i class="bi bi-grid-fill i-button-null"></i>
                 </div>
                 <div class="item-field">
+                    {% if nota_form %}
+                    <input class="form-control" type="number"
+                    name="volume" step="1.00" value="{{ nota_form.volume }}">
+                    {% else %}
                     <input class="form-control" type="number"
                     name="volume" step="1.00" value="0">
+                    {% endif %}
                 </div>
             </div>
             <div class="item-form">
@@ -193,8 +245,13 @@
                     <i class="bi bi-truck-flatbed i-button-null"></i>
                 </div>
                 <div class="item-field">
+                    {% if nota_form %}
+                    <input class="form-control" type="number"
+                    name="peso" step="0.001" value="{{ nota_form.peso|intcomma }}">
+                    {% else %}
                     <input class="form-control" type="number"
                     name="peso" step="0.001" value="0.00">
+                    {% endif %}
                 </div>
             </div>
             <div class="item-form">
@@ -209,8 +266,13 @@
                     <i class="bi bi-currency-dollar i-button-null"></i>
                 </div>
                 <div class="item-field">
+                    {% if nota_form %}
+                    <input class="form-control" type="number"
+                    name="valor" step="0.01" value="{{ nota_form.valor|intcomma }}">
+                    {% else %}
                     <input class="form-control" type="number"
                     name="valor" step="0.01" value="0.00">
+                    {% endif %}
                 </div>
             </div>
             <div class="item-form">

@@ -50,6 +50,17 @@ def create_contexto_cliente(id_cli):
     return cliente.Fantasia
 
 
+def valida_notas_cliente(request):
+    msg = dict()
+    error = False
+    # Valida Local Coleta
+    local_coleta = request.POST.get("localcoleta")
+    if int(local_coleta) == 0:
+        msg["erro_local_coleta"] = "Obrigatório selecionar o local de coleta."
+        error = True
+    return error, msg
+
+
 def create_data_cliente_selecionado(request, contexto):
     data = dict()
     html_lista_notas_cliente(request, contexto, data)
@@ -89,8 +100,8 @@ def read_nota_post(request):
     nota_post["cidade"] = request.POST.get("cidade")
     nota_post["estado"] = request.POST.get("estado")
     nota_post["volume"] = int(request.POST.get("volume"))
-    nota_post["peso"] = Decimal(request.POST.get("peso"))
-    nota_post["valor"] = Decimal(request.POST.get("valor"))
+    nota_post["peso"] = request.POST.get("peso")
+    nota_post["valor"] = request.POST.get("valor")
     nota_post["idcliente"] = request.POST.get("cliente")
     return nota_post
 
