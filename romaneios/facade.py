@@ -19,6 +19,7 @@ def create_contexto_seleciona_notas(id_cli, sort_nota):
     notas = NotasClientes.objects.filter(idCliente=id_cli).order_by(sort_nota)
     lista = [
         {
+            "id_nota_clientes": x.idNotasClientes,
             "local_coleta": x.LocalColeta,
             "data_coleta": x.DataColeta,
             "numero_nota": x.NumeroNota,
@@ -39,6 +40,7 @@ def create_contexto_seleciona_notas(id_cli, sort_nota):
             "valor": x.Valor,
             "statusnota": x.StatusNota,
             "historico": x.Historico,
+            "idcliente": x.idCliente_id,
         }
         for x in notas
     ]
@@ -55,7 +57,7 @@ def valida_notas_cliente(request):
     error = False
     # Valida Local Coleta
     local_coleta = request.POST.get("localcoleta")
-    if int(local_coleta) == 0:
+    if local_coleta == "":
         msg["erro_local_coleta"] = "Obrigatório selecionar o local de coleta."
         error = True
     return error, msg
@@ -106,6 +108,28 @@ def read_nota_post(request):
     return nota_post
 
 
+def read_nota_database(_id_not):
+    nota = NotasClientes.objects.get(idNotasClientes=_id_not)
+    nota_database = dict()
+    nota_database["id_nota_clientes"] = nota.idNotasClientes
+    nota_database["local_coleta"] = nota.LocalColeta
+    nota_database["data_coleta"] = datetime.datetime.strftime(
+        nota.DataColeta, "%Y-%m-%d"
+    )
+    nota_database["numero_nota"] = nota.NumeroNota
+    nota_database["destinatario"] = nota.Destinatario
+    nota_database["endereco"] = nota.Endereco
+    nota_database["cep"] = nota.CEP
+    nota_database["bairro"] = nota.Bairro
+    nota_database["cidade"] = nota.Cidade
+    nota_database["estado"] = nota.Estado
+    nota_database["volume"] = nota.Volume
+    nota_database["peso"] = str(nota.Peso)
+    nota_database["valor"] = str(nota.Valor)
+    nota_database["idcliente"] = nota.idCliente_id
+    return nota_database
+
+
 def save_notas_cliente(nota):
     obj = NotasClientes()
     obj.LocalColeta = nota["local_coleta"]
@@ -123,3 +147,29 @@ def save_notas_cliente(nota):
     obj.StatusNota = "COLETAR"
     obj.idCliente_id = nota["idcliente"]
     obj.save()
+
+
+def update_notas_cliente(nota_form, id_not):
+    nota = NotasClientes.objects.get(idNotasClientes=id_not)
+    obj = nota
+    obj.LocalColeta = nota_form["local_coleta"]
+    obj.DataColeta = nota_form["data_coleta"]
+    obj.NumeroNota = nota_form["numero_nota"]
+    obj.Destinatario = nota_form["destinatario"]
+    obj.Endereco = nota_form["endereco"]
+    obj.CEP = nota_form["cep"]
+    obj.Bairro = nota_form["bairro"]
+    obj.Cidade = nota_form["cidade"]
+    obj.Estado = nota_form["estado"]
+    obj.Volume = nota_form["volume"]
+    obj.Peso = nota_form["peso"]
+    obj.Valor = nota_form["valor"]
+    obj.StatusNota = "COLETAR"
+    obj.idCliente_id = nota_form["idcliente"]
+    obj.save()
+
+
+def create_data_edita_nota(request, contexto):
+    data = dict()
+    html_form_notas_cliente(request, contexto, data)
+    return JsonResponse(data)

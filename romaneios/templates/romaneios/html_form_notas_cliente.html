@@ -1,4 +1,3 @@
-{% load humanize %}
 <form class="js-gera-notas-cliente" method="post" action="">
     {% csrf_token %}
     <div class="article-card-titulo">
@@ -11,17 +10,27 @@
                     <i class="bi bi-building i-button-null"></i>
                 </div>
                 <div class="item-field">
+                    {% if nota_form %}
+                    <input type="hidden" name="idnota"
+                    value="{{ nota_form.id_nota_clientes }}">
+                    {% endif %}
                     <select class="form-control js-cliente"
                     name="localcoleta" id="localcoleta">
-                        <option value="0">SELECIONE LOCAL COLETA</option>
-                        {% if notas_form %}
-                            {% if despesa.categoria == categoria.idcategoria %}
-                            <option value="{{ cliente.idcliente }}" selected>
-                                {{ cliente.fantasia }}
+                        <option value="">SELECIONE LOCAL COLETA</option>
+                        {% if nota_form %}
+                            {% if nota_form.local_coleta == cliente %}
+                            <option value="{{ cliente }}" selected>
+                                {{ cliente }}
+                            </option>
+                            <option value="DESTINATÁRIO">
+                                DESTINATÁRIO
                             </option>
                             {% else %}
-                            <option value="{{ cliente.idcliente }}">
-                                {{ cliente.fantasia }}
+                            <option value="{{ cliente }}">
+                                {{ cliente }}
+                            </option>
+                            <option value="DESTINATÁRIO" selected>
+                                DESTINATÁRIO
                             </option>
                             {% endif %}
                         {% else %}
@@ -42,9 +51,6 @@
                 </div>
                 {% endif %}
             </div>
-
-
-
             <div class="item-form">
                 <div class="button" title="DATA DA COLETA">
                     <i class="bi bi-calendar i-button-null"></i>
@@ -96,7 +102,7 @@
                     {% if nota_form %}
                     <input class="form-control" type="text"
                     name="destinatario" placeholder="DESTINATÁRIO"
-                    value="{{ nota_form.numero_nota }}">
+                    value="{{ nota_form.destinatario }}">
                     {% else %}
                     <input class="form-control" type="text"
                     name="destinatario" placeholder="DESTINATÁRIO">
@@ -247,7 +253,7 @@
                 <div class="item-field">
                     {% if nota_form %}
                     <input class="form-control" type="number"
-                    name="peso" step="0.001" value="{{ nota_form.peso|intcomma }}">
+                    name="peso" step="0.001" value="{{ nota_form.peso }}">
                     {% else %}
                     <input class="form-control" type="number"
                     name="peso" step="0.001" value="0.00">
@@ -268,7 +274,7 @@
                 <div class="item-field">
                     {% if nota_form %}
                     <input class="form-control" type="number"
-                    name="valor" step="0.01" value="{{ nota_form.valor|intcomma }}">
+                    name="valor" step="0.01" value="{{ nota_form.valor }}">
                     {% else %}
                     <input class="form-control" type="number"
                     name="valor" step="0.01" value="0.00">
@@ -282,7 +288,11 @@
                 </div>
                 {% endif %}
             </div>
+            {% if nota_form %}
+            <input type="hidden" name="cliente" value="{{ nota_form.idcliente }}">
+            {% else %}
             <input type="hidden" name="cliente" value="{{ idcliente }}">
+            {% endif %}
     </div>
     <div class="article-card-footer">
         <button class="bi bi-save2 i-button"></button>

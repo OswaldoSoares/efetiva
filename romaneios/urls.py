@@ -1,6 +1,11 @@
 from django.urls import path
 
-from .views import adiciona_nota_cliente, index_romaneio, seleciona_cliente
+from .views import (
+    adiciona_nota_cliente,
+    edita_nota_cliente,
+    index_romaneio,
+    seleciona_cliente,
+)
 
 urlpatterns = [
     path(
@@ -17,5 +22,10 @@ urlpatterns = [
         "adiciona_nota_cliente",
         adiciona_nota_cliente,
         name="adiciona_nota_cliente",
+    ),
+    path(
+        "edita_nota_cliente",
+        edita_nota_cliente,
+        name="edita_nota_cliente",
     ),
 ]

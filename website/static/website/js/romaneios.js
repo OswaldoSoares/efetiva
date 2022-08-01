@@ -41,3 +41,26 @@ $(document).on('submit', '.js-gera-notas-cliente', function(event) {
         },
     });
 });
+
+$(document).on('click', '.js-edita-notas-cliente', function() {
+    var _id_nota = $(this).data("idnota")
+    var _id_cliente = $(this).data("idcliente")
+    $.ajax({
+        type: 'GET',
+        url: '/romaneios/edita_nota_cliente',
+        data: {
+            idNota: _id_nota,
+            idCliente: _id_cliente,
+        },
+        beforeSend: function() {
+            $(".card-form-notas-cliente").hide()
+            $(".box-loader").show();
+        },
+        success: function(data) {
+            $(".card-form-notas-cliente").html(data.html_form_notas_cliente)
+            $(".card-form-notas-cliente").show()
+                // CarregaMask()
+            $(".box-loader").hide();
+        },
+    });
+});
