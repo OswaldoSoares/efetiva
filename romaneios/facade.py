@@ -168,6 +168,10 @@ def update_notas_cliente(nota_form, id_not):
     obj.idCliente_id = nota_form["idcliente"]
     obj.save()
 
+def delete_notas_cliente(id_not):
+    nota = NotasClientes.objects.get(idNotasClientes=id_not)
+    nota.delete()
+
 
 def create_data_edita_nota(request, contexto):
     data = dict()

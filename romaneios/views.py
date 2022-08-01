@@ -27,8 +27,7 @@ def adiciona_nota_cliente(request):
         if id_not:
             facade.update_notas_cliente(nota_form, id_not)
         else:
-            # facade.save_notas_cliente(nota_form)
-            print("oi")
+            facade.save_notas_cliente(nota_form)
         nota_form = dict()
     id_cli = request.POST.get("cliente")
     notas = facade.create_contexto_seleciona_notas(id_cli, "NumeroNota")
@@ -55,4 +54,16 @@ def edita_nota_cliente(request):
     }
     contexto.update(msg)
     data = facade.create_data_edita_nota(request, contexto)
+    return data
+
+
+def exclui_nota_cliente(request):
+    _id_not = request.GET.get("idNota")
+    _id_cli = request.GET.get("idCliente")
+    facade.delete_notas_cliente(_id_not)
+    notas = facade.create_contexto_seleciona_notas(_id_cli, "NumeroNota")
+    cliente = facade.create_contexto_cliente(_id_cli)
+    hoje = facade.hoje
+    contexto = {"notas": notas, "cliente": cliente, "hoje": hoje, "idcliente": _id_cli}
+    data = facade.create_data_cliente_selecionado(request, contexto)
     return data
