@@ -13,6 +13,8 @@ class NotasClientes(models.Model):
     Bairro = models.CharField(max_length=100, blank=True, null=True)
     Cidade = models.CharField(max_length=30, default="SÃO PAULO")
     Estado = models.CharField(max_length=2, default="SP")
+    Contato = models.CharField(max_length=150, blank=True, null=True)
+    Informa = models.CharField(max_length=150, blank=True, null=True)
     Volume = models.IntegerField(default=0)
     Peso = models.DecimalField(max_digits=9, decimal_places=3, default=0)
     Valor = models.DecimalField(max_digits=8, decimal_places=2, default=0)
