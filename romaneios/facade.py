@@ -249,6 +249,10 @@ def save_ocorrencia(ocorrencia):
     obj.Descricao = ocorrencia["ocorrencia"]
     obj.idNotasClientes_id = ocorrencia["idnotaclientes"]
     obj.save()
+    nota = NotasClientes.objects.get(idNotasClientes=ocorrencia["idnotaclientes"])
+    obj = nota
+    obj.Ocorrencia = ocorrencia["ocorrencia"]
+    obj.save(update_fields=["Ocorre,cia"])
 
 
 def update_ocorrencia(ocorrencia_form, id_ocor):
