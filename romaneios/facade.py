@@ -133,6 +133,12 @@ def create_data_cliente_selecionado(request, contexto):
     return JsonResponse(data)
 
 
+def create_data_ocorrencia_selecionada(request, contexto):
+    data = dict()
+    html_lista_ocorrencia(request, contexto, data)
+    return JsonResponse(data)
+
+
 def create_data_nota_selecionada(request, contexto):
     data = dict()
     html_lista_ocorrencia(request, contexto, data)
@@ -242,7 +248,6 @@ def save_notas_cliente(nota):
 
 
 def save_ocorrencia(ocorrencia):
-    print(ocorrencia)
     obj = NotasOcorrencias()
     obj.DataOcorrencia = ocorrencia["data_ocorrencia"]
     obj.TipoOcorrencia = ocorrencia["tipo_ocorrencia"]
@@ -284,7 +289,7 @@ def update_notas_cliente(nota_form, id_not):
     obj.Volume = nota_form["volume"]
     obj.Peso = nota_form["peso"]
     obj.Valor = nota_form["valor"]
-    obj.StatusNota = "COLETAR"
+    # obj.StatusNota = ""
     obj.idCliente_id = nota_form["idcliente"]
     obj.save()
 

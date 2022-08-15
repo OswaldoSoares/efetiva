@@ -49,15 +49,12 @@ $(document).on('submit', '.js-gera-ocorrencia', function(event) {
         url: '/romaneios/adiciona_ocorrencia',
         data: $(this).serialize(),
         beforeSend: function() {
-            $(".card-romaneios-cliente").hide()
-            $(".card-lista-notas-cliente").hide()
+            $(".card-lista-ocorrencia").hide()
             $(".box-loader").show();
         },
         success: function(data) {
-            $(".card-form-notas-cliente").html(data.html_form_notas_cliente)
-            $(".card-form-notas-cliente").show()
-            $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente)
-            $(".card-lista-notas-cliente").show()
+            $(".card-lista-ocorrencia").html(data.html_lista_ocorrencia)
+            $(".card-lista-ocorrencia").show()
                 //CarregaMask()
             $(".box-loader").hide();
         },
@@ -131,6 +128,27 @@ $(document).on('click', '.js-exclui-notas-cliente', function() {
             $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente)
             $(".card-lista-notas-cliente").show()
                 // CarregaMask()
+            $(".box-loader").hide();
+        },
+    });
+});
+
+$(document).on('click', '.js-retorna-lista-notas', function() {
+    var _id_cliente = $(this).data("idcliente")
+    $.ajax({
+        type: 'GET',
+        url: '/romaneios/seleciona_cliente',
+        data: {
+            cliente: _id_cliente,
+        },
+        beforeSend: function() {
+            $(".card-lista-ocorrencia").hide()
+            $(".box-loader").show();
+        },
+        success: function(data) {
+            $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente)
+            $(".card-lista-notas-cliente").show()
+                //CarregaMask()
             $(".box-loader").hide();
         },
     });

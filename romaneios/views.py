@@ -10,7 +10,11 @@ def index_romaneio(request):
 
 
 def seleciona_cliente(request):
-    id_cli = request.POST.get("cliente")
+    if request.POST:
+        id_cli = request.POST.get("cliente")
+    else:
+        id_cli = request.GET.get("cliente")
+    print(id_cli)
     notas = facade.create_contexto_seleciona_notas(id_cli, "-NumeroNota")
     cliente = facade.create_contexto_cliente(id_cli)
     hoje = facade.hoje
@@ -95,7 +99,7 @@ def adiciona_ocorrencia(request):
         else:
             facade.save_ocorrencia(ocorrencia_form)
         ocorrencia_form = dict()
-    id_not = request.POST.get("id_notas_cliente")
+    id_not = request.POST.get("id_nota_clientes")
     notas = facade.create_contexto_ocorrencia_notas(id_not)
     ocorrencias = facade.create_contexto_seleciona_ocorrencia(id_not, "NumeroNota")
     hoje = facade.hoje
@@ -107,5 +111,5 @@ def adiciona_ocorrencia(request):
     }
     contexto.update({"error": error})
     contexto.update(msg)
-    data = facade.create_data_cliente_selecionado(request, contexto)
+    data = facade.create_data_ocorrencia_selecionada(request, contexto)
     return data
