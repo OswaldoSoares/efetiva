@@ -36,6 +36,8 @@ class NotasClientes(models.Model):
         self.Bairro = self.Bairro.upper()
         self.Cidade = self.Cidade.upper()
         self.Estado = self.Estado.upper()
+        self.Contato = self.Contato.upper()
+        self.Informa = self.Informa.upper()
         self.StatusNota = self.StatusNota.upper()
         self.Historico = self.Historico.upper()
 

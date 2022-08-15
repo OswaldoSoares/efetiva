@@ -35,6 +35,8 @@ def create_contexto_seleciona_notas(id_cli, sort_nota):
             + x.Cidade
             + " "
             + x.Estado,
+            "contato": x.Contato,
+            "informa": x.Informa,
             "volume": x.Volume,
             "peso": x.Peso,
             "valor": x.Valor,
@@ -101,6 +103,8 @@ def read_nota_post(request):
     nota_post["bairro"] = request.POST.get("bairro")
     nota_post["cidade"] = request.POST.get("cidade")
     nota_post["estado"] = request.POST.get("estado")
+    nota_post["contato"] = request.POST.get("contato")
+    nota_post["informa"] = request.POST.get("informa")
     nota_post["volume"] = int(request.POST.get("volume"))
     nota_post["peso"] = request.POST.get("peso")
     nota_post["valor"] = request.POST.get("valor")
@@ -123,6 +127,8 @@ def read_nota_database(_id_not):
     nota_database["bairro"] = nota.Bairro
     nota_database["cidade"] = nota.Cidade
     nota_database["estado"] = nota.Estado
+    nota_database["contato"] = nota.Contato
+    nota_database["informa"] = nota.Informa
     nota_database["volume"] = nota.Volume
     nota_database["peso"] = str(nota.Peso)
     nota_database["valor"] = str(nota.Valor)
@@ -141,6 +147,8 @@ def save_notas_cliente(nota):
     obj.Bairro = nota["bairro"]
     obj.Cidade = nota["cidade"]
     obj.Estado = nota["estado"]
+    obj.Contato = nota["contato"]
+    obj.Informa = nota["informa"]
     obj.Volume = nota["volume"]
     obj.Peso = nota["peso"]
     obj.Valor = nota["valor"]
@@ -161,6 +169,8 @@ def update_notas_cliente(nota_form, id_not):
     obj.Bairro = nota_form["bairro"]
     obj.Cidade = nota_form["cidade"]
     obj.Estado = nota_form["estado"]
+    obj.Contato = nota_form["contato"]
+    obj.Informa = nota_form["informa"]
     obj.Volume = nota_form["volume"]
     obj.Peso = nota_form["peso"]
     obj.Valor = nota_form["valor"]

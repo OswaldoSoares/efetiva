@@ -226,6 +226,48 @@
                 {% endif %}
             </div>
             <div class="item-form">
+                <div class="button" title="CONTATO DA ENTREGA">
+                    <i class="bi bi-person-badge i-button-null"></i>
+                </div>
+                <div class="item-field">
+                    {% if nota_form %}
+                    <input class="form-control" type="text"
+                    name="contato" value="{{ nota_form.contato }}">
+                    {% else %}
+                    <input class="form-control" type="text"
+                    name="contato" placeholder="CONTATO">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="item-form">
+                {% if error_contato %}
+                <div class="error">
+                    <span>{{ error_contato }}<span>
+                </div>
+                {% endif %}
+            </div>
+            <div class="item-form">
+                <div class="button" title="INFORMAÇÕES DA ENTREGA">
+                    <i class="bi bi-info-square i-button-null"></i>
+                </div>
+                <div class="item-field">
+                    {% if nota_form %}
+                    <input class="form-control" type="text"
+                    name="informa" value="{{ nota_form.informa }}">
+                    {% else %}
+                    <input class="form-control" type="text"
+                    name="informa" placeholder="INFORMAÇÕES">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="item-form">
+                {% if error_informa %}
+                <div class="error">
+                    <span>{{ error_informa }}<span>
+                </div>
+                {% endif %}
+            </div>
+            <div class="item-form">
                 <div class="button" title="VOLUME">
                     <i class="bi bi-grid-fill i-button-null"></i>
                 </div>
