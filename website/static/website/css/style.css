@@ -5054,6 +5054,82 @@ main .fp-recibo-tabela .fp-recibo-print {
     text-align: right;
 }
 
+.card-lista-ocorrencia {
+    width: 700px;
+}
+
+.card-lista-ocorrencia .item-nota {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    color: var(--color6)
+}
+
+.card-lista-ocorrencia .item-nota .item-numero {
+    width: 15%;
+    text-align: left;
+    padding: 0 5px;
+    border-top: 1px solid var(--color7);
+}
+
+.card-lista-ocorrencia .item-nota .item-data {
+    width: 15%;
+    text-align: center;
+    padding: 0 5px;
+    border-top: 1px solid var(--color7);
+}
+
+.card-lista-ocorrencia .item-nota .item-local {
+    width: 30%;
+    padding: 0 5px;
+    text-align: left;
+    border-top: 1px solid var(--color7);
+}
+
+.card-lista-ocorrencia .item-nota .item-volume {
+    width: 10%;
+    text-align: right;
+    padding: 0 5px;
+    border-top: 1px solid var(--color7);
+}
+
+.card-lista-ocorrencia .item-nota .item-peso {
+    width: 15%;
+    text-align: right;
+    padding: 0 5px;
+    border-top: 1px solid var(--color7);
+}
+
+.card-lista-ocorrencia .item-nota .item-valor {
+    width: 15%;
+    text-align: right;
+    padding: 0 5px;
+    border-top: 1px solid var(--color7);
+}
+
+.card-lista-ocorrencia .item-nota .item-destinatario {
+    width: 80%;
+    text-align: left;
+    padding: 0 5px;
+    /* border-top: 1px solid var(--color7); */
+}
+
+.card-lista-ocorrencia .item-nota .item-endereco {
+    width: 100%;
+    text-align: left;
+    padding: 0 5px;
+    /* border-top: 1px solid var(--color7); */
+}
+
+.card-lista-ocorrencia .item-nota .item-button {
+    width: 20%;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    text-align: right;
+}
+
 .card-categoria,
 .card-subcategoria {
     width: 300px;

@@ -100,12 +100,24 @@
                 </div>
                 <div class="item-field">
                     {% if nota_form %}
-                    <input class="form-control" type="text"
+                    <input class="form-control" type="text" id="destinatario"
                     name="destinatario" placeholder="DESTINATÁRIO"
                     value="{{ nota_form.destinatario }}">
+                    <datalist id="destinatario">
+                        <option value="TESTE1">
+                        <option value="TESTE2">
+                        <option value="TESTE3">
+                        <option value="TESTE4">
+                    </datalist>
                     {% else %}
-                    <input class="form-control" type="text"
+                    <input class="form-control" type="text" id="destinatario"
                     name="destinatario" placeholder="DESTINATÁRIO">
+                    <datalist id="destinatario">
+                        <option value="TESTE1">
+                        <option value="TESTE2">
+                        <option value="TESTE3">
+                        <option value="TESTE4">
+                    </datalist>
                     {% endif %}
                 </div>
             </div>

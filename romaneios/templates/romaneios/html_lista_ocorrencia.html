@@ -1,0 +1,171 @@
+{% load humanize %}
+<div class="article-card-titulo">
+    <span>NOTAS</span>
+</div>
+<div class="article-card-body">
+    {% for nota in notas %}
+    <div class="item-nota">
+        <div class="item-numero" title="Número Nota">
+            <i class="bi bi-file-text i-button-null"></i> {{ nota.numero_nota }}
+        </div>
+        <div class="item-data" title="Data da Coleta">
+            <i class="bi bi-calendar i-button-null"></i> {{ nota.data_coleta }}
+        </div>
+        <div class="item-local" title="Local da Coleta">
+            <i class="bi bi-building i-button-null"></i> {{ nota.local_coleta }}
+        </div>
+        <div class="item-volume" title="Volume">
+            <i class="bi bi-grid-fill i-button-null"></i> {{ nota.volume }}
+        </div>
+        <div class="item-peso" title="Peso">
+            <i class="bi bi-truck-flatbed i-button-null"></i> {{ nota.peso }}
+        </div>
+        <div class="item-valor" title="Valor">
+            <i class="bi bi-currency-dollar i-button-null"></i> R$ {{ nota.valor|intcomma }}
+        </div>
+    </div>
+    <div class="item-nota">
+        <div class="item-destinatario">
+            <i class="bi bi-shop i-button-null"
+            title="Destinatário"></i> {{ nota.destinatario }}
+            <i class="bi bi-person-badge i-button-null"
+            title="Contato"></i> {{ nota.contato }}
+        </div>
+        <div class="item-button">
+            <i class="bi bi-calendar-plus i-button
+            js-ocorrencia-notas-cliente" title="Insere Ocorrência"
+            data-idnota={{ nota.id_nota_clientes }}
+            data-idcliente={{ nota.idcliente }}></i>
+        </div>
+    </div>
+    <div class="item-nota">
+        <div class="item-endereco">
+            <i class="bi bi-geo-alt i-button-null"
+            title="Endereço"></i> {{ nota.endereco }}
+            <i class="bi bi-info-square i-button-null"
+            title="Informações"></i> {{ nota.informa }}
+        </div>
+        <div class="item-button" title="Status">
+            <i class="bi bi-activity i-button-null"></i> {{ nota.statusnota }}
+        </div>
+    </div>
+    {% endfor %}
+    {% for ocorrencia in ocorrencias %}
+    {{ ocorrencia.id_notas_ocorrencia }}
+    {{ ocorrencia.data_ocorrencia }}
+    {{ ocorrencia.tipo_ocorrencia }}
+    {{ ocorrencia.data_agendada }}
+    {{ ocorrencia.ocorrencia }}
+    {{ ocorrencia.id_nota_clientes }}
+    {% endfor %}
+    <form class="js-gera-ocorrencia" method="post" action="">
+        {% csrf_token %}
+        <div class="item-form-ocorrencia">
+            <div class="item-form">
+                <div class="button" title="DATA DA OCORRÊNCIA">
+                    <i class="bi bi-calendar i-button-null"></i>
+                </div>
+                <div class="item-field">
+                    {% if nota_form %}
+                    <input class="form-control" type="date"
+                    name="data_ocorrencia" value={{ ocorrencia_form.data_ocorrencia }}>
+                    {% else %}
+                    <input class="form-control" type="date"
+                    name="data_ocorrencia" value={{ hoje }}>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="item-form">
+                {% if erro_data_ocorrencia %}
+                <div class="error">
+                    <span>{{ erro_data_ocorrencia }}<span>
+                </div>
+                {% endif %}
+            </div>
+            <div class="item-form">
+                <div class="button" title="TIPO OCORRÊNCIA">
+                    <i class="bi bi-calendar i-button-null"></i>
+                </div>
+                <div class="item-field">
+                    {% if nota_form %}
+                    <select class="form-control" name="tipo_ocorrencia"
+                    id="tipo_ocorrencia">
+                        <option value="">SELECIONA TIPO OCORRÊNCIA</option>
+                        <option value="RECUSADA">RECUSADA</option>
+                        <option value="DEVOLVIDA">DEVOLVIDA NO CLIENTE</option>
+                        <option value="ENTREGUE">ENTREGUE</option>
+                    </select>
+                    {% else %}
+                    <select class="form-control" name="tipo_ocorrencia"
+                    id="tipo_ocorrencia">
+                        <option value="">SELECIONA TIPO OCORRÊNCIA</option>
+                        <option value="RECUSADA">RECUSADA</option>
+                        <option value="DEVOLVIDA">DEVOLVIDA NO CLIENTE</option>
+                        <option value="ENTREGUE">ENTREGUE</option>
+                    </select>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="item-form">
+                {% if erro_dataocorrencia %}
+                <div class="error">
+                    <span>{{ erro_dataocorrencia }}<span>
+                </div>
+                {% endif %}
+            </div>
+            <div class="item-form">
+                <div class="button" title="DATA AGENDADA">
+                    <i class="bi bi-calendar i-button-null"></i>
+                </div>
+                <div class="item-field">
+                    {% if nota_form %}
+                    <input class="form-control" type="date"
+                    name="data_agendada" value={{ ocorrencia_form.data_agendade }}>
+                    {% else %}
+                    <input class="form-control" type="date"
+                    name="data_agendada" value={{ hoje }}>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="item-form">
+                {% if erro_data_agendada %}
+                <div class="error">
+                    <span>{{ erro_data_agendada }}<span>
+                </div>
+                {% endif %}
+            </div>
+            <div class="item-form">
+                <div class="button" title="DESCRIÇÃO DA OCORRÊNCIA">
+                    <i class="bi bi-calendar i-button-null"></i>
+                </div>
+                <div class="item-field">
+                    {% if ocorrencia_form %}
+                    <textarea class="form-control" name="ocorrencia" id="ocorrencia"
+                    cols="40" rows="3">{{ ocorrencia_form.ocorrencia }}</textarea>
+                    {% else %}
+                    <textarea class="form-control" name="ocorrencia" id="ocorrencia"
+                    cols="40" rows="3" placeholder="DESCRIÇÃO DA OCORRÊNCIA"></textarea>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="item-form">
+                {% if erro_ocorrencia %}
+                <div class="error">
+                    <span>{{ erro_ocorrencia }}<span>
+                </div>
+                {% endif %}
+            </div>            
+            <input type="hidden" name="id_nota_clientes" value="{{ id_nota }}">
+        </div>
+        <div class="item-form-ocorrencia">
+            <button class="bi bi-save2 i-button"></button>
+        </div>
+    </form>
+</div>
+<div class="article-card-footer">
+    {% for nota in notas %}
+    {% if forloop.last %}
+    <span><b>{{ forloop.counter|stringformat:"02d" }} NOTA{{ forloop.counter|pluralize|upper }}</b></span>
+    {% endif %}
+    {% endfor %}
+</div>

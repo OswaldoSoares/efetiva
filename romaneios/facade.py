@@ -6,7 +6,7 @@ from clientes.models import Cliente
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 
-from romaneios.models import NotasClientes
+from romaneios.models import NotasClientes, NotasOcorrencias
 
 
 def create_contexto_seleciona_cliente():
@@ -17,6 +17,56 @@ def create_contexto_seleciona_cliente():
 
 def create_contexto_seleciona_notas(id_cli, sort_nota):
     notas = NotasClientes.objects.filter(idCliente=id_cli).order_by(sort_nota)
+    lista = [
+        {
+            "id_nota_clientes": x.idNotasClientes,
+            "local_coleta": x.LocalColeta,
+            "data_coleta": x.DataColeta,
+            "numero_nota": x.NumeroNota,
+            "destinatario": x.Destinatario,
+            "endereco": x.Endereco
+            + " "
+            + x.Bairro
+            + " "
+            + x.CEP[0:5]
+            + "-"
+            + x.CEP[5:]
+            + " "
+            + x.Cidade
+            + " "
+            + x.Estado,
+            "contato": x.Contato,
+            "informa": x.Informa,
+            "volume": x.Volume,
+            "peso": x.Peso,
+            "valor": x.Valor,
+            "statusnota": x.StatusNota,
+            "historico": x.Historico,
+            "idcliente": x.idCliente_id,
+        }
+        for x in notas
+    ]
+    return lista
+
+
+def create_contexto_seleciona_ocorrencia(id_not, sort_ocorrencia):
+    ocorrencia = NotasOcorrencias.objects.filter(idNotasClientes=id_not)
+    lista = [
+        {
+            "id_notas_ocorrencia": x.idNotasOcorrencia,
+            "data_ocorrencia": x.DataOcorrencia,
+            "tipo_ocorrencia": x.TipoOcorrencia,
+            "data_agendada": x.DataAgendada,
+            "ocorrencia": x.Descricao,
+            "id_notas_clientes": x.idNotasClientes_id,
+        }
+        for x in ocorrencia
+    ]
+    return lista
+
+
+def create_contexto_ocorrencia_notas(_id_not):
+    notas = NotasClientes.objects.filter(idNotasClientes=_id_not)
     lista = [
         {
             "id_nota_clientes": x.idNotasClientes,
@@ -65,11 +115,35 @@ def valida_notas_cliente(request):
     return error, msg
 
 
+def valida_ocorrencia(request):
+    msg = dict()
+    error = False
+    # Valida Tipo Ocorrencia
+    tipo_ocorrencia = request.POST.get("tipo_ocorrencia")
+    if tipo_ocorrencia == "":
+        msg["erro_tipo_ocorrencia"] = "Obrigatório selecionar o tipo de ocorrencia."
+        error = True
+    return error, msg
+
+
 def create_data_cliente_selecionado(request, contexto):
     data = dict()
     html_lista_notas_cliente(request, contexto, data)
     html_form_notas_cliente(request, contexto, data)
     return JsonResponse(data)
+
+
+def create_data_nota_selecionada(request, contexto):
+    data = dict()
+    html_lista_ocorrencia(request, contexto, data)
+    return JsonResponse(data)
+
+
+def html_lista_ocorrencia(request, contexto, data):
+    data["html_lista_ocorrencia"] = render_to_string(
+        "romaneios/html_lista_ocorrencia.html", contexto, request=request
+    )
+    return data
 
 
 def html_lista_notas_cliente(request, contexto, data):
@@ -112,6 +186,16 @@ def read_nota_post(request):
     return nota_post
 
 
+def read_ocorrencia_post(request):
+    ocorrencia_post = dict()
+    ocorrencia_post["data_ocorrencia"] = request.POST.get("data_ocorrencia")
+    ocorrencia_post["tipo_ocorrencia"] = request.POST.get("tipo_ocorrencia")
+    ocorrencia_post["data_agendade"] = request.POST.get("data_agendada")
+    ocorrencia_post["ocorrencia"] = request.POST.get("ocorrencia")
+    ocorrencia_post["idnotaclientes"] = request.POST.get("id_nota_clientes")
+    return ocorrencia_post
+
+
 def read_nota_database(_id_not):
     nota = NotasClientes.objects.get(idNotasClientes=_id_not)
     nota_database = dict()
@@ -152,8 +236,29 @@ def save_notas_cliente(nota):
     obj.Volume = nota["volume"]
     obj.Peso = nota["peso"]
     obj.Valor = nota["valor"]
-    obj.StatusNota = "COLETAR"
+    obj.StatusNota = "PENDENTE"
     obj.idCliente_id = nota["idcliente"]
+    obj.save()
+
+
+def save_ocorrencia(ocorrencia):
+    obj = NotasOcorrencias()
+    obj.DataOcorrencia = ocorrencia["data_ocorrencia"]
+    obj.TipoOcorrencia = ocorrencia["tipo_ocorrencia"]
+    obj.DataAgendada = ocorrencia["data_agendade"]
+    obj.Descricao = ocorrencia["ocorrencia"]
+    obj.idNotasClientes_id = ocorrencia["idnotaclientes"]
+    obj.save()
+
+
+def update_ocorrencia(ocorrencia_form, id_ocor):
+    ocorrencia = NotasOcorrencias.objects.get(idNotasOcorrencia=id_ocor)
+    obj = ocorrencia
+    obj.DataOcorrencia = ocorrencia_form["data_ocorrencia"]
+    obj.TipoOcorrencia = ocorrencia_form["tipo_ocorrencia"]
+    obj.DataAgendada = ocorrencia_form["data_agendade"]
+    obj.Descricao = ocorrencia_form["ocorrencia"]
+    obj.idNotasClientes_id = ocorrencia_form["idnotaclientes"]
     obj.save()
 
 
@@ -177,6 +282,7 @@ def update_notas_cliente(nota_form, id_not):
     obj.StatusNota = "COLETAR"
     obj.idCliente_id = nota_form["idcliente"]
     obj.save()
+
 
 def delete_notas_cliente(id_not):
     nota = NotasClientes.objects.get(idNotasClientes=id_not)

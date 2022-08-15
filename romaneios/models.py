@@ -44,3 +44,25 @@ class NotasClientes(models.Model):
         super(NotasClientes, self).save(*args, **kwargs)
 
     objects = models.Manager()
+
+
+class NotasOcorrencias(models.Model):
+    idNotasOcorrencia = models.AutoField(primary_key=True)
+    DataOcorrencia = models.DateField(default=0)
+    TipoOcorrencia = models.CharField(max_length=25, default="PENDENTE")
+    Descricao = models.TextField(default="", blank=True, null=True)
+    DataAgendada = models.DateField(default=0)
+    idNotasClientes = models.ForeignKey(NotasClientes, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = "notas_ocorrencia"
+
+    def __str__(self):
+        return str(self.idNotasOcorrencia)
+
+    def save(self, *args, **kwargs):
+        self.Descricao = self.Descricao.upper()
+
+        super(NotasOcorrencias, self).save(*args, **kwargs)
+
+    objects = models.Manager()

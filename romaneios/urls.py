@@ -2,9 +2,11 @@ from django.urls import path
 
 from .views import (
     adiciona_nota_cliente,
+    adiciona_ocorrencia,
     edita_nota_cliente,
     exclui_nota_cliente,
     index_romaneio,
+    ocorrencia_nota_cliente,
     seleciona_cliente,
 )
 
@@ -33,5 +35,15 @@ urlpatterns = [
         "exclui_nota_cliente",
         exclui_nota_cliente,
         name="exclui_nota_cliente",
+    ),
+    path(
+        "ocorrencia_nota_cliente",
+        ocorrencia_nota_cliente,
+        name="ocorrencia_nota_cliente",
+    ),
+    path(
+        "adiciona_ocorrencia",
+        adiciona_ocorrencia,
+        name="adiciona_ocorrencia",
     ),
 ]

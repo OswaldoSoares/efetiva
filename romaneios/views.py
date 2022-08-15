@@ -67,3 +67,45 @@ def exclui_nota_cliente(request):
     contexto = {"notas": notas, "cliente": cliente, "hoje": hoje, "idcliente": _id_cli}
     data = facade.create_data_cliente_selecionado(request, contexto)
     return data
+
+
+def ocorrencia_nota_cliente(request):
+    _id_not = request.GET.get("idNota")
+    _id_cli = request.GET.get("idCliente")
+    notas = facade.create_contexto_ocorrencia_notas(_id_not)
+    ocorrencias = facade.create_contexto_seleciona_ocorrencia(_id_not, "NumeroNota")
+    hoje = facade.hoje
+    contexto = {
+        "ocorrencias": ocorrencias,
+        "notas": notas,
+        "hoje": hoje,
+        "id_nota": _id_not,
+    }
+    data = facade.create_data_nota_selecionada(request, contexto)
+    return data
+
+
+def adiciona_ocorrencia(request):
+    error, msg = facade.valida_ocorrencia(request)
+    ocorrencia_form = facade.read_ocorrencia_post(request)
+    id_ocor = request.POST.get("idocorrencia")
+    if not error:
+        if id_ocor:
+            facade.update_ocorrencia(ocorrencia_form, id_ocor)
+        else:
+            facade.save_ocorrencia(ocorrencia_form)
+        ocorrencia_form = dict()
+    id_not = request.POST.get("id_notas_cliente")
+    notas = facade.create_contexto_ocorrencia_notas(id_not)
+    ocorrencias = facade.create_contexto_seleciona_ocorrencia(id_not, "NumeroNota")
+    hoje = facade.hoje
+    contexto = {
+        "notas": notas,
+        "ocorrencias": ocorrencias,
+        "hoje": hoje,
+        "id_nota": id_not,
+    }
+    contexto.update({"error": error})
+    contexto.update(msg)
+    data = facade.create_data_cliente_selecionado(request, contexto)
+    return data
