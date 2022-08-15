@@ -18,7 +18,7 @@ class NotasClientes(models.Model):
     Volume = models.IntegerField(default=0)
     Peso = models.DecimalField(max_digits=9, decimal_places=3, default=0)
     Valor = models.DecimalField(max_digits=8, decimal_places=2, default=0)
-    StatusNota = models.CharField(max_length=15)
+    StatusNota = models.CharField(max_length=25)
     Historico = models.TextField(default="", blank=True, null=True)
     idCliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
 
@@ -50,7 +50,7 @@ class NotasOcorrencias(models.Model):
     idNotasOcorrencia = models.AutoField(primary_key=True)
     DataOcorrencia = models.DateField(default=0)
     TipoOcorrencia = models.CharField(max_length=25, default="PENDENTE")
-    Descricao = models.TextField(default="", blank=True, null=True)
+    Ocorrencia = models.TextField(default="", blank=True, null=True)
     DataAgendada = models.DateField(default=0)
     idNotasClientes = models.ForeignKey(NotasClientes, on_delete=models.CASCADE)
 
@@ -61,7 +61,7 @@ class NotasOcorrencias(models.Model):
         return str(self.idNotasOcorrencia)
 
     def save(self, *args, **kwargs):
-        self.Descricao = self.Descricao.upper()
+        self.Ocorrencia = self.Ocorrencia.upper()
 
         super(NotasOcorrencias, self).save(*args, **kwargs)
 

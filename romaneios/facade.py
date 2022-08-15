@@ -57,7 +57,7 @@ def create_contexto_seleciona_ocorrencia(id_not, sort_ocorrencia):
             "data_ocorrencia": x.DataOcorrencia,
             "tipo_ocorrencia": x.TipoOcorrencia,
             "data_agendada": x.DataAgendada,
-            "ocorrencia": x.Descricao,
+            "ocorrencia": x.Ocorrencia,
             "id_notas_clientes": x.idNotasClientes_id,
         }
         for x in ocorrencia
@@ -242,17 +242,18 @@ def save_notas_cliente(nota):
 
 
 def save_ocorrencia(ocorrencia):
+    print(ocorrencia)
     obj = NotasOcorrencias()
     obj.DataOcorrencia = ocorrencia["data_ocorrencia"]
     obj.TipoOcorrencia = ocorrencia["tipo_ocorrencia"]
     obj.DataAgendada = ocorrencia["data_agendade"]
-    obj.Descricao = ocorrencia["ocorrencia"]
+    obj.Ocorrencia = ocorrencia["ocorrencia"]
     obj.idNotasClientes_id = ocorrencia["idnotaclientes"]
     obj.save()
     nota = NotasClientes.objects.get(idNotasClientes=ocorrencia["idnotaclientes"])
     obj = nota
-    obj.Ocorrencia = ocorrencia["ocorrencia"]
-    obj.save(update_fields=["Ocorre,cia"])
+    obj.StatusNota = ocorrencia["tipo_ocorrencia"]
+    obj.save(update_fields=["StatusNota"])
 
 
 def update_ocorrencia(ocorrencia_form, id_ocor):
@@ -261,7 +262,7 @@ def update_ocorrencia(ocorrencia_form, id_ocor):
     obj.DataOcorrencia = ocorrencia_form["data_ocorrencia"]
     obj.TipoOcorrencia = ocorrencia_form["tipo_ocorrencia"]
     obj.DataAgendada = ocorrencia_form["data_agendade"]
-    obj.Descricao = ocorrencia_form["ocorrencia"]
+    obj.Ocorrencia = ocorrencia_form["ocorrencia"]
     obj.idNotasClientes_id = ocorrencia_form["idnotaclientes"]
     obj.save()
 
