@@ -3,10 +3,11 @@ from cgitb import html
 from decimal import Decimal
 
 from clientes.models import Cliente
+from django.db.models import Max
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 
-from romaneios.models import NotasClientes, NotasOcorrencias
+from romaneios.models import NotasClientes, NotasOcorrencias, Romaneios
 
 
 def create_contexto_seleciona_cliente():
@@ -134,6 +135,7 @@ def create_data_cliente_selecionado(request, contexto):
     data = dict()
     html_lista_notas_cliente(request, contexto, data)
     html_form_notas_cliente(request, contexto, data)
+    html_form_romaneios(request, contexto, data)
     return JsonResponse(data)
 
 
@@ -166,6 +168,13 @@ def html_lista_notas_cliente(request, contexto, data):
 def html_form_notas_cliente(request, contexto, data):
     data["html_form_notas_cliente"] = render_to_string(
         "romaneios/html_form_notas_cliente.html", contexto, request=request
+    )
+    return data
+
+
+def html_form_romaneios(request, contexto, data):
+    data["html_form_romaneios"] = render_to_string(
+        "romaneios/html_form_romaneios.html", contexto, request=request
     )
     return data
 
@@ -307,3 +316,25 @@ def create_data_edita_nota(request, contexto):
     data = dict()
     html_form_notas_cliente(request, contexto, data)
     return JsonResponse(data)
+
+
+def read_romaneio_post(request):
+    romaneio = dict()
+    romaneio["data_romaneio"] = request.POST.get("data_romaneio")
+    romaneio["motorista"] = request.POST.get("motorista")
+    romaneio["veiculo"] = request.POST.get("veiculo")
+    return romaneio
+
+
+def save_romaneio(romaneio):
+    print(romaneio)
+    num_rom = Romaneios.objects.aggregate(numero=Max("Romaneio"))
+    numero = 1
+    if num_rom["numero"]:
+        numero += num_rom["numero"]
+    obj = Romaneios()
+    obj.Romaneio = numero
+    obj.DataRomaneio = romaneio["data_romaneio"]
+    obj.idMotorista_id = romaneio["motorista"]
+    obj.idVeiculo_id = romaneio["veiculo"]
+    obj.save()

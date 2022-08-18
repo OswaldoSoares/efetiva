@@ -1,0 +1,32 @@
+<form class="js-gera-romaneios" method="post" action="">
+    {% csrf_token %}
+    <div class="article-card-titulo">
+        <i class="bi bi-plus-circle i-button js-mostra-body-romaneio"> ROMANEIO</i>
+        <i class="bi bi-dash-circle i-button js-oculta-body-romaneio"> ROMANEIO</i>
+    </div>
+    <div class="article-card-body body-romaneio">
+        <div class="item-nota">
+            <input class="form-control" type="date"
+             value="{{ hoje }}" name="data_romaneio">
+        </div>
+        <div class="item-nota">
+            <select class="form-control" name="motorista">
+                <option value="">SELECIONE O MOTORISTA</option>
+                {% for moto in motoristas %}
+                <option value="{{ moto.idPessoal }}">{{ moto.Nome }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="item-nota">
+            <select class="form-control" name="veiculo">
+                <option value="">SELECIONE O VEÍCULO</option>
+                {% for veic in veiculos %}
+                <option value="{{ veic.idVeiculo }}">{{ veic.Veiculo }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <div class="article-card-footer">
+        <button class="bi bi-save2 i-button body-romaneio"></button>
+    </div>
+</form>

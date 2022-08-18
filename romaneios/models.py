@@ -74,7 +74,7 @@ class Romaneios(models.Model):
     idRomaneio = models.AutoField(primary_key=True)
     Romaneio = models.IntegerField()
     DataRomaneio = models.DateField(default=0)
-    idmotorista = models.ForeignKey(
+    idMotorista = models.ForeignKey(
         Pessoal, on_delete=models.PROTECT, blank=True, null=True
     )
     idVeiculo = models.ForeignKey(

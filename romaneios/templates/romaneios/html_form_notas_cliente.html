@@ -1,9 +1,10 @@
 <form class="js-gera-notas-cliente" method="post" action="">
     {% csrf_token %}
     <div class="article-card-titulo">
-        <span>{{ cliente }}</span>
+        <i class="bi bi-plus-circle i-button js-mostra-body-nota"> {{ cliente }}</i>
+        <i class="bi bi-dash-circle i-button js-oculta-body-nota"> {{ cliente }}</i>
     </div>
-    <div class="article-card-body">
+    <div class="article-card-body body-nota">
         <div class="item-nota">
             <div class="item-form">
                 <div class="button" title="LOCAL DE COLETA">
@@ -347,8 +348,9 @@
             {% else %}
             <input type="hidden" name="cliente" value="{{ idcliente }}">
             {% endif %}
+        </div>
     </div>
     <div class="article-card-footer">
-        <button class="bi bi-save2 i-button"></button>
+        <button class="bi bi-save2 i-button body-nota"></button>
     </div>
 </form>

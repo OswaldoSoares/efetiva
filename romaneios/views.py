@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from minutas.facade import filtra_veiculo, motoristas_disponiveis
 
 from romaneios import facade
 
@@ -18,6 +19,9 @@ def seleciona_cliente(request):
     cliente = facade.create_contexto_cliente(id_cli)
     hoje = facade.hoje
     contexto = {"notas": notas, "cliente": cliente, "hoje": hoje, "idcliente": id_cli}
+    motoristas = motoristas_disponiveis()
+    veiculos = filtra_veiculo("17", "TRANSPORTADORA")
+    contexto.update({"motoristas": motoristas, "veiculos": veiculos})
     data = facade.create_data_cliente_selecionado(request, contexto)
     return data
 
@@ -112,3 +116,9 @@ def adiciona_ocorrencia(request):
     contexto.update(msg)
     data = facade.create_data_ocorrencia_selecionada(request, contexto)
     return data
+
+
+def adiciona_romaneio(request):
+    romaneio = facade.read_romaneio_post(request)
+    facade.save_romaneio(romaneio)
+    pass
