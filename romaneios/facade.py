@@ -16,7 +16,11 @@ def create_contexto_seleciona_cliente():
 
 
 def create_contexto_seleciona_notas(id_cli, sort_nota):
-    notas = NotasClientes.objects.filter(idCliente=id_cli).order_by(sort_nota)
+    notas = (
+        NotasClientes.objects.filter(idCliente=id_cli)
+        .order_by(sort_nota)
+        .exclude(StatusNota="ENTREGA NO CLIENTE")
+    )
     lista = [
         {
             "id_nota_clientes": x.idNotasClientes,

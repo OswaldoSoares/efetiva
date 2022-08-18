@@ -5,7 +5,7 @@
 <div class="article-card-body">
     {% for nota in notas %}
     <div class="item-nota">
-        <div class="item-numero" title="Número Nota">
+        <div class="item-numero" title="Número Nota" draggable="true">
             <i class="bi bi-file-text i-button-null"></i> {{ nota.numero_nota }}
         </div>
         <div class="item-data" title="Data da Coleta">
@@ -51,12 +51,18 @@
     </div>
     {% endfor %}
     {% for ocorrencia in ocorrencias %}
-    {{ ocorrencia.id_notas_ocorrencia }}
-    {{ ocorrencia.data_ocorrencia }}
-    {{ ocorrencia.tipo_ocorrencia }}
-    {{ ocorrencia.data_agendada }}
-    {{ ocorrencia.ocorrencia }}
-    {{ ocorrencia.id_nota_clientes }}
+    <div class="item-ocorrencia">
+        <div class="item-data">
+            <i class="bi bi-"></i> {{ ocorrencia.data_ocorrencia }}
+            <i class="bi bi-"></i> {{ ocorrencia.tipo_ocorrencia }}
+            <i class="bi bi-"></i> {{ ocorrencia.data_agendada }}
+        </div>
+        <div class="item-descricao">
+            <i class="bi bi-"></i> {{ ocorrencia.ocorrencia}}
+        </div>
+        <i class="bi bi-"></i> {{ ocorrencia.id_nota_clientes}}
+    </div>
+    <i class="bi bi-" data-idnotasocorrencia="{{ ocorrencia.id_notas_ocorrencia }}"></i> 
     {% endfor %}
     <form class="js-gera-ocorrencia" method="post" action="">
         {% csrf_token %}
@@ -96,7 +102,7 @@
                         <option value="ENTREGUE">ENTREGUE</option>
                         <option value="NÃO COLETADA">NÃO COLETADA</option>
                         <option value="COLETADA">COLETADA</option>
-                        <option value="ENTREGA NO CLIENTE">ENTREGA NO CLIENTE</option>
+                        <option value="ENTREGUE NO CLIENTE">ENTREGUE NO CLIENTE</option>
                     </select>
                     {% else %}
                     <select class="form-control" name="tipo_ocorrencia"
@@ -107,7 +113,7 @@
                         <option value="ENTREGUE">ENTREGUE</option>
                         <option value="NÃO COLETADA">NÃO COLETADA</option>
                         <option value="COLETADA">COLETADA</option>
-                        <option value="ENTREGA NO CLIENTE">ENTREGA NO CLIENTE</option>
+                        <option value="ENTREGUE NO CLIENTE">ENTREGUE NO CLIENTE</option>
                     </select>
                     {% endif %}
                 </div>
