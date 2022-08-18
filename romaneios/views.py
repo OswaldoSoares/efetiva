@@ -14,7 +14,6 @@ def seleciona_cliente(request):
         id_cli = request.POST.get("cliente")
     else:
         id_cli = request.GET.get("cliente")
-    print(id_cli)
     notas = facade.create_contexto_seleciona_notas(id_cli, "-NumeroNota")
     cliente = facade.create_contexto_cliente(id_cli)
     hoje = facade.hoje

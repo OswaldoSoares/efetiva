@@ -1,5 +1,7 @@
 from clientes.models import Cliente
 from django.db import models
+from pessoas.models import Pessoal
+from veiculos.models import Veiculo
 
 
 class NotasClientes(models.Model):
@@ -64,5 +66,39 @@ class NotasOcorrencias(models.Model):
         self.Ocorrencia = self.Ocorrencia.upper()
 
         super(NotasOcorrencias, self).save(*args, **kwargs)
+
+    objects = models.Manager()
+
+
+class Romaneios(models.Model):
+    idRomaneio = models.AutoField(primary_key=True)
+    Romaneio = models.IntegerField()
+    DataRomaneio = models.DateField(default=0)
+    idmotorista = models.ForeignKey(
+        Pessoal, on_delete=models.PROTECT, blank=True, null=True
+    )
+    idVeiculo = models.ForeignKey(
+        Veiculo, on_delete=models.PROTECT, blank=True, null=True
+    )
+
+    class Meta:
+        db_table = "romaneios"
+
+    def __str__(self):
+        return str(self.idRomaneio)
+
+    objects = models.Manager()
+
+
+class RomaneioNotas(models.Model):
+    idRomaneioNotas = models.AutoField(primary_key=True)
+    idRomaneio = models.ForeignKey(Romaneios, on_delete=models.CASCADE)
+    idNotasClientes = models.ForeignKey(NotasClientes, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = "romaneio_notas"
+
+    def __str__(self):
+        return str(self.idRomaneioNotas)
 
     objects = models.Manager()
