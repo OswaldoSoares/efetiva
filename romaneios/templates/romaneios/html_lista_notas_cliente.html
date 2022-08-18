@@ -27,7 +27,9 @@
     <div class="item-nota">
         <div class="item-destinatario" title="Destinatário">
             <i class="bi bi-shop i-button-null"></i> {{ nota.destinatario }}
+            {% if nota.contato %}
             <i class="bi bi-person-badge i-button-null"></i> {{ nota.contato }}
+            {% endif %}
         </div>
         <div class="item-button">
             <i class="bi bi-calendar-plus i-button
@@ -47,12 +49,18 @@
     <div class="item-nota">
         <div class="item-endereco" title="Endereço">
             <i class="bi bi-geo-alt i-button-null"></i> {{ nota.endereco }}
-            <i class="bi bi-info-square i-button-null"></i> {{ nota.informa }}
         </div>
         <div class="item-button" title="Status">
             <i class="bi bi-activity i-button-null"></i> {{ nota.statusnota }}
         </div>
     </div>
+        {% if nota.informa %}
+        <div class="item-nota">
+            <div class="item-endereco" title="Informações">
+                <i class="bi bi-info-square i-button-null"></i> {{ nota.informa }}
+            </div>
+        </div>
+        {% endif %}
     {% endfor %}
 </div>
 <div class="article-card-footer">

@@ -28,8 +28,10 @@
         <div class="item-destinatario">
             <i class="bi bi-shop i-button-null"
             title="Destinatário"></i> {{ nota.destinatario }}
+            {% if nota.contato %}
             <i class="bi bi-person-badge i-button-null"
             title="Contato"></i> {{ nota.contato }}
+            {% endif %}
         </div>
         <div class="item-button">
             <i class="bi bi-calendar-plus i-button
@@ -42,20 +44,25 @@
         <div class="item-endereco">
             <i class="bi bi-geo-alt i-button-null"
             title="Endereço"></i> {{ nota.endereco }}
-            <i class="bi bi-info-square i-button-null"
-            title="Informações"></i> {{ nota.informa }}
         </div>
         <div class="item-button" title="Status">
             <i class="bi bi-activity i-button-null"></i> {{ nota.statusnota }}
         </div>
     </div>
+        {% if nota.informa %}
+            <div class="item-nota">
+                <div class="item-endereco" title="Informações">
+                    <i class="bi bi-info-square i-button-null"
+                    title="Informações"></i> {{ nota.informa }}
+                </div>
+            </div>
+        {% endif %}
     {% endfor %}
     {% for ocorrencia in ocorrencias %}
     <div class="item-ocorrencia">
         <div class="item-data">
             <i class="bi bi-"></i> {{ ocorrencia.data_ocorrencia }}
             <i class="bi bi-"></i> {{ ocorrencia.tipo_ocorrencia }}
-            <i class="bi bi-"></i> {{ ocorrencia.data_agendada }}
         </div>
         <div class="item-descricao">
             <i class="bi bi-"></i> {{ ocorrencia.ocorrencia}}
