@@ -4979,7 +4979,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-lista-notas-cliente {
-    width: 700px;
+    width: 660px;
 }
 
 .card-lista-notas-cliente .item-nota {
@@ -4999,14 +4999,14 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-lista-notas-cliente .item-nota .item-data {
-    width: 15%;
+    width: 20%;
     text-align: center;
     padding: 0 5px;
     border-top: 1px solid var(--color7);
 }
 
 .card-lista-notas-cliente .item-nota .item-local {
-    width: 30%;
+    width: 25%;
     padding: 0 5px;
     text-align: left;
     border-top: 1px solid var(--color7);
@@ -5055,7 +5055,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-lista-ocorrencia {
-    width: 700px;
+    width: 660px;
 }
 
 .card-lista-ocorrencia .item-nota {
@@ -5075,14 +5075,14 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-lista-ocorrencia .item-nota .item-data {
-    width: 15%;
+    width: 20%;
     text-align: center;
     padding: 0 5px;
     border-top: 1px solid var(--color7);
 }
 
 .card-lista-ocorrencia .item-nota .item-local {
-    width: 30%;
+    width: 25%;
     padding: 0 5px;
     text-align: left;
     border-top: 1px solid var(--color7);
@@ -5151,6 +5151,50 @@ main .fp-recibo-tabela .fp-recibo-print {
     padding: 0 5px;
     width: 100%;
     border-bottom: 1px solid var(--color7);
+}
+
+.card-lista-romaneios {
+    width: 275px;
+}
+
+.card-lista-romaneios .item-romaneio {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    color: var(--color6);
+    border-top: 1px solid var(--color7);
+}
+
+.card-lista-romaneios .item-romaneio .item-numero {
+    width: 30%;
+    text-align: left;
+    padding: 0 5px;
+}
+
+.card-lista-romaneios .item-romaneio .item-data {
+    width: 50%;
+    text-align: center;
+    padding: 0 5px;
+}
+
+.card-lista-romaneios .item-romaneio .item-button {
+    width: 20%;
+    text-align: center;
+    padding: 0 5px;
+}
+
+.card-lista-romaneios .item-romaneio .item-motorista {
+    width: 60%;
+    text-align: left;
+    padding: 0 5px;
+}
+
+.card-lista-romaneios .item-romaneio .item-veiculo {
+    width: 40%;
+    text-align: right;
+    padding: 0 5px;
 }
 
 .card-categoria,

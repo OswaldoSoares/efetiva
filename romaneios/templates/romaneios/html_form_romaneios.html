@@ -11,7 +11,7 @@
         </div>
         <div class="item-nota">
             <select class="form-control" name="motorista">
-                <option value="">SELECIONE O MOTORISTA</option>
+                <option value="SEM MOTORISTA">SELECIONE O MOTORISTA</option>
                 {% for moto in motoristas %}
                 <option value="{{ moto.idPessoal }}">{{ moto.Nome }}</option>
                 {% endfor %}
@@ -19,7 +19,7 @@
         </div>
         <div class="item-nota">
             <select class="form-control" name="veiculo">
-                <option value="">SELECIONE O VEÍCULO</option>
+                <option value="SEM VEICULO">SELECIONE O VEÍCULO</option>
                 {% for veic in veiculos %}
                 <option value="{{ veic.idVeiculo }}">{{ veic.Veiculo }}</option>
                 {% endfor %}

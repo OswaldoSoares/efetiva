@@ -1,0 +1,43 @@
+{% load humanize %}
+<div class="article-card-titulo">
+    <span>ROMANEIO {{ romaneio }}</span>
+</div>
+<div class="article-card-body">
+    {% for not_rom in notas_romaneios %}
+    <div class="item-romaneio">
+        <div class="item-numero" title="Número Romaneio">
+            <i class="bi bi-file-text i-button-null"></i> {{ rom.romaneio }}
+        </div>
+        <div class="item-data" title="Data do Romaneio">
+            <i class="bi bi-calendar i-button-null"></i> {{ rom.data_romaneio }}
+        </div>
+        <div class="item-button">
+            <i class="bi bi-calendar-plus i-button
+            js-seleciona-romaneio" title="Seleciona Romanio"
+            data-idromaneio={{ rom.idromaneio }}></i>
+            <i class="bi bi-pencil-square i-button
+            js-edita-romaneio" title="Edita Romaneio"
+            data-idromaneio={{ rom.idromaneio }}></i>
+        </div>
+    </div>
+    <div class="item-romaneio">
+        <div class="item-motorista" title="Motorista">
+            {% if rom.motorista %}
+            <i class="bi bi-building i-button-null"></i> {{ rom.apelido }}
+            {% endif %}
+        </div>
+        <div class="item-veiculo" title="Veiculo">
+            {% if rom.veiculo %}
+            <i class="bi bi-truck i-button-null"></i> {{ rom.veiculo }}
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<div class="article-card-footer">
+    {% for rom in romaneios %}
+    {% if forloop.last %}
+    <span><b>{{ forloop.counter|stringformat:"02d" }} ROMANEIO{{ forloop.counter|pluralize|upper }}</b></span>
+    {% endif %}
+    {% endfor %}
+</div>

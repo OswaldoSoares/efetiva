@@ -6,7 +6,8 @@ from romaneios import facade
 
 def index_romaneio(request):
     clientes = facade.create_contexto_seleciona_cliente()
-    contexto = {"clientes": clientes}
+    romaneios = facade.create_contexto_romaneios()
+    contexto = {"clientes": clientes, "romaneios": romaneios}
     return render(request, "romaneios/index.html", contexto)
 
 
@@ -121,4 +122,12 @@ def adiciona_ocorrencia(request):
 def adiciona_romaneio(request):
     romaneio = facade.read_romaneio_post(request)
     facade.save_romaneio(romaneio)
+    pass
+
+
+def edita_romaneio(request):
+    pass
+
+
+def seleciona_romaneio(request):
     pass

@@ -5,10 +5,12 @@ from .views import (
     adiciona_ocorrencia,
     adiciona_romaneio,
     edita_nota_cliente,
+    edita_romaneio,
     exclui_nota_cliente,
     index_romaneio,
     ocorrencia_nota_cliente,
     seleciona_cliente,
+    seleciona_romaneio,
 )
 
 urlpatterns = [
@@ -51,5 +53,15 @@ urlpatterns = [
         "adiciona_romaneio",
         adiciona_romaneio,
         name="adiciona_romaneio",
+    ),
+    path(
+        "edita_romaneio",
+        edita_romaneio,
+        name="edita_romaneio",
+    ),
+    path(
+        "seleciona_romaneio",
+        seleciona_romaneio,
+        name="seleciona_romaneio",
     ),
 ]

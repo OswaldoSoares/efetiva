@@ -6,6 +6,7 @@ from clientes.models import Cliente
 from django.db.models import Max
 from django.http import JsonResponse
 from django.template.loader import render_to_string
+from minutas.facade import nome_curto
 
 from romaneios.models import NotasClientes, NotasOcorrencias, Romaneios
 
@@ -338,3 +339,26 @@ def save_romaneio(romaneio):
     obj.idMotorista_id = romaneio["motorista"]
     obj.idVeiculo_id = romaneio["veiculo"]
     obj.save()
+
+
+def create_contexto_romaneios():
+    romaneios = Romaneios.objects.all()
+    lista = [
+        {
+            "idromaneio": x.idRomaneio,
+            "romaneio": x.Romaneio,
+            "data_romaneio": x.DataRomaneio,
+            "motorista": x.idMotorista,
+            "veiculo": x.idVeiculo,
+        }
+        for x in romaneios
+    ]
+    if lista:
+        for index, itens in enumerate(lista):
+            if lista[index]["motorista"]:
+                lista[index]["apelido"] = nome_curto(lista[index]["motorista"].Nome)
+    return lista
+
+
+def seleciona_notas_romaneio(request):
+    pass
