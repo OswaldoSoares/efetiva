@@ -194,14 +194,12 @@ $(document).on('click', '.js-seleciona-romaneio', function() {
             idRomaneio: _id_romaneio,
         },
         beforeSend: function() {
-            $(".card-form-notas-cliente").hide()
+            $(".card-lista-romaneios").hide()
             $(".box-loader").show();
         },
         success: function(data) {
-            $(".card-form-notas-cliente").html(data.html_form_notas_cliente)
-            $(".card-form-notas-cliente").show()
-            $(".card-form-romaneios").html(data.html_form_romaneios)
-            $(".card-form-romaneios").show()
+            $(".card-lista-notas-romaneio").html(data.html_lista_notas_romaneio)
+            $(".card-lista-notas-romaneio").show()
                 // CarregaMask()
             $(".box-loader").hide();
         },

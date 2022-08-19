@@ -8,7 +8,7 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 from minutas.facade import nome_curto
 
-from romaneios.models import NotasClientes, NotasOcorrencias, Romaneios
+from romaneios.models import NotasClientes, NotasOcorrencias, RomaneioNotas, Romaneios
 
 
 def create_contexto_seleciona_cliente():
@@ -328,7 +328,6 @@ def read_romaneio_post(request):
 
 
 def save_romaneio(romaneio):
-    print(romaneio)
     num_rom = Romaneios.objects.aggregate(numero=Max("Romaneio"))
     numero = 1
     if num_rom["numero"]:
@@ -357,6 +356,53 @@ def create_contexto_romaneios():
         for index, itens in enumerate(lista):
             if lista[index]["motorista"]:
                 lista[index]["apelido"] = nome_curto(lista[index]["motorista"].Nome)
+    return lista
+
+
+def create_contexto_notas_romaneio(id_rom):
+    notas_romaneio = RomaneioNotas.objects.filter(idRomaneioNotas=id_rom)
+    lista = [
+        {
+            "idromaneionotas": x.idRomaneioNotas,
+            "idromaneio": x.idRomaneio,
+            "idnotasclientes": x.idNotasClientes,
+        }
+        for x in notas_romaneio
+    ]
+    return lista
+
+
+def create_data_lista_notas_romaneio(request, contexto):
+    data = dict()
+    html_lista_notas_romaneio(request, contexto, data)
+    return JsonResponse(data)
+
+
+def html_lista_notas_romaneio(request, contexto, data):
+    data["html_lista_notas_romaneio"] = render_to_string(
+        "romaneios/html_lista_notas_romaneio.html", contexto, request=request
+    )
+    return data
+
+
+def create_contexto_seleciona_romaneio(id_rom):
+    romaneio = Romaneios.objects.filter(idRomaneio=id_rom)
+    print(id_rom)
+    lista = [
+        {
+            "idromaneio": x.idRomaneio,
+            "romaneio": x.Romaneio,
+            "data_romaneio": x.DataRomaneio,
+            "motorista": x.idMotorista,
+            "veiculo": x.idVeiculo,
+        }
+        for x in romaneio
+    ]
+    if lista:
+        for index, itens in enumerate(lista):
+            if lista[index]["motorista"]:
+                lista[index]["apelido"] = nome_curto(lista[index]["motorista"].Nome)
+    print(lista)
     return lista
 
 

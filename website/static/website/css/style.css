@@ -5153,10 +5153,12 @@ main .fp-recibo-tabela .fp-recibo-print {
     border-bottom: 1px solid var(--color7);
 }
 
+.card-lista-notas-romaneio,
 .card-lista-romaneios {
-    width: 275px;
+    width: 270px;
 }
 
+.card-lista-notas-romaneio .item-romaneio,
 .card-lista-romaneios .item-romaneio {
     width: 100%;
     display: flex;
@@ -5164,33 +5166,40 @@ main .fp-recibo-tabela .fp-recibo-print {
     align-items: center;
     justify-content: center;
     color: var(--color6);
-    border-top: 1px solid var(--color7);
 }
 
+.card-lista-notas-romaneio .item-romaneio .item-numero,
 .card-lista-romaneios .item-romaneio .item-numero {
     width: 30%;
     text-align: left;
     padding: 0 5px;
+    border-top: 1px solid var(--color7);
 }
 
+.card-lista-notas-romaneio .item-romaneio .item-data,
 .card-lista-romaneios .item-romaneio .item-data {
     width: 50%;
     text-align: center;
     padding: 0 5px;
+    border-top: 1px solid var(--color7);
 }
 
+.card-lista-notas-romaneio .item-romaneio .item-button,
 .card-lista-romaneios .item-romaneio .item-button {
     width: 20%;
     text-align: center;
     padding: 0 5px;
+    border-top: 1px solid var(--color7);
 }
 
+.card-lista-notas-romaneio .item-romaneio .item-motorista,
 .card-lista-romaneios .item-romaneio .item-motorista {
     width: 60%;
     text-align: left;
     padding: 0 5px;
 }
 
+.card-lista-notas-romaneio .item-romaneio .item-veiculo,
 .card-lista-romaneios .item-romaneio .item-veiculo {
     width: 40%;
     text-align: right;

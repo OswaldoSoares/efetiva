@@ -1,9 +1,9 @@
 {% load humanize %}
 <div class="article-card-titulo">
-    <span>ROMANEIO {{ romaneio }}</span>
+    <span>ROMANEIO</span>
 </div>
 <div class="article-card-body">
-    {% for not_rom in notas_romaneios %}
+    {% for rom in romaneios %}
     <div class="item-romaneio">
         <div class="item-numero" title="Número Romaneio">
             <i class="bi bi-file-text i-button-null"></i> {{ rom.romaneio }}

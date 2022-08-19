@@ -130,4 +130,9 @@ def edita_romaneio(request):
 
 
 def seleciona_romaneio(request):
-    pass
+    id_rom = request.GET.get("idRomaneio")
+    not_rom = facade.create_contexto_notas_romaneio(id_rom)
+    romaneio = facade.create_contexto_seleciona_romaneio(id_rom)
+    contexto = {"notas_romaneio": not_rom, "romaneios": romaneio}
+    data = facade.create_data_lista_notas_romaneio(request, contexto)
+    return data
