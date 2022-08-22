@@ -5,6 +5,7 @@
 <div class="article-card-body">
     {% for rom in romaneios %}
     <div class="item-romaneio">
+        <input type="hidden" id="id_romaneio" value="{{ rom.idromaneio }}">
         <div class="item-numero" title="Número Romaneio">
             <i class="bi bi-file-text i-button-null"></i> {{ rom.romaneio }}
         </div>

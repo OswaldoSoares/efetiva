@@ -2,6 +2,7 @@ from django.urls import path
 
 from .views import (
     adiciona_nota_cliente,
+    adiciona_nota_romaneio,
     adiciona_ocorrencia,
     adiciona_romaneio,
     edita_nota_cliente,
@@ -63,5 +64,10 @@ urlpatterns = [
         "seleciona_romaneio",
         seleciona_romaneio,
         name="seleciona_romaneio",
+    ),
+    path(
+        "adiciona_nota_romaneio",
+        adiciona_nota_romaneio,
+        name="adiciona_nota_romaneio",
     ),
 ]

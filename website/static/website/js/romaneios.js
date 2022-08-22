@@ -22,7 +22,7 @@ $(document).on('submit', '.js-seleciona-cliente', function(event) {
             $(".mostra-body-romaneio").show()
             $(".body-romaneio").hide()
             $(".js-oculta-body-romaneio").hide()
-            $(".js-inclui-nota-romaneio").hide()
+            $(".js-adiciona-nota-romaneio").hide()
                 //CarregaMask()
             $(".box-loader").hide();
         },
@@ -201,9 +201,28 @@ $(document).on('click', '.js-seleciona-romaneio', function() {
         success: function(data) {
             $(".card-lista-notas-romaneio").html(data.html_lista_notas_romaneio)
             $(".card-lista-notas-romaneio").show()
-            $(".js-inclui-nota-romaneio").show()
+            $(".js-adiciona-nota-romaneio").show()
                 // CarregaMask()
             $(".box-loader").hide();
+        },
+    });
+});
+
+$(document).on('click', '.js-adiciona-nota-romaneio', function() {
+    var _id_nota = $(this).data("idnota")
+    var _id_romaneio = $('#id_romaneio').val()
+    $.ajax({
+        type: 'GET',
+        url: '/romaneios/adiciona_nota_romaneio',
+        data: {
+            idNota: _id_nota,
+            idRomaneio: _id_romaneio
+        },
+        beforeSend: function() {
+
+        },
+        success: function(data) {
+
         },
     });
 });
@@ -251,7 +270,7 @@ $(document).on('click', '.js-retorna-lista-notas', function() {
         success: function(data) {
             $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente)
             $(".card-lista-notas-cliente").show()
-            $(".js-inclui-nota-romaneio").hide()
+            $(".js-adiciona-nota-romaneio").hide()
                 //CarregaMask()
             $(".box-loader").hide();
         },

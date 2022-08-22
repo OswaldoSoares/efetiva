@@ -435,3 +435,10 @@ def lista_bairros():
     for x in destinatarios:
         lista.append(x["Bairro"])
     return lista
+
+
+def save_nota_romaneio(id_nota, id_romaneio):
+    obj = RomaneioNotas()
+    obj.idNotasClientes_id = id_nota
+    obj.idRomaneio_id = id_romaneio
+    obj.save()
