@@ -16,10 +16,21 @@ def seleciona_cliente(request):
         id_cli = request.POST.get("cliente")
     else:
         id_cli = request.GET.get("cliente")
+    destinatarios = facade.lista_destinatarios()
+    enderecos = facade.lista_enderecos()
+    bairros = facade.lista_bairros()
     notas = facade.create_contexto_seleciona_notas(id_cli, "-NumeroNota")
     cliente = facade.create_contexto_cliente(id_cli)
     hoje = facade.hoje
-    contexto = {"notas": notas, "cliente": cliente, "hoje": hoje, "idcliente": id_cli}
+    contexto = {
+        "notas": notas,
+        "cliente": cliente,
+        "hoje": hoje,
+        "idcliente": id_cli,
+        "destinatarios": destinatarios,
+        "enderecos": enderecos,
+        "bairros": bairros,
+    }
     motoristas = motoristas_disponiveis()
     veiculos = filtra_veiculo("17", "TRANSPORTADORA")
     contexto.update({"motoristas": motoristas, "veiculos": veiculos})

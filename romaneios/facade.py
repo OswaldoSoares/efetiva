@@ -402,9 +402,36 @@ def create_contexto_seleciona_romaneio(id_rom):
         for index, itens in enumerate(lista):
             if lista[index]["motorista"]:
                 lista[index]["apelido"] = nome_curto(lista[index]["motorista"].Nome)
-    print(lista)
     return lista
 
 
 def seleciona_notas_romaneio(request):
     pass
+
+
+def lista_destinatarios():
+    destinatarios = (
+        NotasClientes.objects.values("Destinatario").distinct().order_by("Destinatario")
+    )
+    lista = []
+    for x in destinatarios:
+        lista.append(x["Destinatario"])
+    return lista
+
+
+def lista_enderecos():
+    destinatarios = (
+        NotasClientes.objects.values("Endereco").distinct().order_by("Endereco")
+    )
+    lista = []
+    for x in destinatarios:
+        lista.append(x["Endereco"])
+    return lista
+
+
+def lista_bairros():
+    destinatarios = NotasClientes.objects.values("Bairro").distinct().order_by("Bairro")
+    lista = []
+    for x in destinatarios:
+        lista.append(x["Bairro"])
+    return lista

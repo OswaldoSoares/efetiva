@@ -22,6 +22,7 @@ $(document).on('submit', '.js-seleciona-cliente', function(event) {
             $(".mostra-body-romaneio").show()
             $(".body-romaneio").hide()
             $(".js-oculta-body-romaneio").hide()
+            $(".js-inclui-nota-romaneio").hide()
                 //CarregaMask()
             $(".box-loader").hide();
         },
@@ -200,6 +201,7 @@ $(document).on('click', '.js-seleciona-romaneio', function() {
         success: function(data) {
             $(".card-lista-notas-romaneio").html(data.html_lista_notas_romaneio)
             $(".card-lista-notas-romaneio").show()
+            $(".js-inclui-nota-romaneio").show()
                 // CarregaMask()
             $(".box-loader").hide();
         },
@@ -249,6 +251,7 @@ $(document).on('click', '.js-retorna-lista-notas', function() {
         success: function(data) {
             $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente)
             $(".card-lista-notas-cliente").show()
+            $(".js-inclui-nota-romaneio").hide()
                 //CarregaMask()
             $(".box-loader").hide();
         },

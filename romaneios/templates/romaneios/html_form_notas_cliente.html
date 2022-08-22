@@ -101,23 +101,21 @@
                 </div>
                 <div class="item-field">
                     {% if nota_form %}
-                    <input class="form-control" type="text" id="destinatario"
-                    name="destinatario" placeholder="DESTINATÁRIO"
+                    <input class="form-control" type="text" name="destinatario"
+                    placeholder="DESTINATÁRIO" list="destinatarios"
                     value="{{ nota_form.destinatario }}">
-                    <datalist id="destinatario">
-                        <option value="TESTE1">
-                        <option value="TESTE2">
-                        <option value="TESTE3">
-                        <option value="TESTE4">
+                    <datalist id="destinatarios">
+                        {% for dest in destinatarios %}
+                        <option value="{{ dest }}">
+                        {% endfor %}
                     </datalist>
                     {% else %}
-                    <input class="form-control" type="text" id="destinatario"
-                    name="destinatario" placeholder="DESTINATÁRIO">
-                    <datalist id="destinatario">
-                        <option value="TESTE1">
-                        <option value="TESTE2">
-                        <option value="TESTE3">
-                        <option value="TESTE4">
+                    <input class="form-control" type="text" name="destinatario"
+                    placeholder="DESTINATÁRIO" list="destinatarios">
+                    <datalist id="destinatarios">
+                        {% for dest in destinatarios %}
+                        <option value="{{ dest }}">
+                        {% endfor %}
                     </datalist>
                     {% endif %}
                 </div>
@@ -135,12 +133,22 @@
                 </div>
                 <div class="item-field">
                     {% if nota_form %}
-                    <input class="form-control" type="text"
-                    name="endereco" placeholder="ENDEREÇO"
+                    <input class="form-control" type="text" name="endereco"
+                    list="enderecos" placeholder="ENDEREÇO"
                     value="{{ nota_form.endereco }}">
+                    <datalist id="enderecos">
+                        {% for ende in enderecos %}
+                        <option value="{{ ende }}">
+                        {% endfor %}
+                    </datalist>
                     {% else %}
-                    <input class="form-control" type="text"
-                    name="endereco" placeholder="ENDEREÇO">
+                    <input class="form-control" type="text" name="endereco"
+                    list="enderecos" placeholder="ENDEREÇO">
+                    <datalist id="enderecos">
+                        {% for ende in enderecos %}
+                        <option value="{{ ende }}">
+                        {% endfor %}
+                    </datalist>
                     {% endif %}
                 </div>
             </div>
@@ -179,12 +187,22 @@
                 </div>
                 <div class="item-field">
                     {% if nota_form %}
-                    <input class="form-control" type="text"
-                    name="bairro" placeholder="BAIRRO"
+                    <input class="form-control" type="text" name="bairro"
+                    list="bairros" placeholder="BAIRRO"
                     value="{{ nota_form.bairro }}">
+                    <datalist id="bairros">
+                        {% for bair in bairros %}
+                        <option value="{{ bair }}">
+                        {% endfor %}
+                    </datalist>
                     {% else %}
-                    <input class="form-control" type="text"
-                    name="bairro" placeholder="BAIRRO">
+                    <input class="form-control" type="text" name="bairro"
+                    list="bairros" placeholder="BAIRRO">
+                    <datalist id="bairros">
+                        {% for bair in bairros %}
+                        <option value="{{ bair }}">
+                        {% endfor %}
+                    </datalist>
                     {% endif %}
                 </div>
             </div>
