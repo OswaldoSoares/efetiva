@@ -280,6 +280,7 @@ $(document).on('click', '.js-retorna-lista-notas', function() {
 $(document).on('change', $('.js-file-xml'), function() {
     if ($('.js-file-xml').val()) {
         $('.js-xmlTxt').text($('.js-file-xml').val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]);
+        $('.js-xmlTxt').text($('.js-xmlTxt').text().substring(0, 23) + '...');
     } else {
         $('.js-xmlTxt').text('Selecionar XML.');
     }
