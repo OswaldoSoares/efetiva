@@ -24,6 +24,7 @@ def create_contexto_seleciona_notas(id_cli, sort_nota):
         NotasClientes.objects.filter(idCliente=id_cli)
         .order_by(sort_nota)
         .exclude(StatusNota__startswith="ENTREGUE")
+        .exclude(StatusNota="COLETA CANCELADA")
     )
     lista = [
         {
@@ -389,7 +390,6 @@ def html_lista_notas_romaneio(request, contexto, data):
 
 def create_contexto_seleciona_romaneio(id_rom):
     romaneio = Romaneios.objects.filter(idRomaneio=id_rom)
-    print(id_rom)
     lista = [
         {
             "idromaneio": x.idRomaneio,
