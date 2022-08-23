@@ -276,3 +276,43 @@ $(document).on('click', '.js-retorna-lista-notas', function() {
         },
     });
 });
+
+$(document).on('change', $('.js-file-xml'), function() {
+    if ($('.js-file-xml').val()) {
+        $('.js-xmlTxt').text($('.js-file-xml').val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]);
+    } else {
+        $('.js-xmlTxt').text('Selecionar XML.');
+    }
+});
+
+$(document).on('submit', '.js-carrega-xml', function(event) {
+    event.preventDefault();
+    var formData = new FormData($(this)[0])
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    formData.append('csrfmiddlewaretoken', csrftoken);
+    $.ajax({
+        type: $(this).attr('method'),
+        url: '/romaneios/carrega_xml',
+        processData: false,
+        contentType: false,
+        data: formData,
+        beforeSend: function() {
+            //$(".card-lista-ocorrencia").hide()
+            //$(".box-loader").show();
+        },
+        success: function(data) {
+            $("#numeronota").val(data["numero_nf"])
+            $("#destinatario").val(data["destinatario"])
+            $("#endereco").val(data["endereco"])
+            $("#bairro").val(data["bairro"])
+            $("#cep").val(data["cep"])
+            $("#cidade").val(data["cidade"])
+            $("#estado").val(data["estado"])
+            $("#telefone").val(data["telefone"])
+            $("#informa").val(data["informa"])
+            $("#volume").val(data["volume"])
+            $("#peso").val(data["peso"])
+            $("#valor").val(data["valor"])
+        },
+    });
+});

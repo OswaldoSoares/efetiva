@@ -158,3 +158,13 @@ def adiciona_nota_romaneio(request):
     contexto = {"notas_romaneio": not_rom, "romaneios": romaneio}
     data = facade.create_data_lista_notas_romaneio(request, contexto)
     return data
+
+
+def ler_nota_xml(request):
+    pass
+
+
+def carrega_xml(request):
+    file = request.FILES["uploadFile"]
+    dados = facade.ler_nota_xml(file)
+    return dados

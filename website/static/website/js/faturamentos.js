@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(document).ready(function() {
     $('.box-loader').hide()
 
     /**
@@ -31,11 +31,11 @@ $(document).ready(function(){
         if (type_mensagem == 'ERROR') {
             $('.mensagem-erro').text(text_mensagem)
             $(".div-erro").slideDown(500)
-            $(".div-erro").delay(5000).slideUp(500) 
+            $(".div-erro").delay(5000).slideUp(500)
         } else if (type_mensagem == 'SUCESSO') {
             $('.mensagem-sucesso').text(text_mensagem)
             $(".div-sucesso").slideDown(500)
-            $(".div-sucesso").delay(5000).slideUp(500) 
+            $(".div-sucesso").delay(5000).slideUp(500)
         }
     }
 
@@ -65,8 +65,7 @@ $(document).ready(function(){
                 idobj: idobj,
                 idfatura: idfatura,
             },
-            beforeSend: function() {
-            },
+            beforeSend: function() {},
             success: function(data) {
                 window.location.href = '/faturamentos/fatura/' + data['idfatura'] + '/'
             }
@@ -85,22 +84,22 @@ $(document).ready(function(){
                 emails: emails,
                 texto: texto,
             },
-            beforeSend: function(){
+            beforeSend: function() {
                 $('.text-loader').text('Aguarde, enviando e-mail...')
                 $('.box-loader').fadeIn(50);
             },
-            success: function(data){
+            success: function(data) {
                 $('.box-loader').hide();
                 $('.text-loader').text('Aguarde...')
                 if (data['type_mensagem'] == 'ERROR') {
                     $('.mensagem-erro').text(data['text_mensagem'])
                     $(".div-erro").slideDown(500)
-                    $(".div-erro").delay(5000).slideUp(500) 
+                    $(".div-erro").delay(5000).slideUp(500)
                 } else if (data['type_mensagem'] == 'SUCESSO') {
                     $('.mensagem-sucesso').text(data['text_mensagem'])
                     $(".div-sucesso").slideDown(500)
-                    $(".div-sucesso").delay(5000).slideUp(500) 
-                }    
+                    $(".div-sucesso").delay(5000).slideUp(500)
+                }
             },
             error: function(data) {
                 $('.box-loader').hide();
@@ -131,11 +130,11 @@ $(document).ready(function(){
                 if (data['type_mensagem'] == 'ERROR') {
                     $('.mensagem-erro').text(data['text_mensagem'])
                     $(".div-erro").slideDown(500)
-                    $(".div-erro").delay(5000).slideUp(500) 
+                    $(".div-erro").delay(5000).slideUp(500)
                 } else if (data['type_mensagem'] == 'SUCESSO') {
                     $('.mensagem-sucesso').text(data['text_mensagem'])
                     $(".div-sucesso").slideDown(500)
-                    $(".div-sucesso").delay(5000).slideUp(500) 
+                    $(".div-sucesso").delay(5000).slideUp(500)
                 }
             },
             error: function(error) {
@@ -144,10 +143,10 @@ $(document).ready(function(){
         });
     });
 
-    $('.js-cliente-faturas').on('click', function () {
+    $('.js-cliente-faturas').on('click', function() {
         var vElementSel = $(this)
         var idobj = $(this).data('idobj')
-        var vElement = $('.cl-'+$(this).data('idobj'))
+        var vElement = $('.cl-' + $(this).data('idobj'))
         if ($(vElement).is(':hidden')) {
             $.ajax({
                 url: '/faturamentos/cliente_fatura',
@@ -164,7 +163,7 @@ $(document).ready(function(){
                     $(vElement).fadeIn(500)
                 },
                 error: function(error) {
-    
+
                 },
             });
         } else {
@@ -173,7 +172,7 @@ $(document).ready(function(){
         }
     });
 
-    
+
 
     if ($('.body-email').height() > $('.body-file').height()) {
         $('.body-file').height($('.body-email').height())
@@ -184,7 +183,7 @@ $(document).ready(function(){
     }
 
 
-    var buscaDados = function(minuta){
+    var buscaDados = function(minuta) {
         var minuta = minuta;
         var idcliente = 9;
 
@@ -195,57 +194,57 @@ $(document).ready(function(){
             data: {
                 minuta: minuta,
             },
-            beforeSend: function(){
-                $('#'+minuta).html("");
+            beforeSend: function() {
+                $('#' + minuta).html("");
             },
-            success: function(data){
-                $('#'+minuta).html(data.html_minuta);
+            success: function(data) {
+                $('#' + minuta).html(data.html_minuta);
             }
         });
     };
 
     var somaFatura = 0.00
 
-    $('.tag-select').each(function(){
+    $('.tag-select').each(function() {
         if ($(this).text() == $('#cod-10004').text()) {
-            somaFatura += parseFloat($(this).attr('valor').replace(',','.'))
-            minuta = $(this).attr('id').substr(6,($(this).attr('id').length)-1);
+            somaFatura += parseFloat($(this).attr('valor').replace(',', '.'))
+            minuta = $(this).attr('id').substr(6, ($(this).attr('id').length) - 1);
             $('.minutas-selecionadas').append('<div class="auto-minuta" id=' + minuta + ' data-sid=' + minuta + '>' + minuta + '</div>');
-            $('.input-cria-fatura').append('<input id="input'+ minuta +'" type="hidden" name="numero-minuta" value='+
-            minuta +'>');
+            $('.input-cria-fatura').append('<input id="input' + minuta + '" type="hidden" name="numero-minuta" value=' +
+                minuta + '>');
             buscaDados(minuta);
         }
-        $('.valor-fatura').val('R$ ' + somaFatura.toFixed(2).replace('.',','));
+        $('.valor-fatura').val('R$ ' + somaFatura.toFixed(2).replace('.', ','));
     });
 
-    $(".tb-select-minuta > tbody > tr > td").on("click", function (e) {
-        var $this = '#'+$(this).attr('id').replace('col2','col1');
-        var $atual =  $this.replace('col1','atual');
-        var minuta = $atual.substr(7,($atual.length)-1);
+    $(".tb-select-minuta > tbody > tr > td").on("click", function(e) {
+        var $this = '#' + $(this).attr('id').replace('col2', 'col1');
+        var $atual = $this.replace('col1', 'atual');
+        var minuta = $atual.substr(7, ($atual.length) - 1);
         if ($($atual).text() == $('#cod-10004').text()) {
-            $('#'+minuta).remove();
-            $('#input'+minuta).remove();
+            $('#' + minuta).remove();
+            $('#input' + minuta).remove();
             $($this).removeClass("checked");
             $($this).toggleClass("nochecked");
             $($atual).text($('#cod-10008').text());
-            somaFatura -= parseFloat($($atual).attr('valor').replace(',','.'));
+            somaFatura -= parseFloat($($atual).attr('valor').replace(',', '.'));
         } else {
             $('.minutas-selecionadas').append('<div class="auto-minuta" id=' + minuta + ' data-sid=' + minuta + '>' + minuta + '</div>');
-            $('.input-cria-fatura').append('<input id="input'+ minuta +'" type="hidden" name="numero-minuta" value='+
-            minuta +'>');
+            $('.input-cria-fatura').append('<input id="input' + minuta + '" type="hidden" name="numero-minuta" value=' +
+                minuta + '>');
             buscaDados(minuta);
             $($this).removeClass("nochecked");
             $($this).toggleClass("checked");
             $($atual).text($('#cod-10004').text());
-            somaFatura += parseFloat($($atual).attr('valor').replace(',','.'));
+            somaFatura += parseFloat($($atual).attr('valor').replace(',', '.'));
         };
-        $('.minutas-selecionadas div').sort(function(a,b){
+        $('.minutas-selecionadas div').sort(function(a, b) {
             return parseInt(a.dataset.sid) > parseInt(b.dataset.sid)
         }).appendTo('.minutas-selecionadas');
-        $('.valor-fatura').val('R$ ' + somaFatura.toFixed(2).replace('.',','));
+        $('.valor-fatura').val('R$ ' + somaFatura.toFixed(2).replace('.', ','));
     });
 
-    var loadForm = function(){
+    var loadForm = function() {
         var obj = $(this);
         var idfatura = $(this).attr("idfatura");
 
@@ -256,11 +255,11 @@ $(document).ready(function(){
             data: {
                 idfatura: idfatura,
             },
-            beforeSend: function(){
+            beforeSend: function() {
                 $("#modal-formulario .modal-content").html("");
                 $("#modal-formulario").modal("show");
             },
-            success: function(data){
+            success: function(data) {
                 $("#modal-formulario .modal-content").html(data.html_form);
             }
         });

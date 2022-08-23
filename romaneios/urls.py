@@ -5,10 +5,12 @@ from .views import (
     adiciona_nota_romaneio,
     adiciona_ocorrencia,
     adiciona_romaneio,
+    carrega_xml,
     edita_nota_cliente,
     edita_romaneio,
     exclui_nota_cliente,
     index_romaneio,
+    ler_nota_xml,
     ocorrencia_nota_cliente,
     seleciona_cliente,
     seleciona_romaneio,
@@ -69,5 +71,15 @@ urlpatterns = [
         "adiciona_nota_romaneio",
         adiciona_nota_romaneio,
         name="adiciona_nota_romaneio",
+    ),
+    path(
+        "ler_nota_xml",
+        ler_nota_xml,
+        name="ler_nota_xml",
+    ),
+    path(
+        "carrega_xml",
+        carrega_xml,
+        name="carrega_xml",
     ),
 ]

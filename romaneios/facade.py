@@ -1,6 +1,8 @@
 import datetime
+import xml.etree.ElementTree as ET
 from cgitb import html
 from decimal import Decimal
+from xml.dom import ValidationErr
 
 from clientes.models import Cliente
 from django.db.models import Max
@@ -442,3 +444,132 @@ def save_nota_romaneio(id_nota, id_romaneio):
     obj.idNotasClientes_id = id_nota
     obj.idRomaneio_id = id_romaneio
     obj.save()
+
+
+def ler_nota_xml(nota):
+    tree = ET.parse(nota)
+    doc = tree.getroot()
+    NFe = "{http://www.portalfiscal.inf.br/nfe}NFe"
+    infNFe = "{http://www.portalfiscal.inf.br/nfe}infNFe"
+    ide = "{http://www.portalfiscal.inf.br/nfe}ide"
+    nNF = "{http://www.portalfiscal.inf.br/nfe}nNF"
+    dest = "{http://www.portalfiscal.inf.br/nfe}dest"
+    xNome = "{http://www.portalfiscal.inf.br/nfe}xNome"
+    enderDest = "{http://www.portalfiscal.inf.br/nfe}enderDest"
+    xLgr = "{http://www.portalfiscal.inf.br/nfe}xLgr"
+    nro = "{http://www.portalfiscal.inf.br/nfe}nro"
+    xCpl = "{http://www.portalfiscal.inf.br/nfe}xCpl"
+    xBairro = "{http://www.portalfiscal.inf.br/nfe}xBairro"
+    xCEP = "{http://www.portalfiscal.inf.br/nfe}CEP"
+    xMun = "{http://www.portalfiscal.inf.br/nfe}xMun"
+    uf = "{http://www.portalfiscal.inf.br/nfe}UF"
+    telefone = "{http://www.portalfiscal.inf.br/nfe}Telefone"
+    infAdic = "{http://www.portalfiscal.inf.br/nfe}infAdic"
+    infCpl = "{http://www.portalfiscal.inf.br/nfe}infCpl"
+    transp = "{http://www.portalfiscal.inf.br/nfe}transp"
+    vol = "{http://www.portalfiscal.inf.br/nfe}vol"
+    qVol = "{http://www.portalfiscal.inf.br/nfe}qVol"
+    pesoB = "{http://www.portalfiscal.inf.br/nfe}pesoB"
+    ICMSTot = "{http://www.portalfiscal.inf.br/nfe}ICMSTot"
+    total = "{http://www.portalfiscal.inf.br/nfe}total"
+    vNF = "{http://www.portalfiscal.inf.br/nfe}vNF"
+    caminho_numero_nf = f"{NFe}/{infNFe}/{ide}/{nNF}"
+    nodefind = doc.find(caminho_numero_nf)
+    if not nodefind is None:
+        numero_nf = nodefind.text
+    else:
+        numero_nf = ""
+    caminho_destinatario = f"{NFe}/{infNFe}/{dest}/{xNome}"
+    nodefind = doc.find(caminho_destinatario)
+    if not nodefind is None:
+        destinatario = nodefind.text
+    else:
+        destinatario = ""
+    caminho_endereco = f"{NFe}/{infNFe}/{dest}/{enderDest}/{xLgr}"
+    nodefind = doc.find(caminho_endereco)
+    if not nodefind is None:
+        endereco = nodefind.text
+    else:
+        endereco = ""
+    caminho_numero = f"{NFe}/{infNFe}/{dest}/{enderDest}/{nro}"
+    nodefind = doc.find(caminho_numero)
+    if not nodefind is None:
+        numero = nodefind.text
+    else:
+        numero = ""
+    caminho_complemento = f"{NFe}/{infNFe}/{dest}/{enderDest}/{xCpl}"
+    nodefind = doc.find(caminho_complemento)
+    if not nodefind is None:
+        complemento = nodefind.text
+        endereco = f"{endereco}, {numero}{complemento}"
+    else:
+        endereco = f"{endereco}, {numero}"
+    caminho_bairro = f"{NFe}/{infNFe}/{dest}/{enderDest}/{xBairro}"
+    nodefind = doc.find(caminho_bairro)
+    if not nodefind is None:
+        bairro = nodefind.text
+    else:
+        bairro = ""
+    caminho_CEP = f"{NFe}/{infNFe}/{dest}/{enderDest}/{xCEP}"
+    nodefind = doc.find(caminho_CEP)
+    if not nodefind is None:
+        cep = nodefind.text
+    else:
+        cep = ""
+    caminho_cidade = f"{NFe}/{infNFe}/{dest}/{enderDest}/{xMun}"
+    nodefind = doc.find(caminho_cidade)
+    if not nodefind is None:
+        cidade = nodefind.text
+    else:
+        cidade = ""
+    caminho_estado = f"{NFe}/{infNFe}/{dest}/{enderDest}/{uf}"
+    nodefind = doc.find(caminho_estado)
+    if not nodefind is None:
+        estado = nodefind.text
+    else:
+        estado = ""
+    caminho_telefone = f"{NFe}/{infNFe}/{dest}/{enderDest}/{telefone}"
+    nodefind = doc.find(caminho_telefone)
+    if not nodefind is None:
+        telefone = nodefind.text
+    else:
+        telefone = ""
+    caminho_info = f"{NFe}/{infNFe}/{infAdic}/{infCpl}"
+    nodefind = doc.find(caminho_info)
+    if not nodefind is None:
+        informa = nodefind.text
+    else:
+        informa = ""
+    caminho_volume = f"{NFe}/{infNFe}/{transp}/{vol}/{qVol}"
+    nodefind = doc.find(caminho_volume)
+    if not nodefind is None:
+        volume = nodefind.text
+    else:
+        volume = 0
+    caminho_peso = f"{NFe}/{infNFe}/{transp}/{vol}/{pesoB}"
+    nodefind = doc.find(caminho_peso)
+    if not nodefind is None:
+        peso = nodefind.text
+    else:
+        peso = 0.000
+    caminho_valor = f"{NFe}/{infNFe}/{total}/{ICMSTot}/{vNF}"
+    nodefind = doc.find(caminho_valor)
+    if not nodefind is None:
+        valor = nodefind.text
+    else:
+        valor = 0.00
+    lista = {
+        "numero_nf": numero_nf,
+        "destinatario": destinatario,
+        "endereco": endereco,
+        "bairro": bairro,
+        "cep": cep,
+        "cidade": cidade,
+        "estado": estado,
+        "telefone": telefone,
+        "informa": informa,
+        "volume": volume,
+        "peso": peso,
+        "valor": valor,
+    }
+    return JsonResponse(lista)

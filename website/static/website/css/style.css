@@ -5006,14 +5006,14 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-lista-notas-cliente .item-nota .item-local {
-    width: 25%;
+    width: 22%;
     padding: 0 5px;
     text-align: left;
     border-top: 1px solid var(--color7);
 }
 
 .card-lista-notas-cliente .item-nota .item-volume {
-    width: 10%;
+    width: 8%;
     text-align: right;
     padding: 0 5px;
     border-top: 1px solid var(--color7);
@@ -5027,7 +5027,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-lista-notas-cliente .item-nota .item-valor {
-    width: 15%;
+    width: 20%;
     text-align: right;
     padding: 0 5px;
     border-top: 1px solid var(--color7);

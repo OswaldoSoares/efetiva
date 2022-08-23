@@ -81,10 +81,11 @@
                     {% if nota_form %}
                     <input class="form-control" type="text"
                     name="numeronota" placeholder="NÚMERO DA NOTA"
-                    value="{{ nota_form.numero_nota }}">
+                    id="numeronota" value="{{ nota_form.numero_nota }}">
                     {% else %}
                     <input class="form-control" type="text"
-                    name="numeronota" placeholder="NÚMERO DA NOTA">
+                    name="numeronota" placeholder="NÚMERO DA NOTA"
+                    id="numeronota">
                     {% endif %}
                 </div>
             </div>
@@ -103,7 +104,7 @@
                     {% if nota_form %}
                     <input class="form-control" type="text" name="destinatario"
                     placeholder="DESTINATÁRIO" list="destinatarios"
-                    value="{{ nota_form.destinatario }}">
+                    id="destinatario" value="{{ nota_form.destinatario }}">
                     <datalist id="destinatarios">
                         {% for dest in destinatarios %}
                         <option value="{{ dest }}">
@@ -111,7 +112,8 @@
                     </datalist>
                     {% else %}
                     <input class="form-control" type="text" name="destinatario"
-                    placeholder="DESTINATÁRIO" list="destinatarios">
+                    placeholder="DESTINATÁRIO" list="destinatarios"
+                    id="destinatario">
                     <datalist id="destinatarios">
                         {% for dest in destinatarios %}
                         <option value="{{ dest }}">
@@ -135,7 +137,7 @@
                     {% if nota_form %}
                     <input class="form-control" type="text" name="endereco"
                     list="enderecos" placeholder="ENDEREÇO"
-                    value="{{ nota_form.endereco }}">
+                    id="endereco" value="{{ nota_form.endereco }}">
                     <datalist id="enderecos">
                         {% for ende in enderecos %}
                         <option value="{{ ende }}">
@@ -143,7 +145,8 @@
                     </datalist>
                     {% else %}
                     <input class="form-control" type="text" name="endereco"
-                    list="enderecos" placeholder="ENDEREÇO">
+                    list="enderecos" placeholder="ENDEREÇO"
+                    id="endereco">
                     <datalist id="enderecos">
                         {% for ende in enderecos %}
                         <option value="{{ ende }}">
@@ -167,10 +170,10 @@
                     {% if nota_form %}
                     <input class="form-control" type="text" maxlength="8"
                     name="cep" placeholder="CEP"
-                    value="{{ nota_form.cep }}">
+                    id="cep" value="{{ nota_form.cep }}">
                     {% else %}
                     <input class="form-control" type="text" maxlength="8"
-                    name="cep" placeholder="CEP">
+                    name="cep" placeholder="CEP" id="cep">
                     {% endif %}
                 </div>
             </div>
@@ -189,7 +192,7 @@
                     {% if nota_form %}
                     <input class="form-control" type="text" name="bairro"
                     list="bairros" placeholder="BAIRRO"
-                    value="{{ nota_form.bairro }}">
+                    id="bairro" value="{{ nota_form.bairro }}">
                     <datalist id="bairros">
                         {% for bair in bairros %}
                         <option value="{{ bair }}">
@@ -197,7 +200,7 @@
                     </datalist>
                     {% else %}
                     <input class="form-control" type="text" name="bairro"
-                    list="bairros" placeholder="BAIRRO">
+                    list="bairros" placeholder="BAIRRO" id="bairro">
                     <datalist id="bairros">
                         {% for bair in bairros %}
                         <option value="{{ bair }}">
@@ -221,10 +224,10 @@
                     {% if nota_form %}
                     <input class="form-control" type="text"
                     name="cidade" value="SÃO PAULO"
-                    value="{{ nota_form.cidade }}">
+                    id="cidade" value="{{ nota_form.cidade }}">
                     {% else %}
                     <input class="form-control" type="text"
-                    name="cidade" value="SÃO PAULO">
+                    name="cidade" value="SÃO PAULO" id="cidade">
                     {% endif %}
                 </div>
             </div>
@@ -242,10 +245,11 @@
                 <div class="item-field">
                     {% if nota_form %}
                     <input class="form-control" type="text"
-                    name="estado" value="{{ nota_form.estado }}">
+                    name="estado" value="{{ nota_form.estado }}"
+                    id="estado">
                     {% else %}
                     <input class="form-control" type="text"
-                    name="estado" value="SP">
+                    name="estado" value="SP" id="estado">
                     {% endif %}
                 </div>
             </div>
@@ -263,10 +267,11 @@
                 <div class="item-field">
                     {% if nota_form %}
                     <input class="form-control" type="text"
-                    name="contato" value="{{ nota_form.contato }}">
+                    name="contato" value="{{ nota_form.contato }}"
+                    id="contato">
                     {% else %}
                     <input class="form-control" type="text"
-                    name="contato" placeholder="CONTATO">
+                    name="contato" placeholder="CONTATO" id="contato">
                     {% endif %}
                 </div>
             </div>
@@ -284,10 +289,12 @@
                 <div class="item-field">
                     {% if nota_form %}
                     <input class="form-control" type="text"
-                    name="informa" value="{{ nota_form.informa }}">
+                    name="informa" value="{{ nota_form.informa }}"
+                    id="informa">
                     {% else %}
                     <input class="form-control" type="text"
-                    name="informa" placeholder="INFORMAÇÕES">
+                    name="informa" placeholder="INFORMAÇÕES"
+                    id="informa">
                     {% endif %}
                 </div>
             </div>
@@ -305,10 +312,11 @@
                 <div class="item-field">
                     {% if nota_form %}
                     <input class="form-control" type="number"
-                    name="volume" step="1.00" value="{{ nota_form.volume }}">
+                    name="volume" step="1.00" value="{{ nota_form.volume }}"
+                    id="volume">
                     {% else %}
                     <input class="form-control" type="number"
-                    name="volume" step="1.00" value="0">
+                    name="volume" step="1.00" value="0" id="volume">
                     {% endif %}
                 </div>
             </div>
@@ -326,10 +334,11 @@
                 <div class="item-field">
                     {% if nota_form %}
                     <input class="form-control" type="number"
-                    name="peso" step="0.001" value="{{ nota_form.peso }}">
+                    name="peso" step="0.001" value="{{ nota_form.peso }}"
+                    id="peso">
                     {% else %}
                     <input class="form-control" type="number"
-                    name="peso" step="0.001" value="0.00">
+                    name="peso" step="0.001" value="0.00" id="peso">
                     {% endif %}
                 </div>
             </div>
@@ -347,10 +356,11 @@
                 <div class="item-field">
                     {% if nota_form %}
                     <input class="form-control" type="number"
-                    name="valor" step="0.01" value="{{ nota_form.valor }}">
+                    name="valor" step="0.01" value="{{ nota_form.valor }}"
+                    id="valor">
                     {% else %}
                     <input class="form-control" type="number"
-                    name="valor" step="0.01" value="0.00">
+                    name="valor" step="0.01" value="0.00" id="valor">
                     {% endif %}
                 </div>
             </div>
@@ -371,4 +381,11 @@
     <div class="article-card-footer">
         <button class="bi bi-save2 i-button body-nota"></button>
     </div>
+</form>
+<form class="file-body js-carrega-xml" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="uploadFile" class="file js-file-xml" id="file-xml" value="">
+    <label for="file-xml" class="bi bi-folder i-button custonBtn radius-left"></label>
+    <span class="filenameTxt js-xmlTxt">Selecionar XML</span>
+    <button type="submit" class="bi bi-cloud-arrow-up i-button custonBtn radius-right"></button>
 </form>
