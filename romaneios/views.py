@@ -11,7 +11,6 @@ def index_romaneio(request):
 
 
 def seleciona_cliente(request):
-    print(request.POST)
     error, msg = facade.valida_seleciona_cliente(request)
     if not error:
         if request.POST:
@@ -74,11 +73,17 @@ def edita_nota_cliente(request):
     cliente = facade.create_contexto_cliente(_id_cli)
     error, msg = False, dict()
     nota_form = facade.read_nota_database(_id_not)
+    destinatarios = facade.lista_destinatarios()
+    enderecos = facade.lista_enderecos()
+    bairros = facade.lista_bairros()
     contexto = {
         "nota_form": nota_form,
         "cliente": cliente,
         "error": error,
         "idcliente": _id_cli,
+        "destinatarios": destinatarios,
+        "enderecos": enderecos,
+        "bairros": bairros,
     }
     contexto.update(msg)
     data = facade.create_data_edita_nota(request, contexto)

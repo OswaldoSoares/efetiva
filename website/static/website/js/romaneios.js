@@ -49,6 +49,7 @@ $(document).on('click', '.js-oculta-body-nota', function() {
     $(".js-mostra-body-nota").show()
     $(".js-oculta-body-nota").hide()
     $(".file-body").hide()
+    LimpaFormNota()
 })
 
 $(document).on('click', '.js-mostra-body-romaneio', function() {
@@ -319,7 +320,7 @@ $(document).on('submit', '.js-carrega-xml', function(event) {
             $("#cep").val(data["cep"])
             $("#cidade").val(data["cidade"])
             $("#estado").val(data["estado"])
-            $("#telefone").val(data["telefone"])
+            $("#contato").val(data["telefone"])
             $("#informa").val(data["informa"])
             $("#volume").val(data["volume"])
             $("#peso").val(data["peso"])
@@ -327,3 +328,25 @@ $(document).on('submit', '.js-carrega-xml', function(event) {
         },
     });
 });
+
+var LimpaFormNota = function() {
+    var hoje = new Date();
+    var dd = String(hoje.getDate()).padStart(2, '0');
+    var mm = String(hoje.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = hoje.getFullYear();
+    hoje = yyyy + '-' + mm + '-' + dd;
+    $("#localcoleta").val("")
+    $("#datacoleta").val(hoje)
+    $("#numeronota").val("")
+    $("#destinatario").val("")
+    $("#endereco").val("")
+    $("#bairro").val("")
+    $("#cep").val("")
+    $("#cidade").val("SÃO PAULO")
+    $("#estado").val("SP")
+    $("#contato").val("")
+    $("#informa").val("")
+    $("#volume").val("0")
+    $("#peso").val("0.00")
+    $("#valor").val("0.00")
+}

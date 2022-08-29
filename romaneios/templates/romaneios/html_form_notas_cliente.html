@@ -60,10 +60,12 @@
                 <div class="item-field">
                     {% if nota_form %}
                     <input class="form-control" type="date"
-                    name="datacoleta" value={{ nota_form.data_coleta }}>
+                    name="datacoleta" id="datacoleta"
+                    value={{ nota_form.data_coleta }}>
                     {% else %}
                     <input class="form-control" type="date"
-                    name="datacoleta" value={{ hoje }}>
+                    name="datacoleta" id="datacoleta"
+                    value={{ hoje }}>
                     {% endif %}
                 </div>
             </div>
@@ -268,8 +270,8 @@
                 <div class="item-field">
                     {% if nota_form %}
                     <input class="form-control" type="text"
-                    name="contato" value="{{ nota_form.contato }}"
-                    id="contato">
+                    name="contato" placeholder="CONTATO" id="contato"
+                    value="{{ nota_form.contato }}">
                     {% else %}
                     <input class="form-control" type="text"
                     name="contato" placeholder="CONTATO" id="contato">
@@ -290,8 +292,8 @@
                 <div class="item-field">
                     {% if nota_form %}
                     <input class="form-control" type="text"
-                    name="informa" value="{{ nota_form.informa }}"
-                    id="informa">
+                    name="informa" placeholder="INFORMAÇÕES"
+                    id="informa" value="{{ nota_form.informa }}">
                     {% else %}
                     <input class="form-control" type="text"
                     name="informa" placeholder="INFORMAÇÕES"
