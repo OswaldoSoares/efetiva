@@ -10,23 +10,28 @@ $(document).on('submit', '.js-seleciona-cliente', function(event) {
             $(".box-loader").show();
         },
         success: function(data) {
-            $(".card-form-notas-cliente").html(data.html_form_notas_cliente)
-            $(".card-form-notas-cliente").show()
-            $(".card-form-romaneios").html(data.html_form_romaneios)
-            $(".card-form-romaneios").show()
-            $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente)
-            $(".card-lista-notas-cliente").show()
-            $(".card-lista-romaneios").html(data.html_lista_romaneios)
-            $(".card-lista-romaneios").show()
-            $(".mostra-body-nota").show()
-            $(".body-nota").hide()
-            $(".js-oculta-body-nota").hide()
-            $(".file-body").hide()
-            $(".mostra-body-romaneio").show()
-            $(".body-romaneio").hide()
-            $(".js-oculta-body-romaneio").hide()
-            $(".js-adiciona-nota-romaneio").hide()
-                //CarregaMask()
+            console.log(data)
+            if (data.html_form_seleciona_cliente) {
+                $(".card-romaneios-cliente").html(data.html_form_seleciona_cliente)
+                $(".card-romaneios-cliente").show()
+            } else {
+                $(".card-form-notas-cliente").html(data.html_form_notas_cliente)
+                $(".card-form-notas-cliente").show()
+                $(".card-form-romaneios").html(data.html_form_romaneios)
+                $(".card-form-romaneios").show()
+                $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente)
+                $(".card-lista-notas-cliente").show()
+                $(".card-lista-romaneios").html(data.html_lista_romaneios)
+                $(".card-lista-romaneios").show()
+                $(".mostra-body-nota").show()
+                $(".body-nota").hide()
+                $(".js-oculta-body-nota").hide()
+                $(".file-body").hide()
+                $(".mostra-body-romaneio").show()
+                $(".body-romaneio").hide()
+                $(".js-oculta-body-romaneio").hide()
+                $(".js-adiciona-nota-romaneio").hide()
+            }
             $(".box-loader").hide();
         },
     });

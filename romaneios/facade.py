@@ -113,6 +113,16 @@ def create_contexto_cliente(id_cli):
     return cliente.Fantasia
 
 
+def valida_seleciona_cliente(request):
+    msg = dict()
+    error = False
+    seleciona = request.POST.get("cliente")
+    if seleciona == "0":
+        msg["erro_seleciona"] = "Obrigatório selecionar um cliente."
+        error = True
+    return error, msg
+
+
 def valida_notas_cliente(request):
     msg = dict()
     error = False
@@ -133,6 +143,19 @@ def valida_ocorrencia(request):
         msg["erro_tipo_ocorrencia"] = "Obrigatório selecionar o tipo de ocorrencia."
         error = True
     return error, msg
+
+
+def create_data_seleciona_cliente(request, contexto):
+    data = dict()
+    html_form_seleciona_cliente(request, contexto, data)
+    return JsonResponse(data)
+
+
+def html_form_seleciona_cliente(request, contexto, data):
+    data["html_form_seleciona_cliente"] = render_to_string(
+        "romaneios/html_form_seleciona_cliente.html", contexto, request=request
+    )
+    return data
 
 
 def create_data_cliente_selecionado(request, contexto):

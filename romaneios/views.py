@@ -11,31 +11,39 @@ def index_romaneio(request):
 
 
 def seleciona_cliente(request):
-    if request.POST:
-        id_cli = request.POST.get("cliente")
+    print(request.POST)
+    error, msg = facade.valida_seleciona_cliente(request)
+    if not error:
+        if request.POST:
+            id_cli = request.POST.get("cliente")
+        else:
+            id_cli = request.GET.get("cliente")
+        notas = facade.create_contexto_seleciona_notas(id_cli, "-NumeroNota")
+        cliente = facade.create_contexto_cliente(id_cli)
+        hoje = facade.hoje
+        destinatarios = facade.lista_destinatarios()
+        enderecos = facade.lista_enderecos()
+        bairros = facade.lista_bairros()
+        contexto = {
+            "notas": notas,
+            "cliente": cliente,
+            "hoje": hoje,
+            "idcliente": id_cli,
+            "destinatarios": destinatarios,
+            "enderecos": enderecos,
+            "bairros": bairros,
+        }
+        romaneios = facade.create_contexto_romaneios()
+        contexto.update({"romaneios": romaneios})
+        motoristas = motoristas_disponiveis()
+        veiculos = filtra_veiculo("17", "TRANSPORTADORA")
+        contexto.update({"motoristas": motoristas, "veiculos": veiculos})
+        data = facade.create_data_cliente_selecionado(request, contexto)
     else:
-        id_cli = request.GET.get("cliente")
-    destinatarios = facade.lista_destinatarios()
-    enderecos = facade.lista_enderecos()
-    bairros = facade.lista_bairros()
-    notas = facade.create_contexto_seleciona_notas(id_cli, "-NumeroNota")
-    cliente = facade.create_contexto_cliente(id_cli)
-    hoje = facade.hoje
-    contexto = {
-        "notas": notas,
-        "cliente": cliente,
-        "hoje": hoje,
-        "idcliente": id_cli,
-        "destinatarios": destinatarios,
-        "enderecos": enderecos,
-        "bairros": bairros,
-    }
-    romaneios = facade.create_contexto_romaneios()
-    contexto.update({"romaneios": romaneios})
-    motoristas = motoristas_disponiveis()
-    veiculos = filtra_veiculo("17", "TRANSPORTADORA")
-    contexto.update({"motoristas": motoristas, "veiculos": veiculos})
-    data = facade.create_data_cliente_selecionado(request, contexto)
+        clientes = facade.create_contexto_seleciona_cliente()
+        contexto = {"clientes": clientes, "error": error}
+        contexto.update(msg)
+        data = facade.create_data_seleciona_cliente(request, contexto)
     return data
 
 
