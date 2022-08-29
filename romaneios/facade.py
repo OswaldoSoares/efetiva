@@ -363,11 +363,10 @@ def create_contexto_romaneios():
 
 
 def create_contexto_notas_romaneio(id_rom):
-    notas_romaneio = RomaneioNotas.objects.filter(idRomaneioNotas=id_rom)
+    notas_romaneio = RomaneioNotas.objects.filter(idRomaneio=id_rom)
     lista = [
         {
             "idromaneionotas": x.idRomaneioNotas,
-            "idromaneio": x.idRomaneio,
             "idnotasclientes": x.idNotasClientes,
         }
         for x in notas_romaneio
@@ -405,10 +404,6 @@ def create_contexto_seleciona_romaneio(id_rom):
             if lista[index]["motorista"]:
                 lista[index]["apelido"] = nome_curto(lista[index]["motorista"].Nome)
     return lista
-
-
-def seleciona_notas_romaneio(request):
-    pass
 
 
 def lista_destinatarios():

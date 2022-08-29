@@ -34,11 +34,33 @@
         </div>
     </div>
     {% endfor %}
+    {% for nr in notas_romaneio %}
+    <div class="item-nr">
+        <div class="item-numero-nota" title="Numero da Nota">
+            <i class="bi bi-file-text i-button-null"></i> {{ nr.idnotasclientes.NumeroNota }}
+        </div>
+    </div>
+    <div class="item-nr">
+        <div class="item-destinatario" title="Destinatario">
+            <i class="bi bi-shop i-button-null"></i> {{ nr.idnotasclientes.Destinatario|slice:"0:32" }}
+        </div>
+    </div>
+    <div class="item-nr">
+        <div class="item-endereco" title="Endereço">
+            <i class="bi bi-geo-alt i-button-null"></i> {{ nr.idnotasclientes.Endereco|slice:"0:32" }}
+        </div>
+    </div>
+    <div class="item-nr">
+        <div class="item-endereco-compl" title="Bairro-Cidade">
+            <i class="bi bi-geo-alt i-button-null"></i> {{ nr.idnotasclientes.Bairro|slice:"0:18" }} - {{ nr.idnotasclientes.Cidade }}
+        </div>
+    </div>
+    {% endfor %}
 </div>
 <div class="article-card-footer">
-    {% for rom in romaneios %}
+    {% for rom in notas_romaneio %}
     {% if forloop.last %}
-    <span><b>{{ forloop.counter|stringformat:"02d" }} ROMANEIO{{ forloop.counter|pluralize|upper }}</b></span>
+    <span><b>{{ forloop.counter|stringformat:"02d" }} ENTREGA{{ forloop.counter|pluralize|upper }}</b></span>
     {% endif %}
     {% endfor %}
 </div>

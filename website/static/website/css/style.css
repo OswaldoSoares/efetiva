@@ -5197,6 +5197,7 @@ main .fp-recibo-tabela .fp-recibo-print {
     width: 60%;
     text-align: left;
     padding: 0 5px;
+    border-bottom: 1px solid var(--color7);
 }
 
 .card-lista-notas-romaneio .item-romaneio .item-veiculo,
@@ -5204,6 +5205,41 @@ main .fp-recibo-tabela .fp-recibo-print {
     width: 40%;
     text-align: right;
     padding: 0 5px;
+    border-bottom: 1px solid var(--color7);
+}
+
+.card-lista-notas-romaneio .item-nr {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    color: var(--color6);
+}
+
+.card-lista-notas-romaneio .item-nr .item-numero-nota {
+    width: 100%;
+    text-align: left;
+    padding: 0 5px;
+}
+
+.card-lista-notas-romaneio .item-nr .item-destinatario {
+    width: 100%;
+    text-align: left;
+    padding: 0 5px;
+}
+
+.card-lista-notas-romaneio .item-nr .item-endereco {
+    width: 100%;
+    text-align: left;
+    padding: 0 5px;
+}
+
+.card-lista-notas-romaneio .item-nr .item-endereco-compl {
+    width: 100%;
+    text-align: left;
+    padding: 0 5px;
+    border-bottom: 1px solid var(--color7);
 }
 
 .card-categoria,

@@ -144,7 +144,12 @@ def seleciona_romaneio(request):
     id_rom = request.GET.get("idRomaneio")
     not_rom = facade.create_contexto_notas_romaneio(id_rom)
     romaneio = facade.create_contexto_seleciona_romaneio(id_rom)
-    contexto = {"notas_romaneio": not_rom, "romaneios": romaneio}
+    # notas_romaneio = facade.create_contexto_seleciona_notas_romaneio(id_rom)
+    contexto = {
+        "notas_romaneio": not_rom,
+        "romaneios": romaneio,
+        # "notas_romaneio": notas_romaneio,
+    }
     data = facade.create_data_lista_notas_romaneio(request, contexto)
     return data
 
@@ -155,7 +160,12 @@ def adiciona_nota_romaneio(request):
     facade.save_nota_romaneio(id_not, id_rom)
     not_rom = facade.create_contexto_notas_romaneio(id_rom)
     romaneio = facade.create_contexto_seleciona_romaneio(id_rom)
-    contexto = {"notas_romaneio": not_rom, "romaneios": romaneio}
+    # notas_romaneio = facade.create_contexto_seleciona_notas_romaneio(id_rom)
+    contexto = {
+        "notas_romaneio": not_rom,
+        "romaneios": romaneio,
+        # "notas_romaneio": notas_romaneio,
+    }
     data = facade.create_data_lista_notas_romaneio(request, contexto)
     return data
 
