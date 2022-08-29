@@ -6,8 +6,7 @@ from romaneios import facade
 
 def index_romaneio(request):
     clientes = facade.create_contexto_seleciona_cliente()
-    romaneios = facade.create_contexto_romaneios()
-    contexto = {"clientes": clientes, "romaneios": romaneios}
+    contexto = {"clientes": clientes}
     return render(request, "romaneios/index.html", contexto)
 
 
@@ -31,6 +30,8 @@ def seleciona_cliente(request):
         "enderecos": enderecos,
         "bairros": bairros,
     }
+    romaneios = facade.create_contexto_romaneios()
+    contexto.update({"romaneios": romaneios})
     motoristas = motoristas_disponiveis()
     veiculos = filtra_veiculo("17", "TRANSPORTADORA")
     contexto.update({"motoristas": motoristas, "veiculos": veiculos})
@@ -144,11 +145,9 @@ def seleciona_romaneio(request):
     id_rom = request.GET.get("idRomaneio")
     not_rom = facade.create_contexto_notas_romaneio(id_rom)
     romaneio = facade.create_contexto_seleciona_romaneio(id_rom)
-    # notas_romaneio = facade.create_contexto_seleciona_notas_romaneio(id_rom)
     contexto = {
         "notas_romaneio": not_rom,
         "romaneios": romaneio,
-        # "notas_romaneio": notas_romaneio,
     }
     data = facade.create_data_lista_notas_romaneio(request, contexto)
     return data
@@ -160,11 +159,9 @@ def adiciona_nota_romaneio(request):
     facade.save_nota_romaneio(id_not, id_rom)
     not_rom = facade.create_contexto_notas_romaneio(id_rom)
     romaneio = facade.create_contexto_seleciona_romaneio(id_rom)
-    # notas_romaneio = facade.create_contexto_seleciona_notas_romaneio(id_rom)
     contexto = {
         "notas_romaneio": not_rom,
         "romaneios": romaneio,
-        # "notas_romaneio": notas_romaneio,
     }
     data = facade.create_data_lista_notas_romaneio(request, contexto)
     return data

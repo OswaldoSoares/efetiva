@@ -4,6 +4,9 @@
 </div>
 <div class="article-card-body">
     {% for rom in romaneios %}
+    {% if forloop.first %}
+    <div class="borda-top"></div>
+    {% endif %}
     <div class="item-romaneio">
         <div class="item-numero" title="Número Romaneio">
             <i class="bi bi-file-text i-button-null"></i> {{ rom.romaneio }}

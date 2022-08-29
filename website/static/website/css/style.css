@@ -16,6 +16,7 @@
     --color6: white;
     --color7: #696969;
     --color8: #F5DEB3;
+    --color9: black;
 }
 
 
@@ -4995,56 +4996,54 @@ main .fp-recibo-tabela .fp-recibo-print {
     width: 15%;
     text-align: left;
     padding: 0 5px;
-    border-top: 1px solid var(--color7);
+    border-top: 1px solid var(--color9);
 }
 
 .card-lista-notas-cliente .item-nota .item-data {
     width: 20%;
     text-align: center;
     padding: 0 5px;
-    border-top: 1px solid var(--color7);
+    border-top: 1px solid var(--color9);
 }
 
 .card-lista-notas-cliente .item-nota .item-local {
     width: 22%;
     padding: 0 5px;
     text-align: left;
-    border-top: 1px solid var(--color7);
+    border-top: 1px solid var(--color9);
 }
 
 .card-lista-notas-cliente .item-nota .item-volume {
     width: 8%;
     text-align: right;
     padding: 0 5px;
-    border-top: 1px solid var(--color7);
+    border-top: 1px solid var(--color9);
 }
 
 .card-lista-notas-cliente .item-nota .item-peso {
     width: 15%;
     text-align: right;
     padding: 0 5px;
-    border-top: 1px solid var(--color7);
+    border-top: 1px solid var(--color9);
 }
 
 .card-lista-notas-cliente .item-nota .item-valor {
     width: 20%;
     text-align: right;
     padding: 0 5px;
-    border-top: 1px solid var(--color7);
+    border-top: 1px solid var(--color9);
 }
 
 .card-lista-notas-cliente .item-nota .item-destinatario {
     width: 80%;
     text-align: left;
     padding: 0 5px;
-    /* border-top: 1px solid var(--color7); */
 }
 
 .card-lista-notas-cliente .item-nota .item-endereco {
     width: 100%;
     text-align: left;
     padding: 0 5px;
-    /* border-top: 1px solid var(--color7); */
 }
 
 .card-lista-notas-cliente .item-nota .item-button {
@@ -5071,56 +5070,54 @@ main .fp-recibo-tabela .fp-recibo-print {
     width: 15%;
     text-align: left;
     padding: 0 5px;
-    border-top: 1px solid var(--color7);
+    border-top: 1px solid var(--color9);
 }
 
 .card-lista-ocorrencia .item-nota .item-data {
     width: 20%;
     text-align: center;
     padding: 0 5px;
-    border-top: 1px solid var(--color7);
+    border-top: 1px solid var(--color9);
 }
 
 .card-lista-ocorrencia .item-nota .item-local {
     width: 25%;
     padding: 0 5px;
     text-align: left;
-    border-top: 1px solid var(--color7);
+    border-top: 1px solid var(--color9);
 }
 
 .card-lista-ocorrencia .item-nota .item-volume {
     width: 10%;
     text-align: right;
     padding: 0 5px;
-    border-top: 1px solid var(--color7);
+    border-top: 1px solid var(--color9);
 }
 
 .card-lista-ocorrencia .item-nota .item-peso {
     width: 15%;
     text-align: right;
     padding: 0 5px;
-    border-top: 1px solid var(--color7);
+    border-top: 1px solid var(--color9);
 }
 
 .card-lista-ocorrencia .item-nota .item-valor {
     width: 15%;
     text-align: right;
     padding: 0 5px;
-    border-top: 1px solid var(--color7);
+    border-top: 1px solid var(--color9);
 }
 
 .card-lista-ocorrencia .item-nota .item-destinatario {
     width: 80%;
     text-align: left;
     padding: 0 5px;
-    /* border-top: 1px solid var(--color7); */
 }
 
 .card-lista-ocorrencia .item-nota .item-endereco {
     width: 100%;
     text-align: left;
     padding: 0 5px;
-    /* border-top: 1px solid var(--color7); */
 }
 
 .card-lista-ocorrencia .item-nota .item-button {
@@ -5173,7 +5170,6 @@ main .fp-recibo-tabela .fp-recibo-print {
     width: 30%;
     text-align: left;
     padding: 0 5px;
-    border-top: 1px solid var(--color7);
 }
 
 .card-lista-notas-romaneio .item-romaneio .item-data,
@@ -5181,7 +5177,6 @@ main .fp-recibo-tabela .fp-recibo-print {
     width: 50%;
     text-align: center;
     padding: 0 5px;
-    border-top: 1px solid var(--color7);
 }
 
 .card-lista-notas-romaneio .item-romaneio .item-button,
@@ -5189,7 +5184,6 @@ main .fp-recibo-tabela .fp-recibo-print {
     width: 20%;
     text-align: center;
     padding: 0 5px;
-    border-top: 1px solid var(--color7);
 }
 
 .card-lista-notas-romaneio .item-romaneio .item-motorista,
@@ -5197,7 +5191,7 @@ main .fp-recibo-tabela .fp-recibo-print {
     width: 60%;
     text-align: left;
     padding: 0 5px;
-    border-bottom: 1px solid var(--color7);
+    border-bottom: 1px solid var(--color9);
 }
 
 .card-lista-notas-romaneio .item-romaneio .item-veiculo,
@@ -5205,7 +5199,7 @@ main .fp-recibo-tabela .fp-recibo-print {
     width: 40%;
     text-align: right;
     padding: 0 5px;
-    border-bottom: 1px solid var(--color7);
+    border-bottom: 1px solid var(--color9);
 }
 
 .card-lista-notas-romaneio .item-nr {
@@ -5215,6 +5209,10 @@ main .fp-recibo-tabela .fp-recibo-print {
     align-items: center;
     justify-content: center;
     color: var(--color6);
+}
+
+.linha-p {
+    background-color: #484848;
 }
 
 .card-lista-notas-romaneio .item-nr .item-numero-nota {
@@ -5239,7 +5237,18 @@ main .fp-recibo-tabela .fp-recibo-print {
     width: 100%;
     text-align: left;
     padding: 0 5px;
-    border-bottom: 1px solid var(--color7);
+    border-bottom: 1px solid var(--color9);
+}
+
+.borda-top,
+.borda-bottom {
+    width: 100%;
+    height: 1px;
+    background-color: var(--color9);
+}
+
+.titulo-retrai-card {
+    padding-left: 10px;
 }
 
 .card-categoria,

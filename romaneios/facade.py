@@ -140,7 +140,15 @@ def create_data_cliente_selecionado(request, contexto):
     html_lista_notas_cliente(request, contexto, data)
     html_form_notas_cliente(request, contexto, data)
     html_form_romaneios(request, contexto, data)
+    html_lista_romaneios(request, contexto, data)
     return JsonResponse(data)
+
+
+def html_lista_romaneios(request, contexto, data):
+    data["html_lista_romaneios"] = render_to_string(
+        "romaneios/html_lista_romaneios.html", contexto, request=request
+    )
+    return data
 
 
 def create_data_ocorrencia_selecionada(request, contexto):

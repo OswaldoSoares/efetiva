@@ -1,8 +1,9 @@
 <form class="js-gera-notas-cliente" method="post" action="">
     {% csrf_token %}
     <div class="article-card-titulo">
-        <i class="bi bi-plus-circle i-button js-mostra-body-nota"> {{ cliente }}</i>
-        <i class="bi bi-dash-circle i-button js-oculta-body-nota"> {{ cliente }}</i>
+        <i class="bi bi-plus-circle i-button js-mostra-body-nota"></i>
+        <i class="bi bi-dash-circle i-button js-oculta-body-nota"></i>
+        <span class="titulo-retrai-card">{{ cliente }}</span>
     </div>
     <div class="article-card-body body-nota">
         <div class="item-nota">

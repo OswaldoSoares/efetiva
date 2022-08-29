@@ -49,14 +49,17 @@
             <i class="bi bi-activity i-button-null"></i> {{ nota.statusnota }}
         </div>
     </div>
-        {% if nota.informa %}
-            <div class="item-nota">
-                <div class="item-endereco" title="Informações">
-                    <i class="bi bi-info-square i-button-null"
-                    title="Informações"></i> {{ nota.informa }}
-                </div>
+    {% if nota.informa %}
+        <div class="item-nota">
+            <div class="item-endereco" title="Informações">
+                <i class="bi bi-info-square i-button-null"
+                title="Informações"></i> {{ nota.informa }}
             </div>
-        {% endif %}
+        </div>
+    {% endif %}
+    {% if forloop.last %}
+    <div class="borda-bottom"></div>
+    {% endif %}
     {% endfor %}
     {% for ocorrencia in ocorrencias %}
     <div class="item-ocorrencia">

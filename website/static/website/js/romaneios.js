@@ -16,9 +16,12 @@ $(document).on('submit', '.js-seleciona-cliente', function(event) {
             $(".card-form-romaneios").show()
             $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente)
             $(".card-lista-notas-cliente").show()
+            $(".card-lista-romaneios").html(data.html_lista_romaneios)
+            $(".card-lista-romaneios").show()
             $(".mostra-body-nota").show()
             $(".body-nota").hide()
             $(".js-oculta-body-nota").hide()
+            $(".file-body").hide()
             $(".mostra-body-romaneio").show()
             $(".body-romaneio").hide()
             $(".js-oculta-body-romaneio").hide()
@@ -33,12 +36,14 @@ $(document).on('click', '.js-mostra-body-nota', function() {
     $(".body-nota").show()
     $(".js-mostra-body-nota").hide()
     $(".js-oculta-body-nota").show()
+    $(".file-body").show()
 })
 
 $(document).on('click', '.js-oculta-body-nota', function() {
     $(".body-nota").hide()
     $(".js-mostra-body-nota").show()
     $(".js-oculta-body-nota").hide()
+    $(".file-body").hide()
 })
 
 $(document).on('click', '.js-mostra-body-romaneio', function() {
