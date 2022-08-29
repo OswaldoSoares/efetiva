@@ -62,6 +62,7 @@ $(document).on('click', '.js-oculta-body-romaneio', function() {
     $(".body-romaneio").hide()
     $(".js-mostra-body-romaneio").show()
     $(".js-oculta-body-romaneio").hide()
+    LimpaFormRomaneio()
 })
 
 $(document).on('submit', '.js-gera-notas-cliente', function(event) {
@@ -330,11 +331,7 @@ $(document).on('submit', '.js-carrega-xml', function(event) {
 });
 
 var LimpaFormNota = function() {
-    var hoje = new Date();
-    var dd = String(hoje.getDate()).padStart(2, '0');
-    var mm = String(hoje.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = hoje.getFullYear();
-    hoje = yyyy + '-' + mm + '-' + dd;
+    hoje = Hoje()
     $("#localcoleta").val("")
     $("#datacoleta").val(hoje)
     $("#numeronota").val("")
@@ -349,4 +346,20 @@ var LimpaFormNota = function() {
     $("#volume").val("0")
     $("#peso").val("0.00")
     $("#valor").val("0.00")
+}
+
+var LimpaFormRomaneio = function() {
+    hoje = Hoje()
+    $("#data_romaneio").val(hoje)
+    $("#motorista").val("")
+    $("#veiculo").val("")
+}
+
+var Hoje = function() {
+    var hoje = new Date();
+    var dd = String(hoje.getDate()).padStart(2, '0');
+    var mm = String(hoje.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = hoje.getFullYear();
+    hoje = yyyy + '-' + mm + '-' + dd;
+    return hoje
 }
