@@ -10,7 +10,6 @@ $(document).on('submit', '.js-seleciona-cliente', function(event) {
             $(".box-loader").show();
         },
         success: function(data) {
-            console.log(data)
             if (data.html_form_seleciona_cliente) {
                 $(".card-romaneios-cliente").html(data.html_form_seleciona_cliente)
                 $(".card-romaneios-cliente").show()
@@ -283,6 +282,29 @@ $(document).on('click', '.js-retorna-lista-notas', function() {
             $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente)
             $(".card-lista-notas-cliente").show()
             $(".js-adiciona-nota-romaneio").hide()
+                //CarregaMask()
+            $(".box-loader").hide();
+        },
+    });
+});
+
+$(document).on('click', '.js-sort-notas', function() {
+    var _id_cliente = $(this).data("idcliente")
+    var _sort = $(this).data("sort")
+    $.ajax({
+        type: 'GET',
+        url: '/romaneios/orderna_notas',
+        data: {
+            cliente: _id_cliente,
+            sort: _sort,
+        },
+        beforeSend: function() {
+            $(".card-lista-notas-cliente").hide()
+            $(".box-loader").show();
+        },
+        success: function(data) {
+            $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente)
+            $(".card-lista-notas-cliente").show()
                 //CarregaMask()
             $(".box-loader").hide();
         },

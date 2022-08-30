@@ -5022,6 +5022,15 @@ main .fp-recibo-tabela .fp-recibo-print {
     width: 660px;
 }
 
+.card-lista-notas-cliente .sort-notas {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    padding: 0 50px;
+    border-top: 1px solid var(--color9)
+}
+
 .card-lista-notas-cliente .item-nota {
     width: 100%;
     display: flex;

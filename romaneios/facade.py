@@ -33,7 +33,8 @@ def create_contexto_seleciona_notas(id_cli, sort_nota):
             "data_coleta": x.DataColeta,
             "numero_nota": x.NumeroNota,
             "destinatario": x.Destinatario,
-            "endereco": x.Endereco
+            "endereco": x.Endereco,
+            "endereco_compl": x.Endereco
             + " "
             + x.Bairro
             + " "
@@ -44,6 +45,10 @@ def create_contexto_seleciona_notas(id_cli, sort_nota):
             + x.Cidade
             + " "
             + x.Estado,
+            "bairro": x.Bairro,
+            "cep": x.CEP[0:5] + "-" + x.CEP[5:],
+            "cidade": x.Cidade,
+            "estado": x.Estado,
             "contato": x.Contato,
             "informa": x.Informa,
             "volume": x.Volume,
@@ -164,6 +169,12 @@ def create_data_cliente_selecionado(request, contexto):
     html_form_notas_cliente(request, contexto, data)
     html_form_romaneios(request, contexto, data)
     html_lista_romaneios(request, contexto, data)
+    return JsonResponse(data)
+
+
+def create_data_sort_notas(request, contexto):
+    data = dict()
+    html_lista_notas_cliente(request, contexto, data)
     return JsonResponse(data)
 
 

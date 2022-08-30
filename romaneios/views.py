@@ -188,3 +188,12 @@ def carrega_xml(request):
     file = request.FILES["uploadFile"]
     dados = facade.ler_nota_xml(file)
     return dados
+
+
+def orderna_notas(request):
+    id_cli = request.GET.get("cliente")
+    sort_nota = request.GET.get("sort")
+    notas = facade.create_contexto_seleciona_notas(id_cli, sort_nota)
+    contexto = {"notas": notas, "idcliente": id_cli}
+    data = facade.create_data_sort_notas(request, contexto)
+    return data

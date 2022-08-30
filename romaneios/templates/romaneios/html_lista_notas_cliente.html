@@ -3,10 +3,35 @@
     <span>NOTAS</span>
 </div>
 <div class="article-card-body">
+    <div class="sort-notas">
+        <span class="i-button js-sort-notas"
+        data-idcliente="{{ idcliente }}"
+        data-sort="NumeroNota">NOTA</span>
+        <span class="i-button js-sort-notas"
+        data-idcliente="{{ idcliente }}"
+        data-sort="Destinatario">DESTINATARIO</span>
+        <span class="i-button js-sort-notas"
+        data-idcliente="{{ idcliente }}"
+        data-sort="Endereco">ENDEREÇO</span>
+        <span class="i-button js-sort-notas"
+        data-idcliente="{{ idcliente }}"
+        data-sort="Bairro">BAIRRO</span>
+        <span class="i-button js-sort-notas"
+        data-idcliente="{{ idcliente }}"
+        data-sort="CEP">CEP</span>
+        <span class="i-button js-sort-notas"
+        data-idcliente="{{ idcliente }}"
+        data-sort="Cidade">CIDADE</span>
+        <span class="i-button js-sort-notas"
+        data-idcliente="{{ idcliente }}"
+        data-sort="Estado">ESTADO</span>
+    </div>
     {% for nota in notas %}
     <div class="item-nota {% cycle 'linha-p' 'linha-i' %}">
         <div class="item-numero" title="Número Nota">
-            <i class="bi bi-file-text i-button-null"></i> {{ nota.numero_nota }}
+            <i class="bi bi-file-text i-button js-sort-nota"
+            data-idcliente="{{ rom.idcliente }}"
+            data-sort="{{ NumeroNota }}"></i> {{ nota.numero_nota }}
         </div>
         <div class="item-data" title="Data da Coleta">
             <i class="bi bi-calendar i-button-null"></i> {{ nota.data_coleta }}
@@ -26,7 +51,9 @@
     </div>
     <div class="item-nota {% cycle 'linha-p' 'linha-i' %}">
         <div class="item-destinatario" title="Destinatário">
-            <i class="bi bi-shop i-button-null"></i> {{ nota.destinatario }}
+            <i class="bi bi-shop i-button js-sort-nota"
+            data-idcliente="{{ rom.idcliente }}"
+            data-sort="{{ Destinatario }}"></i> {{ nota.destinatario }}
             {% if nota.contato %}
             <i class="bi bi-person-badge i-button-null"></i> {{ nota.contato }}
             {% endif %}
@@ -51,7 +78,8 @@
     </div>
     <div class="item-nota {% cycle 'linha-p' 'linha-i' %}">
         <div class="item-endereco" title="Endereço">
-            <i class="bi bi-geo-alt i-button-null"></i> {{ nota.endereco }}
+            <i class="bi bi-geo-alt i-button-null"></i> {{ nota.endereco_compl }}
+
         </div>
         <div class="item-button" title="Status">
             <i class="bi bi-activity i-button-null"></i> {{ nota.statusnota }}

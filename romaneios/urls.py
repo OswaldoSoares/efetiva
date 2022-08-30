@@ -12,6 +12,7 @@ from .views import (
     index_romaneio,
     ler_nota_xml,
     ocorrencia_nota_cliente,
+    orderna_notas,
     seleciona_cliente,
     seleciona_romaneio,
 )
@@ -81,5 +82,10 @@ urlpatterns = [
         "carrega_xml",
         carrega_xml,
         name="carrega_xml",
+    ),
+    path(
+        "orderna_notas",
+        orderna_notas,
+        name="orderna_notas",
     ),
 ]
