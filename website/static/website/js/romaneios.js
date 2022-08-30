@@ -213,7 +213,6 @@ $(document).on('click', '.js-seleciona-romaneio', function() {
             $(".card-lista-notas-romaneio").html(data.html_lista_notas_romaneio)
             $(".card-lista-notas-romaneio").show()
             $(".js-adiciona-nota-romaneio").show()
-                // CarregaMask()
             $(".box-loader").hide();
         },
     });
@@ -227,13 +226,39 @@ $(document).on('click', '.js-adiciona-nota-romaneio', function() {
         url: '/romaneios/adiciona_nota_romaneio',
         data: {
             idNota: _id_nota,
-            idRomaneio: _id_romaneio
+            idRomaneio: _id_romaneio,
         },
         beforeSend: function() {
-
+            $(".card-lista-notas-romaneio").hide()
+            $(".box-loader").show()
         },
         success: function(data) {
+            $(".card-lista-notas-romaneio").html(data.html_lista_notas_romaneio)
+            $(".card-lista-notas-romaneio").show()
+            $(".box-loader").hide()
 
+        },
+    });
+});
+
+$(document).on('click', '.js-exclui-nota-romaneio', function() {
+    var _id_romaneio_nota = $(this).data("idromaneionotas")
+    var _id_romaneio = $('#id_romaneio').val()
+    $.ajax({
+        type: 'GET',
+        url: '/romaneios/exclui_nota_romaneio',
+        data: {
+            idRomaneioNota: _id_romaneio_nota,
+            idRomaneio: _id_romaneio,
+        },
+        beforeSend: function() {
+            $(".card-lista-notas-romaneio").hide()
+            $(".box-loader").show()
+        },
+        success: function(data) {
+            $(".card-lista-notas-romaneio").html(data.html_lista_notas_romaneio)
+            $(".card-lista-notas-romaneio").show()
+            $(".box-loader").hide()
         },
     });
 });

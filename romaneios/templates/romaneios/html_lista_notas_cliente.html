@@ -29,9 +29,7 @@
     {% for nota in notas %}
     <div class="item-nota {% cycle 'linha-p' 'linha-i' %}">
         <div class="item-numero" title="Número Nota">
-            <i class="bi bi-file-text i-button js-sort-nota"
-            data-idcliente="{{ rom.idcliente }}"
-            data-sort="{{ NumeroNota }}"></i> {{ nota.numero_nota }}
+            <i class="bi bi-file-text i-button-null"></i> {{ nota.numero_nota }}
         </div>
         <div class="item-data" title="Data da Coleta">
             <i class="bi bi-calendar i-button-null"></i> {{ nota.data_coleta }}
@@ -51,9 +49,7 @@
     </div>
     <div class="item-nota {% cycle 'linha-p' 'linha-i' %}">
         <div class="item-destinatario" title="Destinatário">
-            <i class="bi bi-shop i-button js-sort-nota"
-            data-idcliente="{{ rom.idcliente }}"
-            data-sort="{{ Destinatario }}"></i> {{ nota.destinatario }}
+            <i class="bi bi-shop i-button-null"></i> {{ nota.destinatario }}
             {% if nota.contato %}
             <i class="bi bi-person-badge i-button-null"></i> {{ nota.contato }}
             {% endif %}

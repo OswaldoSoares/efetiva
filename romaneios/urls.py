@@ -9,6 +9,7 @@ from .views import (
     edita_nota_cliente,
     edita_romaneio,
     exclui_nota_cliente,
+    exclui_nota_romaneio,
     index_romaneio,
     ler_nota_xml,
     ocorrencia_nota_cliente,
@@ -87,5 +88,10 @@ urlpatterns = [
         "orderna_notas",
         orderna_notas,
         name="orderna_notas",
+    ),
+    path(
+        "exclui_nota_romaneio",
+        exclui_nota_romaneio,
+        name="exclui_nota_romaneio",
     ),
 ]

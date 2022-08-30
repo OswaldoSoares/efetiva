@@ -183,6 +183,20 @@ def adiciona_nota_romaneio(request):
     return data
 
 
+def exclui_nota_romaneio(request):
+    id_romaneio_nota = request.GET.get("idRomaneioNota")
+    id_rom = request.GET.get("idRomaneio")
+    facade.delete_nota_romaneio(id_romaneio_nota)
+    not_rom = facade.create_contexto_notas_romaneio(id_rom)
+    romaneio = facade.create_contexto_seleciona_romaneio(id_rom)
+    contexto = {
+        "notas_romaneio": not_rom,
+        "romaneios": romaneio,
+    }
+    data = facade.create_data_lista_notas_romaneio(request, contexto)
+    return data
+
+
 def ler_nota_xml(request):
     pass
 

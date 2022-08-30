@@ -58,6 +58,12 @@
             <i class="bi bi-geo-alt i-button-null"></i> {{ nr.idnotasclientes.Bairro|slice:"0:18" }} - {{ nr.idnotasclientes.Cidade }}
         </div>
     </div>
+    <div class="item-nr {% cycle 'linha-p' 'linha-i' %}">
+        <div class="item-button">
+            <i class="bi bi-trash i-button js-exclui-nota-romaneio"
+            data-idromaneionotas="{{ nr.idromaneionotas }}"></i>
+        </div>
+    </div>
     {% endfor %}
 </div>
 <div class="article-card-footer">

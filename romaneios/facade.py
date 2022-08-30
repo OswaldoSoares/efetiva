@@ -364,6 +364,11 @@ def delete_notas_cliente(id_not):
     nota.delete()
 
 
+def delete_nota_romaneio(id_romaneio_nota):
+    nota_romaneio = RomaneioNotas.objects.get(idRomaneioNotas=id_romaneio_nota)
+    nota_romaneio.delete()
+
+
 def create_data_edita_nota(request, contexto):
     data = dict()
     html_form_notas_cliente(request, contexto, data)
