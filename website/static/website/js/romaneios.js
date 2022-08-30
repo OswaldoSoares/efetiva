@@ -114,12 +114,12 @@ $(document).on('submit', '.js-gera-romaneios', function(event) {
         url: '/romaneios/adiciona_romaneio',
         data: $(this).serialize(),
         beforeSend: function() {
-            $(".card-lista-ocorrencia").hide()
+            $(".card-lista-romaneios").hide()
             $(".box-loader").show();
         },
         success: function(data) {
-            $(".card-lista-ocorrencia").html(data.html_lista_ocorrencia)
-            $(".card-lista-ocorrencia").show()
+            $(".card-lista-romaneios").html(data.html_lista_romaneios)
+            $(".card-lista-romaneios").show()
                 //CarregaMask()
             $(".box-loader").hide();
         },

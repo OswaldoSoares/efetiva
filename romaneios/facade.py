@@ -178,6 +178,12 @@ def create_data_sort_notas(request, contexto):
     return JsonResponse(data)
 
 
+def create_data_romaneios(request, contexto):
+    data = dict()
+    html_lista_romaneios(request, contexto, data)
+    return JsonResponse(data)
+
+
 def html_lista_romaneios(request, contexto, data):
     data["html_lista_romaneios"] = render_to_string(
         "romaneios/html_lista_romaneios.html", contexto, request=request

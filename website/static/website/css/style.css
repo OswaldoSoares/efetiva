@@ -3484,7 +3484,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .i-button:hover {
-    color: dodgerblue;
+    color: var(--color4);
     cursor: pointer;
     text-decoration: none;
 }

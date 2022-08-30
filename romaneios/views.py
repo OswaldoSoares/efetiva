@@ -147,7 +147,10 @@ def adiciona_ocorrencia(request):
 def adiciona_romaneio(request):
     romaneio = facade.read_romaneio_post(request)
     facade.save_romaneio(romaneio)
-    pass
+    romaneios = facade.create_contexto_romaneios()
+    contexto = {"romaneios": romaneios}
+    data = facade.create_data_romaneios(request, contexto)
+    return data
 
 
 def edita_romaneio(request):
