@@ -25,6 +25,7 @@ def create_contexto_seleciona_notas(id_cli, sort_nota):
         .order_by(sort_nota)
         .exclude(StatusNota__startswith="ENTREGUE")
         .exclude(StatusNota="COLETA CANCELADA")
+        .exclude(StatusNota="DEVOLVIDA NO CLIENTE")
     )
     lista = [
         {
