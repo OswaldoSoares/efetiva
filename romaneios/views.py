@@ -145,8 +145,12 @@ def adiciona_ocorrencia(request):
 
 
 def adiciona_romaneio(request):
+    id_rom = request.POST.get("idRomaneio")
     romaneio = facade.read_romaneio_post(request)
-    facade.save_romaneio(romaneio)
+    if id_rom:
+        facade.update_romaneio(romaneio, id_rom)
+    else:
+        facade.save_romaneio(romaneio)
     romaneios = facade.create_contexto_romaneios()
     contexto = {"romaneios": romaneios}
     data = facade.create_data_romaneios(request, contexto)
@@ -154,7 +158,14 @@ def adiciona_romaneio(request):
 
 
 def edita_romaneio(request):
-    pass
+    _id_rom = request.GET.get("idRomaneio")
+    romaneio = facade.read_romaneio_database(_id_rom)
+    contexto = {"romaneio": romaneio}
+    motoristas = motoristas_disponiveis()
+    veiculos = filtra_veiculo("17", "TRANSPORTADORA")
+    contexto.update({"motoristas": motoristas, "veiculos": veiculos})
+    data = facade.create_data_edita_romaneio(request, contexto)
+    return data
 
 
 def seleciona_romaneio(request):

@@ -376,12 +376,30 @@ def create_data_edita_nota(request, contexto):
     return JsonResponse(data)
 
 
+def create_data_edita_romaneio(request, contexto):
+    data = dict()
+    html_form_romaneios(request, contexto, data)
+    return JsonResponse(data)
+
+
 def read_romaneio_post(request):
     romaneio = dict()
     romaneio["data_romaneio"] = request.POST.get("data_romaneio")
     romaneio["motorista"] = request.POST.get("motorista")
     romaneio["veiculo"] = request.POST.get("veiculo")
     return romaneio
+
+
+def read_romaneio_database(id_rom):
+    romaneio = Romaneios.objects.get(idRomaneio=id_rom)
+    romaneio_database = dict()
+    romaneio_database["idromaneio"] = romaneio.idRomaneio
+    romaneio_database["DataRomaneio"] = datetime.datetime.strftime(
+        romaneio.DataRomaneio, "%Y-%m-%d"
+    )
+    romaneio_database["motorista"] = romaneio.idMotorista
+    romaneio_database["veiculo"] = romaneio.idVeiculo
+    return romaneio_database
 
 
 def save_romaneio(romaneio):
@@ -394,6 +412,15 @@ def save_romaneio(romaneio):
     obj.DataRomaneio = romaneio["data_romaneio"]
     obj.idMotorista_id = romaneio["motorista"]
     obj.idVeiculo_id = romaneio["veiculo"]
+    obj.save()
+
+
+def update_romaneio(romaneio_form, id_rom):
+    romaneio = Romaneios.objects.get(idRomaneio=id_rom)
+    obj = romaneio
+    obj.DataRomaneio = romaneio_form["data_romaneio"]
+    obj.idMotorista_id = romaneio_form["motorista"]
+    obj.idVeiculo_id = romaneio_form["veiculo"]
     obj.save()
 
 

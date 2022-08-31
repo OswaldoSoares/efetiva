@@ -12,8 +12,13 @@
                     <i class="bi bi-calendar i-button-null"></i>
                 </div>
                 <div class="item-field">
+                    {% if romaneio %}
+                    <input class="form-control" type="date"
+                    value="{{ romaneio.DataRomaneio }}" id="data_romaneio" name="data_romaneio">
+                    {% else %}
                     <input class="form-control" type="date"
                     value="{{ hoje }}" id="data_romaneio" name="data_romaneio">
+                    {% endif %}
                 </div>
             </div>
             <div class="item-form">
@@ -42,6 +47,7 @@
                     </select>
                 </div>
             </div>
+            <input type="hidden" name="idRomaneio" value="{{ romaneio.idromaneio }}"
         </div>
     </div>
     <div class="article-card-footer">
