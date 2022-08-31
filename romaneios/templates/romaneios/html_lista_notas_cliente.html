@@ -69,6 +69,7 @@
             <i class="bi bi-info-square i-button-null"></i> {{ nota.informa }}
         </div>
     </div>
+    {% endif %}
     <div class="item-nota {% cycle 'linha-p' 'linha-i' %}">
         <div class="item-button">
             <i class="bi bi-folder i-button
@@ -88,7 +89,6 @@
             data-idnota={{ nota.id_nota_clientes }}></i>
         </div>
     </div>
-    {% endif %}
     {% if forloop.last %}
     <div class="borda-bottom"></div>
     {% endif %}
