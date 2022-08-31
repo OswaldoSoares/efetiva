@@ -5055,7 +5055,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-lista-notas-cliente .item-nota .item-local {
-    width: 22%;
+    width: 20%;
     padding: 0 5px;
     text-align: left;
     border-top: 1px solid var(--color9);
@@ -5076,7 +5076,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-lista-notas-cliente .item-nota .item-valor {
-    width: 20%;
+    width: 22%;
     text-align: right;
     padding: 0 5px;
     border-top: 1px solid var(--color9);
@@ -5088,6 +5088,12 @@ main .fp-recibo-tabela .fp-recibo-print {
     padding: 0 5px;
 }
 
+.card-lista-notas-cliente .item-nota .item-status {
+    width: 20%;
+    text-align: right;
+    padding: 0 5px;
+}
+
 .card-lista-notas-cliente .item-nota .item-endereco {
     width: 100%;
     text-align: left;
@@ -5095,10 +5101,10 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-lista-notas-cliente .item-nota .item-button {
-    width: 20%;
+    width: 100%;
     padding-right: 5px;
     padding-bottom: 5px;
-    text-align: right;
+    text-align: center;
 }
 
 .card-lista-ocorrencia {
@@ -5129,14 +5135,14 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-lista-ocorrencia .item-nota .item-local {
-    width: 25%;
+    width: 20%;
     padding: 0 5px;
     text-align: left;
     border-top: 1px solid var(--color9);
 }
 
 .card-lista-ocorrencia .item-nota .item-volume {
-    width: 10%;
+    width: 8%;
     text-align: right;
     padding: 0 5px;
     border-top: 1px solid var(--color9);
@@ -5150,7 +5156,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-lista-ocorrencia .item-nota .item-valor {
-    width: 15%;
+    width: 22%;
     text-align: right;
     padding: 0 5px;
     border-top: 1px solid var(--color9);
@@ -5162,6 +5168,12 @@ main .fp-recibo-tabela .fp-recibo-print {
     padding: 0 5px;
 }
 
+.card-lista-ocorrencia .item-nota .item-status {
+    width: 20%;
+    padding: 0 5px;
+    text-align: right;
+}
+
 .card-lista-ocorrencia .item-nota .item-endereco {
     width: 100%;
     text-align: left;
@@ -5169,22 +5181,21 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-lista-ocorrencia .item-nota .item-button {
-    width: 20%;
-    padding-right: 5px;
-    padding-bottom: 5px;
-    text-align: right;
+    width: 100%;
+    padding: 0 5px;
+    text-align: center;
 }
 
 .card-lista-ocorrencia .item-ocorrencia {
     background-color: var(--color8);
-    width: 100%;
+    width: 94%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     color: var(--color1);
     border-radius: 5px;
-    margin-bottom: 2px;
+    margin: 5px 3%;
 }
 
 .card-lista-ocorrencia .item-ocorrencia .item-data {
@@ -5196,6 +5207,84 @@ main .fp-recibo-tabela .fp-recibo-print {
     padding: 0 5px;
     width: 100%;
     border-bottom: 1px solid var(--color7);
+}
+
+.card-lista-ocorrencia .item-form-ocorrencia {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-lista-ocorrencia .item-form-ocorrencia .item-form-dia {
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 0;
+    border-top: 1px solid var(--color9);
+}
+
+.card-lista-ocorrencia .item-form-ocorrencia .item-form-dia .button {
+    width: 10%;
+    padding: 0 5px;
+    text-align: center;
+}
+
+.card-lista-ocorrencia .item-form-ocorrencia .item-form-dia .item-field {
+    width: 90%;
+    padding: 0 5px;
+    text-align: center;
+}
+
+.card-lista-ocorrencia .item-form-ocorrencia .item-form-tipo {
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 0;
+    border-top: 1px solid var(--color9)
+}
+
+.card-lista-ocorrencia .item-form-ocorrencia .item-form-tipo .button {
+    width: 10%;
+    padding: 0 5px;
+    text-align: center;
+}
+
+.card-lista-ocorrencia .item-form-ocorrencia .item-form-tipo .item-field {
+    width: 90%;
+    padding: 0 5px;
+    text-align: center;
+}
+
+.card-lista-ocorrencia .item-form-ocorrencia .item-form-descricao {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-lista-ocorrencia .item-form-ocorrencia .item-form-descricao .button {
+    width: 5%;
+    padding: 0 5px;
+    text-align: center;
+}
+
+.card-lista-ocorrencia .item-form-ocorrencia .item-form-descricao .item-field {
+    width: 95%;
+    padding: 0 5px;
+    text-align: center;
+}
+
+.card-lista-ocorrencia .item-form-ocorrencia button {
+    background-color: var(--color2);
+    border: none;
+    margin: 5px 0;
 }
 
 .card-lista-notas-romaneio,
@@ -5215,22 +5304,15 @@ main .fp-recibo-tabela .fp-recibo-print {
 
 .card-lista-notas-romaneio .item-romaneio .item-numero,
 .card-lista-romaneios .item-romaneio .item-numero {
-    width: 30%;
+    width: 40%;
     text-align: left;
     padding: 0 5px;
 }
 
 .card-lista-notas-romaneio .item-romaneio .item-data,
 .card-lista-romaneios .item-romaneio .item-data {
-    width: 50%;
-    text-align: center;
-    padding: 0 5px;
-}
-
-.card-lista-notas-romaneio .item-romaneio .item-button,
-.card-lista-romaneios .item-romaneio .item-button {
-    width: 20%;
-    text-align: center;
+    width: 60%;
+    text-align: right;
     padding: 0 5px;
 }
 
@@ -5239,7 +5321,6 @@ main .fp-recibo-tabela .fp-recibo-print {
     width: 60%;
     text-align: left;
     padding: 0 5px;
-    border-bottom: 1px solid var(--color9);
 }
 
 .card-lista-notas-romaneio .item-romaneio .item-veiculo,
@@ -5247,6 +5328,12 @@ main .fp-recibo-tabela .fp-recibo-print {
     width: 40%;
     text-align: right;
     padding: 0 5px;
+}
+
+.card-lista-notas-romaneio .item-romaneio .item-button,
+.card-lista-romaneios .item-romaneio .item-button {
+    width: 100%;
+    text-align: center;
     border-bottom: 1px solid var(--color9);
 }
 
@@ -5260,7 +5347,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .linha-p {
-    background-color: #484848;
+    background-color: #444444;
 }
 
 .card-lista-notas-romaneio .item-nr .item-numero-nota {

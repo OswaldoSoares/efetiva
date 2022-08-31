@@ -7,23 +7,15 @@
     {% if forloop.first %}
     <div class="borda-top"></div>
     {% endif %}
-    <div class="item-romaneio">
+    <div class="item-romaneio {% cycle 'linha-p' 'linha-i' %}">
         <div class="item-numero" title="Número Romaneio">
             <i class="bi bi-file-text i-button-null"></i> {{ rom.romaneio }}
         </div>
         <div class="item-data" title="Data do Romaneio">
             <i class="bi bi-calendar i-button-null"></i> {{ rom.data_romaneio }}
         </div>
-        <div class="item-button">
-            <i class="bi bi-calendar-plus i-button
-            js-seleciona-romaneio" title="Seleciona Romanio"
-            data-idromaneio={{ rom.idromaneio }}></i>
-            <i class="bi bi-pencil-square i-button
-            js-edita-romaneio" title="Edita Romaneio"
-            data-idromaneio={{ rom.idromaneio }}></i>
-        </div>
     </div>
-    <div class="item-romaneio">
+    <div class="item-romaneio {% cycle 'linha-p' 'linha-i' %}">
         <div class="item-motorista" title="Motorista">
             {% if rom.motorista %}
             <i class="bi bi-building i-button-null"></i> {{ rom.apelido }}
@@ -33,6 +25,16 @@
             {% if rom.veiculo %}
             <i class="bi bi-truck i-button-null"></i> {{ rom.veiculo }}
             {% endif %}
+        </div>
+    </div>
+    <div class="item-romaneio {% cycle 'linha-p' 'linha-i' %}">
+        <div class="item-button">
+            <i class="bi bi-folder i-button
+            js-seleciona-romaneio" title="Seleciona Romanio"
+            data-idromaneio={{ rom.idromaneio }}></i>
+            <i class="bi bi-pencil-square i-button
+            js-edita-romaneio" title="Edita Romaneio"
+            data-idromaneio={{ rom.idromaneio }}></i>
         </div>
     </div>
     {% endfor %}

@@ -263,6 +263,16 @@ $(document).on('click', '.js-exclui-nota-romaneio', function() {
     });
 });
 
+$(document).on('click', '.js-retorna-lista-romaneio', function() {
+    $(".box-loader").show();
+    $(".js-adiciona-nota-romaneio").hide()
+    $(".card-lista-notas-romaneio").hide()
+    $(".card-lista-romaneios").show()
+    window.setTimeout(function() {
+        $(".box-loader").hide();
+    }, 500);
+});
+
 $(document).on('click', '.js-exclui-notas-cliente', function() {
     var _id_nota = $(this).data("idnota")
     var _id_cliente = $(this).data("idcliente")
@@ -314,6 +324,7 @@ $(document).on('click', '.js-retorna-lista-notas', function() {
 });
 
 $(document).on('click', '.js-sort-notas', function() {
+    var anr_hidden = $(".js-adiciona-nota-romaneio").is(":hidden")
     var _id_cliente = $(this).data("idcliente")
     var _sort = $(this).data("sort")
     $.ajax({
@@ -330,7 +341,10 @@ $(document).on('click', '.js-sort-notas', function() {
         success: function(data) {
             $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente)
             $(".card-lista-notas-cliente").show()
-                //CarregaMask()
+            if (anr_hidden) {
+                $(".js-adiciona-nota-romaneio").hide()
+            }
+            //CarregaMask()
             $(".box-loader").hide();
         },
     });

@@ -3,7 +3,7 @@
     <span>NOTAS</span>
 </div>
 <div class="article-card-body">
-    <div class="sort-notas">
+    <div class="sort-notas {% cycle 'linha-p' 'linha-i' %}">
         <span class="i-button js-sort-notas"
         data-idcliente="{{ idcliente }}"
         data-sort="NumeroNota">NOTA</span>
@@ -35,7 +35,7 @@
             <i class="bi bi-calendar i-button-null"></i> {{ nota.data_coleta }}
         </div>
         <div class="item-local" title="Local da Coleta">
-            <i class="bi bi-building i-button-null"></i> {{ nota.local_coleta }}
+            <i class="bi bi-building i-button-null"></i> {{ nota.local_coleta|slice:"0:12" }}
         </div>
         <div class="item-volume" title="Volume">
             <i class="bi bi-grid-fill i-button-null"></i> {{ nota.volume }}
@@ -54,9 +54,25 @@
             <i class="bi bi-person-badge i-button-null"></i> {{ nota.contato }}
             {% endif %}
         </div>
+        <div class="item-status" title="Status">
+            <i class="bi bi-exclamation-circle i-button-null"></i> {{ nota.statusnota }}
+        </div>
+    </div>
+    <div class="item-nota {% cycle 'linha-p' 'linha-i' %}">
+        <div class="item-endereco" title="Endereço">
+            <i class="bi bi-geo-alt i-button-null"></i> {{ nota.endereco_compl }}
+        </div>
+    </div>
+    {% if nota.informa %}
+    <div class="item-nota {% cycle 'linha-p' 'linha-i' %}">
+        <div class="item-endereco" title="Informações">
+            <i class="bi bi-info-square i-button-null"></i> {{ nota.informa }}
+        </div>
+    </div>
+    <div class="item-nota {% cycle 'linha-p' 'linha-i' %}">
         <div class="item-button">
-            <i class="bi bi-calendar-plus i-button
-            js-ocorrencia-notas-cliente" title="Insere Ocorrência"
+            <i class="bi bi-folder i-button
+            js-ocorrencia-notas-cliente" title="Seleciona Nota"
             data-idnota={{ nota.id_nota_clientes }}
             data-idcliente={{ nota.idcliente }}></i>
             <i class="bi bi-pencil-square i-button
@@ -70,21 +86,6 @@
             <i class="bi bi-check-square i-button
             js-adiciona-nota-romaneio" title="Adiciona no Romaneio"
             data-idnota={{ nota.id_nota_clientes }}></i>
-        </div>
-    </div>
-    <div class="item-nota {% cycle 'linha-p' 'linha-i' %}">
-        <div class="item-endereco" title="Endereço">
-            <i class="bi bi-geo-alt i-button-null"></i> {{ nota.endereco_compl }}
-
-        </div>
-        <div class="item-button" title="Status">
-            <i class="bi bi-activity i-button-null"></i> {{ nota.statusnota }}
-        </div>
-    </div>
-    {% if nota.informa %}
-    <div class="item-nota {% cycle 'linha-p' 'linha-i' %}">
-        <div class="item-endereco" title="Informações">
-            <i class="bi bi-info-square i-button-null"></i> {{ nota.informa }}
         </div>
     </div>
     {% endif %}

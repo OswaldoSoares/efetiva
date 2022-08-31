@@ -15,14 +15,6 @@
         <div class="item-data" title="Data do Romaneio">
             <i class="bi bi-calendar i-button-null"></i> {{ rom.data_romaneio }}
         </div>
-        <div class="item-button">
-            <i class="bi bi-calendar-plus i-button
-            js-seleciona-romaneio" title="Seleciona Romanio"
-            data-idromaneio={{ rom.idromaneio }}></i>
-            <i class="bi bi-pencil-square i-button
-            js-edita-romaneio" title="Edita Romaneio"
-            data-idromaneio={{ rom.idromaneio }}></i>
-        </div>
     </div>
     <div class="item-romaneio">
         <div class="item-motorista" title="Motorista">
@@ -34,6 +26,14 @@
             {% if rom.veiculo %}
             <i class="bi bi-truck i-button-null"></i> {{ rom.veiculo }}
             {% endif %}
+        </div>
+    </div>
+    <div class="item-romaneio">
+        <div class="item-button">
+            <i class="bi bi-arrow-left-circle i-button
+            js-retorna-lista-romaneio" title="Lista de Romaneios"></i>
+            <i class="bi bi-printer i-button
+            js-print-romaneio" title="Imprime Romaneio"></i>
         </div>
     </div>
     {% endfor %}
@@ -61,6 +61,7 @@
     <div class="item-nr {% cycle 'linha-p' 'linha-i' %}">
         <div class="item-button">
             <i class="bi bi-trash i-button js-exclui-nota-romaneio"
+            title="Remove Nota do Romaneio"
             data-idromaneionotas="{{ nr.idromaneionotas }}"></i>
         </div>
     </div>
