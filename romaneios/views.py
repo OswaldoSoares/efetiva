@@ -184,6 +184,7 @@ def adiciona_nota_romaneio(request):
     id_not = request.GET.get("idNota")
     id_rom = request.GET.get("idRomaneio")
     facade.save_nota_romaneio(id_not, id_rom)
+    facade.altera_status_rota(id_rom, id_not)
     not_rom = facade.create_contexto_notas_romaneio(id_rom)
     romaneio = facade.create_contexto_seleciona_romaneio(id_rom)
     contexto = {

@@ -327,6 +327,21 @@ def save_ocorrencia(ocorrencia):
     obj.save(update_fields=["StatusNota"])
 
 
+def altera_status_rota(id_rom, id_not):
+    romaneio = Romaneios.objects.get(idRomaneio=id_rom)
+    obj = NotasOcorrencias()
+    obj.DataOcorrencia = romaneio.DataRomaneio
+    obj.TipoOcorrencia = "EM ROTA"
+    obj.DataAgendada = romaneio.DataRomaneio
+    obj.Ocorrencia = f"INSERIDA NO ROMANEIO {romaneio.Romaneio}"
+    obj.idNotasClientes_id = id_not
+    obj.save()
+    nota = NotasClientes.objects.get(idNotasClientes=id_not)
+    obj = nota
+    obj.StatusNota = "EM ROTA"
+    obj.save(update_fields=["StatusNota"])
+
+
 def update_ocorrencia(ocorrencia_form, id_ocor):
     ocorrencia = NotasOcorrencias.objects.get(idNotasOcorrencia=id_ocor)
     obj = ocorrencia
