@@ -7,6 +7,7 @@ $(document).on('submit', '.js-seleciona-cliente', function(event) {
         beforeSend: function() {
             $(".card-romaneios-cliente").hide()
             $(".card-lista-notas-cliente").hide()
+            $(".card-lista-notas-romaneio").hide()
             $(".box-loader").show();
         },
         success: function(data) {
@@ -90,18 +91,26 @@ $(document).on('submit', '.js-gera-notas-cliente', function(event) {
 
 $(document).on('submit', '.js-gera-ocorrencia', function(event) {
     event.preventDefault();
+    var lnr_visible = $(".card-lista-notas-romaneio").is(":visible")
     $.ajax({
         type: $(this).attr('method'),
         url: '/romaneios/adiciona_ocorrencia',
         data: $(this).serialize(),
         beforeSend: function() {
+            if (lnr_visible) {
+                $(".card-lista-notas-romaneio").hide()
+            }
             $(".card-lista-ocorrencia").hide()
             $(".box-loader").show();
         },
         success: function(data) {
             $(".card-lista-ocorrencia").html(data.html_lista_ocorrencia)
             $(".card-lista-ocorrencia").show()
-                //CarregaMask()
+            if (lnr_visible) {
+                $(".card-lista-notas-romaneio").html(data.html_lista_notas_romaneio)
+                $(".card-lista-notas-romaneio").show()
+            }
+            //CarregaMask()
             $(".box-loader").hide();
         },
     });
@@ -129,12 +138,14 @@ $(document).on('submit', '.js-gera-romaneios', function(event) {
 $(document).on('click', '.js-ocorrencia-notas-cliente', function() {
     var _id_nota = $(this).data("idnota")
     var _id_cliente = $(this).data("idcliente")
+    var _id_romaneio = ""
     $.ajax({
         type: 'GET',
         url: '/romaneios/ocorrencia_nota_cliente',
         data: {
             idNota: _id_nota,
             idCliente: _id_cliente,
+            idRomaneio: _id_romaneio,
         },
         beforeSend: function() {
             $(".card-lista-notas-cliente").hide()

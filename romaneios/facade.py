@@ -195,6 +195,7 @@ def html_lista_romaneios(request, contexto, data):
 def create_data_ocorrencia_selecionada(request, contexto):
     data = dict()
     html_lista_ocorrencia(request, contexto, data)
+    html_lista_notas_romaneio(request, contexto, data)
     return JsonResponse(data)
 
 
@@ -468,6 +469,15 @@ def create_contexto_notas_romaneio(id_rom):
         for x in notas_romaneio
     ]
     return lista
+
+
+def create_contexto_romaneio_tem_nota(id_nota):
+    romaneio = RomaneioNotas.objects.filter(idNotasClientes=id_nota)
+    id_rom = None
+    if romaneio:
+        romaneio = romaneio.latest("idRomaneio_id")
+        id_rom = romaneio.idRomaneio.Romaneio
+    return id_rom
 
 
 def create_data_lista_notas_romaneio(request, contexto):

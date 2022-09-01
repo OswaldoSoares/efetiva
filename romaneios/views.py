@@ -105,7 +105,6 @@ def exclui_nota_cliente(request):
 
 def ocorrencia_nota_cliente(request):
     _id_not = request.GET.get("idNota")
-    _id_cli = request.GET.get("idCliente")
     notas = facade.create_contexto_ocorrencia_notas(_id_not)
     ocorrencias = facade.create_contexto_seleciona_ocorrencia(_id_not, "NumeroNota")
     hoje = facade.hoje
@@ -130,6 +129,7 @@ def adiciona_ocorrencia(request):
             facade.save_ocorrencia(ocorrencia_form)
         ocorrencia_form = dict()
     id_not = request.POST.get("id_nota_clientes")
+    id_rom = facade.create_contexto_romaneio_tem_nota(id_not)
     notas = facade.create_contexto_ocorrencia_notas(id_not)
     ocorrencias = facade.create_contexto_seleciona_ocorrencia(id_not, "NumeroNota")
     hoje = facade.hoje
@@ -141,6 +141,10 @@ def adiciona_ocorrencia(request):
     }
     contexto.update({"error": error})
     contexto.update(msg)
+    if id_rom:
+        not_rom = facade.create_contexto_notas_romaneio(id_rom)
+        romaneio = facade.create_contexto_seleciona_romaneio(id_rom)
+        contexto.update({"notas_romaneio": not_rom, "romaneios": romaneio})
     data = facade.create_data_ocorrencia_selecionada(request, contexto)
     return data
 
