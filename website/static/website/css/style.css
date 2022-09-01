@@ -5022,6 +5022,27 @@ main .fp-recibo-tabela .fp-recibo-print {
     width: 660px;
 }
 
+.card-lista-notas-cliente .article-card-titulo {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+}
+
+.card-lista-notas-cliente .article-card-titulo .titulo-com-filtro {
+    width: 70%;
+    justify-content: center;
+}
+
+.card-lista-notas-cliente .article-card-titulo .div-filtro {
+    width: 30%;
+}
+
+.card-lista-notas-cliente .article-card-titulo .div-filtro .filtra-nota {
+    width: 100px;
+}
+
 .card-lista-notas-cliente .sort-notas {
     display: flex;
     align-items: center;

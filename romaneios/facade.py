@@ -179,6 +179,12 @@ def create_data_sort_notas(request, contexto):
     return JsonResponse(data)
 
 
+def create_data_filtro_nota(request, contexto):
+    data = dict()
+    html_lista_notas_cliente(request, contexto, data)
+    return JsonResponse(data)
+
+
 def create_data_romaneios(request, contexto):
     data = dict()
     html_lista_romaneios(request, contexto, data)
@@ -681,3 +687,42 @@ def create_contexto_imprime_romaneio(id_rom, id_cli):
     cliente = Cliente.objects.get(idCliente=id_cli)
     notas = RomaneioNotas.objects.filter(idRomaneio=id_rom)
     return {"romaneio": romaneio, "cliente": cliente, "notas": notas}
+
+
+def create_contexto_filtro_nota(nota):
+    notas = NotasClientes.objects.filter(NumeroNota=nota)
+    lista = [
+        {
+            "id_nota_clientes": x.idNotasClientes,
+            "local_coleta": x.LocalColeta,
+            "data_coleta": x.DataColeta,
+            "numero_nota": x.NumeroNota,
+            "destinatario": x.Destinatario,
+            "endereco": x.Endereco,
+            "endereco_compl": x.Endereco
+            + " "
+            + x.Bairro
+            + " "
+            + x.CEP[0:5]
+            + "-"
+            + x.CEP[5:]
+            + " "
+            + x.Cidade
+            + " "
+            + x.Estado,
+            "bairro": x.Bairro,
+            "cep": x.CEP[0:5] + "-" + x.CEP[5:],
+            "cidade": x.Cidade,
+            "estado": x.Estado,
+            "contato": x.Contato,
+            "informa": x.Informa,
+            "volume": x.Volume,
+            "peso": x.Peso,
+            "valor": x.Valor,
+            "statusnota": x.StatusNota,
+            "historico": x.Historico,
+            "idcliente": x.idCliente_id,
+        }
+        for x in notas
+    ]
+    return lista

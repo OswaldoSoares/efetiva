@@ -1,6 +1,12 @@
 {% load humanize %}
 <div class="article-card-titulo">
-    <span>NOTAS</span>
+    <div class="titulo-com-filtro">
+        <span>NOTAS</span>
+    </div>
+    <div class="div-filtro">
+        <input class="form-control filtra-nota" type="text">
+        <i class="bi bi-search i-button js-filtra-nota"></i>
+    </div>
 </div>
 <div class="article-card-body">
     <div class="sort-notas {% cycle 'linha-p' 'linha-i' %}">

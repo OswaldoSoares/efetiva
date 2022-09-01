@@ -89,6 +89,30 @@ $(document).on('submit', '.js-gera-notas-cliente', function(event) {
     });
 });
 
+$(document).on('click', '.js-filtra-nota', function() {
+    var anr_hidden = $(".js-adiciona-nota-romaneio").is(":hidden")
+    var nota = $(".filtra-nota").val()
+    $.ajax({
+        type: 'GET',
+        url: '/romaneios/filtra_nota_cliente',
+        data: {
+            nota: nota,
+        },
+        beforeSend: function() {
+            $(".card-lista-notas-cliente").hide()
+            $(".box-loader").show()
+        },
+        success: function(data) {
+            $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente)
+            $(".card-lista-notas-cliente").show()
+            if (anr_hidden) {
+                $(".js-adiciona-nota-romaneio").hide()
+            }
+            $(".box-loader").hide()
+        },
+    });
+});
+
 $(document).on('submit', '.js-gera-ocorrencia', function(event) {
     event.preventDefault();
     var lnr_visible = $(".card-lista-notas-romaneio").is(":visible")

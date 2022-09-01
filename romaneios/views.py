@@ -241,3 +241,12 @@ def imprime_romaneio(request):
     contexto = facade.create_contexto_imprime_romaneio(id_rom, id_cli)
     response = print_romaneio(contexto)
     return response
+
+
+def filtra_nota_cliente(request):
+    nota = request.GET.get("nota")
+    id_cli = request.GET.get("cliente")
+    notas = facade.create_contexto_filtro_nota(nota)
+    contexto = {"notas": notas, "idcliente": id_cli}
+    data = facade.create_data_filtro_nota(request, contexto)
+    return data
