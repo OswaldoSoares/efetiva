@@ -66,6 +66,10 @@
     </div>
     <div class="item-nr {% cycle 'linha-p' 'linha-i' %}">
         <div class="item-button">
+            <i class="bi bi-folder i-button
+            js-ocorrencia-notas-cliente" title="Seleciona Nota"
+            data-idnota={{ nr.idnotasclientes.idNotasClientes }}
+            data-idcliente={{ nr.idnotasclientes.idCliente_id }}></i>
             <i class="bi bi-trash i-button js-exclui-nota-romaneio"
             title="Remove Nota do Romaneio"
             data-idromaneionotas="{{ nr.idromaneionotas }}"></i>
