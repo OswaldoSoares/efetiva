@@ -32,8 +32,9 @@
         <div class="item-button">
             <i class="bi bi-arrow-left-circle i-button
             js-retorna-lista-romaneio" title="Lista de Romaneios"></i>
-            <i class="bi bi-printer i-button
-            js-print-romaneio" title="Imprime Romaneio"></i>
+            <a class="bi bi-printer i-button" title="Imprime Romaneio"
+            href="{% url 'imprime_romaneio' %}?idRomaneio={{ rom.idromaneio }}&idCliente={{ idcliente }}"
+            target="_blank"></a>
         </div>
     </div>
     {% endfor %}

@@ -55,14 +55,14 @@ $(document).on('click', '.js-mostra-body-romaneio', function() {
     $(".body-romaneio").show()
     $(".js-mostra-body-romaneio").hide()
     $(".js-oculta-body-romaneio").show()
-})
+});
 
 $(document).on('click', '.js-oculta-body-romaneio', function() {
     $(".body-romaneio").hide()
     $(".js-mostra-body-romaneio").show()
     $(".js-oculta-body-romaneio").hide()
     LimpaFormRomaneio()
-})
+});
 
 $(document).on('submit', '.js-gera-notas-cliente', function(event) {
     event.preventDefault();
@@ -199,11 +199,13 @@ $(document).on('click', '.js-edita-romaneio', function() {
 
 $(document).on('click', '.js-seleciona-romaneio', function() {
     var _id_romaneio = $(this).data("idromaneio")
+    var _id_cliente = $(this).data("idcliente")
     $.ajax({
         type: 'GET',
         url: '/romaneios/seleciona_romaneio',
         data: {
             idRomaneio: _id_romaneio,
+            idCliente: _id_cliente,
         },
         beforeSend: function() {
             $(".card-lista-romaneios").hide()

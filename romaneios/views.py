@@ -2,6 +2,7 @@ from django.shortcuts import render
 from minutas.facade import filtra_veiculo, motoristas_disponiveis
 
 from romaneios import facade
+from romaneios.print import print_romaneio
 
 
 def index_romaneio(request):
@@ -170,11 +171,13 @@ def edita_romaneio(request):
 
 def seleciona_romaneio(request):
     id_rom = request.GET.get("idRomaneio")
+    id_cli = request.GET.get("idCliente")
     not_rom = facade.create_contexto_notas_romaneio(id_rom)
     romaneio = facade.create_contexto_seleciona_romaneio(id_rom)
     contexto = {
         "notas_romaneio": not_rom,
         "romaneios": romaneio,
+        "idcliente": id_cli,
     }
     data = facade.create_data_lista_notas_romaneio(request, contexto)
     return data
@@ -226,3 +229,11 @@ def orderna_notas(request):
     contexto = {"notas": notas, "idcliente": id_cli}
     data = facade.create_data_sort_notas(request, contexto)
     return data
+
+
+def imprime_romaneio(request):
+    id_rom = request.GET.get("idRomaneio")
+    id_cli = request.GET.get("idCliente")
+    contexto = facade.create_contexto_imprime_romaneio(id_rom, id_cli)
+    response = print_romaneio(contexto)
+    return response

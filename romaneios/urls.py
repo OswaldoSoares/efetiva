@@ -16,6 +16,7 @@ from .views import (
     orderna_notas,
     seleciona_cliente,
     seleciona_romaneio,
+    imprime_romaneio,
 )
 
 urlpatterns = [
@@ -93,5 +94,10 @@ urlpatterns = [
         "exclui_nota_romaneio",
         exclui_nota_romaneio,
         name="exclui_nota_romaneio",
+    ),
+    path(
+        "imprime_romaneio",
+        imprime_romaneio,
+        name="imprime_romaneio",
     ),
 ]
