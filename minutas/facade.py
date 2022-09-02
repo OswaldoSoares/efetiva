@@ -15,6 +15,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from pessoas.models import Pessoal
+from romaneios.models import NotasClientes, RomaneioNotas, Romaneios
 from veiculos.models import CategoriaVeiculo, Veiculo
 
 from minutas.forms import CadastraMinutaKMFinal, CadastraMinutaKMInicial
@@ -62,6 +63,7 @@ class MinutaSelecionada:
         self.coleta = minuta.Coleta
         self.entrega = minuta.Entrega
         self.obs = minuta.Obs
+        self.idcliente = minuta.idCliente.idCliente
         self.cliente = minuta.idCliente.Fantasia
         self.motorista = MinutaMotorista(idminuta).nome
         self.ajudantes = MinutaAjudantes(idminuta).nome
@@ -1687,3 +1689,53 @@ def forn_minuta(request, c_form, c_idobj, c_url, c_view):
     data["html_tipo_mensagem"] = tipo_mensagem
     c_return = JsonResponse(data)
     return c_return
+
+
+def create_contexto_romaneios(id_cli):
+    romaneios = Romaneios.objects.all()
+    return romaneios
+
+
+def save_notas_romaneio_minuta(id_rom, id_min):
+    rom_notas = RomaneioNotas.objects.filter(idRomaneio=id_rom)
+    lista = []
+    for x in rom_notas:
+        nota_cliente = NotasClientes.objects.get(idNotasClientes=x.idNotasClientes_id)
+        nota = dict()
+        nota["numero"] = nota_cliente.NumeroNota
+        nota["valor"] = nota_cliente.Valor
+        nota["peso"] = nota_cliente.Peso
+        nota["volume"] = nota_cliente.Volume
+        nota["nome"] = nota_cliente.Destinatario
+        nota["endereco"] = nota_cliente.Endereco
+        nota["bairro"] = nota_cliente.Bairro
+        nota["cidade"] = nota_cliente.Cidade
+        nota["estado"] = nota_cliente.Estado
+        nota["notaguia"] = 0
+        nota["idminuta"] = id_min
+        lista.append(nota)
+    nova_lista = sorted(lista, key=lambda d: d["endereco"])
+    save_nota_entrega(nova_lista)
+
+
+def save_nota_entrega(nota_lista):
+    for nota in nota_lista:
+        obj = MinutaNotas()
+        obj.Nota = nota["numero"]
+        obj.ValorNota = nota["valor"]
+        obj.Peso = nota["peso"]
+        obj.Volume = nota["volume"]
+        obj.Nome = nota["nome"]
+        obj.Bairro = nota["bairro"]
+        obj.Cidade = nota["cidade"]
+        obj.Estado = nota["estado"]
+        obj.NotaGuia = nota["notaguia"]
+        obj.idMinuta_id = nota["idminuta"]
+        obj.ExtraValorAjudante = 0
+        obj.save()
+
+
+def create_data_adiciona_romaneio_minuta(request, id_min):
+    data = dict()
+    data = html_entrega(request, data, id_min)
+    return data

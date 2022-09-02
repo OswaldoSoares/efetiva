@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(document).ready(function() {
     $(document).on('submit', '#form-edita-hora', function(event) {
         event.preventDefault();
         $(".div-sucesso").hide()
@@ -8,7 +8,7 @@ $(document).ready(function(){
             type: $(this).attr('method'),
             url: url,
             data: $(this).serialize(),
-            success: function(data){
+            success: function(data) {
                 if (data.html_tipo_mensagem == 'ERROR') {
                     $(".mensagem-erro").text(data.html_mensagem);
                     mostraMensagemErro()
@@ -39,7 +39,7 @@ $(document).ready(function(){
             type: $(this).attr('method'),
             url: url,
             data: $(this).serialize(),
-            success: function(data){
+            success: function(data) {
                 if (data.html_tipo_mensagem == 'ERROR') {
                     $(".mensagem-erro").text(data.html_mensagem);
                     mostraMensagemErro()
@@ -70,7 +70,7 @@ $(document).ready(function(){
             type: $(this).attr('method'),
             url: url,
             data: $(this).serialize(),
-            success: function(data){
+            success: function(data) {
                 window.location.href = '/minutas/minuta/' + data['html_idminuta'] + '/'
             },
             error: function(error) {
@@ -78,7 +78,7 @@ $(document).ready(function(){
             }
         });
     });
-    
+
     $(document).on('click', '.estorna-pagamentos', function(event) {
         $(".container").hide()
         var idminuta = $(this).attr('idMinuta')
@@ -88,8 +88,8 @@ $(document).ready(function(){
             data: {
                 idMinuta: idminuta,
             },
-            success: function(data){
-                window.location.href = '/minutas/minuta/' + data['html_idminuta'] + '/'    
+            success: function(data) {
+                window.location.href = '/minutas/minuta/' + data['html_idminuta'] + '/'
             },
             error: function(error) {
                 console.log(error)
@@ -105,10 +105,10 @@ $(document).ready(function(){
             data: {
                 idMinuta: idminuta,
             },
-            success: function(data){
+            success: function(data) {
                 escondeChecklist()
-                    $('.html-checklist').html(data['html_checklist']);
-                    mostraChecklist();    
+                $('.html-checklist').html(data['html_checklist']);
+                mostraChecklist();
             },
             error: function(error) {
                 console.log(error)
@@ -128,7 +128,7 @@ $(document).ready(function(){
                 idMinuta: idminuta,
                 Cargo: cargo
             },
-            success: function(data){
+            success: function(data) {
                 if (cargo == 'AJUDANTE') {
                     $('.html-ajudante').html(data['html_ajudante']);
                 } else if (cargo == 'MOTORISTA') {
@@ -182,7 +182,7 @@ $(document).ready(function(){
                 idMinutaNotas: idminutanotas,
                 idMinuta: idminuta,
             },
-            success: function(data){
+            success: function(data) {
                 recarregaFinanceiro(data['html_pagamento'], data['html_recebimento'])
                 escondeChecklist();
                 $('.html-checklist').html(data['html_checklist']);
@@ -215,7 +215,7 @@ $(document).ready(function(){
         }
     });
 
-     $(document).on('click', '.list-colaborador', function(event) {
+    $(document).on('click', '.list-colaborador', function(event) {
         $(".fd-cliente").hide()
         $(".list-cliente").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
         $(".fd-veiculo").hide()
@@ -311,7 +311,7 @@ $(document).ready(function(){
                 Meses: meses,
                 Anos: anos,
             },
-            success: function(data){
+            success: function(data) {
                 $(".minutas-consulta").html(data['html_filtra_minuta'])
                 $(".box-loader").hide()
                 $(".minutas-consulta").show()
@@ -339,7 +339,7 @@ $(document).ready(function(){
                 Meses: meses,
                 Anos: anos,
             },
-            success: function(data){
+            success: function(data) {
                 $(".minutas-consulta").html(data['html_filtra_minuta'])
                 $(".filtro-periodo").each(function() {
                     if ($(this).text() == menu_selecionado.text()) {
@@ -381,7 +381,7 @@ $(document).ready(function(){
                 Meses: meses,
                 Anos: anos,
             },
-            success: function(data){
+            success: function(data) {
                 $(".minutas-consulta").html(data['html_filtra_minuta'])
                 $(".box-loader").hide()
                 $(".minutas-consulta").show()
@@ -392,8 +392,8 @@ $(document).ready(function(){
         })
     });
 
-    $('#MyModal').on('shown.bs.modal', function () {
-        setTimeout(function(){      // Delay para função loadCubagem, após janela estar carregada
+    $('#MyModal').on('shown.bs.modal', function() {
+        setTimeout(function() { // Delay para função loadCubagem, após janela estar carregada
             $(".form-radio").click(function() {
                 $(".escolha-veiculo").fadeOut(500)
                 var filtro = $(this).val()
@@ -405,7 +405,7 @@ $(document).ready(function(){
                         idPessoal: $("#idpessoal").attr('idpessoal'),
                         Filtro: filtro,
                     },
-                    success: function(data){
+                    success: function(data) {
                         $(".html-escolhido").html(data['html_filtro'])
                         $(".escolha-veiculo").fadeIn(500)
                     },
@@ -414,10 +414,10 @@ $(document).ready(function(){
                     }
                 });
             });
-            $("#id_Propriedade").focus();   // Configura o foco inicial
+            $("#id_Propriedade").focus(); // Configura o foco inicial
         }, 800);
     });
-    
+
     verificaTotalKMs()
     verificaTotalHoras()
     $(".div-sucesso").hide()
@@ -428,8 +428,8 @@ $(document).ready(function(){
     $(".filtro-destinatario").hide()
 
     // JQuery da Janela Modal Antigo
-    $('#modal-formulario').on('shown.bs.modal', function () {
-        setTimeout(function(){      // Delay para função loadCubagem, após janela estar carregada
+    $('#modal-formulario').on('shown.bs.modal', function() {
+        setTimeout(function() { // Delay para função loadCubagem, após janela estar carregada
             $("#id_Propriedade").change(function() {
                 var obj = $(this)
                 var propriedade = $(this).val();
@@ -441,15 +441,16 @@ $(document).ready(function(){
                     dataType: 'json',
                     data: {
                         propriedade: propriedade,
-                        idminutacolaboradores, idminutacolaboradores
+                        idminutacolaboradores,
+                        idminutacolaboradores
                     },
-                    success: function(data){
+                    success: function(data) {
                         $("#id_Veiculo").fadeOut(500).fadeIn(500)
                         $("#id_Veiculo ").html(data.html_form)
                     }
                 });
             });
-            $("#id_Propriedade").focus();   // Configura o foco inicial
+            $("#id_Propriedade").focus(); // Configura o foco inicial
         }, 800);
 
         $('#id_NotaGuia').change(function() {
@@ -467,9 +468,8 @@ $(document).ready(function(){
                         nota_guia: nota_guia,
                         id_minuta: id_minuta,
                     },
-                    beforeSend: function(){
-                    },
-                    success: function(data){
+                    beforeSend: function() {},
+                    success: function(data) {
                         $('#id_Nome').val(data.nota_guia_nome);
                         $('#id_Estado').val(data.nota_guia_estado);
                         $('#id_Cidade').val(data.nota_guia_cidade);
@@ -500,68 +500,68 @@ $(document).ready(function(){
 
     var mostravalores = function(obj) {
         var switch_id = obj.attr('id');
-        var ta_id = '#' + switch_id.replace('sw','ta');
-        var mi_id = '#' + switch_id.replace('sw','mi');
-        var to_id = '#' + switch_id.replace('sw','to');
-        var hi_id = '#' + switch_id.replace('sw','hi');
+        var ta_id = '#' + switch_id.replace('sw', 'ta');
+        var mi_id = '#' + switch_id.replace('sw', 'mi');
+        var to_id = '#' + switch_id.replace('sw', 'to');
+        var hi_id = '#' + switch_id.replace('sw', 'hi');
         if (obj.is(":checked")) {
             if ($(mi_id).length) {
                 if ($(ta_id).attr('meu_tipo') == '%' && $(mi_id).attr('meu_tipo') == 'R$') {
-                    $(to_id).text('R$ ' + ($(ta_id).val() /100 * $(mi_id).val()).toFixed(2).replace('.',','))
-                    $(hi_id).val(($(ta_id).val() /100 * $(mi_id).val()))
+                    $(to_id).text('R$ ' + ($(ta_id).val() / 100 * $(mi_id).val()).toFixed(2).replace('.', ','))
+                    $(hi_id).val(($(ta_id).val() / 100 * $(mi_id).val()))
                 } else if ($(ta_id).attr('meu_tipo') == 'R$' && $(mi_id).attr('meu_tipo') == 'HS') {
                     if (ta_id == "#ta-horas-recebe") {
                         var valor_hora = $("#ta-horas-recebe").val();
-                        var horas = $("#mi-horas-recebe").val().substring(0,2);
-                        var minutos = $("#mi-horas-recebe").val().substring(3,5);
+                        var horas = $("#mi-horas-recebe").val().substring(0, 2);
+                        var minutos = $("#mi-horas-recebe").val().substring(3, 5);
                         total_horas = horas * valor_hora
-                        total_minutos = minutos * (valor_hora/60).toFixed(5)
+                        total_minutos = minutos * (valor_hora / 60).toFixed(5)
                         total_horas_recebe = total_horas + total_minutos
-                        $(to_id).text('R$ ' + total_horas_recebe.toFixed(2).replace('.',','))
+                        $(to_id).text('R$ ' + total_horas_recebe.toFixed(2).replace('.', ','))
                         $(hi_id).val(total_horas_recebe)
                     } else if (ta_id == "#ta-horas-paga") {
                         var valor_hora = $("#ta-horas-paga").val();
-                        var horas = $("#mi-horas-paga").val().substring(0,2);
-                        var minutos = $("#mi-horas-paga").val().substring(3,5);
+                        var horas = $("#mi-horas-paga").val().substring(0, 2);
+                        var minutos = $("#mi-horas-paga").val().substring(3, 5);
                         total_horas = horas * valor_hora
-                        total_minutos = minutos * (valor_hora/60).toFixed(5)
+                        total_minutos = minutos * (valor_hora / 60).toFixed(5)
                         total_horas_paga = total_horas + total_minutos
-                        $(to_id).text('R$ ' + total_horas_paga.toFixed(2).replace('.',','))
+                        $(to_id).text('R$ ' + total_horas_paga.toFixed(2).replace('.', ','))
                         $(hi_id).val(total_horas_paga)
                     }
                 } else if ($(ta_id).attr('meu_tipo') == '%' && $(mi_id).attr('meu_tipo') == 'HS') {
                     if (ta_id == "#ta-horasexcede-recebe") {
                         var valor_hora_excede = $("#ta-horas-recebe").val() * ($(ta_id).val() / 100)
-                        var horas = $("#mi-horasexcede-recebe").val().substring(0,2);
-                        var minutos = $("#mi-horasexcede-recebe").val().substring(3,5);
+                        var horas = $("#mi-horasexcede-recebe").val().substring(0, 2);
+                        var minutos = $("#mi-horasexcede-recebe").val().substring(3, 5);
                         total_horas_excede = horas * valor_hora_excede
-                        total_minutos_excede = minutos * (valor_hora_excede/60).toFixed(5)
+                        total_minutos_excede = minutos * (valor_hora_excede / 60).toFixed(5)
                         total_horas_excede_recebe = total_horas_excede + total_minutos_excede
-                        $(to_id).text('R$ ' + total_horas_excede_recebe.toFixed(2).replace('.',','))
+                        $(to_id).text('R$ ' + total_horas_excede_recebe.toFixed(2).replace('.', ','))
                         $(hi_id).val(total_horas_excede_recebe)
                     } else if (ta_id == "#ta-horasexcede-paga") {
                         var valor_hora_excede = $("#ta-horas-paga").val() * ($(ta_id).val() / 100)
-                        var horas = $("#mi-horasexcede-paga").val().substring(0,2);
-                        var minutos = $("#mi-horasexcede-paga").val().substring(3,5);
+                        var horas = $("#mi-horasexcede-paga").val().substring(0, 2);
+                        var minutos = $("#mi-horasexcede-paga").val().substring(3, 5);
                         total_horas_excede = horas * valor_hora_excede
-                        total_minutos_excede = minutos * (valor_hora_excede/60).toFixed(5)
+                        total_minutos_excede = minutos * (valor_hora_excede / 60).toFixed(5)
                         total_horas_excede_paga = total_horas_excede + total_minutos_excede
-                        $(to_id).text('R$ ' + total_horas_excede_paga.toFixed(2).replace('.',','))
+                        $(to_id).text('R$ ' + total_horas_excede_paga.toFixed(2).replace('.', ','))
                         $(hi_id).val(total_horas_excede_paga)
                     }
                 } else if ($(ta_id).attr('meu_tipo') == 'R$' && $(mi_id).attr('meu_tipo') == 'UN') {
-                    $(to_id).text('R$ ' + ($(ta_id).val()*$(mi_id).val()).toFixed(2).replace('.',','))
-                    $(hi_id).val($(ta_id).val()*$(mi_id).val())
+                    $(to_id).text('R$ ' + ($(ta_id).val() * $(mi_id).val()).toFixed(2).replace('.', ','))
+                    $(hi_id).val($(ta_id).val() * $(mi_id).val())
                 } else if ($(ta_id).attr('meu_tipo') == 'R$' && $(mi_id).attr('meu_tipo') == 'KG') {
-                    $(to_id).text('R$ ' + ($(ta_id).val()*$(mi_id).val()).toFixed(2).replace('.',','))
-                    $(hi_id).val($(ta_id).val()*$(mi_id).val())
+                    $(to_id).text('R$ ' + ($(ta_id).val() * $(mi_id).val()).toFixed(2).replace('.', ','))
+                    $(hi_id).val($(ta_id).val() * $(mi_id).val())
                 }
             } else {
                 if (to_id == '#to-desconto-recebe') {
-                    $(to_id).text('R$ ' + ($(ta_id).val()*-1).toFixed(2).replace('.',','))
-                    $(hi_id).val($(ta_id).val()*-1)
+                    $(to_id).text('R$ ' + ($(ta_id).val() * -1).toFixed(2).replace('.', ','))
+                    $(hi_id).val($(ta_id).val() * -1)
                 } else {
-                    $(to_id).text('R$ ' + ($(ta_id).val()*1).toFixed(2).replace('.',','))
+                    $(to_id).text('R$ ' + ($(ta_id).val() * 1).toFixed(2).replace('.', ','))
                     $(hi_id).val($(ta_id).val())
                 }
             }
@@ -572,24 +572,24 @@ $(document).ready(function(){
         somaPerimetro();
         // Calcula novamente o pernoite e o perimetro caso tenha alguma mudança
         if ($('#to-perimetro-recebe').is(":checked")) {
-            $('#to-perimetro-recebe').text('R$ ' + ($('#ta-perimetro-recebe').val() /100 * $('#mi-perimetro-recebe').val())
-            .toFixed(2).replace('.',','))
-            $('#hi-perimetro-recebe').val(($('#ta-perimetro-recebe').val() /100 * $('#mi-perimetro-recebe').val()))
+            $('#to-perimetro-recebe').text('R$ ' + ($('#ta-perimetro-recebe').val() / 100 * $('#mi-perimetro-recebe').val())
+                .toFixed(2).replace('.', ','))
+            $('#hi-perimetro-recebe').val(($('#ta-perimetro-recebe').val() / 100 * $('#mi-perimetro-recebe').val()))
         }
         if ($('#to-pernoite-recebe').is(":checked")) {
-            $('#to-pernoite-recebe').text('R$ ' + ($('#ta-pernoite-recebe').val() /100 * $('#mi-pernoite-recebe').val())
-            .toFixed(2).replace('.',','))
-            $('#hi-pernoite-recebe').val(($('#ta-pernoite-recebe').val() /100 * $('#mi-pernoite-recebe').val()))
+            $('#to-pernoite-recebe').text('R$ ' + ($('#ta-pernoite-recebe').val() / 100 * $('#mi-pernoite-recebe').val())
+                .toFixed(2).replace('.', ','))
+            $('#hi-pernoite-recebe').val(($('#ta-pernoite-recebe').val() / 100 * $('#mi-pernoite-recebe').val()))
         }
         if ($('#to-perimetro-paga').is(":checked")) {
-            $('#to-perimetro-paga').text('R$ ' + ($('#ta-perimetro-paga').val() /100 * $('#mi-perimetro-paga').val())
-            .toFixed(2).replace('.',','))
-            $('#hi-perimetro-paga').val(($('#ta-perimetro-paga').val() /100 * $('#mi-perimetro-paga').val()))
+            $('#to-perimetro-paga').text('R$ ' + ($('#ta-perimetro-paga').val() / 100 * $('#mi-perimetro-paga').val())
+                .toFixed(2).replace('.', ','))
+            $('#hi-perimetro-paga').val(($('#ta-perimetro-paga').val() / 100 * $('#mi-perimetro-paga').val()))
         }
         if ($('#to-pernoite-paga').is(":checked")) {
-            $('#to-pernoite-paga').text('R$ ' + ($('#ta-pernoite-paga').val() /100 * $('#mi-pernoite-paga').val())
-            .toFixed(2).replace('.',','))
-            $('#hi-pernoite-paga').val(($('#ta-pernoite-paga').val() /100 * $('#mi-pernoite-paga').val()))
+            $('#to-pernoite-paga').text('R$ ' + ($('#ta-pernoite-paga').val() / 100 * $('#mi-pernoite-paga').val())
+                .toFixed(2).replace('.', ','))
+            $('#hi-pernoite-paga').val(($('#ta-pernoite-paga').val() / 100 * $('#mi-pernoite-paga').val()))
         }
         totais();
     };
@@ -603,41 +603,41 @@ $(document).ready(function(){
         $(".valor-paga").each(function() {
             valor_paga += parseFloat($(this).val())
         });
-        $("#totalrecebe").text('R$ ' + valor_recebe.toFixed(2).replace('.',','))
-        $("#totalpaga").text('R$ ' + valor_paga.toFixed(2).replace('.',','))
-        $(".saldo-minuta").text('Saldo da Minuta R$ ' + (valor_recebe-valor_paga).toFixed(2).replace('.',','))
+        $("#totalrecebe").text('R$ ' + valor_recebe.toFixed(2).replace('.', ','))
+        $("#totalpaga").text('R$ ' + valor_paga.toFixed(2).replace('.', ','))
+        $(".saldo-minuta").text('Saldo da Minuta R$ ' + (valor_recebe - valor_paga).toFixed(2).replace('.', ','))
     }
 
     var somaPerimetro = function() {
         var soma_recebe = 0.00
-        soma_recebe += $('#hi-porcentagem-recebe').val()*1
-        soma_recebe += $('#hi-horas-recebe').val()*1
-        soma_recebe += $('#hi-horasexcede-recebe').val()*1
-        soma_recebe += $('#hi-kilometragem-recebe').val()*1
-        soma_recebe += $('#hi-entregas-recebe').val()*1
-        soma_recebe += $('#hi-entregaskg-recebe').val()*1
-        soma_recebe += $('#hi-entregasvolume-recebe').val()*1
-        soma_recebe += $('#hi-saida-recebe').val()*1
-        soma_recebe += $('#hi-capacidade-recebe').val()*1
-        soma_recebe = (soma_recebe*1).toFixed(2)
+        soma_recebe += $('#hi-porcentagem-recebe').val() * 1
+        soma_recebe += $('#hi-horas-recebe').val() * 1
+        soma_recebe += $('#hi-horasexcede-recebe').val() * 1
+        soma_recebe += $('#hi-kilometragem-recebe').val() * 1
+        soma_recebe += $('#hi-entregas-recebe').val() * 1
+        soma_recebe += $('#hi-entregaskg-recebe').val() * 1
+        soma_recebe += $('#hi-entregasvolume-recebe').val() * 1
+        soma_recebe += $('#hi-saida-recebe').val() * 1
+        soma_recebe += $('#hi-capacidade-recebe').val() * 1
+        soma_recebe = (soma_recebe * 1).toFixed(2)
         $('#mi-perimetro-recebe').val(soma_recebe)
         $('#mi-pernoite-recebe').val(soma_recebe)
         var soma_paga = 0.00
-        soma_paga += $('#hi-porcentagem-paga').val()*1
-        soma_paga += $('#hi-horas-paga').val()*1
-        soma_paga += $('#hi-horasexcede-paga').val()*1
-        soma_paga += $('#hi-kilometragem-paga').val()*1
-        soma_paga += $('#hi-entregas-paga').val()*1
-        soma_paga += $('#hi-entregaskg-paga').val()*1
-        soma_paga += $('#hi-entregasvolume-paga').val()*1
-        soma_paga += $('#hi-saida-paga').val()*1
-        soma_paga += $('#hi-capacidade-paga').val()*1
-        soma_paga = (soma_paga*1).toFixed(2)
+        soma_paga += $('#hi-porcentagem-paga').val() * 1
+        soma_paga += $('#hi-horas-paga').val() * 1
+        soma_paga += $('#hi-horasexcede-paga').val() * 1
+        soma_paga += $('#hi-kilometragem-paga').val() * 1
+        soma_paga += $('#hi-entregas-paga').val() * 1
+        soma_paga += $('#hi-entregaskg-paga').val() * 1
+        soma_paga += $('#hi-entregasvolume-paga').val() * 1
+        soma_paga += $('#hi-saida-paga').val() * 1
+        soma_paga += $('#hi-capacidade-paga').val() * 1
+        soma_paga = (soma_paga * 1).toFixed(2)
         $('#mi-perimetro-paga').val(soma_paga)
         $('#mi-pernoite-paga').val(soma_paga)
     }
 
-    var loadForm = function(){
+    var loadForm = function() {
         var obj = $(this);
         var idminuta = $(this).attr("idminuta");
         var urlok = obj.attr("data-url")
@@ -650,11 +650,11 @@ $(document).ready(function(){
             data: {
                 idminuta: idminuta,
             },
-            beforeSend: function(){
+            beforeSend: function() {
                 $("#modal-formulario .modal-content").html("");
                 $("#modal-formulario").modal("show");
             },
-            success: function(data){
+            success: function(data) {
                 $("#modal-formulario .modal-content").html(data.html_form);
                 if ($('#id_NotaGuia').val() != 0) {
                     $('#id_Nome').attr('readonly', 'readonly')
@@ -663,7 +663,7 @@ $(document).ready(function(){
                 }
             }
         });
-        
+
     };
 
     $('.switch').each(function() {
@@ -718,7 +718,7 @@ $(document).ready(function(){
             $('#id_Nota').focus();
         }
     });
-    
+
     $(document).on('click', '#chk-saida', function(event) {
         if ($('#chk-saida').is(":checked")) {
             $('#id_Nota').val($('#label-chk-saida').attr('saida'))
@@ -728,30 +728,30 @@ $(document).ready(function(){
             $('#id_Nota').focus();
         }
     });
-    
+
     $(document).on('change', '.c_paga', function() {
         var switch_change = $(this).attr('id').substring(7)
-        var visible = $('#form-paga-'+switch_change).is(':visible')
+        var visible = $('#form-paga-' + switch_change).is(':visible')
         if (visible) {
-            $('#form-paga-'+switch_change).slideUp(500)
-            $('#t_paga_'+switch_change).text('0,00')
+            $('#form-paga-' + switch_change).slideUp(500)
+            $('#t_paga_' + switch_change).text('0,00')
         } else {
-            $('#form-paga-'+switch_change).slideDown(500)
+            $('#form-paga-' + switch_change).slideDown(500)
         }
     })
-    
+
     $(document).on('change', '.c_recebe', function() {
         var switch_change = $(this).attr('id').substring(9)
-        var visible = $('#form-recebe-'+switch_change).is(':visible')
+        var visible = $('#form-recebe-' + switch_change).is(':visible')
         if (visible) {
-            $('#form-recebe-'+switch_change).slideUp(500)
-            $('#t_recebe_'+switch_change).text('0,00')
+            $('#form-recebe-' + switch_change).slideUp(500)
+            $('#t_recebe_' + switch_change).text('0,00')
             somaReceita();
         } else {
-            $('#form-recebe-'+switch_change).slideDown(500)
-            var valor_digitado = $('#v_'+switch_change).val()            
-            verificaElemento('v_'+switch_change, valor_digitado)
-            $('#v_'+switch_change).select()            
+            $('#form-recebe-' + switch_change).slideDown(500)
+            var valor_digitado = $('#v_' + switch_change).val()
+            verificaElemento('v_' + switch_change, valor_digitado)
+            $('#v_' + switch_change).select()
         }
     })
 
@@ -759,10 +759,10 @@ $(document).ready(function(){
         // Cria as variaveis como o nome do atributo e com valor 0
         var element_select = $(this).attr('name')
         var valor_digitado = '0,00'
-        // Verifica se o valor do elemento e inteiro se for acrescenta o ',00' ao final - Bug do plugin mask e altera a
-        // variavel valor_digitado
+            // Verifica se o valor do elemento e inteiro se for acrescenta o ',00' ao final - Bug do plugin mask e altera a
+            // variavel valor_digitado
         if ($(this).val() % 1 === 0) {
-            valor_digitado = $(this).val()+',00'
+            valor_digitado = $(this).val() + ',00'
             $(this).val(valor_digitado)
         } else {
             valor_digitado = $(this).val()
@@ -774,7 +774,7 @@ $(document).ready(function(){
     verificaSwitchRecebe();
     mostraChecklist();
     formatMask();
-    
+
 });
 
 function filtroMenuSelecionado(item) {
@@ -784,17 +784,17 @@ function filtroMenuSelecionado(item) {
 }
 
 function verificaElemento(element_select, valor_digitado) {
-    function calculaPorcentagem(v_porcentagem, v_valor ) {
-        var valor1 = parseFloat(v_porcentagem.replace('.','').replace(',','.')) / 100
-        var valor2 = parseFloat(v_valor.replace('.','').replace(',','.'))
+    function calculaPorcentagem(v_porcentagem, v_valor) {
+        var valor1 = parseFloat(v_porcentagem.replace('.', '').replace(',', '.')) / 100
+        var valor2 = parseFloat(v_valor.replace('.', '').replace(',', '.'))
         var valor3 = (valor1 * valor2).toFixed(2)
 
         return valor3
     }
 
     function calculaMultiplo(v_valor1, v_valor2) {
-        var valor1 = parseFloat(v_valor1.replace('.','').replace(',','.'))
-        var valor2 = parseFloat(v_valor2.replace('.','').replace(',','.'))
+        var valor1 = parseFloat(v_valor1.replace('.', '').replace(',', '.'))
+        var valor2 = parseFloat(v_valor2.replace('.', '').replace(',', '.'))
         var valor3 = (valor1 * valor2).toFixed(2)
 
         return valor3
@@ -803,11 +803,11 @@ function verificaElemento(element_select, valor_digitado) {
     function calculaHora(v_porcentagem, v_valor1, v_hora) {
         var horas = v_hora.substring(0, 2)
         var minutos = v_hora.substring(3, 5)
-        var valor_hora = (parseFloat(v_porcentagem.replace('.','').replace(',','.')) / 100 * parseFloat(v_valor1.replace('.','').replace(',','.')))
+        var valor_hora = (parseFloat(v_porcentagem.replace('.', '').replace(',', '.')) / 100 * parseFloat(v_valor1.replace('.', '').replace(',', '.')))
         var valor_minuto = (valor_hora / 60)
         var valor_total = ((valor_hora * horas) + (valor_minuto * minutos)).toFixed(2)
 
-        return(valor_total)
+        return (valor_total)
     }
     // verifica o elemento e realiza as operações, quando necessárias para retornar o total
     if (element_select == 'v_taxa') {
@@ -839,13 +839,13 @@ function verificaElemento(element_select, valor_digitado) {
     } else if (element_select == 'v_ajud' || element_select == 'm_ajud') {
         $('#t_recebe_ajud').text(calculaMultiplo($('#v_ajud').val(), $('#m_ajud').val()))
     } else if (element_select.substring(0, 6) == 'v_desp') {
-        $('#t_recebe_'+element_select.substring(2)).text(valor_digitado)
+        $('#t_recebe_' + element_select.substring(2)).text(valor_digitado)
     }
     // recarrega mask
     formatUnmask();
     formatMask();
     // Faz a soma geral com os valores atualizados 
-    somaReceita(); 
+    somaReceita();
 }
 
 function recarregaFinanceiro(html_paga, html_recebe) {
@@ -863,32 +863,32 @@ function recarregaFinanceiro(html_paga, html_recebe) {
 }
 
 function formatMask() {
-    $('#v_taxa').mask('#.##0,00', {reverse: true})
-    $('#v_segu').mask('#.##0,00', {reverse: true})
-    $('#m_segu').mask('#.##0,00', {reverse: true})
-    $('#v_porc').mask('#.##0,00', {reverse: true})
-    $('#m_porc').mask('#.##0,00', {reverse: true})
-    $('#v_hora').mask('#.##0,00', {reverse: true})
-    $('#v_exce').mask('#.##0,00', {reverse: true})
-    $('#v_kilm').mask('#.##0,00', {reverse: true})
-    $('#m_kilm').mask('#.##0', {reverse: true})
-    $('#v_entr').mask('#.##0,00', {reverse: true})
-    $('#m_entr').mask('#.##0', {reverse: true})
-    $('#v_enkg').mask('#.##0,00', {reverse: true})
-    $('#m_enkg').mask('#.##0,00', {reverse: true})
-    $('#v_evol').mask('#.##0,00', {reverse: true})
-    $('#m_evol').mask('#.##0', {reverse: true})
-    $('#v_said').mask('#.##0,00', {reverse: true})
-    $('#v_capa').mask('#.##0,00', {reverse: true})
-    $('#v_peri').mask('#.##0,00', {reverse: true})
-    $('#m_peri').mask('#.##0,00', {reverse: true})
-    $('#v_pnoi').mask('#.##0,00', {reverse: true})
-    $('#m_pnoi').mask('#.##0,00', {reverse: true})
-    $('#v_ajud').mask('#.##0,00', {reverse: true})
-    $('#m_ajud').mask('#.##0', {reverse: true})
-    $('.v_desp').mask('#.##0,00', {reverse: true})
-    $('.total-recebe').mask('#.##0,00', {reverse: true})
-    $("#totalrecebe").mask('#.##0,00', {reverse: true})
+    $('#v_taxa').mask('#.##0,00', { reverse: true })
+    $('#v_segu').mask('#.##0,00', { reverse: true })
+    $('#m_segu').mask('#.##0,00', { reverse: true })
+    $('#v_porc').mask('#.##0,00', { reverse: true })
+    $('#m_porc').mask('#.##0,00', { reverse: true })
+    $('#v_hora').mask('#.##0,00', { reverse: true })
+    $('#v_exce').mask('#.##0,00', { reverse: true })
+    $('#v_kilm').mask('#.##0,00', { reverse: true })
+    $('#m_kilm').mask('#.##0', { reverse: true })
+    $('#v_entr').mask('#.##0,00', { reverse: true })
+    $('#m_entr').mask('#.##0', { reverse: true })
+    $('#v_enkg').mask('#.##0,00', { reverse: true })
+    $('#m_enkg').mask('#.##0,00', { reverse: true })
+    $('#v_evol').mask('#.##0,00', { reverse: true })
+    $('#m_evol').mask('#.##0', { reverse: true })
+    $('#v_said').mask('#.##0,00', { reverse: true })
+    $('#v_capa').mask('#.##0,00', { reverse: true })
+    $('#v_peri').mask('#.##0,00', { reverse: true })
+    $('#m_peri').mask('#.##0,00', { reverse: true })
+    $('#v_pnoi').mask('#.##0,00', { reverse: true })
+    $('#m_pnoi').mask('#.##0,00', { reverse: true })
+    $('#v_ajud').mask('#.##0,00', { reverse: true })
+    $('#m_ajud').mask('#.##0', { reverse: true })
+    $('.v_desp').mask('#.##0,00', { reverse: true })
+    $('.total-recebe').mask('#.##0,00', { reverse: true })
+    $("#totalrecebe").mask('#.##0,00', { reverse: true })
 }
 
 function formatUnmask() {
@@ -927,7 +927,7 @@ function openMyModal(event) {
     $.ajax({
         type: "GET",
         url: url,
-        data : { 
+        data: {
             idobj: $(event.target).data('idminuta'),
             idPessoal: $(event.target).data('idpessoal'),
         }
@@ -1017,7 +1017,7 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                             $(".html-categoria").html(xhr['html_categoria']);
                             MostraCategoria()
                             if (xhr['html_veiculo'] == '') {
-                                EscondeVeiculo() 
+                                EscondeVeiculo()
                             } else {
                                 $('.html-veiculo').html(xhr['html_veiculo']);
                                 MostraVeiculo()
@@ -1071,11 +1071,11 @@ var somaReceita = function() {
     /*$('.total-recebe').mask('#.##0,00', {reverse: true})*/
     var valor_receita = 0.00;
     $(".total-recebe").each(function() {
-        valor_receita += parseFloat($(this).text().replace('.','').replace(',','.'))
+        valor_receita += parseFloat($(this).text().replace('.', '').replace(',', '.'))
     });
     $("#totalrecebe").text(valor_receita.toFixed(2))
     $("#totalrecebe").unmask()
-    $("#totalrecebe").mask('#.##0,00', {reverse: true})
+    $("#totalrecebe").mask('#.##0,00', { reverse: true })
 }
 
 var verificaTotalHoras = function() {
@@ -1265,12 +1265,12 @@ function verificaTotalZero() {
 
 var mostraMensagemErro = function() {
     $(".div-erro").slideDown(500)
-    $(".div-erro").delay(5000).slideUp(500)        
+    $(".div-erro").delay(5000).slideUp(500)
 }
 
 var mostraMensagemSucesso = function() {
     $(".div-sucesso").slideDown(500)
-    $(".div-sucesso").delay(5000).slideUp(500)        
+    $(".div-sucesso").delay(5000).slideUp(500)
 }
 
 var EscondeCategoria = function() {
@@ -1321,11 +1321,11 @@ var MostraEntrega = function() {
     $(".html-entrega").delay(1000).slideDown(500)
 }
 
-var escondeChecklist =  function() {
+var escondeChecklist = function() {
     $(".html-checklist").hide()
 }
 
-var mostraChecklist =  function() {
+var mostraChecklist = function() {
     $(".html-checklist").slideDown(500)
     $(".chk-red").each(function() {
         $('.conclui-minuta').slideUp(500)
@@ -1335,3 +1335,24 @@ var mostraChecklist =  function() {
     });
 }
 
+$(document).on('click', '.js-adiciona-romaneio-minuta', function() {
+    var _id_romaneio = $(this).data('idromaneio')
+    var _id_minuta = $(this).data('idminuta')
+    $.ajax({
+        type: 'GET',
+        url: '/minutas/adiciona_romaneio_minuta',
+        data: {
+            idRomaneio: _id_romaneio,
+            idMinuta: _id_minuta,
+        },
+        beforeSend: function() {
+            $('.html-entrega').hide()
+            $(".box-loader").show()
+        },
+        success: function(data) {
+            $('.html-entrega').html(data['html_entrega'])
+            $('.html-entrega').show()
+            $(".box-loader").hide()
+        },
+    });
+});

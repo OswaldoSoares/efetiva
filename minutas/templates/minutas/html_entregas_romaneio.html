@@ -1,0 +1,21 @@
+{% load humanize %}
+<div class="article-card-titulo">
+    <span>ENTREGAS ROMANEIO</span>
+</div>
+<div class="article-card-body">
+    <div class="">
+    {% for rom in romaneios %}
+    {{ rom.Romaneio|stringformat:'05d' }}
+    <i class="bi bi-check-square i-button js-adiciona-romaneio-minuta"
+    data-idromaneio="{{ rom.idRomaneio }}"
+    data-idminuta="{{ s_minuta.idminuta }}"></i>
+    {% endfor %}
+    </div>
+</div>
+<div class="article-card-footer">
+    {% for ocorrencia in ocorrencias %}
+    {% if forloop.last %}
+    <span><b>{{ forloop.counter|stringformat:"02d" }} OCORRÊNCIA{{ forloop.counter|pluralize|upper }}</b></span>
+    {% endif %}
+    {% endfor %}
+</div>
