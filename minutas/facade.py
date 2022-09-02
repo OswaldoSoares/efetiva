@@ -1715,6 +1715,16 @@ def save_notas_romaneio_minuta(id_rom, id_min):
         nota["idminuta"] = id_min
         lista.append(nota)
     nova_lista = sorted(lista, key=lambda d: d["endereco"])
+    posi = -1
+    for itens in nova_lista:
+        teste = next(
+            (i for i, x in enumerate(nova_lista) if x["endereco"] == itens["endereco"]),
+            None,
+        )
+        if posi == teste:
+            itens["notaguia"] = nota
+        nota = itens["numero"]
+        posi = teste
     save_nota_entrega(nova_lista)
 
 
