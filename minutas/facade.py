@@ -1692,8 +1692,17 @@ def forn_minuta(request, c_form, c_idobj, c_url, c_view):
 
 
 def create_contexto_romaneios(id_cli):
-    romaneios = Romaneios.objects.all()
-    return romaneios
+    romaneios = Romaneios.objects.all().order_by("-Romaneio")
+    lista = [
+        {
+            "idromaneio": x.idRomaneio,
+            "romaneio": x.Romaneio,
+            "motorista": nome_curto(x.idMotorista.Nome),
+            "veiculo": x.idVeiculo,
+        }
+        for x in romaneios
+    ]
+    return lista
 
 
 def save_notas_romaneio_minuta(id_rom, id_min):

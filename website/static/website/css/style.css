@@ -4096,6 +4096,44 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 
+/* Minuta - Card Romaneios - start */
+
+.ac-entrega-romaneio .article-card-body .itens-romaneio {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color6);
+}
+
+.ac-entrega-romaneio .article-card-body .itens-romaneio .item-romaneio {
+    width: 18%;
+    padding: 0 5px;
+    text-align: center;
+}
+
+.ac-entrega-romaneio .article-card-body .itens-romaneio .item-motorista {
+    width: 47%;
+    padding: 0 5px;
+    text-align: left;
+}
+
+.ac-entrega-romaneio .article-card-body .itens-romaneio .item-placa {
+    width: 25%;
+    padding: 0 5px;
+    text-align: center;
+}
+
+.ac-entrega-romaneio .article-card-body .itens-romaneio .item-buttom {
+    width: 10%;
+    padding: 0 5px;
+    text-align: center;
+}
+
+
+/* Minuta - Card Romaneios - end */
+
+
 /* Card end */
 
 .card-mes-ano {

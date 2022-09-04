@@ -1,5 +1,6 @@
 from clientes.models import Cliente
 from django.db import models
+from minutas.models import Minuta
 from pessoas.models import Pessoal
 from veiculos.models import Veiculo
 
@@ -74,11 +75,15 @@ class Romaneios(models.Model):
     idRomaneio = models.AutoField(primary_key=True)
     Romaneio = models.IntegerField()
     DataRomaneio = models.DateField(default=0)
+    Fechado = models.BooleanField(default=False)
     idMotorista = models.ForeignKey(
         Pessoal, on_delete=models.PROTECT, blank=True, null=True
     )
     idVeiculo = models.ForeignKey(
         Veiculo, on_delete=models.PROTECT, blank=True, null=True
+    )
+    idMinuta = models.ForeignKey(
+        Minuta, on_delete=models.PROTECT, blank=True, null=True
     )
 
     class Meta:

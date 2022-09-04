@@ -1,16 +1,26 @@
 {% load humanize %}
 <div class="article-card-titulo">
-    <span>ENTREGAS ROMANEIO</span>
+    <span>ROMANEIOS</span>
 </div>
 <div class="article-card-body">
-    <div class="">
     {% for rom in romaneios %}
-    {{ rom.Romaneio|stringformat:'05d' }}
-    <i class="bi bi-check-square i-button js-adiciona-romaneio-minuta"
-    data-idromaneio="{{ rom.idRomaneio }}"
-    data-idminuta="{{ s_minuta.idminuta }}"></i>
-    {% endfor %}
+    <div class="itens-romaneio">
+        <div class="item-romaneio">
+            {{ rom.romaneio|stringformat:'05d' }}
+        </div>
+        <div class="item-motorista">
+            {{ rom.motorista }}
+        </div>
+        <div class="item-placa">
+            {{ rom.veiculo }}
+        </div>
+        <div class="item-buttom">
+            <i class="bi bi-check-square i-button js-adiciona-romaneio-minuta"
+            data-idromaneio="{{ rom.idromaneio }}"
+            data-idminuta="{{ s_minuta.idminuta }}"></i>
+        </div>
     </div>
+    {% endfor %}
 </div>
 <div class="article-card-footer">
     {% for ocorrencia in ocorrencias %}
