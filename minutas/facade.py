@@ -1699,6 +1699,7 @@ def create_contexto_romaneios(id_cli):
             "romaneio": x.Romaneio,
             "motorista": nome_curto(x.idMotorista.Nome),
             "veiculo": x.idVeiculo,
+            "idminuta": x.idMinuta_id,
         }
         for x in romaneios
     ]
@@ -1724,17 +1725,21 @@ def save_notas_romaneio_minuta(id_rom, id_min):
         nota["idminuta"] = id_min
         lista.append(nota)
     nova_lista = sorted(lista, key=lambda d: d["endereco"])
-    posi = -1
+    atual = -1
     for itens in nova_lista:
-        teste = next(
+        proximo = next(
             (i for i, x in enumerate(nova_lista) if x["endereco"] == itens["endereco"]),
             None,
         )
-        if posi == teste:
+        if atual == proximo:
             itens["notaguia"] = nota
         nota = itens["numero"]
-        posi = teste
+        atual = proximo
     save_nota_entrega(nova_lista)
+    romaneio = Romaneios.objects.get(idRomaneio=id_rom)
+    obj = romaneio
+    obj.idMinuta_id = id_min
+    obj.save(update_fields=["idMinuta_id"])
 
 
 def save_nota_entrega(nota_lista):

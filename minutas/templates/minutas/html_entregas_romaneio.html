@@ -6,13 +6,25 @@
     {% for rom in romaneios %}
     <div class="itens-romaneio">
         <div class="item-romaneio">
+            {% if rom.idminuta|stringformat:"i" == s_minuta.idminuta|stringformat:"i" %}
+            <span class="i-button-null">{{ rom.romaneio|stringformat:'05d' }}</span>
+            {% else %}
             {{ rom.romaneio|stringformat:'05d' }}
+            {% endif %}
         </div>
         <div class="item-motorista">
+            {% if rom.idminuta|stringformat:"i" == s_minuta.idminuta|stringformat:"i" %}
+            <span class="i-button-null">{{ rom.motorista }}</span>
+            {% else %}
             {{ rom.motorista }}
+            {% endif %}
         </div>
         <div class="item-placa">
+            {% if rom.idminuta|stringformat:"i" == s_minuta.idminuta|stringformat:"i" %}
+            <span class="i-button-null">{{ rom.veiculo }}</span>
+            {% else %}
             {{ rom.veiculo }}
+            {% endif %}
         </div>
         <div class="item-buttom">
             <i class="bi bi-check-square i-button js-adiciona-romaneio-minuta"
