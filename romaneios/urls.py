@@ -10,14 +10,15 @@ from .views import (
     edita_romaneio,
     exclui_nota_cliente,
     exclui_nota_romaneio,
+    fecha_romaneio,
+    filtra_nota_cliente,
+    imprime_romaneio,
     index_romaneio,
     ler_nota_xml,
     ocorrencia_nota_cliente,
     orderna_notas,
     seleciona_cliente,
     seleciona_romaneio,
-    imprime_romaneio,
-    filtra_nota_cliente,
 )
 
 urlpatterns = [
@@ -105,5 +106,10 @@ urlpatterns = [
         "filtra_nota_cliente",
         filtra_nota_cliente,
         name="filtra_nota_cliente",
+    ),
+    path(
+        "fecha_romaneio",
+        fecha_romaneio,
+        name="fecha_romaneio",
     ),
 ]

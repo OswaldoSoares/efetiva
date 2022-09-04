@@ -360,6 +360,27 @@ $(document).on('click', '.js-retorna-lista-notas', function() {
     });
 });
 
+$(document).on('click', '.js-fecha-romaneio', function() {
+    var _id_romaneio = $(this).data("idromaneio")
+    $.ajax({
+        type: 'GET',
+        url: '/romaneios/fecha_romaneio',
+        data: {
+            idRomaneio: _id_romaneio,
+        },
+        beforeSend: function() {
+            $(".card-lista-romaneios").hide()
+            $(".box-loader").show();
+        },
+        success: function(data) {
+            $(".card-lista-romaneios").html(data.html_lista_romaneios)
+            $(".card-lista-romaneios").show()
+                //CarregaMask()
+            $(".box-loader").hide();
+        },
+    });
+});
+
 $(document).on('click', '.js-sort-notas', function() {
     var anr_hidden = $(".js-adiciona-nota-romaneio").is(":hidden")
     var _id_cliente = $(this).data("idcliente")

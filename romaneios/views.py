@@ -250,3 +250,14 @@ def filtra_nota_cliente(request):
     contexto = {"notas": notas, "idcliente": id_cli}
     data = facade.create_data_filtro_nota(request, contexto)
     return data
+
+
+def fecha_romaneio(request):
+    id_rom = request.GET.get("idRomaneio")
+    facade.fecha_romaneio(id_rom)
+    romaneio = facade.create_contexto_romaneios()
+    contexto = {
+        "romaneios": romaneio,
+    }
+    data = facade.create_data_romaneios(request, contexto)
+    return data

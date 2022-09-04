@@ -447,7 +447,7 @@ def update_romaneio(romaneio_form, id_rom):
 
 
 def create_contexto_romaneios():
-    romaneios = Romaneios.objects.all()
+    romaneios = Romaneios.objects.filter(Fechado=False).order_by("-Romaneio")
     lista = [
         {
             "idromaneio": x.idRomaneio,
@@ -726,3 +726,10 @@ def create_contexto_filtro_nota(nota):
         for x in notas
     ]
     return lista
+
+
+def fecha_romaneio(id_rom):
+    romaneio = Romaneios.objects.get(idRomaneio=id_rom)
+    obj = romaneio
+    obj.Fechado = True
+    obj.save(update_fields=["Fechado"])
