@@ -182,7 +182,9 @@ def create_data_sort_notas(request, contexto):
 
 def create_data_filtro_nota(request, contexto):
     data = dict()
+    data["id_rom"] = contexto["id_rom"]
     html_lista_notas_cliente(request, contexto, data)
+    html_lista_notas_romaneio(request, contexto, data)
     return JsonResponse(data)
 
 

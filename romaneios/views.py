@@ -247,7 +247,18 @@ def filtra_nota_cliente(request):
     nota = request.GET.get("nota")
     id_cli = request.GET.get("cliente")
     notas = facade.create_contexto_filtro_nota(nota)
+    id_rom = facade.create_contexto_romaneio_tem_nota(int(notas[0]["id_nota_clientes"]))
     contexto = {"notas": notas, "idcliente": id_cli}
+    not_rom = facade.create_contexto_notas_romaneio(id_rom)
+    romaneio = facade.create_contexto_seleciona_romaneio(id_rom)
+    contexto.update(
+        {
+            "notas_romaneio": not_rom,
+            "romaneios": romaneio,
+            "idcliente": id_cli,
+            "id_rom": id_rom,
+        }
+    )
     data = facade.create_data_filtro_nota(request, contexto)
     return data
 
