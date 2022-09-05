@@ -319,11 +319,12 @@
                     {% if notas_minuta_guia %}
                     {% for notasminutaguia in notas_minuta_guia %}
                     <div class="entregas-itens">
-                        <span>Nota: {{ notasminutaguia.Nota }} - Valor: R$ {{ notasminutaguia.ValorNota }} - Peso:
+                        <span title="{{ notasminutaguia.Nome }}">Nota: {{ notasminutaguia.Nota }} - Valor: R$ 
+                                {{ notasminutaguia.ValorNota }} - Peso:
                                 {{ notasminutaguia.Peso }} - Volume: {{ notasminutaguia.Volume }} -
                                 <b>{% if notasminutaguia.Bairro %} {{ notasminutaguia.Bairro }} - {% endif %}
                                 {{ notasminutaguia.Cidade }} {% if notasminutaguia.Nome %} -
-                                {{ notasminutaguia.Nome|slice:"0:35" }} {% endif %}</b>
+                                {{ notasminutaguia.Nome|slice:"0:20" }} {% endif %}</b>
                         </span>
                         <div>
                             {% if itens.StatusMinuta == 'ABERTA' %}

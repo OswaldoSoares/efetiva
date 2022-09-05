@@ -1733,7 +1733,8 @@ def save_notas_romaneio_minuta(id_rom, id_min):
         )
         if atual == proximo:
             itens["notaguia"] = nota
-        nota = itens["numero"]
+        else:
+            nota = itens["numero"]
         atual = proximo
     save_nota_entrega(nova_lista)
     romaneio = Romaneios.objects.get(idRomaneio=id_rom)
