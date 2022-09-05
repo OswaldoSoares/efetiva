@@ -4,6 +4,7 @@ from cgitb import html
 from decimal import Decimal
 from xml.dom import ValidationErr
 
+import requests
 from clientes.models import Cliente
 from django.db.models import Max
 from django.http import JsonResponse
@@ -332,6 +333,16 @@ def save_ocorrencia(ocorrencia):
     obj = nota
     obj.StatusNota = ocorrencia["tipo_ocorrencia"]
     obj.save(update_fields=["StatusNota"])
+    if not ocorrencia["ocorrencia"]:
+        ocorrencia["ocorrencia"] = "ENTREGA EFETUADA COM SUCESSO."
+    texto = f"""
+    Nota: {nota.NumeroNota} - Valor R$ {nota.Valor} - Peso: {nota.Peso} - Volume {nota.Volume}
+    Destinatário: {nota.Destinatario}
+    Endereço: {nota.Endereco} - {nota.Bairro} - CEP: {nota.CEP} - {nota.Cidade} - {nota.Estado}
+    Tipo de Ocorrência: {ocorrencia["tipo_ocorrencia"]}
+    Ocorrência: {ocorrencia["ocorrencia"]}
+    """
+    send_message(texto)
 
 
 def altera_status_rota(id_rom, id_not):
@@ -733,3 +744,34 @@ def fecha_romaneio(id_rom):
     obj = romaneio
     obj.Fechado = True
     obj.save(update_fields=["Fechado"])
+
+
+def last_chat_id_telegram(token):
+    try:
+        url = f"https://api.telegram.org/bot{token}/getUpdates"
+        response = requests.get(url)
+        if response.status_code == 200:
+            json_msg = response.json()
+            for json_result in reversed(json_msg["result"]):
+                message_keys = json_result["message"].keys()
+                if ("new_chat_member") in message_keys or (
+                    "group_chat_created" in message_keys
+                ):
+                    return json_result["message"]["chat"]["id"]
+            print("Nenhum grupo encontrado")
+        else:
+            print(f"A resposta falhou, código de status {response.status_code}")
+    except Exception as e:
+        print("Erro no getUpdates:", e)
+
+
+# enviar mensagens utilizando o bot para um chat específico
+def send_message(message):
+    token = "5778267083:AAEha8jgzCRYr_niZ7JM4EB5MWDX2Zkk98o"
+    chat_id = "-785462150"
+    try:
+        data = {"chat_id": chat_id, "text": message}
+        url = f"https://api.telegram.org/bot{token}/sendMessage"
+        requests.post(url, data)
+    except Exception as e:
+        print("Erro no sendMessage:", e)

@@ -969,7 +969,9 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
             modal.find('.modal-body form').submit();
         });
     }
-    if (cbAfterLoad) { cbAfterLoad(modal); }
+    if (cbAfterLoad) {
+        cbAfterLoad(modal);
+    }
     modal.find('form input:visible').first().focus();
     $(form).on('submit', function(event) {
         event.preventDefault();
@@ -1097,85 +1099,85 @@ var verificaTotalKMs = function() {
 }
 
 function verificaSwitchPaga() {
-    if ($('#c_paga_porc').is(':not(:checked')) {
+    if ($('#c_paga_porc').is(':not(:checked)')) {
         $('#form-paga-porc').slideUp(500)
     }
-    if ($('#c_paga_hora').is(':not(:checked')) {
+    if ($('#c_paga_hora').is(':not(:checked)')) {
         $('#form-paga-hora').slideUp(500)
     }
-    if ($('#c_paga_exce').is(':not(:checked')) {
+    if ($('#c_paga_exce').is(':not(:checked)')) {
         $('#form-paga-exce').slideUp(500)
     }
-    if ($('#c_paga_kilm').is(':not(:checked')) {
+    if ($('#c_paga_kilm').is(':not(:checked)')) {
         $('#form-paga-kilm').slideUp(500)
     }
-    if ($('#c_paga_entr').is(':not(:checked')) {
+    if ($('#c_paga_entr').is(':not(:checked)')) {
         $('#form-paga-entr').slideUp(500)
     }
-    if ($('#c_paga_enkg').is(':not(:checked')) {
+    if ($('#c_paga_enkg').is(':not(:checked)')) {
         $('#form-paga-enkg').slideUp(500)
     }
-    if ($('#c_paga_evol').is(':not(:checked')) {
+    if ($('#c_paga_evol').is(':not(:checked)')) {
         $('#form-paga-evol').slideUp(500)
     }
-    if ($('#c_paga_said').is(':not(:checked')) {
+    if ($('#c_paga_said').is(':not(:checked)')) {
         $('#form-paga-said').slideUp(500)
     }
-    if ($('#c_paga_capa').is(':not(:checked')) {
+    if ($('#c_paga_capa').is(':not(:checked)')) {
         $('#form-paga-capa').slideUp(500)
     }
-    if ($('#c_paga_peri').is(':not(:checked')) {
+    if ($('#c_paga_peri').is(':not(:checked)')) {
         $('#form-paga-peri').slideUp(500)
     }
-    if ($('#c_paga_pnoi').is(':not(:checked')) {
+    if ($('#c_paga_pnoi').is(':not(:checked)')) {
         $('#form-paga-pnoi').slideUp(500)
     }
-    if ($('#c_paga_ajud').is(':not(:checked')) {
+    if ($('#c_paga_ajud').is(':not(:checked)')) {
         $('#form-paga-ajud').slideUp(500)
     }
 };
 
 function verificaSwitchRecebe() {
-    if ($('#c_recebe_taxa').is(':not(:checked')) {
+    if ($('#c_recebe_taxa').is(':not(:checked)')) {
         $('#form-recebe-taxa').slideUp(500)
     }
-    if ($('#c_recebe_segu').is(':not(:checked')) {
+    if ($('#c_recebe_segu').is(':not(:checked)')) {
         $('#form-recebe-segu').slideUp(500)
     }
-    if ($('#c_recebe_porc').is(':not(:checked')) {
+    if ($('#c_recebe_porc').is(':not(:checked)')) {
         $('#form-recebe-porc').slideUp(500)
     }
-    if ($('#c_recebe_hora').is(':not(:checked')) {
+    if ($('#c_recebe_hora').is(':not(:checked)')) {
         $('#form-recebe-hora').slideUp(500)
     }
-    if ($('#c_recebe_exce').is(':not(:checked')) {
+    if ($('#c_recebe_exce').is(':not(:checked)')) {
         $('#form-recebe-exce').slideUp(500)
     }
-    if ($('#c_recebe_kilm').is(':not(:checked')) {
+    if ($('#c_recebe_kilm').is(':not(:checked)')) {
         $('#form-recebe-kilm').slideUp(500)
     }
-    if ($('#c_recebe_entr').is(':not(:checked')) {
+    if ($('#c_recebe_entr').is(':not(:checked)')) {
         $('#form-recebe-entr').slideUp(500)
     }
-    if ($('#c_recebe_enkg').is(':not(:checked')) {
+    if ($('#c_recebe_enkg').is(':not(:checked)')) {
         $('#form-recebe-enkg').slideUp(500)
     }
-    if ($('#c_recebe_evol').is(':not(:checked')) {
+    if ($('#c_recebe_evol').is(':not(:checked)')) {
         $('#form-recebe-evol').slideUp(500)
     }
-    if ($('#c_recebe_said').is(':not(:checked')) {
+    if ($('#c_recebe_said').is(':not(:checked)')) {
         $('#form-recebe-said').slideUp(500)
     }
-    if ($('#c_recebe_capa').is(':not(:checked')) {
+    if ($('#c_recebe_capa').is(':not(:checked)')) {
         $('#form-recebe-capa').slideUp(500)
     }
-    if ($('#c_recebe_peri').is(':not(:checked')) {
+    if ($('#c_recebe_peri').is(':not(:checked)')) {
         $('#form-recebe-peri').slideUp(500)
     }
-    if ($('#c_recebe_pnoi').is(':not(:checked')) {
+    if ($('#c_recebe_pnoi').is(':not(:checked)')) {
         $('#form-recebe-pnoi').slideUp(500)
     }
-    if ($('#c_recebe_ajud').is(':not(:checked')) {
+    if ($('#c_recebe_ajud').is(':not(:checked)')) {
         $('#form-recebe-ajud').slideUp(500)
     }
 };

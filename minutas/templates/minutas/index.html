@@ -7,7 +7,7 @@
     <div class="col-01">
         <div class="article minutas-atual">
             {% if t_aberta %}
-                <article class="article-card ac-lista">
+                <article class="article-card ac-lista js-card-minuta-aberta">
                     <div class="article-minuta-titulo">
                         <span>ABERTA</span>
                     </div>
@@ -16,14 +16,14 @@
                         <div class="ac-itens">
                             <div class="dados-minuta">
                                 <div class="linha-minuta">
-                                    <i class="bi bi-file-text">
+                                    <i class="bi bi-file-text i-button-null">
                                         <span>{{ minutas.Minuta }}</span>
                                         <span>{{ minutas.Data }}</span>
                                         <span>{{ minutas.Hora }}</span>
                                     </i>
                                 </div>
                                 <div class="linha-minuta">
-                                    <i class="bi bi-building">
+                                    <i class="bi bi-building i-button-null">
                                         <span>{{ minutas.Cliente }}</span>
                                     </i>
                                 </div>
@@ -31,14 +31,14 @@
                             <div class="dados-minuta">
                                 <div class="linha-minuta linha-motorista">
                                     {% if minutas.Motorista %}
-                                    <i class="bi bi-person-square">
+                                    <i class="bi bi-person-square i-button-null">
                                         <span>{{ minutas.Motorista }}</span>
                                     </i>
                                     {% endif %}
                                 </div>
                                 <div class="linha-minuta linha-motorista">
                                     {% if minutas.Veiculo %}
-                                    <i class="bi bi-truck">
+                                    <i class="bi bi-truck i-button-null">
                                         <span>{{ minutas.Veiculo }}</span>
                                     </i>
                                     {% endif %}
