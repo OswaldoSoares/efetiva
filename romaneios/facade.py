@@ -770,7 +770,8 @@ def last_chat_id_telegram(token):
 # enviar mensagens utilizando o bot para um chat específico
 def send_message(message):
     token = "5778267083:AAEha8jgzCRYr_niZ7JM4EB5MWDX2Zkk98o"
-    chat_id = "-785462150"
+    chat_id = "-785462150"  # Telegrm TransEfetiva - Operacional
+    chat_id = "-666092318"  # Telegram Efetiva - Catavento
     try:
         data = {"chat_id": chat_id, "text": message}
         url = f"https://api.telegram.org/bot{token}/sendMessage"
