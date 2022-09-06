@@ -1,4 +1,5 @@
 import datetime
+import os
 import xml.etree.ElementTree as ET
 from cgitb import html
 from decimal import Decimal
@@ -10,6 +11,7 @@ from django.db.models import Max
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from minutas.facade import nome_curto
+from website.models import FileUpload
 
 from romaneios.models import NotasClientes, NotasOcorrencias, RomaneioNotas, Romaneios
 
@@ -770,11 +772,29 @@ def last_chat_id_telegram(token):
 # enviar mensagens utilizando o bot para um chat específico
 def send_message(message):
     token = "5778267083:AAEha8jgzCRYr_niZ7JM4EB5MWDX2Zkk98o"
-    chat_id = "-785462150"  # Telegrm TransEfetiva - Operacional
     chat_id = "-666092318"  # Telegram Efetiva - Catavento
+    chat_id = "-785462150"  # Telegrm TransEfetiva - Operacional
     try:
         data = {"chat_id": chat_id, "text": message}
         url = f"https://api.telegram.org/bot{token}/sendMessage"
         requests.post(url, data)
     except Exception as e:
         print("Erro no sendMessage:", e)
+
+
+def send_arquivo(romaneio):
+    token = "5778267083:AAEha8jgzCRYr_niZ7JM4EB5MWDX2Zkk98o"
+    chat_id = "-785462150"  # Telegram TransEfetiva - Operacional
+
+    rom_numero = str(romaneio).zfill(5)
+    descricao_arquivo = f"Romaneio_{str(rom_numero).zfill(5)}.pdf"
+    arquivo = FileUpload.objects.filter(DescricaoUpload=descricao_arquivo)
+    url = f"https://api.telegram.org/bot{token}/sendDocument?chat_id={chat_id}"
+    payload = {}
+    file = os.path.join(arquivo[0].uploadFile.path)
+    print(file)
+    if arquivo:
+        files = [("document", open(file, "rb"))]
+    print(files)
+    headers = []
+    requests.request("POST", url, headers=headers, data=payload, files=files)

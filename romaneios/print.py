@@ -1,7 +1,9 @@
 import decimal
 import email
+import os
 from io import BytesIO
 
+from django.core.files.base import ContentFile
 from django.http import HttpResponse
 from minutas.facade import nome_curto
 from reportlab.lib.colors import HexColor
@@ -10,6 +12,7 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.pdfgen import canvas
 from reportlab.platypus import Paragraph
 from transefetiva.settings.settings import STATIC_ROOT
+from website.models import FileUpload
 
 
 def cmp(mm):
@@ -24,6 +27,16 @@ def cmp(mm):
 
 def print_romaneio(contexto):
     rom_numero = str(contexto["romaneio"].Romaneio).zfill(5)
+    descricao_arquivo = f"Romaneio_{str(rom_numero).zfill(5)}.pdf"
+    arquivo = FileUpload.objects.filter(DescricaoUpload=descricao_arquivo)
+    if not arquivo:
+        obj = FileUpload()
+        obj.DescricaoUpload = descricao_arquivo
+        obj.save()
+        arquivo = FileUpload.objects.filter(DescricaoUpload=descricao_arquivo)
+    else:
+        if arquivo[0].uploadFile:
+            os.remove(arquivo[0].uploadFile.path)
     response = HttpResponse(content_type="application/pdf")
     response["Content-Disposition"] = f'filename="ROMANEIO {rom_numero}.pdf'
     buffer = BytesIO()
@@ -35,6 +48,8 @@ def print_romaneio(contexto):
     pdf.save()
     buffer.seek(0)
     pdf = buffer.getvalue()
+    obj = FileUpload.objects.get(idFileUpload=arquivo[0].idFileUpload)
+    obj.uploadFile.save(descricao_arquivo, ContentFile(pdf))
     buffer.close()
     response.write(pdf)
     return response
