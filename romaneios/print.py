@@ -14,6 +14,8 @@ from reportlab.platypus import Paragraph
 from transefetiva.settings.settings import STATIC_ROOT
 from website.models import FileUpload
 
+from romaneios.models import NotasOcorrencias
+
 
 def cmp(mm):
     """
@@ -121,6 +123,7 @@ def notas_romaneio(pdf, contexto):
             coleta = "COLETA"
         else:
             coleta = "ENTREGA"
+        id_not = x.idNotasClientes.idNotasClientes
         numero = x.idNotasClientes.NumeroNota
         destinatario = x.idNotasClientes.Destinatario
         endereco = x.idNotasClientes.Endereco
@@ -163,6 +166,8 @@ def notas_romaneio(pdf, contexto):
             linha -= para.height * 0.352777
             para.drawOn(pdf, cmp(12), cmp(linha))
         linha -= 1
+        print(numero)
+        ocorrencia_nota(id_not, status_nota, pdf)
         pdf.line(cmp(12), cmp(linha), cmp(198), cmp(linha))
         linha -= 3
     pdf.line(cmp(10), cmp(14), cmp(200), cmp(14))
@@ -170,3 +175,11 @@ def notas_romaneio(pdf, contexto):
     pagina = str(pdf.getPageNumber()).zfill(2)
     pdf.drawString(cmp(20), cmp(11), f"{notas} NOTAS")
     pdf.drawRightString(cmp(190), cmp(11), f"PÁGINA {pagina}")
+
+
+def ocorrencia_nota(id_not, status, pdf):
+    print(status)
+    ocorrencia = NotasOcorrencias.objects.filter(
+        idNotasClientes_id=id_not, TipoOcorrencia=status
+    ).latest("Ocorrencia")
+    print(ocorrencia)

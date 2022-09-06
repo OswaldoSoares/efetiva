@@ -93,7 +93,6 @@ $(document).on('click', '.js-filtra-nota', function() {
     var anr_visible = $(".card-lista-notas-romaneio").is(":visible")
     var nota = $(".filtra-nota").val()
     var id_cliente = $("#id_cliente").val()
-    alert(id_cliente)
     $.ajax({
         type: 'GET',
         url: '/romaneios/filtra_nota_cliente',

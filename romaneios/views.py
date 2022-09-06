@@ -253,7 +253,9 @@ def filtra_nota_cliente(request):
     contexto = {"notas": notas, "idcliente": id_cli}
     not_rom = facade.create_contexto_notas_romaneio(id_rom)
     romaneio = facade.create_contexto_seleciona_romaneio(id_rom)
-    arquivo = facade.create_contexto_pdf_romaneio(romaneio[0]["romaneio"])
+    arquivo = False
+    if romaneio:
+        arquivo = facade.create_contexto_pdf_romaneio(romaneio[0]["romaneio"])
     contexto.update(
         {
             "notas_romaneio": not_rom,
