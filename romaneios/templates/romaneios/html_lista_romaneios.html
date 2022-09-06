@@ -3,10 +3,10 @@
     <span>ROMANEIOS</span>
 </div>
 <div class="article-card-body">
-    {% for rom in romaneios %}
-    {% if forloop.first %}
+    {% for rom in romaneios %} {% if forloop.first %}
     <div class="borda-top"></div>
     {% endif %}
+    <input type="hidden" id="id_cliente" value="{{ idcliente }}">
     <div class="item-romaneio {% cycle 'linha-p' 'linha-i' %}">
         <div class="item-numero" title="Número Romaneio">
             <i class="bi bi-file-text i-button-null"></i> {{ rom.romaneio|stringformat:'05d' }}
@@ -18,38 +18,26 @@
     <div class="item-romaneio {% cycle 'linha-p' 'linha-i' %}">
         <div class="item-motorista" title="Motorista">
             {% if rom.motorista %}
-            <i class="bi bi-building i-button-null"></i> {{ rom.apelido }}
-            {% endif %}
+            <i class="bi bi-building i-button-null"></i> {{ rom.apelido }} {% endif %}
         </div>
         <div class="item-veiculo" title="Veiculo">
             {% if rom.veiculo %}
-            <i class="bi bi-truck i-button-null"></i> {{ rom.veiculo }}
-            {% endif %}
+            <i class="bi bi-truck i-button-null"></i> {{ rom.veiculo }} {% endif %}
         </div>
     </div>
     <div class="item-romaneio {% cycle 'linha-p' 'linha-i' %}">
         <div class="item-button">
             <i class="bi bi-folder i-button
-            js-seleciona-romaneio" title="Seleciona Romanio"
-            data-idromaneio={{ rom.idromaneio }}
-            data-idcliente={{ idcliente }}></i>
+            js-seleciona-romaneio" title="Seleciona Romanio" data-idromaneio={{ rom.idromaneio }} data-idcliente={{ idcliente }}></i>
             <i class="bi bi-pencil-square i-button
-            js-edita-romaneio" title="Edita Romaneio"
-            data-idromaneio={{ rom.idromaneio }}></i>
+            js-edita-romaneio" title="Edita Romaneio" data-idromaneio={{ rom.idromaneio }}></i>
             <i class="bi bi-door-closed i-button
-            js-fecha-romaneio" title="Fecha Romaneio"
-            data-idromaneio={{ rom.idromaneio }}></i>
+            js-fecha-romaneio" title="Fecha Romaneio" data-idromaneio={{ rom.idromaneio }}></i>
         </div>
     </div>
-    {% endfor %}
-    {% for notas in notas_romaneio %}
-    {{ notas.idnotascliente }}
-    {% endfor %}
+    {% endfor %} {% for notas in notas_romaneio %} {{ notas.idnotascliente }} {% endfor %}
 </div>
 <div class="article-card-footer">
-    {% for rom in romaneios %}
-    {% if forloop.last %}
-    <span><b>{{ forloop.counter|stringformat:"02d" }} ROMANEIO{{ forloop.counter|pluralize|upper }}</b></span>
-    {% endif %}
-    {% endfor %}
+    {% for rom in romaneios %} {% if forloop.last %}
+    <span><b>{{ forloop.counter|stringformat:"02d" }} ROMANEIO{{ forloop.counter|pluralize|upper }}</b></span> {% endif %} {% endfor %}
 </div>

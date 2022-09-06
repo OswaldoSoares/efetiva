@@ -92,11 +92,14 @@ $(document).on('submit', '.js-gera-notas-cliente', function(event) {
 $(document).on('click', '.js-filtra-nota', function() {
     var anr_visible = $(".card-lista-notas-romaneio").is(":visible")
     var nota = $(".filtra-nota").val()
+    var id_cliente = $("#id_cliente").val()
+    alert(id_cliente)
     $.ajax({
         type: 'GET',
         url: '/romaneios/filtra_nota_cliente',
         data: {
             nota: nota,
+            cliente: id_cliente,
         },
         beforeSend: function() {
             $(".card-lista-notas-cliente").hide()

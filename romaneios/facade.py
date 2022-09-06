@@ -802,3 +802,15 @@ def create_data_send_arquivo():
     data["send_arquivo"] = "OK"
     data = JsonResponse(data)
     return data
+
+
+def create_contexto_pdf_romaneio(rom):
+    descricao_arquivo = f"Romaneio_{str(rom).zfill(5)}.pdf"
+    arquivo = FileUpload.objects.filter(DescricaoUpload=descricao_arquivo)
+    if arquivo:
+        if arquivo[0].uploadFile:
+            return True
+        else:
+            return False
+    else:
+        return False
