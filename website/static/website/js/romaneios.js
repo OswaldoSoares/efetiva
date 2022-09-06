@@ -221,6 +221,29 @@ $(document).on('click', '.js-edita-notas-cliente', function() {
     });
 });
 
+$(document).on('click', '.js-envia-telegram-romaneio', function() {
+    var _romaneio = $(this).data("romaneio")
+    $.ajax({
+        type: 'GET',
+        url: '/romaneios/envia_telegram_romaneio',
+        data: {
+            Romaneio: _romaneio,
+        },
+        beforeSend: function() {
+            $(".card-form-notas-cliente").hide()
+            $(".box-loader").show();
+        },
+        success: function(data) {
+            $(".card-form-notas-cliente").html(data.html_form_notas_cliente)
+            $(".card-form-notas-cliente").show()
+            $(".card-form-romaneios").html(data.html_form_romaneios)
+            $(".card-form-romaneios").show()
+                // CarregaMask()
+            $(".box-loader").hide();
+        },
+    });
+});
+
 $(document).on('click', '.js-edita-romaneio', function() {
     var _id_romaneio = $(this).data("idromaneio")
     $.ajax({

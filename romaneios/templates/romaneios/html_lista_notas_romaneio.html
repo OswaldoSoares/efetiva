@@ -3,8 +3,7 @@
     <span>ROMANEIO</span>
 </div>
 <div class="article-card-body">
-    {% for rom in romaneios %}
-    {% if forloop.first %}
+    {% for rom in romaneios %} {% if forloop.first %}
     <div class="borda-top"></div>
     {% endif %}
     <div class="item-romaneio">
@@ -19,26 +18,23 @@
     <div class="item-romaneio">
         <div class="item-motorista" title="Motorista">
             {% if rom.motorista %}
-            <i class="bi bi-building i-button-null"></i> {{ rom.apelido }}
-            {% endif %}
+            <i class="bi bi-building i-button-null"></i> {{ rom.apelido }} {% endif %}
         </div>
         <div class="item-veiculo" title="Veiculo">
             {% if rom.veiculo %}
-            <i class="bi bi-truck i-button-null"></i> {{ rom.veiculo }}
-            {% endif %}
+            <i class="bi bi-truck i-button-null"></i> {{ rom.veiculo }} {% endif %}
         </div>
     </div>
     <div class="item-romaneio">
         <div class="item-button">
             <i class="bi bi-arrow-left-circle i-button
             js-retorna-lista-romaneio" title="Lista de Romaneios"></i>
-            <a class="bi bi-printer i-button" title="Imprime Romaneio"
-            href="{% url 'imprime_romaneio' %}?idRomaneio={{ rom.idromaneio }}&idCliente={{ idcliente }}"
-            target="_blank"></a>
+            <a class="bi bi-printer i-button" title="Imprime Romaneio" href="{% url 'imprime_romaneio' %}?idRomaneio={{ rom.idromaneio }}&idCliente={{ idcliente }}" target="_blank"></a>
+            <i class="bi bi-cursor i-button
+            js-envia-telegram-romaneio" data-romaneio="{{ rom.romaneio }}" title="Envia Romaneio no Telegram"></i>
         </div>
     </div>
-    {% endfor %}
-    {% for nr in notas_romaneio %}
+    {% endfor %} {% for nr in notas_romaneio %}
     <div class="item-nr {% cycle 'linha-p' 'linha-i' %}">
         <div class="item-numero-nota" title="Numero da Nota">
             <i class="bi bi-file-text i-button-null"></i> {{ nr.idnotasclientes.NumeroNota }}
@@ -67,20 +63,13 @@
     <div class="item-nr {% cycle 'linha-p' 'linha-i' %}">
         <div class="item-button">
             <i class="bi bi-folder i-button
-            js-ocorrencia-notas-cliente" title="Seleciona Nota"
-            data-idnota={{ nr.idnotasclientes.idNotasClientes }}
-            data-idcliente={{ nr.idnotasclientes.idCliente_id }}></i>
-            <i class="bi bi-trash i-button js-exclui-nota-romaneio"
-            title="Remove Nota do Romaneio"
-            data-idromaneionotas="{{ nr.idromaneionotas }}"></i>
+            js-ocorrencia-notas-cliente" title="Seleciona Nota" data-idnota={{ nr.idnotasclientes.idNotasClientes }} data-idcliente={{ nr.idnotasclientes.idCliente_id }}></i>
+            <i class="bi bi-trash i-button js-exclui-nota-romaneio" title="Remove Nota do Romaneio" data-idromaneionotas="{{ nr.idromaneionotas }}"></i>
         </div>
     </div>
     {% endfor %}
 </div>
 <div class="article-card-footer">
-    {% for rom in notas_romaneio %}
-    {% if forloop.last %}
-    <span><b>{{ forloop.counter|stringformat:"02d" }} ENTREGA{{ forloop.counter|pluralize|upper }}</b></span>
-    {% endif %}
-    {% endfor %}
+    {% for rom in notas_romaneio %} {% if forloop.last %}
+    <span><b>{{ forloop.counter|stringformat:"02d" }} ENTREGA{{ forloop.counter|pluralize|upper }}</b></span> {% endif %} {% endfor %}
 </div>

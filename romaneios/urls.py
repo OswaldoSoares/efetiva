@@ -8,6 +8,7 @@ from .views import (
     carrega_xml,
     edita_nota_cliente,
     edita_romaneio,
+    envia_telegram_romaneio,
     exclui_nota_cliente,
     exclui_nota_romaneio,
     fecha_romaneio,
@@ -111,5 +112,10 @@ urlpatterns = [
         "fecha_romaneio",
         fecha_romaneio,
         name="fecha_romaneio",
+    ),
+    path(
+        "envia_telegram_romaneio",
+        envia_telegram_romaneio,
+        name="envia_telegram_romaneio",
     ),
 ]

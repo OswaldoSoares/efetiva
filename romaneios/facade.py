@@ -785,16 +785,20 @@ def send_message(message):
 def send_arquivo(romaneio):
     token = "5778267083:AAEha8jgzCRYr_niZ7JM4EB5MWDX2Zkk98o"
     chat_id = "-785462150"  # Telegram TransEfetiva - Operacional
-
     rom_numero = str(romaneio).zfill(5)
     descricao_arquivo = f"Romaneio_{str(rom_numero).zfill(5)}.pdf"
     arquivo = FileUpload.objects.filter(DescricaoUpload=descricao_arquivo)
     url = f"https://api.telegram.org/bot{token}/sendDocument?chat_id={chat_id}"
     payload = {}
     file = os.path.join(arquivo[0].uploadFile.path)
-    print(file)
     if arquivo:
         files = [("document", open(file, "rb"))]
-    print(files)
     headers = []
     requests.request("POST", url, headers=headers, data=payload, files=files)
+
+
+def create_data_send_arquivo():
+    data = dict()
+    data["send_arquivo"] = "OK"
+    data = JsonResponse(data)
+    return data
