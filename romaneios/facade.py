@@ -784,7 +784,7 @@ def send_message(message):
 
 def send_arquivo(romaneio):
     token = "5778267083:AAEha8jgzCRYr_niZ7JM4EB5MWDX2Zkk98o"
-    chat_id = "-785462150"  # Telegram TransEfetiva - Operacional
+    chat_id = "-666092318"  # Telegram Efetiva - Catavento
     rom_numero = str(romaneio).zfill(5)
     descricao_arquivo = f"Romaneio_{str(rom_numero).zfill(5)}.pdf"
     arquivo = FileUpload.objects.filter(DescricaoUpload=descricao_arquivo)
