@@ -110,9 +110,10 @@ $(document).on('click', '.js-filtro-status', function() {
             $(".box-loader").show()
         },
         success: function(data) {
-            $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente)
+            $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente_reduzida)
             $(".card-lista-notas-cliente").show()
             $(".card-lista-romaneios").show()
+            $(".js-adiciona-nota-romaneio").hide()
             $(".box-loader").hide()
         },
     });

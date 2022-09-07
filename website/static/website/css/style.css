@@ -5153,6 +5153,34 @@ main .fp-recibo-tabela .fp-recibo-print {
     text-align: center;
 }
 
+.card-lista-notas-cliente .item-nota .item-numero-reduzida {
+    width: 12%;
+    text-align: left;
+    padding: 0 5px;
+    border-top: 1px solid var(--color9);
+}
+
+.card-lista-notas-cliente .item-nota .item-endereco-reduzida {
+    width: 60%;
+    text-align: left;
+    padding: 0 5px;
+    border-top: 1px solid var(--color9);
+}
+
+.card-lista-notas-cliente .item-nota .item-destinatario-reduzida {
+    width: 13%;
+    text-align: left;
+    padding: 0 5px;
+    border-top: 1px solid var(--color9);
+}
+
+.card-lista-notas-cliente .item-nota .item-button-reduzida {
+    width: 15%;
+    text-align: center;
+    padding: 0 5px;
+    border-top: 1px solid var(--color9);
+}
+
 .card-lista-ocorrencia {
     width: 660px;
 }

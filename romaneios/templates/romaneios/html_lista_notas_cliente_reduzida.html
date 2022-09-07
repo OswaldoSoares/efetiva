@@ -1,0 +1,70 @@
+{% load humanize %}
+<div class="article-card-titulo">
+    <div class="titulo-com-filtro">
+        <span>NOTAS</span>
+    </div>
+</div>
+<div class="article-card-body">
+    <div class="sort-notas {% cycle 'linha-p' 'linha-i' %}">
+        <span class="i-button js-sort-notas" data-idcliente="{{ idcliente }}"
+        data-sort="NumeroNota">NOTA</span>
+        <span class="i-button js-sort-notas" data-idcliente="{{ idcliente }}"
+        data-sort="Destinatario">DESTINATARIO</span>
+        <span class="i-button js-sort-notas" data-idcliente="{{ idcliente }}"
+        data-sort="Endereco">ENDEREÇO</span>
+        <span class="i-button js-sort-notas" data-idcliente="{{ idcliente }}"
+        data-sort="Bairro">BAIRRO</span>
+        <span class="i-button js-sort-notas" data-idcliente="{{ idcliente }}"
+        data-sort="CEP">CEP</span>
+        <span class="i-button js-sort-notas" data-idcliente="{{ idcliente }}"
+        data-sort="Cidade">CIDADE</span>
+        <span class="i-button js-sort-notas" data-idcliente="{{ idcliente }}"
+        data-sort="Estado">ESTADO</span>
+        <span class="i-button js-sort-notas" data-idcliente="{{ idcliente }}"
+        data-sort="-StatusNota">STATUS</span>
+    </div>
+    {% for nota in notas %}
+    <div class="item-nota {% cycle 'linha-p' 'linha-i' %}">
+        {% if nota.statusnota == "NOTA CADASTRADA" %}
+        <div class="item-numero-reduzida" title="Número Nota">
+            <i class="bi bi-file-text i-button js-nota-pendente"></i> {{ nota.numero_nota }}
+        </div>
+        {% else %}
+        <div class="item-numero-reduzida" title="Número Nota">
+            <i class="bi bi-file-text i-button-null"></i> {{ nota.numero_nota }}
+        </div>
+        {% endif %}
+        <div class="item-endereco-reduzida" title="{{ nota.endereco_compl }}">
+            <i class="bi bi-geo-alt i-button-null"></i> {{ nota.endereco_compl|slice:"0:45" }}
+        </div>
+        <div class="item-destinatario-reduzida" title="{{ nota.destinatario }}">
+            <i class="bi bi-shop i-button-null"></i> {{ nota.destinatario|slice:"0:6" }}
+        </div>
+        <div class="item-button-reduzida">
+            <i class="bi bi-folder i-button
+            js-ocorrencia-notas-cliente" title="Seleciona Nota"
+            data-idnota={{ nota.id_nota_clientes }}
+            data-idcliente={{ nota.idcliente }}></i>
+            <i class="bi bi-pencil-square i-button
+            js-edita-notas-cliente" title="Edita Nota"
+            data-idnota={{ nota.id_nota_clientes }}
+            data-idcliente={{ nota.idcliente }}></i>
+            <i class="bi bi-trash i-button
+            js-exclui-notas-cliente" title="Exclui Nota"
+            data-idnota={{ nota.id_nota_clientes }}
+            data-idcliente={{ nota.idcliente }}></i>
+            {% if not nota.statusnota == "EM ROTA" %}
+            <i class="bi bi-check-square i-button
+            js-adiciona-nota-romaneio" title="Adiciona no Romaneio"
+            data-idnota={{ nota.id_nota_clientes }}></i>
+            {% endif %}
+        </div>
+    </div>
+    {% if forloop.last %}
+    <div class="borda-bottom"></div>
+    {% endif %} {% endfor %}
+</div>
+<div class="article-card-footer">
+    {% for nota in notas %} {% if forloop.last %}
+    <span><b>{{ forloop.counter|stringformat:"02d" }} NOTA{{ forloop.counter|pluralize|upper }}</b></span> {% endif %} {% endfor %}
+</div>

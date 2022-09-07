@@ -89,9 +89,11 @@
             js-exclui-notas-cliente" title="Exclui Nota"
             data-idnota={{ nota.id_nota_clientes }}
             data-idcliente={{ nota.idcliente }}></i>
+            {% if not nota.statusnota == "EM ROTA" %}
             <i class="bi bi-check-square i-button
             js-adiciona-nota-romaneio" title="Adiciona no Romaneio"
             data-idnota={{ nota.id_nota_clientes }}></i>
+            {% endif %}
         </div>
     </div>
     {% if forloop.last %}

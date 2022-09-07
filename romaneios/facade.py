@@ -191,9 +191,9 @@ def create_data_filtro_nota(request, contexto):
     return JsonResponse(data)
 
 
-def create_data_filtro_status(request, contexto):
+def create_data_filtro_status_reduzida(request, contexto):
     data = dict()
-    html_lista_notas_cliente(request, contexto, data)
+    html_lista_notas_cliente_reduzida(request, contexto, data)
     return JsonResponse(data)
 
 
@@ -233,6 +233,13 @@ def html_lista_ocorrencia(request, contexto, data):
 def html_lista_notas_cliente(request, contexto, data):
     data["html_lista_notas_cliente"] = render_to_string(
         "romaneios/html_lista_notas_cliente.html", contexto, request=request
+    )
+    return data
+
+
+def html_lista_notas_cliente_reduzida(request, contexto, data):
+    data["html_lista_notas_cliente_reduzida"] = render_to_string(
+        "romaneios/html_lista_notas_cliente_reduzida.html", contexto, request=request
     )
     return data
 

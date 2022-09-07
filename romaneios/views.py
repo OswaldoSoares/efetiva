@@ -300,5 +300,5 @@ def filtra_status(request):
             "idcliente": id_cli,
         }
     )
-    data = facade.create_data_filtro_status(request, contexto)
+    data = facade.create_data_filtro_status_reduzida(request, contexto)
     return data
