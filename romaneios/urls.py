@@ -13,6 +13,7 @@ from .views import (
     exclui_nota_romaneio,
     fecha_romaneio,
     filtra_nota_cliente,
+    filtra_status,
     imprime_romaneio,
     index_romaneio,
     ler_nota_xml,
@@ -117,5 +118,10 @@ urlpatterns = [
         "envia_telegram_romaneio",
         envia_telegram_romaneio,
         name="envia_telegram_romaneio",
+    ),
+    path(
+        "filtra_status",
+        filtra_status,
+        name="filtra_status",
     ),
 ]

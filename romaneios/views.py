@@ -38,6 +38,8 @@ def seleciona_cliente(request):
         motoristas = motoristas_disponiveis()
         veiculos = filtra_veiculo("17", "TRANSPORTADORA")
         contexto.update({"motoristas": motoristas, "veiculos": veiculos})
+        status_nota = facade.create_contexto_filtro_status()
+        contexto.update({"status_nota": status_nota})
         data = facade.create_data_cliente_selecionado(request, contexto)
     else:
         clientes = facade.create_contexto_seleciona_cliente()
@@ -284,4 +286,19 @@ def envia_telegram_romaneio(request):
     rom = request.GET.get("Romaneio")
     facade.send_arquivo(rom)
     data = facade.create_data_send_arquivo()
+    return data
+
+
+def filtra_status(request):
+    sort_status = request.GET.get("status")
+    id_cli = request.GET.get("cliente")
+    notas = facade.create_contexto_filtro_notas_status(id_cli, sort_status)
+    contexto = {"notas": notas, "idcliente": id_cli}
+    contexto.update(
+        {
+            "notas": notas,
+            "idcliente": id_cli,
+        }
+    )
+    data = facade.create_data_filtro_status(request, contexto)
     return data

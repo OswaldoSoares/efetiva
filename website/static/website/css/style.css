@@ -5068,19 +5068,6 @@ main .fp-recibo-tabela .fp-recibo-print {
     padding: 0 10px;
 }
 
-.card-lista-notas-cliente .article-card-titulo .titulo-com-filtro {
-    width: 70%;
-    justify-content: center;
-}
-
-.card-lista-notas-cliente .article-card-titulo .div-filtro {
-    width: 30%;
-}
-
-.card-lista-notas-cliente .article-card-titulo .div-filtro .filtra-nota {
-    width: 100px;
-}
-
 .card-lista-notas-cliente .sort-notas {
     display: flex;
     align-items: center;
@@ -5437,6 +5424,33 @@ main .fp-recibo-tabela .fp-recibo-print {
     width: 100%;
     text-align: center;
     border-bottom: 1px solid var(--color9);
+}
+
+.card-filtro-notas-romaneios {
+    width: 300px;
+}
+
+.card-filtro-notas-romaneios .itens-filtro {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    color: var(--color6);
+}
+
+.card-filtro-notas-romaneios .itens-filtro .item-icon {
+    width: 10%;
+    text-align: center;
+}
+
+.card-filtro-notas-romaneios .itens-filtro .item-filtro {
+    width: 80%;
+}
+
+.card-filtro-notas-romaneios .itens-filtro .item-button {
+    width: 10%;
+    text-align: center;
 }
 
 .borda-top,

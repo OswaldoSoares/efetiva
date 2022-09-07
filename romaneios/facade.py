@@ -173,6 +173,7 @@ def create_data_cliente_selecionado(request, contexto):
     html_form_notas_cliente(request, contexto, data)
     html_form_romaneios(request, contexto, data)
     html_lista_romaneios(request, contexto, data)
+    html_filtro_notas_romaneios(request, contexto, data)
     return JsonResponse(data)
 
 
@@ -187,6 +188,12 @@ def create_data_filtro_nota(request, contexto):
     data["id_rom"] = contexto["id_rom"]
     html_lista_notas_cliente(request, contexto, data)
     html_lista_notas_romaneio(request, contexto, data)
+    return JsonResponse(data)
+
+
+def create_data_filtro_status(request, contexto):
+    data = dict()
+    html_lista_notas_cliente(request, contexto, data)
     return JsonResponse(data)
 
 
@@ -320,7 +327,7 @@ def save_notas_cliente(nota):
     obj.Volume = nota["volume"]
     obj.Peso = nota["peso"]
     obj.Valor = nota["valor"]
-    obj.StatusNota = "PENDENTE"
+    obj.StatusNota = "NOTA CADASTRADA"
     obj.idCliente_id = nota["idcliente"]
     obj.save()
 
@@ -512,6 +519,59 @@ def html_lista_notas_romaneio(request, contexto, data):
         "romaneios/html_lista_notas_romaneio.html", contexto, request=request
     )
     return data
+
+
+def html_filtro_notas_romaneios(request, contexto, data):
+    data["html_filtro_notas_romaneios"] = render_to_string(
+        "romaneios/html_filtro_notas_romaneios.html", contexto, request=request
+    )
+    return data
+
+
+def create_contexto_filtro_status():
+    status_nota = (
+        NotasClientes.objects.values("StatusNota").distinct().order_by("StatusNota")
+    )
+    return status_nota
+
+
+def create_contexto_filtro_notas_status(id_cli, sort_status):
+    notas = NotasClientes.objects.filter(StatusNota=sort_status, idCliente_id=id_cli)
+    lista = [
+        {
+            "id_nota_clientes": x.idNotasClientes,
+            "local_coleta": x.LocalColeta,
+            "data_coleta": x.DataColeta,
+            "numero_nota": x.NumeroNota,
+            "destinatario": x.Destinatario,
+            "endereco": x.Endereco,
+            "endereco_compl": x.Endereco
+            + " "
+            + x.Bairro
+            + " "
+            + x.CEP[0:5]
+            + "-"
+            + x.CEP[5:]
+            + " "
+            + x.Cidade
+            + " "
+            + x.Estado,
+            "bairro": x.Bairro,
+            "cep": x.CEP[0:5] + "-" + x.CEP[5:],
+            "cidade": x.Cidade,
+            "estado": x.Estado,
+            "contato": x.Contato,
+            "informa": x.Informa,
+            "volume": x.Volume,
+            "peso": x.Peso,
+            "valor": x.Valor,
+            "statusnota": x.StatusNota,
+            "historico": x.Historico,
+            "idcliente": x.idCliente_id,
+        }
+        for x in notas
+    ]
+    return lista
 
 
 def create_contexto_seleciona_romaneio(id_rom):
