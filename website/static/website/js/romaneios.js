@@ -299,15 +299,15 @@ $(document).on('click', '.js-edita-romaneio', function() {
     });
 });
 
-$(document).on('click', '.js-seleciona-romaneio', function() {
-    var _id_romaneio = $(this).data("idromaneio")
-    var _id_cliente = $(this).data("idcliente")
+$(document).on('click', '.js-filtra-romaneio', function() {
+    var id_romaneio = $(".filtra-romaneio").val()
+    var id_cliente = $("#id_cliente").val()
     $.ajax({
         type: 'GET',
         url: '/romaneios/seleciona_romaneio',
         data: {
-            idRomaneio: _id_romaneio,
-            idCliente: _id_cliente,
+            idRomaneio: id_romaneio,
+            idCliente: id_cliente,
         },
         beforeSend: function() {
             $(".card-lista-romaneios").hide()
