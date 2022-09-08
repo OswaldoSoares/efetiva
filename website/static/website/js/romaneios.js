@@ -40,6 +40,29 @@ $(document).on('submit', '.js-seleciona-cliente', function(event) {
     });
 });
 
+$(document).on('click', '.js-seleciona-romaneio', function() {
+    var _id_romaneio = $(this).data("idromaneio")
+    var _id_cliente = $(this).data("idcliente")
+    $.ajax({
+        type: 'GET',
+        url: '/romaneios/seleciona_romaneio',
+        data: {
+            idRomaneio: _id_romaneio,
+            idCliente: _id_cliente,
+        },
+        beforeSend: function() {
+            $(".card-lista-romaneios").hide()
+            $(".box-loader").show();
+        },
+        success: function(data) {
+            $(".card-lista-notas-romaneio").html(data.html_lista_notas_romaneio)
+            $(".card-lista-notas-romaneio").show()
+            $(".js-adiciona-nota-romaneio").show()
+            $(".box-loader").hide();
+        },
+    });
+});
+
 $(document).on('click', '.js-mostra-body-nota', function() {
     $(".body-nota").show()
     $(".js-mostra-body-nota").hide()
@@ -94,6 +117,32 @@ $(document).on('submit', '.js-gera-notas-cliente', function(event) {
 
 
 $(document).on('click', '.js-filtro-status', function() {
+    var _status = $("#select-status").val()
+    var id_cliente = $("#id_cliente").val()
+    $.ajax({
+        type: 'GET',
+        url: '/romaneios/filtra_status',
+        data: {
+            status: _status,
+            cliente: id_cliente,
+        },
+        beforeSend: function() {
+            $(".card-lista-notas-cliente").hide()
+            $(".card-lista-romaneios").hide()
+            $(".card-lista-notas-romaneio").hide()
+            $(".box-loader").show()
+        },
+        success: function(data) {
+            $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente_reduzida)
+            $(".card-lista-notas-cliente").show()
+            $(".card-lista-romaneios").show()
+            $(".js-adiciona-nota-romaneio").hide()
+            $(".box-loader").hide()
+        },
+    });
+});
+
+$(document).on('click', '.js-imprime-notas-status', function() {
     var _status = $("#select-status").val()
     var id_cliente = $("#id_cliente").val()
     $.ajax({
