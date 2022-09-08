@@ -63,6 +63,32 @@ $(document).on('click', '.js-seleciona-romaneio', function() {
     });
 });
 
+$(document).on('click', '.js-nota-pendente', function() {
+    var _id_nota_clientes = $(this).data("idnotaclientes")
+    var _status = $("#select-status").val()
+    var id_cliente = $("#id_cliente").val()
+    $.ajax({
+        type: 'GET',
+        url: '/romaneios/nota_deposito',
+        data: {
+            idNotaClientes: _id_nota_clientes,
+            status: _status,
+            cliente: id_cliente,
+        },
+        beforeSend: function() {
+            $(".card-lista-notas-cliente").hide()
+            $(".box-loader").show();
+        },
+        success: function(data) {
+            $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente_reduzida)
+            $(".card-lista-notas-cliente").show()
+            $(".card-lista-romaneios").show()
+            $(".js-adiciona-nota-romaneio").hide()
+            $(".box-loader").hide()
+        },
+    });
+});
+
 $(document).on('click', '.js-mostra-body-nota', function() {
     $(".body-nota").show()
     $(".js-mostra-body-nota").hide()

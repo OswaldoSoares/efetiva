@@ -305,3 +305,14 @@ def filtra_status(request):
     contexto.update({"idcliente": id_cli})
     data = facade.create_data_filtro_status_reduzida(request, contexto)
     return data
+
+
+def nota_deposito(request):
+    id_nota_clientes = request.GET.get("idNotaClientes")
+    facade.altera_status_pendente(id_nota_clientes)
+    sort_status = request.GET.get("status")
+    id_cli = request.GET.get("cliente")
+    contexto = facade.create_contexto_filtro_notas_status(id_cli, sort_status)
+    contexto.update({"idcliente": id_cli})
+    data = facade.create_data_filtro_status_reduzida(request, contexto)
+    return data

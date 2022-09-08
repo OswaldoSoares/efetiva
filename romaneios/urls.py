@@ -18,6 +18,7 @@ from .views import (
     imprime_romaneio,
     index_romaneio,
     ler_nota_xml,
+    nota_deposito,
     ocorrencia_nota_cliente,
     orderna_notas,
     seleciona_cliente,
@@ -129,5 +130,10 @@ urlpatterns = [
         "imprime_notas_status",
         imprime_notas_status,
         name="imprime_notas_status",
+    ),
+    path(
+        "nota_deposito",
+        nota_deposito,
+        name="nota_deposito",
     ),
 ]

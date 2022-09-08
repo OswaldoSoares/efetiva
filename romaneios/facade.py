@@ -882,3 +882,10 @@ def create_contexto_pdf_romaneio(rom):
             return False
     else:
         return False
+
+
+def altera_status_pendente(id_not):
+    nota = NotasClientes.objects.get(idNotasClientes=id_not)
+    obj = nota
+    obj.StatusNota = "PENDENTE"
+    obj.save(update_fields=["StatusNota"])

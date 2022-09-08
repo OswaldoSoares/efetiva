@@ -27,7 +27,8 @@
     <div class="item-nota {% cycle 'linha-p' 'linha-i' %}">
         {% if nota.statusnota == "NOTA CADASTRADA" %}
         <div class="item-numero-reduzida" title="Número Nota">
-            <i class="bi bi-file-text i-button js-nota-pendente"></i> {{ nota.numero_nota }}
+            <i class="bi bi-file-text i-button js-nota-pendente"
+            data-idnotaclientes="{{ nota.id_nota_clientes }}"></i> {{ nota.numero_nota }}
         </div>
         {% else %}
         <div class="item-numero-reduzida" title="Número Nota">
