@@ -62,9 +62,16 @@
     </div>
     {% if forloop.last %}
     <div class="borda-bottom"></div>
-    {% endif %} {% endfor %}
+    {% endif %}
+    {% endfor %}
 </div>
 <div class="article-card-footer">
-    {% for nota in notas %} {% if forloop.last %}
-    <span><b>{{ forloop.counter|stringformat:"02d" }} NOTA{{ forloop.counter|pluralize|upper }}</b></span> {% endif %} {% endfor %}
+    {% for nota in notas %}
+    {% if forloop.last %}
+    <span><b>{{ forloop.counter|stringformat:"02d" }} NOTA{{ forloop.counter|pluralize|upper }}</b></span>
+    <a class="bi bi-printer i-button" title="Imprime Romaneio"
+    href="{% url 'imprime_notas_status' %}?StatusNota={{ nota.statusnota }}&idCliente={{ idcliente }}"
+    target="_blank"></a>
+    {% endif %}
+    {% endfor %}
 </div>

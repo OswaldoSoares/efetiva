@@ -43,6 +43,7 @@ def print_romaneio(contexto):
     response["Content-Disposition"] = f'filename="ROMANEIO {rom_numero}.pdf'
     buffer = BytesIO()
     pdf = canvas.Canvas(buffer)
+    header(pdf, contexto)
     header_romaneio(pdf, contexto)
     header_cliente(pdf, contexto)
     notas_romaneio(pdf, contexto)
@@ -57,11 +58,26 @@ def print_romaneio(contexto):
     return response
 
 
-def header_romaneio(pdf, contexto):
-    rom_numero = str(contexto["romaneio"].Romaneio).zfill(5)
-    rom_data_romaneio = contexto["romaneio"].DataRomaneio.strftime("%d/%m/%Y")
-    rom_motorista = nome_curto(contexto["romaneio"].idMotorista.Nome)
-    rom_placa = contexto["romaneio"].idVeiculo
+def print_notas_status(contexto):
+    status_nota = contexto["sort_status"]
+    response = HttpResponse(content_type="application/pdf")
+    response["Content-Disposition"] = f'filename="RELATÓRIO - NOTAS: {status_nota}.pdf'
+    buffer = BytesIO()
+    pdf = canvas.Canvas(buffer)
+    header(pdf, contexto)
+    header_nota_status(pdf, contexto)
+    header_cliente(pdf, contexto)
+    notas_status(pdf, contexto)
+    pdf.setTitle(f"RELATÓRIO - NOTAS: {status_nota}.pdf")
+    pdf.save()
+    buffer.seek(0)
+    pdf = buffer.getvalue()
+    buffer.close()
+    response.write(pdf)
+    return response
+
+
+def header(pdf, contexto):
     url = f"{STATIC_ROOT}/website/img/transportadora.jpg"
     nom_empresa = "TRANSEFETIVA TRANSPORTE - EIRELLI - ME"
     end_empresa = "RUA OLIMPIO PORTUGAL, 245 - MOOCA - SÃO PAULO - SP - CEP 03112-010"
@@ -83,6 +99,21 @@ def header_romaneio(pdf, contexto):
     pdf.setStrokeColor(HexColor("#000000"))
     pdf.setFillColor(HexColor("#000000"))
     pdf.setFont("Times-Roman", 12)
+    return pdf
+
+
+def header_nota_status(pdf, contexto):
+    status_nota = contexto["sort_status"]
+    pdf.drawCentredString(cmp(105), cmp(255.8), f"RELATÓRIO - NOTAS: {status_nota}")
+    pdf.line(cmp(10), cmp(254.1), cmp(200), cmp(254.1))
+    return pdf
+
+
+def header_romaneio(pdf, contexto):
+    rom_numero = str(contexto["romaneio"].Romaneio).zfill(5)
+    rom_data_romaneio = contexto["romaneio"].DataRomaneio.strftime("%d/%m/%Y")
+    rom_motorista = nome_curto(contexto["romaneio"].idMotorista.Nome)
+    rom_placa = contexto["romaneio"].idVeiculo
     pdf.drawString(cmp(12), cmp(255.8), f"ROMANEIO Nº: {rom_numero}")
     pdf.drawCentredString(cmp(105), cmp(255.8), f"{rom_motorista} - {rom_placa}")
     pdf.drawRightString(cmp(198), cmp(255.8), f"{rom_data_romaneio}")
@@ -189,3 +220,35 @@ def ocorrencia_nota(id_not, status, pdf, linha):
             pdf.setFillColor(HexColor("#000000"))
             linha -= 1.5
     return pdf, linha
+
+
+def notas_status(pdf, contexto):
+    linha = 242.8
+    for x in contexto["notas"]:
+        numero = x["numero_nota"]
+        destinatario = x["destinatario"]
+        endereco = x["endereco"]
+        bairro = x["bairro"]
+        cep = x["cep"]
+        cidade = x["cidade"]
+        pdf.setFont("Times-Roman", 9)
+        pdf.drawString(
+            cmp(12),
+            cmp(linha),
+            f"{numero} - {destinatario[0:9]}... - {endereco[0:30]} - {bairro} - CEP: {cep} - {cidade[0:9]}",
+        )
+        linha -= 1
+        pdf.line(cmp(12), cmp(linha), cmp(198), cmp(linha))
+        linha -= 3
+        if linha < 20:
+            pagina = pdf.getPageNumber()
+            pdf.drawCentredString(cmp(105), cmp(11), "PÁGINA {}".format(pagina))
+            pdf.showPage()
+            header(pdf, contexto)
+            header_nota_status(pdf, contexto)
+            header_cliente(pdf, contexto)
+            linha = 242.8
+    pagina = pdf.getPageNumber()
+    pdf.drawCentredString(cmp(105), cmp(11), "PÁGINA {}".format(pagina))
+    pdf.showPage()
+    return pdf

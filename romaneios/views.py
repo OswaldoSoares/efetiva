@@ -2,7 +2,7 @@ from django.shortcuts import render
 from minutas.facade import filtra_veiculo, motoristas_disponiveis
 
 from romaneios import facade
-from romaneios.print import print_romaneio
+from romaneios.print import print_notas_status, print_romaneio
 
 
 def index_romaneio(request):
@@ -247,6 +247,15 @@ def imprime_romaneio(request):
     return response
 
 
+def imprime_notas_status(request):
+    sort_status = request.GET.get("StatusNota")
+    id_cli = request.GET.get("idCliente")
+    contexto = facade.create_contexto_filtro_notas_status(id_cli, sort_status)
+    contexto.update({"sort_status": sort_status})
+    response = print_notas_status(contexto)
+    return response
+
+
 def filtra_nota_cliente(request):
     nota = request.GET.get("nota")
     id_cli = request.GET.get("cliente")
@@ -292,13 +301,7 @@ def envia_telegram_romaneio(request):
 def filtra_status(request):
     sort_status = request.GET.get("status")
     id_cli = request.GET.get("cliente")
-    notas = facade.create_contexto_filtro_notas_status(id_cli, sort_status)
-    contexto = {"notas": notas, "idcliente": id_cli}
-    contexto.update(
-        {
-            "notas": notas,
-            "idcliente": id_cli,
-        }
-    )
+    contexto = facade.create_contexto_filtro_notas_status(id_cli, sort_status)
+    contexto.update({"idcliente": id_cli})
     data = facade.create_data_filtro_status_reduzida(request, contexto)
     return data

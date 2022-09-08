@@ -14,6 +14,7 @@ from .views import (
     fecha_romaneio,
     filtra_nota_cliente,
     filtra_status,
+    imprime_notas_status,
     imprime_romaneio,
     index_romaneio,
     ler_nota_xml,
@@ -123,5 +124,10 @@ urlpatterns = [
         "filtra_status",
         filtra_status,
         name="filtra_status",
+    ),
+    path(
+        "imprime_notas_status",
+        imprime_notas_status,
+        name="imprime_notas_status",
     ),
 ]
