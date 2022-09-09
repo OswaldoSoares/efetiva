@@ -1,6 +1,5 @@
-import decimal
-import email
 import os
+from datetime import datetime
 from io import BytesIO
 
 from django.core.files.base import ContentFile
@@ -115,8 +114,10 @@ def header(pdf, contexto):
 
 
 def header_nota_status(pdf, contexto):
+    agora = datetime.now()
+    data_hora = agora.strftime("%d/%m/%Y %H:%M")
     status_nota = contexto["sort_status"]
-    pdf.drawCentredString(cmp(105), cmp(255.8), f"RELATÓRIO - NOTAS: {status_nota}")
+    pdf.drawCentredString(cmp(105), cmp(255.8), f"NOTAS {status_nota} - {data_hora}HS")
     pdf.line(cmp(10), cmp(254.1), cmp(200), cmp(254.1))
     return pdf
 
