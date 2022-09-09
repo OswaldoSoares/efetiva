@@ -144,8 +144,6 @@ $(document).on('submit', '.js-gera-notas-cliente', function(event) {
 $(document).on('click', '.js-filtro-status', function() {
     var _status = $("#select-status").val()
     var id_cliente = $(this).data("idcliente")
-    console.log(_status)
-    console.log(id_cliente)
     $.ajax({
         type: 'GET',
         url: '/romaneios/filtra_status',
@@ -424,12 +422,14 @@ $(document).on('click', '.js-adiciona-nota-romaneio', function() {
 $(document).on('click', '.js-exclui-nota-romaneio', function() {
     var _id_romaneio_nota = $(this).data("idromaneionotas")
     var _id_romaneio = $('#id_romaneio').val()
+    var _id_nota = $(this).data("idnota")
     $.ajax({
         type: 'GET',
         url: '/romaneios/exclui_nota_romaneio',
         data: {
             idRomaneioNota: _id_romaneio_nota,
             idRomaneio: _id_romaneio,
+            idNota: _id_nota,
         },
         beforeSend: function() {
             $(".card-lista-notas-romaneio").hide()

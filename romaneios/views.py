@@ -209,7 +209,10 @@ def adiciona_nota_romaneio(request):
 def exclui_nota_romaneio(request):
     id_romaneio_nota = request.GET.get("idRomaneioNota")
     id_rom = request.GET.get("idRomaneio")
+    id_not = request.GET.get("idNota")
+    hoje = facade.hoje()
     facade.delete_nota_romaneio(id_romaneio_nota)
+    facade.altera_status_remove_romaneio(id_rom, id_not, hoje)
     not_rom = facade.create_contexto_notas_romaneio(id_rom)
     romaneio = facade.create_contexto_seleciona_romaneio(id_rom)
     contexto = {

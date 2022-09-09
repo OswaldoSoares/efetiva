@@ -378,6 +378,21 @@ def altera_status_rota(id_rom, id_not):
     obj.save(update_fields=["StatusNota"])
 
 
+def altera_status_remove_romaneio(id_rom, id_not, hoje):
+    romaneio = Romaneios.objects.get(idRomaneio=id_rom)
+    obj = NotasOcorrencias()
+    obj.DataOcorrencia = hoje
+    obj.TipoOcorrencia = "PENDENTE"
+    obj.DataAgendada = hoje
+    obj.Ocorrencia = f"REMOVIDA DO ROMANEIO {romaneio.Romaneio}"
+    obj.idNotasClientes_id = id_not
+    obj.save()
+    nota = NotasClientes.objects.get(idNotasClientes=id_not)
+    obj = nota
+    obj.StatusNota = "PENDENTE"
+    obj.save(update_fields=["StatusNota"])
+
+
 def update_ocorrencia(ocorrencia_form, id_ocor):
     ocorrencia = NotasOcorrencias.objects.get(idNotasOcorrencia=id_ocor)
     obj = ocorrencia

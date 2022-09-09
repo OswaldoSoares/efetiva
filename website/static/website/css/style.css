@@ -3880,12 +3880,13 @@ main .fp-recibo-tabela .fp-recibo-print {
     color: var(--color6);
 }
 
-.article-card-titulo div {
+
+/* .article-card-titulo div {
     width: 100%;
     display: flex;
     justify-content: space-between;
     padding: 0 10px 0 30px;
-}
+} */
 
 .article-card-body {
     background-color: var(--color2);
