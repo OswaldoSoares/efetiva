@@ -896,7 +896,7 @@ def send_arquivo(romaneio):
 
 def send_arquivo_relatorio(sort_status):
     token = "5778267083:AAEha8jgzCRYr_niZ7JM4EB5MWDX2Zkk98o"
-    chat_id = "-785462150"  # Telegram Efetiva - Catavento
+    chat_id = "-666092318"  # Telegram Efetiva - Catavento
     descricao_arquivo = f"Notas {sort_status}.pdf"
     arquivo = FileUpload.objects.filter(DescricaoUpload=descricao_arquivo)
     url = f"https://api.telegram.org/bot{token}/sendDocument?chat_id={chat_id}"
