@@ -399,6 +399,7 @@ $(document).on('click', '.js-filtra-romaneio', function() {
 $(document).on('click', '.js-adiciona-nota-romaneio', function() {
     var _id_nota = $(this).data("idnota")
     var _id_romaneio = $('#id_romaneio').val()
+    $(this).hide()
     $.ajax({
         type: 'GET',
         url: '/romaneios/adiciona_nota_romaneio',
@@ -414,7 +415,6 @@ $(document).on('click', '.js-adiciona-nota-romaneio', function() {
             $(".card-lista-notas-romaneio").html(data.html_lista_notas_romaneio)
             $(".card-lista-notas-romaneio").show()
             $(".box-loader").hide()
-
         },
     });
 });
