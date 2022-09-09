@@ -60,6 +60,16 @@ def print_romaneio(contexto):
 
 def print_notas_status(contexto):
     status_nota = contexto["sort_status"]
+    descricao_arquivo = f"Notas {status_nota}.pdf"
+    arquivo = FileUpload.objects.filter(DescricaoUpload=descricao_arquivo)
+    if not arquivo:
+        obj = FileUpload()
+        obj.DescricaoUpload = descricao_arquivo
+        obj.save()
+        arquivo = FileUpload.objects.filter(DescricaoUpload=descricao_arquivo)
+    else:
+        if arquivo[0].uploadFile:
+            os.remove(arquivo[0].uploadFile.path)
     response = HttpResponse(content_type="application/pdf")
     response["Content-Disposition"] = f'filename="RELATÓRIO - NOTAS: {status_nota}.pdf'
     buffer = BytesIO()
@@ -72,6 +82,8 @@ def print_notas_status(contexto):
     pdf.save()
     buffer.seek(0)
     pdf = buffer.getvalue()
+    obj = FileUpload.objects.get(idFileUpload=arquivo[0].idFileUpload)
+    obj.uploadFile.save(descricao_arquivo, ContentFile(pdf))
     buffer.close()
     response.write(pdf)
     return response
