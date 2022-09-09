@@ -301,6 +301,13 @@ def envia_telegram_romaneio(request):
     return data
 
 
+def envia_telegram_relatorio(request):
+    sort_nota = request.GET.get("status")
+    facade.send_arquivo_relatorio(sort_nota)
+    data = facade.create_data_send_arquivo()
+    return data
+
+
 def filtra_status(request):
     sort_status = request.GET.get("status")
     id_cli = request.GET.get("cliente")

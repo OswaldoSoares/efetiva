@@ -561,10 +561,19 @@ def create_contexto_filtro_status():
 def create_contexto_filtro_notas_status(id_cli, sort_status):
     print(id_cli)
     cliente = Cliente.objects.get(idCliente=id_cli)
-    if sort_status == 'SEM FILTRO':
-        notas = NotasClientes.objects.filter(idCliente=id_cli).order_by("NumeroNota").exclude(StatusNota="COLETA CANCELADA").exclude(StatusNota="DEVOLVIDA NO CLIENTE").exclude(StatusNota__startswith="ENTREGUE").exclude(StatusNota="NOTA CADASTRADA")
+    if sort_status == "SEM FILTRO":
+        notas = (
+            NotasClientes.objects.filter(idCliente=id_cli)
+            .order_by("NumeroNota")
+            .exclude(StatusNota="COLETA CANCELADA")
+            .exclude(StatusNota="DEVOLVIDA NO CLIENTE")
+            .exclude(StatusNota__startswith="ENTREGUE")
+            .exclude(StatusNota="NOTA CADASTRADA")
+        )
     else:
-        notas = NotasClientes.objects.filter(StatusNota=sort_status, idCliente_id=id_cli)
+        notas = NotasClientes.objects.filter(
+            StatusNota=sort_status, idCliente_id=id_cli
+        )
     lista = [
         {
             "id_nota_clientes": x.idNotasClientes,
@@ -875,6 +884,20 @@ def send_arquivo(romaneio):
     chat_id = "-666092318"  # Telegram Efetiva - Catavento
     rom_numero = str(romaneio).zfill(5)
     descricao_arquivo = f"Romaneio_{str(rom_numero).zfill(5)}.pdf"
+    arquivo = FileUpload.objects.filter(DescricaoUpload=descricao_arquivo)
+    url = f"https://api.telegram.org/bot{token}/sendDocument?chat_id={chat_id}"
+    payload = {}
+    file = os.path.join(arquivo[0].uploadFile.path)
+    if arquivo:
+        files = [("document", open(file, "rb"))]
+    headers = []
+    requests.request("POST", url, headers=headers, data=payload, files=files)
+
+
+def send_arquivo_relatorio(sort_status):
+    token = "5778267083:AAEha8jgzCRYr_niZ7JM4EB5MWDX2Zkk98o"
+    chat_id = "-785462150"  # Telegram Efetiva - Catavento
+    descricao_arquivo = f"Notas {sort_status}.pdf"
     arquivo = FileUpload.objects.filter(DescricaoUpload=descricao_arquivo)
     url = f"https://api.telegram.org/bot{token}/sendDocument?chat_id={chat_id}"
     payload = {}

@@ -70,9 +70,11 @@
     {% for nota in notas %}
     {% if forloop.last %}
     <span><b>{{ forloop.counter|stringformat:"02d" }} NOTA{{ forloop.counter|pluralize|upper }}</b></span>
-    <a class="bi bi-printer i-button" title="Imprime Romaneio"
+    <a class="bi bi-printer i-button js-print-relatorio" title="Imprime Romaneio"
     href="{% url 'imprime_notas_status' %}?StatusNota={{ nota.statusnota }}&idCliente={{ idcliente }}"
     target="_blank"></a>
     {% endif %}
     {% endfor %}
+    <i class="bi bi-cursor i-button js-envia-telegram-relatorio"
+    title="Envia Relatorio no Telegram"></i>
 </div>

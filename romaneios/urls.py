@@ -8,6 +8,7 @@ from .views import (
     carrega_xml,
     edita_nota_cliente,
     edita_romaneio,
+    envia_telegram_relatorio,
     envia_telegram_romaneio,
     exclui_nota_cliente,
     exclui_nota_romaneio,
@@ -135,5 +136,10 @@ urlpatterns = [
         "nota_deposito",
         nota_deposito,
         name="nota_deposito",
+    ),
+    path(
+        "envia_telegram_relatorio",
+        envia_telegram_relatorio,
+        name="envia_telegram_relatorio",
     ),
 ]

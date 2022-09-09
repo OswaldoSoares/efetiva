@@ -33,6 +33,7 @@ $(document).on('submit', '.js-seleciona-cliente', function(event) {
                 $(".body-romaneio").hide()
                 $(".js-oculta-body-romaneio").hide()
                 $(".js-adiciona-nota-romaneio").hide()
+                $(".js-envia-telegram-relatorio").hide()
             }
             $(".box-loader").hide();
         },
@@ -141,6 +142,10 @@ $(document).on('submit', '.js-gera-notas-cliente', function(event) {
 });
 
 
+$(document).on('click', '.js-print-relatorio', function() {
+    $('.js-envia-telegram-relatorio').show()
+});
+
 $(document).on('click', '.js-filtro-status', function() {
     var _status = $("#select-status").val()
     var id_cliente = $(this).data("idcliente")
@@ -162,6 +167,7 @@ $(document).on('click', '.js-filtro-status', function() {
             $(".card-lista-notas-cliente").show()
             $(".card-lista-romaneios").show()
             $(".js-adiciona-nota-romaneio").hide()
+            $(".js-envia-telegram-relatorio").hide()
             $(".box-loader").hide()
         },
     });
@@ -345,6 +351,24 @@ $(document).on('click', '.js-envia-telegram-romaneio', function() {
             $(".card-form-romaneios").html(data.html_form_romaneios)
             $(".card-form-romaneios").show()
                 // CarregaMask()
+            $(".box-loader").hide();
+        },
+    });
+});
+
+$(document).on('click', '.js-envia-telegram-relatorio', function() {
+    var _status = $("#select-status").val()
+    $(this).hide()
+    $.ajax({
+        type: 'GET',
+        url: '/romaneios/envia_telegram_relatorio',
+        data: {
+            status: _status,
+        },
+        beforeSend: function() {
+            $(".box-loader").show();
+        },
+        success: function(data) {
             $(".box-loader").hide();
         },
     });
