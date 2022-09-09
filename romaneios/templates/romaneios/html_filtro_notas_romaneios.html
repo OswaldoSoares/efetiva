@@ -8,7 +8,7 @@
         </div>
         <div class="item-filtro">
             <select class="form-control" id="select-status">
-                <option value="">SELECIONA STATUS</option>
+                <option value="SEM FILTRO">SEM FILTRO</option>
                 {% for status in status_nota %}
                 <option value="{{ status.StatusNota }}">{{ status.StatusNota }}</option>
                 {% endfor %}

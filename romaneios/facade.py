@@ -26,9 +26,10 @@ def create_contexto_seleciona_notas(id_cli, sort_nota):
     notas = (
         NotasClientes.objects.filter(idCliente=id_cli)
         .order_by(sort_nota)
-        .exclude(StatusNota__startswith="ENTREGUE")
         .exclude(StatusNota="COLETA CANCELADA")
         .exclude(StatusNota="DEVOLVIDA NO CLIENTE")
+        .exclude(StatusNota__startswith="ENTREGUE")
+        .exclude(StatusNota="NOTA CADASTRADA")
     )
     lista = [
         {
@@ -560,7 +561,10 @@ def create_contexto_filtro_status():
 def create_contexto_filtro_notas_status(id_cli, sort_status):
     print(id_cli)
     cliente = Cliente.objects.get(idCliente=id_cli)
-    notas = NotasClientes.objects.filter(StatusNota=sort_status, idCliente_id=id_cli)
+    if sort_status == 'SEM FILTRO':
+        notas = NotasClientes.objects.filter(idCliente=id_cli).order_by("NumeroNota").exclude(StatusNota="COLETA CANCELADA").exclude(StatusNota="DEVOLVIDA NO CLIENTE").exclude(StatusNota__startswith="ENTREGUE").exclude(StatusNota="NOTA CADASTRADA")
+    else:
+        notas = NotasClientes.objects.filter(StatusNota=sort_status, idCliente_id=id_cli)
     lista = [
         {
             "id_nota_clientes": x.idNotasClientes,
