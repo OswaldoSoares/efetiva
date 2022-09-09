@@ -143,7 +143,7 @@ $(document).on('submit', '.js-gera-notas-cliente', function(event) {
 
 $(document).on('click', '.js-filtro-status', function() {
     var _status = $("#select-status").val()
-    var id_cliente = $("#id_cliente").val()
+    var id_cliente = $(this).data("idcliente")
     console.log(_status)
     console.log(id_cliente)
     $.ajax({
