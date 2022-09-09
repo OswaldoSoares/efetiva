@@ -543,6 +543,7 @@ def create_contexto_filtro_status():
 
 
 def create_contexto_filtro_notas_status(id_cli, sort_status):
+    print(id_cli)
     cliente = Cliente.objects.get(idCliente=id_cli)
     notas = NotasClientes.objects.filter(StatusNota=sort_status, idCliente_id=id_cli)
     lista = [

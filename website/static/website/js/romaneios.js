@@ -33,7 +33,6 @@ $(document).on('submit', '.js-seleciona-cliente', function(event) {
                 $(".body-romaneio").hide()
                 $(".js-oculta-body-romaneio").hide()
                 $(".js-adiciona-nota-romaneio").hide()
-                console.log(data)
             }
             $(".box-loader").hide();
         },
