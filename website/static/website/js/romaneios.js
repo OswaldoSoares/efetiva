@@ -550,6 +550,8 @@ $(document).on('click', '.js-fecha-romaneio', function() {
 
 $(document).on('click', '.js-sort-notas', function() {
     var anr_hidden = $(".js-adiciona-nota-romaneio").is(":hidden")
+    var _status = $("#select-status").val()
+    var _tipo_sort = $(".js-tipo-sort").val()
     var _id_cliente = $(this).data("idcliente")
     var _sort = $(this).data("sort")
     $.ajax({
@@ -558,6 +560,8 @@ $(document).on('click', '.js-sort-notas', function() {
         data: {
             cliente: _id_cliente,
             sort: _sort,
+            tipo_sort: _tipo_sort,
+            status: _status,
         },
         beforeSend: function() {
             $(".card-lista-notas-cliente").hide()
@@ -565,7 +569,9 @@ $(document).on('click', '.js-sort-notas', function() {
         },
         success: function(data) {
             $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente)
+            $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente_reduzida)
             $(".card-lista-notas-cliente").show()
+            $(".js-envia-telegram-relatorio").hide()
             if (anr_hidden) {
                 $(".js-adiciona-nota-romaneio").hide()
             }

@@ -180,7 +180,10 @@ def create_data_cliente_selecionado(request, contexto):
 
 def create_data_sort_notas(request, contexto):
     data = dict()
-    html_lista_notas_cliente(request, contexto, data)
+    if contexto["tipo_sort"] == "completo":
+        html_lista_notas_cliente(request, contexto, data)
+    else:
+        html_lista_notas_cliente_reduzida(request, contexto, data)
     return JsonResponse(data)
 
 
@@ -558,8 +561,7 @@ def create_contexto_filtro_status():
     return status_nota
 
 
-def create_contexto_filtro_notas_status(id_cli, sort_status):
-    print(id_cli)
+def create_contexto_filtro_notas_status(id_cli, sort_status, order_nota):
     cliente = Cliente.objects.get(idCliente=id_cli)
     if sort_status == "SEM FILTRO":
         notas = (
@@ -569,11 +571,11 @@ def create_contexto_filtro_notas_status(id_cli, sort_status):
             .exclude(StatusNota="DEVOLVIDA NO CLIENTE")
             .exclude(StatusNota__startswith="ENTREGUE")
             .exclude(StatusNota="NOTA CADASTRADA")
-        )
+        ).order_by(order_nota)
     else:
         notas = NotasClientes.objects.filter(
             StatusNota=sort_status, idCliente_id=id_cli
-        )
+        ).order_by(order_nota)
     lista = [
         {
             "id_nota_clientes": x.idNotasClientes,

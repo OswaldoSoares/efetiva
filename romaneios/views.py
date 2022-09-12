@@ -236,8 +236,16 @@ def carrega_xml(request):
 def orderna_notas(request):
     id_cli = request.GET.get("cliente")
     sort_nota = request.GET.get("sort")
-    notas = facade.create_contexto_seleciona_notas(id_cli, sort_nota)
-    contexto = {"notas": notas, "idcliente": id_cli}
+    tipo_sort = request.GET.get("tipo_sort")
+    filtro_status = request.GET.get("status")
+    if tipo_sort == "completo":
+        notas = facade.create_contexto_seleciona_notas(id_cli, sort_nota)
+        contexto = {"notas": notas, "idcliente": id_cli, "tipo_sort": tipo_sort}
+    else:
+        contexto = facade.create_contexto_filtro_notas_status(
+            id_cli, filtro_status, sort_nota
+        )
+        contexto.update({"idcliente": id_cli, "tipo_sort": tipo_sort})
     data = facade.create_data_sort_notas(request, contexto)
     return data
 
@@ -251,10 +259,12 @@ def imprime_romaneio(request):
 
 
 def imprime_notas_status(request):
-    sort_status = request.GET.get("StatusNota")
+    filtro_status = request.GET.get("StatusNota")
     id_cli = request.GET.get("idCliente")
-    contexto = facade.create_contexto_filtro_notas_status(id_cli, sort_status)
-    contexto.update({"sort_status": sort_status})
+    contexto = facade.create_contexto_filtro_notas_status(
+        id_cli, filtro_status, "NumeroNota"
+    )
+    contexto.update({"sort_status": filtra_status})
     response = print_notas_status(contexto)
     return response
 
@@ -309,9 +319,11 @@ def envia_telegram_relatorio(request):
 
 
 def filtra_status(request):
-    sort_status = request.GET.get("status")
+    filtro_status = request.GET.get("status")
     id_cli = request.GET.get("cliente")
-    contexto = facade.create_contexto_filtro_notas_status(id_cli, sort_status)
+    contexto = facade.create_contexto_filtro_notas_status(
+        id_cli, filtro_status, "NumeroNota"
+    )
     contexto.update({"idcliente": id_cli})
     data = facade.create_data_filtro_status_reduzida(request, contexto)
     return data
@@ -320,9 +332,11 @@ def filtra_status(request):
 def nota_deposito(request):
     id_nota_clientes = request.GET.get("idNotaClientes")
     facade.altera_status_pendente(id_nota_clientes)
-    sort_status = request.GET.get("status")
+    filtro_status = request.GET.get("status")
     id_cli = request.GET.get("cliente")
-    contexto = facade.create_contexto_filtro_notas_status(id_cli, sort_status)
+    contexto = facade.create_contexto_filtro_notas_status(
+        id_cli, filtro_status, "NumeroNota"
+    )
     contexto.update({"idcliente": id_cli})
     data = facade.create_data_filtro_status_reduzida(request, contexto)
     return data
