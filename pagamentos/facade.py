@@ -974,14 +974,14 @@ def update_cartao_ponto(_var):
                 obj.Entrada = "07:00:00"
                 obj.Saida = "17:00:00"
         else:
-            # if x.Ausencia == "-------":
-            if x.Dia.weekday() == 5 or x.Dia.weekday() == 6:
-                obj.Ausencia = dias[x.Dia.weekday()]
-                obj.Conducao = False
-            else:
-                obj.Ausencia = ""
-                obj.Conducao = True
-            obj.Remunerado = True
+            if x.Ausencia == "-------":
+                if x.Dia.weekday() == 5 or x.Dia.weekday() == 6:
+                    obj.Ausencia = dias[x.Dia.weekday()]
+                    obj.Conducao = False
+                else:
+                    obj.Ausencia = ""
+                    obj.Conducao = True
+                obj.Remunerado = True
             obj.Alteracao = "ROBOT"
             obj.Entrada = "07:00:00"
             obj.Saida = "17:00:00"
@@ -1025,7 +1025,7 @@ def altera_ausencia_falta(_id_cp):
         obj.Remunerado = True
     else:
         obj.Ausencia = "FALTA"
-        obj.Alteracao = "ROBOT"
+        obj.Alteracao = "MANUAL"
         obj.Conducao = False
         obj.Remunerado = False
     obj.Entrada = "07:00:00"
