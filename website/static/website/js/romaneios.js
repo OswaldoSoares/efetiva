@@ -158,9 +158,10 @@ $(document).on('click', '.js-filtro-status', function() {
         },
         beforeSend: function() {
             $(".card-lista-notas-cliente").hide()
+            $(".card-lista-ocorrencia").hide()
             $(".card-lista-romaneios").hide()
             $(".card-lista-notas-romaneio").hide()
-                // $(".box-loader").show()
+            $(".box-loader").show()
         },
         success: function(data) {
             $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente_reduzida)
