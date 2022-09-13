@@ -59,13 +59,21 @@
     <div class="item-nota {% cycle 'linha-p' 'linha-i' %}">
         <div class="item-button">
             <i class="bi bi-folder i-button
-            js-ocorrencia-notas-cliente" title="Seleciona Nota" data-idnota={{ nota.id_nota_clientes }} data-idcliente={{ nota.idcliente }}></i>
+            js-ocorrencia-notas-cliente" title="Seleciona Nota"
+            data-idnota={{ nota.id_nota_clientes }}
+            data-idcliente={{ nota.idcliente }}></i>
             <i class="bi bi-pencil-square i-button
-            js-edita-notas-cliente" title="Edita Nota" data-idnota={{ nota.id_nota_clientes }} data-idcliente={{ nota.idcliente }}></i>
+            js-edita-notas-cliente" title="Edita Nota"
+            data-idnota={{ nota.id_nota_clientes }}
+            data-idcliente={{ nota.idcliente }}></i>
             <i class="bi bi-trash i-button
-            js-exclui-notas-cliente" title="Exclui Nota" data-idnota={{ nota.id_nota_clientes }} data-idcliente={{ nota.idcliente }}></i> {% if not nota.statusnota == "EM ROTA" %}
+            js-exclui-notas-cliente" title="Exclui Nota"
+            data-idnota={{ nota.id_nota_clientes }}
+            data-idcliente={{ nota.idcliente }}></i> {% if not nota.statusnota == "EM ROTA" %}
             <i class="bi bi-check-square i-button
-            js-adiciona-nota-romaneio" title="Adiciona no Romaneio" data-idnota={{ nota.id_nota_clientes }}></i> {% endif %}
+            js-adiciona-nota-romaneio" title="Adiciona no Romaneio"
+            data-idnota={{ nota.id_nota_clientes }}
+            data-idcliente={{ nota.idcliente }}></i> {% endif %}
         </div>
     </div>
     {% if forloop.last %}

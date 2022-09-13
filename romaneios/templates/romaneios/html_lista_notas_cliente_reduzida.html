@@ -57,7 +57,8 @@
                 {% if not nota.statusnota == "EM ROTA" %}
                 <i class="bi bi-check-square i-button
                 js-adiciona-nota-romaneio" title="Adiciona no Romaneio"
-                data-idnota={{ nota.id_nota_clientes }}></i>
+                data-idnota={{ nota.id_nota_clientes }}
+                data-idcliente={{ nota.idcliente }}></i>
                 {% endif %}
             {% endif %}
         </div>

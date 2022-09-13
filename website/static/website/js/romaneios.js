@@ -424,6 +424,7 @@ $(document).on('click', '.js-filtra-romaneio', function() {
 $(document).on('click', '.js-adiciona-nota-romaneio', function() {
     var _id_nota = $(this).data("idnota")
     var _id_romaneio = $('#id_romaneio').val()
+    var _id_cliente = $(this).data("idcliente")
     $(this).hide()
     $.ajax({
         type: 'GET',
@@ -431,6 +432,7 @@ $(document).on('click', '.js-adiciona-nota-romaneio', function() {
         data: {
             idNota: _id_nota,
             idRomaneio: _id_romaneio,
+            idCliente: _id_cliente,
         },
         beforeSend: function() {
             $(".card-lista-notas-romaneio").hide()

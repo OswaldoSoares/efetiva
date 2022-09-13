@@ -194,6 +194,7 @@ def seleciona_romaneio(request):
 def adiciona_nota_romaneio(request):
     id_not = request.GET.get("idNota")
     id_rom = request.GET.get("idRomaneio")
+    id_cli = request.GET.get("idCliente")
     facade.save_nota_romaneio(id_not, id_rom)
     facade.altera_status_rota(id_rom, id_not)
     not_rom = facade.create_contexto_notas_romaneio(id_rom)
@@ -201,6 +202,7 @@ def adiciona_nota_romaneio(request):
     contexto = {
         "notas_romaneio": not_rom,
         "romaneios": romaneio,
+        "idcliente": id_cli,
     }
     data = facade.create_data_lista_notas_romaneio(request, contexto)
     return data
@@ -261,9 +263,7 @@ def imprime_romaneio(request):
 def imprime_notas_status(request):
     status = request.GET.get("StatusNota")
     id_cli = request.GET.get("idCliente")
-    contexto = facade.create_contexto_filtro_notas_status(
-        id_cli, status, "NumeroNota"
-    )
+    contexto = facade.create_contexto_filtro_notas_status(id_cli, status, "NumeroNota")
     contexto.update({"sort_status": status})
     response = print_notas_status(contexto)
     return response
