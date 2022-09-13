@@ -552,6 +552,7 @@ $(document).ready(function() {
                 } else if ($(ta_id).attr('meu_tipo') == 'R$' && $(mi_id).attr('meu_tipo') == 'UN') {
                     $(to_id).text('R$ ' + ($(ta_id).val() * $(mi_id).val()).toFixed(2).replace('.', ','))
                     $(hi_id).val($(ta_id).val() * $(mi_id).val())
+                    $(mi_id).val(parseFloat($(mi_id).val()).toFixed(0).replace('.', ','))
                 } else if ($(ta_id).attr('meu_tipo') == 'R$' && $(mi_id).attr('meu_tipo') == 'KG') {
                     $(to_id).text('R$ ' + ($(ta_id).val() * $(mi_id).val()).toFixed(2).replace('.', ','))
                     $(hi_id).val($(ta_id).val() * $(mi_id).val())
