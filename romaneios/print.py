@@ -77,7 +77,7 @@ def print_notas_status(contexto):
     header_nota_status(pdf, contexto)
     header_cliente(pdf, contexto)
     notas_status(pdf, contexto)
-    pdf.setTitle(f"RELATÓRIO - NOTAS: {status_nota}.pdf")
+    pdf.setTitle(f"NOTAS {status_nota}.pdf")
     pdf.save()
     buffer.seek(0)
     pdf = buffer.getvalue()

@@ -259,12 +259,12 @@ def imprime_romaneio(request):
 
 
 def imprime_notas_status(request):
-    filtro_status = request.GET.get("StatusNota")
+    status = request.GET.get("StatusNota")
     id_cli = request.GET.get("idCliente")
     contexto = facade.create_contexto_filtro_notas_status(
-        id_cli, filtro_status, "NumeroNota"
+        id_cli, status, "NumeroNota"
     )
-    contexto.update({"sort_status": filtra_status})
+    contexto.update({"sort_status": status})
     response = print_notas_status(contexto)
     return response
 
