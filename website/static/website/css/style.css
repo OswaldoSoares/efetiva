@@ -5563,6 +5563,27 @@ main .fp-recibo-tabela .fp-recibo-print {
     color: var(--color8)
 }
 
+.destak {
+    color: var(--color4);
+    animation: animate 3s linear infinite;
+}
+
+@keyframes animate {
+    0% {
+        opacity: 1;
+        margin-left: 0px;
+    }
+    50% {
+        opacity: 0.5;
+        margin-left: 100px;
+        color: var(--color6);
+    }
+    100% {
+        opacity: 1;
+        margin-left: 0px;
+    }
+}
+
 .card-files {
     width: 400px;
 }
