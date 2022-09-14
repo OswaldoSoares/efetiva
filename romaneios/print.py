@@ -214,8 +214,10 @@ def notas_romaneio(pdf, contexto):
         pdf.line(cmp(12), cmp(linha), cmp(198), cmp(linha))
         linha -= 3
         if linha < 50:
-            pagina = pdf.getPageNumber()
-            pdf.drawCentredString(cmp(105), cmp(11), "PÁGINA {}".format(pagina))
+            notas = str(len(contexto["notas"])).zfill(2)
+            pagina = str(pdf.getPageNumber()).zfill(2)
+            pdf.drawString(cmp(20), cmp(11), f"{notas} NOTAS")
+            pdf.drawRightString(cmp(190), cmp(11), f"PÁGINA {pagina}")
             pdf.showPage()
             header(pdf, contexto)
             header_romaneio(pdf, contexto)
