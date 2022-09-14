@@ -481,14 +481,15 @@ $(document).on('click', '.js-retorna-lista-romaneio', function() {
 });
 
 $(document).on('click', '.js-exclui-notas-cliente', function() {
+    var _id_nota = $(this).data("idnota")
+    var _id_cliente = $(this).data("idcliente")
     if ($("#reduzida-exist").length) {
         var _card_reduzida = true
-        $(this).hide()
+        var _div_nota = "#nota-" + _id_nota
+        $(_div_nota).hide()
     } else {
         var _card_reduzida = false
     }
-    var _id_nota = $(this).data("idnota")
-    var _id_cliente = $(this).data("idcliente")
     $.ajax({
         type: 'GET',
         url: '/romaneios/exclui_nota_cliente',

@@ -24,7 +24,7 @@
         data-sort="-StatusNota">STATUS</span>
     </div>
     {% for nota in notas %}
-    <div class="item-nota {% cycle 'linha-p' 'linha-i' %}">
+    <div class="item-nota {% cycle 'linha-p' 'linha-i' %}" id="nota-{{ nota.id_nota_clientes }}">
         {% if nota.statusnota == "NOTA CADASTRADA" %}
         <div class="item-numero-reduzida" title="Número Nota">
             <i class="bi bi-file-text i-button js-nota-pendente"
