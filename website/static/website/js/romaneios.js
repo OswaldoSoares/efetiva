@@ -481,6 +481,12 @@ $(document).on('click', '.js-retorna-lista-romaneio', function() {
 });
 
 $(document).on('click', '.js-exclui-notas-cliente', function() {
+    if ($("#reduzida-exist").length) {
+        var _card_reduzida = true
+        $(this).hide()
+    } else {
+        var _card_reduzida = false
+    }
     var _id_nota = $(this).data("idnota")
     var _id_cliente = $(this).data("idcliente")
     $.ajax({
@@ -491,18 +497,16 @@ $(document).on('click', '.js-exclui-notas-cliente', function() {
             idCliente: _id_cliente,
         },
         beforeSend: function() {
-            $(".card-form-notas-cliente").hide()
-            $(".card-lista-notas-cliente").hide()
+            if (_card_reduzida == false) {
+                $(".card-lista-notas-cliente").hide()
+            }
             $(".box-loader").show();
         },
         success: function(data) {
-            $(".card-form-notas-cliente").html(data.html_form_notas_cliente)
-            $(".card-form-notas-cliente").show()
-            $(".card-form-romaneios").html(data.html_form_romaneios)
-            $(".card-form-romaneios").show()
-            $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente)
-            $(".card-lista-notas-cliente").show()
-                // CarregaMask()
+            if (_card_reduzida == false) {
+                $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente)
+                $(".card-lista-notas-cliente").show()
+            }
             $(".box-loader").hide();
         },
     });
