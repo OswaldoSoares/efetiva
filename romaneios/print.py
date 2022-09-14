@@ -213,7 +213,7 @@ def notas_romaneio(pdf, contexto):
         pdf, linha = ocorrencia_nota(id_not, status_nota, pdf, linha)
         pdf.line(cmp(12), cmp(linha), cmp(198), cmp(linha))
         linha -= 3
-        if linha < 20:
+        if linha < 50:
             pagina = pdf.getPageNumber()
             pdf.drawCentredString(cmp(105), cmp(11), "PÁGINA {}".format(pagina))
             pdf.showPage()
