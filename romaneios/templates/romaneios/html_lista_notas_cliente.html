@@ -15,70 +15,73 @@
         <span class="i-button js-sort-notas" data-idcliente="{{ idcliente }}" data-sort="-StatusNota">STATUS</span>
     </div>
     {% for nota in notas %}
-    <div class="item-nota {% cycle 'linha-p' 'linha-i' %}">
-        <div class="item-numero" title="Número Nota">
-            <i class="bi bi-file-text i-button-null"></i> {{ nota.numero_nota }}
+    <div>
+        <div class="item-nota {% cycle 'linha-p' 'linha-i' %}">
+            <div class="item-numero" title="Número Nota">
+                <i class="bi bi-file-text i-button-null"></i> {{ nota.numero_nota }}
+            </div>
+            <div class="item-data" title="Data da Coleta">
+                <i class="bi bi-calendar i-button-null"></i> {{ nota.data_coleta }}
+            </div>
+            <div class="item-local" title="Local da Coleta">
+                <i class="bi bi-building i-button-null"></i> {{ nota.local_coleta|slice:"0:12" }}
+            </div>
+            <div class="item-volume" title="Volume">
+                <i class="bi bi-grid-fill i-button-null"></i> {{ nota.volume }}
+            </div>
+            <div class="item-peso" title="Peso">
+                <i class="bi bi-truck-flatbed i-button-null"></i> {{ nota.peso }}
+            </div>
+            <div class="item-valor" title="Valor">
+                <i class="bi bi-currency-dollar i-button-null"></i> R$ {{ nota.valor|intcomma }}
+            </div>
         </div>
-        <div class="item-data" title="Data da Coleta">
-            <i class="bi bi-calendar i-button-null"></i> {{ nota.data_coleta }}
+        <div class="item-nota {% cycle 'linha-p' 'linha-i' %}">
+            <div class="item-destinatario" title="Destinatário">
+                <i class="bi bi-shop i-button-null"></i> {{ nota.destinatario }} {% if nota.contato %}
+                <i class="bi bi-person-badge i-button-null"></i> {{ nota.contato }} {% endif %}
+            </div>
+            <div class="item-status" title="Status">
+                <i class="bi bi-exclamation-circle i-button-null"></i> {{ nota.statusnota }}
+            </div>
         </div>
-        <div class="item-local" title="Local da Coleta">
-            <i class="bi bi-building i-button-null"></i> {{ nota.local_coleta|slice:"0:12" }}
+        <div class="item-nota {% cycle 'linha-p' 'linha-i' %}">
+            <div class="item-endereco" title="Endereço">
+                <i class="bi bi-geo-alt i-button-null"></i> {{ nota.endereco_compl }}
+            </div>
         </div>
-        <div class="item-volume" title="Volume">
-            <i class="bi bi-grid-fill i-button-null"></i> {{ nota.volume }}
+        {% if nota.informa %}
+        <div class="item-nota {% cycle 'linha-p' 'linha-i' %}">
+            <div class="item-endereco" title="Informações">
+                <i class="bi bi-info-square i-button-null"></i> {{ nota.informa }}
+            </div>
         </div>
-        <div class="item-peso" title="Peso">
-            <i class="bi bi-truck-flatbed i-button-null"></i> {{ nota.peso }}
+        {% endif %}
+        <div class="item-nota {% cycle 'linha-p' 'linha-i' %}">
+            <div class="item-button">
+                <i class="bi bi-folder i-button
+                js-ocorrencia-notas-cliente" title="Seleciona Nota"
+                data-idnota={{ nota.id_nota_clientes }}
+                data-idcliente={{ nota.idcliente }}></i>
+                <i class="bi bi-pencil-square i-button
+                js-edita-notas-cliente" title="Edita Nota"
+                data-idnota={{ nota.id_nota_clientes }}
+                data-idcliente={{ nota.idcliente }}></i>
+                <i class="bi bi-trash i-button
+                js-exclui-notas-cliente" title="Exclui Nota"
+                data-idnota={{ nota.id_nota_clientes }}
+                data-idcliente={{ nota.idcliente }}></i> {% if not nota.statusnota == "EM ROTA" %}
+                <i class="bi bi-check-square i-button
+                js-adiciona-nota-romaneio" title="Adiciona no Romaneio"
+                data-idnota={{ nota.id_nota_clientes }}
+                data-idcliente={{ nota.idcliente }}></i> {% endif %}
+            </div>
         </div>
-        <div class="item-valor" title="Valor">
-            <i class="bi bi-currency-dollar i-button-null"></i> R$ {{ nota.valor|intcomma }}
+        {% if forloop.last %}
+        <div class="borda-bottom"></div>
+        {% endif %}
         </div>
-    </div>
-    <div class="item-nota {% cycle 'linha-p' 'linha-i' %}">
-        <div class="item-destinatario" title="Destinatário">
-            <i class="bi bi-shop i-button-null"></i> {{ nota.destinatario }} {% if nota.contato %}
-            <i class="bi bi-person-badge i-button-null"></i> {{ nota.contato }} {% endif %}
-        </div>
-        <div class="item-status" title="Status">
-            <i class="bi bi-exclamation-circle i-button-null"></i> {{ nota.statusnota }}
-        </div>
-    </div>
-    <div class="item-nota {% cycle 'linha-p' 'linha-i' %}">
-        <div class="item-endereco" title="Endereço">
-            <i class="bi bi-geo-alt i-button-null"></i> {{ nota.endereco_compl }}
-        </div>
-    </div>
-    {% if nota.informa %}
-    <div class="item-nota {% cycle 'linha-p' 'linha-i' %}">
-        <div class="item-endereco" title="Informações">
-            <i class="bi bi-info-square i-button-null"></i> {{ nota.informa }}
-        </div>
-    </div>
-    {% endif %}
-    <div class="item-nota {% cycle 'linha-p' 'linha-i' %}">
-        <div class="item-button">
-            <i class="bi bi-folder i-button
-            js-ocorrencia-notas-cliente" title="Seleciona Nota"
-            data-idnota={{ nota.id_nota_clientes }}
-            data-idcliente={{ nota.idcliente }}></i>
-            <i class="bi bi-pencil-square i-button
-            js-edita-notas-cliente" title="Edita Nota"
-            data-idnota={{ nota.id_nota_clientes }}
-            data-idcliente={{ nota.idcliente }}></i>
-            <i class="bi bi-trash i-button
-            js-exclui-notas-cliente" title="Exclui Nota"
-            data-idnota={{ nota.id_nota_clientes }}
-            data-idcliente={{ nota.idcliente }}></i> {% if not nota.statusnota == "EM ROTA" %}
-            <i class="bi bi-check-square i-button
-            js-adiciona-nota-romaneio" title="Adiciona no Romaneio"
-            data-idnota={{ nota.id_nota_clientes }}
-            data-idcliente={{ nota.idcliente }}></i> {% endif %}
-        </div>
-    </div>
-    {% if forloop.last %}
-    <div class="borda-bottom"></div>
-    {% endif %} {% endfor %}
+    {% endfor %}
 </div>
 <div class="article-card-footer">
     {% for nota in notas %} {% if forloop.last %}

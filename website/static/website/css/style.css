@@ -5421,8 +5421,22 @@ main .fp-recibo-tabela .fp-recibo-print {
     color: var(--color6);
 }
 
+
+/*
 .linha-p {
     background-color: #444444;
+}*/
+
+.item-mouse:hover .item-nota:hover {
+    color: var(--color9)
+}
+
+.item-mouse:hover {
+    background-color: var(--color5);
+}
+
+.item-mouse:hover .i-button-null {
+    color: var(--color9);
 }
 
 .card-lista-notas-romaneio .item-nr .item-numero-nota {
