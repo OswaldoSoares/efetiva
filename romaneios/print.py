@@ -254,12 +254,19 @@ def notas_status(pdf, contexto):
         bairro = x["bairro"]
         cep = x["cep"]
         cidade = x["cidade"]
+        data_ocorrencia = x["ocorrencia"]["data_ocorrencia"].strftime("%d/%m/%Y")
+        ocorrencia = x["ocorrencia"]["ocorrencia"]
         pdf.setFont("Times-Roman", 9)
         pdf.drawString(
             cmp(12),
             cmp(linha),
             f"{numero} - {destinatario[0:9]}... - {endereco[0:30]} - {bairro} - CEP: {cep} - {cidade[0:9]}",
         )
+        if ocorrencia:
+            pdf.setFillColor(HexColor("#FF0000"))
+            linha -= 3
+            pdf.drawString(cmp(12), cmp(linha), f"{data_ocorrencia} - {ocorrencia}")
+            pdf.setFillColor(HexColor("#000000"))
         linha -= 1
         pdf.line(cmp(12), cmp(linha), cmp(198), cmp(linha))
         linha -= 3

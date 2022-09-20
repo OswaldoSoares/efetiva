@@ -576,40 +576,51 @@ def create_contexto_filtro_notas_status(id_cli, sort_status, order_nota):
         notas = NotasClientes.objects.filter(
             StatusNota=sort_status, idCliente_id=id_cli
         ).order_by(order_nota)
-    lista = [
-        {
-            "id_nota_clientes": x.idNotasClientes,
-            "local_coleta": x.LocalColeta,
-            "data_coleta": x.DataColeta,
-            "numero_nota": x.NumeroNota,
-            "destinatario": x.Destinatario,
-            "endereco": x.Endereco,
-            "endereco_compl": x.Endereco
-            + " "
-            + x.Bairro
-            + " "
-            + x.CEP[0:5]
-            + "-"
-            + x.CEP[5:]
-            + " "
-            + x.Cidade
-            + " "
-            + x.Estado,
-            "bairro": x.Bairro,
-            "cep": x.CEP[0:5] + "-" + x.CEP[5:],
-            "cidade": x.Cidade,
-            "estado": x.Estado,
-            "contato": x.Contato,
-            "informa": x.Informa,
-            "volume": x.Volume,
-            "peso": x.Peso,
-            "valor": x.Valor,
-            "statusnota": x.StatusNota,
-            "historico": x.Historico,
-            "idcliente": x.idCliente_id,
-        }
-        for x in notas
-    ]
+    lista = []
+    for x in notas:
+        y = None
+        if x.StatusNota == "RECUSADA":
+            ocorrencia = NotasOcorrencias.objects.filter(
+                idNotasClientes=x.idNotasClientes
+            )
+            y = ocorrencia.latest("idNotasOcorrencia")
+            data_ocorrencia = y.DataOcorrencia
+            desc_ocorrencia = y.Ocorrencia
+            y = {"ocorrencia": desc_ocorrencia, "data_ocorrencia": data_ocorrencia}
+        lista.append(
+            {
+                "id_nota_clientes": x.idNotasClientes,
+                "local_coleta": x.LocalColeta,
+                "data_coleta": x.DataColeta,
+                "numero_nota": x.NumeroNota,
+                "destinatario": x.Destinatario,
+                "endereco": x.Endereco,
+                "endereco_compl": x.Endereco
+                + " "
+                + x.Bairro
+                + " "
+                + x.CEP[0:5]
+                + "-"
+                + x.CEP[5:]
+                + " "
+                + x.Cidade
+                + " "
+                + x.Estado,
+                "bairro": x.Bairro,
+                "cep": x.CEP[0:5] + "-" + x.CEP[5:],
+                "cidade": x.Cidade,
+                "estado": x.Estado,
+                "contato": x.Contato,
+                "informa": x.Informa,
+                "volume": x.Volume,
+                "peso": x.Peso,
+                "valor": x.Valor,
+                "statusnota": x.StatusNota,
+                "historico": x.Historico,
+                "idcliente": x.idCliente_id,
+                "ocorrencia": y,
+            }
+        )
     return {"notas": lista, "cliente": cliente}
 
 
