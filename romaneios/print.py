@@ -253,7 +253,7 @@ def notas_status(pdf, contexto):
         fontSize=7,
         leading=9,
         alignment=TA_JUSTIFY,
-        # textColor=HexColor("#FF0000"),
+        textColor=HexColor("#FF0000"),
     )
     linha = 242.8
     for x in contexto["notas"]:
