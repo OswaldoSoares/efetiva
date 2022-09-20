@@ -1,6 +1,7 @@
 import os
 from datetime import datetime
 from io import BytesIO
+from turtle import color
 
 from django.core.files.base import ContentFile
 from django.http import HttpResponse
@@ -246,6 +247,14 @@ def ocorrencia_nota(id_not, status, pdf, linha):
 
 
 def notas_status(pdf, contexto):
+    styles_claro = ParagraphStyle(
+        "claro",
+        fontName="Times-Roman",
+        fontSize=7,
+        leading=9,
+        alignment=TA_JUSTIFY,
+        textColor=HexColor("#FF0000"),
+    )
     linha = 242.8
     for x in contexto["notas"]:
         numero = x["numero_nota"]
@@ -255,7 +264,7 @@ def notas_status(pdf, contexto):
         cep = x["cep"]
         cidade = x["cidade"]
         data_ocorrencia = x["ocorrencia"]["data_ocorrencia"].strftime("%d/%m/%Y")
-        ocorrencia = x["ocorrencia"]["ocorrencia"]
+        ocorrencia = f"{data_ocorrencia} - {x['ocorrencia']['ocorrencia']}"
         pdf.setFont("Times-Roman", 9)
         pdf.drawString(
             cmp(12),
@@ -263,10 +272,10 @@ def notas_status(pdf, contexto):
             f"{numero} - {destinatario[0:9]}... - {endereco[0:30]} - {bairro} - CEP: {cep} - {cidade[0:9]}",
         )
         if ocorrencia:
-            pdf.setFillColor(HexColor("#FF0000"))
-            linha -= 3
-            pdf.drawString(cmp(12), cmp(linha), f"{data_ocorrencia} - {ocorrencia}")
-            pdf.setFillColor(HexColor("#000000"))
+            para = Paragraph(ocorrencia, style=styles_claro)
+            para.wrapOn(pdf, cmp(186), cmp(297))
+            linha -= para.height * 0.352777
+            para.drawOn(pdf, cmp(12), cmp(linha))
         linha -= 1
         pdf.line(cmp(12), cmp(linha), cmp(198), cmp(linha))
         linha -= 3
