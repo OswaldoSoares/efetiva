@@ -419,8 +419,8 @@ def create_contexto_funcionario(_mes_ano, _id) -> JsonResponse:
     _var["mes"], _var["ano"] = converter_mes_ano(_mes_ano)
     _var["primeiro_dia"], _var["ultimo_dia"] = extremos_mes(_var["mes"], _var["ano"])
     # TODO Necessário inverter as posições do _cartao_ponto e Minutas
-    minutas = minutas_contra_cheque(_var)
     _cartao_ponto = cartao_ponto(_var)
+    minutas = minutas_contra_cheque(_var)
     _var["dias_falta"] = dias_falta(_cartao_ponto)
     _var["dias_remunerado"] = dias_remunerado(_cartao_ponto)
     _var["dias_transporte"] = dias_transporte(_cartao_ponto)
@@ -1162,7 +1162,6 @@ def imprime_contra_cheque_pagamento(_id_cc, tipo):
         idPessoal=_var["id_pessoal"],
         Dia__range=[_var["primeiro_dia"], _var["ultimo_dia"]],
     )
-    print(minutas)
     for x in agenda:
         lista_agenda_minuta.append({"dia": x.Dia, "descricao": x.Descricao})
     for x in minutas:
@@ -1178,7 +1177,6 @@ def imprime_contra_cheque_pagamento(_id_cc, tipo):
             }
         )
     newlist = sorted(lista_agenda_minuta, key=lambda d: d["dia"])
-    print(newlist)
 
     lista_multas = []
     for x in contrachequeitens:
