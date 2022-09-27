@@ -215,6 +215,7 @@ def notas_romaneio(pdf, contexto):
         pdf.line(cmp(12), cmp(linha), cmp(198), cmp(linha))
         linha -= 3
         if linha < 50:
+            pdf.line(cmp(10), cmp(14), cmp(200), cmp(14))
             notas = str(len(contexto["notas"])).zfill(2)
             pagina = str(pdf.getPageNumber()).zfill(2)
             pdf.drawString(cmp(20), cmp(11), f"{notas} NOTAS")
@@ -283,14 +284,20 @@ def notas_status(pdf, contexto):
         pdf.line(cmp(12), cmp(linha), cmp(198), cmp(linha))
         linha -= 3
         if linha < 20:
-            pagina = pdf.getPageNumber()
-            pdf.drawCentredString(cmp(105), cmp(11), "PÁGINA {}".format(pagina))
+            pdf.line(cmp(10), cmp(14), cmp(200), cmp(14))
+            notas = str(len(contexto["notas"])).zfill(3)
+            pagina = str(pdf.getPageNumber()).zfill(2)
+            pdf.drawString(cmp(20), cmp(11), f"{notas} NOTAS")
+            pdf.drawRightString(cmp(190), cmp(11), f"PÁGINA {pagina}")
             pdf.showPage()
             header(pdf, contexto)
             header_nota_status(pdf, contexto)
             header_cliente(pdf, contexto)
             linha = 242.8
-    pagina = pdf.getPageNumber()
-    pdf.drawCentredString(cmp(105), cmp(11), "PÁGINA {}".format(pagina))
+    pdf.line(cmp(10), cmp(14), cmp(200), cmp(14))
+    notas = str(len(contexto["notas"])).zfill(3)
+    pagina = str(pdf.getPageNumber()).zfill(2)
+    pdf.drawString(cmp(20), cmp(11), f"{notas} NOTAS")
+    pdf.drawRightString(cmp(190), cmp(11), f"PÁGINA {pagina}")
     pdf.showPage()
     return pdf
