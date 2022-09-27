@@ -263,8 +263,11 @@ def notas_status(pdf, contexto):
         bairro = x["bairro"]
         cep = x["cep"]
         cidade = x["cidade"]
-        data_ocorrencia = x["ocorrencia"]["data_ocorrencia"].strftime("%d/%m/%Y")
-        ocorrencia = f"{data_ocorrencia} - {x['ocorrencia']['ocorrencia']}"
+        data_ocorrencia = None
+        ocorrencia = None
+        if x["ocorrencia"]:
+            data_ocorrencia = x["ocorrencia"]["data_ocorrencia"].strftime("%d/%m/%Y")
+            ocorrencia = f"{data_ocorrencia} - {x['ocorrencia']['ocorrencia']}"
         pdf.setFont("Times-Roman", 9)
         pdf.drawString(
             cmp(12),
