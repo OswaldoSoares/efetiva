@@ -175,7 +175,15 @@ def create_data_cliente_selecionado(request, contexto):
     html_form_romaneios(request, contexto, data)
     html_lista_romaneios(request, contexto, data)
     html_filtro_notas_romaneios(request, contexto, data)
+    html_quantidade_notas(request, contexto, data)
     return JsonResponse(data)
+
+
+def html_quantidade_notas(request, contexto, data):
+    data["html_quantidade_notas"] = render_to_string(
+        "romaneios/html_quantidade_notas.html", contexto, request=request
+    )
+    return data
 
 
 def create_data_sort_notas(request, contexto):
@@ -559,6 +567,23 @@ def create_contexto_filtro_status():
         NotasClientes.objects.values("StatusNota").distinct().order_by("StatusNota")
     )
     return status_nota
+
+
+def create_contexto_quantidades_status():
+    notas = NotasClientes.objects.all()
+    rota = len(notas.filter(StatusNota="EM ROTA"))
+    cadastrada = len(notas.filter(StatusNota="NOTA CADASTRADA"))
+    pendente = len(notas.filter(StatusNota="PENDENTE"))
+    recusada = len(notas.filter(StatusNota="RECUSADA"))
+    lista = [
+        {
+            "rota": rota,
+            "cadastrada": cadastrada,
+            "pendente": pendente,
+            "recusada": recusada,
+        }
+    ]
+    return lista
 
 
 def create_contexto_filtro_notas_status(id_cli, sort_status, order_nota):

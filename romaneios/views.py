@@ -40,6 +40,11 @@ def seleciona_cliente(request):
         contexto.update({"motoristas": motoristas, "veiculos": veiculos})
         status_nota = facade.create_contexto_filtro_status()
         contexto.update({"status_nota": status_nota})
+        quantidade_notas = facade.create_contexto_quantidades_status()
+        contexto.update({"rotas": quantidade_notas[0]["rota"]})
+        contexto.update({"cadastrada": quantidade_notas[0]["cadastrada"]})
+        contexto.update({"pendente": quantidade_notas[0]["pendente"]})
+        contexto.update({"recusada": quantidade_notas[0]["recusada"]})
         data = facade.create_data_cliente_selecionado(request, contexto)
     else:
         clientes = facade.create_contexto_seleciona_cliente()

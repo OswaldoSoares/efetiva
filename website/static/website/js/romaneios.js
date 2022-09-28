@@ -23,6 +23,8 @@ $(document).on('submit', '.js-seleciona-cliente', function(event) {
                 $(".card-lista-notas-cliente").show()
                 $(".card-lista-romaneios").html(data.html_lista_romaneios)
                 $(".card-lista-romaneios").show()
+                $(".card-quantidade-notas").html(data.html_quantidade_notas)
+                $(".card-quantidade-notas").show()
                 $(".card-filtro-notas-romaneios").html(data.html_filtro_notas_romaneios)
                 $(".card-filtro-notas-romaneios").show()
                 $(".mostra-body-nota").show()
