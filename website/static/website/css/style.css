@@ -5065,7 +5065,7 @@ main .fp-recibo-tabela .fp-recibo-print {
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     padding: 0 10px;
 }
 
