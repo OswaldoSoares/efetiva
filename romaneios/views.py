@@ -71,6 +71,11 @@ def adiciona_nota_cliente(request):
     contexto = {"notas": notas, "cliente": cliente, "hoje": hoje, "idcliente": id_cli}
     contexto.update({"nota_form": nota_form, "error": error})
     contexto.update(msg)
+    quantidade_notas = facade.create_contexto_quantidades_status()
+    contexto.update({"rotas": quantidade_notas[0]["rota"]})
+    contexto.update({"cadastrada": quantidade_notas[0]["cadastrada"]})
+    contexto.update({"pendente": quantidade_notas[0]["pendente"]})
+    contexto.update({"recusada": quantidade_notas[0]["recusada"]})
     data = facade.create_data_cliente_selecionado(request, contexto)
     return data
 
@@ -106,6 +111,11 @@ def exclui_nota_cliente(request):
     cliente = facade.create_contexto_cliente(_id_cli)
     hoje = facade.hoje
     contexto = {"notas": notas, "cliente": cliente, "hoje": hoje, "idcliente": _id_cli}
+    quantidade_notas = facade.create_contexto_quantidades_status()
+    contexto.update({"rotas": quantidade_notas[0]["rota"]})
+    contexto.update({"cadastrada": quantidade_notas[0]["cadastrada"]})
+    contexto.update({"pendente": quantidade_notas[0]["pendente"]})
+    contexto.update({"recusada": quantidade_notas[0]["recusada"]})
     data = facade.create_data_cliente_selecionado(request, contexto)
     return data
 
@@ -148,6 +158,11 @@ def adiciona_ocorrencia(request):
     }
     contexto.update({"error": error})
     contexto.update(msg)
+    quantidade_notas = facade.create_contexto_quantidades_status()
+    contexto.update({"rotas": quantidade_notas[0]["rota"]})
+    contexto.update({"cadastrada": quantidade_notas[0]["cadastrada"]})
+    contexto.update({"pendente": quantidade_notas[0]["pendente"]})
+    contexto.update({"recusada": quantidade_notas[0]["recusada"]})
     if id_rom:
         not_rom = facade.create_contexto_notas_romaneio(id_rom)
         romaneio = facade.create_contexto_seleciona_romaneio(id_rom)
@@ -209,6 +224,11 @@ def adiciona_nota_romaneio(request):
         "romaneios": romaneio,
         "idcliente": id_cli,
     }
+    quantidade_notas = facade.create_contexto_quantidades_status()
+    contexto.update({"rotas": quantidade_notas[0]["rota"]})
+    contexto.update({"cadastrada": quantidade_notas[0]["cadastrada"]})
+    contexto.update({"pendente": quantidade_notas[0]["pendente"]})
+    contexto.update({"recusada": quantidade_notas[0]["recusada"]})
     data = facade.create_data_lista_notas_romaneio(request, contexto)
     return data
 
@@ -226,6 +246,11 @@ def exclui_nota_romaneio(request):
         "notas_romaneio": not_rom,
         "romaneios": romaneio,
     }
+    quantidade_notas = facade.create_contexto_quantidades_status()
+    contexto.update({"rotas": quantidade_notas[0]["rota"]})
+    contexto.update({"cadastrada": quantidade_notas[0]["cadastrada"]})
+    contexto.update({"pendente": quantidade_notas[0]["pendente"]})
+    contexto.update({"recusada": quantidade_notas[0]["recusada"]})
     data = facade.create_data_lista_notas_romaneio(request, contexto)
     return data
 
@@ -343,5 +368,10 @@ def nota_deposito(request):
         id_cli, filtro_status, "NumeroNota"
     )
     contexto.update({"idcliente": id_cli})
+    quantidade_notas = facade.create_contexto_quantidades_status()
+    contexto.update({"rotas": quantidade_notas[0]["rota"]})
+    contexto.update({"cadastrada": quantidade_notas[0]["cadastrada"]})
+    contexto.update({"pendente": quantidade_notas[0]["pendente"]})
+    contexto.update({"recusada": quantidade_notas[0]["recusada"]})
     data = facade.create_data_filtro_status_reduzida(request, contexto)
     return data

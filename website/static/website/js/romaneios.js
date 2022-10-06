@@ -137,7 +137,8 @@ $(document).on('submit', '.js-gera-notas-cliente', function(event) {
             $(".card-form-romaneios").show()
             $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente)
             $(".card-lista-notas-cliente").show()
-                //CarregaMask()
+            $(".card-quantidade-notas").html(data.html_quantidade_notas)
+            $(".card-quantidade-notas").show()
             $(".box-loader").hide();
         },
     });
@@ -509,6 +510,8 @@ $(document).on('click', '.js-exclui-notas-cliente', function() {
             if (_card_reduzida == false) {
                 $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente)
                 $(".card-lista-notas-cliente").show()
+                $(".card-quantidade-notas").html(data.html_quantidade_notas)
+                $(".card-quantidade-notas").show()
             }
             $(".box-loader").hide();
         },
