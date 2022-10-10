@@ -446,6 +446,8 @@ $(document).on('click', '.js-adiciona-nota-romaneio', function() {
         success: function(data) {
             $(".card-lista-notas-romaneio").html(data.html_lista_notas_romaneio)
             $(".card-lista-notas-romaneio").show()
+            $(".card-quantidade-notas").html(data.html_quantidade_notas)
+            $(".card-quantidade-notas").show()
             $(".box-loader").hide()
         },
     });
@@ -470,6 +472,8 @@ $(document).on('click', '.js-exclui-nota-romaneio', function() {
         success: function(data) {
             $(".card-lista-notas-romaneio").html(data.html_lista_notas_romaneio)
             $(".card-lista-notas-romaneio").show()
+            $(".card-quantidade-notas").html(data.html_quantidade_notas)
+            $(".card-quantidade-notas").show()
             $(".box-loader").hide()
         },
     });
