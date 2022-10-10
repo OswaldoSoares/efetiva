@@ -1,9 +1,10 @@
- <form class="js-gera-notas-cliente" method="post" action="">
+<form class="js-gera-notas-cliente" method="post" action="">
     {% csrf_token %}
     <div class="article-card-titulo">
         <i class="bi bi-plus-circle i-button js-mostra-body-nota"></i>
         <i class="bi bi-dash-circle i-button js-oculta-body-nota"></i>
         <span class="titulo-retrai-card">{{ cliente }}</span>
+        <input type="hidden" id="id_cliente" value="{{ idcliente }}">
     </div>
     <div class="article-card-body body-nota">
         <div class="item-nota">
@@ -13,11 +14,8 @@
                 </div>
                 <div class="item-field">
                     {% if nota_form %}
-                    <input type="hidden" name="idnota"
-                    value="{{ nota_form.id_nota_clientes }}">
-                    {% endif %}
-                    <select class="form-control js-cliente"
-                    name="localcoleta" id="localcoleta">
+                    <input type="hidden" name="idnota" value="{{ nota_form.id_nota_clientes }}"> {% endif %}
+                    <select class="form-control js-cliente" name="localcoleta" id="localcoleta">
                         <option value="">SELECIONE LOCAL COLETA</option>
                         {% if nota_form %}
                             {% if nota_form.local_coleta == cliente %}
@@ -390,5 +388,5 @@
     <input type="file" name="uploadFile" class="file js-file-xml" id="file-xml" value="">
     <label for="file-xml" class="bi bi-folder i-button custonBtn radius-left"></label>
     <span class="filenameTxt js-xmlTxt">Selecionar XML</span>
-    <button type="submit" class="bi bi-cloud-arrow-up i-button custonBtn radius-right"></button>
+                    <button type="submit" class="bi bi-cloud-arrow-up i-button custonBtn radius-right"></button>
 </form>

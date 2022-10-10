@@ -6,7 +6,6 @@
     {% for rom in romaneios %} {% if forloop.first %}
     <div class="borda-top"></div>
     {% endif %}
-    <input type="hidden" id="id_cliente" value="{{ idcliente }}">
     <div class="item-romaneio {% cycle 'linha-p' 'linha-i' %}">
         <div class="item-numero" title="Número Romaneio">
             <i class="bi bi-file-text i-button-null"></i> {{ rom.romaneio|stringformat:'05d' }}

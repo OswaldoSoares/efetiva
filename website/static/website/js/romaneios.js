@@ -86,6 +86,8 @@ $(document).on('click', '.js-nota-pendente', function() {
             $(".card-lista-notas-cliente").show()
             $(".card-lista-romaneios").show()
             $(".js-adiciona-nota-romaneio").hide()
+            $(".card-quantidade-notas").html(data.html_quantidade_notas)
+            $(".card-quantidade-notas").show()
             $(".box-loader").hide()
         },
     });

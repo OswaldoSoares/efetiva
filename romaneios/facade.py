@@ -206,6 +206,7 @@ def create_data_filtro_nota(request, contexto):
 def create_data_filtro_status_reduzida(request, contexto):
     data = dict()
     html_lista_notas_cliente_reduzida(request, contexto, data)
+    html_quantidade_notas(request, contexto, data)
     return JsonResponse(data)
 
 
