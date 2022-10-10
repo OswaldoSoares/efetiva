@@ -75,6 +75,7 @@ class MinutaSelecionada:
         self.t_despesas = self.total_despesas()
         self.entregas = MinutaEntrega(idminuta).nota
         self.t_entregas = self.total_notas()
+        self.romaneio = self.get_romaneio()
         self.tabela = ClienteTabela(minuta.idCliente).tabela
         self.tabela_veiculo = ClienteTabelaVeiculo(minuta.idCliente).tabela
         self.tabela_perimetro = ClienteTabelaPerimetro(minuta.idCliente).tabela
@@ -82,7 +83,7 @@ class MinutaSelecionada:
         self.valores_recebe = self.carrega_valores_recebe()
         self.valores_paga = self.carrega_valores_paga()
         self.total_horas = self.get_total_horas()
-        self.total_horas_str = self.total_horas_str()
+        self.total_horas_str = self.get_total_horas_str()
         self.total_kms = self.get_total_kms()
         self.CategoriaDespesa = MinutaCategoriaDespesas().Categoria
         self.proxima_saida = self.entrega_saida()
@@ -100,6 +101,13 @@ class MinutaSelecionada:
         if calculo_kms < 1:
             calculo_kms = 0
         return calculo_kms
+
+    def get_romaneio(self):
+        romaneio = Romaneios.objects.filter(idMinuta_id=self.idminuta)
+        num_romaneio = None
+        if romaneio:
+            num_romaneio = romaneio[0].Romaneio
+        return num_romaneio
 
     def total_ajudantes(self):
         self.total_ajudantes_avulso()
@@ -150,7 +158,7 @@ class MinutaSelecionada:
                 periodo = final - inicial
         return periodo
 
-    def total_horas_str(self):
+    def get_total_horas_str(self):
         total_horas_str = str(self.total_horas)
         if total_horas_str.__len__() == 7:
             total_horas_str = f"0{total_horas_str}"

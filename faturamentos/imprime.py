@@ -3,6 +3,7 @@ from io import BytesIO
 from clientes.models import Cliente, TabelaPerimetro
 from django.core.files.base import ContentFile
 from django.http import HttpResponse
+from minutas.facade import MinutaSelecionada
 from minutas.models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas
 from minutas.views import convertemp
 from reportlab.lib.colors import HexColor
@@ -118,7 +119,7 @@ def imprime_cabecalho(pdf, fatura_selecionada):
         convertemp(54), convertemp(279), "TRANSEFETIVA TRANSPORTE - EIRELLI - ME"
     )
     pdf.setFont("Times-Roman", 12)
-    pdf.drawString(
+    pdf.drawString(  
         convertemp(53),
         convertemp(273),
         "RUA OLIMPIO PORTUGAL, 245 - MOOCA - SÃO PAULO - SP - CEP 03112-010",
@@ -221,6 +222,8 @@ def imprime_fatura_pdf(fatura):
     pdf.line(convertemp(10), convertemp(linha), convertemp(200), convertemp(linha))
     linha = 242.8
     for index, itens in enumerate(minutas):
+        s_minuta = MinutaSelecionada(minutas[index].idMinuta).__dict__
+        romaneio = s_minuta["romaneio"]
         inicialkm = minutas[index].KMInicial
         finalkm = minutas[index].KMFinal
         totalkm = finalkm - inicialkm
@@ -251,9 +254,14 @@ def imprime_fatura_pdf(fatura):
             convertemp(12), convertemp(linha), "DATA: {}".format(minuta_data)
         )
         pdf.setFillColor(HexColor("#000000"))
-        pdf.drawCentredString(
-            convertemp(105), convertemp(linha), "MINUTA: {}".format(minuta_numero)
-        )
+        if romaneio:
+            pdf.drawCentredString(
+                convertemp(105), convertemp(linha), f"MINUTA: {minuta_numero} - R: {romaneio}"
+            )
+        else:
+            pdf.drawCentredString(
+                convertemp(105), convertemp(linha), "MINUTA: {}".format(minuta_numero)
+            )
         if minuta_placa:
             pdf.drawRightString(
                 convertemp(198),
