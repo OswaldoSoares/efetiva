@@ -11,6 +11,7 @@ from reportlab.lib.enums import TA_JUSTIFY
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.pdfgen import canvas
 from reportlab.platypus import Paragraph
+from romaneios.models import RomaneioNotas
 from transefetiva.settings.settings import STATIC_ROOT
 from website.models import FileUpload
 
@@ -119,7 +120,7 @@ def imprime_cabecalho(pdf, fatura_selecionada):
         convertemp(54), convertemp(279), "TRANSEFETIVA TRANSPORTE - EIRELLI - ME"
     )
     pdf.setFont("Times-Roman", 12)
-    pdf.drawString(  
+    pdf.drawString(
         convertemp(53),
         convertemp(273),
         "RUA OLIMPIO PORTUGAL, 245 - MOOCA - SÃO PAULO - SP - CEP 03112-010",
@@ -256,7 +257,9 @@ def imprime_fatura_pdf(fatura):
         pdf.setFillColor(HexColor("#000000"))
         if romaneio:
             pdf.drawCentredString(
-                convertemp(105), convertemp(linha), f"MINUTA: {minuta_numero} - R: {romaneio}"
+                convertemp(105),
+                convertemp(linha),
+                f"MINUTA: {minuta_numero} - R: {romaneio}",
             )
         else:
             pdf.drawCentredString(
@@ -313,91 +316,63 @@ def imprime_fatura_pdf(fatura):
             para.wrapOn(pdf, convertemp(186), convertemp(297))
             linha -= para.height * 0.352777
             para.drawOn(pdf, convertemp(12), convertemp(linha))
-        notas_dados = (
-            MinutaNotas.objects.values(
-                "Nota",
-                "ValorNota",
-                "Peso",
-                "Volume",
-                "Bairro",
-                "Cidade",
-                "Nome",
-                "NotaGuia",
+        if romaneio:
+            notas_romaneio = RomaneioNotas.objects.filter(idRomaneio=romaneio)
+            notas_dados = [
+                {
+                    "Nota": x.idNotasClientes.NumeroNota,
+                    "ValorNota": x.idNotasClientes.Valor,
+                    "Peso": x.idNotasClientes.Peso,
+                    "Volume": x.idNotasClientes.Volume,
+                    "Bairro": x.idNotasClientes.Bairro,
+                    "CEP": x.idNotasClientes.CEP,
+                    "Cidade": x.idNotasClientes.Cidade,
+                    "Estado": x.idNotasClientes.Estado,
+                    "Nome": x.idNotasClientes.Destinatario,
+                    "Endereco": x.idNotasClientes.Endereco,
+                    "LocalColeta": x.idNotasClientes.LocalColeta,
+                    "StatusNota": x.idNotasClientes.StatusNota,
+                    "Contato": x.idNotasClientes.Contato,
+                }
+                for x in notas_romaneio
+            ]
+            idminuta = minutas[index].idMinuta
+            notas = "NOTA(S): "
+            if notas_dados:
+                linha, pdf = print_notas_da_minuta_unidade(
+                    notas_dados,
+                    idminuta,
+                    notas,
+                    pdf,
+                    styles_claro,
+                    linha,
+                )
+        else:
+            notas_dados = (
+                MinutaNotas.objects.values(
+                    "Nota",
+                    "ValorNota",
+                    "Peso",
+                    "Volume",
+                    "Bairro",
+                    "Cidade",
+                    "Nome",
+                    "NotaGuia",
+                )
+                .filter(idMinuta=minutas[index].idMinuta, NotaGuia="0")
+                .exclude(Nota="PERIMETRO")
             )
-            .filter(idMinuta=minutas[index].idMinuta, NotaGuia="0")
-            .exclude(Nota="PERIMETRO")
-        )
-        idminuta = minutas[index].idMinuta
-        notas = "NOTA(S): "
-        if notas_dados:
-            for itensnotas in notas_dados:
-                notas_valor = ""
-                if itensnotas["ValorNota"] > 0.00:
-                    notas_valor = " VALOR {}".format(itensnotas["ValorNota"])
-                notas_peso = ""
-                if itensnotas["Peso"] > 0.00:
-                    notas_peso = " PESO {}".format(itensnotas["Peso"])
-                notas_volume = ""
-                if itensnotas["Volume"] > 0:
-                    notas_volume = " VOLUME {}".format(itensnotas["Volume"])
-                notasguia_dados = MinutaNotas.objects.values(
-                    "Nota", "NotaGuia", "ValorNota", "Peso", "Volume"
-                ).filter(idMinuta=idminuta, NotaGuia=itensnotas["Nota"])
-                notasguia = ""
-                if notasguia_dados:
-                    for itensnotasguia in notasguia_dados:
-                        notasguia_valor = ""
-                        notasguia_peso = ""
-                        notasguia_volume = ""
-                        notasguia_nota = " &#x271B NOTA: {}".format(
-                            itensnotasguia["Nota"]
-                        )
-                        if itensnotasguia["ValorNota"] > 0.00:
-                            notasguia_valor = " VALOR {}".format(
-                                itensnotasguia["ValorNota"]
-                            )
-                        if itensnotasguia["Peso"] > 0.00:
-                            notasguia_peso = " PESO {}".format(itensnotasguia["Peso"])
-                        if itensnotasguia["Volume"] > 0:
-                            notasguia_volume = " VOLUME {}".format(
-                                itensnotasguia["Volume"]
-                            )
-                        notasguia = notasguia + "{}{}{}{}".format(
-                            notasguia_nota,
-                            notasguia_valor,
-                            notasguia_peso,
-                            notasguia_volume,
-                        )
-                notas_bairro = ""
-                if itensnotas["Bairro"]:
-                    notas_bairro = " - {}".format(itensnotas["Bairro"])
-                if itensnotas["Nome"]:
-                    notas = "{} &#x2713 NOTA: {}{}{}{}{}{} - {} - {}".format(
-                        notas,
-                        itensnotas["Nota"],
-                        notas_valor,
-                        notas_peso,
-                        notas_volume,
-                        notasguia,
-                        notas_bairro,
-                        itensnotas["Cidade"],
-                        itensnotas["Nome"],
-                    )
-                else:
-                    notas = "{} &#x2713 NOTA: {}{}{}{}{}{} - {} ".format(
-                        notas,
-                        itensnotas["Nota"],
-                        notas_valor,
-                        notas_peso,
-                        notas_volume,
-                        notasguia,
-                        notas_bairro,
-                        itensnotas["Cidade"],
-                    )
-            para = Paragraph(notas, style=styles_claro)
-            para.wrapOn(pdf, convertemp(186), convertemp(297))
-            linha -= para.height * 0.352777
-            para.drawOn(pdf, convertemp(12), convertemp(linha))
+            idminuta = minutas[index].idMinuta
+            notas = "NOTA(S): "
+            if notas_dados:
+                linha, pdf = print_notas_da_minuta_paragrafo(
+                    notas_dados,
+                    idminuta,
+                    notas,
+                    pdf,
+                    styles_claro,
+                    linha,
+                )
         notas_perimetro = (
             MinutaNotas.objects.values("Cidade")
             .filter(idMinuta=minutas[index].idMinuta)
@@ -470,3 +445,123 @@ def imprime_fatura_pdf(fatura):
     obj.uploadFile.save(descricao_arquivo, ContentFile(pdf))
     response.write(pdf)
     return [response, pdf]
+
+
+def print_notas_da_minuta_paragrafo(
+    notas_dados,
+    idminuta,
+    notas,
+    pdf,
+    styles_claro,
+    linha,
+):
+    for itensnotas in notas_dados:
+        notas_valor = ""
+        if itensnotas["ValorNota"] > 0.00:
+            notas_valor = " VALOR {}".format(itensnotas["ValorNota"])
+        notas_peso = ""
+        if itensnotas["Peso"] > 0.00:
+            notas_peso = " PESO {}".format(itensnotas["Peso"])
+        notas_volume = ""
+        if itensnotas["Volume"] > 0:
+            notas_volume = " VOLUME {}".format(itensnotas["Volume"])
+        notasguia_dados = MinutaNotas.objects.values(
+            "Nota", "NotaGuia", "ValorNota", "Peso", "Volume"
+        ).filter(idMinuta=idminuta, NotaGuia=itensnotas["Nota"])
+        notasguia = ""
+        if notasguia_dados:
+            for itensnotasguia in notasguia_dados:
+                notasguia_valor = ""
+                notasguia_peso = ""
+                notasguia_volume = ""
+                notasguia_nota = " &#x271B NOTA: {}".format(itensnotasguia["Nota"])
+                if itensnotasguia["ValorNota"] > 0.00:
+                    notasguia_valor = " VALOR {}".format(itensnotasguia["ValorNota"])
+                if itensnotasguia["Peso"] > 0.00:
+                    notasguia_peso = " PESO {}".format(itensnotasguia["Peso"])
+                if itensnotasguia["Volume"] > 0:
+                    notasguia_volume = " VOLUME {}".format(itensnotasguia["Volume"])
+                notasguia = notasguia + "{}{}{}{}".format(
+                    notasguia_nota,
+                    notasguia_valor,
+                    notasguia_peso,
+                    notasguia_volume,
+                )
+        notas_bairro = ""
+        if itensnotas["Bairro"]:
+            notas_bairro = " - {}".format(itensnotas["Bairro"])
+        if itensnotas["Nome"]:
+            notas = "{} &#x2713 NOTA: {}{}{}{}{}{} - {} - {}".format(
+                notas,
+                itensnotas["Nota"],
+                notas_valor,
+                notas_peso,
+                notas_volume,
+                notasguia,
+                notas_bairro,
+                itensnotas["Cidade"],
+                itensnotas["Nome"],
+            )
+        else:
+            notas = "{} &#x2713 NOTA: {}{}{}{}{}{} - {} ".format(
+                notas,
+                itensnotas["Nota"],
+                notas_valor,
+                notas_peso,
+                notas_volume,
+                notasguia,
+                notas_bairro,
+                itensnotas["Cidade"],
+            )
+    para = Paragraph(notas, style=styles_claro)
+    para.wrapOn(pdf, convertemp(186), convertemp(297))
+    linha -= para.height * 0.352777
+    para.drawOn(pdf, convertemp(12), convertemp(linha))
+    return linha, pdf
+
+
+def print_notas_da_minuta_unidade(
+    notas_dados,
+    idminuta,
+    notas,
+    pdf,
+    styles_claro,
+    linha,
+):
+    styles_claro = ParagraphStyle(
+        "claro", fontName="Times-Roman", fontSize=7, leading=7, alignment=TA_JUSTIFY
+    )
+    linha -= 3
+    for x in notas_dados:
+        if x["LocalColeta"] == "DESTINATÁRIO":
+            coleta = "COLETA"
+        else:
+            coleta = "ENTREGA"
+        numero = x["Nota"]
+        destinatario = x["Nome"]
+        endereco = x["Endereco"]
+        bairro = x["Bairro"]
+        cep = x["CEP"][0:5] + "-" + x["CEP"][5:]
+        cidade = x["Cidade"]
+        estado = x["Estado"]
+        volume = x["Volume"]
+        peso = x["Peso"]
+        valor = x["ValorNota"]
+        status_nota = x["StatusNota"]
+        contato = x["Contato"]
+        end_compl = f"{endereco} - {bairro} - CEP: {cep} - {cidade} - {estado}"
+        vol_compl = f"VOLUME: {volume} - PESO: {peso} - VALOR: R$ {valor} - {status_nota} - {contato}"
+        para_compl = f"{end_compl} - {vol_compl}"
+        pdf.setFont("Times-Roman", 7)
+        pdf.drawString(
+            convertemp(12),
+            convertemp(linha),
+            f"NOTA: {numero} - {coleta} - {destinatario}",
+        )
+        if para_compl:
+            para = Paragraph(para_compl, style=styles_claro)
+            para.wrapOn(pdf, convertemp(186), convertemp(297))
+            linha -= para.height * 0.352777
+            para.drawOn(pdf, convertemp(12), convertemp(linha))
+        linha -= 3
+    return linha, pdf
