@@ -249,17 +249,16 @@ def imprime_fatura_pdf(fatura):
         if minutas[index].idVeiculo:
             minuta_placa = minutas[index].idVeiculo
         minuta_valor = minutas[index].Valor
-        pdf.setFont("Times-Roman", 10)
+        pdf.setFont("Times-Roman", 8)
         pdf.setFillColor(HexColor("#FF0000"))
         pdf.drawString(
             convertemp(12), convertemp(linha), "DATA: {}".format(minuta_data)
         )
-        pdf.setFillColor(HexColor("#000000"))
         if romaneio:
             pdf.drawCentredString(
                 convertemp(105),
                 convertemp(linha),
-                f"MINUTA: {minuta_numero} - R: {romaneio}",
+                f"MINUTA: {minuta_numero} - ROMANEIO: {romaneio}",
             )
         else:
             pdf.drawCentredString(
@@ -271,7 +270,8 @@ def imprime_fatura_pdf(fatura):
                 convertemp(linha),
                 "VEÍCULO: {} - {}".format(minuta_veiculo, minuta_placa),
             )
-        linha -= 4
+        linha -= 3
+        pdf.setFillColor(HexColor("#0000FF"))
         pdf.setFont("Times-Roman", 8)
         if minuta_motorista:
             pdf.drawString(
@@ -284,14 +284,15 @@ def imprime_fatura_pdf(fatura):
                 minuta_hora_inicial, minuta_hora_final
             ),
         )
-        pdf.setFont("Times-Roman", 10)
-        pdf.setFillColor(HexColor("#0000FF"))
+        pdf.setFont("Times-Roman", 8)
         pdf.drawRightString(
             convertemp(198),
             convertemp(linha),
             "VALOR: R$ {:.2f}".format(minuta_valor).replace(".", ","),
         )
         pdf.setFillColor(HexColor("#000000"))
+        linha -= 1
+        pdf.line(convertemp(12), convertemp(linha), convertemp(198), convertemp(linha))
         coleta_entrega = None
         if minutas[index].Coleta and minutas[index].Entrega:
             coleta_entrega = "COLETA: {} - ENTREGA: {}".format(
@@ -346,6 +347,7 @@ def imprime_fatura_pdf(fatura):
                     pdf,
                     styles_claro,
                     linha,
+                    fatura_selecionada,
                 )
         else:
             notas_dados = (
@@ -372,34 +374,37 @@ def imprime_fatura_pdf(fatura):
                     pdf,
                     styles_claro,
                     linha,
+                    fatura_selecionada,
                 )
-        notas_perimetro = (
-            MinutaNotas.objects.values("Cidade")
-            .filter(idMinuta=minutas[index].idMinuta)
-            .exclude(Cidade="SÃO PAULO")
-        )
-        cidades = "CIDADE(S):"
-        if notas_perimetro:
-            for itensperimetro in notas_perimetro:
-                cidades = "{} &#x2713 {} ".format(cidades, itensperimetro["Cidade"])
-            para = Paragraph(cidades, style=styles_claro)
-            para.wrapOn(pdf, convertemp(186), convertemp(297))
-            linha -= para.height * 0.352777
-            para.drawOn(pdf, convertemp(12), convertemp(linha))
-        notas_bairro = (
-            MinutaNotas.objects.values("Bairro")
-            .filter(idMinuta=minutas[index].idMinuta)
-            .exclude(Bairro__isnull=True)
-            .exclude(Bairro__exact="")
-        )
-        bairros = "BAIRRO(S):"
-        if notas_bairro:
-            for itensbairro in notas_bairro:
-                bairros = "{} &#x2713 {} ".format(bairros, itensbairro["Bairro"])
-            para = Paragraph(bairros, style=styles_claro)
-            para.wrapOn(pdf, convertemp(186), convertemp(297))
-            linha -= para.height * 0.352777
-            para.drawOn(pdf, convertemp(12), convertemp(linha))
+        # TODO Código abaixo removido a pedido de Mauricio em 11/10/2022 para não mostrar mais
+        #      Bairro e Cidade
+        # notas_perimetro = (
+        #     MinutaNotas.objects.values("Cidade")
+        #     .filter(idMinuta=minutas[index].idMinuta)
+        #     .exclude(Cidade="SÃO PAULO")
+        # )
+        # cidades = "CIDADE(S):"
+        # if notas_perimetro:
+        #     for itensperimetro in notas_perimetro:
+        #         cidades = "{} &#x2713 {} ".format(cidades, itensperimetro["Cidade"])
+        #     para = Paragraph(cidades, style=styles_claro)
+        #     para.wrapOn(pdf, convertemp(186), convertemp(297))
+        #     linha -= para.height * 0.352777
+        #     para.drawOn(pdf, convertemp(12), convertemp(linha))
+        # notas_bairro = (
+        #     MinutaNotas.objects.values("Bairro")
+        #     .filter(idMinuta=minutas[index].idMinuta)
+        #     .exclude(Bairro__isnull=True)
+        #     .exclude(Bairro__exact="")
+        # )
+        # bairros = "BAIRRO(S):"
+        # if notas_bairro:
+        #     for itensbairro in notas_bairro:
+        #         bairros = "{} &#x2713 {} ".format(bairros, itensbairro["Bairro"])
+        #     para = Paragraph(bairros, style=styles_claro)
+        #     para.wrapOn(pdf, convertemp(186), convertemp(297))
+        #     linha -= para.height * 0.352777
+        #     para.drawOn(pdf, convertemp(12), convertemp(linha))
         if totalkm > 0:
             linha -= 3
             pdf.setFont("Times-Roman", 8)
@@ -423,7 +428,7 @@ def imprime_fatura_pdf(fatura):
         linha -= para.height * 0.352777
         para.drawOn(pdf, convertemp(12), convertemp(linha))
         linha -= 1
-        pdf.line(convertemp(12), convertemp(linha), convertemp(198), convertemp(linha))
+        pdf.line(convertemp(10), convertemp(linha), convertemp(200), convertemp(linha))
         linha -= 3.5
         if linha < 50:
             pagina = pdf.getPageNumber()
@@ -454,6 +459,7 @@ def print_notas_da_minuta_paragrafo(
     pdf,
     styles_claro,
     linha,
+    fatura_selecionada,
 ):
     for itensnotas in notas_dados:
         notas_valor = ""
@@ -517,6 +523,14 @@ def print_notas_da_minuta_paragrafo(
     para.wrapOn(pdf, convertemp(186), convertemp(297))
     linha -= para.height * 0.352777
     para.drawOn(pdf, convertemp(12), convertemp(linha))
+    if linha < 25:
+        pagina = pdf.getPageNumber()
+        pdf.drawCentredString(
+            convertemp(105), convertemp(11), "PÁGINA {}".format(pagina)
+        )
+        pdf.showPage()
+        imprime_cabecalho(pdf, fatura_selecionada)
+        linha = 250.8
     return linha, pdf
 
 
@@ -527,12 +541,13 @@ def print_notas_da_minuta_unidade(
     pdf,
     styles_claro,
     linha,
+    fatura_selecionada,
 ):
     styles_claro = ParagraphStyle(
         "claro", fontName="Times-Roman", fontSize=7, leading=7, alignment=TA_JUSTIFY
     )
     linha -= 3
-    for x in notas_dados:
+    for index, x in enumerate(notas_dados):
         if x["LocalColeta"] == "DESTINATÁRIO":
             coleta = "COLETA"
         else:
@@ -563,5 +578,18 @@ def print_notas_da_minuta_unidade(
             para.wrapOn(pdf, convertemp(186), convertemp(297))
             linha -= para.height * 0.352777
             para.drawOn(pdf, convertemp(12), convertemp(linha))
-        linha -= 3
+        if index != len(notas_dados) - 1:
+            linha -= 1
+            pdf.line(
+                convertemp(12), convertemp(linha), convertemp(198), convertemp(linha)
+            )
+            linha -= 3
+        if linha < 25:
+            pagina = pdf.getPageNumber()
+            pdf.drawCentredString(
+                convertemp(105), convertemp(11), "PÁGINA {}".format(pagina)
+            )
+            pdf.showPage()
+            imprime_cabecalho(pdf, fatura_selecionada)
+            linha = 250.8
     return linha, pdf
