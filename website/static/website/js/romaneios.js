@@ -135,13 +135,16 @@ $(document).on('submit', '.js-gera-notas-cliente', function(event) {
         success: function(data) {
             $(".card-form-notas-cliente").html(data.html_form_notas_cliente)
             $(".card-form-notas-cliente").show()
-            $(".card-form-romaneios").html(data.html_form_romaneios)
             $(".card-form-romaneios").show()
             $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente)
             $(".card-lista-notas-cliente").show()
             $(".card-quantidade-notas").html(data.html_quantidade_notas)
             $(".card-quantidade-notas").show()
             $(".box-loader").hide();
+            $(".js-oculta-body-nota").hide()
+            $(".body-nota").hide()
+            $(".js-mostra-body-nota").show()
+            $(".file-body").hide()
             $(window).scrollTop(0)
         },
     });
@@ -285,7 +288,9 @@ $(document).on('submit', '.js-gera-romaneios', function(event) {
         success: function(data) {
             $(".card-lista-romaneios").html(data.html_lista_romaneios)
             $(".card-lista-romaneios").show()
-                //CarregaMask()
+            $(".js-oculta-body-romaneio").hide()
+            $(".body-romaneio").hide()
+            $(".js-mostra-body-romaneio").show()
             $(".box-loader").hide();
         },
     });
@@ -334,6 +339,7 @@ $(document).on('click', '.js-edita-notas-cliente', function() {
             $(".card-form-notas-cliente").html(data.html_form_notas_cliente)
             $(".card-form-notas-cliente").show()
             $(".js-oculta-body-nota").show()
+            $(".body-nota").show()
             $(".file-body").show()
             $(".js-mostra-body-nota").hide()
             $(".card-form-romaneios").html(data.html_form_romaneios)
@@ -404,7 +410,9 @@ $(document).on('click', '.js-edita-romaneio', function() {
             $(".card-form-notas-cliente").show()
             $(".card-form-romaneios").html(data.html_form_romaneios)
             $(".card-form-romaneios").show()
-                // CarregaMask()
+            $(".js-oculta-body-romaneio").show()
+            $(".body-romaneio").show()
+            $(".js-mostra-body-romaneio").hide()
             $(".box-loader").hide();
         },
     });
