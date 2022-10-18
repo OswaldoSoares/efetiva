@@ -142,6 +142,7 @@ $(document).on('submit', '.js-gera-notas-cliente', function(event) {
             $(".card-quantidade-notas").html(data.html_quantidade_notas)
             $(".card-quantidade-notas").show()
             $(".box-loader").hide();
+            $(window).scrollTop(0)
         },
     });
 });
@@ -340,6 +341,7 @@ $(document).on('click', '.js-edita-notas-cliente', function() {
                 // CarregaMask()
             $(".box-loader").hide();
             $('#filtro').val($("#select-status").val())
+            $(window).scrollTop(0)
         },
     });
 });
