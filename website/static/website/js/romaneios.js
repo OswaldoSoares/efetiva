@@ -152,6 +152,7 @@ $(document).on('click', '.js-print-relatorio', function() {
 });
 
 $(document).on('click', '.js-filtro-status', function() {
+    $('#filtro').val($("#select-status").val())
     var _status = $("#select-status").val()
     var id_cliente = $(this).data("idcliente")
     $.ajax({
@@ -331,10 +332,14 @@ $(document).on('click', '.js-edita-notas-cliente', function() {
         success: function(data) {
             $(".card-form-notas-cliente").html(data.html_form_notas_cliente)
             $(".card-form-notas-cliente").show()
+            $(".js-oculta-body-nota").show()
+            $(".file-body").show()
+            $(".js-mostra-body-nota").hide()
             $(".card-form-romaneios").html(data.html_form_romaneios)
             $(".card-form-romaneios").show()
                 // CarregaMask()
             $(".box-loader").hide();
+            $('#filtro').val($("#select-status").val())
         },
     });
 });

@@ -66,9 +66,19 @@ def adiciona_nota_cliente(request):
         nota_form = dict()
     id_cli = request.POST.get("cliente")
     notas = facade.create_contexto_seleciona_notas(id_cli, "NumeroNota")
-    cliente = facade.create_contexto_cliente(id_cli)
     hoje = facade.hoje
-    contexto = {"notas": notas, "cliente": cliente, "hoje": hoje, "idcliente": id_cli}
+    filtro_status = request.POST.get("filtro")
+    if filtro_status:
+        contexto = facade.create_contexto_filtro_notas_status(
+            id_cli, filtro_status, "NumeroNota"
+        )
+    else:
+        cliente = facade.create_contexto_cliente(id_cli)
+        contexto = {
+            "notas": notas,
+            "cliente": cliente,
+        }
+    contexto.update({"hoje": hoje, "idcliente": id_cli})
     contexto.update({"nota_form": nota_form, "error": error})
     contexto.update(msg)
     quantidade_notas = facade.create_contexto_quantidades_status()

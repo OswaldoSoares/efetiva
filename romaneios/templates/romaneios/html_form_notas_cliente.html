@@ -1,5 +1,6 @@
 <form class="js-gera-notas-cliente" method="post" action="">
     {% csrf_token %}
+    <input type="hidden" id="filtro" name="filtro" value="">
     <div class="article-card-titulo">
         <i class="bi bi-plus-circle i-button js-mostra-body-nota"></i>
         <i class="bi bi-dash-circle i-button js-oculta-body-nota"></i>

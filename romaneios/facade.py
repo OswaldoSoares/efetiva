@@ -245,7 +245,7 @@ def html_lista_ocorrencia(request, contexto, data):
 
 def html_lista_notas_cliente(request, contexto, data):
     data["html_lista_notas_cliente"] = render_to_string(
-        "romaneios/html_lista_notas_cliente.html", contexto, request=request
+        "romaneios/html_lista_notas_cliente_reduzida.html", contexto, request=request
     )
     return data
 
