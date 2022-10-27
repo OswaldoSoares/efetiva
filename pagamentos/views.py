@@ -138,8 +138,8 @@ def exclui_contrachequeitensvale(request):
 
 
 def seleciona_periodo(request):
-    c_datainicial = request.POST.get("DataInicial")
-    c_datafinal = request.POST.get("DataFinal")
+    c_datainicial = request.GET.get("DataInicial")
+    c_datafinal = request.GET.get("DataFinal")
     data = facade.seleciona_saldoavulso(c_datainicial, c_datafinal)
     return data
 
@@ -250,6 +250,7 @@ def imprime_recibo(request):
 
 
 # TODO EXCLUIR FUNÇÕES ACIMA NÃO UTILIZADAS
+# Utilizavel 21/10/2022
 def seleciona_mes_ano(request):
     _mes_ano = request.GET.get("mes_ano")
     contexto = facade.create_contexto_folha(_mes_ano)
@@ -257,6 +258,7 @@ def seleciona_mes_ano(request):
     return data
 
 
+# Utilizavel 21/10/2022
 def seleciona_funcionario(request):
     _mes_ano = request.GET.get("mes_ano")
     _id_pes = request.GET.get("idpessoal")
@@ -265,6 +267,7 @@ def seleciona_funcionario(request):
     return data
 
 
+# Utilizavel 21/10/2022
 def ausencia_falta(request):
     _mes_ano = request.GET.get("mes_ano")
     _id_pes = request.GET.get("idpessoal")
@@ -276,6 +279,7 @@ def ausencia_falta(request):
     return data
 
 
+# Utilizavel 21/10/2022
 def altera_horario_cartao_ponto(request):
     _mes_ano = request.GET.get("mes_ano")
     _id_cp = request.GET.get("idcartaoponto")
@@ -292,6 +296,7 @@ def altera_horario_cartao_ponto(request):
     return data
 
 
+# Utilizavel 21/10/2022
 def atestada(request):
     _mes_ano = request.GET.get("mes_ano")
     _id_pes = request.GET.get("idpessoal")
@@ -303,6 +308,7 @@ def atestada(request):
     return data
 
 
+# Utilizavel 21/10/2022
 def carro_empresa(request):
     _mes_ano = request.GET.get("mes_ano")
     _id_pes = request.GET.get("idpessoal")
@@ -327,6 +333,7 @@ def adiantamento(request):
     return data
 
 
+# Utilizavel 21/10/2022
 def adiantamento_automatico(request):
     _mes_ano = request.GET.get("mes_ano")
     facade.adiantamento_automatico(_mes_ano)
@@ -335,6 +342,7 @@ def adiantamento_automatico(request):
     return data
 
 
+# Utilizavel 21/10/2022
 def adiciona_contra_cheque_itens(request):
     _descricao = request.POST.get("descricao")
     _valor = request.POST.get("valor")
@@ -349,6 +357,7 @@ def adiciona_contra_cheque_itens(request):
     return data
 
 
+# Utilizavel 21/10/2022
 def remove_contra_cheque_itens(request):
     _id_cci = request.GET.get("idcontrachequeitens")
     facade.delete_contra_cheque_itens(_id_cci)
@@ -360,6 +369,7 @@ def remove_contra_cheque_itens(request):
     return data
 
 
+# Utilizavel 21/10/2022
 def adiciona_vales(request):
     _descricao = request.POST.get("descricao")
     _data = request.POST.get("data")
@@ -397,6 +407,7 @@ def remove_vales(request):
     return data
 
 
+# Utilizavel 21/10/2022
 def print_contra_cheque_adiantamento(request):
     _id_cc = request.GET.get("idcc")
     contexto = facade.imprime_contra_cheque_pagamento(_id_cc, "adian")
@@ -404,6 +415,7 @@ def print_contra_cheque_adiantamento(request):
     return response
 
 
+# Utilizavel 21/10/2022
 def print_contra_cheque_pagamento(request):
     _id_cc = request.GET.get("idcc")
     contexto = facade.imprime_contra_cheque_pagamento(_id_cc, "paga")
@@ -411,6 +423,7 @@ def print_contra_cheque_pagamento(request):
     return response
 
 
+# Utilizavel 21/10/2022
 def print_contra_cheque_transporte(request):
     _id_cc = request.GET.get("idcc")
     contexto = facade.imprime_contra_cheque_pagamento(_id_cc, "transp")
@@ -418,6 +431,7 @@ def print_contra_cheque_transporte(request):
     return response
 
 
+# Utilizavel 21/10/2022
 def salva_file(request):
     _mes_ano = request.POST.get("mes_ano")
     _id_pes = request.POST.get("idpessoal")
@@ -444,6 +458,7 @@ def delete_file(request):
     return data
 
 
+# Utilizavel 21/10/2022
 def adiciona_agenda(request):
     _descricao = request.POST.get("descricao")
     _data = request.POST.get("data")

@@ -61,7 +61,11 @@ urlpatterns = [
         edita_cartaoponto,
         name="editacartaoponto",
     ),
-    path("selecionaperiodo", seleciona_periodo, name="selecionaperiodo"),
+    path(
+        "seleciona_periodo",
+        seleciona_periodo,
+        name="seleciona_periodo",
+    ),
     path("selecionasaldoavulso", seleciona_saldoavulso, name="selecionasaldoavulso"),
     path("criapagamento", cria_pagamento, name="criapagamento"),
     path("criavale", cria_vale, name="criavale"),

@@ -1,31 +1,61 @@
-// TODO Remove função - Folha Antiga
 $(document).ready(function() {
-    window.MesReferencia = "";
-    window.AnoReferencia = "";
-    window.idpessoal = "";
-    $(".down-folha").hide();
-    $(".down-avulso").hide();
-    $('[data-toggle="tooltip"]').tooltip();
-    // TODO Mantem para Folha Nova
     tamanhoCardBody();
 });
 
-// TODO Remove função - Folha Antiga
-$(document).on("change", "#id_MesReferencia", function(event) {
-    $(".fp-base").html("");
-    $(".fp-contrachequeitens").html("");
-    $(".fp-adiantamento").html("");
-    $(".fp-adiantamento").hide();
+// Seleciona mês e ano para pagamento de colaboradores mensalistas
+$(document).on("click", ".js-seleciona-mes-ano", function(event) {
+    v_mes_ano = $(".select-mes-ano option:selected").text();
+    $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: "/pagamentos/seleciona_mes_ano",
+        data: {
+            mes_ano: v_mes_ano,
+        },
+        beforeSend: function() {
+            $('.box-loader').show()
+        },
+        success: function(data) {
+            $(".js-folha").html(data.html_folha);
+            $(".js-saldo").html(data.html_saldo);
+            $(".js-adiantamento").html(data.html_adiantamento);
+            $('.box-loader').hide()
+        },
+    });
 });
 
-// TODO Remove função - Folha Antiga
-$(document).on("change", "#id_AnoReferencia", function(event) {
-    $(".fp-base").html("");
-    $(".fp-contrachequeitens").html("");
-    $(".fp-adiantamento").html("");
-    $(".fp-adiantamento").hide();
+// Seleciona funcionário mensalista
+$(document).on("click", ".js-seleciona-funcionario", function(event) {
+    v_mes_ano = $(".select-mes-ano option:selected").text();
+    v_idpessoal = $(this).data("idpessoal");
+    $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: "/pagamentos/seleciona_funcionario",
+        data: {
+            mes_ano: v_mes_ano,
+            idpessoal: v_idpessoal,
+        },
+        beforeSend: function() {
+            $('.box-loader').show();
+        },
+        success: function(data) {
+            $(".js-funcionario-pagamento").html(data.html_funcionario);
+            $(".js-cartao-ponto").html(data.html_cartao_ponto);
+            $(".js-itens-contra-cheque").html(data.html_itens_contra_cheque);
+            $(".js-contra-cheque").html(data.html_contra_cheque);
+            $(".js-cria-vales").html(data.html_vales);
+            $(".js-adiantamento").html(data.html_adiantamento);
+            $(".js-minutas-pagamento").html(data.html_minutas);
+            $(".js-lista-vales").html(data.html_vales_pagamento);
+            $(".js-files-pagamento").html(data.html_files_pagamento);
+            $(".js-agenda-pagamento").html(data.html_agenda_pagamento);
+            $(".js-itens-agenda-pagamento").html(data.html_itens_agenda_pagamento);
+            $('.box-loader').hide();
+            tamanhoCardBody();
+        },
+    });
 });
-
 
 var maxHeight = 0;
 var topPosition = 0;
@@ -96,26 +126,7 @@ var tamanhoCardBody = function() {
     }
 }
 
-$(document).on("click", ".js-seleciona-mes-ano", function(event) {
-    v_mes_ano = $(".select-mes-ano option:selected").text();
-    $.ajax({
-        type: "GET",
-        dataType: "json",
-        url: "/pagamentos/seleciona_mes_ano",
-        data: {
-            mes_ano: v_mes_ano,
-        },
-        beforeSend: function() {
-            $('.box-loader').show()
-        },
-        success: function(data) {
-            $(".js-folha").html(data.html_folha);
-            $(".js-saldo").html(data.html_saldo);
-            $(".js-adiantamento").html(data.html_adiantamento);
-            $('.box-loader').hide()
-        },
-    });
-});
+
 
 $(document).on("change", ".select-mes-ano", function(event) {
     $(".js-folha").html('');
@@ -133,37 +144,7 @@ $(document).on("change", ".select-mes-ano", function(event) {
     $(".js-itens-agenda-pagamento").html('');
 });
 
-$(document).on("click", ".js-seleciona-funcionario", function(event) {
-    v_mes_ano = $(".select-mes-ano option:selected").text();
-    v_idpessoal = $(this).data("idpessoal");
-    $.ajax({
-        type: "GET",
-        dataType: "json",
-        url: "/pagamentos/seleciona_funcionario",
-        data: {
-            mes_ano: v_mes_ano,
-            idpessoal: v_idpessoal,
-        },
-        beforeSend: function() {
-            $('.box-loader').show();
-        },
-        success: function(data) {
-            $(".js-funcionario-pagamento").html(data.html_funcionario);
-            $(".js-cartao-ponto").html(data.html_cartao_ponto);
-            $(".js-itens-contra-cheque").html(data.html_itens_contra_cheque);
-            $(".js-contra-cheque").html(data.html_contra_cheque);
-            $(".js-cria-vales").html(data.html_vales);
-            $(".js-adiantamento").html(data.html_adiantamento);
-            $(".js-minutas-pagamento").html(data.html_minutas);
-            $(".js-lista-vales").html(data.html_vales_pagamento);
-            $(".js-files-pagamento").html(data.html_files_pagamento);
-            $(".js-agenda-pagamento").html(data.html_agenda_pagamento);
-            $(".js-itens-agenda-pagamento").html(data.html_itens_agenda_pagamento);
-            $('.box-loader').hide();
-            tamanhoCardBody();
-        },
-    });
-});
+
 
 $(document).on("click", ".js-altera-falta", function(event) {
     var v_mes_ano = $(".select-mes-ano option:selected").text();
@@ -569,114 +550,27 @@ $(document).on('click', '.js-delete-file', function() {
     });
 });
 
-// TODO Excluir daqui para baixo após terminar refatoração
-$(document).on("change", ".switchmini", function(event) {
-    var idpessoalconcatenado = "#vale_" + $(this).attr("idpessoal");
-    if ($(this).attr("tipopgto") == "mensalista") {
-        if ($(this).is(":checked")) {
-            var url = "criacontrachequeitensvale";
-        } else {
-            var url = "excluicontrachequeitensvale";
-        }
-        var idpessoal = $(this).attr("idpessoal");
-        var idvales = $(this).attr("idvales");
-        var idcontracheque = $(this).attr("idcontracheque");
-        var mesreferencia = window.MesReferencia;
-        var anoreferencia = window.AnoReferencia;
-        var estado_switchmini = estadoswitchmini(idpessoal);
-        $.ajax({
-            type: "GET",
-            dateType: "json",
-            url: url,
-            data: {
-                idPessoal: idpessoal,
-                idVales: idvales,
-                idContraCheque: idcontracheque,
-                MesReferencia: mesreferencia,
-                AnoReferencia: anoreferencia,
-                EstadoSwitchMini: estado_switchmini,
-            },
-            success: function(data) {
-                $(".fp-base").html(data.html_folha);
-                $(".fp-contracheque").html(data.html_contracheque);
-                $(".fp-minutas").html(data.html_minutascontracheque);
-                $(".fp-vales").html(data.html_vales);
-                $(".fp-contrachequeitens").html(data.html_formccitens);
-                if (data.html_adiantamento == true) {
-                    $(".fp-adiantamento").hide();
-                } else {
-                    $(".fp-adiantamento").show();
-                }
-                $(".fp-adiantamento").html(data.html_formccadianta);
-                $(".fp-contracheque").html(data.html_contracheque);
-                $(".fp-cartaoponto").html(data.html_cartaoponto);
-            },
-        });
-    }
-    valeselect(idpessoalconcatenado);
-    somavales();
-});
 
-// $(document).on("submit", "#form-seleciona-folha", function(event) {
-//     event.preventDefault();
-//     var url = $(this).attr("action") || action;
-//     window.MesReferencia = $("#id_MesReferencia").val();
-//     window.AnoReferencia = $("#id_AnoReferencia").val();
-//     $.ajax({
-//         type: $(this).attr("method"),
-//         url: url,
-//         data: $(this).serialize(),
-//         success: function(data) {
-//             $(".fp-base").html(data.html_folha);
-//             $(".fp-contrachequeitens").html("");
-//             $(".fp-adiantamento").hide();
-//         },
-//         error: function(error) {
-//             console.log(error);
-//         },
-//     });
-// });
-
-// $(document).on("submit", ".form-cria-contrachequeitens", function(event) {
-//     event.preventDefault();
-//     var url = $(this).attr("action") || action;
-//     $.ajax({
-//         type: $(this).attr("method"),
-//         url: url,
-//         data: $(this).serialize(),
-//         success: function(data) {
-//             $(".fp-base").html(data.html_folha);
-//             $(".fp-minutas").html(data.html_minutascontracheque);
-//             $(".fp-vales").html(data.html_vales);
-//             $(".fp-contrachequeitens").html(data.html_formccitens);
-//             $(".fp-adiantamento").html(data.html_formccadianta);
-//             if (data.html_adiantamento == true) {
-//                 $(".fp-adiantamento").hide();
-//             }
-//             $(".fp-contracheque").html(data.html_contracheque);
-//             $(".fp-cartaoponto").html(data.html_cartaoponto);
-//         },
-//         error: function(error) {
-//             console.log(error);
-//         },
-//     });
-// });
-
-$(document).on("submit", "#form-seleciona-periodo", function(event) {
-    event.preventDefault();
-    var url = $(this).attr("action") || action;
+// Seleciona periodo de pagamento para colaboradores avulso
+$(document).on("click", ".js-periodo-avulso", function(event) {
+    var _data_inicial = $("#id_DataInicial").val()
+    var _data_final = $("#id_DataFinal").val()
     $.ajax({
-        type: $(this).attr("method"),
-        url: url,
-        data: $(this).serialize(),
+        type: "GET",
+        dataType: "JSON",
+        url: '/pagamentos/seleciona_periodo',
+        data: {
+            DataInicial: _data_inicial,
+            DataFinal: _data_final,
+        },
         beforeSend: function() {},
         success: function(data) {
-            /*  $(".pa-saldo").html("");*/
-            $(".pa-saldo-minutas").html(data.html_saldoavulso);
+            console.log(data.html_saldoavulso);
+            $(".card-saldo-avulso").html(data.html_saldoavulso);
         },
         error: function(error) {
             console.log(error);
-        },
+        }
     });
 });
 
@@ -700,125 +594,6 @@ $(document).on("submit", "#form-vale", function(event) {
         },
     });
 });
-
-// $(document).on("click", ".selecionar-contracheque", function(event) {
-//     var url = $(this).attr("data-url");
-//     var mesreferencia = window.MesReferencia;
-//     var anoreferencia = window.AnoReferencia;
-//     var idpessoal = $(this).attr("idpessoal");
-//     window.idPessoal = $(this).attr("idpessoal");
-//     $.ajax({
-//         type: "GET",
-//         dataType: "json",
-//         url: url,
-//         data: {
-//             MesReferencia: mesreferencia,
-//             AnoReferencia: anoreferencia,
-//             idPessoal: idpessoal,
-//         },
-//         success: function(data) {
-//             $(".fp-minutas").html(data.html_minutascontracheque);
-//             $(".fp-vales").html(data.html_vales);
-//             $(".fp-contrachequeitens").html(data.html_formccitens);
-//             if (data.html_adiantamento == true) {
-//                 $(".fp-adiantamento").hide();
-//             } else {
-//                 $(".fp-adiantamento").show();
-//             }
-//             $(".fp-adiantamento").html(data.html_formccadianta);
-//             $(".fp-contracheque").html(data.html_contracheque);
-//             $(".fp-cartaoponto").html(data.html_cartaoponto);
-//         },
-//         error: function(error) {
-//             console.log(error);
-//         },
-//     });
-// });
-
-// $(document).on("click", ".remove-item", function(event) {
-//     var url = $(this).attr("data-url");
-//     var idcontracheque = $(this).attr("idcontracheque");
-//     var descricao = $(this).attr("descricao");
-//     var registro = $(this).attr("registro");
-//     var mesreferencia = window.MesReferencia;
-//     var anoreferencia = window.AnoReferencia;
-//     var idpessoal = $(this).attr("idpessoal");
-//     $.ajax({
-//         type: "GET",
-//         dataType: "json",
-//         url: url,
-//         data: {
-//             idContraCheque: idcontracheque,
-//             Descricao: descricao,
-//             Registro: registro,
-//             MesReferencia: mesreferencia,
-//             AnoReferencia: anoreferencia,
-//             idPessoal: idpessoal,
-//         },
-//         success: function(data) {
-//             $(".fp-base").html(data.html_folha);
-//             $(".fp-contracheque").html("");
-//             $(".fp-contracheque").html(data.html_contracheque);
-//             $(".fp-cartaoponto").html("");
-//             $(".fp-cartaoponto").html(data.html_cartaoponto);
-//             $(".fp-contrachequeitens").html("");
-//             $(".fp-contrachequeitens").html(data.html_formccitens);
-//             $(".fp-adiantamento").html("");
-//             $(".fp-adiantamento").html(data.html_formccadianta);
-//             $(".fp-minutas").html("");
-//             $(".fp-minutas").html(data.html_minutascontracheque);
-//             $(".fp-vales").html("");
-//             $(".fp-vales").html(data.html_vales);
-//             if (data.html_adiantamento == true) {
-//                 $(".fp-adiantamento").hide();
-//             }
-//         },
-//         error: function(error) {
-//             console.log(error);
-//         },
-//     });
-// });
-
-// $(document).on("click", ".remove-vale", function(event) {
-//     var url = $(this).attr("data-url");
-//     var idvales = $(this).attr("idvales");
-//     var mesreferencia = window.MesReferencias;
-//     var anoreferencia = window.AnoReferencia;
-//     var idpessoal = window.idPessoal;
-
-//     $.ajax({
-//         type: "GET",
-//         dataType: "json",
-//         url: url,
-//         data: {
-//             idVales: idvales,
-//             MesReferencia: mesreferencia,
-//             AnoReferencia: anoreferencia,
-//             idPessoal: idpessoal,
-//         },
-//         success: function(data) {
-//             $(".fp-base").html(data.html_folha);
-//             $(".fp-contracheque").html("");
-//             $(".fp-contracheque").html(data.html_contracheque);
-//             $(".fp-cartaoponto").html("");
-//             $(".fp-cartaoponto").html(data.html_cartaoponto);
-//             $(".fp-contrachequeitens").html("");
-//             $(".fp-contrachequeitens").html(data.html_formccitens);
-//             $(".fp-adiantamento").html("");
-//             $(".fp-adiantamento").html(data.html_formccadianta);
-//             $(".fp-minutas").html("");
-//             $(".fp-minutas").html(data.html_minutascontracheque);
-//             $(".fp-vales").html("");
-//             $(".fp-vales").html(data.html_vales);
-//             if (data.html_adiantamento == true) {
-//                 $(".fp-adiantamento").hide();
-//             }
-//         },
-//         error: function(error) {
-//             console.log(error);
-//         },
-//     });
-// });
 
 $(document).on("click", ".estorna-recibo", function(event) {
     var url = $(this).attr("data-url");
@@ -851,32 +626,6 @@ $(document).on("click", ".estorna-recibo", function(event) {
     });
 });
 
-// $(document).on("click", "#gerar-folha", function(event) {
-//     var url = $(this).attr("data-url");
-//     var mesreferencia = $(this).attr("mesreferencia");
-//     var anoreferencia = $(this).attr("anoreferencia");
-//     $.ajax({
-//         type: "GET",
-//         dataType: "json",
-//         url: url,
-//         data: {
-//             MesReferencia: mesreferencia,
-//             AnoReferencia: anoreferencia,
-//         },
-//         beforeSend: function() {
-//             $(".fp-base").html("");
-//             $(".fp-adiantamento").hide();
-//         },
-//         success: function(data) {
-//             $(".fp-base").html(data.html_folha);
-//             $(".fp-adiantamento").hide();
-//         },
-//         error: function(error) {
-//             console.log(error);
-//         },
-//     });
-// });
-
 $(document).on("click", "#gerar-pagamento", function(event) {
     var url = $(this).attr("data-url");
     var idpessoal = $(this).attr("idpessoal");
@@ -907,44 +656,6 @@ $(document).on("click", "#gerar-pagamento", function(event) {
     });
 });
 
-// $(document).on("click", ".altera-falta", function(event) {
-//     var url = $(this).attr("data-url");
-//     var mesreferencia = $(this).attr("mesreferencia");
-//     var anoreferencia = $(this).attr("anoreferencia");
-//     var idpessoal = $(this).attr("idpessoal");
-//     var idcartaoponto = $(this).attr("idcartaoponto");
-//     $.ajax({
-//         type: "GET",
-//         dataType: "json",
-//         url: url,
-//         data: {
-//             MesReferencia: mesreferencia,
-//             AnoReferencia: anoreferencia,
-//             idPessoal: idpessoal,
-//             idCartaoPonto: idcartaoponto,
-//         },
-//         success: function(data) {
-//             $(".fp-base").html(data.html_folha);
-//             $(".fp-contracheque").html("");
-//             $(".fp-contracheque").html(data.html_contracheque);
-//             $(".fp-cartaoponto").html("");
-//             $(".fp-cartaoponto").html(data.html_cartaoponto);
-//             $(".fp-adiantamento").html("");
-//             $(".fp-adiantamento").html(data.html_formccadianta);
-//             $(".fp-minutas").html("");
-//             $(".fp-minutas").html(data.html_minutascontracheque);
-//             $(".fp-vales").html("");
-//             $(".fp-vales").html(data.html_vales);
-//             if (data.html_adiantamento == true) {
-//                 $(".fp-adiantamento").hide();
-//             }
-//         },
-//         error: function(error, data) {
-//             console.log(error);
-//         },
-//     });
-// });
-
 $(document).on("click", ".selecionar-saldoavulso", function(event) {
     var url = $(this).attr("data-url");
     var datainicial = $(this).attr("datainicial");
@@ -972,29 +683,6 @@ $(document).on("click", ".selecionar-saldoavulso", function(event) {
     });
 });
 
-// $(".div-fade-folha").click(function() {
-//     if ($("#fp-main").is(":hidden")) {
-//         $("#fp-main").slideDown("fast");
-//         $(".up-folha").show();
-//         $(".down-folha").hide();
-//     } else {
-//         $(".up-folha").hide();
-//         $(".down-folha").show();
-//         $("#fp-main").slideUp("fast");
-//     }
-// });
-
-$(".div-fade-avulso").click(function() {
-    if ($("#pa-main").is(":hidden")) {
-        $("#pa-main").slideDown("fast");
-        $(".up-avulso").show();
-        $(".down-avulso").hide();
-    } else {
-        $(".up-avulso").hide();
-        $(".down-avulso").show();
-        $("#pa-main").slideUp("fast");
-    }
-});
 
 function openMyModal(event) {
     var modal = initModalDialog(event, "#MyModal");

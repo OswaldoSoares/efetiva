@@ -1,6 +1,7 @@
 import calendar
 import datetime
 from decimal import Decimal
+from tkinter import Pack
 
 from dateutil.relativedelta import relativedelta
 from despesas.models import Multas
@@ -1357,7 +1358,6 @@ def busca_item_contra_cheque(v_id: int, v_des: str):
 
 def create_context_formcontracheque():
     formcontracheque = CadastraContraCheque()
-
     contexto = {"formcontracheque": formcontracheque}
     return contexto
 
@@ -1383,6 +1383,89 @@ def get_periodo_pagamento_avulsos():
     return periodo
 
 
+def create_contexto_avulsos_a_receber(datainicial, datafinal):
+    print(datainicial)
+    print(datafinal)
+    saldo = []
+    saldo_total = 0
+    saldo_vales = 0
+    total_select = 0
+    avulsos = (
+        MinutaColaboradores.objects.filter(Pago=False)
+        .exclude(idPessoal__TipoPgto="MENSALISTA")
+        .values("idPessoal__Nome")
+        .distinct()
+        .order_by("idPessoal")
+    )
+    for colaboradores in avulsos:
+        colaborador = MinutaColaboradores.objects.filter(
+            idPessoal__Nome=colaboradores["idPessoal__Nome"], Pago=False
+        ).exclude(idMinuta__StatusMinuta="ABERTA")
+        saldo_colaborador = 0
+        for itens in colaborador:
+            if itens.Cargo == "AJUDANTE":
+                base_valor = ExpressionWrapper(
+                    F("Valor") / F("Quantidade"), output_field=DecimalField()
+                )
+                ajudante = MinutaItens.objects.values(ValorAjudante=base_valor).filter(
+                    TipoItens="PAGA",
+                    idMinuta=itens.idMinuta,
+                    Descricao="AJUDANTE",
+                    idMinuta_id__DataMinuta__range=[datainicial, datafinal],
+                )
+                if ajudante:
+                    saldo_colaborador += ajudante[0]["ValorAjudante"]
+                    saldo_total += ajudante[0]["ValorAjudante"]
+            elif itens.Cargo == "MOTORISTA":
+                motorista = (
+                    MinutaItens.objects.filter(
+                        TipoItens="PAGA",
+                        idMinuta=itens.idMinuta,
+                        idMinuta_id__DataMinuta__range=[datainicial, datafinal],
+                    )
+                    .exclude(Descricao="AJUDANTE")
+                    .aggregate(ValorMotorista=Sum("Valor"))
+                )
+                if motorista["ValorMotorista"]:
+                    saldo_colaborador += motorista["ValorMotorista"]
+                    saldo_total += motorista["ValorMotorista"]
+        total_vales = calcula_total_vales(colaborador[0].idPessoal_id)
+        if not total_vales:
+            total_vales = 0
+            saldo_vales += total_vales
+        dict_vale, saldo_vales_select = get_vales_select(colaborador[0].idPessoal_id, 0)
+        total_select += saldo_vales_select
+        # " Colocar aqui condição para mostrar apenas colaboradores com saldo ou vale"
+        # if saldo_colaborador > 0 or saldo_vales > 0:
+        saldo.append(
+            {
+                "Nome": colaboradores["idPessoal__Nome"],
+                "idPessoal": colaborador[0].idPessoal_id,
+                "Saldo": f"{saldo_colaborador}",
+                "ValeSelect": saldo_vales_select,
+                "ValeTotal": total_vales,
+            }
+        )
+    return saldo, saldo_total, saldo_vales, total_select
+
+    # lista_geral = []
+    # for x in colaboradores:
+    #     pgtos = MinutaColaboradores.objects.filter(
+    #         Pago=False, idPessoal__Nome=x["idPessoal__Nome"]
+    #     )
+    #     lista = [
+    #         {
+    #             "idminutacolaboradores": y.idMinutaColaboradores,
+    #             "cargo": y.Cargo,
+    #             "idMinuta": y.idMinuta,
+    #         }
+    #         for y in pgtos
+    #     ]
+    #     lista_geral.append({x["idPessoal__Nome"]: lista})
+    # return lista_geral
+
+
+# TODO Remover está função 25/10/2022
 def get_saldo_pagamento_avulso(datainicial, datafinal):
     saldo = []
     avulsos = list_avulsos_ativo()
@@ -2738,9 +2821,10 @@ def html_saldo_avulso(datainicial, datafinal):
     :param datafinal:
     :return: render_to_string através da variável c_return
     """
-    saldo, saldototal, saldovales, totalselect = get_saldo_pagamento_avulso(
+    saldo, saldototal, saldovales, totalselect = create_contexto_avulsos_a_receber(
         datainicial, datafinal
     )
+    print(saldo)
     context = {
         "saldo": saldo,
         "saldototal": saldototal,

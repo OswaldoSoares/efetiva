@@ -4530,7 +4530,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 
 .div-cinco {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
 }
@@ -4638,6 +4638,69 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-saldo-pagamento .article-card-footer {
+    color: var(--color6);
+    font-size: 14px;
+}
+
+.card-periodo-avulso {
+    width: 400px;
+}
+
+.card-periodo-avulso .item-periodo {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-periodo-avulso .item-periodo .item-data {
+    width: 44%;
+    padding: 5px 5px 10px 5px;
+}
+
+.card-periodo-avulso .item-periodo .button-save {
+    width: 12%;
+    padding: 5px 5px 10px 5px;
+    font-size: 26px;
+    text-align: center;
+}
+
+.card-periodo-avulso .item-periodo .button-save button {
+    background-color: var(--color2);
+    border: none;
+}
+
+.card-saldo-avulso {
+    width: 400px;
+}
+
+.card-saldo-avulso .itens-saldo-avulso {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    color: var(--color6);
+}
+
+.card-saldo-avulso .itens-saldo-avulso .item-nome {
+    width: 50%;
+    text-align: left;
+    padding-left: 5px;
+}
+
+.card-saldo-avulso .itens-saldo-avulso .item-valor {
+    width: 40%;
+    text-align: right;
+}
+
+.card-saldo-avulso .itens-saldo-avulso .item-button {
+    width: 10%;
+    text-align: center;
+}
+
+.card-saldo-avulso .article-card-footer {
     color: var(--color6);
     font-size: 14px;
 }
