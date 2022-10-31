@@ -12,7 +12,7 @@
             <span>R$ {{ itens.Saldo|floatformat:2 }}</span>
         </div>
         <div class="item-button">
-            <i class="bi bi-folder-symlink i-button js-saldo-avulso"
+            <i class="bi bi-folder-symlink i-button js-seleciona-avulso"
             data-url="{% url 'selecionasaldoavulso' %}"
             datainicial="{{ datainicial }}" datafinal="{{ datafinal }}"
             idpessoal="{{ itens.idPessoal }}"></i>
@@ -24,7 +24,7 @@
     <div class="itens-saldo-avulso">
         <div class="item-nome">Total</div>
         <div class="item-valor">
-            <span>R$ {{ saldototal|intcomma }}</span>
+            <span>R$ {{ saldototal|floatformat:2 }}</span>
         </div>
         <div class="item-button"></div>
     </div>

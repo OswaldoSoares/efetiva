@@ -1,18 +1,16 @@
 <div class="article-card-titulo">
     <span>PERÍODO DE PAGAMENTO AVULSOS</span>
 </div>
-<div class="article-card-body js-periodo-avulso">
+<div class="article-card-body">
     <div class="item-periodo">
         <div class="item-data">
-            <input type="date" class="form-control" name="DataInicial"
-            value="{{ periodo.DataInicial }}" id="id_DataInicial">
+            <input type="date" class="form-control" name="DataInicial" value="{{ periodo.DataInicial }}" id="id_DataInicial">
         </div>
         <div class="item-data">
-            <input type="date" class="form-control" name="DataFinal"
-            value="{{ periodo.DataFinal }}" id="id_DataFinal">
+            <input type="date" class="form-control" name="DataFinal" value="{{ periodo.DataFinal }}" id="id_DataFinal">
         </div>
         <div class="button-save">
-            <i class="bi bi-clipboard-check i-button"></i>
+            <i class="bi bi-clipboard-check i-button js-periodo-avulso"></i>
         </div>
     </div>
 </div>
