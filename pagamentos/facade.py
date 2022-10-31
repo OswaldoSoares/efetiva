@@ -1384,8 +1384,6 @@ def get_periodo_pagamento_avulsos():
 
 
 def create_contexto_avulsos_a_receber(datainicial, datafinal):
-    print(datainicial)
-    print(datafinal)
     saldo = []
     saldo_total = 0
     saldo_vales = 0
@@ -1436,16 +1434,16 @@ def create_contexto_avulsos_a_receber(datainicial, datafinal):
         dict_vale, saldo_vales_select = get_vales_select(colaborador[0].idPessoal_id, 0)
         total_select += saldo_vales_select
         # " Colocar aqui condição para mostrar apenas colaboradores com saldo ou vale"
-        # if saldo_colaborador > 0 or saldo_vales > 0:
-        saldo.append(
-            {
-                "Nome": colaboradores["idPessoal__Nome"],
-                "idPessoal": colaborador[0].idPessoal_id,
-                "Saldo": f"{saldo_colaborador}",
-                "ValeSelect": saldo_vales_select,
-                "ValeTotal": total_vales,
-            }
-        )
+        if saldo_colaborador > 0:
+            saldo.append(
+                {
+                    "Nome": colaboradores["idPessoal__Nome"],
+                    "idPessoal": colaborador[0].idPessoal_id,
+                    "Saldo": f"{saldo_colaborador}",
+                    "ValeSelect": saldo_vales_select,
+                    "ValeTotal": total_vales,
+                }
+            )
     return saldo, saldo_total, saldo_vales, total_select
 
     # lista_geral = []
@@ -2843,7 +2841,6 @@ def html_saldo_avulso(datainicial, datafinal):
     saldo, saldototal, saldovales, totalselect = create_contexto_avulsos_a_receber(
         datainicial, datafinal
     )
-    print(saldo)
     context = {
         "saldo": saldo,
         "saldototal": saldototal,

@@ -373,6 +373,7 @@ def seleciona_periodo(request):
     return data
 
 
+# Seleciona colaborador avulso a pagar
 def seleciona_saldoavulso(request):
     c_datainicial = request.GET.get("DataInicial")
     c_datafinal = request.GET.get("DataFinal")
