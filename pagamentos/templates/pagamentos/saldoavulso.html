@@ -6,7 +6,8 @@
     {% for itens in saldo %}
     <div class="itens-saldo-avulso">
         <div class="item-nome">
-            <span>{{ itens.Nome_Curto }}</span>
+            <span data-tooltip="{{ itens.Nome }}"
+            data-tooltip-position="right">{{ itens.Nome_Curto }}</span>
         </div>
         <div class="item-valor">
             <span>R$ {{ itens.Saldo|floatformat:2 }}</span>
