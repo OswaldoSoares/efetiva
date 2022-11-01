@@ -1,5 +1,12 @@
 $(document).ready(function() {
     tamanhoCardBody();
+    $(".div-um").show()
+    $(".div-dois").hide()
+    $(".div-tres").hide()
+    $(".div-quatro").hide()
+    $(".div-cinco").show()
+    $(".div-seis").hide()
+    $(".div-sete").hide()
 });
 
 // Seleciona mês e ano para pagamento de colaboradores mensalistas
@@ -124,6 +131,26 @@ var tamanhoCardBody = function() {
         $('.js-body-cria-vales').height(maior - cva_top)
         $('.js-body-agenda-pagamento').height(maior - age_top)
     }
+}
+
+var tamanho_body_saldo_avulso;
+
+var tamanhoCardBodyAvulso = function() {
+    tamanho_body_saldo_avulso = $('.js-body-saldo-avulso').height()
+    var saldo_avulso_top = $('.js-body-saldo-avulso').position().top
+    var saldo_avulso_height = $('.js-body-saldo-avulso').height()
+    var saldo_avulso_area = saldo_avulso_top + saldo_avulso_height
+    var minutas_avulso_top = $('.js-body-minutas-avulso').position().top
+    var minutas_avulso_height = $('.js-body-minutas-avulso').height()
+    var minutas_avulso_area = minutas_avulso_top + minutas_avulso_height
+    var recibos_avulso_top = $('.js-body-recibos-avulso').position().top
+    var recibos_avulso_height = $('.js-body-recibos-avulso').height()
+    var recibos_avulso_area = recibos_avulso_top + recibos_avulso_height
+    var areas = [saldo_avulso_area, minutas_avulso_area, recibos_avulso_area]
+    maior = Math.max(...areas)
+    $('.js-body-saldo-avulso').height(maior - saldo_avulso_top)
+    $('.js-body-minutas-avulso').height(maior - minutas_avulso_top)
+    $('.js-body-recibos-avulso').height(maior - recibos_avulso_top)
 }
 
 
@@ -572,6 +599,8 @@ $(document).on("click", ".js-periodo-avulso", function(event) {
         },
         success: function(data) {
             $(".card-saldo-avulso").html(data.html_saldoavulso);
+            $(".div-seis").show();
+            $(".div-sete").show();
             $(".box-loader").hide();
         },
         error: function(error) {
@@ -674,16 +703,19 @@ $(document).on("click", ".js-seleciona-colaborador-avulso", function(event) {
         },
         beforeSend: function() {
             $(".box-loader").show()
+            $(".js-body-saldo-avulso").height(tamanho_body_saldo_avulso)
+            $(".card-saldo-avulso").hide()
+            $(".card-minutas-avulso").hide()
+            $(".card-recibos-avulso").hide()
         },
         success: function(data) {
             $(".card-minutas-avulso").html(data.html_minutas);
             $(".card-recibos-avulso").html(data.html_recibos);
+            $(".card-saldo-avulso").show()
+            $(".card-minutas-avulso").show()
+            $(".card-recibos-avulso").show()
+            tamanhoCardBodyAvulso();
             $(".box-loader").hide()
-            console.log(data.html_recibos);
-            // $(".pa-vales").html(data.html_valesavulso);
-            // $(".pa-recibos").html(data.html_recibos);
-            // valeselect("#vale_" + idpessoal);
-            // somavales();
         },
         error: function(error) {
             console.log(error);

@@ -2,7 +2,7 @@
 <div class="article-card-titulo">
     <span>{{ colaborador.Nome }}</span>
 </div>
-<div class="article-card-body">
+<div class="article-card-body js-body-minutas-avulso">
     <div class="itens-minuta-avulso">
         <div class="item-dataminuta item-titulo">DATA</div>
         <div class="item-minuta item-titulo">MINUTA</div>
@@ -21,8 +21,8 @@
     {% endfor %}
 </div>
 <div class="article-card-footer">
-    <i class="bi bi-cash i-button js-gera-pagamento-avulso" datafinal="{{ datafinal }}"
-    datainicial="{{ datainicial }}" idpessoal="{{ colaborador.idPessoal }}"
-    hint="GERAR PAGAMENTO"></i>
+    <i class="bi bi-currency-dollar i-button js-gera-pagamento-avulso"
+    datafinal="{{ datafinal }}" datainicial="{{ datainicial }}"
+    idpessoal="{{ colaborador.idPessoal }}"></i>
 </div>
 {% endfor %}

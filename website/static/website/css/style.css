@@ -4656,7 +4656,8 @@ main .fp-recibo-tabela .fp-recibo-print {
 
 .card-periodo-avulso .item-periodo .item-data {
     width: 44%;
-    padding: 5px 5px 10px 5px;
+    margin: 10px 0 10px 5px;
+    /* padding: 5px 5px 10px 5px; */
 }
 
 .card-periodo-avulso .item-periodo .button-save {
@@ -4748,9 +4749,8 @@ main .fp-recibo-tabela .fp-recibo-print {
     text-align: center;
 }
 
-.card-minutas-avulso .article-card-footer {
-    color: var(--color6);
-    font-size: 14px;
+.card-minutas-avulso .article-card-footer span {
+    font-size: 24px;
 }
 
 .card-recibos-avulso {
