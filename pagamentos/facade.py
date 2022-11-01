@@ -1438,6 +1438,7 @@ def create_contexto_avulsos_a_receber(datainicial, datafinal):
             saldo.append(
                 {
                     "Nome": colaboradores["idPessoal__Nome"],
+                    "Nome_Curto": nome_curto(colaboradores["idPessoal__Nome"]),
                     "idPessoal": colaborador[0].idPessoal_id,
                     "Saldo": f"{saldo_colaborador}",
                     "ValeSelect": saldo_vales_select,
