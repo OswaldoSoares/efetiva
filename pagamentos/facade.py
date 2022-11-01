@@ -1427,12 +1427,12 @@ def create_contexto_avulsos_a_receber(datainicial, datafinal):
                 if motorista["ValorMotorista"]:
                     saldo_colaborador += motorista["ValorMotorista"]
                     saldo_total += motorista["ValorMotorista"]
-        total_vales = calcula_total_vales(colaborador[0].idPessoal_id)
-        if not total_vales:
-            total_vales = 0
-            saldo_vales += total_vales
-        dict_vale, saldo_vales_select = get_vales_select(colaborador[0].idPessoal_id, 0)
-        total_select += saldo_vales_select
+        # total_vales = calcula_total_vales(colaborador[0].idPessoal_id)
+        # if not total_vales:
+        #     total_vales = 0
+        #     saldo_vales += total_vales
+        # dict_vale, saldo_vales_select = get_vales_select(colaborador[0].idPessoal_id, 0)
+        # total_select += saldo_vales_select
         # " Colocar aqui condição para mostrar apenas colaboradores com saldo ou vale"
         if saldo_colaborador > 0:
             saldo.append(
@@ -1441,8 +1441,8 @@ def create_contexto_avulsos_a_receber(datainicial, datafinal):
                     "Nome_Curto": nome_curto(colaboradores["idPessoal__Nome"]),
                     "idPessoal": colaborador[0].idPessoal_id,
                     "Saldo": f"{saldo_colaborador}",
-                    "ValeSelect": saldo_vales_select,
-                    "ValeTotal": total_vales,
+                    # "ValeSelect": saldo_vales_select,
+                    # "ValeTotal": total_vales,
                 }
             )
     return saldo, saldo_total, saldo_vales, total_select
@@ -1729,9 +1729,7 @@ def create_pagamento_avulso(datainicial, datafinal, idpessoal):
         total_recibo = 0.00
         for itens in recibo:
             total_recibo += float(itens["Valor"])
-        total_vales = 0.00
-        # html_recibo_avulso(idpessoal)
-        if total_recibo >= total_vales:
+        if total_recibo > 0.00:
             numero_recibo = Recibo.objects.aggregate(Maior=Max("Recibo"))
             if not numero_recibo["Maior"]:
                 numero_recibo = 1431
@@ -1740,7 +1738,7 @@ def create_pagamento_avulso(datainicial, datafinal, idpessoal):
             obj = Recibo()
             obj.Recibo = numero_recibo
             obj.DataRecibo = datetime.date.today()
-            obj.ValorRecibo = total_recibo - total_vales
+            obj.ValorRecibo = total_recibo
             obj.idPessoal_id = idpessoal
             obj.save()
             new_idrecibo = obj.idRecibo
@@ -1758,7 +1756,7 @@ def create_pagamento_avulso(datainicial, datafinal, idpessoal):
     data["html_saldoavulso"] = html_saldo_avulso(datainicial, datafinal)
     data["html_minutas"] = html_minutasavulso(datainicial, datafinal, idpessoal)
     data["html_recibos"] = html_recibo_avulso(datainicial, datafinal, idpessoal)
-    data["html_valesavulso"] = html_vale(idpessoal, "avulso", 0)
+    data["numero_recibo"] = new_idrecibo
     c_return = JsonResponse(data)
     return c_return
 

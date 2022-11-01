@@ -23,10 +23,17 @@
                     </i>
                 </div>
                 <div class="item-button">
-                    <a class="bi bi-printer i-button"
+                    {% if forloop.first %}  
+                        <a class="bi bi-printer i-button js-recibo-novo"
                         href="{% url 'imprimerecibo' %}?idrecibo={{ itens.idRecibo }}"
                         target="_blank">
-                    </a>
+                        </a>
+                    {% else %}
+                        <a class="bi bi-printer i-button"
+                        href="{% url 'imprimerecibo' %}?idrecibo={{ itens.idRecibo }}"
+                        target="_blank">
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         {% endfor %}

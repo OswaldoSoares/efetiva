@@ -21,8 +21,10 @@
     {% endfor %}
 </div>
 <div class="article-card-footer">
-    <i class="bi bi-currency-dollar i-button js-gera-pagamento-avulso"
-    datafinal="{{ datafinal }}" datainicial="{{ datainicial }}"
-    idpessoal="{{ colaborador.idPessoal }}"></i>
+    {% if recibo %}
+        <i class="bi bi-currency-dollar i-button js-gera-pagamento-avulso"
+        datafinal="{{ datafinal }}" datainicial="{{ datainicial }}"
+        idpessoal="{{ colaborador.idPessoal }}"></i>
+    {% endif %}
 </div>
 {% endfor %}

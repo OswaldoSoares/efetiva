@@ -675,12 +675,10 @@ $(document).on("click", ".js-gera-pagamento-avulso", function(event) {
             DataFinal: datafinal,
         },
         success: function(data) {
-            $(".pa-saldo-minutas").html(data.html_saldoavulso);
-            $(".pa-minutas").html(data.html_minutas);
-            $(".pa-vales").html(data.html_valesavulso);
-            $(".pa-recibos").html(data.html_recibos);
-            valeselect("#vale_" + idpessoal);
-            somavales();
+            $(".card-saldo-avulso").html(data.html_saldoavulso);
+            $(".card-minutas-avulso").html(data.html_minutas);
+            $(".card-recibos-avulso").html(data.html_recibos);
+            $(".js-recibo-novo").get(0).click();
         },
         error: function(error) {
             console.log(error);
@@ -711,11 +709,11 @@ $(document).on("click", ".js-seleciona-colaborador-avulso", function(event) {
         success: function(data) {
             $(".card-minutas-avulso").html(data.html_minutas);
             $(".card-recibos-avulso").html(data.html_recibos);
-            $(".card-saldo-avulso").show()
-            $(".card-minutas-avulso").show()
-            $(".card-recibos-avulso").show()
+            $(".card-saldo-avulso").show();
+            $(".card-minutas-avulso").show();
+            $(".card-recibos-avulso").show();
             tamanhoCardBodyAvulso();
-            $(".box-loader").hide()
+            $(".box-loader").hide();
         },
         error: function(error) {
             console.log(error);
