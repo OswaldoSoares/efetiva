@@ -1668,7 +1668,7 @@ def create_folha(mesreferencia, anoreferencia):
     #     create_cartaoponto(mesreferencia, anoreferencia, itens.idPessoal)
 
 
-def create_pagamento_avulso(datainicial, datafinal, idpessoal, vales):
+def create_pagamento_avulso(datainicial, datafinal, idpessoal):
     recibo = []
     minutas = (
         MinutaColaboradores.objects.filter(
@@ -1729,9 +1729,6 @@ def create_pagamento_avulso(datainicial, datafinal, idpessoal, vales):
         for itens in recibo:
             total_recibo += float(itens["Valor"])
         total_vales = 0.00
-        for itens in vales:
-            vale = Vales.objects.get(idVales=itens[3:-5])
-            total_vales += float(vale.Valor)
         # html_recibo_avulso(idpessoal)
         if total_recibo >= total_vales:
             numero_recibo = Recibo.objects.aggregate(Maior=Max("Recibo"))
@@ -1751,12 +1748,6 @@ def create_pagamento_avulso(datainicial, datafinal, idpessoal, vales):
                 obj.idRecibo_id = new_idrecibo
                 obj.idMinutaItens_id = itens["idMinutaItens"]
                 obj.save()
-            for itens in vales:
-                vale = Vales.objects.get(idVales=itens[3:-5])
-                obj = vale
-                obj.Pago = True
-                obj.idRecibo_id = new_idrecibo
-                obj.save(update_fields=["Pago", "idRecibo_id"])
             for itens in minutas:
                 obj = itens
                 obj.Pago = True

@@ -153,6 +153,14 @@ def exclui_agenda(request):
     return data
 
 
+def gera_pagamento_avulso(request):
+    c_idpessoal = request.GET.get("idPessoal")
+    c_datainicial = request.GET.get("DataInicial")
+    c_datafinal = request.GET.get("DataFinal")
+    data = facade.create_pagamento_avulso(c_datainicial, c_datafinal, c_idpessoal)
+    return data
+
+
 def print_contra_cheque_adiantamento(request):
     _id_cc = request.GET.get("idcc")
     contexto = facade.imprime_contra_cheque_pagamento(_id_cc, "adian")
@@ -211,6 +219,14 @@ def salva_file(request):
     return data
 
 
+def seleciona_colaborador_avulso(request):
+    c_datainicial = request.GET.get("DataInicial")
+    c_datafinal = request.GET.get("DataFinal")
+    c_idpesssoal = request.GET.get("idPessoal")
+    data = facade.seleciona_minutasavulso(c_datainicial, c_datafinal, c_idpesssoal)
+    return data
+
+
 def seleciona_funcionario(request):
     _mes_ano = request.GET.get("mes_ano")
     _id_pes = request.GET.get("idpessoal")
@@ -223,6 +239,13 @@ def seleciona_mes_ano(request):
     _mes_ano = request.GET.get("mes_ano")
     contexto = facade.create_contexto_folha(_mes_ano)
     data = facade.create_data_seleciona_mes_ano(request, contexto)
+    return data
+
+
+def seleciona_periodo_avulso(request):
+    c_datainicial = request.GET.get("DataInicial")
+    c_datafinal = request.GET.get("DataFinal")
+    data = facade.seleciona_saldoavulso(c_datainicial, c_datafinal)
     return data
 
 
@@ -327,17 +350,6 @@ def imprime_contracheque(request):
     # return response
 
 
-def cria_pagamento(request):
-    c_idpessoal = request.GET.get("idPessoal")
-    c_datainicial = request.GET.get("DataInicial")
-    c_datafinal = request.GET.get("DataFinal")
-    c_vales = request.GET.getlist("ValesSelecionados[]")
-    data = facade.create_pagamento_avulso(
-        c_datainicial, c_datafinal, c_idpessoal, c_vales
-    )
-    return data
-
-
 def cria_contrachequeitensvale(request):
     pass
     # c_idpessoal = request.GET.get("idPessoal")
@@ -364,22 +376,6 @@ def exclui_contrachequeitensvale(request):
     # facade.estado_swith_vales[c_idpesssoal] = c_switch[0:-1].split("-")
     # data = facade.seleciona_contracheque(c_mes, c_ano, c_idpesssoal, request)
     # return data
-
-
-def seleciona_periodo(request):
-    c_datainicial = request.GET.get("DataInicial")
-    c_datafinal = request.GET.get("DataFinal")
-    data = facade.seleciona_saldoavulso(c_datainicial, c_datafinal)
-    return data
-
-
-# Seleciona colaborador avulso a pagar
-def seleciona_saldoavulso(request):
-    c_datainicial = request.GET.get("DataInicial")
-    c_datafinal = request.GET.get("DataFinal")
-    c_idpesssoal = request.GET.get("idPessoal")
-    data = facade.seleciona_minutasavulso(c_datainicial, c_datafinal, c_idpesssoal)
-    return data
 
 
 def inserefalta(request):

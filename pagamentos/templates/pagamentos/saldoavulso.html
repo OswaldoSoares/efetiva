@@ -12,8 +12,7 @@
             <span>R$ {{ itens.Saldo|floatformat:2 }}</span>
         </div>
         <div class="item-button">
-            <i class="bi bi-folder-symlink i-button js-seleciona-avulso"
-            data-url="{% url 'selecionasaldoavulso' %}"
+            <i class="bi bi-folder-symlink i-button js-seleciona-colaborador-avulso"
             datainicial="{{ datainicial }}" datafinal="{{ datafinal }}"
             idpessoal="{{ itens.idPessoal }}"></i>
         </div>
@@ -32,10 +31,8 @@
 
 
 
-<div class="pa-saldo">
-    <table class="pa-tabela">
-    </table>
+{% comment %} <div class="pa-saldo">
+    <table class="pa-tabela"></table>
     <div class="pa-vales"></div>
-    <div class="pa-recibos"></div>
-</div>
-<div class="pa-minutas"></div>
+    
+</div> {% endcomment %}

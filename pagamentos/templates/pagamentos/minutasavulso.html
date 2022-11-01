@@ -1,26 +1,28 @@
 {% for colaborador in colaborador %}
-<table class="pa-tabela">
-    <tr>
-        <td colspan="5" class="pa-titulo">{{ colaborador.Nome }}</td>
-    </tr>
-    <tr>
-        <td class="pa-titulo">DATA</td>
-        <td class="pa-titulo">MINUTA</td>
-        <td class="pa-titulo">CLIENTE</td>
-        <td class="pa-titulo">DESCRIÇÃO</td>
-        <td class="pa-titulo">VALOR</td>
-    </tr>
+<div class="article-card-titulo">
+    <span>{{ colaborador.Nome }}</span>
+</div>
+<div class="article-card-body">
+    <div class="itens-minuta-avulso">
+        <div class="item-dataminuta item-titulo">DATA</div>
+        <div class="item-minuta item-titulo">MINUTA</div>
+        <div class="item-cliente">CLIENTE</div>
+        <div class="item-descricao">DESCRIÇÃO</div>
+        <div class="item-valor item-titulo">VALOR</div>
+    </div>
     {% for itens in recibo %}
-    <tr>
-        <td class="pa-dataminuta">{{ itens.Data }}</td>
-        <td class="pa-dataminuta">{{ itens.Minuta }}</td>
-        <td class="pa-cliente">{{ itens.Cliente }}</td>
-        <td class="pa-descricao">{{ itens.Descricao }}</td>
-        <td class="pa-valor">R$ {{ itens.Valor }}</td>
-    </tr>
+    <div class="itens-minuta-avulso">
+        <div class="item-dataminuta">{{ itens.Data }}</div>
+        <div class="item-minuta">{{ itens.Minuta }}</div>
+        <div class="item-cliente">{{ itens.Cliente }}</div>
+        <div class="item-descricao">{{ itens.Descricao }}</div>
+        <div class="item-valor">R$ {{ itens.Valor }}</div>
+    </div>
     {% endfor %}
-</table>
-<button class="btn btn-warning" data-url="{% url 'criapagamento' %}" id="gerar-pagamento"  datafinal="{{ datafinal }}"
-        datainicial="{{ datainicial }}" idpessoal="{{ colaborador.idPessoal }}">GERAR PAGAMENTO
-</button>
+</div>
+<div class="article-card-footer">
+    <i class="bi bi-cash i-button js-gera-pagamento-avulso" datafinal="{{ datafinal }}"
+    datainicial="{{ datainicial }}" idpessoal="{{ colaborador.idPessoal }}"
+    hint="GERAR PAGAMENTO"></i>
+</div>
 {% endfor %}

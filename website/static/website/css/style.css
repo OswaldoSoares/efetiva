@@ -4705,6 +4705,97 @@ main .fp-recibo-tabela .fp-recibo-print {
     font-size: 14px;
 }
 
+.card-minutas-avulso {
+    width: 600px;
+}
+
+.card-minutas-avulso .itens-minuta-avulso {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    color: var(--color6);
+}
+
+.card-minutas-avulso .itens-minuta-avulso .item-dataminuta {
+    width: 14%;
+    text-align: center;
+}
+
+.card-minutas-avulso .itens-minuta-avulso .item-minuta {
+    width: 12%;
+    text-align: center;
+}
+
+.card-minutas-avulso .itens-minuta-avulso .item-cliente {
+    width: 35%;
+    text-align: left;
+}
+
+.card-minutas-avulso .itens-minuta-avulso .item-descricao {
+    width: 23%;
+    text-align: left;
+}
+
+.card-minutas-avulso .itens-minuta-avulso .item-valor {
+    width: 15%;
+    text-align: right;
+    padding-right: 5px;
+}
+
+.card-minutas-avulso .itens-minuta-avulso .item-titulo {
+    text-align: center;
+}
+
+.card-minutas-avulso .article-card-footer {
+    color: var(--color6);
+    font-size: 14px;
+}
+
+.card-recibos-avulso {
+    width: 300px;
+}
+
+.card-recibos-avulso .itens-recibo-avulso {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    color: var(--color6);
+}
+
+.card-recibos-avulso .itens-recibo-avulso .item-dia {
+    width: 30%;
+    text-align: center;
+}
+
+.card-recibos-avulso .itens-recibo-avulso .item-recibo {
+    width: 24%;
+    text-align: center;
+}
+
+.card-recibos-avulso .itens-recibo-avulso .item-valor {
+    width: 28%;
+    text-align: right;
+    padding-right: 5px;
+}
+
+.card-recibos-avulso .itens-recibo-avulso .item-button {
+    width: 8%;
+    text-align: center;
+}
+
+.card-minutas-avulso .itens-recibo-avulso .item-titulo {
+    text-align: center;
+}
+
+.card-recibos-avulso .article-card-footer {
+    color: var(--color6);
+    font-size: 14px;
+}
+
 .ponto {
     color: var(--color2)
 }

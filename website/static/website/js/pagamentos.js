@@ -558,15 +558,21 @@ $(document).on("click", ".js-periodo-avulso", function(event) {
     $.ajax({
         type: "GET",
         dataType: "JSON",
-        url: '/pagamentos/seleciona_periodo',
+        url: '/pagamentos/seleciona_periodo_avulso',
         data: {
             DataInicial: _data_inicial,
             DataFinal: _data_final,
         },
-        beforeSend: function() {},
+        beforeSend: function() {
+            $(".div-um").hide()
+            $(".div-dois").hide()
+            $(".div-tres").hide()
+            $(".div-quatro").hide()
+            $(".box-loader").show();
+        },
         success: function(data) {
-            console.log(data.html_saldoavulso);
             $(".card-saldo-avulso").html(data.html_saldoavulso);
+            $(".box-loader").hide();
         },
         error: function(error) {
             console.log(error);
@@ -626,21 +632,18 @@ $(document).on("click", ".estorna-recibo", function(event) {
     });
 });
 
-$(document).on("click", "#gerar-pagamento", function(event) {
-    var url = $(this).attr("data-url");
+$(document).on("click", ".js-gera-pagamento-avulso", function(event) {
     var idpessoal = $(this).attr("idpessoal");
     var datainicial = $(this).attr("datainicial");
     var datafinal = $(this).attr("datafinal");
-    var valesselecionados = valeselect("#vale_" + $(this).attr("idpessoal"));
     $.ajax({
         type: "GET",
         dataType: "json",
-        url: url,
+        url: '/pagamentos/gera_pagamento_avulso',
         data: {
             idPessoal: idpessoal,
             DataInicial: datainicial,
             DataFinal: datafinal,
-            ValesSelecionados: valesselecionados,
         },
         success: function(data) {
             $(".pa-saldo-minutas").html(data.html_saldoavulso);
@@ -656,26 +659,31 @@ $(document).on("click", "#gerar-pagamento", function(event) {
     });
 });
 
-$(document).on("click", ".selecionar-saldoavulso", function(event) {
-    var url = $(this).attr("data-url");
+$(document).on("click", ".js-seleciona-colaborador-avulso", function(event) {
     var datainicial = $(this).attr("datainicial");
     var datafinal = $(this).attr("datafinal");
     var idpessoal = $(this).attr("idpessoal");
     $.ajax({
         type: "GET",
         dataType: "json",
-        url: url,
+        url: '/pagamentos/seleciona_colaborador_avulso',
         data: {
             DataInicial: datainicial,
             DataFinal: datafinal,
             idPessoal: idpessoal,
         },
+        beforeSend: function() {
+            $(".box-loader").show()
+        },
         success: function(data) {
-            $(".pa-minutas").html(data.html_minutas);
-            $(".pa-vales").html(data.html_valesavulso);
-            $(".pa-recibos").html(data.html_recibos);
-            valeselect("#vale_" + idpessoal);
-            somavales();
+            $(".card-minutas-avulso").html(data.html_minutas);
+            $(".card-recibos-avulso").html(data.html_recibos);
+            $(".box-loader").hide()
+            console.log(data.html_recibos);
+            // $(".pa-vales").html(data.html_valesavulso);
+            // $(".pa-recibos").html(data.html_recibos);
+            // valeselect("#vale_" + idpessoal);
+            // somavales();
         },
         error: function(error) {
             console.log(error);

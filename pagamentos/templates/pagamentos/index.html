@@ -3,31 +3,31 @@ d{% extends 'pagamentos/basepagamentos.html' %}
 {% block mainpagamento %}
 <main class="article">
     <div class="div-um">
-    <article class="article-card card-mes-ano">
-        <div class="article-card-titulo">
-            <span>FOLHA PAGAMENTO</span>
-        </div>
-        <div class="article-card-body">
-            <select name="meses" id="meses" class="select-mes-ano form-control">
-                {% for itens in mes_ano %}
-                <option value="{{ itens }}">{{ itens|upper }}</option>
-                {% endfor %}
-            </select>
-            <div class="button-mes-ano">
-                <i class="bi bi-clipboard-check i-button js-seleciona-mes-ano"></i>
+        <article class="article-card card-mes-ano">
+            <div class="article-card-titulo">
+                <span>FOLHA PAGAMENTO</span>
             </div>
-        </div>
-        <div class="article-card-footer"></div>
-    </article>
-    <article class="article-card card-folha js-folha">
-        {% include 'pagamentos/html_folha.html' %}
-    </article>
-    <article class="article-card card-saldo-pagamento js-saldo">
-        {% include 'pagamentos/html_saldo.html' %}
-    </article>
-    <article class="article-card card-adiantamento js-adiantamento">
-        {% include 'pagamentos/html_adiantamento_automatico.html' %}
-    </article>
+            <div class="article-card-body">
+                <select name="meses" id="meses" class="select-mes-ano form-control">
+                    {% for itens in mes_ano %}
+                    <option value="{{ itens }}">{{ itens|upper }}</option>
+                    {% endfor %}
+                </select>
+                <div class="button-mes-ano">
+                    <i class="bi bi-clipboard-check i-button js-seleciona-mes-ano"></i>
+                </div>
+            </div>
+            <div class="article-card-footer"></div>
+        </article>
+        <article class="article-card card-folha js-folha">
+            {% include 'pagamentos/html_folha.html' %}
+        </article>
+        <article class="article-card card-saldo-pagamento js-saldo">
+            {% include 'pagamentos/html_saldo.html' %}
+        </article>
+        <article class="article-card card-adiantamento js-adiantamento">
+            {% include 'pagamentos/html_adiantamento_automatico.html' %}
+        </article>
     </div>
     <div class='div-dois'>
     <article class="article-card card-cartao-ponto js-cartao-ponto">
@@ -70,16 +70,14 @@ d{% extends 'pagamentos/basepagamentos.html' %}
         <article class="article-card card-periodo-avulso">
             {% include 'pagamentos/html_avulso_periodo.html' %}
         </article>
-
         <article class="article-card card-saldo-avulso"></article>
     </div>
-    {% comment %} <div class="pagamento-conteudo avulsos">
-    <main id="pa-main">
-        <div class="pa-form">
-        <div class="pa-faixa"><!-- Comentário: ??? --></div>
-        </div>
-    </main>
-    </div> {% endcomment %}
+    <div class="div-seis">
+        <article class="article-card card-minutas-avulso"></article>
+    </div>
+    <div class="div-sete">
+        <article class="article-card card-recibos-avulso"></article>
+    </div>
     {% endif %}
 </main>
 
@@ -89,12 +87,8 @@ d{% extends 'pagamentos/basepagamentos.html' %}
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="close"
-        >
+        <button type="button" class="close" data-dismiss="modal"
+          aria-label="close" >
           <span aria-hidden="true">&times;</span>
         </button>
         <h4 class="modal-title"><b>CARTÃO DE PONTO</b></h4>
