@@ -136,7 +136,6 @@ var tamanhoCardBody = function() {
 var tamanho_body_saldo_avulso;
 
 var tamanhoCardBodyAvulso = function() {
-    tamanho_body_saldo_avulso = $('.js-body-saldo-avulso').height()
     var saldo_avulso_top = $('.js-body-saldo-avulso').position().top
     var saldo_avulso_height = $('.js-body-saldo-avulso').height()
     var saldo_avulso_area = saldo_avulso_top + saldo_avulso_height
@@ -591,14 +590,18 @@ $(document).on("click", ".js-periodo-avulso", function(event) {
             DataFinal: _data_final,
         },
         beforeSend: function() {
+            $(".box-loader").show();
             $(".div-um").hide()
             $(".div-dois").hide()
             $(".div-tres").hide()
             $(".div-quatro").hide()
-            $(".box-loader").show();
+            $(".card-minutas-avulso").hide()
+            $(".card-recibos-avulso").hide()
+            $(".js-body-saldo-avulso").height(tamanho_body_saldo_avulso)
         },
         success: function(data) {
             $(".card-saldo-avulso").html(data.html_saldoavulso);
+            tamanho_body_saldo_avulso = $('.js-body-saldo-avulso').height()
             $(".div-seis").show();
             $(".div-sete").show();
             $(".box-loader").hide();
@@ -636,7 +639,6 @@ $(document).on("click", ".estorna-recibo", function(event) {
     var mesreferencia = window.MesReferencias;
     var anoreferencia = window.AnoReferencia;
     var idpessoal = window.idPessoal;
-
     $.ajax({
         type: "GET",
         dataType: "json",
@@ -647,13 +649,15 @@ $(document).on("click", ".estorna-recibo", function(event) {
             AnoReferencia: anoreferencia,
             idPessoal: idpessoal,
         },
+        beforeSend: function() {
+            $(".box-loader").show()
+            $(".card-minutas-avulso").hide();
+            $(".card-recibos-avulso").hide();
+        },
         success: function(data) {
-            $(".pa-saldo-minutas").html(data.html_saldoavulso);
-            $(".pa-minutas").html(data.html_minutas);
-            $(".pa-vales").html(data.html_valesavulso);
-            $(".pa-recibos").html(data.html_recibos);
-            valeselect("#vale_" + idpessoal);
-            somavales();
+            $(".card-saldo-avulso").html(data.html_saldoavulso);
+            tamanho_body_saldo_avulso = $('.js-body-saldo-avulso').height()
+            $(".box-loader").hide();
         },
         error: function(error) {
             console.log(error);
@@ -674,11 +678,17 @@ $(document).on("click", ".js-gera-pagamento-avulso", function(event) {
             DataInicial: datainicial,
             DataFinal: datafinal,
         },
+        beforeSend: function() {
+            $(".box-loader").show()
+        },
         success: function(data) {
             $(".card-saldo-avulso").html(data.html_saldoavulso);
+            tamanho_body_saldo_avulso = $('.js-body-saldo-avulso').height()
             $(".card-minutas-avulso").html(data.html_minutas);
             $(".card-recibos-avulso").html(data.html_recibos);
             $(".js-recibo-novo").get(0).click();
+            tamanhoCardBodyAvulso();
+            $(".box-loader").hide();
         },
         error: function(error) {
             console.log(error);
