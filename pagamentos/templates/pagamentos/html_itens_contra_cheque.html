@@ -6,7 +6,7 @@
 <div class="article-card-body js-body-itens-contra-cheque">
   {% if user|can:'pagamentos_folha' %}
   <form class="js-gera-contra-cheque-itens" method="post"
-  action="{% url 'adiantamento' %}">
+  action="">
   {% csrf_token %}
     <div class="item-contra-cheque-itens">
       <div class="item-descricao">

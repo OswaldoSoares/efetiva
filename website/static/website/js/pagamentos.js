@@ -20,7 +20,8 @@ $(document).on("click", ".js-seleciona-mes-ano", function(event) {
             mes_ano: v_mes_ano,
         },
         beforeSend: function() {
-            $('.box-loader').show()
+            $(".card-periodo-avulso").hide();
+            $('.box-loader').show();
         },
         success: function(data) {
             $(".js-folha").html(data.html_folha);
@@ -44,6 +45,9 @@ $(document).on("click", ".js-seleciona-funcionario", function(event) {
             idpessoal: v_idpessoal,
         },
         beforeSend: function() {
+            $(".div-dois").show();
+            $(".div-tres").show();
+            $(".div-quatro").show();
             $('.box-loader').show();
         },
         success: function(data) {

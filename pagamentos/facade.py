@@ -2769,6 +2769,10 @@ def print_recibo(idrecibo):
     recibo = Recibo.objects.get(idRecibo=idrecibo)
     colaborador = Pessoal.objects.get(idPessoal=recibo.idPessoal_id)
     conta_colaborador = ContaPessoal.objects.filter(idPessoal=recibo.idPessoal_id)
+    _banco = ContaPessoal.objects.filter(idPessoal=recibo.idPessoal_id)
+    _vc = False
+    if len(_banco) > 1:
+        _vc = True
     minutaitens = ReciboItens.objects.filter(idRecibo_id=idrecibo).annotate(
         idMinuta=F("idMinutaItens_id__idMinuta_id"),
         DataMinuta=F("idMinutaItens_id__idMinuta_id__DataMinuta"),
@@ -2815,6 +2819,8 @@ def print_recibo(idrecibo):
         "reciboitens": reciboitens,
         "vales": vales,
         "conta_colaborador": conta_colaborador,
+        "banco": _banco,
+        "mais_banco": _vc,
     }
     return contexto
 

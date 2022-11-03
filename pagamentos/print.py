@@ -388,9 +388,14 @@ def print_recibo(contexto):
     pdf.drawCentredString(
         cmp(105), cmp(linha - 22.5), "{}".format(contexto["colaborador"])
     )
-    # pdf.drawCentredString(convertemp(105), convertemp(linha - 26.5), 'Banco {} - Agência {} - Conta {} - PIX {}'.format(
-    #     contexto['conta_colaborador'].Banco, contexto['conta_colaborador'].Agencia, contexto['conta_colaborador'].Conta,
-    #     contexto['conta_colaborador'].PIX))
+    pdf.setFont("Times-Roman", 10)
+    if contexto["mais_banco"]:
+        pdf.drawString(cmp(6), cmp(linha - 26), "*")
+    pdf.drawCentredString(
+        cmp(105),
+        cmp(linha - 26),
+        f"PIX: {contexto['banco'][0].PIX} - BANCO: {contexto['banco'][0].Banco} - AG: {contexto['banco'][0].Agencia} - CONTA {contexto['banco'][0].Conta} - {contexto['banco'][0].TipoConta}",
+    )
     pdf.setFillColor(HexColor("#808080"))
     pdf.setFont("Times-Roman", 14)
     pdf.drawString(cmp(6), cmp(linha - 32), "{}".format("Minuta"))
@@ -449,55 +454,56 @@ def print_recibo(contexto):
         cmp(13.5 + linhaitens),
         fill=0,
     )
-    pdf.rect(
-        cmp(5),
-        cmp(linha - 47.5 - linhaitens),
-        cmp(200),
-        cmp(5),
-        fill=0,
-    )
-    marca = linha - 47.5 - linhaitens
-    pdf.drawCentredString(
-        cmp(105), cmp(linha - 46.5 - linhaitens), "{}".format("DESCONTOS")
-    )
-    pdf.setFillColor(HexColor("#808080"))
-    pdf.setFont("Times-Roman", 14)
-    pdf.drawString(cmp(6), cmp(linha - 52 - linhaitens), "{}".format("Data"))
-    pdf.drawString(cmp(45), cmp(linha - 52 - linhaitens), "{}".format("Descricao"))
-    pdf.drawRightString(cmp(204), cmp(linha - 52 - linhaitens), "{}".format("Valor"))
-    pdf.setFillColor(HexColor("#000000"))
-    pdf.setFont("Times-Roman", 11)
-    total_vales = decimal.Decimal(0.00)
-    for itens in contexto["vales"]:
-        pdf.drawString(
-            cmp(6),
-            cmp(linha - 57 - linhaitens),
-            "{}".format(itens.Data.strftime("%d/%m/%Y")),
-        )
-        pdf.drawString(
-            cmp(45),
-            cmp(linha - 57 - linhaitens),
-            "{}".format(itens.Descricao),
-        )
-        pdf.drawRightString(
-            cmp(204),
-            cmp(linha - 57 - linhaitens),
-            "R$ {}".format(itens.Valor).replace(".", ","),
-        )
-        total_vales += itens.Valor
-        linhaitens += 4.1
-    pdf.drawRightString(
-        cmp(204),
-        cmp(linha - 60 - linhaitens),
-        "Total: R$ {:.2f}".format(total_vales).replace(".", ","),
-    )
-    pdf.rect(
-        cmp(5),
-        cmp(linha - 61 - linhaitens),
-        cmp(200),
-        cmp(marca - (linha - 61 - linhaitens)),
-        fill=0,
-    )
+    # TODO Retirado o sistema de vale para os colaboradores avulsos
+    # pdf.rect(
+    #     cmp(5),
+    #     cmp(linha - 47.5 - linhaitens),
+    #     cmp(200),
+    #     cmp(5),
+    #     fill=0,
+    # )
+    # marca = linha - 47.5 - linhaitens
+    # pdf.drawCentredString(
+    #     cmp(105), cmp(linha - 46.5 - linhaitens), "{}".format("DESCONTOS")
+    # )
+    # pdf.setFillColor(HexColor("#808080"))
+    # pdf.setFont("Times-Roman", 14)
+    # pdf.drawString(cmp(6), cmp(linha - 52 - linhaitens), "{}".format("Data"))
+    # pdf.drawString(cmp(45), cmp(linha - 52 - linhaitens), "{}".format("Descricao"))
+    # pdf.drawRightString(cmp(204), cmp(linha - 52 - linhaitens), "{}".format("Valor"))
+    # pdf.setFillColor(HexColor("#000000"))
+    # pdf.setFont("Times-Roman", 11)
+    # total_vales = decimal.Decimal(0.00)
+    # for itens in contexto["vales"]:
+    #     pdf.drawString(
+    #         cmp(6),
+    #         cmp(linha - 57 - linhaitens),
+    #         "{}".format(itens.Data.strftime("%d/%m/%Y")),
+    #     )
+    #     pdf.drawString(
+    #         cmp(45),
+    #         cmp(linha - 57 - linhaitens),
+    #         "{}".format(itens.Descricao),
+    #     )
+    #     pdf.drawRightString(
+    #         cmp(204),
+    #         cmp(linha - 57 - linhaitens),
+    #         "R$ {}".format(itens.Valor).replace(".", ","),
+    #     )
+    #     total_vales += itens.Valor
+    #     linhaitens += 4.1
+    # pdf.drawRightString(
+    #     cmp(204),
+    #     cmp(linha - 60 - linhaitens),
+    #     "Total: R$ {:.2f}".format(total_vales).replace(".", ","),
+    # )
+    # pdf.rect(
+    #     cmp(5),
+    #     cmp(linha - 61 - linhaitens),
+    #     cmp(200),
+    #     cmp(marca - (linha - 61 - linhaitens)),
+    #     fill=0,
+    # )
     pdf.rect(cmp(5), cmp(5), cmp(200), cmp(15), fill=0)
     pdf.setFont("Times-Roman", 9)
     pdf.setFillColor(HexColor("#808080"))
