@@ -414,6 +414,24 @@ def html_folha(request, contexto, data):
     return data
 
 
+def create_contexto_agenda(minutas, agenda):
+    print(minutas)
+    for x in agenda:
+        minutas.append(
+            {
+                "idMinuta_id__DataMinuta": x.Dia,
+                "idMinuta_id__Minuta": "",
+                "idMinuta_id__idCliente__Fantasia": x.Descricao,
+                "idMinuta_id__HoraInicial": datetime.time(0, 0),
+                "idMinuta_id__HoraFinal": datetime.time(0, 0),
+                "idPessoal": "",
+                "Extra": "00:00",
+            }
+        )
+    newlist = sorted(minutas, key=lambda d: d["idMinuta_id__DataMinuta"])
+    return newlist
+
+
 def create_contexto_funcionario(_mes_ano, _id) -> JsonResponse:
     _var = dict()
     get_pessoa(_id, _var)
@@ -1181,7 +1199,7 @@ def imprime_contra_cheque_pagamento(_id_cc, tipo):
             }
         )
     newlist = sorted(lista_agenda_minuta, key=lambda d: d["dia"])
-
+    new_minutas = create_contexto_agenda(minutas, agenda)
     lista_multas = []
     for x in contrachequeitens:
         if x.Descricao[0:8] == "MULTA - ":
@@ -1202,7 +1220,7 @@ def imprime_contra_cheque_pagamento(_id_cc, tipo):
         "contrachequeitens": contrachequeitens,
         "colaborador": colaborador,
         "totais": totais,
-        "minutas": minutas,
+        "minutas": new_minutas,
         "salario_base": str(_var["salario_base"]),
         "cartao_ponto": _carto_ponto,
         "banco": _banco,
