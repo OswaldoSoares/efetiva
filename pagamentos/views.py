@@ -64,7 +64,10 @@ def adiciona_vales(request):
     _descricao = request.POST.get("descricao")
     _data = request.POST.get("data")
     _valor = request.POST.get("valor")
-    _parcelas = request.POST.get("parcelas")
+    if request.POST.get("parcelas") == "":
+        _parcelas = 1
+    else:
+        _parcelas = request.POST.get("parcelas")
     _id_pes = request.POST.get("idPessoal")
     data = facade.create_vales(_descricao, _data, _valor, _parcelas, _id_pes)
     _mes_ano = request.POST.get("mes_ano")

@@ -24,7 +24,8 @@
                 <input type="number" class="form-control" name="parcelas"
                 id="id_parcelas" value="" step="1" placeholder="PARCELAS">
             </div>
-            <input type="hidden" name="mes_ano" value="" id="mes_ano">
+            <input type="hidden" name="mes_ano"
+            value="{{ mes_ano }}" id="mes_ano">
             <input type="hidden" name="idPessoal"
             value="{{ contra_cheque.idpessoal }}" id="idPessoal">
             <div class="button-save">
