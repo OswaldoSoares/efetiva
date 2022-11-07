@@ -437,9 +437,10 @@ def create_contexto_funcionario(_mes_ano, _id) -> JsonResponse:
     get_pessoa(_id, _var)
     _var["mes"], _var["ano"] = converter_mes_ano(_mes_ano)
     _var["primeiro_dia"], _var["ultimo_dia"] = extremos_mes(_var["mes"], _var["ano"])
-    # TODO Necessário inverter as posições do _cartao_ponto e Minutas
-    minutas = minutas_contra_cheque(_var)
+    # TODO Necessário inverter as posições do _cartao_ponto e Minutas.
+    # com minuta antes, não é calculado a hora extra
     _cartao_ponto = cartao_ponto(_var)
+    minutas = minutas_contra_cheque(_var)
     _var["dias_falta"] = dias_falta(_cartao_ponto)
     _var["dias_remunerado"] = dias_remunerado(_cartao_ponto)
     _var["dias_transporte"] = dias_transporte(_cartao_ponto)
@@ -831,6 +832,18 @@ def minutas_contra_cheque(_var):
     lista_filtrada = []
     _he = datetime.timedelta(hours=7, minutes=0)
     _hs = datetime.timedelta(hours=17, minutes=0)
+    _cp = CartaoPonto.objects.filter(
+        Dia__range=[_pdm, _udm], idPessoal=_var["id_pessoal"]
+    )
+    if not _cp:
+        create_cartao_ponto(
+            _var["id_pessoal"],
+            _var["primeiro_dia"],
+            _var["ultimo_dia"],
+            _var["admissao"],
+            _var["demissao"],
+            _var,
+        )
     for x in minutas:
         _hez = datetime.timedelta(hours=0, minutes=0)
         _hi = x.idMinuta.HoraInicial
