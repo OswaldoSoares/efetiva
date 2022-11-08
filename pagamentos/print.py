@@ -186,13 +186,14 @@ def print_contracheque(contexto, tipoimpressao):
                     )
                     linhaitens += 4.1
         pdf.setFont("Times-Roman", 8)
-        if contexto["mais_banco"]:
-            pdf.drawString(cmp(6), cmp(linha - 124), "*")
-        pdf.drawString(
-            cmp(8),
-            cmp(linha - 124),
-            f"PIX: {contexto['banco'][0].PIX} - BANCO: {contexto['banco'][0].Banco} - AG: {contexto['banco'][0].Agencia} - CONTA {contexto['banco'][0].Conta} - {contexto['banco'][0].TipoConta}",
-        )
+        if contexto["banco"]:
+            if contexto["mais_banco"]:
+                pdf.drawString(cmp(6), cmp(linha - 124), "*")
+            pdf.drawString(
+                cmp(8),
+                cmp(linha - 124),
+                f"PIX: {contexto['banco'][0].PIX} - BANCO: {contexto['banco'][0].Banco} - AG: {contexto['banco'][0].Agencia} - CONTA {contexto['banco'][0].Conta} - {contexto['banco'][0].TipoConta}",
+            )
         pdf.setFont("Times-Roman", 11)
         pdf.drawRightString(
             cmp(142.6),
@@ -389,13 +390,14 @@ def print_recibo(contexto):
         cmp(105), cmp(linha - 22.5), "{}".format(contexto["colaborador"])
     )
     pdf.setFont("Times-Roman", 10)
-    if contexto["mais_banco"]:
-        pdf.drawString(cmp(6), cmp(linha - 26), "*")
-    pdf.drawCentredString(
-        cmp(105),
-        cmp(linha - 26),
-        f"PIX: {contexto['banco'][0].PIX} - BANCO: {contexto['banco'][0].Banco} - AG: {contexto['banco'][0].Agencia} - CONTA {contexto['banco'][0].Conta} - {contexto['banco'][0].TipoConta}",
-    )
+    if contexto["banco"]:
+        if contexto["mais_banco"]:
+            pdf.drawString(cmp(6), cmp(linha - 26), "*")
+        pdf.drawCentredString(
+            cmp(105),
+            cmp(linha - 26),
+            f"PIX: {contexto['banco'][0].PIX} - BANCO: {contexto['banco'][0].Banco} - AG: {contexto['banco'][0].Agencia} - CONTA {contexto['banco'][0].Conta} - {contexto['banco'][0].TipoConta}",
+        )
     pdf.setFillColor(HexColor("#808080"))
     pdf.setFont("Times-Roman", 14)
     pdf.drawString(cmp(6), cmp(linha - 32), "{}".format("Minuta"))
