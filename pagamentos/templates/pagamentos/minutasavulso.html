@@ -24,10 +24,10 @@
     {% if recibo %}
         <i class="bi bi-currency-dollar i-button js-gera-pagamento-avulso"
         datafinal="{{ datafinal }}" datainicial="{{ datainicial }}"
-        idpessoal="{{ colaborador.idPessoal }}"></i>
-        <i class="bi bi-trash i-button js-remove-itens-pagamento"
+        idpessoal="{{ colaborador.idPessoal }}" zerado="0"></i>
+        <i class="bi bi-slash-circle i-button js-gera-pagamento-avulso js-recibo-avulso-zerado"
         datafinal="{{ datafinal }}" datainicial="{{ datainicial }}"
-        idpessoal="{{ colaborador.idPessoal }}"></i>
+        idpessoal="{{ colaborador.idPessoal }}" zerado="1"></i>
     {% endif %}
 </div>
 {% endfor %}

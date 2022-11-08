@@ -673,6 +673,7 @@ $(document).on("click", ".js-gera-pagamento-avulso", function(event) {
     var idpessoal = $(this).attr("idpessoal");
     var datainicial = $(this).attr("datainicial");
     var datafinal = $(this).attr("datafinal");
+    var zerado = $(this).attr("zerado");
     $.ajax({
         type: "GET",
         dataType: "json",
@@ -681,6 +682,7 @@ $(document).on("click", ".js-gera-pagamento-avulso", function(event) {
             idPessoal: idpessoal,
             DataInicial: datainicial,
             DataFinal: datafinal,
+            Zerado: zerado,
         },
         beforeSend: function() {
             $(".box-loader").show()
@@ -726,7 +728,7 @@ $(document).on("click", ".js-seleciona-colaborador-avulso", function(event) {
             $(".card-saldo-avulso").show();
             $(".card-minutas-avulso").show();
             $(".card-recibos-avulso").show();
-            $(".js-remove-itens-pagamento").hide();
+            $(".js-recibo-avulso-zerado").hide();
             tamanhoCardBodyAvulso();
             $(".box-loader").hide();
         },
@@ -863,8 +865,8 @@ function estadoswitchmini(idpessoal) {
 
 document.addEventListener("keydown", function(event) {
     if (event.altKey && event.code === "KeyT") {
-        $(".js-remove-itens-pagamento").show();
         $(".js-gera-pagamento-avulso").hide();
+        $(".js-recibo-avulso-zerado").show();
         event.preventDefault();
     }
 });

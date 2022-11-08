@@ -160,7 +160,10 @@ def gera_pagamento_avulso(request):
     c_idpessoal = request.GET.get("idPessoal")
     c_datainicial = request.GET.get("DataInicial")
     c_datafinal = request.GET.get("DataFinal")
-    data = facade.create_pagamento_avulso(c_datainicial, c_datafinal, c_idpessoal)
+    c_zerado = int(request.GET.get("Zerado"))
+    data = facade.create_pagamento_avulso(
+        c_datainicial, c_datafinal, c_idpessoal, c_zerado
+    )
     return data
 
 

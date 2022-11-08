@@ -1700,7 +1700,7 @@ def create_folha(mesreferencia, anoreferencia):
     #     create_cartaoponto(mesreferencia, anoreferencia, itens.idPessoal)
 
 
-def create_pagamento_avulso(datainicial, datafinal, idpessoal):
+def create_pagamento_avulso(datainicial, datafinal, idpessoal, zerado):
     recibo = []
     minutas = (
         MinutaColaboradores.objects.filter(
@@ -1711,6 +1711,7 @@ def create_pagamento_avulso(datainicial, datafinal, idpessoal):
         .exclude(idMinuta__StatusMinuta="ABERTA")
         .exclude(idMinuta__StatusMinuta="CONCLUIDA")
     )
+    new_idrecibo = 0
     if minutas:
         for index, itens in enumerate(minutas):
             motorista = MinutaColaboradores.objects.filter(
@@ -1769,7 +1770,10 @@ def create_pagamento_avulso(datainicial, datafinal, idpessoal):
             obj = Recibo()
             obj.Recibo = numero_recibo
             obj.DataRecibo = datetime.date.today()
-            obj.ValorRecibo = total_recibo
+            if zerado:
+                obj.ValorRecibo = Decimal(0.00)
+            else:
+                obj.ValorRecibo = total_recibo
             obj.idPessoal_id = idpessoal
             obj.save()
             new_idrecibo = obj.idRecibo
@@ -1783,11 +1787,71 @@ def create_pagamento_avulso(datainicial, datafinal, idpessoal):
                 obj.Pago = True
                 obj.idRecibo_id = new_idrecibo
                 obj.save(update_fields=["Pago", "idRecibo_id"])
+            print(new_idrecibo)
+            print(type(new_idrecibo))
     data = dict()
     data["html_saldoavulso"] = html_saldo_avulso(datainicial, datafinal)
     data["html_minutas"] = html_minutasavulso(datainicial, datafinal, idpessoal)
     data["html_recibos"] = html_recibo_avulso(datainicial, datafinal, idpessoal)
     data["numero_recibo"] = new_idrecibo
+    c_return = JsonResponse(data)
+    return c_return
+
+
+def create_contexto_itens_pagamento_avulso(datainicial, datafinal, idpessoal):
+    recibo = []
+    minutas = (
+        MinutaColaboradores.objects.filter(
+            idPessoal=idpessoal,
+            Pago=False,
+            idMinuta_id__DataMinuta__range=[datainicial, datafinal],
+        )
+        .exclude(idMinuta__StatusMinuta="ABERTA")
+        .exclude(idMinuta__StatusMinuta="CONCLUIDA")
+    )
+    if minutas:
+        for index, itens in enumerate(minutas):
+            if itens.Cargo == "AJUDANTE":
+                minutaitens = MinutaItens.objects.filter(
+                    TipoItens="PAGA",
+                    idMinuta=itens.idMinuta,
+                    Descricao="AJUDANTE",
+                    idMinuta_id__DataMinuta__range=[datainicial, datafinal],
+                )
+                if minutaitens:
+                    recibo.append(
+                        {
+                            "Data": itens.idMinuta.DataMinuta,
+                            "Minuta": itens.idMinuta.Minuta,
+                            "Cliente": itens.idMinuta.idCliente.Fantasia,
+                            "Descricao": minutaitens[0].Descricao,
+                            "Valor": minutaitens[0].ValorBase,
+                            "Motorista": "",
+                            "idMinutaItens": minutaitens[0].idMinutaItens,
+                        }
+                    )
+            elif itens.Cargo == "MOTORISTA":
+                minutaitens = MinutaItens.objects.filter(
+                    TipoItens="PAGA",
+                    idMinuta=itens.idMinuta,
+                    idMinuta_id__DataMinuta__range=[datainicial, datafinal],
+                ).exclude(Descricao="AJUDANTE")
+                for x in minutaitens:
+                    recibo.append(
+                        {
+                            "Data": itens.idMinuta.DataMinuta,
+                            "Minuta": itens.idMinuta.Minuta,
+                            "Cliente": itens.idMinuta.idCliente.Fantasia,
+                            "Descricao": x.Descricao,
+                            "Valor": x.Valor,
+                            "Motorista": "",
+                            "idMinutaItens": x.idMinutaItens,
+                        }
+                    )
+    data = dict()
+    data["html_saldoavulso"] = html_saldo_avulso(datainicial, datafinal)
+    data["html_minutas"] = html_minutasavulso(datainicial, datafinal, idpessoal)
+    data["html_recibos"] = html_recibo_avulso(datainicial, datafinal, idpessoal)
     c_return = JsonResponse(data)
     return c_return
 
