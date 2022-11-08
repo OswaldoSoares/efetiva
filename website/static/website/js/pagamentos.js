@@ -726,6 +726,7 @@ $(document).on("click", ".js-seleciona-colaborador-avulso", function(event) {
             $(".card-saldo-avulso").show();
             $(".card-minutas-avulso").show();
             $(".card-recibos-avulso").show();
+            $(".js-remove-itens-pagamento").hide();
             tamanhoCardBodyAvulso();
             $(".box-loader").hide();
         },
@@ -859,3 +860,11 @@ function estadoswitchmini(idpessoal) {
     });
     return estado_switchmini;
 }
+
+document.addEventListener("keydown", function(event) {
+    if (event.altKey && event.code === "KeyT") {
+        $(".js-remove-itens-pagamento").show();
+        $(".js-gera-pagamento-avulso").hide();
+        event.preventDefault();
+    }
+});
