@@ -415,7 +415,6 @@ def html_folha(request, contexto, data):
 
 
 def create_contexto_agenda(minutas, agenda):
-    print(minutas)
     for x in agenda:
         minutas.append(
             {
@@ -1136,7 +1135,7 @@ def verifica_falta(v_cartao_ponto):
                             break
 
 
-# TODO Melhorar codigo
+# TODO Melhorar código
 def imprime_contra_cheque_pagamento(_id_cc, tipo):
     _cc = ContraCheque.objects.filter(idContraCheque=_id_cc)
     _var = dict()
@@ -1150,15 +1149,15 @@ def imprime_contra_cheque_pagamento(_id_cc, tipo):
     _var["mes"], _var["ano"] = _mes, _ano
     _var["primeiro_dia"], _var["ultimo_dia"] = extremos_mes(_var["mes"], _var["ano"])
     # minutas = minutas_contra_cheque(_var)
-    minutas = select_minutas_contracheque(_mes, _ano, _cc[0].idPessoal_id)
     _carto_ponto = cartao_ponto(_var)
+    minutas = select_minutas_contracheque(_mes, _ano, _cc[0].idPessoal_id)
     _var["dias_falta"] = dias_falta(_carto_ponto)
     _var["dias_remunerado"] = dias_remunerado(_carto_ponto)
     _var["dias_transporte"] = dias_transporte(_carto_ponto)
     _var["dias_carro_empresa"] = dias_carro_empresa(_carto_ponto)
     _var["id_contra_cheque"] = _id_cc
-    atrazo(_var)
-    hora_extra(_var)
+    # atrazo(_var)
+    # hora_extra(_var)
     _cci = contra_cheque_itens(_var)
     _tv, _td, _st = totais_contra_cheque(_var)
     if tipo == "adian":
@@ -1787,8 +1786,6 @@ def create_pagamento_avulso(datainicial, datafinal, idpessoal, zerado):
                 obj.Pago = True
                 obj.idRecibo_id = new_idrecibo
                 obj.save(update_fields=["Pago", "idRecibo_id"])
-            print(new_idrecibo)
-            print(type(new_idrecibo))
     data = dict()
     data["html_saldoavulso"] = html_saldo_avulso(datainicial, datafinal)
     data["html_minutas"] = html_minutasavulso(datainicial, datafinal, idpessoal)
