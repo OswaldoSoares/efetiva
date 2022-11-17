@@ -27,6 +27,7 @@ from .views import (
     seleciona_mes_ano,
     seleciona_periodo_avulso,
     seleciona_vales,
+    imprime_relatorio_saldo_avulso,
 )
 
 urlpatterns = [
@@ -147,5 +148,10 @@ urlpatterns = [
         "exclui_agenda",
         exclui_agenda,
         name="exclui_agenda",
+    ),
+    path(
+        "imprime_relatorio_saldo_avulso",
+        imprime_relatorio_saldo_avulso,
+        name="imprime_relatorio_saldo_avulso",
     ),
 ]

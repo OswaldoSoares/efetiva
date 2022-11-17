@@ -4,6 +4,9 @@ from io import BytesIO
 from django.http import HttpResponse
 from reportlab.lib.colors import HexColor
 from reportlab.pdfgen import canvas
+from romaneios.print import header
+
+from website.models import FileUpload
 
 
 def cmp(mm):
@@ -519,6 +522,21 @@ def print_recibo(contexto):
     pdf.drawCentredString(cmp(170), cmp(10), "_______________________________")
     pdf.drawCentredString(cmp(170), cmp(6), "ASSINATURA")
     pdf.setTitle("recibo.pdf")
+    pdf.save()
+    buffer.seek(0)
+    pdf = buffer.getvalue()
+    buffer.close()
+    response.write(pdf)
+    return response
+
+
+def print_relatorio_saldo_avulso(contexto):
+    response = HttpResponse(content_type="application/pdf")
+    response["Content-Disposition"] = 'filename="RELATORIO SALDO AVULSO.pdf'
+    buffer = BytesIO()
+    pdf = canvas.Canvas(buffer)
+    pdf = header(pdf, contexto)
+    pdf.setTitle("RELATORIO SALDO AVULSO.pdf")
     pdf.save()
     buffer.seek(0)
     pdf = buffer.getvalue()

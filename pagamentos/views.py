@@ -8,7 +8,7 @@ from rolepermissions.decorators import has_permission_decorator
 from pagamentos import facade
 
 from .forms import CadastraCartaoPonto
-from .print import print_contracheque, print_recibo
+from .print import print_contracheque, print_recibo, print_relatorio_saldo_avulso
 
 
 @has_permission_decorator("modulo_pagamentos")
@@ -185,6 +185,17 @@ def print_contra_cheque_transporte(request):
     _id_cc = request.GET.get("idcc")
     contexto = facade.imprime_contra_cheque_pagamento(_id_cc, "transp")
     response = print_contracheque(contexto, "VALE TRANSPORTE")
+    return response
+
+
+def imprime_relatorio_saldo_avulso(request):
+    c_datainicial = request.GET.get("DataInicial")
+    c_datafinal = request.GET.get("DataFinal")
+    contexto = facade.create_contexto_imprime_relatorio_saldo_avulso(
+        c_datainicial, c_datafinal
+    )
+    response = print_relatorio_saldo_avulso(contexto)
+    print(response)
     return response
 
 

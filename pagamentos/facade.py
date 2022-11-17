@@ -2939,3 +2939,81 @@ def html_saldo_avulso(datainicial, datafinal):
     }
     c_return = render_to_string("pagamentos/saldoavulso.html", context)
     return c_return
+
+
+def create_contexto_imprime_relatorio_saldo_avulso(datainicial, datafinal):
+    contexto = create_contexto_saldo_avulso(datainicial, datafinal)
+    return contexto
+
+
+def create_contexto_saldo_avulso(datainicial, datafinal):
+    saldo, saldototal, saldovales, totalselect = create_contexto_avulsos_a_receber(
+        datainicial, datafinal
+    )
+    contexto = {
+        "saldo_colaborador": saldo,
+        "saldo_total": saldototal,
+        "data_inicial": datainicial,
+        "data_final": datafinal,
+    }
+    for x in contexto["saldo_colaborador"]:
+        pagar = create_contexto_minutas_avulso_receber(
+            datainicial, datafinal, x["idPessoal"]
+        )
+        x["pagar"] = pagar
+    return contexto
+
+
+def create_contexto_minutas_avulso_receber(datainicial, datafinal, idpessoal):
+    pagar = []
+    colaborador = facade.get_pessoal(idpessoal)
+    minutas = (
+        MinutaColaboradores.objects.filter(
+            idPessoal=idpessoal,
+            Pago=False,
+            idMinuta_id__DataMinuta__range=[datainicial, datafinal],
+        )
+        .exclude(idMinuta__StatusMinuta="ABERTA")
+        .exclude(idMinuta__StatusMinuta="CONCLUIDA")
+    )
+    for index, itens in enumerate(minutas):
+        if itens.Cargo == "AJUDANTE":
+            minutaitens = MinutaItens.objects.filter(
+                TipoItens="PAGA",
+                idMinuta=itens.idMinuta,
+                Descricao="AJUDANTE",
+                idMinuta_id__DataMinuta__range=[datainicial, datafinal],
+            )
+            if minutaitens:
+                pagar.append(
+                    {
+                        "Data": itens.idMinuta.DataMinuta,
+                        "Minuta": itens.idMinuta.Minuta,
+                        "Cliente": itens.idMinuta.idCliente.Fantasia,
+                        "Descricao": minutaitens[0].Descricao,
+                        "Valor": minutaitens[0].ValorBase,
+                    }
+                )
+        elif itens.Cargo == "MOTORISTA":
+            minutaitens = MinutaItens.objects.filter(
+                TipoItens="PAGA",
+                idMinuta=itens.idMinuta,
+                idMinuta_id__DataMinuta__range=[datainicial, datafinal],
+            ).exclude(Descricao="AJUDANTE")
+            for minutas in minutaitens:
+                pagar.append(
+                    {
+                        "Data": itens.idMinuta.DataMinuta,
+                        "Minuta": itens.idMinuta.Minuta,
+                        "Cliente": itens.idMinuta.idCliente.Fantasia,
+                        "Descricao": minutas.Descricao,
+                        "Valor": minutas.Valor,
+                    }
+                )
+    context = {
+        "pagar": pagar,
+        "colaborador": colaborador,
+        "datainicial": datainicial,
+        "datafinal": datafinal,
+    }
+    return context["pagar"]

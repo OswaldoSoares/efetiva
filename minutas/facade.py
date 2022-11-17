@@ -419,6 +419,7 @@ class MinutaSelecionada:
                 v_recebe["c_evol"] = True if int(phkesc[5:6]) else False
                 v_recebe["v_said"] = self.filtro_tabela_veiculo()["SaidaCobra"]
                 v_recebe["c_said"] = True if int(phkesc[6:7]) else False
+                print(v_recebe["c_said"])
                 if capacidade:
                     v_recebe["v_capa"] = capacidade[0]
                 v_recebe["c_capa"] = True if int(phkesc[7:8]) else False

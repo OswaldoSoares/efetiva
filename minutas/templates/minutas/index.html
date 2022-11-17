@@ -100,33 +100,25 @@
                             <div class="dados-minuta">
                                 <div class="linha-minuta linha-motorista">
                                     {% if minutas.Motorista %}
-                                    <i class="bi bi-person-square">
-                                        <span>{{ minutas.Motorista }}</span>
-                                    </i>
+                                    <i class="bi bi-person-square"><span>{{ minutas.Motorista }}</span></i>
                                     {% endif %}
                                 </div>
                                 <div class="linha-minuta linha-motorista">
                                     {% if minutas.Veiculo %}
-                                    <i class="bi bi-truck">
-                                        <span>{{ minutas.Veiculo }}</span>
-                                    </i>
+                                    <i class="bi bi-truck"><span>{{ minutas.Veiculo }}</span></i>
                                     {% endif %}
                                 </div>
                             </div>
                         </div>
                         <div class="icones-minuta">
                             <i class="bi bi-reply-all i-button"
-                                    onclick="window.location.href = '{% url 'estorna_minuta' minutas.idMinuta %}'">
-                            </i>
+                            onclick="window.location.href = '{% url 'estorna_minuta' minutas.idMinuta %}'"></i>
                             <i class="bi bi-printer i-button"
-                                    onclick="window.location.href = '{% url 'imprimeminuta' minutas.idMinuta %}'">
-                            </i>
+                            onclick="window.location.href = '{% url 'imprimeminuta' minutas.idMinuta %}'"></i>
                             <i class="bi bi-folder i-button"
-                                    onclick="window.location.href = '{% url 'consultaminuta' minutas.idMinuta %}'">
-                            </i>
+                            onclick="window.location.href = '{% url 'consultaminuta' minutas.idMinuta %}'"></i>
                             <i class="bi bi-folder i-button"
-                                    onclick="window.location.href = '{% url 'minuta' minutas.idMinuta %}'">
-                            </i>
+                            onclick="window.location.href = '{% url 'minuta' minutas.idMinuta %}'"></i>
                         </div>
                     </div>
                     <div class="linha-divisoria"></div>
