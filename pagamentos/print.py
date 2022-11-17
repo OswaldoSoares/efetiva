@@ -1,3 +1,4 @@
+import datetime
 import decimal
 from io import BytesIO
 
@@ -536,6 +537,63 @@ def print_relatorio_saldo_avulso(contexto):
     buffer = BytesIO()
     pdf = canvas.Canvas(buffer)
     pdf = header(pdf, contexto)
+    di = contexto["data_inicial"]
+    df = contexto["data_final"]
+    data_inicial = f"{di[8:10]}/{di[5:7]}/{di[0:4]}"
+    data_final = f"{df[8:10]}/{df[5:7]}/{df[0:4]}"
+    total_g = contexto["saldo_total"]
+    total_g = f"R$ {total_g:,.2f}".replace(".", "_").replace(",", ".").replace("_", ",")
+    pdf = header_relatorio_saldo_avulo(pdf, data_inicial, data_final)
+    linha = 250.6
+    for x in contexto["saldo_colaborador"]:
+        pdf.setFillColor(HexColor("#483D8B"))
+        pdf.setFont("Times-Roman", 10)
+        total = decimal.Decimal(x["Saldo"])
+        total = f"R$ {total:,.2f}".replace(".", "_").replace(",", ".").replace("_", ",")
+        pdf.drawString(cmp(12), cmp(linha), x["Nome"])
+        pdf.drawRightString(cmp(198), cmp(linha), total)
+        if x["banco"]:
+            pdf.setFont("Times-Roman", 8)
+            linha = linha - 3
+            if x["mais_banco"]:
+                pdf.drawString(cmp(10.5), cmp(linha), "*")
+            pdf.drawString(
+                cmp(12),
+                cmp(linha),
+                f"PIX: {x['banco'][0].PIX} - BANCO: {x['banco'][0].Banco} - AG: {x['banco'][0].Agencia} - CONTA {x['banco'][0].Conta} - {x['banco'][0].TipoConta}",
+            )
+        for i in x["pagar"]:
+            linha = linha - 3
+            pdf.setFillColor(HexColor("#000000"))
+            pdf.setFont("Times-Roman", 8)
+            valor = decimal.Decimal(i["Valor"])
+            valor = (
+                f"R$ {valor:,.2f}".replace(".", "_").replace(",", ".").replace("_", ",")
+            )
+            pdf.drawString(cmp(12), cmp(linha), i["Data"].strftime("%d/%m/%Y"))
+            pdf.drawString(cmp(32), cmp(linha), str(i["Minuta"]))
+            pdf.drawString(cmp(52), cmp(linha), i["Cliente"])
+            pdf.drawString(cmp(105), cmp(linha), i["Descricao"])
+            pdf.drawRightString(cmp(198), cmp(linha), valor)
+            if linha < 25:
+                pdf.line(cmp(10), cmp(14), cmp(200), cmp(14))
+                pagina = str(pdf.getPageNumber()).zfill(2)
+                pdf.drawString(cmp(20), cmp(11), f"TOTAL A PAGAR {total_g}")
+                pdf.drawRightString(cmp(190), cmp(11), f"PÁGINA {pagina}")
+                pdf.showPage()
+                header(pdf, contexto)
+                header_relatorio_saldo_avulo(pdf, data_inicial, data_final)
+                linha = 253.6
+        print(linha)
+        if not linha == 253.6:
+            linha = linha - 1
+            pdf.line(cmp(10), cmp(linha), cmp(200), cmp(linha))
+        linha = linha - 3.5
+    pdf.line(cmp(10), cmp(14), cmp(200), cmp(14))
+    pagina = str(pdf.getPageNumber()).zfill(2)
+    pdf.drawString(cmp(20), cmp(11), f"TOTAL A PAGAR {total_g}")
+    pdf.drawRightString(cmp(190), cmp(11), f"PÁGINA {pagina}")
+    pdf.showPage()
     pdf.setTitle("RELATORIO SALDO AVULSO.pdf")
     pdf.save()
     buffer.seek(0)
@@ -543,3 +601,14 @@ def print_relatorio_saldo_avulso(contexto):
     buffer.close()
     response.write(pdf)
     return response
+
+
+def header_relatorio_saldo_avulo(pdf, data_inicial, data_final):
+    pdf.setFont("Times-Roman", 12)
+    pdf.drawCentredString(
+        cmp(105),
+        cmp(255.8),
+        f"AVULSOS A PAGAR: {data_inicial} - {data_final}",
+    )
+    pdf.line(cmp(10), cmp(254.1), cmp(200), cmp(254.1))
+    return pdf

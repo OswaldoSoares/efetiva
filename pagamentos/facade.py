@@ -1421,7 +1421,7 @@ def create_contexto_avulsos_a_receber(datainicial, datafinal):
     avulsos = (
         MinutaColaboradores.objects.filter(Pago=False)
         .exclude(idPessoal__TipoPgto="MENSALISTA")
-        .values("idPessoal__Nome")
+        .values("idPessoal__Nome", "idPessoal_id")
         .distinct()
         .order_by("idPessoal")
     )
@@ -1429,6 +1429,10 @@ def create_contexto_avulsos_a_receber(datainicial, datafinal):
         colaborador = MinutaColaboradores.objects.filter(
             idPessoal__Nome=colaboradores["idPessoal__Nome"], Pago=False
         ).exclude(idMinuta__StatusMinuta="ABERTA")
+        _banco = ContaPessoal.objects.filter(idPessoal=colaboradores["idPessoal_id"])
+        _vc = False
+        if len(_banco) > 1:
+            _vc = True
         saldo_colaborador = 0
         for itens in colaborador:
             if itens.Cargo == "AJUDANTE":
@@ -1471,6 +1475,8 @@ def create_contexto_avulsos_a_receber(datainicial, datafinal):
                     "Nome_Curto": nome_curto(colaboradores["idPessoal__Nome"]),
                     "idPessoal": colaborador[0].idPessoal_id,
                     "Saldo": f"{saldo_colaborador}",
+                    "banco": _banco,
+                    "mais_banco": _vc,
                     # "ValeSelect": saldo_vales_select,
                     # "ValeTotal": total_vales,
                 }
@@ -2976,6 +2982,10 @@ def create_contexto_minutas_avulso_receber(datainicial, datafinal, idpessoal):
         .exclude(idMinuta__StatusMinuta="ABERTA")
         .exclude(idMinuta__StatusMinuta="CONCLUIDA")
     )
+    _banco = ContaPessoal.objects.filter(idPessoal=idpessoal)
+    _vc = False
+    if len(_banco) > 1:
+        _vc = True
     for index, itens in enumerate(minutas):
         if itens.Cargo == "AJUDANTE":
             minutaitens = MinutaItens.objects.filter(
