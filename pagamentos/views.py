@@ -195,7 +195,6 @@ def imprime_relatorio_saldo_avulso(request):
         c_datainicial, c_datafinal
     )
     response = print_relatorio_saldo_avulso(contexto)
-    print(response)
     return response
 
 

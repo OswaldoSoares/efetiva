@@ -536,14 +536,14 @@ def print_relatorio_saldo_avulso(contexto):
     response["Content-Disposition"] = 'filename="RELATORIO SALDO AVULSO.pdf'
     buffer = BytesIO()
     pdf = canvas.Canvas(buffer)
-    pdf = header(pdf, contexto)
+    header(pdf, contexto)
     di = contexto["data_inicial"]
     df = contexto["data_final"]
     data_inicial = f"{di[8:10]}/{di[5:7]}/{di[0:4]}"
     data_final = f"{df[8:10]}/{df[5:7]}/{df[0:4]}"
     total_g = contexto["saldo_total"]
     total_g = f"R$ {total_g:,.2f}".replace(".", "_").replace(",", ".").replace("_", ",")
-    pdf = header_relatorio_saldo_avulo(pdf, data_inicial, data_final)
+    header_relatorio_saldo_avulo(pdf, data_inicial, data_final)
     linha = 250.6
     for x in contexto["saldo_colaborador"]:
         pdf.setFillColor(HexColor("#483D8B"))
@@ -576,24 +576,15 @@ def print_relatorio_saldo_avulso(contexto):
             pdf.drawString(cmp(105), cmp(linha), i["Descricao"])
             pdf.drawRightString(cmp(198), cmp(linha), valor)
             if linha < 25:
-                pdf.line(cmp(10), cmp(14), cmp(200), cmp(14))
-                pagina = str(pdf.getPageNumber()).zfill(2)
-                pdf.drawString(cmp(20), cmp(11), f"TOTAL A PAGAR {total_g}")
-                pdf.drawRightString(cmp(190), cmp(11), f"PÁGINA {pagina}")
-                pdf.showPage()
+                footer_relatorio_saldo_avulso(pdf, total_g)
                 header(pdf, contexto)
                 header_relatorio_saldo_avulo(pdf, data_inicial, data_final)
                 linha = 253.6
-        print(linha)
         if not linha == 253.6:
             linha = linha - 1
             pdf.line(cmp(10), cmp(linha), cmp(200), cmp(linha))
         linha = linha - 3.5
-    pdf.line(cmp(10), cmp(14), cmp(200), cmp(14))
-    pagina = str(pdf.getPageNumber()).zfill(2)
-    pdf.drawString(cmp(20), cmp(11), f"TOTAL A PAGAR {total_g}")
-    pdf.drawRightString(cmp(190), cmp(11), f"PÁGINA {pagina}")
-    pdf.showPage()
+    footer_relatorio_saldo_avulso(pdf, total_g)
     pdf.setTitle("RELATORIO SALDO AVULSO.pdf")
     pdf.save()
     buffer.seek(0)
@@ -611,4 +602,13 @@ def header_relatorio_saldo_avulo(pdf, data_inicial, data_final):
         f"AVULSOS A PAGAR: {data_inicial} - {data_final}",
     )
     pdf.line(cmp(10), cmp(254.1), cmp(200), cmp(254.1))
+    return pdf
+
+
+def footer_relatorio_saldo_avulso(pdf, total_g):
+    pdf.line(cmp(10), cmp(14), cmp(200), cmp(14))
+    pagina = str(pdf.getPageNumber()).zfill(2)
+    pdf.drawString(cmp(20), cmp(11), f"TOTAL A PAGAR {total_g}")
+    pdf.drawRightString(cmp(190), cmp(11), f"PÁGINA {pagina}")
+    pdf.showPage()
     return pdf
