@@ -49,7 +49,7 @@ dias = [
 class Colaborador:
     def __init__(self, idpes):
         colaborador = Pessoal.objects.get(idPessoal=idpes)
-        self.idpessoal = colaborador.idPessoal
+        self.idpes = colaborador.idPessoal
         self.nome = colaborador.Nome
         self.endereco = colaborador.Endereco
         self.bairro = colaborador.Bairro
@@ -65,6 +65,28 @@ class Colaborador:
         self.data_admissao = colaborador.DataAdmissao
         self.data_demissao = colaborador.DataDemissao
         self.foto = colaborador.Foto
+        self.documentos = ColaboradorDocumentos(idpes).docs
+
+
+class ColaboradorDocumentos:
+    def __init__(self, idpes):
+        self.docs = self.get_docpessoal(idpes)
+
+    @staticmethod
+    def get_docpessoal(idpes):
+        print("oi")
+        documentos = DocPessoal.objects.filter(idPessoal=idpes)
+        lista = [
+            {
+                "iddoc": i.idDocPessoal,
+                "tipo": i.TipoDocumento,
+                "documento": i.Documento,
+                "data_doc": i.Data,
+            }
+            for i in documentos
+        ]
+        print(lista)
+        return lista
 
 
 def create_pessoal_context(idpessoa: int):
