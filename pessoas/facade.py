@@ -19,6 +19,7 @@ from pessoas.models import (
     CartaoPonto,
 )
 from minutas.models import MinutaColaboradores
+from website.facade import nome_curto
 
 
 meses = [
@@ -157,6 +158,19 @@ def create_pessoal_context(idpessoa: int):
         "minutas": minutas,
     }
     return context
+
+
+def create_contexto_colaboradores_ativo():
+    colaboradores = Pessoal.objects.filter(StatusPessoal=True)
+    lista = [
+        {
+            "idpessoal": i.idPessoal,
+            "nome": i.Nome,
+            "nome_curto": nome_curto(i.Nome),
+        }
+        for i in colaboradores
+    ]
+    return lista
 
 
 def list_pessoal_all():

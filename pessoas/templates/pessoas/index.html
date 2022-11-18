@@ -10,7 +10,7 @@
             data-title="CADASTRO DE COLABORADOR"
             data-action="{% url 'criapessoa' %}"
             data-button-save-label="SALVAR"></button>
-    <table class="tabela">
+    {% comment %} <table class="tabela">
         <tbody>
             {% for itens in pessoal %}
                 <tr class="tabelalinha">
@@ -43,7 +43,7 @@
                 </tr>
             {% endfor %}
         </tbody>
-    </table>
+    </table> {% endcomment %}
 
     <!-- DIV MODAL -->
     <div class="modal fade" id="modal-formulario" >
