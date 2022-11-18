@@ -67,6 +67,7 @@ class Colaborador:
         self.foto = colaborador.Foto
         self.documentos = ColaboradorDocumentos(idpes).docs
         self.telefones = ColaboradorTelefones(idpes).fone
+        self.bncos = ColaboradorBancos(idpes).conta
 
 
 class ColaboradorDocumentos:
@@ -103,6 +104,29 @@ class ColaboradorTelefones:
                 "contato": i.Contato,
             }
             for i in telefones
+        ]
+        return lista
+
+
+class ColaboradorBancos:
+    def __init__(self, idpes):
+        self.conta = self.get_bancos(idpes)
+
+    @staticmethod
+    def get_bancos(idpes):
+        bancos = ContaPessoal.objects.filter(idPessoal=idpes)
+        lista = [
+            {
+                "idconta": i.idContaPessoal,
+                "banco": i.Banco,
+                "agencia": i.Agencia,
+                "conta": i.Conta,
+                "tipo": i.TipoConta,
+                "titular": i.Titular,
+                "documento": i.Documento,
+                "pix": i.PIX,
+            }
+            for i in bancos
         ]
         return lista
 

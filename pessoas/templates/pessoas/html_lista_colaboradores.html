@@ -1,0 +1,17 @@
+<div class="article-card-titulo">
+    <span>COLABORADORES</span>
+</div>
+<div class="article-card-body">
+    {% for colaborador in pessoal %}
+    <div class="itens-lista">
+        <div class="item-nome">
+            <span>{{ colaborador.Nome }}</span>
+        </div>
+        <div class="item-button">
+            <i class="bi bi-folder-symlink i-button js-seleciona-colaborador"></i>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<div class="article-card-footer">
+</div>
