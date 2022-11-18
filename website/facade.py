@@ -12,6 +12,36 @@ from .models import Parametros
 # from imap_tools import MailBox, AND
 
 
+def nome_curto(nome):
+    apelido = nome
+    if nome:
+        apelido = nome.split()
+    if len(apelido) > 2:
+        if len(apelido[1]) > 2:
+            del apelido[2:]
+        else:
+            del apelido[3:]
+        apelido = " ".join(apelido)
+    else:
+        apelido = nome
+    return apelido
+
+
+def nome_curto_underscore(nome):
+    apelido = nome
+    if nome:
+        apelido = nome.split()
+    if len(apelido) > 2:
+        if len(apelido[1]) > 2:
+            del apelido[2:]
+        else:
+            del apelido[3:]
+        apelido = "_".join(apelido)
+    else:
+        apelido = "_".join(apelido)
+    return apelido
+
+
 class DiasFeriados:
     def __init__(self):
         self.feriados = self.get_dias_feriados()
