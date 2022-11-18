@@ -7,14 +7,64 @@ from django.template.loader import render_to_string
 from decimal import Decimal
 
 from pessoas.forms import CadastraSalario, CadastraVale, CadastraDemissao
-from pessoas.models import Pessoal, Salario, DocPessoal, FonePessoal, ContaPessoal, Vales, ContraCheque, \
-    ContraChequeItens, CartaoPonto
+from pessoas.models import (
+    Pessoal,
+    Salario,
+    DocPessoal,
+    FonePessoal,
+    ContaPessoal,
+    Vales,
+    ContraCheque,
+    ContraChequeItens,
+    CartaoPonto,
+)
 from minutas.models import MinutaColaboradores
 
 
-meses = ['JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL', 'MAIO', 'JUNHO', 'JULHO', 'AGOSTO', 'SETEMBRO', 'OUTUBRO',
-         'NOVEMBRO', 'DEZEMBRO']
-dias = ['SEGUNDA-FEIRA', 'TERÇA-FEIRA', 'QUARTA-FEIRA', 'QUINTA-FEIRA', 'SEXTA-FEIRA', 'SÁBADO', 'DOMINGO']
+meses = [
+    "JANEIRO",
+    "FEVEREIRO",
+    "MARÇO",
+    "ABRIL",
+    "MAIO",
+    "JUNHO",
+    "JULHO",
+    "AGOSTO",
+    "SETEMBRO",
+    "OUTUBRO",
+    "NOVEMBRO",
+    "DEZEMBRO",
+]
+dias = [
+    "SEGUNDA-FEIRA",
+    "TERÇA-FEIRA",
+    "QUARTA-FEIRA",
+    "QUINTA-FEIRA",
+    "SEXTA-FEIRA",
+    "SÁBADO",
+    "DOMINGO",
+]
+
+
+class Colaborador:
+    def __init__(self, idpes):
+        colaborador = Pessoal.objects.get(idPessoal=idpes)
+        self.idpessoal = colaborador.idPessoal
+        self.nome = colaborador.Nome
+        self.endereco = colaborador.Endereco
+        self.bairro = colaborador.Bairro
+        self.cep = colaborador.CEP
+        self.cidade = colaborador.Cidade
+        self.estado = colaborador.Estado
+        self.data_nascimento = colaborador.DataNascimento
+        self.mae = colaborador.Mae
+        self.pai = colaborador.Pai
+        self.categoria = colaborador.Categoria
+        self.tipo_pgto = colaborador.TipoPgto
+        self.status_pessoal = colaborador.StatusPessoal
+        self.data_admissao = colaborador.DataAdmissao
+        self.data_demissao = colaborador.DataDemissao
+        self.foto = colaborador.Foto
 
 
 def create_pessoal_context(idpessoa: int):
@@ -30,9 +80,18 @@ def create_pessoal_context(idpessoa: int):
     formvale = CadastraVale()
     form_demissao = CadastraDemissao(instance=instance_colaborador)
     minutas = MinutaColaboradores.objects.filter(idPessoal=idpessoa)
-    context = {'colaborador': colaborador, 'docpessoa': docpessoa, 'fonepessoa': fonepessoa, 'contapessoa': contapessoa,
-               'contracheque': contracheque, 'salario': salario, 'formsalario': formsalario, 'formvale': formvale,
-               'form_demissao': form_demissao, 'minutas': minutas}
+    context = {
+        "colaborador": colaborador,
+        "docpessoa": docpessoa,
+        "fonepessoa": fonepessoa,
+        "contapessoa": contapessoa,
+        "contracheque": contracheque,
+        "salario": salario,
+        "formsalario": formsalario,
+        "formvale": formvale,
+        "form_demissao": form_demissao,
+        "minutas": minutas,
+    }
     return context
 
 
@@ -45,11 +104,11 @@ def get_pessoal_all():
 
 
 def get_pessoal_mensalista_ativo():
-    return Pessoal.objects.filter(TipoPgto='MENSALISTA', StatusPessoal=True)
+    return Pessoal.objects.filter(TipoPgto="MENSALISTA", StatusPessoal=True)
 
 
 def get_pessoal_nao_mensalista_ativo():
-    return Pessoal.objects.filter(StatusPessoal=True).exclude(TipoPgto='MENSALISTA')
+    return Pessoal.objects.filter(StatusPessoal=True).exclude(TipoPgto="MENSALISTA")
 
 
 def get_pessoal(idpessoa: int):
@@ -91,14 +150,17 @@ def get_contrachequereferencia(mesreferencia, anoreferencia, idpessoal):
     if mesreferencia in meses:
         mes = mesreferencia
     else:
-        mes = meses[int(mesreferencia)-1]
-    contracheque = ContraCheque.objects.filter(MesReferencia=mes, AnoReferencia=anoreferencia,
-                                               idPessoal=idpessoal)
+        mes = meses[int(mesreferencia) - 1]
+    contracheque = ContraCheque.objects.filter(
+        MesReferencia=mes, AnoReferencia=anoreferencia, idPessoal=idpessoal
+    )
     return contracheque
 
 
 def get_contracheque_itens(idcontracheque: int):
-    contracheque_itens = ContraChequeItens.objects.filter(idContraCheque_id=idcontracheque).order_by('Registro')
+    contracheque_itens = ContraChequeItens.objects.filter(
+        idContraCheque_id=idcontracheque
+    ).order_by("Registro")
     return contracheque_itens
 
 
@@ -124,7 +186,7 @@ def edita_data_demissao(idpessoal, data_demissao):
     colaborador = Pessoal.objects.get(idPessoal=idpessoal)
     obj = colaborador
     obj.DataDemissao = data_demissao
-    obj.save(update_fields=['DataDemissao'])
+    obj.save(update_fields=["DataDemissao"])
 
 
 def create_vale(data, descricao, valor, idpessoal):
@@ -142,14 +204,18 @@ def create_contracheque(mesreferencia, anoreferencia, valor, idpessoal):
     if int(anoreferencia) >= admissao.year:
         if int(mesreferencia) >= admissao.month:
             salario = get_salario(idpessoal)
-            if not busca_contracheque(meses[int(mesreferencia)-1], anoreferencia, idpessoal):
+            if not busca_contracheque(
+                meses[int(mesreferencia) - 1], anoreferencia, idpessoal
+            ):
                 obj = ContraCheque()
-                obj.MesReferencia = meses[int(mesreferencia)-1]
+                obj.MesReferencia = meses[int(mesreferencia) - 1]
                 obj.AnoReferencia = anoreferencia
                 obj.Valor = valor
                 obj.idPessoal_id = idpessoal
                 obj.save()
-                create_contracheque_itens('Salario', salario[0].Salario, 'C', obj.idContraCheque)
+                create_contracheque_itens(
+                    "Salario", salario[0].Salario, "C", obj.idContraCheque
+                )
 
 
 def create_contracheque_itens(descricao, valor, registro, idcontracheque):
@@ -167,32 +233,40 @@ def altera_contracheque_itens(contrachequeitens, valorhoraextra):
     if float(valorhoraextra) > 0:
         obj = contrachequeitens
         obj.Valor = valorhoraextra
-        obj.save(update_fields=['Valor'])
+        obj.save(update_fields=["Valor"])
 
 
 def busca_contracheque(mesreferencia, anoreferencia, idpessoal):
-    qs_contracheque = ContraCheque.objects.filter(MesReferencia=mesreferencia, AnoReferencia=anoreferencia,
-                                                  idPessoal=idpessoal)
+    qs_contracheque = ContraCheque.objects.filter(
+        MesReferencia=mesreferencia, AnoReferencia=anoreferencia, idPessoal=idpessoal
+    )
     if qs_contracheque:
         return True
 
 
 def busca_contrachequeitens(idcontracheque, descricao, registro):
-    contrachequeitens = ContraChequeItens.objects.filter(idContraCheque=idcontracheque, Descricao=descricao,
-                                                         Registro=registro)
+    contrachequeitens = ContraChequeItens.objects.filter(
+        idContraCheque=idcontracheque, Descricao=descricao, Registro=registro
+    )
     return contrachequeitens
 
 
 def saldo_contracheque(idcontracheque):
-    credito = ContraChequeItens.objects.filter(idContraCheque=idcontracheque,
-                                               Registro='C').aggregate(Total=Sum('Valor'))
-    debito = ContraChequeItens.objects.filter(idContraCheque=idcontracheque,
-                                              Registro='D').aggregate(Total=Sum('Valor'))
-    if not credito['Total']:
-        credito['Total'] = Decimal('0.00')
-    if not debito['Total']:
-        debito['Total'] = Decimal('0.00')
-    totais = {'Credito': credito['Total'], 'Debito': debito['Total'], 'Liquido': credito['Total'] - debito['Total']}
+    credito = ContraChequeItens.objects.filter(
+        idContraCheque=idcontracheque, Registro="C"
+    ).aggregate(Total=Sum("Valor"))
+    debito = ContraChequeItens.objects.filter(
+        idContraCheque=idcontracheque, Registro="D"
+    ).aggregate(Total=Sum("Valor"))
+    if not credito["Total"]:
+        credito["Total"] = Decimal("0.00")
+    if not debito["Total"]:
+        debito["Total"] = Decimal("0.00")
+    totais = {
+        "Credito": credito["Total"],
+        "Debito": debito["Total"],
+        "Liquido": credito["Total"] - debito["Total"],
+    }
     return totais
 
 
@@ -200,17 +274,27 @@ def print_contracheque_context(idcontracheque):
     contracheque = get_contrachequeid(idcontracheque)
     contrachequeitens = get_contracheque_itens(idcontracheque)
     colaborador = get_pessoal(contracheque[0].idPessoal_id)
-    credito = ContraChequeItens.objects.filter(idContraCheque=contracheque[0].idContraCheque,
-                                               Registro='C').aggregate(Total=Sum('Valor'))
-    debito = ContraChequeItens.objects.filter(idContraCheque=contracheque[0].idContraCheque,
-                                              Registro='D').aggregate(Total=Sum('Valor'))
-    if credito['Total']:
-        credito['Total'] = Decimal('0.00')
-    if debito['Total']:
-        debito['Total'] = Decimal('0.00')
-    totais = {'Credito': credito['Total'], 'Debito': debito['Total'], 'Liquido': credito['Total'] - debito['Total']}
-    contexto = {'contracheque': contracheque, 'contrachequeitens': contrachequeitens, 'colaborador': colaborador,
-                'totais': totais}
+    credito = ContraChequeItens.objects.filter(
+        idContraCheque=contracheque[0].idContraCheque, Registro="C"
+    ).aggregate(Total=Sum("Valor"))
+    debito = ContraChequeItens.objects.filter(
+        idContraCheque=contracheque[0].idContraCheque, Registro="D"
+    ).aggregate(Total=Sum("Valor"))
+    if credito["Total"]:
+        credito["Total"] = Decimal("0.00")
+    if debito["Total"]:
+        debito["Total"] = Decimal("0.00")
+    totais = {
+        "Credito": credito["Total"],
+        "Debito": debito["Total"],
+        "Liquido": credito["Total"] - debito["Total"],
+    }
+    contexto = {
+        "contracheque": contracheque,
+        "contrachequeitens": contrachequeitens,
+        "colaborador": colaborador,
+        "totais": totais,
+    }
     return contexto
 
 
@@ -220,36 +304,40 @@ def create_cartaoponto(mesreferencia, anoreferencia, idpessoal):
     if int(anoreferencia) >= admissao.year:
         if int(mesreferencia) >= admissao.month:
             admissao = datetime.datetime(admissao.year, admissao.month, admissao.day)
-            if not busca_cartaoponto_referencia(mesreferencia, anoreferencia, idpessoal):
+            if not busca_cartaoponto_referencia(
+                mesreferencia, anoreferencia, idpessoal
+            ):
                 referencia = calendar.monthrange(int(anoreferencia), int(mesreferencia))
-                for x in range(1, referencia[1]+1):
-                    dia = '{}-{}-{}'.format(anoreferencia, mesreferencia, x)
-                    dia = datetime.datetime.strptime(dia, '%Y-%m-%d')
+                for x in range(1, referencia[1] + 1):
+                    dia = "{}-{}-{}".format(anoreferencia, mesreferencia, x)
+                    dia = datetime.datetime.strptime(dia, "%Y-%m-%d")
                     obj = CartaoPonto()
                     obj.Dia = dia
-                    obj.Entrada = '07:00'
-                    obj.Saida = '17:00'
+                    obj.Entrada = "07:00"
+                    obj.Saida = "17:00"
                     if dia.weekday() == 5 or dia.weekday() == 6:
                         obj.Ausencia = dias[dia.weekday()]
                     else:
-                        obj.Ausencia = ''
+                        obj.Ausencia = ""
                     if dia < admissao:
-                        obj.Ausencia = '-------'
+                        obj.Ausencia = "-------"
                     obj.idPessoal_id = idpessoal
                     obj.save()
 
 
 def busca_cartaoponto_referencia(mesreferencia, anoreferencia, idpessoal):
     if mesreferencia in meses:
-        mes = meses.index(mesreferencia)+1
+        mes = meses.index(mesreferencia) + 1
     else:
         mes = int(mesreferencia)
-    dia = '{}-{}-{}'.format(anoreferencia, mes, 1)
-    dia = datetime.datetime.strptime(dia, '%Y-%m-%d')
+    dia = "{}-{}-{}".format(anoreferencia, mes, 1)
+    dia = datetime.datetime.strptime(dia, "%Y-%m-%d")
     referencia = calendar.monthrange(int(anoreferencia), mes)
-    diafinal = '{}-{}-{}'.format(anoreferencia, mes, referencia[1])
-    diafinal = datetime.datetime.strptime(diafinal, '%Y-%m-%d')
-    cartaoponto = CartaoPonto.objects.filter(Dia__range=[dia, diafinal], idPessoal=idpessoal)
+    diafinal = "{}-{}-{}".format(anoreferencia, mes, referencia[1])
+    diafinal = datetime.datetime.strptime(diafinal, "%Y-%m-%d")
+    cartaoponto = CartaoPonto.objects.filter(
+        Dia__range=[dia, diafinal], idPessoal=idpessoal
+    )
     if cartaoponto:
         return cartaoponto
 
@@ -266,26 +354,34 @@ def altera_status(idpessoal):
 def form_pessoa(request, c_form, c_idobj, c_url, c_view, idpessoal):
     data = dict()
     c_instance = None
-    if c_view == 'edita_pessoa' or c_view == 'exclui_pessoa':
+    if c_view == "edita_pessoa" or c_view == "exclui_pessoa":
         if c_idobj:
             c_instance = Pessoal.objects.get(idPessoal=c_idobj)
-    if request.method == 'POST':
+    if request.method == "POST":
         form = c_form(request.POST, instance=c_instance)
         if form.is_valid():
             save_id = form.save()
-            if c_view == 'cria_pessoa' or c_view == 'edita_pessoa':
-                data['save_id'] = save_id.idPessoal
-                if c_view == 'cria_pessoa':
+            if c_view == "cria_pessoa" or c_view == "edita_pessoa":
+                data["save_id"] = save_id.idPessoal
+                if c_view == "cria_pessoa":
                     save_salario(save_id.idPessoal, 0.00, 1, 0.00)
             else:
-                data['save_id'] = save_id.idPessoal_id
+                data["save_id"] = save_id.idPessoal_id
         else:
             pass
     else:
         form = c_form(instance=c_instance)
-    context = {'form': form, 'c_idobj': c_idobj, 'c_url': c_url, 'c_view': c_view, 'idpessoal': idpessoal}
-    data['html_form'] = render_to_string('pessoas/formpessoa.html', context, request=request)
-    data['c_view'] = c_view
+    context = {
+        "form": form,
+        "c_idobj": c_idobj,
+        "c_url": c_url,
+        "c_view": c_view,
+        "idpessoal": idpessoal,
+    }
+    data["html_form"] = render_to_string(
+        "pessoas/formpessoa.html", context, request=request
+    )
+    data["c_view"] = c_view
     c_return = JsonResponse(data)
     return c_return
 
@@ -293,7 +389,7 @@ def form_pessoa(request, c_form, c_idobj, c_url, c_view, idpessoal):
 def form_exclui_pessoal(request, c_idobj, c_url, c_view, idpessoal):
     data = dict()
     c_queryset = None
-    if c_view == 'exclui_pessoa':
+    if c_view == "exclui_pessoa":
         c_queryset = Pessoal.objects.get(idPessoal=c_idobj)
     # elif c_view == 'exclui_email_cliente':
     #     c_queryset = EMailContatoCliente.objects.get(idEmailContatoCliente=c_idobj)
@@ -307,9 +403,16 @@ def form_exclui_pessoal(request, c_idobj, c_url, c_view, idpessoal):
     #     c_queryset = TabelaPerimetro.objects.get(idTabelaPerimetro=c_idobj)
     if request.method == "POST":
         c_queryset.delete()
-    context = {'c_url': c_url, 'c_view': c_view, 'c_queryset': c_queryset, 'idpessoal': idpessoal}
-    data['html_form'] = render_to_string('pessoas/formpessoa.html', context, request=request)
-    data['c_view'] = c_view
-    data['save_id'] = idpessoal
+    context = {
+        "c_url": c_url,
+        "c_view": c_view,
+        "c_queryset": c_queryset,
+        "idpessoal": idpessoal,
+    }
+    data["html_form"] = render_to_string(
+        "pessoas/formpessoa.html", context, request=request
+    )
+    data["c_view"] = c_view
+    data["save_id"] = idpessoal
     c_return = JsonResponse(data)
     return c_return
