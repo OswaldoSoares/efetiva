@@ -66,6 +66,7 @@ class Colaborador:
         self.data_demissao = colaborador.DataDemissao
         self.foto = colaborador.Foto
         self.documentos = ColaboradorDocumentos(idpes).docs
+        self.telefones = ColaboradorTelefones(idpes).fone
 
 
 class ColaboradorDocumentos:
@@ -74,7 +75,6 @@ class ColaboradorDocumentos:
 
     @staticmethod
     def get_docpessoal(idpes):
-        print("oi")
         documentos = DocPessoal.objects.filter(idPessoal=idpes)
         lista = [
             {
@@ -85,7 +85,25 @@ class ColaboradorDocumentos:
             }
             for i in documentos
         ]
-        print(lista)
+        return lista
+
+
+class ColaboradorTelefones:
+    def __init__(self, idpes):
+        self.fone = self.get_telefones(idpes)
+
+    @staticmethod
+    def get_telefones(idpes):
+        telefones = FonePessoal.objects.filter(idPessoal=idpes)
+        lista = [
+            {
+                "idfone": i.idFonePessoal,
+                "tipo": i.TipoFone,
+                "fone": i.Fone,
+                "contato": i.Contato,
+            }
+            for i in telefones
+        ]
         return lista
 
 
