@@ -1,3 +1,4 @@
+{% load humanize %}
 <div class="article-card-titulo">
     <span>COLABORADORES</span>
 </div>
@@ -16,4 +17,18 @@
     {% endfor %}
 </div>
 <div class="article-card-footer">
+    <div class="itens-lista">
+        <div class="item-nome">
+            {% for it in colaboradores %}
+                {% if forloop.last %}
+                {{ forloop.counter|stringformat:"02d" }}
+                COLABORADOR{{ forloop.counter|pluralize:"es"|upper }}
+                ATIVO{{ forloop.counter|pluralize|upper }}
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="item-button">
+            <i class="bi bi-plus-circle i-button js-adiciona-colaborador"></i>
+        </div>
+    </div>
 </div>
