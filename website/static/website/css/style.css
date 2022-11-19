@@ -6091,6 +6091,36 @@ main .fp-recibo-tabela .fp-recibo-print {
     font-size: 14px;
 }
 
+.card-dados-colaborador {
+    width: 500px;
+}
+
+.card-dados-colaborador .itens-dados {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    color: var(--color6);
+}
+
+.card-dados-colaborador .itens-dados .item-descricao {
+    width: 30%;
+    padding-left: 5px;
+    text-align: left;
+}
+
+.card-dados-colaborador .itens-dados .item-valor {
+    width: 70%;
+    padding-right: 5px;
+    text-align: right;
+}
+
+.card-dados-colaborador .article-card-footer {
+    color: var(--color6);
+    font-size: 14px;
+}
+
 
 /* MODULO PESSOAS - END */
 

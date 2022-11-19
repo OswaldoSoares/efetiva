@@ -6,8 +6,15 @@ $(document).on('click', ".js-seleciona-colaborador", function() {
         data: {
             id_pessoal: id_pessoal,
         },
-        beforeSend: function() {},
-        success: function(data) {},
+        beforeSend: function() {
+            $(".card-dados-colaborador").hide()
+            $(".box-loader").show()
+        },
+        success: function(data) {
+            $(".card-dados-colaborador").html(data.html_dados_colaborador)
+            $(".card-dados-colaborador").show()
+            $(".box-loader").hide()
+        },
         error: function(errorThrown) {
             console.log("error: " + errorThrown)
         }

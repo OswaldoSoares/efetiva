@@ -1,5 +1,78 @@
 <div class="article-card-titulo">
-    <span>{{ colaborador }}</span>
+    <span>{{ colaborador.nome }}</span>
 </div>
-<div class="article-card-body"></div>
+<div class="article-card-body">
+    <div class="itens-dados">
+        <div class="item-descricao">
+            <span>NOME:</span>
+        </div>
+        <div class="item-valor">
+            {{ colaborador.nome }}
+        </div>
+    </div>
+    <div class="itens-dados">
+        <div class="item-descricao">
+            <span>ENDEREÇO:</span>
+        </div>
+        <div class="item-valor">
+            {{ colaborador.endereco }}
+        </div>
+    </div>
+    <div class="itens-dados">
+        <div class="item-descricao">
+            <span>CIDADE:</span>
+        </div>
+        <div class="item-valor">
+            {{ colaborador.cidade }}
+        </div>
+    </div>
+    <div class="itens-dados">
+        <div class="item-descricao">
+            <span>NOME MÃE:</span>
+        </div>
+        <div class="item-valor">
+            {{ colaborador.mae }}
+        </div>
+    </div>
+    <div class="itens-dados">
+        <div class="item-descricao">
+            <span>NOME PAI:</span>
+        </div>
+        <div class="item-valor">
+            {{ colaborador.pai}}
+        </div>
+    </div>
+    <div class="itens-dados">
+        <div class="item-descricao">
+            <span>DATA NASCIMENTO:</span>
+        </div>
+        <div class="item-valor">
+            {{ colaborador.data_nascimento }}
+        </div>
+    </div>
+    <div class="itens-dados">
+        <div class="item-descricao">
+            <span>CATEGORIA:</span>
+        </div>
+        <div class="item-valor">
+            {{ colaborador.categoria }}
+        </div>
+    </div>
+    <div class="itens-dados">
+        <div class="item-descricao">
+            <span>DATA ADMISSÃO:</span>
+        </div>
+        <div class="item-valor">
+            {{ colaborador.data_admissao}}
+        </div>
+    </div>
+    <div class="itens-dados">
+        <div class="item-descricao">
+            <span>TIPO DE PAGAMENTO</span>
+        </div>
+        <div class="item-valor">
+            {{ colaborador.tipo_pgto }}
+        </div>
+    </div>
+</div>
 <div class="article-card-footer"></div>
