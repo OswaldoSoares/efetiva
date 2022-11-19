@@ -498,9 +498,10 @@ def create_contexto_colaboradores_ativo():
 
 
 def create_contexto_consulta_colaborador(idpessoal):
-    colaborador = Colaborador(idpessoal)
+    colaborador = Colaborador(idpessoal).__dict__
     return {"colaborador": colaborador}
 
 
 def create_data_consulta_colaborador(request, contexto):
+    print(contexto)
     pass
