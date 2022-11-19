@@ -1,5 +1,16 @@
 <div class="article-card-titulo">
-    <span>{{ colaborador.nome }}</span>
+    <div class="itens-dados">
+        <div class="item-nome">
+            <span>{{ colaborador.nome_curto }}</span>
+        </div>
+        <div class="item-button">
+            <i class="bi bi-pencil-square i-button"
+            onclick="openMyModal(event); return false;"
+            data-title="EDITA CADASTRO DE COLABORADOR"
+            data-action="{% url 'editapessoa' colaborador.idpes %}"
+            data-button-save-label="ALTERAR"></i>
+        </div>
+    </div>
 </div>
 <div class="article-card-body">
     <div class="itens-dados">
@@ -26,6 +37,7 @@
             {{ colaborador.cidade_estado }}
         </div>
     </div>
+    {% if colaborador.mae  %}
     <div class="itens-dados">
         <div class="item-descricao">
             <span>NOME MÃE:</span>
@@ -34,14 +46,17 @@
             {{ colaborador.mae }}
         </div>
     </div>
+    {% endif %}
+    {% if colaborador.pai  %}
     <div class="itens-dados">
         <div class="item-descricao">
             <span>NOME PAI:</span>
         </div>
         <div class="item-valor">
-            {{ colaborador.pai}}
+            {{ colaborador.pai }}
         </div>
     </div>
+    {% endif %}
     <div class="itens-dados">
         <div class="item-descricao">
             <span>DATA NASCIMENTO:</span>
@@ -58,6 +73,7 @@
             {{ colaborador.categoria }}
         </div>
     </div>
+    {% if colaborador.admissao  %}
     <div class="itens-dados">
         <div class="item-descricao">
             <span>DATA ADMISSÃO:</span>
@@ -66,6 +82,7 @@
             {{ colaborador.data_admissao}}
         </div>
     </div>
+    {% endif %}
     <div class="itens-dados">
         <div class="item-descricao">
             <span>TIPO DE PAGAMENTO:</span>

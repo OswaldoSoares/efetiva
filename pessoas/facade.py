@@ -52,6 +52,7 @@ class Colaborador:
         colaborador = Pessoal.objects.get(idPessoal=idpes)
         self.idpes = colaborador.idPessoal
         self.nome = colaborador.Nome
+        self.nome_curto = nome_curto(colaborador.Nome)
         self.endereco = colaborador.Endereco
         self.bairro = colaborador.Bairro
         self.cep = colaborador.CEP
