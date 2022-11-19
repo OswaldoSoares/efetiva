@@ -15,7 +15,7 @@
             <span>ENDEREÇO:</span>
         </div>
         <div class="item-valor">
-            {{ colaborador.endereco }}
+            {{ colaborador.endereco_completo }}
         </div>
     </div>
     <div class="itens-dados">
@@ -23,7 +23,7 @@
             <span>CIDADE:</span>
         </div>
         <div class="item-valor">
-            {{ colaborador.cidade }}
+            {{ colaborador.cidade_estado }}
         </div>
     </div>
     <div class="itens-dados">
@@ -68,7 +68,7 @@
     </div>
     <div class="itens-dados">
         <div class="item-descricao">
-            <span>TIPO DE PAGAMENTO</span>
+            <span>TIPO DE PAGAMENTO:</span>
         </div>
         <div class="item-valor">
             {{ colaborador.tipo_pgto }}

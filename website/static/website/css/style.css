@@ -6092,7 +6092,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-dados-colaborador {
-    width: 500px;
+    width: 700px;
 }
 
 .card-dados-colaborador .itens-dados {
@@ -6105,13 +6105,13 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-dados-colaborador .itens-dados .item-descricao {
-    width: 30%;
+    width: 22%;
     padding-left: 5px;
     text-align: left;
 }
 
 .card-dados-colaborador .itens-dados .item-valor {
-    width: 70%;
+    width: 78%;
     padding-right: 5px;
     text-align: right;
 }

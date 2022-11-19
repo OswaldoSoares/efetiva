@@ -55,8 +55,10 @@ class Colaborador:
         self.endereco = colaborador.Endereco
         self.bairro = colaborador.Bairro
         self.cep = colaborador.CEP
+        self.endereco_completo = self.get_endereco_completo(self)
         self.cidade = colaborador.Cidade
         self.estado = colaborador.Estado
+        self.cidade_estado = self.get_cidade_estado(self)
         self.data_nascimento = colaborador.DataNascimento
         self.mae = colaborador.Mae
         self.pai = colaborador.Pai
@@ -69,6 +71,38 @@ class Colaborador:
         self.documentos = ColaboradorDocumentos(idpes).docs
         self.telefones = ColaboradorTelefones(idpes).fone
         self.bncos = ColaboradorBancos(idpes).conta
+
+    @staticmethod
+    def get_endereco_completo(self):
+        endereco_completo = ""
+        endereco = self.endereco
+        bairro = self.bairro
+        if endereco:
+            endereco_completo = endereco
+        if endereco and bairro:
+            endereco_completo = endereco_completo + " - " + bairro
+        if not endereco and bairro:
+            endereco_completo = bairro
+        return endereco_completo
+
+    @staticmethod
+    def get_cidade_estado(self):
+        cidade_estado = ""
+        cep = self.cep
+        cidade = self.cidade
+        estado = self.estado
+        if cidade:
+            cidade_estado = cidade
+        if cidade and estado:
+            cidade_estado = cidade_estado + " - " + estado
+        if not cidade and estado:
+            cidade_estado = estado
+        if cep:
+            if cidade_estado == "":
+                cidade_estado = "CEP: " + cep
+            else:
+                cidade_estado = cidade_estado + " - CEP: " + cep
+        return cidade_estado
 
 
 class ColaboradorDocumentos:
