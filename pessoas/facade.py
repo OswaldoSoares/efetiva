@@ -160,19 +160,6 @@ def create_pessoal_context(idpessoa: int):
     return context
 
 
-def create_contexto_colaboradores_ativo():
-    colaboradores = Pessoal.objects.filter(StatusPessoal=True)
-    lista = [
-        {
-            "idpessoal": i.idPessoal,
-            "nome": i.Nome,
-            "nome_curto": nome_curto(i.Nome),
-        }
-        for i in colaboradores
-    ]
-    return lista
-
-
 def list_pessoal_all():
     return list(Pessoal.objects.all())
 
@@ -494,3 +481,25 @@ def form_exclui_pessoal(request, c_idobj, c_url, c_view, idpessoal):
     data["save_id"] = idpessoal
     c_return = JsonResponse(data)
     return c_return
+
+
+# TODO: Refatoração
+def create_contexto_colaboradores_ativo():
+    colaboradores = Pessoal.objects.filter(StatusPessoal=True)
+    lista = [
+        {
+            "idpessoal": i.idPessoal,
+            "nome": i.Nome,
+            "nome_curto": nome_curto(i.Nome),
+        }
+        for i in colaboradores
+    ]
+    return lista
+
+
+def create_contexto_consulta_colaborador(idpessoal):
+    pass
+
+
+def create_data_consulta_colaborador(request, contexto):
+    pass

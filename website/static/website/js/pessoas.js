@@ -1,5 +1,5 @@
 $(document).on('click', ".js-seleciona-colaborador", function() {
-    var id_pessoal = $(this).data("id_pessoal");
+    var id_pessoal = $(this).data("idpessoal");
     $.ajax({
         type: "GET",
         url: "/pessoas/consulta_pessoa",

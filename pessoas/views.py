@@ -213,3 +213,10 @@ def cria_contrachequeitens(request):
     facade.create_contracheque_itens(c_descricao, c_valor, c_registro, c_idcontracheque)
     data = facade.seleciona_contracheque(request, c_mes, c_ano, c_idpessoal)
     return data
+
+
+def consulta_pessoa(request):
+    idpes = request.GET.get("id_pessoal")
+    contexto = facade.create_contexto_consulta_colaborador(idpes)
+    data = facade.create_data_consulta_colaborador(request, contexto)
+    return data
