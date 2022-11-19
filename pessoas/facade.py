@@ -503,5 +503,6 @@ def create_contexto_consulta_colaborador(idpessoal):
 
 
 def create_data_consulta_colaborador(request, contexto):
-    print(contexto)
-    pass
+    data = dict()
+    html_dados_colaborador(request, contexto, data)
+    return JsonResponse(data)
