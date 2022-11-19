@@ -1,15 +1,10 @@
 {% extends 'pessoas/basepessoas.html' %}
 {% block mainpessoal %}
 <main class="article">
-    <article class="article-card card-lista-colasboradores">
+    <article class="article-card card-lista-colaboradores">
         {% include "pessoas/html_lista_colaboradores.html" %}
     </article>
 </main>
-    <button type="button" class="btn btn-success glyphicon glyphicon-plus"
-            onclick="openMyModal(event); return false;"
-            data-title="CADASTRO DE COLABORADOR"
-            data-action="{% url 'criapessoa' %}"
-            data-button-save-label="SALVAR"></button>
     {% comment %} <table class="tabela">
         <tbody>
             {% for itens in pessoal %}

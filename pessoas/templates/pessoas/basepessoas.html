@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
     Módulo Pessoas
@@ -12,7 +13,7 @@
 {% endblock %}
 
 {% block script %}
-    <script>
+    {% comment %} <script>
         $(document).on('submit', '#form-cria-contracheque', function(event) {
             event.preventDefault();
             var url = $(this).attr('action') || action;
@@ -230,5 +231,7 @@
 
         
         
+    </script> {% endcomment %}
+    <script type="text/javascript" src="{% static 'website/js/pessoas.js' %}">
     </script>
 {% endblock %}

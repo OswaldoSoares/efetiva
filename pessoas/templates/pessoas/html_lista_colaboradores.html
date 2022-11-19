@@ -28,7 +28,11 @@
             {% endfor %}
         </div>
         <div class="item-button">
-            <i class="bi bi-plus-circle i-button js-adiciona-colaborador"></i>
+            <i class="bi bi-plus-circle i-button"
+            onclick="openMyModal(event); return false;"
+            data-title="CADASTRO DE COLABORADOR"
+            data-action="{% url 'criapessoa' %}"
+            data-button-save-label="SALVAR"></i>
         </div>
     </div>
 </div>
