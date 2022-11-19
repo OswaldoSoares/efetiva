@@ -506,3 +506,10 @@ def create_data_consulta_colaborador(request, contexto):
     data = dict()
     html_dados_colaborador(request, contexto, data)
     return JsonResponse(data)
+
+
+def html_dados_colaborador(request, contexto, data):
+    data["html_dados_colaborador"] = render_to_string(
+        "pessoas/html_dados_colaborador.html", contexto, request=request
+    )
+    return data
