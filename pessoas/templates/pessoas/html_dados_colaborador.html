@@ -3,14 +3,28 @@
     <span>{{ colaborador.nome_curto }}</span>
 </div>
 <div class="article-card-body">
-    {{ colaborador.foto }}
     <figure class="containerimg">
         {% if colaborador.foto %}
-        <img src="/media/{{ colaborador.foto }}" alt="">
+        <img src="/media/{{ colaborador.foto }}"
+        alt="" class="foto">
         {% else %}
-        <img src="{% static 'website/img/usuario.png' %}" alt="" class="foto">
+        <img src="{% static 'website/img/usuario.png' %}"
+        alt="" class="foto">
         {% endif %}
         <span>{{ colaborador.nome }}</span>
+        
+        <form class="file-body js-carrega-foto" method="post"
+        enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" class="file" id="file_foto">
+            <label for="file_foto" title="Carregar Foto"
+            class="bi bi-camera i-button custonBtn radius-left"></label>
+            <i class="bi bi-hand-thumbs-down i-button custonBtn radius-right"
+            title="Bloquear Colaborador"></i>
+            <input type="hidden" value="{{ colaborador.idpes }}"
+            id="idpessoal" name="idpessoal">
+            <input type="hidden" class="js-salva-foto"></input>
+        </form>
     </figure>
     <div class="itens-dados">
         <div class="item-descricao">
@@ -31,7 +45,7 @@
     {% if colaborador.mae  %}
     <div class="itens-dados">
         <div class="item-descricao">
-            <span>NOME MÃE:</span>
+            <span>MÃE:</span>
         </div>
         <div class="item-valor">
             {{ colaborador.mae }}
@@ -41,7 +55,7 @@
     {% if colaborador.pai  %}
     <div class="itens-dados">
         <div class="item-descricao">
-            <span>NOME PAI:</span>
+            <span>PAI:</span>
         </div>
         <div class="item-valor">
             {{ colaborador.pai }}

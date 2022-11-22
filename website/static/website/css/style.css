@@ -5881,6 +5881,10 @@ main .fp-recibo-tabela .fp-recibo-print {
     border-radius: 0 10px 10px 0;
 }
 
+.radius-all {
+    border-radius: 10px;
+}
+
 .filenameTxt {
     background-color: black;
     min-width: 200px;
@@ -6138,6 +6142,7 @@ main .fp-recibo-tabela .fp-recibo-print {
     border-radius: 50%;
     overflow: hidden;
     background-color: var(--color4);
+    border: 2px solid var(--color9);
 }
 
 

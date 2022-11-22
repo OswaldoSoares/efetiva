@@ -19,6 +19,7 @@ from .views import (
     cria_contrachequeitens,
     edita_demissao,
     consulta_pessoa,
+    salva_foto,
 )
 
 
@@ -55,5 +56,10 @@ urlpatterns = [
         "consulta_pessoa",
         consulta_pessoa,
         name="consulta_pessoa",
+    ),
+    path(
+        "salva_foto",
+        salva_foto,
+        name="salva_foto",
     ),
 ]

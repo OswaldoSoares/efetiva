@@ -548,3 +548,10 @@ def html_dados_colaborador(request, contexto, data):
         "pessoas/html_dados_colaborador.html", contexto, request=request
     )
     return data
+
+
+def salva_foto_colaborador(idpessoal, arquivo):
+    obj = Pessoal.objects.get(idPessoal=idpessoal)
+    obj.Foto = arquivo
+    obj.save(update_fields=["Foto"])
+    return obj
