@@ -10,6 +10,10 @@
             data-tooltip-position="right">{{ it.nome_curto }}</span>
         </div>
         <div class="item-button">
+            <i class="i-button js-seleciona-colaborador"
+            data-idpessoal="{{ it.idpessoal }}">13º</i>
+        </div>
+        <div class="item-button">
             <i class="bi bi-folder-symlink i-button js-seleciona-colaborador"
             data-idpessoal="{{ it.idpessoal }}"></i>
         </div>
@@ -20,13 +24,14 @@
     <div class="itens-lista">
         <div class="item-nome">
             {% for it in colaboradores %}
-                {% if forloop.last %}
-                {{ forloop.counter|stringformat:"02d" }}
-                COLABORADOR{{ forloop.counter|pluralize:"es"|upper }}
-                ATIVO{{ forloop.counter|pluralize|upper }}
-                {% endif %}
+            {% if forloop.last %}
+            {{ forloop.counter|stringformat:"02d" }}
+            COLABORADOR{{ forloop.counter|pluralize:"es"|upper }}
+            ATIVO{{ forloop.counter|pluralize|upper }}
+            {% endif %}
             {% endfor %}
         </div>
+        <div class="item-button"></div>
         <div class="item-button">
             <i class="bi bi-plus-circle i-button"
             onclick="openMyModal(event); return false;"
