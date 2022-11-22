@@ -9,6 +9,7 @@ from decimal import Decimal
 
 from pessoas.forms import CadastraSalario, CadastraVale, CadastraDemissao
 from pessoas.models import (
+    DecimoTerceiro,
     Pessoal,
     Salario,
     DocPessoal,
@@ -560,3 +561,31 @@ def salva_foto_colaborador(idpessoal, arquivo):
     obj.Foto = arquivo
     obj.save(update_fields=["Foto"])
     return obj
+
+
+def gera_decimo_terceiro():
+    colaboradores = Pessoal.objects.filter(
+        TipoPgto="MENSALISTA", StatusPessoal=True, DataDemissao__isnull=True
+    )
+    hoje = datetime.datetime.today()
+    for x in colaboradores:
+        colaborador_decimo = DecimoTerceiro.objects.filter(
+            idPessoal=x.idPessoal, Ano=hoje.year
+        )
+        if not colaborador_decimo:
+            salario = Salario.objects.get(idPessoal=x.idPessoal)
+            admissao = x.DataAdmissao
+            if admissao.year < hoje.year:
+                avos = 12
+            else:
+                avos = 12 - admissao.month
+                if admissao.day < 17:
+                    avos += 1
+            valor = salario.Salario / 12 * avos
+            obj = DecimoTerceiro()
+            obj.Ano = hoje.year
+            obj.ValorBase = salario.Salario
+            obj.Dozeavos = avos
+            obj.Valor = valor
+            obj.idPessoal_id = x.idPessoal
+            obj.save()

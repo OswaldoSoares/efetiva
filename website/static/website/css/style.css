@@ -6067,7 +6067,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 /* MODULO PESSOAS - START */
 
 .card-lista-colaboradores {
-    width: 230px;
+    width: 300px;
 }
 
 .card-lista-colaboradores .itens-lista {
@@ -6080,13 +6080,14 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-lista-colaboradores .itens-lista .item-nome {
-    width: 88%;
+    background-color: red;
+    width: 80%;
     padding-left: 5px;
     text-align: left;
 }
 
 .card-lista-colaboradores .itens-lista .item-button {
-    width: 12%;
+    width: 20%;
     text-align: center;
 }
 
