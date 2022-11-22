@@ -272,3 +272,40 @@ class Agenda(models.Model):
         super(Agenda, self).save(*args, **kwargs)
 
     objects = models.Manager()
+
+
+class DecimoTerceiro(models.Model):
+    idDecimoTerceiro = models.AutoField(primary_key=True)
+    Ano = models.IntegerField(default=0)
+    Dozeavos = models.IntegerField(default=0)
+    ValorBase = models.DecimalField(decimal_places=2, max_digits=9, default=0.00)
+    Valor = models.DecimalField(decimal_places=2, max_digits=9, default=0.00)
+    Pago = models.BooleanField(default=False)
+    idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = "decimo_terceiro"
+        ordering = ["Ano", "Valor"]
+
+    def __str__(self):
+        return str(self.idDecimoTerceiro)
+
+    objects = models.Manager()
+
+
+class ParcelasDecimoTerceiro(models.Model):
+    idParcelasDecimoTerceiro = models.AutoField(primary_key=True)
+    Parcela = models.IntegerField(default=0)
+    Valor = models.DecimalField(decimal_places=2, max_digits=9, default=0.00)
+    Pago = models.BooleanField(default=False)
+    DataPgto = models.DateField(blank=True, null=True)
+    idDecimoTerceiro = models.ForeignKey(DecimoTerceiro, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = "decimo_terceiro_parcelas"
+        ordering = ["idParcelasDecimoTerceiro"]
+
+    def __str__(self):
+        return str(self.idParcelasDecimoTerceiro)
+
+    objects = models.Manager()
