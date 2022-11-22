@@ -1,5 +1,6 @@
 import calendar
 import datetime
+import os
 
 from django.db.models import Sum
 from django.http import JsonResponse
@@ -20,7 +21,7 @@ from pessoas.models import (
 )
 from minutas.models import MinutaColaboradores
 from website.facade import nome_curto
-
+from transefetiva.settings.development import MEDIA_ROOT
 
 meses = [
     "JANEIRO",
@@ -552,6 +553,8 @@ def html_dados_colaborador(request, contexto, data):
 
 def salva_foto_colaborador(idpessoal, arquivo):
     obj = Pessoal.objects.get(idPessoal=idpessoal)
+    file = f"{MEDIA_ROOT}/{obj.Foto}"
+    os.remove(file)
     obj.Foto = arquivo
     obj.save(update_fields=["Foto"])
     return obj
