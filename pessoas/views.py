@@ -52,13 +52,6 @@ def edita_pessoa(request, idpessoa):
     return data
 
 
-def salva_foto(request):
-    idpes = request.POST.get("idpessoal")
-    arquivo = request.FILES.get("arquivo")
-    facade.salva_foto_colaborador(idpes, arquivo)
-    pass
-
-
 def excluipessoa(request, idpessoa):
     c_idobj = idpessoa
     c_url = "/pessoas/excluipessoa/{}/".format(c_idobj)
@@ -224,6 +217,15 @@ def cria_contrachequeitens(request):
 
 def consulta_pessoa(request):
     idpes = request.GET.get("id_pessoal")
+    contexto = facade.create_contexto_consulta_colaborador(idpes)
+    data = facade.create_data_consulta_colaborador(request, contexto)
+    return data
+
+
+def salva_foto(request):
+    idpes = request.POST.get("idpessoal")
+    arquivo = request.FILES.get("arquivo")
+    facade.salva_foto_colaborador(idpes, arquivo)
     contexto = facade.create_contexto_consulta_colaborador(idpes)
     data = facade.create_data_consulta_colaborador(request, contexto)
     return data

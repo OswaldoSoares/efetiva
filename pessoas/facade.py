@@ -553,8 +553,10 @@ def html_dados_colaborador(request, contexto, data):
 
 def salva_foto_colaborador(idpessoal, arquivo):
     obj = Pessoal.objects.get(idPessoal=idpessoal)
-    file = f"{MEDIA_ROOT}/{obj.Foto}"
-    os.remove(file)
+    if obj.Foto:
+        file = f"{MEDIA_ROOT}/{obj.Foto}"
+        if os.path.isfile(file):
+            os.remove(file)
     obj.Foto = arquivo
     obj.save(update_fields=["Foto"])
     return obj

@@ -39,10 +39,12 @@ $(document).on('click', ".js-salva-foto", function(event) {
         contentType: false,
         enctype: 'multipart/form-data',
         beforeSend: function() {
-            // $('.box-loader').show()
+            $(".card-dados-colaborador").hide()
+            $('.box-loader').show()
         },
         success: function(data) {
-            $(".js-files-pagamento").html(data.html_files_pagamento)
+            $(".card-dados-colaborador").html(data.html_dados_colaborador)
+            $(".card-dados-colaborador").show()
             $('.box-loader').hide()
         },
     });
