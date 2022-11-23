@@ -6145,6 +6145,12 @@ main .fp-recibo-tabela .fp-recibo-print {
     border: 2px solid var(--color9);
 }
 
+.button-decimo-terceiro {
+    top: 87px;
+    right: 5px;
+    position: absolute;
+}
+
 
 /* MODULO PESSOAS - END */
 

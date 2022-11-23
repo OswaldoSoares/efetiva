@@ -74,6 +74,7 @@ class Colaborador:
         self.documentos = ColaboradorDocumentos(idpes).docs
         self.telefones = ColaboradorTelefones(idpes).fone
         self.bncos = ColaboradorBancos(idpes).conta
+        self.decimo_terceiro = self.get_decimo_terceiro(self)
 
     @staticmethod
     def get_endereco_completo(self):
@@ -106,6 +107,14 @@ class Colaborador:
             else:
                 cidade_estado = cidade_estado + " - CEP: " + cep
         return cidade_estado
+
+    @staticmethod
+    def get_decimo_terceiro(self):
+        hoje = datetime.datetime.today()
+        decimo_terceiro = list(
+            DecimoTerceiro.objects.filter(idPessoal=self.idpes, Ano=hoje.year)
+        )
+        return decimo_terceiro
 
 
 class ColaboradorDocumentos:
