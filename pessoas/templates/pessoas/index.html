@@ -10,9 +10,12 @@
         <div class="article-card-body"></div>
         <div class="article-card-footer"></div> {% endcomment %}
     </article>
+    {% now "n" as mes %}
+    {% if mes|add:0 > 10 %}
     <article class="article-card">
         <i class="i-button custonBtn radius-all button-decimo-terceiro">13º</i>
     </article>
+    {% endif %}
 </main>
     {% comment %} <table class="tabela">
         <tbody>
