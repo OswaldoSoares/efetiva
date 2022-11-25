@@ -113,9 +113,27 @@ class Colaborador:
     @staticmethod
     def get_decimo_terceiro(self):
         hoje = datetime.datetime.today()
-        decimo_terceiro = list(
-            DecimoTerceiro.objects.filter(idPessoal=self.idpes, Ano=hoje.year)
+        decimo_terceiro = DecimoTerceiro.objects.filter(
+            idPessoal=self.idpes, Ano=hoje.year
         )
+        lista = []
+        for i in decimo_terceiro:
+            decimo_terceiro_parcelas = list(
+                ParcelasDecimoTerceiro.objects.filter(
+                    idDecimoTerceiro=decimo_terceiro[0].idDecimoTerceiro
+                )
+            )
+            lista.append(
+                {
+                    "id_decimo_terceiro": i.idDecimoTerceiro,
+                    "ano": i.Ano,
+                    "dozeavos": i.Dozeavos,
+                    "valor_base": i.ValorBase,
+                    "valor": i.Valor,
+                    "pago": i.Pago,
+                    "parcelas": decimo_terceiro_parcelas,
+                }
+            )
         return decimo_terceiro
 
 
