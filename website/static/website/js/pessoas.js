@@ -8,11 +8,14 @@ $(document).on('click', ".js-seleciona-colaborador", function() {
         },
         beforeSend: function() {
             $(".card-dados-colaborador").hide()
+            $(".card-decimo-terceiro").hide()
             $(".box-loader").show()
         },
         success: function(data) {
             $(".card-dados-colaborador").html(data.html_dados_colaborador)
             $(".card-dados-colaborador").show()
+            $(".card-decimo-terceiro").html(data.html_decimo_terceiro)
+            $(".card-decimo-terceiro").show()
             $(".box-loader").hide()
         },
         error: function(errorThrown) {

@@ -11,6 +11,7 @@ from decimal import Decimal
 from pessoas.forms import CadastraSalario, CadastraVale, CadastraDemissao
 from pessoas.models import (
     DecimoTerceiro,
+    ParcelasDecimoTerceiro,
     Pessoal,
     Salario,
     DocPessoal,
@@ -571,12 +572,20 @@ def create_contexto_consulta_colaborador(idpessoal):
 def create_data_consulta_colaborador(request, contexto):
     data = dict()
     html_dados_colaborador(request, contexto, data)
+    html_decimo_terceiro(request, contexto, data)
     return JsonResponse(data)
 
 
 def html_dados_colaborador(request, contexto, data):
     data["html_dados_colaborador"] = render_to_string(
         "pessoas/html_dados_colaborador.html", contexto, request=request
+    )
+    return data
+
+
+def html_decimo_terceiro(request, contexto, data):
+    data["html_decimo_terceiro"] = render_to_string(
+        "pessoas/html_decimo_terceiro.html", contexto, request=request
     )
     return data
 
@@ -618,3 +627,18 @@ def gera_decimo_terceiro():
             obj.Valor = valor
             obj.idPessoal_id = x.idPessoal
             obj.save()
+            new_obj = obj.idDecimoTerceiro
+            gera_decimo_terceiro_parcelas(new_obj, valor)
+
+
+def gera_decimo_terceiro_parcelas(idDecimoTerceiro, valor):
+    for i in range(1, 3):
+        obj = ParcelasDecimoTerceiro()
+        obj.Valor = round(valor / 2, 2)
+        obj.Parcela = i
+        obj.idDecimoTerceiro_id = idDecimoTerceiro
+        obj.save()
+
+
+def atualiza_decimno_terceito_parcelas(idDecimoTerceiro):
+    pass
