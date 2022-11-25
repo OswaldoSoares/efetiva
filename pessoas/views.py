@@ -232,4 +232,8 @@ def salva_foto(request):
 
 
 def atualiza_decimo_terceiro(request):
-    print("ok")
+    facade.gera_decimo_terceiro()
+    colaboradores = facade.create_contexto_colaboradores_ativo()
+    contexto = {"colaboradores": colaboradores}
+    data = facade.create_data_lista_colaboradores_ativo(request, contexto)
+    return data

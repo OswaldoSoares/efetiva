@@ -60,12 +60,12 @@ $(document).on('click', '.js-atualiza-decimo-terceiro', function() {
         url: "/pessoas/atualiza_decimo_terceiro",
         data: {},
         beforeSend: function() {
-            $(".card-dados-colaborador").hide()
+            $(".card-lista-colaboradores").hide()
             $(".box-loader").show()
         },
         success: function(data) {
-            $(".card-dados-colaborador").html(data.html_dados_colaborador)
-            $(".card-dados-colaborador").show()
+            $(".card-lista-colaboradores").html(data.html_lista_colaboradores_ativo)
+            $(".card-lista-colaboradores").show()
             $(".box-loader").hide()
         },
         error: function(errorThrown) {

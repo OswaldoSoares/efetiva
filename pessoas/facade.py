@@ -1,6 +1,7 @@
 import calendar
 import datetime
 import os
+from django.db import connection
 
 from django.db.models import Sum
 from django.http import JsonResponse
@@ -532,15 +533,34 @@ def form_exclui_pessoal(request, c_idobj, c_url, c_view, idpessoal):
 # TODO: Refatoração
 def create_contexto_colaboradores_ativo():
     colaboradores = Pessoal.objects.filter(StatusPessoal=True)
-    lista = [
-        {
-            "idpessoal": i.idPessoal,
-            "nome": i.Nome,
-            "nome_curto": nome_curto(i.Nome),
-        }
-        for i in colaboradores
-    ]
+    lista = []
+    hoje = datetime.datetime.today()
+    for i in colaboradores:
+        decimo_terceiro = DecimoTerceiro.objects.filter(
+            idPessoal=i.idPessoal, Ano=hoje.year
+        )
+        lista.append(
+            {
+                "idpessoal": i.idPessoal,
+                "nome": i.Nome,
+                "nome_curto": nome_curto(i.Nome),
+                "decimo_terceiro": decimo_terceiro,
+            }
+        )
     return lista
+
+
+def create_data_lista_colaboradores_ativo(request, contexto):
+    data = dict()
+    html_lista_colaboradores_ativo(request, contexto, data)
+    return JsonResponse(data)
+
+
+def html_lista_colaboradores_ativo(request, contexto, data):
+    data["html_lista_colaboradores_ativo"] = render_to_string(
+        "pessoas/html_lista_colaboradores.html", contexto, request=request
+    )
+    return data
 
 
 def create_contexto_consulta_colaborador(idpessoal):
