@@ -53,3 +53,23 @@ $(document).on('click', ".js-salva-foto", function(event) {
 $(document).on('change', '.js-carrega-foto', function() {
     $(".js-salva-foto").click()
 });
+
+$(document).on('click', '.js-atualiza-decimo-terceiro', function() {
+    $.ajax({
+        type: "GET",
+        url: "/pessoas/atualiza_decimo_terceiro",
+        data: {},
+        beforeSend: function() {
+            $(".card-dados-colaborador").hide()
+            $(".box-loader").show()
+        },
+        success: function(data) {
+            $(".card-dados-colaborador").html(data.html_dados_colaborador)
+            $(".card-dados-colaborador").show()
+            $(".box-loader").hide()
+        },
+        error: function(errorThrown) {
+            console.log("error: " + errorThrown)
+        }
+    });
+});

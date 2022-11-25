@@ -229,3 +229,7 @@ def salva_foto(request):
     contexto = facade.create_contexto_consulta_colaborador(idpes)
     data = facade.create_data_consulta_colaborador(request, contexto)
     return data
+
+
+def atualiza_decimo_terceiro(request):
+    print("ok")
