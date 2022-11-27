@@ -593,6 +593,7 @@ def create_data_consulta_colaborador(request, contexto):
     html_decimo_terceiro(request, contexto, data)
     html_documentos(request, contexto, data)
     html_telefones(request, contexto, data)
+    html_contas_bancaria(request, contexto, data)
     return JsonResponse(data)
 
 
@@ -620,6 +621,13 @@ def html_documentos(request, contexto, data):
 def html_telefones(request, contexto, data):
     data["html_telefones"] = render_to_string(
         "pessoas/html_telefones.html", contexto, request=request
+    )
+    return data
+
+
+def html_contas_bancaria(request, contexto, data):
+    data["html_contas_bancaria"] = render_to_string(
+        "pessoas/html_contas_bancaria.html", contexto, request=request
     )
     return data
 
