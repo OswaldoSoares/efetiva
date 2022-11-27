@@ -134,7 +134,7 @@ class Colaborador:
                     "parcelas": decimo_terceiro_parcelas,
                 }
             )
-        return decimo_terceiro
+        return lista
 
 
 class ColaboradorDocumentos:

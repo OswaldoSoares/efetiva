@@ -1,7 +1,35 @@
+{% load humanize %}
 {% if colaborador.decimo_terceiro %}
 <div class="article-card-titulo">
     <span>DECIMO TERCEIRO</span>
 </div>
-<div class="article-card-body"></div>
+<div class="article-card-body">
+    {% for i in colaborador.decimo_terceiro %}
+    <div class="decimo-terceiro-dados">
+        <span class="i-button-null">ANO: {{ i.ano }}</span>
+        <span class="i-button-null">SALÁRIO: R$ {{ i.valor_base|intcomma }}</span>
+    </div>
+    <div class="decimo-terceiro-dados linha-separadora">
+        <span class="i-button-null">DOZEAVOS: {{ i.dozeavos}}</span>
+        <span class="i-button-null">VALOR: R$ {{ i.valor|intcomma }}</span>
+    </div>
+        {% for y in i.parcelas %}
+        <div class="itens-parcelas">
+            <div class="item-parcela">
+                <span>{{ y.Parcela }}ª PARCELA</span>
+            </div>
+            <div class="item-valor">
+                <span>R$ {{ y.Valor }}</span>
+            </div>
+            <div class="item-button">
+                <i class="bi bi-printer i-button js-imprime-decimo-terceiro"></i>
+            </div>
+            <div class="item-button">
+                <i class="bi bi-currency-dollar i-button js-paga-decimo-terceiro"></i>
+            </div>
+        </div>
+        {% endfor %}
+    {% endfor %}
+</div>
 <div class="article-card-footer"></div>
 {% endif %}
