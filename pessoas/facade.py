@@ -684,3 +684,9 @@ def gera_decimo_terceiro_parcelas(idDecimoTerceiro, valor):
 
 def atualiza_decimno_terceito_parcelas(idDecimoTerceiro):
     pass
+
+
+def create_contexto_print_decimo_terceiro(idpes, idparcela):
+    colaborador = Colaborador(idpes).__dict__
+    contexto = {"colaborador": colaborador, "idparcela": idparcela}
+    return contexto

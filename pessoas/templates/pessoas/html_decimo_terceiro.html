@@ -22,7 +22,9 @@
                 <span>R$ {{ y.Valor }}</span>
             </div>
             <div class="item-button">
-                <i class="bi bi-printer i-button js-imprime-decimo-terceiro"></i>
+                <a class="bi bi-printer i-button" target="_blank"
+                href="{% url 'print_decimo_terceiro' %}?idparcela={{ y.idParcelasDecimoTerceiro }}&idpes={{ colaborador.idpes }}"
+                ></a>
             </div>
             <div class="item-button">
                 <i class="bi bi-currency-dollar i-button js-paga-decimo-terceiro"></i>

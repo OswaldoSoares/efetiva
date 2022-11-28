@@ -21,6 +21,7 @@ from .views import (
     consulta_pessoa,
     salva_foto,
     atualiza_decimo_terceiro,
+    print_decimo_terceiro,
 )
 
 
@@ -67,5 +68,10 @@ urlpatterns = [
         "atualiza_decimo_terceiro",
         atualiza_decimo_terceiro,
         name="atualiza_decimo_terceiro",
+    ),
+    path(
+        "print_decimo_terceiro",
+        print_decimo_terceiro,
+        name="print_decimo_terceiro",
     ),
 ]

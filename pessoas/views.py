@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 from rolepermissions.decorators import has_permission_decorator
 from pessoas import facade
+from pessoas.print import print_pdf_decimno_terceiro
 from .models import Pessoal, DocPessoal, FonePessoal, ContaPessoal, ContraChequeItens
 from .forms import (
     CadastraPessoal,
@@ -237,3 +238,12 @@ def atualiza_decimo_terceiro(request):
     contexto = {"colaboradores": colaboradores}
     data = facade.create_data_lista_colaboradores_ativo(request, contexto)
     return data
+
+
+def print_decimo_terceiro(request):
+    idpes = request.GET.get("idpes")
+    idparcela = request.GET.get("idparcela")
+    contexto = facade.create_contexto_print_decimo_terceiro(idpes, idparcela)
+    print(contexto)
+    response = print_pdf_decimno_terceiro(contexto)
+    return response
