@@ -244,6 +244,5 @@ def print_decimo_terceiro(request):
     idpes = request.GET.get("idpes")
     idparcela = request.GET.get("idparcela")
     contexto = facade.create_contexto_print_decimo_terceiro(idpes, idparcela)
-    print(contexto)
     response = print_pdf_decimno_terceiro(contexto)
     return response

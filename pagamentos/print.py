@@ -22,7 +22,7 @@ def cmp(mm):
 
 def print_contracheque(contexto, tipoimpressao):
     response = HttpResponse(content_type="application/pdf")
-    response["Content-Disposition"] = 'flename="CONTRACHEQUE {}.pdf'.format("A")
+    response["Content-Disposition"] = 'filename="CONTRACHEQUE {}.pdf'.format("A")
     buffer = BytesIO()
     pdf = canvas.Canvas(buffer)
     pdf.setFont("Times-Roman", 10)
