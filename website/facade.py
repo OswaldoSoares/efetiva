@@ -42,6 +42,16 @@ def nome_curto_underscore(nome):
     return apelido
 
 
+def cmp(mm: float) -> float:
+    """
+    Converte milimetros em pontos - Utilizado na criação de Relatórios
+
+    :param mm: milimetros
+    :return: pontos
+    """
+    return mm / 0.352777
+
+
 class DiasFeriados:
     def __init__(self):
         self.feriados = self.get_dias_feriados()
