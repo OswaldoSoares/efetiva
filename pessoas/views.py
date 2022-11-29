@@ -229,6 +229,11 @@ def salva_foto(request):
     facade.salva_foto_colaborador(idpes, arquivo)
     contexto = facade.create_contexto_consulta_colaborador(idpes)
     data = facade.create_data_consulta_colaborador(request, contexto)
+    # data = dict()
+    # data["idpes"] = idpes
+    # data["arquivo"] = arquivo
+    # print(data)
+    # data = JsonResponse(data)
     return data
 
 

@@ -53,12 +53,17 @@ $(document).on('click', ".js-salva-foto", function(event) {
         enctype: 'multipart/form-data',
         beforeSend: function() {
             $(".card-dados-colaborador").hide()
-            $('.box-loader').show()
+                // $('.box-loader').show()
         },
         success: function(data) {
             $(".card-dados-colaborador").html(data.html_dados_colaborador)
             $(".card-dados-colaborador").show()
             $('.box-loader').hide()
+            console.log("oi")
+            console.log(data)
+        },
+        errorThrown: function(data) {
+            console.log(data)
         },
     });
 });
