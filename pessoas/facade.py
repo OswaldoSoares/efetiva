@@ -24,9 +24,10 @@ from pessoas.models import (
 )
 from minutas.models import MinutaColaboradores
 from website.facade import nome_curto
-from transefetiva.settings.development import MEDIA_ROOT
 
-# from transefetiva.settings.production import MEDIA_ROOT
+# from transefetiva.settings.development import MEDIA_ROOT
+
+from transefetiva.settings.production import MEDIA_ROOT
 
 meses = [
     "JANEIRO",
