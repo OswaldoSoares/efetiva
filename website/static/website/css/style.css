@@ -6109,6 +6109,10 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-dados-colaborador .itens-dados .item-descricao {
+    /* display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between; */
     width: 22%;
     padding-left: 5px;
     text-align: left;

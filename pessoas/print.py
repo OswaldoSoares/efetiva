@@ -85,11 +85,6 @@ def print_pdf_decimno_terceiro(contexto):
             cmp(linha - 17.7),
             "{}".format("CNPJ: 21.602.117/0001-15"),
         )
-        pdf.drawString(
-            cmp(122.8),
-            cmp(linha - 17.7),
-            "{}".format(contexto["colaborador"]["nome"]),
-        )
         pdf.setFont("Times-Roman", 10)
         pdf.drawString(
             cmp(5.8),

@@ -24,7 +24,9 @@ from pessoas.models import (
 )
 from minutas.models import MinutaColaboradores
 from website.facade import nome_curto
-from transefetiva.settings.production import MEDIA_ROOT
+from transefetiva.settings.development import MEDIA_ROOT
+
+# from transefetiva.settings.production import MEDIA_ROOT
 
 meses = [
     "JANEIRO",
@@ -75,7 +77,7 @@ class Colaborador:
         self.foto = colaborador.Foto
         self.documentos = ColaboradorDocumentos(idpes).docs
         self.telefones = ColaboradorTelefones(idpes).fone
-        self.bncos = ColaboradorBancos(idpes).conta
+        self.bancos = ColaboradorBancos(idpes).conta
         self.decimo_terceiro = self.get_decimo_terceiro(self)
 
     @staticmethod
@@ -591,9 +593,6 @@ def create_data_consulta_colaborador(request, contexto):
     data = dict()
     html_dados_colaborador(request, contexto, data)
     html_decimo_terceiro(request, contexto, data)
-    html_documentos(request, contexto, data)
-    html_telefones(request, contexto, data)
-    html_contas_bancaria(request, contexto, data)
     return JsonResponse(data)
 
 
@@ -607,27 +606,6 @@ def html_dados_colaborador(request, contexto, data):
 def html_decimo_terceiro(request, contexto, data):
     data["html_decimo_terceiro"] = render_to_string(
         "pessoas/html_decimo_terceiro.html", contexto, request=request
-    )
-    return data
-
-
-def html_documentos(request, contexto, data):
-    data["html_documentos"] = render_to_string(
-        "pessoas/html_documentos.html", contexto, request=request
-    )
-    return data
-
-
-def html_telefones(request, contexto, data):
-    data["html_telefones"] = render_to_string(
-        "pessoas/html_telefones.html", contexto, request=request
-    )
-    return data
-
-
-def html_contas_bancaria(request, contexto, data):
-    data["html_contas_bancaria"] = render_to_string(
-        "pessoas/html_contas_bancaria.html", contexto, request=request
     )
     return data
 

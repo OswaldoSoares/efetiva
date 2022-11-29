@@ -12,7 +12,6 @@
         alt="" class="foto">
         {% endif %}
         <span>{{ colaborador.nome }}</span>
-        
         <form class="file-body js-carrega-foto" method="post"
         enctype="multipart/form-data">
             {% csrf_token %}
@@ -78,7 +77,7 @@
             {{ colaborador.categoria }}
         </div>
     </div>
-    {% if colaborador.admissao  %}
+    {% if colaborador.data_admissao  %}
     <div class="itens-dados">
         <div class="item-descricao">
             <span>DATA ADMISSÃO:</span>
@@ -96,6 +95,69 @@
             {{ colaborador.tipo_pgto }}
         </div>
     </div>
+    {% for x in colaborador.documentos %}
+    <div class="itens-dados">
+        <div class="item-descricao">
+            <span>{{ x.tipo }}: </span>
+            <i class="bi bi-pencil-square i-button"></i>
+            <i class="bi bi-trash i-button"></i>
+        </div>
+        <div class="item-valor">
+            {{ x.documento }} - {{ x.data_doc }}
+        </div>
+    </div>
+    {% endfor %}
+    {% for x in colaborador.telefones %}
+    <div class="itens-dados">
+        <div class="item-descricao">
+            <span>{{ x.tipo }}: </span>
+            <i class="bi bi-pencil-square i-button"></i>
+            <i class="bi bi-trash i-button js-excluifonepessoa"></i>
+        </div>
+        <div class="item-valor">
+            {{ x.fone }} {% if x.contato %} - {{ x.contato }} {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+    {% for x in colaborador.bancos %}
+    <div class="itens-dados">
+        {% if x.pix %}
+        <div class="item-descricao">
+            <span>CHAVE PIX: </span>
+            <i class="bi bi-pencil-square i-button"></i>
+            <i class="bi bi-trash i-button"></i>
+        </div>
+        <div class="item-valor">
+            {{ x.pix }}
+        </div>
+        {% else %}
+        <div class="item-descricao">
+            <span>{{ x.banco }}: </span>
+            <i class="bi bi-pencil-square i-button"></i>
+            <i class="bi bi-trash i-button"></i>
+        </div>
+        <div class="item-valor">
+            AG: {{ x.agencia }}
+            {% if x.tipo == "CORRENTE" %}
+             - C/C:
+             {% else %}
+             - C/P:
+            {% endif %}
+             {{ x.conta }}
+        </div>
+        {% endif %}
+    </div>
+    <div class="itens-dados">
+        {% if x.titular %}
+        <div class="item-descricao">
+            <span>&#x27A5 TITULAR: </span>
+        </div>
+        <div class="item-valor">
+            {{ x.titular }} {% if x.documento %} - {{ x.documento }} {% endif %}
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
 </div>
 <div class="article-card-footer">
     <i class="bi bi-pencil-square i-button"
