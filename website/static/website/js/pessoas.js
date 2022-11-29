@@ -91,3 +91,72 @@ $(document).on('click', '.js-atualiza-decimo-terceiro', function() {
         }
     });
 });
+
+$(document).on('click', '.js-adiciona-documento-colaborador', function() {
+    var idpessoal = $(this).data('idpobj')
+    $.ajax({
+        type: "GET",
+        url: "/pessoas/adiciona_documento_colaborador",
+        data: {
+            idpessoal: idpessoal,
+        },
+        beforeSend: function() {
+            $(".card-lista-colaboradores").hide()
+            $(".box-loader").show()
+        },
+        success: function(data) {
+            $(".card-lista-colaboradores").html(data.html_lista_colaboradores_ativo)
+            $(".card-lista-colaboradores").show()
+            $(".box-loader").hide()
+        },
+        error: function(errorThrown) {
+            console.log("error: " + errorThrown)
+        }
+    });
+});
+
+$(document).on('click', '.js-adiciona-telefone-colaborador', function() {
+    var idpessoal = $(this).data('idobj')
+    $.ajax({
+        type: "GET",
+        url: "/pessoas/atualiza_decimo_terceiro",
+        data: {
+            idpessoal: idpessoal,
+        },
+        beforeSend: function() {
+            $(".card-lista-colaboradores").hide()
+            $(".box-loader").show()
+        },
+        success: function(data) {
+            $(".card-lista-colaboradores").html(data.html_lista_colaboradores_ativo)
+            $(".card-lista-colaboradores").show()
+            $(".box-loader").hide()
+        },
+        error: function(errorThrown) {
+            console.log("error: " + errorThrown)
+        }
+    });
+});
+
+$(document).on('click', '.js-adiciona-conta-colaborador', function() {
+    var idpessoal = $(this).data('idobj')
+    $.ajax({
+        type: "GET",
+        url: "/pessoas/atualiza_decimo_terceiro",
+        data: {
+            idpessoal: idpessoal,
+        },
+        beforeSend: function() {
+            $(".card-lista-colaboradores").hide()
+            $(".box-loader").show()
+        },
+        success: function(data) {
+            $(".card-lista-colaboradores").html(data.html_lista_colaboradores_ativo)
+            $(".card-lista-colaboradores").show()
+            $(".box-loader").hide()
+        },
+        error: function(errorThrown) {
+            console.log("error: " + errorThrown)
+        }
+    });
+});

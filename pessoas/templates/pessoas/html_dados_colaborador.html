@@ -165,8 +165,15 @@
 </div>
 <div class="article-card-footer">
     <i class="bi bi-pencil-square i-button"
+    title="EDITAR COLABORADOR"
     onclick="openMyModal(event); return false;"
     data-title="EDITA CADASTRO DE COLABORADOR"
     data-action="{% url 'editapessoa' colaborador.idpes %}"
     data-button-save-label="ALTERAR"></i>
+    <i class="icofont-ui-v-card i-button js-adiciona-documento-colaborador"
+    title="ADICIONAR DOCUMENTO" data-idobj="{{ colaborador.idpes }}"></i>
+    <i class="icofont-ui-dial-phone i-button js-adiciona-telefone-colaborador"
+    title="ADCIONAR TELEFONE" data-idobj="{{ colaborador.idpes }}"></i>
+    <i class="icofont-bank-alt i-button js-adiciona-conta-colaborador"
+    title="ADICIONAR CONTA BANCÁRIA" data-idobj="{{ colaborador.idpes }}"></i>
 </div>

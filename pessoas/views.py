@@ -251,3 +251,15 @@ def print_decimo_terceiro(request):
     contexto = facade.create_contexto_print_decimo_terceiro(idpes, idparcela)
     response = print_pdf_decimno_terceiro(contexto)
     return response
+
+
+def adiciona_documento_colaborador(request):
+    pass
+
+
+def adiciona_telefone_colaborador(request):
+    pass
+
+
+def adiciona_conta_colaborador(request):
+    pass
