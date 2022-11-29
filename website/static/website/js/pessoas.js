@@ -33,7 +33,7 @@ $(document).on('click', ".js-seleciona-colaborador", function() {
     });
 });
 
-$(document).on('click', ".js-salva-foto", function(event) {
+$(document).on('submit', ".js-salva-foto", function(event) {
     event.preventDefault();
     var _formData = new FormData();
     var _arquivo = $("#file_foto").get(0).files[0]
@@ -68,9 +68,9 @@ $(document).on('click', ".js-salva-foto", function(event) {
     });
 });
 
-$(document).on('change', '.js-carrega-foto', function() {
-    $(".js-salva-foto").click()
-});
+// $(document).on('change', '.js-carrega-foto', function() {
+//     $(".js-salva-foto").click()
+// });
 
 $(document).on('click', '.js-atualiza-decimo-terceiro', function() {
     $.ajax({
