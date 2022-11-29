@@ -99,7 +99,11 @@
     <div class="itens-dados">
         <div class="item-descricao">
             <span>{{ x.tipo }}: </span>
-            <i class="bi bi-pencil-square i-button"></i>
+            <i class="bi bi-pencil-square i-button"
+            onclick="openMyModal(event); return false;"
+            data-title="EDITA DOCUMENTO COLABORADOR"
+            data-action="{% url 'excluidocpessoa' colaborador.idpes %}"
+            data-button-save-label="ALTERAR"></i>
             <i class="bi bi-trash i-button"></i>
         </div>
         <div class="item-valor">
@@ -112,7 +116,7 @@
         <div class="item-descricao">
             <span>{{ x.tipo }}: </span>
             <i class="bi bi-pencil-square i-button"></i>
-            <i class="bi bi-trash i-button js-excluifonepessoa"></i>
+            <i class="bi bi-trash i-button js-exclui-fone-pessoa"></i>
         </div>
         <div class="item-valor">
             {{ x.fone }} {% if x.contato %} - {{ x.contato }} {% endif %}

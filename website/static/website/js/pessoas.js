@@ -42,6 +42,7 @@ $(document).on('click', ".js-salva-foto", function(event) {
     _formData.append("arquivo", _arquivo);
     _formData.append("csrfmiddlewaretoken", _csrf_token);
     _formData.append("idpessoal", _idpessoal);
+    console.log(_arquivo, _idpessoal, _csrf_token)
     $.ajax({
         type: 'POST',
         url: '/pessoas/salva_foto',
