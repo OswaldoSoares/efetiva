@@ -682,3 +682,29 @@ def html_form_adiciona_documento_colaborador(request, contexto, data):
         "pessoas/html_form_documento_colaborador.html", contexto, request=request
     )
     return data
+
+
+def valida_documento_colaborador(request):
+    msg = dict()
+    error = False
+    seleciona = request.POST.get("tipo_doc")
+    if seleciona == "0":
+        msg["erro_tipo_doc"] = "Obrigatório selecionar o tipo de documento."
+        error = True
+    documento = request.POST.get("numero_doc")
+    if documento == None:
+        msg["erro_documento"] = "Obrigatório digitar o número do documento."
+        error = True
+    elif len(documento) < 3:
+        msg["erro_documento"] = "Número de documento inválido."
+        error = True
+    return error, msg
+
+
+def read_documento_post(request):
+    documento_post = dict()
+    documento_post["tipo_doc"] = request.POST.get("tipo_doc")
+    documento_post["numero_doc"] = request.POST.get("numero_doc")
+    documento_post["data_doc"] = request.POST.get("data_doc")
+    documento_post["idpessoal"] = request.POST.get("idpessoal")
+    return documento_post

@@ -3,6 +3,7 @@ from minutas.facade import filtra_veiculo, motoristas_disponiveis
 
 from romaneios import facade
 from romaneios.print import print_notas_status, print_romaneio
+from website.facade import str_hoje
 
 
 def index_romaneio(request):
@@ -20,7 +21,7 @@ def seleciona_cliente(request):
             id_cli = request.GET.get("cliente")
         notas = facade.create_contexto_seleciona_notas(id_cli, "-NumeroNota")
         cliente = facade.create_contexto_cliente(id_cli)
-        hoje = facade.hoje
+        hoje = str_hoje()
         destinatarios = facade.lista_destinatarios()
         enderecos = facade.lista_enderecos()
         bairros = facade.lista_bairros()
@@ -66,7 +67,7 @@ def adiciona_nota_cliente(request):
         nota_form = dict()
     id_cli = request.POST.get("cliente")
     notas = facade.create_contexto_seleciona_notas(id_cli, "NumeroNota")
-    hoje = facade.hoje
+    hoje = str_hoje()
     filtro_status = request.POST.get("filtro")
     if filtro_status:
         contexto = facade.create_contexto_filtro_notas_status(
@@ -119,7 +120,7 @@ def exclui_nota_cliente(request):
     facade.delete_notas_cliente(_id_not)
     notas = facade.create_contexto_seleciona_notas(_id_cli, "NumeroNota")
     cliente = facade.create_contexto_cliente(_id_cli)
-    hoje = facade.hoje
+    hoje = str_hoje()
     contexto = {"notas": notas, "cliente": cliente, "hoje": hoje, "idcliente": _id_cli}
     quantidade_notas = facade.create_contexto_quantidades_status()
     contexto.update({"rotas": quantidade_notas[0]["rota"]})
@@ -134,7 +135,7 @@ def ocorrencia_nota_cliente(request):
     _id_not = request.GET.get("idNota")
     notas = facade.create_contexto_ocorrencia_notas(_id_not)
     ocorrencias = facade.create_contexto_seleciona_ocorrencia(_id_not, "NumeroNota")
-    hoje = facade.hoje
+    hoje = str_hoje()
     contexto = {
         "ocorrencias": ocorrencias,
         "notas": notas,
@@ -159,7 +160,7 @@ def adiciona_ocorrencia(request):
     id_rom = facade.create_contexto_romaneio_tem_nota(id_not)
     notas = facade.create_contexto_ocorrencia_notas(id_not)
     ocorrencias = facade.create_contexto_seleciona_ocorrencia(id_not, "NumeroNota")
-    hoje = facade.hoje
+    hoje = str_hoje()
     contexto = {
         "notas": notas,
         "ocorrencias": ocorrencias,
@@ -247,7 +248,7 @@ def exclui_nota_romaneio(request):
     id_romaneio_nota = request.GET.get("idRomaneioNota")
     id_rom = request.GET.get("idRomaneio")
     id_not = request.GET.get("idNota")
-    hoje = facade.hoje()
+    hoje = str_hoje()
     facade.delete_nota_romaneio(id_romaneio_nota)
     facade.altera_status_remove_romaneio(id_rom, id_not, hoje)
     not_rom = facade.create_contexto_notas_romaneio(id_rom)

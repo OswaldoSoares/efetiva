@@ -9,9 +9,7 @@ $(document).on('click', ".js-seleciona-colaborador", function() {
         beforeSend: function() {
             $(".card-dados-colaborador").hide()
             $(".card-decimo-terceiro").hide()
-            $(".card-documentos").hide()
-            $(".card-teledones").hide()
-            $(".card-contas-bancaria").hide()
+            $(".card-form-colaborador").hide()
             $(".box-loader").show()
         },
         success: function(data) {
@@ -19,12 +17,6 @@ $(document).on('click', ".js-seleciona-colaborador", function() {
             $(".card-dados-colaborador").show()
             $(".card-decimo-terceiro").html(data.html_decimo_terceiro)
             $(".card-decimo-terceiro").show()
-            $(".card-documentos").html(data.html_documentos)
-            $(".card-documentos").show()
-            $(".card-telefones").html(data.html_telefones)
-            $(".card-telefones").show()
-            $(".card-contas-bancaria").html(data.html_contas_bancaria)
-            $(".card-contas-bancaria").show()
             $(".box-loader").hide()
         },
         error: function(errorThrown) {
@@ -93,7 +85,7 @@ $(document).on('click', '.js-atualiza-decimo-terceiro', function() {
 });
 
 $(document).on('click', '.js-adiciona-documento-colaborador', function() {
-    var idpessoal = $(this).data('idpobj')
+    var idpessoal = $(this).data('idobj')
     $.ajax({
         type: "GET",
         url: "/pessoas/adiciona_documento_colaborador",
@@ -126,6 +118,8 @@ $(document).on('submit', '.js-gera-documento', function(event) {
         },
         success: function(data) {
             $('.card-form-colaborador').html(data.html_form_documento_colaborador)
+            $('.card-form-colaborador').show()
+            console.log(data)
             $('.box-loader').hide()
         },
     });

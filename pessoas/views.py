@@ -264,7 +264,26 @@ def adiciona_documento_colaborador(request):
 
 
 def salva_documento_colaborador(request):
-    print(request.POST)
+    error, msg = facade.valida_documento_colaborador(request)
+    documento_form = facade.read_documento_post(request)
+    print(documento_form)
+    if not error:
+        idpessoal = request.POST.get("idpessoal")
+        contexto = facade.create_contexto_consulta_colaborador(idpessoal)
+        data = facade.create_data_consulta_colaborador(request, contexto)
+        documento_form = dict()
+    else:
+        idpessoal = request.POST.get("idpessoal")
+        hoje = str_hoje()
+        contexto = {
+            "documento_form": documento_form,
+            "idpessoal": idpessoal,
+            "hoje": hoje,
+            "error": error,
+        }
+        contexto.update(msg)
+        data = facade.create_data_form_adiciona_documento_colaborador(request, contexto)
+    return data
 
 
 def adiciona_telefone_colaborador(request):

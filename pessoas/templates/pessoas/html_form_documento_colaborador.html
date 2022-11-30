@@ -11,7 +11,7 @@
                 </div>
                 <div class="item-field">
                     <select class="form-control" id="tipo_doc" name="tipo_doc">
-                        <option value="">SELECIONE TIPO DOCUMENTO</option>
+                        <option value="0">SELECIONE TIPO DOCUMENTO</option>
                         <option value="RG">RG</option>
                         <option value="CPF">CPF</option>
                         <option value="HABILITAÇÃO">HABILITAÇÃO</option>
@@ -21,23 +21,54 @@
                 </div>
             </div>
             <div class="item-form">
+                {% if erro_tipo_doc %}
+                <div class="error">
+                    <span>{{ erro_tipo_doc }}</span>
+                </div>
+                {% endif %}
+            </div>
+            <div class="item-form">
                 <div class="button" title="Número do Documento">
                     <i class="bi bi-file-binary i-button-null"></i>
                 </div>
+                {% if documento_form %}
+                <div class="item-field">
+                    <input type="text" class="form-control" name="numero_doc"
+                    value="{{ documento_form.numero_doc }}"
+                    placeholder="NÚMERO DOCUMENTO">
+                </div>
+                {% else %}
                 <div class="item-field">
                     <input type="text" class="form-control" name="numero_doc"
                     placeholder="NÚMERO DOCUMENTO">
                 </div>
+                {% endif %}
+            </div>
+            <div class="item-form">
+                {% if erro_documento %}
+                <div class="error">
+                    <span>{{ erro_documento }}</span>
+                </div>
+                {% endif %}
             </div>
             <div class="item-form">
                 <div class="button" title="Data Emissão/Vencimento do Documento">
                     <i class="bi bi-calendar i-button-null"></i>
                 </div>
+                {% if documento_form %}
+                <div class="item-field">
+                    <input type="date" class="form-control" name="data_doc"
+                    value="{{ documento_form.data_doc }}"
+                    placeholder="DATA EMISSÃO OU VENCIMENTO">
+                </div>
+                {% else %}
                 <div class="item-field">
                     <input type="date" class="form-control" name="data_doc"
                     value="{{ hoje }}" placeholder="DATA EMISSÃO OU VENCIMENTO">
                 </div>
+                {% endif %}
             </div>
+            <input type="hidden" name="idpessoal" value="{{ idpessoal }}">
         </div>
     </div>
     <div class="article-card-footer">

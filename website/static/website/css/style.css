@@ -6242,6 +6242,14 @@ main .fp-recibo-tabela .fp-recibo-print {
     padding: 5px;
 }
 
+.card-form-colaborador .itens-cadastro .item-form .error {
+    width: 100%;
+    color: var(--color6);
+    padding-left: 10%;
+    font-size: 12px;
+    text-align: center;
+}
+
 .card-form-colaborador .article-card-footer button {
     background-color: var(--color1);
     border: none;
