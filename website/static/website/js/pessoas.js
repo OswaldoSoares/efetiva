@@ -101,11 +101,10 @@ $(document).on('click', '.js-adiciona-documento-colaborador', function() {
             idpessoal: idpessoal,
         },
         beforeSend: function() {
-            $(".card-lista-colaboradores").hide()
             $(".box-loader").show()
         },
         success: function(data) {
-            $(".card-lista-colaboradores").html(data.html_lista_colaboradores_ativo)
+            $(".card-form-colaborador").html(data.html_form_documento_colaborador)
             $(".card-lista-colaboradores").show()
             $(".box-loader").hide()
         },
@@ -124,7 +123,6 @@ $(document).on('click', '.js-adiciona-telefone-colaborador', function() {
             idpessoal: idpessoal,
         },
         beforeSend: function() {
-            $(".card-lista-colaboradores").hide()
             $(".box-loader").show()
         },
         success: function(data) {

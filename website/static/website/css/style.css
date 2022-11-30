@@ -6207,6 +6207,47 @@ main .fp-recibo-tabela .fp-recibo-print {
     font-size: 16px;
 }
 
+.card-form-colaborador {
+    width: 280px;
+}
+
+.card-form-colaborador .itens-cadastro {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color5);
+}
+
+.card-form-colaborador .itens-cadastro .item-form {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-form-colaborador .itens-cadastro .item-form .button {
+    width: 10%;
+    font-size: 20px;
+    text-align: center;
+    color: var(--color6);
+}
+
+.card-form-colaborador .itens-cadastro .item-form .item-field {
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+}
+
+.card-form-colaborador .article-card-footer button {
+    background-color: var(--color1);
+    border: none;
+    padding: 0 5px;
+}
+
 .button-decimo-terceiro {
     top: 89px;
     right: 5px;

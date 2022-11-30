@@ -1,3 +1,4 @@
+import datetime
 from django.db.models import Sum
 from django.shortcuts import render
 from django.shortcuts import redirect, get_object_or_404
@@ -254,7 +255,11 @@ def print_decimo_terceiro(request):
 
 
 def adiciona_documento_colaborador(request):
-    pass
+    idpessoal = request.GET.get("idpessoal")
+    hoje = facade.hoje()
+    contexto = {"idpessoal": idpessoal, "hoje": hoje}
+    data = facade.create_data_form_adiciona_documento_colaborador(request, contexto)
+    return data
 
 
 def adiciona_telefone_colaborador(request):
