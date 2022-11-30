@@ -52,6 +52,18 @@ def cmp(mm: float) -> float:
     return mm / 0.352777
 
 
+def str_hoje() -> str:
+    """
+    Data de Hoje
+
+    Returns:
+        str: Retorna a data de hoje no formato ano-mês-dia
+    """
+    hoje = datetime.datetime.today()
+    hoje = datetime.datetime.strftime(hoje, "%Y-%m-%d")
+    return hoje
+
+
 class DiasFeriados:
     def __init__(self):
         self.feriados = self.get_dias_feriados()

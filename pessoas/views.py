@@ -7,6 +7,7 @@ from django.template.loader import render_to_string
 from rolepermissions.decorators import has_permission_decorator
 from pessoas import facade
 from pessoas.print import print_pdf_decimno_terceiro
+from website.facade import str_hoje
 from .models import Pessoal, DocPessoal, FonePessoal, ContaPessoal, ContraChequeItens
 from .forms import (
     CadastraPessoal,
@@ -256,7 +257,7 @@ def print_decimo_terceiro(request):
 
 def adiciona_documento_colaborador(request):
     idpessoal = request.GET.get("idpessoal")
-    hoje = facade.hoje()
+    hoje = str_hoje()
     contexto = {"idpessoal": idpessoal, "hoje": hoje}
     data = facade.create_data_form_adiciona_documento_colaborador(request, contexto)
     return data

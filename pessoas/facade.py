@@ -682,10 +682,3 @@ def html_form_adiciona_documento_colaborador(request, contexto, data):
         "pessoas/html_form_documento_colaborador.html", contexto
     )
     return data
-
-
-# TODO remover para facade website
-def hoje():
-    hoje = datetime.datetime.today()
-    hoje = datetime.datetime.strftime(hoje, "%Y-%m-%d")
-    return hoje
