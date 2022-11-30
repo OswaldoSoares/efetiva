@@ -105,7 +105,7 @@ $(document).on('click', '.js-adiciona-documento-colaborador', function() {
         },
         success: function(data) {
             $(".card-form-colaborador").html(data.html_form_documento_colaborador)
-            $(".card-lista-colaboradores").show()
+            $(".card-form-colaborador").show()
             $(".box-loader").hide()
         },
         error: function(errorThrown) {
@@ -129,6 +129,10 @@ $(document).on('submit', '.js-gera-documento', function(event) {
             $('.box-loader').hide()
         },
     });
+});
+
+$(document).on('click', '.js-fecha-formulario', function() {
+    $('.card-form-colaborador').hide();
 });
 
 $(document).on('click', '.js-adiciona-telefone-colaborador', function() {
