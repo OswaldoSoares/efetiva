@@ -1,4 +1,4 @@
-<form method="post" action="{% url 'criadocpessoa' %}" class="js-cria-docpessoa-form">
+<form class="js-gera-documento" method="post" action="">
     {% csrf_token %}
     <div class="article-card-titulo">
         <span>CADASTRO DOCUMENTO</span>
@@ -6,12 +6,12 @@
     <div class="article-card-body">
         <div class="itens-cadastro">
             <div class="item-form">
-                <div class="button" title="TIPO DE DOCUMENTO">
+                <div class="button" title="Tipo de Documento">
                     <i class="icofont-ui-v-card i-button-null"></i>
                 </div>
                 <div class="item-field">
                     <select class="form-control" id="tipo_doc" name="tipo_doc">
-                        <option value="">TIPO DOCUMENTO</option>
+                        <option value="">SELECIONE TIPO DOCUMENTO</option>
                         <option value="RG">RG</option>
                         <option value="CPF">CPF</option>
                         <option value="HABILITAÇÃO">HABILITAÇÃO</option>
@@ -21,7 +21,7 @@
                 </div>
             </div>
             <div class="item-form">
-                <div class="button" title="NÚMERO DO DOCUMENTO">
+                <div class="button" title="Número do Documento">
                     <i class="bi bi-file-binary i-button-null"></i>
                 </div>
                 <div class="item-field">
@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div class="item-form">
-                <div class="button" title="DATA EMISSÃO/VENCIMENTO DO DOCUMENTO">
+                <div class="button" title="Data Emissão/Vencimento do Documento">
                     <i class="bi bi-calendar i-button-null"></i>
                 </div>
                 <div class="item-field">
@@ -42,8 +42,8 @@
     </div>
     <div class="article-card-footer">
         <i class="bi bi-x-circle i-button js-fecha-formulario"
-        title="FECHAR"></i>
+        title="Fechar"></i>
         <button type="submit" class="bi bi-save i-button"
-        title="SALVAR DOCUMENTO"></button>
+        title="Salva Documento"></button>
     </div>
 </form>

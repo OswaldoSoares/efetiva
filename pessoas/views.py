@@ -263,6 +263,10 @@ def adiciona_documento_colaborador(request):
     return data
 
 
+def salva_documento_colaborador(request):
+    print(request.POST)
+
+
 def adiciona_telefone_colaborador(request):
     pass
 

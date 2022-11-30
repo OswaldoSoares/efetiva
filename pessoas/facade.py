@@ -679,6 +679,6 @@ def create_data_form_adiciona_documento_colaborador(request, contexto):
 
 def html_form_adiciona_documento_colaborador(request, contexto, data):
     data["html_form_documento_colaborador"] = render_to_string(
-        "pessoas/html_form_documento_colaborador.html", contexto
+        "pessoas/html_form_documento_colaborador.html", contexto, request=request
     )
     return data

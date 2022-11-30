@@ -114,6 +114,23 @@ $(document).on('click', '.js-adiciona-documento-colaborador', function() {
     });
 });
 
+$(document).on('submit', '.js-gera-documento', function(event) {
+    event.preventDefault();
+    $.ajax({
+        type: $(this).attr('method'),
+        url: "/pessoas/salva_documento_colaborador",
+        data: $(this).serialize(),
+        beforeSend: function() {
+            $('.card-form-colaborador').hide()
+            $('.box-loader').show()
+        },
+        success: function(data) {
+            $('.card-form-colaborador').html(data.html_form_documento_colaborador)
+            $('.box-loader').hide()
+        },
+    });
+});
+
 $(document).on('click', '.js-adiciona-telefone-colaborador', function() {
     var idpessoal = $(this).data('idobj')
     $.ajax({
