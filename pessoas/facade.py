@@ -695,7 +695,7 @@ def valida_documento_colaborador(request):
     if documento == None:
         msg["erro_documento"] = "Obrigatório digitar o número do documento."
         error = True
-    elif len(documento) < 3:
+    elif len(documento) < 4:
         msg["erro_documento"] = "Número de documento inválido."
         error = True
     return error, msg
@@ -708,3 +708,12 @@ def read_documento_post(request):
     documento_post["data_doc"] = request.POST.get("data_doc")
     documento_post["idpessoal"] = request.POST.get("idpessoal")
     return documento_post
+
+
+def salva_documento(documento):
+    obj = DocPessoal()
+    obj.TipoDocumento = documento["tipo_doc"]
+    obj.Documento = documento["numero_doc"]
+    obj.Data = documento["data_doc"]
+    obj.idPessoal_id = documento["idpessoal"]
+    obj.save()

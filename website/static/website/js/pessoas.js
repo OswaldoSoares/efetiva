@@ -113,10 +113,13 @@ $(document).on('submit', '.js-gera-documento', function(event) {
         url: "/pessoas/salva_documento_colaborador",
         data: $(this).serialize(),
         beforeSend: function() {
+            $('.card-dados-colaborador').hide()
             $('.card-form-colaborador').hide()
             $('.box-loader').show()
         },
         success: function(data) {
+            $(".card-dados-colaborador").html(data.html_dados_colaborador)
+            $(".card-dados-colaborador").show()
             $('.card-form-colaborador').html(data.html_form_documento_colaborador)
             $('.card-form-colaborador').show()
             console.log(data)

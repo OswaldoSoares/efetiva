@@ -269,6 +269,7 @@ def salva_documento_colaborador(request):
     documento_form = facade.read_documento_post(request)
     print(documento_form)
     if not error:
+        facade.salva_documento(documento_form)
         idpessoal = request.POST.get("idpessoal")
         contexto = facade.create_contexto_consulta_colaborador(idpessoal)
         data = facade.create_data_consulta_colaborador(request, contexto)
