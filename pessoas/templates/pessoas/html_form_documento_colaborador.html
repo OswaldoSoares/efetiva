@@ -13,7 +13,15 @@
                     <select class="form-control" id="tipo_doc" name="tipo_doc">
                         <option value="0">SELECIONE TIPO DOCUMENTO</option>
                         {% for i in tipo_doc %}
-                        <option value="{{ i }}">{{ i }}</option>
+                        {% if documento_form %}
+                            {% if documento_form.tipo_doc == i %}
+                            <option value="{{ i }}" selected>{{ i }}</option>
+                            {% else %}
+                            <option value="{{ i }}">{{ i }}</option>
+                            {% endif %}
+                        {% else %}
+                            <option value="{{ i }}">{{ i }}</option>
+                        {% endif %}
                         {% endfor %}
                     </select>
                 </div>
