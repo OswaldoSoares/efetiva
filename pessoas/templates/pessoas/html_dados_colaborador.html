@@ -104,7 +104,8 @@
             data-title="EDITA DOCUMENTO COLABORADOR"
             data-action="{% url 'excluidocpessoa' colaborador.idpes %}"
             data-button-save-label="ALTERAR"></i>
-            <i class="bi bi-trash i-button"></i>
+            <i class="bi bi-trash i-button js-exclui-documento-colaborador"
+            data-iddocpessoal="{{ x.iddoc }}"></i>
         </div>
         <div class="item-valor">
             {{ x.documento }} - {{ x.data_doc }}
@@ -116,7 +117,8 @@
         <div class="item-descricao">
             <span>{{ x.tipo }}: </span>
             <i class="bi bi-pencil-square i-button"></i>
-            <i class="bi bi-trash i-button js-exclui-fone-pessoa"></i>
+            <i class="bi bi-trash i-button js-exclui-fone-colaborador"
+            data-idpessoal="{{ colaborador.idpes }}"></i>
         </div>
         <div class="item-valor">
             {{ x.fone }} {% if x.contato %} - {{ x.contato }} {% endif %}
@@ -129,7 +131,8 @@
         <div class="item-descricao">
             <span>CHAVE PIX: </span>
             <i class="bi bi-pencil-square i-button"></i>
-            <i class="bi bi-trash i-button"></i>
+            <i class="bi bi-trash i-button js-exclui-conta-colaborador"
+            data-idpessoal="{{ colaborador.idpes }}"></i>
         </div>
         <div class="item-valor">
             {{ x.pix }}
@@ -138,7 +141,8 @@
         <div class="item-descricao">
             <span>{{ x.banco }}: </span>
             <i class="bi bi-pencil-square i-button"></i>
-            <i class="bi bi-trash i-button"></i>
+            <i class="bi bi-trash i-button js-exclui-conta-colaborador"
+            data-idpessoal="{{ colaborador.idpes }}"></i>
         </div>
         <div class="item-valor">
             AG: {{ x.agencia }}
@@ -171,9 +175,9 @@
     data-action="{% url 'editapessoa' colaborador.idpes %}"
     data-button-save-label="ALTERAR"></i>
     <i class="icofont-ui-v-card i-button js-adiciona-documento-colaborador"
-    title="ADICIONAR DOCUMENTO" data-idobj="{{ colaborador.idpes }}"></i>
+    title="ADICIONAR DOCUMENTO" data-idpessoal="{{ colaborador.idpes }}"></i>
     <i class="icofont-ui-dial-phone i-button js-adiciona-telefone-colaborador"
-    title="ADCIONAR TELEFONE" data-idobj="{{ colaborador.idpes }}"></i>
+    title="ADCIONAR TELEFONE" data-idpessoal="{{ colaborador.idpes }}"></i>
     <i class="icofont-bank-alt i-button js-adiciona-conta-colaborador"
-    title="ADICIONAR CONTA BANCÁRIA" data-idobj="{{ colaborador.idpes }}"></i>
+    title="ADICIONAR CONTA BANCÁRIA" data-idpessoal="{{ colaborador.idpes }}"></i>
 </div>

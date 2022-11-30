@@ -85,7 +85,7 @@ $(document).on('click', '.js-atualiza-decimo-terceiro', function() {
 });
 
 $(document).on('click', '.js-adiciona-documento-colaborador', function() {
-    var idpessoal = $(this).data('idobj')
+    var idpessoal = $(this).data('idpessoal')
     $.ajax({
         type: "GET",
         url: "/pessoas/adiciona_documento_colaborador",
@@ -97,6 +97,28 @@ $(document).on('click', '.js-adiciona-documento-colaborador', function() {
         },
         success: function(data) {
             $(".card-form-colaborador").html(data.html_form_documento_colaborador)
+            $(".card-form-colaborador").show()
+            $(".box-loader").hide()
+        },
+        error: function(errorThrown) {
+            console.log("error: " + errorThrown)
+        }
+    });
+});
+
+$(document).on('click', '.js-exclui-documento-colaborador', function() {
+    var iddocpessoal = $(this).data('iddocpessoal')
+    $.ajax({
+        type: "GET",
+        url: "/pessoas/exclui_documento_colaborador",
+        data: {
+            iddocpessoal: iddocpessoal,
+        },
+        beforeSend: function() {
+            $(".box-loader").show()
+        },
+        success: function(data) {
+            $(".card-form-colaborador").html(data.html_form_confirma_exclusao)
             $(".card-form-colaborador").show()
             $(".box-loader").hide()
         },
@@ -135,7 +157,7 @@ $(document).on('click', '.js-fecha-formulario', function() {
 });
 
 $(document).on('click', '.js-adiciona-telefone-colaborador', function() {
-    var idpessoal = $(this).data('idobj')
+    var idpessoal = $(this).data('idpessoal')
     $.ajax({
         type: "GET",
         url: "/pessoas/atualiza_decimo_terceiro",
@@ -157,7 +179,7 @@ $(document).on('click', '.js-adiciona-telefone-colaborador', function() {
 });
 
 $(document).on('click', '.js-adiciona-conta-colaborador', function() {
-    var idpessoal = $(this).data('idobj')
+    var idpessoal = $(this).data('idpessoal')
     $.ajax({
         type: "GET",
         url: "/pessoas/atualiza_decimo_terceiro",

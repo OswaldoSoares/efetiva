@@ -1,0 +1,20 @@
+<form class="js-gera-documento" method="post" action="">
+    {% csrf_token %}
+    <div class="article-card-titulo">
+        <span>CONFIRMA EXCLUSÃO</span>
+    </div>
+    <div class="article-card-body">
+        <div class="itens-cadastro">
+            <div class="item-form">
+                <textarea class="form-control texto_confirma">{{ mensagem }}</textarea>
+            </div>
+            <input type="hidden" name="iddocpessoal" value="{{ iddocpessoal }}">
+        </div>
+    </div>
+    <div class="article-card-footer">
+        <i class="bi bi-x-circle i-button js-fecha-formulario"
+        title="Fechar"></i>
+        <button type="submit" class="bi bi-check-circle i-button"
+        title="Salva Documento"></button>
+    </div>
+</form>

@@ -677,9 +677,22 @@ def create_data_form_adiciona_documento_colaborador(request, contexto):
     return JsonResponse(data)
 
 
+def create_data_form_exclui_documento_colaborador(request, contexto):
+    data = dict()
+    html_form_confirma_exclusao(request, contexto, data)
+    return JsonResponse(data)
+
+
 def html_form_adiciona_documento_colaborador(request, contexto, data):
     data["html_form_documento_colaborador"] = render_to_string(
         "pessoas/html_form_documento_colaborador.html", contexto, request=request
+    )
+    return data
+
+
+def html_form_confirma_exclusao(request, contexto, data):
+    data["html_form_confirma_exclusao"] = render_to_string(
+        "pessoas/html_form_confirma_exclusao.html", contexto, request=request
     )
     return data
 
@@ -717,3 +730,11 @@ def salva_documento(documento):
     obj.Data = documento["data_doc"]
     obj.idPessoal_id = documento["idpessoal"]
     obj.save()
+
+
+def create_contexto_exclui_documento_colaborador(iddocpessoal):
+    documento = DocPessoal.objects.get(idDocPessoal=iddocpessoal)
+    tipo = documento.TipoDocumento
+    doc = documento.Documento
+    mensagem = f"Confirma a exclusão do documento: {tipo} de número {doc}?"
+    return {"mensagem": mensagem, "iddocpessoal": iddocpessoal}

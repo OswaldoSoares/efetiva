@@ -289,6 +289,14 @@ def salva_documento_colaborador(request):
     return data
 
 
+def exclui_documento_colaborador(request):
+    iddocpessoal = request.GET.get("iddocpessoal")
+    contexto = facade.create_contexto_exclui_documento_colaborador(iddocpessoal)
+    print(contexto)
+    data = facade.create_data_form_exclui_documento_colaborador(request, contexto)
+    return data
+
+
 def adiciona_telefone_colaborador(request):
     pass
 
