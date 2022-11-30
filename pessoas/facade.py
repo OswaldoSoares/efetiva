@@ -736,5 +736,11 @@ def create_contexto_exclui_documento_colaborador(iddocpessoal):
     documento = DocPessoal.objects.get(idDocPessoal=iddocpessoal)
     tipo = documento.TipoDocumento
     doc = documento.Documento
+    idpessoal = documento.idPessoal_id
     mensagem = f"Confirma a exclusão do documento: {tipo} de número {doc}?"
-    return {"mensagem": mensagem, "iddocpessoal": iddocpessoal}
+    return {"mensagem": mensagem, "iddocpessoal": iddocpessoal, "idpessoal": idpessoal}
+
+
+def apaga_documento(iddocpessoal):
+    documento = DocPessoal.objects.get(idDocPessoal=iddocpessoal)
+    documento.delete()

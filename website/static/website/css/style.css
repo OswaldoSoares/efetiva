@@ -6217,6 +6217,10 @@ main .fp-recibo-tabela .fp-recibo-print {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    /* background-color: var(--color5); */
+}
+
+.magenta {
     background-color: var(--color5);
 }
 
@@ -6256,7 +6260,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-form-colaborador .article-card-footer button {
-    background-color: var(--color1);
+    background-color: var(--color5);
     border: none;
     padding: 0 5px;
 }

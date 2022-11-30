@@ -27,6 +27,7 @@ from .views import (
     adiciona_conta_colaborador,
     salva_documento_colaborador,
     exclui_documento_colaborador,
+    apaga_documento_colaborador,
 )
 
 
@@ -103,5 +104,10 @@ urlpatterns = [
         "exclui_documento_colaborador",
         exclui_documento_colaborador,
         name="exclui_documento_colaborador",
+    ),
+    path(
+        "apaga_documento_colaborador",
+        apaga_documento_colaborador,
+        name="apaga_documento_colaborador",
     ),
 ]
