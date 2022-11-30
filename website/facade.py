@@ -64,6 +64,17 @@ def str_hoje() -> str:
     return hoje
 
 
+def dict_tipo_doc() -> dict:
+    tipo_doc = {
+        "RG": "RG",
+        "CPF": "CPF",
+        "HABILITAÇÃO": "HABILITAÇÃO",
+        "RESERVISTA": "RESERVISTA",
+        "PIS/PASEP": "PISPASEP",
+    }
+    return tipo_doc
+
+
 class DiasFeriados:
     def __init__(self):
         self.feriados = self.get_dias_feriados()

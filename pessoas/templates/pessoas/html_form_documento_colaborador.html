@@ -12,11 +12,9 @@
                 <div class="item-field">
                     <select class="form-control" id="tipo_doc" name="tipo_doc">
                         <option value="0">SELECIONE TIPO DOCUMENTO</option>
-                        <option value="RG">RG</option>
-                        <option value="CPF">CPF</option>
-                        <option value="HABILITAÇÃO">HABILITAÇÃO</option>
-                        <option value="RESERVISTA">RESERVISTA</option>
-                        <option value="PIS/PASEP">PIS/PASEP</option>
+                        {% for i in tipo_doc %}
+                        <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
                     </select>
                 </div>
             </div>
