@@ -264,11 +264,29 @@ def adiciona_documento_colaborador(request):
     return data
 
 
+def altera_documento_colaborador(request):
+    iddocpessoal = request.GET.get("iddocpessoal")
+    idpessoal = request.GET.get("idpessoal")
+    documento_form = facade.read_documento_database(iddocpessoal)
+    tipo_doc = dict_tipo_doc()
+    contexto = {
+        "documento_form": documento_form,
+        "idpessoal": idpessoal,
+        "tipo_doc": tipo_doc,
+    }
+    data = facade.create_data_form_adiciona_documento_colaborador(request, contexto)
+    return data
+
+
 def salva_documento_colaborador(request):
     error, msg = facade.valida_documento_colaborador(request)
     documento_form = facade.read_documento_post(request)
+    iddocpessoal = request.POST.get("iddocpessoal")
     if not error:
-        facade.salva_documento(documento_form)
+        if iddocpessoal:
+            facade.altera_documento(documento_form, iddocpessoal)
+        else:
+            facade.salva_documento(documento_form)
         idpessoal = request.POST.get("idpessoal")
         contexto = facade.create_contexto_consulta_colaborador(idpessoal)
         data = facade.create_data_consulta_colaborador(request, contexto)

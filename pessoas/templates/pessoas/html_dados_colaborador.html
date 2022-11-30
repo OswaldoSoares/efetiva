@@ -99,11 +99,9 @@
     <div class="itens-dados">
         <div class="item-descricao">
             <span>{{ x.tipo }}: </span>
-            <i class="bi bi-pencil-square i-button"
-            onclick="openMyModal(event); return false;"
-            data-title="EDITA DOCUMENTO COLABORADOR"
-            data-action="{% url 'excluidocpessoa' colaborador.idpes %}"
-            data-button-save-label="ALTERAR"></i>
+            <i class="bi bi-pencil-square i-button js-altera-documento-colaborador"
+            data-iddocpessoal="{{ x.iddoc }}"
+            data-idpessoal="{{ colaborador.idpes }}"></i>
             <i class="bi bi-trash i-button js-exclui-documento-colaborador"
             data-iddocpessoal="{{ x.iddoc }}"></i>
         </div>
@@ -116,7 +114,8 @@
     <div class="itens-dados">
         <div class="item-descricao">
             <span>{{ x.tipo }}: </span>
-            <i class="bi bi-pencil-square i-button"></i>
+            <i class="bi bi-pencil-square i-button js-altera-fone-colaborador"
+            data-idpessoal="{{ colaborador.idpes }}"></i>
             <i class="bi bi-trash i-button js-exclui-fone-colaborador"
             data-idpessoal="{{ colaborador.idpes }}"></i>
         </div>
@@ -130,7 +129,8 @@
         {% if x.pix %}
         <div class="item-descricao">
             <span>CHAVE PIX: </span>
-            <i class="bi bi-pencil-square i-button"></i>
+            <i class="bi bi-pencil-square i-button js-altera-conta-colaborador"
+            data-idpessoal="{{ colaborador.idpes }}"></i>
             <i class="bi bi-trash i-button js-exclui-conta-colaborador"
             data-idpessoal="{{ colaborador.idpes }}"></i>
         </div>
@@ -140,7 +140,8 @@
         {% else %}
         <div class="item-descricao">
             <span>{{ x.banco }}: </span>
-            <i class="bi bi-pencil-square i-button"></i>
+            <i class="bi bi-pencil-square i-button js-altera-conta-colaborador"
+            data-idpessoal="{{ colaborador.idpes }}"></i>
             <i class="bi bi-trash i-button js-exclui-conta-colaborador"
             data-idpessoal="{{ colaborador.idpes }}"></i>
         </div>

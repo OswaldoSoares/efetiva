@@ -28,6 +28,7 @@ from .views import (
     salva_documento_colaborador,
     exclui_documento_colaborador,
     apaga_documento_colaborador,
+    altera_documento_colaborador,
 )
 
 
@@ -109,5 +110,10 @@ urlpatterns = [
         "apaga_documento_colaborador",
         apaga_documento_colaborador,
         name="apaga_documento_colaborador",
+    ),
+    path(
+        "altera_documento_colaborador",
+        altera_documento_colaborador,
+        name="altera_documento_colaborador",
     ),
 ]

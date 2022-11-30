@@ -723,8 +723,32 @@ def read_documento_post(request):
     return documento_post
 
 
+def read_documento_database(iddocpessoal):
+    documento = DocPessoal.objects.get(idDocPessoal=iddocpessoal)
+    documento_database = dict()
+    documento_database["tipo_doc"] = documento.TipoDocumento
+    documento_database["numero_doc"] = documento.Documento
+    documento_database["data_doc"] = datetime.datetime.strftime(
+        documento.Data, "%Y-%m-%d"
+    )
+    documento_database["idpessoal"] = documento.idPessoal_id
+    documento_database["iddocpessoal"] = documento.idDocPessoal
+    return documento_database
+
+
 def salva_documento(documento):
     obj = DocPessoal()
+    obj.TipoDocumento = documento["tipo_doc"]
+    obj.Documento = documento["numero_doc"]
+    obj.Data = documento["data_doc"]
+    obj.idPessoal_id = documento["idpessoal"]
+    obj.save()
+
+
+def altera_documento(documento, iddocpessoal):
+    doc = DocPessoal.objects.get(idDocPessoal=iddocpessoal)
+    obj = DocPessoal(doc)
+    obj.idDocPessoal = doc.idDocPessoal
     obj.TipoDocumento = documento["tipo_doc"]
     obj.Documento = documento["numero_doc"]
     obj.Data = documento["data_doc"]

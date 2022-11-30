@@ -64,16 +64,18 @@
                 {% if documento_form %}
                 <div class="item-field">
                     <input type="date" class="form-control" name="data_doc"
-                    value="{{ documento_form.data_doc }}"
-                    placeholder="DATA EMISSÃO OU VENCIMENTO">
+                    value="{{ documento_form.data_doc }}">
                 </div>
                 {% else %}
                 <div class="item-field">
                     <input type="date" class="form-control" name="data_doc"
-                    value="{{ hoje }}" placeholder="DATA EMISSÃO OU VENCIMENTO">
+                    value="{{ hoje }}">
                 </div>
                 {% endif %}
             </div>
+            {% if documento_form %}
+            <input type="hidden" name="iddocpessoal" value="{{ documento_form.iddocpessoal }}">
+            {% endif %}
             <input type="hidden" name="idpessoal" value="{{ idpessoal }}">
         </div>
     </div>
