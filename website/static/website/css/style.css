@@ -6250,6 +6250,11 @@ main .fp-recibo-tabela .fp-recibo-print {
     text-align: center;
 }
 
+.card-form-colaborador .itens-cadastro .item-form textarea {
+    margin: 10px;
+    text-align: center;
+}
+
 .card-form-colaborador .article-card-footer button {
     background-color: var(--color1);
     border: none;
