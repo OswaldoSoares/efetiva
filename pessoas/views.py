@@ -267,7 +267,6 @@ def adiciona_documento_colaborador(request):
 def salva_documento_colaborador(request):
     error, msg = facade.valida_documento_colaborador(request)
     documento_form = facade.read_documento_post(request)
-    print(documento_form)
     if not error:
         facade.salva_documento(documento_form)
         idpessoal = request.POST.get("idpessoal")

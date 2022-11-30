@@ -465,13 +465,11 @@ def salva_arquivo(request, msg, v_idfatura):
 
 
 def salva_envio(v_idobj, v_emails, v_texto):
-    print(v_idobj, v_emails, v_texto)
     obj = EmailEnviado()
     obj.EmailsEnviado = v_emails
     obj.MensagemAdicional = v_texto
     obj.idFatura_id = int(v_idobj)
-    if obj.save():
-        print("OK")
+    obj.save()
 
 
 def salva_pagamento(request, v_idfatura, v_data, v_valor):
