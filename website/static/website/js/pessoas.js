@@ -120,8 +120,10 @@ $(document).on('submit', '.js-gera-documento', function(event) {
         success: function(data) {
             $(".card-dados-colaborador").html(data.html_dados_colaborador)
             $(".card-dados-colaborador").show()
-            $('.card-form-colaborador').html(data.html_form_documento_colaborador)
-            $('.card-form-colaborador').show()
+            if (data.html_form_documento_colaborador) {
+                $('.card-form-colaborador').html(data.html_form_documento_colaborador)
+                $('.card-form-colaborador').show()
+            }
             console.log(data)
             $('.box-loader').hide()
         },
