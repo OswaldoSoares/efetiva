@@ -152,6 +152,25 @@ $(document).on('submit', '.js-gera-documento', function(event) {
     });
 });
 
+$(document).on('submit', '.js-apaga-documento', function(event) {
+    event.preventDefault();
+    $.ajax({
+        type: $(this).attr('method'),
+        url: "/pessoas/apaga_documento_colaborador",
+        data: $(this).serialize(),
+        beforeSend: function() {
+            $('.card-dados-colaborador').hide()
+            $('.card-form-colaborador').hide()
+            $('.box-loader').show()
+        },
+        success: function(data) {
+            $(".card-dados-colaborador").html(data.html_dados_colaborador)
+            $(".card-dados-colaborador").show()
+            $('.box-loader').hide()
+        },
+    });
+});
+
 $(document).on('click', '.js-fecha-formulario', function() {
     $('.card-form-colaborador').hide();
 });
