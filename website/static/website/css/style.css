@@ -6217,7 +6217,6 @@ main .fp-recibo-tabela .fp-recibo-print {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    /* background-color: var(--color5); */
 }
 
 .magenta {

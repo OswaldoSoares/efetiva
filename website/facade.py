@@ -75,6 +75,19 @@ def dict_tipo_doc() -> dict:
     return tipo_doc
 
 
+def dict_tipo_fone() -> dict:
+    tipo_fone = {
+        "WHATSAPP": "WHATSAPP",
+        "VIVO": "VIVO",
+        "TIM": "TIM",
+        "OI": "OI",
+        "CLARO": "CLARO",
+        "FIXO": "FIXO",
+        "RECADO": "RECADO",
+    }
+    return tipo_fone
+
+
 class DiasFeriados:
     def __init__(self):
         self.feriados = self.get_dias_feriados()
