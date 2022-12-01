@@ -932,3 +932,18 @@ def salva_conta(conta):
     obj.PIX = conta["pix"]
     obj.idPessoal_id = conta["idpessoal"]
     obj.save()
+
+
+def altera_conta(conta, idcontapessoal):
+    conta_banco = ContaPessoal.objects.get(idContaPessoal=idcontapessoal)
+    obj = ContaPessoal(conta_banco)
+    obj.idContaPessoal = conta_banco.idContaPessoal
+    obj.Banco = conta["banco"]
+    obj.Agencia = conta["agencia"]
+    obj.Conta = conta["conta"]
+    obj.TipoConta = conta["tipo_conta"]
+    obj.Titular = conta["titular"]
+    obj.Documento = conta["documento"]
+    obj.PIX = conta["pix"]
+    obj.idPessoal_id = conta["idpessoal"]
+    obj.save()
