@@ -950,7 +950,7 @@ def altera_conta(conta, idcontapessoal):
 
 
 def create_contexto_exclui_conta_colaborador(idcontapessoal):
-    conta = ContaPessoal.objects.get(idcontaPessoal=idcontapessoal)
+    conta = ContaPessoal.objects.get(idContaPessoal=idcontapessoal)
     banco = conta.Banco
     agencia = conta.Agencia
     conta_banco = conta.Banco
@@ -967,3 +967,8 @@ def create_contexto_exclui_conta_colaborador(idcontapessoal):
         "idpessoal": idpessoal,
         "js_class": js_class,
     }
+
+
+def apaga_conta(idcontapessoal):
+    conta = ContaPessoal.objects.get(idContaPessoal=idcontapessoal)
+    conta.delete()
