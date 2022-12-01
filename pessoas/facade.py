@@ -904,3 +904,18 @@ def read_conta_post(request):
     conta_post["pix"] = request.POST.get("pix")
     conta_post["idpessoal"] = request.POST.get("idpessoal")
     return conta_post
+
+
+def read_conta_database(idcontapessoal):
+    conta = ContaPessoal.objects.get(idContaPessoal=idcontapessoal)
+    conta_database = dict()
+    conta_database["banco"] = conta.Banco
+    conta_database["agencia"] = conta.Agencia
+    conta_database["conta"] = conta.Conta
+    conta_database["tipo_conta"] = conta.TipoConta
+    conta_database["titular"] = conta.Titular
+    conta_database["documento"] = conta.Documento
+    conta_database["pix"] = conta.PIX
+    conta_database["idpessoal"] = conta.idPessoal_id
+    conta_database["idContaPessoal"] = conta.idContaPessoal
+    return conta_database
