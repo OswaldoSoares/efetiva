@@ -919,3 +919,16 @@ def read_conta_database(idcontapessoal):
     conta_database["idpessoal"] = conta.idPessoal_id
     conta_database["idContaPessoal"] = conta.idContaPessoal
     return conta_database
+
+
+def salva_conta(conta):
+    obj = ContaPessoal()
+    obj.Banco = conta["banco"]
+    obj.Agencia = conta["agencia"]
+    obj.Conta = conta["conta"]
+    obj.TipoConta = conta["tipo_conta"]
+    obj.Titular = conta["titular"]
+    obj.Documento = conta["documento"]
+    obj.PIX = conta["pix"]
+    obj.idPessoal_id = conta["idpessoal"]
+    obj.save()
