@@ -871,3 +871,16 @@ def create_contexto_exclui_fone_colaborador(idfonepessoal):
 def apaga_fone(idfonepessoal):
     fone = FonePessoal.objects.get(idFonePessoal=idfonepessoal)
     fone.delete()
+
+
+def create_data_form_adiciona_conta_colaborador(request, contexto):
+    data = dict()
+    html_form_adiciona_conta_colaborador(request, contexto, data)
+    return JsonResponse(data)
+
+
+# TODO renomear função já existe fazendo a mesma função.
+def create_data_form_exclui_conta_colaborador(request, contexto):
+    data = dict()
+    html_form_confirma_exclusao(request, contexto, data)
+    return JsonResponse(data)
