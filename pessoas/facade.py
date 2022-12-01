@@ -788,3 +788,20 @@ def html_form_fone_documento_colaborador(request, contexto, data):
         "pessoas/html_form_fone_colaborador.html", contexto, request=request
     )
     return data
+
+
+def valida_fone_colaborador(request):
+    msg = dict()
+    error = False
+    seleciona = request.POST.get("tipo_fone")
+    if seleciona == "0":
+        msg["erro_tipo_fone"] = "Obrigatório selecionar o tipo de telefone."
+        error = True
+    telefone = request.POST.get("numero_fone")
+    if telefone == None:
+        msg["erro_telefone"] = "Obrigatório digitar o número do telefone."
+        error = True
+    elif len(telefone) < 8:
+        msg["erro_telefone"] = "Número de telefone inválido."
+        error = True
+    return error, msg
