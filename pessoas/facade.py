@@ -774,3 +774,9 @@ def create_data_form_adiciona_fone_colaborador(request, contexto):
     data = dict()
     html_form_adiciona_fone_colaborador(request, contexto, data)
     return JsonResponse(data)
+
+
+def create_data_form_exclui_fone_colaborador(request, contexto):
+    data = dict()
+    html_form_confirma_exclusao(request, contexto, data)
+    return JsonResponse(data)
