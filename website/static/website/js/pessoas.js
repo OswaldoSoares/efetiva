@@ -266,3 +266,27 @@ $(document).on('click', '.js-exclui-telefone-colaborador', function() {
         }
     });
 });
+
+$(document).on('submit', '.js-gera-telefone', function(event) {
+    event.preventDefault();
+    $.ajax({
+        type: $(this).attr('method'),
+        url: "/pessoas/salva_telefone_colaborador",
+        data: $(this).serialize(),
+        beforeSend: function() {
+            $('.card-dados-colaborador').hide()
+            $('.card-form-colaborador').hide()
+            $('.box-loader').show()
+        },
+        success: function(data) {
+            $(".card-dados-colaborador").html(data.html_dados_colaborador)
+            $(".card-dados-colaborador").show()
+            if (data.html_form_fone_colaborador) {
+                $('.card-form-colaborador').html(data.html_form_fone_colaborador)
+                $('.card-form-colaborador').show()
+            }
+            console.log(data)
+            $('.box-loader').hide()
+        },
+    });
+});
