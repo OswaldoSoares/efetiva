@@ -23,12 +23,16 @@ from .views import (
     atualiza_decimo_terceiro,
     print_decimo_terceiro,
     adiciona_documento_colaborador,
-    adiciona_telefone_colaborador,
-    adiciona_conta_colaborador,
-    salva_documento_colaborador,
-    exclui_documento_colaborador,
-    apaga_documento_colaborador,
     altera_documento_colaborador,
+    exclui_documento_colaborador,
+    salva_documento_colaborador,
+    apaga_documento_colaborador,
+    adiciona_telefone_colaborador,
+    altera_telefone_colaborador,
+    exclui_telefone_colaborador,
+    salva_telefone_colaborador,
+    apaga_telefone_colaborador,
+    adiciona_conta_colaborador,
 )
 
 
@@ -87,19 +91,9 @@ urlpatterns = [
         name="adiciona_documento_colaborador",
     ),
     path(
-        "adiciona_telefone_colaborador",
-        adiciona_telefone_colaborador,
-        name="adiciona_telefone_colaborador",
-    ),
-    path(
-        "adiciona_conta_colaborador",
-        adiciona_conta_colaborador,
-        name="adiciona_conta_colaborador",
-    ),
-    path(
-        "salva_documento_colaborador",
-        salva_documento_colaborador,
-        name="salva_documento_colaborador",
+        "altera_documento_colaborador",
+        altera_documento_colaborador,
+        name="altera_documento_colaborador",
     ),
     path(
         "exclui_documento_colaborador",
@@ -107,13 +101,43 @@ urlpatterns = [
         name="exclui_documento_colaborador",
     ),
     path(
+        "salva_documento_colaborador",
+        salva_documento_colaborador,
+        name="salva_documento_colaborador",
+    ),
+    path(
         "apaga_documento_colaborador",
         apaga_documento_colaborador,
         name="apaga_documento_colaborador",
     ),
     path(
-        "altera_documento_colaborador",
-        altera_documento_colaborador,
-        name="altera_documento_colaborador",
+        "adiciona_telefone_colaborador",
+        adiciona_telefone_colaborador,
+        name="adiciona_telefone_colaborador",
+    ),
+    path(
+        "altera_telefone_colaborador",
+        altera_telefone_colaborador,
+        name="altera_telefone_colaborador",
+    ),
+    path(
+        "exclui_telefone_colaborador",
+        exclui_telefone_colaborador,
+        name="exclui_telefone_colaborador",
+    ),
+    path(
+        "salva_telefone_colaborador",
+        salva_telefone_colaborador,
+        name="salva_telefone_colaborador",
+    ),
+    path(
+        "apaga_telefone_colaborador",
+        apaga_telefone_colaborador,
+        name="apaga_telefone_colabor",
+    ),
+    path(
+        "adiciona_conta_colaborador",
+        adiciona_conta_colaborador,
+        name="adiciona_conta_colaborador",
     ),
 ]
