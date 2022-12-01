@@ -379,5 +379,14 @@ def exclui_telefone_colaborador(request):
     return data
 
 
+def apaga_telefone_colaborador(request):
+    idfonepessoal = request.POST.get("idfonepessoal")
+    idpessoal = request.POST.get("idpessoal")
+    facade.apaga_fone(idfonepessoal)
+    contexto = facade.create_contexto_consulta_colaborador(idpessoal)
+    data = facade.create_data_consulta_colaborador(request, contexto)
+    return data
+
+
 def adiciona_conta_colaborador(request):
     pass
