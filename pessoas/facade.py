@@ -858,3 +858,8 @@ def create_contexto_exclui_fone_colaborador(idfonepessoal):
         "idfonepessoal": idfonepessoal,
         "idpessoal": idpessoal,
     }
+
+
+def apaga_fone(idfonepessoal):
+    fone = FonePessoal.objects.get(idFonePessoal=idfonepessoal)
+    fone.delete()
