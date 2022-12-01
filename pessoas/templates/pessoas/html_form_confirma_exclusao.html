@@ -1,4 +1,4 @@
-<form class="js-apaga-documento" method="post" action="">
+<form class="{{ var_class }}" method="post" action="">
     {% csrf_token %}
     <div class="article-card-titulo magenta">
         <span>CONFIRMA EXCLUSÃO</span>
@@ -8,7 +8,7 @@
             <div class="item-form">
                 <textarea class="form-control" rows="3">{{ mensagem }}</textarea>
             </div>
-            <input type="hidden" name="iddocpessoal" value="{{ iddocpessoal }}">
+            <input type="hidden" name="idobj" value="{{ idobj }}">
             <input type="hidden" name="idpessoal" value="{{ idpessoal }}">
         </div>
     </div>

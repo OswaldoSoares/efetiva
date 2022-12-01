@@ -3,7 +3,7 @@ import datetime
 from django import forms
 from .models import (
     Pessoal,
-    FonePessoal,
+    DocPessoal,
     FonePessoal,
     ContaPessoal,
     Salario,
@@ -140,7 +140,7 @@ class CadastraPessoal(forms.ModelForm):
 
 class CadastraDocPessoal(forms.ModelForm):
     class Meta:
-        model = FonePessoal
+        model = DocPessoal
         fields = ("TipoDocumento", "Documento", "Data", "idPessoal")
         labels = {
             "TipoDocumento": "TIPO DE DOCUMENTO",

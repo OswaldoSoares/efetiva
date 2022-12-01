@@ -8,7 +8,7 @@ from rolepermissions.decorators import has_permission_decorator
 from pessoas import facade
 from pessoas.print import print_pdf_decimno_terceiro
 from website.facade import dict_tipo_doc, dict_tipo_fone, str_hoje
-from .models import Pessoal, FonePessoal, FonePessoal, ContaPessoal, ContraChequeItens
+from .models import Pessoal, DocPessoal, FonePessoal, ContaPessoal, ContraChequeItens
 from .forms import (
     CadastraPessoal,
     CadastraDocPessoal,
@@ -75,7 +75,7 @@ def criadocpessoa(request):
 
 
 def excluidocpessoa(request, idpesdoc):
-    docpessoa = get_object_or_404(FonePessoal, idDocPessoal=idpesdoc)
+    docpessoa = get_object_or_404(DocPessoal, idDocPessoal=idpesdoc)
     data = dict()
     if request.method == "POST":
         docpessoa.delete()
@@ -315,7 +315,7 @@ def exclui_documento_colaborador(request):
 
 
 def apaga_documento_colaborador(request):
-    iddocpessoal = request.POST.get("iddocpessoal")
+    iddocpessoal = request.POST.get("idobj")
     idpessoal = request.POST.get("idpessoal")
     facade.apaga_documento(iddocpessoal)
     contexto = facade.create_contexto_consulta_colaborador(idpessoal)
@@ -380,7 +380,7 @@ def exclui_telefone_colaborador(request):
 
 
 def apaga_telefone_colaborador(request):
-    idfonepessoal = request.POST.get("idfonepessoal")
+    idfonepessoal = request.POST.get("idobj")
     idpessoal = request.POST.get("idpessoal")
     facade.apaga_fone(idfonepessoal)
     contexto = facade.create_contexto_consulta_colaborador(idpessoal)

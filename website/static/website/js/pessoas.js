@@ -291,7 +291,7 @@ $(document).on('submit', '.js-gera-telefone', function(event) {
     });
 });
 
-(document).on('submit', '.js-apaga-telefone', function(event) {
+$(document).on('submit', '.js-apaga-telefone', function(event) {
     event.preventDefault();
     $.ajax({
         type: $(this).attr('method'),

@@ -53,7 +53,7 @@ class Pessoal(models.Model):
     objects = models.Manager()
 
 
-class FonePessoal(models.Model):
+class DocPessoal(models.Model):
     idDocPessoal = models.AutoField(primary_key=True)
     TipoDocumento = models.CharField(max_length=25)
     Documento = models.CharField(max_length=25)

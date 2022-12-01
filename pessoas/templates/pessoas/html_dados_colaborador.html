@@ -114,10 +114,11 @@
     <div class="itens-dados">
         <div class="item-descricao">
             <span>{{ x.tipo }}: </span>
-            <i class="bi bi-pencil-square i-button js-altera-fone-colaborador"
+            <i class="bi bi-pencil-square i-button js-altera-telefone-colaborador"
+            data-idfonepessoal="{{ x.idfone }}"
             data-idpessoal="{{ colaborador.idpes }}"></i>
-            <i class="bi bi-trash i-button js-exclui-fone-colaborador"
-            data-idpessoal="{{ colaborador.idpes }}"></i>
+            <i class="bi bi-trash i-button js-exclui-telefone-colaborador"
+            data-idfonepessoal="{{ x.idfone }}"></i>
         </div>
         <div class="item-valor">
             {{ x.fone }} {% if x.contato %} - {{ x.contato }} {% endif %}

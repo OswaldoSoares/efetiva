@@ -14,7 +14,7 @@ from pessoas.models import (
     ParcelasDecimoTerceiro,
     Pessoal,
     Salario,
-    FonePessoal,
+    DocPessoal,
     FonePessoal,
     ContaPessoal,
     Vales,
@@ -146,7 +146,7 @@ class ColaboradorDocumentos:
 
     @staticmethod
     def get_docpessoal(idpes):
-        documentos = FonePessoal.objects.filter(idPessoal=idpes)
+        documentos = DocPessoal.objects.filter(idPessoal=idpes)
         lista = [
             {
                 "iddoc": i.idDocPessoal,
@@ -251,7 +251,7 @@ def get_pessoal(idpessoa: int):
 
 
 def get_docpessoal(idpessoa: int):
-    docpessoal = FonePessoal.objects.filter(idPessoal=idpessoa)
+    docpessoal = DocPessoal.objects.filter(idPessoal=idpessoa)
     return docpessoal
 
 
@@ -724,7 +724,7 @@ def read_documento_post(request):
 
 
 def read_documento_database(iddocpessoal):
-    documento = FonePessoal.objects.get(idDocPessoal=iddocpessoal)
+    documento = DocPessoal.objects.get(idDocPessoal=iddocpessoal)
     documento_database = dict()
     documento_database["tipo_doc"] = documento.TipoDocumento
     documento_database["numero_doc"] = documento.Documento
@@ -737,7 +737,7 @@ def read_documento_database(iddocpessoal):
 
 
 def salva_documento(documento):
-    obj = FonePessoal()
+    obj = DocPessoal()
     obj.TipoDocumento = documento["tipo_doc"]
     obj.Documento = documento["numero_doc"]
     obj.Data = documento["data_doc"]
@@ -746,8 +746,8 @@ def salva_documento(documento):
 
 
 def altera_documento(documento, iddocpessoal):
-    doc = FonePessoal.objects.get(idDocPessoal=iddocpessoal)
-    obj = FonePessoal(doc)
+    doc = DocPessoal.objects.get(idDocPessoal=iddocpessoal)
+    obj = DocPessoal(doc)
     obj.idDocPessoal = doc.idDocPessoal
     obj.TipoDocumento = documento["tipo_doc"]
     obj.Documento = documento["numero_doc"]
@@ -757,16 +757,22 @@ def altera_documento(documento, iddocpessoal):
 
 
 def create_contexto_exclui_documento_colaborador(iddocpessoal):
-    documento = FonePessoal.objects.get(idDocPessoal=iddocpessoal)
+    documento = DocPessoal.objects.get(idDocPessoal=iddocpessoal)
     tipo = documento.TipoDocumento
     doc = documento.Documento
     idpessoal = documento.idPessoal_id
     mensagem = f"Confirma a exclusão do documento: {tipo} de número {doc}?"
-    return {"mensagem": mensagem, "iddocpessoal": iddocpessoal, "idpessoal": idpessoal}
+    var_class = "js-apaga-documento"
+    return {
+        "mensagem": mensagem,
+        "idobj": iddocpessoal,
+        "idpessoal": idpessoal,
+        "var_class": var_class,
+    }
 
 
 def apaga_documento(iddocpessoal):
-    documento = FonePessoal.objects.get(idDocPessoal=iddocpessoal)
+    documento = DocPessoal.objects.get(idDocPessoal=iddocpessoal)
     documento.delete()
 
 
@@ -785,7 +791,7 @@ def create_data_form_exclui_fone_colaborador(request, contexto):
 
 def html_form_adiciona_fone_colaborador(request, contexto, data):
     data["html_form_fone_colaborador"] = render_to_string(
-        "pessoas/html_form_fone_colaborador.html", contexto, request=request
+        "pessoas/html_form_telefone_colaborador.html", contexto, request=request
     )
     return data
 
@@ -853,10 +859,12 @@ def create_contexto_exclui_fone_colaborador(idfonepessoal):
     telefone = fone.Fone
     idpessoal = fone.idPessoal_id
     mensagem = f"Confirma a exclusão do telefone: {tipo} de número {telefone}?"
+    var_class = "js-apaga-telefone"
     return {
         "mensagem": mensagem,
-        "idfonepessoal": idfonepessoal,
+        "idobj": idfonepessoal,
         "idpessoal": idpessoal,
+        "var_class": var_class,
     }
 
 
