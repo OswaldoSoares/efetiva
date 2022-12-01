@@ -88,6 +88,16 @@ def dict_tipo_fone() -> dict:
     return tipo_fone
 
 
+def dict_tipo_conta() -> dict:
+    tipo_conta = {
+        "CORRENTE",
+        "CORRENTE",
+        "POUPANÇA",
+        "POUPANÇA",
+    }
+    return tipo_conta
+
+
 class DiasFeriados:
     def __init__(self):
         self.feriados = self.get_dias_feriados()
