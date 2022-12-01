@@ -827,12 +827,12 @@ def read_fone_database(idfonepessoal):
     return fone_database
 
 
-def salva_fone(documento):
+def salva_fone(fone):
     obj = FonePessoal()
-    obj.TipoFone = documento["tipo_fone"]
-    obj.Fone = documento["numero_fone"]
-    obj.Contato = documento["contato"]
-    obj.idPessoal_id = documento["idpessoal"]
+    obj.TipoFone = fone["tipo_fone"]
+    obj.Fone = fone["numero_fone"]
+    obj.Contato = fone["contato"]
+    obj.idPessoal_id = fone["idpessoal"]
     obj.save()
 
 
