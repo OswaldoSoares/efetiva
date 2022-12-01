@@ -324,7 +324,11 @@ def apaga_documento_colaborador(request):
 
 
 def adiciona_telefone_colaborador(request):
-    pass
+    idpessoal = request.GET.get("idpessoal")
+    tipo_fone = dict_tipo_fone()
+    contexto = {"idpessoal": idpessoal, "tipo_fone": tipo_fone}
+    data = facade.create_data_form_adiciona_fone_colaborador(request, contexto)
+    return data
 
 
 def adiciona_conta_colaborador(request):
