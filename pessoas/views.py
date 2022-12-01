@@ -372,5 +372,12 @@ def salva_telefone_colaborador(request):
     return data
 
 
+def exclui_telefone_colaborador(request):
+    idfonepessoal = request.GET.get("idfonepessoal")
+    contexto = facade.create_contexto_exclui_fone_colaborador(idfonepessoal)
+    data = facade.create_data_form_exclui_fone_colaborador(request, contexto)
+    return data
+
+
 def adiciona_conta_colaborador(request):
     pass
