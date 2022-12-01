@@ -7,7 +7,7 @@ from django.template.loader import render_to_string
 from rolepermissions.decorators import has_permission_decorator
 from pessoas import facade
 from pessoas.print import print_pdf_decimno_terceiro
-from website.facade import dict_tipo_doc, dict_tipo_fone, str_hoje
+from website.facade import dict_tipo_conta, dict_tipo_doc, dict_tipo_fone, str_hoje
 from .models import Pessoal, DocPessoal, FonePessoal, ContaPessoal, ContraChequeItens
 from .forms import (
     CadastraPessoal,
@@ -392,5 +392,19 @@ def adiciona_conta_colaborador(request):
     idpessoal = request.GET.get("idpessoal")
     tipo_conta = dict_tipo_conta()
     contexto = {"idpessoal": idpessoal, "tipo_fone": tipo_conta}
+    data = facade.create_data_form_adiciona_conta_colaborador(request, contexto)
+    return data
+
+
+def altera_conta_colaborador(request):
+    idcontapessoal = request.GET.get("idcontapessoal")
+    idpessoal = request.GET.get("idpessoal")
+    conta_form = facade.read_conta_database(idcontapessoal)
+    tipo_conta = dict_tipo_conta()
+    contexto = {
+        "conta_form": conta_form,
+        "idpessoal": idpessoal,
+        "tipo_conta": tipo_conta,
+    }
     data = facade.create_data_form_adiciona_conta_colaborador(request, contexto)
     return data
