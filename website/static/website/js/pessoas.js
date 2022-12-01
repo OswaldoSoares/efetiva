@@ -245,21 +245,20 @@ $(document).on('click', '.js-altera-telefone-colaborador', function() {
     });
 });
 
-$(document).on('click', '.js-adiciona-conta-colaborador', function() {
-    var idpessoal = $(this).data('idpessoal')
+$(document).on('click', '.js-exclui-telefone-colaborador', function() {
+    var idfonepessoal = $(this).data('idfonepessoal')
     $.ajax({
         type: "GET",
-        url: "/pessoas/atualiza_decimo_terceiro",
+        url: "/pessoas/exclui_telefone_colaborador",
         data: {
-            idpessoal: idpessoal,
+            idfonepessoal: idfonepessoal,
         },
         beforeSend: function() {
-            $(".card-lista-colaboradores").hide()
             $(".box-loader").show()
         },
         success: function(data) {
-            $(".card-lista-colaboradores").html(data.html_lista_colaboradores_ativo)
-            $(".card-lista-colaboradores").show()
+            $(".card-form-colaborador").html(data.html_form_confirma_exclusao)
+            $(".card-form-colaborador").show()
             $(".box-loader").hide()
         },
         error: function(errorThrown) {
