@@ -776,7 +776,15 @@ def create_data_form_adiciona_fone_colaborador(request, contexto):
     return JsonResponse(data)
 
 
+# TODO renomear função já existe fazendo a mesma função.
 def create_data_form_exclui_fone_colaborador(request, contexto):
     data = dict()
     html_form_confirma_exclusao(request, contexto, data)
     return JsonResponse(data)
+
+
+def html_form_fone_documento_colaborador(request, contexto, data):
+    data["html_form_fone_colaborador"] = render_to_string(
+        "pessoas/html_form_fone_colaborador.html", contexto, request=request
+    )
+    return data
