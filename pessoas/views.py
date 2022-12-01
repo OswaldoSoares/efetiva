@@ -8,7 +8,7 @@ from rolepermissions.decorators import has_permission_decorator
 from pessoas import facade
 from pessoas.print import print_pdf_decimno_terceiro
 from website.facade import dict_tipo_doc, str_hoje
-from .models import Pessoal, DocPessoal, FonePessoal, ContaPessoal, ContraChequeItens
+from .models import Pessoal, FonePessoal, FonePessoal, ContaPessoal, ContraChequeItens
 from .forms import (
     CadastraPessoal,
     CadastraDocPessoal,
@@ -75,7 +75,7 @@ def criadocpessoa(request):
 
 
 def excluidocpessoa(request, idpesdoc):
-    docpessoa = get_object_or_404(DocPessoal, idDocPessoal=idpesdoc)
+    docpessoa = get_object_or_404(FonePessoal, idDocPessoal=idpesdoc)
     data = dict()
     if request.method == "POST":
         docpessoa.delete()
