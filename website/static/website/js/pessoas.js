@@ -203,7 +203,7 @@ $(document).on('click', '.js-adiciona-telefone-colaborador', function() {
     var idpessoal = $(this).data('idpessoal')
     $.ajax({
         type: "GET",
-        url: "/pessoas/atualiza_decimo_terceiro",
+        url: "/pessoas/adiciona_telefone_colaborador",
         data: {
             idpessoal: idpessoal,
         },
@@ -211,8 +211,8 @@ $(document).on('click', '.js-adiciona-telefone-colaborador', function() {
             $(".box-loader").show()
         },
         success: function(data) {
-            $(".card-lista-colaboradores").html(data.html_lista_colaboradores_ativo)
-            $(".card-lista-colaboradores").show()
+            $(".card-form-colaborador").html(data.html_form_fone_colaborador)
+            $(".card-form-colaborador").show()
             $(".box-loader").hide()
         },
         error: function(errorThrown) {
@@ -220,6 +220,7 @@ $(document).on('click', '.js-adiciona-telefone-colaborador', function() {
         }
     });
 });
+
 
 $(document).on('click', '.js-adiciona-conta-colaborador', function() {
     var idpessoal = $(this).data('idpessoal')
