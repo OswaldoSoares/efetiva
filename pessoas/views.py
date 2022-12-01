@@ -442,3 +442,12 @@ def exclui_conta_colaborador(request):
     contexto = facade.create_contexto_exclui_conta_colaborador(idcontapessoal)
     data = facade.create_data_form_exclui_conta_colaborador(request, contexto)
     return data
+
+
+def apaga_conta_colaborador(request):
+    idcontapessoal = request.POST.get("idobj")
+    idpessoal = request.POST.get("idpessoal")
+    facade.apaga_conta(idcontapessoal)
+    contexto = facade.create_contexto_consulta_colaborador(idpessoal)
+    data = facade.create_data_consulta_colaborador(request, contexto)
+    return data
