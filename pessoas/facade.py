@@ -947,3 +947,23 @@ def altera_conta(conta, idcontapessoal):
     obj.PIX = conta["pix"]
     obj.idPessoal_id = conta["idpessoal"]
     obj.save()
+
+
+def create_contexto_exclui_conta_colaborador(idcontapessoal):
+    conta = ContaPessoal.objects.get(idcontaPessoal=idcontapessoal)
+    banco = conta.Banco
+    agencia = conta.Agencia
+    conta_banco = conta.Banco
+    pix = conta.PIX
+    idpessoal = conta.idPessoal_id
+    if conta_banco:
+        mensagem = f"Confirma a exclusão da conta: {banco} - AG: {agencia} Conta {conta_banco}?"
+    else:
+        mensagem = f"Confirma a exclusão da conta: Chave PIX: {pix}?"
+    js_class = "js-apaga-conta"
+    return {
+        "mensagem": mensagem,
+        "idobj": idcontapessoal,
+        "idpessoal": idpessoal,
+        "js_class": js_class,
+    }
