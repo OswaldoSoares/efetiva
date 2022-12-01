@@ -768,3 +768,9 @@ def create_contexto_exclui_documento_colaborador(iddocpessoal):
 def apaga_documento(iddocpessoal):
     documento = DocPessoal.objects.get(idDocPessoal=iddocpessoal)
     documento.delete()
+
+
+def create_data_form_adiciona_fone_colaborador(request, contexto):
+    data = dict()
+    html_form_adiciona_fone_colaborador(request, contexto, data)
+    return JsonResponse(data)
