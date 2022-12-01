@@ -814,3 +814,14 @@ def read_fone_post(request):
     fone_post["contato"] = request.POST.get("contato")
     fone_post["idpessoal"] = request.POST.get("idpessoal")
     return fone_post
+
+
+def read_fone_database(idfonepessoal):
+    fone = FonePessoal.objects.get(idFonePessoal=idfonepessoal)
+    fone_database = dict()
+    fone_database["tipo_fone"] = fone.TipoFone
+    fone_database["numero_fone"] = fone.Fone
+    fone_database["contato"] = fone.Contato
+    fone_database["idpessoal"] = fone.idPessoal_id
+    fone_database["idfonepessoal"] = fone.idFonePessoal
+    return fone_database
