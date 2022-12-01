@@ -884,3 +884,10 @@ def create_data_form_exclui_conta_colaborador(request, contexto):
     data = dict()
     html_form_confirma_exclusao(request, contexto, data)
     return JsonResponse(data)
+
+
+def html_form_adiciona_conta_colaborador(request, contexto, data):
+    data["html_form_conta_colaborador"] = render_to_string(
+        "pessoas/html_form_conta_colaborador.html", contexto, request=request
+    )
+    return data
