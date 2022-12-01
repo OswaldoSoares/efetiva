@@ -435,3 +435,10 @@ def salva_conta_colaborador(request):
         contexto.update(msg)
         data = facade.create_data_form_adiciona_conta_colaborador(request, contexto)
     return data
+
+
+def exclui_conta_colaborador(request):
+    idcontapessoal = request.GET.get("idcontapessoal")
+    contexto = facade.create_contexto_exclui_conta_colaborador(idcontapessoal)
+    data = facade.create_data_form_exclui_conta_colaborador(request, contexto)
+    return data
