@@ -845,3 +845,16 @@ def altera_fone(fone, idfonepessoal):
     obj.Contato = fone["contato"]
     obj.idPessoal_id = fone["idpessoal"]
     obj.save()
+
+
+def create_contexto_exclui_fone_colaborador(idfonepessoal):
+    fone = FonePessoal.objects.get(idFonePessoal=idfonepessoal)
+    tipo = fone.TipoFone
+    telefone = fone.Fone
+    idpessoal = fone.idPessoal_id
+    mensagem = f"Confirma a exclusão do telefone: {tipo} de número {telefone}?"
+    return {
+        "mensagem": mensagem,
+        "idfonepessoal": idfonepessoal,
+        "idpessoal": idpessoal,
+    }
