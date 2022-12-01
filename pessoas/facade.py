@@ -891,3 +891,16 @@ def html_form_adiciona_conta_colaborador(request, contexto, data):
         "pessoas/html_form_conta_colaborador.html", contexto, request=request
     )
     return data
+
+
+def read_conta_post(request):
+    conta_post = dict()
+    conta_post["banco"] = request.POST.get("banco")
+    conta_post["agencia"] = request.POST.get("agencia")
+    conta_post["conta"] = request.POST.get("nconta")
+    conta_post["tipo_conta"] = request.POST.get("tipo_conta")
+    conta_post["titular"] = request.POST.get("titular")
+    conta_post["documento"] = request.POST.get("documento")
+    conta_post["pix"] = request.POST.get("pix")
+    conta_post["idpessoal"] = request.POST.get("idpessoal")
+    return conta_post
