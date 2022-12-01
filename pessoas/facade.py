@@ -762,12 +762,12 @@ def create_contexto_exclui_documento_colaborador(iddocpessoal):
     doc = documento.Documento
     idpessoal = documento.idPessoal_id
     mensagem = f"Confirma a exclusão do documento: {tipo} de número {doc}?"
-    var_class = "js-apaga-documento"
+    js_class = "js-apaga-documento"
     return {
         "mensagem": mensagem,
         "idobj": iddocpessoal,
         "idpessoal": idpessoal,
-        "var_class": var_class,
+        "js_class": js_class,
     }
 
 
@@ -859,12 +859,12 @@ def create_contexto_exclui_fone_colaborador(idfonepessoal):
     telefone = fone.Fone
     idpessoal = fone.idPessoal_id
     mensagem = f"Confirma a exclusão do telefone: {tipo} de número {telefone}?"
-    var_class = "js-apaga-telefone"
+    js_class = "js-apaga-telefone"
     return {
         "mensagem": mensagem,
         "idobj": idfonepessoal,
         "idpessoal": idpessoal,
-        "var_class": var_class,
+        "js_class": js_class,
     }
 
 
