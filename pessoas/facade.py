@@ -826,10 +826,22 @@ def read_fone_database(idfonepessoal):
     fone_database["idfonepessoal"] = fone.idFonePessoal
     return fone_database
 
-def salva_documento(documento):
+
+def salva_fone(documento):
     obj = FonePessoal()
-    obj.TipoDocumento = documento["tipo_doc"]
-    obj.Documento = documento["numero_doc"]
-    obj.Data = documento["data_doc"]
+    obj.TipoFone = documento["tipo_fone"]
+    obj.Fone = documento["numero_fone"]
+    obj.Contato = documento["contato"]
     obj.idPessoal_id = documento["idpessoal"]
+    obj.save()
+
+
+def altera_fone(fone, idfonepessoal):
+    telefone = FonePessoal.objects.get(idFonePessoal=idfonepessoal)
+    obj = FonePessoal(telefone)
+    obj.idFonePessoal = telefone.idFonePessoal
+    obj.TipoFone = fone["tipo_fone"]
+    obj.Fone = fone["numero_fone"]
+    obj.Contato = fone["contato"]
+    obj.idPessoal_id = fone["idpessoal"]
     obj.save()
