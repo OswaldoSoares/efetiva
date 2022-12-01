@@ -290,3 +290,22 @@ $(document).on('submit', '.js-gera-telefone', function(event) {
         },
     });
 });
+
+(document).on('submit', '.js-apaga-telefone', function(event) {
+    event.preventDefault();
+    $.ajax({
+        type: $(this).attr('method'),
+        url: "/pessoas/apaga_telefone_colaborador",
+        data: $(this).serialize(),
+        beforeSend: function() {
+            $('.card-dados-colaborador').hide()
+            $('.card-form-colaborador').hide()
+            $('.box-loader').show()
+        },
+        success: function(data) {
+            $(".card-dados-colaborador").html(data.html_dados_colaborador)
+            $(".card-dados-colaborador").show()
+            $('.box-loader').hide()
+        },
+    });
+});
