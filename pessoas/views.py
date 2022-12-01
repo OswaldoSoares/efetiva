@@ -408,3 +408,30 @@ def altera_conta_colaborador(request):
     }
     data = facade.create_data_form_adiciona_conta_colaborador(request, contexto)
     return data
+
+
+def salva_conta_colaborador(request):
+    error, msg = facade.valida_conta_colaborador(request)
+    conta_form = facade.read_conta_post(request)
+    idcontapessoal = request.POST.get("idcontapessoal")
+    if not error:
+        if idcontapessoal:
+            facade.altera_conta(conta_form, idcontapessoal)
+        else:
+            facade.salva_conta(conta_form)
+        idpessoal = request.POST.get("idpessoal")
+        contexto = facade.create_contexto_consulta_colaborador(idpessoal)
+        data = facade.create_data_consulta_colaborador(request, contexto)
+        conta_form = dict()
+    else:
+        idpessoal = request.POST.get("idpessoal")
+        tipo_conta = dict_tipo_conta()
+        contexto = {
+            "conta_form": conta_form,
+            "idpessoal": idpessoal,
+            "tipo_conta": tipo_conta,
+            "error": error,
+        }
+        contexto.update(msg)
+        data = facade.create_data_form_adiciona_conta_colaborador(request, contexto)
+    return data
