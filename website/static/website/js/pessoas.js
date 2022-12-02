@@ -309,3 +309,25 @@ $(document).on('submit', '.js-apaga-telefone', function(event) {
         },
     });
 });
+
+$(document).on('click', '.js-adiciona-conta-colaborador', function() {
+    var idpessoal = $(this).data('idpessoal')
+    $.ajax({
+        type: "GET",
+        url: "/pessoas/adiciona_conta_colaborador",
+        data: {
+            idpessoal: idpessoal,
+        },
+        beforeSend: function() {
+            $(".box-loader").show()
+        },
+        success: function(data) {
+            $(".card-form-colaborador").html(data.html_form_conta_colaborador)
+            $(".card-form-colaborador").show()
+            $(".box-loader").hide()
+        },
+        error: function(errorThrown) {
+            console.log("error: " + errorThrown)
+        }
+    });
+});
