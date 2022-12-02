@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 <div class="article-card-titulo">
     <span>{{ colaborador.nome_curto }}</span>
 </div>
@@ -28,6 +29,7 @@
     <div class="linha-divisoria"></div>
     <div class="itens-dados">
         <div class="item-descricao">
+            <i class="bi bi-geo-alt i-button-null"></i>
             <span>ENDEREÇO:</span>
         </div>
         <div class="item-valor">
@@ -36,6 +38,7 @@
     </div>
     <div class="itens-dados">
         <div class="item-descricao">
+            <i class="bi bi-geo-fill i-button-null"></i>
             <span>CIDADE:</span>
         </div>
         <div class="item-valor">
@@ -45,6 +48,7 @@
     {% if colaborador.mae  %}
     <div class="itens-dados">
         <div class="item-descricao">
+            <i class="bi bi-gender-female i-button-null"></i>
             <span>MÃE:</span>
         </div>
         <div class="item-valor">
@@ -55,6 +59,7 @@
     {% if colaborador.pai  %}
     <div class="itens-dados">
         <div class="item-descricao">
+            <i class="bi bi-gender-male i-button-null"></i>
             <span>PAI:</span>
         </div>
         <div class="item-valor">
@@ -64,6 +69,7 @@
     {% endif %}
     <div class="itens-dados">
         <div class="item-descricao">
+            <i class="icofont-star-alt-1 i-button-null"></i>
             <span>DATA NASCIMENTO:</span>
         </div>
         <div class="item-valor">
@@ -72,6 +78,7 @@
     </div>
     <div class="itens-dados">
         <div class="item-descricao">
+            <i class="bi bi-list i-button-null"></i>
             <span>CATEGORIA:</span>
         </div>
         <div class="item-valor">
@@ -81,6 +88,7 @@
     {% if colaborador.data_admissao  %}
     <div class="itens-dados">
         <div class="item-descricao">
+            <i class="bi bi-calendar-date i-button-null"></i>
             <span>DATA ADMISSÃO:</span>
         </div>
         <div class="item-valor">
@@ -90,16 +98,36 @@
     {% endif %}
     <div class="itens-dados">
         <div class="item-descricao">
-            <span>TIPO DE PAGAMENTO:</span>
+            <i class="icofont-money i-button-null"></i>
+            <span>SALÁRIO:</span>
+        </div>
+        <div class="item-valor">
+            R$ {{ colaborador.salario.0.salario|intcomma }}
+        </div>
+    </div>
+    <div class="itens-dados">
+        <div class="item-descricao">
+            <i class="bi bi-currency-dollar i-button-null"></i>
+            <span>TIPO PAGAMENTO:</span>
         </div>
         <div class="item-valor">
             {{ colaborador.tipo_pgto }}
+        </div>
+    </div>
+    <div class="itens-dados">
+        <div class="item-descricao">
+            <i class="icofont-bus-alt-2 i-button-null"></i>
+            <span>VALE TRANSPORTE:</span>
+        </div>
+        <div class="item-valor">
+            R$ {{ colaborador.salario.0.transporte|intcomma }}
         </div>
     </div>
     <div class="linha-divisoria"></div>
     {% for x in colaborador.documentos %}
     <div class="itens-dados">
         <div class="item-descricao">
+            <i class="icofont-ui-v-card i-button-null"></i>
             <span>{{ x.tipo }}: </span>
         </div>
         <div class="item-valor">
@@ -115,6 +143,7 @@
     {% for x in colaborador.telefones %}
     <div class="itens-dados">
         <div class="item-descricao">
+            <i class="icofont-ui-dial-phone i-button-null"></i>
             <span>{{ x.tipo }}: </span>
         </div>
         <div class="item-valor">
@@ -131,6 +160,7 @@
     <div class="itens-dados">
         {% if x.pix %}
         <div class="item-descricao">
+            <i class="icofont-bank i-button-null"></i>
             <span>CHAVE PIX: </span>
         </div>
         <div class="item-valor">
@@ -143,6 +173,7 @@
         </div>
         {% else %}
         <div class="item-descricao">
+            <i class="icofont-bank i-button-null"></i>
             <span>{{ x.banco }}: </span>
         </div>
         <div class="item-valor">

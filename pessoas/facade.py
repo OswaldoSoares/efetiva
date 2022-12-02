@@ -79,6 +79,7 @@ class Colaborador:
         self.documentos = ColaboradorDocumentos(idpes).docs
         self.telefones = ColaboradorTelefones(idpes).fone
         self.bancos = ColaboradorBancos(idpes).conta
+        self.salario = ColaboradorSalario(idpes).salario
         self.decimo_terceiro = self.get_decimo_terceiro(self)
 
     @staticmethod
@@ -197,6 +198,24 @@ class ColaboradorBancos:
                 "pix": i.PIX,
             }
             for i in bancos
+        ]
+        return lista
+
+
+class ColaboradorSalario:
+    def __init__(self, idpes):
+        self.salario = self.get_salario(idpes)
+
+    @staticmethod
+    def get_salario(idpes):
+        valores = Salario.objects.filter(idPessoal=idpes)
+        lista = [
+            {
+                "idsalario": i.idSalario,
+                "salario": i.Salario,
+                "transporte": i.ValeTransporte,
+            }
+            for i in valores
         ]
         return lista
 
