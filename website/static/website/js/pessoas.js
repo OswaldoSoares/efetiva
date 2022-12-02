@@ -25,8 +25,7 @@ $(document).on('click', ".js-seleciona-colaborador", function() {
     });
 });
 
-$(document).on('click', ".js-salva-foto", function(event) {
-    console.log("aqui cheguei")
+$(document).on('submit', ".js-salva-foto", function(event) {
     event.preventDefault();
     var _formData = new FormData();
     var _arquivo = $("#file_foto").get(0).files[0]
@@ -35,7 +34,6 @@ $(document).on('click', ".js-salva-foto", function(event) {
     _formData.append("arquivo", _arquivo);
     _formData.append("csrfmiddlewaretoken", _csrf_token);
     _formData.append("idpessoal", _idpessoal);
-    console.log(_arquivo, _idpessoal, _csrf_token)
     $.ajax({
         type: 'POST',
         url: '/pessoas/salva_foto',
@@ -61,9 +59,9 @@ $(document).on('click', ".js-salva-foto", function(event) {
     });
 });
 
-// $(document).on('change', '.js-carrega-foto', function() {
-//     $(".js-salva-foto").click()
-// });
+$(document).on('change', '.js-carrega-foto', function() {
+    $(".js-salva-foto").click()
+});
 
 $(document).on('click', '.js-atualiza-decimo-terceiro', function() {
     $.ajax({

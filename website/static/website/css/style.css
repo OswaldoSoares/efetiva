@@ -6154,6 +6154,10 @@ main .fp-recibo-tabela .fp-recibo-print {
     border: 2px solid var(--color9);
 }
 
+.submit_btn {
+    display: none;
+}
+
 .div-tres-colaborador {
     display: flex;
     flex-direction: column;

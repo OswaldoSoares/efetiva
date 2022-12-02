@@ -13,17 +13,15 @@
         alt="" class="foto">
         {% endif %}
         <span>{{ colaborador.nome }}</span>
-        <form class="file-body js-carrega-foto" method="post"
+        <form class="file-body js-salva-foto" method="post"
         enctype="multipart/form-data">
             {% csrf_token %}
-            <input type="file" class="file" id="file_foto">
+            <input type="file" class="file js-carrega-foto" id="file_foto">
             <label for="file_foto" title="Carregar Foto"
-            class="bi bi-camera i-button custonBtn radius-left"></label>
+            class="bi bi-camera i-button custonBtn radius-all"></label>
             <input type="hidden" value="{{ colaborador.idpes }}"
             id="idpessoal" name="idpessoal">
-            <button type="submit" class="bi bi-save i-button custonBtn radius-right"
-            title="Bloquear Colaborador"></button>
-            <input type="hidden" class="js-salva-foto"></input>
+            <button type="submit" class="js-salva-foto submit_btn"></button>
         </form>
     </figure>
     <div class="linha-divisoria"></div>
