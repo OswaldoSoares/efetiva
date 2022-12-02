@@ -44,9 +44,10 @@ $(document).on('submit', ".js-salva-foto", function(event) {
         enctype: 'multipart/form-data',
         beforeSend: function() {
             $(".card-dados-colaborador").hide()
-            console.log(_arquivo)
-            console.log(_idpessoal)
-                // $('.box-loader').show()
+            for (var pair of _formData.entries()) {
+                console.log(pair[0] + ', ' + pair[1]);
+            }
+            // $('.box-loader').show()
         },
         success: function(data) {
             $(".card-dados-colaborador").html(data.html_dados_colaborador)
