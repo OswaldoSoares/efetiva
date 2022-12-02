@@ -331,3 +331,27 @@ $(document).on('click', '.js-adiciona-conta-colaborador', function() {
         }
     });
 });
+
+$(document).on('click', '.js-altera-conta-colaborador', function() {
+    var idcontapessoal = $(this).data('idcontapessoal')
+    var idpessoal = $(this).data('idpessoal')
+    $.ajax({
+        type: "GET",
+        url: "/pessoas/altera_conta_colaborador",
+        data: {
+            idcontapessoal: idcontapessoal,
+            idpessoal: idpessoal,
+        },
+        beforeSend: function() {
+            $(".box-loader").show()
+        },
+        success: function(data) {
+            $(".card-form-colaborador").html(data.html_form_conta_colaborador)
+            $(".card-form-colaborador").show()
+            $(".box-loader").hide()
+        },
+        error: function(errorThrown) {
+            console.log("error: " + errorThrown)
+        }
+    });
+});
