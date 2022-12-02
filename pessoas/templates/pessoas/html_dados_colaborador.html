@@ -25,6 +25,7 @@
             <input type="submit" class="js-salva-foto"></input>
         </form>
     </figure>
+    <div class="linha-divisoria"></div>
     <div class="itens-dados">
         <div class="item-descricao">
             <span>ENDEREÇO:</span>
@@ -95,18 +96,19 @@
             {{ colaborador.tipo_pgto }}
         </div>
     </div>
+    <div class="linha-divisoria"></div>
     {% for x in colaborador.documentos %}
     <div class="itens-dados">
         <div class="item-descricao">
             <span>{{ x.tipo }}: </span>
+        </div>
+        <div class="item-valor">
+            {{ x.documento }} - {{ x.data_doc }}
             <i class="bi bi-pencil-square i-button js-altera-documento-colaborador"
             data-iddocpessoal="{{ x.iddoc }}"
             data-idpessoal="{{ colaborador.idpes }}"></i>
             <i class="bi bi-trash i-button js-exclui-documento-colaborador"
             data-iddocpessoal="{{ x.iddoc }}"></i>
-        </div>
-        <div class="item-valor">
-            {{ x.documento }} - {{ x.data_doc }}
         </div>
     </div>
     {% endfor %}
@@ -114,14 +116,14 @@
     <div class="itens-dados">
         <div class="item-descricao">
             <span>{{ x.tipo }}: </span>
+        </div>
+        <div class="item-valor">
+            {{ x.fone }} {% if x.contato %} - {{ x.contato }} {% endif %}
             <i class="bi bi-pencil-square i-button js-altera-telefone-colaborador"
             data-idfonepessoal="{{ x.idfone }}"
             data-idpessoal="{{ colaborador.idpes }}"></i>
             <i class="bi bi-trash i-button js-exclui-telefone-colaborador"
             data-idfonepessoal="{{ x.idfone }}"></i>
-        </div>
-        <div class="item-valor">
-            {{ x.fone }} {% if x.contato %} - {{ x.contato }} {% endif %}
         </div>
     </div>
     {% endfor %}
@@ -130,21 +132,18 @@
         {% if x.pix %}
         <div class="item-descricao">
             <span>CHAVE PIX: </span>
-            <i class="bi bi-pencil-square i-button js-altera-conta-colaborador"
-            data-idpessoal="{{ colaborador.idpes }}"></i>
-            <i class="bi bi-trash i-button js-exclui-conta-colaborador"
-            data-idpessoal="{{ colaborador.idpes }}"></i>
         </div>
         <div class="item-valor">
             {{ x.pix }}
+            <i class="bi bi-pencil-square i-button js-altera-conta-colaborador"
+            data-idcontapessoal="{{ x.idconta }}"
+            data-idpessoal="{{ colaborador.idpes }}"></i>
+            <i class="bi bi-trash i-button js-exclui-conta-colaborador"
+            data-idcontapessoal="{{ x.idconta }}"></i>
         </div>
         {% else %}
         <div class="item-descricao">
             <span>{{ x.banco }}: </span>
-            <i class="bi bi-pencil-square i-button js-altera-conta-colaborador"
-            data-idpessoal="{{ colaborador.idpes }}"></i>
-            <i class="bi bi-trash i-button js-exclui-conta-colaborador"
-            data-idpessoal="{{ colaborador.idpes }}"></i>
         </div>
         <div class="item-valor">
             AG: {{ x.agencia }}
@@ -154,6 +153,11 @@
              - C/P:
             {% endif %}
              {{ x.conta }}
+            <i class="bi bi-pencil-square i-button js-altera-conta-colaborador"
+            data-idcontapessoal="{{ x.idconta }}"
+            data-idpessoal="{{ colaborador.idpes }}"></i>
+            <i class="bi bi-trash i-button js-exclui-conta-colaborador"
+            data-idcontapessoal="{{ x.idconta }}"></i> 
         </div>
         {% endif %}
     </div>

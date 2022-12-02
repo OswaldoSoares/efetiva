@@ -391,7 +391,7 @@ def apaga_telefone_colaborador(request):
 def adiciona_conta_colaborador(request):
     idpessoal = request.GET.get("idpessoal")
     tipo_conta = dict_tipo_conta()
-    contexto = {"idpessoal": idpessoal, "tipo_fone": tipo_conta}
+    contexto = {"idpessoal": idpessoal, "tipo_conta": tipo_conta}
     data = facade.create_data_form_adiciona_conta_colaborador(request, contexto)
     return data
 
@@ -411,6 +411,7 @@ def altera_conta_colaborador(request):
 
 
 def salva_conta_colaborador(request):
+    print(request.POST)
     error, msg = facade.valida_conta_colaborador(request)
     conta_form = facade.read_conta_post(request)
     idcontapessoal = request.POST.get("idcontapessoal")

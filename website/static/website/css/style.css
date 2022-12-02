@@ -5760,6 +5760,11 @@ main .fp-recibo-tabela .fp-recibo-print {
     color: var(--color8)
 }
 
+.i-button-null-text {
+    font-size: 16px;
+    cursor: default;
+}
+
 .destak {
     color: var(--color4);
     animation: animate 3s linear infinite;
@@ -6138,7 +6143,6 @@ main .fp-recibo-tabela .fp-recibo-print {
     width: 100%;
     padding: 10px;
     color: var(--color8);
-    border-bottom: 1px solid var(--color9);
 }
 
 .card-dados-colaborador .foto {

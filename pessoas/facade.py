@@ -705,7 +705,7 @@ def valida_documento_colaborador(request):
         msg["erro_tipo_doc"] = "Obrigatório selecionar o tipo de documento."
         error = True
     documento = request.POST.get("numero_doc")
-    if documento == None:
+    if documento == "":
         msg["erro_documento"] = "Obrigatório digitar o número do documento."
         error = True
     elif len(documento) < 4:
@@ -804,7 +804,7 @@ def valida_fone_colaborador(request):
         msg["erro_tipo_fone"] = "Obrigatório selecionar o tipo de telefone."
         error = True
     telefone = request.POST.get("numero_fone")
-    if telefone == None:
+    if telefone == "":
         msg["erro_telefone"] = "Obrigatório digitar o número do telefone."
         error = True
     elif len(telefone) < 8:
@@ -893,11 +893,47 @@ def html_form_adiciona_conta_colaborador(request, contexto, data):
     return data
 
 
+def valida_conta_colaborador(request):
+    msg = dict()
+    error = False
+    banco = request.POST.get("banco")
+    pix = request.POST.get("pix")
+    if banco == "" and pix == "":
+        msg["erro_banco"] = "Obrigatório digitar o nome do banco."
+        msg["erro_pix"] = "Obrigatório digitar a chave PIX."
+        error = True
+    if banco != "" and len(banco) < 2:
+        msg["erro_banco"] = "Nome do banco inválido."
+        error = True
+    if pix != "" and len(pix) < 6:
+        msg["erro_pix"] = "Chave PIX inválida."
+        error = True
+    agencia = request.POST.get("agencia")
+    if banco != "" and agencia == "":
+        msg["erro_agencia"] = "Obrigatório digitar o número da agência."
+        error = True
+    if agencia != "" and len(agencia) < 3:
+        msg["erro_agencia"] = "Número da agência inválida."
+        error = True
+    conta = request.POST.get("conta")
+    if banco != "" and conta == "":
+        msg["erro_numero_conta"] = "Obrigatório digitar o número da conta."
+        error = True
+    if conta != "" and len(conta) < 4:
+        msg["erro_numero_conta"] = "Número da conta inválida."
+        error = True
+    seleciona = request.POST.get("tipo_conta")
+    if banco != "" and seleciona == "0":
+        msg["erro_tipo_conta"] = "Obrigatório selecionar o tipo de conta."
+        error = True
+    return error, msg
+
+
 def read_conta_post(request):
     conta_post = dict()
     conta_post["banco"] = request.POST.get("banco")
     conta_post["agencia"] = request.POST.get("agencia")
-    conta_post["conta"] = request.POST.get("nconta")
+    conta_post["conta"] = request.POST.get("conta")
     conta_post["tipo_conta"] = request.POST.get("tipo_conta")
     conta_post["titular"] = request.POST.get("titular")
     conta_post["documento"] = request.POST.get("documento")
@@ -917,7 +953,7 @@ def read_conta_database(idcontapessoal):
     conta_database["documento"] = conta.Documento
     conta_database["pix"] = conta.PIX
     conta_database["idpessoal"] = conta.idPessoal_id
-    conta_database["idContaPessoal"] = conta.idContaPessoal
+    conta_database["idcontapessoal"] = conta.idContaPessoal
     return conta_database
 
 
@@ -953,11 +989,11 @@ def create_contexto_exclui_conta_colaborador(idcontapessoal):
     conta = ContaPessoal.objects.get(idContaPessoal=idcontapessoal)
     banco = conta.Banco
     agencia = conta.Agencia
-    conta_banco = conta.Banco
+    conta_banco = conta.Conta
     pix = conta.PIX
     idpessoal = conta.idPessoal_id
     if conta_banco:
-        mensagem = f"Confirma a exclusão da conta: {banco} - AG: {agencia} Conta {conta_banco}?"
+        mensagem = f"Confirma a exclusão da conta: {banco} - AG: {agencia} Conta: {conta_banco}?"
     else:
         mensagem = f"Confirma a exclusão da conta: Chave PIX: {pix}?"
     js_class = "js-apaga-conta"
