@@ -401,3 +401,22 @@ $(document).on('submit', '.js-gera-conta', function(event) {
         },
     });
 });
+
+$(document).on('submit', '.js-apaga-conta', function(event) {
+    event.preventDefault();
+    $.ajax({
+        type: $(this).attr('method'),
+        url: "/pessoas/apaga_conta_colaborador",
+        data: $(this).serialize(),
+        beforeSend: function() {
+            $('.card-dados-colaborador').hide()
+            $('.card-form-colaborador').hide()
+            $('.box-loader').show()
+        },
+        success: function(data) {
+            $(".card-dados-colaborador").html(data.html_dados_colaborador)
+            $(".card-dados-colaborador").show()
+            $('.box-loader').hide()
+        },
+    });
+});
