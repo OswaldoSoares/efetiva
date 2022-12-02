@@ -44,17 +44,17 @@ $(document).on('submit', ".js-salva-foto", function(event) {
         enctype: 'multipart/form-data',
         beforeSend: function() {
             $(".card-dados-colaborador").hide()
+            console.log(_arquivo)
+            console.log(_idpessoal)
                 // $('.box-loader').show()
         },
         success: function(data) {
             $(".card-dados-colaborador").html(data.html_dados_colaborador)
             $(".card-dados-colaborador").show()
             $('.box-loader').hide()
-            console.log("oi")
-            console.log(data)
         },
-        errorThrown: function(data) {
-            console.log(data)
+        error: function(errorThrown) {
+            console.log("error: " + errorThrown)
         },
     });
 });
@@ -169,7 +169,6 @@ $(document).on('submit', '.js-gera-documento', function(event) {
                 $('.card-form-colaborador').html(data.html_form_documento_colaborador)
                 $('.card-form-colaborador').show()
             }
-            console.log(data)
             $('.box-loader').hide()
         },
     });
@@ -284,7 +283,6 @@ $(document).on('submit', '.js-gera-telefone', function(event) {
                 $('.card-form-colaborador').html(data.html_form_fone_colaborador)
                 $('.card-form-colaborador').show()
             }
-            console.log(data)
             $('.box-loader').hide()
         },
     });
@@ -395,7 +393,6 @@ $(document).on('submit', '.js-gera-conta', function(event) {
                 $('.card-form-colaborador').html(data.html_form_conta_colaborador)
                 $('.card-form-colaborador').show()
             }
-            console.log(data)
             $('.box-loader').hide()
         },
     });
