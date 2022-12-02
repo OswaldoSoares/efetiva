@@ -355,3 +355,25 @@ $(document).on('click', '.js-altera-conta-colaborador', function() {
         }
     });
 });
+
+$(document).on('click', '.js-exclui-conta-colaborador', function() {
+    var idcontapessoal = $(this).data('idcontapessoal')
+    $.ajax({
+        type: "GET",
+        url: "/pessoas/exclui_conta_colaborador",
+        data: {
+            idcontapessoal: idcontapessoal,
+        },
+        beforeSend: function() {
+            $(".box-loader").show()
+        },
+        success: function(data) {
+            $(".card-form-colaborador").html(data.html_form_confirma_exclusao)
+            $(".card-form-colaborador").show()
+            $(".box-loader").hide()
+        },
+        error: function(errorThrown) {
+            console.log("error: " + errorThrown)
+        }
+    });
+});
