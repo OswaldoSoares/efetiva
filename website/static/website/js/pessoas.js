@@ -377,3 +377,27 @@ $(document).on('click', '.js-exclui-conta-colaborador', function() {
         }
     });
 });
+
+$(document).on('submit', '.js-gera-conta', function(event) {
+    event.preventDefault();
+    $.ajax({
+        type: $(this).attr('method'),
+        url: "/pessoas/salva_conta_colaborador",
+        data: $(this).serialize(),
+        beforeSend: function() {
+            $('.card-dados-colaborador').hide()
+            $('.card-form-colaborador').hide()
+            $('.box-loader').show()
+        },
+        success: function(data) {
+            $(".card-dados-colaborador").html(data.html_dados_colaborador)
+            $(".card-dados-colaborador").show()
+            if (data.html_form_conta_colaborador) {
+                $('.card-form-colaborador').html(data.html_form_conta_colaborador)
+                $('.card-form-colaborador').show()
+            }
+            console.log(data)
+            $('.box-loader').hide()
+        },
+    });
+});
