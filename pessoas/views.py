@@ -225,6 +225,8 @@ def consulta_pessoa(request):
 def salva_foto(request):
     idpes = request.POST.get("idpessoal")
     arquivo = request.FILES.get("arquivo")
+    print(request.POST)
+    print(request.FILES)
     facade.salva_foto_colaborador(idpes, arquivo)
     contexto = facade.create_contexto_consulta_colaborador(idpes)
     data = facade.create_data_consulta_colaborador(request, contexto)
