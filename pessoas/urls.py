@@ -33,6 +33,10 @@ from .views import (
     salva_telefone_colaborador,
     apaga_telefone_colaborador,
     adiciona_conta_colaborador,
+    altera_conta_colaborador,
+    exclui_conta_colaborador,
+    salva_conta_colaborador,
+    apaga_conta_colaborador,
 )
 
 
@@ -139,5 +143,25 @@ urlpatterns = [
         "adiciona_conta_colaborador",
         adiciona_conta_colaborador,
         name="adiciona_conta_colaborador",
+    ),
+    path(
+        "altera_conta_colaborador",
+        altera_conta_colaborador,
+        name="altera_conta_colaborador",
+    ),
+    path(
+        "exclui_conta_colaborador",
+        exclui_conta_colaborador,
+        name="exclui_conta_colaborador",
+    ),
+    path(
+        "salva_conta_colaborador",
+        salva_conta_colaborador,
+        name="salva_conta_colaborador",
+    ),
+    path(
+        "apaga_conta_colaborador",
+        apaga_conta_colaborador,
+        name="apaga_conta_colaborador",
     ),
 ]
