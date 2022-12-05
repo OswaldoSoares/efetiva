@@ -49,6 +49,9 @@ $(document).on('submit', ".js-salva-foto", function(event) {
         success: function(data) {
             $(".card-dados-colaborador").html(data.html_dados_colaborador)
             $(".card-dados-colaborador").show()
+            var url = $(".foto").attr("src");
+            // Força o recarregamento da foto sem utilizar o cache
+            $(".foto").attr("src", url + `?v=${new Date().getTime()}`);
             $('.box-loader').hide()
         },
         error: function(errorThrown) {
