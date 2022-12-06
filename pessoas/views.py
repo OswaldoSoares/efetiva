@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 from rolepermissions.decorators import has_permission_decorator
 from pessoas import facade
-from pessoas.print import print_pdf_decimno_terceiro
+from pessoas.print import print_pdf_decimno_terceiro, print_pdf_ficha_colaborador
 from website.facade import dict_tipo_conta, dict_tipo_doc, dict_tipo_fone, str_hoje
 from .models import Pessoal, DocPessoal, FonePessoal, ContaPessoal, ContraChequeItens
 from .forms import (
@@ -463,3 +463,11 @@ def paga_decimo_terceiro(request):
     contexto = facade.create_contexto_consulta_colaborador(idpessoal)
     data = facade.create_data_consulta_colaborador(request, contexto)
     return data
+
+
+def print_ficha_colaborador(request):
+    idpes = request.GET.get("idpes")
+    contexto = facade.create_contexto_consulta_colaborador(idpes)
+    print(contexto)
+    response = print_pdf_ficha_colaborador(contexto)
+    return response

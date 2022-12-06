@@ -1,7 +1,9 @@
+import datetime
 from io import BytesIO
 from django.http import HttpResponse
 from reportlab.lib.colors import HexColor
 from reportlab.pdfgen import canvas
+from romaneios.print import header
 from website.facade import cmp
 
 
@@ -175,3 +177,82 @@ def print_pdf_decimno_terceiro(contexto):
     buffer.close()
     response.write(pdf)
     return response
+
+
+def print_pdf_ficha_colaborador(contexto):
+    nome_curto = contexto["colaborador"]["nome_curto"]
+    response = HttpResponse(content_type="application/pdf")
+    response["Content-Disposition"] = f'filename="FICHA CADASTRAL {nome_curto}.pdf'
+    buffer = BytesIO()
+    pdf = canvas.Canvas(buffer)
+    header(pdf, contexto)
+    ficha_colaborador(pdf, contexto)
+    pdf.setTitle(f"FICHA CADSTRAl {nome_curto}.pdf")
+    pdf.save()
+    buffer.seek(0)
+    pdf = buffer.getvalue()
+    buffer.close()
+    response.write(pdf)
+    return response
+
+
+def ficha_colaborador(pdf, contexto):
+    foto = contexto["colaborador"]["foto"].path
+    nome = contexto["colaborador"]["nome"]
+    data_nascimento = datetime.datetime.strftime(
+        contexto["colaborador"]["data_nascimento"], "%d/%m/%Y"
+    )
+    mae = contexto["colaborador"]["mae"]
+    pai = contexto["colaborador"]["pai"]
+    doc = contexto["colaborador"]["documentos"]
+    fone = contexto["colaborador"]["telefones"]
+    pdf.drawCentredString(cmp(105), cmp(255.8), "FICHA CADASTRAL")
+    pdf.line(cmp(10), cmp(254.1), cmp(200), cmp(254.1))
+    pdf.drawImage(foto, cmp(85), cmp(210), cmp(40), cmp(40), mask="auto")
+    pdf.setFont("Helvetica", 16)
+    pdf.setFillColor(HexColor("#FF0000"))
+    pdf.drawCentredString(cmp(105), cmp(202), nome)
+    pdf.line(cmp(10), cmp(200), cmp(200), cmp(200))
+    pdf.circle(cmp(105), cmp(230), 57, stroke=1, fill=0)
+    linha = 196
+    pdf.setFont("Times-Roman", 12)
+    pdf.setFillColor(HexColor("#000000"))
+    pdf.drawString(cmp(12), cmp(linha), f"DATA DE NSCIMENTO: {data_nascimento}")
+    if mae:
+        linha -= 5
+        pdf.drawString(cmp(12), cmp(linha), f"NOME DA MÃE: {mae}")
+    if pai:
+        linha -= 5
+        pdf.drawString(cmp(12), cmp(linha), f"NOME DO PAI: {pai}")
+    linha -= 1
+    pdf.line(cmp(10), cmp(linha), cmp(200), cmp(linha))
+    if doc:
+        linha -= 6
+        pdf.setFillColor(HexColor("#B0C4DE"))
+        pdf.setStrokeColor(HexColor("#B0C4DE"))
+        pdf.rect(cmp(11), cmp(linha), cmp(188), cmp(5), fill=1, stroke=1)
+        pdf.setStrokeColor(HexColor("#000000"))
+        pdf.setFillColor(HexColor("#000000"))
+        pdf.drawCentredString(cmp(105), cmp(linha + 1), "DOCUMENTOS")
+        linha -= 1
+        pdf.line(cmp(10), cmp(linha), cmp(200), cmp(linha))
+        linha += 1
+        for i in doc:
+            linha -= 5
+            pdf.drawString(cmp(12), cmp(linha), f'{i["tipo"]}: {i["documento"]}')
+        linha -= 1
+        pdf.line(cmp(10), cmp(linha), cmp(200), cmp(linha))
+    if fone:
+        linha -= 6
+        pdf.setFillColor(HexColor("#B0C4DE"))
+        pdf.setStrokeColor(HexColor("#B0C4DE"))
+        pdf.rect(cmp(11), cmp(linha), cmp(188), cmp(5), fill=1, stroke=1)
+        pdf.setStrokeColor(HexColor("#000000"))
+        pdf.setFillColor(HexColor("#000000"))
+        pdf.drawCentredString(cmp(105), cmp(linha + 1), "TELEFONES")
+        linha -= 1
+        pdf.line(cmp(10), cmp(linha), cmp(200), cmp(linha))
+        linha += 1
+        for i in fone:
+            linha -= 5
+            pdf.drawString(cmp(12), cmp(linha), f'{i["tipo"]}: {i["fone"]}')
