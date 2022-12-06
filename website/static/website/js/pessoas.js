@@ -443,12 +443,18 @@ $(document).on('click', '.js-form-paga-decimo-terceiro', function() {
     var idparcela = $(this).data("parcela");
     $.ajax({
         type: "GET",
-        url: "pessoas/paga_form_decimo_terceiro",
+        url: "/pessoas/form_paga_decimo_terceiro",
         data: {
             idparcela: idparcela,
         },
-        beforeSend: function() {},
-        success: function(data) {},
+        beforeSend: function() {
+            $('.box-loader').show();
+        },
+        success: function(data) {
+            $(".card-form-colaborador").html(data.html_form_paga_decimo_terceiro)
+            $(".card-form-colaborador").show()
+            $('.box-loader').hide()
+        },
         error: function(errorThrown) {
             console.log(errorThrown);
         },

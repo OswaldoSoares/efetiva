@@ -445,8 +445,9 @@ def apaga_conta_colaborador(request):
     return data
 
 
-def paga_decimo_terceiro(request):
+def form_paga_decimo_terceiro(request):
     idparcela = request.GET.get("idparcela")
     hoje = str_hoje()
     contexto = {"idpercela": idparcela, "hoje": hoje}
-    data = facade.create_data_form_paga_parcela_decimo_terceiro(request, contexto)
+    data = facade.create_data_form_paga_decimo_terceiro(request, contexto)
+    return data
