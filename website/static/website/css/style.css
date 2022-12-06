@@ -6273,6 +6273,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .button-decimo-terceiro {
+    background-color: var(--color9);
     top: 89px;
     right: 5px;
     position: absolute;

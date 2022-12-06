@@ -444,3 +444,7 @@ def apaga_conta_colaborador(request):
     contexto = facade.create_contexto_consulta_colaborador(idpessoal)
     data = facade.create_data_consulta_colaborador(request, contexto)
     return data
+
+
+def paga_decimo_terceiro(request):
+    idpercela = request.GET.get("idparcela")

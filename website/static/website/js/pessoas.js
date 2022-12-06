@@ -15,6 +15,9 @@ $(document).on('click', ".js-seleciona-colaborador", function() {
         success: function(data) {
             $(".card-dados-colaborador").html(data.html_dados_colaborador)
             $(".card-dados-colaborador").show()
+            var url = $(".foto").attr("src");
+            // Força o recarregamento da foto sem utilizar o cache
+            $(".foto").attr("src", url + `?v=${new Date().getTime()}`);
             $(".card-decimo-terceiro").html(data.html_decimo_terceiro)
             $(".card-decimo-terceiro").show()
             $(".box-loader").hide()
@@ -166,6 +169,9 @@ $(document).on('submit', '.js-gera-documento', function(event) {
         success: function(data) {
             $(".card-dados-colaborador").html(data.html_dados_colaborador)
             $(".card-dados-colaborador").show()
+            var url = $(".foto").attr("src");
+            // Força o recarregamento da foto sem utilizar o cache
+            $(".foto").attr("src", url + `?v=${new Date().getTime()}`);
             if (data.html_form_documento_colaborador) {
                 $('.card-form-colaborador').html(data.html_form_documento_colaborador)
                 $('.card-form-colaborador').show()
@@ -189,13 +195,12 @@ $(document).on('submit', '.js-apaga-documento', function(event) {
         success: function(data) {
             $(".card-dados-colaborador").html(data.html_dados_colaborador)
             $(".card-dados-colaborador").show()
+            var url = $(".foto").attr("src");
+            // Força o recarregamento da foto sem utilizar o cache
+            $(".foto").attr("src", url + `?v=${new Date().getTime()}`);
             $('.box-loader').hide()
         },
     });
-});
-
-$(document).on('click', '.js-fecha-formulario', function() {
-    $('.card-form-colaborador').hide();
 });
 
 $(document).on('click', '.js-adiciona-telefone-colaborador', function() {
@@ -280,6 +285,9 @@ $(document).on('submit', '.js-gera-telefone', function(event) {
         success: function(data) {
             $(".card-dados-colaborador").html(data.html_dados_colaborador)
             $(".card-dados-colaborador").show()
+            var url = $(".foto").attr("src");
+            // Força o recarregamento da foto sem utilizar o cache
+            $(".foto").attr("src", url + `?v=${new Date().getTime()}`);
             if (data.html_form_fone_colaborador) {
                 $('.card-form-colaborador').html(data.html_form_fone_colaborador)
                 $('.card-form-colaborador').show()
@@ -303,6 +311,9 @@ $(document).on('submit', '.js-apaga-telefone', function(event) {
         success: function(data) {
             $(".card-dados-colaborador").html(data.html_dados_colaborador)
             $(".card-dados-colaborador").show()
+            var url = $(".foto").attr("src");
+            // Força o recarregamento da foto sem utilizar o cache
+            $(".foto").attr("src", url + `?v=${new Date().getTime()}`);
             $('.box-loader').hide()
         },
     });
@@ -390,6 +401,9 @@ $(document).on('submit', '.js-gera-conta', function(event) {
         success: function(data) {
             $(".card-dados-colaborador").html(data.html_dados_colaborador)
             $(".card-dados-colaborador").show()
+            var url = $(".foto").attr("src");
+            // Força o recarregamento da foto sem utilizar o cache
+            $(".foto").attr("src", url + `?v=${new Date().getTime()}`);
             if (data.html_form_conta_colaborador) {
                 $('.card-form-colaborador').html(data.html_form_conta_colaborador)
                 $('.card-form-colaborador').show()
@@ -413,7 +427,30 @@ $(document).on('submit', '.js-apaga-conta', function(event) {
         success: function(data) {
             $(".card-dados-colaborador").html(data.html_dados_colaborador)
             $(".card-dados-colaborador").show()
+            var url = $(".foto").attr("src");
+            // Força o recarregamento da foto sem utilizar o cache
+            $(".foto").attr("src", url + `?v=${new Date().getTime()}`);
             $('.box-loader').hide()
+        },
+    });
+});
+
+$(document).on('click', '.js-fecha-formulario', function() {
+    $('.card-form-colaborador').hide();
+});
+
+$(document).on('click', '.js-form-paga-decimo-terceiro', function() {
+    var idparcela = $(this).data("parcela");
+    $.ajax({
+        type: "GET",
+        url: "pessoas/paga_form_decimo_terceiro",
+        data: {
+            idparcela: idparcela,
+        },
+        beforeSend: function() {},
+        success: function(data) {},
+        error: function(errorThrown) {
+            console.log(errorThrown);
         },
     });
 });

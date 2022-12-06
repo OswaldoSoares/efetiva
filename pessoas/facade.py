@@ -1025,3 +1025,9 @@ def create_contexto_exclui_conta_colaborador(idcontapessoal):
 def apaga_conta(idcontapessoal):
     conta = ContaPessoal.objects.get(idContaPessoal=idcontapessoal)
     conta.delete()
+
+
+def create_data_form_paga_parcela_decimo_terceiro(request, contexto):
+    data = dict()
+    html_form_paga_parcela_decimo_terceiro(request, contexto, data)
+    return JsonResponse(data)
