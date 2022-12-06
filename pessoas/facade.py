@@ -1031,3 +1031,10 @@ def create_data_form_paga_parcela_decimo_terceiro(request, contexto):
     data = dict()
     html_form_paga_parcela_decimo_terceiro(request, contexto, data)
     return JsonResponse(data)
+
+
+def html_form_paga_parcela_decimo_terceiro(request, contexto, data):
+    data["html_form_paga_parcela_decimo_terceiro"] = render_to_string(
+        "pessoas/html_form_paga_parcela_decimo_terceiro.html", contexto, request=request
+    )
+    return data

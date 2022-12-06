@@ -1,0 +1,26 @@
+<form class="js-gera-conta" method="post" action="">
+    {% csrf_token %}
+    <div class="article-card-titulo magenta">
+        <span>PAGAMENTO 13º</span>
+    </div>
+    <div class="article-card-body">
+        <div class="itens-cadastro">
+            <div class="item-form">
+                <div class="button" title="data Pagamento">
+                    <i class="bi bi-calendary-date i-button-null"></i>
+                </div>
+                <div class="item-field">
+                    <input type="date" class="form-control" name="data_pgto"
+                    value="{{ hoje }}">
+                </div>
+            </div>
+            <input type="hidden" name="idpessoal" value="{{ idparcela }}">
+        </div>
+    </div>
+    <div class="article-card-footer magenta">
+        <i class="bi bi-x-circle i-button js-fecha-formulario"
+        title="Fechar"></i>
+        <button type="submit" class="bi bi-save i-button"
+        title="Salva Telefone"></button>
+    </div>
+</form>
