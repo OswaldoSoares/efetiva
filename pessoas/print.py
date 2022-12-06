@@ -224,7 +224,7 @@ def ficha_colaborador(pdf, contexto):
     linha = 196
     pdf.setFont("Times-Roman", 12)
     pdf.setFillColor(HexColor("#000000"))
-    pdf.drawString(cmp(12), cmp(linha), f"DATA DE NSCIMENTO: {data_nascimento}")
+    pdf.drawString(cmp(12), cmp(linha), f"DATA DE NASCIMENTO: {data_nascimento}")
     if mae:
         linha -= 5
         pdf.drawString(cmp(12), cmp(linha), f"NOME DA MÃE: {mae}")
