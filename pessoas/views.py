@@ -403,7 +403,6 @@ def altera_conta_colaborador(request):
 
 
 def salva_conta_colaborador(request):
-    print(request.POST)
     error, msg = facade.valida_conta_colaborador(request)
     conta_form = facade.read_conta_post(request)
     idcontapessoal = request.POST.get("idcontapessoal")
@@ -447,4 +446,7 @@ def apaga_conta_colaborador(request):
 
 
 def paga_decimo_terceiro(request):
-    idpercela = request.GET.get("idparcela")
+    idparcela = request.GET.get("idparcela")
+    hoje = str_hoje()
+    contexto = {"idpercela": idparcela, "hoje": hoje}
+    data = facade.create_data_form_paga_parcela_decimo_terceiro(request, contexto)
