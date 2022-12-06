@@ -210,9 +210,12 @@
     data-action="{% url 'editapessoa' colaborador.idpes %}"
     data-button-save-label="ALTERAR"></i>
     <i class="icofont-ui-v-card i-button js-adiciona-documento-colaborador"
-    title="ADICIONAR DOCUMENTO" data-idpessoal="{{ colaborador.idpes }}"></i>
+    title="Adiciona Documento" data-idpessoal="{{ colaborador.idpes }}"></i>
     <i class="icofont-ui-dial-phone i-button js-adiciona-telefone-colaborador"
-    title="ADCIONAR TELEFONE" data-idpessoal="{{ colaborador.idpes }}"></i>
+    title="Adiciona Telefone" data-idpessoal="{{ colaborador.idpes }}"></i>
     <i class="icofont-bank-alt i-button js-adiciona-conta-colaborador"
-    title="ADICIONAR CONTA BANCÁRIA" data-idpessoal="{{ colaborador.idpes }}"></i>
+    title="Adiciona Conta Bancária" data-idpessoal="{{ colaborador.idpes }}"></i>
+    <a class="bi bi-printer i-button" target="_blank"
+    href="{% url 'print_ficha_colaborador' %}?idpes={{ colaborador.idpes }}"
+    title="Imprime Ficha do Colaborador"></a>
 </div>
