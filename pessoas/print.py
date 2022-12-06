@@ -3,7 +3,9 @@ from io import BytesIO
 from django.http import HttpResponse
 from reportlab.lib.colors import HexColor
 from reportlab.pdfgen import canvas
+from pessoas.facade import do_crop
 from romaneios.print import header
+from transefetiva.settings.settings import STATIC_ROOT
 from website.facade import cmp
 
 
@@ -197,7 +199,11 @@ def print_pdf_ficha_colaborador(contexto):
 
 
 def ficha_colaborador(pdf, contexto):
-    foto = contexto["colaborador"]["foto"].path
+    if contexto["colaborador"]["foto"]:
+        foto = contexto["colaborador"]["foto"].path
+        foto = do_crop(foto)
+    else:
+        foto = f"{STATIC_ROOT}/website/img/usuario.png"
     nome = contexto["colaborador"]["nome"]
     data_nascimento = datetime.datetime.strftime(
         contexto["colaborador"]["data_nascimento"], "%d/%m/%Y"
@@ -209,11 +215,12 @@ def ficha_colaborador(pdf, contexto):
     pdf.drawCentredString(cmp(105), cmp(255.8), "FICHA CADASTRAL")
     pdf.line(cmp(10), cmp(254.1), cmp(200), cmp(254.1))
     pdf.drawImage(foto, cmp(85), cmp(210), cmp(40), cmp(40), mask="auto")
-    pdf.setFont("Helvetica", 16)
+    pdf.setFont("Helvetica", 15)
     pdf.setFillColor(HexColor("#FF0000"))
     pdf.drawCentredString(cmp(105), cmp(202), nome)
     pdf.line(cmp(10), cmp(200), cmp(200), cmp(200))
-    pdf.circle(cmp(105), cmp(230), 57, stroke=1, fill=0)
+    if contexto["colaborador"]["foto"]:
+        pdf.circle(cmp(105), cmp(230), 57, stroke=1, fill=0)
     linha = 196
     pdf.setFont("Times-Roman", 12)
     pdf.setFillColor(HexColor("#000000"))

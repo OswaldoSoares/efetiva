@@ -7,6 +7,7 @@ from django.db.models import Sum
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from decimal import Decimal
+from PIL import Image, ImageDraw
 
 from pessoas.forms import CadastraSalario, CadastraVale, CadastraDemissao
 from pessoas.models import (
@@ -1045,3 +1046,30 @@ def paga_parcela(idparcela, data_pgto):
     obj.DataPgto = data_pgto
     obj.Pago = True
     obj.save(update_fields=["DataPgto", "Pago"])
+
+
+# Deixa a imagem circular e salva como png, utilizada na impressão da ficha cadastral
+def prepare_mask(size, antialias=2):
+    mask = Image.new("L", (size[0] * antialias, size[1] * antialias), 0)
+    ImageDraw.Draw(mask).ellipse((0, 0) + mask.size, fill=255)
+    return mask.resize(size, Image.ANTIALIAS)
+
+
+def crop(im, s):
+    w, h = im.size
+    k = w / s[0] - h / s[1]
+    if k > 0:
+        im = im.crop(((w - h) / 2, 0, (w + h) / 2, h))
+    elif k < 0:
+        im = im.crop((0, (h - w) / 2, w, (h + w) / 2))
+    return im.resize(s, Image.ANTIALIAS)
+
+
+def do_crop(img):
+    size = (200, 200)
+    im = Image.open(img)
+    im = crop(im, size)
+    im.putalpha(prepare_mask(size, 4))
+    output = str(img).replace("jpg", "png").replace("jpeg", "png")
+    im.save(output)
+    return output

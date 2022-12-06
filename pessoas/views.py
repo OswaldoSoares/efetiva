@@ -468,6 +468,5 @@ def paga_decimo_terceiro(request):
 def print_ficha_colaborador(request):
     idpes = request.GET.get("idpes")
     contexto = facade.create_contexto_consulta_colaborador(idpes)
-    print(contexto)
     response = print_pdf_ficha_colaborador(contexto)
     return response
