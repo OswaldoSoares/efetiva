@@ -1,4 +1,4 @@
-<form class="js-paga_decimo_terceiro" method="post" action="">
+<form class="js-paga-decimo-terceiro" method="post" action="">
     {% csrf_token %}
     <div class="article-card-titulo magenta">
         <span>PAGAMENTO 13º</span>
@@ -6,7 +6,7 @@
     <div class="article-card-body">
         <div class="itens-cadastro">
             <div class="item-form">
-                <div class="button" title="data Pagamento">
+                <div class="button" title="Data do Pagamento">
                     <i class="bi bi-calendar-date i-button-null"></i>
                 </div>
                 <div class="item-field">
@@ -14,13 +14,14 @@
                     value="{{ hoje }}">
                 </div>
             </div>
-            <input type="hidden" name="idpessoal" value="{{ idparcela }}">
+            <input type="hidden" name="idparcela" value="{{ idparcela }}">
+            <input type="hidden" name="idpessoal" value="{{ idpessoal }}">
         </div>
     </div>
     <div class="article-card-footer magenta">
         <i class="bi bi-x-circle i-button js-fecha-formulario"
         title="Fechar"></i>
         <button type="submit" class="bi bi-save i-button"
-        title="Salva Telefone"></button>
+        title="Salva Pagamento"></button>
     </div>
 </form>

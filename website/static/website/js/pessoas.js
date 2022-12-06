@@ -440,12 +440,14 @@ $(document).on('click', '.js-fecha-formulario', function() {
 });
 
 $(document).on('click', '.js-form-paga-decimo-terceiro', function() {
-    var idparcela = $(this).data("parcela");
+    var idparcela = $(this).data("idparcela");
+    var idpessoal = $(this).data("idpessoal");
     $.ajax({
         type: "GET",
         url: "/pessoas/form_paga_decimo_terceiro",
         data: {
             idparcela: idparcela,
+            idpessoal: idpessoal,
         },
         beforeSend: function() {
             $('.box-loader').show();
@@ -457,6 +459,26 @@ $(document).on('click', '.js-form-paga-decimo-terceiro', function() {
         },
         error: function(errorThrown) {
             console.log(errorThrown);
+        },
+    });
+});
+
+$(document).on('submit', '.js-paga-decimo-terceiro', function(event) {
+    event.preventDefault();
+    $.ajax({
+        type: $(this).attr('method'),
+        url: "/pessoas/paga_decimo_terceiro",
+        data: $(this).serialize(),
+        beforeSend: function() {
+            $('.card-form-colaborador').hide()
+            $(".card-decimo-terceiro").hide()
+            $('.box-loader').show()
+        },
+        success: function(data) {
+            console.log(data)
+            $(".card-decimo-terceiro").html(data.html_decimo_terceiro)
+            $(".card-decimo-terceiro").show()
+            $('.box-loader').hide()
         },
     });
 });

@@ -1038,3 +1038,10 @@ def html_form_paga_decimo_terceiro(request, contexto, data):
         "pessoas/html_form_paga_decimo_terceiro.html", contexto, request=request
     )
     return data
+
+
+def paga_parcela(idparcela, data_pgto):
+    obj = ParcelasDecimoTerceiro.objects.get(idParcelasDecimoTerceiro=idparcela)
+    obj.DataPgto = data_pgto
+    obj.Pago = True
+    obj.save(update_fields=["DataPgto", "Pago"])

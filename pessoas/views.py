@@ -447,7 +447,19 @@ def apaga_conta_colaborador(request):
 
 def form_paga_decimo_terceiro(request):
     idparcela = request.GET.get("idparcela")
+    idpessoal = request.GET.get("idpessoal")
     hoje = str_hoje()
-    contexto = {"idpercela": idparcela, "hoje": hoje}
+    contexto = {"idparcela": idparcela, "idpessoal": idpessoal, "hoje": hoje}
     data = facade.create_data_form_paga_decimo_terceiro(request, contexto)
+    return data
+
+
+def paga_decimo_terceiro(request):
+    idparcela = int(request.POST.get("idparcela"))
+    data_pgto = request.POST.get("data_pgto")
+    idpessoal = request.POST.get("idpessoal")
+    if request.method == "POST":
+        facade.paga_parcela(idparcela, data_pgto)
+    contexto = facade.create_contexto_consulta_colaborador(idpessoal)
+    data = facade.create_data_consulta_colaborador(request, contexto)
     return data

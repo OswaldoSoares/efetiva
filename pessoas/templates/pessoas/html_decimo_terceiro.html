@@ -27,9 +27,13 @@
                 ></a>
             </div>
             <div class="item-button">
+                {% if y.Pago %}
+                <i class="bi bi-check-circle"></i>
+                {% else %}
                 <i class="bi bi-currency-dollar i-button js-form-paga-decimo-terceiro"
-                title="Pagamento da Parcela"
+                title="Pagamento da Parcela" data-idpessoal="{{ colaborador.idpes }}"
                 data-idparcela="{{ y.idParcelasDecimoTerceiro }}"></i>
+                {% endif %}
             </div>
         </div>
         {% endfor %}

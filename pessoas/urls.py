@@ -38,6 +38,7 @@ from .views import (
     salva_conta_colaborador,
     apaga_conta_colaborador,
     form_paga_decimo_terceiro,
+    paga_decimo_terceiro,
 )
 
 
@@ -169,5 +170,10 @@ urlpatterns = [
         "form_paga_decimo_terceiro",
         form_paga_decimo_terceiro,
         name="form_paga_decimo_terceiro",
+    ),
+    path(
+        "paga_decimo_terceiro",
+        paga_decimo_terceiro,
+        name="paga_decimo_terceiro",
     ),
 ]
