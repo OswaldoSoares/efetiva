@@ -1079,3 +1079,20 @@ def create_data_form_salario_colaborador(request, contexto):
     data = dict()
     html_form_salario_colaborador(request, contexto, data)
     return JsonResponse(data)
+
+
+def html_form_salario_colaborador(request, contexto, data):
+    data["html_form_salario_colaborador"] = render_to_string(
+        "pessoas/html_form_salario_colaborador.html", contexto, request=request
+    )
+    return data
+
+
+def valida_salario_colaborador(request):
+    msg = dict()
+    error = False
+    salario = request.POST.get("salario")
+    if salario < 0.00:
+        msg["erro_salario"] = "O salário deve ser maior que R$ 0,00."
+        error = True
+    return error, msg
