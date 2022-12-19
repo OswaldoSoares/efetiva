@@ -1114,3 +1114,10 @@ def read_salario_database(idsalario):
     conta_database["idpessoal"] = salario.idPessoal
     conta_database["idsalario"] = salario.idSalario
     return conta_database
+
+
+def altera_salario(salario, idsalario):
+    obj = Salario.objects.get(idSalario=idsalario)
+    obj.Salario = salario["salario"]
+    obj.ValeTransporte = salario["transporte"]
+    obj.save(update_fields=["Salario", "ValeTransporte"])
