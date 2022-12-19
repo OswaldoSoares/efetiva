@@ -445,6 +445,15 @@ def apaga_conta_colaborador(request):
     return data
 
 
+def altera_salario_colaborador(request):
+    idsalario = request.GET.get("idsalario")
+    idpessoal = request.GET.get("idpessoal")
+    salario_form = facade.read_salario_database(idsalario)
+    contexto = {"salario_form": salario_form, "idpessoal": idpessoal}
+    data = facade.create_data_form_salario_colaborador(request, contexto)
+    return data
+
+
 def form_paga_decimo_terceiro(request):
     idparcela = request.GET.get("idparcela")
     idpessoal = request.GET.get("idpessoal")
