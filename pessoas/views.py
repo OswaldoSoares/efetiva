@@ -453,18 +453,20 @@ def altera_salario_colaborador(request):
     return data
 
 
-def salva_salavrio_colaborador(request):
+def salva_salario_colaborador(request):
     error, msg = facade.valida_salario_colaborador(request)
     salario_form = facade.read_salario_post(request)
     idsalario = request.POST.get("idsalario")
+    idpessoal = request.POST.get("idpessoal")
     if not error:
-        facade.altera_salario(salario_form)
+        facade.altera_salario(salario_form, idsalario)
+        contexto = facade.create_contexto_consulta_colaborador(idpessoal)
+        data = facade.create_data_consulta_colaborador(request, contexto)
         salario_form = dict()
     else:
-        idpessoal: str = request.POST.get("idpessoal")
         contexto = {"salario_form": salario_form, "idpessoal": idpessoal}
         contexto.update(msg)
-    data = facade.create_data_form_salario_colaborador(request, contexto)
+        data = facade.create_data_form_salario_colaborador(request, contexto)
     return data
 
 

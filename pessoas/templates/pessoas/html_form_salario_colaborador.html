@@ -3,14 +3,12 @@
     {% csrf_token %}
     <div class="article-card-titulo magenta">
         <span>SALÁRIO COLABORADOR</span>
-        {{ salario_form.salario }}
-        {{ salario_form.transporte }}
     </div>
     <div class="article-card-body">
         <div class="itens-cadastro">
             <div class="item-form">
                 <div class="button" title="Valor do salário">
-                    <i class="bi bi-currency-dollar i-button-null"></i>
+                    <i class="icofont-money i-button-null"></i>
                 </div>
                 {% if salario_form %}
                 <div class="item-field">

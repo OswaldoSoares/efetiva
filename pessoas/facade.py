@@ -1089,20 +1089,22 @@ def html_form_salario_colaborador(request, contexto, data):
 
 
 def valida_salario_colaborador(request):
+    print("[INFO] - ", request.POST)
     msg = dict()
     error = False
-    salario = request.POST.get("salario")
-    if salario < 0.00:
-        msg["erro_salario"] = "O salário deve ser maior que R$ 0,00."
+    salario = float(request.POST.get("valor_salario"))
+    if salario < 1.00:
+        msg["erro_salario"] = "O salário deve ser maior que R$ 0,99."
         error = True
     return error, msg
 
 
 def read_salario_post(request):
     conta_post = dict()
-    conta_post["salario"] = request.POST.get("salario")
-    conta_post["transporte"] = request.POST.get("transporte")
+    conta_post["salario"] = request.POST.get("valor_salario")
+    conta_post["transporte"] = request.POST.get("valor_transporte")
     conta_post["idpessoal"] = request.POST.get("idpessoal")
+    conta_post["idsalario"] = request.POST.get("idsalario")
     return conta_post
 
 
@@ -1120,4 +1122,6 @@ def altera_salario(salario, idsalario):
     obj = Salario.objects.get(idSalario=idsalario)
     obj.Salario = salario["salario"]
     obj.ValeTransporte = salario["transporte"]
+    # obj.idSalario = obj.Salario
+    # obj.idPessoal = obj.idPessoal
     obj.save(update_fields=["Salario", "ValeTransporte"])
