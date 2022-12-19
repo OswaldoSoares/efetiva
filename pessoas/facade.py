@@ -1104,3 +1104,13 @@ def read_salario_post(request):
     conta_post["transporte"] = request.POST.get("transporte")
     conta_post["idpessoal"] = request.POST.get("idpessoal")
     return conta_post
+
+
+def read_salario_database(idsalario):
+    salario = Salario.objects.get(idSalario=idsalario)
+    conta_database = dict()
+    conta_database["salario"] = salario.Salario
+    conta_database["transporte"] = salario.ValeTransporte
+    conta_database["idpessoal"] = salario.idPessoal
+    conta_database["idsalario"] = salario.idSalario
+    return conta_database
