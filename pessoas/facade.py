@@ -1073,3 +1073,9 @@ def do_crop(img):
     output = str(img).replace("jpg", "png").replace("jpeg", "png")
     im.save(output)
     return output
+
+
+def create_data_form_salario_colaborador(request, contexto):
+    data = dict()
+    html_form_salario_colaborador(request, contexto, data)
+    return JsonResponse(data)
