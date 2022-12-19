@@ -149,14 +149,19 @@ def dias_falta(_cp):
     for itens in _cp:
         if itens["ausencia"] == "FALTA" and itens["alteracao"] == "ROBOT":
             dias += 1
+    print("[INFO - DIAS FALTA] - ", dias)
     return dias
 
 
-def dias_remunerado(_cp):
+def dias_remunerado(_cp, ultimo_dia):
+    print("[INFO - ULTIMO DIA] - ", ultimo_dia.day)
     dias = 0
     for itens in _cp:
         if itens["remunerado"]:
             dias += 1
+    if ultimo_dia.day == 31:
+        dias -= 1
+    print("[INFO - DIAS REMUNERADO] - ", dias)
     return dias
 
 
@@ -165,6 +170,7 @@ def dias_transporte(_cp):
     for itens in _cp:
         if itens["transporte"]:
             dias += 1
+    print("[INFO - DIAS TRANSPORTE] - ", dias)
     return dias
 
 
@@ -173,6 +179,7 @@ def dias_carro_empresa(_cp):
     for itens in _cp:
         if itens["carro_empresa"]:
             dias += 1
+    print("[INFO - DIAS CARRO EMPRESA] - ", dias)
     return dias
 
 
@@ -181,6 +188,7 @@ def dias_trabalhado(_cp):
     for itens in _cp:
         if itens["ausencia"] == "":
             dias += 1
+    print("[INFO - DIAS TRABALHANDO] - ", dias)
     return dias
 
 
@@ -441,7 +449,7 @@ def create_contexto_funcionario(_mes_ano, _id) -> JsonResponse:
     _cartao_ponto = cartao_ponto(_var)
     minutas = minutas_contra_cheque(_var)
     _var["dias_falta"] = dias_falta(_cartao_ponto)
-    _var["dias_remunerado"] = dias_remunerado(_cartao_ponto)
+    _var["dias_remunerado"] = dias_remunerado(_cartao_ponto, _var["ultimo_dia"])
     _var["dias_transporte"] = dias_transporte(_cartao_ponto)
     _var["dias_carro_empresa"] = dias_carro_empresa(_cartao_ponto)
     _var["dias_trabalhado"] = dias_trabalhado(_cartao_ponto)
@@ -1152,7 +1160,7 @@ def imprime_contra_cheque_pagamento(_id_cc, tipo):
     _carto_ponto = cartao_ponto(_var)
     minutas = select_minutas_contracheque(_mes, _ano, _cc[0].idPessoal_id)
     _var["dias_falta"] = dias_falta(_carto_ponto)
-    _var["dias_remunerado"] = dias_remunerado(_carto_ponto)
+    _var["dias_remunerado"] = dias_remunerado(_carto_ponto, _var["ultimo_dia"])
     _var["dias_transporte"] = dias_transporte(_carto_ponto)
     _var["dias_carro_empresa"] = dias_carro_empresa(_carto_ponto)
     _var["id_contra_cheque"] = _id_cc
@@ -2577,6 +2585,7 @@ def html_formccitens(contracheque, request):
     return c_return
 
 
+# TODO EXCLUIR função não está mais sendo usada.
 def calcula_faltas(mesreferencia, anoreferencia, idpessoal):
     dia, diafinal = periodo_cartaoponto(mesreferencia, anoreferencia)
     colaborador = facade.get_pessoal(idpessoal)
