@@ -435,6 +435,32 @@ $(document).on('submit', '.js-apaga-conta', function(event) {
     });
 });
 
+$(document).on('click', '.js-altera-salario-colaborador', function() {
+    var idsalario = $(this).data('idsalario')
+    var idpessoal = $(this).data('idpessoal')
+    $.ajax({
+        type: "GET",
+        url: "/pessoas/altera_salario_colaborador",
+        data: {
+            idsalario: idsalario,
+            idpessoal: idpessoal,
+        },
+        beforeSend: function() {
+            $(".box-loader").show()
+        },
+        success: function(data) {
+            $(".card-form-colaborador").html(data.html_form_salario_colaborador)
+            $(".card-form-colaborador").show()
+            $(".box-loader").hide()
+        },
+        error: function(errorThrown) {
+            console.log("error: " + errorThrown)
+        }
+    });
+});
+
+
+
 $(document).on('click', '.js-fecha-formulario', function() {
     $('.card-form-colaborador').hide();
 });

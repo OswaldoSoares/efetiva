@@ -1106,11 +1106,11 @@ def read_salario_post(request):
     return conta_post
 
 
-def read_salario_database(idsalario):
-    salario = Salario.objects.get(idSalario=idsalario)
+def read_salario_database(idpessoal):
+    salario = Salario.objects.get(idPessoal=idpessoal)
     conta_database = dict()
-    conta_database["salario"] = salario.Salario
-    conta_database["transporte"] = salario.ValeTransporte
+    conta_database["salario"] = str(salario.Salario)
+    conta_database["transporte"] = str(salario.ValeTransporte)
     conta_database["idpessoal"] = salario.idPessoal
     conta_database["idsalario"] = salario.idSalario
     return conta_database

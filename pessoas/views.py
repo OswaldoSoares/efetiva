@@ -446,10 +446,24 @@ def apaga_conta_colaborador(request):
 
 
 def altera_salario_colaborador(request):
-    idsalario = request.GET.get("idsalario")
     idpessoal = request.GET.get("idpessoal")
-    salario_form = facade.read_salario_database(idsalario)
+    salario_form = facade.read_salario_database(idpessoal)
     contexto = {"salario_form": salario_form, "idpessoal": idpessoal}
+    data = facade.create_data_form_salario_colaborador(request, contexto)
+    return data
+
+
+def salva_salavrio_colaborador(request):
+    error, msg = facade.valida_salario_colaborador(request)
+    salario_form = facade.read_salario_post(request)
+    idsalario = request.POST.get("idsalario")
+    if not error:
+        facade.altera_salario(salario_form)
+        salario_form = dict()
+    else:
+        idpessoal: str = request.POST.get("idpessoal")
+        contexto = {"salario_form": salario_form, "idpessoal": idpessoal}
+        contexto.update(msg)
     data = facade.create_data_form_salario_colaborador(request, contexto)
     return data
 

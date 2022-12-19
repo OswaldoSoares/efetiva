@@ -215,6 +215,9 @@
     title="Adiciona Telefone" data-idpessoal="{{ colaborador.idpes }}"></i>
     <i class="icofont-bank-alt i-button js-adiciona-conta-colaborador"
     title="Adiciona Conta Bancária" data-idpessoal="{{ colaborador.idpes }}"></i>
+    <i class="bi bi-currency-dollar i-button js-altera-salario-colaborador"
+    title="Altera Valor do Salário e do Vale Transporte"
+    data-idpessoal="{{ colaborador.idpes }}"></i>
     <a class="bi bi-printer i-button" target="_blank"
     href="{% url 'print_ficha_colaborador' %}?idpes={{ colaborador.idpes }}"
     title="Imprime Ficha do Colaborador"></a>

@@ -40,6 +40,7 @@ from .views import (
     form_paga_decimo_terceiro,
     paga_decimo_terceiro,
     print_ficha_colaborador,
+    altera_salario_colaborador,
 )
 
 
@@ -181,5 +182,10 @@ urlpatterns = [
         "print_ficha_colaborador",
         print_ficha_colaborador,
         name="print_ficha_colaborador",
+    ),
+    path(
+        "altera_salario_colaborador",
+        altera_salario_colaborador,
+        name="altera_salario_colaborador",
     ),
 ]
