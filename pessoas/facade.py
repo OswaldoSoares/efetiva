@@ -1096,3 +1096,11 @@ def valida_salario_colaborador(request):
         msg["erro_salario"] = "O salário deve ser maior que R$ 0,00."
         error = True
     return error, msg
+
+
+def read_salario_post(request):
+    conta_post = dict()
+    conta_post["salario"] = request.POST.get("salario")
+    conta_post["transporte"] = request.POST.get("transporte")
+    conta_post["idpessoal"] = request.POST.get("idpessoal")
+    return conta_post
