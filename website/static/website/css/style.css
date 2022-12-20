@@ -6272,9 +6272,16 @@ main .fp-recibo-tabela .fp-recibo-print {
     padding: 0 5px;
 }
 
-.button-decimo-terceiro {
+.button-ferias {
     background-color: var(--color9);
     top: 89px;
+    right: 5px;
+    position: absolute;
+}
+
+.button-decimo-terceiro {
+    background-color: var(--color9);
+    top: 139px;
     right: 5px;
     position: absolute;
 }
