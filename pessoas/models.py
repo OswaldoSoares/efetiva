@@ -309,3 +309,23 @@ class ParcelasDecimoTerceiro(models.Model):
         return str(self.idParcelasDecimoTerceiro)
 
     objects = models.Manager()
+
+
+class Ferias(models.Model):
+    idFerias = models.AutoField(primary_key=True)
+    DataInicial = models.DateField(blank=True, null=True)
+    DataFinal = models.DateField(blank=True, null=True)
+    Concessão = models.IntegerField(default=0)
+    Periodo = models.IntegerField(default=0)
+    DiasPeriodo = models.IntegerField(default=0)
+    DataVencimento = models.DateField(blank=True, null=True)
+    idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = "ferias"
+        ordering = ["idFerias"]
+
+    def __str__(self):
+        return str(self.idferias)
+
+    objects = models.Manager()
