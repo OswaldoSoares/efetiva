@@ -84,6 +84,7 @@ class Colaborador:
         self.salario = ColaboradorSalario(idpes).salario
         self.decimo_terceiro = self.get_decimo_terceiro(self)
         self.ferias = self.get_ferias(self)
+        self.meses_ferias = self.get_meses_feiras(self)
 
     @staticmethod
     def get_endereco_completo(self):
@@ -165,6 +166,10 @@ class Colaborador:
             for i in ferias
         ]
         return lista
+
+        @staticmethod
+        def get_meses_ferias(self):
+            admissao = self.data_admissao
 
 
 class ColaboradorDocumentos:
