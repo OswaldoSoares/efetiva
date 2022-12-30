@@ -8,6 +8,7 @@ $(document).on('click', ".js-seleciona-colaborador", function() {
         },
         beforeSend: function() {
             $(".card-dados-colaborador").hide()
+            $(".card-ferias-colaborador").hide()
             $(".card-decimo-terceiro").hide()
             $(".card-form-colaborador").hide()
             $(".box-loader").show()
@@ -18,6 +19,8 @@ $(document).on('click', ".js-seleciona-colaborador", function() {
             var url = $(".foto").attr("src");
             // Força o recarregamento da foto sem utilizar o cache
             $(".foto").attr("src", url + `?v=${new Date().getTime()}`);
+            $(".card-ferias-colaborador").html(data.html_ferias_colaborador)
+            $(".card-ferias-colaborador").show()
             $(".card-decimo-terceiro").html(data.html_decimo_terceiro)
             $(".card-decimo-terceiro").show()
             $(".box-loader").hide()

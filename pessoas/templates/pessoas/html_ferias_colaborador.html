@@ -1,5 +1,19 @@
 <div class="article-card-titulo">
     <span>FÉRIAS</span>
 </div>
-<div class="article-card-body"></div>
+<div class="article-card-body">
+    {% for i in colaborador.ferias %}
+    <div class="">
+        <div class="">
+            <span>PERIODO AQUISITIVO - {{ i.concessao }}</span>
+        </div>
+        <div class="">
+            {% if i.concessao == 1 %}
+            {{ colaborador.data_admissao }}
+            {{ colaborador.data_completa_ano }}
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
 <div class="article-card-footer"></div>

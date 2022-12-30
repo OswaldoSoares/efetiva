@@ -3,7 +3,8 @@ import datetime
 import os
 from django.db import connection
 
-from django.db.models import Sum
+from dateutil.relativedelta import relativedelta
+from django.db.models import Sum, Max
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from decimal import Decimal
@@ -12,6 +13,7 @@ from PIL import Image, ImageDraw
 from pessoas.forms import CadastraSalario, CadastraVale, CadastraDemissao
 from pessoas.models import (
     DecimoTerceiro,
+    Ferias,
     ParcelasDecimoTerceiro,
     Pessoal,
     Salario,
@@ -73,6 +75,7 @@ class Colaborador:
         self.tipo_pgto = colaborador.TipoPgto
         self.status_pessoal = colaborador.StatusPessoal
         self.data_admissao = colaborador.DataAdmissao
+        self.data_completa_ano = self.data_admissao + relativedelta(years=+1, days=-1)
         self.data_demissao = colaborador.DataDemissao
         self.foto = colaborador.Foto
         self.documentos = ColaboradorDocumentos(idpes).docs
@@ -80,6 +83,7 @@ class Colaborador:
         self.bancos = ColaboradorBancos(idpes).conta
         self.salario = ColaboradorSalario(idpes).salario
         self.decimo_terceiro = self.get_decimo_terceiro(self)
+        self.ferias = self.get_ferias(self)
 
     @staticmethod
     def get_endereco_completo(self):
@@ -137,6 +141,29 @@ class Colaborador:
                     "parcelas": decimo_terceiro_parcelas,
                 }
             )
+        return lista
+
+    @staticmethod
+    def get_ferias(self):
+        ferias = Ferias.objects.filter(idPessoal=self.idpes)
+        if not ferias:
+            obj = Ferias()
+            obj.Concessao = 1
+            obj.DataVencimento = self.data_completa_ano + relativedelta(years=+1)
+            obj.idPessoal_id = self.idpes
+            obj.save()
+            ferias = Ferias.objects.filter(idPessoal=self.idpes)
+        lista = [
+            {
+                "data_inicial": i.DataInicial,
+                "data_final": i.DataFinal,
+                "concessao": i.Concessao,
+                "periodo": i.Periodo,
+                "dias_periodo": i.DiasPeriodo,
+                "data_vencimento": i.DataVencimento,
+            }
+            for i in ferias
+        ]
         return lista
 
 
@@ -611,8 +638,16 @@ def create_contexto_consulta_colaborador(idpessoal):
 def create_data_consulta_colaborador(request, contexto):
     data = dict()
     html_dados_colaborador(request, contexto, data)
+    html_ferias_colaborador(request, contexto, data)
     html_decimo_terceiro(request, contexto, data)
     return JsonResponse(data)
+
+
+def html_ferias_colaborador(request, contexto, data):
+    data["html_ferias_colaborador"] = render_to_string(
+        "pessoas/html_ferias_colaborador.html", contexto, request=request
+    )
+    return data
 
 
 def html_dados_colaborador(request, contexto, data):
@@ -1125,3 +1160,8 @@ def altera_salario(salario, idsalario):
     # obj.idSalario = obj.Salario
     # obj.idPessoal = obj.idPessoal
     obj.save(update_fields=["Salario", "ValeTransporte"])
+
+
+def salva_ferias_aquisitivo_inicial(colaborador):
+    obj = Ferias()
+    obj.DataInicial = colaborador.data_admissao

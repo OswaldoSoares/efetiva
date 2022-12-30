@@ -315,7 +315,7 @@ class Ferias(models.Model):
     idFerias = models.AutoField(primary_key=True)
     DataInicial = models.DateField(blank=True, null=True)
     DataFinal = models.DateField(blank=True, null=True)
-    Concessão = models.IntegerField(default=0)
+    Concessao = models.IntegerField(default=0)
     Periodo = models.IntegerField(default=0)
     DiasPeriodo = models.IntegerField(default=0)
     DataVencimento = models.DateField(blank=True, null=True)
