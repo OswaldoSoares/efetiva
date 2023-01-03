@@ -495,3 +495,37 @@ def print_ficha_colaborador(request):
     contexto = facade.create_contexto_consulta_colaborador(idpes)
     response = print_pdf_ficha_colaborador(contexto)
     return response
+
+
+def demissao_colaborador(request):
+    idpessoal = request.GET.get("idpessoal")
+    hoje = str_hoje()
+    contexto = {
+        "idpessoal": idpessoal,
+        "hoje": hoje,
+    }
+    data = facade.create_data_form_altera_demissao(request, contexto)
+    return data
+
+
+def salva_demissao_colaborador(request):
+    print("[INFO} - ", request.POST)
+    error, msg = facade.valida_demissao_colaborador(request)
+    demissao_form = facade.read_demissao_post(request)
+    data_demissao = request.POST.get("demissao")
+    if not error:
+        idpessoal = request.POST.get("idpessoal")
+        facade.salva_demissao(idpessoal, data_demissao)
+        contexto = facade.create_contexto_consulta_colaborador(idpessoal)
+        data = facade.create_data_consulta_colaborador(request, contexto)
+        demissao_form = dict()
+    else:
+        idpessoal = request.POST.get("idpessoal")
+        contexto = {
+            "demissao_form": demissao_form,
+            "idpessoal": idpessoal,
+            "error": error,
+        }
+        contexto.update(msg)
+        data = facade.create_data_form_altera_demissao(request, contexto)
+    return data

@@ -1,3 +1,7 @@
+$(document).ready(function() {
+    $(".button-demissao").hide();
+});
+
 $(document).on('click', ".js-seleciona-colaborador", function() {
     var id_pessoal = $(this).data("idpessoal");
     $.ajax({
@@ -23,6 +27,7 @@ $(document).on('click', ".js-seleciona-colaborador", function() {
             $(".card-ferias-colaborador").show()
             $(".card-decimo-terceiro").html(data.html_decimo_terceiro)
             $(".card-decimo-terceiro").show()
+            $(".button-demissao").show()
             $(".box-loader").hide()
         },
         error: function(errorThrown) {
@@ -82,6 +87,28 @@ $(document).on('click', '.js-atualiza-decimo-terceiro', function() {
         success: function(data) {
             $(".card-lista-colaboradores").html(data.html_lista_colaboradores_ativo)
             $(".card-lista-colaboradores").show()
+            $(".box-loader").hide()
+        },
+        error: function(errorThrown) {
+            console.log("error: " + errorThrown)
+        }
+    });
+});
+
+$(document).on('click', '.js-demissao', function() {
+    var idpessoal = $("#idpessoal").val();
+    $.ajax({
+        type: "GET",
+        url: "/pessoas/demissao_colaborador",
+        data: {
+            idpessoal: idpessoal,
+        },
+        beforeSend: function() {
+            $(".box-loader").show()
+        },
+        success: function(data) {
+            $(".card-form-colaborador").html(data.html_form_demissao_colaborador)
+            $(".card-form-colaborador").show()
             $(".box-loader").hide()
         },
         error: function(errorThrown) {
@@ -177,6 +204,32 @@ $(document).on('submit', '.js-gera-documento', function(event) {
             $(".foto").attr("src", url + `?v=${new Date().getTime()}`);
             if (data.html_form_documento_colaborador) {
                 $('.card-form-colaborador').html(data.html_form_documento_colaborador)
+                $('.card-form-colaborador').show()
+            }
+            $('.box-loader').hide()
+        },
+    });
+});
+
+$(document).on('submit', '.js-gera-demissao', function(event) {
+    event.preventDefault();
+    $.ajax({
+        type: $(this).attr('method'),
+        url: "/pessoas/salva_demissao_colaborador",
+        data: $(this).serialize(),
+        beforeSend: function() {
+            $('.card-dados-colaborador').hide()
+            $('.card-form-colaborador').hide()
+            $('.box-loader').show()
+        },
+        success: function(data) {
+            $(".card-dados-colaborador").html(data.html_dados_colaborador)
+            $(".card-dados-colaborador").show()
+            var url = $(".foto").attr("src");
+            // Força o recarregamento da foto sem utilizar o cache
+            $(".foto").attr("src", url + `?v=${new Date().getTime()}`);
+            if (data.html_form_demissao_colaborador) {
+                $('.card-form-colaborador').html(data.html_form_demissao_colaborador)
                 $('.card-form-colaborador').show()
             }
             $('.box-loader').hide()

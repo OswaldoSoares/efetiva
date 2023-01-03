@@ -84,7 +84,7 @@ class Colaborador:
         self.salario = ColaboradorSalario(idpes).salario
         self.decimo_terceiro = self.get_decimo_terceiro(self)
         self.ferias = self.get_ferias(self)
-        self.meses_ferias = self.get_meses_feiras(self)
+        # self.meses_ferias = self.get_meses_feiras(self)
 
     @staticmethod
     def get_endereco_completo(self):
@@ -167,9 +167,9 @@ class Colaborador:
         ]
         return lista
 
-        @staticmethod
-        def get_meses_ferias(self):
-            admissao = self.data_admissao
+        # @staticmethod
+        # def get_meses_ferias(self):
+        #     admissao = self.data_admissao
 
 
 class ColaboradorDocumentos:
@@ -1170,3 +1170,55 @@ def altera_salario(salario, idsalario):
 def salva_ferias_aquisitivo_inicial(colaborador):
     obj = Ferias()
     obj.DataInicial = colaborador.data_admissao
+
+
+def create_data_form_altera_demissao(request, contexto):
+    data = dict()
+    html_form_altera_demissao(request, contexto, data)
+    return JsonResponse(data)
+
+
+def html_form_altera_demissao(request, contexto, data):
+    data["html_form_demissao_colaborador"] = render_to_string(
+        "pessoas/html_form_demissao_colaborador.html", contexto, request=request
+    )
+    return data
+
+
+# TODO Fazer uma validação conforme data de admissao e pagamentos de salarios
+def valida_demissao_colaborador(request):
+    msg = dict()
+    error = False
+    hoje = datetime.datetime.today()
+    data_demissao = datetime.datetime.strptime(request.POST.get("demissao"), "%Y-%m-%d")
+    if data_demissao > hoje:
+        msg["erro_demissao"] = "Você não pode utilizar uma data futura."
+        error = True
+    return error, msg
+
+
+def read_demissao_post(request):
+    demissao_post = dict()
+    demissao_post["demissao"] = datetime.datetime.strptime(
+        request.POST.get("demissao"), "%Y-%m-%d"
+    )
+    demissao_post["idpessoal"] = request.POST.get("idpessoal")
+    return demissao_post
+
+
+def read_demissao_database(idpessoal):
+    colaborador = Pessoal.objects.get(idPessoal=idpessoal)
+    demissao_database = dict()
+    demissao_database["demissao"] = colaborador.DataDemissao
+    demissao_database["idpessoal"] = colaborador.idPessoal
+    print("[INFO] - ", demissao_database)
+    return demissao_database
+
+
+def salva_demissao(idpessoal, demissao):
+    colaborador = Pessoal.objects.get(idPessoal=idpessoal)
+    print("[INFO] -	", colaborador.idPessoal)
+    obj = Pessoal(colaborador)
+    obj.DataDemissao = demissao
+    obj.idPessoal = idpessoal
+    obj.save(update_fields=["DataDemissao"])

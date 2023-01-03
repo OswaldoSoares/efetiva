@@ -1,0 +1,40 @@
+<form class="js-gera-demissao" method="post" action="">
+    {% csrf_token %}
+    <div class="article-card-titulo magenta">
+        <span>DEMISSÃO COLABORADOR</span>
+    </div>
+    <div class="article-card-body">
+        <div class="itens-cadastro">
+            <div class="item-form">
+                <div class="button" title="Data Demissão">
+                    <i class="bi bi-calendar i-button-null"></i>
+                </div>
+                {% if demissao_form %}
+                <div class="item-field">
+                    <input type="date" class="form-control" name="demissao"
+                    value="{{ demissao_form.demissao }}">
+                </div>
+                {% else %}
+                <div class="item-field">
+                    <input type="date" class="form-control" name="demissao"
+                    value="{{ hoje }}">
+                </div>
+                {% endif %}
+            </div>
+            <div class="item-form">
+                {% if erro_demissao %}
+                <div class="error">
+                    <span>{{ erro_demissao }}</span>
+                </div>
+                {% endif %}
+            </div>
+            <input type="hidden" name="idpessoal" value="{{ idpessoal }}">
+        </div>
+    </div>
+    <div class="article-card-footer magenta">
+        <i class="bi bi-x-circle i-button js-fecha-formulario"
+        title="Fechar"></i>
+        <button type="submit" class="bi bi-save i-button"
+        title="Salva Demissão"></button>
+    </div>
+</form>

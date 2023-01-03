@@ -94,6 +94,17 @@
         </div>
     </div>
     {% endif %}
+    {% if colaborador.data_demissao  %}
+    <div class="itens-dados">
+        <div class="item-descricao">
+            <i class="bi bi-calendar-date i-button-null"></i>
+            <span>DATA DEMISSÃO:</span>
+        </div>
+        <div class="item-valor">
+            {{ colaborador.data_demissao}}
+        </div>
+    </div>
+    {% endif %}
     <div class="itens-dados">
         <div class="item-descricao">
             <i class="icofont-money i-button-null"></i>

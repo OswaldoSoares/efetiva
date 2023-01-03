@@ -42,6 +42,8 @@ from .views import (
     print_ficha_colaborador,
     altera_salario_colaborador,
     salva_salario_colaborador,
+    demissao_colaborador,
+    salva_demissao_colaborador,
 )
 
 
@@ -193,5 +195,15 @@ urlpatterns = [
         "salva_salario_colaborador",
         salva_salario_colaborador,
         name="salva_salario_colaborador",
+    ),
+    path(
+        "demissao_colaborador",
+        demissao_colaborador,
+        name="demissao_colaborador",
+    ),
+    path(
+        "salva_demissao_colaborador",
+        salva_demissao_colaborador,
+        name="salva_demissao_colaborador",
     ),
 ]
