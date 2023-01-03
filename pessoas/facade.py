@@ -1211,13 +1211,11 @@ def read_demissao_database(idpessoal):
     demissao_database = dict()
     demissao_database["demissao"] = colaborador.DataDemissao
     demissao_database["idpessoal"] = colaborador.idPessoal
-    print("[INFO] - ", demissao_database)
     return demissao_database
 
 
 def salva_demissao(idpessoal, demissao):
     colaborador = Pessoal.objects.get(idPessoal=idpessoal)
-    print("[INFO] -	", colaborador.idPessoal)
     obj = Pessoal(colaborador)
     obj.DataDemissao = demissao
     obj.idPessoal = idpessoal
