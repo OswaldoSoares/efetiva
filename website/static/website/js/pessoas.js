@@ -27,7 +27,11 @@ $(document).on('click', ".js-seleciona-colaborador", function() {
             $(".card-ferias-colaborador").show()
             $(".card-decimo-terceiro").html(data.html_decimo_terceiro)
             $(".card-decimo-terceiro").show()
-            $(".button-demissao").show()
+            if (data.tipo_pgto == "MENSALISTA") {
+                $(".button-demissao").show()
+            } else {
+                $(".button-demissao").hide()
+            }
             $(".box-loader").hide()
         },
         error: function(errorThrown) {

@@ -5,10 +5,17 @@
 <div class="article-card-body">
     {% for it in colaboradores %}
     <div class="itens-lista">
+        {% if it.tipo_pgto == "MENSALISTA"%}
+        <div class="item-nome tipo-mensalista">
+            <span data-tooltip="{{ it.nome }}"
+            data-tooltip-position="right">{{ it.nome_curto }}</span>
+        </div>
+        {% else %}
         <div class="item-nome">
             <span data-tooltip="{{ it.nome }}"
             data-tooltip-position="right">{{ it.nome_curto }}</span>
         </div>
+        {% endif %}
         <div class="item-button">
             {% if it.decimo_terceiro %}
             <i>13º</i>

@@ -6286,6 +6286,10 @@ main .fp-recibo-tabela .fp-recibo-print {
     position: absolute;
 }
 
+.tipo-mensalista {
+    color: var(--color8);
+}
+
 
 /* MODULO PESSOAS - END */
 

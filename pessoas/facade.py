@@ -616,6 +616,7 @@ def create_contexto_colaboradores_ativo():
                 "idpessoal": i.idPessoal,
                 "nome": i.Nome,
                 "nome_curto": nome_curto(i.Nome),
+                "tipo_pgto": i.TipoPgto,
                 "decimo_terceiro": decimo_terceiro,
             }
         )
@@ -659,6 +660,7 @@ def html_dados_colaborador(request, contexto, data):
     data["html_dados_colaborador"] = render_to_string(
         "pessoas/html_dados_colaborador.html", contexto, request=request
     )
+    data["tipo_pgto"] = contexto["colaborador"]["tipo_pgto"]
     return data
 
 

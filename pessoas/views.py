@@ -27,8 +27,6 @@ def removeduplicadas(lista):
 def indexpessoal(request):
     colaboradores = facade.create_contexto_colaboradores_ativo()
     contexto = {"colaboradores": colaboradores}
-    # categoriaslist = Pessoal.objects.values("Categoria").order_by("Categoria")
-    # categorias = removeduplicadas(categoriaslist)
     return render(request, "pessoas/index.html", contexto)
 
 
@@ -509,7 +507,6 @@ def demissao_colaborador(request):
 
 
 def salva_demissao_colaborador(request):
-    print("[INFO} - ", request.POST)
     error, msg = facade.valida_demissao_colaborador(request)
     demissao_form = facade.read_demissao_post(request)
     data_demissao = request.POST.get("demissao")
