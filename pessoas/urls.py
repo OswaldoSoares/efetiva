@@ -44,6 +44,8 @@ from .views import (
     salva_salario_colaborador,
     demissao_colaborador,
     salva_demissao_colaborador,
+    periodo_ferias,
+    salva_periodo_ferias,
 )
 
 
@@ -205,5 +207,15 @@ urlpatterns = [
         "salva_demissao_colaborador",
         salva_demissao_colaborador,
         name="salva_demissao_colaborador",
+    ),
+    path(
+        "periodo_ferias",
+        periodo_ferias,
+        name="periodo_ferias",
+    ),
+    path(
+        "salva_periodo_ferias",
+        salva_periodo_ferias,
+        name="salva_periodo_ferias",
     ),
 ]

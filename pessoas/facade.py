@@ -9,6 +9,7 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 from decimal import Decimal
 from PIL import Image, ImageDraw
+from pagamentos import facade
 
 from pessoas.forms import CadastraSalario, CadastraVale, CadastraDemissao
 from pessoas.models import (
@@ -1172,6 +1173,48 @@ def altera_salario(salario, idsalario):
 def salva_ferias_aquisitivo_inicial(colaborador):
     obj = Ferias()
     obj.DataInicial = colaborador.data_admissao
+
+
+def create_data_form_periodo_ferias(request, contexto):
+    data = dict()
+    html_form_periodo_ferias(request, contexto, data)
+    return JsonResponse(data)
+
+
+def html_form_periodo_ferias(request, contexto, data):
+    data["html_form_periodo_ferias"] = render_to_string(
+        "pessoas/html_form_periodo_ferias.html", contexto, request=request
+    )
+    return data
+
+
+# TODO Fazer uma validação conforme data de admissao e pagamentos de salarios
+def valida_periodo_ferias(request):
+    msg = dict()
+    error = False
+    hoje = datetime.datetime.today()
+    data_inicio = datetime.datetime.strptime(request.POST.get("inicio"), "%Y-%m-%d")
+    data_termino = datetime.datetime.strptime(request.POST.get("termino"), "%Y-%m-%d")
+    dias = (data_termino - data_inicio).days
+    if dias < 5:
+        msg["erro_termino"] = "O Período não pode ser menor que 5 dias."
+        error = True
+    if dias > 30:
+        msg["erro_termino"] = "O Período não pode ser maior que 30 dias."
+        error = True
+    return error, msg
+
+
+def read_periodo_ferias_post(request):
+    periodo_ferias_post = dict()
+    periodo_ferias_post["inicio"] = request.POST.get("inicio")
+    periodo_ferias_post["termino"] = request.POST.get("termino")
+    periodo_ferias_post["idpessoal"] = request.POST.get("idpessoal")
+    return periodo_ferias_post
+
+
+def salva_periodo_ferias_colaborador(idpessoal, inicio, termino):
+    pass
 
 
 def create_data_form_altera_demissao(request, contexto):

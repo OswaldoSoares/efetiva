@@ -526,3 +526,37 @@ def salva_demissao_colaborador(request):
         contexto.update(msg)
         data = facade.create_data_form_altera_demissao(request, contexto)
     return data
+
+
+def periodo_ferias(request):
+    idpessoal = request.GET.get("idpessoal")
+    hoje = str_hoje()
+    contexto = {
+        "idpessoal": idpessoal,
+        "hoje": hoje,
+    }
+    data = facade.create_data_form_periodo_ferias(request, contexto)
+    return data
+
+
+def salva_periodo_ferias(request):
+    error, msg = facade.valida_periodo_ferias(request)
+    ferias_form = facade.read_periodo_ferias_post(request)
+    if not error:
+        data = dict()
+        idpessoal = request.POST.get("idpessoal")
+        inicio = request.POST.get("inicio")
+        terminio = request.POST.get("termino")
+        facade.salva_periodo_ferias_colaborador(idpessoal, inicio, terminio)
+        data = JsonResponse(data)
+        ferias_form = dict()
+    else:
+        idpessoal = request.POST.get("idpessoal")
+        contexto = {
+            "ferias_form": ferias_form,
+            "idpessoal": idpessoal,
+            "error": error,
+        }
+        contexto.update(msg)
+        data = facade.create_data_form_periodo_ferias(request, contexto)
+    return data

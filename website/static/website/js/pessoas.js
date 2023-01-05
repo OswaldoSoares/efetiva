@@ -24,7 +24,7 @@ $(document).on('click', ".js-seleciona-colaborador", function() {
             // Força o recarregamento da foto sem utilizar o cache
             $(".foto").attr("src", url + `?v=${new Date().getTime()}`);
             $(".card-ferias-colaborador").html(data.html_ferias_colaborador)
-                // $(".card-ferias-colaborador").show()
+            $(".card-ferias-colaborador").show()
             $(".card-decimo-terceiro").html(data.html_decimo_terceiro)
             $(".card-decimo-terceiro").show()
             if (data.tipo_pgto == "MENSALISTA") {
@@ -112,6 +112,28 @@ $(document).on('click', '.js-demissao', function() {
         },
         success: function(data) {
             $(".card-form-colaborador").html(data.html_form_demissao_colaborador)
+            $(".card-form-colaborador").show()
+            $(".box-loader").hide()
+        },
+        error: function(errorThrown) {
+            console.log("error: " + errorThrown)
+        }
+    });
+});
+
+$(document).on('click', '.js-periodo-ferias', function() {
+    var idpessoal = $("#idpessoal").val();
+    $.ajax({
+        type: "GET",
+        url: "/pessoas/periodo_ferias",
+        data: {
+            idpessoal: idpessoal,
+        },
+        beforeSend: function() {
+            $(".box-loader").show()
+        },
+        success: function(data) {
+            $(".card-form-colaborador").html(data.html_form_periodo_ferias)
             $(".card-form-colaborador").show()
             $(".box-loader").hide()
         },
@@ -234,6 +256,27 @@ $(document).on('submit', '.js-gera-demissao', function(event) {
             $(".foto").attr("src", url + `?v=${new Date().getTime()}`);
             if (data.html_form_demissao_colaborador) {
                 $('.card-form-colaborador').html(data.html_form_demissao_colaborador)
+                $('.card-form-colaborador').show()
+            }
+            $('.box-loader').hide()
+        },
+    });
+});
+
+$(document).on('submit', '.js-gera-periodo-ferias', function(event) {
+    event.preventDefault();
+    $.ajax({
+        type: $(this).attr('method'),
+        url: "/pessoas/salva_periodo_ferias",
+        data: $(this).serialize(),
+        beforeSend: function() {
+            $('.card-form-colaborador').hide()
+            $('.box-loader').show()
+        },
+        success: function(data) {
+            $(".card-dados-colaborador").show()
+            if (data.html_form_periodo_ferias) {
+                $('.card-form-colaborador').html(data.html_form_periodo_ferias)
                 $('.card-form-colaborador').show()
             }
             $('.box-loader').hide()
