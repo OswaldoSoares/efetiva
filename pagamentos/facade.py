@@ -1036,6 +1036,13 @@ def update_cartao_ponto(_var):
                 obj.Saida = "17:00:00"
             if _var["conducao"] == Decimal(0.00):
                 obj.Conducao = False
+        if x.Ausencia == "FÉRIAS":
+            obj.Conducao = False
+            obj.Remunerado = False
+            obj.Alteracao = "ROBOT"
+            obj.Entrada = "07:00:00"
+            obj.Saida = "17:00:00"
+            print(f"[INFO] - {x.Dia} - {x.Remunerado}")
         if not _dem is None:
             if x.Dia > _dem:
                 if obj.Ausencia != "-------":
@@ -1055,6 +1062,7 @@ def update_cartao_ponto(_var):
                 "Remunerado",
             ]
         )
+        print(f"[INFO] - {x.Dia} - {x.Remunerado}")
 
 
 def altera_ausencia_falta(_id_cp):
@@ -1065,6 +1073,9 @@ def altera_ausencia_falta(_id_cp):
         obj.Alteracao = "ROBOT"
         obj.Conducao = True
         obj.Remunerado = True
+    elif obj.Ausencia == "FÉRIAS":
+        obj.Conducao = False
+        obj.Remunerado = False
     else:
         obj.Ausencia = "FALTA"
         obj.Alteracao = "MANUAL"
@@ -1113,34 +1124,39 @@ def verifica_falta(v_cartao_ponto):
     faltas = len(v_cartao_ponto.filter(Ausencia__exact="FALTA", Alteracao="ROBOT"))
     for itens in v_cartao_ponto:
         if not itens.Ausencia == "-------":
-            if itens.Dia.weekday() == 5 or itens.Dia.weekday() == 6:
-                obj = CartaoPonto.objects.get(idCartaoPonto=itens.idCartaoPonto)
-                obj.Remunerado = True
-                obj.save(update_fields=["Remunerado"])
-            if itens.Ausencia == "FERIADO":
-                obj = CartaoPonto.objects.get(idCartaoPonto=itens.idCartaoPonto)
-                obj.Remunerado = True
-                obj.save(update_fields=["Remunerado"])
+            if not itens.Ausencia == "FÉRIAS":
+                if itens.Dia.weekday() == 5 or itens.Dia.weekday() == 6:
+                    obj = CartaoPonto.objects.get(idCartaoPonto=itens.idCartaoPonto)
+                    obj.Remunerado = True
+                    obj.save(update_fields=["Remunerado"])
+                if itens.Ausencia == "FERIADO":
+                    obj = CartaoPonto.objects.get(idCartaoPonto=itens.idCartaoPonto)
+                    obj.Remunerado = True
+                    obj.save(update_fields=["Remunerado"])
     if faltas > 0:
         for itens in v_cartao_ponto:
             if not itens.Ausencia == "-------":
-                if itens.Dia.weekday() == 5 or itens.Dia.weekday() == 6:
-                    obj = CartaoPonto.objects.get(idCartaoPonto=itens.idCartaoPonto)
-                    obj.Remunerado = False
-                    obj.save(update_fields=["Remunerado"])
-                    faltas -= 1
-                    if faltas == 0:
-                        break
-        if faltas > 0:
-            for itens in v_cartao_ponto:
-                if not itens.Ausencia == "-------":
-                    if itens.Ausencia == "FERIADO":
+                if not itens.Ausencia == "FÉRIAS":
+                    if itens.Dia.weekday() == 5 or itens.Dia.weekday() == 6:
                         obj = CartaoPonto.objects.get(idCartaoPonto=itens.idCartaoPonto)
                         obj.Remunerado = False
                         obj.save(update_fields=["Remunerado"])
                         faltas -= 1
                         if faltas == 0:
                             break
+        if faltas > 0:
+            for itens in v_cartao_ponto:
+                if not itens.Ausencia == "-------":
+                    if not itens.Ausencia == "FÉRIAS":
+                        if itens.Ausencia == "FERIADO":
+                            obj = CartaoPonto.objects.get(
+                                idCartaoPonto=itens.idCartaoPonto
+                            )
+                            obj.Remunerado = False
+                            obj.save(update_fields=["Remunerado"])
+                            faltas -= 1
+                            if faltas == 0:
+                                break
 
 
 # TODO Melhorar código
