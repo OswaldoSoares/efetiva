@@ -159,8 +159,8 @@ def dias_remunerado(_cp, ultimo_dia):
     for itens in _cp:
         if itens["remunerado"]:
             dias += 1
-    if ultimo_dia.day == 31:
-        dias -= 1
+    # if ultimo_dia.day == 31:
+    #     dias -= 1
     print("[INFO - DIAS REMUNERADO] - ", dias)
     return dias
 
