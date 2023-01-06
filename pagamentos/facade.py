@@ -1,7 +1,6 @@
 import calendar
 import datetime
 from decimal import Decimal
-from tkinter import Pack
 
 from dateutil.relativedelta import relativedelta
 from despesas.models import Multas
@@ -12,7 +11,7 @@ from django.template.loader import render_to_string
 from minutas.facade import nome_curto, nome_curto_underscore
 from minutas.models import MinutaColaboradores, MinutaItens
 from pessoas import facade
-from pessoas.forms import CadastraContraCheque, CadastraContraChequeItens, CadastraVale
+from pessoas.forms import CadastraContraCheque, CadastraContraChequeItens
 from pessoas.models import (
     Agenda,
     CartaoPonto,
@@ -53,8 +52,6 @@ dias = [
     "SÁBADO",
     "DOMINGO",
 ]
-
-estado_swith_vales = dict()
 
 
 class FolhaContraCheque:
@@ -100,24 +97,24 @@ class FolhaContraCheque:
 
 
 def get_saldo_folha(_id_pes, _mes, _ano):
-    _var = dict()
-    get_pessoa(_id_pes, _var)
-    _var["mes"] = _mes
-    _var["ano"] = _ano
-    _cc = contra_cheque(_var)
-    _id_cc = _cc["idcontracheque"]
-    _vencimentos = ContraChequeItens.objects.filter(
-        idContraCheque=_id_cc, Registro="C"
+    var = dict()
+    get_pessoa(_id_pes, var)
+    var["mes"] = _mes
+    var["ano"] = _ano
+    contra_cheque = contra_cheque(var)
+    contra_cheque_id = contra_cheque["idcontracheque"]
+    vencimentos = ContraChequeItens.objects.filter(
+        idContraCheque=contra_cheque_id, Registro="C"
     ).aggregate(soma=Sum("Valor"))
-    _descontos = ContraChequeItens.objects.filter(
-        idContraCheque=_id_cc, Registro="D"
+    descontos = ContraChequeItens.objects.filter(
+        idContraCheque=contra_cheque_id, Registro="D"
     ).aggregate(soma=Sum("Valor"))
-    if not _vencimentos["soma"]:
-        _vencimentos["soma"] = Decimal(0.00)
-    if not _descontos["soma"]:
-        _descontos["soma"] = Decimal(0.00)
-    _saldo = _vencimentos["soma"] - _descontos["soma"]
-    return _saldo
+    if not vencimentos["soma"]:
+        vencimentos["soma"] = Decimal(0.00)
+    if not descontos["soma"]:
+        descontos["soma"] = Decimal(0.00)
+    saldo = vencimentos["soma"] - descontos["soma"]
+    return saldo
 
 
 def get_pessoa(_id_pes, _var):
@@ -1353,59 +1350,8 @@ def busca_item_contra_cheque(v_id: int, v_des: str):
     return obj
 
 
-# TODO Exclui antiga folha
-# def create_context(mesreferencia, anoreferencia):
-#     mensalistas = lista_mensaalista_ativos()
-#     folha = {}
-#     referencia = {"MesReferencia": mesreferencia, "AnoReferencia": anoreferencia}
-#     totalsalario = 0.00
-#     totalfolha = 0.00
-#     if mesreferencia in meses:
-#         mes = mesreferencia
-#     else:
-#         mes = meses[int(mesreferencia) - 1]
-#     for itens in mensalistas:
-#         folha[itens.Nome] = {
-#             "Salario": "0,00",
-#             "Liquido": "0,00",
-#             "ContraCheque": False,
-#             "CartaoPonto": False,
-#             "idPessoal": itens.idPessoal,
-#         }
-#         salario = get_salario(itens.idPessoal)
-#         totalsalario += float(salario[0].Salario)
-#         folha[itens.Nome]["Salario"] = salario[0].Salario
-#         contracheque = get_contrachequereferencia(
-#             mesreferencia, anoreferencia, itens.idPessoal
-#         )
-#         if contracheque:
-#             totais = saldo_contracheque(contracheque[0].idContraCheque)
-#             folha[itens.Nome]["Liquido"] = totais["Liquido"]
-#             totalfolha += float(totais["Liquido"])
-#         if busca_contracheque(mes, anoreferencia, itens.idPessoal):
-#             folha[itens.Nome]["ContraCheque"] = True
-#         if busca_cartaoponto_referencia(mesreferencia, anoreferencia, itens.idPessoal):
-#             folha[itens.Nome]["CartaoPonto"] = True
-#     totalsalario = "{0:.2f}".format(totalsalario).replace(".", ",")
-#     totalfolha = "{0:.2f}".format(totalfolha).replace(".", ",")
-#     contexto = {
-#         "folha": folha,
-#         "referencia": referencia,
-#         "totalsalario": totalsalario,
-#         "totalfolha": totalfolha,
-#     }
-#     return contexto
-
-
-def create_context_formcontracheque():
-    formcontracheque = CadastraContraCheque()
-    contexto = {"formcontracheque": formcontracheque}
-    return contexto
-
-
 def create_context_avulso():
     periodo = get_periodo_pagamento_avulsos()
-    # saldo = get_saldo_pagamento_avulso(periodo['DataInicial'], periodo['DataFinal'])
     contexto = {"periodo": periodo}
     return contexto
 
@@ -1472,13 +1418,6 @@ def create_contexto_avulsos_a_receber(datainicial, datafinal):
                 if motorista["ValorMotorista"]:
                     saldo_colaborador += motorista["ValorMotorista"]
                     saldo_total += motorista["ValorMotorista"]
-        # total_vales = calcula_total_vales(colaborador[0].idPessoal_id)
-        # if not total_vales:
-        #     total_vales = 0
-        #     saldo_vales += total_vales
-        # dict_vale, saldo_vales_select = get_vales_select(colaborador[0].idPessoal_id, 0)
-        # total_select += saldo_vales_select
-        # " Colocar aqui condição para mostrar apenas colaboradores com saldo ou vale"
         if saldo_colaborador > 0:
             saldo.append(
                 {
@@ -1488,147 +1427,9 @@ def create_contexto_avulsos_a_receber(datainicial, datafinal):
                     "Saldo": f"{saldo_colaborador}",
                     "banco": _banco,
                     "mais_banco": _vc,
-                    # "ValeSelect": saldo_vales_select,
-                    # "ValeTotal": total_vales,
                 }
             )
     return saldo, saldo_total, saldo_vales, total_select
-
-    # lista_geral = []
-    # for x in colaboradores:
-    #     pgtos = MinutaColaboradores.objects.filter(
-    #         Pago=False, idPessoal__Nome=x["idPessoal__Nome"]
-    #     )
-    #     lista = [
-    #         {
-    #             "idminutacolaboradores": y.idMinutaColaboradores,
-    #             "cargo": y.Cargo,
-    #             "idMinuta": y.idMinuta,
-    #         }
-    #         for y in pgtos
-    #     ]
-    #     lista_geral.append({x["idPessoal__Nome"]: lista})
-    # return lista_geral
-
-
-# TODO Remover está função 25/10/2022
-def get_saldo_pagamento_avulso(datainicial, datafinal):
-    saldo = []
-    avulsos = list_avulsos_ativo()
-    saldo_total = 0
-    saldo_vales = 0
-    total_select = 0
-    for colaboradores in avulsos:
-        colaborador = MinutaColaboradores.objects.filter(
-            idPessoal__Nome=colaboradores.Nome, Pago=False
-        ).exclude(idMinuta__StatusMinuta="ABERTA")
-        saldo_colaborador = 0
-        for index, itens in enumerate(colaborador):
-            if itens.Cargo == "AJUDANTE":
-                base_valor = ExpressionWrapper(
-                    F("Valor") / F("Quantidade"), output_field=DecimalField()
-                )
-                ajudante = MinutaItens.objects.values(ValorAjudante=base_valor).filter(
-                    TipoItens="PAGA",
-                    idMinuta=itens.idMinuta,
-                    Descricao="AJUDANTE",
-                    idMinuta_id__DataMinuta__range=[datainicial, datafinal],
-                )
-                if ajudante:
-                    saldo_colaborador += ajudante[0]["ValorAjudante"]
-                    saldo_total += ajudante[0]["ValorAjudante"]
-            elif itens.Cargo == "MOTORISTA":
-                motorista = (
-                    MinutaItens.objects.filter(
-                        TipoItens="PAGA",
-                        idMinuta=itens.idMinuta,
-                        idMinuta_id__DataMinuta__range=[datainicial, datafinal],
-                    )
-                    .exclude(Descricao="AJUDANTE")
-                    .aggregate(ValorMotorista=Sum("Valor"))
-                )
-                if motorista["ValorMotorista"]:
-                    saldo_colaborador += motorista["ValorMotorista"]
-                    saldo_total += motorista["ValorMotorista"]
-        total_vales = calcula_total_vales(colaboradores.idPessoal)
-        if not total_vales:
-            total_vales = 0
-        saldo_vales += total_vales
-        dict_vale, saldo_vales_select = get_vales_select(colaboradores.idPessoal, 0)
-        total_select += saldo_vales_select
-        " Colocar aqui condição para mostrar apenas colaboradores com saldo ou vale"
-        # if saldo_colaborador > 0 or saldo_vales > 0:
-        saldo.append(
-            {
-                "Nome": colaboradores.Nome,
-                "idPessoal": colaboradores.idPessoal,
-                "Saldo": saldo_colaborador,
-                "ValeSelect": saldo_vales_select,
-                "ValeTotal": total_vales,
-            }
-        )
-    return saldo, saldo_total, saldo_vales, total_select
-
-
-def get_vales_select(idpessoal, idcontracheque):
-    """
-
-    :param idpessoal:
-    :param idcontracheque:
-    :return:
-    """
-    "Procura no dict 'estado_switch_vales' se existe a chave 'idpessoal, caso não exista é incluida"
-    if idpessoal not in estado_swith_vales.keys():
-        estado_swith_vales[str(idpessoal)] = ""
-    "Cria dict vales"
-    dict_vale = dict()
-    vale = Vales.objects.filter(idPessoal=idpessoal, Pago=False)
-    for itens in vale:
-        dict_vale["id{}".format(itens.idVales)] = {
-            "idVales": itens.idVales,
-            "Data": itens.Data,
-            "Descricao": itens.Descricao,
-            "Valor": itens.Valor,
-            "Checked": True,
-        }
-
-    content_descricao = None
-    saldo_vales_select = 0
-    "Percorre dict vales"
-    for itens in dict_vale:
-        "Se encontrar um vale PARCELADO, seleciona apenas a parcela mais nova"
-        if dict_vale[itens]["Descricao"][-9:] == "PARCELADO":
-            if content_descricao:
-                dict_vale[itens]["Checked"] = True
-            if content_descricao == dict_vale[itens]["Descricao"][0:-16]:
-                dict_vale[itens]["Checked"] = False
-            content_descricao = dict_vale[itens]["Descricao"][0:-16]
-            "Busca se o vale já está no contravale, e seleciona mesmo se não for a parcela mais nova"
-            if busca_contracheque_itens_vale(dict_vale[itens]["idVales"]):
-                dict_vale[itens]["Checked"] = True
-        "Se o usuario fez alguma alteração na seleção, é mantida"
-        if "Manual" in estado_swith_vales[str(idpessoal)]:
-            if str(dict_vale[itens]["idVales"]) in estado_swith_vales[str(idpessoal)]:
-                dict_vale[itens]["Checked"] = True
-            else:
-                dict_vale[itens]["Checked"] = False
-        "Busca o vale no conrracheque, se não tiver cria"
-        if idcontracheque > 0:
-            if dict_vale[itens]["Checked"]:
-                if not busca_contracheque_itens_vale(dict_vale[itens]["idVales"]):
-                    create_contracheque_itens_vales(
-                        idpessoal, dict_vale[itens]["idVales"], idcontracheque
-                    )
-        "Calcula saldo dos vales"
-        if dict_vale[itens]["Checked"]:
-            saldo_vales_select += dict_vale[itens]["Valor"]
-    return dict_vale, saldo_vales_select
-
-
-def get_vale_id(idvales):
-    pass
-    # vale = Vales.objects.get(idVales=idvales)
-    # return vale
 
 
 def get_recibo_id(idrecibo):
@@ -1647,7 +1448,6 @@ def seleciona_minutasavulso(datainicial, datafinal, idpessoal):
     data = dict()
     data["html_minutas"] = html_minutasavulso(datainicial, datafinal, idpessoal)
     data["html_recibos"] = html_recibo_avulso(datainicial, datafinal, idpessoal)
-    data["html_valesavulso"] = html_vale(idpessoal, "avulso", 0)
     c_return = JsonResponse(data)
     return c_return
 
@@ -1706,14 +1506,6 @@ def html_minutasavulso(datainicial, datafinal, idpessoal):
     }
     c_return = render_to_string("pagamentos/minutasavulso.html", context)
     return c_return
-
-
-def create_folha(mesreferencia, anoreferencia):
-    pass
-    # mensalistas = lista_mensaalista_ativos()
-    # for itens in mensalistas:
-    #     create_contracheque(mesreferencia, anoreferencia, "0.00", itens.idPessoal)
-    #     create_cartaoponto(mesreferencia, anoreferencia, itens.idPessoal)
 
 
 def create_pagamento_avulso(datainicial, datafinal, idpessoal, zerado):
@@ -1947,23 +1739,6 @@ def create_contracheque_itens(descricao, valor, referencia, registro, idcontrach
                 obj.save()
 
 
-def create_contracheque_itens_vales(idcliente, idvale, idcontracheque):
-    pass
-    # vale = get_vale_id(idvale)
-    # if not busca_contracheque_itens_vale(idvale):
-    #     obj = ContraChequeItens()
-    #     if vale.Descricao[-9:] == "PARCELADO":
-    #         obj.Descricao = vale.Descricao[0:-10]
-    #         obj.Referencia = vale.Descricao[-15:-9]
-    #     else:
-    #         obj.Descricao = vale.Descricao
-    #     obj.Valor = vale.Valor
-    #     obj.Registro = "D"
-    #     obj.idContraCheque_id = idcontracheque
-    #     obj.Vales_id = idvale
-    #     obj.save()
-
-
 def busca_feriados(mesreferencia, anoreferencia):
     lista_feriados = Feriados("Lista", "Feriado")
     lista_feriados = lista_feriados.__dict__["feriados"]
@@ -2010,7 +1785,6 @@ def create_cartaoponto(mesreferencia, anoreferencia, idpessoal):
     else:
         if int(mesreferencia) == admissao.month and int(anoreferencia) == admissao.year:
             confere_admissao(idpessoal, admissao)
-    atualiza_cartaoponto(mesreferencia, anoreferencia, idpessoal)
 
 
 def confere_admissao(idpessoal, admissao):
@@ -2026,29 +1800,6 @@ def confere_admissao(idpessoal, admissao):
             else:
                 obj.Ausencia = ""
         obj.save(update_fields=["Ausencia"])
-
-
-def cria_vale(data, descricao, valor, parcelas, idpessoal):
-    pass
-    # if int(parcelas) > 0:
-    #     for x in range(int(parcelas)):
-    #         obj = Vales()
-    #         obj.Data = data
-    #         if int(parcelas) == 1:
-    #             obj.Descricao = descricao
-    #         else:
-    #             obj.Descricao = "{} {}/{} PARCELADO".format(
-    #                 descricao, str(x + 1).zfill(2), parcelas.zfill(2)
-    #             )
-    #         obj.Valor = float(valor) / int(parcelas)
-    #         obj.idPessoal_id = idpessoal
-    #         obj.save()
-
-
-def exclui_vale(idvales):
-    pass
-    # vale = get_vale_id(idvales)
-    # vale.delete()
 
 
 def exclui_recibo(idrecibo, datainicial, datafinal, idpessoal):
@@ -2069,7 +1820,6 @@ def exclui_recibo(idrecibo, datainicial, datafinal, idpessoal):
     data["html_saldoavulso"] = html_saldo_avulso(datainicial, datafinal)
     data["html_minutas"] = html_minutasavulso(datainicial, datafinal, idpessoal)
     data["html_recibos"] = html_recibo_avulso(datainicial, datafinal, idpessoal)
-    data["html_valesavulso"] = html_vale(idpessoal, "avulso", 0)
     c_return = JsonResponse(data)
     return c_return
 
@@ -2146,13 +1896,6 @@ def busca_contrachequeitens(idcontracheque, descricao, registro):
     return contrachequeitens
 
 
-def busca_contracheque_itens_vale(idvale):
-    pass
-    # contracheque_itens_vale = ContraChequeItens.objects.filter(Vales_id=idvale)
-    # if contracheque_itens_vale:
-    #     return True
-
-
 def busca_adiantamento(idcontracheque):
     if ContraChequeItens.objects.filter(
         idContraCheque=idcontracheque, Descricao="ADIANTAMENTO", Registro="D"
@@ -2160,50 +1903,6 @@ def busca_adiantamento(idcontracheque):
         return True
     else:
         return False
-
-
-def delete_contrachequeitens(idcontracheque, descricao, registro):
-    pass
-    # contrachequeitens = ContraChequeItens.objects.filter(
-    #     idContraCheque=idcontracheque, Descricao=descricao, Registro=registro
-    # )
-    # contrachequeitens.delete()
-
-
-def delete_contracheque_itens_vale(idvale):
-    pass
-    # contracheque_itens_vale = ContraChequeItens.objects.filter(Vales_id=idvale)
-    # contracheque_itens_vale.delete()
-
-
-def seleciona_folha(mesreferencia, anoreferencia):
-    pass
-    # data = dict()
-    # data["html_folha"] = html_folha(mesreferencia, anoreferencia)
-    # c_return = JsonResponse(data)
-    # return c_return
-
-
-def seleciona_contracheque(mesreferencia, anoreferencia, idpessoal, request):
-    pass
-    # data = dict()
-    # contracheque = get_contrachequereferencia(mesreferencia, anoreferencia, idpessoal)
-    # data["html_folha"] = html_folha(mesreferencia, anoreferencia)
-    # data["html_minutascontracheque"] = html_minutascontracheque(
-    #     mesreferencia, anoreferencia, idpessoal
-    # )
-    # data["html_vales"] = html_vale(
-    #     idpessoal, "mensalista", contracheque[0].idContraCheque
-    # )
-    # data["html_formccitens"] = html_formccitens(contracheque, request)
-    # data["html_formccadianta"] = html_formccadianta(contracheque, request)
-    # data["html_adiantamento"] = busca_adiantamento(contracheque[0].idContraCheque)
-    # data["html_contracheque"] = html_contracheque(
-    #     mesreferencia, anoreferencia, idpessoal
-    # )
-    # data["html_cartaoponto"] = html_cartaoponto(mesreferencia, anoreferencia, idpessoal)
-    # c_return = JsonResponse(data)
-    # return c_return
 
 
 def seleciona_saldoavulso(datainicial, datafinal):
@@ -2236,18 +1935,6 @@ def seleciona_cartaoponto(mesreferencia, anoreferencia, idpessoal):
         "idpessoal": idpessoal,
     }
     return render_to_string("pagamentos/cartaoponto.html", context)
-
-
-def seleciona_vales(idpessoal):
-    pass
-    # data = dict()
-    # colaborador = facade.get_pessoal(idpessoal)
-    # if colaborador[0].TipoPgto == "MENSALISTA":
-    #     data["html_vales"] = html_vale(idpessoal, "mensalista", 0)
-    # else:
-    #     data["html_valesavulso"] = html_vale(idpessoal, "avulso", 0)
-    # c_return = JsonResponse(data)
-    # return c_return
 
 
 def select_minutas_contracheque(mesreferencia, anoreferencia, idpessoal):
@@ -2312,56 +1999,6 @@ def html_minutascontracheque(mesreferencia, anoreferencia, idpessoal):
     return c_return
 
 
-def atualiza_cartaoponto(mesreferencia, anoreferencia, idpessoal):
-    pass
-    # colaborador = facade.get_pessoal(idpessoal)
-    # admissao = colaborador[0].DataAdmissao
-    # demissao = colaborador[0].DataDemissao
-    # totalextra = 0
-    # if int(anoreferencia) >= admissao.year:
-    #     if int(mesreferencia) >= admissao.month or int(anoreferencia) > admissao.year:
-    #         minutas = select_minutas_contracheque(
-    #             mesreferencia, anoreferencia, idpessoal
-    #         )
-    #         for x in minutas:
-    #             cartaoponto = CartaoPonto.objects.get(
-    #                 Dia=x["idMinuta_id__DataMinuta"], idPessoal_id=x["idPessoal"]
-    #             )
-    #             obj = cartaoponto
-    #             horaentrada = datetime.datetime.strptime("07:00:00", "%H:%M:%S").time()
-    #             horasaida = datetime.datetime.strptime("17:00:00", "%H:%M:%S").time()
-    #             if obj.Alteracao == "ROBOT" and obj.Ausencia != "FALTA":
-    #                 if x["idMinuta_id__HoraInicial"]:
-    #                     if x["idMinuta_id__HoraInicial"] != obj.Entrada:
-    #                         if x["idMinuta_id__HoraInicial"] < horaentrada:
-    #                             obj.Entrada = x["idMinuta_id__HoraInicial"]
-    #                             obj.save(update_fields=["Entrada"])
-    #                 if x["idMinuta_id__HoraFinal"]:
-    #                     if x["idMinuta_id__HoraFinal"] != obj.Saida:
-    #                         if x["idMinuta_id__HoraFinal"] > horasaida:
-    #                             obj.Saida = x["idMinuta_id__HoraFinal"]
-    #                             obj.save(update_fields=["Saida"])
-    #         totalextra = calcula_horas_extras(mesreferencia, anoreferencia, idpessoal)
-    #         calcula_horas_atrazo(mesreferencia, anoreferencia, idpessoal)
-    #         cartao_ponto = busca_cartaoponto_referencia(
-    #             mesreferencia, anoreferencia, idpessoal
-    #         )
-    #         dias_feriado_mes = busca_feriados(mesreferencia, anoreferencia)
-    #         for itens in cartao_ponto:
-    #             obj = itens
-    #             if itens.Dia.day in dias_feriado_mes:
-    #                 obj.Ausencia = "FERIADO"
-    #                 obj.save(update_fields=["Ausencia"])
-    #         if demissao:
-    #             for itens in cartao_ponto:
-    #                 obj = itens
-    #                 if itens.Dia > demissao:
-    #                     obj.Ausencia = "-------"
-    #                     obj.save(update_fields=["Ausencia"])
-    #             calcula_faltas(mesreferencia, anoreferencia, idpessoal)
-    # return totalextra
-
-
 def altera_horario_manual(idcartaoponto, horaentrada, horasaida):
     obj = get_cartaopontoid(idcartaoponto)
     obj.Entrada = horaentrada
@@ -2375,49 +2012,6 @@ def altera_contracheque_itens(contrachequeitens, valorhoraextra, referencia):
         obj.Valor = valorhoraextra
         obj.Referencia = referencia
         obj.save(update_fields=["Valor", "Referencia"])
-
-
-def altera_falta(mesreferencia, anoreferencia, idpessoal, idcartaoponto, request):
-    pass
-    # data = dict()
-    # cartaoponto = CartaoPonto.objects.get(idCartaoPonto=idcartaoponto)
-    # contracheque = get_contrachequereferencia(mesreferencia, anoreferencia, idpessoal)
-    # obj = cartaoponto
-    # if obj.Ausencia == "FALTA":
-    #     obj.Ausencia = ""
-    #     obj.Alteracao = "ROBOT"
-    # else:
-    #     obj.Ausencia = "FALTA"
-    #     obj.Alteracao = "ROBOT"
-    # obj.Entrada = "07:00:00"
-    # obj.Saida = "17:00:00"
-    # obj.save(update_fields=["Ausencia", "Alteracao", "Entrada", "Saida"])
-    # calcula_faltas(mesreferencia, anoreferencia, idpessoal)
-    # atualiza_cartaoponto(mesreferencia, anoreferencia, idpessoal)
-    # calcula_conducao(mesreferencia, anoreferencia, idpessoal)
-    # data["html_adiantamento"] = busca_adiantamento(contracheque[0].idContraCheque)
-    # data["html_folha"] = html_folha(mesreferencia, anoreferencia)
-    # data["html_contracheque"] = html_contracheque(
-    #     mesreferencia, anoreferencia, idpessoal
-    # )
-    # data["html_cartaoponto"] = html_cartaoponto(mesreferencia, anoreferencia, idpessoal)
-    # data["html_formccadianta"] = html_formccadianta(contracheque, request)
-    # data["html_formccitens"] = html_formccitens(contracheque, request)
-    # data["html_minutascontracheque"] = html_minutascontracheque(
-    #     mesreferencia, anoreferencia, idpessoal
-    # )
-    # data["html_vales"] = html_vale(
-    #     idpessoal, "mensalista", contracheque[0].idContraCheque
-    # )
-    # c_return = JsonResponse(data)
-    # return c_return
-
-
-# TODO Exclui antiga folha
-# def html_folha(mesreferencia, anoreferencia):
-#     contexto = create_context(mesreferencia, anoreferencia)
-#     c_return = render_to_string("pagamentos/folhapgto.html", contexto)
-#     return c_return
 
 
 def html_contracheque(mesreferencia, anoreferencia, idpessoal):
@@ -2456,112 +2050,6 @@ def html_cartaoponto(mesreferencia, anoreferencia, idpessoal):
     }
     c_return = render_to_string("pagamentos/cartaoponto.html", context)
     return c_return
-
-
-def html_vale(idpessoal, tipopgto, idcontracheque):
-    pass
-    # dict_vale, saldo_vale_select = get_vales_select(idpessoal, idcontracheque)
-    # context = {
-    #     "dict_vale": dict_vale,
-    #     "idPessoal": idpessoal,
-    #     "TipoPgto": tipopgto,
-    #     "idcontracheque": idcontracheque,
-    # }
-    # c_return = render_to_string("pagamentos/vale.html", context)
-    # return c_return
-
-
-def print_contracheque_context(idcontracheque, mesreferencia, anoreferencia, idpessoal):
-    pass
-    # contracheque = get_contrachequeid(idcontracheque)
-    # contrachequeitens = facade.get_contracheque_itens(idcontracheque)
-    # colaborador = facade.get_pessoal(contracheque[0].idPessoal_id)
-    # minutas = select_minutas_contracheque(mesreferencia, anoreferencia, idpessoal)
-    # credito = ContraChequeItens.objects.filter(
-    #     idContraCheque=contracheque[0].idContraCheque, Registro="C"
-    # ).aggregate(Total=Sum("Valor"))
-    # debito = ContraChequeItens.objects.filter(
-    #     idContraCheque=contracheque[0].idContraCheque, Registro="D"
-    # ).aggregate(Total=Sum("Valor"))
-    # if not credito["Total"]:
-    #     credito["Total"] = Decimal("0.00")
-    # if not debito["Total"]:
-    #     debito["Total"] = Decimal("0.00")
-    # totais = {
-    #     "Credito": credito["Total"],
-    #     "Debito": debito["Total"],
-    #     "Liquido": credito["Total"] - debito["Total"],
-    # }
-    # contexto = {
-    #     "contracheque": contracheque,
-    #     "contrachequeitens": contrachequeitens,
-    #     "colaborador": colaborador,
-    #     "totais": totais,
-    #     "minutas": minutas,
-    # }
-    # return contexto
-
-
-def print_contracheque_adiantamento_context(
-    idcontracheque, mesreferencia, anoreferencia, idpessoal
-):
-    pass
-    # contracheque = get_contrachequeid(idcontracheque)
-    # contrachequeitens = facade.get_contracheque_itens(idcontracheque)
-    # colaborador = facade.get_pessoal(contracheque[0].idPessoal_id)
-    # minutas = select_minutas_contracheque(mesreferencia, anoreferencia, idpessoal)
-    # credito = ContraChequeItens.objects.filter(
-    #     idContraCheque=contracheque[0].idContraCheque,
-    #     Descricao="ADIANTAMENTO",
-    #     Registro="D",
-    # ).aggregate(Total=Sum("Valor"))
-    # debito = Decimal("0.00")
-    # if not credito["Total"]:
-    #     credito["Total"] = Decimal("0.00")
-    # totais = {
-    #     "Credito": credito["Total"],
-    #     "Debito": debito,
-    #     "Liquido": credito["Total"] - debito,
-    # }
-    # contexto = {
-    #     "contracheque": contracheque,
-    #     "contrachequeitens": contrachequeitens,
-    #     "colaborador": colaborador,
-    #     "totais": totais,
-    #     "minutas": minutas,
-    # }
-    # return contexto
-
-
-def print_contracheque_valetransporte_context(
-    idcontracheque, mesreferencia, anoreferencia, idpessoal
-):
-    pass
-    # contracheque = get_contrachequeid(idcontracheque)
-    # contrachequeitens = facade.get_contracheque_itens(idcontracheque)
-    # colaborador = facade.get_pessoal(contracheque[0].idPessoal_id)
-    # minutas = select_minutas_contracheque(mesreferencia, anoreferencia, idpessoal)
-    # credito = ContraChequeItens.objects.filter(
-    #     idContraCheque=contracheque[0].idContraCheque,
-    #     Descricao="VALE TRANSPORTE",
-    #     Registro="C",
-    # ).aggregate(Total=Sum("Valor"))
-    # debito = Decimal("0.00")
-    # if not credito["Total"]:
-    #     credito["Total"] = Decimal("0.00")
-    # totais = {
-    #     "Credito": credito["Total"],
-    #     "Debito": debito,
-    #     "Liquido": credito["Total"] - debito,
-    # }
-    # contexto = {
-    #     "contracheque": contracheque,
-    #     "contrachequeitens": contrachequeitens,
-    #     "colaborador": colaborador,
-    #     "totais": totais,
-    #     "minutas": minutas,
-    # }
-    # return contexto
 
 
 def html_formccadianta(contracheque, request):
@@ -2643,8 +2131,6 @@ def calcula_horas_extras(mesreferencia, anoreferencia, idpessoal):
                         "C",
                         contracheque[0].idContraCheque,
                     )
-    else:
-        delete_contrachequeitens(contracheque[0].idContraCheque, "HORA EXTRA", "C")
     return totalextra
 
 
@@ -2699,8 +2185,6 @@ def calcula_horas_atrazo(mesreferencia, anoreferencia, idpessoal):
                         "D",
                         contracheque[0].idContraCheque,
                     )
-    else:
-        delete_contrachequeitens(contracheque[0].idContraCheque, "ATRAZO", "D")
     return totalatrazo
 
 
@@ -2721,44 +2205,6 @@ def total_horas_atrazo(mesreferencia, anoreferencia, idpessoal):
         if horaentradareal > horaentradapadrao:
             totalatrazo += horaentradareal - horaentradapadrao
     return totalatrazo
-
-
-def calcula_conducao(mesreferencia, anoreferencia, idpessoal):
-    pass
-    # dia, diafinal = periodo_cartaoponto(mesreferencia, anoreferencia)
-    # cartaoponto = CartaoPonto.objects.filter(
-    #     Dia__range=[dia, diafinal], idPessoal=idpessoal, Ausencia=""
-    # ).count()
-    # contracheque = get_contrachequereferencia(mesreferencia, anoreferencia, idpessoal)
-    # salario = get_salario(idpessoal)
-    # valorconducao = salario[0].ValeTransporte
-    # valetransporte = float(cartaoponto) * float(valorconducao)
-    # if cartaoponto > 0:
-    #     if contracheque:
-    #         contrachequeitens = get_contrachequeitens(
-    #             contracheque[0].idContraCheque, "VALE TRANSPORTE", "C"
-    #         )
-    #         if contrachequeitens:
-    #             if valetransporte == 0:
-    #                 delete_contrachequeitens(
-    #                     contracheque[0].idContraCheque, "VALE TRANSPORTE", "C"
-    #                 )
-    #             else:
-    #                 altera_contracheque_itens(
-    #                     contrachequeitens, valetransporte, "{}d".format(cartaoponto)
-    #                 )
-    #         else:
-    #             if valetransporte > 0:
-    #                 create_contracheque_itens(
-    #                     "VALE TRANSPORTE",
-    #                     valetransporte,
-    #                     "{}d".format(cartaoponto),
-    #                     "C",
-    #                     contracheque[0].idContraCheque,
-    #                 )
-    # else:
-    #     delete_contrachequeitens(contracheque[0].idContraCheque, "VALE TRANSPORTE", "C")
-    # return valetransporte
 
 
 def saldo_contracheque(idcontracheque):
@@ -2813,65 +2259,6 @@ def form_modal_horario(request, _id_cp, _mes_ano):
     )
     c_return = JsonResponse(data)
     return c_return
-
-
-def form_pagamento(
-    request,
-    c_form,
-    c_idobj,
-    c_url,
-    c_view,
-    idcartaoponto,
-    mesreferencia,
-    anoreferencia,
-    idpessoal,
-):
-    pass
-    # data = dict()
-    # c_instance = None
-    # if c_view == "edita_cartaoponto":
-    #     if c_idobj:
-    #         c_instance = CartaoPonto.objects.get(idCartaoPonto=c_idobj)
-    # if request.method == "POST":
-    #     form = c_form(request.POST, instance=c_instance)
-    #     if form.is_valid():
-    #         form.save()
-    #     calcula_horas_extras(mesreferencia, anoreferencia, idpessoal)
-    #     calcula_horas_atrazo(mesreferencia, anoreferencia, idpessoal)
-    #     contracheque = get_contrachequereferencia(
-    #         mesreferencia, anoreferencia, idpessoal
-    #     )
-    #     data["html_adiantamento"] = busca_adiantamento(contracheque[0].idContraCheque)
-    #     data["html_folha"] = html_folha(mesreferencia, anoreferencia)
-    #     data["html_contracheque"] = html_contracheque(
-    #         mesreferencia, anoreferencia, idpessoal
-    #     )
-    #     data["html_cartaoponto"] = html_cartaoponto(
-    #         mesreferencia, anoreferencia, idpessoal
-    #     )
-    #     data["html_formccadianta"] = html_formccadianta(contracheque, request)
-    #     data["html_formccitens"] = html_formccitens(contracheque, request)
-    #     data["html_minutascontracheque"] = html_minutascontracheque(
-    #         mesreferencia, anoreferencia, idpessoal
-    #     )
-    #     data["html_vales"] = html_vale(
-    #         idpessoal, "mensalista", contracheque[0].idContraCheque
-    #     )
-    # else:
-    #     form = c_form(instance=c_instance)
-    # context = {
-    #     "form": form,
-    #     "c_idobj": c_idobj,
-    #     "c_url": c_url,
-    #     "c_view": c_view,
-    #     "idcartaoponto": idcartaoponto,
-    #     "idcategoriaveiculo": request.GET.get("idcategoriaveiculo"),
-    # }
-    # data["html_form"] = render_to_string(
-    #     "pagamentos/formpagamento.html", context, request=request
-    # )
-    # c_return = JsonResponse(data)
-    # return c_return
 
 
 def print_recibo(idrecibo):
