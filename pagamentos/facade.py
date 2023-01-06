@@ -23,7 +23,7 @@ from pessoas.models import (
     Salario,
     Vales,
 )
-from website.facade import DiasFeriados, Feriados
+from website.facade import DiasFeriados, Feriados, converter_mes_ano, extremos_mes
 from website.models import FileUpload
 
 from pagamentos.forms import CadastraCartaoPonto
@@ -55,12 +55,6 @@ dias = [
 ]
 
 estado_swith_vales = dict()
-
-
-def extremos_mes(_mes, _ano):
-    first_day = datetime.datetime.strptime(f"1-{int(_mes)}-{int(_ano)}", "%d-%m-%Y")
-    last_day = first_day + relativedelta(months=+1, days=-1)
-    return first_day, last_day
 
 
 class FolhaContraCheque:
@@ -384,13 +378,6 @@ def seleciona_mes_ano_folha() -> list:
         lista_mes_ano.append(datetime.datetime.strftime(_pdm, "%B/%Y"))
         _pdm = _pdm - relativedelta(months=1)
     return lista_mes_ano
-
-
-def converter_mes_ano(_mes_ano):
-    _date = datetime.datetime.strptime(_mes_ano, "%B/%Y")
-    _mes = datetime.datetime.strftime(_date, "%m")
-    _ano = datetime.datetime.strftime(_date, "%Y")
-    return _mes, _ano
 
 
 def create_contexto_folha(_mes_ano: str) -> JsonResponse:

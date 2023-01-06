@@ -4,6 +4,7 @@ import datetime
 from clientes.facade import get_cliente
 from django.http import JsonResponse
 from django.template.loader import render_to_string
+from dateutil.relativedelta import relativedelta
 
 from website.forms import CadastraFeriado
 
@@ -96,6 +97,19 @@ def dict_tipo_conta() -> dict:
         "POUPANÇA",
     }
     return tipo_conta
+
+
+def extremos_mes(_mes, _ano):
+    first_day = datetime.datetime.strptime(f"1-{int(_mes)}-{int(_ano)}", "%d-%m-%Y")
+    last_day = first_day + relativedelta(months=+1, days=-1)
+    return first_day, last_day
+
+
+def converter_mes_ano(_mes_ano):
+    _date = datetime.datetime.strptime(_mes_ano, "%B/%Y")
+    _mes = datetime.datetime.strftime(_date, "%m")
+    _ano = datetime.datetime.strftime(_date, "%Y")
+    return _mes, _ano
 
 
 class DiasFeriados:
