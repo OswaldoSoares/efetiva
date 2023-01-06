@@ -1214,7 +1214,43 @@ def read_periodo_ferias_post(request):
 
 
 def salva_periodo_ferias_colaborador(idpessoal, inicio, termino):
-    pass
+    inicio = datetime.datetime.strptime(inicio, "%Y-%m-%d")
+    termino = datetime.datetime.strptime(termino, "%Y-%m-%d")
+    colaborador = Pessoal.objects.get(idPessoal=idpessoal)
+    admissao = colaborador.DataAdmissao
+    demissao = colaborador.DataDemissao
+    valores_colaborador = Salario.objects.get(idPessoal=idpessoal)
+    var = dict()
+    var["conducao"] = valores_colaborador.ValeTransporte
+    mes_inicio = inicio.month
+    mes_termino = termino.month
+    if mes_inicio == 12:
+        mes_termino += 12
+    mes_ano = datetime.datetime.strftime(inicio, "%B/%Y")
+    mes, ano = facade.converter_mes_ano(mes_ano)
+    pdm, udm = facade.extremos_mes(mes, ano)
+    cp = CartaoPonto.objects.filter(Dia__range=[pdm, udm], idPessoal=idpessoal)
+    if not cp:
+        facade.create_cartao_ponto(idpessoal, pdm, udm, admissao, demissao, var)
+    if mes_termino > mes_inicio:
+        nova_data = inicio + relativedelta(months=+1)
+        mes_ano = datetime.datetime.strftime(nova_data, "%B/%Y")
+        mes, ano = facade.converter_mes_ano(mes_ano)
+        pdm, udm = facade.extremos_mes(mes, ano)
+        cp = CartaoPonto.objects.filter(Dia__range=[pdm, udm], idPessoal=idpessoal)
+        if not cp:
+            facade.create_cartao_ponto(idpessoal, pdm, udm, admissao, demissao, var)
+        if mes_termino == mes_inicio + 2:
+            nova_data = nova_data + relativedelta(months=+1)
+            mes_ano = datetime.datetime.strftime(nova_data, "%B/%Y")
+            mes, ano = facade.converter_mes_ano(mes_ano)
+            pdm, udm = facade.extremos_mes(mes, ano)
+            cp = CartaoPonto.objects.filter(Dia__range=[pdm, udm], idPessoal=idpessoal)
+            if not cp:
+                facade.create_cartao_ponto(idpessoal, pdm, udm, admissao, demissao, var)
+    CartaoPonto.objects.filter(
+        Dia__range=[inicio, termino], idPessoal=idpessoal
+    ).update(Ausencia="FÉRIAS", Conducao=0, Remunerado=0, CarroEmpresa=0)
 
 
 def create_data_form_altera_demissao(request, contexto):
