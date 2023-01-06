@@ -96,11 +96,11 @@ class FolhaContraCheque:
         return total_pagamento
 
 
-def get_saldo_folha(_id_pes, _mes, _ano):
+def get_saldo_folha(idpessoal, mes, ano):
     var = dict()
-    get_pessoa(_id_pes, var)
-    var["mes"] = _mes
-    var["ano"] = _ano
+    get_pessoa(idpessoal, var)
+    var["mes"] = mes
+    var["ano"] = ano
     contra_cheque = contra_cheque(var)
     contra_cheque_id = contra_cheque["idcontracheque"]
     vencimentos = ContraChequeItens.objects.filter(
@@ -117,37 +117,37 @@ def get_saldo_folha(_id_pes, _mes, _ano):
     return saldo
 
 
-def get_pessoa(_id_pes, _var):
-    _func = Pessoal.objects.filter(idPessoal=_id_pes)
+def get_pessoa(idpessoal, var):
+    _func = Pessoal.objects.filter(idPessoal=idpessoal)
     for x in _func:
         _sb = salario_base(x.idPessoal)
         _vt = conducao(x.idPessoal)
-        _var["admissao"] = x.DataAdmissao
-        _var["bloqueado"] = x.StatusPessoal
-        _var["categoria"] = x.Categoria
-        _var["conducao"] = _vt
-        _var["demissao"] = x.DataDemissao
-        _var["id_pessoal"] = x.idPessoal
-        _var["nome"] = x.Nome
-        _var["nome_curto"] = nome_curto(x.Nome)
-        _var["nome_curto_u"] = nome_curto_underscore(x.Nome)
-        _var["salario_base"] = _sb
-    return _var
+        var["admissao"] = x.DataAdmissao
+        var["bloqueado"] = x.StatusPessoal
+        var["categoria"] = x.Categoria
+        var["conducao"] = _vt
+        var["demissao"] = x.DataDemissao
+        var["id_pessoal"] = x.idPessoal
+        var["nome"] = x.Nome
+        var["nome_curto"] = nome_curto(x.Nome)
+        var["nome_curto_u"] = nome_curto_underscore(x.Nome)
+        var["salario_base"] = _sb
+    return var
 
 
-def dias_falta(_cp):
+def dias_falta(cp):
     dias = 0
-    for itens in _cp:
+    for itens in cp:
         if itens["ausencia"] == "FALTA" and itens["alteracao"] == "ROBOT":
             dias += 1
     print("[INFO - DIAS FALTA] - ", dias)
     return dias
 
 
-def dias_remunerado(_cp, ultimo_dia):
+def dias_remunerado(cp, ultimo_dia):
     print("[INFO - ULTIMO DIA] - ", ultimo_dia.day)
     dias = 0
-    for itens in _cp:
+    for itens in cp:
         if itens["remunerado"]:
             dias += 1
     # if ultimo_dia.day == 31:
@@ -156,48 +156,48 @@ def dias_remunerado(_cp, ultimo_dia):
     return dias
 
 
-def dias_transporte(_cp):
+def dias_transporte(cp):
     dias = 0
-    for itens in _cp:
+    for itens in cp:
         if itens["transporte"]:
             dias += 1
     print("[INFO - DIAS TRANSPORTE] - ", dias)
     return dias
 
 
-def dias_carro_empresa(_cp):
+def dias_carro_empresa(cp):
     dias = 0
-    for itens in _cp:
+    for itens in cp:
         if itens["carro_empresa"]:
             dias += 1
     print("[INFO - DIAS CARRO EMPRESA] - ", dias)
     return dias
 
 
-def dias_trabalhado(_cp):
+def dias_trabalhado(cp):
     dias = 0
-    for itens in _cp:
+    for itens in cp:
         if itens["ausencia"] == "":
             dias += 1
     print("[INFO - DIAS TRABALHANDO] - ", dias)
     return dias
 
 
-def cartao_ponto(_var):
-    _id_pes = _var["id_pessoal"]
-    _pdm = _var["primeiro_dia"]
-    _udm = _var["ultimo_dia"]
-    _adm = _var["admissao"]
-    _dem = _var["demissao"]
-    _cp = CartaoPonto.objects.filter(Dia__range=[_pdm, _udm], idPessoal=_id_pes)
-    if not _cp:
-        create_cartao_ponto(_id_pes, _pdm, _udm, _adm, _dem, _var)
+def cartao_ponto(var):
+    ispessoal = var["id_pessoal"]
+    pdm = var["primeiro_dia"]
+    udm = var["ultimo_dia"]
+    adm = var["admissao"]
+    dem = var["demissao"]
+    cp = CartaoPonto.objects.filter(Dia__range=[pdm, udm], idPessoal=ispessoal)
+    if not cp:
+        create_cartao_ponto(ispessoal, pdm, udm, adm, dem, var)
     else:
-        _var["cartao_ponto"] = _cp
-        update_cartao_ponto(_var)
-    _cp = CartaoPonto.objects.filter(Dia__range=[_pdm, _udm], idPessoal=_id_pes)
-    verifica_falta(_cp)
-    _cp = CartaoPonto.objects.filter(Dia__range=[_pdm, _udm], idPessoal=_id_pes)
+        var["cartao_ponto"] = cp
+        update_cartao_ponto(var)
+    cp = CartaoPonto.objects.filter(Dia__range=[pdm, udm], idPessoal=ispessoal)
+    verifica_falta(cp)
+    cp = CartaoPonto.objects.filter(Dia__range=[pdm, udm], idPessoal=ispessoal)
     lista = [
         {
             "idcartaoponto": x.idCartaoPonto,
@@ -210,95 +210,104 @@ def cartao_ponto(_var):
             "remunerado": x.Remunerado,
             "carro_empresa": x.CarroEmpresa,
         }
-        for x in _cp
+        for x in cp
     ]
     return lista
 
 
-def contra_cheque(_var: dict) -> dict:
+def contra_cheque(var: dict) -> dict:
     """Retorna dados do contra cheque.
 
     Args:
-        _var (dict): Um dicionario com variáveis
+        var (dict): Um dicionario com variáveis
 
     Returns:
         dict: Um dicionario contendo as informação do contra cheque, referente ao
         funcionário, mês e ano selecionados.
     """
-    _id_pes = _var["id_pessoal"]
-    _mes = meses[int(_var["mes"]) - 1]
-    _ano = _var["ano"]
-    _contra_cheque = ContraCheque.objects.filter(
-        idPessoal=_id_pes, MesReferencia=_mes, AnoReferencia=_ano
+    idpessoal = var["id_pessoal"]
+    mes = meses[int(var["mes"]) - 1]
+    ano = var["ano"]
+    contra_cheque = ContraCheque.objects.filter(
+        idPessoal=idpessoal, MesReferencia=mes, AnoReferencia=ano
     ).values("idContraCheque", "Valor", "Pago")
-    if not _contra_cheque:
-        create_contra_cheque(_id_pes, _mes, _ano)
-        _contra_cheque = ContraCheque.objects.filter(
-            idPessoal=_id_pes, MesReferencia=_mes, AnoReferencia=_ano
+    if not contra_cheque:
+        create_contra_cheque(idpessoal, mes, ano)
+        contra_cheque = ContraCheque.objects.filter(
+            idPessoal=idpessoal, MesReferencia=mes, AnoReferencia=ano
         ).values("idContraCheque", "Valor", "Pago")
     dict_contra_cheque = {
-        "idpessoal": _id_pes,
-        "idcontracheque": _contra_cheque[0]["idContraCheque"],
-        "valor": _contra_cheque[0]["Valor"],
-        "pago": _contra_cheque[0]["Pago"],
+        "idpessoal": idpessoal,
+        "idcontracheque": contra_cheque[0]["idContraCheque"],
+        "valor": contra_cheque[0]["Valor"],
+        "pago": contra_cheque[0]["Pago"],
     }
     return dict_contra_cheque
 
 
-def create_contra_cheque(_id_pes, _mes, _ano):
-    v_salario = Salario.objects.get(idPessoal=_id_pes)
+def create_contra_cheque(idpessoal, mes, ano):
+    v_salario = Salario.objects.get(idPessoal=idpessoal)
     obj = ContraCheque()
-    obj.MesReferencia = _mes
-    obj.AnoReferencia = _ano
+    obj.MesReferencia = mes
+    obj.AnoReferencia = ano
     obj.Valor = v_salario.Salario
-    obj.idPessoal_id = _id_pes
+    obj.idPessoal_id = idpessoal
     obj.save()
 
 
-def contra_cheque_itens(_var):
-    _id_cc = _var["id_contra_cheque"]
-    _sb = _var["salario_base"]
-    _dr = _var["dias_remunerado"]
-    _dt = _var["dias_transporte"]
-    _dce = _var["dias_carro_empresa"]
-    v_contra_cheque_itens = ContraChequeItens.objects.filter(
-        idContraCheque=_id_cc, Descricao="SALARIO"
+def contra_cheque_itens(var):
+    contra_cheque_id = var["id_contra_cheque"]
+    salario_base = var["salario_base"]
+    dias_remunerado = var["dias_remunerado"]
+    dias_transporte = var["dias_transporte"]
+    dias_carro_empresa = var["dias_carro_empresa"]
+    contra_cheque_itens = ContraChequeItens.objects.filter(
+        idContraCheque=contra_cheque_id, Descricao="SALARIO"
     )
-    if not v_contra_cheque_itens:
-        create_contra_cheque_itens(_id_cc, "SALARIO", _sb, "C", "30d", "0")
-    if _dr < 32:
-        v_cci = ContraChequeItens.objects.filter(
-            idContraCheque=_id_cc, Descricao="SALARIO"
+    if not contra_cheque_itens:
+        create_contra_cheque_itens(
+            contra_cheque_id, "SALARIO", salario_base, "C", "30d", "0"
         )
-        if _dr == int(datetime.datetime.strftime(_var["ultimo_dia"], "%d")):
-            _dr = 30
-        salario = _sb / 30 * int(_dr)
-        if v_cci:
-            obj = v_cci[0]
+    if dias_remunerado < 32:
+        contra_cheque_itens = ContraChequeItens.objects.filter(
+            idContraCheque=contra_cheque_id, Descricao="SALARIO"
+        )
+        if dias_remunerado == int(datetime.datetime.strftime(var["ultimo_dia"], "%d")):
+            dias_remunerado = 30
+        salario = salario_base / 30 * int(dias_remunerado)
+        if contra_cheque_itens:
+            obj = contra_cheque_itens[0]
             obj.Valor = salario
-            obj.Referencia = f"{_dr}d"
+            obj.Referencia = f"{dias_remunerado}d"
             obj.save(update_fields=["Valor", "Referencia"])
-    v_cci = ContraChequeItens.objects.filter(
-        idContraCheque=_id_cc, Descricao="VALE TRANSPORTE"
+    contra_cheque_itens = ContraChequeItens.objects.filter(
+        idContraCheque=contra_cheque_id, Descricao="VALE TRANSPORTE"
     )
-    _dt = _dt - _dce
-    if _var["conducao"] == Decimal(0.00):
-        _dt = 0
-    if _dt > 0:
-        conducao = _var["conducao"] * int(_dt)
-        if v_cci:
-            obj = v_cci[0]
+    dias_transporte = dias_transporte - dias_carro_empresa
+    if var["conducao"] == Decimal(0.00):
+        dias_transporte = 0
+    if dias_transporte > 0:
+        conducao = var["conducao"] * int(dias_transporte)
+        if contra_cheque_itens:
+            obj = contra_cheque_itens[0]
             obj.Valor = conducao
-            obj.Referencia = f"{_dt}d"
+            obj.Referencia = f"{dias_transporte}d"
             obj.save(update_fields=["Valor", "Referencia"])
         else:
             create_contra_cheque_itens(
-                _id_cc, "VALE TRANSPORTE", conducao, "C", f"{_dt}d", "0"
+                contra_cheque_id,
+                "VALE TRANSPORTE",
+                conducao,
+                "C",
+                f"{dias_transporte}d",
+                "0",
             )
     else:
-        if v_cci:
-            delete_contra_cheque_itens(v_cci[0].idContraChequeItens)
-    v_contra_cheque_itens = ContraChequeItens.objects.filter(idContraCheque=_id_cc)
+        if contra_cheque_itens:
+            delete_contra_cheque_itens(contra_cheque_itens[0].idContraChequeItens)
+    contra_cheque_itens = ContraChequeItens.objects.filter(
+        idContraCheque=contra_cheque_id
+    )
     lista = [
         {
             "idcontrachequeitens": x.idContraChequeItens,
@@ -307,7 +316,7 @@ def contra_cheque_itens(_var):
             "registro": x.Registro,
             "referencia": x.Referencia,
         }
-        for x in v_contra_cheque_itens
+        for x in contra_cheque_itens
     ]
     return lista
 
@@ -334,28 +343,28 @@ def create_contra_cheque_itens(
     obj.save()
 
 
-def salario_base(_id_pes):
-    v_qs = Salario.objects.filter(idPessoal=_id_pes)
+def salario_base(id_pessoal):
+    v_qs = Salario.objects.filter(idPessoal=id_pessoal)
     salario = v_qs[0].Salario
     return salario
 
 
-def conducao(_id_pes):
-    v_qs = Salario.objects.filter(idPessoal=_id_pes)
+def conducao(id_pessoal):
+    v_qs = Salario.objects.filter(idPessoal=id_pessoal)
     conducao = v_qs[0].ValeTransporte
     return conducao
 
 
 class FolhaFuncionarios:
-    def __init__(self, _nome):
+    def __init__(self, nome):
         self.vales = FolhaVale("oswaldo")
 
 
 class FolhaVale:
-    def __init__(self, _nome):
+    def __init__(self, nome):
         self.data = "2020-01-01"
         self.descricao = "VALE"
-        self.nome = _nome
+        self.nome = nome
         self.valor = Decimal(1.00)
 
 
@@ -368,19 +377,19 @@ def seleciona_mes_ano_folha() -> list:
         list: Lista com valores dos Meses e Anos
     """
     v_data_primeira_folha = datetime.datetime.strptime("31-12-2020", "%d-%m-%Y")
-    _hoje = datetime.datetime.today()
-    _pdm = _hoje + relativedelta(day=1)
+    hoje = datetime.datetime.today()
+    pdm = hoje + relativedelta(day=1)
     lista_mes_ano = []
-    while _pdm > v_data_primeira_folha:
-        lista_mes_ano.append(datetime.datetime.strftime(_pdm, "%B/%Y"))
-        _pdm = _pdm - relativedelta(months=1)
+    while pdm > v_data_primeira_folha:
+        lista_mes_ano.append(datetime.datetime.strftime(pdm, "%B/%Y"))
+        pdm = pdm - relativedelta(months=1)
     return lista_mes_ano
 
 
-def create_contexto_folha(_mes_ano: str) -> JsonResponse:
-    _mes, _ano = converter_mes_ano(_mes_ano)
-    _folha = FolhaContraCheque(_mes, _ano).__dict__
-    contexto = {"v_folha": _folha}
+def create_contexto_folha(mes_ano: str) -> JsonResponse:
+    mes, ano = converter_mes_ano(mes_ano)
+    folha = FolhaContraCheque(mes, ano).__dict__
+    contexto = {"v_folha": folha}
     return contexto
 
 
