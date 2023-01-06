@@ -13,7 +13,6 @@ from .print import print_contracheque, print_recibo, print_relatorio_saldo_avuls
 
 @has_permission_decorator("modulo_pagamentos")
 def index_pagamento(request):
-    # contexto = facade.create_context_formcontracheque()
     contexto = {}
     contextovales = facade.cria_contexto_pagamentos()
     contexto.update(contextovales)
@@ -259,6 +258,7 @@ def seleciona_mes_ano(request):
 
 
 def seleciona_periodo_avulso(request):
+    print("passeia aqui")
     c_datainicial = request.GET.get("DataInicial")
     c_datafinal = request.GET.get("DataFinal")
     data = facade.seleciona_saldoavulso(c_datainicial, c_datafinal)

@@ -401,20 +401,6 @@ def create_data_seleciona_mes_ano(request, contexto):
     return JsonResponse(data)
 
 
-def html_saldo(request, contexto, data):
-    data["html_saldo"] = render_to_string(
-        "pagamentos/html_saldo.html", contexto, request=request
-    )
-    return data
-
-
-def html_folha(request, contexto, data):
-    data["html_folha"] = render_to_string(
-        "pagamentos/html_folha.html", contexto, request=request
-    )
-    return data
-
-
 def create_contexto_agenda(minutas, agenda):
     for x in agenda:
         minutas.append(
@@ -598,83 +584,6 @@ def create_data_delete_agenda(request, contexto):
     data = dict()
     html_itens_agenda_pagamento(request, contexto, data)
     return JsonResponse(data)
-
-
-def html_funcionario(request, contexto, data):
-    data["html_funcionario"] = render_to_string(
-        "pagamentos/html_funcionario.html", contexto, request=request
-    )
-    return data
-
-
-def html_files_pagamento(request, contexto, data):
-    data["html_files_pagamento"] = render_to_string(
-        "pagamentos/html_files.html", contexto, request=request
-    )
-    return data
-
-
-def html_cartao_ponto(request, contexto, data):
-    data["html_cartao_ponto"] = render_to_string(
-        "pagamentos/html_cartao_ponto.html", contexto, request=request
-    )
-    return data
-
-
-def html_itens_contra_cheque(request, contexto, data):
-    data["html_itens_contra_cheque"] = render_to_string(
-        "pagamentos/html_itens_contra_cheque.html", contexto, request=request
-    )
-    return data
-
-
-def html_contra_cheque(request, contexto, data):
-    data["html_contra_cheque"] = render_to_string(
-        "pagamentos/html_contra_cheque.html", contexto, request=request
-    )
-    return data
-
-
-def html_vales(request, contexto, data):
-    data["html_vales"] = render_to_string(
-        "pagamentos/html_vales.html", contexto, request=request
-    )
-    return data
-
-
-def html_adiantamento(request, contexto, data):
-    data["html_adiantamento"] = render_to_string(
-        "pagamentos/html_adiantamento_automatico.html", contexto, request=request
-    )
-    return data
-
-
-def html_minutas(request, contexto, data):
-    data["html_minutas"] = render_to_string(
-        "pagamentos/html_minutas.html", contexto, request=request
-    )
-    return data
-
-
-def html_vales_pagamento(request, contexto, data):
-    data["html_vales_pagamento"] = render_to_string(
-        "pagamentos/html_vales_pagamento.html", contexto, request=request
-    )
-    return data
-
-
-def html_agenda_pagamento(request, contexto, data):
-    data["html_agenda_pagamento"] = render_to_string(
-        "pagamentos/html_agenda.html", contexto, request=request
-    )
-    return data
-
-
-def html_itens_agenda_pagamento(request, contexto, data):
-    data["html_itens_agenda_pagamento"] = render_to_string(
-        "pagamentos/html_itens_agenda.html", contexto, request=request
-    )
-    return data
 
 
 def nome_arquivo(_nome_curto, _mes_ano, _tipo):
@@ -1461,62 +1370,6 @@ def seleciona_minutasavulso(datainicial, datafinal, idpessoal):
     return c_return
 
 
-def html_minutasavulso(datainicial, datafinal, idpessoal):
-    recibo = []
-    colaborador = facade.get_pessoal(idpessoal)
-    minutas = (
-        MinutaColaboradores.objects.filter(
-            idPessoal=idpessoal,
-            Pago=False,
-            idMinuta_id__DataMinuta__range=[datainicial, datafinal],
-        )
-        .exclude(idMinuta__StatusMinuta="ABERTA")
-        .exclude(idMinuta__StatusMinuta="CONCLUIDA")
-    )
-    for index, itens in enumerate(minutas):
-        if itens.Cargo == "AJUDANTE":
-            minutaitens = MinutaItens.objects.filter(
-                TipoItens="PAGA",
-                idMinuta=itens.idMinuta,
-                Descricao="AJUDANTE",
-                idMinuta_id__DataMinuta__range=[datainicial, datafinal],
-            )
-            if minutaitens:
-                recibo.append(
-                    {
-                        "Data": itens.idMinuta.DataMinuta,
-                        "Minuta": itens.idMinuta.Minuta,
-                        "Cliente": itens.idMinuta.idCliente.Fantasia,
-                        "Descricao": minutaitens[0].Descricao,
-                        "Valor": minutaitens[0].ValorBase,
-                    }
-                )
-        elif itens.Cargo == "MOTORISTA":
-            minutaitens = MinutaItens.objects.filter(
-                TipoItens="PAGA",
-                idMinuta=itens.idMinuta,
-                idMinuta_id__DataMinuta__range=[datainicial, datafinal],
-            ).exclude(Descricao="AJUDANTE")
-            for minutas in minutaitens:
-                recibo.append(
-                    {
-                        "Data": itens.idMinuta.DataMinuta,
-                        "Minuta": itens.idMinuta.Minuta,
-                        "Cliente": itens.idMinuta.idCliente.Fantasia,
-                        "Descricao": minutas.Descricao,
-                        "Valor": minutas.Valor,
-                    }
-                )
-    context = {
-        "recibo": recibo,
-        "colaborador": colaborador,
-        "datainicial": datainicial,
-        "datafinal": datafinal,
-    }
-    c_return = render_to_string("pagamentos/minutasavulso.html", context)
-    return c_return
-
-
 def create_pagamento_avulso(datainicial, datafinal, idpessoal, zerado):
     recibo = []
     minutas = (
@@ -1987,27 +1840,6 @@ def select_minutas_contracheque(mesreferencia, anoreferencia, idpessoal):
     return minutas
 
 
-def html_recibo_avulso(datainicial, datafinal, idpessoal):
-    recibos = Recibo.objects.filter(idPessoal_id=idpessoal).order_by(
-        "-DataRecibo", "-Recibo"
-    )
-    context = {
-        "recibos": recibos,
-        "idpessoal": idpessoal,
-        "datainicial": datainicial,
-        "datafinal": datafinal,
-    }
-    c_return = render_to_string("pagamentos/reciboavulso.html", context)
-    return c_return
-
-
-def html_minutascontracheque(mesreferencia, anoreferencia, idpessoal):
-    minutas = select_minutas_contracheque(mesreferencia, anoreferencia, idpessoal)
-    context = {"minutas": minutas, "idPessoal": idpessoal}
-    c_return = render_to_string("pagamentos/minutascontracheque.html", context)
-    return c_return
-
-
 def altera_horario_manual(idcartaoponto, horaentrada, horasaida):
     obj = get_cartaopontoid(idcartaoponto)
     obj.Entrada = horaentrada
@@ -2021,68 +1853,6 @@ def altera_contracheque_itens(contrachequeitens, valorhoraextra, referencia):
         obj.Valor = valorhoraextra
         obj.Referencia = referencia
         obj.save(update_fields=["Valor", "Referencia"])
-
-
-def html_contracheque(mesreferencia, anoreferencia, idpessoal):
-    if mesreferencia in meses:
-        mes = mesreferencia
-    else:
-        mes = meses[int(mesreferencia) - 1]
-    contracheque = ContraCheque.objects.filter(
-        MesReferencia=mes, AnoReferencia=anoreferencia, idPessoal=idpessoal
-    )
-    contrachequeitens = ContraChequeItens.objects.filter(
-        idContraCheque=contracheque[0].idContraCheque
-    ).order_by("Registro")
-    totais = saldo_contracheque(contracheque[0].idContraCheque)
-    context = {
-        "qs_contracheque": contracheque,
-        "qs_contrachequeitens": contrachequeitens,
-        "totais": totais,
-        "mesreferencia": mesreferencia,
-        "anoreferencia": anoreferencia,
-    }
-    c_return = render_to_string("pagamentos/contracheque.html", context)
-    return c_return
-
-
-def html_cartaoponto(mesreferencia, anoreferencia, idpessoal):
-    dia, diafinal = periodo_cartaoponto(mesreferencia, anoreferencia)
-    cartaoponto = CartaoPonto.objects.filter(
-        Dia__range=[dia, diafinal], idPessoal=idpessoal
-    )
-    context = {
-        "cartaoponto": cartaoponto,
-        "mesreferencia": mesreferencia,
-        "anoreferencia": anoreferencia,
-        "idpessoal": idpessoal,
-    }
-    c_return = render_to_string("pagamentos/cartaoponto.html", context)
-    return c_return
-
-
-def html_formccadianta(contracheque, request):
-    formcontrachequeitens = CadastraContraChequeItens()
-    contextform = {
-        "formcontrachequeitens": formcontrachequeitens,
-        "contracheque": contracheque,
-    }
-    c_return = render_to_string(
-        "pagamentos/contrachequeadianta.html", contextform, request=request
-    )
-    return c_return
-
-
-def html_formccitens(contracheque, request):
-    formcontrachequeitens = CadastraContraChequeItens()
-    contextform = {
-        "formcontrachequeitens": formcontrachequeitens,
-        "contracheque": contracheque,
-    }
-    c_return = render_to_string(
-        "pagamentos/contrachequeitens.html", contextform, request=request
-    )
-    return c_return
 
 
 # TODO EXCLUIR função não está mais sendo usada.
@@ -2331,30 +2101,6 @@ def print_recibo(idrecibo):
     return contexto
 
 
-def html_saldo_avulso(datainicial, datafinal):
-    """
-    utiliza a 'get_saldo_pagameto_avulso' para carregar as variáveis de saldo dos colaboradores que não são
-    considerados mensalistas, conforme período definido pelo usuário. E retorna um 'render_to_string', do template
-    'pagamentos/saldavulso.html'
-    :param datainicial:
-    :param datafinal:
-    :return: render_to_string através da variável c_return
-    """
-    saldo, saldototal, saldovales, totalselect = create_contexto_avulsos_a_receber(
-        datainicial, datafinal
-    )
-    context = {
-        "saldo": saldo,
-        "saldototal": saldototal,
-        "saldovales": saldovales,
-        "totalselect": totalselect,
-        "datainicial": datainicial,
-        "datafinal": datafinal,
-    }
-    c_return = render_to_string("pagamentos/saldoavulso.html", context)
-    return c_return
-
-
 def create_contexto_imprime_relatorio_saldo_avulso(datainicial, datafinal):
     contexto = create_contexto_saldo_avulso(datainicial, datafinal)
     return contexto
@@ -2435,3 +2181,219 @@ def create_contexto_minutas_avulso_receber(datainicial, datafinal, idpessoal):
         "datafinal": datafinal,
     }
     return context["pagar"]
+
+
+def html_adiantamento(request, contexto, data):
+    data["html_adiantamento"] = render_to_string(
+        "pagamentos/html_adiantamento_automatico.html", contexto, request=request
+    )
+    return data
+
+
+def html_agenda_pagamento(request, contexto, data):
+    data["html_agenda_pagamento"] = render_to_string(
+        "pagamentos/html_agenda.html", contexto, request=request
+    )
+    return data
+
+
+def html_cartao_ponto(request, contexto, data):
+    data["html_cartao_ponto"] = render_to_string(
+        "pagamentos/html_cartao_ponto.html", contexto, request=request
+    )
+    return data
+
+
+def html_contra_cheque(request, contexto, data):
+    data["html_contra_cheque"] = render_to_string(
+        "pagamentos/html_contra_cheque.html", contexto, request=request
+    )
+    return data
+
+
+def html_files_pagamento(request, contexto, data):
+    data["html_files_pagamento"] = render_to_string(
+        "pagamentos/html_files.html", contexto, request=request
+    )
+    return data
+
+
+def html_folha(request, contexto, data):
+    data["html_folha"] = render_to_string(
+        "pagamentos/html_folha.html", contexto, request=request
+    )
+    return data
+
+
+def html_formccadianta(contracheque, request):
+    formcontrachequeitens = CadastraContraChequeItens()
+    contextform = {
+        "formcontrachequeitens": formcontrachequeitens,
+        "contracheque": contracheque,
+    }
+    c_return = render_to_string(
+        "pagamentos/contrachequeadianta.html", contextform, request=request
+    )
+    return c_return
+
+
+def html_formccitens(contracheque, request):
+    formcontrachequeitens = CadastraContraChequeItens()
+    contextform = {
+        "formcontrachequeitens": formcontrachequeitens,
+        "contracheque": contracheque,
+    }
+    c_return = render_to_string(
+        "pagamentos/contrachequeitens.html", contextform, request=request
+    )
+    return c_return
+
+
+def html_funcionario(request, contexto, data):
+    data["html_funcionario"] = render_to_string(
+        "pagamentos/html_funcionario.html", contexto, request=request
+    )
+    return data
+
+
+def html_itens_agenda_pagamento(request, contexto, data):
+    data["html_itens_agenda_pagamento"] = render_to_string(
+        "pagamentos/html_itens_agenda.html", contexto, request=request
+    )
+    return data
+
+
+def html_itens_contra_cheque(request, contexto, data):
+    data["html_itens_contra_cheque"] = render_to_string(
+        "pagamentos/html_itens_contra_cheque.html", contexto, request=request
+    )
+    return data
+
+
+def html_minutas(request, contexto, data):
+    data["html_minutas"] = render_to_string(
+        "pagamentos/html_minutas.html", contexto, request=request
+    )
+    return data
+
+
+def html_minutasavulso(datainicial, datafinal, idpessoal):
+    recibo = []
+    colaborador = facade.get_pessoal(idpessoal)
+    minutas = (
+        MinutaColaboradores.objects.filter(
+            idPessoal=idpessoal,
+            Pago=False,
+            idMinuta_id__DataMinuta__range=[datainicial, datafinal],
+        )
+        .exclude(idMinuta__StatusMinuta="ABERTA")
+        .exclude(idMinuta__StatusMinuta="CONCLUIDA")
+    )
+    for index, itens in enumerate(minutas):
+        if itens.Cargo == "AJUDANTE":
+            minutaitens = MinutaItens.objects.filter(
+                TipoItens="PAGA",
+                idMinuta=itens.idMinuta,
+                Descricao="AJUDANTE",
+                idMinuta_id__DataMinuta__range=[datainicial, datafinal],
+            )
+            if minutaitens:
+                recibo.append(
+                    {
+                        "Data": itens.idMinuta.DataMinuta,
+                        "Minuta": itens.idMinuta.Minuta,
+                        "Cliente": itens.idMinuta.idCliente.Fantasia,
+                        "Descricao": minutaitens[0].Descricao,
+                        "Valor": minutaitens[0].ValorBase,
+                    }
+                )
+        elif itens.Cargo == "MOTORISTA":
+            minutaitens = MinutaItens.objects.filter(
+                TipoItens="PAGA",
+                idMinuta=itens.idMinuta,
+                idMinuta_id__DataMinuta__range=[datainicial, datafinal],
+            ).exclude(Descricao="AJUDANTE")
+            for minutas in minutaitens:
+                recibo.append(
+                    {
+                        "Data": itens.idMinuta.DataMinuta,
+                        "Minuta": itens.idMinuta.Minuta,
+                        "Cliente": itens.idMinuta.idCliente.Fantasia,
+                        "Descricao": minutas.Descricao,
+                        "Valor": minutas.Valor,
+                    }
+                )
+    context = {
+        "recibo": recibo,
+        "colaborador": colaborador,
+        "datainicial": datainicial,
+        "datafinal": datafinal,
+    }
+    c_return = render_to_string("pagamentos/minutasavulso.html", context)
+    return c_return
+
+
+def html_minutascontracheque(mesreferencia, anoreferencia, idpessoal):
+    minutas = select_minutas_contracheque(mesreferencia, anoreferencia, idpessoal)
+    context = {"minutas": minutas, "idPessoal": idpessoal}
+    c_return = render_to_string("pagamentos/minutascontracheque.html", context)
+    return c_return
+
+
+def html_recibo_avulso(datainicial, datafinal, idpessoal):
+    recibos = Recibo.objects.filter(idPessoal_id=idpessoal).order_by(
+        "-DataRecibo", "-Recibo"
+    )
+    context = {
+        "recibos": recibos,
+        "idpessoal": idpessoal,
+        "datainicial": datainicial,
+        "datafinal": datafinal,
+    }
+    c_return = render_to_string("pagamentos/reciboavulso.html", context)
+    return c_return
+
+
+def html_saldo(request, contexto, data):
+    data["html_saldo"] = render_to_string(
+        "pagamentos/html_saldo.html", contexto, request=request
+    )
+    return data
+
+
+def html_saldo_avulso(datainicial, datafinal):
+    """
+    utiliza a 'get_saldo_pagameto_avulso' para carregar as variáveis de saldo dos colaboradores que não são
+    considerados mensalistas, conforme período definido pelo usuário. E retorna um 'render_to_string', do template
+    'pagamentos/saldavulso.html'
+    :param datainicial:
+    :param datafinal:
+    :return: render_to_string através da variável c_return
+    """
+    saldo, saldototal, saldovales, totalselect = create_contexto_avulsos_a_receber(
+        datainicial, datafinal
+    )
+    context = {
+        "saldo": saldo,
+        "saldototal": saldototal,
+        "saldovales": saldovales,
+        "totalselect": totalselect,
+        "datainicial": datainicial,
+        "datafinal": datafinal,
+    }
+    c_return = render_to_string("pagamentos/saldoavulso.html", context)
+    return c_return
+
+
+def html_vales(request, contexto, data):
+    data["html_vales"] = render_to_string(
+        "pagamentos/html_vales.html", contexto, request=request
+    )
+    return data
+
+
+def html_vales_pagamento(request, contexto, data):
+    data["html_vales_pagamento"] = render_to_string(
+        "pagamentos/html_vales_pagamento.html", contexto, request=request
+    )
+    return data
