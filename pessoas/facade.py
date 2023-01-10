@@ -148,13 +148,13 @@ class Colaborador:
     @staticmethod
     def get_ferias(self):
         ferias = Ferias.objects.filter(idPessoal=self.idpes)
-        if not ferias:
-            obj = Ferias()
-            obj.Concessao = 1
-            obj.DataVencimento = self.data_completa_ano + relativedelta(years=+1)
-            obj.idPessoal_id = self.idpes
-            obj.save()
-            ferias = Ferias.objects.filter(idPessoal=self.idpes)
+        # if not ferias:
+        #     obj = Ferias()
+        #     obj.Concessao = 1
+        #     obj.DataVencimento = self.data_completa_ano + relativedelta(years=+1)
+        #     obj.idPessoal_id = self.idpes
+        #     obj.save()
+        #     ferias = Ferias.objects.filter(idPessoal=self.idpes)
         lista = [
             {
                 "data_inicial": i.DataInicial,
@@ -166,11 +166,7 @@ class Colaborador:
             }
             for i in ferias
         ]
-        return lista
-
-        # @staticmethod
-        # def get_meses_ferias(self):
-        #     admissao = self.data_admissao
+        return ferias
 
 
 class ColaboradorDocumentos:
@@ -1195,7 +1191,7 @@ def valida_periodo_ferias(request):
     hoje = datetime.datetime.today()
     data_inicio = datetime.datetime.strptime(request.POST.get("inicio"), "%Y-%m-%d")
     data_termino = datetime.datetime.strptime(request.POST.get("termino"), "%Y-%m-%d")
-    dias = (data_termino - data_inicio).days
+    dias = (data_termino - data_inicio).days + 1
     if dias < 5:
         msg["erro_termino"] = "O Período não pode ser menor que 5 dias."
         error = True
@@ -1214,6 +1210,7 @@ def read_periodo_ferias_post(request):
 
 
 def salva_periodo_ferias_colaborador(idpessoal, inicio, termino):
+    print(len(connection.queries))
     inicio = datetime.datetime.strptime(inicio, "%Y-%m-%d")
     termino = datetime.datetime.strptime(termino, "%Y-%m-%d")
     colaborador = Pessoal.objects.get(idPessoal=idpessoal)
@@ -1248,10 +1245,27 @@ def salva_periodo_ferias_colaborador(idpessoal, inicio, termino):
             cp = CartaoPonto.objects.filter(Dia__range=[pdm, udm], idPessoal=idpessoal)
             if not cp:
                 facade.create_cartao_ponto(idpessoal, pdm, udm, admissao, demissao, var)
+    print(len(connection.queries))
     CartaoPonto.objects.filter(
         Dia__range=[inicio, termino], idPessoal=idpessoal
     ).update(Ausencia="FÉRIAS", Conducao=0, Remunerado=0, CarroEmpresa=0)
+    print(len(connection.queries))
+    obj = Ferias()
+    print(len(connection.queries))
+    obj.DataInicial = inicio
+    obj.DataFinal = termino
+    obj.Concessao = 1
+    obj.Periodo = 1
+    obj.DiasPeriodo = (termino - inicio).days + 1
+    obj.DataVencimento = termino + relativedelta(years=+1)
+    obj.idPessoal_id = idpessoal
+    obj.save()
+    print(len(connection.queries))
 
+def create_contexto_print_ferias(idpes, idparcela):
+    colaborador = Colaborador(idpes).__dict__
+    contexto = {"colaborador": colaborador, "idparcela": idparcela}
+    return contexto
 
 def create_data_form_altera_demissao(request, contexto):
     data = dict()

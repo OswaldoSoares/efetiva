@@ -6215,6 +6215,34 @@ main .fp-recibo-tabela .fp-recibo-print {
     font-size: 16px;
 }
 
+.card-ferias-colaborador {
+    width: 280px;
+}
+
+.card-ferias-colaborador .itens-ferias {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    color: var(--color6);
+}
+
+.card-ferias-colaborador .itens-ferias .item-titulo {
+    width: 26%;
+    text-align: center;
+}
+
+.card-ferias-colaborador .itens-ferias .item-data {
+    width: 32%;
+    text-align: center;
+}
+
+.card-ferias-colaborador .itens-ferias .item-button {
+    width: 10%;
+    text-align: center;
+}
+
 .card-form-colaborador {
     width: 280px;
 }

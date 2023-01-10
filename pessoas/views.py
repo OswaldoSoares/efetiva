@@ -4,7 +4,11 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 from rolepermissions.decorators import has_permission_decorator
 from pessoas import facade
-from pessoas.print import print_pdf_decimno_terceiro, print_pdf_ficha_colaborador
+from pessoas.print import (
+    print_pdf_decimno_terceiro,
+    print_pdf_ficha_colaborador,
+    print_pdf_ferias,
+)
 from website.facade import dict_tipo_conta, dict_tipo_doc, dict_tipo_fone, str_hoje
 from .models import Pessoal, DocPessoal, FonePessoal, ContaPessoal, ContraChequeItens
 from .forms import (
@@ -560,3 +564,11 @@ def salva_periodo_ferias(request):
         contexto.update(msg)
         data = facade.create_data_form_periodo_ferias(request, contexto)
     return data
+
+
+def print_ferias(request):
+    idpes = request.GET.get("idpes")
+    idparcela = request.GET.get("idparcela")
+    contexto = facade.create_contexto_print_ferias(idpes, idparcela)
+    response = print_pdf_ferias(contexto)
+    return response

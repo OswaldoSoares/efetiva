@@ -326,6 +326,6 @@ class Ferias(models.Model):
         ordering = ["idFerias"]
 
     def __str__(self):
-        return str(self.idferias)
+        return str(self.idFerias)
 
     objects = models.Manager()
