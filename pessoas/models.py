@@ -242,7 +242,7 @@ class CartaoPonto(models.Model):
         ordering = ["Dia"]
 
     def __str__(self):
-        return str(self.idPessoal, self.Dia)
+        return str(self.idPessoal)
 
     def save(self, *args, **kwargs):
         if self.Ausencia:

@@ -177,7 +177,25 @@ def dias_trabalhado(cp):
 
 
 def cartao_ponto(var):
-    print(f"[INFO 01] - {len(connection.queries)}")
+    # Revisão Inicio - 10/01/2023
+    print(f"[INFO] CARTÃO DE PONTO - {len(connection.queries)}")
+    cartao_de_ponto = CartaoPonto.objects.filter(
+        Dia__range=[var["primeiro_dia"], var["ultimo_dia"]],
+        idPessoal=var["id_pessoal"],
+    ).values(
+        "idPessoal", "Dia", "Entrada", "Saida", "Conducao", "Remunerado", "CarroEmpresa"
+    )
+    if not cartao_de_ponto:
+        create_cartao_ponto(
+            var["id_pessoal"],
+            var["primeiro_dia"],
+            var["ultimo_dia"],
+            var["admissao"],
+            var["demissao"],
+            var,
+        )
+    print(f"[INFO] CARTÃO DE PONTO - {len(connection.queries)}")
+    # Revisão Final - 10/01/2023
     idpessoal = var["id_pessoal"]
     pdm = var["primeiro_dia"]
     udm = var["ultimo_dia"]
