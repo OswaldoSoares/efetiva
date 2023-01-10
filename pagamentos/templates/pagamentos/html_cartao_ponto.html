@@ -1,133 +1,117 @@
 {% if cartao_ponto %}
 <div class="article-card-titulo">
-  <span>CARTÃO DE PONTO</span>
+    <span>CARTÃO DE PONTO</span>
 </div>
 <div class="article-card-body js-body-cartao-ponto">
-  {% for dias in cartao_ponto %}
-  {% if dias.ausencia %}
-  <div class="itens-cartao-ponto">
-    <div class="item-dia">
-      <span>{{ dias.dia }}</span>
-    </div>
-    {% if not dias.ausencia == '-------' %}
-    <div class="item-button">
-      <i class="bi bi-house"></i>
-    </div>
-    <div class="item-ausencia">
-      <span>{{ dias.ausencia }}</span>
-    </div>
-    <div class="item-button">
-      <i class="bi bi-house"></i>
-    </div>
-    <div class="item-button">
-      {% if dias.remunerado %}
-      <i
-        class="bi bi-currency-dollar i-button js-atestada"
-        idpessoal="{{ idpessoal }}"
-        idcartaoponto="{{ dias.idcartaoponto }}"
-      ></i>
-      {% else %}
-      <i
-        class="bi bi-x-lg i-button js-atestada"
-        idpessoal="{{ idpessoal }}"
-        idcartaoponto="{{ dias.idcartaoponto }}"
-      ></i>
-      {% endif %}
-    </div>
-    <div class="item-button">
-      {% if dias.ausencia == 'FALTA' %}
-      <i
-        class="bi bi-house i-button js-altera-falta"
-        idpessoal="{{ idpessoal }}"
-        idcartaoponto="{{ dias.idcartaoponto }}"
-      ></i>
-      {% else %}
-      <i class="bi bi-house"></i>
-      {% endif %}
-    </div>
-    {% else %}
-    <div class="item-button"></div>
-    <div class="item-ausencia"></div>
-    <div class="item-button"></div>
-    <div class="item-button"></div>
-    <div class="item-button"></div>
-    {% endif %}
-  </div>
-  {% else %}
-  <div class="itens-cartao-ponto">
-    <div class="item-dia">
-      <span>{{ dias.dia }}</span>
-    </div>
-    <div class="item-button">
-      <i
-        class="bi bi-stopwatch i-button"
-        onclick="openMyModal(event); return false"
-        data-action="{% url 'altera_horario_cartao_ponto' %}"
-        data-title="EDITA CARTÃO DE PONTO"
-        data-button-save-label="ALTERAR"
-        data-idcartaoponto="{{ dias.idcartaoponto }}"
-        data-idpessoal="{{ idpessoal }}"
-      ></i>
-    </div>
-    {% if dias.entrada|time:"H:i" > '07:00' %}
-    <div class="item-hora item-atrazo">{{ dias.entrada }}</div>
-    {% elif dias.entrada|time:"H:i" == '07:00' %}
-    <div class="item-hora item-padrao">{{ dias.entrada }}</div>
-    {% elif dias.entrada|time:"H:i" < '07:00' %}
-    <div class="item-hora item-extra">{{ dias.entrada }}</div>
-    {% endif %} {% if dias.saida|time:"H:i" > '17:00' %}
-    <div class="item-hora item-extra">{{ dias.saida }}</div>
-    {% else %}
-    <div class="item-hora item-padrao">{{ dias.saida }}</div>
-    {% endif %}
-    <div class="item-button">
-      {% if dias.transporte %}
-        {% if dias.carro_empresa %}
-        <i class="bi bi-truck i-button js-altera-carro-empresa"
-          idpessoal="{{ idpessoal }}"
-          idcartaoponto="{{ dias.idcartaoponto }}"></i>
+    {% for dias in cartao_ponto %}
+    {% if dias.ausencia %}
+    <div class="itens-cartao-ponto">
+        <div class="item-dia">
+            <span>{{ dias.dia }}</span>
+        </div>
+        {% if not dias.ausencia == '-------' %}
+        <div class="item-button">
+            <i class="bi bi-house"></i>
+        </div>
+        <div class="item-ausencia">
+            <span>{{ dias.ausencia }}</span>
+        </div>
+        <div class="item-button">
+            <i class="bi bi-house"></i>
+        </div>
+        <div class="item-button">
+        {% if dias.remunerado %}
+            <i class="bi bi-currency-dollar i-button js-atestada"
+            idpessoal="{{ idpessoal }}" idcartaoponto="{{ dias.idcartaoponto }}">
+            </i>
         {% else %}
-        <i class="icofont-bus-alt-2 i-button js-altera-carro-empresa"
-          idpessoal="{{ idpessoal }}"
-          idcartaoponto="{{ dias.idcartaoponto }}"></i>
-        {% endif %}  
-      {% else %}
-      <i class="icofont-bicycle-alt-1"></i>
-      {% endif %}
+            <i class="bi bi-x-lg i-button js-atestada"
+            idpessoal="{{ idpessoal }}" idcartaoponto="{{ dias.idcartaoponto }}">
+        </i>
+        {% endif %}
+        </div>
+        <div class="item-button">
+        {% if dias.ausencia == 'FALTA' %}
+            <i class="bi bi-house i-button js-altera-falta"
+            idpessoal="{{ idpessoal }}" idcartaoponto="{{ dias.idcartaoponto }}">
+            </i>
+        {% else %}
+            <i class="bi bi-house"></i>
+        {% endif %}
+        </div>
+    {% else %}
+        <div class="item-button"></div>
+        <div class="item-ausencia"></div>
+        <div class="item-button"></div>
+        <div class="item-button"></div>
+        <div class="item-button"></div>
+    {% endif %}
     </div>
-    <div class="item-button">
-      {% if dias.remunerado %}
-      <i
-        class="bi bi-currency-dollar i-button js-atestada"
-        idpessoal="{{ idpessoal }}"
-        idcartaoponto="{{ dias.idcartaoponto }}"
-      ></i>
-      {% else %}
-      <i
-        class="bi bi-x-lg i-button js-atestada"
-        idpessoal="{{ idpessoal }}"
-        idcartaoponto="{{ dias.idcartaoponto }}"
-      ></i>
-      {% endif %}
+  {% else %}
+    <div class="itens-cartao-ponto">
+        <div class="item-dia">
+            <span>{{ dias.dia }}</span>
+        </div>
+        <div class="item-button">
+            <i class="bi bi-stopwatch i-button"
+            onclick="openMyModal(event); return false"
+            data-action="{% url 'altera_horario_cartao_ponto' %}"
+            data-title="EDITA CARTÃO DE PONTO"
+            data-button-save-label="ALTERAR"
+            data-idcartaoponto="{{ dias.idcartaoponto }}"
+            data-idpessoal="{{ idpessoal }}"></i>
+        </div>
+        {% if dias.entrada|time:"H:i" > '07:00' %}
+        <div class="item-hora item-atrazo">{{ dias.entrada }}</div>
+        {% elif dias.entrada|time:"H:i" == '07:00' %}
+        <div class="item-hora item-padrao">{{ dias.entrada }}</div>
+        {% elif dias.entrada|time:"H:i" < '07:00' %}
+        <div class="item-hora item-extra">{{ dias.entrada }}</div>
+        {% endif %} {% if dias.saida|time:"H:i" > '17:00' %}
+        <div class="item-hora item-extra">{{ dias.saida }}</div>
+        {% else %}
+        <div class="item-hora item-padrao">{{ dias.saida }}</div>
+        {% endif %}
+        <div class="item-button">
+        {% if dias.transporte %}
+            {% if dias.carro_empresa %}
+                <i class="bi bi-truck i-button js-altera-carro-empresa"
+                idpessoal="{{ idpessoal }}" idcartaoponto="{{ dias.idcartaoponto }}"></i>
+            {% else %}
+                <i class="icofont-bus-alt-2 i-button js-altera-carro-empresa"
+                idpessoal="{{ idpessoal }}" idcartaoponto="{{ dias.idcartaoponto }}"></i>
+            {% endif %}  
+        {% else %}
+            <i class="icofont-bicycle-alt-1"></i>
+        {% endif %}
+        </div>
+        <div class="item-button">
+        {% if dias.remunerado %}
+            <i class="bi bi-currency-dollar i-button js-atestada"
+            idpessoal="{{ idpessoal }}" idcartaoponto="{{ dias.idcartaoponto }}">
+            </i>
+        {% else %}
+            <i class="bi bi-x-lg i-button js-atestada"
+                idpessoal="{{ idpessoal }}" idcartaoponto="{{ dias.idcartaoponto }}">
+            </i>
+        {% endif %}
+        </div>
+        <div class="item-button">
+            <i class="bi bi-calendar-check i-button js-altera-falta"
+            idpessoal="{{ idpessoal }}" idcartaoponto="{{ dias.idcartaoponto }}">
+        </i>
+        </div>
     </div>
-    <div class="item-button">
-      <i
-        class="bi bi-calendar-check i-button js-altera-falta"
-        idpessoal="{{ idpessoal }}"
-        idcartaoponto="{{ dias.idcartaoponto }}"
-      ></i>
-    </div>
-  </div>
-  {% endif %}
-  {% endfor %}
+    {% endif %}
+    {% endfor %}
 </div>
 <div class="article-card-footer"></div>
 {% endif %}
 {% if admissao %}
-  <div id="admissao" data-admissao="{{ admissao }}">
-  </div>
-  {% endif %}
+    <div id="admissao" data-admissao="{{ admissao }}">
+    </div>
+{% endif %}
 {% if demissao %}
-  <div id="demissao" data-demissao="{{ demissao }}">
-  </div>
+    <div id="demissao" data-demissao="{{ demissao }}">
+    </div>
 {% endif %}

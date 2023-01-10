@@ -258,7 +258,6 @@ def seleciona_mes_ano(request):
 
 
 def seleciona_periodo_avulso(request):
-    print("passeia aqui")
     c_datainicial = request.GET.get("DataInicial")
     c_datafinal = request.GET.get("DataFinal")
     data = facade.seleciona_saldoavulso(c_datainicial, c_datafinal)

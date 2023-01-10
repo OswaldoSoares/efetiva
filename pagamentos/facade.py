@@ -2,6 +2,7 @@ import calendar
 import datetime
 from decimal import Decimal
 
+from django.db import connection
 from dateutil.relativedelta import relativedelta
 from despesas.models import Multas
 from django.core.exceptions import ObjectDoesNotExist
@@ -101,8 +102,8 @@ def get_saldo_folha(idpessoal, mes, ano):
     get_pessoa(idpessoal, var)
     var["mes"] = mes
     var["ano"] = ano
-    contra_cheque = contra_cheque(var)
-    contra_cheque_id = contra_cheque["idcontracheque"]
+    cc = contra_cheque(var)
+    contra_cheque_id = cc["idcontracheque"]
     vencimentos = ContraChequeItens.objects.filter(
         idContraCheque=contra_cheque_id, Registro="C"
     ).aggregate(soma=Sum("Valor"))
@@ -118,20 +119,18 @@ def get_saldo_folha(idpessoal, mes, ano):
 
 
 def get_pessoa(idpessoal, var):
-    _func = Pessoal.objects.filter(idPessoal=idpessoal)
-    for x in _func:
-        _sb = salario_base(x.idPessoal)
-        _vt = conducao(x.idPessoal)
+    colaborador = Pessoal.objects.filter(idPessoal=idpessoal)
+    for x in colaborador:
         var["admissao"] = x.DataAdmissao
         var["bloqueado"] = x.StatusPessoal
         var["categoria"] = x.Categoria
-        var["conducao"] = _vt
+        var["conducao"] = conducao(x.idPessoal)
         var["demissao"] = x.DataDemissao
         var["id_pessoal"] = x.idPessoal
         var["nome"] = x.Nome
         var["nome_curto"] = nome_curto(x.Nome)
         var["nome_curto_u"] = nome_curto_underscore(x.Nome)
-        var["salario_base"] = _sb
+        var["salario_base"] = salario_base(x.idPessoal)
     return var
 
 
@@ -140,19 +139,16 @@ def dias_falta(cp):
     for itens in cp:
         if itens["ausencia"] == "FALTA" and itens["alteracao"] == "ROBOT":
             dias += 1
-    print("[INFO - DIAS FALTA] - ", dias)
     return dias
 
 
 def dias_remunerado(cp, ultimo_dia):
-    print("[INFO - ULTIMO DIA] - ", ultimo_dia.day)
     dias = 0
     for itens in cp:
         if itens["remunerado"]:
             dias += 1
     # if ultimo_dia.day == 31:
     #     dias -= 1
-    print("[INFO - DIAS REMUNERADO] - ", dias)
     return dias
 
 
@@ -161,7 +157,6 @@ def dias_transporte(cp):
     for itens in cp:
         if itens["transporte"]:
             dias += 1
-    print("[INFO - DIAS TRANSPORTE] - ", dias)
     return dias
 
 
@@ -170,7 +165,6 @@ def dias_carro_empresa(cp):
     for itens in cp:
         if itens["carro_empresa"]:
             dias += 1
-    print("[INFO - DIAS CARRO EMPRESA] - ", dias)
     return dias
 
 
@@ -179,25 +173,30 @@ def dias_trabalhado(cp):
     for itens in cp:
         if itens["ausencia"] == "":
             dias += 1
-    print("[INFO - DIAS TRABALHANDO] - ", dias)
     return dias
 
 
 def cartao_ponto(var):
-    ispessoal = var["id_pessoal"]
+    print(f"[INFO 01] - {len(connection.queries)}")
+    idpessoal = var["id_pessoal"]
     pdm = var["primeiro_dia"]
     udm = var["ultimo_dia"]
     adm = var["admissao"]
     dem = var["demissao"]
-    cp = CartaoPonto.objects.filter(Dia__range=[pdm, udm], idPessoal=ispessoal)
+    cp = CartaoPonto.objects.filter(Dia__range=[pdm, udm], idPessoal=idpessoal)
+    print(f"[INFO 02] - {len(connection.queries)}")
     if not cp:
-        create_cartao_ponto(ispessoal, pdm, udm, adm, dem, var)
+        create_cartao_ponto(idpessoal, pdm, udm, adm, dem, var)
     else:
         var["cartao_ponto"] = cp
-        update_cartao_ponto(var)
-    cp = CartaoPonto.objects.filter(Dia__range=[pdm, udm], idPessoal=ispessoal)
+        # update_cartao_ponto(var)
+    print(f"[INFO 03] - {len(connection.queries)}")
+    cp = CartaoPonto.objects.filter(Dia__range=[pdm, udm], idPessoal=idpessoal)
+    print(f"[INFO 04] - {len(connection.queries)}")
     verifica_falta(cp)
-    cp = CartaoPonto.objects.filter(Dia__range=[pdm, udm], idPessoal=ispessoal)
+    print(f"[INFO 05] - {len(connection.queries)}")
+    cp = CartaoPonto.objects.filter(Dia__range=[pdm, udm], idPessoal=idpessoal)
+    print(f"[INFO] - {len(connection.queries)}")
     lista = [
         {
             "idcartaoponto": x.idCartaoPonto,
@@ -212,6 +211,7 @@ def cartao_ponto(var):
         }
         for x in cp
     ]
+    print(f"[INFO] - {len(connection.queries)}")
     return lista
 
 
@@ -418,61 +418,61 @@ def create_contexto_agenda(minutas, agenda):
     return newlist
 
 
-def create_contexto_funcionario(_mes_ano, _id) -> JsonResponse:
-    _var = dict()
-    get_pessoa(_id, _var)
-    _var["mes"], _var["ano"] = converter_mes_ano(_mes_ano)
-    _var["primeiro_dia"], _var["ultimo_dia"] = extremos_mes(_var["mes"], _var["ano"])
+def create_contexto_funcionario(mes_ano, id) -> JsonResponse:
+    var = dict()
+    get_pessoa(id, var)
+    var["mes"], var["ano"] = converter_mes_ano(mes_ano)
+    var["primeiro_dia"], var["ultimo_dia"] = extremos_mes(var["mes"], var["ano"])
     # TODO Necessário inverter as posições do _cartao_ponto e Minutas.
     # com minuta antes, não é calculado a hora extra
-    _cartao_ponto = cartao_ponto(_var)
-    minutas = minutas_contra_cheque(_var)
-    _var["dias_falta"] = dias_falta(_cartao_ponto)
-    _var["dias_remunerado"] = dias_remunerado(_cartao_ponto, _var["ultimo_dia"])
-    _var["dias_transporte"] = dias_transporte(_cartao_ponto)
-    _var["dias_carro_empresa"] = dias_carro_empresa(_cartao_ponto)
-    _var["dias_trabalhado"] = dias_trabalhado(_cartao_ponto)
-    _cc = contra_cheque(_var)
-    _var["id_contra_cheque"] = _cc["idcontracheque"]
-    atrazo(_var)
-    hora_extra(_var)
+    _cartao_ponto = cartao_ponto(var)
+    minutas = minutas_contra_cheque(var)
+    var["dias_falta"] = dias_falta(_cartao_ponto)
+    var["dias_remunerado"] = dias_remunerado(_cartao_ponto, var["ultimo_dia"])
+    var["dias_transporte"] = dias_transporte(_cartao_ponto)
+    var["dias_carro_empresa"] = dias_carro_empresa(_cartao_ponto)
+    var["dias_trabalhado"] = dias_trabalhado(_cartao_ponto)
+    _cc = contra_cheque(var)
+    var["id_contra_cheque"] = _cc["idcontracheque"]
+    atrazo(var)
+    hora_extra(var)
     _adiantamento = False
-    if busca_item_contra_cheque(_var["id_contra_cheque"], "ADIANTAMENTO"):
+    if busca_item_contra_cheque(var["id_contra_cheque"], "ADIANTAMENTO"):
         _adiantamento = True
-    _cci = contra_cheque_itens(_var)
-    _tv, _td, _st = totais_contra_cheque(_var)
-    vales = vales_funcionario(_var)
+    _cci = contra_cheque_itens(var)
+    _tv, _td, _st = totais_contra_cheque(var)
+    vales = vales_funcionario(var)
     hoje = datetime.datetime.today()
     hoje = datetime.datetime.strftime(hoje, "%Y-%m-%d")
     files = FileUpload.objects.filter(
-        DescricaoUpload__startswith=f"{_var['nome_curto_u']}_MES_{_var['mes']}_{_var['ano']}"
+        DescricaoUpload__startswith=f"{var['nome_curto_u']}_MES_{var['mes']}_{var['ano']}"
     )
     agenda = Agenda.objects.filter(
-        idPessoal=_var["id_pessoal"],
-        Dia__range=[_var["primeiro_dia"], _var["ultimo_dia"]],
+        idPessoal=var["id_pessoal"],
+        Dia__range=[var["primeiro_dia"], var["ultimo_dia"]],
     )
     contexto = {
         "cartao_ponto": _cartao_ponto,
-        "mes_ano": _mes_ano,
-        "nome": _var["nome_curto"],
-        "nome_underscore": _var["nome_curto_u"],
-        "idpessoal": _var["id_pessoal"],
-        "admissao": _var["admissao"],
-        "demissao": _var["demissao"],
-        "categoria": _var["categoria"],
+        "mes_ano": mes_ano,
+        "nome": var["nome_curto"],
+        "nome_underscore": var["nome_curto_u"],
+        "idpessoal": var["id_pessoal"],
+        "admissao": var["admissao"],
+        "demissao": var["demissao"],
+        "categoria": var["categoria"],
         "contra_cheque": _cc,
         "contra_cheque_itens": _cci,
         "vencimentos": _tv,
         "descontos": _td,
         "saldo": _st,
         "adiantamento": _adiantamento,
-        "dias_admitido": dias_admitido(_var),
-        "dias_remunerado": _var["dias_remunerado"],
-        "dias_trabalhado": _var["dias_trabalhado"],
-        "dias_transporte": _var["dias_transporte"] - _var["dias_carro_empresa"],
-        "valor_dia": _var["salario_base"] / 30,
-        "valor_hora": _var["salario_base"] / 30 / 9,
-        "valor_extra": _var["salario_base"] / 30 / 9 * Decimal(1.5),
+        "dias_admitido": dias_admitido(var),
+        "dias_remunerado": var["dias_remunerado"],
+        "dias_trabalhado": var["dias_trabalhado"],
+        "dias_transporte": var["dias_transporte"] - var["dias_carro_empresa"],
+        "valor_dia": var["salario_base"] / 30,
+        "valor_hora": var["salario_base"] / 30 / 9,
+        "valor_extra": var["salario_base"] / 30 / 9 * Decimal(1.5),
         "minutas": minutas,
         "vales": vales,
         "hoje": hoje,
@@ -944,7 +944,6 @@ def update_cartao_ponto(_var):
             obj.Alteracao = "ROBOT"
             obj.Entrada = "07:00:00"
             obj.Saida = "17:00:00"
-            print(f"[INFO] - {x.Dia} - {x.Remunerado}")
         if not _dem is None:
             if x.Dia > _dem:
                 if obj.Ausencia != "-------":
@@ -964,7 +963,6 @@ def update_cartao_ponto(_var):
                 "Remunerado",
             ]
         )
-        print(f"[INFO] - {x.Dia} - {x.Remunerado}")
 
 
 def altera_ausencia_falta(_id_cp):
@@ -1023,18 +1021,20 @@ def altera_carro_empresa(_id_cp):
 
 
 def verifica_falta(v_cartao_ponto):
+    print(f"[INFO] - {len(connection.queries)}")
     faltas = len(v_cartao_ponto.filter(Ausencia__exact="FALTA", Alteracao="ROBOT"))
-    for itens in v_cartao_ponto:
-        if not itens.Ausencia == "-------":
-            if not itens.Ausencia == "FÉRIAS":
-                if itens.Dia.weekday() == 5 or itens.Dia.weekday() == 6:
-                    obj = CartaoPonto.objects.get(idCartaoPonto=itens.idCartaoPonto)
-                    obj.Remunerado = True
-                    obj.save(update_fields=["Remunerado"])
-                if itens.Ausencia == "FERIADO":
-                    obj = CartaoPonto.objects.get(idCartaoPonto=itens.idCartaoPonto)
-                    obj.Remunerado = True
-                    obj.save(update_fields=["Remunerado"])
+    # for itens in v_cartao_ponto:
+    #     if not itens.Ausencia == "-------":
+    #         if not itens.Ausencia == "FÉRIAS":
+    #             if itens.Dia.weekday() == 5 or itens.Dia.weekday() == 6:
+    #                 obj = CartaoPonto.objects.get(idCartaoPonto=itens.idCartaoPonto)
+    #                 obj.Remunerado = True
+    #                 obj.save(update_fields=["Remunerado"])
+    #             if itens.Ausencia == "FERIADO":
+    #                 obj = CartaoPonto.objects.get(idCartaoPonto=itens.idCartaoPonto)
+    #                 obj.Remunerado = True
+    #                 obj.save(update_fields=["Remunerado"])
+    print(f"[INFO] - {len(connection.queries)}")
     if faltas > 0:
         for itens in v_cartao_ponto:
             if not itens.Ausencia == "-------":
@@ -1059,6 +1059,7 @@ def verifica_falta(v_cartao_ponto):
                             faltas -= 1
                             if faltas == 0:
                                 break
+    print(f"[INFO] - {len(connection.queries)}")
 
 
 # TODO Melhorar código
