@@ -288,6 +288,13 @@ def print_pdf_ferias(contexto):
             cmp(linha - 41.2 - linhaitens),
             "FÉRIAS",
         )
+        pdf.setFont("Times-Roman", 8)
+        pdf.drawString(
+            cmp(32),
+            cmp(linha - 40.9 - linhaitens),
+            "(PERÍODO AQUISITIVO 01/01/2020 - 01/02/2021)",
+        )
+        pdf.setFont("Times-Roman", 11)
         pdf.drawCentredString(
             cmp(106),
             cmp(linha - 41.2 - linhaitens),

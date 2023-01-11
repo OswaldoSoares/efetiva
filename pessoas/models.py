@@ -317,6 +317,8 @@ class Ferias(models.Model):
     DataFinal = models.DateField(blank=True, null=True)
     Concessao = models.IntegerField(default=0)
     Periodo = models.IntegerField(default=0)
+    AquisitivoInicial = models.DateField(blank=True, null=True)
+    AquisitivoFinal = models.DateField(blank=True, null=True)
     DiasPeriodo = models.IntegerField(default=0)
     DataVencimento = models.DateField(blank=True, null=True)
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
