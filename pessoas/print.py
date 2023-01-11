@@ -281,6 +281,12 @@ def print_pdf_ferias(contexto):
         pdf.setFont("Times-Roman", 11)
         linhaitens = 0
         salario_base = contexto["colaborador"]["salario"][0]["salario"]
+        aquisitivo_inicial = datetime.datetime.strftime(
+            contexto["colaborador"]["ferias"][0]["aquisitivo_inicial"], "%d/%m/%Y"
+        )
+        aquisitivo_final = datetime.datetime.strftime(
+            contexto["colaborador"]["ferias"][0]["aquisitivo_final"]
+        )
         um_terco = round(salario_base / 100 * Decimal(33.3333), 2)
         total = salario_base + um_terco
         pdf.drawString(
@@ -292,7 +298,7 @@ def print_pdf_ferias(contexto):
         pdf.drawString(
             cmp(32),
             cmp(linha - 40.9 - linhaitens),
-            "(PERÍODO AQUISITIVO 01/01/2020 - 01/02/2021)",
+            f"(PERÍODO AQUISITIVO {aquisitivo_inicial} - {aquisitivo_final})",
         )
         pdf.setFont("Times-Roman", 11)
         pdf.drawCentredString(

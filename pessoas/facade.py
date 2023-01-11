@@ -161,12 +161,14 @@ class Colaborador:
                 "data_final": i.DataFinal,
                 "concessao": i.Concessao,
                 "periodo": i.Periodo,
+                "aquisitivo_inicial": i.AquisitivoInicial,
+                "aquisitivo_final": i.AquisitivoFinal,
                 "dias_periodo": i.DiasPeriodo,
                 "data_vencimento": i.DataVencimento,
             }
             for i in ferias
         ]
-        return ferias
+        return lista
 
 
 class ColaboradorDocumentos:
@@ -1256,16 +1258,20 @@ def salva_periodo_ferias_colaborador(idpessoal, inicio, termino):
     obj.DataFinal = termino
     obj.Concessao = 1
     obj.Periodo = 1
+    obj.AquisitivoInicial = admissao
+    obj.AquisitivoFinal = admissao + relativedelta(years=+1, days=-1)
     obj.DiasPeriodo = (termino - inicio).days + 1
     obj.DataVencimento = termino + relativedelta(years=+1)
     obj.idPessoal_id = idpessoal
     obj.save()
     print(len(connection.queries))
 
+
 def create_contexto_print_ferias(idpes, idparcela):
     colaborador = Colaborador(idpes).__dict__
     contexto = {"colaborador": colaborador, "idparcela": idparcela}
     return contexto
+
 
 def create_data_form_altera_demissao(request, contexto):
     data = dict()
