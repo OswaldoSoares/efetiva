@@ -285,7 +285,7 @@ def print_pdf_ferias(contexto):
             contexto["colaborador"]["ferias"][0]["aquisitivo_inicial"], "%d/%m/%Y"
         )
         aquisitivo_final = datetime.datetime.strftime(
-            contexto["colaborador"]["ferias"][0]["aquisitivo_final"]
+            contexto["colaborador"]["ferias"][0]["aquisitivo_final"], "%d/%m/%Y"
         )
         um_terco = round(salario_base / 100 * Decimal(33.3333), 2)
         total = salario_base + um_terco
