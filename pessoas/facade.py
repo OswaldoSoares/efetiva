@@ -159,12 +159,7 @@ class Colaborador:
             {
                 "data_inicial": i.DataInicial,
                 "data_final": i.DataFinal,
-                "concessao": i.Concessao,
-                "periodo": i.Periodo,
-                "aquisitivo_inicial": i.AquisitivoInicial,
-                "aquisitivo_final": i.AquisitivoFinal,
-                "dias_periodo": i.DiasPeriodo,
-                "data_vencimento": i.DataVencimento,
+                "id_ferias": i.idFerias,
             }
             for i in ferias
         ]
