@@ -25,6 +25,13 @@
             title="Imprime Férias"></a>
         </div>
     </div>
+    <div class="item-ferias">
+        {% for i in colaborador.ferias %}
+        {{ i.data_inicial }}
+        {{ i.data_final }}
+        {{ i.dias }}
+        {% endfor %}
+    </div>
     {% endfor %}
 </div>
 <div class="article-card-footer"></div>

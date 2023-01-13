@@ -158,6 +158,7 @@ class Colaborador:
                 "data_inicial": i.DataInicial,
                 "data_final": i.DataFinal,
                 "id_ferias": i.idFerias,
+                "dias": (i.DataFinal - i.DataInicial).days + 1,
             }
             for i in ferias
         ]
