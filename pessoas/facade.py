@@ -1251,12 +1251,6 @@ def salva_periodo_ferias_colaborador(idpessoal, inicio, termino):
     print(len(connection.queries))
     obj.DataInicial = inicio
     obj.DataFinal = termino
-    obj.Concessao = 1
-    obj.Periodo = 1
-    obj.AquisitivoInicial = admissao
-    obj.AquisitivoFinal = admissao + relativedelta(years=+1, days=-1)
-    obj.DiasPeriodo = (termino - inicio).days + 1
-    obj.DataVencimento = termino + relativedelta(years=+1)
     obj.idPessoal_id = idpessoal
     obj.save()
     print(len(connection.queries))
