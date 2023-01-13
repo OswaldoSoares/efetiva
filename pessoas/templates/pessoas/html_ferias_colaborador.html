@@ -2,27 +2,29 @@
     <span>FÉRIAS</span>
 </div>
 <div class="article-card-body">
+    {% for i in colaborador.aquisitivo %}
     <div class="itens-ferias">
         <div class="item-titulo">
-            <span>PERIODO </span>
+            <span>AQUISITIVO</span>
         </div>
         <div class="item-data">
-            <span>{{ colaborador.data_admissao }}</span>
+            <span>{{ i.aquisitivo_inicial }}</span>
         </div>
         <div class="item-data">
-            <span>{{ colaborador.data_completa_ano }}</span>
+            <span>{{ i.aquisitivo_final }}</span>
         </div>
         <div class="item-button">
             <i class="bi bi-plus-circle i-button js-periodo-ferias"
             title="Inserir Período de Férias"
+            data-idaquisitivo="{{ i.idaquisitivo }}"
             data-idpessoal="{{ colaborador.idpes }}"></i>
         </div>
+        <div class="item-button">
+            <a class="bi bi-printer i-button" target="_blank"
+            href="{% url 'print_ferias' %}?idaquisitivo={{ colaborador.idpes }}"
+            title="Imprime Férias"></a>
+        </div>
     </div>
-    {% if colaborador.ferias %}
-    {% endif %}
+    {% endfor %}
 </div>
-<div class="article-card-footer">
-    <a class="bi bi-printer i-button" target="_blank"
-    href="{% url 'print_ferias' %}?idpes={{ colaborador.idpes }}"
-    title="Imprime Férias"></a>
-</div>
+<div class="article-card-footer"></div>

@@ -59,6 +59,7 @@ dias = [
 
 class Colaborador:
     def __init__(self, idpes):
+        print(len(connection.queries))
         colaborador = Pessoal.objects.get(idPessoal=idpes)
         self.idpes = colaborador.idPessoal
         self.nome = colaborador.Nome
@@ -88,6 +89,7 @@ class Colaborador:
         self.ferias = self.get_ferias(self)
         self.aquisitivo = self.get_aquisitivo(self)
         self.faltas = self.get_faltas_aquisitivo(self)
+        print(len(connection.queries))
         # self.meses_ferias = self.get_meses_feiras(self)
 
     @staticmethod
@@ -184,15 +186,24 @@ class Colaborador:
             obj.DataFinal = aquisitivo_final
             obj.idPessoal_id = self.idpes
             obj.save()
-        return {
-            "aquisitivo_inicial": aquisitivo_inicial,
-            "aquisitivo_final": aquisitivo_final,
-        }
+            aquisitivo = Aquisitivo.objects.filter(idPessoal=self.idpes).order_by(
+                "-DataInicial"
+            )
+        lista = [
+            {
+                "aquisitivo_inicial": i.DataInicial,
+                "aquisitivo_final": i.DataFinal,
+                "idaquisitivo": i.idAquisitivo,
+            }
+            for i in aquisitivo
+        ]
+        return lista
 
     @staticmethod
     def get_faltas_aquisitivo(self):
-        inicio = self.aquisitivo["aquisitivo_inicial"]
-        final = self.aquisitivo["aquisitivo_final"]
+        print(self.aquisitivo[0])
+        inicio = self.aquisitivo[0]["aquisitivo_inicial"]
+        final = self.aquisitivo[0]["aquisitivo_final"]
         cartao_ponto = CartaoPonto.objects.filter(
             idPessoal=self.idpes,
             Dia__range=[inicio, final],
