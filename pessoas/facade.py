@@ -87,6 +87,7 @@ class Colaborador:
         self.decimo_terceiro = self.get_decimo_terceiro(self)
         self.ferias = self.get_ferias(self)
         self.aquisitivo = self.get_aquisitivo(self)
+        self.faltas = self.get_faltas_aquisitivo(self)
         # self.meses_ferias = self.get_meses_feiras(self)
 
     @staticmethod
@@ -187,6 +188,19 @@ class Colaborador:
             "aquisitivo_inicial": aquisitivo_inicial,
             "aquisitivo_final": aquisitivo_final,
         }
+
+    @staticmethod
+    def get_faltas_aquisitivo(self):
+        inicio = self.aquisitivo["aquisitivo_inicial"]
+        final = self.aquisitivo["aquisitivo_final"]
+        cartao_ponto = CartaoPonto.objects.filter(
+            idPessoal=self.idpes,
+            Dia__range=[inicio, final],
+            Ausencia="FALTA",
+            Remunerado=False,
+        )
+        lista = [datetime.datetime.strftime(i.Dia, "%d/%m/%Y") for i in cartao_ponto]
+        return lista
 
 
 class ColaboradorDocumentos:
