@@ -13,6 +13,7 @@ from pagamentos import facade
 
 from pessoas.forms import CadastraSalario, CadastraVale, CadastraDemissao
 from pessoas.models import (
+    Aquisitivo,
     DecimoTerceiro,
     Ferias,
     ParcelasDecimoTerceiro,
@@ -85,6 +86,7 @@ class Colaborador:
         self.salario = ColaboradorSalario(idpes).salario
         self.decimo_terceiro = self.get_decimo_terceiro(self)
         self.ferias = self.get_ferias(self)
+        self.aquisitivo = self.get.aquisitivo(self)
         # self.meses_ferias = self.get_meses_feiras(self)
 
     @staticmethod
@@ -148,13 +150,6 @@ class Colaborador:
     @staticmethod
     def get_ferias(self):
         ferias = Ferias.objects.filter(idPessoal=self.idpes)
-        # if not ferias:
-        #     obj = Ferias()
-        #     obj.Concessao = 1
-        #     obj.DataVencimento = self.data_completa_ano + relativedelta(years=+1)
-        #     obj.idPessoal_id = self.idpes
-        #     obj.save()
-        #     ferias = Ferias.objects.filter(idPessoal=self.idpes)
         lista = [
             {
                 "data_inicial": i.DataInicial,
@@ -164,6 +159,30 @@ class Colaborador:
             for i in ferias
         ]
         return lista
+
+    @staticmethod
+    def get_aquisitivo(self):
+        salvar = False
+        aquisitivo = Aquisitivo.objects.filter(idPessoal=self.idpes).order_by(
+            "-DataInicial"
+        )
+        aquisitivo_inicial = self.data_admissao
+        aquisitivo_final = aquisitivo_inicial + relativedelta(years=+1, days=-1)
+        if not aquisitivo:
+            salvar = True
+        else:
+            if aquisitivo[0].DataFinal < datetime.datetime.today():
+                aquisitivo_inicial = self.data_admissao + relativedelta(
+                    years=+len(aquisitivo)
+                )
+                aquisitivo_final = aquisitivo_inicial + relativedelta(years=+1, days=-1)
+                salvar = True
+        if salvar:
+            obj = Aquisitivo()
+            obj.DataInicial = aquisitivo_inicial
+            obj.DataFinal = aquisitivo_final
+            obj.idPessoal = self.idpes
+            obj.save()
 
 
 class ColaboradorDocumentos:
