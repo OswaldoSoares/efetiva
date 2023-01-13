@@ -86,7 +86,7 @@ class Colaborador:
         self.salario = ColaboradorSalario(idpes).salario
         self.decimo_terceiro = self.get_decimo_terceiro(self)
         self.ferias = self.get_ferias(self)
-        self.aquisitivo = self.get.aquisitivo(self)
+        self.aquisitivo = self.get_aquisitivo(self)
         # self.meses_ferias = self.get_meses_feiras(self)
 
     @staticmethod
