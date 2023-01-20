@@ -13,16 +13,25 @@
         alt="" class="foto">
         {% endif %}
         <span>{{ colaborador.nome }}</span>
-        <form class="file-body js-salva-foto" method="post"
-        enctype="multipart/form-data">
-            {% csrf_token %}
-            <input type="file" class="file js-carrega-foto" id="file_foto">
-            <label for="file_foto" title="Carregar Foto"
-            class="bi bi-camera i-button custonBtn radius-all"></label>
-            <input type="hidden" value="{{ colaborador.idpes }}"
-            id="idpessoal" name="idpessoal">
-            <button type="submit" class="js-salva-foto submit_btn"></button>
-        </form>
+        <div class="botoes">
+            <form class="file-body js-salva-foto" method="post"
+            enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" class="file js-carrega-foto" id="file_foto">
+                <label for="file_foto" title="Carregar Foto"
+                class="bi bi-camera i-button custonBtn radius-left"></label>
+                <input type="hidden" value="{{ colaborador.idpes }}"
+                id="idpessoal" name="idpessoal">
+                <button type="submit" class="js-salva-foto submit_btn"></button>
+                {% if colaborador.status_pessoal %}
+                <i class="icofont-thumbs-down i-button custonBtn radius-right js-altera-status-colaborador"
+                data-idpessoal"{{ colaborador.idpes }}" title="Bloquear Colaborador"></i>
+                {% else %}
+                <i class="icofont-thumbs-up i-button custonBtn radius-right js-altera-status-colaborador"
+                data-idpessoal"{{ colaborador.idpes }}" title="Desbloquear Colaborador"></i>
+                {% endif %}
+            </form>
+        </div>
     </figure>
     <div class="linha-divisoria"></div>
     <div class="itens-dados">

@@ -637,3 +637,20 @@ $(document).on('submit', '.js-paga-decimo-terceiro', function(event) {
         },
     });
 });
+
+$(document).on('click', '.js-altera-status-colaborador', function() {
+    var idpessoal = $("#idpessoal").val()
+    $.ajax({
+        type: "GET",
+        url: "/pessoas/altera_status_colaborador",
+        data: {
+            idpessoal: idpessoal,
+        },
+        beforeSend: function() {
+            $(".box-loader").show()
+        },
+        success: function(data) {
+            $(".box-loader").hide()
+        },
+    });
+});

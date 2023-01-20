@@ -6158,6 +6158,14 @@ main .fp-recibo-tabela .fp-recibo-print {
     display: none;
 }
 
+.card-dados-colaborador .botoes {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
 .div-tres-colaborador {
     display: flex;
     flex-direction: column;

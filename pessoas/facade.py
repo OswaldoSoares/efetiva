@@ -570,12 +570,12 @@ def busca_cartaoponto_referencia(mesreferencia, anoreferencia, idpessoal):
 
 
 def altera_status(idpessoal):
-    pessoa = Pessoal.objects.get(idPessoal=idpessoal)
-    if pessoa.StatusPessoal:
-        pessoa.StatusPessoal = False
+    colaborador = Pessoal.objects.get(idPessoal=idpessoal)
+    if colaborador.StatusPessoal:
+        colaborador.StatusPessoal = False
     else:
-        pessoa.StatusPessoal = True
-    pessoa.save()
+        colaborador.StatusPessoal = True
+    colaborador.save()
 
 
 def form_pessoa(request, c_form, c_idobj, c_url, c_view, idpessoal):

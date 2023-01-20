@@ -572,3 +572,11 @@ def print_ferias(request):
     contexto = facade.create_contexto_print_ferias(idpes, idparcela)
     response = print_pdf_ferias(contexto)
     return response
+
+
+def altera_status_colaborador(request):
+    idpessoal = request.GET.get("idpessoal")
+    facade.altera_status(idpessoal)
+    contexto = facade.create_contexto_consulta_colaborador(idpessoal)
+    data = facade.create_data_consulta_colaborador(request, contexto)
+    return data

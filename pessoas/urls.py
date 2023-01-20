@@ -47,6 +47,7 @@ from .views import (
     periodo_ferias,
     salva_periodo_ferias,
     print_ferias,
+    altera_status_colaborador,
 )
 
 
@@ -223,5 +224,10 @@ urlpatterns = [
         "print_ferias",
         print_ferias,
         name="print_ferias",
+    ),
+    path(
+        "altera_status_colaborador",
+        altera_status_colaborador,
+        name="altera_status_colaborador",
     ),
 ]
