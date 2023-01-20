@@ -1,6 +1,19 @@
 {% load humanize %}
-<div class="article-card-titulo">
-    <span>COLABORADORES</span>
+<div class="article-card-titulo titulo-icone">
+    <div><span>COLABORADORES</span></div>
+    <div>
+        {% for it in colaboradores %}
+        {% if forloop.first %}
+        {% if it.status_pessoal %}
+        <i class="icofont-thumbs-up i-button js-altera-lista"
+        data-lista="" title="Altera para lista de colaboradores bloqueados"></i>
+        {% else %}
+        <i class="icofont-thumbs-down i-button js-altera-lista"
+        data-lista="True" title="Altera para lista de colaboradores ativos"></i>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+    </div>
 </div>
 <div class="article-card-body">
     {% for it in colaboradores %}
@@ -35,7 +48,6 @@
             {% if forloop.last %}
             {{ forloop.counter|stringformat:"02d" }}
             COLABORADOR{{ forloop.counter|pluralize:"es"|upper }}
-            ATIVO{{ forloop.counter|pluralize|upper }}
             {% endif %}
             {% endfor %}
         </div>

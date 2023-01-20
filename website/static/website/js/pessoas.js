@@ -640,16 +640,45 @@ $(document).on('submit', '.js-paga-decimo-terceiro', function(event) {
 
 $(document).on('click', '.js-altera-status-colaborador', function() {
     var idpessoal = $("#idpessoal").val()
+    var lista = $(this).data("lista")
     $.ajax({
         type: "GET",
         url: "/pessoas/altera_status_colaborador",
         data: {
             idpessoal: idpessoal,
+            lista: lista,
         },
         beforeSend: function() {
             $(".box-loader").show()
+            $(".card-lista-colaboradores").hide()
+            $(".card-dados-colaborador").hide()
         },
         success: function(data) {
+            $(".card-lista-colaboradores").html(data.html_lista_colaboradores_ativo)
+            $(".card-dados-colaborador").html(data.html_dados_colaborador)
+            $(".card-lista-colaboradores").show()
+            $(".card-dados-colaborador").show()
+            $(".box-loader").hide()
+        },
+    });
+});
+
+$(document).on('click', '.js-altera-lista', function() {
+    var lista = $(this).data("lista")
+    $.ajax({
+        type: "GET",
+        url: "/pessoas/altera_lista",
+        data: {
+            lista: lista,
+        },
+        beforeSend: function() {
+            $(".box-loader").show()
+            $(".card-lista-colaboradores").hide()
+            $(".card-dados-colaborador").hide()
+        },
+        success: function(data) {
+            $(".card-lista-colaboradores").html(data.html_lista_colaboradores_ativo)
+            $(".card-lista-colaboradores").show()
             $(".box-loader").hide()
         },
     });

@@ -29,7 +29,7 @@ def removeduplicadas(lista):
 
 @has_permission_decorator("modulo_colaboradores")
 def indexpessoal(request):
-    colaboradores = facade.create_contexto_colaboradores_ativo()
+    colaboradores = facade.create_contexto_colaboradores_ativo(True)
     contexto = {"colaboradores": colaboradores}
     return render(request, "pessoas/index.html", contexto)
 
@@ -235,7 +235,7 @@ def salva_foto(request):
 
 def atualiza_decimo_terceiro(request):
     facade.gera_decimo_terceiro()
-    colaboradores = facade.create_contexto_colaboradores_ativo()
+    colaboradores = facade.create_contexto_colaboradores_ativo(True)
     contexto = {"colaboradores": colaboradores}
     data = facade.create_data_lista_colaboradores_ativo(request, contexto)
     return data
@@ -576,7 +576,25 @@ def print_ferias(request):
 
 def altera_status_colaborador(request):
     idpessoal = request.GET.get("idpessoal")
+    ativo = bool(request.GET.get("lista"))
     facade.altera_status(idpessoal)
     contexto = facade.create_contexto_consulta_colaborador(idpessoal)
+    if ativo:
+        colaboradores = facade.create_contexto_colaboradores_ativo(True)
+    else:
+        colaboradores = facade.create_contexto_colaboradores_ativo(False)
+    colaboradores = {"colaboradores": colaboradores}
+    contexto.update(colaboradores)
     data = facade.create_data_consulta_colaborador(request, contexto)
+    return data
+
+
+def altera_lista(request):
+    ativo = bool(request.GET.get("lista"))
+    if ativo:
+        colaboradores = facade.create_contexto_colaboradores_ativo(True)
+    else:
+        colaboradores = facade.create_contexto_colaboradores_ativo(False)
+    contexto = {"colaboradores": colaboradores}
+    data = facade.create_data_lista_colaboradores_ativo(request, contexto)
     return data

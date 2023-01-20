@@ -569,15 +569,6 @@ def busca_cartaoponto_referencia(mesreferencia, anoreferencia, idpessoal):
         return cartaoponto
 
 
-def altera_status(idpessoal):
-    colaborador = Pessoal.objects.get(idPessoal=idpessoal)
-    if colaborador.StatusPessoal:
-        colaborador.StatusPessoal = False
-    else:
-        colaborador.StatusPessoal = True
-    colaborador.save()
-
-
 def form_pessoa(request, c_form, c_idobj, c_url, c_view, idpessoal):
     data = dict()
     c_instance = None
@@ -646,8 +637,8 @@ def form_exclui_pessoal(request, c_idobj, c_url, c_view, idpessoal):
 
 
 # TODO: Refatoração
-def create_contexto_colaboradores_ativo():
-    colaboradores = Pessoal.objects.filter(StatusPessoal=True)
+def create_contexto_colaboradores_ativo(status_colaborador):
+    colaboradores = Pessoal.objects.filter(StatusPessoal=status_colaborador)
     lista = []
     hoje = datetime.datetime.today()
     for i in colaboradores:
@@ -660,6 +651,7 @@ def create_contexto_colaboradores_ativo():
                 "nome": i.Nome,
                 "nome_curto": nome_curto(i.Nome),
                 "tipo_pgto": i.TipoPgto,
+                "status_pessoal": i.StatusPessoal,
                 "decimo_terceiro": decimo_terceiro,
             }
         )
@@ -686,6 +678,7 @@ def create_contexto_consulta_colaborador(idpessoal):
 
 def create_data_consulta_colaborador(request, contexto):
     data = dict()
+    html_lista_colaboradores_ativo(request, contexto, data)
     html_dados_colaborador(request, contexto, data)
     html_ferias_colaborador(request, contexto, data)
     html_decimo_terceiro(request, contexto, data)
@@ -1359,3 +1352,12 @@ def salva_demissao(idpessoal, demissao):
     obj.DataDemissao = demissao
     obj.idPessoal = idpessoal
     obj.save(update_fields=["DataDemissao"])
+
+
+def altera_status(idpessoal):
+    colaborador = Pessoal.objects.get(idPessoal=idpessoal)
+    if colaborador.StatusPessoal:
+        colaborador.StatusPessoal = False
+    else:
+        colaborador.StatusPessoal = True
+    colaborador.save()

@@ -24,11 +24,13 @@
                 id="idpessoal" name="idpessoal">
                 <button type="submit" class="js-salva-foto submit_btn"></button>
                 {% if colaborador.status_pessoal %}
-                <i class="icofont-thumbs-down i-button custonBtn radius-right js-altera-status-colaborador"
-                data-idpessoal"{{ colaborador.idpes }}" title="Bloquear Colaborador"></i>
-                {% else %}
                 <i class="icofont-thumbs-up i-button custonBtn radius-right js-altera-status-colaborador"
-                data-idpessoal"{{ colaborador.idpes }}" title="Desbloquear Colaborador"></i>
+                data-idpessoal"{{ colaborador.idpes }}" data-lista=""
+                title="Bloquear Colaborador"></i>
+                {% else %}
+                <i class="icofont-thumbs-down i-button custonBtn radius-right js-altera-status-colaborador"
+                data-idpessoal"{{ colaborador.idpes }}" data-lista="{{ colaborador.status_pessoal }}"
+                title="Desbloquear Colaborador"></i>
                 {% endif %}
             </form>
         </div>
