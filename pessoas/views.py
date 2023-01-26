@@ -533,10 +533,13 @@ def salva_demissao_colaborador(request):
 
 
 def periodo_ferias(request):
+    print(f"[INFO] - request GET - {request.GET}")
     idpessoal = request.GET.get("idpessoal")
+    idaquisitivo = request.GET.get("idaquisitivo")
     hoje = str_hoje()
     contexto = {
         "idpessoal": idpessoal,
+        "idaquisitivo": idaquisitivo,
         "hoje": hoje,
     }
     data = facade.create_data_form_periodo_ferias(request, contexto)
@@ -544,6 +547,7 @@ def periodo_ferias(request):
 
 
 def salva_periodo_ferias(request):
+    print(f"[INFO] - request POST - {request.POST}")
     error, msg = facade.valida_periodo_ferias(request)
     ferias_form = facade.read_periodo_ferias_post(request)
     if not error:
@@ -551,7 +555,10 @@ def salva_periodo_ferias(request):
         idpessoal = request.POST.get("idpessoal")
         inicio = request.POST.get("inicio")
         terminio = request.POST.get("termino")
-        facade.salva_periodo_ferias_colaborador(idpessoal, inicio, terminio)
+        idaquisitivo = request.POST.get("idaquisitivo")
+        facade.salva_periodo_ferias_colaborador(
+            idpessoal, inicio, terminio, idaquisitivo
+        )
         data = JsonResponse(data)
         ferias_form = dict()
     else:

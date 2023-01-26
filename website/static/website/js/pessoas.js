@@ -123,11 +123,13 @@ $(document).on('click', '.js-demissao', function() {
 
 $(document).on('click', '.js-periodo-ferias', function() {
     var idpessoal = $("#idpessoal").val();
+    var idaquisitivo = $(this).data("idaquisitivo");
     $.ajax({
         type: "GET",
         url: "/pessoas/periodo_ferias",
         data: {
             idpessoal: idpessoal,
+            idaquisitivo: idaquisitivo,
         },
         beforeSend: function() {
             $(".box-loader").show()

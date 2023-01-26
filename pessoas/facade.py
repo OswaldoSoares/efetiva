@@ -1248,7 +1248,7 @@ def read_periodo_ferias_post(request):
     return periodo_ferias_post
 
 
-def salva_periodo_ferias_colaborador(idpessoal, inicio, termino):
+def salva_periodo_ferias_colaborador(idpessoal, inicio, termino, idaquisitivo):
     print(len(connection.queries))
     inicio = datetime.datetime.strptime(inicio, "%Y-%m-%d")
     termino = datetime.datetime.strptime(termino, "%Y-%m-%d")
@@ -1294,6 +1294,7 @@ def salva_periodo_ferias_colaborador(idpessoal, inicio, termino):
     obj.DataInicial = inicio
     obj.DataFinal = termino
     obj.idPessoal_id = idpessoal
+    obj.idAquisitivo_id = idaquisitivo
     obj.save()
     print(len(connection.queries))
 
