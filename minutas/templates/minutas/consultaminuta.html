@@ -710,9 +710,9 @@
                         <span>SALDO MINUTA R$ 0,00</span>
                     </div>
                     <div class="btnfinalizaminuta">
-                        {% if user|can:'fecha_minuta' %}
+                        {% comment %} {% if user|can:'fecha_minuta' %} {% endcomment %}
                         <button type="submit" class="btn btn-success btn-sm active">FECHAR MINUTA</button>
-                        {% endif %}
+                        {% comment %} {% endif %} {% endcomment %}
                     </div>
                 </form>
             </div>
