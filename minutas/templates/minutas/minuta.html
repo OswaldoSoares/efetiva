@@ -55,11 +55,12 @@
             <article class="article-card ac-despesa">
                 <div class="article-titulo">
                     <span>DESPESAS</span>
-                    {% if not s_minuta.paga_realizada %}
+                    {% comment %} TODO Verificar após estorno não insere despesa {% endcomment %}
+                    {% comment %} {% if not s_minuta.paga_realizada %} {% endcomment %}
                     <i class="bi bi-plus-square i-button" onclick="openMyModal(event); return false;"
                     data-title="INSERE DESPESA" data-action="{% url 'inseredespesa' %}"
                     data-button-save-label="INSERIR" data-idminuta="{{ s_minuta.idminuta }}"></i>
-                    {% endif %}
+                    {% comment %} {% endif %} {% endcomment %}
                 </div>
                 <div class="html-despesa">
                     {% include 'minutas/despesaminuta.html' %}
@@ -68,11 +69,11 @@
             <article class="article-card ac-entrega">
                 <div class="article-titulo">
                     <span>ENTREGAS</span>
-                    {% if not s_minuta.paga_realizada %}
+                    {% comment %} {% if not s_minuta.paga_realizada %} {% endcomment %}
                     <i class="bi bi-plus-square i-button" onclick="openMyModal(event); return false;"
                     data-title="INSERE ENTREGA" data-action="{% url 'insereentrega' %}"
                     data-button-save-label="INSERIR" data-idminuta="{{ s_minuta.idminuta }}"></i>
-                    {% endif %}
+                    {% comment %} {% endif %} {% endcomment %}
                 </div>
                 <div class="html-entrega">
                     {% include 'minutas/entregaminuta.html' %}
