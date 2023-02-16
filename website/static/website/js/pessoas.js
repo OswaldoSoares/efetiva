@@ -24,11 +24,11 @@ $(document).on('click', ".js-seleciona-colaborador", function() {
             // Força o recarregamento da foto sem utilizar o cache
             $(".foto").attr("src", url + `?v=${new Date().getTime()}`);
             $(".card-ferias-colaborador").html(data.html_ferias_colaborador)
-            $(".card-ferias-colaborador").show()
             $(".card-decimo-terceiro").html(data.html_decimo_terceiro)
-            $(".card-decimo-terceiro").show()
             if (data.tipo_pgto == "MENSALISTA") {
                 $(".button-demissao").show()
+                $(".card-decimo-terceiro").show()
+                $(".card-ferias-colaborador").show()
             } else {
                 $(".button-demissao").hide()
             }

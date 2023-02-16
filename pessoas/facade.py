@@ -166,52 +166,61 @@ class Colaborador:
 
     @staticmethod
     def get_aquisitivo(self):
-        salvar = False
-        aquisitivo = Aquisitivo.objects.filter(idPessoal=self.idpes).order_by(
-            "-DataInicial"
-        )
-        aquisitivo_inicial = self.data_admissao
-        aquisitivo_final = aquisitivo_inicial + relativedelta(years=+1, days=-1)
-        if not aquisitivo:
-            salvar = True
-        else:
-            if aquisitivo[0].DataFinal < datetime.datetime.today().date():
-                aquisitivo_inicial = self.data_admissao + relativedelta(
-                    years=+len(aquisitivo)
-                )
-                aquisitivo_final = aquisitivo_inicial + relativedelta(years=+1, days=-1)
-                salvar = True
-        if salvar:
-            obj = Aquisitivo()
-            obj.DataInicial = aquisitivo_inicial
-            obj.DataFinal = aquisitivo_final
-            obj.idPessoal_id = self.idpes
-            obj.save()
+        if self.tipo_pgto == "MENSALISTA":
+            salvar = False
             aquisitivo = Aquisitivo.objects.filter(idPessoal=self.idpes).order_by(
                 "-DataInicial"
             )
-        lista = [
-            {
-                "aquisitivo_inicial": i.DataInicial,
-                "aquisitivo_final": i.DataFinal,
-                "idaquisitivo": i.idAquisitivo,
-            }
-            for i in aquisitivo
-        ]
+            aquisitivo_inicial = self.data_admissao
+            aquisitivo_final = aquisitivo_inicial + relativedelta(years=+1, days=-1)
+            if not aquisitivo:
+                salvar = True
+            else:
+                if aquisitivo[0].DataFinal < datetime.datetime.today().date():
+                    aquisitivo_inicial = self.data_admissao + relativedelta(
+                        years=+len(aquisitivo)
+                    )
+                    aquisitivo_final = aquisitivo_inicial + relativedelta(
+                        years=+1, days=-1
+                    )
+                    salvar = True
+            if salvar:
+                obj = Aquisitivo()
+                obj.DataInicial = aquisitivo_inicial
+                obj.DataFinal = aquisitivo_final
+                obj.idPessoal_id = self.idpes
+                obj.save()
+                aquisitivo = Aquisitivo.objects.filter(idPessoal=self.idpes).order_by(
+                    "-DataInicial"
+                )
+            lista = [
+                {
+                    "aquisitivo_inicial": i.DataInicial,
+                    "aquisitivo_final": i.DataFinal,
+                    "idaquisitivo": i.idAquisitivo,
+                }
+                for i in aquisitivo
+            ]
+        else:
+            lista = []
         return lista
 
     @staticmethod
     def get_faltas_aquisitivo(self):
-        print(self.aquisitivo[0])
-        inicio = self.aquisitivo[0]["aquisitivo_inicial"]
-        final = self.aquisitivo[0]["aquisitivo_final"]
-        cartao_ponto = CartaoPonto.objects.filter(
-            idPessoal=self.idpes,
-            Dia__range=[inicio, final],
-            Ausencia="FALTA",
-            Remunerado=False,
-        )
-        lista = [datetime.datetime.strftime(i.Dia, "%d/%m/%Y") for i in cartao_ponto]
+        if self.tipo_pgto == "MENSALISTA":
+            inicio = self.aquisitivo[0]["aquisitivo_inicial"]
+            final = self.aquisitivo[0]["aquisitivo_final"]
+            cartao_ponto = CartaoPonto.objects.filter(
+                idPessoal=self.idpes,
+                Dia__range=[inicio, final],
+                Ausencia="FALTA",
+                Remunerado=False,
+            )
+            lista = [
+                datetime.datetime.strftime(i.Dia, "%d/%m/%Y") for i in cartao_ponto
+            ]
+        else:
+            lista = []
         return lista
 
 
@@ -677,11 +686,13 @@ def create_contexto_consulta_colaborador(idpessoal):
 
 
 def create_data_consulta_colaborador(request, contexto):
+    tipo_pgto = contexto["colaborador"]["tipo_pgto"]
     data = dict()
     html_lista_colaboradores_ativo(request, contexto, data)
     html_dados_colaborador(request, contexto, data)
-    html_ferias_colaborador(request, contexto, data)
-    html_decimo_terceiro(request, contexto, data)
+    if tipo_pgto == "MENSALISTA":
+        html_ferias_colaborador(request, contexto, data)
+        html_decimo_terceiro(request, contexto, data)
     return JsonResponse(data)
 
 
