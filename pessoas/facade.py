@@ -1299,9 +1299,14 @@ def salva_periodo_ferias_colaborador(idpessoal, inicio, termino, idaquisitivo):
     print(len(connection.queries))
 
 
-def create_contexto_print_ferias(idpes, idparcela):
+def create_contexto_print_ferias(idpes, idaquisitivo, idparcela):
     colaborador = Colaborador(idpes).__dict__
-    contexto = {"colaborador": colaborador, "idparcela": idparcela}
+    aquisitivo = Aquisitivo.objects.get(idAquisitivo=idaquisitivo)
+    contexto = {
+        "colaborador": colaborador,
+        "aquisitivo": aquisitivo,
+        "idparcela": idparcela,
+    }
     return contexto
 
 

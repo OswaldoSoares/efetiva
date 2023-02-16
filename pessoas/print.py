@@ -281,6 +281,12 @@ def print_pdf_ferias(contexto):
         pdf.setFont("Times-Roman", 11)
         linhaitens = 0
         salario_base = contexto["colaborador"]["salario"][0]["salario"]
+        aquisitivo_inicial = datetime.datetime.strftime(
+            contexto["aquisitivo"].DataInicial, "%d/%m/%Y"
+        )
+        aquisitivo_final = datetime.datetime.strftime(
+            contexto["aquisitivo"].DataFinal, "%d/%m/%Y"
+        )
         um_terco = round(salario_base / 100 * Decimal(33.3333), 2)
         total = salario_base + um_terco
         pdf.drawString(
@@ -342,6 +348,11 @@ def print_pdf_ferias(contexto):
         #         cmp(linha - 124),
         #         f"PIX: {contexto['banco'][0].PIX} - BANCO: {contexto['banco'][0].Banco} - AG: {contexto['banco'][0].Agencia} - CONTA {contexto['banco'][0].Conta} - {contexto['banco'][0].TipoConta}",
         #     )
+        pdf.drawString(
+            cmp(6),
+            cmp(linha - 124),
+            f"PÉRIODO AQUISITIVO: {aquisitivo_inicial} - {aquisitivo_final}",
+        )
         pdf.setFont("Times-Roman", 11)
         pdf.drawString(cmp(10), cmp(linha - 139), "SALÁRIO BASE")
         pdf.drawString(
@@ -360,7 +371,7 @@ def print_pdf_ferias(contexto):
         pdf.drawString(
             cmp(linha - 138),
             cmp(-186),
-            "DECLARO TER RECEBIDO A IMPORTÂNCIA LÍQUIDA " "DISCRIMINADA NESTE RECIBO",
+            "DECLARO TER RECEBIDO A IMPORTÂNCIA LÍQUIDA DISCRIMINADA NESTE RECIBO",
         )
         pdf.drawString(cmp(linha - 133), cmp(-197), "_____/_____/_____")
         pdf.drawString(cmp(linha - 133), cmp(-201), "          DATA       ")

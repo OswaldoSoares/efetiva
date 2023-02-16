@@ -21,7 +21,7 @@
         </div>
         <div class="item-button">
             <a class="bi bi-printer i-button" target="_blank"
-            href="{% url 'print_ferias' %}?idaquisitivo={{ colaborador.idpes }}"
+            href="{% url 'print_ferias' %}?idpes={{ colaborador.idpes }}&idaquisitivo={{ i.idaquisitivo }}"
             title="Imprime Férias"></a>
         </div>
     </div>

@@ -533,7 +533,6 @@ def salva_demissao_colaborador(request):
 
 
 def periodo_ferias(request):
-    print(f"[INFO] - request GET - {request.GET}")
     idpessoal = request.GET.get("idpessoal")
     idaquisitivo = request.GET.get("idaquisitivo")
     hoje = str_hoje()
@@ -547,7 +546,6 @@ def periodo_ferias(request):
 
 
 def salva_periodo_ferias(request):
-    print(f"[INFO] - request POST - {request.POST}")
     error, msg = facade.valida_periodo_ferias(request)
     ferias_form = facade.read_periodo_ferias_post(request)
     if not error:
@@ -575,8 +573,9 @@ def salva_periodo_ferias(request):
 
 def print_ferias(request):
     idpes = request.GET.get("idpes")
+    idaquisitivo = request.GET.get("idaquisitivo")
     idparcela = request.GET.get("idparcela")
-    contexto = facade.create_contexto_print_ferias(idpes, idparcela)
+    contexto = facade.create_contexto_print_ferias(idpes, idaquisitivo, idparcela)
     response = print_pdf_ferias(contexto)
     return response
 
