@@ -94,6 +94,7 @@
             {{ colaborador.categoria }}
         </div>
     </div>
+    {% if colaborador.tipo_pgto == "MENSALISTA" %}
     {% if colaborador.data_admissao  %}
     <div class="itens-dados">
         <div class="item-descricao">
@@ -125,6 +126,7 @@
             R$ {{ colaborador.salario.0.salario|intcomma }}
         </div>
     </div>
+    {% endif %}
     <div class="itens-dados">
         <div class="item-descricao">
             <i class="bi bi-currency-dollar i-button-null"></i>
@@ -134,6 +136,7 @@
             {{ colaborador.tipo_pgto }}
         </div>
     </div>
+    {% if colaborador.tipo_pgto == "MENSALISTA" %}
     <div class="itens-dados">
         <div class="item-descricao">
             <i class="icofont-bus-alt-2 i-button-null"></i>
@@ -143,6 +146,7 @@
             R$ {{ colaborador.salario.0.transporte|intcomma }}
         </div>
     </div>
+    {% endif %}
     <div class="linha-divisoria"></div>
     {% for x in colaborador.documentos %}
     <div class="itens-dados">
@@ -237,11 +241,13 @@
     title="Adiciona Telefone" data-idpessoal="{{ colaborador.idpes }}"></i>
     <i class="icofont-bank-alt i-button js-adiciona-conta-colaborador"
     title="Adiciona Conta Bancária" data-idpessoal="{{ colaborador.idpes }}"></i>
+    {% if colaborador.tipo_pgto == "MENSALISTA" %}
     <i class="bi bi-currency-dollar i-button js-altera-salario-colaborador"
     title="Altera Valor do Salário e do Vale Transporte"
     data-idpessoal="{{ colaborador.idpes }}"></i>
     <i class="icofont-beach i-button js-periodo-ferias"
     title="Ferias do Colaborador" data-idpessoal="{{ colaborador.idpes }}"></i>
+    {% endif %}
     <a class="bi bi-printer i-button" target="_blank"
     href="{% url 'print_ficha_colaborador' %}?idpes={{ colaborador.idpes }}"
     title="Imprime Ficha do Colaborador"></a>
