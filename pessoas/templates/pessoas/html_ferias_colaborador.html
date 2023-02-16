@@ -25,13 +25,24 @@
             title="Imprime Férias"></a>
         </div>
     </div>
-    <div class="item-ferias">
-        {% for i in colaborador.ferias %}
-        {{ i.data_inicial }}
-        {{ i.data_final }}
-        {{ i.dias }}
-        {% endfor %}
+    {% for ferias in colaborador.ferias %}
+    {% if i.idaquisitivo == ferias.idaquisitivo %}
+    <div class="itens-ferias-periodo">
+        <div class="item-button">
+            <i class="icofont-beach i-button-null"></i>
+        </div>
+        <div class="item-inicio">
+            {{ ferias.data_inicial }}
+        </div>
+        <div class="item-final">
+            {{ ferias.data_final }}
+        </div>
+        <div class="item-dias">
+            {{ ferias.dias|stringformat:"02d" }} DIAS
+        </div>
     </div>
+    {% endif %}
+    {% endfor %}
     {% endfor %}
 </div>
 <div class="article-card-footer"></div>

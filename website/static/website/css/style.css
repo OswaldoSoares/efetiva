@@ -6235,7 +6235,8 @@ main .fp-recibo-tabela .fp-recibo-print {
     width: 280px;
 }
 
-.card-ferias-colaborador .itens-ferias {
+.card-ferias-colaborador .itens-ferias,
+.card-ferias-colaborador .itens-ferias-periodo {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -6257,6 +6258,27 @@ main .fp-recibo-tabela .fp-recibo-print {
 .card-ferias-colaborador .itens-ferias .item-button {
     width: 7%;
     text-align: center;
+}
+
+.card-ferias-colaborador .itens-ferias-periodo .item-button {
+    width: 10%;
+    text-align: center;
+}
+
+.card-ferias-colaborador .itens-ferias-periodo .item-inicio {
+    width: 30%;
+    text-align: center;
+}
+
+.card-ferias-colaborador .itens-ferias-periodo .item-final {
+    width: 30%;
+    text-align: center;
+}
+
+.card-ferias-colaborador .itens-ferias-periodo .item-dias {
+    width: 30%;
+    text-align: left;
+    padding-left: 5px;
 }
 
 .card-form-colaborador {

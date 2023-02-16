@@ -126,42 +126,50 @@ class Colaborador:
 
     @staticmethod
     def get_decimo_terceiro(self):
-        hoje = datetime.datetime.today()
-        decimo_terceiro = DecimoTerceiro.objects.filter(
-            idPessoal=self.idpes, Ano=hoje.year
-        )
-        lista = []
-        for i in decimo_terceiro:
-            decimo_terceiro_parcelas = list(
-                ParcelasDecimoTerceiro.objects.filter(
-                    idDecimoTerceiro=decimo_terceiro[0].idDecimoTerceiro
+        if self.tipo_pgto == "MENSALISTA":
+            hoje = datetime.datetime.today()
+            decimo_terceiro = DecimoTerceiro.objects.filter(
+                idPessoal=self.idpes, Ano=hoje.year
+            )
+            lista = []
+            for i in decimo_terceiro:
+                decimo_terceiro_parcelas = list(
+                    ParcelasDecimoTerceiro.objects.filter(
+                        idDecimoTerceiro=decimo_terceiro[0].idDecimoTerceiro
+                    )
                 )
-            )
-            lista.append(
-                {
-                    "id_decimo_terceiro": i.idDecimoTerceiro,
-                    "ano": i.Ano,
-                    "dozeavos": i.Dozeavos,
-                    "valor_base": i.ValorBase,
-                    "valor": i.Valor,
-                    "pago": i.Pago,
-                    "parcelas": decimo_terceiro_parcelas,
-                }
-            )
+                lista.append(
+                    {
+                        "id_decimo_terceiro": i.idDecimoTerceiro,
+                        "ano": i.Ano,
+                        "dozeavos": i.Dozeavos,
+                        "valor_base": i.ValorBase,
+                        "valor": i.Valor,
+                        "pago": i.Pago,
+                        "parcelas": decimo_terceiro_parcelas,
+                    }
+                )
+        else:
+            lista = []
         return lista
 
     @staticmethod
     def get_ferias(self):
-        ferias = Ferias.objects.filter(idPessoal=self.idpes)
-        lista = [
-            {
-                "data_inicial": i.DataInicial,
-                "data_final": i.DataFinal,
-                "id_ferias": i.idFerias,
-                "dias": (i.DataFinal - i.DataInicial).days + 1,
-            }
-            for i in ferias
-        ]
+        if self.tipo_pgto == "MENSALISTA":
+            ferias = Ferias.objects.filter(idPessoal=self.idpes)
+            lista = [
+                {
+                    "data_inicial": i.DataInicial,
+                    "data_final": i.DataFinal,
+                    "id_ferias": i.idFerias,
+                    "idaquisitivo": i.idAquisitivo_id,
+                    "dias": (i.DataFinal - i.DataInicial).days + 1,
+                }
+                for i in ferias
+            ]
+        else:
+            lista = []
+        print(f"[INFO] Férias - {lista}")
         return lista
 
     @staticmethod
@@ -203,6 +211,7 @@ class Colaborador:
             ]
         else:
             lista = []
+        print(f"[INFO] Aquisitivo - {lista}")
         return lista
 
     @staticmethod
