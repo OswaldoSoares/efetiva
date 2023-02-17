@@ -273,10 +273,13 @@ $(document).on('submit', '.js-gera-periodo-ferias', function(event) {
         data: $(this).serialize(),
         beforeSend: function() {
             $('.card-form-colaborador').hide()
+            $('.card-ferias-colaborador').hide()
             $('.box-loader').show()
         },
         success: function(data) {
             $(".card-dados-colaborador").show()
+            $(".card-ferias-colaborador").html(data.html_ferias_colaborador)
+            $('.card-ferias-colaborador').show()
             if (data.html_form_periodo_ferias) {
                 $('.card-form-colaborador').html(data.html_form_periodo_ferias)
                 $('.card-form-colaborador').show()

@@ -557,7 +557,8 @@ def salva_periodo_ferias(request):
         facade.salva_periodo_ferias_colaborador(
             idpessoal, inicio, terminio, idaquisitivo
         )
-        data = JsonResponse(data)
+        contexto = facade.create_contexto_consulta_colaborador(idpessoal)
+        data = facade.create_data_consulta_colaborador(request, contexto)
         ferias_form = dict()
     else:
         idpessoal = request.POST.get("idpessoal")
