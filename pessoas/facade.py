@@ -1002,6 +1002,13 @@ def create_data_form_exclui_conta_colaborador(request, contexto):
     return JsonResponse(data)
 
 
+# TODO renomear função já existe fazendo a mesma função.
+def create_data_form_exclui_periodo_ferias(request, contexto):
+    data = dict()
+    html_form_confirma_exclusao(request, contexto, data)
+    return JsonResponse(data)
+
+
 def html_form_adiciona_conta_colaborador(request, contexto, data):
     data["html_form_conta_colaborador"] = render_to_string(
         "pessoas/html_form_conta_colaborador.html", contexto, request=request
@@ -1119,6 +1126,26 @@ def create_contexto_exclui_conta_colaborador(idcontapessoal):
         "idpessoal": idpessoal,
         "js_class": js_class,
     }
+
+
+def create_contexto_exclui_ferias(idferias):
+    ferias = Ferias.objects.get(idFerias=idferias)
+    inicio = datetime.datetime.strftime(ferias.DataInicial, "%d/%m/%Y")
+    final = datetime.datetime.strftime(ferias.DataFinal, "%d/%m/%Y")
+    idpessoal = ferias.idPessoal_id
+    mensagem = f"Confirma a exclusão do periodo de férias de: {inicio} - {final}?"
+    js_class = "js-exclui-periodo-ferias"
+    return {
+        "mensagem": mensagem,
+        "idobj": idferias,
+        "idpessoal": idpessoal,
+        "js_class": js_class,
+    }
+
+
+def exclui_periodo_ferias_base_dados(idferias):
+    ferias = Ferias.objects.get(idFerias=idferias)
+    ferias.delete()
 
 
 def apaga_conta(idcontapessoal):

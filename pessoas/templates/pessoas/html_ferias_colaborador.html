@@ -41,7 +41,8 @@
             {{ ferias.dias|stringformat:"02d" }} DIAS
         </div>
         <div class="item-button">
-            <i class="bi bi-trash i-button"></i>
+            <i class="bi bi-trash i-button js-confirma-exclusao-periodo-ferias"
+            data-idferias="{{ ferias.id_ferias }}"></i>
         </div>
     </div>
     {% endif %}

@@ -572,6 +572,22 @@ def salva_periodo_ferias(request):
     return data
 
 
+def confirma_exclusao_periodo_ferias(request):
+    idferias = request.GET.get("idferias")
+    contexto = facade.create_contexto_exclui_ferias(idferias)
+    data = facade.create_data_form_exclui_periodo_ferias(request, contexto)
+    return data
+
+
+def exclui_periodo_ferias(request):
+    idpessoal = request.POST.get("idpessoal")
+    idferias = request.POST.get("idobj")
+    facade.exclui_periodo_ferias_base_dados(idferias)
+    contexto = facade.create_contexto_consulta_colaborador(idpessoal)
+    data = facade.create_data_consulta_colaborador(request, contexto)
+    return data
+
+
 def print_ferias(request):
     idpes = request.GET.get("idpes")
     idaquisitivo = request.GET.get("idaquisitivo")

@@ -46,6 +46,8 @@ from .views import (
     salva_demissao_colaborador,
     periodo_ferias,
     salva_periodo_ferias,
+    confirma_exclusao_periodo_ferias,
+    exclui_periodo_ferias,
     print_ferias,
     altera_status_colaborador,
     altera_lista,
@@ -235,5 +237,15 @@ urlpatterns = [
         "altera_lista",
         altera_lista,
         name="altera_lista",
+    ),
+    path(
+        "confirma_exclusao_periodo_ferias",
+        confirma_exclusao_periodo_ferias,
+        name="confirma_exclusao_periodo_ferias",
+    ),
+    path(
+        "exclui_periodo_ferias",
+        exclui_periodo_ferias,
+        name="exclui_periodo_ferias",
     ),
 ]
