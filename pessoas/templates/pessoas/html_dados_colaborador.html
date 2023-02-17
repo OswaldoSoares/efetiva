@@ -147,6 +147,17 @@
         </div>
     </div>
     {% endif %}
+    {% if colaborador.tipo_pgto == "MENSALISTA" %}
+    <div class="itens-dados">
+        <div class="item-descricao">
+            <i class="bi bi-house i-button-null"></i>
+            <span>FALTAS:</span>
+        </div>
+        <div class="item-valor">
+            {{ colaborador.faltas|length  }}
+        </div>
+    </div>
+    {% endif %}
     <div class="linha-divisoria"></div>
     {% for x in colaborador.documentos %}
     <div class="itens-dados">

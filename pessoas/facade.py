@@ -89,6 +89,7 @@ class Colaborador:
         self.ferias = self.get_ferias(self)
         self.aquisitivo = self.get_aquisitivo(self)
         self.faltas = self.get_faltas_aquisitivo(self)
+        self.salario_ferias = self.get_salario_ferias(self)
         print(len(connection.queries))
         # self.meses_ferias = self.get_meses_feiras(self)
 
@@ -169,7 +170,6 @@ class Colaborador:
             ]
         else:
             lista = []
-        print(f"[INFO] Férias - {lista}")
         return lista
 
     @staticmethod
@@ -211,7 +211,6 @@ class Colaborador:
             ]
         else:
             lista = []
-        print(f"[INFO] Aquisitivo - {lista}")
         return lista
 
     @staticmethod
@@ -231,6 +230,23 @@ class Colaborador:
         else:
             lista = []
         return lista
+
+    @staticmethod
+    def get_salario_ferias(self):
+        salario = Decimal(self.salario[0]["salario"])
+        salario_dia = salario / 30
+        faltas = len(self.faltas)
+        salario_ferias = Decimal(0.00)
+        if faltas < 6:
+            salario_ferias = salario
+        elif faltas > 5 and faltas < 15:
+            salario_ferias = salario_dia * 24
+        elif faltas > 14 and faltas < 24:
+            salario_ferias = salario_dia * 18
+        elif faltas > 23 and faltas < 33:
+            salario_ferias = salario_dia * 12
+        salario_ferias = round(salario_ferias, 2)
+        return salario_ferias
 
 
 class ColaboradorDocumentos:
@@ -1214,7 +1230,6 @@ def html_form_salario_colaborador(request, contexto, data):
 
 
 def valida_salario_colaborador(request):
-    print("[INFO] - ", request.POST)
     msg = dict()
     error = False
     salario = float(request.POST.get("valor_salario"))

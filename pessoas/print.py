@@ -280,7 +280,7 @@ def print_pdf_ferias(contexto):
         )
         pdf.setFont("Times-Roman", 11)
         linhaitens = 0
-        salario_base = contexto["colaborador"]["salario"][0]["salario"]
+        salario_base = contexto["colaborador"]["salario_ferias"]
         aquisitivo_inicial = datetime.datetime.strftime(
             contexto["aquisitivo"].DataInicial, "%d/%m/%Y"
         )
@@ -289,6 +289,15 @@ def print_pdf_ferias(contexto):
         )
         um_terco = round(salario_base / 100 * Decimal(33.3333), 2)
         total = salario_base + um_terco
+        faltas = len(contexto["colaborador"]["faltas"])
+        if faltas < 6:
+            data_referencia = "30d"
+        elif faltas > 5 and faltas < 15:
+            data_referencia = "24d"
+        elif faltas > 14 and faltas < 24:
+            data_referencia = "18d"
+        elif faltas > 23 and faltas < 33:
+            data_referencia = "12d"
         pdf.drawString(
             cmp(17.5),
             cmp(linha - 41.2 - linhaitens),
@@ -298,18 +307,18 @@ def print_pdf_ferias(contexto):
         pdf.drawString(
             cmp(32),
             cmp(linha - 40.9 - linhaitens),
-            f"(PERÍODO AQUISITIVO AQUI - E AQUI)",
+            f"(PERÍODO AQUISITIVO {aquisitivo_inicial} - E {aquisitivo_final})",
         )
         pdf.setFont("Times-Roman", 11)
         pdf.drawCentredString(
             cmp(106),
             cmp(linha - 41.2 - linhaitens),
-            "30d",
+            f"{data_referencia}",
         )
         pdf.drawRightString(
             cmp(142.6),
             cmp(linha - 41.2 - linhaitens),
-            "{}".format(salario_base).replace(".", ","),
+            "R$ {}".format(salario_base).replace(".", ","),
         )
         linhaitens += 4
         pdf.drawString(
@@ -325,19 +334,19 @@ def print_pdf_ferias(contexto):
         pdf.drawRightString(
             cmp(142.6),
             cmp(linha - 41.2 - linhaitens),
-            "{}".format(um_terco).replace(".", ","),
+            "R$ {}".format(um_terco).replace(".", ","),
         )
         pdf.setFont("Times-Roman", 11)
         pdf.drawRightString(
             cmp(142.6),
             cmp(linha - 124),
-            "{}".format(total).replace(".", ","),
+            "R$ {}".format(total).replace(".", ","),
         )
         pdf.drawRightString(cmp(171.7), cmp(linha - 124), "R$ 0,00")
         pdf.drawRightString(
             cmp(171.7),
             cmp(linha - 132),
-            "{}".format(total).replace(".", ","),
+            "R$ {}".format(total).replace(".", ","),
         )
         pdf.setFont("Times-Roman", 8)
         # if contexto["banco"]:
@@ -351,14 +360,14 @@ def print_pdf_ferias(contexto):
         pdf.drawString(
             cmp(6),
             cmp(linha - 124),
-            f"PÉRIODO AQUISITIVO: {aquisitivo_inicial} - {aquisitivo_final}",
+            f"FALTAS NO PERIODO AQUISITIVO: {faltas}",
         )
         pdf.setFont("Times-Roman", 11)
         pdf.drawString(cmp(10), cmp(linha - 139), "SALÁRIO BASE")
         pdf.drawString(
             cmp(10),
             cmp(linha - 144),
-            "{}".format(contexto["colaborador"]["salario"][0]["salario"]).replace(
+            "R$ {}".format(contexto["colaborador"]["salario"][0]["salario"]).replace(
                 ".", ","
             ),
         )
