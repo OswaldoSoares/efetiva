@@ -4,9 +4,10 @@
 <div class="article-card-body js-body-recibos-avulso">
     {% if recibos %}
     <div class="itens-recibo-avulso">
-        <div class="item-dia item-titulo">RECIBO</div>
-        <div class="item-recibo item-titulo">DIA</div>
+        <div class="item-dia item-titulo">DIA</div>
+        <div class="item-recibo item-titulo">RECIBO</div>
         <div class="item-valor item-titulo">VALOR</div>
+        <div class="item-button item-titulo"></div>
         <div class="item-button item-titulo"></div>
         <div class="item-button item-titulo"></div>
     </div>
@@ -24,16 +25,31 @@
                 </div>
                 <div class="item-button">
                     {% if forloop.first %}  
-                        <a class="bi bi-printer i-button js-recibo-novo"
-                        href="{% url 'imprimerecibo' %}?idrecibo={{ itens.idRecibo }}"
-                        target="_blank">
-                        </a>
+                    <a class="bi bi-printer i-button js-recibo-novo"
+                    href="{% url 'imprimerecibo' %}?idrecibo={{ itens.idRecibo }}"
+                    target="_blank">
+                    </a>
                     {% else %}
-                        <a class="bi bi-printer i-button"
-                        href="{% url 'imprimerecibo' %}?idrecibo={{ itens.idRecibo }}"
-                        target="_blank">
-                        </a>
+                    <a class="bi bi-printer i-button"
+                    href="{% url 'imprimerecibo' %}?idrecibo={{ itens.idRecibo }}"
+                    target="_blank">
+                    </a>
                     {% endif %}
+                </div>
+                <div class="item-button">
+                    {% if itens.StatusRecibo == "PAGO" %}
+                    <i class="bi bi-trash i-button js-paga-recibo"
+                            data-url="{% url 'imprimerecibo' %}" idrecibo="{{ itens.idRecibo }}"
+                            datainicial="{{ datainicial }}" datafinal="{{ datafinal }}"
+                            idpessoal="{{ itens.idPessoal }}">
+                    </i>
+                    {% else %}
+                    <i class="bi bi-currency-dollar i-button js-paga-recibo"
+                            data-url="{% url 'imprimerecibo' %}" idrecibo="{{ itens.idRecibo }}"
+                            datainicial="{{ datainicial }}" datafinal="{{ datafinal }}"
+                            idpessoal="{{ itens.idPessoal }}">
+                    </i>
+                   {% endif %}
                 </div>
             </div>
         {% endfor %}

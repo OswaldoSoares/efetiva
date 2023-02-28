@@ -4753,10 +4753,12 @@ main .fp-recibo-tabela .fp-recibo-print {
     font-size: 24px;
 }
 
+.card-recibos-colaborador,
 .card-recibos-avulso {
     width: 300px;
 }
 
+.card-recibos-colaborador .itens-recibo-avulso,
 .card-recibos-avulso .itens-recibo-avulso {
     width: 100%;
     display: flex;
@@ -4766,31 +4768,44 @@ main .fp-recibo-tabela .fp-recibo-print {
     color: var(--color6);
 }
 
+.card-recibos-colaborador .itens-recibo-avulso .item-dia,
 .card-recibos-avulso .itens-recibo-avulso .item-dia {
-    width: 30%;
+    width: 26%;
     text-align: center;
 }
 
+.card-recibos-colaborador .itens-recibo-avulso .item-recibo,
 .card-recibos-avulso .itens-recibo-avulso .item-recibo {
-    width: 24%;
+    width: 20%;
     text-align: center;
 }
 
+.card-recibos-colaborador .itens-recibo-avulso .item-valor,
 .card-recibos-avulso .itens-recibo-avulso .item-valor {
     width: 28%;
     text-align: right;
     padding-right: 5px;
 }
 
+.card-recibos-colaborador .itens-recibo-avulso .item-button,
 .card-recibos-avulso .itens-recibo-avulso .item-button {
     width: 8%;
     text-align: center;
 }
 
+
+/* TODO Não está funcionando */
+
+.card-minutas-colaborador .itens-recibo-avulso .item-titulo,
 .card-minutas-avulso .itens-recibo-avulso .item-titulo {
+    width: 10%;
+    background-color: orange;
     text-align: center;
+    font-size: 40px;
+    color: black;
 }
 
+.card-recibos-colaborador .article-card-footer,
 .card-recibos-avulso .article-card-footer {
     color: var(--color6);
     font-size: 14px;
