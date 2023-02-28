@@ -10,6 +10,7 @@ from django.template.loader import render_to_string
 from decimal import Decimal
 from PIL import Image, ImageDraw
 from pagamentos import facade
+from pagamentos.models import Recibo
 
 from pessoas.forms import CadastraSalario, CadastraVale, CadastraDemissao
 from pessoas.models import (
@@ -705,6 +706,26 @@ def html_lista_colaboradores_ativo(request, contexto, data):
     return data
 
 
+def create_recibos_colaborador(idpessoal):
+    recibos = Recibo.objects.filter(idPessoal_id=idpessoal).order_by(
+        "-DataRecibo", "-Recibo"
+    )
+    return {"recibos": recibos}
+
+
+def html_recibos_colaborador(request, contexto, data):
+    idpessoal = contexto["colaborador"]["idpes"]
+    recibos = create_recibos_colaborador(idpessoal)
+    contexto.update(recibos)
+    print(f"[INFO] - Conexto - {contexto}")
+    print(f"[INFO] - Recibos - {recibos}")
+    data["html_recibos_colaborador"] = render_to_string(
+        "pagamentos/reciboavulso.html", contexto, request=request
+    )
+    print(f"[INFO] - data - {data['html_recibos_colaborador']}")
+    return data
+
+
 def create_contexto_consulta_colaborador(idpessoal):
     colaborador = Colaborador(idpessoal).__dict__
     return {"colaborador": colaborador}
@@ -718,6 +739,8 @@ def create_data_consulta_colaborador(request, contexto):
     if tipo_pgto == "MENSALISTA":
         html_ferias_colaborador(request, contexto, data)
         html_decimo_terceiro(request, contexto, data)
+    else:
+        html_recibos_colaborador(request, contexto, data)
     return JsonResponse(data)
 
 

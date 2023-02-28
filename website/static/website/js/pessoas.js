@@ -15,6 +15,7 @@ $(document).on('click', ".js-seleciona-colaborador", function() {
             $(".card-ferias-colaborador").hide()
             $(".card-decimo-terceiro").hide()
             $(".card-form-colaborador").hide()
+            $(".card-recibos-colaborador").hide()
             $(".box-loader").show()
         },
         success: function(data) {
@@ -25,11 +26,13 @@ $(document).on('click', ".js-seleciona-colaborador", function() {
             $(".foto").attr("src", url + `?v=${new Date().getTime()}`);
             $(".card-ferias-colaborador").html(data.html_ferias_colaborador)
             $(".card-decimo-terceiro").html(data.html_decimo_terceiro)
+            $(".card-recibos-colaborador").html(data.html_recibos_colaborador)
             if (data.tipo_pgto == "MENSALISTA") {
                 $(".button-demissao").show()
                 $(".card-decimo-terceiro").show()
                 $(".card-ferias-colaborador").show()
             } else {
+                $(".card-recibos-colaborador").show()
                 $(".button-demissao").hide()
             }
             $(".box-loader").hide()
