@@ -669,6 +669,34 @@ $(document).on("click", ".estorna-recibo", function(event) {
     });
 });
 
+$(document).on("click", ".js-form-paga-recibo", function(event) {
+    var idrecibo = $(this).data("idrecibo");
+    var idpessoal = $(this).data("idpessoal");
+    var valor_recibo = $(this).data("valor");
+    $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: "/pagamentos/form_paga_recibo",
+        data: {
+            idRecibo: idrecibo,
+            idPessoal: idpessoal,
+            valor_recibo: valor_recibo,
+        },
+        beforeSend: function() {
+            $(".box-loader").show()
+        },
+        success: function(data) {
+            $(".card-form-colaborador").html(data.html_form_paga_recibo_colaborador);
+            $(".card-form-colaborador").show()
+            tamanho_body_saldo_avulso = $('.js-body-saldo-avulso').height()
+            $(".box-loader").hide();
+        },
+        error: function(error) {
+            console.log(error);
+        },
+    });
+});
+
 $(document).on("click", ".js-gera-pagamento-avulso", function(event) {
     var idpessoal = $(this).attr("idpessoal");
     var datainicial = $(this).attr("datainicial");

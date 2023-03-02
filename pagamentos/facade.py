@@ -1705,6 +1705,27 @@ def exclui_recibo(idrecibo, datainicial, datafinal, idpessoal):
     return c_return
 
 
+def create_data_form_paga_recibo_colaborador(request, contexto):
+    data = dict()
+    html_form_paga_recibo_colaborador(request, contexto, data)
+    return JsonResponse(data)
+
+
+def html_form_paga_recibo_colaborador(request, contexto, data):
+    data["html_form_paga_recibo_colaborador"] = render_to_string(
+        "pagamentos/html_form_paga_recibo_colaborador.html", contexto, request=request
+    )
+    return data
+
+
+def paga_recibo_colabotador(idrecibo, datapgto):
+    recibo = Recibo.objects.get(idRecibo=idrecibo)
+    obj = Recibo(recibo)
+    obj.StatusRecibo = "PAGO"
+    obj.DataPagamento = datapgto
+    obj.save(update_fields="StatusRecibo, DataPagamento")
+
+
 def get_contracheque(idpessoal: int):
     contracheque = ContraCheque.objects.filter(idPessoal=idpessoal)
     return contracheque

@@ -15,6 +15,7 @@ from .views import (
     exclui_recibo,
     gera_pagamento_avulso,
     imprime_recibo,
+    paga_recibo,
     index_pagamento,
     print_contra_cheque_adiantamento,
     print_contra_cheque_pagamento,
@@ -28,6 +29,7 @@ from .views import (
     seleciona_periodo_avulso,
     seleciona_vales,
     imprime_relatorio_saldo_avulso,
+    form_paga_recibo,
 )
 
 urlpatterns = [
@@ -153,5 +155,15 @@ urlpatterns = [
         "imprime_relatorio_saldo_avulso",
         imprime_relatorio_saldo_avulso,
         name="imprime_relatorio_saldo_avulso",
+    ),
+    path(
+        "paga_recibo",
+        paga_recibo,
+        name="paga_recibo",
+    ),
+    path(
+        "form_paga_recibo",
+        form_paga_recibo,
+        name="form_paga_recibo",
     ),
 ]

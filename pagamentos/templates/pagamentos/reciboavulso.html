@@ -38,16 +38,15 @@
                 </div>
                 <div class="item-button">
                     {% if itens.StatusRecibo == "PAGO" %}
-                    <i class="bi bi-trash i-button js-paga-recibo"
-                            data-url="{% url 'imprimerecibo' %}" idrecibo="{{ itens.idRecibo }}"
-                            datainicial="{{ datainicial }}" datafinal="{{ datafinal }}"
-                            idpessoal="{{ itens.idPessoal }}">
+                    <i class="bi bi-trash i-button js-form-paga-recibo"
+                            data-idrecibo="{{ itens.idRecibo }}"
+                            data-idpessoal="{{ itens.idPessoal }}">
                     </i>
                     {% else %}
-                    <i class="bi bi-currency-dollar i-button js-paga-recibo"
-                            data-url="{% url 'imprimerecibo' %}" idrecibo="{{ itens.idRecibo }}"
-                            datainicial="{{ datainicial }}" datafinal="{{ datafinal }}"
-                            idpessoal="{{ itens.idPessoal }}">
+                    <i class="bi bi-currency-dollar i-button js-form-paga-recibo"
+                            data-idrecibo="{{ itens.idRecibo }}"
+                            data-idpessoal="{{ itens.idPessoal }}"
+                            data-valor="{{ itens.ValorRecibo }}">
                     </i>
                    {% endif %}
                 </div>

@@ -6,6 +6,7 @@ from minutas.models import MinutaColaboradores, MinutaItens
 from rolepermissions.decorators import has_permission_decorator
 
 from pagamentos import facade
+from website.facade import str_hoje
 
 from .forms import CadastraCartaoPonto
 from .print import print_contracheque, print_recibo, print_relatorio_saldo_avulso
@@ -291,3 +292,26 @@ def imprime_recibo(request):
     contexto = facade.print_recibo(c_idrecibo)
     response = print_recibo(contexto)
     return response
+
+
+def form_paga_recibo(request):
+    print(f"[INFO] - Request GET - {request.GET}")
+    idrecibo = request.GET.get("idrecibo")
+    idpessoal = request.GET.get("idPessoal")
+    valor_recibo = request.GET.get("valor_recibo").replace(".", "").replace(",", ".")
+    hoje = str_hoje()
+    contexto = {
+        "idrecibo": idrecibo,
+        "idpessoal": idpessoal,
+        "hoje": hoje,
+        "valor_recibo": valor_recibo,
+    }
+    data = facade.create_data_form_paga_recibo_colaborador(request, contexto)
+    return data
+
+
+def paga_recibo(request):
+    print(f"[INFO] - Request GET - {request.GET}")
+    idrecibo = request.GET.get("idrecibo")
+    data = []
+    return data

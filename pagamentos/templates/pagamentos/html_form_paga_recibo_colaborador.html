@@ -1,0 +1,36 @@
+<form class="js-paga-recibo-colaborador" method="post" action="">
+    {% csrf_token %}
+    <div class="article-card-titulo magenta">
+        <span>PAGAMENTO AVULSO</span>
+    </div>
+    <div class="article-card-body">
+        <div class="itens-cadastro">
+            <div class="item-form">
+                <div class="button" title="Data Pagamento">
+                    <i class="bi bi-calendar i-button-null"></i>
+                </div>
+                <div class="item-field">
+                    <input type="date" class="form-control" name="data_pgto"
+                    value="{{ hoje }}">
+                </div>
+            </div>
+            <div class="item-form">
+                <div class="button" title="Valor Pago">
+                    <i class="bi bi-calendar i-button-null"></i>
+                </div>
+                <div class="item-field">
+                    <input type="number" class="form-control" name="valor"
+                    value="{{ valor_recibo }}" step="0.01">
+                </div>
+            </div>
+            <input type="hidden" name="idpessoal" value="{{ idpessoal }}">
+            <input type="hidden" name="idrecibo" value="{{ idrecibo }}">
+        </div>
+    </div>
+    <div class="article-card-footer magenta">
+        <i class="bi bi-x-circle i-button js-fecha-formulario"
+        title="Fechar"></i>
+        <button type="submit" class="bi bi-save i-button"
+        title="Confirma Pagamento"></button>
+    </div>
+</form>
