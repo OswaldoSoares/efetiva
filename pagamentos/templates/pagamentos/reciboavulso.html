@@ -17,11 +17,14 @@
                 <div class="item-recibo">{{ itens.Recibo }}</div>
                 <div class="item-valor" id="valor_{{ value.idRecibos }}_Vale">R$ {{ itens.ValorRecibo }}</div>
                 <div class="item-button">
+                    {% if itens.StatusRecibo == "PAGO" %}
+                    <i class="bi bi-reply-all i-button-null"></i>
+                    {% else %}
                     <i class="bi bi-reply-all i-button estorna-recibo"
-                            data-url="{% url 'excluirecibo' %}" idrecibo="{{ itens.idRecibo }}"
-                            datainicial="{{ datainicial }}" datafinal="{{ datafinal }}"
-                            idpessoal="{{ itens.idPessoal }}">
+                    data-idrecibo="{{ itens.idRecibo }}"
+                    data-idpessoal="{{ itens.idPessoal_id }}">
                     </i>
+                    {% endif %}
                 </div>
                 <div class="item-button">
                     {% if forloop.first %}  
@@ -45,7 +48,8 @@
                     {% else %}
                     <i class="bi bi-currency-dollar i-button js-form-paga-recibo"
                             data-idrecibo="{{ itens.idRecibo }}"
-                            data-idpessoal="{{ itens.idPessoal }}"
+                            data-idpessoal="{{ idpessoal }}"
+                            data-recibo="{{ itens.Recibo }}"
                             data-valor="{{ itens.ValorRecibo }}">
                     </i>
                    {% endif %}

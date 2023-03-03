@@ -10,13 +10,22 @@
                     <i class="bi bi-calendar i-button-null"></i>
                 </div>
                 <div class="item-field">
+                    <input type="text" class="form-control" name="data_pgto"
+                    value="RECIBO Nº {{ recibo }}" readonly>
+                </div>
+            </div>
+            <div class="item-form">
+                <div class="button" title="Data Pagamento">
+                    <i class="bi bi-calendar i-button-null"></i>
+                </div>
+                <div class="item-field">
                     <input type="date" class="form-control" name="data_pgto"
                     value="{{ hoje }}">
                 </div>
             </div>
             <div class="item-form">
                 <div class="button" title="Valor Pago">
-                    <i class="bi bi-calendar i-button-null"></i>
+                    <i class="bi bi-currency-dollar i-button-null"></i>
                 </div>
                 <div class="item-field">
                     <input type="number" class="form-control" name="valor"

@@ -1683,10 +1683,7 @@ def confere_admissao(idpessoal, admissao):
         obj.save(update_fields=["Ausencia"])
 
 
-def exclui_recibo(idrecibo, datainicial, datafinal, idpessoal):
-    periodo = get_periodo_pagamento_avulsos()
-    datainicial = periodo["DataInicial"]
-    datafinal = periodo["DataFinal"]
+def exclui_recibo(idrecibo):
     Vales.objects.filter(idRecibo_id=idrecibo).update(idRecibo_id=None, Pago=False)
     MinutaColaboradores.objects.filter(idRecibo_id=idrecibo).update(
         idRecibo_id=None, Pago=False
@@ -1697,12 +1694,6 @@ def exclui_recibo(idrecibo, datainicial, datafinal, idpessoal):
     recibo = get_recibo_id(idrecibo)
     if recibo:
         recibo.delete()
-    data = dict()
-    data["html_saldoavulso"] = html_saldo_avulso(datainicial, datafinal)
-    data["html_minutas"] = html_minutasavulso(datainicial, datafinal, idpessoal)
-    data["html_recibos"] = html_recibo_avulso(datainicial, datafinal, idpessoal)
-    c_return = JsonResponse(data)
-    return c_return
 
 
 def create_data_form_paga_recibo_colaborador(request, contexto):
@@ -1719,11 +1710,23 @@ def html_form_paga_recibo_colaborador(request, contexto, data):
 
 
 def paga_recibo_colabotador(idrecibo, datapgto):
+    print(f"[AQUI ESTOU] - {idrecibo} - {datapgto}")
     recibo = Recibo.objects.get(idRecibo=idrecibo)
-    obj = Recibo(recibo)
+    obj = recibo
     obj.StatusRecibo = "PAGO"
-    obj.DataPagamento = datapgto
-    obj.save(update_fields="StatusRecibo, DataPagamento")
+    obj.DataPagamento = datetime.datetime.strptime(datapgto, "%Y-%m-%d")
+    obj.save(update_fields=["StatusRecibo", "DataPagamento"])
+
+def create_data_estorna_recibo_colaborador(request, contexto):
+    pass
+    
+
+def create_data_html_recibos_colaborador(request, contexto):
+    data = dict()
+    data["html_minutas"] = html_minutasavulso(datainicial, datafinal, idpessoal)
+    data["html_recibos"] = html_recibo_avulso(datainicial, datafinal, idpessoal)
+    c_return = JsonResponse(data)
+    return c_return
 
 
 def get_contracheque(idpessoal: int):
@@ -1810,8 +1813,7 @@ def busca_adiantamento(idcontracheque):
 def seleciona_saldoavulso(datainicial, datafinal):
     data = dict()
     data["html_saldoavulso"] = html_saldo_avulso(datainicial, datafinal)
-    c_return = JsonResponse(data)
-    return c_return
+    return JsonResponse(data)
 
 
 def periodo_cartaoponto(mesreferencia, anoreferencia):

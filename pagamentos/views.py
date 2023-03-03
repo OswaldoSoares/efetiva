@@ -278,12 +278,19 @@ def seleciona_vales(request):
 
 
 def exclui_recibo(request):
-    c_idrecibo = request.GET.get("idRecibo")
-    c_idpessoal = request.GET.get("idPessoal")
-    c_datainicial = request.GET.get("DataInicial")
-    c_datafinal = request.GET.get("DataFinal")
-    # c_vales = request.GET.getlist('ValesSelecionados[]')
-    data = facade.exclui_recibo(c_idrecibo, c_datainicial, c_datafinal, c_idpessoal)
+    print(f"[INFO] Request GET - {request.GET}")
+    idrecibo = request.GET.get("idrecibo")
+    idpessoal = request.GET.get("idpessoal")
+    data_inicial = request.GET.get("data_inicial")
+    data_final = request.GET.get("data_final")
+    facade.exclui_recibo(idrecibo)
+    contexto = {
+        "idrecibo": idrecibo,
+        "idpessoal": idpessoal,
+        "data_inicial": data_inicial,
+        "data_final": data_final,
+    }
+    data = facade.seleciona_saldoavulso(data_inicial, data_final)
     return data
 
 
@@ -295,23 +302,27 @@ def imprime_recibo(request):
 
 
 def form_paga_recibo(request):
-    print(f"[INFO] - Request GET - {request.GET}")
     idrecibo = request.GET.get("idrecibo")
-    idpessoal = request.GET.get("idPessoal")
+    idpessoal = request.GET.get("idpessoal")
+    recibo = request.GET.get("recibo")
     valor_recibo = request.GET.get("valor_recibo").replace(".", "").replace(",", ".")
     hoje = str_hoje()
     contexto = {
         "idrecibo": idrecibo,
         "idpessoal": idpessoal,
-        "hoje": hoje,
+        "recibo": recibo,
         "valor_recibo": valor_recibo,
+        "hoje": hoje,
     }
     data = facade.create_data_form_paga_recibo_colaborador(request, contexto)
     return data
 
 
 def paga_recibo(request):
-    print(f"[INFO] - Request GET - {request.GET}")
-    idrecibo = request.GET.get("idrecibo")
+    print(f"[INFO] - Request POST - {request.POST}")
+    idrecibo = int(request.POST.get("idrecibo"))
+    print(f"[INFO] - Type idrecibo - {type(idrecibo)}")
+    data_pgto = request.POST.get("data_pgto")
+    facade.paga_recibo_colabotador(idrecibo, data_pgto)
     data = []
     return data

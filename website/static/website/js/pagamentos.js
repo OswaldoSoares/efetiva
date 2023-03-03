@@ -7,6 +7,7 @@ $(document).ready(function() {
     $(".div-cinco").show()
     $(".div-seis").hide()
     $(".div-sete").hide()
+    $(".card-form-colaborador").hide()
 });
 
 // Seleciona mês e ano para pagamento de colaboradores mensalistas
@@ -583,8 +584,8 @@ $(document).on('click', '.js-delete-file', function() {
 
 // Seleciona periodo de pagamento para colaboradores avulso
 $(document).on("click", ".js-periodo-avulso", function(event) {
-    var _data_inicial = $("#id_DataInicial").val()
-    var _data_final = $("#id_DataFinal").val()
+    var _data_inicial = $("#data_inicial").val()
+    var _data_final = $("#data_final").val()
     $.ajax({
         type: "GET",
         dataType: "JSON",
@@ -638,20 +639,19 @@ $(document).on("submit", "#form-vale", function(event) {
 });
 
 $(document).on("click", ".estorna-recibo", function(event) {
-    var url = $(this).attr("data-url");
-    var idrecibo = $(this).attr("idrecibo");
-    var mesreferencia = window.MesReferencias;
-    var anoreferencia = window.AnoReferencia;
-    var idpessoal = window.idPessoal;
+    var idrecibo = $(this).data("idrecibo");
+    var idpessoal = $(this).data("idpessoal");
+    var data_inicial = $('#data_inicial').val();
+    var data_final = $('#data_final').val();
     $.ajax({
         type: "GET",
         dataType: "json",
-        url: url,
+        url: "/pagamentos/excluirecibo",
         data: {
-            idRecibo: idrecibo,
-            MesReferencia: mesreferencia,
-            AnoReferencia: anoreferencia,
-            idPessoal: idpessoal,
+            idrecibo: idrecibo,
+            idpessoal: idpessoal,
+            data_inicial: data_inicial,
+            data_final: data_final,
         },
         beforeSend: function() {
             $(".box-loader").show()
@@ -672,14 +672,16 @@ $(document).on("click", ".estorna-recibo", function(event) {
 $(document).on("click", ".js-form-paga-recibo", function(event) {
     var idrecibo = $(this).data("idrecibo");
     var idpessoal = $(this).data("idpessoal");
+    var recibo = $(this).data("recibo");
     var valor_recibo = $(this).data("valor");
     $.ajax({
         type: "GET",
         dataType: "json",
         url: "/pagamentos/form_paga_recibo",
         data: {
-            idRecibo: idrecibo,
-            idPessoal: idpessoal,
+            idrecibo: idrecibo,
+            idpessoal: idpessoal,
+            recibo: recibo,
             valor_recibo: valor_recibo,
         },
         beforeSend: function() {
@@ -690,6 +692,28 @@ $(document).on("click", ".js-form-paga-recibo", function(event) {
             $(".card-form-colaborador").show()
             tamanho_body_saldo_avulso = $('.js-body-saldo-avulso').height()
             $(".box-loader").hide();
+        },
+        error: function(error) {
+            console.log(error);
+        },
+    });
+});
+
+$(document).on("submit", ".js-paga-recibo-colaborador", function(event) {
+    event.preventDefault();
+    $.ajax({
+        type: $(this).attr("method"),
+        url: "/pagamentos/paga_recibo",
+        data: $(this).serialize(),
+        beforeSend: function() {
+            $('.card-recibos-colaborador').hide()
+            $('.card-form-colaborador').hide()
+            $('.box-loader').show()
+        },
+        success: function(data) {
+            $(".card-recibos-colaborador").html(data.html_vales);
+            $(".card-recibos-colaborador").show();
+            $('.box-loader').hide()
         },
         error: function(error) {
             console.log(error);
