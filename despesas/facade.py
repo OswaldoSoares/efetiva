@@ -181,36 +181,6 @@ def busca_vale_multa(_des):
         return False
 
 
-def update_multa(multa, _id_mul):
-    multa_selecionada = Multas.objects.get(idMulta=_id_mul)
-    obj = Multas(multa_selecionada)
-    obj.idMulta = multa_selecionada.idMulta
-    obj.NumeroAIT = multa["numero_ait"]
-    obj.NumeroDOC = multa["numero_doc"]
-    obj.DataMulta = datetime.datetime.strptime(multa["data_multa"], "%Y-%m-%d").date()
-    obj.HoraMulta = datetime.datetime.strptime(multa["hora_multa"], "%H:%M").time()
-    obj.ValorMulta = multa["valor_multa"]
-    obj.Vencimento = datetime.datetime.strptime(multa["vencimento"], "%Y-%m-%d").date()
-    obj.Infracao = multa["infracao"]
-    obj.Local = multa["local"]
-    obj.DescontaMotorista = multa["desconta_motorista"]
-    obj.idVeiculo_id = multa["idveiculo"]
-    obj.LinhaDigitavel = multa["linha_digitavel"]
-    obj.LinhaDigitavelSP = multa["linha_digitavel_sp"]
-    obj.DataPagamento = datetime.datetime.strptime(
-        multa["vencimento"], "%Y-%m-%d"
-    ).date()
-    obj.save()
-    veiculo = Veiculo.objects.filter(idVeiculo=multa["idveiculo"])
-    if obj.DescontaMotorista == "True":
-        minutas = busca_minutas_multa(multa["data_multa"])
-        for x in minutas:
-            if x["placa"] == veiculo[0].Placa:
-                id_pes = x["idpessoal"]
-                if not busca_vale_multa(obj.NumeroDOC):
-                    create_vale_multa(obj, id_pes)
-
-
 def read_multa_post(request):
     multa_post = dict()
     multa_post["idmulta"] = request.POST.get("idMulta")
