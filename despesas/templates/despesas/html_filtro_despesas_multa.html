@@ -7,7 +7,7 @@
             <i class="bi bi-exclamation-circle i-button-null"></i>
         </div>
         <div class="item-filtro">
-            <select class="form-control" id="select-status">
+            <select class="form-control" id="select-motorista">
                 <option value="SEM FILTRO">MULTA POR MOTORISTA</option>
                 {% for i in motoristas %}
                 <option value="{{ i.idpessoal }}">{{ i.nome }}</option>
@@ -15,8 +15,8 @@
             </select>
         </div>
         <div class="item-button">
-            <i class="bi bi-filter-circle i-button js-filtro-status"
-            data-idcliente="{{ idcliente }}"></i>
+            <i class="bi bi-filter-circle i-button js-filtro-motorista"
+            data-idpessoal="{{ i.idpessoal }}"></i>
         </div>
     </div>
     <div class="itens-filtro">

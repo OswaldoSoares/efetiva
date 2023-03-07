@@ -30,6 +30,22 @@ $(document).on('submit', '.js-gera-multas', function(event) {
     });
 });
 
+$(document).on('click', '.js-filtro-motorista', function() {
+    var idpessoal = $("#select-motorista").val()
+    $.ajax({
+        type: "GET",
+        url: "/despesas/filtro_motorista",
+        data: {
+            idpessoal: idpessoal,
+        },
+        beforeSend: function() {
+            $(".box-loader").hide();
+        },
+        success: function(data) {
+            $(".box-loader").show();
+        },
+    });
+});
 
 $(document).on('submit', '.js-gera-despesas', function(event) {
     event.preventDefault();
