@@ -1,6 +1,7 @@
 import datetime
 
 from django.db import models
+from pessoas.models import Pessoal, Vales
 from veiculos.models import Veiculo
 
 
@@ -45,7 +46,11 @@ class Multas(models.Model):
     Pago = models.BooleanField(default=False)
     DescontaMotorista = models.BooleanField(default=False)
     DataPagamento = models.DateField(default=0)
+    idVales = models.ForeignKey(Vales, on_delete=models.PROTECT, blank=True, null=True)
     idVeiculo = models.ForeignKey(Veiculo, on_delete=models.CASCADE)
+    idPessoal = models.ForeignKey(
+        Pessoal, on_delete=models.CASCADE, blank=True, null=True
+    )
 
     class Meta:
         db_table = "multa"
