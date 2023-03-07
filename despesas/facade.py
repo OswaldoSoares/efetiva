@@ -35,6 +35,10 @@ def create_despesas_context():
     return context
 
 
+def create_context_filtro_motorista(idpessoal):
+    multas = multas_pagar("MOTORISTA", idpessoal)
+
+
 def get_abastecimento_all():
     return Abastecimento.objects.all()
 
@@ -276,7 +280,7 @@ def create_data_multas_pagar(request, contexto):
     return JsonResponse(data)
 
 
-def multas_pagar(filtro):
+def multas_pagar(filtro, valor):
     multas = Multas.objects.filter(Pago=False).order_by("-Vencimento")
     lista = []
     for x in multas:
@@ -292,7 +296,9 @@ def multas_pagar(filtro):
         if filtro == "SEM FILTRO":
             adiciona_lista = True
         elif filtro == "MOTORISTA":
-            if x.motorista == motorista:
+            print(f"[INFO] - x.motorista - {motorista[0].idPessoal}")
+            print(f"[INFO] - valor - {valor}")
+            if motorista[0].idPessoal.Nome == valor:
                 adiciona_lista = True
         if adiciona_lista:
             lista.append(

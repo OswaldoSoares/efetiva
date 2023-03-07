@@ -137,3 +137,9 @@ def carrega_subcategoria(request):
     contexto = {"subcategorias": subcategorias}
     data = facade.create_data_choice_subcategoria(request, contexto)
     return data
+
+
+def filtro_motorista(request):
+    idpessoal = request.GET.get("idpessoal")
+    print(f"[INFO] - idpessoa: {idpessoal}")
+    facade.create_context_filtro_motorista(idpessoal)
