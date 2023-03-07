@@ -1,9 +1,11 @@
 <form class="js-gera-multas" method="post" action="">
     {% csrf_token %}
     <div class="article-card-titulo">
-        <span>MULTAS</span>
+        <i class="bi bi-plus-circle i-button js-mostra-body-multa"></i>
+        <i class="bi bi-dash-circle i-button js-oculta-body-multa"></i>
+        <span class="titulo-retrai-card">MULTAS</span>
     </div>
-    <div class="article-card-body">
+    <div class="article-card-body body-multa">
         <div class="item-multa">
             <div class="item-form">
                 <div class="button">
@@ -323,6 +325,6 @@
         <input type="hidden" name="idMulta" value="{{ multa.idmulta }}" id="idMulta"> 
     </div>
     <div class="article-card-footer">
-        <button class='bi bi-save2 i-button'></button>
+        <button class='bi bi-save2 i-button body-multa'></button>
     </div>
 </form>

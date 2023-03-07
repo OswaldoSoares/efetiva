@@ -1,5 +1,7 @@
 $(document).ready(function() {
     CarregaMask()
+    $(".body-multa").hide()
+    $(".js-oculta-body-multa").hide()
 })
 
 var CarregaMask = function() {
@@ -257,3 +259,16 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
         });
     });
 }
+
+$(document).on('click', '.js-mostra-body-multa', function() {
+    $(".body-multa").show()
+    $(".js-mostra-body-multa").hide()
+    $(".js-oculta-body-multa").show()
+})
+
+$(document).on('click', '.js-oculta-body-multa', function() {
+    $(".body-multa").hide()
+    $(".js-mostra-body-multa").show()
+    $(".js-oculta-body-multa").hide()
+        // LimpaFormNota()
+})

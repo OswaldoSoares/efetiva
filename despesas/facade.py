@@ -6,7 +6,7 @@ from django.template.loader import render_to_string
 from minutas.facade import nome_curto
 from minutas.models import Minuta, MinutaColaboradores
 from pagamentos.facade import create_vales
-from pessoas.models import Vales
+from pessoas.models import Pessoal, Vales
 from veiculos.models import Veiculo
 
 from despesas.models import Abastecimento, Categorias, Despesas, Multas, SubCategorias
@@ -15,14 +15,22 @@ from despesas.models import Abastecimento, Categorias, Despesas, Multas, SubCate
 def create_despesas_context():
     abastecimento = get_abastecimento_all()
     veiculos = Veiculo.objects.filter(Proprietario_id=17)
-    multas = multas_pagar()
+    multas = multas_pagar("SEM FILTRO")
     hoje = datetime.datetime.today()
     hoje = datetime.datetime.strftime(hoje, "%Y-%m-%d")
+    motoristas = Pessoal.objects.all().exclude(Categoria="AJUDANTE")
+    lista_motoristas = [
+        {"idpessoal": i.idPessoal, "nome": nome_curto(i.Nome)} for i in motoristas
+    ]
+    veiculos = Veiculo.objects.filter(Proprietario_id=17)
+    lista_veiculos = [{"idveiculo": i.idVeiculo, "placa": i.Placa} for i in veiculos]
     context = {
         "abastecimento": abastecimento,
         "veiculos": veiculos,
         "hoje": hoje,
         "multas": multas,
+        "motoristas": lista_motoristas,
+        "veiculos": lista_veiculos,
     }
     return context
 
@@ -268,7 +276,7 @@ def create_data_multas_pagar(request, contexto):
     return JsonResponse(data)
 
 
-def multas_pagar():
+def multas_pagar(filtro):
     multas = Multas.objects.filter(Pago=False).order_by("-Vencimento")
     lista = []
     for x in multas:
@@ -280,24 +288,31 @@ def multas_pagar():
                 motorista = nome_curto(motorista[0].idPessoal.Nome)
             else:
                 motorista = "VALE NÃO ENCONTRADO"
-        lista.append(
-            {
-                "id_multa": x.idMulta,
-                "vencimento": x.Vencimento,
-                "valor": x.ValorMulta,
-                "doc": x.NumeroDOC,
-                "ait": x.NumeroAIT,
-                "data": x.DataMulta,
-                "hora": x.HoraMulta,
-                "placa": x.idVeiculo.Placa,
-                "infracao": x.Infracao,
-                "local": x.Local,
-                "digitavel": x.LinhaDigitavel,
-                "digitavel_sp": x.LinhaDigitavelSP,
-                "desconta": x.DescontaMotorista,
-                "motorista": motorista,
-            }
-        )
+        adiciona_lista = False
+        if filtro == "SEM FILTRO":
+            adiciona_lista = True
+        elif filtro == "MOTORISTA":
+            if x.motorista == motorista:
+                adiciona_lista = True
+        if adiciona_lista:
+            lista.append(
+                {
+                    "id_multa": x.idMulta,
+                    "vencimento": x.Vencimento,
+                    "valor": x.ValorMulta,
+                    "doc": x.NumeroDOC,
+                    "ait": x.NumeroAIT,
+                    "data": x.DataMulta,
+                    "hora": x.HoraMulta,
+                    "placa": x.idVeiculo.Placa,
+                    "infracao": x.Infracao,
+                    "local": x.Local,
+                    "digitavel": x.LinhaDigitavel,
+                    "digitavel_sp": x.LinhaDigitavelSP,
+                    "desconta": x.DescontaMotorista,
+                    "motorista": motorista,
+                }
+            )
     return lista
 
 

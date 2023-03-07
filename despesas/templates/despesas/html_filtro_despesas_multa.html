@@ -1,0 +1,66 @@
+<div class="article-card-titulo">
+    <span>CONSULTAS</span>
+</div>
+<div class="article-card-body">
+    <div class="itens-filtro">
+        <div class="item-icon">
+            <i class="bi bi-exclamation-circle i-button-null"></i>
+        </div>
+        <div class="item-filtro">
+            <select class="form-control" id="select-status">
+                <option value="SEM FILTRO">MULTA POR MOTORISTA</option>
+                {% for i in motoristas %}
+                <option value="{{ i.idpessoal }}">{{ i.nome }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="item-button">
+            <i class="bi bi-filter-circle i-button js-filtro-status"
+            data-idcliente="{{ idcliente }}"></i>
+        </div>
+    </div>
+    <div class="itens-filtro">
+        <div class="item-icon">
+            <i class="bi bi-exclamation-circle i-button-null"></i>
+        </div>
+        <div class="item-filtro">
+            <select class="form-control" id="select-status">
+                <option value="SEM FILTRO">MULTA POR VEÍCULO</option>
+                {% for i in veiculos %}
+                <option value="{{ i.idveiculo }}">{{ i.placa }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="item-button">
+            <i class="bi bi-filter-circle i-button js-filtro-status"
+            data-idcliente="{{ idcliente }}"></i>
+        </div>
+    </div>
+    <div class="itens-filtro">
+        <div class="item-icon">
+            <i class="bi bi-file-text i-button-null"></i>
+        </div>
+        <div class="item-filtro">
+            <input class="form-control filtra-nota" type="text"
+            placeholder="BUSCA NUMERO PENALIDADE">
+        </div>
+        <div class="item-button">
+            <i class="bi bi-search i-button js-filtra-nota"></i>
+        </div>
+    </div>
+    <div class="itens-filtro">
+        <div class="item-icon">
+            <i class="bi bi-file-text i-button-null"></i>
+        </div>
+        <div class="item-filtro">
+            <input class="form-control filtra-romaneio" type="text"
+            placeholder="BUSCA ROMANEIO">
+        </div>
+        <div class="item-button">
+            <i class="bi bi-search i-button js-filtra-romaneio"></i>
+        </div>
+    </div>
+</div>
+<div class="article-card-footer">
+
+</div>

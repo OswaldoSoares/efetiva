@@ -5638,10 +5638,12 @@ main .fp-recibo-tabela .fp-recibo-print {
     border-bottom: 1px solid var(--color9);
 }
 
+.card-filtro-despesas-multa,
 .card-filtro-notas-romaneios {
     width: 300px;
 }
 
+.card-filtro-despesas-multa .itens-filtro,
 .card-filtro-notas-romaneios .itens-filtro {
     width: 100%;
     display: flex;
@@ -5651,15 +5653,18 @@ main .fp-recibo-tabela .fp-recibo-print {
     color: var(--color6);
 }
 
+.card-filtro-despesas-multa .itens-filtro .item-icon,
 .card-filtro-notas-romaneios .itens-filtro .item-icon {
     width: 10%;
     text-align: center;
 }
 
+.card-filtro-despesas-multa .itens-filtro .item-filtro,
 .card-filtro-notas-romaneios .itens-filtro .item-filtro {
     width: 80%;
 }
 
+.card-filtro-despesas-multa .itens-filtro .item-button,
 .card-filtro-notas-romaneios .itens-filtro .item-button {
     width: 10%;
     text-align: center;
@@ -5772,7 +5777,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .i-button-null {
-    color: var(--color8)
+    color: var(--color8);
 }
 
 .i-button-null-text {
@@ -6312,7 +6317,7 @@ main .fp-recibo-tabela .fp-recibo-print {
     background-color: var(--color5);
 }
 
-.card-form-colaborador .itens-cadastro .item-form {
+.card-null-colaborador .itens-cadastro .item-form {
     width: 100%;
     display: flex;
     align-items: center;

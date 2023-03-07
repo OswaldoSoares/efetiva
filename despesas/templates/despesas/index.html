@@ -2,9 +2,14 @@
 
 {% block maindespesa %}
 <main class='article'>
-    <article class="article-card card-multas">
-        {% include 'despesas/html_form_multas.html' %}
-    </article>
+    <div>
+        <article class="article-card card-multas">
+            {% include 'despesas/html_form_multas.html' %}
+        </article>
+        <article class="article-card card-filtro-despesas-multa">
+            {% include 'despesas/html_filtro_despesas_multa.html' %}
+        </article>
+    </div>
     <div>
         <article class="article-card card-multas-pagar">
             {% include 'despesas/html_multas_pagar.html' %}
