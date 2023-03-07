@@ -830,6 +830,7 @@ def create_vales(_des, _dat, _val, _par, _id_pes):
             obj.Valor = Decimal(_val) / int(_par)
             obj.idPessoal_id = _id_pes
             obj.save()
+    return obj
 
 
 def create_agenda(_des, _dat, _id_pes):
@@ -1717,9 +1718,10 @@ def paga_recibo_colabotador(idrecibo, datapgto):
     obj.DataPagamento = datetime.datetime.strptime(datapgto, "%Y-%m-%d")
     obj.save(update_fields=["StatusRecibo", "DataPagamento"])
 
+
 def create_data_estorna_recibo_colaborador(request, contexto):
     pass
-    
+
 
 def create_data_html_recibos_colaborador(request, contexto):
     data = dict()

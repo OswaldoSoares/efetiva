@@ -16,13 +16,13 @@
                         <option value="0">SELECIONE UM VEICULO</option>
                         {% for veiculo in veiculos %}
                         {% if multa %}
-                            {% if multa.idveiculo == veiculo.idVeiculo %}
-                            <option value="{{ veiculo.idVeiculo }}" selected>{{ veiculo.Placa }}</option>
+                            {% if multa.idveiculo == veiculo.idveiculo %}
+                            <option value="{{ veiculo.idveiculo }}" selected>{{ veiculo.placa }}</option>
                             {% else %}
-                            <option value="{{ veiculo.idVeiculo }}">{{ veiculo.Placa }}</option>
+                            <option value="{{ veiculo.idveiculo }}">{{ veiculo.placa }}</option>
                             {% endif %}
                         {% else %}
-                            <option value="{{ veiculo.idVeiculo }}">{{ veiculo.Placa }}</option>
+                            <option value="{{ veiculo.idveiculo }}">{{ veiculo.placa }}</option>
                         {% endif %}
                         {% endfor %}
                     </select>

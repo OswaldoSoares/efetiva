@@ -2,6 +2,7 @@ $(document).ready(function() {
     CarregaMask()
     $(".body-multa").hide()
     $(".js-oculta-body-multa").hide()
+    $(".card-minutas-multa").hide()
 })
 
 var CarregaMask = function() {

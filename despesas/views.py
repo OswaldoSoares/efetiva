@@ -29,14 +29,11 @@ def cria_abastecimento(request):
 
 
 def adiciona_multa(request):
-    _id_mul = request.POST.get("idMulta")
+    idmulta = request.POST.get("idMulta")
     error, msg = facade.valida_multa(request)
     multa = facade.read_multa_post(request)
     if not error:
-        if _id_mul:
-            facade.update_multa(multa, _id_mul)
-        else:
-            facade.save_multa(multa)
+        facade.save_multa(multa, idmulta)
         multa = dict()
     contexto = facade.create_despesas_context()
     contexto.update({"multa": multa, "error": error})

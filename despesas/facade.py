@@ -15,7 +15,7 @@ from despesas.models import Abastecimento, Categorias, Despesas, Multas, SubCate
 def create_despesas_context():
     abastecimento = get_abastecimento_all()
     veiculos = Veiculo.objects.filter(Proprietario_id=17)
-    multas = multas_pagar("SEM FILTRO")
+    multas = multas_pagar("SEM FILTRO", "")
     hoje = datetime.datetime.today()
     hoje = datetime.datetime.strftime(hoje, "%Y-%m-%d")
     motoristas = Pessoal.objects.all().exclude(Categoria="AJUDANTE")
@@ -132,8 +132,27 @@ def valida_multa(request):
     return error, msg
 
 
-def save_multa(multa):
-    obj = Multas()
+def save_multa(multa, idmulta):
+    idvale = None
+    idpessoal = None
+    veiculo = Veiculo.objects.get(idVeiculo=multa["idveiculo"])
+    minuta = busca_minutas_multa(multa["data_multa"])
+    minuta_filtro = list(filter(lambda x: x["placa"] == veiculo.Placa, minuta))
+    numero_doc = multa["numero_doc"]
+    valor = multa["valor_multa"]
+    if minuta_filtro:
+        idpessoal = minuta_filtro[0]["idpessoal"]
+        if multa["desconta_motorista"] == "True":
+            idvale = busca_vale_multa(numero_doc)
+            if not idvale:
+                vale_salva = create_vale_multa(numero_doc, valor, idpessoal)
+                idvale = vale_salva.idVales
+    if not idmulta:
+        obj = Multas()
+    else:
+        multa_selecionada = Multas.objects.get(idMulta=idmulta)
+        obj = Multas(multa_selecionada)
+        obj.idMulta = multa_selecionada.idMulta
     obj.NumeroAIT = multa["numero_ait"]
     obj.NumeroDOC = multa["numero_doc"]
     obj.DataMulta = datetime.datetime.strptime(multa["data_multa"], "%Y-%m-%d").date()
@@ -149,22 +168,16 @@ def save_multa(multa):
     obj.DataPagamento = datetime.datetime.strptime(
         multa["vencimento"], "%Y-%m-%d"
     ).date()
+    obj.idPessoal_id = idpessoal
+    obj.idVales_id = idvale
     obj.save()
-    veiculo = Veiculo.objects.filter(idVeiculo=multa["idveiculo"])
-    if obj.DescontaMotorista == "True":
-        minutas = busca_minutas_multa(multa["data_multa"])
-        for x in minutas:
-            if x["placa"] == veiculo[0].Placa:
-                id_pes = x["idpessoal"]
-                if not busca_vale_multa(obj.NumeroDOC):
-                    create_vale_multa(obj, id_pes)
 
 
 def busca_vale_multa(_des):
-    vale = Vales.objects.filter(Descricao__startswith=f"MULTA - {_des}")
-    if len(vale) > 0:
-        return True
-    else:
+    try:
+        vale = Vales.objects.filter(Descricao__startswith=f"MULTA - {_des}").get()
+        return vale.idVales
+    except Vales.DoesNotExist:
         return False
 
 
@@ -327,13 +340,13 @@ def delete_multa(_id_mul):
     multa.delete()
 
 
-def create_vale_multa(_obj, _id_pes):
-    if _id_pes:
-        _des = f"Multa - {_obj.NumeroDOC}"
-        _dat = datetime.datetime.today().date()
-        _val = _obj.ValorMulta
-        _par = 1
-        create_vales(_des, _dat, _val, _par, _id_pes)
+def create_vale_multa(_obj, idpessoal):
+    if idpessoal:
+        descricao = f"Multa - {_obj.NumeroDOC}"
+        data = datetime.datetime.today().date()
+        valor = _obj.ValorMulta
+        parcelas = 1
+        return create_vales(descricao, data, valor, parcelas, idpessoal)
 
 
 def busca_minutas_multa(_date):
@@ -357,6 +370,7 @@ def busca_minutas_multa(_date):
                     "demissao": motorista[0].idPessoal.DataDemissao,
                     "admissao": motorista[0].idPessoal.DataAdmissao,
                     "placa": x.idVeiculo.Placa,
+                    "idveiculo": x.idVeiculo,
                 }
             )
     return lista
