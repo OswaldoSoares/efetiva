@@ -24,28 +24,15 @@
         </div>
     </div>
     <div class="item-multa">
-        <div class="item-infracao" title="Tipo de Infração e Localização">
+        <div class="item-infracao" title="Tipo de Infração">
             <i class="bi bi-question-diamond i-button-null"></i> {{ multa.infracao }} 
+        </div>
+    </div>
+    <div class="item-multa">
+        <div class="item-infracao" title="Localização">
             <i class="bi bi-geo-alt i-button-null"></i> {{ multa.local }}
         </div>
-        <div class="item-desconta" title="Motorista Infrator">
-            {% if multa.desconta %}
-            {{ multa.motorista }}
-            {% else %}
-            EMPRESA
-            {% endif %}
-        </div>
     </div>
-    {% comment %} {% if multa.LinhaDigitavel %}
-    <div class="item-multa">
-        <div class="item-linha" title="Linha Digitável">
-            {{ multa.LinhaDigitavel|slice:"0:5" }}.{{ multa.LinhaDigitavel|slice:"5:10" }}
-            {{ multa.LinhaDigitavel|slice:"10:15" }}.{{ multa.LinhaDigitavel|slice:"15:21" }}
-            {{ multa.LinhaDigitavel|slice:"21:26" }}.{{ multa.LinhaDigitavel|slice:"26:32" }}
-            {{ multa.LinhaDigitavel|slice:"32:33" }} {{ multa.LinhaDigitavel|slice:"33:" }}
-        </div>
-    </div>
-    {% endif %} {% endcomment %}
     <div class="item-multa" title="Linha Digitável">
         <div class="item-linha">
             {% if multa.digitavel_sp %}
@@ -67,6 +54,36 @@
             data-idmulta={{ multa.id_multa }}></i>
         </div>
     </div>
+    <div class="item-multa">
+        <div class="item-desconta" title="Quem Paga">
+            <i class="bi bi-currency-dollar i-button-null"></i>
+            {% if multa.desconta %}
+            MOTORISTA
+            {% else %}
+            EMPRESA
+            {% endif %}
+        </div>
+        <div class="item-motorista" title="Motorista Infrator">
+            <i class="bi bi-person-square i-button-null"></i>
+            {{ multa.motorista }}
+        </div>
+        <div class="item-vale">
+            {% if multa.vale %}
+            <i class="icofont-bill-alt i-button-null"></i>
+            {{ multa.vale_mensagem }}
+            {% if multa.vale.Pago %}
+            <i class="bi bi-check-circle i-button-null"
+            title="Vale Pago"
+            data-idvale="{{ multa.vale.idVales }}"></i>
+            {% else %}
+            <i class="bi bi-trash i-button"
+            title="Excluir Vale"
+            data-idvale="{{ multa.vale.idVales }}"></i>
+            {% endif %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="linha-divisoria"></div>
     {% endfor %}
 </div>
 <div class="article-card-footer">

@@ -4892,52 +4892,58 @@ main .fp-recibo-tabela .fp-recibo-print {
     width: 15%;
     text-align: left;
     padding-left: 5px;
-    border-top: 1px solid var(--color7);
 }
 
 .card-multas-pagar .item-multa .item-valor {
     width: 13%;
     text-align: right;
     padding-right: 5px;
-    border-top: 1px solid var(--color7);
 }
 
 .card-multas-pagar .item-multa .item-doc {
     width: 18%;
     text-align: left;
     padding-left: 5px;
-    border-top: 1px solid var(--color7);
 }
 
 .card-multas-pagar .item-multa .item-ait {
     width: 18%;
     text-align: left;
     padding-left: 5px;
-    border-top: 1px solid var(--color7);
 }
 
 .card-multas-pagar .item-multa .item-data {
     width: 23%;
     text-align: center;
     padding-left: 5px;
-    border-top: 1px solid var(--color7);
 }
 
 .card-multas-pagar .item-multa .item-veiculo {
     width: 13%;
     text-align: right;
     padding-right: 5px;
-    border-top: 1px solid var(--color7);
 }
 
 .card-multas-pagar .item-multa .item-infracao {
-    width: 70%;
+    width: 100%;
     text-align: left;
     padding-left: 5px;
 }
 
 .card-multas-pagar .item-multa .item-desconta {
-    width: 30%;
+    width: 15%;
+    padding-left: 5px;
+    text-align: left;
+}
+
+.card-multas-pagar .item-multa .item-motorista {
+    width: 20%;
+    padding-left: 5px;
+    text-align: left;
+}
+
+.card-multas-pagar .item-multa .item-vale {
+    width: 65%;
     padding-right: 5px;
     text-align: right;
 }
@@ -4945,15 +4951,20 @@ main .fp-recibo-tabela .fp-recibo-print {
 .card-multas-pagar .item-multa .item-linha {
     width: 80%;
     padding-left: 5px;
-    padding-bottom: 5px;
+    /* padding-bottom: 5px; */
     text-align: left;
 }
 
 .card-multas-pagar .item-multa .item-button {
     width: 20%;
     padding-right: 5px;
-    padding-bottom: 5px;
     text-align: right;
+}
+
+.card-multas-pagar .linha-divisoria {
+    background-color: #363636;
+    width: 100%;
+    height: 3px;
 }
 
 .card-minutas-multa {

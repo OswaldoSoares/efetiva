@@ -138,15 +138,20 @@ def save_multa(multa, idmulta):
     veiculo = Veiculo.objects.get(idVeiculo=multa["idveiculo"])
     minuta = busca_minutas_multa(multa["data_multa"])
     minuta_filtro = list(filter(lambda x: x["placa"] == veiculo.Placa, minuta))
+    print(f"[INFO] Minuta Filtro - {minuta_filtro}")
     numero_doc = multa["numero_doc"]
     valor = multa["valor_multa"]
     if minuta_filtro:
         idpessoal = minuta_filtro[0]["idpessoal"]
+        print(f"[INFO] idPessoal - {idpessoal}")
+        print(f"[INFO] idPessoal - {type(idpessoal)}")
         if multa["desconta_motorista"] == "True":
             idvale = busca_vale_multa(numero_doc)
             if not idvale:
                 vale_salva = create_vale_multa(numero_doc, valor, idpessoal)
                 idvale = vale_salva.idVales
+        print(f"[INFO] idVale - {idvale}")
+        print(f"[INFO] idVale - {type(idvale)}")
     if not idmulta:
         obj = Multas()
     else:
@@ -268,20 +273,23 @@ def multas_pagar(filtro, valor):
     lista = []
     for x in multas:
         multa = f"MULTA - {x.NumeroDOC}"
-        motorista = None
-        if x.DescontaMotorista:
-            motorista = Vales.objects.filter(Descricao__startswith=multa)
-            if motorista:
-                motorista = nome_curto(motorista[0].idPessoal.Nome)
-            else:
-                motorista = "VALE NÃO ENCONTRADO"
+        try:
+            motorista = nome_curto(x.idPessoal.Nome)
+        except AttributeError:
+            motorista = "NÃO MENCIONADO"
+        vale = False
+        try:
+            vale = Vales.objects.filter(Descricao__startswith=multa).get()
+            vale_mensagem = "VALE ENCONTRADO"
+        except Vales.DoesNotExist:
+            vale_mensagem = "VALE NÃO ENCONTRADO"
         adiciona_lista = False
         if filtro == "SEM FILTRO":
             adiciona_lista = True
         elif filtro == "MOTORISTA":
-            print(f"[INFO] - x.motorista - {motorista[0].idPessoal}")
+            print(f"[INFO] - x.motorista - {vale.idPessoal}")
             print(f"[INFO] - valor - {valor}")
-            if motorista[0].idPessoal.Nome == valor:
+            if vale.idPessoal.Nome == valor:
                 adiciona_lista = True
         if adiciona_lista:
             lista.append(
@@ -300,6 +308,8 @@ def multas_pagar(filtro, valor):
                     "digitavel_sp": x.LinhaDigitavelSP,
                     "desconta": x.DescontaMotorista,
                     "motorista": motorista,
+                    "vale": vale,
+                    "vale_mensagem": vale_mensagem,
                 }
             )
     return lista
