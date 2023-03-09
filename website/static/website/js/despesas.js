@@ -81,9 +81,7 @@ $(document).on('submit', '.js-gera-despesas', function(event) {
             $(".box-loader").show();
         },
         success: function(data) {
-            $(".card-despesas").html(data.html_form_despesas)
-                // $(".card-multas-pagar").html(data.html_multas_pagar)
-                // $('.card-minutas-multa').html('')
+            // $(".card-despesas").html(data.html_form_despesas)
             CarregaMask()
             $(".box-loader").hide();
         },
@@ -100,9 +98,7 @@ $(document).on('submit', '.js-gera-categorias', function(event) {
             $(".box-loader").show();
         },
         success: function(data) {
-            $(".card-categoria").html(data.html_form_categorias)
-                // $(".card-multas-pagar").html(data.html_multas_pagar)
-                // $('.card-minutas-multa').html('')
+            // $(".card-categoria").html(data.html_form_categorias)
             CarregaMask()
             $(".box-loader").hide();
         },
@@ -119,9 +115,7 @@ $(document).on('submit', '.js-gera-subcategorias', function(event) {
             $(".box-loader").show();
         },
         success: function(data) {
-            $(".card-subcategoria").html(data.html_form_subcategorias)
-                // $(".card-multas-pagar").html(data.html_multas_pagar)
-                // $('.card-minutas-multa').html('')
+            // $(".card-subcategoria").html(data.html_form_subcategorias)
             CarregaMask()
             $(".box-loader").hide();
         },
@@ -140,7 +134,7 @@ $(document).on('change', '.js-categoria', function() {
             $(".box-loader").show();
         },
         success: function(data) {
-            $("#subcategoria").html(data.html_choice_subcategorias)
+            // $("#subcategoria").html(data.html_choice_subcategorias)
             $(".box-loader").hide();
         },
     });
