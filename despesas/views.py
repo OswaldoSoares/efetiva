@@ -166,3 +166,13 @@ def filtro_dia_multa(request):
         contexto = facade.create_contexto_multas_pagar()
     data = facade.create_data_multas_pagar(request, contexto)
     return data
+
+
+def filtro_penalidade(request):
+    penalidade = request.GET.get("penalidade")
+    if penalidade:
+        contexto = facade.create_contexto_filtro_penalidade(penalidade)
+    else:
+        contexto = facade.create_contexto_multas_pagar()
+    data = facade.create_data_multas_pagar(request, contexto)
+    return data

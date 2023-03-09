@@ -95,6 +95,28 @@ $(document).on('click', '.js-filtro-dia', function() {
     });
 });
 
+$(document).on('click', '.js-filtro-penalidade', function() {
+    var penalidade = $("#penalidade").val()
+    document.getElementById("select-motorista").value = "SEM FILTRO";
+    document.getElementById("select-veiculo").value = "SEM FILTRO";
+    $.ajax({
+        type: "GET",
+        url: "/despesas/filtro_penalidade",
+        data: {
+            penalidade: penalidade,
+        },
+        beforeSend: function() {
+            $(".box-loader").show();
+            $('.card-minutas-multa').hide('')
+        },
+        success: function(data) {
+            $(".card-multas-pagar").html(data.html_multas_pagar)
+            $('.card-minutas-multa').html('')
+            $(".box-loader").hide();
+        },
+    });
+});
+
 $(document).on('submit', '.js-gera-despesas', function(event) {
     event.preventDefault();
     $.ajax({
