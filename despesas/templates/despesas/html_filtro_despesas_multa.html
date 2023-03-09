@@ -8,7 +8,7 @@
         </div>
         <div class="item-filtro">
             <select class="form-control" id="select-motorista">
-                <option value="SEM FILTRO">MULTA POR MOTORISTA</option>
+                <option value="SEM FILTRO">SEM FILTRO</option>
                 {% for i in motoristas %}
                 <option value="{{ i.idpessoal }}">{{ i.nome }}</option>
                 {% endfor %}
@@ -24,16 +24,16 @@
             <i class="bi bi-exclamation-circle i-button-null"></i>
         </div>
         <div class="item-filtro">
-            <select class="form-control" id="select-status">
-                <option value="SEM FILTRO">MULTA POR VEÍCULO</option>
+            <select class="form-control" id="select-veiculo">
+                <option value="SEM FILTRO">SEM FILTRO</option>
                 {% for i in veiculos %}
                 <option value="{{ i.idveiculo }}">{{ i.placa }}</option>
                 {% endfor %}
             </select>
         </div>
         <div class="item-button">
-            <i class="bi bi-filter-circle i-button js-filtro-status"
-            data-idcliente="{{ idcliente }}"></i>
+            <i class="bi bi-filter-circle i-button js-filtro-veiculo"
+            data-i.idveiculo="{{ i.idveiculo }}"></i>
         </div>
     </div>
     <div class="itens-filtro">

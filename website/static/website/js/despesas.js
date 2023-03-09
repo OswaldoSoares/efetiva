@@ -40,10 +40,33 @@ $(document).on('click', '.js-filtro-motorista', function() {
             idpessoal: idpessoal,
         },
         beforeSend: function() {
-            $(".box-loader").hide();
+            $(".box-loader").show();
+            $('.card-minutas-multa').hide('')
         },
         success: function(data) {
+            $(".card-multas-pagar").html(data.html_multas_pagar)
+            $('.card-minutas-multa').html('')
+            $(".box-loader").hide();
+        },
+    });
+});
+
+$(document).on('click', '.js-filtro-veiculo', function() {
+    var idveiculo = $("#select-veiculo").val()
+    $.ajax({
+        type: "GET",
+        url: "/despesas/filtro_veiculo",
+        data: {
+            idveiculo: idveiculo,
+        },
+        beforeSend: function() {
             $(".box-loader").show();
+            $('.card-minutas-multa').hide('')
+        },
+        success: function(data) {
+            $(".card-multas-pagar").html(data.html_multas_pagar)
+            $('.card-minutas-multa').html('')
+            $(".box-loader").hide();
         },
     });
 });

@@ -35,8 +35,19 @@ def create_despesas_context():
     return context
 
 
-def create_context_filtro_motorista(idpessoal):
+def create_contexto_filtro_motorista(idpessoal):
     multas = multas_pagar("MOTORISTA", idpessoal)
+    return {"multas": multas}
+
+
+def create_contexto_filtro_veiculo(idveiculo):
+    multas = multas_pagar("VEICULO", idveiculo)
+    return {"multas": multas}
+
+
+def create_contexto_multas_pagar():
+    multas = multas_pagar("SEM FILTRO", "")
+    return {"multas": multas}
 
 
 def get_abastecimento_all():
@@ -287,9 +298,10 @@ def multas_pagar(filtro, valor):
         if filtro == "SEM FILTRO":
             adiciona_lista = True
         elif filtro == "MOTORISTA":
-            print(f"[INFO] - x.motorista - {vale.idPessoal}")
-            print(f"[INFO] - valor - {valor}")
-            if vale.idPessoal.Nome == valor:
+            if x.idPessoal_id == int(valor):
+                adiciona_lista = True
+        elif filtro == "VEICULO":
+            if x.idVeiculo_id == int(valor):
                 adiciona_lista = True
         if adiciona_lista:
             lista.append(

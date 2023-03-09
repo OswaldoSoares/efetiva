@@ -129,8 +129,8 @@ def adiciona_subcategoria(request):
 
 
 def carrega_subcategoria(request):
-    _id_cat = request.GET.get("idcategoria")
-    subcategorias = facade.create_contexto_subcategoria(_id_cat)
+    idcategoria = request.GET.get("idcategoria")
+    subcategorias = facade.create_contexto_subcategoria(idcategoria)
     contexto = {"subcategorias": subcategorias}
     data = facade.create_data_choice_subcategoria(request, contexto)
     return data
@@ -138,5 +138,19 @@ def carrega_subcategoria(request):
 
 def filtro_motorista(request):
     idpessoal = request.GET.get("idpessoal")
-    print(f"[INFO] - idpessoa: {idpessoal}")
-    facade.create_context_filtro_motorista(idpessoal)
+    if not idpessoal == "SEM FILTRO":
+        contexto = facade.create_contexto_filtro_motorista(idpessoal)
+    else:
+        contexto = facade.create_contexto_multas_pagar()
+    data = facade.create_data_multas_pagar(request, contexto)
+    return data
+
+
+def filtro_veiculo(request):
+    idveiculo = request.GET.get("idveiculo")
+    if not idveiculo == "SEM FILTRO":
+        contexto = facade.create_contexto_filtro_veiculo(idveiculo)
+    else:
+        contexto = facade.create_contexto_multas_pagar()
+    data = facade.create_data_multas_pagar(request, contexto)
+    return data
