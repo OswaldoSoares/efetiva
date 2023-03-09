@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 
 from despesas import facade
+from website.facade import str_hoje
 
 from .forms import CadastraAbastecimento
 
@@ -150,6 +151,17 @@ def filtro_veiculo(request):
     idveiculo = request.GET.get("idveiculo")
     if not idveiculo == "SEM FILTRO":
         contexto = facade.create_contexto_filtro_veiculo(idveiculo)
+    else:
+        contexto = facade.create_contexto_multas_pagar()
+    data = facade.create_data_multas_pagar(request, contexto)
+    return data
+
+
+def filtro_dia_multa(request):
+    dia_multa = request.GET.get("dia_multa")
+    hoje = str_hoje()
+    if dia_multa < hoje:
+        contexto = facade.create_contexto_filtro_dia_multa(dia_multa)
     else:
         contexto = facade.create_contexto_multas_pagar()
     data = facade.create_data_multas_pagar(request, contexto)

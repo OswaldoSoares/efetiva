@@ -32,7 +32,8 @@ $(document).on('submit', '.js-gera-multas', function(event) {
 });
 
 $(document).on('click', '.js-filtro-motorista', function() {
-    var idpessoal = $("#select-motorista").val()
+    var idpessoal = $("#select-motorista").val();
+    document.getElementById("select-veiculo").value = "SEM FILTRO";
     $.ajax({
         type: "GET",
         url: "/despesas/filtro_motorista",
@@ -53,11 +54,34 @@ $(document).on('click', '.js-filtro-motorista', function() {
 
 $(document).on('click', '.js-filtro-veiculo', function() {
     var idveiculo = $("#select-veiculo").val()
+    document.getElementById("select-motorista").value = "SEM FILTRO";
     $.ajax({
         type: "GET",
         url: "/despesas/filtro_veiculo",
         data: {
             idveiculo: idveiculo,
+        },
+        beforeSend: function() {
+            $(".box-loader").show();
+            $('.card-minutas-multa').hide('')
+        },
+        success: function(data) {
+            $(".card-multas-pagar").html(data.html_multas_pagar)
+            $('.card-minutas-multa').html('')
+            $(".box-loader").hide();
+        },
+    });
+});
+
+$(document).on('click', '.js-filtro-dia', function() {
+    var dia_multa = $("#dia-multa").val()
+    document.getElementById("select-motorista").value = "SEM FILTRO";
+    document.getElementById("select-veiculo").value = "SEM FILTRO";
+    $.ajax({
+        type: "GET",
+        url: "/despesas/filtro_dia_multa",
+        data: {
+            dia_multa: dia_multa,
         },
         beforeSend: function() {
             $(".box-loader").show();

@@ -15,6 +15,7 @@ from .views import (
     minutas_multa,
     filtro_motorista,
     filtro_veiculo,
+    filtro_dia_multa,
 )
 
 urlpatterns = [
@@ -79,5 +80,10 @@ urlpatterns = [
         "filtro_veiculo",
         filtro_veiculo,
         name="filtro_veiculo",
+    ),
+    path(
+        "filtro_dia_multa",
+        filtro_dia_multa,
+        name="filtro_dia_multa",
     ),
 ]

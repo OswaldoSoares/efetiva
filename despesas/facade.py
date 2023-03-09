@@ -45,6 +45,11 @@ def create_contexto_filtro_veiculo(idveiculo):
     return {"multas": multas}
 
 
+def create_contexto_filtro_dia_multa(dia_multa):
+    multas = multas_pagar("DIA MULTA", dia_multa)
+    return {"multas": multas}
+
+
 def create_contexto_multas_pagar():
     multas = multas_pagar("SEM FILTRO", "")
     return {"multas": multas}
@@ -302,6 +307,16 @@ def multas_pagar(filtro, valor):
                 adiciona_lista = True
         elif filtro == "VEICULO":
             if x.idVeiculo_id == int(valor):
+                adiciona_lista = True
+        elif filtro == "DIA MULTA":
+            print(f"[INFO] - dia multa - {x.DataMulta}")
+            print(f"[INFO] - dia multa - {type(x.DataMulta)}")
+            print(f"[INFO] - dia hoje - {valor}")
+            print(f"[INFO] - dia hoje - {type(valor)}")
+            print(
+                f"[INFO] - dia hoje - {type(datetime.datetime.strptime(valor, '%Y-%m-%d'))}"
+            )
+            if x.DataMulta == datetime.datetime.strptime(valor, "%Y-%m-%d").date():
                 adiciona_lista = True
         if adiciona_lista:
             lista.append(
