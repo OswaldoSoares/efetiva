@@ -34,6 +34,8 @@ $(document).on('submit', '.js-gera-multas', function(event) {
 $(document).on('click', '.js-filtro-motorista', function() {
     var idpessoal = $("#select-motorista").val();
     document.getElementById("select-veiculo").value = "SEM FILTRO";
+    document.getElementById("penalidade").value = "";
+    document.getElementById("dia-multa").value = Hoje();
     $.ajax({
         type: "GET",
         url: "/despesas/filtro_motorista",
@@ -55,6 +57,8 @@ $(document).on('click', '.js-filtro-motorista', function() {
 $(document).on('click', '.js-filtro-veiculo', function() {
     var idveiculo = $("#select-veiculo").val()
     document.getElementById("select-motorista").value = "SEM FILTRO";
+    document.getElementById("penalidade").value = "";
+    document.getElementById("dia-multa").value = Hoje();
     $.ajax({
         type: "GET",
         url: "/despesas/filtro_veiculo",
@@ -77,6 +81,7 @@ $(document).on('click', '.js-filtro-dia', function() {
     var dia_multa = $("#dia-multa").val()
     document.getElementById("select-motorista").value = "SEM FILTRO";
     document.getElementById("select-veiculo").value = "SEM FILTRO";
+    document.getElementById("penalidade").value = "";
     $.ajax({
         type: "GET",
         url: "/despesas/filtro_dia_multa",
@@ -99,6 +104,7 @@ $(document).on('click', '.js-filtro-penalidade', function() {
     var penalidade = $("#penalidade").val()
     document.getElementById("select-motorista").value = "SEM FILTRO";
     document.getElementById("select-veiculo").value = "SEM FILTRO";
+    document.getElementById("dia-multa").value = Hoje();
     $.ajax({
         type: "GET",
         url: "/despesas/filtro_penalidade",
@@ -352,3 +358,12 @@ $(document).on('click', '.js-oculta-body-multa', function() {
     $(".js-oculta-body-multa").hide()
         // LimpaFormNota()
 })
+
+var Hoje = function() {
+    var hoje = new Date();
+    var dd = String(hoje.getDate()).padStart(2, '0');
+    var mm = String(hoje.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = hoje.getFullYear();
+    hoje = yyyy + '-' + mm + '-' + dd;
+    return hoje
+}
