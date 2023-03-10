@@ -156,6 +156,7 @@ def valida_multa(request):
 def save_multa(multa, idmulta):
     idvale = None
     idpessoal = None
+    idcliente = None
     veiculo = Veiculo.objects.get(idVeiculo=multa["idveiculo"])
     minuta = busca_minutas_multa(multa["data_multa"])
     minuta_filtro = list(filter(lambda x: x["placa"] == veiculo.Placa, minuta))
@@ -163,6 +164,7 @@ def save_multa(multa, idmulta):
     valor = multa["valor_multa"]
     if minuta_filtro:
         idpessoal = minuta_filtro[0]["idpessoal"]
+        idcliente = minuta_filtro[0]["idcliente"]
         if multa["desconta_motorista"] == "True":
             idvale = busca_vale_multa(numero_doc)
             if not idvale:
@@ -191,6 +193,7 @@ def save_multa(multa, idmulta):
     ).date()
     obj.idPessoal_id = idpessoal
     obj.idVales_id = idvale
+    obj.idCliente_id = idcliente
     obj.save()
 
 
@@ -333,6 +336,7 @@ def multas_pagar(filtro, valor):
                     "motorista": motorista,
                     "vale": vale,
                     "vale_mensagem": vale_mensagem,
+                    "cliente": x.idCliente,
                 }
             )
     return lista
@@ -367,6 +371,7 @@ def busca_minutas_multa(_date):
                     "inicio": x.HoraInicial,
                     "final": x.HoraFinal,
                     "data_minuta": x.DataMinuta,
+                    "idcliente": x.idCliente_id,
                     "fantasia": x.idCliente.Fantasia,
                     "motorista": nome_curto(motorista[0].idPessoal.Nome),
                     "idpessoal": motorista[0].idPessoal_id,

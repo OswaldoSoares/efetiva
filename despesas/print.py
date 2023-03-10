@@ -89,6 +89,10 @@ def multas_pagar(pdf, contexto):
         infracao = x["infracao"]
         local = x["local"]
         motorista = x["motorista"]
+        if x["cliente"]:
+            cliente = x["cliente"]
+        else:
+            cliente = "NÃO ENCONTRADO"
         codigo = f"{x['digitavel_sp'][0:12]} {x['digitavel_sp'][12:24]} {x['digitavel_sp'][24:36]} {x['digitavel_sp'][36:48]}"
         if x["desconta"]:
             paga = "MOTORISTA"
@@ -112,7 +116,9 @@ def multas_pagar(pdf, contexto):
             linha -= para.height * 0.352777
             para.drawOn(pdf, cmp(12), cmp(linha))
         linha -= 3
-        pdf.drawString(cmp(12), cmp(linha), f"MOTORISTA: {motorista}")
+        pdf.drawString(
+            cmp(12), cmp(linha), f"MOTORISTA: {motorista} - CLIENTE: {cliente}"
+        )
         pdf.drawRightString(cmp(198), cmp(linha), f"VEÍCULO: {placa}")
         linha -= 3
         pdf.drawString(cmp(12), cmp(linha), f"LINHA DIGITÁVEL: {codigo}")

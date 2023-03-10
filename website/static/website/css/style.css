@@ -4942,8 +4942,14 @@ main .fp-recibo-tabela .fp-recibo-print {
     text-align: left;
 }
 
+.card-multas-pagar .item-multa .item-cliente {
+    width: 20%;
+    padding-left: 5px;
+    text-align: left;
+}
+
 .card-multas-pagar .item-multa .item-vale {
-    width: 65%;
+    width: 45%;
     padding-right: 5px;
     text-align: right;
 }
