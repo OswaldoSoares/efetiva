@@ -179,7 +179,7 @@ def filtro_penalidade(request):
     return data
 
 
-def imprime_multa(request):
+def imprime_multas(request):
     filtro = request.GET.get("filtro")
     parametro = request.GET.get("parametro")
     if filtro == "SEM FILTRO":

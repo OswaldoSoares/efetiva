@@ -33,6 +33,14 @@ $(document).on('submit', '.js-gera-multas', function(event) {
 
 $(document).on('click', '.js-filtro-motorista', function() {
     var idpessoal = $("#select-motorista").val();
+    if (idpessoal == "SEM FILTRO") {
+        var v_filtro = "SEM FILTRO";
+        var v_parametro = "";
+    } else {
+        var v_filtro = "MOTORISTA";
+        var v_parametro = idpessoal;
+    }
+    var v_href = "/despesas/imprime_multas?filtro=" + v_filtro + "&parametro=" + v_parametro
     document.getElementById("select-veiculo").value = "SEM FILTRO";
     document.getElementById("penalidade").value = "";
     document.getElementById("dia-multa").value = Hoje();
@@ -49,13 +57,7 @@ $(document).on('click', '.js-filtro-motorista', function() {
         success: function(data) {
             $(".card-multas-pagar").html(data.html_multas_pagar)
             $(".card-minutas-multa").html("")
-            if (idpessoal == "SEM FILTRO") {
-                $(".js-imprime-multas").data("filtro", "SEM FILTRO");
-                $(".js-imprime-multas").data("parametro", "");
-            } else {
-                $(".js-imprime-multas").data("filtro", "MOTORISTA");
-                $(".js-imprime-multas").data("parametro", idpessoal);
-            }
+            $("#imprime-multas").attr("href", v_href)
             $(".box-loader").hide();
         },
     });
@@ -63,6 +65,14 @@ $(document).on('click', '.js-filtro-motorista', function() {
 
 $(document).on('click', '.js-filtro-veiculo', function() {
     var idveiculo = $("#select-veiculo").val()
+    if (idveiculo == "") {
+        var v_filtro = "SEM FILTRO";
+        var v_parametro = "";
+    } else {
+        var v_filtro = "VEICULO";
+        var v_parametro = idveiculo;
+    }
+    var v_href = "/despesas/imprime_multas?filtro=" + v_filtro + "&parametro=" + v_parametro
     document.getElementById("select-motorista").value = "SEM FILTRO";
     document.getElementById("penalidade").value = "";
     document.getElementById("dia-multa").value = Hoje();
@@ -79,13 +89,7 @@ $(document).on('click', '.js-filtro-veiculo', function() {
         success: function(data) {
             $(".card-multas-pagar").html(data.html_multas_pagar)
             $('.card-minutas-multa').html('')
-            if (idveiculo == "SEM FILTRO") {
-                $(".js-imprime-multas").data("filtro", "SEM FILTRO");
-                $(".js-imprime-multas").data("parametro", "");
-            } else {
-                $(".js-imprime-multas").data("filtro", "VEICULO");
-                $(".js-imprime-multas").data("parametro", idveiculo);
-            }
+            $("#imprime-multas").attr("href", v_href)
             $(".box-loader").hide();
         },
     });
@@ -95,6 +99,15 @@ $(document).on('click', '.js-filtro-dia', function() {
     var dia_multa = $("#dia-multa").val();
     var hoje = new Date();
     var dia_verificar = new Date($("#dia-multa").val());
+    if (dia_verificar > hoje) {
+        var v_filtro = "SEM FILTRO";
+        var v_parametro = "";
+    } else {
+        var v_filtro = "DIA MULTA";
+        var v_parametro = dia_multa;
+    }
+    var v_href = "/despesas/imprime_multas?filtro=" + v_filtro + "&parametro=" + v_parametro
+    console.log(v_href);
     document.getElementById("select-motorista").value = "SEM FILTRO";
     document.getElementById("select-veiculo").value = "SEM FILTRO";
     document.getElementById("penalidade").value = "";
@@ -110,14 +123,8 @@ $(document).on('click', '.js-filtro-dia', function() {
         },
         success: function(data) {
             $(".card-multas-pagar").html(data.html_multas_pagar)
-            $('.card-minutas-multa').html('')
-            if (dia_verificar > hoje) {
-                $(".js-imprime-multas").data("filtro", "SEM FILTRO");
-                $(".js-imprime-multas").data("parametro", "");
-            } else {
-                $(".js-imprime-multas").data("filtro", "DIA MULTA");
-                $(".js-imprime-multas").data("parametro", dia_multa);
-            }
+            $(".card-minutas-multa").html("")
+            $("#imprime-multas").attr("href", v_href)
             $(".box-loader").hide();
         },
     });
@@ -125,6 +132,14 @@ $(document).on('click', '.js-filtro-dia', function() {
 
 $(document).on('click', '.js-filtro-penalidade', function() {
     var penalidade = $("#penalidade").val()
+    if (penalidade == "") {
+        var v_filtro = "SEM FILTRO";
+        var v_parametro = "";
+    } else {
+        var v_filtro = "PENALIDADE";
+        var v_parametro = penalidade;
+    }
+    var v_href = "/despesas/imprime_multas?filtro=" + v_filtro + "&parametro=" + v_parametro
     document.getElementById("select-motorista").value = "SEM FILTRO";
     document.getElementById("select-veiculo").value = "SEM FILTRO";
     document.getElementById("dia-multa").value = Hoje();
@@ -141,32 +156,12 @@ $(document).on('click', '.js-filtro-penalidade', function() {
         success: function(data) {
             $(".card-multas-pagar").html(data.html_multas_pagar)
             $('.card-minutas-multa').html('')
-            if (penalidade == "") {
-                $(".js-imprime-multas").data("filtro", "SEM FILTRO");
-                $(".js-imprime-multas").data("parametro", "");
-            } else {
-                $(".js-imprime-multas").data("filtro", "PENALIDADE");
-                $(".js-imprime-multas").data("parametro", penalidade);
-            }
+            $("#imprime-multas").attr("href", v_href)
             $(".box-loader").hide();
         },
     });
 });
 
-$(document).on('click', '.js-imprime-multas', function() {
-    var filtro = $(".js-imprime-multas").data("filtro");
-    var parametro = $(".js-imprime-multas").data("parametro");
-    $.ajax({
-        type: "GET",
-        url: "/despesas/imprime_multas",
-        data: {
-            filtro: filtro,
-            parametro: parametro,
-        },
-        beforeSend: function() {},
-        success: function(data) {},
-    });
-});
 
 $(document).on('submit', '.js-gera-despesas', function(event) {
     event.preventDefault();
