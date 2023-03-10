@@ -121,7 +121,6 @@ def multas_pagar(pdf, contexto):
         pdf.line(cmp(10), cmp(linha), cmp(200), cmp(linha))
         linha -= 3
         if linha < 38:
-            print(linha)
             pdf.line(cmp(10), cmp(14), cmp(200), cmp(14))
             multas = str(len(contexto["multas"])).zfill(2)
             pagina = str(pdf.getPageNumber()).zfill(2)

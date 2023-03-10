@@ -159,20 +159,15 @@ def save_multa(multa, idmulta):
     veiculo = Veiculo.objects.get(idVeiculo=multa["idveiculo"])
     minuta = busca_minutas_multa(multa["data_multa"])
     minuta_filtro = list(filter(lambda x: x["placa"] == veiculo.Placa, minuta))
-    print(f"[INFO] Minuta Filtro - {minuta_filtro}")
     numero_doc = multa["numero_doc"]
     valor = multa["valor_multa"]
     if minuta_filtro:
         idpessoal = minuta_filtro[0]["idpessoal"]
-        print(f"[INFO] idPessoal - {idpessoal}")
-        print(f"[INFO] idPessoal - {type(idpessoal)}")
         if multa["desconta_motorista"] == "True":
             idvale = busca_vale_multa(numero_doc)
             if not idvale:
                 vale_salva = create_vale_multa(numero_doc, valor, idpessoal)
                 idvale = vale_salva.idVales
-        print(f"[INFO] idVale - {idvale}")
-        print(f"[INFO] idVale - {type(idvale)}")
     if not idmulta:
         obj = Multas()
     else:
