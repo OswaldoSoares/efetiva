@@ -44,11 +44,13 @@ $(document).on('click', '.js-filtro-motorista', function() {
         },
         beforeSend: function() {
             $(".box-loader").show();
-            $('.card-minutas-multa').hide('')
+            $(".card-minutas-multa").hide("")
         },
         success: function(data) {
             $(".card-multas-pagar").html(data.html_multas_pagar)
-            $('.card-minutas-multa').html('')
+            $(".card-minutas-multa").html("")
+            $(".js-imprime-multas").data("filtro", "MOTORISTA");
+            $(".js-imprime-multas").data("parametro", idpessoal);
             $(".box-loader").hide();
         },
     });
@@ -72,6 +74,8 @@ $(document).on('click', '.js-filtro-veiculo', function() {
         success: function(data) {
             $(".card-multas-pagar").html(data.html_multas_pagar)
             $('.card-minutas-multa').html('')
+            $(".js-imprime-multas").data("filtro", "VEICULO");
+            $(".js-imprime-multas").data("parametro", idveiculo);
             $(".box-loader").hide();
         },
     });
@@ -95,6 +99,8 @@ $(document).on('click', '.js-filtro-dia', function() {
         success: function(data) {
             $(".card-multas-pagar").html(data.html_multas_pagar)
             $('.card-minutas-multa').html('')
+            $(".js-imprime-multas").data("filtro", "DIA MULTA");
+            $(".js-imprime-multas").data("parametro", dia_multa);
             $(".box-loader").hide();
         },
     });
@@ -118,6 +124,8 @@ $(document).on('click', '.js-filtro-penalidade', function() {
         success: function(data) {
             $(".card-multas-pagar").html(data.html_multas_pagar)
             $('.card-minutas-multa').html('')
+            $(".js-imprime-multas").data("filtro", "PENALIDADE");
+            $(".js-imprime-multas").data("parametro", penalidade);
             $(".box-loader").hide();
         },
     });
