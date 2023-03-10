@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 
 from despesas import facade
+from despesas.print import print_multas_pagar
 from website.facade import str_hoje
 
 from .forms import CadastraAbastecimento
@@ -160,10 +161,10 @@ def filtro_veiculo(request):
 def filtro_dia_multa(request):
     dia_multa = request.GET.get("dia_multa")
     hoje = str_hoje()
-    if dia_multa < hoje:
-        contexto = facade.create_contexto_filtro_dia_multa(dia_multa)
-    else:
+    if dia_multa > hoje:
         contexto = facade.create_contexto_multas_pagar()
+    else:
+        contexto = facade.create_contexto_filtro_dia_multa(dia_multa)
     data = facade.create_data_multas_pagar(request, contexto)
     return data
 
@@ -176,3 +177,20 @@ def filtro_penalidade(request):
         contexto = facade.create_contexto_multas_pagar()
     data = facade.create_data_multas_pagar(request, contexto)
     return data
+
+
+def imprime_multa(request):
+    filtro = request.GET.get("filtro")
+    parametro = request.GET.get("parametro")
+    if filtro == "SEM FILTRO":
+        contexto = facade.create_contexto_multas_pagar()
+    elif filtro == "MOTORISTA":
+        contexto = facade.create_contexto_filtro_motorista(parametro)
+    elif filtro == "VEICULO":
+        contexto = facade.create_contexto_filtro_veiculo(parametro)
+    elif filtro == "DIA MULTA":
+        contexto = facade.create_contexto_filtro_dia_multa(parametro)
+    elif filtro == "PENALIDADE":
+        contexto = facade.create_contexto_filtro_penalidade(parametro)
+    response = print_multas_pagar(contexto)
+    return response

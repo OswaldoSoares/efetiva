@@ -87,18 +87,20 @@
     {% endfor %}
 </div>
 <div class="article-card-footer">
-    <div class="quantidade">
-    {% for multa in multas %}
-    {% if forloop.last %}
-    <span><b>{{ forloop.counter|stringformat:"02d" }} MULTA{{ forloop.counter|pluralize|upper }}</b></span>
+    {% if multas %}
+        <div class="quantidade">
+        {% for multa in multas %}
+        {% if forloop.last %}
+        <span><b>{{ forloop.counter|stringformat:"02d" }} MULTA{{ forloop.counter|pluralize|upper }}</b></span>
+        {% endif %}
+        {% endfor %}
+        </div>
+        <div class="botoes">
+            <i class="bi bi-printer i-button js-imprime-multas"
+            title="Imprime Relatório de Multas" data-filtro="SEM FILTRO"
+            data-parametro=""></i>
+        </div>
+        <div class="quantidade">
+        </div>
     {% endif %}
-    {% endfor %}
-    </div>
-    <div class="botoes">
-        <i class="bi bi-printer i-button js-imprime-multas"
-        title="Imprime Relatório de Multas" data-filtro="SEM FILTRO"
-        data-parametro=""></i>
-    </div>
-    <div class="quantidade">
-    </div>
 </div>
