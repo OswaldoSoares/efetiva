@@ -4967,6 +4967,21 @@ main .fp-recibo-tabela .fp-recibo-print {
     height: 3px;
 }
 
+.card-multas-pagar .article-card-footer {
+    width: 100%;
+}
+
+.card-multas-pagar .article-card-footer .quantidade {
+    width: 40%;
+    text-align: left;
+    padding-left: 15px;
+}
+
+.card-multas-pagar .article-card-footer .botoes {
+    width: 20%;
+    text-align: center;
+}
+
 .card-minutas-multa {
     width: 700px;
 }
