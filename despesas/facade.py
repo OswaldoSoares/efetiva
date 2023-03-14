@@ -347,11 +347,11 @@ def delete_multa(_id_mul):
     multa.delete()
 
 
-def create_vale_multa(_obj, idpessoal):
+def create_vale_multa(numero_doc, valor, idpessoal):
     if idpessoal:
-        descricao = f"Multa - {_obj.NumeroDOC}"
+        descricao = f"Multa - {numero_doc}"
         data = datetime.datetime.today().date()
-        valor = _obj.ValorMulta
+        valor = valor
         parcelas = 1
         return create_vales(descricao, data, valor, parcelas, idpessoal)
 
