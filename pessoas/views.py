@@ -135,9 +135,9 @@ def excluicontapessoa(request, idpescon):
     return JsonResponse(data)
 
 
-def consulta_pessoa(request, idpessoa):
-    contexto = facade.create_pessoal_context(idpessoa)
-    return render(request, "pessoas/consultapessoa.html", contexto)
+# def consulta_pessoa(request, idpessoa):
+#     contexto = facade.create_pessoal_context(idpessoa)
+#     return render(request, "pessoas/consultapessoa.html", contexto)
 
 
 def salva_form(request, form, template_name, idpes):

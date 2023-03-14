@@ -9,6 +9,7 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 from decimal import Decimal
 from PIL import Image, ImageDraw
+from despesas import facade as facade_multa
 from pagamentos import facade
 from pagamentos.models import Recibo
 
@@ -728,7 +729,9 @@ def html_recibos_colaborador(request, contexto, data):
 
 def create_contexto_consulta_colaborador(idpessoal):
     colaborador = Colaborador(idpessoal).__dict__
-    return {"colaborador": colaborador}
+    multas = facade_multa.multas_pagar("MOTORISTA", idpessoal)
+    print(multas)
+    return {"colaborador": colaborador, "multas": multas}
 
 
 def create_data_consulta_colaborador(request, contexto):
@@ -741,12 +744,20 @@ def create_data_consulta_colaborador(request, contexto):
         html_decimo_terceiro(request, contexto, data)
     else:
         html_recibos_colaborador(request, contexto, data)
+    html_multas_colaborador(request, contexto, data)
     return JsonResponse(data)
 
 
 def html_ferias_colaborador(request, contexto, data):
     data["html_ferias_colaborador"] = render_to_string(
         "pessoas/html_ferias_colaborador.html", contexto, request=request
+    )
+    return data
+
+
+def html_multas_colaborador(request, contexto, data):
+    data["html_multas_colaborador"] = render_to_string(
+        "pessoas/html_multas_colaborador.html", contexto, request=request
     )
     return data
 

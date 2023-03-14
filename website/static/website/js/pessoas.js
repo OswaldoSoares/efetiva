@@ -13,6 +13,7 @@ $(document).on('click', ".js-seleciona-colaborador", function() {
         beforeSend: function() {
             $(".card-dados-colaborador").hide()
             $(".card-ferias-colaborador").hide()
+            $(".card-multas-colaborador").hide()
             $(".card-decimo-terceiro").hide()
             $(".card-form-colaborador").hide()
             $(".card-recibos-colaborador").hide()
@@ -35,6 +36,8 @@ $(document).on('click', ".js-seleciona-colaborador", function() {
                 $(".card-recibos-colaborador").show()
                 $(".button-demissao").hide()
             }
+            $(".card-multas-colaborador").html(data.html_multas_colaborador)
+            $(".card-multas-colaborador").show()
             $(".box-loader").hide()
         },
         error: function(errorThrown) {
