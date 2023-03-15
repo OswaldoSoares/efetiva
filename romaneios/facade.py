@@ -270,7 +270,8 @@ def html_form_romaneios(request, contexto, data):
     )
     return data
 
-#TODO remover para facade website
+
+# TODO remover para facade website
 def hoje():
     hoje = datetime.datetime.today()
     hoje = datetime.datetime.strftime(hoje, "%Y-%m-%d")
@@ -605,15 +606,22 @@ def create_contexto_filtro_notas_status(id_cli, sort_status, order_nota):
         ).order_by(order_nota)
     lista = []
     for x in notas:
-        y = None
+        ocorrencia = None
         if x.StatusNota == "RECUSADA":
             ocorrencia = NotasOcorrencias.objects.filter(
-                idNotasClientes=x.idNotasClientes
+                idNotasClientes=x.idNotasClientes, TipoOcorrencia="RECUSADA"
             )
-            y = ocorrencia.latest("idNotasOcorrencia")
-            data_ocorrencia = y.DataOcorrencia
-            desc_ocorrencia = y.Ocorrencia
-            y = {"ocorrencia": desc_ocorrencia, "data_ocorrencia": data_ocorrencia}
+            lista_ocorrencia = []
+            for y in ocorrencia:
+
+                data_ocorrencia = y.DataOcorrencia
+                desc_ocorrencia = y.Ocorrencia
+                lista_ocorrencia.append(
+                    {
+                        "ocorrencia": desc_ocorrencia,
+                        "data_ocorrencia": data_ocorrencia,
+                    }
+                )
         lista.append(
             {
                 "id_nota_clientes": x.idNotasClientes,
@@ -645,7 +653,7 @@ def create_contexto_filtro_notas_status(id_cli, sort_status, order_nota):
                 "statusnota": x.StatusNota,
                 "historico": x.Historico,
                 "idcliente": x.idCliente_id,
-                "ocorrencia": y,
+                "ocorrencia": ocorrencia,
             }
         )
     return {"notas": lista, "cliente": cliente}

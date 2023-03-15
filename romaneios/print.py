@@ -264,22 +264,20 @@ def notas_status(pdf, contexto):
         bairro = x["bairro"]
         cep = x["cep"]
         cidade = x["cidade"]
-        data_ocorrencia = None
-        ocorrencia = None
-        if x["ocorrencia"]:
-            data_ocorrencia = x["ocorrencia"]["data_ocorrencia"].strftime("%d/%m/%Y")
-            ocorrencia = f"{data_ocorrencia} - {x['ocorrencia']['ocorrencia']}"
         pdf.setFont("Times-Roman", 9)
         pdf.drawString(
             cmp(12),
             cmp(linha),
             f"{numero} - {destinatario[0:9]}... - {endereco[0:30]} - {bairro} - CEP: {cep} - {cidade[0:9]}",
         )
-        if ocorrencia:
-            para = Paragraph(ocorrencia, style=styles_claro)
-            para.wrapOn(pdf, cmp(186), cmp(297))
-            linha -= para.height * 0.352777
-            para.drawOn(pdf, cmp(12), cmp(linha))
+        for y in x["ocorrencia"]:
+            data_ocorrencia = y.DataOcorrencia
+            ocorrencia = f"{data_ocorrencia} - {y.Ocorrencia}"
+            if ocorrencia:
+                para = Paragraph(ocorrencia, style=styles_claro)
+                para.wrapOn(pdf, cmp(186), cmp(297))
+                linha -= para.height * 0.352777
+                para.drawOn(pdf, cmp(12), cmp(linha))
         linha -= 1
         pdf.line(cmp(12), cmp(linha), cmp(198), cmp(linha))
         linha -= 3
