@@ -2,8 +2,10 @@
     <span>VERBAS RESCISÓRIA</span>
 </div>
 <div class="article-card-body">
-    {% for i in multas %}
-    {% if i.vale %}
+    {{ rescisao.ferias }}
+    {{ rescisao.terco_ferias }}
+    {{ rescisao.decimo_terceiro }}
+    {% for i in rescisao %}
     <div class="item-multas">
         <div class="item-dia" title="Data e Hora da Multa">
             <i class="bi bi-calendar i-button-null"></i> {{ i.data }} {{ i.hora }}
@@ -28,7 +30,6 @@
         </div>        
     </div>
     <div class="linha-divisoria"></div>
-    {% endif %}
     {% endfor %}
 </div>
 <div class="article-card-footer"></div>

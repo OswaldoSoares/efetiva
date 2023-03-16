@@ -256,8 +256,11 @@
     <i class="bi bi-currency-dollar i-button js-altera-salario-colaborador"
     title="Altera Valor do Salário e do Vale Transporte"
     data-idpessoal="{{ colaborador.idpes }}"></i>
-    {% comment %} <i class="icofont-beach i-button js-periodo-ferias"
-    title="Ferias do Colaborador" data-idpessoal="{{ colaborador.idpes }}"></i> {% endcomment %}
+    {% endif %}
+    {% if colaborador.data_demissao %}
+    <i class="icofont-calculator i-button js-verbas-rescisoria"
+    title="Verbas Rescisoria"
+    data-idpessoal="{{ colaborador.idpes }}"></i>
     {% endif %}
     <a class="bi bi-printer i-button" target="_blank"
     href="{% url 'print_ficha_colaborador' %}?idpes={{ colaborador.idpes }}"
