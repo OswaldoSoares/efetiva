@@ -47,13 +47,13 @@ class Multas(models.Model):
     Pago = models.BooleanField(default=False)
     DescontaMotorista = models.BooleanField(default=False)
     DataPagamento = models.DateField(default=0)
-    idVales = models.ForeignKey(Vales, on_delete=models.PROTECT, blank=True, null=True)
+    idVales = models.ForeignKey(Vales, on_delete=models.SET_NULL, blank=True, null=True)
     idVeiculo = models.ForeignKey(Veiculo, on_delete=models.CASCADE)
     idPessoal = models.ForeignKey(
-        Pessoal, on_delete=models.CASCADE, blank=True, null=True
+        Pessoal, on_delete=models.SET_NULL, blank=True, null=True
     )
     idCliente = models.ForeignKey(
-        Cliente, on_delete=models.PROTECT, blank=True, null=True
+        Cliente, on_delete=models.SET_NULL, blank=True, null=True
     )
 
     class Meta:
