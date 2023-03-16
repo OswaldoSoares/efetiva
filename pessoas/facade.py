@@ -718,12 +718,9 @@ def html_recibos_colaborador(request, contexto, data):
     idpessoal = contexto["colaborador"]["idpes"]
     recibos = create_recibos_colaborador(idpessoal)
     contexto.update(recibos)
-    print(f"[INFO] - Conexto - {contexto}")
-    print(f"[INFO] - Recibos - {recibos}")
     data["html_recibos_colaborador"] = render_to_string(
         "pagamentos/reciboavulso.html", contexto, request=request
     )
-    print(f"[INFO] - data - {data['html_recibos_colaborador']}")
     return data
 
 
