@@ -363,6 +363,29 @@ $(document).on('click', '.js-altera-telefone-colaborador', function() {
     });
 });
 
+$(document).on('click', '.js-verba-rescisoria', function() {
+    var idpessoal = $(this).data('idpessoal')
+    $.ajax({
+        type: "GET",
+        url: "/pessoas/verba_rescisoria",
+        data: {
+            idpessoal: idpessoal,
+        },
+        beforeSend: function() {
+            $(".card-verba-rescisoria").hide()
+            $(".box-loader").show()
+        },
+        success: function(data) {
+            $(".card-verba-rescisoria").html(data.html_verba_rescisoria)
+            $(".card-verba-rescisoria").show()
+            $(".box-loader").hide()
+        },
+        error: function(errorThrown) {
+            console.log("error: " + errorThrown)
+        }
+    });
+});
+
 $(document).on('click', '.js-exclui-telefone-colaborador', function() {
     var idfonepessoal = $(this).data('idfonepessoal')
     $.ajax({
