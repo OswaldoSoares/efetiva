@@ -8,6 +8,7 @@ from pessoas.print import (
     print_pdf_decimno_terceiro,
     print_pdf_ficha_colaborador,
     print_pdf_ferias,
+    print_pdf_rescisao_trabalho,
 )
 from website.facade import dict_tipo_conta, dict_tipo_doc, dict_tipo_fone, str_hoje
 from .models import Pessoal, DocPessoal, FonePessoal, ContaPessoal, ContraChequeItens
@@ -628,3 +629,10 @@ def verba_rescisoria(request):
     contexto = facade.create_contexto_verbas_rescisoria(idpessoal)
     data = facade.create_data_verbas_rescisoria(request, contexto)
     return data
+
+
+def print_rescisao_trabalho(request):
+    idpessoal = request.GET.get("idpessoal")
+    contexto = facade.create_contexto_print_rescisao_trabalho(idpessoal)
+    response = print_pdf_rescisao_trabalho(request, contexto)
+    return response
