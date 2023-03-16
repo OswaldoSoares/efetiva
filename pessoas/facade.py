@@ -10,7 +10,7 @@ from django.template.loader import render_to_string
 from decimal import Decimal
 from PIL import Image, ImageDraw
 from despesas import facade as facade_multa
-from pagamentos import facade
+from pagamentos import facade as facade_pagamentos
 from pagamentos.models import Recibo
 
 from pessoas.forms import CadastraSalario, CadastraVale, CadastraDemissao
@@ -733,7 +733,6 @@ def create_contexto_consulta_colaborador(idpessoal):
 
 def create_data_consulta_colaborador(request, contexto):
     tipo_pgto = contexto["colaborador"]["tipo_pgto"]
-    create_contexto_verbas_rescisoria(contexto["colaborador"])
     data = dict()
     html_lista_colaboradores_ativo(request, contexto, data)
     html_dados_colaborador(request, contexto, data)
@@ -847,16 +846,33 @@ def create_contexto_verbas_rescisoria(colaborador):
     rescisao_ferias = rescisao_salario / 12 * meses_ferias
     rescisao_terco_ferias = rescisao_ferias / 3
     rescisao_descimo_terceiro = rescisao_salario / 12 * meses_decimo_terceiro
+    _mes_ano = datetime.datetime.strftime(colaborador["data_demissao"], "%B/%Y")
+    folha = facade_pagamentos.create_contexto_funcionario(
+        _mes_ano, colaborador["idpes"]
+    )
     rescisao = [
         {
             "salario": round(rescisao_salario, 2),
             "ferias": round(rescisao_ferias, 2),
             "terco_ferias": round(rescisao_terco_ferias, 2),
             "decimo_terceiro": round(rescisao_descimo_terceiro, 2),
+            "folha_contra_cheque_itens": folha["contra_cheque_itens"],
         }
     ]
-    print(rescisao)
     return {"rescisao": rescisao}
+
+
+def create_data_verbas_rescisoria(request, contexto):
+    data = dict()
+    html_verbas_rescisoria(request, contexto, data)
+    return JsonResponse(data)
+
+
+def html_verbas_rescisoria(request, contexto, data):
+    data["html_verbas_rescisoria"] = render_to_string(
+        "pessoas/html_verbas_rescisoria.html", contexto, request=request
+    )
+    return data
 
 
 def rescisao_ferias_meses(data_inicial, data_final):
@@ -1410,7 +1426,9 @@ def salva_periodo_ferias_colaborador(idpessoal, inicio, termino, idaquisitivo):
     pdm, udm = extremos_mes(mes, ano)
     cp = CartaoPonto.objects.filter(Dia__range=[pdm, udm], idPessoal=idpessoal)
     if not cp:
-        facade.create_cartao_ponto(idpessoal, pdm, udm, admissao, demissao, var)
+        facade_pagamentos.create_cartao_ponto(
+            idpessoal, pdm, udm, admissao, demissao, var
+        )
     if mes_termino > mes_inicio:
         nova_data = inicio + relativedelta(months=+1)
         mes_ano = datetime.datetime.strftime(nova_data, "%B/%Y")
@@ -1418,7 +1436,9 @@ def salva_periodo_ferias_colaborador(idpessoal, inicio, termino, idaquisitivo):
         pdm, udm = extremos_mes(mes, ano)
         cp = CartaoPonto.objects.filter(Dia__range=[pdm, udm], idPessoal=idpessoal)
         if not cp:
-            facade.create_cartao_ponto(idpessoal, pdm, udm, admissao, demissao, var)
+            facade_pagamentos.create_cartao_ponto(
+                idpessoal, pdm, udm, admissao, demissao, var
+            )
         if mes_termino == mes_inicio + 2:
             nova_data = nova_data + relativedelta(months=+1)
             mes_ano = datetime.datetime.strftime(nova_data, "%B/%Y")
@@ -1426,7 +1446,9 @@ def salva_periodo_ferias_colaborador(idpessoal, inicio, termino, idaquisitivo):
             pdm, udm = extremos_mes(mes, ano)
             cp = CartaoPonto.objects.filter(Dia__range=[pdm, udm], idPessoal=idpessoal)
             if not cp:
-                facade.create_cartao_ponto(idpessoal, pdm, udm, admissao, demissao, var)
+                facade_pagamentos.create_cartao_ponto(
+                    idpessoal, pdm, udm, admissao, demissao, var
+                )
     print(len(connection.queries))
     CartaoPonto.objects.filter(
         Dia__range=[inicio, termino], idPessoal=idpessoal
