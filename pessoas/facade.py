@@ -730,7 +730,6 @@ def html_recibos_colaborador(request, contexto, data):
 def create_contexto_consulta_colaborador(idpessoal):
     colaborador = Colaborador(idpessoal).__dict__
     multas = facade_multa.multas_pagar("MOTORISTA", idpessoal)
-    print(multas)
     return {"colaborador": colaborador, "multas": multas}
 
 
