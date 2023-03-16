@@ -732,6 +732,7 @@ def create_contexto_consulta_colaborador(idpessoal):
 
 def create_data_consulta_colaborador(request, contexto):
     tipo_pgto = contexto["colaborador"]["tipo_pgto"]
+    create_contexto_verbas_rescisoria(contexto["colaborador"])
     data = dict()
     html_lista_colaboradores_ativo(request, contexto, data)
     html_dados_colaborador(request, contexto, data)
@@ -831,6 +832,14 @@ def create_contexto_print_decimo_terceiro(idpes, idparcela):
     colaborador = Colaborador(idpes).__dict__
     contexto = {"colaborador": colaborador, "idparcela": idparcela}
     return contexto
+
+
+def create_contexto_verbas_rescisoria(colaborador):
+    aquisitvo = colaborador["aquisitivo"]
+    if colaborador["data_demissao"]:
+        print(colaborador["data_admissao"], colaborador["data_demissao"])
+    print(colaborador["decimo_terceiro"])
+    print(aquisitvo)
 
 
 def create_data_form_adiciona_documento_colaborador(request, contexto):
@@ -1446,10 +1455,17 @@ def read_demissao_database(idpessoal):
 
 def salva_demissao(idpessoal, demissao):
     colaborador = Pessoal.objects.get(idPessoal=idpessoal)
+    aquisitivo = (
+        Aquisitivo.objects.filter(idPessoal=idpessoal).order_by("-DataInicial").first()
+    )
     obj = Pessoal(colaborador)
-    obj.DataDemissao = demissao
     obj.idPessoal = idpessoal
+    obj.DataDemissao = demissao
     obj.save(update_fields=["DataDemissao"])
+    obj = Aquisitivo(aquisitivo)
+    obj.idAquisitivo = aquisitivo.idAquisitivo
+    obj.DataFinal = demissao
+    obj.save(update_fields=["DataFinal"])
 
 
 def altera_status(idpessoal):
