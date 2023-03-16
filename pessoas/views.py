@@ -621,3 +621,10 @@ def altera_lista(request):
     contexto = {"colaboradores": colaboradores}
     data = facade.create_data_lista_colaboradores_ativo(request, contexto)
     return data
+
+
+def verba_rescisoria(request):
+    idpessoal = request.GET.get("idpessoal")
+    contexto = facade.create_contexto_verbas_rescisoria(idpessoal)
+    data = facade.create_data_verbas_rescisoria(request, contexto)
+    return data

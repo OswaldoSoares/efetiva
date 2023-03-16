@@ -51,6 +51,7 @@ from .views import (
     print_ferias,
     altera_status_colaborador,
     altera_lista,
+    verba_rescisoria,
 )
 
 
@@ -247,5 +248,10 @@ urlpatterns = [
         "exclui_periodo_ferias",
         exclui_periodo_ferias,
         name="exclui_periodo_ferias",
+    ),
+    path(
+        "verba_rescisoria",
+        verba_rescisoria,
+        name="verba_rescisoria",
     ),
 ]
