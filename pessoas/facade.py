@@ -186,14 +186,15 @@ class Colaborador:
             if not aquisitivo:
                 salvar = True
             else:
-                if aquisitivo[0].DataFinal < datetime.datetime.today().date():
-                    aquisitivo_inicial = self.data_admissao + relativedelta(
-                        years=+len(aquisitivo)
-                    )
-                    aquisitivo_final = aquisitivo_inicial + relativedelta(
-                        years=+1, days=-1
-                    )
-                    salvar = True
+                if not self.data_demissao:
+                    if aquisitivo[0].DataFinal < datetime.datetime.today().date():
+                        aquisitivo_inicial = self.data_admissao + relativedelta(
+                            years=+len(aquisitivo)
+                        )
+                        aquisitivo_final = aquisitivo_inicial + relativedelta(
+                            years=+1, days=-1
+                        )
+                        salvar = True
             if salvar:
                 obj = Aquisitivo()
                 obj.DataInicial = aquisitivo_inicial
