@@ -834,11 +834,10 @@ def create_contexto_print_decimo_terceiro(idpes, idparcela):
     return contexto
 
 
-def create_contexto_verbas_rescisoria(colaborador):
+def create_contexto_verbas_rescisoria(idpessoal):
+    colaborador = Colaborador(idpessoal).__dict__
     aquisitvo = (
-        Aquisitivo.objects.filter(idPessoal=colaborador["idpes"])
-        .order_by("-DataInicial")
-        .first()
+        Aquisitivo.objects.filter(idPessoal=idpessoal).order_by("-DataInicial").first()
     )
     meses_ferias = rescisao_ferias_meses(aquisitvo.DataInicial, aquisitvo.DataFinal)
     meses_decimo_terceiro = rescisao_descimo_terceiro_meses(aquisitvo.DataFinal)
@@ -847,18 +846,19 @@ def create_contexto_verbas_rescisoria(colaborador):
     rescisao_terco_ferias = rescisao_ferias / 3
     rescisao_descimo_terceiro = rescisao_salario / 12 * meses_decimo_terceiro
     _mes_ano = datetime.datetime.strftime(colaborador["data_demissao"], "%B/%Y")
-    folha = facade_pagamentos.create_contexto_funcionario(
-        _mes_ano, colaborador["idpes"]
-    )
+    folha = facade_pagamentos.create_contexto_funcionario(_mes_ano, idpessoal)
     rescisao = [
         {
             "salario": round(rescisao_salario, 2),
             "ferias": round(rescisao_ferias, 2),
+            "meses_ferias": meses_ferias,
             "terco_ferias": round(rescisao_terco_ferias, 2),
             "decimo_terceiro": round(rescisao_descimo_terceiro, 2),
+            "meses_decimo_terceiro": meses_decimo_terceiro,
             "folha_contra_cheque_itens": folha["contra_cheque_itens"],
         }
     ]
+    print(rescisao)
     return {"rescisao": rescisao}
 
 

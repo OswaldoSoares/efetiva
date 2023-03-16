@@ -363,7 +363,7 @@ $(document).on('click', '.js-altera-telefone-colaborador', function() {
     });
 });
 
-$(document).on('click', '.js-verba-rescisoria', function() {
+$(document).on('click', '.js-verbas-rescisoria', function() {
     var idpessoal = $(this).data('idpessoal')
     $.ajax({
         type: "GET",
@@ -372,12 +372,15 @@ $(document).on('click', '.js-verba-rescisoria', function() {
             idpessoal: idpessoal,
         },
         beforeSend: function() {
-            $(".card-verba-rescisoria").hide()
+            $(".card-ferias-colaborador").hide()
+            $(".card-multas-colaborador").hide()
+            $(".card-decimo-terceiro").hide()
+            $(".card-verbas-rescisoria").hide()
             $(".box-loader").show()
         },
         success: function(data) {
-            $(".card-verba-rescisoria").html(data.html_verba_rescisoria)
-            $(".card-verba-rescisoria").show()
+            $(".card-verbas-rescisoria").html(data.html_verbas_rescisoria)
+            $(".card-verbas-rescisoria").show()
             $(".box-loader").hide()
         },
         error: function(errorThrown) {

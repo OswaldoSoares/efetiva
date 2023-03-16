@@ -4794,7 +4794,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-multas-colaborador {
-    width: 300px;
+    width: 280px;
 }
 
 .card-multas-colaborador .itens-recibo-avulso {
@@ -4825,6 +4825,36 @@ main .fp-recibo-tabela .fp-recibo-print {
 .card-multas-colaborador .itens-recibo-avulso .item-button {
     width: 8%;
     text-align: center;
+}
+
+.card-verbas-rescisoria {
+    width: 280px;
+}
+
+.card-verbas-rescisoria .itens-verbas {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    color: var(--color6);
+}
+
+.card-verbas-rescisoria .itens-verbas .item-descricao {
+    width: 45%;
+    text-align: left;
+    padding-left: 5px;
+}
+
+.card-verbas-rescisoria .itens-verbas .item-referencia {
+    width: 30%;
+    text-align: center;
+}
+
+.card-verbas-rescisoria .itens-verbas .item-valor {
+    width: 25%;
+    text-align: right;
+    padding-right: 5px;
 }
 
 
