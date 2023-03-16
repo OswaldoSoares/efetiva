@@ -1,5 +1,8 @@
 $(document).ready(function() {
     $(".button-demissao").hide();
+    $('textarea').on('input', function() {
+        console.log($(this).val());
+    });
 });
 
 $(document).on('click', ".js-seleciona-colaborador", function() {
@@ -387,6 +390,14 @@ $(document).on('click', '.js-verbas-rescisoria', function() {
             console.log("error: " + errorThrown)
         }
     });
+});
+
+
+$(document).on('change', '#causa', function() {
+    console.log($("#print_rescisao_trabalho").attr("href"))
+    var v_href = $("#print_rescisao_trabalho").attr("href")
+        // $("#imprime-multas").attr("href", v_href)
+
 });
 
 $(document).on('click', '.js-exclui-telefone-colaborador', function() {

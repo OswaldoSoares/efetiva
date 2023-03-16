@@ -548,7 +548,9 @@ def formulario_rescisao_trabalho(pdf, contexto):
     )
     pdf.drawString(cmp(11), cmp(218), f"ADMISSÃO: {admissao}")
     pdf.drawString(cmp(80), cmp(218), f"AFASTAMENTO: {demissao}")
-    pdf.drawString(cmp(11), cmp(213), f"CAUSA DO AFASTAMENTO: causa")
+    pdf.drawString(
+        cmp(11), cmp(213), f"CAUSA DO AFASTAMENTO: PEDIDO DE DEMISSÃO PELO FUNCIONÁRIO"
+    )
     pdf.rect(cmp(10), cmp(203), cmp(190), cmp(5), fill=0)
     pdf.drawCentredString(cmp(105), cmp(204), "VERBAS RESCISORIA")
     linha = 199
