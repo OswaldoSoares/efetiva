@@ -52,6 +52,7 @@ from .views import (
     altera_status_colaborador,
     altera_lista,
     verba_rescisoria,
+    print_rescisao_trabalho,
 )
 
 
@@ -253,5 +254,10 @@ urlpatterns = [
         "verba_rescisoria",
         verba_rescisoria,
         name="verba_rescisoria",
+    ),
+    path(
+        "print_rescisao_trabalho",
+        print_rescisao_trabalho,
+        name="print_rescisao_trabalho",
     ),
 ]

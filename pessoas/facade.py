@@ -858,8 +858,7 @@ def create_contexto_verbas_rescisoria(idpessoal):
             "folha_contra_cheque_itens": folha["contra_cheque_itens"],
         }
     ]
-    print(rescisao)
-    return {"rescisao": rescisao}
+    return {"rescisao": rescisao, "colaborador": colaborador}
 
 
 def create_data_verbas_rescisoria(request, contexto):
