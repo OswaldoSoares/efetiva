@@ -836,11 +836,52 @@ def create_contexto_print_decimo_terceiro(idpes, idparcela):
 
 
 def create_contexto_verbas_rescisoria(colaborador):
-    aquisitvo = colaborador["aquisitivo"]
-    if colaborador["data_demissao"]:
-        print(colaborador["data_admissao"], colaborador["data_demissao"])
-    print(colaborador["decimo_terceiro"])
-    print(aquisitvo)
+    aquisitvo = (
+        Aquisitivo.objects.filter(idPessoal=colaborador["idpes"])
+        .order_by("-DataInicial")
+        .first()
+    )
+    meses_ferias = rescisao_ferias_meses(aquisitvo.DataInicial, aquisitvo.DataFinal)
+    meses_decimo_terceiro = rescisao_descimo_terceiro_meses(aquisitvo.DataFinal)
+    rescisao_salario = colaborador["salario"][0]["salario"]
+    rescisao_ferias = rescisao_salario / 12 * meses_ferias
+    rescisao_terco_ferias = rescisao_ferias / 3
+    rescisao_descimo_terceiro = rescisao_salario / 12 * meses_decimo_terceiro
+    rescisao = [
+        {
+            "salario": round(rescisao_salario, 2),
+            "ferias": round(rescisao_ferias, 2),
+            "terco_ferias": round(rescisao_terco_ferias, 2),
+            "decimo_terceiro": round(rescisao_descimo_terceiro, 2),
+        }
+    ]
+    print(rescisao)
+    return {"rescisao": rescisao}
+
+
+def rescisao_ferias_meses(data_inicial, data_final):
+    dia_inicial = data_inicial.day
+    if dia_inicial < 16:
+        mes_inicial = data_inicial.month
+    else:
+        mes_inicial = data_inicial.month + 1
+    dia_final = data_final.day
+    if dia_final > 14:
+        mes_final = data_final.month
+    else:
+        mes_final = data_final.month - 1
+    meses = 12 - mes_inicial + 1 + mes_final
+    return meses
+
+
+def rescisao_descimo_terceiro_meses(data_final):
+    dia_final = data_final.day
+    if dia_final > 14:
+        mes_final = data_final.month
+    else:
+        mes_final = data_final.month - 1
+    meses = mes_final
+    return meses
 
 
 def create_data_form_adiciona_documento_colaborador(request, contexto):
