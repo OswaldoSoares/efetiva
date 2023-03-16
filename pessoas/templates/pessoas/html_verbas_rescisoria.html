@@ -51,4 +51,8 @@
     <div class="linha-divisoria"></div>
     {% endfor %}
 </div>
-<div class="article-card-footer"></div>
+<div class="article-card-footer">
+    <a class="bi bi-printer i-button" target="_blank"
+    href="{% url 'print_rescisao_trabalho' %}?idpes={{ colaborador.idpes }}"
+    title="Imprime Rescisão de Trabalho"></a>
+</div>

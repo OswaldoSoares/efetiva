@@ -480,13 +480,14 @@ def ficha_colaborador(pdf, contexto):
             pdf.drawString(cmp(12), cmp(linha), f'{i["tipo"]}: {i["fone"]}')
 
 
-def print_rescisao_trabalho(pdf, contexto):
+def print_pdf_rescisao_trabalho(pdf, contexto):
     response = HttpResponse(content_type="application/pdf")
     response["Content-Disposition"] = f'filename="RESCISAO DE TRABALHO.pdf"'
     buffer = BytesIO()
     pdf = canvas.Canvas(buffer)
     pdf.setFont("Times-Roman", 10)
-    linha = 297
+    linha = 287
+    pdf.rect(cmp(10), cmp(linha), cmp(200), cmp(10), fill=1, stroke=1)
 
     pdf.setTitle(f"RESCISÃO DE TRABALHO - .pdf")
     pdf.save()
