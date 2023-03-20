@@ -633,6 +633,8 @@ def verba_rescisoria(request):
 
 def print_rescisao_trabalho(request):
     idpessoal = request.GET.get("idpessoal")
+    causa = request.GET.get("causa")
     contexto = facade.create_contexto_verbas_rescisoria(idpessoal)
+    contexto.update({"causa": causa})
     response = print_pdf_rescisao_trabalho(request, contexto)
     return response
