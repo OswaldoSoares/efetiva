@@ -571,40 +571,61 @@ def dados_rescisao_trabalho(pdf, contexto):
     pdf.drawString(cmp(123), cmp(linha), f"{demissao}")
     linha -= 7.7
     linha -= 4
-    pdf.drawString(cmp(15), cmp(linha), f"FÉRIAS PROPORCIONAIS - {meses_ferias}/12")
-    pdf.drawRightString(cmp(100), cmp(linha), f"R$ {ferias}")
-    pdf.drawString(cmp(110), cmp(linha), f"1/3 FÉRIAS PROPORCIONAIS")
-    pdf.drawRightString(cmp(195), cmp(linha), f"R$ {terco_ferias}")
-    linha -= 7
+    col = 11
+    for x in contexto["rescisao"][0]["folha_contra_cheque_itens"]:
+        if x["registro"] == "C":
+            if x["descricao"].startswith("SALARIO"):
+                descricao = x["descricao"].replace("SALARIO", "SALDO DE SALARIO")
+            else:
+                descricao = x["descricao"]
+            pdf.drawString(cmp(col), cmp(linha), f"{descricao} - {x['referencia']}")
+            pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {x['valor']}")
+            bruto += x["valor"]
+            if col == 11:
+                col = 106
+            else:
+                col = 11
+                linha -= 7.7
+    pdf.drawString(cmp(col), cmp(linha), f"FÉRIAS PROPORCIONAIS - {meses_ferias}/12")
+    pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {ferias}")
+    if col == 11:
+        col = 106
+    else:
+        col = 11
+        linha -= 7.7
+    pdf.drawString(cmp(col), cmp(linha), f"1/3 FÉRIAS PROPORCIONAIS")
+    pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {terco_ferias}")
+    if col == 11:
+        col = 106
+    else:
+        col = 11
+        linha -= 7.7
     pdf.drawString(
-        cmp(15), cmp(linha), f"13º PROPORCIONAL - {meses_decimo_terceiro}/12"
+        cmp(col), cmp(linha), f"13º PROPORCIONAL - {meses_decimo_terceiro}/12"
     )
-    pdf.drawRightString(cmp(100), cmp(linha), f"R$ {decimo_terceiro}")
-    linha -= 5
-    # for x in contexto["rescisao"][0]["folha_contra_cheque_itens"]:
-    #     if x["registro"] == "C":
-    #         pdf.drawString(cmp(11), cmp(linha), f"{x['descricao']} - {x['referencia']}")
-    #         pdf.drawRightString(cmp(199), cmp(linha), f"R$ {x['valor']}")
-    #         bruto += x["valor"]
-    #         linha -= 5
-    # linha -= 5
-    # pdf.drawRightString(cmp(199), cmp(linha), f"TOTAL BRUTO - R$ {bruto}")
-    # linha -= 10
-    # pdf.rect(cmp(10), cmp(linha - 1), cmp(190), cmp(5), fill=0)
-    # pdf.drawCentredString(cmp(105), cmp(linha), "DEDUÇÕES")
-    # linha -= 5
-    # deducoes = Decimal(0.00)
-    # for x in contexto["rescisao"][0]["folha_contra_cheque_itens"]:
-    #     if x["registro"] == "D":
-    #         pdf.drawString(cmp(11), cmp(linha), f"{x['descricao']}")
-    #         pdf.drawRightString(cmp(199), cmp(linha), f"R$ {x['valor']}")
-    #         deducoes += x["valor"]
-    #         linha -= 5
-    # linha -= 5
-    # pdf.drawRightString(cmp(199), cmp(linha), f"TOTAL DEDUÇÕES - R$ {deducoes}")
-    # linha -= 20
-    # pdf.drawCentredString(cmp(105), cmp(50), f"VALOR LIQUIDO - R$ {bruto - deducoes}")
-    # pdf.drawCentredString(cmp(105), cmp(15), f"{contexto['colaborador']['nome']}")
+    pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {decimo_terceiro}")
+    linha = 116.7
+    pdf.drawRightString(cmp(199), cmp(linha + 1), f"R$ {bruto}")
+    linha -= 7.7
+    linha -= 4
+    linha += 1
+    deducoes = Decimal(0.00)
+    col = 11
+    for x in contexto["rescisao"][0]["folha_contra_cheque_itens"]:
+        if x["registro"] == "D":
+            pdf.drawString(cmp(col), cmp(linha), f"{x['descricao']}")
+            pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {x['valor']}")
+            deducoes += x["valor"]
+            if col == 11:
+                col = 106
+            else:
+                col = 11
+                linha -= 7.7
+    linha = 44.4
+    pdf.drawRightString(cmp(199), cmp(linha), f"R$ {deducoes}")
+    linha -= 7.7
+    pdf.drawRightString(cmp(199), cmp(linha), f"R$ {bruto - deducoes}")
+    pdf.drawCentredString(cmp(105), cmp(15), f"{nome_trabalhador}")
     return pdf
 
 
@@ -723,9 +744,9 @@ def formulario_rescisao_trabalho(pdf, contexto):
     pdf.line(cmp(105), cmp(linha), cmp(105), cmp(linha + (8 * 7.7)))
     pdf.line(cmp(165), cmp(linha), cmp(165), cmp(linha + (8 * 7.7)))
     pdf.line(cmp(10), cmp(linha), cmp(200), cmp(linha))
-    linha -= 7.7
+    linha = 116.7
     pdf.setFont("Times-Roman", 10)
-    pdf.drawRightString(cmp(160), cmp(linha + 2), "TOTAL BRUTO")
+    pdf.drawRightString(cmp(164), cmp(linha + 1), "TOTAL BRUTO")
     pdf.line(cmp(165), cmp(linha), cmp(165), cmp(linha + 7.7))
     linha -= 4
     pdf.setFont("Times-Roman", 8)
@@ -747,11 +768,11 @@ def formulario_rescisao_trabalho(pdf, contexto):
     pdf.line(cmp(10), cmp(linha), cmp(200), cmp(linha))
     linha -= 7.7
     pdf.setFont("Times-Roman", 10)
-    pdf.drawRightString(cmp(160), cmp(linha + 2), "TOTAL DEDUÇÕES")
+    pdf.drawRightString(cmp(164), cmp(linha + 1), "TOTAL DEDUÇÕES")
     pdf.line(cmp(165), cmp(linha), cmp(165), cmp(linha + 7.7))
     pdf.line(cmp(10), cmp(linha), cmp(200), cmp(linha))
     linha -= 7.7
-    pdf.drawRightString(cmp(160), cmp(linha + 2), "TOTAL LIQUIDO")
+    pdf.drawRightString(cmp(164), cmp(linha + 1), "TOTAL LIQUIDO")
     pdf.line(cmp(165), cmp(linha), cmp(165), cmp(linha + 7.7))
     pdf.line(cmp(10), cmp(linha), cmp(200), cmp(linha))
     pdf.line(cmp(50), cmp(19), cmp(160), cmp(19))
