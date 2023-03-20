@@ -10,6 +10,8 @@ class NotasClientes(models.Model):
     DataColeta = models.DateField(default=0)
     LocalColeta = models.CharField(max_length=200)
     NumeroNota = models.CharField(max_length=15, default=0)
+    SerieNota = models.CharField(max_length=5, blank=True, null=True)
+    CNPJ = models.CharField(max_length=18, blank=True, null=True)
     Destinatario = models.CharField(max_length=200, blank=True, null=True)
     Endereco = models.CharField(max_length=200, blank=True, null=True)
     CEP = models.CharField(max_length=8, blank=True, null=True)
