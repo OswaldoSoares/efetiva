@@ -50,10 +50,12 @@
     </div>
     <div class="linha-divisoria"></div>
     {% endfor %}
-    <textarea row="4" col="30" class="form-control" placeholder="CAUSA" id="causa"></textarea>
+    <textarea id="causa" name="causa" rows="4" cols="30"
+    class="form-control" placeholder="CAUSA"></textarea>
+    </textarea>
 </div>
 <div class="article-card-footer">
-    <a class="bi bi-printer i-button" target="_blank" id="print_rescisao_trabalho"
+    <a class="bi bi-printer i-button" target="_blank" id="print-rescisao-trabalho"
     href="{% url 'print_rescisao_trabalho' %}?idpessoal={{ colaborador.idpes }}"
     title="Imprime Rescisão de Trabalho"></a>
 </div>

@@ -531,7 +531,7 @@ def formulario_rescisao_trabalho(pdf, contexto):
     nascimento = datetime.datetime.strftime(
         contexto["colaborador"]["data_nascimento"], "%d/%m/%Y"
     )
-    pdf.drawString(cmp(10), cmp(237), f"NASCIMENTO: {nascimento}")
+    pdf.drawString(cmp(11), cmp(237), f"NASCIMENTO: {nascimento}")
     pdf.drawString(cmp(80), cmp(237), f"MÃE: {contexto['colaborador']['mae']}")
     pdf.rect(cmp(10), cmp(227), cmp(190), cmp(5), fill=0)
     pdf.drawCentredString(cmp(105), cmp(228), "DADOS CONTRATO")

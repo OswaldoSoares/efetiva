@@ -1,9 +1,7 @@
 $(document).ready(function() {
     $(".button-demissao").hide();
-    $('textarea').on('input', function() {
-        console.log($(this).val());
-    });
 });
+
 
 $(document).on('click', ".js-seleciona-colaborador", function() {
     var id_pessoal = $(this).data("idpessoal");
@@ -393,13 +391,6 @@ $(document).on('click', '.js-verbas-rescisoria', function() {
 });
 
 
-$(document).on('change', '#causa', function() {
-    console.log($("#print_rescisao_trabalho").attr("href"))
-    var v_href = $("#print_rescisao_trabalho").attr("href")
-        // $("#imprime-multas").attr("href", v_href)
-
-});
-
 $(document).on('click', '.js-exclui-telefone-colaborador', function() {
     var idfonepessoal = $(this).data('idfonepessoal')
     $.ajax({
@@ -773,5 +764,15 @@ $(document).on('click', '.js-altera-lista', function() {
             $(".card-lista-colaboradores").show()
             $(".box-loader").hide()
         },
+    });
+});
+
+
+$(document).on("input", '#causa', function() {
+    $("#print-rescisao-trabalho").prop('href', function() {
+        var href = $("#print-rescisao-trabalho").prop('href');
+        var url = new URL(href);
+        url.searchParams.set('causa', $("#causa").val());
+        $("#print-rescisao-trabalho").attr("href", url.toString());
     });
 });

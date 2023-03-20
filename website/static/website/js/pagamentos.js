@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    tamanhoCardBody();
+    // tamanhoCardBody();
     $(".div-um").show()
     $(".div-dois").hide()
     $(".div-tres").hide()
