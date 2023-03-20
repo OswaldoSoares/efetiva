@@ -486,7 +486,7 @@ def print_pdf_rescisao_trabalho(pdf, contexto):
     buffer = BytesIO()
     pdf = canvas.Canvas(buffer)
     pdf = formulario_rescisao_trabalho(pdf, contexto)
-
+    pdf = dados_rescisao_trabalho(pdf, contexto)
     pdf.setTitle(f"RESCISÃO DE TRABALHO - .pdf")
     pdf.save()
     buffer.seek(0)
@@ -494,6 +494,118 @@ def print_pdf_rescisao_trabalho(pdf, contexto):
     buffer.close()
     response.write(pdf)
     return response
+
+
+def dados_rescisao_trabalho(pdf, contexto):
+    cnpj = "21.602.117/0001-15"
+    razao_social = "TRANSEFETIVA TRANSPORTE - EIRELLI - ME"
+    endereco_empregador = "RUA OLIMPIO PORTUGAL, 245"
+    bairro_empregador = "MOOCA"
+    cidade_empregador = "SÃO PAULO"
+    estado_empregador = "SP"
+    cep_empregador = "03112-010"
+    for x in contexto["colaborador"]["documentos"]:
+        if x["tipo"] == "CPF":
+            cpf = x["documento"]
+    nome_trabalhador = contexto["colaborador"]["nome"]
+    endereco_trabalhador = contexto["colaborador"]["endereco"]
+    bairro_trabalhador = contexto["colaborador"]["bairro"]
+    cidade_trabalhador = contexto["colaborador"]["cidade"]
+    estado_trabalhador = contexto["colaborador"]["estado"]
+    cep_trabalhador = contexto["colaborador"]["cep"]
+    nascimento = datetime.datetime.strftime(
+        contexto["colaborador"]["data_nascimento"], "%d/%m/%Y"
+    )
+    mae_trabalhador = contexto["colaborador"]["mae"]
+    categoria = contexto["colaborador"]["categoria"]
+    causa = contexto["causa"]
+    salario = contexto["colaborador"]["salario"][0]["salario"]
+    admissao = datetime.datetime.strftime(
+        contexto["colaborador"]["data_admissao"], "%d/%m/%Y"
+    )
+    demissao = datetime.datetime.strftime(
+        contexto["colaborador"]["data_demissao"], "%d/%m/%Y"
+    )
+    bruto = Decimal(0.00)
+    meses_ferias = contexto["rescisao"][0]["meses_ferias"]
+    ferias = contexto["rescisao"][0]["ferias"]
+    bruto += ferias
+    terco_ferias = contexto["rescisao"][0]["terco_ferias"]
+    bruto += terco_ferias
+    meses_decimo_terceiro = contexto["rescisao"][0]["meses_decimo_terceiro"]
+    decimo_terceiro = contexto["rescisao"][0]["decimo_terceiro"]
+    bruto += decimo_terceiro
+    linha = 267.3
+    pdf.setFont("Times-Roman", 10)
+    pdf.drawString(cmp(15), cmp(linha), f"{cnpj}")
+    pdf.drawString(cmp(60), cmp(linha), f"{razao_social}")
+    linha -= 7.7
+    pdf.drawString(cmp(15), cmp(linha), f"{endereco_empregador}")
+    pdf.drawString(cmp(131), cmp(linha), f"{bairro_empregador}")
+    linha -= 7.7
+    pdf.drawString(cmp(15), cmp(linha), f"{cidade_empregador}")
+    pdf.drawString(cmp(73), cmp(linha), f"{estado_empregador}")
+    pdf.drawString(cmp(85), cmp(linha), f"{cep_empregador}")
+    linha -= 7.7
+    linha -= 4
+    pdf.drawString(cmp(15), cmp(linha), f"{cpf}")
+    pdf.drawString(cmp(60), cmp(linha), f"{nome_trabalhador}")
+    linha -= 7.7
+    pdf.drawString(cmp(15), cmp(linha), f"{endereco_trabalhador}")
+    pdf.drawString(cmp(131), cmp(linha), f"{bairro_trabalhador}")
+    linha -= 7.7
+    pdf.drawString(cmp(15), cmp(linha), f"{cidade_trabalhador}")
+    pdf.drawString(cmp(73), cmp(linha), f"{estado_trabalhador}")
+    pdf.drawString(cmp(85), cmp(linha), f"{cep_trabalhador}")
+    linha -= 7.7
+    pdf.drawString(cmp(15), cmp(linha), f"{nascimento}")
+    pdf.drawString(cmp(60), cmp(linha), f"{mae_trabalhador}")
+    linha -= 7.7
+    linha -= 4
+    pdf.drawString(cmp(15), cmp(linha), f"{categoria}")
+    linha -= 7.7
+    pdf.drawString(cmp(15), cmp(linha), f"{causa}")
+    linha -= 7.7
+    pdf.drawString(cmp(15), cmp(linha), f"R$ {salario}")
+    pdf.drawString(cmp(49), cmp(linha), f"{admissao}")
+    pdf.drawString(cmp(123), cmp(linha), f"{demissao}")
+    linha -= 7.7
+    linha -= 4
+    pdf.drawString(cmp(15), cmp(linha), f"FÉRIAS PROPORCIONAIS - {meses_ferias}/12")
+    pdf.drawRightString(cmp(100), cmp(linha), f"R$ {ferias}")
+    pdf.drawString(cmp(110), cmp(linha), f"1/3 FÉRIAS PROPORCIONAIS")
+    pdf.drawRightString(cmp(195), cmp(linha), f"R$ {terco_ferias}")
+    linha -= 7
+    pdf.drawString(
+        cmp(15), cmp(linha), f"13º PROPORCIONAL - {meses_decimo_terceiro}/12"
+    )
+    pdf.drawRightString(cmp(100), cmp(linha), f"R$ {decimo_terceiro}")
+    linha -= 5
+    # for x in contexto["rescisao"][0]["folha_contra_cheque_itens"]:
+    #     if x["registro"] == "C":
+    #         pdf.drawString(cmp(11), cmp(linha), f"{x['descricao']} - {x['referencia']}")
+    #         pdf.drawRightString(cmp(199), cmp(linha), f"R$ {x['valor']}")
+    #         bruto += x["valor"]
+    #         linha -= 5
+    # linha -= 5
+    # pdf.drawRightString(cmp(199), cmp(linha), f"TOTAL BRUTO - R$ {bruto}")
+    # linha -= 10
+    # pdf.rect(cmp(10), cmp(linha - 1), cmp(190), cmp(5), fill=0)
+    # pdf.drawCentredString(cmp(105), cmp(linha), "DEDUÇÕES")
+    # linha -= 5
+    # deducoes = Decimal(0.00)
+    # for x in contexto["rescisao"][0]["folha_contra_cheque_itens"]:
+    #     if x["registro"] == "D":
+    #         pdf.drawString(cmp(11), cmp(linha), f"{x['descricao']}")
+    #         pdf.drawRightString(cmp(199), cmp(linha), f"R$ {x['valor']}")
+    #         deducoes += x["valor"]
+    #         linha -= 5
+    # linha -= 5
+    # pdf.drawRightString(cmp(199), cmp(linha), f"TOTAL DEDUÇÕES - R$ {deducoes}")
+    # linha -= 20
+    # pdf.drawCentredString(cmp(105), cmp(50), f"VALOR LIQUIDO - R$ {bruto - deducoes}")
+    # pdf.drawCentredString(cmp(105), cmp(15), f"{contexto['colaborador']['nome']}")
+    return pdf
 
 
 def formulario_rescisao_trabalho(pdf, contexto):
@@ -504,97 +616,143 @@ def formulario_rescisao_trabalho(pdf, contexto):
     pdf.rect(cmp(11), cmp(281), cmp(188), cmp(5), fill=1, stroke=1)
     pdf.setStrokeColor(HexColor("#000000"))
     pdf.setFillColor(HexColor("#000000"))
-    pdf.drawCentredString(cmp(105), cmp(282), "RESCISÃO DO CONTRATO DE TRABALHO")
+    linha = 282
+    pdf.drawCentredString(cmp(105), cmp(linha), "RESCISÃO DO CONTRATO DE TRABALHO")
+    linha -= 8
+    pdf.setFont("Times-Roman", 8)
+    pdf.setFillColor(HexColor("#B0C4DE"))
+    pdf.setStrokeColor(HexColor("#B0C4DE"))
+    pdf.rect(cmp(10), cmp(linha), cmp(190), cmp(4), fill=1, stroke=1)
+    pdf.setStrokeColor(HexColor("#000000"))
+    pdf.setFillColor(HexColor("#000000"))
+    pdf.rect(cmp(10), cmp(linha), cmp(190), cmp(4), fill=0)
+    pdf.drawCentredString(cmp(105), cmp(linha + 1), "IDENTIFICAÇÃO DO EMPREGADOR")
+    pdf.setFont("Times-Roman", 6)
+    pdf.drawString(cmp(11), cmp(linha - 2.7), "CNPJ:")
+    pdf.line(cmp(54), cmp(linha - 7.7), cmp(54), cmp(linha))
+    pdf.drawString(cmp(55), cmp(linha - 2.7), "RAZÃO SOCIAL:")
+    pdf.line(cmp(10), cmp(linha - 7.7), cmp(200), cmp(linha - 7.7))
+    linha -= 7.7
+    pdf.drawString(cmp(11), cmp(linha - 2.7), "ENDEREÇO (logradouro, nº):")
+    pdf.line(cmp(126), cmp(linha - 7.7), cmp(126), cmp(linha))
+    pdf.drawString(cmp(127), cmp(linha - 2.7), "BAIRRO:")
+    pdf.line(cmp(10), cmp(linha - 7.7), cmp(200), cmp(linha - 7.7))
+    linha -= 7.7
+    pdf.drawString(cmp(11), cmp(linha - 2.7), "MUNICÍPIO:")
+    pdf.line(cmp(68), cmp(linha - 7.7), cmp(68), cmp(linha))
+    pdf.drawString(cmp(69), cmp(linha - 2.7), "UF:")
+    pdf.line(cmp(83), cmp(linha - 7.7), cmp(83), cmp(linha))
+    pdf.drawString(cmp(84), cmp(linha - 2.7), "CEP:")
+    pdf.line(cmp(103), cmp(linha - 7.7), cmp(103), cmp(linha))
+    pdf.line(cmp(10), cmp(linha - 7.7), cmp(200), cmp(linha - 7.7))
+    linha -= 7.7
+    linha -= 4
+    pdf.setFont("Times-Roman", 8)
+    pdf.setFillColor(HexColor("#B0C4DE"))
+    pdf.setStrokeColor(HexColor("#B0C4DE"))
+    pdf.rect(cmp(10), cmp(linha), cmp(190), cmp(4), fill=1, stroke=1)
+    pdf.setStrokeColor(HexColor("#000000"))
+    pdf.setFillColor(HexColor("#000000"))
+    pdf.rect(cmp(10), cmp(linha), cmp(190), cmp(4), fill=0)
+    pdf.drawCentredString(cmp(105), cmp(linha + 1), "IDENTIFICAÇÃO DO TRABALHADOR")
+    pdf.setFont("Times-Roman", 6)
+    pdf.drawString(cmp(11), cmp(linha - 2.7), "CPF:")
+    pdf.line(cmp(54), cmp(linha - 7.7), cmp(54), cmp(linha))
+    pdf.drawString(cmp(55), cmp(linha - 2.7), "NOME:")
+    pdf.line(cmp(10), cmp(linha - 7.7), cmp(200), cmp(linha - 7.7))
+    linha -= 7.7
+    pdf.drawString(cmp(11), cmp(linha - 2.7), "ENDEREÇO (logradouro, nº):")
+    pdf.line(cmp(126), cmp(linha - 7.7), cmp(126), cmp(linha))
+    pdf.drawString(cmp(127), cmp(linha - 2.7), "BAIRRO:")
+    pdf.line(cmp(10), cmp(linha - 7.7), cmp(200), cmp(linha - 7.7))
+    linha -= 7.7
+    pdf.drawString(cmp(11), cmp(linha - 2.7), "MUNICÍPIO:")
+    pdf.line(cmp(68), cmp(linha - 7.7), cmp(68), cmp(linha))
+    pdf.drawString(cmp(69), cmp(linha - 2.7), "UF:")
+    pdf.line(cmp(83), cmp(linha - 7.7), cmp(83), cmp(linha))
+    pdf.drawString(cmp(84), cmp(linha - 2.7), "CEP:")
+    pdf.line(cmp(103), cmp(linha - 7.7), cmp(103), cmp(linha))
+    pdf.line(cmp(10), cmp(linha - 7.7), cmp(200), cmp(linha - 7.7))
+    linha -= 7.7
+    pdf.drawString(cmp(11), cmp(linha - 2.7), "DATA NASCIMENTO:")
+    pdf.line(cmp(54), cmp(linha - 7.7), cmp(54), cmp(linha))
+    pdf.drawString(cmp(55), cmp(linha - 2.7), "NOME DA MÃE:")
+    pdf.line(cmp(10), cmp(linha - 7.7), cmp(200), cmp(linha - 7.7))
+    linha -= 7.7
+    linha -= 4
+    pdf.setFont("Times-Roman", 8)
+    pdf.setFillColor(HexColor("#B0C4DE"))
+    pdf.setStrokeColor(HexColor("#B0C4DE"))
+    pdf.rect(cmp(10), cmp(linha), cmp(190), cmp(4), fill=1, stroke=1)
+    pdf.setStrokeColor(HexColor("#000000"))
+    pdf.setFillColor(HexColor("#000000"))
+    pdf.rect(cmp(10), cmp(linha), cmp(190), cmp(4), fill=0)
+    pdf.drawCentredString(cmp(105), cmp(linha + 1), "DADOS CONTRATO")
+    pdf.setFont("Times-Roman", 6)
+    pdf.drawString(cmp(11), cmp(linha - 2.7), "TIPO CONTRATO:")
+    pdf.line(cmp(10), cmp(linha - 7.7), cmp(200), cmp(linha - 7.7))
+    linha -= 7.7
+    pdf.drawString(cmp(11), cmp(linha - 2.7), "CAUSA DO AFASTAMENTO:")
+    pdf.line(cmp(10), cmp(linha - 7.7), cmp(200), cmp(linha - 7.7))
+    linha -= 7.7
+    pdf.drawString(cmp(11), cmp(linha - 2.7), "REMUNERAÇÃO MÊS ANT.:")
+    pdf.line(cmp(44), cmp(linha - 7.7), cmp(44), cmp(linha))
+    pdf.drawString(cmp(45), cmp(linha - 2.7), "DATA ADMISSÃO:")
+    pdf.line(cmp(80), cmp(linha - 7.7), cmp(80), cmp(linha))
+    pdf.drawString(cmp(81), cmp(linha - 2.7), "DATA AVISO PRÉVIO:")
+    pdf.line(cmp(118), cmp(linha - 7.7), cmp(118), cmp(linha))
+    pdf.drawString(cmp(119), cmp(linha - 2.7), "DATA AFASTAMENTO:")
+    pdf.line(cmp(155), cmp(linha - 7.7), cmp(155), cmp(linha))
+    pdf.line(cmp(10), cmp(linha - 7.7), cmp(200), cmp(linha - 7.7))
+    linha -= 7.7
+    linha -= 4
+    pdf.setFont("Times-Roman", 8)
+    pdf.setFillColor(HexColor("#B0C4DE"))
+    pdf.setStrokeColor(HexColor("#B0C4DE"))
+    pdf.rect(cmp(10), cmp(linha), cmp(190), cmp(4), fill=1, stroke=1)
+    pdf.setStrokeColor(HexColor("#000000"))
+    pdf.setFillColor(HexColor("#000000"))
+    pdf.rect(cmp(10), cmp(linha), cmp(190), cmp(4), fill=0)
+    pdf.drawCentredString(cmp(105), cmp(linha + 1), "VERBAS RESCISORIA")
+    pdf.setFont("Times-Roman", 6)
+    for x in range(7):
+        linha -= 7.7
+        pdf.line(cmp(10), cmp(linha), cmp(200), cmp(linha))
+    linha -= 7.7
+    pdf.line(cmp(70), cmp(linha), cmp(70), cmp(linha + (8 * 7.7)))
+    pdf.line(cmp(105), cmp(linha), cmp(105), cmp(linha + (8 * 7.7)))
+    pdf.line(cmp(165), cmp(linha), cmp(165), cmp(linha + (8 * 7.7)))
+    pdf.line(cmp(10), cmp(linha), cmp(200), cmp(linha))
+    linha -= 7.7
     pdf.setFont("Times-Roman", 10)
-    pdf.rect(cmp(10), cmp(275), cmp(190), cmp(5), fill=0)
-    pdf.drawCentredString(cmp(105), cmp(276), "IDENTIFICAÇÃO DO EMPREGADOR")
-    pdf.drawString(cmp(11), cmp(271), "CNPJ: 21.602.117/0001-15")
-    razao = "TRANSEFETIVA TRANSPORTE - EIRELLI - ME"
-    pdf.drawString(cmp(80), cmp(271), f"RAZAO SOCIAL: {razao}")
-    endereco = "RUA OLIMPIO PORTUGAL, 245 - MOOCA - SÃO PAULO - SP - CEP 03112-010"
-    pdf.drawString(cmp(11), cmp(266), f"ENDEREÇO: {endereco}")
-    pdf.rect(cmp(10), cmp(251), cmp(190), cmp(5), fill=0)
-    pdf.drawCentredString(cmp(105), cmp(252), "IDENTIFICAÇÃO DO TRABALHADOR")
-    for x in contexto["colaborador"]["documentos"]:
-        if x["tipo"] == "CPF":
-            pdf.drawString(cmp(11), cmp(247), f"CPF: {x['documento']}")
-    pdf.drawString(cmp(80), cmp(247), f"NOME: {contexto['colaborador']['nome']}")
-    endereco = contexto["colaborador"]["endereco"]
-    bairro = contexto["colaborador"]["bairro"]
-    cidade = contexto["colaborador"]["cidade"]
-    cep = contexto["colaborador"]["cep"]
-    pdf.drawString(
-        cmp(11),
-        cmp(242),
-        f"ENDEREÇO: {endereco} - {bairro} - {cidade} - SP - CEP {cep}",
-    )
-    nascimento = datetime.datetime.strftime(
-        contexto["colaborador"]["data_nascimento"], "%d/%m/%Y"
-    )
-    pdf.drawString(cmp(11), cmp(237), f"NASCIMENTO: {nascimento}")
-    pdf.drawString(cmp(80), cmp(237), f"MÃE: {contexto['colaborador']['mae']}")
-    pdf.rect(cmp(10), cmp(227), cmp(190), cmp(5), fill=0)
-    pdf.drawCentredString(cmp(105), cmp(228), "DADOS CONTRATO")
-    pdf.drawString(
-        cmp(11), cmp(223), f"CATEGORIA: {contexto['colaborador']['categoria']}"
-    )
-    salario = contexto["colaborador"]["salario"][0]["salario"]
-    pdf.drawString(cmp(80), cmp(223), f"SALÁRIO: R$ {salario}")
-    admissao = datetime.datetime.strftime(
-        contexto["colaborador"]["data_admissao"], "%d/%m/%Y"
-    )
-    demissao = datetime.datetime.strftime(
-        contexto["colaborador"]["data_demissao"], "%d/%m/%Y"
-    )
-    pdf.drawString(cmp(11), cmp(218), f"ADMISSÃO: {admissao}")
-    pdf.drawString(cmp(80), cmp(218), f"AFASTAMENTO: {demissao}")
-    pdf.drawString(cmp(11), cmp(213), f"CAUSA DO AFASTAMENTO: {contexto['causa']}")
-    pdf.rect(cmp(10), cmp(203), cmp(190), cmp(5), fill=0)
-    pdf.drawCentredString(cmp(105), cmp(204), "VERBAS RESCISORIA")
-    linha = 199
-    bruto = Decimal(0.00)
-    meses_ferias = contexto["rescisao"][0]["meses_ferias"]
-    ferias = contexto["rescisao"][0]["ferias"]
-    bruto += ferias
-    terco_ferias = contexto["rescisao"][0]["terco_ferias"]
-    bruto += terco_ferias
-    meses_decimo_terceiro = contexto["rescisao"][0]["meses_decimo_terceiro"]
-    decimo_terceiro = contexto["rescisao"][0]["decimo_terceiro"]
-    bruto += decimo_terceiro
-    pdf.drawString(cmp(11), cmp(linha), f"FÉRIAS PROPORCIONAIS - {meses_ferias}/12")
-    pdf.drawRightString(cmp(199), cmp(linha), f"R$ {ferias}")
-    linha -= 5
-    pdf.drawString(cmp(11), cmp(linha), f"1/3 FÉRIAS PROPORCIONAIS")
-    pdf.drawRightString(cmp(199), cmp(linha), f"R$ {terco_ferias}")
-    linha -= 5
-    pdf.drawString(
-        cmp(11), cmp(linha), f"13º PROPORCIONAL - {meses_decimo_terceiro}/12"
-    )
-    pdf.drawRightString(cmp(199), cmp(linha), f"R$ {decimo_terceiro}")
-    linha -= 5
-    for x in contexto["rescisao"][0]["folha_contra_cheque_itens"]:
-        if x["registro"] == "C":
-            pdf.drawString(cmp(11), cmp(linha), f"{x['descricao']} - {x['referencia']}")
-            pdf.drawRightString(cmp(199), cmp(linha), f"R$ {x['valor']}")
-            bruto += x["valor"]
-            linha -= 5
-    linha -= 5
-    pdf.drawRightString(cmp(199), cmp(linha), f"TOTAL BRUTO - R$ {bruto}")
-    linha -= 10
-    pdf.rect(cmp(10), cmp(linha - 1), cmp(190), cmp(5), fill=0)
-    pdf.drawCentredString(cmp(105), cmp(linha), "DEDUÇÕES")
-    linha -= 5
-    deducoes = Decimal(0.00)
-    for x in contexto["rescisao"][0]["folha_contra_cheque_itens"]:
-        if x["registro"] == "D":
-            pdf.drawString(cmp(11), cmp(linha), f"{x['descricao']}")
-            pdf.drawRightString(cmp(199), cmp(linha), f"R$ {x['valor']}")
-            deducoes += x["valor"]
-            linha -= 5
-    linha -= 5
-    pdf.drawRightString(cmp(199), cmp(linha), f"TOTAL DEDUÇÕES - R$ {deducoes}")
-    linha -= 20
-    pdf.drawCentredString(cmp(105), cmp(50), f"VALOR LIQUIDO - R$ {bruto - deducoes}")
+    pdf.drawRightString(cmp(160), cmp(linha + 2), "TOTAL BRUTO")
+    pdf.line(cmp(165), cmp(linha), cmp(165), cmp(linha + 7.7))
+    linha -= 4
+    pdf.setFont("Times-Roman", 8)
+    pdf.setFillColor(HexColor("#B0C4DE"))
+    pdf.setStrokeColor(HexColor("#B0C4DE"))
+    pdf.rect(cmp(10), cmp(linha), cmp(190), cmp(4), fill=1, stroke=1)
+    pdf.setStrokeColor(HexColor("#000000"))
+    pdf.setFillColor(HexColor("#000000"))
+    pdf.rect(cmp(10), cmp(linha), cmp(190), cmp(4), fill=0)
+    pdf.drawCentredString(cmp(105), cmp(linha + 1), "DEDUÇÕES")
+    pdf.setFont("Times-Roman", 6)
+    for x in range(7):
+        linha -= 7.7
+        pdf.line(cmp(10), cmp(linha), cmp(200), cmp(linha))
+    linha -= 7.7
+    pdf.line(cmp(70), cmp(linha), cmp(70), cmp(linha + (8 * 7.7)))
+    pdf.line(cmp(105), cmp(linha), cmp(105), cmp(linha + (8 * 7.7)))
+    pdf.line(cmp(165), cmp(linha), cmp(165), cmp(linha + (8 * 7.7)))
+    pdf.line(cmp(10), cmp(linha), cmp(200), cmp(linha))
+    linha -= 7.7
+    pdf.setFont("Times-Roman", 10)
+    pdf.drawRightString(cmp(160), cmp(linha + 2), "TOTAL DEDUÇÕES")
+    pdf.line(cmp(165), cmp(linha), cmp(165), cmp(linha + 7.7))
+    pdf.line(cmp(10), cmp(linha), cmp(200), cmp(linha))
+    linha -= 7.7
+    pdf.drawRightString(cmp(160), cmp(linha + 2), "TOTAL LIQUIDO")
+    pdf.line(cmp(165), cmp(linha), cmp(165), cmp(linha + 7.7))
+    pdf.line(cmp(10), cmp(linha), cmp(200), cmp(linha))
     pdf.line(cmp(50), cmp(19), cmp(160), cmp(19))
-    pdf.drawCentredString(cmp(105), cmp(15), f"{contexto['colaborador']['nome']}")
     return pdf
