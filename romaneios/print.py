@@ -69,7 +69,10 @@ def print_notas_status(contexto):
         arquivo = FileUpload.objects.filter(DescricaoUpload=descricao_arquivo)
     else:
         if arquivo[0].uploadFile:
-            os.remove(arquivo[0].uploadFile.path)
+            try:
+                os.remove(arquivo[0].uploadFile.path)
+            except FileNotFoundError:
+                print("OK")
     response = HttpResponse(content_type="application/pdf")
     response["Content-Disposition"] = f'filename="RELATÓRIO - NOTAS: {status_nota}.pdf'
     buffer = BytesIO()
@@ -270,14 +273,15 @@ def notas_status(pdf, contexto):
             cmp(linha),
             f"{numero} - {destinatario[0:9]}... - {endereco[0:30]} - {bairro} - CEP: {cep} - {cidade[0:9]}",
         )
-        for y in x["ocorrencia"]:
-            data_ocorrencia = y.DataOcorrencia
-            ocorrencia = f"{data_ocorrencia} - {y.Ocorrencia}"
-            if ocorrencia:
-                para = Paragraph(ocorrencia, style=styles_claro)
-                para.wrapOn(pdf, cmp(186), cmp(297))
-                linha -= para.height * 0.352777
-                para.drawOn(pdf, cmp(12), cmp(linha))
+        if x["ocorrencia"]:
+            for y in x["ocorrencia"]:
+                data_ocorrencia = y.DataOcorrencia
+                ocorrencia = f"{data_ocorrencia} - {y.Ocorrencia}"
+                if ocorrencia:
+                    para = Paragraph(ocorrencia, style=styles_claro)
+                    para.wrapOn(pdf, cmp(186), cmp(297))
+                    linha -= para.height * 0.352777
+                    para.drawOn(pdf, cmp(12), cmp(linha))
         linha -= 1
         pdf.line(cmp(12), cmp(linha), cmp(198), cmp(linha))
         linha -= 3
