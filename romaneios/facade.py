@@ -612,6 +612,7 @@ def create_contexto_filtro_notas_status(id_cli, sort_status, order_nota):
         notas = NotasClientes.objects.filter(
             StatusNota=sort_status, idCliente_id=id_cli
         ).order_by(order_nota)
+    print(sort_status)
     lista = []
     for x in notas:
         ocorrencia = None
@@ -674,7 +675,7 @@ def create_contexto_filtro_notas_status(id_cli, sort_status, order_nota):
                 "placa_motorista": placa_motorista,
             }
         )
-    return {"notas": lista, "cliente": cliente}
+    return {"notas": lista, "cliente": cliente, "sort_status": sort_status}
 
 
 def create_contexto_seleciona_romaneio(id_rom):

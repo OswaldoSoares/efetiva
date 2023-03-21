@@ -72,14 +72,19 @@
     {% endfor %}
 </div>
 <div class="article-card-footer">
-    {% for nota in notas %}
-    {% if forloop.last %}
-    <span><b>{{ forloop.counter|stringformat:"02d" }} NOTA{{ forloop.counter|pluralize|upper }}</b></span>
-    <a class="bi bi-printer i-button js-print-relatorio" title="Imprime Romaneio"
-    href="{% url 'imprime_notas_status' %}?StatusNota={{ nota.statusnota }}&idCliente={{ idcliente }}"
-    target="_blank"></a>
-    {% endif %}
-    {% endfor %}
-    <i class="bi bi-cursor i-button js-envia-telegram-relatorio"
-    title="Envia Relatorio no Telegram"></i>
+    <div class="quantidade">
+        {% for nota in notas %}
+        {% if forloop.last %}
+        <span><b>{{ forloop.counter|stringformat:"02d" }} NOTA{{ forloop.counter|pluralize|upper }}</b></span>
+        {% endif %}
+        {% endfor %}
+    </div>
+    <div class="botoes">
+        <a class="bi bi-printer i-button js-print-relatorio"
+        href="{% url 'imprime_notas_status' %}?StatusNota={{ sort_status }}&idCliente={{ idcliente }}"
+        title="Imprime Romaneio" target="_blank"></a>
+        <i class="bi bi-cursor i-button js-envia-telegram-relatorio"
+        title="Envia Relatorio no Telegram"></i>
+    </div>
+    <div class="quantidade"></div>
 </div>

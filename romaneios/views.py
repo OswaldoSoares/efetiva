@@ -33,6 +33,7 @@ def seleciona_cliente(request):
             "destinatarios": destinatarios,
             "enderecos": enderecos,
             "bairros": bairros,
+            "sort_status": "SEM FILTRO",
         }
         romaneios = facade.create_contexto_romaneios()
         contexto.update({"romaneios": romaneios})
@@ -305,6 +306,8 @@ def imprime_notas_status(request):
     status = request.GET.get("StatusNota")
     id_cli = request.GET.get("idCliente")
     ordem = request.GET.get("ordem")
+    if not ordem:
+        ordem = "NumeroNota"
     contexto = facade.create_contexto_filtro_notas_status(id_cli, status, ordem)
     contexto.update({"sort_status": status})
     response = print_notas_status(contexto)
