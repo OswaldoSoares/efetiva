@@ -584,18 +584,18 @@ $(document).on('click', '.js-fecha-romaneio', function() {
 
 $(document).on('click', '.js-sort-notas', function() {
     var anr_hidden = $(".js-adiciona-nota-romaneio").is(":hidden")
-    var _status = $("#select-status").val()
-    var _tipo_sort = $(".js-tipo-sort").val()
-    var _id_cliente = $(this).data("idcliente")
-    var _sort = $(this).data("sort")
+    var status = $("#select-status").val()
+    var tipo_sort = $(".js-tipo-sort").val()
+    var idcliente = $(this).data("idcliente")
+    var sort = $(this).data("sort")
     $.ajax({
         type: 'GET',
         url: '/romaneios/orderna_notas',
         data: {
-            cliente: _id_cliente,
-            sort: _sort,
-            tipo_sort: _tipo_sort,
-            status: _status,
+            cliente: idcliente,
+            sort: sort,
+            tipo_sort: tipo_sort,
+            status: status,
         },
         beforeSend: function() {
             $(".card-lista-notas-cliente").hide()
@@ -609,7 +609,12 @@ $(document).on('click', '.js-sort-notas', function() {
             if (anr_hidden) {
                 $(".js-adiciona-nota-romaneio").hide()
             }
-            //CarregaMask()
+            $(".js-print-relatorio").prop('href', function() {
+                var href = $(".js-print-relatorio").prop('href');
+                var url = new URL(href);
+                url.searchParams.set('ordem', sort);
+                $(".js-print-relatorio").attr("href", url.toString());
+            });
             $(".box-loader").hide();
         },
     });

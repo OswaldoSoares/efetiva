@@ -277,10 +277,7 @@ def notas_status(pdf, contexto):
         cep = x["cep"]
         cidade = x["cidade"]
         valor = (
-            "{:,.2f}".format(x["valor"])
-            .replace(",", "*")
-            .replace(".", ",")
-            .replace("*", ".")
+            f"{x['valor']:,.2f}".replace(",", "*").replace(".", ",").replace("*", ".")
         )
         if x["placa_motorista"]:
             placa = x["placa_motorista"][0]["placa"]
