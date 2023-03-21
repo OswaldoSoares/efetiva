@@ -35,9 +35,11 @@ def create_contexto_seleciona_notas(id_cli, sort_nota):
         {
             "id_nota_clientes": x.idNotasClientes,
             "local_coleta": x.LocalColeta,
-            "data_coleta": x.DataColeta,
+            "data_nota": x.DataColeta,
+            "serie_nota": x.SerieNota,
             "numero_nota": x.NumeroNota,
             "destinatario": x.Destinatario,
+            "cnpj": x.CNPJ,
             "endereco": x.Endereco,
             "endereco_compl": x.Endereco
             + " "
@@ -90,8 +92,10 @@ def create_contexto_ocorrencia_notas(_id_not):
         {
             "id_nota_clientes": x.idNotasClientes,
             "local_coleta": x.LocalColeta,
-            "data_coleta": x.DataColeta,
+            "data_nota": x.DataColeta,
+            "serie_nota": x.SerieNota,
             "numero_nota": x.NumeroNota,
+            "cnpj": x.CNPJ,
             "destinatario": x.Destinatario,
             "endereco": x.Endereco
             + " "
@@ -281,7 +285,7 @@ def hoje():
 def read_nota_post(request):
     nota_post = dict()
     nota_post["local_coleta"] = request.POST.get("localcoleta")
-    nota_post["data_coleta"] = request.POST.get("datacoleta")
+    nota_post["data_nota"] = request.POST.get("datanota")
     nota_post["serie_nota"] = request.POST.get("serienota")
     nota_post["numero_nota"] = request.POST.get("numeronota")
     nota_post["destinatario"] = request.POST.get("destinatario")
@@ -315,9 +319,7 @@ def read_nota_database(_id_not):
     nota_database = dict()
     nota_database["id_nota_clientes"] = nota.idNotasClientes
     nota_database["local_coleta"] = nota.LocalColeta
-    nota_database["data_coleta"] = datetime.datetime.strftime(
-        nota.DataColeta, "%Y-%m-%d"
-    )
+    nota_database["data_nota"] = datetime.datetime.strftime(nota.DataColeta, "%Y-%m-%d")
     nota_database["serie_nota"] = nota.SerieNota
     nota_database["numero_nota"] = nota.NumeroNota
     nota_database["destinatario"] = nota.Destinatario
@@ -339,7 +341,7 @@ def read_nota_database(_id_not):
 def save_notas_cliente(nota):
     obj = NotasClientes()
     obj.LocalColeta = nota["local_coleta"]
-    obj.DataColeta = nota["data_coleta"]
+    obj.DataColeta = nota["data_nota"]
     obj.SerieNota = nota["serie_nota"]
     obj.NumeroNota = nota["numero_nota"]
     obj.Destinatario = nota["destinatario"]
@@ -428,7 +430,7 @@ def update_notas_cliente(nota_form, id_not):
     nota = NotasClientes.objects.get(idNotasClientes=id_not)
     obj = nota
     obj.LocalColeta = nota_form["local_coleta"]
-    obj.DataColeta = nota_form["data_coleta"]
+    obj.DataColeta = nota_form["data_nota"]
     obj.NumeroNota = nota_form["numero_nota"]
     obj.Destinatario = nota_form["destinatario"]
     obj.Endereco = nota_form["endereco"]
@@ -627,8 +629,8 @@ def create_contexto_filtro_notas_status(id_cli, sort_status, order_nota):
                         "data_ocorrencia": data_ocorrencia,
                     }
                 )
+        placa_motorista = []
         if x.StatusNota == "EM ROTA":
-            placa_motorista = []
             romaneio = RomaneioNotas.objects.filter(
                 idNotasClientes=x.idNotasClientes
             ).latest("idRomaneioNotas")
@@ -639,7 +641,7 @@ def create_contexto_filtro_notas_status(id_cli, sort_status, order_nota):
             {
                 "id_nota_clientes": x.idNotasClientes,
                 "local_coleta": x.LocalColeta,
-                "data_coleta": x.DataColeta,
+                "data_nota": x.DataColeta,
                 "serie_nota": x.SerieNota,
                 "numero_nota": x.NumeroNota,
                 "destinatario": x.Destinatario,
@@ -735,6 +737,7 @@ def ler_nota_xml(nota):
     NFe = "{http://www.portalfiscal.inf.br/nfe}NFe"
     infNFe = "{http://www.portalfiscal.inf.br/nfe}infNFe"
     ide = "{http://www.portalfiscal.inf.br/nfe}ide"
+    dhEmi = "{http://www.portalfiscal.inf.br/nfe}dhEmi"
     serie = "{http://www.portalfiscal.inf.br/nfe}serie"
     nNF = "{http://www.portalfiscal.inf.br/nfe}nNF"
     dest = "{http://www.portalfiscal.inf.br/nfe}dest"
@@ -758,6 +761,12 @@ def ler_nota_xml(nota):
     ICMSTot = "{http://www.portalfiscal.inf.br/nfe}ICMSTot"
     total = "{http://www.portalfiscal.inf.br/nfe}total"
     vNF = "{http://www.portalfiscal.inf.br/nfe}vNF"
+    caminho_dhemi = f"{NFe}/{infNFe}/{ide}/{dhEmi}"
+    nodefind = doc.find(caminho_dhemi)
+    if not nodefind is None:
+        data_nf = datetime.datetime.strptime(nodefind.text[0:10], "%Y-%m-%d").date()
+    else:
+        data_nf = ""
     caminho_serie = f"{NFe}/{infNFe}/{ide}/{serie}"
     nodefind = doc.find(caminho_serie)
     if not nodefind is None:
@@ -856,6 +865,7 @@ def ler_nota_xml(nota):
     else:
         valor = 0.00
     lista = {
+        "data_nf": data_nf,
         "serie_nf": serie_nf,
         "numero_nf": numero_nf,
         "cnpj": cnpj,
@@ -887,9 +897,11 @@ def create_contexto_filtro_nota(nota):
         {
             "id_nota_clientes": x.idNotasClientes,
             "local_coleta": x.LocalColeta,
-            "data_coleta": x.DataColeta,
+            "data_nota": x.DataColeta,
+            "serie_nota": x.SerieNota,
             "numero_nota": x.NumeroNota,
             "destinatario": x.Destinatario,
+            "cnpj": x.CNPJ,
             "endereco": x.Endereco,
             "endereco_compl": x.Endereco
             + " "

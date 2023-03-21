@@ -259,9 +259,9 @@ def notas_status(pdf, contexto):
         alignment=TA_JUSTIFY,
         textColor=HexColor("#FF0000"),
     )
-    print(contexto)
     linha = 242.8
     for x in contexto["notas"]:
+        data_nota = datetime.strftime(x["data_nota"], "%d/%m/%Y")
         if x["serie_nota"]:
             serie = x["serie_nota"]
         else:
@@ -276,7 +276,12 @@ def notas_status(pdf, contexto):
         bairro = x["bairro"]
         cep = x["cep"]
         cidade = x["cidade"]
-        valor = x["valor"]
+        valor = (
+            "{:,.2f}".format(x["valor"])
+            .replace(",", "*")
+            .replace(".", ",")
+            .replace("*", ".")
+        )
         if x["placa_motorista"]:
             placa = x["placa_motorista"][0]["placa"]
             motorista = x["placa_motorista"][0]["motorista"]
@@ -294,7 +299,7 @@ def notas_status(pdf, contexto):
             pdf.drawString(
                 cmp(12),
                 cmp(linha),
-                f"SÉRIE: {serie} - VALOR: {valor} - CNPJ: {cnpj} - MOTORISTA: {motorista} - PLACA - {placa}",
+                f"{data_nota} - {serie} - VALOR: R$ {valor} - CNPJ: {cnpj} - MOTORISTA: {motorista} - {placa}",
             )
         if x["ocorrencia"]:
             for y in x["ocorrencia"]:

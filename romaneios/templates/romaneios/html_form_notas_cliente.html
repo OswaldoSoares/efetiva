@@ -53,17 +53,17 @@
                 {% endif %}
             </div>
             <div class="item-form">
-                <div class="button" title="DATA DA COLETA">
+                <div class="button" title="DATA DA NOTA">
                     <i class="bi bi-calendar i-button-null"></i>
                 </div>
                 <div class="item-field">
                     {% if nota_form %}
                     <input class="form-control" type="date"
-                    name="datacoleta" id="datacoleta"
-                    value={{ nota_form.data_coleta }}>
+                    name="datanota" id="datanota"
+                    value={{ nota_form.data_nota }}>
                     {% else %}
                     <input class="form-control" type="date"
-                    name="datacoleta" id="datacoleta"
+                    name="datanota" id="datanota"
                     value={{ hoje }}>
                     {% endif %}
                 </div>
