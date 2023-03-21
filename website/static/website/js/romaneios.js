@@ -640,8 +640,10 @@ $(document).on('submit', '.js-carrega-xml', function(event) {
             //$(".box-loader").show();
         },
         success: function(data) {
+            $("#serienota").val(data["serie_nf"])
             $("#numeronota").val(data["numero_nf"])
             $("#destinatario").val(data["destinatario"])
+            $("#cnpj").val(data["cnpj"])
             $("#endereco").val(data["endereco"])
             $("#bairro").val(data["bairro"])
             $("#cep").val(data["cep"])

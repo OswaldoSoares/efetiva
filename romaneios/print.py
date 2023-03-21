@@ -259,20 +259,43 @@ def notas_status(pdf, contexto):
         alignment=TA_JUSTIFY,
         textColor=HexColor("#FF0000"),
     )
+    print(contexto)
     linha = 242.8
     for x in contexto["notas"]:
+        if x["serie_nota"]:
+            serie = x["serie_nota"]
+        else:
+            serie = "NÃO INFORMADA"
         numero = x["numero_nota"]
         destinatario = x["destinatario"]
+        if x["cnpj"]:
+            cnpj = x["cnpj"]
+        else:
+            cnpj = "NÃO INFORMADO"
         endereco = x["endereco"]
         bairro = x["bairro"]
         cep = x["cep"]
         cidade = x["cidade"]
+        valor = x["valor"]
+        if x["placa_motorista"]:
+            placa = x["placa_motorista"][0]["placa"]
+            motorista = x["placa_motorista"][0]["motorista"]
+        else:
+            placa = "NÃO INFORMADA"
+            motorista = "NÃO INFORMADO"
         pdf.setFont("Times-Roman", 9)
         pdf.drawString(
             cmp(12),
             cmp(linha),
             f"{numero} - {destinatario[0:9]}... - {endereco[0:30]} - {bairro} - CEP: {cep} - {cidade[0:9]}",
         )
+        if contexto["sort_status"] == "EM ROTA":
+            linha -= 3
+            pdf.drawString(
+                cmp(12),
+                cmp(linha),
+                f"SÉRIE: {serie} - VALOR: {valor} - CNPJ: {cnpj} - MOTORISTA: {motorista} - PLACA - {placa}",
+            )
         if x["ocorrencia"]:
             for y in x["ocorrencia"]:
                 data_ocorrencia = y.DataOcorrencia

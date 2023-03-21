@@ -76,6 +76,29 @@
                 {% endif %}
             </div>
             <div class="item-form">
+                <div class="button" title="SÉRIE DA NOTA">
+                    <i class="bi bi-file-earmark-binary i-button-null"></i>
+                </div>
+                <div class="item-field">
+                    {% if nota_form %}
+                    <input class="form-control" type="text"
+                    name="serienota" placeholder="SÉRIE DA NOTA"
+                    id="serienota" value="{{ nota_form.serie_nota }}">
+                    {% else %}
+                    <input class="form-control" type="text"
+                    name="serienota" placeholder="SÉRIE DA NOTA"
+                    id="serienota">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="item-form">
+                {% if error_serienota %}
+                <div class="error">
+                    <span>{{ error_serienota }}<span>
+                </div>
+                {% endif %}
+            </div>
+            <div class="item-form">
                 <div class="button" title="NÚMERO DA NOTA">
                     <i class="bi bi-file-text i-button-null"></i>
                 </div>
@@ -128,6 +151,27 @@
                 {% if error_destinatario %}
                 <div class="error">
                     <span>{{ error_destinatario }}<span>
+                </div>
+                {% endif %}
+            </div>
+            <div class="item-form">
+                <div class="button" title="CNPJ">
+                    <i class="bi bi-window i-button-null"></i>
+                </div>
+                <div class="item-field">
+                    {% if nota_form %}
+                    <input class="form-control" type="text" name="cnpj"
+                    placeholder="CNPJ" id="cnpj" value="{{ nota_form.cnpj }}">
+                    {% else %}
+                    <input class="form-control" type="text" name="cnpj"
+                    placeholder="CNPJ" id="cnpj">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="item-form">
+                {% if error_cnpj %}
+                <div class="error">
+                    <span>{{ error_cnpj }}<span>
                 </div>
                 {% endif %}
             </div>
