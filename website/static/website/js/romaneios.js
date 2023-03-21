@@ -640,7 +640,6 @@ $(document).on('submit', '.js-carrega-xml', function(event) {
             //$(".box-loader").show();
         },
         success: function(data) {
-            alert(data["data_nf"])
             $("#datanota").val(data["data_nf"])
             $("#serienota").val(data["serie_nf"])
             $("#numeronota").val(data["numero_nf"])
