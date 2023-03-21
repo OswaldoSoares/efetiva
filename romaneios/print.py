@@ -299,7 +299,7 @@ def notas_status(pdf, contexto):
             pdf.drawString(
                 cmp(12),
                 cmp(linha),
-                f"{data_nota} - {serie} - VALOR: R$ {valor} - CNPJ: {cnpj} - MOTORISTA: {motorista} - {placa}",
+                f"{data_nota} - {serie} - VALOR: R$ {valor} - CNPJ: {cnpj} - {motorista} - {placa}",
             )
         if x["ocorrencia"]:
             for y in x["ocorrencia"]:
