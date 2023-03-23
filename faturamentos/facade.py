@@ -314,10 +314,13 @@ def envia_email(v_idobj, v_emails, v_texto):
     contexto = {"numero_fatura": str(s_fatura.fatura).zfill(6), "texto": v_texto}
     subject = f"Fatura nº {str(s_fatura.fatura).zfill(6)}"
     html_message = render_to_string("faturamentos/emailfatura.html", contexto)
-    from_email = "Transefetiva Transportes <financeiro.efetiva@terra.com.br>"
+    from_email = "Transefetiva Transportes <financeiro.transefetiva@gmail.com>"
     to = emails_to
     bcc = ["transefetiva@terra.com.br"]
-    email = EmailMessage(subject, html_message, from_email, to, bcc)
+    reply_to = ["financeiro.efetiva@terra.com.br"]
+    email = EmailMessage(
+        subject, html_message, from_email, to, bcc, None, None, None, None, reply_to
+    )
     email.content_subtype = "html"
     for itens in s_fatura.file_fatura:
         email.attach_file(itens.uploadFile.path)
