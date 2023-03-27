@@ -431,8 +431,10 @@ def update_notas_cliente(nota_form, id_not):
     obj = nota
     obj.LocalColeta = nota_form["local_coleta"]
     obj.DataColeta = nota_form["data_nota"]
+    obj.SerieNota = nota_form["serie_nota"]
     obj.NumeroNota = nota_form["numero_nota"]
     obj.Destinatario = nota_form["destinatario"]
+    obj.CNPJ = nota_form["cnpj"]
     obj.Endereco = nota_form["endereco"]
     obj.CEP = nota_form["cep"]
     obj.Bairro = nota_form["bairro"]
