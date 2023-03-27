@@ -87,6 +87,7 @@ class Romaneios(models.Model):
     idMinuta = models.ForeignKey(
         Minuta, on_delete=models.PROTECT, blank=True, null=True
     )
+    idCliente = models.ForeignKey(Cliente, on_delete=models.PROTECT)
 
     class Meta:
         db_table = "romaneios"

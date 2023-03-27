@@ -533,8 +533,8 @@ def create_contexto_romaneios():
     return lista
 
 
-def create_contexto_notas_romaneio(id_rom):
-    notas_romaneio = RomaneioNotas.objects.filter(idRomaneio=id_rom)
+def create_contexto_notas_romaneio(idromaneio):
+    notas_romaneio = RomaneioNotas.objects.filter(idRomaneio=idromaneio)
     lista = [
         {
             "idromaneionotas": x.idRomaneioNotas,
@@ -894,8 +894,8 @@ def create_contexto_imprime_romaneio(id_rom, id_cli):
     return {"romaneio": romaneio, "cliente": cliente, "notas": notas}
 
 
-def create_contexto_filtro_nota(nota):
-    notas = NotasClientes.objects.filter(NumeroNota=nota)
+def create_contexto_filtro_nota(nota, idcliente):
+    notas = NotasClientes.objects.filter(NumeroNota=nota, idCliente=idcliente)
     lista = [
         {
             "id_nota_clientes": x.idNotasClientes,
@@ -964,8 +964,9 @@ def last_chat_id_telegram(token):
 # enviar mensagens utilizando o bot para um chat específico
 def send_message(message):
     token = "5778267083:AAEha8jgzCRYr_niZ7JM4EB5MWDX2Zkk98o"
-    chat_id = "-785462150"  # Telegrm TransEfetiva - Operacional
-    chat_id = "-666092318"  # Telegram Efetiva - Catavento
+    chat_id = "-785462150"  # Telegram TransEfetiva - Operacional
+    chat_id = "-666092318"  # Telegram Transefetiva - LogCatavento
+    chat_id = "-994748069"  # Telegram Transefetiva - Kite
     try:
         data = {"chat_id": chat_id, "text": message}
         url = f"https://api.telegram.org/bot{token}/sendMessage"
@@ -976,7 +977,7 @@ def send_message(message):
 
 def send_arquivo(romaneio):
     token = "5778267083:AAEha8jgzCRYr_niZ7JM4EB5MWDX2Zkk98o"
-    chat_id = "-666092318"  # Telegram Efetiva - Catavento
+    chat_id = "-994748069"
     rom_numero = str(romaneio).zfill(5)
     descricao_arquivo = f"Romaneio_{str(rom_numero).zfill(5)}.pdf"
     arquivo = FileUpload.objects.filter(DescricaoUpload=descricao_arquivo)
@@ -991,7 +992,7 @@ def send_arquivo(romaneio):
 
 def send_arquivo_relatorio(sort_status):
     token = "5778267083:AAEha8jgzCRYr_niZ7JM4EB5MWDX2Zkk98o"
-    chat_id = "-666092318"  # Telegram Efetiva - Catavento
+    chat_id = "-994748069"
     descricao_arquivo = f"Notas {sort_status}.pdf"
     arquivo = FileUpload.objects.filter(DescricaoUpload=descricao_arquivo)
     url = f"https://api.telegram.org/bot{token}/sendDocument?chat_id={chat_id}"

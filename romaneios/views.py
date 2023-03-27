@@ -316,21 +316,27 @@ def imprime_notas_status(request):
 
 def filtra_nota_cliente(request):
     nota = request.GET.get("nota")
-    id_cli = request.GET.get("cliente")
-    notas = facade.create_contexto_filtro_nota(nota)
-    id_rom = facade.create_contexto_romaneio_tem_nota(int(notas[0]["id_nota_clientes"]))
-    contexto = {"notas": notas, "idcliente": id_cli}
-    not_rom = facade.create_contexto_notas_romaneio(id_rom)
-    romaneio = facade.create_contexto_seleciona_romaneio(id_rom)
+    idcliente = request.GET.get("cliente")
+    notas = facade.create_contexto_filtro_nota(nota, idcliente)
+    idromaneio = None
+    notas_romaneio = None
+    romaneio = None
+    if notas:
+        idromaneio = facade.create_contexto_romaneio_tem_nota(
+            int(notas[0]["id_nota_clientes"])
+        )
+        notas_romaneio = facade.create_contexto_notas_romaneio(idromaneio)
+        romaneio = facade.create_contexto_seleciona_romaneio(idromaneio)
+    contexto = {"notas": notas, "idcliente": idcliente}
     arquivo = False
     if romaneio:
         arquivo = facade.create_contexto_pdf_romaneio(romaneio[0]["romaneio"])
     contexto.update(
         {
-            "notas_romaneio": not_rom,
+            "notas_romaneio": notas_romaneio,
             "romaneios": romaneio,
-            "idcliente": id_cli,
-            "id_rom": id_rom,
+            "idcliente": idcliente,
+            "id_rom": idromaneio,
             "arquivo": arquivo,
         }
     )
