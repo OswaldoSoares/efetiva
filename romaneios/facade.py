@@ -983,15 +983,14 @@ def send_message(message, idcliente):
         print("Erro no sendMessage:", e)
 
 
-def send_arquivo(romaneio):
+def send_arquivo(romaneio, idcliente):
     token = "5778267083:AAEha8jgzCRYr_niZ7JM4EB5MWDX2Zkk98o"
-    idcliente = "0"
-    # if idcliente == "11":
-    #     chat_id = "-666092318"  # Telegram Transefetiva - LogCatavento
-    # elif idcliente == "7":
-    #     chat_id = "-994748069"  # Telegram Transefetiva - Kite
-    # else:
-    chat_id = "-785462150"  # Telegram TransEfetiva - Operacional
+    if idcliente == "11":
+        chat_id = "-666092318"  # Telegram Transefetiva - LogCatavento
+    elif idcliente == "7":
+        chat_id = "-994748069"  # Telegram Transefetiva - Kite
+    else:
+        chat_id = "-785462150"  # Telegram TransEfetiva - Operacional
     rom_numero = str(romaneio).zfill(5)
     descricao_arquivo = f"Romaneio_{str(rom_numero).zfill(5)}.pdf"
     arquivo = FileUpload.objects.filter(DescricaoUpload=descricao_arquivo)

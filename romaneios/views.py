@@ -364,7 +364,8 @@ def fecha_romaneio(request):
 
 def envia_telegram_romaneio(request):
     rom = request.GET.get("Romaneio")
-    facade.send_arquivo(rom)
+    idcliente = request.GET.get("idCliente")
+    facade.send_arquivo(rom, idcliente)
     data = facade.create_data_send_arquivo()
     return data
 

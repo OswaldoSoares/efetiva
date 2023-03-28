@@ -353,12 +353,14 @@ $(document).on('click', '.js-edita-notas-cliente', function() {
 });
 
 $(document).on('click', '.js-envia-telegram-romaneio', function() {
-    var _romaneio = $(this).data("romaneio")
+    var romaneio = $(this).data("romaneio")
+    var idcliente = $(this).data("idcliente")
     $.ajax({
         type: 'GET',
         url: '/romaneios/envia_telegram_romaneio',
         data: {
-            Romaneio: _romaneio,
+            Romaneio: romaneio,
+            idCliente: idcliente,
         },
         beforeSend: function() {
             $(".card-form-notas-cliente").hide()
