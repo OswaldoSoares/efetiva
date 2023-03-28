@@ -133,15 +133,17 @@ def exclui_nota_cliente(request):
 
 
 def ocorrencia_nota_cliente(request):
-    _id_not = request.GET.get("idNota")
-    notas = facade.create_contexto_ocorrencia_notas(_id_not)
-    ocorrencias = facade.create_contexto_seleciona_ocorrencia(_id_not, "NumeroNota")
+    idnota = request.GET.get("idNota")
+    idcliente = request.GET.get("idCliente")
+    notas = facade.create_contexto_ocorrencia_notas(idnota)
+    ocorrencias = facade.create_contexto_seleciona_ocorrencia(idnota, "NumeroNota")
     hoje = str_hoje()
     contexto = {
         "ocorrencias": ocorrencias,
         "notas": notas,
         "hoje": hoje,
-        "id_nota": _id_not,
+        "id_nota": idnota,
+        "idcliente": idcliente,
     }
     data = facade.create_data_nota_selecionada(request, contexto)
     return data
@@ -150,23 +152,25 @@ def ocorrencia_nota_cliente(request):
 def adiciona_ocorrencia(request):
     error, msg = facade.valida_ocorrencia(request)
     ocorrencia_form = facade.read_ocorrencia_post(request)
-    id_ocor = request.POST.get("idocorrencia")
+    idocorrencia = request.POST.get("idocorrencia")
+    idcliente = request.POST.get("idcliente")
     if not error:
-        if id_ocor:
-            facade.update_ocorrencia(ocorrencia_form, id_ocor)
+        if idocorrencia:
+            facade.update_ocorrencia(ocorrencia_form, idocorrencia)
         else:
-            facade.save_ocorrencia(ocorrencia_form)
+            facade.save_ocorrencia(ocorrencia_form, idcliente)
         ocorrencia_form = dict()
-    id_not = request.POST.get("id_nota_clientes")
-    id_rom = facade.create_contexto_romaneio_tem_nota(id_not)
-    notas = facade.create_contexto_ocorrencia_notas(id_not)
-    ocorrencias = facade.create_contexto_seleciona_ocorrencia(id_not, "NumeroNota")
+    idnota = request.POST.get("id_nota_clientes")
+    idtomaneio = facade.create_contexto_romaneio_tem_nota(idnota)
+    notas = facade.create_contexto_ocorrencia_notas(idnota)
+    ocorrencias = facade.create_contexto_seleciona_ocorrencia(idnota, "NumeroNota")
     hoje = str_hoje()
     contexto = {
         "notas": notas,
         "ocorrencias": ocorrencias,
         "hoje": hoje,
-        "id_nota": id_not,
+        "id_nota": idnota,
+        "idcliente": idcliente,
     }
     contexto.update({"error": error})
     contexto.update(msg)
@@ -175,10 +179,10 @@ def adiciona_ocorrencia(request):
     contexto.update({"cadastrada": quantidade_notas[0]["cadastrada"]})
     contexto.update({"pendente": quantidade_notas[0]["pendente"]})
     contexto.update({"recusada": quantidade_notas[0]["recusada"]})
-    if id_rom:
-        not_rom = facade.create_contexto_notas_romaneio(id_rom)
-        romaneio = facade.create_contexto_seleciona_romaneio(id_rom)
-        contexto.update({"notas_romaneio": not_rom, "romaneios": romaneio})
+    if idtomaneio:
+        notas_romaneio = facade.create_contexto_notas_romaneio(idtomaneio)
+        romaneio = facade.create_contexto_seleciona_romaneio(idtomaneio)
+        contexto.update({"notas_romaneio": notas_romaneio, "romaneios": romaneio})
     data = facade.create_data_ocorrencia_selecionada(request, contexto)
     return data
 

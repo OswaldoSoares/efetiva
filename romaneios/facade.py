@@ -361,7 +361,7 @@ def save_notas_cliente(nota):
     obj.save()
 
 
-def save_ocorrencia(ocorrencia):
+def save_ocorrencia(ocorrencia, idcliente):
     obj = NotasOcorrencias()
     obj.DataOcorrencia = ocorrencia["data_ocorrencia"]
     obj.TipoOcorrencia = ocorrencia["tipo_ocorrencia"]
@@ -382,7 +382,7 @@ def save_ocorrencia(ocorrencia):
     Tipo de Ocorrência: {ocorrencia["tipo_ocorrencia"]}
     Ocorrência: {ocorrencia["ocorrencia"]}
     """
-    send_message(texto)
+    send_message(texto, idcliente)
 
 
 def altera_status_rota(id_rom, id_not):
@@ -415,6 +415,7 @@ def altera_status_remove_romaneio(id_rom, id_not, hoje):
     obj.save(update_fields=["StatusNota"])
 
 
+# TODO FUNÇÃO NÃO ESTÁ SENDO USADA - VERIFICAR 28/03/2023
 def update_ocorrencia(ocorrencia_form, id_ocor):
     ocorrencia = NotasOcorrencias.objects.get(idNotasOcorrencia=id_ocor)
     obj = ocorrencia
@@ -965,12 +966,15 @@ def last_chat_id_telegram(token):
         print("Erro no getUpdates:", e)
 
 
-# enviar mensagens utilizando o bot para um chat específico
-def send_message(message):
+# enviar mensagens utilizando o bot para um gruppo específico
+def send_message(message, idcliente):
     token = "5778267083:AAEha8jgzCRYr_niZ7JM4EB5MWDX2Zkk98o"
-    chat_id = "-666092318"  # Telegram Transefetiva - LogCatavento
-    chat_id = "-994748069"  # Telegram Transefetiva - Kite
-    chat_id = "-785462150"  # Telegram TransEfetiva - Operacional
+    if idcliente == "11":
+        chat_id = "-666092318"  # Telegram Transefetiva - LogCatavento
+    elif idcliente == "7":
+        chat_id = "-994748069"  # Telegram Transefetiva - Kite
+    else:
+        chat_id = "-785462150"  # Telegram TransEfetiva - Operacional
     try:
         data = {"chat_id": chat_id, "text": message}
         url = f"https://api.telegram.org/bot{token}/sendMessage"
@@ -981,7 +985,13 @@ def send_message(message):
 
 def send_arquivo(romaneio):
     token = "5778267083:AAEha8jgzCRYr_niZ7JM4EB5MWDX2Zkk98o"
-    chat_id = "-785462150"
+    idcliente = "0"
+    # if idcliente == "11":
+    #     chat_id = "-666092318"  # Telegram Transefetiva - LogCatavento
+    # elif idcliente == "7":
+    #     chat_id = "-994748069"  # Telegram Transefetiva - Kite
+    # else:
+    chat_id = "-785462150"  # Telegram TransEfetiva - Operacional
     rom_numero = str(romaneio).zfill(5)
     descricao_arquivo = f"Romaneio_{str(rom_numero).zfill(5)}.pdf"
     arquivo = FileUpload.objects.filter(DescricaoUpload=descricao_arquivo)
@@ -996,7 +1006,13 @@ def send_arquivo(romaneio):
 
 def send_arquivo_relatorio(sort_status):
     token = "5778267083:AAEha8jgzCRYr_niZ7JM4EB5MWDX2Zkk98o"
-    chat_id = "-785462150"
+    idcliente = "0"
+    # if idcliente == "11":
+    #     chat_id = "-666092318"  # Telegram Transefetiva - LogCatavento
+    # elif idcliente == "7":
+    #     chat_id = "-994748069"  # Telegram Transefetiva - Kite
+    # else:
+    chat_id = "-785462150"  # Telegram TransEfetiva - Operacional
     descricao_arquivo = f"Notas {sort_status}.pdf"
     arquivo = FileUpload.objects.filter(DescricaoUpload=descricao_arquivo)
     url = f"https://api.telegram.org/bot{token}/sendDocument?chat_id={chat_id}"
