@@ -1003,15 +1003,14 @@ def send_arquivo(romaneio, idcliente):
     requests.request("POST", url, headers=headers, data=payload, files=files)
 
 
-def send_arquivo_relatorio(sort_status):
+def send_arquivo_relatorio(sort_status, idcliente):
     token = "5778267083:AAEha8jgzCRYr_niZ7JM4EB5MWDX2Zkk98o"
-    idcliente = "0"
-    # if idcliente == "11":
-    #     chat_id = "-666092318"  # Telegram Transefetiva - LogCatavento
-    # elif idcliente == "7":
-    #     chat_id = "-994748069"  # Telegram Transefetiva - Kite
-    # else:
-    chat_id = "-785462150"  # Telegram TransEfetiva - Operacional
+    if idcliente == "11":
+        chat_id = "-666092318"  # Telegram Transefetiva - LogCatavento
+    elif idcliente == "7":
+        chat_id = "-994748069"  # Telegram Transefetiva - Kite
+    else:
+        chat_id = "-785462150"  # Telegram TransEfetiva - Operacional
     descricao_arquivo = f"Notas {sort_status}.pdf"
     arquivo = FileUpload.objects.filter(DescricaoUpload=descricao_arquivo)
     url = f"https://api.telegram.org/bot{token}/sendDocument?chat_id={chat_id}"

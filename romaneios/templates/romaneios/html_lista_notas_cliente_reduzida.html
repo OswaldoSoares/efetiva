@@ -84,7 +84,7 @@
         href="{% url 'imprime_notas_status' %}?StatusNota={{ sort_status }}&idCliente={{ idcliente }}"
         title="Imprime Romaneio" target="_blank"></a>
         <i class="bi bi-cursor i-button js-envia-telegram-relatorio"
-        title="Envia Relatorio no Telegram"></i>
+        data-idcliente="{{ idcliente }}" title="Envia Relatorio no Telegram"></i>
     </div>
     <div class="quantidade"></div>
 </div>

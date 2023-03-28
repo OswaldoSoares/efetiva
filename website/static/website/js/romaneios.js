@@ -378,13 +378,15 @@ $(document).on('click', '.js-envia-telegram-romaneio', function() {
 });
 
 $(document).on('click', '.js-envia-telegram-relatorio', function() {
-    var _status = $("#select-status").val()
+    var status = $("#select-status").val()
+    var idcliente = $(this).data("idcliente")
     $(this).hide()
     $.ajax({
         type: 'GET',
         url: '/romaneios/envia_telegram_relatorio',
         data: {
-            status: _status,
+            status: status,
+            idCliente: idcliente,
         },
         beforeSend: function() {
             $(".box-loader").show();
