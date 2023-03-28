@@ -27,11 +27,14 @@
     <div class="item-romaneio {% cycle 'linha-p' 'linha-i' %}">
         <div class="item-button">
             <i class="bi bi-folder i-button
-            js-seleciona-romaneio" title="Seleciona Romanio" data-idromaneio={{ rom.idromaneio }} data-idcliente={{ idcliente }}></i>
+            js-seleciona-romaneio" title="Seleciona Romanio" data-idromaneio={{ rom.idromaneio }}
+            data-idcliente={{ idcliente }}></i>
             <i class="bi bi-pencil-square i-button
-            js-edita-romaneio" title="Edita Romaneio" data-idromaneio={{ rom.idromaneio }}></i>
+            js-edita-romaneio" title="Edita Romaneio" data-idromaneio={{ rom.idromaneio }}
+            data-idcliente={{ idcliente }}></i>
             <i class="bi bi-door-closed i-button
-            js-fecha-romaneio" title="Fecha Romaneio" data-idromaneio={{ rom.idromaneio }}></i>
+            js-fecha-romaneio" title="Fecha Romaneio" data-idromaneio={{ rom.idromaneio }}
+            data-idcliente={{ idcliente }}></i>
         </div>
     </div>
     {% endfor %} {% for notas in notas_romaneio %} {{ notas.idnotascliente }} {% endfor %}

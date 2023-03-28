@@ -16,11 +16,11 @@ def seleciona_cliente(request):
     error, msg = facade.valida_seleciona_cliente(request)
     if not error:
         if request.POST:
-            id_cli = request.POST.get("cliente")
+            idcliente = request.POST.get("cliente")
         else:
-            id_cli = request.GET.get("cliente")
-        notas = facade.create_contexto_seleciona_notas(id_cli, "-NumeroNota")
-        cliente = facade.create_contexto_cliente(id_cli)
+            idcliente = request.GET.get("cliente")
+        notas = facade.create_contexto_seleciona_notas(idcliente, "-NumeroNota")
+        cliente = facade.create_contexto_cliente(idcliente)
         hoje = str_hoje()
         destinatarios = facade.lista_destinatarios()
         enderecos = facade.lista_enderecos()
@@ -29,13 +29,13 @@ def seleciona_cliente(request):
             "notas": notas,
             "cliente": cliente,
             "hoje": hoje,
-            "idcliente": id_cli,
+            "idcliente": idcliente,
             "destinatarios": destinatarios,
             "enderecos": enderecos,
             "bairros": bairros,
             "sort_status": "SEM FILTRO",
         }
-        romaneios = facade.create_contexto_romaneios()
+        romaneios = facade.create_contexto_romaneios(idcliente)
         contexto.update({"romaneios": romaneios})
         motoristas = motoristas_disponiveis()
         veiculos = filtra_veiculo("17", "TRANSPORTADORA")
@@ -184,22 +184,24 @@ def adiciona_ocorrencia(request):
 
 
 def adiciona_romaneio(request):
-    id_rom = request.POST.get("idRomaneio")
+    idromaneio = request.POST.get("idRomaneio")
+    idcliente = request.POST.get("idCliente")
     romaneio = facade.read_romaneio_post(request)
-    if id_rom:
-        facade.update_romaneio(romaneio, id_rom)
+    if idromaneio:
+        facade.update_romaneio(romaneio, idromaneio)
     else:
         facade.save_romaneio(romaneio)
-    romaneios = facade.create_contexto_romaneios()
+    romaneios = facade.create_contexto_romaneios(idcliente)
     contexto = {"romaneios": romaneios}
     data = facade.create_data_romaneios(request, contexto)
     return data
 
 
 def edita_romaneio(request):
-    _id_rom = request.GET.get("idRomaneio")
-    romaneio = facade.read_romaneio_database(_id_rom)
-    contexto = {"romaneio": romaneio}
+    idromaneio = request.GET.get("idRomaneio")
+    idcliente = request.GET.get("idCliente")
+    romaneio = facade.read_romaneio_database(idromaneio)
+    contexto = {"romaneio": romaneio, "idcliente": idcliente}
     motoristas = motoristas_disponiveis()
     veiculos = filtra_veiculo("17", "TRANSPORTADORA")
     contexto.update({"motoristas": motoristas, "veiculos": veiculos})
@@ -345,9 +347,10 @@ def filtra_nota_cliente(request):
 
 
 def fecha_romaneio(request):
-    id_rom = request.GET.get("idRomaneio")
-    facade.fecha_romaneio(id_rom)
-    romaneio = facade.create_contexto_romaneios()
+    idromaneio = request.GET.get("idRomaneio")
+    idcliente = request.GET.get("idCliente")
+    facade.fecha_romaneio(idromaneio)
+    romaneio = facade.create_contexto_romaneios(idcliente)
     contexto = {
         "romaneios": romaneio,
     }

@@ -477,6 +477,7 @@ def read_romaneio_post(request):
     romaneio["data_romaneio"] = request.POST.get("data_romaneio")
     romaneio["motorista"] = request.POST.get("motorista")
     romaneio["veiculo"] = request.POST.get("veiculo")
+    romaneio["cliente"] = request.POST.get("idCliente")
     return romaneio
 
 
@@ -489,6 +490,7 @@ def read_romaneio_database(id_rom):
     )
     romaneio_database["motorista"] = romaneio.idMotorista
     romaneio_database["veiculo"] = romaneio.idVeiculo
+    romaneio.database["cliente"] = romaneio.idCliente
     return romaneio_database
 
 
@@ -502,6 +504,7 @@ def save_romaneio(romaneio):
     obj.DataRomaneio = romaneio["data_romaneio"]
     obj.idMotorista_id = romaneio["motorista"]
     obj.idVeiculo_id = romaneio["veiculo"]
+    obj.idCliente_id = romaneio["cliente"]
     obj.save()
 
 
@@ -514,8 +517,10 @@ def update_romaneio(romaneio_form, id_rom):
     obj.save()
 
 
-def create_contexto_romaneios():
-    romaneios = Romaneios.objects.filter(Fechado=False).order_by("-Romaneio")
+def create_contexto_romaneios(idcliente):
+    romaneios = Romaneios.objects.filter(idCliente=idcliente, Fechado=False).order_by(
+        "-Romaneio"
+    )
     lista = [
         {
             "idromaneio": x.idRomaneio,
@@ -614,7 +619,6 @@ def create_contexto_filtro_notas_status(id_cli, sort_status, order_nota):
         notas = NotasClientes.objects.filter(
             StatusNota=sort_status, idCliente_id=id_cli
         ).order_by(order_nota)
-    print(sort_status)
     lista = []
     for x in notas:
         ocorrencia = None
@@ -964,9 +968,9 @@ def last_chat_id_telegram(token):
 # enviar mensagens utilizando o bot para um chat específico
 def send_message(message):
     token = "5778267083:AAEha8jgzCRYr_niZ7JM4EB5MWDX2Zkk98o"
-    chat_id = "-785462150"  # Telegram TransEfetiva - Operacional
     chat_id = "-666092318"  # Telegram Transefetiva - LogCatavento
     chat_id = "-994748069"  # Telegram Transefetiva - Kite
+    chat_id = "-785462150"  # Telegram TransEfetiva - Operacional
     try:
         data = {"chat_id": chat_id, "text": message}
         url = f"https://api.telegram.org/bot{token}/sendMessage"
@@ -977,7 +981,7 @@ def send_message(message):
 
 def send_arquivo(romaneio):
     token = "5778267083:AAEha8jgzCRYr_niZ7JM4EB5MWDX2Zkk98o"
-    chat_id = "-994748069"
+    chat_id = "-785462150"
     rom_numero = str(romaneio).zfill(5)
     descricao_arquivo = f"Romaneio_{str(rom_numero).zfill(5)}.pdf"
     arquivo = FileUpload.objects.filter(DescricaoUpload=descricao_arquivo)
@@ -992,7 +996,7 @@ def send_arquivo(romaneio):
 
 def send_arquivo_relatorio(sort_status):
     token = "5778267083:AAEha8jgzCRYr_niZ7JM4EB5MWDX2Zkk98o"
-    chat_id = "-994748069"
+    chat_id = "-785462150"
     descricao_arquivo = f"Notas {sort_status}.pdf"
     arquivo = FileUpload.objects.filter(DescricaoUpload=descricao_arquivo)
     url = f"https://api.telegram.org/bot{token}/sendDocument?chat_id={chat_id}"

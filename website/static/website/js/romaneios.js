@@ -394,12 +394,14 @@ $(document).on('click', '.js-envia-telegram-relatorio', function() {
 });
 
 $(document).on('click', '.js-edita-romaneio', function() {
-    var _id_romaneio = $(this).data("idromaneio")
+    var idromaneio = $(this).data("idromaneio")
+    var idcliente = $(this).data("idcliente")
     $.ajax({
         type: 'GET',
         url: '/romaneios/edita_romaneio',
         data: {
-            idRomaneio: _id_romaneio,
+            idRomaneio: idromaneio,
+            idCliente: idcliente,
         },
         beforeSend: function() {
             $(".card-form-notas-cliente").hide()
@@ -562,12 +564,14 @@ $(document).on('click', '.js-retorna-lista-notas', function() {
 });
 
 $(document).on('click', '.js-fecha-romaneio', function() {
-    var _id_romaneio = $(this).data("idromaneio")
+    var idromaneio = $(this).data("idromaneio")
+    var idcliente = $(this).data("idcliente")
     $.ajax({
         type: 'GET',
         url: '/romaneios/fecha_romaneio',
         data: {
-            idRomaneio: _id_romaneio,
+            idRomaneio: idromaneio,
+            idCliente: idcliente,
         },
         beforeSend: function() {
             $(".card-lista-romaneios").hide()
