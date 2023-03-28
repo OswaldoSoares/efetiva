@@ -112,6 +112,10 @@ def converter_mes_ano(_mes_ano):
     return _mes, _ano
 
 
+def valor_ponto_milhar(valor):
+    return f"{valor:,.2f}".replace(".", "_").replace(",", ".").replace("_", ",")
+
+
 class DiasFeriados:
     def __init__(self):
         self.feriados = self.get_dias_feriados()

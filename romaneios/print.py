@@ -13,6 +13,7 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.pdfgen import canvas
 from reportlab.platypus import Paragraph
 from transefetiva.settings.settings import STATIC_ROOT
+from website.facade import valor_ponto_milhar
 from website.models import FileUpload
 
 from romaneios.models import NotasOcorrencias
@@ -168,6 +169,7 @@ def notas_romaneio(pdf, contexto):
     )
     linha = 242.8
     total_romaneio = Decimal(0.00)
+    peso_romaneio = Decimal(0.00)
     for x in contexto["notas"]:
         if x.idNotasClientes.LocalColeta == "DESTINATÁRIO":
             coleta = "COLETA"
@@ -183,14 +185,15 @@ def notas_romaneio(pdf, contexto):
         estado = x.idNotasClientes.Estado
         end_compl = f"{endereco} - {bairro} - CEP: {cep} - {cidade} - {estado}"
         volume = x.idNotasClientes.Volume
-        peso = x.idNotasClientes.Peso
-        valor = x.idNotasClientes.Valor
+        peso = f"{valor_ponto_milhar(x.idNotasClientes.Peso)}"
+        valor = f"{valor_ponto_milhar(x.idNotasClientes.Valor)}"
         vol_compl = f"VOLUME: {volume} - PESO: {peso} - VALOR: R$ {valor}"
         status_nota = x.idNotasClientes.StatusNota
         contato = x.idNotasClientes.Contato
         informa = x.idNotasClientes.Informa
         con_compl = None
-        total_romaneio += valor
+        peso_romaneio += x.idNotasClientes.Peso
+        total_romaneio += x.idNotasClientes.Valor
         if contato and informa:
             con_compl = f"{contato} {informa}"
         else:
@@ -223,14 +226,12 @@ def notas_romaneio(pdf, contexto):
         if linha < 50:
             pdf.line(cmp(10), cmp(14), cmp(200), cmp(14))
             notas = str(len(contexto["notas"])).zfill(2)
+            total_romaneio = f"{valor_ponto_milhar(total_romaneio)}"
+            peso_romaneio = f"{valor_ponto_milhar(peso_romaneio)}"
             pagina = str(pdf.getPageNumber()).zfill(2)
             pdf.drawString(cmp(20), cmp(11), f"{notas} NOTAS")
             pdf.drawCentredString(
-                cmp(105),
-                cmp(11),
-                f"R$ {total_romaneio:,.2f}".replace(".", "_")
-                .replace(",", ".")
-                .replace("_", ","),
+                cmp(105), cmp(11), f"R$ {total_romaneio} - PESO {peso_romaneio}"
             )
             pdf.drawRightString(cmp(190), cmp(11), f"PÁGINA {pagina}")
             pdf.showPage()
@@ -240,14 +241,12 @@ def notas_romaneio(pdf, contexto):
             linha = 242.8
     pdf.line(cmp(10), cmp(14), cmp(200), cmp(14))
     notas = str(len(contexto["notas"])).zfill(2)
+    total_romaneio = f"{valor_ponto_milhar(total_romaneio)}"
+    peso_romaneio = f"{valor_ponto_milhar(peso_romaneio)}"
     pagina = str(pdf.getPageNumber()).zfill(2)
     pdf.drawString(cmp(20), cmp(11), f"{notas} NOTAS")
     pdf.drawCentredString(
-        cmp(105),
-        cmp(11),
-        f"R$ {total_romaneio:,.2f}".replace(".", "_")
-        .replace(",", ".")
-        .replace("_", ","),
+        cmp(105), cmp(11), f"R$ {total_romaneio} - PESO {peso_romaneio}"
     )
     pdf.drawRightString(cmp(190), cmp(11), f"PÁGINA {pagina}")
 
