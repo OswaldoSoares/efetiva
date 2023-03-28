@@ -161,6 +161,7 @@ def imprime_cabecalho(pdf, fatura_selecionada):
 
 
 def imprime_fatura_pdf(fatura):
+    print(f"[INFO - Imprime Fatura] - {fatura}")
     fatura_selecionada = Fatura.objects.filter(idFatura=fatura)
     descricao_arquivo = (
         f"Fatura_{str(fatura_selecionada[0].Fatura).zfill(6)}_fatura.pdf"
@@ -225,6 +226,7 @@ def imprime_fatura_pdf(fatura):
     for index, itens in enumerate(minutas):
         s_minuta = MinutaSelecionada(minutas[index].idMinuta).__dict__
         romaneio = s_minuta["romaneio"]
+        print(f"[INFO - ROMANEIO] - {romaneio}")
         inicialkm = minutas[index].KMInicial
         finalkm = minutas[index].KMFinal
         totalkm = finalkm - inicialkm

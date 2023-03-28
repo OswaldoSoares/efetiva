@@ -279,3 +279,22 @@ var escondeFaturasPagas = function() {
         $(this).removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
     });
 }
+
+$(document).on('click', '.js-reimprime-fatura', function() {
+    var idobj = $(this).attr('data-idobj');
+    var idfatura = $(this).attr('data-idfatura');
+    $.ajax({
+        type: 'GET',
+        url: '/faturamentos/reimprime_fatura',
+        data: {
+            idobj: idobj,
+            idfatura: idfatura,
+        },
+        beforeSend: function() {
+            $(".box-loader").show();
+        },
+        success: function(data) {
+            $(".box-loader").hide();
+        },
+    });
+});

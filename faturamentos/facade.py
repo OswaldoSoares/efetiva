@@ -299,7 +299,10 @@ def delete_arquivo(request, id_fileupload, id_fatura):
     data = dict()
     nota = FileUpload.objects.get(idFileUpload=id_fileupload)
     nota.delete()
-    os.remove(nota.uploadFile.path)
+    try:
+        os.remove(nota.uploadFile.path)
+    except FileNotFoundError:
+        print("ARQUIVO NÃO ENCONTRADO")
     data["idfatura"] = id_fatura
     return retorna_json(data)
 

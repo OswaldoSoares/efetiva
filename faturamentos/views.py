@@ -268,3 +268,14 @@ def cliente_fatura(request):
     faturas = get_fatura_pagas(v_idobj)
     data = html_clientes_paga(faturas)
     return data
+
+
+def reimprime_fatura(request):
+    idobj = request.GET.get("idobj")
+    idfatura = request.GET.get("idfatura")
+    try:
+        delete_arquivo(request, idobj, idfatura)
+    except FileUpload.DoesNotExist:
+        print("ARQUIVO NÃO ENCONTRADO")
+    response = imprime_fatura_pdf(idfatura)[0]
+    return response
