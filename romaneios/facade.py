@@ -491,7 +491,7 @@ def read_romaneio_database(id_rom):
     )
     romaneio_database["motorista"] = romaneio.idMotorista
     romaneio_database["veiculo"] = romaneio.idVeiculo
-    romaneio.database["cliente"] = romaneio.idCliente
+    romaneio_database["cliente"] = romaneio.idCliente
     return romaneio_database
 
 
