@@ -346,6 +346,7 @@ def filtra_nota_cliente(request):
             "arquivo": arquivo,
         }
     )
+    print(f"[INFO - IDCLIENTE] - {idcliente}")
     data = facade.create_data_filtro_nota(request, contexto)
     return data
 

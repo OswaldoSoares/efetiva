@@ -1,3 +1,4 @@
+from decimal import Decimal
 import os
 from datetime import datetime
 from io import BytesIO
@@ -166,6 +167,7 @@ def notas_romaneio(pdf, contexto):
         "claro", fontName="Times-Roman", fontSize=7, leading=9, alignment=TA_JUSTIFY
     )
     linha = 242.8
+    total_romaneio = Decimal(0.00)
     for x in contexto["notas"]:
         if x.idNotasClientes.LocalColeta == "DESTINATÁRIO":
             coleta = "COLETA"
@@ -188,6 +190,7 @@ def notas_romaneio(pdf, contexto):
         contato = x.idNotasClientes.Contato
         informa = x.idNotasClientes.Informa
         con_compl = None
+        total_romaneio += valor
         if contato and informa:
             con_compl = f"{contato} {informa}"
         else:
@@ -222,6 +225,13 @@ def notas_romaneio(pdf, contexto):
             notas = str(len(contexto["notas"])).zfill(2)
             pagina = str(pdf.getPageNumber()).zfill(2)
             pdf.drawString(cmp(20), cmp(11), f"{notas} NOTAS")
+            pdf.drawCentredString(
+                cmp(105),
+                cmp(11),
+                f"R$ {total_romaneio:,.2f}".replace(".", "_")
+                .replace(",", ".")
+                .replace("_", ","),
+            )
             pdf.drawRightString(cmp(190), cmp(11), f"PÁGINA {pagina}")
             pdf.showPage()
             header(pdf, contexto)
@@ -232,6 +242,13 @@ def notas_romaneio(pdf, contexto):
     notas = str(len(contexto["notas"])).zfill(2)
     pagina = str(pdf.getPageNumber()).zfill(2)
     pdf.drawString(cmp(20), cmp(11), f"{notas} NOTAS")
+    pdf.drawCentredString(
+        cmp(105),
+        cmp(11),
+        f"R$ {total_romaneio:,.2f}".replace(".", "_")
+        .replace(",", ".")
+        .replace("_", ","),
+    )
     pdf.drawRightString(cmp(190), cmp(11), f"PÁGINA {pagina}")
 
 

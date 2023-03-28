@@ -352,7 +352,7 @@ def save_notas_cliente(nota):
     obj.Cidade = nota["cidade"]
     obj.Estado = nota["estado"]
     obj.Contato = nota["contato"]
-    obj.Informa = nota["informa"]
+    obj.Informa = nota["informa"][0:299]
     obj.Volume = nota["volume"]
     obj.Peso = nota["peso"]
     obj.Valor = nota["valor"]
