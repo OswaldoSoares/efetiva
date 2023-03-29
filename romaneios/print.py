@@ -40,7 +40,10 @@ def print_romaneio(contexto):
         arquivo = FileUpload.objects.filter(DescricaoUpload=descricao_arquivo)
     else:
         if arquivo[0].uploadFile:
-            os.remove(arquivo[0].uploadFile.path)
+            try:
+                os.remove(arquivo[0].uploadFile.path)
+            except FileNotFoundError:
+                print("ARQUIVO NÃO ENCONTRADO")
     response = HttpResponse(content_type="application/pdf")
     response["Content-Disposition"] = f'filename="ROMANEIO {rom_numero}.pdf'
     buffer = BytesIO()
@@ -226,12 +229,12 @@ def notas_romaneio(pdf, contexto):
         if linha < 50:
             pdf.line(cmp(10), cmp(14), cmp(200), cmp(14))
             notas = str(len(contexto["notas"])).zfill(2)
-            total_romaneio = f"{valor_ponto_milhar(total_romaneio)}"
-            peso_romaneio = f"{valor_ponto_milhar(peso_romaneio)}"
+            total_romaneio_str = f"{valor_ponto_milhar(total_romaneio)}"
+            peso_romaneio_str = f"{valor_ponto_milhar(peso_romaneio)}"
             pagina = str(pdf.getPageNumber()).zfill(2)
             pdf.drawString(cmp(20), cmp(11), f"{notas} NOTAS")
             pdf.drawCentredString(
-                cmp(105), cmp(11), f"R$ {total_romaneio} - PESO {peso_romaneio}"
+                cmp(105), cmp(11), f"R$ {total_romaneio_str} - PESO {peso_romaneio_str}"
             )
             pdf.drawRightString(cmp(190), cmp(11), f"PÁGINA {pagina}")
             pdf.showPage()
@@ -241,12 +244,12 @@ def notas_romaneio(pdf, contexto):
             linha = 242.8
     pdf.line(cmp(10), cmp(14), cmp(200), cmp(14))
     notas = str(len(contexto["notas"])).zfill(2)
-    total_romaneio = f"{valor_ponto_milhar(total_romaneio)}"
-    peso_romaneio = f"{valor_ponto_milhar(peso_romaneio)}"
+    total_romaneio_str = f"{valor_ponto_milhar(total_romaneio)}"
+    peso_romaneio_str = f"{valor_ponto_milhar(peso_romaneio)}"
     pagina = str(pdf.getPageNumber()).zfill(2)
     pdf.drawString(cmp(20), cmp(11), f"{notas} NOTAS")
     pdf.drawCentredString(
-        cmp(105), cmp(11), f"R$ {total_romaneio} - PESO {peso_romaneio}"
+        cmp(105), cmp(11), f"R$ {total_romaneio_str} - PESO {peso_romaneio_str}"
     )
     pdf.drawRightString(cmp(190), cmp(11), f"PÁGINA {pagina}")
 
