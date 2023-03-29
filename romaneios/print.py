@@ -173,7 +173,7 @@ def notas_romaneio(pdf, contexto):
     linha = 242.8
     total_romaneio = Decimal(0.00)
     peso_romaneio = Decimal(0.00)
-    for x in contexto["notas"]:
+    for indice, x in enumerate(contexto["notas"]):
         if x.idNotasClientes.LocalColeta == "DESTINATÁRIO":
             coleta = "COLETA"
         else:
@@ -233,22 +233,25 @@ def notas_romaneio(pdf, contexto):
         pdf, linha = ocorrencia_nota(id_not, status_nota, pdf, linha)
         pdf.line(cmp(12), cmp(linha), cmp(198), cmp(linha))
         linha -= 3
-        if linha < 50:
-            pdf.line(cmp(10), cmp(14), cmp(200), cmp(14))
-            notas = str(len(contexto["notas"])).zfill(2)
-            total_romaneio_str = f"{valor_ponto_milhar(total_romaneio)}"
-            peso_romaneio_str = f"{valor_ponto_milhar(peso_romaneio)}"
-            pagina = str(pdf.getPageNumber()).zfill(2)
-            pdf.drawString(cmp(20), cmp(11), f"{notas} NOTAS")
-            pdf.drawCentredString(
-                cmp(105), cmp(11), f"R$ {total_romaneio_str} - PESO {peso_romaneio_str}"
-            )
-            pdf.drawRightString(cmp(190), cmp(11), f"PÁGINA {pagina}")
-            pdf.showPage()
-            header(pdf, contexto)
-            header_romaneio(pdf, contexto)
-            header_cliente(pdf, contexto)
-            linha = 242.8
+        if not indice == len(contexto["notas"]) - 1:
+            if linha < 50:
+                pdf.line(cmp(10), cmp(14), cmp(200), cmp(14))
+                notas = str(len(contexto["notas"])).zfill(2)
+                total_romaneio_str = f"{valor_ponto_milhar(total_romaneio)}"
+                peso_romaneio_str = f"{valor_ponto_milhar(peso_romaneio)}"
+                pagina = str(pdf.getPageNumber()).zfill(2)
+                pdf.drawString(cmp(20), cmp(11), f"{notas} NOTAS")
+                pdf.drawCentredString(
+                    cmp(105),
+                    cmp(11),
+                    f"R$ {total_romaneio_str} - PESO {peso_romaneio_str}",
+                )
+                pdf.drawRightString(cmp(190), cmp(11), f"PÁGINA {pagina}")
+                pdf.showPage()
+                header(pdf, contexto)
+                header_romaneio(pdf, contexto)
+                header_cliente(pdf, contexto)
+                linha = 242.8
     pdf.line(cmp(10), cmp(14), cmp(200), cmp(14))
     notas = str(len(contexto["notas"])).zfill(2)
     total_romaneio_str = f"{valor_ponto_milhar(total_romaneio)}"
