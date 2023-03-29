@@ -184,7 +184,8 @@ def notas_romaneio(pdf, contexto):
         numero = x.idNotasClientes.NumeroNota
         destinatario = x.idNotasClientes.Destinatario
         cnpj = x.idNotasClientes.CNPJ
-        cnpj = f"{cnpj[0:2]}.{cnpj[2:5]}.{cnpj[5:8]}/{cnpj[8:12]}-{cnpj[12:15]}"
+        # Cliente não quer que coloca pontos e traços no CNPJ - 29/03/2023
+        # cnpj = f"{cnpj[0:2]}.{cnpj[2:5]}.{cnpj[5:8]}/{cnpj[8:12]}-{cnpj[12:15]}"
         endereco = x.idNotasClientes.Endereco
         endereco = x.idNotasClientes.Endereco
         bairro = x.idNotasClientes.Bairro
