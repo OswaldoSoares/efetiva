@@ -179,8 +179,13 @@ def notas_romaneio(pdf, contexto):
         else:
             coleta = "ENTREGA"
         id_not = x.idNotasClientes.idNotasClientes
+        data_nota = datetime.strftime(x.idNotasClientes.DataColeta, "%d/%m/%Y")
+        serie = x.idNotasClientes.SerieNota
         numero = x.idNotasClientes.NumeroNota
         destinatario = x.idNotasClientes.Destinatario
+        cnpj = x.idNotasClientes.CNPJ
+        cnpj = f"{cnpj[0:2]}.{cnpj[2:5]}.{cnpj[5:8]}/{cnpj[8:12]}-{cnpj[12:15]}"
+        endereco = x.idNotasClientes.Endereco
         endereco = x.idNotasClientes.Endereco
         bairro = x.idNotasClientes.Bairro
         cep = x.idNotasClientes.CEP[0:5] + "-" + x.idNotasClientes.CEP[5:]
@@ -205,14 +210,16 @@ def notas_romaneio(pdf, contexto):
             if informa:
                 con_compl = f"{informa}"
         pdf.setFont("Times-Roman", 9)
-        pdf.drawString(cmp(12), cmp(linha), f"NOTA: {numero}")
+        pdf.drawString(
+            cmp(12), cmp(linha), f"NOTA: {numero} - SÉRIE {serie} - {data_nota}"
+        )
         pdf.drawCentredString(cmp(105), cmp(linha), f"{coleta}")
         pdf.setFillColor(HexColor("#FF0000"))
         pdf.drawRightString(cmp(198), cmp(linha), f"{status_nota}")
         pdf.setFillColor(HexColor("#000000"))
         linha -= 2.5
         pdf.setFont("Times-Roman", 7)
-        pdf.drawString(cmp(12), cmp(linha), f"{destinatario}")
+        pdf.drawString(cmp(12), cmp(linha), f"{destinatario} - CNPJ: {cnpj}")
         linha -= 2.5
         pdf.drawString(cmp(12), cmp(linha), f"{end_compl}")
         linha -= 2.5
