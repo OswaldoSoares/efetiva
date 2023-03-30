@@ -340,6 +340,7 @@ def consultaminuta(request, idmin):
     phkescrecebe = list(tabelacliente.values("phkescCobra")[0].values())[0]
     phkescpaga = list(tabelacliente.values("phkescPaga")[0].values())[0]
     valortaxaexpedicao = list(tabelacliente.values("TaxaExpedicao")[0].values())[0]
+    porcentagemseguro = list(tabelacliente.values("Seguro")[0].values())[0]
     valorajudanterecebe = list(tabelacliente.values("AjudanteCobra")[0].values())[0]
     valor_ajudante_recebe_hora_extra = list(
         tabelacliente.values("AjudanteCobraHoraExtra")[0].values()
@@ -614,7 +615,7 @@ def consultaminuta(request, idmin):
     # Cria lista a receber para os inputs com os valores das tabelas do cliente
     values_tabela_recebe = [
         valortaxaexpedicao,
-        0.23,
+        porcentagemseguro,
         valorporcentagemrecebe,
         valorhorarecebe,
         100,
@@ -766,6 +767,8 @@ def consultaminuta(request, idmin):
     # Altera os switchs a receber para ligados conforme valores das tabelas dos cliente
     if valortaxaexpedicao:
         switch_recebe["taxaexpedicao"] = True
+    if porcentagemseguro:
+        switch_recebe["seguro"] = True
     if phkescrecebe[0:1] == "1":
         switch_recebe["porcentagem"] = True
     if phkescrecebe[1:2] == "1":
@@ -944,6 +947,7 @@ def consultaminuta(request, idmin):
         "totalvolumenotas": totalvolumenotas,
         "totalquantidadenotas": totalquantidadenotas,
         "valortaxaexpedicao": valortaxaexpedicao,
+        "porcentagemseguro": porcentagemseguro,
         "valorporcentagemrecebe": valorporcentagemrecebe,
         "valorporcentagempaga": valorporcentagempaga,
         "valorhorarecebe": valorhorarecebe,

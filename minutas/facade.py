@@ -581,6 +581,7 @@ class ClienteTabela:
             {
                 "idTabela": itens.idTabela,
                 "Comissao": itens.Comissao,
+                "Seguro": itens.Seguro,
                 "TaxaExpedicao": itens.TaxaExpedicao,
                 "AjudanteCobra": itens.AjudanteCobra,
                 "AjudanteCobraHoraExtra": itens.AjudanteCobraHoraExtra,
