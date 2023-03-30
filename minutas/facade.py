@@ -1701,7 +1701,9 @@ def forn_minuta(request, c_form, c_idobj, c_url, c_view):
 
 
 def create_contexto_romaneios(id_cli):
-    romaneios = Romaneios.objects.all().order_by("-Romaneio")
+    romaneios = Romaneios.objects.filter(
+        idCliente=id_cli, idMinuta__isnull=True
+    ).order_by("-Romaneio")
     lista = [
         {
             "idromaneio": x.idRomaneio,
