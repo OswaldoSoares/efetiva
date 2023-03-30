@@ -417,6 +417,8 @@ def ficha_colaborador(pdf, contexto):
     if contexto["colaborador"]["foto"]:
         foto = contexto["colaborador"]["foto"].path
         foto = do_crop(foto)
+        if foto == False:
+            foto = f"{STATIC_ROOT}/website/img/usuario.png"
     else:
         foto = f"{STATIC_ROOT}/website/img/usuario.png"
     nome = contexto["colaborador"]["nome"]
@@ -425,8 +427,14 @@ def ficha_colaborador(pdf, contexto):
     )
     mae = contexto["colaborador"]["mae"]
     pai = contexto["colaborador"]["pai"]
+    endereco = contexto["colaborador"]["endereco"]
+    bairro = contexto["colaborador"]["bairro"]
+    cep = contexto["colaborador"]["cep"]
+    cidade_estado = contexto["colaborador"]["cidade_estado"]
     doc = contexto["colaborador"]["documentos"]
     fone = contexto["colaborador"]["telefones"]
+    banco = contexto["colaborador"]["bancos"]
+    pdf.setFont("Times-Roman", 12)
     pdf.drawCentredString(cmp(105), cmp(255.8), "FICHA CADASTRAL")
     pdf.line(cmp(10), cmp(254.1), cmp(200), cmp(254.1))
     pdf.drawImage(foto, cmp(85), cmp(210), cmp(40), cmp(40), mask="auto")
@@ -437,8 +445,14 @@ def ficha_colaborador(pdf, contexto):
     if contexto["colaborador"]["foto"]:
         pdf.circle(cmp(105), cmp(230), 57, stroke=1, fill=0)
     linha = 196
-    pdf.setFont("Times-Roman", 12)
+    pdf.setFont("Times-Roman", 10)
     pdf.setFillColor(HexColor("#000000"))
+    pdf.drawString(cmp(12), cmp(linha), f"ENDEREÇO: {endereco}")
+    linha -= 5
+    pdf.drawString(
+        cmp(12), cmp(linha), f"BAIRRO: {bairro} - CEP {cep} - {cidade_estado}"
+    )
+    linha -= 5
     pdf.drawString(cmp(12), cmp(linha), f"DATA DE NASCIMENTO: {data_nascimento}")
     if mae:
         linha -= 5
@@ -446,38 +460,73 @@ def ficha_colaborador(pdf, contexto):
     if pai:
         linha -= 5
         pdf.drawString(cmp(12), cmp(linha), f"NOME DO PAI: {pai}")
-    linha -= 1
+    linha -= 1.5
     pdf.line(cmp(10), cmp(linha), cmp(200), cmp(linha))
     if doc:
         linha -= 6
+        pdf.setFont("Times-Roman", 12)
         pdf.setFillColor(HexColor("#B0C4DE"))
         pdf.setStrokeColor(HexColor("#B0C4DE"))
         pdf.rect(cmp(11), cmp(linha), cmp(188), cmp(5), fill=1, stroke=1)
         pdf.setStrokeColor(HexColor("#000000"))
         pdf.setFillColor(HexColor("#000000"))
         pdf.drawCentredString(cmp(105), cmp(linha + 1), "DOCUMENTOS")
+        pdf.setFont("Times-Roman", 10)
         linha -= 1
         pdf.line(cmp(10), cmp(linha), cmp(200), cmp(linha))
         linha += 1
         for i in doc:
             linha -= 5
-            pdf.drawString(cmp(12), cmp(linha), f'{i["tipo"]}: {i["documento"]}')
-        linha -= 1
+            if i["tipo"] == "HABILITAÇÃO":
+                data = datetime.datetime.strftime(i["data_doc"], "%d/%m/%Y")
+                pdf.drawString(
+                    cmp(12),
+                    cmp(linha),
+                    f'{i["tipo"]}: {i["documento"]} - VENCIMENTO: {data}',
+                )
+            else:
+                pdf.drawString(cmp(12), cmp(linha), f'{i["tipo"]}: {i["documento"]}')
+        linha -= 1.5
         pdf.line(cmp(10), cmp(linha), cmp(200), cmp(linha))
     if fone:
         linha -= 6
+        pdf.setFont("Times-Roman", 12)
         pdf.setFillColor(HexColor("#B0C4DE"))
         pdf.setStrokeColor(HexColor("#B0C4DE"))
         pdf.rect(cmp(11), cmp(linha), cmp(188), cmp(5), fill=1, stroke=1)
         pdf.setStrokeColor(HexColor("#000000"))
         pdf.setFillColor(HexColor("#000000"))
         pdf.drawCentredString(cmp(105), cmp(linha + 1), "TELEFONES")
+        pdf.setFont("Times-Roman", 10)
         linha -= 1
         pdf.line(cmp(10), cmp(linha), cmp(200), cmp(linha))
         linha += 1
         for i in fone:
             linha -= 5
             pdf.drawString(cmp(12), cmp(linha), f'{i["tipo"]}: {i["fone"]}')
+        linha -= 1.5
+        pdf.line(cmp(10), cmp(linha), cmp(200), cmp(linha))
+    if banco:
+        linha -= 6
+        pdf.setFont("Times-Roman", 12)
+        pdf.setFillColor(HexColor("#B0C4DE"))
+        pdf.setStrokeColor(HexColor("#B0C4DE"))
+        pdf.rect(cmp(11), cmp(linha), cmp(188), cmp(5), fill=1, stroke=1)
+        pdf.setStrokeColor(HexColor("#000000"))
+        pdf.setFillColor(HexColor("#000000"))
+        pdf.drawCentredString(cmp(105), cmp(linha + 1), "INFORMAÇÕES BANCÁRIAS")
+        pdf.setFont("Times-Roman", 10)
+        linha -= 1
+        pdf.line(cmp(10), cmp(linha), cmp(200), cmp(linha))
+        linha += 1
+        for i in banco:
+            linha -= 5
+            pdf.drawString(
+                cmp(12),
+                cmp(linha),
+                f'{i["banco"]} - AGÊNCIA: {i["agencia"]} CONTA {i["tipo"]}:'
+                f' {i["conta"]} - CHAVE PIX: {i["pix"]}',
+            )
 
 
 def print_pdf_rescisao_trabalho(pdf, contexto):

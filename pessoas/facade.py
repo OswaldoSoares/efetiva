@@ -1304,12 +1304,15 @@ def crop(im, s):
 
 def do_crop(img):
     size = (200, 200)
-    im = Image.open(img)
-    im = crop(im, size)
-    im.putalpha(prepare_mask(size, 4))
-    output = str(img).replace("jpg", "png").replace("jpeg", "png")
-    im.save(output)
-    return output
+    try:
+        im = Image.open(img)
+        im = crop(im, size)
+        im.putalpha(prepare_mask(size, 4))
+        output = str(img).replace("jpg", "png").replace("jpeg", "png")
+        im.save(output)
+        return output
+    except:
+        return False
 
 
 def create_data_form_salario_colaborador(request, contexto):
