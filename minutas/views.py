@@ -377,7 +377,7 @@ def consultaminuta(request, idmin):
     valorentrega_paga = 0.00
     valorentregakg_paga = 0.00
     valorentregavolume_paga = 0.00
-    porcesegurorecebe = 1.00
+    porcesegurorecebe = 1.000
     porcepernoite = 100
     numero_saidas_do_ajudante = -1
     dezhoras = timedelta(days=0, hours=10, minutes=0)

@@ -162,7 +162,9 @@ class CadastraTabela(forms.ModelForm):
         }
         widgets = {
             "Comissao": forms.NumberInput(attrs={"class": "form-control"}),
-            "Seguro": forms.NumberInput(attrs={"class": "form-control"}),
+            "Seguro": forms.NumberInput(
+                attrs={"class": "form-control", "step": "0.001"}
+            ),
             "TaxaExpedicao": forms.NumberInput(attrs={"class": "form-control"}),
             "AjudanteCobra": forms.NumberInput(attrs={"class": "form-control"}),
             "AjudanteCobraHoraExtra": forms.NumberInput(

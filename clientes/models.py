@@ -9,15 +9,15 @@ class Cliente(models.Model):
     Endereco = models.CharField(max_length=60, blank=True)
     Bairro = models.CharField(max_length=25, blank=True)
     CEP = models.CharField(max_length=9, blank=True)
-    Cidade = models.CharField(max_length=30, blank=True, default='SÃO PAULO')
-    Estado = models.CharField(max_length=2, blank=True, default='SP')
+    Cidade = models.CharField(max_length=30, blank=True, default="SÃO PAULO")
+    Estado = models.CharField(max_length=2, blank=True, default="SP")
     CNPJ = models.CharField(max_length=18, blank=True)
     IE = models.CharField(max_length=15, blank=True)
     Site = models.CharField(max_length=40, blank=True)
 
     class Meta:
-        db_table = 'cliente'
-        ordering = ['Fantasia']
+        db_table = "cliente"
+        ordering = ["Fantasia"]
 
     def __str__(self):
         return self.Fantasia
@@ -44,11 +44,11 @@ class FoneContatoCliente(models.Model):
     idCliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'fonecontatocliente'
-        ordering = ['Contato']
+        db_table = "fonecontatocliente"
+        ordering = ["Contato"]
 
     def __str__(self):
-        return '{}/{}'.format(self.Contato, self.TipoFone)
+        return "{}/{}".format(self.Contato, self.TipoFone)
 
     def save(self, *args, **kwargs):
         self.Contato = self.Contato.upper()
@@ -67,11 +67,11 @@ class EMailContatoCliente(models.Model):
     idCliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'emailcontatocliente'
-        ordering = ['Contato']
+        db_table = "emailcontatocliente"
+        ordering = ["Contato"]
 
     def __str__(self):
-        return '{}/{}'.format(self.Contato, self.EMail)
+        return "{}/{}".format(self.Contato, self.EMail)
 
     def save(self, *args, **kwargs):
         self.Contato = self.Contato.upper()
@@ -88,15 +88,15 @@ class Cobranca(models.Model):
     Endereco = models.CharField(max_length=35, blank=True)
     Bairro = models.CharField(max_length=20, blank=True)
     CEP = models.CharField(max_length=9, blank=True)
-    Cidade = models.CharField(max_length=25, blank=True, default='SÃO PAULO')
-    Estado = models.CharField(max_length=2, blank=True, default='SP')
+    Cidade = models.CharField(max_length=25, blank=True, default="SÃO PAULO")
+    Estado = models.CharField(max_length=2, blank=True, default="SP")
     CNPJ = models.CharField(max_length=18, blank=True)
     IE = models.CharField(max_length=15, blank=True)
     idCliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'cobranca'
-        ordering = ['Nome']
+        db_table = "cobranca"
+        ordering = ["Nome"]
 
     def __str__(self):
         return self.Nome
@@ -119,11 +119,11 @@ class FormaPagamento(models.Model):
     Dias = models.IntegerField(default=1)
 
     class Meta:
-        db_table = 'formapagamento'
-        ordering = ['Forma', 'Dias']
+        db_table = "formapagamento"
+        ordering = ["Forma", "Dias"]
 
     def __str__(self):
-        return self.Forma + ' + ' + str(self.Dias)
+        return self.Forma + " + " + str(self.Dias)
 
     def save(self, *args, **kwargs):
         self.Forma = self.Forma.upper()
@@ -135,19 +135,23 @@ class FormaPagamento(models.Model):
 
 class Tabela(models.Model):
     idTabela = models.AutoField(primary_key=True)
+    Seguro = models.DecimalField(max_digits=6, decimal_places=3, default=0)
     Comissao = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     TaxaExpedicao = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     AjudanteCobra = models.DecimalField(max_digits=8, decimal_places=2, default=0)
-    AjudanteCobraHoraExtra = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    AjudanteCobraHoraExtra = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0
+    )
     AjudantePaga = models.DecimalField(max_digits=8, decimal_places=2, default=0)
-    Seguro = models.DecimalField(max_digits=5, decimal_places=2, default=0)
-    phkescCobra = models.CharField(max_length=8, default='00000000')
-    phkescPaga = models.CharField(max_length=8, default='00000000')
-    idFormaPagamento = models.ForeignKey(FormaPagamento, on_delete=models.PROTECT, verbose_name='FORMA DE PAGAMENTO')
+    phkescCobra = models.CharField(max_length=8, default="00000000")
+    phkescPaga = models.CharField(max_length=8, default="00000000")
+    idFormaPagamento = models.ForeignKey(
+        FormaPagamento, on_delete=models.PROTECT, verbose_name="FORMA DE PAGAMENTO"
+    )
     idCliente = models.OneToOneField(Cliente, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'tabela'
+        db_table = "tabela"
 
     def __str__(self):
         return str(self.idFormaPagamento)
@@ -178,8 +182,8 @@ class TabelaVeiculo(models.Model):
     idCliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'tabelaveiculo'
-        ordering = ['idCategoriaVeiculo']
+        db_table = "tabelaveiculo"
+        ordering = ["idCategoriaVeiculo"]
 
     def __str__(self):
         return str(self.idCategoriaVeiculo)
@@ -196,8 +200,8 @@ class TabelaCapacidade(models.Model):
     idCliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'tabelacapacidade'
-        ordering = ['idTabelaCapacidade']
+        db_table = "tabelacapacidade"
+        ordering = ["idTabelaCapacidade"]
 
     objects = models.Manager()
 
@@ -211,7 +215,7 @@ class TabelaPerimetro(models.Model):
     idCliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'tabelaperimetro'
-        ordering = ['idTabelaPerimetro']
+        db_table = "tabelaperimetro"
+        ordering = ["idTabelaPerimetro"]
 
     objects = models.Manager()
