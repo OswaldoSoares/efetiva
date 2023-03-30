@@ -154,7 +154,9 @@
         <input type="hidden" name="id_nota_clientes" value="{{ id_nota }}">
         <input type="hidden" name="idcliente" value="{{ idcliente }}">
         <div class="item-form-ocorrencia">
+            {% if not statusnota == "ENTREGUE" %}
             <button class="bi bi-save2 i-button"></button>
+            {% endif %}
         </div>
     </form>
 </div>

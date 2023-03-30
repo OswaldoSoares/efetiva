@@ -83,10 +83,13 @@
             js-ocorrencia-notas-cliente" title="Seleciona Nota"
             data-idnota={{ nr.idnotasclientes.idNotasClientes }}
             data-idcliente={{ nr.idnotasclientes.idCliente_id }}></i>
+            {% if not nr.idnotasclientes.StatusNota == "ENTREGUE" %}
             <i class="bi bi-trash i-button js-exclui-nota-romaneio"
-            data-idnota={{ nr.idnotasclientes.idNotasClientes }}
             title="Remove Nota do Romaneio"
-            data-idromaneionotas="{{ nr.idromaneionotas }}"></i>
+            data-idnota={{ nr.idnotasclientes.idNotasClientes }}
+            data-idromaneionotas="{{ nr.idromaneionotas }}"
+            data-idcliente={{ nr.idnotasclientes.idCliente_id }}></i>
+            {% endif %}
         </div>
     </div>
     {% endfor %}

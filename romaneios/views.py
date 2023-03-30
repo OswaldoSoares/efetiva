@@ -136,6 +136,7 @@ def ocorrencia_nota_cliente(request):
     idnota = request.GET.get("idNota")
     idcliente = request.GET.get("idCliente")
     notas = facade.create_contexto_ocorrencia_notas(idnota)
+    print(notas)
     ocorrencias = facade.create_contexto_seleciona_ocorrencia(idnota, "NumeroNota")
     hoje = str_hoje()
     contexto = {
@@ -144,6 +145,7 @@ def ocorrencia_nota_cliente(request):
         "hoje": hoje,
         "id_nota": idnota,
         "idcliente": idcliente,
+        "statusnota": notas[0]["statusnota"],
     }
     data = facade.create_data_nota_selecionada(request, contexto)
     return data
@@ -252,23 +254,30 @@ def adiciona_nota_romaneio(request):
 
 
 def exclui_nota_romaneio(request):
-    id_romaneio_nota = request.GET.get("idRomaneioNota")
-    id_rom = request.GET.get("idRomaneio")
-    id_not = request.GET.get("idNota")
+    idromaneionotas = request.GET.get("idRomaneioNota")
+    idromaneio = request.GET.get("idRomaneio")
+    idnota = request.GET.get("idNota")
+    idcliente = request.GET.get("idCliente")
+    filtro_status = request.GET.get("status")
     hoje = str_hoje()
-    facade.delete_nota_romaneio(id_romaneio_nota)
-    facade.altera_status_remove_romaneio(id_rom, id_not, hoje)
-    not_rom = facade.create_contexto_notas_romaneio(id_rom)
-    romaneio = facade.create_contexto_seleciona_romaneio(id_rom)
-    contexto = {
-        "notas_romaneio": not_rom,
-        "romaneios": romaneio,
-    }
+    facade.delete_nota_romaneio(idromaneionotas)
+    facade.altera_status_remove_romaneio(idromaneio, idnota, hoje)
+    contexto = facade.create_contexto_filtro_notas_status(
+        idcliente, filtro_status, "NumeroNota"
+    )
+    notas_romaneio = facade.create_contexto_notas_romaneio(idromaneio)
+    romaneio = facade.create_contexto_seleciona_romaneio(idromaneio)
     quantidade_notas = facade.create_contexto_quantidades_status()
-    contexto.update({"rotas": quantidade_notas[0]["rota"]})
-    contexto.update({"cadastrada": quantidade_notas[0]["cadastrada"]})
-    contexto.update({"pendente": quantidade_notas[0]["pendente"]})
-    contexto.update({"recusada": quantidade_notas[0]["recusada"]})
+    contexto.update(
+        {
+            "notas_romaneio": notas_romaneio,
+            "romaneios": romaneio,
+            "rotas": quantidade_notas[0]["rota"],
+            "cadastrada": quantidade_notas[0]["cadastrada"],
+            "pendente": quantidade_notas[0]["pendente"],
+            "recusada": quantidade_notas[0]["recusada"],
+        }
+    )
     data = facade.create_data_lista_notas_romaneio(request, contexto)
     return data
 

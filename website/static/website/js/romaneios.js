@@ -475,22 +475,29 @@ $(document).on('click', '.js-adiciona-nota-romaneio', function() {
 });
 
 $(document).on('click', '.js-exclui-nota-romaneio', function() {
-    var _id_romaneio_nota = $(this).data("idromaneionotas")
-    var _id_romaneio = $('#id_romaneio').val()
-    var _id_nota = $(this).data("idnota")
+    var idromaneionotas = $(this).data("idromaneionotas")
+    var idromaneio = $('#id_romaneio').val()
+    var idnota = $(this).data("idnota")
+    var idcliente = $(this).data("idcliente")
+    var status = $("#select-status").val()
     $.ajax({
         type: 'GET',
         url: '/romaneios/exclui_nota_romaneio',
         data: {
-            idRomaneioNota: _id_romaneio_nota,
-            idRomaneio: _id_romaneio,
-            idNota: _id_nota,
+            idRomaneioNota: idromaneionotas,
+            idRomaneio: idromaneio,
+            idNota: idnota,
+            idCliente: idcliente,
+            status: status,
         },
         beforeSend: function() {
+            $(".card-lista-notas-cliente").hide()
             $(".card-lista-notas-romaneio").hide()
             $(".box-loader").show()
         },
         success: function(data) {
+            $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente)
+            $(".card-lista-notas-cliente").show()
             $(".card-lista-notas-romaneio").html(data.html_lista_notas_romaneio)
             $(".card-lista-notas-romaneio").show()
             $(".card-quantidade-notas").html(data.html_quantidade_notas)
