@@ -536,10 +536,18 @@
                                             <span><b>{{ value.type_tabela_recebe }}</b></span>
                                             <input id="{{ value.id_tr }}"
                                                    name="{{ value.name_tr }}"
+                                                   {% if key == "SEGURO" %}
+                                                   value="{{ value.value_tr|stringformat:'.3f' }}"
+                                                   {% else %}
                                                    value="{{ value.value_tr|stringformat:'.2f' }}"
+                                                   {% endif %}
                                                    class="{{ value.class_tr }}"
                                                    type="{{ value.type_tr }}"
+                                                   {% if key == "SEGURO" %}
+                                                   step="0.001"
+                                                   {% else %}
                                                    step="{{ value.step_tr }}"
+                                                   {% endif %}
                                                    meu_tipo="{{ value.type_tabela_recebe }}">
                                         </td>
                                         <td class="tb-coluna4">

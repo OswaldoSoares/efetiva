@@ -677,9 +677,13 @@ $(document).ready(function() {
 
     $('.demonstrativo-input').change(function() {
         if ($(this).attr('type') != 'time') {
-            $(this).val(parseFloat($(this).val()).toFixed(2))
-        }
-    })
+            if ($(this).attr('id') == 'ta-seguro-recebe') {
+                $(this).val(parseFloat($(this).val()).toFixed(3))
+            } else {
+                $(this).val(parseFloat($(this).val()).toFixed(2))
+            }
+        };
+    });
 
     $('.demonstrativo-input').change(function() {
         var elemento_alterado = '#sw' + $(this).attr('id').substring(2, 50)
@@ -687,7 +691,7 @@ $(document).ready(function() {
         mostravalores(obj);
     });
 
-    $("#mi-ajudante-paga").attr('readonly', 'readonly')
+    $("#mi-ajudante-paga").attr('readonly', 'readonly');
     $(".js-criaminuta").click(loadForm);
     $(".js-editaminuta").click(loadForm);
     $(".js-imprimeminuta").click(loadForm);
