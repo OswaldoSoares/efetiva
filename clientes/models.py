@@ -140,6 +140,7 @@ class Tabela(models.Model):
     AjudanteCobra = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     AjudanteCobraHoraExtra = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     AjudantePaga = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    Seguro = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     phkescCobra = models.CharField(max_length=8, default='00000000')
     phkescPaga = models.CharField(max_length=8, default='00000000')
     idFormaPagamento = models.ForeignKey(FormaPagamento, on_delete=models.PROTECT, verbose_name='FORMA DE PAGAMENTO')
