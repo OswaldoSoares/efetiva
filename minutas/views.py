@@ -340,6 +340,10 @@ def consultaminuta(request, idmin):
     phkescrecebe = list(tabelacliente.values("phkescCobra")[0].values())[0]
     phkescpaga = list(tabelacliente.values("phkescPaga")[0].values())[0]
     valortaxaexpedicao = list(tabelacliente.values("TaxaExpedicao")[0].values())[0]
+    s_minuta = MinutaSelecionada(idmin).__dict__
+    romaneios = s_minuta["romaneio"]
+    if romaneios:
+        valortaxaexpedicao = valortaxaexpedicao * len(romaneios)
     porcentagemseguro = list(tabelacliente.values("Seguro")[0].values())[0]
     valorajudanterecebe = list(tabelacliente.values("AjudanteCobra")[0].values())[0]
     valor_ajudante_recebe_hora_extra = list(
