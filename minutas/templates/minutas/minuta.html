@@ -67,17 +67,7 @@
                 </div>
             </article>
             <article class="article-card ac-entrega">
-                <div class="article-titulo">
-                    <span>ENTREGAS</span>
-                    {% comment %} {% if not s_minuta.paga_realizada %} {% endcomment %}
-                    <i class="bi bi-plus-square i-button" onclick="openMyModal(event); return false;"
-                    data-title="INSERE ENTREGA" data-action="{% url 'insereentrega' %}"
-                    data-button-save-label="INSERIR" data-idminuta="{{ s_minuta.idminuta }}"></i>
-                    {% comment %} {% endif %} {% endcomment %}
-                </div>
-                <div class="html-entrega">
-                    {% include 'minutas/entregaminuta.html' %}
-                </div>
+                {% include 'minutas/entregaminuta.html' %}
             </article>
             <article class="article-card card-romaneio">
                 {% include 'minutas/html_entregas_romaneio.html' %}

@@ -188,7 +188,7 @@ $(document).ready(function() {
                 $('.html-checklist').html(data['html_checklist']);
                 mostraChecklist();
                 EscondeEntrega()
-                $('.html-entrega').html(data['html_entrega']);
+                $('.js-entrega').html(data['html_entrega']);
                 MostraEntrega()
             },
             error: function(error) {
@@ -1056,7 +1056,7 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                         $(".mensagem-sucesso").text(xhr['html_mensagem']);
                         mostraMensagemSucesso()
                         EscondeEntrega()
-                        $('.html-entrega').html(xhr['html_entrega']);
+                        $('.js-entrega').html(xhr['html_entrega']);
                         MostraEntrega()
                         verificaTotalKMs()
                     }
@@ -1321,11 +1321,11 @@ var MostraDespesa = function() {
 }
 
 var EscondeEntrega = function() {
-    $(".html-entrega").hide()
+    $(".js-entrega").hide()
 }
 
 var MostraEntrega = function() {
-    $(".html-entrega").delay(1000).slideDown(500)
+    $(".js-entrega").delay(1000).slideDown(500)
 }
 
 var escondeChecklist = function() {
@@ -1353,12 +1353,12 @@ $(document).on('click', '.js-adiciona-romaneio-minuta', function() {
             idMinuta: _id_minuta,
         },
         beforeSend: function() {
-            $('.html-entrega').hide()
+            $('.js-entrega').hide()
             $(".box-loader").show()
         },
         success: function(data) {
-            $('.html-entrega').html(data['html_entrega'])
-            $('.html-entrega').show()
+            $('.js-entrega').html(data['html_entrega'])
+            $('.js-entrega').show()
             $(".box-loader").hide()
         },
     });
