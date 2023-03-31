@@ -2884,12 +2884,6 @@ main .fp-recibo-tabela .fp-recibo-print {
     font-size: 18px;
 }
 
-.linha-divisoria {
-    background-color: #363636;
-    width: 100%;
-    height: 3px;
-}
-
 .ac-lista .article-minuta-rodape {
     background-color: #363636;
     height: 30px;
@@ -4099,33 +4093,37 @@ main .fp-recibo-tabela .fp-recibo-print {
 
 /* Minuta - Card Romaneios - start */
 
-.ac-entrega-romaneio .article-card-body .itens-romaneio {
+.card-romaneio {
+    width: 360px;
+}
+
+.card-romaneio .itens-romaneio {
     width: 100%;
+    color: var(--color6);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--color6);
 }
 
-.ac-entrega-romaneio .article-card-body .itens-romaneio .item-romaneio {
-    width: 18%;
+.card-romaneio .itens-romaneio .item-romaneio {
+    width: 14%;
     padding: 0 5px;
     text-align: center;
 }
 
-.ac-entrega-romaneio .article-card-body .itens-romaneio .item-motorista {
-    width: 47%;
+.card-romaneio .itens-romaneio .item-data {
+    width: 23%;
+    padding: 0 5px;
+    text-align: center;
+}
+
+.card-romaneio .itens-romaneio .item-motorista {
+    width: 53%;
     padding: 0 5px;
     text-align: left;
 }
 
-.ac-entrega-romaneio .article-card-body .itens-romaneio .item-placa {
-    width: 25%;
-    padding: 0 5px;
-    text-align: center;
-}
-
-.ac-entrega-romaneio .article-card-body .itens-romaneio .item-buttom {
+.card-romaneio .itens-romaneio .item-buttom {
     width: 10%;
     padding: 0 5px;
     text-align: center;
@@ -6497,4 +6495,13 @@ main .fp-recibo-tabela .fp-recibo-print {
 [data-tooltip]:hover:after {
     display: block;
     z-index: 50;
+}
+
+
+/* Comuns */
+
+.linha-divisoria {
+    background-color: var(--color7);
+    width: 100%;
+    height: 2px;
 }

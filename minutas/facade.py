@@ -1710,6 +1710,7 @@ def create_contexto_romaneios(id_cli):
             "romaneio": x.Romaneio,
             "motorista": nome_curto(x.idMotorista.Nome),
             "veiculo": x.idVeiculo,
+            "data_romaneio": x.DataRomaneio,
             "idminuta": x.idMinuta_id,
         }
         for x in romaneios
