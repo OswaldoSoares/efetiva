@@ -216,15 +216,15 @@ def edita_romaneio(request):
 
 
 def seleciona_romaneio(request):
-    id_rom = request.GET.get("idRomaneio")
-    id_cli = request.GET.get("idCliente")
-    not_rom = facade.create_contexto_notas_romaneio(id_rom)
-    romaneio = facade.create_contexto_seleciona_romaneio(id_rom)
+    idromaneio = request.GET.get("idRomaneio")
+    idcliente = request.GET.get("idCliente")
+    notas_romaneio = facade.create_contexto_notas_romaneio(idromaneio)
+    romaneio = facade.create_contexto_seleciona_romaneio(idromaneio)
     arquivo = facade.create_contexto_pdf_romaneio(romaneio[0]["romaneio"])
     contexto = {
-        "notas_romaneio": not_rom,
+        "notas_romaneio": notas_romaneio,
         "romaneios": romaneio,
-        "idcliente": id_cli,
+        "idcliente": idcliente,
         "arquivo": arquivo,
     }
     data = facade.create_data_lista_notas_romaneio(request, contexto)
@@ -363,7 +363,18 @@ def filtra_nota_cliente(request):
 def fecha_romaneio(request):
     idromaneio = request.GET.get("idRomaneio")
     idcliente = request.GET.get("idCliente")
-    facade.fecha_romaneio(idromaneio)
+    facade.fecha_romaneio_cliente(idromaneio)
+    romaneio = facade.create_contexto_romaneios(idcliente)
+    contexto = {
+        "romaneios": romaneio,
+    }
+    data = facade.create_data_romaneios(request, contexto)
+    return data
+
+def reabre_romaneio(request):
+    idromaneio = request.GET.get("idRomaneio")
+    idcliente = request.GET.get("idCliente")
+    facade.reabre_romaneio_cliente(idromaneio)
     romaneio = facade.create_contexto_romaneios(idcliente)
     contexto = {
         "romaneios": romaneio,

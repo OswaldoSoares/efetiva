@@ -222,10 +222,11 @@ $(document).on('click', '.js-filtra-nota', function() {
             cliente: id_cliente,
         },
         beforeSend: function() {
+            $(".box-loader").show()
             $(".card-lista-notas-cliente").hide()
             $(".card-lista-romaneios").hide()
             $(".card-lista-notas-romaneio").hide()
-            $(".box-loader").show()
+            $(".filtra-nota").val("")
         },
         success: function(data) {
             $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente)
@@ -435,8 +436,9 @@ $(document).on('click', '.js-filtra-romaneio', function() {
             idCliente: id_cliente,
         },
         beforeSend: function() {
-            $(".card-lista-romaneios").hide()
             $(".box-loader").show();
+            $(".card-lista-romaneios").hide()
+            $(".filtra-romaneio").val("");
         },
         success: function(data) {
             $(".card-lista-notas-romaneio").html(data.html_lista_notas_romaneio)
@@ -592,6 +594,29 @@ $(document).on('click', '.js-fecha-romaneio', function() {
             $(".card-lista-romaneios").html(data.html_lista_romaneios)
             $(".card-lista-romaneios").show()
                 //CarregaMask()
+            $(".box-loader").hide();
+        },
+    });
+});
+
+$(document).on('click', '.js-reabre-romaneio', function() {
+    var idromaneio = $(this).data("idromaneio")
+    var idcliente = $(this).data("idcliente")
+    $.ajax({
+        type: 'GET',
+        url: '/romaneios/reabre_romaneio',
+        data: {
+            idRomaneio: idromaneio,
+            idCliente: idcliente,
+        },
+        beforeSend: function() {
+            $(".card-lista-romaneios").hide()
+            $(".card-lista-notas-romaneio").hide()
+            $(".box-loader").show();
+        },
+        success: function(data) {
+            $(".card-lista-romaneios").html(data.html_lista_romaneios)
+            $(".card-lista-romaneios").show()
             $(".box-loader").hide();
         },
     });

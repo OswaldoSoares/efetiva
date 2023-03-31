@@ -695,6 +695,7 @@ def create_contexto_seleciona_romaneio(id_rom):
             "data_romaneio": x.DataRomaneio,
             "motorista": x.idMotorista,
             "veiculo": x.idVeiculo,
+            "fechado": x.Fechado,
         }
         for x in romaneio
     ]
@@ -941,10 +942,17 @@ def create_contexto_filtro_nota(nota, idcliente):
     return lista
 
 
-def fecha_romaneio(id_rom):
-    romaneio = Romaneios.objects.get(idRomaneio=id_rom)
+def fecha_romaneio_cliente(idromaneio):
+    romaneio = Romaneios.objects.get(idRomaneio=idromaneio)
     obj = romaneio
     obj.Fechado = True
+    obj.save(update_fields=["Fechado"])
+
+
+def reabre_romaneio_cliente(idromaneio):
+    romaneio = Romaneios.objects.get(idRomaneio=idromaneio)
+    obj = romaneio
+    obj.Fechado = False
     obj.save(update_fields=["Fechado"])
 
 

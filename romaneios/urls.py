@@ -24,6 +24,7 @@ from .views import (
     orderna_notas,
     seleciona_cliente,
     seleciona_romaneio,
+    reabre_romaneio,
 )
 
 urlpatterns = [
@@ -141,5 +142,10 @@ urlpatterns = [
         "envia_telegram_relatorio",
         envia_telegram_relatorio,
         name="envia_telegram_relatorio",
+    ),
+    path(
+        "reabre_romaneio",
+        reabre_romaneio,
+        name="reabre_romaneio",
     ),
 ]
