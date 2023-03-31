@@ -78,8 +78,9 @@ $(document).on('click', '.js-nota-pendente', function() {
             cliente: id_cliente,
         },
         beforeSend: function() {
-            $(".card-lista-notas-cliente").hide()
             $(".box-loader").show();
+            $(".card-lista-notas-cliente").hide()
+            $(".card-quantidade-notas").hide()
         },
         success: function(data) {
             $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente_reduzida)
@@ -128,9 +129,10 @@ $(document).on('submit', '.js-gera-notas-cliente', function(event) {
         url: '/romaneios/adiciona_nota_cliente',
         data: $(this).serialize(),
         beforeSend: function() {
+            $(".box-loader").show();
             $(".card-romaneios-cliente").hide()
             $(".card-lista-notas-cliente").hide()
-            $(".box-loader").show();
+            $(".card-quantidade-notas").hide()
         },
         success: function(data) {
             $(".card-form-notas-cliente").html(data.html_form_notas_cliente)
@@ -257,11 +259,12 @@ $(document).on('submit', '.js-gera-ocorrencia', function(event) {
         url: '/romaneios/adiciona_ocorrencia',
         data: $(this).serialize(),
         beforeSend: function() {
+            $(".box-loader").show();
             if (lnr_visible) {
                 $(".card-lista-notas-romaneio").hide()
             }
             $(".card-lista-ocorrencia").hide()
-            $(".box-loader").show();
+            $(".card-quantidade-notas").hide()
         },
         success: function(data) {
             $(".card-lista-ocorrencia").html(data.html_lista_ocorrencia)
@@ -270,7 +273,8 @@ $(document).on('submit', '.js-gera-ocorrencia', function(event) {
                 $(".card-lista-notas-romaneio").html(data.html_lista_notas_romaneio)
                 $(".card-lista-notas-romaneio").show()
             }
-            //CarregaMask()
+            $(".card-quantidade-notas").html(data.html_quantidade_notas)
+            $(".card-quantidade-notas").show()
             $(".box-loader").hide();
         },
     });
@@ -463,7 +467,8 @@ $(document).on('click', '.js-adiciona-nota-romaneio', function() {
             idCliente: _id_cliente,
         },
         beforeSend: function() {
-            $(".card-lista-notas-romaneio").hide()
+            $(".box-loader").show()
+            $(".carddquintisadt-notas-noaideromaneio").hide()
             $(".box-loader").show()
         },
         success: function(data) {
@@ -493,9 +498,10 @@ $(document).on('click', '.js-exclui-nota-romaneio', function() {
             status: status,
         },
         beforeSend: function() {
+            $(".box-loader").show()
             $(".card-lista-notas-cliente").hide()
             $(".card-lista-notas-romaneio").hide()
-            $(".box-loader").show()
+            $(".card-quantidade-notas").hide()
         },
         success: function(data) {
             $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente)
@@ -537,10 +543,11 @@ $(document).on('click', '.js-exclui-notas-cliente', function() {
             idCliente: _id_cliente,
         },
         beforeSend: function() {
+            $(".box-loader").show();
             if (_card_reduzida == false) {
                 $(".card-lista-notas-cliente").hide()
             }
-            $(".box-loader").show();
+            $(".card-quantidade-notas").hide()
         },
         success: function(data) {
             if (_card_reduzida == false) {
