@@ -104,9 +104,9 @@ class MinutaSelecionada:
 
     def get_romaneio(self):
         romaneio = Romaneios.objects.filter(idMinuta_id=self.idminuta)
-        num_romaneio = None
-        if romaneio:
-            num_romaneio = romaneio[0].Romaneio
+        num_romaneio = []
+        for i in romaneio:
+            num_romaneio.append(i.Romaneio)
         return num_romaneio
 
     def total_ajudantes(self):
