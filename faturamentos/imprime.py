@@ -225,8 +225,9 @@ def imprime_fatura_pdf(fatura):
     linha = 242.8
     for index, itens in enumerate(minutas):
         s_minuta = MinutaSelecionada(minutas[index].idMinuta).__dict__
-        romaneio = s_minuta["romaneio"]
-        print(f"[INFO - ROMANEIO] - {romaneio}")
+        romaneios = s_minuta["romaneio"]
+        lista_romaneios = " - ".join(str(e) for e in romaneios)
+        print(f"[INFO - ROMANEIO] - {romaneios}")
         inicialkm = minutas[index].KMInicial
         finalkm = minutas[index].KMFinal
         totalkm = finalkm - inicialkm
@@ -256,11 +257,11 @@ def imprime_fatura_pdf(fatura):
         pdf.drawString(
             convertemp(12), convertemp(linha), "DATA: {}".format(minuta_data)
         )
-        if romaneio:
+        if romaneios:
             pdf.drawCentredString(
                 convertemp(105),
                 convertemp(linha),
-                f"MINUTA: {minuta_numero} - ROMANEIO: {romaneio}",
+                f"MINUTA: {minuta_numero} - ROMANEIO(S): {lista_romaneios}",
             )
         else:
             pdf.drawCentredString(
@@ -279,7 +280,7 @@ def imprime_fatura_pdf(fatura):
             pdf.drawString(
                 convertemp(12), convertemp(linha), "{}".format(minuta_motorista)
             )
-        pdf.drawCentredString(
+        pdf.drawCentredString (
             convertemp(105),
             convertemp(linha),
             "HORA INICIAL: {} HS ATÉ AS {} HS".format(
@@ -319,8 +320,8 @@ def imprime_fatura_pdf(fatura):
             para.wrapOn(pdf, convertemp(186), convertemp(297))
             linha -= para.height * 0.352777
             para.drawOn(pdf, convertemp(12), convertemp(linha))
-        if romaneio:
-            notas_romaneio = RomaneioNotas.objects.filter(idRomaneio=romaneio)
+        if romaneios:
+            notas_romaneio = RomaneioNotas.objects.filter(idRomaneio__in=romaneios)
             notas_dados = [
                 {
                     "Nota": x.idNotasClientes.NumeroNota,
