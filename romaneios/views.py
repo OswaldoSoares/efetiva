@@ -42,7 +42,7 @@ def seleciona_cliente(request):
         contexto.update({"motoristas": motoristas, "veiculos": veiculos})
         status_nota = facade.create_contexto_filtro_status()
         contexto.update({"status_nota": status_nota})
-        quantidade_notas = facade.create_contexto_quantidades_status()
+        quantidade_notas = facade.create_contexto_quantidades_status(idcliente)
         contexto.update({"rotas": quantidade_notas[0]["rota"]})
         contexto.update({"cadastrada": quantidade_notas[0]["cadastrada"]})
         contexto.update({"pendente": quantidade_notas[0]["pendente"]})
@@ -66,24 +66,24 @@ def adiciona_nota_cliente(request):
         else:
             facade.save_notas_cliente(nota_form)
         nota_form = dict()
-    id_cli = request.POST.get("cliente")
-    notas = facade.create_contexto_seleciona_notas(id_cli, "NumeroNota")
+    idcliente = request.POST.get("cliente")
+    notas = facade.create_contexto_seleciona_notas(idcliente, "NumeroNota")
     hoje = str_hoje()
     filtro_status = request.POST.get("filtro")
     if filtro_status:
         contexto = facade.create_contexto_filtro_notas_status(
-            id_cli, filtro_status, "NumeroNota"
+            idcliente, filtro_status, "NumeroNota"
         )
     else:
-        cliente = facade.create_contexto_cliente(id_cli)
+        cliente = facade.create_contexto_cliente(idcliente)
         contexto = {
             "notas": notas,
             "cliente": cliente,
         }
-    contexto.update({"hoje": hoje, "idcliente": id_cli})
+    contexto.update({"hoje": hoje, "idcliente": idcliente})
     contexto.update({"nota_form": nota_form, "error": error})
     contexto.update(msg)
-    quantidade_notas = facade.create_contexto_quantidades_status()
+    quantidade_notas = facade.create_contexto_quantidades_status(idcliente)
     contexto.update({"rotas": quantidade_notas[0]["rota"]})
     contexto.update({"cadastrada": quantidade_notas[0]["cadastrada"]})
     contexto.update({"pendente": quantidade_notas[0]["pendente"]})
@@ -116,14 +116,14 @@ def edita_nota_cliente(request):
 
 
 def exclui_nota_cliente(request):
-    _id_not = request.GET.get("idNota")
-    _id_cli = request.GET.get("idCliente")
-    facade.delete_notas_cliente(_id_not)
-    notas = facade.create_contexto_seleciona_notas(_id_cli, "NumeroNota")
-    cliente = facade.create_contexto_cliente(_id_cli)
+    idnota = request.GET.get("idNota")
+    idcliente = request.GET.get("idCliente")
+    facade.delete_notas_cliente(idnota)
+    notas = facade.create_contexto_seleciona_notas(idcliente, "NumeroNota")
+    cliente = facade.create_contexto_cliente(idcliente)
     hoje = str_hoje()
-    contexto = {"notas": notas, "cliente": cliente, "hoje": hoje, "idcliente": _id_cli}
-    quantidade_notas = facade.create_contexto_quantidades_status()
+    contexto = {"notas": notas, "cliente": cliente, "hoje": hoje, "idcliente": idcliente}
+    quantidade_notas = facade.create_contexto_quantidades_status(idcliente)
     contexto.update({"rotas": quantidade_notas[0]["rota"]})
     contexto.update({"cadastrada": quantidade_notas[0]["cadastrada"]})
     contexto.update({"pendente": quantidade_notas[0]["pendente"]})
@@ -176,7 +176,7 @@ def adiciona_ocorrencia(request):
     }
     contexto.update({"error": error})
     contexto.update(msg)
-    quantidade_notas = facade.create_contexto_quantidades_status()
+    quantidade_notas = facade.create_contexto_quantidades_status(idcliente)
     contexto.update({"rotas": quantidade_notas[0]["rota"]})
     contexto.update({"cadastrada": quantidade_notas[0]["cadastrada"]})
     contexto.update({"pendente": quantidade_notas[0]["pendente"]})
@@ -232,19 +232,19 @@ def seleciona_romaneio(request):
 
 
 def adiciona_nota_romaneio(request):
-    id_not = request.GET.get("idNota")
-    id_rom = request.GET.get("idRomaneio")
-    id_cli = request.GET.get("idCliente")
-    facade.save_nota_romaneio(id_not, id_rom)
-    facade.altera_status_rota(id_rom, id_not)
-    not_rom = facade.create_contexto_notas_romaneio(id_rom)
-    romaneio = facade.create_contexto_seleciona_romaneio(id_rom)
+    idnota = request.GET.get("idNota")
+    idromaneio = request.GET.get("idRomaneio")
+    idcliente = request.GET.get("idCliente")
+    facade.save_nota_romaneio(idnota, idromaneio)
+    facade.altera_status_rota(idromaneio, idnota)
+    not_rom = facade.create_contexto_notas_romaneio(idromaneio)
+    romaneio = facade.create_contexto_seleciona_romaneio(idromaneio)
     contexto = {
         "notas_romaneio": not_rom,
         "romaneios": romaneio,
-        "idcliente": id_cli,
+        "idcliente": idcliente,
     }
-    quantidade_notas = facade.create_contexto_quantidades_status()
+    quantidade_notas = facade.create_contexto_quantidades_status(idcliente)
     contexto.update({"rotas": quantidade_notas[0]["rota"]})
     contexto.update({"cadastrada": quantidade_notas[0]["cadastrada"]})
     contexto.update({"pendente": quantidade_notas[0]["pendente"]})
@@ -267,7 +267,7 @@ def exclui_nota_romaneio(request):
     )
     notas_romaneio = facade.create_contexto_notas_romaneio(idromaneio)
     romaneio = facade.create_contexto_seleciona_romaneio(idromaneio)
-    quantidade_notas = facade.create_contexto_quantidades_status()
+    quantidade_notas = facade.create_contexto_quantidades_status(idcliente)
     contexto.update(
         {
             "notas_romaneio": notas_romaneio,
@@ -414,15 +414,15 @@ def filtra_status(request):
 
 
 def nota_deposito(request):
-    id_nota_clientes = request.GET.get("idNotaClientes")
-    facade.altera_status_pendente(id_nota_clientes)
+    idnotasclientes = request.GET.get("idNotaClientes")
+    facade.altera_status_pendente(idnotasclientes)
     filtro_status = request.GET.get("status")
-    id_cli = request.GET.get("cliente")
+    idcliente = request.GET.get("cliente")
     contexto = facade.create_contexto_filtro_notas_status(
-        id_cli, filtro_status, "NumeroNota"
+        idcliente, filtro_status, "NumeroNota"
     )
-    contexto.update({"idcliente": id_cli})
-    quantidade_notas = facade.create_contexto_quantidades_status()
+    contexto.update({"idcliente": idcliente})
+    quantidade_notas = facade.create_contexto_quantidades_status(idcliente)
     contexto.update({"rotas": quantidade_notas[0]["rota"]})
     contexto.update({"cadastrada": quantidade_notas[0]["cadastrada"]})
     contexto.update({"pendente": quantidade_notas[0]["pendente"]})

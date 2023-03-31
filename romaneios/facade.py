@@ -589,8 +589,8 @@ def create_contexto_filtro_status():
     return status_nota
 
 
-def create_contexto_quantidades_status():
-    notas = NotasClientes.objects.all()
+def create_contexto_quantidades_status(idcliente):
+    notas = NotasClientes.objects.filter(idCliente=idcliente)
     rota = len(notas.filter(StatusNota="EM ROTA"))
     cadastrada = len(notas.filter(StatusNota="NOTA CADASTRADA"))
     pendente = len(notas.filter(StatusNota="PENDENTE"))
