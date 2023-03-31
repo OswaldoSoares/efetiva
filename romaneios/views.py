@@ -367,9 +367,11 @@ def fecha_romaneio(request):
     romaneio = facade.create_contexto_romaneios(idcliente)
     contexto = {
         "romaneios": romaneio,
+        "idcliente": idcliente,
     }
     data = facade.create_data_romaneios(request, contexto)
     return data
+
 
 def reabre_romaneio(request):
     idromaneio = request.GET.get("idRomaneio")
@@ -378,6 +380,7 @@ def reabre_romaneio(request):
     romaneio = facade.create_contexto_romaneios(idcliente)
     contexto = {
         "romaneios": romaneio,
+        "idcliente": idcliente,
     }
     data = facade.create_data_romaneios(request, contexto)
     return data
