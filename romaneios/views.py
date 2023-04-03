@@ -188,9 +188,19 @@ def adiciona_ocorrencia(request):
     contexto.update({"recusada": quantidade_notas[0]["recusada"]})
     if idromaneio:
         notas_romaneio = facade.create_contexto_notas_romaneio(idromaneio)
-        notas_endereco = facade.notas_enderecos(notas_romaneio)
+        (
+            quantidade_entregas,
+            quantidade_falta,
+        ) = facade.create_contexto_quantidade_entregas(notas_romaneio)
         romaneio = facade.create_contexto_seleciona_romaneio(idromaneio)
-        contexto.update({"notas_romaneio": notas_romaneio, "romaneios": romaneio})
+        contexto.update(
+            {
+                "notas_romaneio": notas_romaneio,
+                "romaneios": romaneio,
+                "quantidade_entregas": quantidade_entregas,
+                "quantidade_falta": quantidade_falta,
+            }
+        )
     data = facade.create_data_ocorrencia_selecionada(request, contexto)
     return data
 
@@ -225,7 +235,9 @@ def seleciona_romaneio(request):
     idromaneio = request.GET.get("idRomaneio")
     idcliente = request.GET.get("idCliente")
     notas_romaneio = facade.create_contexto_notas_romaneio(idromaneio)
-    quantidade_entregas = facade.create_contexto_quantidade_entregas(notas_romaneio)
+    quantidade_entregas, quantidade_falta = facade.create_contexto_quantidade_entregas(
+        notas_romaneio
+    )
     romaneio = facade.create_contexto_seleciona_romaneio(idromaneio)
     arquivo = facade.create_contexto_pdf_romaneio(romaneio[0]["romaneio"])
     contexto = {
@@ -234,6 +246,7 @@ def seleciona_romaneio(request):
         "idcliente": idcliente,
         "arquivo": arquivo,
         "quantidade_entregas": quantidade_entregas,
+        "quantidade_falta": quantidade_falta,
     }
     data = facade.create_data_lista_notas_romaneio(request, contexto)
     return data

@@ -1059,7 +1059,15 @@ def altera_status_pendente(id_not):
 
 def create_contexto_quantidade_entregas(notas_romaneio):
     entregas = []
+    falta_entregar = []
     for x in notas_romaneio:
-        entregas.append(f"{x['idnotasclientes'].Endereco} - {x['idnotasclientes'].Bairro}")
+        entregas.append(
+            f"{x['idnotasclientes'].Endereco} - {x['idnotasclientes'].Bairro}"
+        )
+        if x["idnotasclientes"].StatusNota == "EM ROTA":
+            falta_entregar.append(
+                f"{x['idnotasclientes'].Endereco} - {x['idnotasclientes'].Bairro}"
+            )
     entregas = len(list(set(entregas)))
-    return entregas
+    falta_entregar = len(list(set(falta_entregar)))
+    return entregas, falta_entregar

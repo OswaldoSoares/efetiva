@@ -128,7 +128,7 @@
     <div>
         <span>
             <b>
-                {{ quantidade_entregas|stringformat:"02d" }}
+                {{ quantidade_falta|stringformat:"02d" }}/{{ quantidade_entregas|stringformat:"02d" }}
                 ENTREGA{{ quantidade_entregas|pluralize|upper }}
             </b>
         </span>
