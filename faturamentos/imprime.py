@@ -378,7 +378,7 @@ def imprime_fatura_pdf(fatura):
                 convertemp(12), convertemp(linha), convertemp(198), convertemp(linha)
             )
             linha -= 3
-            pdf.setFillColor(HexColor("#0000FF"))
+            pdf.setFillColor(HexColor("#FF0000"))
             pdf.drawCentredString(
                 convertemp(102),
                 convertemp(linha),
