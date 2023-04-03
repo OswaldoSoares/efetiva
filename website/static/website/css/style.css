@@ -5699,6 +5699,17 @@ main .fp-recibo-tabela .fp-recibo-print {
     color: var(--color6);
 }
 
+.card-lista-notas-romaneio .article-card-footer {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px;
+    margin-bottom: 10px;
+    ;
+}
+
 
 /*
 .linha-p {

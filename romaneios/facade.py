@@ -1055,3 +1055,11 @@ def altera_status_pendente(id_not):
     obj = nota
     obj.StatusNota = "PENDENTE"
     obj.save(update_fields=["StatusNota"])
+
+
+def create_contexto_quantidade_entregas(notas_romaneio):
+    entregas = []
+    for x in notas_romaneio:
+        entregas.append(f"{x['idnotasclientes'].Endereco} - {x['idnotasclientes'].Bairro}")
+    entregas = len(list(set(entregas)))
+    return entregas

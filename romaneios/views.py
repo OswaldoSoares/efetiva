@@ -122,7 +122,12 @@ def exclui_nota_cliente(request):
     notas = facade.create_contexto_seleciona_notas(idcliente, "NumeroNota")
     cliente = facade.create_contexto_cliente(idcliente)
     hoje = str_hoje()
-    contexto = {"notas": notas, "cliente": cliente, "hoje": hoje, "idcliente": idcliente}
+    contexto = {
+        "notas": notas,
+        "cliente": cliente,
+        "hoje": hoje,
+        "idcliente": idcliente,
+    }
     quantidade_notas = facade.create_contexto_quantidades_status(idcliente)
     contexto.update({"rotas": quantidade_notas[0]["rota"]})
     contexto.update({"cadastrada": quantidade_notas[0]["cadastrada"]})
@@ -163,7 +168,7 @@ def adiciona_ocorrencia(request):
             facade.save_ocorrencia(ocorrencia_form, idcliente)
         ocorrencia_form = dict()
     idnota = request.POST.get("id_nota_clientes")
-    idtomaneio = facade.create_contexto_romaneio_tem_nota(idnota)
+    idromaneio = facade.create_contexto_romaneio_tem_nota(idnota)
     notas = facade.create_contexto_ocorrencia_notas(idnota)
     ocorrencias = facade.create_contexto_seleciona_ocorrencia(idnota, "NumeroNota")
     hoje = str_hoje()
@@ -181,9 +186,10 @@ def adiciona_ocorrencia(request):
     contexto.update({"cadastrada": quantidade_notas[0]["cadastrada"]})
     contexto.update({"pendente": quantidade_notas[0]["pendente"]})
     contexto.update({"recusada": quantidade_notas[0]["recusada"]})
-    if idtomaneio:
-        notas_romaneio = facade.create_contexto_notas_romaneio(idtomaneio)
-        romaneio = facade.create_contexto_seleciona_romaneio(idtomaneio)
+    if idromaneio:
+        notas_romaneio = facade.create_contexto_notas_romaneio(idromaneio)
+        notas_endereco = facade.notas_enderecos(notas_romaneio)
+        romaneio = facade.create_contexto_seleciona_romaneio(idromaneio)
         contexto.update({"notas_romaneio": notas_romaneio, "romaneios": romaneio})
     data = facade.create_data_ocorrencia_selecionada(request, contexto)
     return data
@@ -219,6 +225,7 @@ def seleciona_romaneio(request):
     idromaneio = request.GET.get("idRomaneio")
     idcliente = request.GET.get("idCliente")
     notas_romaneio = facade.create_contexto_notas_romaneio(idromaneio)
+    quantidade_entregas = facade.create_contexto_quantidade_entregas(notas_romaneio)
     romaneio = facade.create_contexto_seleciona_romaneio(idromaneio)
     arquivo = facade.create_contexto_pdf_romaneio(romaneio[0]["romaneio"])
     contexto = {
@@ -226,6 +233,7 @@ def seleciona_romaneio(request):
         "romaneios": romaneio,
         "idcliente": idcliente,
         "arquivo": arquivo,
+        "quantidade_entregas": quantidade_entregas,
     }
     data = facade.create_data_lista_notas_romaneio(request, contexto)
     return data
@@ -355,7 +363,6 @@ def filtra_nota_cliente(request):
             "arquivo": arquivo,
         }
     )
-    print(f"[INFO - IDCLIENTE] - {idcliente}")
     data = facade.create_data_filtro_nota(request, contexto)
     return data
 

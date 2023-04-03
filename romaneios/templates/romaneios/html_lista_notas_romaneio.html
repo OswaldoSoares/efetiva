@@ -113,14 +113,24 @@
     {% endfor %}
 </div>
 <div class="article-card-footer">
-    {% for romaneio in notas_romaneio %}
-    {% if forloop.last %}
-    <span>
-        <b>
-            {{ forloop.counter|stringformat:"02d" }}
-             ENTREGA{{ forloop.counter|pluralize|upper }}
-        </b>
-    </span>
-    {% endif %}
-    {% endfor %}
+    <div class="">
+        {% for romaneio in notas_romaneio %}
+        {% if forloop.last %}
+        <span>
+            <b>
+                {{ forloop.counter|stringformat:"02d" }}
+                NOTA{{ forloop.counter|pluralize|upper }}
+            </b>
+        </span>
+        {% endif %}
+        {% endfor %}
+    </div>
+    <div>
+        <span>
+            <b>
+                {{ quantidade_entregas|stringformat:"02d" }}
+                ENTREGA{{ quantidade_entregas|pluralize|upper }}
+            </b>
+        </span>
+    </div>
 </div>
