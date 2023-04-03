@@ -462,7 +462,7 @@ def imprime_fatura_pdf(fatura):
             idMinuta=minutas[index].idMinuta, RecebePaga="R"
         )
         servicos = decricao_servico(minuta_itens, perimetro_inicial, perimetro_final)
-        para = Paragraph(servicos, style=styles_escuro)
+        para = Paragraph(servicos, style=styles_claro)
         para.wrapOn(pdf, convertemp(186), convertemp(297))
         linha -= para.height * 0.352777
         para.drawOn(pdf, convertemp(12), convertemp(linha))
