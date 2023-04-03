@@ -115,17 +115,18 @@ def imprime_cabecalho(pdf, fatura_selecionada):
     pdf.drawImage(url, convertemp(12), convertemp(265), convertemp(40), convertemp(20))
     # pdf.drawImage('efetiva/site/public/static/website/img/transportadora.jpg', convertemp(12), convertemp(265),
     #               convertemp(40), convertemp(20))
-    pdf.setFont("Times-Bold", 18)
+    tamanho_font = 18
+    pdf.setFont("Times-Bold", tamanho_font)
     pdf.drawString(
         convertemp(54), convertemp(279), "TRANSEFETIVA TRANSPORTE - EIRELLI - ME"
     )
-    pdf.setFont("Times-Roman", 12)
+    tamanho_font = 12
+    pdf.setFont("Times-Roman", tamanho_font)
     pdf.drawString(
         convertemp(53),
         convertemp(273),
         "RUA OLIMPIO PORTUGAL, 245 - MOOCA - SÃO PAULO - SP - CEP 03112-010",
     )
-    pdf.setFont("Times-Roman", 12)
     pdf.drawString(
         convertemp(68), convertemp(268), "(11) 2305-0582 - WHATSAPP (11) 94167-0583"
     )
@@ -147,7 +148,6 @@ def imprime_cabecalho(pdf, fatura_selecionada):
     )
     pdf.setStrokeColor(HexColor("#000000"))
     pdf.setFillColor(HexColor("#000000"))
-    pdf.setFont("Times-Roman", 12)
     pdf.drawString(
         convertemp(12), convertemp(255.8), "FATURA Nº: {}".format(fatura_numero)
     )
@@ -209,7 +209,8 @@ def imprime_fatura_pdf(fatura):
         cliente_docs = "IR {}".format(cliente[0].IE)
     imprime_cabecalho(pdf, fatura_selecionada)
     linha = 250.8
-    pdf.setFont("Times-Roman", 10)
+    tamanho_font = 10
+    pdf.setFont("Times-Roman", tamanho_font)
     pdf.setFillColor(HexColor("#483D8B"))
     pdf.drawString(convertemp(12), convertemp(linha), "{}".format(cliente_nome))
     if cliente_docs:
@@ -250,7 +251,20 @@ def imprime_fatura_pdf(fatura):
         if minutas[index].idVeiculo:
             minuta_placa = minutas[index].idVeiculo
         minuta_valor = minutas[index].Valor
-        pdf.setFont("Times-Roman", 8)
+        pdf.setFillColor(HexColor("#FAF3CF"))
+        pdf.setStrokeColor(HexColor("#FAF3CF"))
+        pdf.rect(
+            convertemp(12),
+            convertemp(linha - 3),
+            convertemp(186),
+            convertemp(5.6),
+            fill=1,
+            stroke=1,
+        )
+        pdf.setStrokeColor(HexColor("#000000"))
+        pdf.setFillColor(HexColor("#000000"))
+        tamanho_font = 8
+        pdf.setFont("Times-Roman", tamanho_font)
         pdf.setFillColor(HexColor("#FF0000"))
         pdf.drawString(
             convertemp(12), convertemp(linha), "DATA: {}".format(minuta_data)
@@ -273,12 +287,13 @@ def imprime_fatura_pdf(fatura):
             )
         linha -= 3
         pdf.setFillColor(HexColor("#0000FF"))
-        pdf.setFont("Times-Roman", 8)
+        tamanho_font = 8
+        pdf.setFont("Times-Roman", tamanho_font)
         if minuta_motorista:
             pdf.drawString(
                 convertemp(12), convertemp(linha), "{}".format(minuta_motorista)
             )
-        pdf.drawCentredString (
+        pdf.drawCentredString(
             convertemp(105),
             convertemp(linha),
             "HORA INICIAL: {} HS ATÉ AS {} HS".format(
@@ -320,6 +335,13 @@ def imprime_fatura_pdf(fatura):
             para.drawOn(pdf, convertemp(12), convertemp(linha))
         if romaneios:
             notas_romaneio = RomaneioNotas.objects.filter(idRomaneio__in=romaneios)
+            soma_peso = sum([i.idNotasClientes.Peso for i in notas_romaneio])
+            soma_valor = sum([i.idNotasClientes.Valor for i in notas_romaneio])
+            enderecos = [
+                f"{i.idNotasClientes.Endereco} - {i.idNotasClientes.Bairro}"
+                for i in notas_romaneio
+            ]
+            entregas = list(set(enderecos))
             notas_dados = [
                 {
                     "Nota": x.idNotasClientes.NumeroNota,
@@ -350,6 +372,16 @@ def imprime_fatura_pdf(fatura):
                     linha,
                     fatura_selecionada,
                 )
+            linha -= 2
+            pdf.line(
+                convertemp(12), convertemp(linha), convertemp(198), convertemp(linha)
+            )
+            linha -= 3
+            pdf.drawCentredString(
+                convertemp(102),
+                convertemp(linha),
+                f"{len(entregas):0>2} ENTREGAS - PESO: {soma_peso:,.3f} - VALOR: {soma_valor:,.2f}",
+            )
         else:
             notas_dados = (
                 MinutaNotas.objects.values(
@@ -408,7 +440,8 @@ def imprime_fatura_pdf(fatura):
         #     para.drawOn(pdf, convertemp(12), convertemp(linha))
         if totalkm > 0:
             linha -= 3
-            pdf.setFont("Times-Roman", 8)
+            tamanho_font = 8
+            pdf.setFont("Times-Roman", tamanho_font)
             pdf.drawString(
                 convertemp(12), convertemp(linha), "TOTAL {} KMS".format(totalkm)
             )
@@ -432,6 +465,7 @@ def imprime_fatura_pdf(fatura):
         pdf.line(convertemp(10), convertemp(linha), convertemp(200), convertemp(linha))
         linha -= 3.5
         if linha < 50:
+            tamanho_font_atual = tamanho_font
             pagina = pdf.getPageNumber()
             pdf.drawCentredString(
                 convertemp(105), convertemp(11), "PÁGINA {}".format(pagina)
@@ -439,6 +473,7 @@ def imprime_fatura_pdf(fatura):
             pdf.showPage()
             imprime_cabecalho(pdf, fatura_selecionada)
             linha = 250.8
+            pdf.setFont("Times-Roman", tamanho_font_atual)
     pagina = pdf.getPageNumber()
     pdf.drawCentredString(convertemp(105), convertemp(11), "PÁGINA {}".format(pagina))
     # End writing the PDF here - Aqui termina a escrita do PDF
@@ -568,7 +603,8 @@ def print_notas_da_minuta_unidade(
         end_compl = f"{endereco} - {bairro} - CEP: {cep} - {cidade} - {estado}"
         vol_compl = f"VOLUME: {volume} - PESO: {peso} - VALOR: R$ {valor} - {status_nota} - {contato}"
         para_compl = f"{end_compl} - {vol_compl}"
-        pdf.setFont("Times-Roman", 7)
+        tamanho_font = 7
+        pdf.setFont("Times-Roman", tamanho_font)
         pdf.drawString(
             convertemp(12),
             convertemp(linha),
@@ -586,6 +622,7 @@ def print_notas_da_minuta_unidade(
             )
             linha -= 3
         if linha < 25:
+            tamanho_font_atual = tamanho_font
             pagina = pdf.getPageNumber()
             pdf.drawCentredString(
                 convertemp(105), convertemp(11), "PÁGINA {}".format(pagina)
@@ -593,4 +630,5 @@ def print_notas_da_minuta_unidade(
             pdf.showPage()
             imprime_cabecalho(pdf, fatura_selecionada)
             linha = 250.8
+            pdf.setfont("Times-Roman", tamanho_font_atual)
     return linha, pdf
