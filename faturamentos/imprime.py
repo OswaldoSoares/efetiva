@@ -13,6 +13,7 @@ from reportlab.pdfgen import canvas
 from reportlab.platypus import Paragraph
 from romaneios.models import RomaneioNotas
 from transefetiva.settings.settings import STATIC_ROOT
+from website.facade import valor_ponto_milhar
 from website.models import FileUpload
 
 from .models import Fatura
@@ -380,7 +381,11 @@ def imprime_fatura_pdf(fatura):
             pdf.drawCentredString(
                 convertemp(102),
                 convertemp(linha),
-                f"{len(entregas):0>2} ENTREGAS - PESO: {soma_peso:,.3f} - VALOR: {soma_valor:,.2f}",
+                f"{len(entregas):0>2} ENTREGAS - PESO: {valor_ponto_milhar(soma_peso)} - VALOR: {valor_ponto_milhar(soma_valor)}",
+            )
+            linha -= 1
+            pdf.line(
+                convertemp(12), convertemp(linha), convertemp(198), convertemp(linha)
             )
         else:
             notas_dados = (
@@ -601,7 +606,7 @@ def print_notas_da_minuta_unidade(
         status_nota = x["StatusNota"]
         contato = x["Contato"]
         end_compl = f"{endereco} - {bairro} - CEP: {cep} - {cidade} - {estado}"
-        vol_compl = f"VOLUME: {volume} - PESO: {peso} - VALOR: R$ {valor} - {status_nota} - {contato}"
+        vol_compl = f"VOLUME: {volume} - PESO: {valor_ponto_milhar(peso)} - VALOR: R$ {valor_ponto_milhar(valor)} - {status_nota} - {contato}"
         para_compl = f"{end_compl} - {vol_compl}"
         tamanho_font = 7
         pdf.setFont("Times-Roman", tamanho_font)
@@ -630,5 +635,5 @@ def print_notas_da_minuta_unidade(
             pdf.showPage()
             imprime_cabecalho(pdf, fatura_selecionada)
             linha = 250.8
-            pdf.setfont("Times-Roman", tamanho_font_atual)
+            pdf.setFont("Times-Roman", tamanho_font_atual)
     return linha, pdf

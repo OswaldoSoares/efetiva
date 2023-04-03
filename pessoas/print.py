@@ -422,6 +422,7 @@ def ficha_colaborador(pdf, contexto):
     else:
         foto = f"{STATIC_ROOT}/website/img/usuario.png"
     nome = contexto["colaborador"]["nome"]
+    categoria = contexto["colaborador"]["categoria"]
     data_nascimento = datetime.datetime.strftime(
         contexto["colaborador"]["data_nascimento"], "%d/%m/%Y"
     )
@@ -441,17 +442,17 @@ def ficha_colaborador(pdf, contexto):
     pdf.setFont("Helvetica", 15)
     pdf.setFillColor(HexColor("#FF0000"))
     pdf.drawCentredString(cmp(105), cmp(202), nome)
-    pdf.line(cmp(10), cmp(200), cmp(200), cmp(200))
+    pdf.setFont("Helvetica", 12)
+    pdf.drawCentredString(cmp(105), cmp(198), categoria)
+    pdf.line(cmp(10), cmp(196), cmp(200), cmp(196))
     if contexto["colaborador"]["foto"]:
         pdf.circle(cmp(105), cmp(230), 57, stroke=1, fill=0)
-    linha = 196
+    linha = 192
     pdf.setFont("Times-Roman", 10)
     pdf.setFillColor(HexColor("#000000"))
     pdf.drawString(cmp(12), cmp(linha), f"ENDEREÇO: {endereco}")
     linha -= 5
-    pdf.drawString(
-        cmp(12), cmp(linha), f"BAIRRO: {bairro} - CEP {cep} - {cidade_estado}"
-    )
+    pdf.drawString(cmp(12), cmp(linha), f"BAIRRO: {bairro} - {cidade_estado}")
     linha -= 5
     pdf.drawString(cmp(12), cmp(linha), f"DATA DE NASCIMENTO: {data_nascimento}")
     if mae:
