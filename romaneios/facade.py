@@ -894,11 +894,22 @@ def ler_nota_xml(nota):
     return JsonResponse(lista)
 
 
-def create_contexto_imprime_romaneio(id_rom, id_cli):
-    romaneio = Romaneios.objects.get(idRomaneio=id_rom)
-    cliente = Cliente.objects.get(idCliente=id_cli)
-    notas = RomaneioNotas.objects.filter(idRomaneio=id_rom)
-    return {"romaneio": romaneio, "cliente": cliente, "notas": notas}
+def create_contexto_imprime_romaneio(idromaneio, idcliente):
+    romaneio = Romaneios.objects.get(idRomaneio=idromaneio)
+    cliente = Cliente.objects.get(idCliente=idcliente)
+    notas = RomaneioNotas.objects.filter(idRomaneio=idromaneio)
+    notas_romaneio = create_contexto_notas_romaneio(idromaneio)
+    (
+        quantidade_entregas,
+        quantidade_falta,
+    ) = create_contexto_quantidade_entregas(notas_romaneio)
+    return {
+        "romaneio": romaneio,
+        "cliente": cliente,
+        "notas": notas,
+        "quantidade_entregas": quantidade_entregas,
+        "quantidade_falta": quantidade_falta,
+    }
 
 
 def create_contexto_filtro_nota(nota, idcliente):

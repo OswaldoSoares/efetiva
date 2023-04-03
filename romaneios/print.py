@@ -241,7 +241,11 @@ def notas_romaneio(pdf, contexto):
                 total_romaneio_str = f"{valor_ponto_milhar(total_romaneio)}"
                 peso_romaneio_str = f"{valor_ponto_milhar(peso_romaneio)}"
                 pagina = str(pdf.getPageNumber()).zfill(2)
-                pdf.drawString(cmp(20), cmp(11), f"{notas} NOTAS")
+                pdf.drawString(
+                    cmp(20),
+                    cmp(11),
+                    f"{notas} NOTAS - {contexto['quantidade_entregas']} ENTREGAS",
+                ),
                 pdf.drawCentredString(
                     cmp(105),
                     cmp(11),
@@ -258,7 +262,9 @@ def notas_romaneio(pdf, contexto):
     total_romaneio_str = f"{valor_ponto_milhar(total_romaneio)}"
     peso_romaneio_str = f"{valor_ponto_milhar(peso_romaneio)}"
     pagina = str(pdf.getPageNumber()).zfill(2)
-    pdf.drawString(cmp(20), cmp(11), f"{notas} NOTAS")
+    pdf.drawString(
+        cmp(20), cmp(11), f"{notas} NOTAS - {contexto['quantidade_entregas']} ENTREGAS"
+    ),
     pdf.drawCentredString(
         cmp(105), cmp(11), f"R$ {total_romaneio_str} - PESO {peso_romaneio_str}"
     )
