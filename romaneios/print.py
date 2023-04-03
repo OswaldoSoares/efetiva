@@ -238,7 +238,7 @@ def notas_romaneio(pdf, contexto):
             if linha < 50:
                 pdf.line(cmp(10), cmp(14), cmp(200), cmp(14))
                 notas = str(len(contexto["notas"])).zfill(2)
-                entregas = str(len(contexto["quantidade_entregas"])).zfill(2)
+                entregas = str(int(contexto["quantidade_entregas"])).zfill(2)
                 total_romaneio_str = f"{valor_ponto_milhar(total_romaneio)}"
                 peso_romaneio_str = f"{valor_ponto_milhar(peso_romaneio)}"
                 pagina = str(pdf.getPageNumber()).zfill(2)
@@ -260,7 +260,7 @@ def notas_romaneio(pdf, contexto):
                 linha = 242.8
     pdf.line(cmp(10), cmp(14), cmp(200), cmp(14))
     notas = str(len(contexto["notas"])).zfill(2)
-    entregas = str(len(contexto["quantidade_entregas"])).zfill(2)
+    entregas = str(int(contexto["quantidade_entregas"])).zfill(2)
     total_romaneio_str = f"{valor_ponto_milhar(total_romaneio)}"
     peso_romaneio_str = f"{valor_ponto_milhar(peso_romaneio)}"
     pagina = str(pdf.getPageNumber()).zfill(2)
