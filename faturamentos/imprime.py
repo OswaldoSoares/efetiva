@@ -378,11 +378,13 @@ def imprime_fatura_pdf(fatura):
                 convertemp(12), convertemp(linha), convertemp(198), convertemp(linha)
             )
             linha -= 3
+            pdf.setFillColor(HexColor("#0000FF"))
             pdf.drawCentredString(
                 convertemp(102),
                 convertemp(linha),
                 f"{len(entregas):0>2} ENTREGAS - PESO: {valor_ponto_milhar(soma_peso)} - VALOR: {valor_ponto_milhar(soma_valor)}",
             )
+            pdf.setFillColor(HexColor("#000000"))
             linha -= 1
             pdf.line(
                 convertemp(12), convertemp(linha), convertemp(198), convertemp(linha)
