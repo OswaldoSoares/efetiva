@@ -32,9 +32,7 @@ def decricao_servico(dict_servicos, perimetro_inicial, perimetro_final):
                     itens["Valor"]
                 )
             if itens["Descricao"] == "SEGURO":
-                texto_seguro = "&#x2713 SEGURO {}% DO VALOR DA(S) NOTA(S) R$ {} &#x27BA R$ {} ".format(
-                    itens["Porcento"], itens["ValorBase"], itens["Valor"]
-                )
+                texto_seguro = f"&#x2713 SEGURO {itens['Porcento']:,.3f}% DO VALOR DA(S) NOTA(S) R$ {itens['ValorBase']} &#x27BA R$ {itens['Valor']}"
             if itens["Descricao"] == "PORCENTAGEM DA NOTA":
                 servicos = (
                     "{} &#x2713 {}% DO VALOR DA(S) NOTA(S) R$ {} &#x27BA R$ {} ".format(
