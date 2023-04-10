@@ -74,7 +74,7 @@ class MinutaItens(models.Model):
     RecebePaga = models.CharField(max_length=1)
     Valor = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     Quantidade = models.IntegerField(default=0)
-    Porcento = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    Porcento = models.DecimalField(max_digits=9, decimal_places=3, default=0)
     Peso = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     ValorBase = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     Tempo = models.DurationField(default=0)
