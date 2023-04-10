@@ -336,6 +336,10 @@ def imprime_fatura_pdf(fatura):
             notas_romaneio = RomaneioNotas.objects.filter(idRomaneio__in=romaneios)
             soma_peso = sum([i.idNotasClientes.Peso for i in notas_romaneio])
             soma_valor = sum([i.idNotasClientes.Valor for i in notas_romaneio])
+            if soma_valor > 0:
+                custo = minuta_valor / soma_valor * 100
+            else:
+                custo = None
             enderecos = [
                 f"{i.idNotasClientes.Endereco} - {i.idNotasClientes.Bairro}"
                 for i in notas_romaneio
@@ -378,10 +382,14 @@ def imprime_fatura_pdf(fatura):
             linha -= 3
             pdf.setFillColor(HexColor("#FF0000"))
             pdf.drawCentredString(
-                convertemp(102),
+                convertemp(105),
                 convertemp(linha),
                 f"{len(entregas):0>2} ENTREGAS - PESO: {valor_ponto_milhar(soma_peso)} - VALOR: {valor_ponto_milhar(soma_valor)}",
             )
+            if soma_valor > 0:
+                pdf.drawRightString(
+                    convertemp(198), convertemp(linha), f"{custo:,.3f}%"
+                )
             pdf.setFillColor(HexColor("#000000"))
             linha -= 1
             pdf.line(
