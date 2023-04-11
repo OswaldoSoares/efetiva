@@ -1,4 +1,4 @@
-<div class="article-titulo">
+<div class="card-header">
     <span>DESPESAS</span>
     {% comment %} TODO Verificar após estorno não insere despesa {% endcomment %}
     {% comment %} {% if not s_minuta.paga_realizada %} {% endcomment %}
@@ -9,39 +9,30 @@
 </div>
 <div class="html-despesa">
     {% for despesa in s_minuta.despesas %}
-    <div class="article-descricao" >
+    <div class="card-body">
         <div class="descricao-despesa">
-            <div class="dados-despesa">
-                <div class="dd-despesa">
-                    <spam><i class="bi bi-file-text"></i> {{ despesa.Descricao }}</spam>
-                </div>
-                <div class="dd-valor">
-                    <span>R$ {{ despesa.Valor }}</span>
-                </div>
-            </div>
-            <div class="dados-despesa">
-                <div class="dd-obs">
-                    {% if despesa.Obs %}
-                    <span>{{ despesa.Obs}}</span>
+            <div class="linha-divisoria"></div>
+            <div class="input-group">
+                <span class="input-group-addon addon-my-color">{{ forloop.counter|stringformat:".2d" }}</span>
+                <spam class="form-control input-fake font-menor">{{ despesa.Descricao }} - R$ {{ despesa.Valor }}</spam>
+                <span class="form-control input-fake font-menor">{{ despesa.Obs}}</span>
+                <div class="input-group-addon addon-my-color">
+                    {% if not s_minuta.paga_realizada %}
+                    <i class="bi bi-trash i-button remove-despesa" idMinuta="{{ s_minuta.idminuta }}"
+                       idMinutaItens="{{ despesa.idMinutaItens }}"></i>
+                    {% else %}
+                    <i class="bi bi-check input-group-addon addon-my-color"></i>
                     {% endif %}
                 </div>
             </div>
         </div>
-        <div class="div-i-button">
-            {% if not s_minuta.paga_realizada %}
-            <i class="bi bi-trash i-button remove-despesa" idMinuta="{{ s_minuta.idminuta }}"
-               idMinutaItens="{{ despesa.idMinutaItens }}"></i>
-            {% endif %}
-        </div>
     </div>
     {% endfor %}
-    <div class="article-minuta-rodape">
+    <div class="linha-divisoria"></div>
+    <div class="card-footer">
         {% if s_minuta.despesas %}
         <div class="dados-rodape">
-            <span><i class="bi bi-file-text"></i> {{ s_minuta.t_despesas.total_despesas }}</span>
-        </div>
-        <div class="dados-rodape">
-            <span>R$ {{ s_minuta.t_despesas.valor_despesas }}</span>
+            <span>TORAL DAS DESPESAS R$ {{ s_minuta.t_despesas.valor_despesas }}</span>
         </div>
         {% else %}
         <span>DESPESAS NÃO REGISTRADAS</span>

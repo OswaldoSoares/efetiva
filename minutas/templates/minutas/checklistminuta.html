@@ -2,8 +2,7 @@
     <span>CHECK LIST</span>
 </div>
 <div class="card-body">
-    <div class="linha-divisoria"></div>
-    <div class="check-item">
+    <div class="card-body-item">
         <div class="input-group">
             <i class="bi bi-check-square input-group-addon addon-my-color"></i>
             <span class="form-control input-fake">HORA FINAL</span>
@@ -16,8 +15,7 @@
             </div>
         </div>
     </div>
-    <div class="linha-divisoria"></div>
-    <div class="check-item">
+    <div class="card-body-item">
         <div class="input-group">
             {% if s_minuta.entregas %}
             <i class="bi bi-check-square input-group-addon addon-my-color"></i>
@@ -42,10 +40,8 @@
             </div>
         </div>
     </div>
-    
     {% if s_minuta.veiculo_solicitado %}
-    <div class="linha-divisoria"></div>
-    <div class="check-item">
+    <div class="card-body-item">
         <div class="input-group">
             <i class="bi bi-check-square input-group-addon addon-my-color"></i>
             <span class="form-control input-fake">MOTORISTA</span>
@@ -59,10 +55,8 @@
         </div>
     </div>
     {% endif %}
-    
     {% if s_minuta.motorista %}
-    <div class="linha-divisoria"></div>
-    <div class="check-item">
+    <div class="card-body-item">
         <div class="input-group">
             <i class="bi bi-check-square input-group-addon addon-my-color"></i>
             <span class="form-control input-fake">VEÍCULO</span>
@@ -76,10 +70,8 @@
         </div>
     </div>
     {% endif %}
-    
     {% if s_minuta.veiculo %}
-    <div class="linha-divisoria"></div>
-    <div class="check-item">
+    <div class="card-body-item">
         <div class="input-group">
             <i class="bi bi-check-square input-group-addon addon-my-color"></i>
             <span class="form-control input-fake">KM INICIAL</span>
@@ -93,10 +85,8 @@
         </div>
     </div>
     {% endif %}
-    
     {% if s_minuta.km_inicial %}
-    <div class="linha-divisoria"></div>
-    <div class="check-item">
+    <div class="card-body-item">
         <div class="input-group">
             <i class="bi bi-check-square input-group-addon addon-my-color"></i>
             <span class="form-control input-fake">KM FINAL</span>
@@ -110,8 +100,7 @@
         </div>
     </div>
     {% endif %}
-    <div class="linha-divisoria"></div>
-    <div class="check-item">
+    <div class="card-body-item">
         <div class="input-group">
             <i class="bi bi-square input-group-addon addon-my-color"></i>
             <span class="form-control input-fake">AJUDANTE</span>
@@ -124,10 +113,8 @@
             </div>
         </div>
     </div>
-    
     {% if s_minuta.motorista or s_minuta.ajudantes %}
-    <div class="linha-divisoria"></div>
-    <div class="check-item">
+    <div class="card-body-item">
         <div class="input-group">
             {% if s_minuta.paga_minuta %}
             <i class="bi bi-check-square input-group-addon addon-my-color"></i>
@@ -149,7 +136,7 @@
         </div>
     </div>
     {% endif %}
-    <div class="check-item">
+    <div class="card-body-item">
         <div class="input-group">
             <i class="bi bi-check-square input-group-addon addon-my-color"></i>
             <span class="form-control input-fake">CONCLUIR MINUTA</span>
@@ -162,11 +149,11 @@
             </div>
         </div>
     </div>
-    <div class="linha-divisoria"></div>    
     <div class="card-footer">
         {% if s_minuta.status_minuta == 'ABERTA' %}
-        <i class="bi bi-check2-square i-button conclui-minuta" idMinuta="{{ s_minuta.idminuta }}">
-            <span>CONCLUI MINUTA</span></i>
+        <i class="bi bi-check2-square i-button conclui-minuta"
+        title="CONCLUI MINUTA"
+        idMinuta="{{ s_minuta.idminuta }}"></i>
         {% endif %}
     </div>
 </div>

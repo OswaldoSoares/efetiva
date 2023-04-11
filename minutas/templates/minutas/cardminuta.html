@@ -4,28 +4,27 @@
     <span>MINUTA {{ s_minuta.numero }}</span>
 </div>
 <div class="card-body">
-    <div class="linha-divisoria"></div>
     <div class="html-cliente-data">
         {% include 'minutas/clientedataminuta.html' %}
     </div>
-    <div class="linha-divisoria"></div>
     <form class="html-hora-final" method="post" action="{% url 'editahorafinal' %}" id="form-edita-hora">
         {% csrf_token %}
-        <div class="card-minuta-dados">
+        <div class="card-body-item">
             <div class="input-group">
                 <i class="bi bi-moon-fill input-group-addon addon-my-color"></i>
                 {{ form_hora_final.HoraFinal }}
                 <div class="input-group-addon addon-my-color">
                     {% if not s_minuta.paga_realizada %}
                     <button type="submit" class="i-button-form"><i class="bi bi-save i-button"></i></button>
+                    {% else %}
+                    <i class="bi bi-check"></i>
                     {% endif %}
                 </div>
             </div>
         </div>
         <input type="hidden" name="idMinuta" value="{{ s_minuta.idminuta }}">
     </form>
-    <div class="linha-divisoria"></div>
-    <div class="card-minuta-dados calcula-horas">
+    <div class="card-body-item calcula-horas">
         <div class="input-group">
             <i class="bi bi-clock-history input-group-addon addon-my-color"></i>
             <span class="form-control input-fake total-horas">{{ s_minuta.total_horas_str }} Hs</span>
@@ -34,56 +33,53 @@
             </div>
         </div>
     </div>
-    <div class="linha-divisoria"></div>
     <div class="html-categoria">
         {% include 'minutas/categoriaminuta.html' %}
     </div>
-    <div class="linha-divisoria"></div>
     <div class="html-veiculo">
         {% include 'minutas/veiculominuta.html' %}
     </div>
-    <div class="linha-divisoria"></div>
     <div class="html-ajudante">
         {% include 'minutas/ajudantesminuta.html' %}
     </div>
-    <div class="linha-divisoria"></div>
-    <div class="card-minuta-dados">
+    {% if not s_minuta.paga_realizada %}
+    <div class="card-body-item">
         <div class="input-group">
             <i class="bi bi-person-plus-fill input-group-addon addon-my-color" title="INSERE AJUDNTE"></i>
             <span class="form-control input-fake">INSERE AJUDANTE</span>
             <div class="input-group-addon addon-my-color">
-                {% if not s_minuta.paga_realizada %}
                 <i class="bi bi-plus-square i-button" onclick="openMyModal(event); return false;"
                 data-title="INSERE AJUDANTE" data-action="{% url 'insereajudante' %}"
                 data-button-save-label="INSERIR" data-idminuta="{{ s_minuta.idminuta }}"></i>
-                {% endif %}
             </div>
         </div>
     </div>
-    <div class="linha-divisoria"></div>
+    {% endif %}
     <div class="html-coleta-entrega-obs">
         {% include 'minutas/coletaentregaobsminuta.html' %}
     </div>
-    <div class="linha-divisoria"></div>
 </div>  
 <div class="card-footer">
     {% if s_minuta.status_minuta == 'FECHADA' or s_minuta.status_minuta == 'CONCLUIDA'%}
     {% if user|can:'estorna_minuta' %}
     <i class="bi bi-reply-all i-button"
-    onclick="window.location.href = '{% url 'estorna_minuta' s_minuta.idminuta %}'">
-        <span>ESTORMA MINUTA</span></i>
+    title="ESTORNA MINUTA"
+    onclick="window.location.href = '{% url 'estorna_minuta' s_minuta.idminuta %}'"></i>
     {% endif %}
     {% endif %}
     {% if s_minuta.status_minuta == 'ABERTA' %}
     {% if not s_minuta.paga_realizada %}
     {% if user|can:'edita_minuta' %}
-    <i class="bi bi-pencil-square i-button" onclick="openMyModal(event); return false;"
-    data-title="EDITA MINUTA" data-action="{% url 'editaminuta' %}" data-button-save-label="EDITAR"
-    data-idminuta="{{ s_minuta.idminuta }}"><span>EDITA MINUTA</span></i>
+    <i class="bi bi-pencil-square i-button" title="EDITA MINUTA"
+    onclick="openMyModal(event); return false;"
+    data-title="EDITA MINUTA" data-action="{% url 'editaminuta' %}"
+    data-button-save-label="EDITAR"
+    data-idminuta="{{ s_minuta.idminuta }}"></i>
     {% endif %}
     {% endif %}
     {% endif %}
-    <i class="bi bi-printer i-button js-imprimeminuta" idminuta="{{ s_minuta.idminuta }}"
-            onclick="window.location.href = '{% url 'imprimeminuta' s_minuta.idminuta %}'">
-            <span>IMPRIME MINUTA</span></i>
+    <i class="bi bi-printer i-button js-imprimeminuta"
+    title="IMPRIME MINUTA"
+    idminuta="{{ s_minuta.idminuta }}"
+    onclick="window.location.href = '{% url 'imprimeminuta' s_minuta.idminuta %}'"></i>
 </div>

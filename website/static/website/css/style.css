@@ -17,6 +17,7 @@
     --color7: #696969;
     --color8: #F5DEB3;
     --color9: black;
+    --color10: #d7cec7;
 }
 
 
@@ -3490,17 +3491,12 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .i-button-form-rodape {
-    background-color: #363636;
+    background-color: transparent;
     border: 0;
     padding: 0;
 }
 
-.form-control-minuta {
-    width: 50%;
-    height: 25px;
-    padding: 0 0.5rem;
-    text-align: center;
-}
+
 
 .form-control-search {
     width: 100%;
@@ -6545,6 +6541,7 @@ main .fp-recibo-tabela .fp-recibo-print {
     font-size: 3rem;
     text-align: center;
     padding-top: 0.5rem;
+    border-bottom: 1px solid var(--color7);
 }
 
 .card-body {
@@ -6554,55 +6551,22 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-footer {
-    height: 3rem;
+    height: 4rem;
     background-color: var(--color1);
-    border-radius: 0 0 1.5rem 1.5rem ;
+    border-radius: 0 0 1rem 1rem ;
     text-align: center;
     padding-top: 0.5rem;
     margin-bottom: 5px;
+    font-size: 2rem;
 }
 
-/* .card-minuta-dados {
-    padding-top: 0.1rem;
-} */
-
-/* .card-minuta-dados {
-    width: 100%;
-    height: 30px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items: center;
-    text-align: center;
+.card-footer .i-button {
+    padding: 0 10px;
 }
 
-.card-minuta-dados i {
-    width: 15%;
-    font-size: 20px;
+.card-body-item {
+    border-bottom: 1px solid var(--color7);
 }
-
-.card-minuta-dados span {
-    width: 75%;
-    font-size: 15px;
-}
-
-.card-minuta-dados .div-input {
-    display: flex;
-    width: 100%;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.card-minuta-dados span div {
-    width: 100%;
-    display: flex;
-    font-size: 12px;
-}
-
-.card-minuta-dados div {
-    width: 10%;
-} */
 
 @media only screen and (min-width: 715px) {
     .section-grid {
@@ -6624,13 +6588,31 @@ main .fp-recibo-tabela .fp-recibo-print {
 
 .input-fake {
     background-color: var(--color2);
-    color: var(--color8);
+    color: var(--color6);
+    border: 1px solid var(--color1);
+    text-align: center;
+}
+
+.form-control-minuta {
+    background-color: var(--color10);
+    color: var(--color9);
     border: 1px solid var(--color1);
     text-align: center;
 }
 
 .addon-my-color {
     background-color: var(--color1);
+    max-width: 4rem;
     color: var(--color6);
     border: 1px solid var(--color1);
+}
+
+.addon-my-color i {
+    /* background-color: yellow; */
+    max-width: 1.5rem;
+}
+
+.font-menor {
+    font-size: 1.1rem;
+    text-align: justify;
 }

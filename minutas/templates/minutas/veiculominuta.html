@@ -1,6 +1,6 @@
 {% if s_minuta.veiculo_solicitado %}
 {% for motorista in s_minuta.motorista %}
-    <div class="card-minuta-dados">
+    <div class="card-body-item">
         <div class="input-group">
             <i class="bi bi-person-square input-group-addon addon-my-color"></i>
             <span class="form-control input-fake" title="{{ motorista.nome }}">{{ motorista.apelido }}</span>
@@ -8,13 +8,14 @@
                 {% if not s_minuta.paga_realizada %}
                 <i class="bi bi-trash i-button remove-colaborador" idMinuta="{{ s_minuta.idminuta }}" Cargo="MOTORISTA"
                 idMinutaColaboradores="{{ motorista.idMinutaColaboradores }}"></i>
+                {% else %}
+                <i class="bi bi-check"></i>
                 {% endif %}
             </div>
         </div>
     </div>
     {% if s_minuta.veiculo %}
-    <div class="linha-divisoria"></div>
-    <div class="card-minuta-dados">
+    <div class="card-body-item">
         <div class="input-group">
             <i class="bi bi-truck input-group-addon addon-my-color"></i>
             <span class="form-control input-fake">{{ s_minuta.veiculo.Modelo }} - {{ s_minuta.veiculo.Placa}}</span>
@@ -23,54 +24,57 @@
                 <i class="bi bi-pencil-square i-button" onclick="openMyModal(event); return false;" data-title="VEÍCULO"
                 data-action="{% url 'editaveiculoescolhido' %}" data-button-save-label="EDITAR"
                 data-idminuta="{{ s_minuta.idminuta }}" data-idpessoal="{{ motorista.obj.idPessoal }}"></i>
+                {% else %}
+                <i class="bi bi-check"></i>
                 {% endif %}
             </div>
         </div>
     </div>
-    <div class="linha-divisoria"></div>
     <form class="html-km-inicial" method="post" action="{% url 'editakminicial' %}" id="form-edita-km">
         {% csrf_token %}
-        <div class="card-minuta-dados">
+        <div class="card-body-item">
             <div class="input-group">
                 <i class="bi bi-speedometer input-group-addon addon-my-color"></i>
                 {{ form_km_inicial.KMInicial }}
                 <div class="input-group-addon addon-my-color">
                     {% if not s_minuta.paga_realizada %}
                     <button type="submit" class="i-button-form"><i class="bi bi-save i-button"></i></button>
+                    {% else %}
+                    <i class="bi bi-check"></i>
                     {% endif %}
                 </div>
             </div>
         </div>
         <input type="hidden" name="idMinuta" value="{{ s_minuta.idminuta }}">
     </form>
-    <div class="linha-divisoria"></div>
     <form class="html-km-final" method="post" action="{% url 'editakmfinal' %}" id="form-edita-km">
         {% csrf_token %}
-        <div class="card-minuta-dados">
+        <div class="card-body-item">
             <div class="input-group">
                 <i class="bi bi-speedometer input-group-addon addon-my-color"></i>
                 {{ form_km_final.KMFinal }}
                 <div class="input-group-addon addon-my-color">
                     {% if not s_minuta.paga_realizada %}
                     <button type="submit" class="i-button-form"><i class="bi bi-save i-button"></i></button>
+                    {% else %}
+                    <i class="bi bi-check"></i>
                     {% endif %}
                 </div>
             </div>
         </div>
         <input type="hidden" name="idMinuta" value="{{ s_minuta.idminuta }}">
     </form>
-    <div class="linha-divisoria"></div>
-    <div class="card-minuta-dados calcula-kms">
+    <div class="card-body-item calcula-kms">
         <div class="input-group">
             <i class="bi bi-calculator input-group-addon addon-my-color"></i>
             <span class="form-control input-fake total-kms">{{ s_minuta.total_kms }} KMs</span>
-            <div class="input-group-addon addonn-my-color">
-                <i class="bi bi-check>"></i>
+            <div class="input-group-addon addon-my-color">
+                <i class="bi bi-check"></i>
             </div>
         </div>
     </div>
     {% else %}
-    <div class="card-minuta-dados">
+    <div class="card-body-item">
         <div class="input-group">
             <i class="bi bi-truck input-group-addon addon-my-color"></i>
             <span class="form-control input-fake">INSERE VEÍCULO</span>
@@ -79,13 +83,15 @@
                 <i class="bi bi-plus-square i-button" onclick="openMyModal(event); return false;" data-title="VEÍCULO"
                 data-action="{% url 'editaveiculoescolhido' %}" data-button-save-label="EDITAR"
                 data-idminuta="{{ s_minuta.idminuta }}" data-idpessoal="{{ motorista.obj.idPessoal }}"></i>
+                {% else %}
+                <i class="bi bi-check"></i>
                 {% endif %}
             </div>
         </div>
     </div>    
     {% endif %}
 {% empty %}
-    <div class="card-minuta-dados">
+    <div class="card-body-item">
         <div class="input-group">
             <i class="bi bi-person-square input-group-addon addon-my-color"></i>
             <span class="form-control input-fake">INSERE MOTORISTA</span>
@@ -94,6 +100,8 @@
                 <i class="bi bi-plus-square i-button" onclick="openMyModal(event); return false;"
                 data-title="INSERE MOTORISTA" data-action="{% url 'inseremotorista' %}" data-button-save-label="INSERIR"
                 data-idminuta="{{ s_minuta.idminuta }}"></i>
+                {% else %}
+                <i class="bi bi-check"></i>
                 {% endif %}
             </div>
         </div>
