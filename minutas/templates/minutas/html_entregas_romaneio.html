@@ -1,45 +1,33 @@
 {% load humanize %}
-<div class="article-card-titulo">
-    <span>ROMANEIOS SEM MINUTA</span>
+<div class="card-header">
+    <span>ROMANEIOS</span>
 </div>
-<div class="article-card-body">
-    <div class="linha-divisoria"></div>
-    {% for rom in romaneios %}
-    <div class="itens-romaneio">
-        <div class="item-romaneio">
-            {% if rom.idminuta|stringformat:"i" == s_minuta.idminuta|stringformat:"i" %}
-            <span class="i-button-null">{{ rom.romaneio|stringformat:'05d' }}</span>
-            {% else %}
-            <span>{{ rom.romaneio|stringformat:'05d' }}</span>
-            {% endif %}
-        </div>
-        <div class="item-data">
-            {% if rom.idminuta|stringformat:"i" == s_minuta.idminuta|stringformat:"i" %}
-            <span class="i-button-null">{{ rom.data_romaneio }}</span>
-            {% else %}
-            <span>{{ rom.data_romaneio }}</span>
-            {% endif %}
-        </div>
-        <div class="item-motorista">
-            {% if rom.idminuta|stringformat:"i" == s_minuta.idminuta|stringformat:"i" %}
-            <span class="i-button-null">{{ rom.motorista|slice:"0:20" }}</span>
-            {% else %}
-            <span title="VEÍCULO UTILIZADO - {{ rom.veiculo }}">{{ rom.motorista|slice:"0:20" }}</span>
-            {% endif %}
-        </div>
-        <div class="item-buttom">
-            <i class="bi bi-check-square i-button js-adiciona-romaneio-minuta"
-            data-idromaneio="{{ rom.idromaneio }}"
-            data-idminuta="{{ s_minuta.idminuta }}"></i>
+{% for rom in romaneios %}
+<div class="card-body">
+    <div class="card-body-item">
+        <div class="input-group">
+            <i class="bi bi-list-check input-group-addon addon-my-color"></i>
+            <div class="input-fake div-flex font-menor">
+                <span>{{ rom.romaneio|stringformat:'05d' }} - {{ rom.data_romaneio }}</span>
+                <span title="VEÍCULO UTILIZADO - {{ rom.veiculo }}">{{ rom.motorista|slice:"0:20" }}</span>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="bi bi-check-square i-button js-adiciona-romaneio-minuta"
+                data-idromaneio="{{ rom.idromaneio }}"
+                data-idminuta="{{ s_minuta.idminuta }}"></i>
+            </div>
         </div>
     </div>
-    <div class="linha-divisoria"></div>
-    {% endfor %}
 </div>
-<div class="article-card-footer">
-    {% for ocorrencia in ocorrencias %}
+{% endfor %}
+<div class="card-footer">
+    {% if romaneio %}
+    {% for romaneio in romaneios %}
     {% if forloop.last %}
-    <span><b>{{ forloop.counter|stringformat:"02d" }} OCORRÊNCIA{{ forloop.counter|pluralize|upper }}</b></span>
+    <span><b>{{ forloop.counter|stringformat:"02d" }} ROMANEIO{{ forloop.counter|pluralize|upper }}</b></span>
     {% endif %}
     {% endfor %}
+    {% else %}
+    <span>ROMANEIOS NÃO ENCONTRADOS</span>
+    {% endif %}
 </div>
