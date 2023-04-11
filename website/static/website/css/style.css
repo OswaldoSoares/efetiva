@@ -17,7 +17,7 @@
     --color7: #696969;
     --color8: #F5DEB3;
     --color9: black;
-    --color10: #d7cec7;
+    --color10: #f3eeeb;
 }
 
 
@@ -6538,9 +6538,8 @@ main .fp-recibo-tabela .fp-recibo-print {
     color: var(--color6);
     height: 5rem;
     border-radius: 1rem 1rem 0 0;
-    font-size: 3rem;
     text-align: center;
-    padding-top: 0.5rem;
+    vertical-align: middle;
     border-bottom: 1px solid var(--color7);
 }
 
@@ -6551,16 +6550,43 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-footer {
-    height: 4rem;
     background-color: var(--color1);
+    color: var(--color6);
+    height: 4rem;
     border-radius: 0 0 1rem 1rem ;
     text-align: center;
+    vertical-align: middle;
     padding-top: 0.5rem;
     margin-bottom: 5px;
-    font-size: 2rem;
+}
+
+.card-header span {
+    font-size: 3rem;
+    vertical-align: middle;
+}
+
+.card-header i {
+    font-size: 2.5rem;
+    vertical-align: middle;
+    padding: 0 0.8rem;
+}
+
+.card-header .i-button {
+    font-size: 1.8rem;
+    vertical-align: middle;
+    padding: 0 0.8rem;
+}
+
+.card-footer span {
+    line-height: 3rem;
+    font-size: 1.5rem;
+    vertical-align: middle;
 }
 
 .card-footer .i-button {
+    line-height: 3rem;
+    font-size: 2rem;
+    vertical-align: middle;
     padding: 0 10px;
 }
 
@@ -6593,6 +6619,14 @@ main .fp-recibo-tabela .fp-recibo-print {
     text-align: center;
 }
 
+.linha-add {
+    background-color: var(--color2);
+    height: 2.5rem;    
+    font-size: 1.1rem;
+    text-align: left;
+    padding: 0.5rem 0.5rem;
+}
+
 .form-control-minuta {
     background-color: var(--color10);
     color: var(--color9);
@@ -6608,11 +6642,13 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .addon-my-color i {
-    /* background-color: yellow; */
     max-width: 1.5rem;
 }
 
-.font-menor {
-    font-size: 1.1rem;
-    text-align: justify;
+.div-flex {
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5px;
 }

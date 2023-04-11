@@ -1,41 +1,50 @@
 <div class="card-header">
     <span>DESPESAS</span>
     {% comment %} TODO Verificar após estorno não insere despesa {% endcomment %}
-    {% comment %} {% if not s_minuta.paga_realizada %} {% endcomment %}
+    {% if not s_minuta.paga_realizada %}
     <i class="bi bi-plus-square i-button" onclick="openMyModal(event); return false;"
     data-title="INSERE DESPESA" data-action="{% url 'inseredespesa' %}"
     data-button-save-label="INSERIR" data-idminuta="{{ s_minuta.idminuta }}"></i>
-    {% comment %} {% endif %} {% endcomment %}
+    {% endif %}
 </div>
 <div class="html-despesa">
     {% for despesa in s_minuta.despesas %}
     <div class="card-body">
-        <div class="descricao-despesa">
-            <div class="linha-divisoria"></div>
+        <div class="card-body-item">
             <div class="input-group">
-                <span class="input-group-addon addon-my-color">{{ forloop.counter|stringformat:".2d" }}</span>
-                <spam class="form-control input-fake font-menor">{{ despesa.Descricao }} - R$ {{ despesa.Valor }}</spam>
-                <span class="form-control input-fake font-menor">{{ despesa.Obs}}</span>
+                <div class="input-group-addon addon-my-color">{{ forloop.counter|stringformat:".2d" }}</div>
+                <div class="input-fake div-flex">
+                    <span>{{ despesa.Descricao|slice:"0:20" }}</span>
+                    <span>R$ {{ despesa.Valor }}</span>
+                </div>
                 <div class="input-group-addon addon-my-color">
                     {% if not s_minuta.paga_realizada %}
                     <i class="bi bi-trash i-button remove-despesa" idMinuta="{{ s_minuta.idminuta }}"
-                       idMinutaItens="{{ despesa.idMinutaItens }}"></i>
+                    idMinutaItens="{{ despesa.idMinutaItens }}"></i>
                     {% else %}
-                    <i class="bi bi-check input-group-addon addon-my-color"></i>
+                    <i class="bi bi-check"></i>
                     {% endif %}
                 </div>
             </div>
         </div>
+        {% if despesa.Obs %}
+        <div class="card-body-item">
+            <span class="form-control input-fake linha-add"
+            title="{{ despesa.Obs }}">
+                {{ despesa.Obs|slice:"0:50" }}
+                {% if despesa.Obs|length > 50 %}... {% endif %}
+            </span>
+        </div>
+        {% endif %}
     </div>
     {% endfor %}
-    <div class="linha-divisoria"></div>
     <div class="card-footer">
         {% if s_minuta.despesas %}
         <div class="dados-rodape">
-            <span>TORAL DAS DESPESAS R$ {{ s_minuta.t_despesas.valor_despesas }}</span>
+            <span>TOTAL: R$ {{ s_minuta.t_despesas.valor_despesas }}</span>
         </div>
         {% else %}
-        <span>DESPESAS NÃO REGISTRADAS</span>
+        <span>DESPESAS NÃO ENCONTRADAS</span>
         {% endif %}
     </div>
 </div>
