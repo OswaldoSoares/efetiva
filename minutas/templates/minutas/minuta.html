@@ -6,102 +6,75 @@
 {% endblock %}
 
 {% block mainminuta %}
-<main>
-    <div class="article">
-        <article class="article-card ac-minuta">
-            <div class="article-minuta-titulo">
-                <i class="bi bi-file-text" title="NÚMERO MINUTA"></i>
-                <span>{{ s_minuta.numero }}</span>
-            </div>
-            <div class="html-minuta">
-                {% include 'minutas/cardminuta.html' %}
-            </div>            
-        </article>
-
-        {% if user|can:'demonstrativo_minuta' %}
-        <div class="article-card ac-finan">
-            <div class="article-titulo">
-                <span id="teste123">RECEITAS</span>
-            </div>
-            <div class="html-form-recebe">
-                {% include 'minutas/formrecebimento.html' %}
-            </div>
+<section class="grid-column">
+    <div class="card card-minuta">
+        {% include 'minutas/cardminuta.html' %}
+    </div>
+    {% if s_minuta.status_minuta != 'FATURADA' %}
+    <div class="card card-checklist">
+        {% include 'minutas/checklistminuta.html' %}
+    </div>
+    {% endif %}
+</section>
+<section class="grid-column">
+    <div class="card card-despesa">
+        {% include 'minutas/despesaminuta.html' %}
+    </div>
+    <div class="card card-entrega">
+        {% include 'minutas/entregaminuta.html' %}
+    </div>
+    <div class="card card-romaneio">
+        {% include 'minutas/html_entregas_romaneio.html' %}
+    </div>
+</section>
+<section class="grid-column">
+    {% if user|can:'demonstrativo_minuta' %}
+    <div class="card ac-finan">
+        <div class="article-titulo">
+            <span id="teste123">RECEITAS</span>
         </div>
-        {% endif %}
-
-        <div>
-            <div class="article-card ac-finan">
-                <div class="article-titulo">
-                    <span>PAGAMENTOS</span>
-                </div>
-                <div class="html-form-paga">
-                    {% include 'minutas/formpagamento.html' %}
-                </div>
-            </div>
-
-            {% if s_minuta.status_minuta != 'FATURADA' %}
-            <article class="article-card ac-checklist">
-                <div class="article-titulo">
-                    <span>CHECK LIST</span>
-                </div>
-                <div class="html-checklist">
-                    {% include 'minutas/checklistminuta.html' %}
-                </div>
-            </article>
-            {% endif %}
-        </div>
-
-        <div class="article-despesa-entrega">
-            <article class="article-card ac-despesa">
-                <div class="article-titulo">
-                    <span>DESPESAS</span>
-                    {% comment %} TODO Verificar após estorno não insere despesa {% endcomment %}
-                    {% comment %} {% if not s_minuta.paga_realizada %} {% endcomment %}
-                    <i class="bi bi-plus-square i-button" onclick="openMyModal(event); return false;"
-                    data-title="INSERE DESPESA" data-action="{% url 'inseredespesa' %}"
-                    data-button-save-label="INSERIR" data-idminuta="{{ s_minuta.idminuta }}"></i>
-                    {% comment %} {% endif %} {% endcomment %}
-                </div>
-                <div class="html-despesa">
-                    {% include 'minutas/despesaminuta.html' %}
-                </div>
-            </article>
-            <article class="article-card ac-entrega">
-                {% include 'minutas/entregaminuta.html' %}
-            </article>
-            <article class="article-card card-romaneio">
-                {% include 'minutas/html_entregas_romaneio.html' %}
-            </article>
+        <div class="html-form-recebe">
+            {% include 'minutas/formrecebimento.html' %}
         </div>
     </div>
-    
-    <div class="adicionar-minuta">
-        <i class="bi bi-plus-square i-button" onclick="openMyModal(event); return false;"
-           data-title="CADASTRA MINUTA" data-action="{% url 'adicionaminuta' %}" data-button-save-label="SALVAR">
-            ADICIONA MINUTA</i>
+    {% endif %}
+</section>
+<section class="grid-column">
+    <div class="card ac-finan">
+        <div class="article-titulo">
+            <span>PAGAMENTOS</span>
+        </div>
+        <div class="html-form-paga">
+            {% include 'minutas/formpagamento.html' %}
+        </div>
     </div>
+</section>
 
 
 
-    <!-- div modal -->
-    <div class="modal fade bd-example-modal-lg" id="MyModal" tabindex="-1">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title"><b>CADASTRO DE CLIENTE</b></h4>
-                </div>
-                <div class="modal-body">
+<div class="adicionar-minuta">
+    <i class="bi bi-plus-square i-button" onclick="openMyModal(event); return false;"
+        data-title="CADASTRA MINUTA" data-action="{% url 'adicionaminuta' %}" data-button-save-label="SALVAR">
+        ADICIONA MINUTA</i>
+</div>
+<!-- div modal -->
+<div class="modal fade bd-example-modal-lg" id="MyModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title"><b>CADASTRO DE CLIENTE</b></h4>
+            </div>
+            <div class="modal-body">
 
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">FECHAR</button>
-                    <button type="submit" class="btn btn-success btn-save">CRIAR</button>
-                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">FECHAR</button>
+                <button type="submit" class="btn btn-success btn-save">CRIAR</button>
             </div>
         </div>
     </div>
-</main>
+</div>
 {% endblock %}

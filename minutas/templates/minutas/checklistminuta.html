@@ -1,138 +1,145 @@
-<div class="check-item">
-    <span>HORA FINAL</span>
-    <div class="checkbox">
-        {% if s_minuta.hora_final > s_minuta.hora_inicial %}
-        <i class="bi bi-check-square chk-green"></i>
-        {%  else %}
-        <i class="bi bi-square chk-red"></i>
-        {% endif %}
-        <i class="bi bi-check-square"></i>
-    </div>
+<div class="card-header">
+    <span>CHECK LIST</span>
 </div>
-
-<div class="check-item">
-    <span>VEÍCULO SOLICITADO</span>
-    <div class="checkbox">
-        {% if s_minuta.entregas %}
-        {% if s_minuta.veiculo_solicitado %}
-        <i class="bi bi-check-square chk-green"></i>
-        {%  else %}
-        <i class="bi bi-square chk-red"></i>
-        {% endif %}
-        <i class="bi bi-check-square"></i>
-        {% else %}
-        {% if s_minuta.veiculo_solicitado %}
-        <i class="bi bi-check-square chk-green"></i>
-        {%  else %}
-        <i class="bi bi-square chk-green"></i>
-        {% endif %}
-        <i class="bi bi-square"></i>
-        {% endif %}
-    </div>
-</div>
-
-{% if s_minuta.veiculo_solicitado %}
-<div class="check-item">
-    <span>MOTORISTA</span>
-    <div class="checkbox">
-        {% if s_minuta.motorista %}
-        <i class="bi bi-check-square chk-green"></i>
-        {%  else %}
-        <i class="bi bi-square chk-red"></i>
-        {% endif %}
-        <i class="bi bi-check-square"></i>
-    </div>
-</div>
-{% endif %}
-
-{% if s_minuta.motorista %}
-<div class="check-item">
-    <span>VEÍCULO</span>
-    <div class="checkbox">
-        {% if s_minuta.veiculo %}
-        <i class="bi bi-check-square chk-green"></i>
-        {%  else %}
-        <i class="bi bi-square chk-red"></i>
-        {% endif %}
-        <i class="bi bi-check-square"></i>
-    </div>
-</div>
-{% endif %}
-
-{% if s_minuta.veiculo %}
-<div class="check-item">
-    <span>KM INICIAL</span>
-    <div class="checkbox">
-        {% if s_minuta.km_inicial %}
-        <i class="bi bi-check-square chk-green"></i>
-        {%  else %}
-        <i class="bi bi-square chk-red"></i>
-        {% endif %}
-        <i class="bi bi-check-square"></i>
-    </div>
-</div>
-{% endif %}
-
-{% if s_minuta.km_inicial %}
-<div class="check-item">
-    <span>KM FINAL</span>
-    <div class="checkbox">
-        {% if s_minuta.km_final %}
-        <i class="bi bi-check-square chk-green"></i>
-        {%  else %}
-        <i class="bi bi-square chk-red"></i>
-        {% endif %}
-        <i class="bi bi-check-square"></i>
-    </div>
-</div>
-{% endif %}
-
-<div class="check-item">
-    <span>AJUDANTE</span>
-    <div class="checkbox">
-        {% if s_minuta.ajudantes %}
-        <i class="bi bi-check-square chk-green"></i>
-        {%  else %}
-        <i class="bi bi-square chk-green"></i>
-        {% endif %}
-        <i class="bi bi-square"></i>
-    </div>
-</div>
-
-{% if s_minuta.motorista or s_minuta.ajudantes %}
-<div class="check-item">
-    <span>GERAR PAGAMENTOS</span>
-    <div class="checkbox">
-        {% if s_minuta.paga_minuta %}
-            {% if s_minuta.paga_realizada %}
-                <i class="bi bi-check-square chk-green"></i>
+<div class="card-body">
+    <div class="check-item">
+        <span>HORA FINAL</span>
+        <div class="checkbox">
+            {% if s_minuta.hora_final > s_minuta.hora_inicial %}
+            <i class="bi bi-check-square chk-green"></i>
             {%  else %}
-                <i class="bi bi-square chk-red-gera-paga"></i>
+            <i class="bi bi-square chk-red"></i>
             {% endif %}
             <i class="bi bi-check-square"></i>
-        {% else %}
+        </div>
+    </div>
+    
+    <div class="check-item">
+        <span>VEÍCULO SOLICITADO</span>
+        <div class="checkbox">
+            {% if s_minuta.entregas %}
+            {% if s_minuta.veiculo_solicitado %}
+            <i class="bi bi-check-square chk-green"></i>
+            {%  else %}
+            <i class="bi bi-square chk-red"></i>
+            {% endif %}
+            <i class="bi bi-check-square"></i>
+            {% else %}
+            {% if s_minuta.veiculo_solicitado %}
+            <i class="bi bi-check-square chk-green"></i>
+            {%  else %}
             <i class="bi bi-square chk-green"></i>
+            {% endif %}
             <i class="bi bi-square"></i>
-        {% endif %}
+            {% endif %}
+        </div>
     </div>
-</div>
-{% endif %}
-
-<div class="check-item">
-    <span>CONCLUIR MINUTA</span>
-    <div class="checkbox">
-        {% if s_minuta.status_minuta == 'CONCLUIDA' %}
-        <i class="bi bi-check-square chk-green"></i>
-        {%  else %}
-        <i class="bi bi-square chk-red-conclui"></i>
-        {% endif %}
-        <i class="bi bi-check-square"></i>
+    
+    {% if s_minuta.veiculo_solicitado %}
+    <div class="check-item">
+        <span>MOTORISTA</span>
+        <div class="checkbox">
+            {% if s_minuta.motorista %}
+            <i class="bi bi-check-square chk-green"></i>
+            {%  else %}
+            <i class="bi bi-square chk-red"></i>
+            {% endif %}
+            <i class="bi bi-check-square"></i>
+        </div>
     </div>
-</div>
-
-<div class="article-minuta-rodape">
-    {% if s_minuta.status_minuta == 'ABERTA' %}
-    <i class="bi bi-check2-square i-button conclui-minuta" idMinuta="{{ s_minuta.idminuta }}">
-        <span>CONCLUI MINUTA</span></i>
     {% endif %}
+    
+    {% if s_minuta.motorista %}
+    <div class="check-item">
+        <span>VEÍCULO</span>
+        <div class="checkbox">
+            {% if s_minuta.veiculo %}
+            <i class="bi bi-check-square chk-green"></i>
+            {%  else %}
+            <i class="bi bi-square chk-red"></i>
+            {% endif %}
+            <i class="bi bi-check-square"></i>
+        </div>
+    </div>
+    {% endif %}
+    
+    {% if s_minuta.veiculo %}
+    <div class="check-item">
+        <span>KM INICIAL</span>
+        <div class="checkbox">
+            {% if s_minuta.km_inicial %}
+            <i class="bi bi-check-square chk-green"></i>
+            {%  else %}
+            <i class="bi bi-square chk-red"></i>
+            {% endif %}
+            <i class="bi bi-check-square"></i>
+        </div>
+    </div>
+    {% endif %}
+    
+    {% if s_minuta.km_inicial %}
+    <div class="check-item">
+        <span>KM FINAL</span>
+        <div class="checkbox">
+            {% if s_minuta.km_final %}
+            <i class="bi bi-check-square chk-green"></i>
+            {%  else %}
+            <i class="bi bi-square chk-red"></i>
+            {% endif %}
+            <i class="bi bi-check-square"></i>
+        </div>
+    </div>
+    {% endif %}
+    
+    <div class="check-item">
+        <span>AJUDANTE</span>
+        <div class="checkbox">
+            {% if s_minuta.ajudantes %}
+            <i class="bi bi-check-square chk-green"></i>
+            {%  else %}
+            <i class="bi bi-square chk-green"></i>
+            {% endif %}
+            <i class="bi bi-square"></i>
+        </div>
+    </div>
+    
+    {% if s_minuta.motorista or s_minuta.ajudantes %}
+    <div class="check-item">
+        <span>GERAR PAGAMENTOS</span>
+        <div class="checkbox">
+            {% if s_minuta.paga_minuta %}
+                {% if s_minuta.paga_realizada %}
+                    <i class="bi bi-check-square chk-green"></i>
+                {%  else %}
+                    <i class="bi bi-square chk-red-gera-paga"></i>
+                {% endif %}
+                <i class="bi bi-check-square"></i>
+            {% else %}
+                <i class="bi bi-square chk-green"></i>
+                <i class="bi bi-square"></i>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+    
+    <div class="check-item">
+        <span>CONCLUIR MINUTA</span>
+        <div class="checkbox">
+            {% if s_minuta.status_minuta == 'CONCLUIDA' %}
+            <i class="bi bi-check-square chk-green"></i>
+            {%  else %}
+            <i class="bi bi-square chk-red-conclui"></i>
+            {% endif %}
+            <i class="bi bi-check-square"></i>
+        </div>
+    </div>"
+        
+    <div class="card-footer">
+        {% if s_minuta.status_minuta == 'ABERTA' %}
+        <i class="bi bi-check2-square i-button conclui-minuta" idMinuta="{{ s_minuta.idminuta }}">
+            <span>CONCLUI MINUTA</span></i>
+        {% endif %}
+    </div>
 </div>
+
+

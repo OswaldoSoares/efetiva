@@ -1,39 +1,50 @@
-{% for despesa in s_minuta.despesas %}
-<div class="article-descricao" >
-    <div class="descricao-despesa">
-        <div class="dados-despesa">
-            <div class="dd-despesa">
-                <spam><i class="bi bi-file-text"></i> {{ despesa.Descricao }}</spam>
+<div class="article-titulo">
+    <span>DESPESAS</span>
+    {% comment %} TODO Verificar após estorno não insere despesa {% endcomment %}
+    {% comment %} {% if not s_minuta.paga_realizada %} {% endcomment %}
+    <i class="bi bi-plus-square i-button" onclick="openMyModal(event); return false;"
+    data-title="INSERE DESPESA" data-action="{% url 'inseredespesa' %}"
+    data-button-save-label="INSERIR" data-idminuta="{{ s_minuta.idminuta }}"></i>
+    {% comment %} {% endif %} {% endcomment %}
+</div>
+<div class="html-despesa">
+    {% for despesa in s_minuta.despesas %}
+    <div class="article-descricao" >
+        <div class="descricao-despesa">
+            <div class="dados-despesa">
+                <div class="dd-despesa">
+                    <spam><i class="bi bi-file-text"></i> {{ despesa.Descricao }}</spam>
+                </div>
+                <div class="dd-valor">
+                    <span>R$ {{ despesa.Valor }}</span>
+                </div>
             </div>
-            <div class="dd-valor">
-                <span>R$ {{ despesa.Valor }}</span>
+            <div class="dados-despesa">
+                <div class="dd-obs">
+                    {% if despesa.Obs %}
+                    <span>{{ despesa.Obs}}</span>
+                    {% endif %}
+                </div>
             </div>
         </div>
-        <div class="dados-despesa">
-            <div class="dd-obs">
-                {% if despesa.Obs %}
-                <span>{{ despesa.Obs}}</span>
-                {% endif %}
-            </div>
+        <div class="div-i-button">
+            {% if not s_minuta.paga_realizada %}
+            <i class="bi bi-trash i-button remove-despesa" idMinuta="{{ s_minuta.idminuta }}"
+               idMinutaItens="{{ despesa.idMinutaItens }}"></i>
+            {% endif %}
         </div>
     </div>
-    <div class="div-i-button">
-        {% if not s_minuta.paga_realizada %}
-        <i class="bi bi-trash i-button remove-despesa" idMinuta="{{ s_minuta.idminuta }}"
-           idMinutaItens="{{ despesa.idMinutaItens }}"></i>
+    {% endfor %}
+    <div class="article-minuta-rodape">
+        {% if s_minuta.despesas %}
+        <div class="dados-rodape">
+            <span><i class="bi bi-file-text"></i> {{ s_minuta.t_despesas.total_despesas }}</span>
+        </div>
+        <div class="dados-rodape">
+            <span>R$ {{ s_minuta.t_despesas.valor_despesas }}</span>
+        </div>
+        {% else %}
+        <span>DESPESAS NÃO REGISTRADAS</span>
         {% endif %}
     </div>
-</div>
-{% endfor %}
-<div class="article-minuta-rodape">
-    {% if s_minuta.despesas %}
-    <div class="dados-rodape">
-        <span><i class="bi bi-file-text"></i> {{ s_minuta.t_despesas.total_despesas }}</span>
-    </div>
-    <div class="dados-rodape">
-        <span>R$ {{ s_minuta.t_despesas.valor_despesas }}</span>
-    </div>
-    {% else %}
-    <span>DESPESAS NÃO REGISTRADAS</span>
-    {% endif %}
 </div>
