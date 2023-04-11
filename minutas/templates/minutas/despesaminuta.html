@@ -7,44 +7,42 @@
     data-button-save-label="INSERIR" data-idminuta="{{ s_minuta.idminuta }}"></i>
     {% endif %}
 </div>
-<div class="html-despesa">
-    {% for despesa in s_minuta.despesas %}
-    <div class="card-body">
-        <div class="card-body-item">
-            <div class="input-group">
-                <div class="input-group-addon addon-my-color">{{ forloop.counter|stringformat:".2d" }}</div>
-                <div class="input-fake div-flex">
-                    <span>{{ despesa.Descricao|slice:"0:20" }}</span>
-                    <span>R$ {{ despesa.Valor }}</span>
-                </div>
-                <div class="input-group-addon addon-my-color">
-                    {% if not s_minuta.paga_realizada %}
-                    <i class="bi bi-trash i-button remove-despesa" idMinuta="{{ s_minuta.idminuta }}"
-                    idMinutaItens="{{ despesa.idMinutaItens }}"></i>
-                    {% else %}
-                    <i class="bi bi-check"></i>
-                    {% endif %}
-                </div>
+{% for despesa in s_minuta.despesas %}
+<div class="card-body">
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">{{ forloop.counter|stringformat:".2d" }}</div>
+            <div class="input-fake div-flex">
+                <span>{{ despesa.Descricao|slice:"0:20" }}</span>
+                <span>R$ {{ despesa.Valor }}</span>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                {% if not s_minuta.paga_realizada %}
+                <i class="bi bi-trash i-button remove-despesa" idMinuta="{{ s_minuta.idminuta }}"
+                idMinutaItens="{{ despesa.idMinutaItens }}"></i>
+                {% else %}
+                <i class="bi bi-check"></i>
+                {% endif %}
             </div>
         </div>
-        {% if despesa.Obs %}
-        <div class="card-body-item">
-            <span class="form-control input-fake linha-add"
-            title="{{ despesa.Obs }}">
-                {{ despesa.Obs|slice:"0:50" }}
-                {% if despesa.Obs|length > 50 %}... {% endif %}
-            </span>
-        </div>
-        {% endif %}
     </div>
-    {% endfor %}
-    <div class="card-footer">
-        {% if s_minuta.despesas %}
-        <div class="dados-rodape">
-            <span>TOTAL: R$ {{ s_minuta.t_despesas.valor_despesas }}</span>
-        </div>
-        {% else %}
-        <span>DESPESAS NÃO ENCONTRADAS</span>
-        {% endif %}
+    {% if despesa.Obs %}
+    <div class="card-body-item">
+        <span class="form-control input-fake linha-add"
+        title="{{ despesa.Obs }}">
+            {{ despesa.Obs|slice:"0:50" }}
+            {% if despesa.Obs|length > 50 %}... {% endif %}
+        </span>
     </div>
+    {% endif %}
+</div>
+{% endfor %}
+<div class="card-footer">
+    {% if s_minuta.despesas %}
+    <div class="dados-rodape">
+        <span>TOTAL: R$ {{ s_minuta.t_despesas.valor_despesas }}</span>
+    </div>
+    {% else %}
+    <span>DESPESAS NÃO ENCONTRADAS</span>
+    {% endif %}
 </div>

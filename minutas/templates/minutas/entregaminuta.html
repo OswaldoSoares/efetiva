@@ -1,85 +1,103 @@
-<div class="article-titulo">
+{% load humanize %}
+<div class="card-header">
     <span>ENTREGAS</span>
-    {% comment %} {% if not s_minuta.paga_realizada %} {% endcomment %}
-    <i class="bi bi-plus-square i-button" onclick="openMyModal(event); return false;"
-    data-title="INSERE ENTREGA" data-action="{% url 'insereentrega' %}"
-    data-button-save-label="INSERIR" data-idminuta="{{ s_minuta.idminuta }}"></i>
-    {% comment %} {% endif %} {% endcomment %}
+    {% if not s_minuta.paga_realizada %}
+    <i class="bi bi-plus-square i-button"
+    onclick="openMyModal(event); return false;"
+    data-title="INSERE ENTREGA"
+    data-action="{% url 'insereentrega' %}"
+    data-button-save-label="INSERIR"
+    data-idminuta="{{ s_minuta.idminuta }}"></i>
+    {% endif %}
 </div>
 <div class="js-entrega">
     {% for entrega in s_minuta.entregas %}
-    <div class="article-descricao">
-        <div class="descricao-entrega">
-            <div class="dados-nota">
-                <div class="de-nota">
-                    <span><i class="bi bi-file-text"></i> {{ entrega.Nota }}</span>
+    <div class="card-body">
+        <div class="card-body-item">
+            <div class="input-group">
+                <div class="input-group-addon addon-my-color">
+                    {{ forloop.counter|stringformat:".2d" }}
                 </div>
-                <div class="de-numero">
-                    {% if entrega.ValorNota %}
-                    <span>R$ {{ entrega.ValorNota }}</span>
-                    {% endif %}
-                </div>
-                <div class="de-numero">
-                    {% if entrega.Peso %}
-                    <span><i class="bi bi-truck-flatbed"></i> {{ entrega.Peso }}</span>
-                    {% endif %}
-                </div>
-                <div class="de-numero">
-                    {% if entrega.Volume %}
-                    <span><i class="bi bi-grid-fill"></i> {{ entrega.Volume }}</span>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="dados-nota">
-                <div class="de-mercado">
-                    {% if entrega.Nome %}
-                    <span><i class="bi bi-shop"></i> {{ entrega.Nome }}</span>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="dados-nota">
-                <div class="de-mercado">
-                    {% if entrega.Bairro or entrega.Cidade or entrega.Estado %}
+                <div class="input-fake div-flex font-menor">
                     <span>
-                        <i class="bi bi-geo-alt-fill"></i>
-                        {% if entrega.Bairro %}
-                        {{ entrega.Bairro }} -
-                        {% endif %}
-                        {% if entrega.Cidade %}
-                        {{ entrega.Cidade }} -
-                        {% endif %}
-                        {% if entrega.Estado %}
-                        {{ entrega.Estado }}
-                        {% endif %}
+                        <i class="bi bi-file-text"></i>
+                         {{ entrega.Nota }}
+                    </span>
+                    {% if entrega.ValorNota %}
+                    <span>
+                        R$ {{ entrega.ValorNota|intcomma }}
+                    </span>
+                    {% endif %}
+                    {% if entrega.Peso %}
+                    <span>
+                        <i class="bi bi-truck-flatbed"></i>
+                         {{ entrega.Peso|intcomma }}
+                    </span>
+                    {% endif %}
+                    {% if entrega.Volume %}
+                    <span>
+                        <i class="bi bi-grid-fill"></i>
+                         {{ entrega.Volume }}
                     </span>
                     {% endif %}
                 </div>
+                <div class="input-group-addon addon-my-color">
+                    {% if not s_minuta.paga_realizada %}
+                    <i class="bi bi-trash i-button remove-entrega"
+                    idMinuta="{{ s_minuta.idminuta }}"
+                    idMinutaNotas="{{ entrega.idMinutaNotas }}"></i>
+                    {% else %}
+                    <i class="bi bi-check"></i>
+                    {% endif %}
+                </div>
             </div>
         </div>
-        <div class="div-i-button">
-            {% if not s_minuta.paga_realizada %}
-            <i class="bi bi-trash i-button remove-entrega" idMinuta="{{ s_minuta.idminuta }}"
-            idMinutaNotas="{{ entrega.idMinutaNotas }}"></i>
-            {% endif %}
+        {% if entrega.Nome %}
+        <div class="card-body-item">
+            <span class="form-control input-fake linha-add">
+                <i class="bi bi-shop"></i> {{ entrega.Nome }}
+            </span>
         </div>
+        {% endif %}
+        {% if entrega.Bairro or entrega.Cidade or entrega.Estado %}
+        <div class="card-body-item">
+            <span class="form-control input-fake linha-add">
+                <i class="bi bi-geo-alt-fill"></i>
+                {% if entrega.Bairro %}
+                {{ entrega.Bairro }} -
+                {% endif %}
+                {% if entrega.Cidade %}
+                {{ entrega.Cidade }} -
+                {% endif %}
+                {% if entrega.Estado %}
+                {{ entrega.Estado }}
+                {% endif %}
+            </span>
+        </div>
+        {% endif %}
     </div>
     {% endfor %}
-    <div class="article-minuta-rodape">
+    <div class="card-footer">
         {% if s_minuta.entregas %}
-        <div class="dados-rodape">
-            <span><i class="bi bi-geo-alt-fill"></i> {{ s_minuta.t_entregas.total_entregas }}</span>
-        </div>
-        <div class="dados-rodape">
-            <span>R$ {{ s_minuta.t_entregas.valor_entregas }}</span>
-        </div>
-        <div class="dados-rodape">
-            <span><i class="bi bi-truck-flatbed"></i> {{ s_minuta.t_entregas.peso_entregas }}</span>
-        </div>
-        <div class="dados-rodape">
-            <span><i class="bi bi-grid-fill"></i> {{ s_minuta.t_entregas.volume_entregas }}</span>
+        <div class="div-flex">
+            <span>
+                <i class="bi bi-geo-alt-fill"></i>
+                 {{ s_minuta.t_entregas.total_entregas }}
+            </span>
+            <span>
+                R$ {{ s_minuta.t_entregas.valor_entregas|intcomma }}
+            </span>
+            <span>
+                <i class="bi bi-truck-flatbed"></i>
+                 {{ s_minuta.t_entregas.peso_entregas|intcomma }}
+            </span>
+            <span>
+                <i class="bi bi-grid-fill"></i>
+                 {{ s_minuta.t_entregas.volume_entregas }}
+            </span>
         </div>
         {% else %}
-        <span>ENTREGAS NÃO REGISTRADAS</span>
+        <span>ENTREGAS NÃO ENCONTRADAS</span>
         {% endif %}
     </div>
 </div>

@@ -6650,5 +6650,9 @@ main .fp-recibo-tabela .fp-recibo-print {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 5px;
+    padding: 0 0.8rem;
+}
+
+.font-menor {
+    font-size: 1.2rem;
 }
