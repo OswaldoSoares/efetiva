@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    /* Versão Nova */
     $(document).on('submit', '#form-edita-hora', function(event) {
         event.preventDefault();
         $(".div-sucesso").hide()
@@ -30,6 +31,7 @@ $(document).ready(function() {
         });
     });
 
+    /* Versão Nova */
     $(document).on('submit', '#form-edita-km', function(event) {
         event.preventDefault();
         $(".div-sucesso").hide()
@@ -61,6 +63,7 @@ $(document).ready(function() {
         });
     });
 
+    /* Versão Nova */
     $(document).on('submit', '#form-gera-paga', function(event) {
         verificaTotalZero();
         $(".container").hide()
@@ -79,6 +82,7 @@ $(document).ready(function() {
         });
     });
 
+    // Versão Nova //
     $(document).on('click', '.estorna-pagamentos', function(event) {
         $(".container").hide()
         var idminuta = $(this).attr('idMinuta')
@@ -97,6 +101,7 @@ $(document).ready(function() {
         });
     });
 
+    // Versão Nova //
     $(document).on('click', '.conclui-minuta', function(event) {
         var idminuta = $(this).attr('idMinuta')
         $.ajax({
@@ -116,6 +121,7 @@ $(document).ready(function() {
         });
     });
 
+    // Versão Nova //
     $(document).on('click', '.remove-colaborador', function(event) {
         var idminutacolaboradores = $(this).attr('idMinutaColaboradores')
         var idminuta = $(this).attr('idMinuta')
@@ -147,6 +153,7 @@ $(document).ready(function() {
         });
     });
 
+    // Versão Nova //
     $(document).on('click', '.remove-despesa', function(event) {
         var idminutaitens = $(this).attr('idMinutaItens')
         var idminuta = $(this).attr('idMinuta')
@@ -172,6 +179,7 @@ $(document).ready(function() {
         });
     });
 
+    // Versão Nova //
     $(document).on('click', '.remove-entrega', function(event) {
         var idminutanotas = $(this).attr('idMinutaNotas')
         var idminuta = $(this).attr('idMinuta')
@@ -197,6 +205,7 @@ $(document).ready(function() {
         });
     });
 
+    // Versão Nova - Consultas //
     $(document).on('click', '.list-cliente', function(event) {
         $(".fd-colaborador").hide()
         $(".list-colaborador").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
@@ -215,6 +224,7 @@ $(document).ready(function() {
         }
     });
 
+    // Versão Nova - Consultas //
     $(document).on('click', '.list-colaborador', function(event) {
         $(".fd-cliente").hide()
         $(".list-cliente").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
@@ -233,6 +243,7 @@ $(document).ready(function() {
         }
     });
 
+    // Versão Nova - Consultas //
     $(document).on('click', '.list-veiculo', function(event) {
         $(".fd-cliente").hide()
         $(".list-cliente").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
@@ -251,6 +262,7 @@ $(document).ready(function() {
         }
     });
 
+    // Versão Nova - Consultas //
     $(document).on('click', '.list-entrega-cidade', function(event) {
         $(".fd-cliente").hide()
         $(".list-cliente").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
@@ -269,6 +281,7 @@ $(document).ready(function() {
         }
     });
 
+    // Versão Nova - Consultas //
     $(document).on('click', '.digita-destinatario', function(event) {
         $(".fd-cliente").hide()
         $(".list-cliente").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
@@ -287,6 +300,7 @@ $(document).ready(function() {
         }
     });
 
+    // Versão Nova - Consultas //
     $(document).on('click', '.filtro-consulta', function(event) {
         $(".filtro-lista").each(function() {
             $(this).addClass("i-button")
@@ -322,6 +336,7 @@ $(document).ready(function() {
         });
     });
 
+    // Versão Nova - Consultas //
     $(document).on('click', '.filtro-periodo', function(event) {
         $(".minutas-consulta").hide()
         $(".box-loader").show()
@@ -357,6 +372,7 @@ $(document).ready(function() {
         })
     });
 
+    // Versão Nova - Consultas //
     $(document).on('click', '.search-destinatario', function(event) {
         $(".filtro-lista").each(function() {
             $(this).addClass("i-button")
@@ -392,6 +408,7 @@ $(document).ready(function() {
         })
     });
 
+
     $('#MyModal').on('shown.bs.modal', function() {
         setTimeout(function() { // Delay para função loadCubagem, após janela estar carregada
             $(".form-radio").click(function() {
@@ -420,10 +437,13 @@ $(document).ready(function() {
 
     verificaTotalKMs()
     verificaTotalHoras()
+    // Versão Nova //
     $(".div-sucesso").hide()
+    // Versão Nova //
     $(".div-erro").hide()
     $(".filtro-dados").hide()
     $(".minutas-consulta").hide()
+    // Versão Nova //
     $(".box-loader").hide()
     $(".filtro-destinatario").hide()
 
@@ -498,6 +518,7 @@ $(document).ready(function() {
         });
     });
 
+    // Versão Antiga //
     var mostravalores = function(obj) {
         var switch_id = obj.attr('id');
         var ta_id = '#' + switch_id.replace('sw', 'ta');
@@ -595,6 +616,7 @@ $(document).ready(function() {
         totais();
     };
 
+    // Versão Antiga //
     var totais = function() {
         valor_recebe = 0.00;
         valor_paga = 0.00;
@@ -609,6 +631,7 @@ $(document).ready(function() {
         $(".saldo-minuta").text('Saldo da Minuta R$ ' + (valor_recebe - valor_paga).toFixed(2).replace('.', ','))
     }
 
+    // Versão Antiga //
     var somaPerimetro = function() {
         var soma_recebe = 0.00
         soma_recebe += $('#hi-porcentagem-recebe').val() * 1
@@ -638,6 +661,7 @@ $(document).ready(function() {
         $('#mi-pernoite-paga').val(soma_paga)
     }
 
+    // Versão Antiga //
     var loadForm = function() {
         var obj = $(this);
         var idminuta = $(this).attr("idminuta");
@@ -675,6 +699,7 @@ $(document).ready(function() {
         mostravalores($(this));
     });
 
+    
     $('.demonstrativo-input').change(function() {
         if ($(this).attr('type') != 'time') {
             if ($(this).attr('id') == 'ta-seguro-recebe') {
@@ -691,6 +716,7 @@ $(document).ready(function() {
         mostravalores(obj);
     });
 
+    // Versão Antiga //
     $("#mi-ajudante-paga").attr('readonly', 'readonly');
     $(".js-criaminuta").click(loadForm);
     $(".js-editaminuta").click(loadForm);
@@ -707,8 +733,9 @@ $(document).ready(function() {
     $(".js-editaminutaentrega").click(loadForm);
     $(".js-excluiminutaentrega").click(loadForm);
 
-
+    // Versão Nova - Cadastra Entrega (Form) //
     $(document).on('click', '#chk-perimetro', function(event) {
+        alert("OK")
         if ($('#chk-perimetro').is(':checked')) {
             $('.js-perimetro-hide').hide();
             $('#js-perimetro-div').removeClass('col-md-2');
@@ -724,6 +751,7 @@ $(document).ready(function() {
         }
     });
 
+    // Versão Nova - Cadastra Entrega (Form) //
     $(document).on('click', '#chk-saida', function(event) {
         if ($('#chk-saida').is(":checked")) {
             $('#id_Nota').val($('#label-chk-saida').attr('saida'))
@@ -735,28 +763,24 @@ $(document).ready(function() {
     });
 
     $(document).on('change', '.c_paga', function() {
-        var switch_change = $(this).attr('id').substring(7)
-        var visible = $('#form-paga-' + switch_change).is(':visible')
+        var checkbox_change = $(this).attr('id').substring(7)
+        var visible = $('#form-paga-' + checkbox_change).is(':visible')
+        $('#form-paga-' + checkbox_change).fadeToggle(500)
         if (visible) {
-            $('#form-paga-' + switch_change).slideUp(500)
-            $('#t_paga_' + switch_change).text('0,00')
-        } else {
-            $('#form-paga-' + switch_change).slideDown(500)
-        }
+            $('#t_paga_' + checkbox_change).text('0,00')}
     })
 
     $(document).on('change', '.c_recebe', function() {
-        var switch_change = $(this).attr('id').substring(9)
-        var visible = $('#form-recebe-' + switch_change).is(':visible')
+        var checkbox_change = $(this).attr('id').substring(9)
+        var visible = $('#form-recebe-' + checkbox_change).is(':visible')
+        $('#form-recebe-' + checkbox_change).fadeToggle(500)
         if (visible) {
-            $('#form-recebe-' + switch_change).slideUp(500)
-            $('#t_recebe_' + switch_change).text('0,00')
+            $('#t_recebe_' + checkbox_change).text('0,00')
             somaReceita();
         } else {
-            $('#form-recebe-' + switch_change).slideDown(500)
-            var valor_digitado = $('#v_' + switch_change).val()
-            verificaElemento('v_' + switch_change, valor_digitado)
-            $('#v_' + switch_change).select()
+            var valor_digitado = $('#v_' + checkbox_change).val()
+            verificaElemento('v_' + checkbox_change, valor_digitado)
+            $('#v_' + checkbox_change).select()
         }
     })
 
@@ -1074,15 +1098,17 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
     });
 }
 
+// Apenas roda na versão mais nova do financeiro
 var somaReceita = function() {
     /*$('.total-recebe').mask('#.##0,00', {reverse: true})*/
     var valor_receita = 0.00;
     $(".total-recebe").each(function() {
-        valor_receita += parseFloat($(this).text().replace('.', '').replace(',', '.'))
+        valor_receita += parseFloat($(this).val().replace('.', '').replace(',', '.'))
     });
-    $("#totalrecebe").text(valor_receita.toFixed(2))
-    $("#totalrecebe").unmask()
-    $("#totalrecebe").mask('#.##0,00', { reverse: true })
+    alert(valor_receita)
+    $("#totalrecebe").val('TOTAL: R$ ' + valor_receita.toFixed(2))
+    // $("#totalrecebe").unmask()
+    // $("#totalrecebe").mask('#.##0,00', { reverse: true })
 }
 
 var verificaTotalHoras = function() {
@@ -1342,6 +1368,7 @@ var mostraChecklist = function() {
     });
 }
 
+// Versão Nova //
 $(document).on('click', '.js-adiciona-romaneio-minuta', function() {
     var _id_romaneio = $(this).data('idromaneio')
     var _id_minuta = $(this).data('idminuta')

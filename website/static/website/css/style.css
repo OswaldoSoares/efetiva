@@ -6666,12 +6666,17 @@ main .fp-recibo-tabela .fp-recibo-print {
 .linha-divisoria-nova {
     background-color: var(--color5);
     width: 100%;
-    height: 0.2rem;
+    height: 0.4rem;
+    border-bottom: 2px solid var(--color7);
+}
+
+.transparente {
+    background-color: var(--color7);
 }
 
 /* Altera Bootstrap CSS */
 .input-group-sm {
-    padding: 0.2rem 0;
+    padding: 0.2rem 0.2rem;
 }
 
 .input-group-sm > .form-control,
