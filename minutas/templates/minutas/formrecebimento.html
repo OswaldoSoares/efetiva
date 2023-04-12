@@ -1,400 +1,512 @@
-<form class="" method="post" action="{% url 'gerapagamentos' %}" id="form-gera-recebe">
-{% csrf_token %}
-    <input type="hidden" name="idminuta" value="{{ s_minuta.idminuta }}" id="id_idminuta">
-    <div class="form-finan">
-        <span>TAXA DE EXPEDIÇÃO</span>
-        <input type="checkbox" class="new-switch new-switch--shadow c_recebe" id="c_recebe_taxa"
-               {% if s_minuta.recebe.c_taxa %} checked="checked" {% endif %}
-               name="s_taxa">
-        <label for="c_recebe_taxa"></label>
-    </div>
-    <div class="form-finan" id="form-recebe-taxa">
-        <div class="v_recebe">
-            <span class="form-label-recebe">R$</span>
-            <input type="text" class="form-control-recebe" name="v_taxa" id="v_taxa"
-               value="{{ s_minuta.recebe.v_taxa|stringformat:'.2f' }}">
-        </div>
-        <div></div>
-        <div></div>
-        <div class="t_recebe">
-            <span class="form-label-recebe">R$</span>
-            <div class="total-recebe" id="t_recebe_taxa">{{ s_minuta.recebe.v_taxa|stringformat:'.2f' }}</div>
-        </div>
-    </div>
-    <div class="form-finan">
-        <span>SEGURO</span>
-        <input type="checkbox" class="new-switch new-switch--shadow c_recebe" id="c_recebe_segu"
-               {% if s_minuta.recebe.c_segu %} checked="checked" {% endif %}
-               name="s_segu">
-        <label for="c_recebe_segu"></label>
-    </div>
-    <div class="form-finan" id="form-recebe-segu">
-        <div class="v_recebe">
-            <span class="form-label-recebe">%</span>
-            <input type="text" class="form-control-recebe" name="v_segu" id="v_segu"
-               value="{{ s_minuta.recebe.v_segu|stringformat:'.2f' }}">
-        </div>
-        <div class="m_recebe">
-            <span class="form-label-recebe">R$</span>
-            <input type="text" class="form-control-recebe" name="m_segu" id="m_segu"
-               value="{{ s_minuta.recebe.m_segu|stringformat:'.2f' }}">
-        </div>
-        <div>
-            <span>=</span>
-        </div>
-        <div class="t_recebe">
-            <span class="form-label-recebe">R$</span>
-            <div class="total-recebe" id="t_recebe_segu">{{ s_minuta.recebe.t_segu|stringformat:'.2f' }}</div>
-        </div>
-    </div>
-    <div class="form-finan">
-        <span>PORCENTAGEM NOTA</span>
-        <input type="checkbox" class="new-switch new-switch--shadow c_recebe" id="c_recebe_porc"
-               {% if s_minuta.recebe.c_porc %} checked="checked" {% endif %}
-               name="s_porc">
-        <label for="c_recebe_porc"></label>
-    </div>
-    <div class="form-finan" id="form-recebe-porc">
-        <div class="v_recebe">
-            <span class="form-label-recebe">%</span>
-            <input type="text" class="form-control-recebe" name="v_porc" id="v_porc"
-               value="{{ s_minuta.recebe.v_porc|stringformat:'.2f' }}">
-        </div>
-        <div class="m_recebe">
-            <span class="form-label-recebe">R$</span>
-            <input type="text" class="form-control-recebe" name="m_porc" id="m_porc"
-               value="{{ s_minuta.recebe.m_porc|stringformat:'.2f' }}">
-        </div>
-        <div>
-            <span>=</span>
-        </div>
-        <div class="t_recebe">
-            <span class="form-label-recebe">R$</span>
-            <div class="total-recebe" id="t_recebe_porc">{{ s_minuta.recebe.t_porc|stringformat:'.2f' }}</div>
-        </div>
-    </div>
-    <div class="form-finan">
-        <span>HORAS</span>
-        <input type="checkbox" class="new-switch new-switch--shadow c_recebe" id="c_recebe_hora"
-               {% if s_minuta.recebe.c_hora %} checked="checked" {% endif %}
-               name="s_hora">
-        <label for="c_recebe_hora"></label>
-    </div>
-    <div class="form-finan" id="form-recebe-hora">
-        <div class="v_recebe">
-            <span class="form-label-recebe">R$</span>
-            <input type="text" class="form-control-recebe" name="v_hora" id="v_hora"
-               value="{{ s_minuta.recebe.v_hora|stringformat:'.2f' }}">
-        </div>
-        <div class="m_recebe">
-            <span class="form-label-recebe">HS</span>
-            <input type="time" class="form-control-recebe" name="m_hora" id="m_hora"
-               value="{{ s_minuta.recebe.m_hora }}">
-        </div>
-        <div>
-            <span>=</span>
-        </div>
-        <div class="t_recebe">
-            <span class="form-label-recebe">R$</span>
-            <div class="total-recebe" id="t_recebe_hora">{{ s_minuta.recebe.t_hora|stringformat:'.2f' }}</div>
-        </div>
-    </div>
-    <div class="form-finan">
-        <span>HORAS EXCEDENTE</span>
-        <input type="checkbox" class="new-switch new-switch--shadow c_recebe" id="c_recebe_exce"
-               {% if s_minuta.recebe.c_exce %} checked="checked" {% endif %}
-               name="s_exce">
-        <label for="c_recebe_exce"></label>
-    </div>
-    <div class="form-finan" id="form-recebe-exce">
-        <div class="v_recebe">
-            <span class="form-label-recebe">%</span>
-            <input type="text" class="form-control-recebe" name="v_exce" id="v_exce"
-               value="{{ s_minuta.recebe.v_exce|stringformat:'.2f' }}">
-        </div>
-        <div class="m_recebe">
-            <span class="form-label-recebe">HS</span>
-            <input type="time" class="form-control-recebe" name="m_exce" id="m_exce"
-               value="{{ s_minuta.recebe.m_exce }}">
-        </div>
-        <div>
-            <span>=</span>
-        </div>
-        <div class="t_recebe">
-            <span class="form-label-recebe">R$</span>
-            <div class="total-recebe" id="t_recebe_exce">{{ s_minuta.recebe.t_exce|stringformat:'.2f' }}</div>
-        </div>
-    </div>
-    <div class="form-finan">
-        <span>KILOMETRAGEM</span>
-        <input type="checkbox" class="new-switch new-switch--shadow c_recebe" id="c_recebe_kilm"
-               {% if s_minuta.recebe.c_kilm %} checked="checked" {% endif %}
-               name="s_kilm">
-        <label for="c_recebe_kilm"></label>
-    </div>
-    <div class="form-finan" id="form-recebe-kilm">
-        <div class="v_recebe">
-            <span class="form-label-recebe">R$</span>
-            <input type="text" class="form-control-recebe" name="v_kilm" id="v_kilm"
-               value="{{ s_minuta.recebe.v_kilm|stringformat:'.2f' }}">
-        </div>
-        <div class="m_recebe">
-            <span class="form-label-recebe">UN</span>
-            <input type="text" class="form-control-recebe" name="m_kilm" id="m_kilm"
-               value="{{ s_minuta.recebe.m_kilm|stringformat:'.0f' }}">
-        </div>
-        <div>
-            <span>=</span>
-        </div>
-        <div class="t_recebe">
-            <span class="form-label-recebe">R$</span>
-            <div class="total-recebe" id="t_recebe_kilm">{{ s_minuta.recebe.t_kilm|stringformat:'.2f' }}</div>
-        </div>
-    </div>
-    <div class="form-finan">
-        <span>ENTREGAS</span>
-        <input type="checkbox" class="new-switch new-switch--shadow c_recebe" id="c_recebe_entr"
-               {% if s_minuta.recebe.c_entr %} checked="checked" {% endif %}
-               name="s_entr">
-        <label for="c_recebe_entr"></label>
-    </div>
-    <div class="form-finan" id="form-recebe-entr">
-        <div class="v_recebe">
-            <span class="form-label-recebe">R$</span>
-            <input type="text" class="form-control-recebe" name="v_entr" id="v_entr"
-               value="{{ s_minuta.recebe.v_entr|stringformat:'.2f' }}">
-        </div>
-        <div class="m_recebe">
-            <span class="form-label-recebe">UN</span>
-            <input type="text" class="form-control-recebe" name="m_entr" id="m_entr"
-               value="{{ s_minuta.recebe.m_entr|stringformat:'.0f' }}">
-        </div>
-        <div>
-            <span>=</span>
-        </div>
-        <div class="t_recebe">
-            <span class="form-label-recebe">R$</span>
-            <div class="total-recebe" id="t_recebe_entr">{{ s_minuta.recebe.t_entr|stringformat:'.2f' }}</div>
-        </div>
-    </div>
-    <div class="form-finan">
-        <span>ENTREGAS KG</span>
-        <input type="checkbox" class="new-switch new-switch--shadow c_recebe" id="c_recebe_enkg"
-               {% if s_minuta.recebe.c_enkg %} checked="checked" {% endif %}
-               name="s_enkg">
-        <label for="c_recebe_enkg"></label>
-    </div>
-    <div class="form-finan" id="form-recebe-enkg">
-        <div class="v_recebe">
-            <span class="form-label-recebe">R$</span>
-            <input type="text" class="form-control-recebe" name="v_enkg" id="v_enkg"
-               value="{{ s_minuta.recebe.v_enkg|stringformat:'.2f' }}">
-        </div>
-        <div class="m_recebe">
-            <span class="form-label-recebe">KG</span>
-            <input type="text" class="form-control-recebe" name="m_enkg" id="m_enkg"
-               value="{{ s_minuta.recebe.m_enkg|stringformat:'.2f' }}">
-        </div>
-        <div>
-            <span>=</span>
-        </div>
-        <div class="t_recebe">
-            <span class="form-label-recebe">R$</span>
-            <div class="total-recebe" id="t_recebe_enkg">{{ s_minuta.recebe.t_enkg|stringformat:'.2f' }}</div>
-        </div>
-    </div>
-    <div class="form-finan">
-        <span>ENTREGAS VOLUME</span>
-        <input type="checkbox" class="new-switch new-switch--shadow c_recebe" id="c_recebe_evol"
-               {% if s_minuta.recebe.c_evol %} checked="checked" {% endif %}
-               name="s_evol">
-        <label for="c_recebe_evol"></label>
-    </div>
-    <div class="form-finan" id="form-recebe-evol">
-        <div class="v_recebe">
-            <span class="form-label-recebe">R$</span>
-            <input type="text" class="form-control-recebe" name="v_evol" id="v_evol"
-               value="{{ s_minuta.recebe.v_evol|stringformat:'.2f' }}">
-        </div>
-        <div class="m_recebe">
-            <span class="form-label-recebe">UN</span>
-            <input type="text" class="form-control-recebe" name="m_evol" id="m_evol"
-               value="{{ s_minuta.recebe.m_evol|stringformat:'.0f' }}">
-        </div>
-        <div>
-            <span>=</span>
-        </div>
-        <div class="t_recebe">
-            <span class="form-label-recebe">R$</span>
-            <div class="total-recebe" id="t_recebe_evol">{{ s_minuta.recebe.t_evol|stringformat:'.2f' }}</div>
-        </div>
-    </div>
-    <div class="form-finan">
-        <span>SAÍDA</span>
-        <input type="checkbox" class="new-switch new-switch--shadow c_recebe" id="c_recebe_said"
-               {% if s_minuta.recebe.c_said %} checked="checked" {% endif %}
-               name="s_said">
-        <label for="c_recebe_said"></label>
-    </div>
-    <div class="form-finan" id="form-recebe-said">
-        <div class="v_recebe">
-            <span class="form-label-recebe">R$</span>
-            <input type="text" class="form-control-recebe" name="v_said" id="v_said"
-               value="{{ s_minuta.recebe.v_said|stringformat:'.2f' }}">
-        </div>
-        <div></div>
-        <div></div>
-        <div class="t_recebe">
-            <span class="form-label-recebe">R$</span>
-            <div class="total-recebe" id="t_recebe_said">{{ s_minuta.recebe.v_said|stringformat:'.2f' }}</div>
-        </div>
-    </div>
-    <div class="form-finan">
-        <span>CAPCIDADE PESO</span>
-        <input type="checkbox" class="new-switch new-switch--shadow c_recebe" id="c_recebe_capa"
-               {% if s_minuta.recebe.c_capa %} checked="checked" {% endif %}
-               name="s_capa">
-        <label for="c_recebe_capa"></label>
-    </div>
-    <div class="form-finan" id="form-recebe-capa">
-        <div class="v_recebe">
-            <span class="form-label-recebe">R$</span>
-            <input type="text" class="form-control-recebe" name="v_capa" id="v_capa"
-               value="{{ s_minuta.recebe.v_capa|stringformat:'.2f' }}">
-        </div>
-        <div></div>
-        <div></div>
-        <div class="t_recebe">
-            <span class="form-label-recebe">R$</span>
-            <div class="total-recebe" id="t_recebe_capa">{{ s_minuta.recebe.v_capa|stringformat:'.2f' }}</div>
-        </div>
-    </div>
-    <div class="form-finan">
-        <span>PERIMETRO</span>
-        <input type="checkbox" class="new-switch new-switch--shadow c_recebe" id="c_recebe_peri"
-               {% if s_minuta.recebe.c_peri %} checked="checked" {% endif %}
-               name="s_peri">
-        <label for="c_recebe_peri"></label>
-    </div>
-    <div class="form-finan" id="form-recebe-peri">
-        <div class="v_recebe">
-            <span class="form-label-recebe">%</span>
-            <input type="text" class="form-control-recebe" name="v_peri" id="v_peri"
-               value="{{ s_minuta.recebe.v_peri|stringformat:'.2f' }}">
-        </div>
-        <div class="m_recebe">
-            <span class="form-label-recebe">R$</span>
-            <input type="text" class="form-control-recebe" name="m_peri" id="m_peri"
-               value="{{ s_minuta.recebe.m_peri|stringformat:'.2f' }}">
-        </div>
-        <div>
-            <span>=</span>
-        </div>
-        <div class="t_recebe">
-            <span class="form-label-recebe">R$</span>
-            <div class="total-recebe" id="t_recebe_peri">{{ s_minuta.recebe.t_peri|stringformat:'.2f' }}</div>
-        </div>
-    </div>
-    <div class="form-finan">
-        <span>PERNOITE</span>
-        <input type="checkbox" class="new-switch new-switch--shadow c_recebe" id="c_recebe_pnoi"
-               {% if s_minuta.recebe.c_pnoi %} checked="checked" {% endif %}
-               name="s_pnoi">
-        <label for="c_recebe_pnoi"></label>
-    </div>
-    <div class="form-finan" id="form-recebe-pnoi">
-        <div class="v_recebe">
-            <span class="form-label-recebe">%</span>
-            <input type="text" class="form-control-recebe" name="v_pnoi" id="v_pnoi"
-               value="{{ s_minuta.recebe.v_pnoi|stringformat:'.2f' }}">
-        </div>
-        <div class="m_recebe">
-            <span class="form-label-recebe">R$</span>
-            <input type="text" class="form-control-recebe" name="m_pnoi" id="m_pnoi"
-               value="{{ s_minuta.recebe.m_pnoi|stringformat:'.2f' }}">
-        </div>
-        <div>
-            <span>=</span>
-        </div>
-        <div class="t_recebe">
-            <span class="form-label-recebe">R$</span>
-            <div class="total-recebe" id="t_recebe_pnoi">{{ s_minuta.recebe.t_pnoi|stringformat:'.2f' }}</div>
-        </div>
-    </div>
-    <div class="form-finan">
-        <span>AJUDANTE</span>
-        <input type="checkbox" class="new-switch new-switch--shadow c_recebe" id="c_recebe_ajud"
-               {% if s_minuta.recebe.c_ajud %} checked="checked" {% endif %}
-               name="s_ajud">
-        <label for="c_recebe_ajud"></label>
-    </div>
-    <div class="form-finan" id="form-recebe-ajud">
-        <div class="v_recebe">
-            <span class="form-label-recebe">R$</span>
-            <input type="text" class="form-control-recebe" name="v_ajud" id="v_ajud"
-               value="{{ s_minuta.recebe.v_ajud|stringformat:'.2f' }}">
-        </div>
-        <div class="m_recebe">
-            <span class="form-label-recebe">UN</span>
-            <input type="text" class="form-control-recebe" name="m_ajud" id="m_ajud"
-               value="{{ s_minuta.recebe.m_ajud|stringformat:'.0f' }}">
-        </div>
-        <div>
-            <span>=</span>
-        </div>
-        <div class="t_recebe">
-            <span class="form-label-recebe">R$</span>
-            <div class="total-recebe" id="t_recebe_ajud">{{ s_minuta.recebe.t_ajud|stringformat:'.2f' }}</div>
-        </div>
-    </div>
-    {% for despesa in s_minuta.despesas %}
-        <div class="form-finan">
-            <span>{{ despesa.Descricao }}</span>
-            <input type="checkbox" class="new-switch new-switch--shadow c_recebe"
-                   id="c_recebe_desp{{ despesa.idMinutaItens }}" checked="checked" name="s_desp">
-            <label for="c_recebe_desp{{ despesa.idMinutaItens }}"></label>
-        </div>
-        <div class="form-finan" id="form-recebe-desp{{ despesa.idMinutaItens }}">
-            <div class="v_recebe">
-                <span class="form-label-recebe">R$</span>
-                <input type="text" class="form-control-recebe v_desp" name="v_desp{{ despesa.idMinutaItens }}"
-                       id="v_desp{{ despesa.idMinutaItens }}" value="{{ despesa.Valor|stringformat:'.2f' }}">
-            </div>
-            <div></div>
-            <div></div>
-            <div class="t_recebe">
-                <span class="form-label-recebe">R$</span>
-                <div class="total-recebe" id="t_recebe_desp{{ despesa.idMinutaItens }}">{{ despesa.Valor }}</div>
+<div class="card-header">
+    <span>RECEITAS</span>
+</div>
+<div class="card-body">
+    <form class="row-g3" method="post" action="{% url 'gerapagamentos' %}" id="form-gera-recebe">
+    {% csrf_token %}
+        <input type="hidden"name="idminuta" value="{{ s_minuta.idminuta }}" id="id_idminuta">
+        <div class="card-body-item">
+            <div class="input-group">
+                <i class="bi bi-cash input-group-addon addon-my-color"></i>
+                <span class="form-control input-fake">TAXA DE EXPEDIÇÃO</span>
+                <div class="input-group-addon addon-my-color">
+                    <input type="checkbox"
+                    class="new-switch new-switch--shadow c_recebe"
+                    id="c_recebe_taxa"
+                    {% if s_minuta.recebe.c_taxa %} checked="checked" {% endif %}
+                    name="s_taxa">
+                    <label for="c_recebe_taxa"></label>
+                </div>
             </div>
         </div>
-    {% endfor %}
-    {% if s_minuta.motorista or s_minuta.ajudantes %}
-    <div class="linha-divisoria"></div>
-    <div class="form-finan">
-        <span>TOTAL RCEITAS DA MINUTA</span>
-        <div class="t_recebe">
-            <span class="form-label-recebe">R$</span>
-            <div class="total" id="totalrecebe">{{ s_minuta.recebe_minuta|stringformat:'.2f' }}</div>
+        <div class="card-body-item">
+            <div class="input-group input-group-sm" id="form-recebe-taxa">
+                <span class="form-label-recebe input-group-addon addon-blue">R$</span>
+                <input type="text" name="v_taxa" id="v_taxa"
+                class="form-control text-right"
+                value="{{ s_minuta.recebe.v_taxa|stringformat:'.2f' }}">
+                <span class="form-label-recebe input-group-addon addon-blue">UN</span>
+                <input type="text" readonly class="form-control text-right" value="1">
+                <span class="form-label-recebe input-group-addon addon-my-color">=</span>
+                <span class="form-label-recebe input-group-addon addon-blue">R$</span>
+                <input type="text" readonly class="total-recebe form-control text-right"
+                id="t_recebe_taxa" value="{{ s_minuta.recebe.v_taxa|stringformat:'.2f' }}">
+                </input>
+            </div>
         </div>
-    </div>
-    {% endif %}
-    <div class="article-minuta-rodape">
-        {% if s_minuta.paga_minuta|stringformat:'.2f' == '0.00' or s_minuta.paga_realizada %}
-        {% if s_minuta.recebe_minuta %}
-        {% if s_minuta.motorista or s_minuta.ajudantes %}
-        {% if s_minuta.status_minuta == 'ABERTA' %}
-        {% if not s_minuta.recebe_realizada %}
-        {{ s_minuta.paga_minuta|stringformat:'.2f' }}
-        <button type="submit" class="i-button-form-rodape">
-            <i class="bi bi-credit-card i-button"><span>FINALIZAR MINUTA</span></i>
-        </button>
-        {% else %}
-        <i class="bi bi-reply-all i-button estorna-pagamentos" idMinuta="{{ s_minuta.idminuta }}">
-            <span>ESTORNA FATURAMENTO</span></i>
-        {% endif %}
-        {% endif %}
-        {% endif %}
-        {% endif %}
-        {% endif %}
-    </div>
-</form>
+        <div class="card-body-item">
+            <div class="input-group">
+                <i class="bi bi-cash input-group-addon addon-my-color"></i>
+                <span class="form-control input-fake">SEGURO</span>
+                <div class="input-group-addon addon-my-color">
+                    <input type="checkbox"
+                    class="new-switch new-switch--shadow c_recebe"
+                    id="c_recebe_segu"
+                    {% if s_minuta.recebe.c_segu %} checked="checked" {% endif %}
+                    name="s_segu">
+                    <label for="c_recebe_segu"></label>
+                </div>
+            </div>
+        </div>
+        <div class="card-body-item">
+            <div class="input-group input-group-sm" id="form-recebe-segu">
+                <span class="form-label-recebe input-group-addon addon-blue">%</span>
+                <input type="text" name="v_segu" id="v_segu"
+                class="form-control text-right"
+                value="{{ s_minuta.recebe.v_segu|stringformat:'.2f' }}">
+                <span class="form-label-recebe  input-group-addon addon-blue">R$</span>
+                <input type="text" class="form-control text-right" name="m_segu" id="m_segu"
+                value="{{ s_minuta.recebe.m_segu|stringformat:'.2f' }}">
+                <span class="form-label-recebe input-group-addon addon-my-color">=</span>
+                <span class="form-label-recebe input-group-addon addon-blue">R$</span>
+                <input type="texy" class="total-recebe form-control text-right"
+                id="t_recebe_segu"
+                value="{{ s_minuta.recebe.t_segu|stringformat:'.2f' }}"></input>
+            </div>
+        </div>
+        <div class="card-body-item">
+            <div class="input-group">
+                <i class="bi bi-cash input-group-addon addon-my-color"></i>
+                <span class="form-control input-fake">PORCENTAGEM NOTA</span>
+                <div class="input-group-addon addon-my-color">
+                    <input type="checkbox"
+                    class="new-switch new-switch--shadow c_recebe"
+                    id="c_recebe_porc"
+                    {% if s_minuta.recebe.c_porc %} checked="checked" {% endif %}
+                    name="s_porc">
+                    <label for="c_recebe_porc"></label>
+                </div>
+            </div>
+        </div>
+        <div class="card-body-item">
+            <div class="form-finan" id="form-recebe-porc">
+                <div class="input-group input-group-sm" id="form-recebe-segu">
+                    <span class="form-label-recebe input-group-addon addon-blue">%</span>
+                    <input type="text" name="v_porc" id="v_porc"
+                    class="form-control text-right"
+                    value="{{ s_minuta.recebe.v_porc|stringformat:'.2f' }}">
+                    <span class="form-label-recebe  input-group-addon addon-blue">R$</span>
+                    <input type="text" class="form-control text-right" name="m_porc" id="m_porc"
+                    value="{{ s_minuta.recebe.m_porc|stringformat:'.2f' }}">
+                    <span class="form-label-recebe input-group-addon addon-my-color">=</span>
+                    <span class="form-label-recebe input-group-addon addon-blue">R$</span>
+                    <input type="texy" class="total-recebe form-control text-right"
+                    id="t_recebe_porc"
+                    value="{{ s_minuta.recebe.t_porc|stringformat:'.2f' }}"></input>
+                </div>
+            </div>
+        </div>
+        <div class="card-body-item">
+            <div class="input-group">
+                <i class="bi bi-cash input-group-addon addon-my-color"></i>
+                <span class="form-control input-fake">HORAS</span>
+                <div class="input-group-addon addon-my-color">
+                    <input type="checkbox"
+                    class="new-switch new-switch--shadow c_recebe"
+                    id="c_recebe_hora"
+                    {% if s_minuta.recebe.c_hora %} checked="checked" {% endif %}
+                    name="s_hora">
+                    <label for="c_recebe_hora"></label>
+                </div>
+            </div>
+        </div>
+        <div class="card-body-item">
+            <div class="form-finan" id="form-recebe-hora">
+                <div class="input-group input-group-sm" id="form-recebe-segu">
+                    <span class="form-label-recebe input-group-addon addon-blue">R$</span>
+                    <input type="text" name="v_hora" id="v_hora"
+                    class="form-control text-right"
+                    value="{{ s_minuta.recebe.v_hora|stringformat:'.2f' }}">
+                    <span class="form-label-recebe  input-group-addon addon-blue">HS</span>
+                    <input type="text" class="form-control text-right" name="m_hora" id="m_hora"
+                    value="{{ s_minuta.recebe.m_hora }}">
+                    <span class="form-label-recebe input-group-addon addon-my-color">=</span>
+                    <span class="form-label-recebe input-group-addon addon-blue">R$</span>
+                    <input type="texy" class="total-recebe form-control text-right"
+                    id="t_recebe_hora"
+                    value="{{ s_minuta.recebe.t_hora|stringformat:'.2f' }}"></input>
+                </div>
+            </div>
+        </div>
+        <div class="card-body-item">
+            <div class="input-group">
+                <i class="bi bi-cash input-group-addon addon-my-color"></i>
+                <span class="form-control input-fake">HORAS EXCEDENTE</span>
+                <div class="input-group-addon addon-my-color">
+                    <input type="checkbox"
+                    class="new-switch new-switch--shadow c_recebe"
+                    id="c_recebe_exce"
+                    {% if s_minuta.recebe.c_exce %} checked="checked" {% endif %}
+                    name="s_exce">
+                    <label for="c_recebe_exce"></label>
+                </div>
+            </div>
+        </div>
+        <div class="card-body-item">
+            <div class="form-finan" id="form-recebe-exce">
+                <div class="input-group input-group-sm" id="form-recebe-segu">
+                    <span class="form-label-recebe input-group-addon addon-blue">%</span>
+                    <input type="text" name="v_exce" id="v_exce"
+                    class="form-control text-right"
+                    value="{{ s_minuta.recebe.v_exce|stringformat:'.2f' }}">
+                    <span class="form-label-recebe  input-group-addon addon-blue">HS</span>
+                    <input type="text" class="form-control text-right" name="m_exce" id="m_exce"
+                    value="{{ s_minuta.recebe.m_exce }}">
+                    <span class="form-label-recebe input-group-addon addon-my-color">=</span>
+                    <span class="form-label-recebe input-group-addon addon-blue">R$</span>
+                    <input type="texy" class="total-recebe form-control text-right"
+                    id="t_recebe_exce"
+                    value="{{ s_minuta.recebe.t_exce|stringformat:'.2f' }}"></input>
+                </div>
+            </div>
+        </div>
+        <div class="card-body-item">
+            <div class="input-group">
+                <i class="bi bi-cash input-group-addon addon-my-color"></i>
+                <span class="form-control input-fake">KILOMETRAGEM</span>
+                <div class="input-group-addon addon-my-color">
+                    <input type="checkbox"
+                    class="new-switch new-switch--shadow c_recebe"
+                    id="c_recebe_kilm"
+                    {% if s_minuta.recebe.c_kilm %} checked="checked" {% endif %}
+                    name="s_kilm">
+                    <label for="c_recebe_kilm"></label>
+                </div>
+            </div>
+        </div>
+        <div class="card-body-item">
+            <div class="form-finan" id="form-recebe-kilm">
+                <div class="input-group input-group-sm" id="form-recebe-segu">
+                    <span class="form-label-recebe input-group-addon addon-blue">R$</span>
+                    <input type="text" name="v_kilm" id="v_kilm"
+                    class="form-control text-right"
+                    value="{{ s_minuta.recebe.v_kilm|stringformat:'.2f' }}">
+                    <span class="form-label-recebe  input-group-addon addon-blue">UN</span>
+                    <input type="text" class="form-control text-right" name="m_kilm" id="m_kilm"
+                    value="{{ s_minuta.recebe.m_kilm|stringformat:'.0f' }}">
+                    <span class="form-label-recebe input-group-addon addon-my-color">=</span>
+                    <span class="form-label-recebe input-group-addon addon-blue">R$</span>
+                    <input type="texy" class="total-recebe form-control text-right"
+                    id="t_recebe_kilm"
+                    value="{{ s_minuta.recebe.t_kilm|stringformat:'.2f' }}"></input>
+                </div>
+            </div>
+        </div>
+        <div class="card-body-item">
+            <div class="input-group">
+                <i class="bi bi-cash input-group-addon addon-my-color"></i>
+                <span class="form-control input-fake">ENTREGAS</span>
+                <div class="input-group-addon addon-my-color">
+                    <input type="checkbox"
+                    class="new-switch new-switch--shadow c_recebe"
+                    id="c_recebe_entr"
+                    {% if s_minuta.recebe.c_entr %} checked="checked" {% endif %}
+                    name="s_entr">
+                    <label for="c_recebe_entr"></label>
+                </div>
+            </div>
+        </div>
+        <div class="card-body-item">
+            <div class="form-finan" id="form-recebe-entr">
+                <div class="input-group input-group-sm" id="form-recebe-segu">
+                    <span class="form-label-recebe input-group-addon addon-blue">R$</span>
+                    <input type="text" name="v_entr" id="v_entr"
+                    class="form-control text-right"
+                    value="{{ s_minuta.recebe.v_entr|stringformat:'.2f' }}">
+                    <span class="form-label-recebe  input-group-addon addon-blue">UN</span>
+                    <input type="text" class="form-control text-right" name="m_entr" id="m_entr"
+                    value="{{ s_minuta.recebe.m_entr|stringformat:'.0f' }}">
+                    <span class="form-label-recebe input-group-addon addon-my-color">=</span>
+                    <span class="form-label-recebe input-group-addon addon-blue">R$</span>
+                    <input type="texy" class="total-recebe form-control text-right"
+                    id="t_recebe_entr"
+                    value="{{ s_minuta.recebe.t_entr|stringformat:'.2f' }}"></input>
+                </div>
+            </div>
+        </div>     
+        <div class="card-body-item">
+            <div class="input-group">
+                <i class="bi bi-cash input-group-addon addon-my-color"></i>
+                <span class="form-control input-fake">ENTREGAS KG</span>
+                <div class="input-group-addon addon-my-color">
+                    <input type="checkbox"
+                    class="new-switch new-switch--shadow c_recebe"
+                    id="c_recebe_enkg"
+                    {% if s_minuta.recebe.c_enkg %} checked="checked" {% endif %}
+                    name="s_enkg">
+                    <label for="c_recebe_enkg"></label>
+                </div>
+            </div>
+        </div>
+        <div class="card-body-item">
+            <div class="form-finan" id="form-recebe-enkg">
+                <div class="input-group input-group-sm" id="form-recebe-segu">
+                    <span class="form-label-recebe input-group-addon addon-blue">R$</span>
+                    <input type="text" name="v_enkg" id="v_enkg"
+                    class="form-control text-right"
+                    value="{{ s_minuta.recebe.v_enkg|stringformat:'.2f' }}">
+                    <span class="form-label-recebe  input-group-addon addon-blue">KG</span>
+                    <input type="text" class="form-control text-right" name="m_enkg" id="m_enkg"
+                    value="{{ s_minuta.recebe.m_enkg|stringformat:'.2f' }}">
+                    <span class="form-label-recebe input-group-addon addon-my-color">=</span>
+                    <span class="form-label-recebe input-group-addon addon-blue">R$</span>
+                    <input type="texy" class="total-recebe form-control text-right"
+                    id="t_recebe_enkg"
+                    value="{{ s_minuta.recebe.t_enkg|stringformat:'.2f' }}"></input>
+                </div>
+            </div>
+        </div>
+        <div class="card-body-item">
+            <div class="input-group">
+                <i class="bi bi-cash input-group-addon addon-my-color"></i>
+                <span class="form-control input-fake">ENTREGAS VOLUME</span>
+                <div class="input-group-addon addon-my-color">
+                    <input type="checkbox"
+                    class="new-switch new-switch--shadow c_recebe"
+                    id="c_recebe_evol"
+                    {% if s_minuta.recebe.c_evol %} checked="checked" {% endif %}
+                    name="s_evol">
+                    <label for="c_recebe_evol"></label>
+                </div>
+            </div>
+        </div>
+        <div class="card-body-item">
+            <div class="form-finan" id="form-recebe-evol">
+                <div class="input-group input-group-sm" id="form-recebe-segu">
+                    <span class="form-label-recebe input-group-addon addon-blue">R$</span>
+                    <input type="text" name="v_evol" id="v_evol"
+                    class="form-control text-right"
+                    value="{{ s_minuta.recebe.v_evol|stringformat:'.2f' }}">
+                    <span class="form-label-recebe  input-group-addon addon-blue">UN</span>
+                    <input type="text" class="form-control text-right" name="m_evol" id="m_evol"
+                    value="{{ s_minuta.recebe.m_evol|stringformat:'.0f' }}">
+                    <span class="form-label-recebe input-group-addon addon-my-color">=</span>
+                    <span class="form-label-recebe input-group-addon addon-blue">R$</span>
+                    <input type="texy" class="total-recebe form-control text-right"
+                    id="t_recebe_evol"
+                    value="{{ s_minuta.recebe.t_evol|stringformat:'.2f' }}"></input>
+                </div>
+            </div>
+        </div>
+        <div class="card-body-item">
+            <div class="input-group">
+                <i class="bi bi-cash input-group-addon addon-my-color"></i>
+                <span class="form-control input-fake">SAÍDA</span>
+                <div class="input-group-addon addon-my-color">
+                    <input type="checkbox"
+                    class="new-switch new-switch--shadow c_recebe"
+                    id="c_recebe_said"
+                    {% if s_minuta.recebe.c_said %} checked="checked" {% endif %}
+                    name="s_said">
+                    <label for="c_recebe_said"></label>
+                </div>
+            </div>
+        </div>
+        <div class="card-body-item">
+            <div class="form-finan" id="form-recebe-said">
+                <div class="input-group input-group-sm" id="form-recebe-segu">
+                    <span class="form-label-recebe input-group-addon addon-blue">R$</span>
+                    <input type="text" name="v_said" id="v_said"
+                    class="form-control text-right"
+                    value="{{ s_minuta.recebe.v_said|stringformat:'.2f' }}">
+                    <span class="form-label-recebe input-group-addon addon-blue">UN</span>
+                    <input type="text" readonly class="form-control text-right" value="1">
+                    <span class="form-label-recebe input-group-addon addon-my-color">=</span>
+                    <span class="form-label-recebe input-group-addon addon-blue">R$</span>
+                    <input type="texy" class="total-recebe form-control text-right"
+                    id="t_recebe_said"
+                    value="{{ s_minuta.recebe.v_said|stringformat:'.2f' }}"></input>
+                </div>
+            </div>
+        </div>
+        <div class="card-body-item">
+            <div class="input-group">
+                <i class="bi bi-cash input-group-addon addon-my-color"></i>
+                <span class="form-control input-fake">CAPACIDADE PESO</span>
+                <div class="input-group-addon addon-my-color">
+                    <input type="checkbox"
+                    class="new-switch new-switch--shadow c_recebe"
+                    id="c_recebe_capa"
+                    {% if s_minuta.recebe.c_capa %} checked="checked" {% endif %}
+                    name="s_capa">
+                    <label for="c_recebe_capa"></label>
+                </div>
+            </div>
+        </div>
+        <div class="card-body-item">
+            <div class="form-finan" id="form-recebe-capa">
+                <div class="input-group input-group-sm" id="form-recebe-segu">
+                    <span class="form-label-recebe input-group-addon addon-blue">R$</span>
+                    <input type="text" name="v_capa" id="v_capa"
+                    class="form-control text-right"
+                    value="{{ s_minuta.recebe.v_capa|stringformat:'.2f' }}">
+                    <span class="form-label-recebe input-group-addon addon-blue">UN</span>
+                    <input type="text" readonly class="form-control text-right" value="1">
+                    <span class="form-label-recebe input-group-addon addon-my-color">=</span>
+                    <span class="form-label-recebe input-group-addon addon-blue">R$</span>
+                    <input type="texy" class="total-recebe form-control text-right"
+                    id="t_recebe_capa"
+                    value="{{ s_minuta.recebe.v_capa|stringformat:'.2f' }}"></input>
+                </div>
+            </div>
+        </div>
+        <div class="card-body-item">
+            <div class="input-group">
+                <i class="bi bi-cash input-group-addon addon-my-color"></i>
+                <span class="form-control input-fake">PERIMETRO</span>
+                <div class="input-group-addon addon-my-color">
+                    <input type="checkbox"
+                    class="new-switch new-switch--shadow c_recebe"
+                    id="c_recebe_peri"
+                    {% if s_minuta.recebe.c_peri %} checked="checked" {% endif %}
+                    name="s_peri">
+                    <label for="c_recebe_peri"></label>
+                </div>
+            </div>
+        </div>
+        <div class="card-body-item">
+            <div class="form-finan" id="form-recebe-peri">
+                <div class="input-group input-group-sm" id="form-recebe-segu">
+                    <span class="form-label-recebe input-group-addon addon-blue">%</span>
+                    <input type="text" name="v_peri" id="v_peri"
+                    class="form-control text-right"
+                    value="{{ s_minuta.recebe.v_peri|stringformat:'.2f' }}">
+                    <span class="form-label-recebe  input-group-addon addon-blue">R$</span>
+                    <input type="text" class="form-control text-right" name="m_peri" id="m_peri"
+                    value="{{ s_minuta.recebe.m_peri|stringformat:'.2f' }}">
+                    <span class="form-label-recebe input-group-addon addon-my-color">=</span>
+                    <span class="form-label-recebe input-group-addon addon-blue">R$</span>
+                    <input type="texy" class="total-recebe form-control text-right"
+                    id="t_recebe_peri"
+                    value="{{ s_minuta.recebe.t_peri|stringformat:'.2f' }}"></input>
+                </div>
+            </div>
+        </div>
+        <div class="card-body-item">
+            <div class="input-group">
+                <i class="bi bi-cash input-group-addon addon-my-color"></i>
+                <span class="form-control input-fake">PERNOITE</span>
+                <div class="input-group-addon addon-my-color">
+                    <input type="checkbox"
+                    class="new-switch new-switch--shadow c_recebe"
+                    id="c_recebe_pnoi"
+                    {% if s_minuta.recebe.c_pnoi %} checked="checked" {% endif %}
+                    name="s_pnoi">
+                    <label for="c_recebe_pnoi"></label>
+                </div>
+            </div>
+        </div>
+        <div class="card-body-item">
+            <div class="form-finan" id="form-recebe-pnoi">
+                <div class="input-group input-group-sm" id="form-recebe-segu">
+                    <span class="form-label-recebe input-group-addon addon-blue">%</span>
+                    <input type="text" name="v_pnoi" id="v_pnoi"
+                    class="form-control text-right"
+                    value="{{ s_minuta.recebe.v_pnoi|stringformat:'.2f' }}">
+                    <span class="form-label-recebe  input-group-addon addon-blue">R$</span>
+                    <input type="text" class="form-control text-right" name="m_pnoi" id="m_pnoi"
+                    value="{{ s_minuta.recebe.m_peri|stringformat:'.2f' }}">
+                    <span class="form-label-recebe input-group-addon addon-my-color">=</span>
+                    <span class="form-label-recebe input-group-addon addon-blue">R$</span>
+                    <input type="texy" class="total-recebe form-control text-right"
+                    id="t_recebe_pnoi"
+                    value="{{ s_minuta.recebe.t_pnoi|stringformat:'.2f' }}"></input>
+                </div>
+            </div>
+        </div>
+        <div class="card-body-item">
+            <div class="input-group">
+                <i class="bi bi-cash input-group-addon addon-my-color"></i>
+                <span class="form-control input-fake">AJUDANTE</span>
+                <div class="input-group-addon addon-my-color">
+                    <input type="checkbox"
+                    class="new-switch new-switch--shadow c_recebe"
+                    id="c_recebe_ajud"
+                    {% if s_minuta.recebe.c_ajud %} checked="checked" {% endif %}
+                    name="s_ajud">
+                    <label for="c_recebe_ajud"></label>
+                </div>
+            </div>
+        </div>
+        <div class="card-body-item">
+            <div class="form-finan" id="form-recebe-ajud">
+                <div class="input-group input-group-sm" id="form-recebe-segu">
+                    <span class="form-label-recebe input-group-addon addon-blue">R$</span>
+                    <input type="text" name="v_ajud" id="v_ajud"
+                    class="form-control text-right"
+                    value="{{ s_minuta.recebe.v_ajud|stringformat:'.2f' }}">
+                    <span class="form-label-recebe  input-group-addon addon-blue">UN</span>
+                    <input type="text" class="form-control text-right" name="m_ajud" id="m_ajud"
+                    value="{{ s_minuta.recebe.m_ajud|stringformat:'.0f' }}">
+                    <span class="form-label-recebe input-group-addon addon-my-color">=</span>
+                    <span class="form-label-recebe input-group-addon addon-blue">R$</span>
+                    <input type="texy" class="total-recebe form-control text-right"
+                    id="t_recebe_ajud"
+                    value="{{ s_minuta.recebe.t_ajud|stringformat:'.2f' }}"></input>
+                </div>
+            </div>
+        </div>
+        <div class="linha-divisoria-nova"></div>
+        {% for despesa in s_minuta.despesas %}
+        <div class="card-body-item">
+            <div class="input-group">
+                <i class="bi bi-bag input-group-addon addon-my-color"></i>
+                <span class="form-control input-fake">{{ despesa.Descricao }}</span>
+                <div class="input-group-addon addon-my-color">
+                    <input type="checkbox"
+                    class="new-switch new-switch--shadow c_recebe"
+                    id="c_recebe_desp{{ despesa.idMinutaItens }}" checked="checked"
+                    name="s_desp">
+                    <label for="c_recebe_desp{{ despesa.idMinutaItens }}"></label>
+                </div>
+            </div>
+        </div>
+        <div class="card-body-item">
+            <div class="form-finan" id="form-recebe-desp{{ despesa.idMinutaItens }}">
+                <div class="input-group input-group-sm" id="form-recebe-segu">
+                    <span class="form-label-recebe input-group-addon addon-blue">R$</span>
+                    <input type="text" name="v_desp{{ despesa.idMinutaItens }}"
+                    id="v_desp{{ despesa.idMinutaItens }}" class="form-control text-right"
+                    value="{{ despesa.Valor|stringformat:'.2f' }}">
+                    <span class="form-label-recebe input-group-addon addon-blue">UN</span>
+                    <input type="text" readonly class="form-control text-right" value="1">
+                    <span class="form-label-recebe input-group-addon addon-my-color">=</span>
+                    <span class="form-label-recebe input-group-addon addon-blue">R$</span>
+                    <input type="texy" class="total-recebe form-control text-right"
+                    id="t_recebe_desp{{ despesa.idMinutaItens }}"
+                    value="{{ despesa.Valor|stringformat:'.2f' }}"></input>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <div class="card-footer">
+            {% if s_minuta.motorista or s_minuta.ajudantes %}
+            <div>
+                <span>TOTAL</span>
+                <div class="total" id="totalrecebe">R$ {{ s_minuta.recebe_minuta|stringformat:'.2f' }}</div>
+            </div>
+            {% endif %}
+            {% if s_minuta.paga_minuta|stringformat:'.2f' == '0.00' or s_minuta.paga_realizada %}
+            {% if s_minuta.recebe_minuta %}
+            {% if s_minuta.motorista or s_minuta.ajudantes %}
+            {% if s_minuta.status_minuta == 'ABERTA' %}
+            {% if not s_minuta.recebe_realizada %}
+            {{ s_minuta.paga_minuta|stringformat:'.2f' }}
+            <button type="submit" class="i-button-form-rodape">
+                <i class="bi bi-credit-card i-button">
+                    <span>FINALIZAR MINUTA</span>
+                </i>
+            </button>
+            {% else %}
+            <i class="bi bi-reply-all i-button estorna-pagamentos"
+            idMinuta="{{ s_minuta.idminuta }}">
+                <span>ESTORNA FATURAMENTO</span>
+            </i>
+            {% endif %}
+            {% endif %}
+            {% endif %}
+            {% endif %}
+            {% endif %}
+        </div>
+    </form>
+</div>

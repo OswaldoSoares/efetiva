@@ -8,8 +8,12 @@
         <div class="input-group">
             <i class="bi bi-list-check input-group-addon addon-my-color"></i>
             <div class="input-fake div-flex font-menor">
-                <span>{{ rom.romaneio|stringformat:'05d' }} - {{ rom.data_romaneio }}</span>
-                <span title="VEÍCULO UTILIZADO - {{ rom.veiculo }}">{{ rom.motorista|slice:"0:20" }}</span>
+                <span>
+                    {{ rom.romaneio|stringformat:'05d' }} - {{ rom.data_romaneio }}
+                </span>
+                <span title="VEÍCULO UTILIZADO - {{ rom.veiculo }}">
+                    {{ rom.motorista|slice:"0:20" }}
+                </span>
             </div>
             <div class="input-group-addon addon-my-color">
                 <i class="bi bi-check-square i-button js-adiciona-romaneio-minuta"
@@ -24,7 +28,11 @@
     {% if romaneio %}
     {% for romaneio in romaneios %}
     {% if forloop.last %}
-    <span><b>{{ forloop.counter|stringformat:"02d" }} ROMANEIO{{ forloop.counter|pluralize|upper }}</b></span>
+    <span>
+        <b>
+            {{ forloop.counter|stringformat:"02d" }} ROMANEIO{{ forloop.counter|pluralize|upper }}
+        </b>
+    </span>
     {% endif %}
     {% endfor %}
     {% else %}

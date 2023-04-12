@@ -6591,7 +6591,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-body-item {
-    border-bottom: 1px solid var(--color7);
+    border-bottom: 2px solid var(--color7);
 }
 
 @media only screen and (min-width: 715px) {
@@ -6655,4 +6655,30 @@ main .fp-recibo-tabela .fp-recibo-print {
 
 .font-menor {
     font-size: 1.2rem;
+}
+
+.addon-blue {
+    background-color: var(--color4);
+    color: var(--color6);
+    border: 0;
+}
+
+.linha-divisoria-nova {
+    background-color: var(--color5);
+    width: 100%;
+    height: 0.2rem;
+}
+
+/* Altera Bootstrap CSS */
+.input-group-sm {
+    padding: 0.2rem 0;
+}
+
+.input-group-sm > .form-control,
+.input-group-sm > .input-group-addon {
+    height: calc(2rem + 2px);
+    padding: 0.25rem 0.5rem;
+    font-size: 1.1rem;
+    line-height: 1.5rem;
+    border-radius: 0.2rem;  
 }
