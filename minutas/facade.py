@@ -362,14 +362,14 @@ class MinutaSelecionada:
             <= itens["PerimetroFinal"]
         ]
         phkesc = self.tabela[0]["phkescCobra"]
-        v_recebe["v_taxa"] = self.tabela[0]["TaxaExpedicao"]
+        v_recebe["v_taxa"] = self.tabela[0]["TaxaExpedicao"] * len(self.romaneio)
         v_recebe["c_taxa"] = True if self.tabela[0]["TaxaExpedicao"] > 0 else False
         if tabela_veiculo:
             if self.motorista:
-                v_recebe["v_segu"] = float(0.00)
+                v_recebe["v_segu"] = self.tabela[0]["Seguro"]
                 v_recebe["m_segu"] = self.t_entregas["valor_entregas"]
                 v_recebe["t_segu"] = (
-                    v_recebe["v_segu"] / 100 * float(v_recebe["m_segu"])
+                    float(v_recebe["v_segu"]) / 100 * float(v_recebe["m_segu"])
                 )
                 v_recebe["c_segu"] = (
                     True if self.t_entregas["valor_entregas"] > 0 else False

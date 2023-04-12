@@ -484,30 +484,34 @@
         </div>
         {% endfor %}
         <div class="card-footer">
-            {% if s_minuta.motorista or s_minuta.ajudantes %}
-            <div class="total" id="totalrecebe">TOTAL: R$ {{ s_minuta.recebe_minuta|stringformat:'.2f' }}</div>
-            {% endif %}
-            {% if s_minuta.paga_minuta|stringformat:'.2f' == '0.00' or s_minuta.paga_realizada %}
-            {% if s_minuta.recebe_minuta %}
-            {% if s_minuta.motorista or s_minuta.ajudantes %}
-            {% if s_minuta.status_minuta == 'ABERTA' %}
-            {% if not s_minuta.recebe_realizada %}
-            {{ s_minuta.paga_minuta|stringformat:'.2f' }}
-            <button type="submit" class="i-button-form-rodape">
-                <i class="bi bi-credit-card i-button">
-                    <span>FINALIZAR MINUTA</span>
+            <div class="div-flex">
+                {% if s_minuta.paga_minuta|stringformat:'.2f' == '0.00' or s_minuta.paga_realizada %}
+                {% if s_minuta.recebe_minuta %}
+                {% if s_minuta.motorista or s_minuta.ajudantes %}
+                {% if s_minuta.status_minuta == 'ABERTA' %}
+                {% if not s_minuta.recebe_realizada %}
+                {{ s_minuta.paga_minuta|stringformat:'.2f' }}
+                <button type="submit" class="i-button-form-rodape">
+                    <i class="bi bi-credit-card i-button">
+                        <span>FINALIZAR MINUTA</span>
+                    </i>
+                </button>
+                {% else %}
+                <i class="bi bi-reply-all i-button estorna-pagamentos"
+                idMinuta="{{ s_minuta.idminuta }}">
+                    <span>ESTORNA FATURAMENTO</span>
                 </i>
-            </button>
-            {% else %}
-            <i class="bi bi-reply-all i-button estorna-pagamentos"
-            idMinuta="{{ s_minuta.idminuta }}">
-                <span>ESTORNA FATURAMENTO</span>
-            </i>
-            {% endif %}
-            {% endif %}
-            {% endif %}
-            {% endif %}
-            {% endif %}
+                {% endif %}
+                {% endif %}
+                {% endif %}
+                {% endif %}
+                {% endif %}
+                {% if s_minuta.motorista or s_minuta.ajudantes %}
+                <span class="total" id="totalrecebe">
+                    TOTAL: R$ {{ s_minuta.recebe_minuta|stringformat:'.2f' }}
+                </span>
+                {% endif %}
+            </div>
         </div>
     </form>
 </div>

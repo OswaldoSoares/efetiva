@@ -770,12 +770,14 @@ $(document).ready(function() {
             $('#t_paga_' + checkbox_change).text('0,00')}
     })
 
+    // Versão Nova //
+    // Ao modificar um checkbox //
     $(document).on('change', '.c_recebe', function() {
         var checkbox_change = $(this).attr('id').substring(9)
         var visible = $('#form-recebe-' + checkbox_change).is(':visible')
         $('#form-recebe-' + checkbox_change).fadeToggle(500)
         if (visible) {
-            $('#t_recebe_' + checkbox_change).text('0,00')
+            $('#t_recebe_' + checkbox_change).val('0,00')
             somaReceita();
         } else {
             var valor_digitado = $('#v_' + checkbox_change).val()
@@ -840,35 +842,35 @@ function verificaElemento(element_select, valor_digitado) {
     }
     // verifica o elemento e realiza as operações, quando necessárias para retornar o total
     if (element_select == 'v_taxa') {
-        $('#t_recebe_taxa').text(valor_digitado)
+        $('#t_recebe_taxa').val(valor_digitado)
     } else if (element_select == 'v_segu' || element_select == 'm_segu') {
-        $('#t_recebe_segu').text(calculaPorcentagem($('#v_segu').val(), $('#m_segu').val()))
+        $('#t_recebe_segu').val(calculaPorcentagem($('#v_segu').val(), $('#m_segu').val()))
     } else if (element_select == 'v_porc' || element_select == 'm_porc') {
-        $('#t_recebe_porc').text(calculaPorcentagem($('#v_porc').val(), $('#m_porc').val()))
+        $('#t_recebe_porc').val(calculaPorcentagem($('#v_porc').val(), $('#m_porc').val()))
     } else if (element_select == 'v_hora' || element_select == 'm_hora') {
-        $('#t_recebe_hora').text(calculaHora('100', $('#v_hora').val(), $('#m_hora').val()))
+        $('#t_recebe_hora').val(calculaHora('100', $('#v_hora').val(), $('#m_hora').val()))
     } else if (element_select == 'v_exce' || element_select == 'm_exce') {
-        $('#t_recebe_exce').text(calculaHora($('#v_exce').val(), $('#v_hora').val(), $('#m_exce').val()))
+        $('#t_recebe_exce').val(calculaHora($('#v_exce').val(), $('#v_hora').val(), $('#m_exce').val()))
     } else if (element_select == 'v_kilm' || element_select == 'm_kilm') {
-        $('#t_recebe_kilm').text(calculaMultiplo($('#v_kilm').val(), $('#m_kilm').val()))
+        $('#t_recebe_kilm').val(calculaMultiplo($('#v_kilm').val(), $('#m_kilm').val()))
     } else if (element_select == 'v_entr' || element_select == 'm_entr') {
-        $('#t_recebe_entr').text(calculaMultiplo($('#v_entr').val(), $('#m_entr').val()))
+        $('#t_recebe_entr').val(calculaMultiplo($('#v_entr').val(), $('#m_entr').val()))
     } else if (element_select == 'v_enkg' || element_select == 'm_enkg') {
-        $('#t_recebe_enkg').text(calculaMultiplo($('#v_enkg').val(), $('#m_enkg').val()))
+        $('#t_recebe_enkg').val(calculaMultiplo($('#v_enkg').val(), $('#m_enkg').val()))
     } else if (element_select == 'v_evol' || element_select == 'm_evol') {
-        $('#t_recebe_evol').text(calculaMultiplo($('#v_evol').val(), $('#m_evol').val()))
+        $('#t_recebe_evol').val(calculaMultiplo($('#v_evol').val(), $('#m_evol').val()))
     } else if (element_select == 'v_said') {
-        $('#t_recebe_said').text(valor_digitado)
+        $('#t_recebe_said').val(valor_digitado)
     } else if (element_select == 'v_capa') {
-        $('#t_recebe_capa').text(valor_digitado)
+        $('#t_recebe_capa').val(valor_digitado)
     } else if (element_select == 'v_peri' || element_select == 'm_peri') {
-        $('#t_recebe_peri').text(calculaPorcentagem($('#v_peri').val(), $('#m_peri').val()))
+        $('#t_recebe_peri').val(calculaPorcentagem($('#v_peri').val(), $('#m_peri').val()))
     } else if (element_select == 'v_pnoi' || element_select == 'm_pnoi') {
-        $('#t_recebe_pnoi').text(calculaPorcentagem($('#v_pnoi').val(), $('#m_pnoi').val()))
+        $('#t_recebe_pnoi').val(calculaPorcentagem($('#v_pnoi').val(), $('#m_pnoi').val()))
     } else if (element_select == 'v_ajud' || element_select == 'm_ajud') {
-        $('#t_recebe_ajud').text(calculaMultiplo($('#v_ajud').val(), $('#m_ajud').val()))
+        $('#t_recebe_ajud').val(calculaMultiplo($('#v_ajud').val(), $('#m_ajud').val()))
     } else if (element_select.substring(0, 6) == 'v_desp') {
-        $('#t_recebe_' + element_select.substring(2)).text(valor_digitado)
+        $('#t_recebe_' + element_select.substring(2)).val(valor_digitado)
     }
     // recarrega mask
     formatUnmask();
@@ -893,7 +895,7 @@ function recarregaFinanceiro(html_paga, html_recebe) {
 
 function formatMask() {
     $('#v_taxa').mask('#.##0,00', { reverse: true })
-    $('#v_segu').mask('#.##0,00', { reverse: true })
+    $('#v_segu').mask('#.##0,000', { reverse: true })
     $('#m_segu').mask('#.##0,00', { reverse: true })
     $('#v_porc').mask('#.##0,00', { reverse: true })
     $('#m_porc').mask('#.##0,00', { reverse: true })
@@ -917,7 +919,7 @@ function formatMask() {
     $('#m_ajud').mask('#.##0', { reverse: true })
     $('.v_desp').mask('#.##0,00', { reverse: true })
     $('.total-recebe').mask('#.##0,00', { reverse: true })
-    $("#totalrecebe").mask('#.##0,00', { reverse: true })
+    // $("#totalrecebe").mask('#.##0,00', { reverse: true })
 }
 
 function formatUnmask() {
@@ -946,7 +948,7 @@ function formatUnmask() {
     $('#m_ajud').unmask()
     $('#v_desp').unmask()
     $('.total-recebe').unmask()
-    $("#totalrecebe").unmask()
+    // $("#totalrecebe").unmask()
 }
 
 
@@ -1100,15 +1102,16 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
 
 // Apenas roda na versão mais nova do financeiro
 var somaReceita = function() {
-    /*$('.total-recebe').mask('#.##0,00', {reverse: true})*/
     var valor_receita = 0.00;
     $(".total-recebe").each(function() {
         valor_receita += parseFloat($(this).val().replace('.', '').replace(',', '.'))
     });
-    alert(valor_receita)
-    $("#totalrecebe").val('TOTAL: R$ ' + valor_receita.toFixed(2))
-    // $("#totalrecebe").unmask()
-    // $("#totalrecebe").mask('#.##0,00', { reverse: true })
+    $("#totalrecebe").text(valor_receita.toFixed(2))
+    $("#totalrecebe").unmask()
+    $("#totalrecebe").mask('#.##0,00', { reverse: true })
+    var text_total = $("#totalrecebe").text();
+    var text_total = "TOTAL R$ " + text_total
+    $("#totalrecebe").text(text_total)
 }
 
 var verificaTotalHoras = function() {
@@ -1214,46 +1217,46 @@ function verificaSwitchRecebe() {
 };
 
 function verificaTotalZero() {
-    if ($('#t_recebe_taxa').text() == 0.00) {
+    if ($('#t_recebe_taxa').val() == 0.00) {
         $('#c_recebe_taxa').prop('checked', false)
     }
-    if ($('#t_recebe_segu').text() == 0.00) {
+    if ($('#t_recebe_segu').val() == 0.00) {
         $('#c_recebe_segu').prop('checked', false)
     }
-    if ($('#t_recebe_porc').text() == 0.00) {
+    if ($('#t_recebe_porc').val() == 0.00) {
         $('#c_recebe_porc').prop('checked', false)
     }
-    if ($('#t_recebe_hora').text() == 0.00) {
+    if ($('#t_recebe_hora').val() == 0.00) {
         $('#c_recebe_hora').prop('checked', false)
     }
-    if ($('#t_recebe_exce').text() == 0.00) {
+    if ($('#t_recebe_exce').val() == 0.00) {
         $('#c_recebe_exce').prop('checked', false)
     }
-    if ($('#t_recebe_kilm').text() == 0.00) {
+    if ($('#t_recebe_kilm').val() == 0.00) {
         $('#c_recebe_kilm').prop('checked', false)
     }
-    if ($('#t_recebe_entr').text() == 0.00) {
+    if ($('#t_recebe_entr').val() == 0.00) {
         $('#c_recebe_entr').prop('checked', false)
     }
-    if ($('#t_recebe_enkg').text() == 0.00) {
+    if ($('#t_recebe_enkg').val() == 0.00) {
         $('#c_recebe_enkg').prop('checked', false)
     }
-    if ($('#t_recebe_evol').text() == 0.00) {
+    if ($('#t_recebe_evol').val() == 0.00) {
         $('#c_recebe_evol').prop('checked', false)
     }
-    if ($('#t_recebe_said').text() == 0.00) {
+    if ($('#t_recebe_said').val() == 0.00) {
         $('#c_recebe_said').prop('checked', false)
     }
-    if ($('#t_recebe_capa').text() == 0.00) {
+    if ($('#t_recebe_capa').val() == 0.00) {
         $('#c_recebe_capa').prop('checked', false)
     }
-    if ($('#t_recebe_peri').text() == 0.00) {
+    if ($('#t_recebe_peri').val() == 0.00) {
         $('#c_recebe_peri').prop('checked', false)
     }
-    if ($('#t_recebe_pnoi').text() == 0.00) {
+    if ($('#t_recebe_pnoi').val() == 0.00) {
         $('#c_recebe_pnoi').prop('checked', false)
     }
-    if ($('#t_recebe_ajud').text() == 0.00) {
+    if ($('#t_recebe_ajud').val() == 0.00) {
         $('#c_recebe_ajud').prop('checked', false)
     }
     verificaSwitchRecebe();
