@@ -29,9 +29,8 @@
             </div>
         </div>
         <!-- Valores Taxa de Expedição -->
-        <div class="card-body-item">
-            <div class="input-group input-group-sm transparente"
-            id="form-recebe-taxa">
+        <div class="card-body-item" id="js-recebe-taxa">
+            <div class="input-group input-group-sm transparente">
                 <span class="input-group-addon addon-blue">
                     R$
                 </span>
@@ -79,9 +78,8 @@
             </div>
         </div>
         <!-- Valores Seguro -->
-        <div class="card-body-item">
-            <div class="input-group input-group-sm transparente"
-            id="form-recebe-segu">
+        <div class="card-body-item" id="js-recebe-segu">
+            <div class="input-group input-group-sm transparente">
                 <span class="input-group-addon addon-blue">
                     &nbsp%&nbsp
                 </span>
@@ -130,39 +128,35 @@
             </div>
         </div>
         <!-- Valores Porcentagem Nota -->
-        <div class="card-body-item">
-            <div class="form-finan"
-            id="form-recebe-porc">
-                <div class="input-group input-group-sm transparente"
-                id="form-recebe-segu">
-                    <span class="input-group-addon addon-blue">
-                        &nbsp%&nbsp
-                    </span>
-                    <input type="text"
-                    class="form-control text-right js-input-change"
-                    id="v_porc"
-                    name="v_porc"
-                    value="{{ s_minuta.recebe.v_porc|stringformat:'.2f' }}" />
-                    <span class="input-group-addon addon-blue">
-                        R$
-                    </span>
-                    <input type="text"
-                    class="form-control text-right js-input-change"
-                    id="m_porc"
-                    name="m_porc"
-                    value="{{ s_minuta.recebe.m_porc|stringformat:'.2f' }}" />
-                    <span class="input-group-addon addon-my-color">
-                        =
-                    </span>
-                    <span class="input-group-addon addon-blue">
-                        R$
-                    </span>
-                    <input type="texy"
-                    class="total-recebe form-control text-right"
-                    id="t_recebe_porc"
-                    value="{{ s_minuta.recebe.t_porc|stringformat:'.2f' }}"
-                    readonly />
-                </div>
+        <div class="card-body-item" id="js-recebe-porc">
+            <div class="input-group input-group-sm transparente">
+                <span class="input-group-addon addon-blue">
+                    &nbsp%&nbsp
+                </span>
+                <input type="text"
+                class="form-control text-right js-input-change"
+                id="v_porc"
+                name="v_porc"
+                value="{{ s_minuta.recebe.v_porc|stringformat:'.2f' }}" />
+                <span class="input-group-addon addon-blue">
+                    R$
+                </span>
+                <input type="text"
+                class="form-control text-right js-input-change"
+                id="m_porc"
+                name="m_porc"
+                value="{{ s_minuta.recebe.m_porc|stringformat:'.2f' }}" />
+                <span class="input-group-addon addon-my-color">
+                    =
+                </span>
+                <span class="input-group-addon addon-blue">
+                    R$
+                </span>
+                <input type="texy"
+                class="total-recebe form-control text-right"
+                id="t_recebe_porc"
+                value="{{ s_minuta.recebe.t_porc|stringformat:'.2f' }}"
+                readonly />
             </div>
         </div>
         <!-- Horas -->
@@ -184,39 +178,35 @@
             </div>
         </div>
         <!-- Valores Horas -->
-        <div class="card-body-item">
-            <div class="form-finan"
-            id="form-recebe-hora">
-                <div class="input-group input-group-sm transparente"
-                id="form-recebe-segu">
-                    <span class="input-group-addon addon-blue">
-                        R$
-                    </span>
-                    <input type="text"
-                    id="v_hora"
-                    name="v_hora"
-                    class="form-control text-right js-input-change"
-                    value="{{ s_minuta.recebe.v_hora|stringformat:'.2f' }}" />
-                    <span class="input-group-addon addon-blue">
-                        HS
-                    </span>
-                    <input type="text"
-                    class="form-control text-right js-input-change"
-                    id="m_hora"
-                    name="m_hora"
-                    value="{{ s_minuta.recebe.m_hora }}" />
-                    <span class="input-group-addon addon-my-color">
-                        =
-                    </span>
-                    <span class="input-group-addon addon-blue">
-                        R$
-                    </span>
-                    <input type="texy"
-                    class="total-recebe form-control text-right"
-                    id="t_recebe_hora"
-                    value="{{ s_minuta.recebe.t_hora|stringformat:'.2f' }}"
-                    readonly />
-                </div>
+        <div class="card-body-item" id="js-recebe-hora">
+            <div class="input-group input-group-sm transparente">
+                <span class="input-group-addon addon-blue">
+                    R$
+                </span>
+                <input type="text"
+                id="v_hora"
+                name="v_hora"
+                class="form-control text-right js-input-change"
+                value="{{ s_minuta.recebe.v_hora|stringformat:'.2f' }}" />
+                <span class="input-group-addon addon-blue">
+                    HS
+                </span>
+                <input type="text"
+                class="form-control text-right js-input-change"
+                id="m_hora"
+                name="m_hora"
+                value="{{ s_minuta.recebe.m_hora }}" />
+                <span class="input-group-addon addon-my-color">
+                    =
+                </span>
+                <span class="input-group-addon addon-blue">
+                    R$
+                </span>
+                <input type="texy"
+                class="total-recebe form-control text-right"
+                id="t_recebe_hora"
+                value="{{ s_minuta.recebe.t_hora|stringformat:'.2f' }}"
+                readonly />
             </div>
         </div>
         <!-- Horas Excedente -->
@@ -238,38 +228,35 @@
             </div>
         </div>
         <!-- Valores Horas Excedente -->
-        <div class="card-body-item">
-            <div class="form-finan" id="form-recebe-exce">
-                <div class="input-group input-group-sm transparente"
-                id="form-recebe-segu">
-                    <span class="input-group-addon addon-blue">
-                        &nbsp%&nbsp
-                    </span>
-                    <input type="text"
-                    class="form-control text-right js-input-change"
-                    id="v_exce"
-                    name="v_exce"
-                    value="{{ s_minuta.recebe.v_exce|stringformat:'.2f' }}" />
-                    <span class="input-group-addon addon-blue">
-                        HS
-                    </span>
-                    <input type="text"
-                    class="form-control text-right js-input-change"
-                    id="m_exce"
-                    name="m_exce"
-                    value="{{ s_minuta.recebe.m_exce }}" />
-                    <span class="input-group-addon addon-my-color">
-                        =
-                    </span>
-                    <span class="input-group-addon addon-blue">
-                        R$
-                    </span>
-                    <input type="texy"
-                    class="total-recebe form-control text-right"
-                    id="t_recebe_exce"
-                    value="{{ s_minuta.recebe.t_exce|stringformat:'.2f' }}"
-                    readonly />
-                </div>
+        <div class="card-body-item" id="js-recebe-exce">
+            <div class="input-group input-group-sm transparente">
+                <span class="input-group-addon addon-blue">
+                    &nbsp%&nbsp
+                </span>
+                <input type="text"
+                class="form-control text-right js-input-change"
+                id="v_exce"
+                name="v_exce"
+                value="{{ s_minuta.recebe.v_exce|stringformat:'.2f' }}" />
+                <span class="input-group-addon addon-blue">
+                    HS
+                </span>
+                <input type="text"
+                class="form-control text-right js-input-change"
+                id="m_exce"
+                name="m_exce"
+                value="{{ s_minuta.recebe.m_exce }}" />
+                <span class="input-group-addon addon-my-color">
+                    =
+                </span>
+                <span class="input-group-addon addon-blue">
+                    R$
+                </span>
+                <input type="texy"
+                class="total-recebe form-control text-right"
+                id="t_recebe_exce"
+                value="{{ s_minuta.recebe.t_exce|stringformat:'.2f' }}"
+                readonly />
             </div>
         </div>
         <!-- Kilometragem -->
@@ -291,39 +278,35 @@
             </div>
         </div>
         <!-- Valores Kilometragem -->
-        <div class="card-body-item">
-            <div class="form-finan"
-            id="form-recebe-kilm">
-                <div class="input-group input-group-sm transparente"
-                id="form-recebe-segu">
-                    <span class="input-group-addon addon-blue">
-                        R$
-                    </span>
-                    <input type="text"
-                    id="v_kilm"
-                    name="v_kilm"
-                    class="form-control text-right js-input-change"
-                    value="{{ s_minuta.recebe.v_kilm|stringformat:'.2f' }}" />
-                    <span class="input-group-addon addon-blue">
-                        UN
-                    </span>
-                    <input type="text"
-                    class="form-control text-right js-input-change"
-                    id="m_kilm"
-                    name="m_kilm"
-                    value="{{ s_minuta.recebe.m_kilm|stringformat:'.0f' }}" />
-                    <span class="input-group-addon addon-my-color">
-                        =
-                    </span>
-                    <span class="input-group-addon addon-blue">
-                        R$
-                    </span>
-                    <input type="texy"
-                    class="total-recebe form-control text-right"
-                    id="t_recebe_kilm"
-                    value="{{ s_minuta.recebe.t_kilm|stringformat:'.2f' }}"
-                    readonly />
-                </div>
+        <div class="card-body-item" id="js-recebe-kilm">
+            <div class="input-group input-group-sm transparente">
+                <span class="input-group-addon addon-blue">
+                    R$
+                </span>
+                <input type="text"
+                id="v_kilm"
+                name="v_kilm"
+                class="form-control text-right js-input-change"
+                value="{{ s_minuta.recebe.v_kilm|stringformat:'.2f' }}" />
+                <span class="input-group-addon addon-blue">
+                    UN
+                </span>
+                <input type="text"
+                class="form-control text-right js-input-change"
+                id="m_kilm"
+                name="m_kilm"
+                value="{{ s_minuta.recebe.m_kilm|stringformat:'.0f' }}" />
+                <span class="input-group-addon addon-my-color">
+                    =
+                </span>
+                <span class="input-group-addon addon-blue">
+                    R$
+                </span>
+                <input type="texy"
+                class="total-recebe form-control text-right"
+                id="t_recebe_kilm"
+                value="{{ s_minuta.recebe.t_kilm|stringformat:'.2f' }}"
+                readonly />
             </div>
         </div>
         <!-- Entregas -->
@@ -345,39 +328,35 @@
             </div>
         </div>
         <!-- Valores Entregas -->
-        <div class="card-body-item">
-            <div class="form-finan"
-            id="form-recebe-entr">
-                <div class="input-group input-group-sm transparente"
-                id="form-recebe-segu">
-                    <span class="input-group-addon addon-blue">
-                        R$
-                    </span>
-                    <input type="text"
-                    class="form-control text-right js-input-change"
-                    id="v_entr"
-                    name="v_entr"
-                    value="{{ s_minuta.recebe.v_entr|stringformat:'.2f' }}" />
-                    <span class="input-group-addon addon-blue">
-                        UN
-                    </span>
-                    <input type="text"
-                    class="form-control text-right js-input-change"
-                    id="m_entr"
-                    name="m_entr"
-                    value="{{ s_minuta.recebe.m_entr|stringformat:'.0f' }}" />
-                    <span class="input-group-addon addon-my-color">
-                        =
-                    </span>
-                    <span class="input-group-addon addon-blue">
-                        R$
-                    </span>
-                    <input type="texy"
-                    class="total-recebe form-control text-right"
-                    id="t_recebe_entr"
-                    value="{{ s_minuta.recebe.t_entr|stringformat:'.2f' }}"
-                    readonly />
-                </div>
+        <div class="card-body-item" id="js-recebe-entr">
+            <div class="input-group input-group-sm transparente">
+                <span class="input-group-addon addon-blue">
+                    R$
+                </span>
+                <input type="text"
+                class="form-control text-right js-input-change"
+                id="v_entr"
+                name="v_entr"
+                value="{{ s_minuta.recebe.v_entr|stringformat:'.2f' }}" />
+                <span class="input-group-addon addon-blue">
+                    UN
+                </span>
+                <input type="text"
+                class="form-control text-right js-input-change"
+                id="m_entr"
+                name="m_entr"
+                value="{{ s_minuta.recebe.m_entr|stringformat:'.0f' }}" />
+                <span class="input-group-addon addon-my-color">
+                    =
+                </span>
+                <span class="input-group-addon addon-blue">
+                    R$
+                </span>
+                <input type="texy"
+                class="total-recebe form-control text-right"
+                id="t_recebe_entr"
+                value="{{ s_minuta.recebe.t_entr|stringformat:'.2f' }}"
+                readonly />
             </div>
         </div>     
         <!-- Entregas KG -->
@@ -399,39 +378,35 @@
             </div>
         </div>
         <!-- Valores Entregas KG -->
-        <div class="card-body-item">
-            <div class="form-finan"
-            id="form-recebe-enkg">
-                <div class="input-group input-group-sm transparente"
-                id="form-recebe-segu">
-                    <span class="input-group-addon addon-blue">
-                        R$
-                    </span>
-                    <input type="text"
-                    class="form-control text-right js-input-change"
-                    id="v_enkg"
-                    name="v_enkg"
-                    value="{{ s_minuta.recebe.v_enkg|stringformat:'.2f' }}" />
-                    <span class="input-group-addon addon-blue">
-                        KG
-                    </span>
-                    <input type="text"
-                    class="form-control text-right js-input-change"
-                    id="m_enkg"
-                    name="m_enkg"
-                    value="{{ s_minuta.recebe.m_enkg|stringformat:'.2f' }}" />
-                    <span class="input-group-addon addon-my-color">
-                        =
-                    </span>
-                    <span class="input-group-addon addon-blue">
-                        R$
-                    </span>
-                    <input type="texy"
-                    class="total-recebe form-control text-right"
-                    id="t_recebe_enkg"
-                    value="{{ s_minuta.recebe.t_enkg|stringformat:'.2f' }}"
-                    readonly />
-                </div>
+        <div class="card-body-item" id="js-recebe-enkg">
+            <div class="input-group input-group-sm transparente">
+                <span class="input-group-addon addon-blue">
+                    R$
+                </span>
+                <input type="text"
+                class="form-control text-right js-input-change"
+                id="v_enkg"
+                name="v_enkg"
+                value="{{ s_minuta.recebe.v_enkg|stringformat:'.2f' }}" />
+                <span class="input-group-addon addon-blue">
+                    KG
+                </span>
+                <input type="text"
+                class="form-control text-right js-input-change"
+                id="m_enkg"
+                name="m_enkg"
+                value="{{ s_minuta.recebe.m_enkg|stringformat:'.2f' }}" />
+                <span class="input-group-addon addon-my-color">
+                    =
+                </span>
+                <span class="input-group-addon addon-blue">
+                    R$
+                </span>
+                <input type="texy"
+                class="total-recebe form-control text-right"
+                id="t_recebe_enkg"
+                value="{{ s_minuta.recebe.t_enkg|stringformat:'.2f' }}"
+                readonly />
             </div>
         </div>
         <!-- Entregas Volume -->
@@ -453,39 +428,35 @@
             </div>
         </div>
         <!-- Valores Entregas Volume -->
-        <div class="card-body-item">
-            <div class="form-finan"
-            id="form-recebe-evol">
-                <div class="input-group input-group-sm transparente"
-                id="form-recebe-segu">
-                    <span class="input-group-addon addon-blue">
-                        R$
-                    </span>
-                    <input type="text"
-                    class="form-control text-right js-input-change"
-                    id="v_evol"
-                    name="v_evol"
-                    value="{{ s_minuta.recebe.v_evol|stringformat:'.2f' }}" />
-                    <span class="input-group-addon addon-blue">
-                        UN
-                    </span>
-                    <input type="text"
-                    class="form-control text-right js-input-change"
-                    id="m_evol"
-                    name="m_evol"
-                    value="{{ s_minuta.recebe.m_evol|stringformat:'.0f' }}" />
-                    <span class="input-group-addon addon-my-color">
-                        =
-                    </span>
-                    <span class="input-group-addon addon-blue">
-                        R$
-                    </span>
-                    <input type="texy"
-                    class="total-recebe form-control text-right"
-                    id="t_recebe_evol"
-                    value="{{ s_minuta.recebe.t_evol|stringformat:'.2f' }}"
-                    readonly />
-                </div>
+        <div class="card-body-item" id="js-recebe-evol">
+            <div class="input-group input-group-sm transparente">
+                <span class="input-group-addon addon-blue">
+                    R$
+                </span>
+                <input type="text"
+                class="form-control text-right js-input-change"
+                id="v_evol"
+                name="v_evol"
+                value="{{ s_minuta.recebe.v_evol|stringformat:'.2f' }}" />
+                <span class="input-group-addon addon-blue">
+                    UN
+                </span>
+                <input type="text"
+                class="form-control text-right js-input-change"
+                id="m_evol"
+                name="m_evol"
+                value="{{ s_minuta.recebe.m_evol|stringformat:'.0f' }}" />
+                <span class="input-group-addon addon-my-color">
+                    =
+                </span>
+                <span class="input-group-addon addon-blue">
+                    R$
+                </span>
+                <input type="texy"
+                class="total-recebe form-control text-right"
+                id="t_recebe_evol"
+                value="{{ s_minuta.recebe.t_evol|stringformat:'.2f' }}"
+                readonly />
             </div>
         </div>
         <!-- Saida -->
@@ -507,38 +478,34 @@
             </div>
         </div>
         <!-- Valores Saida -->
-        <div class="card-body-item">
-            <div class="form-finan"
-            id="form-recebe-said">
-                <div class="input-group input-group-sm transparente"
-                id="form-recebe-segu">
-                    <span class="input-group-addon addon-blue">
-                        R$
-                    </span>
-                    <input type="text"
-                    id="v_said"
-                    name="v_said"
-                    class="form-control text-right js-input-change"
-                    value="{{ s_minuta.recebe.v_said|stringformat:'.2f' }}" />
-                    <span class="input-group-addon addon-blue">
-                        UN
-                    </span>
-                    <input type="text"
-                    class="form-control text-right"
-                    value="1"
-                    readonly />
-                    <span class="input-group-addon addon-my-color">
-                        =
-                    </span>
-                    <span class="input-group-addon addon-blue">
-                        R$
-                    </span>
-                    <input type="texy"
-                    class="total-recebe form-control text-right"
-                    id="t_recebe_said"
-                    value="{{ s_minuta.recebe.v_said|stringformat:'.2f' }}"
-                    readonly />
-                </div>
+        <div class="card-body-item" id="js-recebe-said">
+            <div class="input-group input-group-sm transparente">
+                <span class="input-group-addon addon-blue">
+                    R$
+                </span>
+                <input type="text"
+                id="v_said"
+                name="v_said"
+                class="form-control text-right js-input-change"
+                value="{{ s_minuta.recebe.v_said|stringformat:'.2f' }}" />
+                <span class="input-group-addon addon-blue">
+                    UN
+                </span>
+                <input type="text"
+                class="form-control text-right"
+                value="1"
+                readonly />
+                <span class="input-group-addon addon-my-color">
+                    =
+                </span>
+                <span class="input-group-addon addon-blue">
+                    R$
+                </span>
+                <input type="texy"
+                class="total-recebe form-control text-right"
+                id="t_recebe_said"
+                value="{{ s_minuta.recebe.v_said|stringformat:'.2f' }}"
+                readonly />
             </div>
         </div>
         <!-- Capacidade Peso -->
@@ -560,37 +527,33 @@
             </div>
         </div>
         <!-- Valores Capacidade Peso -->
-        <div class="card-body-item">
-            <div class="form-finan"
-            id="form-recebe-capa">
-                <div class="input-group input-group-sm transparente"
-                id="form-recebe-segu">
-                    <span class="input-group-addon addon-blue">
-                        R$
-                    </span>
-                    <input type="text"
-                    class="form-control text-right js-input-change"
-                    id="v_capa"
-                    name="v_capa"
-                    value="{{ s_minuta.recebe.v_capa|stringformat:'.2f' }}" />
-                    <span class="input-group-addon addon-blue">
-                        UN
-                    </span>
-                    <input type="text"
-                    class="form-control text-right" value="1"
-                    readonly />
-                    <span class="input-group-addon addon-my-color">
-                        =
-                    </span>
-                    <span class="input-group-addon addon-blue">
-                        R$
-                    </span>
-                    <input type="texy"
-                    class="total-recebe form-control text-right"
-                    id="t_recebe_capa"
-                    value="{{ s_minuta.recebe.v_capa|stringformat:'.2f' }}"
-                    readonly />
-                </div>
+        <div class="card-body-item" id="js-recebe-capa">
+            <div class="input-group input-group-sm transparente">
+                <span class="input-group-addon addon-blue">
+                    R$
+                </span>
+                <input type="text"
+                class="form-control text-right js-input-change"
+                id="v_capa"
+                name="v_capa"
+                value="{{ s_minuta.recebe.v_capa|stringformat:'.2f' }}" />
+                <span class="input-group-addon addon-blue">
+                    UN
+                </span>
+                <input type="text"
+                class="form-control text-right" value="1"
+                readonly />
+                <span class="input-group-addon addon-my-color">
+                    =
+                </span>
+                <span class="input-group-addon addon-blue">
+                    R$
+                </span>
+                <input type="texy"
+                class="total-recebe form-control text-right"
+                id="t_recebe_capa"
+                value="{{ s_minuta.recebe.v_capa|stringformat:'.2f' }}"
+                readonly />
             </div>
         </div>
         <!-- Perimetro -->
@@ -612,39 +575,35 @@
             </div>
         </div>
         <!-- Valores Perimetro -->
-        <div class="card-body-item">
-            <div class="form-finan"
-            id="form-recebe-peri">
-                <div class="input-group input-group-sm transparente"
-                id="form-recebe-segu">
-                    <span class="input-group-addon addon-blue">
-                        &nbsp%&nbsp
-                    </span>
-                    <input type="text"
-                    id="v_peri"
-                    name="v_peri"
-                    class="form-control text-right js-input-change"
-                    value="{{ s_minuta.recebe.v_peri|stringformat:'.2f' }}" />
-                    <span class="input-group-addon addon-blue">
-                        R$
-                    </span>
-                    <input type="text"
-                    class="form-control text-right js-input-change"
-                    id="m_peri"
-                    name="m_peri"
-                    value="{{ s_minuta.recebe.m_peri|stringformat:'.2f' }}" />
-                    <span class="input-group-addon addon-my-color">
-                        =
-                    </span>
-                    <span class="input-group-addon addon-blue">
-                        R$
-                    </span>
-                    <input type="texy"
-                    class="total-recebe form-control text-right"
-                    id="t_recebe_peri"
-                    value="{{ s_minuta.recebe.t_peri|stringformat:'.2f' }}"
-                    readonly />
-                </div>
+        <div class="card-body-item" id="js-recebe-peri">
+            <div class="input-group input-group-sm transparente">
+                <span class="input-group-addon addon-blue">
+                    &nbsp%&nbsp
+                </span>
+                <input type="text"
+                id="v_peri"
+                name="v_peri"
+                class="form-control text-right js-input-change"
+                value="{{ s_minuta.recebe.v_peri|stringformat:'.2f' }}" />
+                <span class="input-group-addon addon-blue">
+                    R$
+                </span>
+                <input type="text"
+                class="form-control text-right js-input-change"
+                id="m_peri"
+                name="m_peri"
+                value="{{ s_minuta.recebe.m_peri|stringformat:'.2f' }}" />
+                <span class="input-group-addon addon-my-color">
+                    =
+                </span>
+                <span class="input-group-addon addon-blue">
+                    R$
+                </span>
+                <input type="texy"
+                class="total-recebe form-control text-right"
+                id="t_recebe_peri"
+                value="{{ s_minuta.recebe.t_peri|stringformat:'.2f' }}"
+                readonly />
             </div>
         </div>
         <!-- Pernoite -->
@@ -666,39 +625,35 @@
             </div>
         </div>
         <!-- Valores Pernoite -->
-        <div class="card-body-item">
-            <div class="form-finan"
-            id="form-recebe-pnoi">
-                <div class="input-group input-group-sm transparente"
-                id="form-recebe-segu">
-                    <span class="input-group-addon addon-blue">
-                        &nbsp%&nbsp
-                    </span>
-                    <input type="text"
-                    class="form-control text-right js-input-change"
-                    id="v_pnoi"
-                    name="v_pnoi"
-                    value="{{ s_minuta.recebe.v_pnoi|stringformat:'.2f' }}" />
-                    <span class="input-group-addon addon-blue">
-                        R$
-                    </span>
-                    <input type="text"
-                    class="form-control text-right js-input-change"
-                    id="m_pnoi"
-                    name="m_pnoi"
-                    value="{{ s_minuta.recebe.m_peri|stringformat:'.2f' }}" />
-                    <span class="input-group-addon addon-my-color">
-                        =
-                    </span>
-                    <span class="input-group-addon addon-blue">
-                        R$
-                    </span>
-                    <input type="texy"
-                    class="total-recebe form-control text-right"
-                    id="t_recebe_pnoi"
-                    value="{{ s_minuta.recebe.t_pnoi|stringformat:'.2f' }}"
-                    readonly />
-                </div>
+        <div class="card-body-item" id="js-recebe-pnoi">
+            <div class="input-group input-group-sm transparente">
+                <span class="input-group-addon addon-blue">
+                    &nbsp%&nbsp
+                </span>
+                <input type="text"
+                class="form-control text-right js-input-change"
+                id="v_pnoi"
+                name="v_pnoi"
+                value="{{ s_minuta.recebe.v_pnoi|stringformat:'.2f' }}" />
+                <span class="input-group-addon addon-blue">
+                    R$
+                </span>
+                <input type="text"
+                class="form-control text-right js-input-change"
+                id="m_pnoi"
+                name="m_pnoi"
+                value="{{ s_minuta.recebe.m_peri|stringformat:'.2f' }}" />
+                <span class="input-group-addon addon-my-color">
+                    =
+                </span>
+                <span class="input-group-addon addon-blue">
+                    R$
+                </span>
+                <input type="texy"
+                class="total-recebe form-control text-right"
+                id="t_recebe_pnoi"
+                value="{{ s_minuta.recebe.t_pnoi|stringformat:'.2f' }}"
+                readonly />
             </div>
         </div>
         <!-- Ajudante -->
@@ -720,39 +675,35 @@
             </div>
         </div>
         <!-- Valores Ajudante -->
-        <div class="card-body-item">
-            <div class="form-finan"
-            id="form-recebe-ajud">
-                <div class="input-group input-group-sm transparente"
-                id="form-recebe-segu">
-                    <span class="input-group-addon addon-blue">
-                        R$
-                    </span>
-                    <input type="text"
-                    class="form-control text-right js-input-change"
-                    id="v_ajud"
-                    name="v_ajud"
-                    value="{{ s_minuta.recebe.v_ajud|stringformat:'.2f' }}" />
-                    <span class="input-group-addon addon-blue">
-                        UN
-                    </span>
-                    <input type="text"
-                    class="form-control text-right js-input-change"
-                    id="m_ajud"
-                    name="m_ajud"
-                    value="{{ s_minuta.recebe.m_ajud|stringformat:'.0f' }}" />
-                    <span class="input-group-addon addon-my-color">
-                        =
-                    </span>
-                    <span class="input-group-addon addon-blue">
-                        R$
-                    </span>
-                    <input type="texy"
-                    class="total-recebe form-control text-right"
-                    id="t_recebe_ajud"
-                    value="{{ s_minuta.recebe.t_ajud|stringformat:'.2f' }}"
-                    readonly />
-                </div>
+        <div class="card-body-item" id="js-recebe-ajud">
+            <div class="input-group input-group-sm transparente">
+                <span class="input-group-addon addon-blue">
+                    R$
+                </span>
+                <input type="text"
+                class="form-control text-right js-input-change"
+                id="v_ajud"
+                name="v_ajud"
+                value="{{ s_minuta.recebe.v_ajud|stringformat:'.2f' }}" />
+                <span class="input-group-addon addon-blue">
+                    UN
+                </span>
+                <input type="text"
+                class="form-control text-right js-input-change"
+                id="m_ajud"
+                name="m_ajud"
+                value="{{ s_minuta.recebe.m_ajud|stringformat:'.0f' }}" />
+                <span class="input-group-addon addon-my-color">
+                    =
+                </span>
+                <span class="input-group-addon addon-blue">
+                    R$
+                </span>
+                <input type="texy"
+                class="total-recebe form-control text-right"
+                id="t_recebe_ajud"
+                value="{{ s_minuta.recebe.t_ajud|stringformat:'.2f' }}"
+                readonly />
             </div>
         </div>
         {% if s_minuta.despesas %}
@@ -776,38 +727,34 @@
             </div>
         </div>
         <!-- Valores Despesas -->
-        <div class="card-body-item">
-            <div class="form-finan"
-            id="form-recebe-desp{{ despesa.idMinutaItens }}">
-                <div class="input-group input-group-sm transparente"
-                id="form-recebe-segu">
-                    <span class="input-group-addon addon-blue">
-                        R$
-                    </span>
-                    <input type="text"
-                    class="form-control text-right js-input-change"
-                    id="v_desp{{ despesa.idMinutaItens }}"
-                    name="v_desp{{ despesa.idMinutaItens }}"
-                    value="{{ despesa.Valor|stringformat:'.2f' }}" />
-                    <span class="input-group-addon addon-blue">
-                        UN
-                    </span>
-                    <input type="text"
-                    class="form-control text-right"
-                    value="1"
-                    readonly />
-                    <span class="input-group-addon addon-my-color">
-                        =
-                    </span>
-                    <span class="input-group-addon addon-blue">
-                        R$
-                    </span>
-                    <input type="texy"
-                    class="total-recebe form-control text-right"
-                    id="t_recebe_desp{{ despesa.idMinutaItens }}"
-                    value="{{ despesa.Valor|stringformat:'.2f' }}"
-                    readonly />
-                </div>
+        <div class="card-body-item" id="js-recebe-desp{{ despesa.idMinutaItens }}">
+            <div class="input-group input-group-sm transparente">
+                <span class="input-group-addon addon-blue">
+                    R$
+                </span>
+                <input type="text"
+                class="form-control text-right js-input-change"
+                id="v_desp{{ despesa.idMinutaItens }}"
+                name="v_desp{{ despesa.idMinutaItens }}"
+                value="{{ despesa.Valor|stringformat:'.2f' }}" />
+                <span class="input-group-addon addon-blue">
+                    UN
+                </span>
+                <input type="text"
+                class="form-control text-right"
+                value="1"
+                readonly />
+                <span class="input-group-addon addon-my-color">
+                    =
+                </span>
+                <span class="input-group-addon addon-blue">
+                    R$
+                </span>
+                <input type="texy"
+                class="total-recebe form-control text-right"
+                id="t_recebe_desp{{ despesa.idMinutaItens }}"
+                value="{{ despesa.Valor|stringformat:'.2f' }}"
+                readonly />
             </div>
         </div>
         {% endfor %}

@@ -781,8 +781,8 @@ $(document).ready(function() {
     // Ao modificar um checkbox //
     $(document).on('change', '.c_recebe', function() {
         var checkbox_change = $(this).attr('id').substring(9)
-        var visible = $('#form-recebe-' + checkbox_change).is(':visible')
-        $('#form-recebe-' + checkbox_change).fadeToggle(500)
+        var visible = $('#js-recebe-' + checkbox_change).is(':visible')
+        $('#js-recebe-' + checkbox_change).fadeToggle(500)
         if (visible) {
             $('#t_recebe_' + checkbox_change).val('0,00')
             somaReceita();
@@ -1180,46 +1180,46 @@ function verificaSwitchPaga() {
 
 function verificaSwitchRecebe() {
     if ($('#c_recebe_taxa').is(':not(:checked)')) {
-        $('#form-recebe-taxa').slideUp(500)
+        $('#js-recebe-taxa').slideUp(500)
     }
     if ($('#c_recebe_segu').is(':not(:checked)')) {
-        $('#form-recebe-segu').slideUp(500)
+        $('#js-recebe-segu').slideUp(500)
     }
     if ($('#c_recebe_porc').is(':not(:checked)')) {
-        $('#form-recebe-porc').slideUp(500)
+        $('#js-recebe-porc').slideUp(500)
     }
     if ($('#c_recebe_hora').is(':not(:checked)')) {
-        $('#form-recebe-hora').slideUp(500)
+        $('#js-recebe-hora').slideUp(500)
     }
     if ($('#c_recebe_exce').is(':not(:checked)')) {
-        $('#form-recebe-exce').slideUp(500)
+        $('#js-recebe-exce').slideUp(500)
     }
     if ($('#c_recebe_kilm').is(':not(:checked)')) {
-        $('#form-recebe-kilm').slideUp(500)
+        $('#js-recebe-kilm').slideUp(500)
     }
     if ($('#c_recebe_entr').is(':not(:checked)')) {
-        $('#form-recebe-entr').slideUp(500)
+        $('#js-recebe-entr').slideUp(500)
     }
     if ($('#c_recebe_enkg').is(':not(:checked)')) {
-        $('#form-recebe-enkg').slideUp(500)
+        $('#js-recebe-enkg').slideUp(500)
     }
     if ($('#c_recebe_evol').is(':not(:checked)')) {
-        $('#form-recebe-evol').slideUp(500)
+        $('#js-recebe-evol').slideUp(500)
     }
     if ($('#c_recebe_said').is(':not(:checked)')) {
-        $('#form-recebe-said').slideUp(500)
+        $('#js-recebe-said').slideUp(500)
     }
     if ($('#c_recebe_capa').is(':not(:checked)')) {
-        $('#form-recebe-capa').slideUp(500)
+        $('#js-recebe-capa').slideUp(500)
     }
     if ($('#c_recebe_peri').is(':not(:checked)')) {
-        $('#form-recebe-peri').slideUp(500)
+        $('#js-recebe-peri').slideUp(500)
     }
     if ($('#c_recebe_pnoi').is(':not(:checked)')) {
-        $('#form-recebe-pnoi').slideUp(500)
+        $('#js-recebe-pnoi').slideUp(500)
     }
     if ($('#c_recebe_ajud').is(':not(:checked)')) {
-        $('#form-recebe-ajud').slideUp(500)
+        $('#js-recebe-ajud').slideUp(500)
     }
 };
 
