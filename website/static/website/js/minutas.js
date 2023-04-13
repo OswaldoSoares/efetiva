@@ -66,8 +66,29 @@ $(document).ready(function() {
     /* Versão Nova - Função que envia formulário com os itens de
     recebimento para serem processados pelo servidor */
     $(document).on('submit', '#js-gera-receitas', function(event) {
+        verificaTotalZero();
         event.preventDefault();
-        alert(event)
+        $.ajax({
+            type: "POST",
+            url: "/minutas/gera_receitas",
+            data: $(this).serialize,
+            beforeSend: function() {
+                $(".box-loader").show();
+            },
+            success: function(data) {
+                $(".box-loader").hide();
+            },
+            error: function(error) {
+                $(".mensagem-erro").text(
+                    error.status + " " + error.message + " "
+                    + "- entre em contato com o administrador do aplicativo."
+                );
+                $('html, body').scrollTop(0);
+                $(".box-loader").hide();
+                mostraMensagemErro()
+                console.log(error)
+            },
+        });
     });
     
     /* Versão Nova */
