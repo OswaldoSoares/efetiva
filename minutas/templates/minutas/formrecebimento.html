@@ -25,7 +25,7 @@
             <div class="input-group input-group-sm transparente" id="form-recebe-taxa">
                 <span class="form-label-recebe input-group-addon addon-blue">R$</span>
                 <input type="text" name="v_taxa" id="v_taxa"
-                class="form-control text-right"
+                class="form-control text-right js-input-change"
                 value="{{ s_minuta.recebe.v_taxa|stringformat:'.2f' }}">
                 <span class="form-label-recebe input-group-addon addon-blue">UN</span>
                 <input type="text" readonly class="form-control text-right" value="1">
@@ -54,15 +54,15 @@
             <div class="input-group input-group-sm transparente" id="form-recebe-segu">
                 <span class="form-label-recebe input-group-addon addon-blue">&nbsp%&nbsp</span>
                 <input type="text" name="v_segu" id="v_segu"
-                class="form-control text-right"
+                class="form-control text-right js-input-change"
                 value="{{ s_minuta.recebe.v_segu|stringformat:'.3f' }}">
                 <span class="form-label-recebe  input-group-addon addon-blue">R$</span>
-                <input type="text" class="form-control text-right" name="m_segu" id="m_segu"
+                <input type="text" class="form-control text-right js-input-change" name="m_segu" id="m_segu"
                 value="{{ s_minuta.recebe.m_segu|stringformat:'.2f' }}">
                 <span class="form-label-recebe input-group-addon addon-my-color">=</span>
                 <span class="form-label-recebe input-group-addon addon-blue">R$</span>
                 <input type="texy" class="total-recebe form-control text-right"
-                id="t_recebe_segu"
+                id="t_recebe_segu" readonly
                 value="{{ s_minuta.recebe.t_segu|stringformat:'.2f' }}"></input>
             </div>
         </div>
@@ -85,15 +85,15 @@
                 <div class="input-group input-group-sm transparente" id="form-recebe-segu">
                     <span class="form-label-recebe input-group-addon addon-blue">&nbsp%&nbsp</span>
                     <input type="text" name="v_porc" id="v_porc"
-                    class="form-control text-right"
+                    class="form-control text-right js-input-change"
                     value="{{ s_minuta.recebe.v_porc|stringformat:'.2f' }}">
                     <span class="form-label-recebe  input-group-addon addon-blue">R$</span>
-                    <input type="text" class="form-control text-right" name="m_porc" id="m_porc"
+                    <input type="text" class="form-control text-right js-input-change" name="m_porc" id="m_porc"
                     value="{{ s_minuta.recebe.m_porc|stringformat:'.2f' }}">
                     <span class="form-label-recebe input-group-addon addon-my-color">=</span>
                     <span class="form-label-recebe input-group-addon addon-blue">R$</span>
                     <input type="texy" class="total-recebe form-control text-right"
-                    id="t_recebe_porc"
+                    id="t_recebe_porc" readonly
                     value="{{ s_minuta.recebe.t_porc|stringformat:'.2f' }}"></input>
                 </div>
             </div>
@@ -117,15 +117,15 @@
                 <div class="input-group input-group-sm transparente" id="form-recebe-segu">
                     <span class="form-label-recebe input-group-addon addon-blue">R$</span>
                     <input type="text" name="v_hora" id="v_hora"
-                    class="form-control text-right"
+                    class="form-control text-right js-input-change"
                     value="{{ s_minuta.recebe.v_hora|stringformat:'.2f' }}">
                     <span class="form-label-recebe  input-group-addon addon-blue">HS</span>
-                    <input type="text" class="form-control text-right" name="m_hora" id="m_hora"
+                    <input type="text" class="form-control text-right js-input-change" name="m_hora" id="m_hora"
                     value="{{ s_minuta.recebe.m_hora }}">
                     <span class="form-label-recebe input-group-addon addon-my-color">=</span>
                     <span class="form-label-recebe input-group-addon addon-blue">R$</span>
                     <input type="texy" class="total-recebe form-control text-right"
-                    id="t_recebe_hora"
+                    id="t_recebe_hora" readonly
                     value="{{ s_minuta.recebe.t_hora|stringformat:'.2f' }}"></input>
                 </div>
             </div>
@@ -149,15 +149,15 @@
                 <div class="input-group input-group-sm transparente" id="form-recebe-segu">
                     <span class="form-label-recebe input-group-addon addon-blue">&nbsp%&nbsp</span>
                     <input type="text" name="v_exce" id="v_exce"
-                    class="form-control text-right"
+                    class="form-control text-right js-input-change"
                     value="{{ s_minuta.recebe.v_exce|stringformat:'.2f' }}">
                     <span class="form-label-recebe  input-group-addon addon-blue">HS</span>
-                    <input type="text" class="form-control text-right" name="m_exce" id="m_exce"
+                    <input type="text" class="form-control text-right js-input-change" name="m_exce" id="m_exce"
                     value="{{ s_minuta.recebe.m_exce }}">
                     <span class="form-label-recebe input-group-addon addon-my-color">=</span>
                     <span class="form-label-recebe input-group-addon addon-blue">R$</span>
                     <input type="texy" class="total-recebe form-control text-right"
-                    id="t_recebe_exce"
+                    id="t_recebe_exce" readonly
                     value="{{ s_minuta.recebe.t_exce|stringformat:'.2f' }}"></input>
                 </div>
             </div>
@@ -181,15 +181,15 @@
                 <div class="input-group input-group-sm transparente" id="form-recebe-segu">
                     <span class="form-label-recebe input-group-addon addon-blue">R$</span>
                     <input type="text" name="v_kilm" id="v_kilm"
-                    class="form-control text-right"
+                    class="form-control text-right js-input-change"
                     value="{{ s_minuta.recebe.v_kilm|stringformat:'.2f' }}">
                     <span class="form-label-recebe  input-group-addon addon-blue">UN</span>
-                    <input type="text" class="form-control text-right" name="m_kilm" id="m_kilm"
+                    <input type="text" class="form-control text-right js-input-change" name="m_kilm" id="m_kilm"
                     value="{{ s_minuta.recebe.m_kilm|stringformat:'.0f' }}">
                     <span class="form-label-recebe input-group-addon addon-my-color">=</span>
                     <span class="form-label-recebe input-group-addon addon-blue">R$</span>
                     <input type="texy" class="total-recebe form-control text-right"
-                    id="t_recebe_kilm"
+                    id="t_recebe_kilm" readonly
                     value="{{ s_minuta.recebe.t_kilm|stringformat:'.2f' }}"></input>
                 </div>
             </div>
@@ -213,15 +213,15 @@
                 <div class="input-group input-group-sm transparente" id="form-recebe-segu">
                     <span class="form-label-recebe input-group-addon addon-blue">R$</span>
                     <input type="text" name="v_entr" id="v_entr"
-                    class="form-control text-right"
+                    class="form-control text-right js-input-change"
                     value="{{ s_minuta.recebe.v_entr|stringformat:'.2f' }}">
                     <span class="form-label-recebe  input-group-addon addon-blue">UN</span>
-                    <input type="text" class="form-control text-right" name="m_entr" id="m_entr"
+                    <input type="text" class="form-control text-right js-input-change" name="m_entr" id="m_entr"
                     value="{{ s_minuta.recebe.m_entr|stringformat:'.0f' }}">
                     <span class="form-label-recebe input-group-addon addon-my-color">=</span>
                     <span class="form-label-recebe input-group-addon addon-blue">R$</span>
                     <input type="texy" class="total-recebe form-control text-right"
-                    id="t_recebe_entr"
+                    id="t_recebe_entr" readonly
                     value="{{ s_minuta.recebe.t_entr|stringformat:'.2f' }}"></input>
                 </div>
             </div>
@@ -245,15 +245,15 @@
                 <div class="input-group input-group-sm transparente" id="form-recebe-segu">
                     <span class="form-label-recebe input-group-addon addon-blue">R$</span>
                     <input type="text" name="v_enkg" id="v_enkg"
-                    class="form-control text-right"
+                    class="form-control text-right js-input-change"
                     value="{{ s_minuta.recebe.v_enkg|stringformat:'.2f' }}">
                     <span class="form-label-recebe  input-group-addon addon-blue">KG</span>
-                    <input type="text" class="form-control text-right" name="m_enkg" id="m_enkg"
+                    <input type="text" class="form-control text-right js-input-change" name="m_enkg" id="m_enkg"
                     value="{{ s_minuta.recebe.m_enkg|stringformat:'.2f' }}">
                     <span class="form-label-recebe input-group-addon addon-my-color">=</span>
                     <span class="form-label-recebe input-group-addon addon-blue">R$</span>
                     <input type="texy" class="total-recebe form-control text-right"
-                    id="t_recebe_enkg"
+                    id="t_recebe_enkg" readonly
                     value="{{ s_minuta.recebe.t_enkg|stringformat:'.2f' }}"></input>
                 </div>
             </div>
@@ -277,15 +277,15 @@
                 <div class="input-group input-group-sm transparente" id="form-recebe-segu">
                     <span class="form-label-recebe input-group-addon addon-blue">R$</span>
                     <input type="text" name="v_evol" id="v_evol"
-                    class="form-control text-right"
+                    class="form-control text-right js-input-change"
                     value="{{ s_minuta.recebe.v_evol|stringformat:'.2f' }}">
                     <span class="form-label-recebe  input-group-addon addon-blue">UN</span>
-                    <input type="text" class="form-control text-right" name="m_evol" id="m_evol"
+                    <input type="text" class="form-control text-right js-input-change" name="m_evol" id="m_evol"
                     value="{{ s_minuta.recebe.m_evol|stringformat:'.0f' }}">
                     <span class="form-label-recebe input-group-addon addon-my-color">=</span>
                     <span class="form-label-recebe input-group-addon addon-blue">R$</span>
                     <input type="texy" class="total-recebe form-control text-right"
-                    id="t_recebe_evol"
+                    id="t_recebe_evol" readonly
                     value="{{ s_minuta.recebe.t_evol|stringformat:'.2f' }}"></input>
                 </div>
             </div>
@@ -309,14 +309,14 @@
                 <div class="input-group input-group-sm transparente" id="form-recebe-segu">
                     <span class="form-label-recebe input-group-addon addon-blue">R$</span>
                     <input type="text" name="v_said" id="v_said"
-                    class="form-control text-right"
+                    class="form-control text-right js-input-change"
                     value="{{ s_minuta.recebe.v_said|stringformat:'.2f' }}">
                     <span class="form-label-recebe input-group-addon addon-blue">UN</span>
                     <input type="text" readonly class="form-control text-right" value="1">
                     <span class="form-label-recebe input-group-addon addon-my-color">=</span>
                     <span class="form-label-recebe input-group-addon addon-blue">R$</span>
                     <input type="texy" class="total-recebe form-control text-right"
-                    id="t_recebe_said"
+                    id="t_recebe_said" readonly
                     value="{{ s_minuta.recebe.v_said|stringformat:'.2f' }}"></input>
                 </div>
             </div>
@@ -340,14 +340,14 @@
                 <div class="input-group input-group-sm transparente" id="form-recebe-segu">
                     <span class="form-label-recebe input-group-addon addon-blue">R$</span>
                     <input type="text" name="v_capa" id="v_capa"
-                    class="form-control text-right"
+                    class="form-control text-right js-input-change"
                     value="{{ s_minuta.recebe.v_capa|stringformat:'.2f' }}">
                     <span class="form-label-recebe input-group-addon addon-blue">UN</span>
                     <input type="text" readonly class="form-control text-right" value="1">
                     <span class="form-label-recebe input-group-addon addon-my-color">=</span>
                     <span class="form-label-recebe input-group-addon addon-blue">R$</span>
                     <input type="texy" class="total-recebe form-control text-right"
-                    id="t_recebe_capa"
+                    id="t_recebe_capa" readonly
                     value="{{ s_minuta.recebe.v_capa|stringformat:'.2f' }}"></input>
                 </div>
             </div>
@@ -371,15 +371,15 @@
                 <div class="input-group input-group-sm transparente" id="form-recebe-segu">
                     <span class="form-label-recebe input-group-addon addon-blue">&nbsp%&nbsp</span>
                     <input type="text" name="v_peri" id="v_peri"
-                    class="form-control text-right"
+                    class="form-control text-right js-input-change"
                     value="{{ s_minuta.recebe.v_peri|stringformat:'.2f' }}">
                     <span class="form-label-recebe  input-group-addon addon-blue">R$</span>
-                    <input type="text" class="form-control text-right" name="m_peri" id="m_peri"
+                    <input type="text" class="form-control text-right js-input-change" name="m_peri" id="m_peri"
                     value="{{ s_minuta.recebe.m_peri|stringformat:'.2f' }}">
                     <span class="form-label-recebe input-group-addon addon-my-color">=</span>
                     <span class="form-label-recebe input-group-addon addon-blue">R$</span>
                     <input type="texy" class="total-recebe form-control text-right"
-                    id="t_recebe_peri"
+                    id="t_recebe_peri" readonly
                     value="{{ s_minuta.recebe.t_peri|stringformat:'.2f' }}"></input>
                 </div>
             </div>
@@ -403,15 +403,15 @@
                 <div class="input-group input-group-sm transparente" id="form-recebe-segu">
                     <span class="form-label-recebe input-group-addon addon-blue">&nbsp%&nbsp</span>
                     <input type="text" name="v_pnoi" id="v_pnoi"
-                    class="form-control text-right"
+                    class="form-control text-right js-input-change"
                     value="{{ s_minuta.recebe.v_pnoi|stringformat:'.2f' }}">
                     <span class="form-label-recebe  input-group-addon addon-blue">R$</span>
-                    <input type="text" class="form-control text-right" name="m_pnoi" id="m_pnoi"
+                    <input type="text" class="form-control text-right js-input-change" name="m_pnoi" id="m_pnoi"
                     value="{{ s_minuta.recebe.m_peri|stringformat:'.2f' }}">
                     <span class="form-label-recebe input-group-addon addon-my-color">=</span>
                     <span class="form-label-recebe input-group-addon addon-blue">R$</span>
                     <input type="texy" class="total-recebe form-control text-right"
-                    id="t_recebe_pnoi"
+                    id="t_recebe_pnoi" readonly
                     value="{{ s_minuta.recebe.t_pnoi|stringformat:'.2f' }}"></input>
                 </div>
             </div>
@@ -435,15 +435,15 @@
                 <div class="input-group input-group-sm transparente" id="form-recebe-segu">
                     <span class="form-label-recebe input-group-addon addon-blue">R$</span>
                     <input type="text" name="v_ajud" id="v_ajud"
-                    class="form-control text-right"
+                    class="form-control text-right js-input-change"
                     value="{{ s_minuta.recebe.v_ajud|stringformat:'.2f' }}">
                     <span class="form-label-recebe  input-group-addon addon-blue">UN</span>
-                    <input type="text" class="form-control text-right" name="m_ajud" id="m_ajud"
+                    <input type="text" class="form-control text-right js-input-change" name="m_ajud" id="m_ajud"
                     value="{{ s_minuta.recebe.m_ajud|stringformat:'.0f' }}">
                     <span class="form-label-recebe input-group-addon addon-my-color">=</span>
                     <span class="form-label-recebe input-group-addon addon-blue">R$</span>
                     <input type="texy" class="total-recebe form-control text-right"
-                    id="t_recebe_ajud"
+                    id="t_recebe_ajud" readonly
                     value="{{ s_minuta.recebe.t_ajud|stringformat:'.2f' }}"></input>
                 </div>
             </div>
@@ -470,14 +470,14 @@
                 <div class="input-group input-group-sm transparente" id="form-recebe-segu">
                     <span class="form-label-recebe input-group-addon addon-blue">R$</span>
                     <input type="text" name="v_desp{{ despesa.idMinutaItens }}"
-                    id="v_desp{{ despesa.idMinutaItens }}" class="form-control text-right"
+                    id="v_desp{{ despesa.idMinutaItens }}" class="form-control text-right js-input-change"
                     value="{{ despesa.Valor|stringformat:'.2f' }}">
                     <span class="form-label-recebe input-group-addon addon-blue">UN</span>
                     <input type="text" readonly class="form-control text-right" value="1">
                     <span class="form-label-recebe input-group-addon addon-my-color">=</span>
                     <span class="form-label-recebe input-group-addon addon-blue">R$</span>
                     <input type="texy" class="total-recebe form-control text-right"
-                    id="t_recebe_desp{{ despesa.idMinutaItens }}"
+                    id="t_recebe_desp{{ despesa.idMinutaItens }}" readonly
                     value="{{ despesa.Valor|stringformat:'.2f' }}"></input>
                 </div>
             </div>
@@ -490,11 +490,8 @@
                 {% if s_minuta.motorista or s_minuta.ajudantes %}
                 {% if s_minuta.status_minuta == 'ABERTA' %}
                 {% if not s_minuta.recebe_realizada %}
-                {{ s_minuta.paga_minuta|stringformat:'.2f' }}
                 <button type="submit" class="i-button-form-rodape">
-                    <i class="bi bi-credit-card i-button">
-                        <span>FINALIZAR MINUTA</span>
-                    </i>
+                    <i class="bi bi-credit-card i-button" title="Finalizar Minuta"></i>
                 </button>
                 {% else %}
                 <i class="bi bi-reply-all i-button estorna-pagamentos"

@@ -786,7 +786,7 @@ $(document).ready(function() {
         }
     })
 
-    $(document).on('change', '.form-control-recebe', function() {
+    $(document).on('change', '.js-input-change', function() {
         // Cria as variaveis como o nome do atributo e com valor 0
         var element_select = $(this).attr('name')
         var valor_digitado = '0,00'
