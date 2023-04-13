@@ -63,6 +63,13 @@ $(document).ready(function() {
         });
     });
 
+    /* Versão Nova - Função que envia formulário com os itens de
+    recebimento para serem processados pelo servidor */
+    $(document).on('submit', '#js-gera-receitas', function(event) {
+        event.preventDefault();
+        alert(event)
+    });
+    
     /* Versão Nova */
     $(document).on('submit', '#form-gera-paga', function(event) {
         verificaTotalZero();

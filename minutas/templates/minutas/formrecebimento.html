@@ -3,7 +3,7 @@
     <span>RECEITAS</span>
 </div>
 <!-- Card - Body -->
-<form method="post" action="{% url 'gerapagamentos' %}">
+<form method="post" id="js-gera-receitas">
     <div class="card-body">
     {% csrf_token %}
         <input type="hidden"
