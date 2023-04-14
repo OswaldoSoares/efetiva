@@ -51,6 +51,7 @@ from .views import (
     remove_minuta_colaborador,
     remove_minuta_despesa,
     remove_minuta_entrega,
+    remove_romaneio_minuta,
 )
 
 urlpatterns = [
@@ -159,5 +160,14 @@ urlpatterns = [
     path("gerapagamentos/", gera_pagamentos, name="gerapagamentos"),
     path("estornapagamentos/", estorna_pagamentos, name="estornapagamentos"),
     path("concluirminuta/", concluir_minuta, name="concluirminuta"),
-    path("adiciona_romaneio_minuta", adiciona_romaneio_minuta, name="adiciona_romaneio_minuta",),
+    path(
+        "adiciona_romaneio_minuta",
+        adiciona_romaneio_minuta,
+        name="adiciona_romaneio_minuta",
+    ),
+    path(
+        "remove_romaneio_minuta",
+        remove_romaneio_minuta,
+        name="remove_romaneio_minuta",
+    ),
 ]

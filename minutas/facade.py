@@ -1779,3 +1779,40 @@ def create_data_adiciona_romaneio_minuta(request, id_min):
     data = dict()
     data = html_entrega(request, data, id_min)
     return data
+
+
+def remove_numero_romaneio_minuta(numero_romaneio, idminuta):
+    romaneio = Romaneios.objects.get(idMinuta=idminuta, Romaneio=numero_romaneio)
+    obj = romaneio
+    obj.idMinuta_id = None
+    obj.save(update_fields=["idMinuta_id"])
+
+
+def create_contexto_minuta_selecionada(idminuta):
+    s_minuta = MinutaSelecionada(idminuta)
+    contexto = {
+        "s_minuta": s_minuta,
+    }
+    return contexto
+
+
+def create_data_entrega_romaneio_minuta(request, contexto):
+    data = dict()
+    data = html_entrega_nova(request, data, contexto)
+    data = html_romaneio(request, data, contexto)
+    return JsonResponse(data)
+
+
+# TODO trocar futuramente html_entrega por está
+def html_entrega_nova(request, data, contexto):
+    data["html_entrega"] = render_to_string(
+        "minutas/entregaminuta.html", contexto, request=request
+    )
+    return data
+
+
+def html_romaneio(request, data, contexto):
+    data["html_romaneio"] = render_to_string(
+        "minutas/html_entregas_romaneio.html", contexto, request=request
+    )
+    return data

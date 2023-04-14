@@ -224,7 +224,7 @@ $(document).ready(function() {
                 $('.html-checklist').html(data['html_checklist']);
                 mostraChecklist();
                 EscondeEntrega()
-                $('.js-entrega').html(data['html_entrega']);
+                $('.card-entrega').html(data['html_entrega']);
                 MostraEntrega()
             },
             error: function(error) {
@@ -1110,7 +1110,7 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                         $(".mensagem-sucesso").text(xhr['html_mensagem']);
                         mostraMensagemSucesso()
                         EscondeEntrega()
-                        $('.js-entrega').html(xhr['html_entrega']);
+                        $('.card-entrega').html(xhr['html_entrega']);
                         MostraEntrega()
                         verificaTotalKMs()
                     }
@@ -1378,11 +1378,11 @@ var MostraDespesa = function() {
 }
 
 var EscondeEntrega = function() {
-    $(".js-entrega").hide()
+    $(".card-entrega").hide()
 }
 
 var MostraEntrega = function() {
-    $(".js-entrega").delay(1000).slideDown(500)
+    $(".card-entrega").delay(1000).slideDown(500)
 }
 
 var escondeChecklist = function() {
@@ -1401,22 +1401,54 @@ var mostraChecklist = function() {
 
 // Versão Nova //
 $(document).on('click', '.js-adiciona-romaneio-minuta', function() {
-    var _id_romaneio = $(this).data('idromaneio')
-    var _id_minuta = $(this).data('idminuta')
+    var idromaneio = $(this).data('idromaneio')
+    var idminuta = $(this).data('idminuta')
+    var idcliente = $(this).data('idcliente')
     $.ajax({
         type: 'GET',
         url: '/minutas/adiciona_romaneio_minuta',
         data: {
-            idRomaneio: _id_romaneio,
-            idMinuta: _id_minuta,
+            idromaneio: idromaneio,
+            idminuta: idminuta,
+            idcliente: idcliente
         },
         beforeSend: function() {
-            $('.js-entrega').hide()
+            $('.card-entrega').hide()
+            $('.card-romaneio').hide()
             $(".box-loader").show()
         },
         success: function(data) {
-            $('.js-entrega').html(data['html_entrega'])
-            $('.js-entrega').show()
+            $('.card-entrega').html(data['html_entrega'])
+            $('.card-entrega').show()
+            $('.card-romaneio').html(data['html_romaneio'])
+            $('.card-romaneio').show()
+            $(".box-loader").hide()
+        },
+    });
+});
+
+$(document).on('click', '.js-remove-romaneio-minuta', function() {
+    var romaneio = $(this).data('romaneio')
+    var idminuta = $(this).data('idminuta')
+    var idcliente = $(this).data('idcliente')
+    $.ajax({
+        type: 'GET',
+        url: '/minutas/remove_romaneio_minuta',
+        data: {
+            romaneio: romaneio,
+            idminuta: idminuta,
+            idcliente: idcliente,
+        },
+        beforeSend: function() {
+            $('.card-entrega').hide()
+            $('.card-romaneio').hide()
+            $(".box-loader").show()
+        },
+        success: function(data) {
+            $('.card-entrega').html(data['html_entrega'])
+            $('.card-entrega').show()
+            $('.card-romaneio').html(data['html_romaneio'])
+            $('.card-romaneio').show()
             $(".box-loader").hide()
         },
     });
