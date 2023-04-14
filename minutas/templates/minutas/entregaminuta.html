@@ -13,6 +13,30 @@
 <div class="js-entrega">
     {% for entrega in s_minuta.entregas %}
     <div class="card-body">
+        {% for romaneio in s_minuta.romaneio %}
+        <div class="card-body-item">
+            <div class="input-group">
+                <div class="input-group-addon addon-my-color">
+                    <i class="bi bi-list-check"></i>
+                </div>
+                <div class="form-control input-fake">
+                    <span>
+                        ROMANEIO: {{ romaneio|stringformat:".5d" }}
+                    </span>
+                </div>
+                <div class="input-group-addon addon-my-color">
+                    {% if not s_minuta.paga_realizada %}
+                    <i class="bi bi-x-square i-button js-remove-romaneio-minuta"
+                    idMinuta="{{ s_minuta.idminuta }}"
+                    romaneio="{{ romaneio }}"
+                    title="Remove Romaneio da Minuta"></i>
+                    {% else %}
+                    <i class="bi bi-check"></i>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
         <div class="card-body-item">
             <div class="input-group">
                 <div class="input-group-addon addon-my-color">
@@ -43,9 +67,10 @@
                 </div>
                 <div class="input-group-addon addon-my-color">
                     {% if not s_minuta.paga_realizada %}
-                    <i class="bi bi-trash i-button remove-entrega"
+                    <i class="bi bi-x-square i-button remove-entrega"
                     idMinuta="{{ s_minuta.idminuta }}"
-                    idMinutaNotas="{{ entrega.idMinutaNotas }}"></i>
+                    idMinutaNotas="{{ entrega.idMinutaNotas }}"
+                    title="Remove Nota Fiscal das Entregas"></i>
                     {% else %}
                     <i class="bi bi-check"></i>
                     {% endif %}
