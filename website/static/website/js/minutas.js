@@ -92,7 +92,7 @@ $(document).ready(function() {
     });
     
     /* Versão Nova */
-    $(document).on('submit', '#form-gera-paga', function(event) {
+    $(document).on('submit', '#js-gera-pagamentos', function(event) {
         verificaTotalZero();
         $(".container").hide()
         event.preventDefault();
@@ -792,8 +792,8 @@ $(document).ready(function() {
 
     $(document).on('change', '.c_paga', function() {
         var checkbox_change = $(this).attr('id').substring(7)
-        var visible = $('#form-paga-' + checkbox_change).is(':visible')
-        $('#form-paga-' + checkbox_change).fadeToggle(500)
+        var visible = $('#js-paga-' + checkbox_change).is(':visible')
+        $('#js-paga-' + checkbox_change).fadeToggle(500)
         if (visible) {
             $('#t_paga_' + checkbox_change).text('0,00')}
     })
@@ -1162,40 +1162,40 @@ var verificaTotalKMs = function() {
 
 function verificaSwitchPaga() {
     if ($('#c_paga_porc').is(':not(:checked)')) {
-        $('#form-paga-porc').slideUp(500)
+        $('#js-paga-porc').slideUp(500)
     }
     if ($('#c_paga_hora').is(':not(:checked)')) {
-        $('#form-paga-hora').slideUp(500)
+        $('#js-paga-hora').slideUp(500)
     }
     if ($('#c_paga_exce').is(':not(:checked)')) {
-        $('#form-paga-exce').slideUp(500)
+        $('#js-paga-exce').slideUp(500)
     }
     if ($('#c_paga_kilm').is(':not(:checked)')) {
-        $('#form-paga-kilm').slideUp(500)
+        $('#js-paga-kilm').slideUp(500)
     }
     if ($('#c_paga_entr').is(':not(:checked)')) {
-        $('#form-paga-entr').slideUp(500)
+        $('#js-paga-entr').slideUp(500)
     }
     if ($('#c_paga_enkg').is(':not(:checked)')) {
-        $('#form-paga-enkg').slideUp(500)
+        $('#js-paga-enkg').slideUp(500)
     }
     if ($('#c_paga_evol').is(':not(:checked)')) {
-        $('#form-paga-evol').slideUp(500)
+        $('#js-paga-evol').slideUp(500)
     }
     if ($('#c_paga_said').is(':not(:checked)')) {
-        $('#form-paga-said').slideUp(500)
+        $('#js-paga-said').slideUp(500)
     }
     if ($('#c_paga_capa').is(':not(:checked)')) {
-        $('#form-paga-capa').slideUp(500)
+        $('#js-paga-capa').slideUp(500)
     }
     if ($('#c_paga_peri').is(':not(:checked)')) {
-        $('#form-paga-peri').slideUp(500)
+        $('#js-paga-peri').slideUp(500)
     }
     if ($('#c_paga_pnoi').is(':not(:checked)')) {
-        $('#form-paga-pnoi').slideUp(500)
+        $('#js-paga-pnoi').slideUp(500)
     }
     if ($('#c_paga_ajud').is(':not(:checked)')) {
-        $('#form-paga-ajud').slideUp(500)
+        $('#js-paga-ajud').slideUp(500)
     }
 };
 

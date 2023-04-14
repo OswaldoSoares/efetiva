@@ -35,23 +35,10 @@
     {% endif %}
 </section>
 <section class="grid-column">
-    <div class="card ac-finan">
-        <div class="article-titulo">
-            <span>PAGAMENTOS</span>
-        </div>
-        <div class="html-form-paga">
-            {% include 'minutas/formpagamento.html' %}
-        </div>
+    <div class="html-form-paga">
+        {% include 'minutas/formpagamento.html' %}
     </div>
 </section>
-
-
-
-<div class="adicionar-minuta">
-    <i class="bi bi-plus-square i-button" onclick="openMyModal(event); return false;"
-        data-title="CADASTRA MINUTA" data-action="{% url 'adicionaminuta' %}" data-button-save-label="SALVAR">
-        ADICIONA MINUTA</i>
-</div>
 <!-- div modal -->
 <div class="modal fade bd-example-modal-lg" id="MyModal" tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered">
