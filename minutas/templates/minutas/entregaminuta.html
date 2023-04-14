@@ -36,6 +36,9 @@
         </div>
     </div>
     {% endfor %}
+    {% if s_minuta.romaneio %}
+        <div class="linha-divisoria-nova"></div>
+    {% endif %}
     {% for entrega in s_minuta.entregas %}
     <div class="card-body-item">
         <div class="input-group">
