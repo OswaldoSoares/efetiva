@@ -947,6 +947,7 @@ function formatMask() {
     $('#m_ajud').mask('#.##0', { reverse: true })
     $('.v_desp').mask('#.##0,00', { reverse: true })
     $('.total-recebe').mask('#.##0,00', { reverse: true })
+    $('.total-paga').mask('#.##0,00', { reverse: true })
     // $("#totalrecebe").mask('#.##0,00', { reverse: true })
 }
 
@@ -976,6 +977,7 @@ function formatUnmask() {
     $('#m_ajud').unmask()
     $('#v_desp').unmask()
     $('.total-recebe').unmask()
+    $('.total-paga').unmask()
     // $("#totalrecebe").unmask()
 }
 

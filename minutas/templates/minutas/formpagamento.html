@@ -609,20 +609,28 @@
             </div>
         </div>
     </div>
+    {% if s_minuta.ajudantes or s_minuta.motorista %}
+    <div class="linha-divisoria-nova"></div>
+    {% endif %}
     {% for motorista in s_minuta.motorista %}
     {% if motorista.obj.TipoPgto != 'MENSALISTA' %}
-    <div class="form-finan">
-        <span>{{ motorista.apelido }}</span>
-        <div class="t_paga">
-            <span class="form-label-paga">R$</span>
-            <div class="total-paga">{{ s_minuta.paga_motorista|stringformat:'.2f' }}</div>
+    <div class="card-body-item">
+        <div class="input-group">
+            <i class="bi bi-person input-group-addon addon-my-color"></i>
+            <div class="input-fake div-flex font-menor">
+                <span>
+                    {{ motorista.apelido }}
+                </span>
+                <span>
+                    R$ {{ s_minuta.paga.motorista|stringformat:'.2f' }}
+                </span>
+            </div>
+            <i class="bi bi-check input-group-addon addon-my-color"></i>
         </div>
+    </div>
     </div>
     {% endif %}
     {% endfor %}
-    {% if s_minuta.ajudantes %}
-    <div class="linha-divisoria-nova"></div>
-    {% endif %}
     {% for ajudante in s_minuta.ajudantes %}
     {% if ajudante.tipo != 'MENSALISTA' %}
     <div class="card-body-item">
