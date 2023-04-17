@@ -993,229 +993,6 @@ def cria_dict_recebe():
     return v_recebe
 
 
-def prepara_itens(request):
-    idminuta = request.POST.get("idminuta")
-    hora_zero = timedelta(days=0, hours=0, minutes=0)
-    obs = ""
-    if request.POST.get("s_porc"):
-        base = float(request.POST.get("m_porc"))
-        porcento = float(request.POST.get("v_porc"))
-        valor = base * porcento / 100
-        insere_minuta_item(
-            "PORCENTAGEM DA NOTA",
-            "PAGA",
-            "P",
-            valor,
-            0,
-            porcento,
-            0.00,
-            base,
-            hora_zero,
-            idminuta,
-            obs,
-        )
-    if request.POST.get("s_hora"):
-        base = float(request.POST.get("v_hora"))
-        tempo = datetime.strptime(request.POST.get("m_hora"), "%H:%M").time()
-        valor = calcula_valor_hora(100, tempo, base)
-        tempo = timedelta(days=0, hours=tempo.hour, minutes=tempo.minute)
-        insere_minuta_item(
-            "HORAS", "PAGA", "P", valor, 0, 0.00, 0.00, base, tempo, idminuta, obs
-        )
-    if request.POST.get("s_exce"):
-        porcento = float(request.POST.get("v_exce"))
-        base = float(request.POST.get("v_hora"))
-        tempo = datetime.strptime(request.POST.get("m_exce"), "%H:%M")
-        valor = calcula_valor_hora(porcento, tempo, base)
-        tempo = timedelta(days=0, hours=tempo.hour, minutes=tempo.minute)
-        insere_minuta_item(
-            "HORAS EXCEDENTE",
-            "PAGA",
-            "P",
-            valor,
-            0,
-            porcento,
-            0.00,
-            base,
-            tempo,
-            idminuta,
-            obs,
-        )
-    if request.POST.get("s_kilm"):
-        base = float(request.POST.get("v_kilm"))
-        unidade = float(request.POST.get("m_kilm"))
-        valor = base * unidade
-        insere_minuta_item(
-            "KILOMETRAGEM",
-            "PAGA",
-            "P",
-            valor,
-            unidade,
-            0.00,
-            0.00,
-            base,
-            hora_zero,
-            idminuta,
-            obs,
-        )
-    if request.POST.get("s_entr"):
-        base = float(request.POST.get("v_entr"))
-        unidade = float(request.POST.get("m_entr"))
-        valor = base * unidade
-        insere_minuta_item(
-            "ENTREGAS",
-            "PAGA",
-            "P",
-            valor,
-            unidade,
-            0.00,
-            0.00,
-            base,
-            hora_zero,
-            idminuta,
-            obs,
-        )
-    if request.POST.get("s_enkg"):
-        base = float(request.POST.get("v_enkg"))
-        peso = float(request.POST.get("m_enkg"))
-        valor = base * peso
-        insere_minuta_item(
-            "ENTREGAS KG",
-            "PAGA",
-            "P",
-            valor,
-            0,
-            0.00,
-            peso,
-            base,
-            hora_zero,
-            idminuta,
-            obs,
-        )
-    if request.POST.get("s_evol"):
-        base = float(request.POST.get("v_evol"))
-        unidade = float(request.POST.get("m_evol"))
-        valor = base * unidade
-        insere_minuta_item(
-            "ENTREGAS VOLUME",
-            "PAGA",
-            "P",
-            valor,
-            unidade,
-            0.00,
-            0.00,
-            base,
-            hora_zero,
-            idminuta,
-            obs,
-        )
-    if request.POST.get("s_said"):
-        base = float(request.POST.get("v_said"))
-        insere_minuta_item(
-            "SAIDA", "PAGA", "P", base, 0, 0.00, 0.00, base, hora_zero, idminuta, obs
-        )
-    if request.POST.get("s_capa"):
-        base = float(request.POST.get("v_capa"))
-        insere_minuta_item(
-            "CAPACIDADE PESO",
-            "PAGA",
-            "P",
-            base,
-            0,
-            0.00,
-            0.00,
-            base,
-            hora_zero,
-            idminuta,
-            obs,
-        )
-    if request.POST.get("s_peri"):
-        base = float(request.POST.get("m_peri"))
-        porcento = float(request.POST.get("v_peri"))
-        valor = base * porcento / 100
-        insere_minuta_item(
-            "PERIMETRO",
-            "PAGA",
-            "P",
-            valor,
-            0,
-            porcento,
-            0.00,
-            base,
-            hora_zero,
-            idminuta,
-            obs,
-        )
-    if request.POST.get("s_pnoi"):
-        base = float(request.POST.get("m_pnoi"))
-        porcento = float(request.POST.get("v_pnoi"))
-        valor = base * porcento / 100
-        insere_minuta_item(
-            "PERNOITE",
-            "PAGA",
-            "P",
-            valor,
-            0,
-            porcento,
-            0.00,
-            base,
-            hora_zero,
-            idminuta,
-            obs,
-        )
-    if request.POST.get("s_ajud"):
-        base = float(request.POST.get("v_ajud"))
-        unidade = float(request.POST.get("m_ajud"))
-        valor = base * unidade
-        insere_minuta_item(
-            "AJUDANTE",
-            "PAGA",
-            "P",
-            valor,
-            unidade,
-            0.00,
-            0.00,
-            base,
-            hora_zero,
-            idminuta,
-            obs,
-        )
-
-
-def insere_minuta_item(
-    descricao,
-    tipoitens,
-    recebepaga,
-    valor,
-    quantidade,
-    porcento,
-    peso,
-    valorbase,
-    tempo,
-    idminuta,
-    obs,
-):
-    obj = MinutaItens()
-    obj.Descricao = descricao
-    obj.TipoItens = tipoitens
-    obj.RecebePaga = recebepaga
-    obj.Valor = valor
-    obj.Quantidade = quantidade
-    obj.Porcento = porcento
-    obj.Peso = peso
-    obj.ValorBase = valorbase
-    obj.Tempo = tempo
-    obj.idMinuta_id = idminuta
-    obj.Obs = obs
-    obj.save()
-
-
-def estorna_paga(idminuta):
-    pagamentos = MinutaItens.objects.filter(TipoItens="PAGA", idMinuta=idminuta)
-    for i in pagamentos:
-        i.delete()
-
-
 def novo_status_minuta(request, idminuta, novo_status):
     minuta = get_minuta(idminuta)
     obj = minuta
@@ -1818,83 +1595,323 @@ def html_romaneio(request, data, contexto):
     return data
 
 
-def create_itens_financeiro():
-    lista = [
-        {
-            "itens": [
-                "TAXA DE EXPEDIÇÃO",
-                "SEGURO",
-                "PORCENTAGEM DA NOTA",
-                "HORAS",
-                "HORAS EXCEDENTE",
-                "KILOMETRAGEM",
-                "ENTREGAS",
-                "ENTREGAS KG",
-                "ENTREGAS VOLUME",
-                "SAIDA",
-                "CAPACIDADE PESO",
-                "PERIMETRO",
-                "PERNOITE",
-                "AJUDANTE",
-                "DESCONTO",
-            ]
-        },
-        {
-            "nome_itens": [
-                "taxaexpedicao",
-                "seguro",
-                "porcentagem",
-                "horas",
-                "horasexcede",
-                "kilometragem",
-                "entregas",
-                "entregaskg",
-                "entregasvolume",
-                "saida",
-                "capacidade",
-                "perimetro",
-                "pernoite",
-                "ajudante",
-                "desconto",
-            ]
-        },
-        {
-            "tipo_itens_tabela": [
-                "R$",
-                "%",
-                "%",
-                "R$",
-                "%",
-                "R$",
-                "R$",
-                "R$",
-                "R$",
-                "R$",
-                "R$",
-                "%",
-                "%",
-                "R$",
-                "R$",
-            ]
-        },
-        {
-            "tipo_itens_minuta": [
-                None,
-                "R$",
-                "R$",
-                "HS",
-                "HS",
-                "UN",
-                "UN",
-                "KG",
-                "UN",
-                None,
-                None,
-                "R$",
-                "R$",
-                "UN",
-                None,
-            ]
-        },
-    ]
-    return lista
+def gera_itens_pagamento(request):
+    if request.POST.get("check-porcentagem-paga"):
+        insere_porcentagem_paga(request)
+    if request.POST.get("check-hora-paga"):
+        insere_hora_paga(request)
+    if request.POST.get("check-excede-paga"):
+        insere_excedente_paga(request)
+    if request.POST.get("check-kilometragem-paga"):
+        insere_kilometragem_paga(request)
+    if request.POST.get("check-entrega-paga"):
+        insere_entrega_paga(request)
+    if request.POST.get("check-entrega-kg-paga"):
+        insere_entrega_kg_paga(request)
+    if request.POST.get("check-entrega-volume-paga"):
+        insere_entrega_volume_paga(request)
+    if request.POST.get("check-saida-paga"):
+        insere_saida_paga(request)
+    if request.POST.get("check-capacidade-paga"):
+        insere_capacidade_paga(request)
+    if request.POST.get("check-perimetro-paga"):
+        insere_perimetro_paga(request)
+    if request.POST.get("check-pernoite-paga"):
+        insere_pernoite_paga(request)
+    if request.POST.get("check-ajudante-paga"):
+        insere_ajudante_paga(request)
+
+
+def insere_porcentagem_paga(request):
+    idminuta = request.POST.get("idminuta")
+    hora_zero = timedelta(days=0, hours=0, minutes=0)
+    obs = ""
+    base = float(request.POST.get("minuta-porcentagem-paga"))
+    porcento = float(request.POST.get("tabela-porcentagem-paga"))
+    valor = base * porcento / 100
+    insere_minuta_item(
+        "PORCENTAGEM DA NOTA",
+        "PAGA",
+        "P",
+        valor,
+        0,
+        porcento,
+        0.00,
+        base,
+        hora_zero,
+        idminuta,
+        obs,
+    )
+
+
+def insere_hora_paga(request):
+    idminuta = request.POST.get("idminuta")
+    obs = ""
+    base = float(request.POST.get("tabela-hora-paga"))
+    tempo = datetime.strptime(request.POST.get("minura-hora-paga"), "%H:%M").time()
+    valor = calcula_valor_hora(100, tempo, base)
+    tempo = timedelta(days=0, hours=tempo.hour, minutes=tempo.minute)
+    insere_minuta_item(
+        "HORAS",
+        "PAGA",
+        "P",
+        valor,
+        0,
+        0.00,
+        0.00,
+        base,
+        tempo,
+        idminuta,
+        obs,
+    )
+
+
+def insere_excedente_paga(request):
+    idminuta = request.POST.get("idminuta")
+    obs = ""
+    porcento = float(request.POST.get("tabela-excedente-paga"))
+    base = float(request.POST.get("tabela-hora-paga"))
+    tempo = datetime.strptime(request.POST.get("minuta-excedente-paga"), "%H:%M")
+    valor = calcula_valor_hora(porcento, tempo, base)
+    tempo = timedelta(days=0, hours=tempo.hour, minutes=tempo.minute)
+    insere_minuta_item(
+        "HORAS EXCEDENTE",
+        "PAGA",
+        "P",
+        valor,
+        0,
+        porcento,
+        0.00,
+        base,
+        tempo,
+        idminuta,
+        obs,
+    )
+
+
+def insere_kilometragem_paga(request):
+    idminuta = request.POST.get("idminuta")
+    hora_zero = timedelta(days=0, hours=0, minutes=0)
+    obs = ""
+    base = float(request.POST.get("tabela-kilometragem-paga"))
+    unidade = float(request.POST.get("minuta-kilometragem-paga"))
+    valor = base * unidade
+    insere_minuta_item(
+        "KILOMETRAGEM",
+        "PAGA",
+        "P",
+        valor,
+        unidade,
+        0.00,
+        0.00,
+        base,
+        hora_zero,
+        idminuta,
+        obs,
+    )
+
+
+def insere_entrega_paga(request):
+    idminuta = request.POST.get("idminuta")
+    hora_zero = timedelta(days=0, hours=0, minutes=0)
+    obs = ""
+    base = float(request.POST.get("tabela-entrega-paga"))
+    unidade = float(request.POST.get("minuta-entrega-paga"))
+    valor = base * unidade
+    insere_minuta_item(
+        "ENTREGAS",
+        "PAGA",
+        "P",
+        valor,
+        unidade,
+        0.00,
+        0.00,
+        base,
+        hora_zero,
+        idminuta,
+        obs,
+    )
+
+
+def insere_entrega_kg_paga(request):
+    idminuta = request.POST.get("idminuta")
+    hora_zero = timedelta(days=0, hours=0, minutes=0)
+    obs = ""
+    base = float(request.POST.get("tabela-entrega-kg-paga"))
+    peso = float(request.POST.get("minuta-entrega-kg-paga"))
+    valor = base * peso
+    insere_minuta_item(
+        "ENTREGAS KG",
+        "PAGA",
+        "P",
+        valor,
+        0,
+        0.00,
+        peso,
+        base,
+        hora_zero,
+        idminuta,
+        obs,
+    )
+
+
+def insere_entrega_volume_paga(request):
+    idminuta = request.POST.get("idminuta")
+    hora_zero = timedelta(days=0, hours=0, minutes=0)
+    obs = ""
+    base = float(request.POST.get("tabela-entrega-volume-paga"))
+    unidade = float(request.POST.get("minuta-entreg-volume-paga"))
+    valor = base * unidade
+    insere_minuta_item(
+        "ENTREGAS VOLUME",
+        "PAGA",
+        "P",
+        valor,
+        unidade,
+        0.00,
+        0.00,
+        base,
+        hora_zero,
+        idminuta,
+        obs,
+    )
+
+
+def insere_saida_paga(request):
+    idminuta = request.POST.get("idminuta")
+    hora_zero = timedelta(days=0, hours=0, minutes=0)
+    obs = ""
+    base = float(request.POST.get("tabela-saida-paga"))
+    insere_minuta_item(
+        "SAIDA",
+        "PAGA",
+        "P",
+        base,
+        0,
+        0.00,
+        0.00,
+        base,
+        hora_zero,
+        idminuta,
+        obs,
+    )
+
+
+def insere_capacidade_paga(request):
+    idminuta = request.POST.get("idminuta")
+    hora_zero = timedelta(days=0, hours=0, minutes=0)
+    obs = ""
+    base = float(request.POST.get("tabela-capacidade-paga"))
+    insere_minuta_item(
+        "CAPACIDADE PESO",
+        "PAGA",
+        "P",
+        base,
+        0,
+        0.00,
+        0.00,
+        base,
+        hora_zero,
+        idminuta,
+        obs,
+    )
+
+
+def insere_perimetro_paga(request):
+    idminuta = request.POST.get("idminuta")
+    hora_zero = timedelta(days=0, hours=0, minutes=0)
+    obs = ""
+    base = float(request.POST.get("minuta-perimetro-paga"))
+    porcento = float(request.POST.get("tabela-perimetro-paga"))
+    valor = base * porcento / 100
+    insere_minuta_item(
+        "PERIMETRO",
+        "PAGA",
+        "P",
+        valor,
+        0,
+        porcento,
+        0.00,
+        base,
+        hora_zero,
+        idminuta,
+        obs,
+    )
+
+
+def insere_pernoite_paga(request):
+    idminuta = request.POST.get("idminuta")
+    hora_zero = timedelta(days=0, hours=0, minutes=0)
+    obs = ""
+    base = float(request.POST.get("minuta-pernoite-paga"))
+    porcento = float(request.POST.get("tabela-pernoite-paga"))
+    valor = base * porcento / 100
+    insere_minuta_item(
+        "PERNOITE",
+        "PAGA",
+        "P",
+        valor,
+        0,
+        porcento,
+        0.00,
+        base,
+        hora_zero,
+        idminuta,
+        obs,
+    )
+
+
+def insere_ajudante_paga(request):
+    idminuta = request.POST.get("idminuta")
+    hora_zero = timedelta(days=0, hours=0, minutes=0)
+    obs = ""
+    base = float(request.POST.get("tabela-ajudante-paga"))
+    unidade = float(request.POST.get("minuta-ajudante-paga"))
+    valor = base * unidade
+    insere_minuta_item(
+        "AJUDANTE",
+        "PAGA",
+        "P",
+        valor,
+        unidade,
+        0.00,
+        0.00,
+        base,
+        hora_zero,
+        idminuta,
+        obs,
+    )
+
+
+def insere_minuta_item(
+    descricao,
+    tipoitens,
+    recebepaga,
+    valor,
+    quantidade,
+    porcento,
+    peso,
+    valorbase,
+    tempo,
+    idminuta,
+    obs,
+):
+    obj = MinutaItens()
+    obj.Descricao = descricao
+    obj.TipoItens = tipoitens
+    obj.RecebePaga = recebepaga
+    obj.Valor = valor
+    obj.Quantidade = quantidade
+    obj.Porcento = porcento
+    obj.Peso = peso
+    obj.ValorBase = valorbase
+    obj.Tempo = tempo
+    obj.idMinuta_id = idminuta
+    obj.Obs = obs
+    obj.save()
+
+
+def estorna_paga(idminuta):
+    pagamentos = MinutaItens.objects.filter(TipoItens="PAGA", idMinuta=idminuta)
+    for i in pagamentos:
+        i.delete()

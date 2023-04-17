@@ -8,7 +8,7 @@
     <div class="card-body">
         {% csrf_token %}
         <input type="hidden"
-        id="id_idminuta"
+        id="idminuta-paga"
         name="idminuta"
         value="{{ s_minuta.idminuta }}">
         <!-- Porcentagem Nota -->
@@ -681,7 +681,7 @@
             {% else %}
             <i class="bi bi-reply-all i-button estorna-pagamentos"
             idMinuta="{{ s_minuta.idminuta }}"
-            title="Estorna Faturamento"></i>
+            title="Estorna Pagamentos"></i>
             {% endif %}
             {% endif %}
             {% endif %}
