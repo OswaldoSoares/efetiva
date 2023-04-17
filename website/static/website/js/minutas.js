@@ -66,7 +66,6 @@ $(document).ready(function() {
     /* Versão Nova - Função que envia formulário com os itens de
     recebimento para serem processados pelo servidor */
     $(document).on('submit', '#js-gera-receitas', function(event) {
-        verificaTotalZero();
         event.preventDefault();
         $.ajax({
             type: "POST",
@@ -93,7 +92,6 @@ $(document).ready(function() {
     
     /* Versão Nova */
     $(document).on('submit', '#js-gera-pagamentos', function(event) {
-        // verificaTotalZero();
         event.preventDefault();
         $.ajax({
             type: "POST",
@@ -836,6 +834,8 @@ $(document).ready(function() {
     mostraChecklist();
     formatMask();
 
+    verificaCheckbox();
+
 });
 
 function filtroMenuSelecionado(item) {
@@ -949,7 +949,7 @@ function formatMask() {
     $('#m_ajud').mask('#.##0', { reverse: true })
     $('.v_desp').mask('#.##0,00', { reverse: true })
     $('.total-recebe').mask('#.##0,00', { reverse: true })
-    $('.total-paga').mask('#.##0,00', { reverse: true })
+    $('.total-pagamentos').mask('#.##0,00', { reverse: true })
     // $("#totalrecebe").mask('#.##0,00', { reverse: true })
 }
 
@@ -979,7 +979,7 @@ function formatUnmask() {
     $('#m_ajud').unmask()
     $('#v_desp').unmask()
     $('.total-recebe').unmask()
-    $('.total-paga').unmask()
+    $('.total-pagamentos').unmask()
     // $("#totalrecebe").unmask()
 }
 
@@ -1248,89 +1248,6 @@ function verificaSwitchRecebe() {
     }
 };
 
-function verificaTotalZero() {
-    if ($('#t_recebe_taxa').val() == 0.00) {
-        $('#c_recebe_taxa').prop('checked', false)
-    }
-    if ($('#t_recebe_segu').val() == 0.00) {
-        $('#c_recebe_segu').prop('checked', false)
-    }
-    if ($('#t_recebe_porc').val() == 0.00) {
-        $('#c_recebe_porc').prop('checked', false)
-    }
-    if ($('#t_recebe_hora').val() == 0.00) {
-        $('#c_recebe_hora').prop('checked', false)
-    }
-    if ($('#t_recebe_exce').val() == 0.00) {
-        $('#c_recebe_exce').prop('checked', false)
-    }
-    if ($('#t_recebe_kilm').val() == 0.00) {
-        $('#c_recebe_kilm').prop('checked', false)
-    }
-    if ($('#t_recebe_entr').val() == 0.00) {
-        $('#c_recebe_entr').prop('checked', false)
-    }
-    if ($('#t_recebe_enkg').val() == 0.00) {
-        $('#c_recebe_enkg').prop('checked', false)
-    }
-    if ($('#t_recebe_evol').val() == 0.00) {
-        $('#c_recebe_evol').prop('checked', false)
-    }
-    if ($('#t_recebe_said').val() == 0.00) {
-        $('#c_recebe_said').prop('checked', false)
-    }
-    if ($('#t_recebe_capa').val() == 0.00) {
-        $('#c_recebe_capa').prop('checked', false)
-    }
-    if ($('#t_recebe_peri').val() == 0.00) {
-        $('#c_recebe_peri').prop('checked', false)
-    }
-    if ($('#t_recebe_pnoi').val() == 0.00) {
-        $('#c_recebe_pnoi').prop('checked', false)
-    }
-    if ($('#t_recebe_ajud').val() == 0.00) {
-        $('#c_recebe_ajud').prop('checked', false)
-    }
-    verificaSwitchRecebe();
-    if ($('#t_paga_porc').text() == 0.00) {
-        $('#c_paga_porc').prop('checked', false)
-    }
-    if ($('#t_paga_hora').text() == 0.00) {
-        $('#_pagac_hora').prop('checked', false)
-    }
-    if ($('#t_paga_exce').text() == 0.00) {
-        $('#c_paga_exce').prop('checked', false)
-    }
-    if ($('#t_paga_kilm').text() == 0.00) {
-        $('#c_paga_kilm').prop('checked', false)
-    }
-    if ($('#t_paga_entr').text() == 0.00) {
-        $('#c_paga_entr').prop('checked', false)
-    }
-    if ($('#t_paga_enkg').text() == 0.00) {
-        $('#c_paga_enkg').prop('checked', false)
-    }
-    if ($('#t_paga_evol').text() == 0.00) {
-        $('#c_paga_evol').prop('checked', false)
-    }
-    if ($('#t_paga_said').text() == 0.00) {
-        $('#c_paga_said').prop('checked', false)
-    }
-    if ($('#t_paga_capa').text() == 0.00) {
-        $('#c_paga_capa').prop('checked', false)
-    }
-    if ($('#t_paga_peri').text() == 0.00) {
-        $('#c_paga_peri').prop('checked', false)
-    }
-    if ($('#t_paga_pnoi').text() == 0.00) {
-        $('#c_paga_pnoi').prop('checked', false)
-    }
-    if ($('#t_paga_ajud').text() == 0.00) {
-        $('#c_paga_ajud').prop('checked', false)
-    }
-    verificaSwitchPaga();
-};
-
 var mostraMensagemErro = function() {
     $(".div-erro").slideDown(500)
     $(".div-erro").delay(5000).slideUp(500)
@@ -1457,3 +1374,18 @@ $(document).on('click', '.js-remove-romaneio-minuta', function() {
         },
     });
 });
+
+
+function verificaCheckbox() {
+    $('.total-paga').each(function() {
+        check_altera = $(this).attr("name").replace("valor", "#check");
+        div_mostra = $(this).attr("name").replace("valor", "#js");
+        if ($(this).val() == 0.00) {
+            $(check_altera).prop('checked', false)
+            $(div_mostra).slideUp(500)
+        } else {
+            $(check_altera).prop('checked', true)
+            $(div_mostra).slideDown(500)
+        }
+    });
+};
