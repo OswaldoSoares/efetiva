@@ -2342,3 +2342,10 @@ def remove_romaneio_minuta(request):
     contexto.update({"romaneios": romaneios, "idminuta": idminuta})
     data = facade.create_data_entrega_romaneio_minuta(request, contexto)
     return data
+
+
+def gera_receitas(request):
+    pass
+
+def gera_pagamentos(request):
+    pass

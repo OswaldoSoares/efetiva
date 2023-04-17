@@ -94,14 +94,16 @@ $(document).ready(function() {
     /* Versão Nova */
     $(document).on('submit', '#js-gera-pagamentos', function(event) {
         verificaTotalZero();
-        $(".container").hide()
         event.preventDefault();
-        var url = $(this).attr('action') || action;
         $.ajax({
-            type: $(this).attr('method'),
-            url: url,
+            type: "POST",
+            url: '/minutas/gera_pagamentos',
             data: $(this).serialize(),
+            before: function() {
+                $(".box-loader").show();
+            },
             success: function(data) {
+                $(".box-loader").hide();
                 window.location.href = '/minutas/minuta/' + data['html_idminuta'] + '/'
             },
             error: function(error) {
