@@ -1816,3 +1816,65 @@ def html_romaneio(request, data, contexto):
         "minutas/html_entregas_romaneio.html", contexto, request=request
     )
     return data
+
+def create_itens_financeiro():
+    lista = [
+        {
+            "itens": [
+                "TAXA DE EXPEDIÇÃO",
+                "SEGURO",
+                "PORCENTAGEM DA NOTA",
+                "HORAS",
+                "HORAS EXCEDENTE",
+                "KILOMETRAGEM",
+                "ENTREGAS",
+                "ENTREGAS KG",
+                "ENTREGAS VOLUME",
+                "SAIDA",
+                "CAPACIDADE PESO",
+                "PERIMETRO",
+                "PERNOITE",
+                "AJUDANTE",
+                "DESCONTO",
+            ]
+        },
+        {
+            "nome_itens": [
+                "taxaexpedicao",
+                "seguro",
+                "porcentagem",
+                "horas",
+                "horasexcede",
+                "kilometragem",
+                "entregas",
+                "entregaskg",
+                "entregasvolume",
+                "saida",
+                "capacidade",
+                "perimetro",
+                "pernoite",
+                "ajudante",
+                "desconto",
+            ]
+        },
+        {
+            "tipo_itens": [
+                "R$",
+                "%",
+                "%",
+                "R$",
+                "%",
+                "R$",
+                "R$",
+                "R$",
+                "R$",
+                "R$",
+                "R$",
+                "%",
+                "%",
+                "R$",
+                "R$",
+            ]
+        },
+    ]
+    return lista

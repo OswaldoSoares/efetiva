@@ -93,7 +93,7 @@ $(document).ready(function() {
     
     /* Versão Nova */
     $(document).on('submit', '#js-gera-pagamentos', function(event) {
-        verificaTotalZero();
+        // verificaTotalZero();
         event.preventDefault();
         $.ajax({
             type: "POST",
