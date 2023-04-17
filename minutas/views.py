@@ -2349,97 +2349,23 @@ def gera_receitas(request):
 
 
 def gera_pagamentos(request):
-    itens_financeito = facade.create_itens_financeiro()
-    print(request.POST, itens_financeito)
+    itens_financeiro = facade.create_itens_financeiro()
+    dados_switch = request.POST.getlist("switch")
+    dados_tabela_paga = request.POST.getlist("tabela-paga")
+    dados_minuta_paga = request.POST.getlist("minuta-paga")
+    dados_minuta_paga.insert(7, None)
+    dados_minuta_paga.insert(8, None)
+    dados_valor_paga = request.POST.getlist("valor-paga")
+    print(f"[INFO - POST] - {request.POST}")
+    print(f"[INFO - ITENS FINANCEIRO] - {itens_financeiro}")
+    print(f"[INFO - DADOS SWITCH] - {dados_switch}")
+    print(f"[INFO - TABELA PAGA] - {dados_tabela_paga}")
+    print(f"[INFO - MINUTA PAGA] - {dados_minuta_paga}")
+    print(f"[INFO - VALOR PAGA] - {dados_valor_paga}")
 
 
 # Copia para poder mexer
 def fecha_minuta_antiga(request, idmin):
-    """
-    FUNÇÃO PARA INSERIR NA TABELA "MINUTAITENS" OS ITENS DE COBRANÇA E PAGAMENTO DA MINUTA.
-    CHAMA A FUNÇÃO exclui_minuta_itens PARA APAGAR ITENS QUE ESTIVER COM VALOR 0.
-    ALTERA O STATUS DA MINUTA PARA "FECHADA"
-    RETORNA A PAGINA CONSULTA DA MINUTA
-
-    :param request: request
-    :param idmin: int :return:
-    """
-    
-    keys_nome_recebe = []
-    type_tabela_recebe = []
-    type_minuta_recebe = [
-        None,
-        "R$",
-        "R$",
-        "HS",
-        "HS",
-        "UN",
-        "UN",
-        "KG",
-        "UN",
-        None,
-        None,
-        "R$",
-        "R$",
-        "UN",
-        None,
-    ]
-    keys_paga = [
-        "PORCENTAGEM DA NOTA",
-        "HORAS",
-        "HORAS EXCEDENTE",
-        "KILOMETRAGEM",
-        "ENTREGAS",
-        "ENTREGAS KG",
-        "ENTREGAS VOLUME",
-        "SAIDA",
-        "CAPACIDADE PESO",
-        "PERIMETRO",
-        "PERNOITE",
-        "AJUDANTE",
-    ]
-    keys_nome_paga = [
-        "porcentagem",
-        "horas",
-        "horasexcede",
-        "kilometragem",
-        "entregas",
-        "entregaskg",
-        "entregasvolume",
-        "saida",
-        "capacidade",
-        "perimetro",
-        "pernoite",
-        "ajudante",
-    ]
-    type_tabela_paga = [
-        "%",
-        "R$",
-        "%",
-        "R$",
-        "R$",
-        "R$",
-        "R$",
-        "R$",
-        "R$",
-        "%",
-        "%",
-        "R$",
-    ]
-    type_minuta_paga = [
-        "R$",
-        "HS",
-        "HS",
-        "UN",
-        "UN",
-        "KG",
-        "UN",
-        None,
-        None,
-        "R$",
-        "R$",
-        "UN",
-    ]
     dados_switch = request.POST.getlist("switch")
     dados_tabela_recebe = request.POST.getlist("tabela-recebe")
     dados_minuta_recebe = request.POST.getlist("minuta-recebe")
@@ -2448,238 +2374,238 @@ def fecha_minuta_antiga(request, idmin):
     dados_minuta_recebe.insert(10, None)
     dados_minuta_recebe.insert(14, None)
     dados_valor_recebe = request.POST.getlist("valor-recebe")
-    for index, itens in enumerate(keys_nome_recebe):
-        switch_name = "sw-%s-recebe" % itens
-        if switch_name in dados_switch:
-            if dados_valor_recebe != 0:
-                if (type_tabela_recebe[index] == "R$") and (
-                    type_minuta_recebe[index] is None
-                ):
-                    salvaminutaitens(
-                        keys_recebe[index],
-                        "RECEBE",
-                        "R",
-                        dados_valor_recebe[index],
-                        0,
-                        0,
-                        0,
-                        dados_tabela_recebe[index],
-                        "00:00",
-                        idmin,
-                    )
-                if (type_tabela_recebe[index] == "%") and (
-                    type_minuta_recebe[index] == "R$"
-                ):
-                    salvaminutaitens(
-                        keys_recebe[index],
-                        "RECEBE",
-                        "R",
-                        dados_valor_recebe[index],
-                        0,
-                        dados_tabela_recebe[index],
-                        0,
-                        dados_minuta_recebe[index],
-                        "00:00",
-                        idmin,
-                    )
-                if (type_tabela_recebe[index] == "R$") and (
-                    type_minuta_recebe[index] == "HS"
-                ):
-                    salvaminutaitens(
-                        keys_recebe[index],
-                        "RECEBE",
-                        "R",
-                        dados_valor_recebe[index],
-                        0,
-                        0,
-                        0,
-                        dados_tabela_recebe[index],
-                        dados_minuta_recebe[index],
-                        idmin,
-                    )
-                if (type_tabela_recebe[index] == "%") and (
-                    type_minuta_recebe[index] == "HS"
-                ):
-                    salvaminutaitens(
-                        keys_recebe[index],
-                        "RECEBE",
-                        "R",
-                        dados_valor_recebe[index],
-                        0,
-                        dados_tabela_recebe[index],
-                        0,
-                        0,
-                        dados_minuta_recebe[index],
-                        idmin,
-                    )
-                if (type_tabela_recebe[index] == "R$") and (
-                    type_minuta_recebe[index] == "UN"
-                ):
-                    salvaminutaitens(
-                        keys_recebe[index],
-                        "RECEBE",
-                        "R",
-                        dados_valor_recebe[index],
-                        dados_minuta_recebe[index],
-                        0,
-                        0,
-                        dados_tabela_recebe[index],
-                        "00:00",
-                        idmin,
-                    )
-                if (type_tabela_recebe[index] == "R$") and (
-                    type_minuta_recebe[index] == "KG"
-                ):
-                    salvaminutaitens(
-                        keys_recebe[index],
-                        "RECEBE",
-                        "R",
-                        dados_valor_recebe[index],
-                        0,
-                        0,
-                        dados_minuta_recebe[index],
-                        dados_tabela_recebe[index],
-                        "00:00",
-                        idmin,
-                    )
-    dados_tabela_paga = request.POST.getlist("tabela-paga")
-    dados_minuta_paga = request.POST.getlist("minuta-paga")
-    dados_minuta_paga.insert(7, None)
-    dados_minuta_paga.insert(8, None)
-    dados_valor_paga = request.POST.getlist("valor-paga")
-    for index, itens in enumerate(keys_nome_paga):
-        switch_name = "sw-%s-paga" % itens
-        if switch_name in dados_switch:
-            if dados_valor_paga != 0:
-                if (type_tabela_paga[index] == "R$") and (
-                    type_minuta_paga[index] is None
-                ):
-                    salvaminutaitens(
-                        keys_paga[index],
-                        "PAGA",
-                        "P",
-                        dados_valor_paga[index],
-                        0,
-                        0,
-                        0,
-                        dados_tabela_paga[index],
-                        "00:00",
-                        idmin,
-                    )
-                if (type_tabela_paga[index] == "%") and (
-                    type_minuta_paga[index] == "R$"
-                ):
-                    salvaminutaitens(
-                        keys_paga[index],
-                        "PAGA",
-                        "P",
-                        dados_valor_paga[index],
-                        0,
-                        dados_tabela_paga[index],
-                        0,
-                        dados_minuta_paga[index],
-                        "00:00",
-                        idmin,
-                    )
-                if (type_tabela_paga[index] == "R$") and (
-                    type_minuta_paga[index] == "HS"
-                ):
-                    salvaminutaitens(
-                        keys_paga[index],
-                        "PAGA",
-                        "P",
-                        dados_valor_paga[index],
-                        0,
-                        0,
-                        0,
-                        dados_tabela_paga[index],
-                        dados_minuta_paga[index],
-                        idmin,
-                    )
-                if (type_tabela_paga[index] == "%") and (
-                    type_minuta_paga[index] == "HS"
-                ):
-                    salvaminutaitens(
-                        keys_paga[index],
-                        "PAGA",
-                        "P",
-                        dados_valor_paga[index],
-                        0,
-                        dados_tabela_paga[index],
-                        0,
-                        0,
-                        dados_minuta_paga[index],
-                        idmin,
-                    )
-                if (type_tabela_paga[index] == "R$") and (
-                    type_minuta_paga[index] == "UN"
-                ):
-                    salvaminutaitens(
-                        keys_paga[index],
-                        "PAGA",
-                        "P",
-                        dados_valor_paga[index],
-                        dados_minuta_paga[index],
-                        0,
-                        0,
-                        dados_tabela_paga[index],
-                        "00:00",
-                        idmin,
-                    )
-                if (type_tabela_paga[index] == "R$") and (
-                    type_minuta_paga[index] == "KG"
-                ):
-                    salvaminutaitens(
-                        keys_paga[index],
-                        "PAGA",
-                        "P",
-                        dados_valor_paga[index],
-                        0,
-                        0,
-                        dados_minuta_paga[index],
-                        dados_tabela_paga[index],
-                        "00:00",
-                        idmin,
-                    )
-    dados_descricao_despesa_recebe = request.POST.getlist("descricao-despesa-recebe")
-    dados_valor_despesa_recebe = request.POST.getlist("valor-despesa-recebe")
-    for index, itens in enumerate(dados_descricao_despesa_recebe, start=0):
-        float(dados_valor_despesa_recebe[index].replace(",", "."))
-        salvaminutaitens(
-            dados_descricao_despesa_recebe[index],
-            "DESPESA",
-            "R",
-            float(dados_valor_despesa_recebe[index].replace(",", ".")),
-            0,
-            0.00,
-            0.00,
-            0.00,
-            "00:00",
-            idmin,
-        )
-    dados_descricao_despesa_paga = request.POST.getlist("descricao-despesa-paga")
-    dados_valor_despesa_paga = request.POST.getlist("valor-despesa-paga")
-    for index, itens in enumerate(dados_descricao_despesa_paga, start=0):
-        float(dados_valor_despesa_paga[index].replace(",", "."))
-        salvaminutaitens(
-            dados_descricao_despesa_paga[index],
-            "REEMBOLSO",
-            "P",
-            float(dados_valor_despesa_paga[index].replace(",", ".")),
-            0,
-            0.00,
-            0.00,
-            0.00,
-            "00:00",
-            idmin,
-        )
-    minuta_itens = MinutaItens.objects.filter(idMinuta_id=idmin)
-    for itens in minuta_itens:
-        if itens.Valor == 0:
-            excluiminutaitens(itens.idMinutaItens)
-        altera_status_minuta("FECHADA", idmin)
-    valor_minuta = MinutaItens.objects.filter(idMinuta=idmin, RecebePaga="R").aggregate(
-        totalminuta=Sum("Valor")
-    )
-    cria_minuta_fatura(valor_minuta["totalminuta"], idmin)
-    return redirect("consultaminuta", idmin)
+    # for index, itens in enumerate(keys_nome_recebe):
+    #     switch_name = "sw-%s-recebe" % itens
+    #     if switch_name in dados_switch:
+    #         if dados_valor_recebe != 0:
+    #             if (type_tabela_recebe[index] == "R$") and (
+    #                 type_minuta_recebe[index] is None
+    #             ):
+    #                 salvaminutaitens(
+    #                     keys_recebe[index],
+    #                     "RECEBE",
+    #                     "R",
+    #                     dados_valor_recebe[index],
+    #                     0,
+    #                     0,
+    #                     0,
+    #                     dados_tabela_recebe[index],
+    #                     "00:00",
+    #                     idmin,
+    #                 )
+    #             if (type_tabela_recebe[index] == "%") and (
+    #                 type_minuta_recebe[index] == "R$"
+    #             ):
+    #                 salvaminutaitens(
+    #                     keys_recebe[index],
+    #                     "RECEBE",
+    #                     "R",
+    #                     dados_valor_recebe[index],
+    #                     0,
+    #                     dados_tabela_recebe[index],
+    #                     0,
+    #                     dados_minuta_recebe[index],
+    #                     "00:00",
+    #                     idmin,
+    #                 )
+    #             if (type_tabela_recebe[index] == "R$") and (
+    #                 type_minuta_recebe[index] == "HS"
+    #             ):
+    #                 salvaminutaitens(
+    #                     keys_recebe[index],
+    #                     "RECEBE",
+    #                     "R",
+    #                     dados_valor_recebe[index],
+    #                     0,
+    #                     0,
+    #                     0,
+    #                     dados_tabela_recebe[index],
+    #                     dados_minuta_recebe[index],
+    #                     idmin,
+    #                 )
+    #             if (type_tabela_recebe[index] == "%") and (
+    #                 type_minuta_recebe[index] == "HS"
+    #             ):
+    #                 salvaminutaitens(
+    #                     keys_recebe[index],
+    #                     "RECEBE",
+    #                     "R",
+    #                     dados_valor_recebe[index],
+    #                     0,
+    #                     dados_tabela_recebe[index],
+    #                     0,
+    #                     0,
+    #                     dados_minuta_recebe[index],
+    #                     idmin,
+    #                 )
+    #             if (type_tabela_recebe[index] == "R$") and (
+    #                 type_minuta_recebe[index] == "UN"
+    #             ):
+    #                 salvaminutaitens(
+    #                     keys_recebe[index],
+    #                     "RECEBE",
+    #                     "R",
+    #                     dados_valor_recebe[index],
+    #                     dados_minuta_recebe[index],
+    #                     0,
+    #                     0,
+    #                     dados_tabela_recebe[index],
+    #                     "00:00",
+    #                     idmin,
+    #                 )
+    #             if (type_tabela_recebe[index] == "R$") and (
+    #                 type_minuta_recebe[index] == "KG"
+    #             ):
+    #                 salvaminutaitens(
+    #                     keys_recebe[index],
+    #                     "RECEBE",
+    #                     "R",
+    #                     dados_valor_recebe[index],
+    #                     0,
+    #                     0,
+    #                     dados_minuta_recebe[index],
+    #                     dados_tabela_recebe[index],
+    #                     "00:00",
+    #                     idmin,
+    #                 )
+    # dados_tabela_paga = request.POST.getlist("tabela-paga")
+    # dados_minuta_paga = request.POST.getlist("minuta-paga")
+    # dados_minuta_paga.insert(7, None)
+    # dados_minuta_paga.insert(8, None)
+    # dados_valor_paga = request.POST.getlist("valor-paga")
+    # for index, itens in enumerate(keys_nome_paga):
+    #     switch_name = "sw-%s-paga" % itens
+    #     if switch_name in dados_switch:
+    #         if dados_valor_paga != 0:
+    #             if (type_tabela_paga[index] == "R$") and (
+    #                 type_minuta_paga[index] is None
+    #             ):
+    #                 salvaminutaitens(
+    #                     keys_paga[index],
+    #                     "PAGA",
+    #                     "P",
+    #                     dados_valor_paga[index],
+    #                     0,
+    #                     0,
+    #                     0,
+    #                     dados_tabela_paga[index],
+    #                     "00:00",
+    #                     idmin,
+    #                 )
+    #             if (type_tabela_paga[index] == "%") and (
+    #                 type_minuta_paga[index] == "R$"
+    #             ):
+    #                 salvaminutaitens(
+    #                     keys_paga[index],
+    #                     "PAGA",
+    #                     "P",
+    #                     dados_valor_paga[index],
+    #                     0,
+    #                     dados_tabela_paga[index],
+    #                     0,
+    #                     dados_minuta_paga[index],
+    #                     "00:00",
+    #                     idmin,
+    #                 )
+    #             if (type_tabela_paga[index] == "R$") and (
+    #                 type_minuta_paga[index] == "HS"
+    #             ):
+    #                 salvaminutaitens(
+    #                     keys_paga[index],
+    #                     "PAGA",
+    #                     "P",
+    #                     dados_valor_paga[index],
+    #                     0,
+    #                     0,
+    #                     0,
+    #                     dados_tabela_paga[index],
+    #                     dados_minuta_paga[index],
+    #                     idmin,
+    #                 )
+    #             if (type_tabela_paga[index] == "%") and (
+    #                 type_minuta_paga[index] == "HS"
+    #             ):
+    #                 salvaminutaitens(
+    #                     keys_paga[index],
+    #                     "PAGA",
+    #                     "P",
+    #                     dados_valor_paga[index],
+    #                     0,
+    #                     dados_tabela_paga[index],
+    #                     0,
+    #                     0,
+    #                     dados_minuta_paga[index],
+    #                     idmin,
+    #                 )
+    #             if (type_tabela_paga[index] == "R$") and (
+    #                 type_minuta_paga[index] == "UN"
+    #             ):
+    #                 salvaminutaitens(
+    #                     keys_paga[index],
+    #                     "PAGA",
+    #                     "P",
+    #                     dados_valor_paga[index],
+    #                     dados_minuta_paga[index],
+    #                     0,
+    #                     0,
+    #                     dados_tabela_paga[index],
+    #                     "00:00",
+    #                     idmin,
+    #                 )
+    #             if (type_tabela_paga[index] == "R$") and (
+    #                 type_minuta_paga[index] == "KG"
+    #             ):
+    #                 salvaminutaitens(
+    #                     keys_paga[index],
+    #                     "PAGA",
+    #                     "P",
+    #                     dados_valor_paga[index],
+    #                     0,
+    #                     0,
+    #                     dados_minuta_paga[index],
+    #                     dados_tabela_paga[index],
+    #                     "00:00",
+    #                     idmin,
+    #                 )
+    # dados_descricao_despesa_recebe = request.POST.getlist("descricao-despesa-recebe")
+    # dados_valor_despesa_recebe = request.POST.getlist("valor-despesa-recebe")
+    # for index, itens in enumerate(dados_descricao_despesa_recebe, start=0):
+    #     float(dados_valor_despesa_recebe[index].replace(",", "."))
+    #     salvaminutaitens(
+    #         dados_descricao_despesa_recebe[index],
+    #         "DESPESA",
+    #         "R",
+    #         float(dados_valor_despesa_recebe[index].replace(",", ".")),
+    #         0,
+    #         0.00,
+    #         0.00,
+    #         0.00,
+    #         "00:00",
+    #         idmin,
+    #     )
+    # dados_descricao_despesa_paga = request.POST.getlist("descricao-despesa-paga")
+    # dados_valor_despesa_paga = request.POST.getlist("valor-despesa-paga")
+    # for index, itens in enumerate(dados_descricao_despesa_paga, start=0):
+    #     float(dados_valor_despesa_paga[index].replace(",", "."))
+    #     salvaminutaitens(
+    #         dados_descricao_despesa_paga[index],
+    #         "REEMBOLSO",
+    #         "P",
+    #         float(dados_valor_despesa_paga[index].replace(",", ".")),
+    #         0,
+    #         0.00,
+    #         0.00,
+    #         0.00,
+    #         "00:00",
+    #         idmin,
+    #     )
+    # minuta_itens = MinutaItens.objects.filter(idMinuta_id=idmin)
+    # for itens in minuta_itens:
+    #     if itens.Valor == 0:
+    #         excluiminutaitens(itens.idMinutaItens)
+    #     altera_status_minuta("FECHADA", idmin)
+    # valor_minuta = MinutaItens.objects.filter(idMinuta=idmin, RecebePaga="R").aggregate(
+    #     totalminuta=Sum("Valor")
+    # )
+    # cria_minuta_fatura(valor_minuta["totalminuta"], idmin)
+    # return redirect("consultaminuta", idmin)

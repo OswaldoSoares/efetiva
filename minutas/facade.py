@@ -1817,6 +1817,7 @@ def html_romaneio(request, data, contexto):
     )
     return data
 
+
 def create_itens_financeiro():
     lista = [
         {
@@ -1858,7 +1859,7 @@ def create_itens_financeiro():
             ]
         },
         {
-            "tipo_itens": [
+            "tipo_itens_tabela": [
                 "R$",
                 "%",
                 "%",
@@ -1874,6 +1875,25 @@ def create_itens_financeiro():
                 "%",
                 "R$",
                 "R$",
+            ]
+        },
+        {
+            "tipo_itens_minuta": [
+                None,
+                "R$",
+                "R$",
+                "HS",
+                "HS",
+                "UN",
+                "UN",
+                "KG",
+                "UN",
+                None,
+                None,
+                "R$",
+                "R$",
+                "UN",
+                None,
             ]
         },
     ]
