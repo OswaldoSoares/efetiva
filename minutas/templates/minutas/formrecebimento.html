@@ -768,10 +768,10 @@
                 TOTAL: R$ {{ s_minuta.recebe_minuta|stringformat:'.2f' }}
             </span>
             {% endif %}
-            {% if s_minuta.paga_minuta|stringformat:'.2f' == '0.00' or s_minuta.paga_realizada %}
-            {% if s_minuta.recebe_minuta %}
-            {% if s_minuta.motorista or s_minuta.ajudantes %}
-            {% if s_minuta.status_minuta == 'ABERTA' %}
+            {% comment %} {% if s_minuta.paga_minuta|stringformat:'.2f' == '0.00' or s_minuta.paga_realizada %} {% endcomment %}
+            {% comment %} {% if s_minuta.recebe_minuta %} {% endcomment %}
+            {% comment %} {% if s_minuta.motorista or s_minuta.ajudantes %} {% endcomment %}
+            {% if s_minuta.status_minuta == 'CONCLUIDA' %}
             {% if not s_minuta.recebe_realizada %}
             <button type="submit"
             class="i-button-form-rodape">
@@ -784,9 +784,9 @@
             title="Estorna Faturamento"></i>
             {% endif %}
             {% endif %}
-            {% endif %}
-            {% endif %}
-            {% endif %}
+            {% comment %} {% endif %} {% endcomment %}
+            {% comment %} {% endif %} {% endcomment %}
+            {% comment %} {% endif %} {% endcomment %}
         </div>
     </div>
 </form>
