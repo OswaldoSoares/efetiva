@@ -20,7 +20,7 @@
                 </span>
                 <div class="input-group-addon addon-my-color">
                     <input type="checkbox"
-                    class="c_paga"
+                    class="js-checkbox-paga"
                     id="check-porcentagem-paga"
                     name="check-porcentagem-paga"
                     {% if s_minuta.paga.c_porc %}
@@ -71,7 +71,7 @@
                 </span>
                 <div class="input-group-addon addon-my-color">
                     <input type="checkbox"
-                    class="c_paga"
+                    class="js-checkbox-paga"
                     id="check-hora-paga"
                     name="check-hora-paga"
                     {% if s_minuta.paga.c_hora %}
@@ -122,7 +122,7 @@
                 </span>
                 <div class="input-group-addon addon-my-color">
                     <input type="checkbox"
-                    class="c_paga"
+                    class="js-checkbox-paga"
                     id="check-excedente-paga"
                     name="check-excedente-paga"
                     {% if s_minuta.paga.c_exce %}
@@ -173,7 +173,7 @@
                 </span>
                 <div class="input-group-addon addon-my-color">
                     <input type="checkbox"
-                    class="c_paga"
+                    class="js-checkbox-paga"
                     id="check-kilometragem-paga"
                     name="check-kilometragem-paga"
                     {% if s_minuta.paga.c_kilm %}
@@ -224,7 +224,7 @@
                 </span>
                 <div class="input-group-addon addon-my-color">
                     <input type="checkbox"
-                    class="c_paga"
+                    class="js-checkbox-paga"
                     id="check-entrega-paga"
                     name="check-entrega-paga"
                     {% if s_minuta.paga.c_entr %}
@@ -275,7 +275,7 @@
                 </span>
                 <div class="input-group-addon addon-my-color">
                     <input type="checkbox"
-                    class="c_paga"
+                    class="js-checkbox-paga"
                     id="check-entrega-kg-paga"
                     name="check-entrega-kg-paga"
                     {% if s_minuta.paga.c_enkg %}
@@ -326,7 +326,7 @@
                 </span>
                 <div class="input-group-addon addon-my-color">
                     <input type="checkbox"
-                    class="c_paga"
+                    class="js-checkbox-paga"
                     id="check-entrega-volume-paga"
                     name="check-entrega-volume-paga"
                     {% if s_minuta.paga.c_evol %}
@@ -377,7 +377,7 @@
                 </span>
                 <div class="input-group-addon addon-my-color">
                     <input type="checkbox"
-                    class="c_paga"
+                    class="js-checkbox-paga"
                     id="check-saida-paga"
                     name="check-saida-paga"
                     {% if s_minuta.paga.c_said %}
@@ -427,7 +427,7 @@
                 </span>
                 <div class="input-group-addon addon-my-color">
                     <input type="checkbox"
-                    class="c_paga"
+                    class="js-checkbox-paga"
                     id="check-capacidade-paga"
                     name="check-capacidade-paga"
                     {% if s_minuta.paga.c_capa %}
@@ -476,7 +476,7 @@
                 </span>
                 <div class="input-group-addon addon-my-color">
                     <input type="checkbox"
-                    class="c_paga"
+                    class="js-checkbox-paga"
                     id="check-perimetro-paga"
                     name="check-perimetro-paga"
                     {% if s_minuta.paga.c_peri %}
@@ -527,7 +527,7 @@
                 </span>
                 <div class="input-group-addon addon-my-color">
                     <input type="checkbox"
-                    class="c_paga"
+                    class="js-checkbox-paga"
                     id="check-pernoite-paga"
                     name="check-pernoite-paga"
                     {% if s_minuta.paga.c_pnoi %}
@@ -578,7 +578,7 @@
                 </span>
                 <div class="input-group-addon addon-my-color">
                     <input type="checkbox"
-                    class="c_paga"
+                    class="js-checkbox-paga"
                     id="check-ajudante-paga"
                     name="check-ajudante-paga"
                     {% if s_minuta.paga.c_ajud %}
@@ -626,15 +626,15 @@
     {% endif %}
     {% for motorista in s_minuta.motorista %}
     {% if motorista.obj.TipoPgto != 'MENSALISTA' %}
-    <div class="card-body-item">
+    <div class="card-body-item div-motorista">
         <div class="input-group">
-            <i class="bi bi-person input-group-addon addon-my-color"></i>
+            <i class="bi bi-person-square input-group-addon addon-my-color"></i>
             <div class="input-fake div-flex font-menor">
                 <span>
                     {{ motorista.apelido }}
                 </span>
-                <span>
-                    R$ {{ s_minuta.paga.motorista|stringformat:'.2f' }}
+                <span id="total-motorista">
+                    R$ {{ s_minuta.paga_motorista|stringformat:'.2f' }}
                 </span>
             </div>
             <i class="bi bi-check input-group-addon addon-my-color"></i>
@@ -645,14 +645,14 @@
     {% endfor %}
     {% for ajudante in s_minuta.ajudantes %}
     {% if ajudante.tipo != 'MENSALISTA' %}
-    <div class="card-body-item">
+    <div class="card-body-item div-ajudante">
         <div class="input-group">
             <i class="bi bi-person input-group-addon addon-my-color"></i>
             <div class="input-fake div-flex font-menor">
                 <span>
                     {{ ajudante.apelido }}
                 </span>
-                <span>
+                <span id="total-ajudante">
                     R$ {{ s_minuta.paga.v_ajud|stringformat:'.2f' }}
                 </span>
             </div>
@@ -663,12 +663,6 @@
     {% endfor %}
     <div class="card-footer">
         <div class="div-flex">
-            {% if s_minuta.motorista or s_minuta.ajudantes %}
-            <span class="total"
-            id="total-pagamentos">
-                TOTAL: R$ {{ s_minuta.paga_minuta|stringformat:'.2f' }}
-            </span>
-            {% endif %}
             {% if s_minuta.paga_minuta %}
             {% if s_minuta.motorista or s_minuta.ajudantes %}
             {% if s_minuta.status_minuta == 'ABERTA' %}
@@ -685,6 +679,16 @@
             {% endif %}
             {% endif %}
             {% endif %}
+            {% else %}
+            <div></div>
+            {% endif %}
+            {% if s_minuta.motorista or s_minuta.ajudantes %}
+            <span class="total"
+            id="total-pagamentos">
+                TOTAL: R$ {{ s_minuta.paga_minuta|stringformat:'.2f' }}
+            </span>
+            {% else %}
+            <div></div>
             {% endif %}
         </div>
     </div>
