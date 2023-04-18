@@ -6536,7 +6536,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 .card-header {
     background-color: var(--color1);
     color: var(--color6);
-    height: 5rem;
+    height: 4rem;
     border-radius: 1rem 1rem 0 0;
     text-align: center;
     vertical-align: middle;
@@ -6561,7 +6561,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-header span {
-    font-size: 3rem;
+    font-size: 2.5rem;
     vertical-align: middle;
 }
 
@@ -6579,7 +6579,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 
 .card-footer span {
     line-height: 3rem;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     vertical-align: middle;
 }
 
