@@ -765,7 +765,7 @@ $(document).ready(function() {
     
 
     // Utilizado na Versão Nova
-    verificaSwitchPaga();
+    verificaCheckboxPaga();
     verificaSwitchRecebe();
     mostraChecklist();
     formatMask();
@@ -779,19 +779,7 @@ $(document).ready(function() {
 
 
 
-function recarregaFinanceiro(html_paga, html_recebe) {
-    $(".html-form-paga").hide(500);
-    $(".html-form-recebe").hide(500);
-    $('.html-form-paga').html(html_paga);
-    $('.html-form-recebe').html(html_recebe);
-    formatUnmask();
-    formatMask();
-    somaReceita();
-    $(".html-form-paga").slideDown(500);
-    $(".html-form-recebe").slideDown(500);
-    verificaSwitchPaga();
-    verificaSwitchRecebe();
-}
+
 
 
 function openMyModal(event) {
@@ -944,45 +932,6 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
 
 
 
-function verificaSwitchPaga() {
-    if ($('#js-checkbox-paga_porc').is(':not(:checked)')) {
-        $('#js-paga-porc').slideUp(500)
-    }
-    if ($('#js-checkbox-paga_hora').is(':not(:checked)')) {
-        $('#js-paga-hora').slideUp(500)
-    }
-    if ($('#js-checkbox-paga_exce').is(':not(:checked)')) {
-        $('#js-paga-exce').slideUp(500)
-    }
-    if ($('#js-checkbox-paga_kilm').is(':not(:checked)')) {
-        $('#js-paga-kilm').slideUp(500)
-    }
-    if ($('#js-checkbox-paga_entr').is(':not(:checked)')) {
-        $('#js-paga-entr').slideUp(500)
-    }
-    if ($('#js-checkbox-paga_enkg').is(':not(:checked)')) {
-        $('#js-paga-enkg').slideUp(500)
-    }
-    if ($('#js-checkbox-paga_evol').is(':not(:checked)')) {
-        $('#js-paga-evol').slideUp(500)
-    }
-    if ($('#js-checkbox-paga_said').is(':not(:checked)')) {
-        $('#js-paga-said').slideUp(500)
-    }
-    if ($('#js-checkbox-paga_capa').is(':not(:checked)')) {
-        $('#js-paga-capa').slideUp(500)
-    }
-    if ($('#js-checkbox-paga_peri').is(':not(:checked)')) {
-        $('#js-paga-peri').slideUp(500)
-    }
-    if ($('#js-checkbox-paga_pnoi').is(':not(:checked)')) {
-        $('#js-paga-pnoi').slideUp(500)
-    }
-    if ($('#js-checkbox-paga_ajud').is(':not(:checked)')) {
-        $('#js-paga-ajud').slideUp(500)
-    }
-};
-
 function verificaSwitchRecebe() {
     if ($('#c_recebe_taxa').is(':not(:checked)')) {
         $('#js-recebe-taxa').slideUp(500)
@@ -1047,15 +996,7 @@ function verificaSwitchRecebe() {
 
 
 
-var mostraMensagemErro = function() {
-    $(".div-erro").slideDown(500)
-    $(".div-erro").delay(5000).slideUp(500)
-}
 
-var mostraMensagemSucesso = function() {
-    $(".div-sucesso").slideDown(500)
-    $(".div-sucesso").delay(5000).slideUp(500)
-}
 
 var EscondeCategoria = function() {
     $(".html-categoria").hide()
@@ -1119,55 +1060,9 @@ var mostraChecklist = function() {
     });
 }
 
-// Apenas roda na versão mais nova do financeiro
-var somaReceita = function() {
-    var valor_receita = 0.00;
-    $(".total-recebe").each(function() {
-        valor_receita += parseFloat($(this).val().replace('.', '').replace(',', '.'))
-    });
-    $("#totalrecebe").text(valor_receita.toFixed(2))
-    $("#totalrecebe").unmask()
-    $("#totalrecebe").mask('#.##0,00', { reverse: true })
-    var text_total = $("#totalrecebe").text();
-    var text_total = "TOTAL R$ " + text_total
-    $("#totalrecebe").text(text_total)
-}
 
-// Apenas roda na versão mais nova do financeiro
-var somaPagamentos = function() {
-    var valor_paga = 0.00;
-    $(".total-paga").each(function() {
-        valor_paga += parseFloat($(this).val().replace('.', '').replace(',', '.'))
-    });
-    $("#total-pagamentos").text(valor_paga.toFixed(2))
-    $("#total-pagamentos").unmask()
-    $("#total-pagamentos").mask('#.##0,00', { reverse: true })
-    var text_total = $("#total-pagamentos").text();
-    var text_total = "TOTAL R$ " + text_total
-    $("#total-pagamentos").text(text_total)
-    somaMotorista();
-}
 
-// Apenas roda na versão mais nova do financeiro
-var somaMotorista = function() {
-    var valor_paga = 0.00;
-    $(".total-paga").each(function() {
-        if ($(this).attr("id") != "valor-ajudante-paga") {
-            valor_paga += parseFloat($(this).val().replace('.', '').replace(',', '.'))
-        }
-    });
-    $("#total-motorista").text(valor_paga.toFixed(2))
-    if (valor_paga > 0) {
-        $(".div-motorista").slideDown(500)
-    } else {
-        $(".div-motorista").slideUp(500)
-    }
-    $("#total-motorista").unmask()
-    $("#total-motorista").mask('#.##0,00', { reverse: true })
-    var text_total = $("#total-motorista").text();
-    var text_total = "R$ " + text_total
-    $("#total-motorista").text(text_total)
-}
+
 
 var verificaTotalHoras = function() {
     if ($(".total-horas").text() == '00:00 Hs') {
@@ -1618,6 +1513,83 @@ $(document).on('click', '.js-remove-romaneio-minuta', function() {
         },
     });
 });
+
+// Mostra a div de mensagem com a mensagem de erro
+function mostraMensagemErro() {
+    $(".div-erro").slideDown(500)
+    $(".div-erro").delay(5000).slideUp(500)
+}
+
+// Mostra a div de mensagem com a mensagem de sucesso
+function mostraMensagemSucesso() {
+    $(".div-sucesso").slideDown(500)
+    $(".div-sucesso").delay(5000).slideUp(500)
+}
+
+// TODO VERIFICAR NECESSIDADE E APRIMORAR SE NECESSÁRIO
+function recarregaFinanceiro(html_paga, html_recebe) {
+    $('.html-form-paga').html(html_paga);
+    $('.html-form-recebe').html(html_recebe);
+    formatUnmask();
+    formatMask();
+    somaReceita();
+    somaPagamentos();
+    verificaCheckboxPaga();
+    verificaSwitchRecebe();
+}
+
+// Utilizada no Card-Pagamentps
+// Soma valor do motorista
+function somaMotorista() {
+    var valor_paga = 0.00;
+    $(".total-paga").each(function() {
+        if ($(this).attr("id") != "valor-ajudante-paga") {
+            valor_paga += parseFloat($(this).val().replace('.', '').replace(',', '.'))
+        }
+    });
+    $("#total-motorista").text(valor_paga.toFixed(2))
+    if (valor_paga > 0) {
+        $(".div-motorista").slideDown(500)
+    } else {
+        $(".div-motorista").slideUp(500)
+    }
+    $("#total-motorista").unmask()
+    $("#total-motorista").mask('#.##0,00', { reverse: true })
+    var text_total = $("#total-motorista").text();
+    var text_total = "R$ " + text_total
+    $("#total-motorista").text(text_total)
+}
+
+// Utilizada no Card-Pagamentos
+// Soma total dos pagamentos
+function somaPagamentos() {
+    var valor_paga = 0.00;
+    $(".total-paga").each(function() {
+        valor_paga += parseFloat($(this).val().replace('.', '').replace(',', '.'))
+    });
+    $("#total-pagamentos").text(valor_paga.toFixed(2))
+    $("#total-pagamentos").unmask()
+    $("#total-pagamentos").mask('#.##0,00', { reverse: true })
+    var text_total = $("#total-pagamentos").text();
+    var text_total = "TOTAL R$ " + text_total
+    $("#total-pagamentos").text(text_total)
+    somaMotorista();
+}
+
+// Utilizada no Card-Receitas
+// Soma total das receitas
+function somaReceitas() {
+    var valor_receita = 0.00;
+    $(".total-recebe").each(function() {
+        valor_receita += parseFloat($(this).val().replace('.', '').replace(',', '.'))
+    });
+    $("#totalrecebe").text(valor_receita.toFixed(2))
+    $("#totalrecebe").unmask()
+    $("#totalrecebe").mask('#.##0,00', { reverse: true })
+    var text_total = $("#totalrecebe").text();
+    var text_total = "TOTAL R$ " + text_total
+    $("#totalrecebe").text(text_total)
+}
 
 // Utilizado no Card-Pagamentos
 // Mostra inputs dos itens de acordo com o estado do checkbox
