@@ -766,10 +766,9 @@ $(document).ready(function() {
 
     // Utilizado na Versão Nova
     verificaCheckboxPaga();
-    verificaSwitchRecebe();
+    verificaCheckboxRecebe();
     mostraChecklist();
     formatMask();
-    verificaCheckboxPaga();
 });
 
 
@@ -929,74 +928,6 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
         });
     });
 }
-
-
-
-function verificaSwitchRecebe() {
-    if ($('#c_recebe_taxa').is(':not(:checked)')) {
-        $('#js-recebe-taxa').slideUp(500)
-    }
-    if ($('#c_recebe_segu').is(':not(:checked)')) {
-        $('#js-recebe-segu').slideUp(500)
-    }
-    if ($('#c_recebe_porc').is(':not(:checked)')) {
-        $('#js-recebe-porc').slideUp(500)
-    }
-    if ($('#c_recebe_hora').is(':not(:checked)')) {
-        $('#js-recebe-hora').slideUp(500)
-    }
-    if ($('#c_recebe_exce').is(':not(:checked)')) {
-        $('#js-recebe-exce').slideUp(500)
-    }
-    if ($('#c_recebe_kilm').is(':not(:checked)')) {
-        $('#js-recebe-kilm').slideUp(500)
-    }
-    if ($('#c_recebe_entr').is(':not(:checked)')) {
-        $('#js-recebe-entr').slideUp(500)
-    }
-    if ($('#c_recebe_enkg').is(':not(:checked)')) {
-        $('#js-recebe-enkg').slideUp(500)
-    }
-    if ($('#c_recebe_evol').is(':not(:checked)')) {
-        $('#js-recebe-evol').slideUp(500)
-    }
-    if ($('#c_recebe_said').is(':not(:checked)')) {
-        $('#js-recebe-said').slideUp(500)
-    }
-    if ($('#c_recebe_capa').is(':not(:checked)')) {
-        $('#js-recebe-capa').slideUp(500)
-    }
-    if ($('#c_recebe_peri').is(':not(:checked)')) {
-        $('#js-recebe-peri').slideUp(500)
-    }
-    if ($('#c_recebe_pnoi').is(':not(:checked)')) {
-        $('#js-recebe-pnoi').slideUp(500)
-    }
-    if ($('#c_recebe_ajud').is(':not(:checked)')) {
-        $('#js-recebe-ajud').slideUp(500)
-    }
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 var EscondeCategoria = function() {
     $(".html-categoria").hide()
@@ -1535,7 +1466,7 @@ function recarregaFinanceiro(html_paga, html_recebe) {
     somaReceita();
     somaPagamentos();
     verificaCheckboxPaga();
-    verificaSwitchRecebe();
+    verificaCheckboxRecebe();
 }
 
 // Utilizada no Card-Pagamentps
@@ -1595,6 +1526,22 @@ function somaReceitas() {
 // Mostra inputs dos itens de acordo com o estado do checkbox
 function verificaCheckboxPaga() {
     $('.total-paga').each(function() {
+        check_altera = $(this).attr("name").replace("valor", "#check");
+        div_mostra = $(this).attr("name").replace("valor", "#js");
+        if (parseFloat($(this).val()) > parseFloat(0,00)) {
+            $(check_altera).prop('checked', true)
+            $(div_mostra).slideDown(500)
+        } else {
+            $(check_altera).prop('checked', false)
+            $(div_mostra).slideUp(500)
+        }
+    });
+};
+
+// Utilizado no Card-Pagamentos
+// Mostra inputs dos itens de acordo com o estado do checkbox
+function verificaCheckboxRecebe() {
+    $('.total-recebe').each(function() {
         check_altera = $(this).attr("name").replace("valor", "#check");
         div_mostra = $(this).attr("name").replace("valor", "#js");
         if (parseFloat($(this).val()) > parseFloat(0,00)) {

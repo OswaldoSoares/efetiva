@@ -29,7 +29,7 @@
             </div>
         </div>
         <!-- Valores Taxa de Expedição -->
-        <div class="card-body-item" id="js-recebe-taxa">
+        <div class="card-body-item" id="js-taxa-recebe">
             <div class="input-group input-group-sm transparente">
                 <span class="input-group-addon addon-blue">
                     R$
@@ -79,7 +79,7 @@
             </div>
         </div>
         <!-- Valores Seguro -->
-        <div class="card-body-item" id="js-recebe-segu">
+        <div class="card-body-item" id="js-seguro-recebe">
             <div class="input-group input-group-sm transparente">
                 <span class="input-group-addon addon-blue">
                     &nbsp%&nbsp
@@ -130,7 +130,7 @@
             </div>
         </div>
         <!-- Valores Porcentagem Nota -->
-        <div class="card-body-item" id="js-recebe-porc">
+        <div class="card-body-item" id="js-porcentagem-recebe">
             <div class="input-group input-group-sm transparente">
                 <span class="input-group-addon addon-blue">
                     &nbsp%&nbsp
@@ -181,7 +181,7 @@
             </div>
         </div>
         <!-- Valores Horas -->
-        <div class="card-body-item" id="js-recebe-hora">
+        <div class="card-body-item" id="js--hora-recebe">
             <div class="input-group input-group-sm transparente">
                 <span class="input-group-addon addon-blue">
                     R$
@@ -232,7 +232,7 @@
             </div>
         </div>
         <!-- Valores Horas Excedente -->
-        <div class="card-body-item" id="js-recebe-exce">
+        <div class="card-body-item" id="js-excedente-recebe">
             <div class="input-group input-group-sm transparente">
                 <span class="input-group-addon addon-blue">
                     &nbsp%&nbsp
@@ -283,7 +283,7 @@
             </div>
         </div>
         <!-- Valores Kilometragem -->
-        <div class="card-body-item" id="js-recebe-kilm">
+        <div class="card-body-item" id="js-kilometragem-recebe">
             <div class="input-group input-group-sm transparente">
                 <span class="input-group-addon addon-blue">
                     R$
@@ -334,7 +334,7 @@
             </div>
         </div>
         <!-- Valores Entregas -->
-        <div class="card-body-item" id="js-recebe-entr">
+        <div class="card-body-item" id="js-entrega-recebe">
             <div class="input-group input-group-sm transparente">
                 <span class="input-group-addon addon-blue">
                     R$
@@ -385,7 +385,7 @@
             </div>
         </div>
         <!-- Valores Entregas KG -->
-        <div class="card-body-item" id="js-recebe-enkg">
+        <div class="card-body-item" id="js-entrega-kg-recebe">
             <div class="input-group input-group-sm transparente">
                 <span class="input-group-addon addon-blue">
                     R$
@@ -436,7 +436,7 @@
             </div>
         </div>
         <!-- Valores Entregas Volume -->
-        <div class="card-body-item" id="js-recebe-evol">
+        <div class="card-body-item" id="js-entrega-volume-recebe">
             <div class="input-group input-group-sm transparente">
                 <span class="input-group-addon addon-blue">
                     R$
@@ -487,7 +487,7 @@
             </div>
         </div>
         <!-- Valores Saida -->
-        <div class="card-body-item" id="js-recebe-said">
+        <div class="card-body-item" id="js-saida-recebe">
             <div class="input-group input-group-sm transparente">
                 <span class="input-group-addon addon-blue">
                     R$
@@ -537,7 +537,7 @@
             </div>
         </div>
         <!-- Valores Capacidade Peso -->
-        <div class="card-body-item" id="js-recebe-capa">
+        <div class="card-body-item" id="js-capacidade-recebe">
             <div class="input-group input-group-sm transparente">
                 <span class="input-group-addon addon-blue">
                     R$
@@ -586,7 +586,7 @@
             </div>
         </div>
         <!-- Valores Perimetro -->
-        <div class="card-body-item" id="js-recebe-peri">
+        <div class="card-body-item" id="js-perimetro-recebe">
             <div class="input-group input-group-sm transparente">
                 <span class="input-group-addon addon-blue">
                     &nbsp%&nbsp
@@ -637,7 +637,7 @@
             </div>
         </div>
         <!-- Valores Pernoite -->
-        <div class="card-body-item" id="js-recebe-pnoi">
+        <div class="card-body-item" id="js-pernoite-recebe">
             <div class="input-group input-group-sm transparente">
                 <span class="input-group-addon addon-blue">
                     &nbsp%&nbsp
@@ -688,7 +688,7 @@
             </div>
         </div>
         <!-- Valores Ajudante -->
-        <div class="card-body-item" id="js-recebe-ajud">
+        <div class="card-body-item" id="js-ajudante-recebe">
             <div class="input-group input-group-sm transparente">
                 <span class="input-group-addon addon-blue">
                     R$
@@ -705,7 +705,7 @@
                 class="form-control text-right js-input-change"
                 id="minuta-ajudante-recebe"
                 name="minuta-ajudante-recebe"
-                value="{{ s_ajudante-minuta.recebe.m_ajud|stringformat:'.0f' }}" />
+                value="{{ s_ajudante.recebe.m_ajud|stringformat:'.0f' }}" />
                 <span class="input-group-addon addon-my-color">
                     =
                 </span>
@@ -741,7 +741,7 @@
             </div>
         </div>
         <!-- Valores Despesas -->
-        <div class="card-body-item" id="js-recebe-desp{{ despesa.idMinutaItens }}">
+        <div class="card-body-item" id="js-despesa-recebe-desp{{ despesa.idMinutaItens }}">
             <div class="input-group input-group-sm transparente">
                 <span class="input-group-addon addon-blue">
                     R$
