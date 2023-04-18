@@ -1451,20 +1451,20 @@ $(document).on('change', '.js-checkbox-paga', function() {
 
 // Utilizado no Card-Receitas
 // Mudança de estado do checkbox
-// TODO renomear para js-checkbox-recebe
-// Fazer mudanças para deixar igual a versão pagamentos
-$(document).on('change', '.c_recebe', function() {
-    var checkbox_change = $(this).attr('id').substring(9)
-    var visible = $('#js-recebe-' + checkbox_change).is(':visible')
-    $('#js-recebe-' + checkbox_change).fadeToggle(500)
+$(document).on('change', '.js-checkbox-recebe', function() {
+    var div_mostra = $(this).attr('id').replace("check", "#js");
+    var visible = $(div_mostra).is(':visible')
+    var input_tabela = $(this).attr('id').replace("check", "#tabela");
+    var input_valor = $(this).attr('id').replace("check", "#valor");
+    $(div_mostra).slideToggle(500)
     if (visible) {
-        $('#t_recebe_' + checkbox_change).val('0,00')
-        somaReceita();
+        $(input_valor).val('0,00')
     } else {
-        var valor_digitado = $('#v_' + checkbox_change).val()
-        calculosMudarInputRecebe('v_' + checkbox_change, valor_digitado)
-        $('#v_' + checkbox_change).select()
+        var valor_digitado = $(input_tabela).val()
+        calculosMudarInputRecebe(input_tabela.replace("#", ""), valor_digitado)
+        $(input_tabela).select()
     }
+    somaReceitas();
 })
 
 

@@ -19,12 +19,12 @@
                 </span>
                 <div class="input-group-addon addon-my-color">
                     <input type="checkbox"
-                    class="c_recebe"
-                    id="c_recebe_taxa"
+                    class="js-checkbox-recebe"
+                    id="check-taxa-recebe"
+                    name="check-taxa-recebe"
                     {% if s_minuta.recebe.c_taxa %}
                     checked="checked"
-                    {% endif %}
-                    name="s_taxa" />
+                    {% endif %} />
                 </div>
             </div>
         </div>
@@ -36,8 +36,8 @@
                 </span>
                 <input type="text"
                 class="form-control text-right js-input-change"
-                id="v_taxa"
-                name="v_taxa"
+                id="tabela-taxa-recebe"
+                name="tabela-taxa-recebe"
                 value="{{ s_minuta.recebe.v_taxa|stringformat:'.2f' }}" />
                 <span class="input-group-addon addon-blue">
                     UN
@@ -54,7 +54,8 @@
                 </span>
                 <input type="text"
                 class="total-recebe form-control text-right"
-                id="t_recebe_taxa"
+                id="valor-taxa-recebe"
+                name="valor-taxa-recebe"
                 value="{{ s_minuta.recebe.v_taxa|stringformat:'.2f' }}"
                 readonly />
             </div>
@@ -68,9 +69,9 @@
                 </span>
                 <div class="input-group-addon addon-my-color">
                     <input type="checkbox"
-                    class="c_recebe"
-                    id="c_recebe_segu"
-                    name="s_segu"
+                    class="js-checkbox-recebe"
+                    id="check-seguro-recebe"
+                    name="check-seguro-recebe"
                     {% if s_minuta.recebe.c_segu %}
                     checked="checked"
                     {% endif %} />
@@ -85,16 +86,16 @@
                 </span>
                 <input type="text"
                 class="form-control text-right js-input-change"
-                name="v_segu"
-                id="v_segu"
+                id="tabela-seguro-recebe"
+                name="tabela-seguro-recebe"
                 value="{{ s_minuta.recebe.v_segu|stringformat:'.3f' }}" />
                 <span class="input-group-addon addon-blue">
                     R$
                 </span>
                 <input type="text"
                 class="form-control text-right js-input-change"
-                id="m_segu"
-                name="m_segu"
+                id="minuta-seguro-recebe"
+                name="minuta-seguro-recebe"
                 value="{{ s_minuta.recebe.m_segu|stringformat:'.2f' }}" />
                 <span class="input-group-addon addon-my-color">
                     =
@@ -104,7 +105,8 @@
                 </span>
                 <input type="texy"
                 class="total-recebe form-control text-right"
-                id="t_recebe_segu"
+                id="valor-seguro-recebe"
+                name="valor-seguro-recebe"
                 value="{{ s_minuta.recebe.t_segu|stringformat:'.2f' }}"
                 readonly />
             </div>
@@ -118,9 +120,9 @@
                 </span>
                 <div class="input-group-addon addon-my-color">
                     <input type="checkbox"
-                    class="c_recebe"
-                    id="c_recebe_porc"
-                    name="s_porc"
+                    class="js-checkbox-recebe"
+                    id="check-porcentagem-recebe"
+                    name="check-porcentagem-recebe"
                     {% if s_minuta.recebe.c_porc %}
                     checked="checked"
                     {% endif %} />
@@ -135,16 +137,16 @@
                 </span>
                 <input type="text"
                 class="form-control text-right js-input-change"
-                id="v_porc"
-                name="v_porc"
+                id="tabela-porcentagem-recebe"
+                name="tabela-porcentagem-recebe"
                 value="{{ s_minuta.recebe.v_porc|stringformat:'.2f' }}" />
                 <span class="input-group-addon addon-blue">
                     R$
                 </span>
                 <input type="text"
                 class="form-control text-right js-input-change"
-                id="m_porc"
-                name="m_porc"
+                id="minuta-porcentagem-recebe"
+                name="minuta-porcentagem-recebe"
                 value="{{ s_minuta.recebe.m_porc|stringformat:'.2f' }}" />
                 <span class="input-group-addon addon-my-color">
                     =
@@ -154,7 +156,8 @@
                 </span>
                 <input type="texy"
                 class="total-recebe form-control text-right"
-                id="t_recebe_porc"
+                id="valor-porcentagem-recebe"
+                name="valor-porcentagem-recebe"
                 value="{{ s_minuta.recebe.t_porc|stringformat:'.2f' }}"
                 readonly />
             </div>
@@ -168,12 +171,12 @@
                 </span>
                 <div class="input-group-addon addon-my-color">
                     <input type="checkbox"
-                    class="c_recebe"
-                    id="c_recebe_hora"
+                    class="js-checkbox-recebe"
+                    id="check-hora-recebe"
+                    name="check-hora-recebe"
                     {% if s_minuta.recebe.c_hora %}
                     checked="checked"
-                    {% endif %}
-                    name="s_hora">
+                    {% endif %} />
                 </div>
             </div>
         </div>
@@ -184,8 +187,8 @@
                     R$
                 </span>
                 <input type="text"
-                id="v_hora"
-                name="v_hora"
+                id="tabela-hora-recebe"
+                name="tabela-hora-recebe"
                 class="form-control text-right js-input-change"
                 value="{{ s_minuta.recebe.v_hora|stringformat:'.2f' }}" />
                 <span class="input-group-addon addon-blue">
@@ -193,8 +196,8 @@
                 </span>
                 <input type="time"
                 class="form-control text-right js-input-change"
-                id="m_hora"
-                name="m_hora"
+                id="minuta-hora-recebe"
+                name="minuta-hora-recebe"
                 value="{{ s_minuta.recebe.m_hora }}" />
                 <span class="input-group-addon addon-my-color">
                     =
@@ -204,7 +207,8 @@
                 </span>
                 <input type="texy"
                 class="total-recebe form-control text-right"
-                id="t_recebe_hora"
+                id="valor-hora-recebe"
+                name="valor-hora-recebe"
                 value="{{ s_minuta.recebe.t_hora|stringformat:'.2f' }}"
                 readonly />
             </div>
@@ -218,9 +222,9 @@
                 </span>
                 <div class="input-group-addon addon-my-color">
                     <input type="checkbox"
-                    class="c_recebe"
-                    id="c_recebe_exce"
-                    name="s_exce"
+                    class="js-checkbox-recebe"
+                    id="check-excedente-recebe"
+                    name="check-excedente-recebe"
                     {% if s_minuta.recebe.c_exce %}
                     checked="checked"
                     {% endif %} />
@@ -235,16 +239,16 @@
                 </span>
                 <input type="text"
                 class="form-control text-right js-input-change"
-                id="v_exce"
-                name="v_exce"
+                id="tabela-excedente-recebe"
+                name="tabela-excedente-recebe"
                 value="{{ s_minuta.recebe.v_exce|stringformat:'.2f' }}" />
                 <span class="input-group-addon addon-blue">
                     HS
                 </span>
                 <input type="time"
                 class="form-control text-right js-input-change"
-                id="m_exce"
-                name="m_exce"
+                id="minuta-excedente-recebe"
+                name="minuta-excedente-recebe"
                 value="{{ s_minuta.recebe.m_exce }}" />
                 <span class="input-group-addon addon-my-color">
                     =
@@ -254,7 +258,8 @@
                 </span>
                 <input type="texy"
                 class="total-recebe form-control text-right"
-                id="t_recebe_exce"
+                id="valor-excedente-recebe"
+                name="valor-excedente-recebe"
                 value="{{ s_minuta.recebe.t_exce|stringformat:'.2f' }}"
                 readonly />
             </div>
@@ -268,9 +273,9 @@
                 </span>
                 <div class="input-group-addon addon-my-color">
                     <input type="checkbox"
-                    class="c_recebe"
-                    id="c_recebe_kilm"
-                    name="s_kilm"
+                    class="js-checkbox-recebe"
+                    id="check-kilometragem-recebe"
+                    name="check-kilometragem-recebe"
                     {% if s_minuta.recebe.c_kilm %}
                     checked="checked"
                     {% endif %} />
@@ -284,8 +289,8 @@
                     R$
                 </span>
                 <input type="text"
-                id="v_kilm"
-                name="v_kilm"
+                id="tabela-kilometragem-recebe"
+                name="tabela-kilometragem-recebe"
                 class="form-control text-right js-input-change"
                 value="{{ s_minuta.recebe.v_kilm|stringformat:'.2f' }}" />
                 <span class="input-group-addon addon-blue">
@@ -293,8 +298,8 @@
                 </span>
                 <input type="text"
                 class="form-control text-right js-input-change"
-                id="m_kilm"
-                name="m_kilm"
+                id="minuta-kilometragem-recebe"
+                name="minuta-kilometragem-recebe"
                 value="{{ s_minuta.recebe.m_kilm|stringformat:'.0f' }}" />
                 <span class="input-group-addon addon-my-color">
                     =
@@ -304,7 +309,8 @@
                 </span>
                 <input type="texy"
                 class="total-recebe form-control text-right"
-                id="t_recebe_kilm"
+                id="valor-kilometragem-recebe"
+                name="valor-kilometragem-recebe"
                 value="{{ s_minuta.recebe.t_kilm|stringformat:'.2f' }}"
                 readonly />
             </div>
@@ -318,9 +324,9 @@
                 </span>
                 <div class="input-group-addon addon-my-color">
                     <input type="checkbox"
-                    class="c_recebe"
-                    id="c_recebe_entr"
-                    name="s_entr"
+                    class="js-checkbox-recebe"
+                    id="check-entrega-recebe"
+                    name="check-entrega-recebe"
                     {% if s_minuta.recebe.c_entr %}
                     checked="checked"
                     {% endif %} />
@@ -335,16 +341,16 @@
                 </span>
                 <input type="text"
                 class="form-control text-right js-input-change"
-                id="v_entr"
-                name="v_entr"
+                id="tabela-entrega-recebe"
+                name="tabela-entrega-recebe"
                 value="{{ s_minuta.recebe.v_entr|stringformat:'.2f' }}" />
                 <span class="input-group-addon addon-blue">
                     UN
                 </span>
                 <input type="text"
                 class="form-control text-right js-input-change"
-                id="m_entr"
-                name="m_entr"
+                id="minuta-entrega-recebe"
+                name="minuta-entrega-recebe"
                 value="{{ s_minuta.recebe.m_entr|stringformat:'.0f' }}" />
                 <span class="input-group-addon addon-my-color">
                     =
@@ -354,7 +360,8 @@
                 </span>
                 <input type="texy"
                 class="total-recebe form-control text-right"
-                id="t_recebe_entr"
+                id="valor-entrega-recebe"
+                name="valor-entrega-recebe"
                 value="{{ s_minuta.recebe.t_entr|stringformat:'.2f' }}"
                 readonly />
             </div>
@@ -368,9 +375,9 @@
                 </span>
                 <div class="input-group-addon addon-my-color">
                     <input type="checkbox"
-                    class="c_recebe"
-                    id="c_recebe_enkg"
-                    name="s_enkg"
+                    class="js-checkbox-recebe"
+                    id="check-entrega-kg-recebe"
+                    name="check-entrega-kg-recebe"
                     {% if s_minuta.recebe.c_enkg %}
                     checked="checked"
                     {% endif %} />
@@ -385,16 +392,16 @@
                 </span>
                 <input type="text"
                 class="form-control text-right js-input-change"
-                id="v_enkg"
-                name="v_enkg"
+                id="tabela-entrega-kg-recebe"
+                name="tabela-entrega-kg-recebe"
                 value="{{ s_minuta.recebe.v_enkg|stringformat:'.2f' }}" />
                 <span class="input-group-addon addon-blue">
                     KG
                 </span>
                 <input type="text"
                 class="form-control text-right js-input-change"
-                id="m_enkg"
-                name="m_enkg"
+                id="minuta-entrega-kg-recebe"
+                name="minuta-entrega-kg-recebe"
                 value="{{ s_minuta.recebe.m_enkg|stringformat:'.2f' }}" />
                 <span class="input-group-addon addon-my-color">
                     =
@@ -404,7 +411,8 @@
                 </span>
                 <input type="texy"
                 class="total-recebe form-control text-right"
-                id="t_recebe_enkg"
+                id="valor-entrega-kg-recebe"
+                name="valor-entrega-kg-recebe"
                 value="{{ s_minuta.recebe.t_enkg|stringformat:'.2f' }}"
                 readonly />
             </div>
@@ -418,9 +426,9 @@
                 </span>
                 <div class="input-group-addon addon-my-color">
                     <input type="checkbox"
-                    class="c_recebe"
-                    id="c_recebe_evol"
-                    name="s_evol"
+                    class="js-checkbox-recebe"
+                    id="check-entrega-volume-recebe"
+                    name="check-entrega-volume-recebe"
                     {% if s_minuta.recebe.c_evol %}
                     checked="checked"
                     {% endif %} />
@@ -435,16 +443,16 @@
                 </span>
                 <input type="text"
                 class="form-control text-right js-input-change"
-                id="v_evol"
-                name="v_evol"
+                id="tabela-entrega-volume-recebe"
+                name="tabela-entrega-volume-recebe"
                 value="{{ s_minuta.recebe.v_evol|stringformat:'.2f' }}" />
                 <span class="input-group-addon addon-blue">
                     UN
                 </span>
                 <input type="text"
                 class="form-control text-right js-input-change"
-                id="m_evol"
-                name="m_evol"
+                id="minuta-entrega-volume-recebe"
+                name="minuta-entrega-volume-recebe"
                 value="{{ s_minuta.recebe.m_evol|stringformat:'.0f' }}" />
                 <span class="input-group-addon addon-my-color">
                     =
@@ -454,7 +462,8 @@
                 </span>
                 <input type="texy"
                 class="total-recebe form-control text-right"
-                id="t_recebe_evol"
+                id="valor-entrega-volume-recebe"
+                name="valor-entrega-volume-recebe"
                 value="{{ s_minuta.recebe.t_evol|stringformat:'.2f' }}"
                 readonly />
             </div>
@@ -468,9 +477,9 @@
                 </span>
                 <div class="input-group-addon addon-my-color">
                     <input type="checkbox"
-                    class="c_recebe"
-                    id="c_recebe_said"
-                    name="s_said"
+                    class="js-checkbox-recebe"
+                    id="check-saida-recebe"
+                    name="check-saida-recebe"
                     {% if s_minuta.recebe.c_said %}
                     checked="checked"
                     {% endif %} />
@@ -484,8 +493,8 @@
                     R$
                 </span>
                 <input type="text"
-                id="v_said"
-                name="v_said"
+                id="tabela-saida-recebe"
+                name="tabela-saida-recebe"
                 class="form-control text-right js-input-change"
                 value="{{ s_minuta.recebe.v_said|stringformat:'.2f' }}" />
                 <span class="input-group-addon addon-blue">
@@ -503,7 +512,8 @@
                 </span>
                 <input type="texy"
                 class="total-recebe form-control text-right"
-                id="t_recebe_said"
+                id="valor-saida-recebe"
+                name="valor-saida-recebe"
                 value="{{ s_minuta.recebe.v_said|stringformat:'.2f' }}"
                 readonly />
             </div>
@@ -517,9 +527,9 @@
                 </span>
                 <div class="input-group-addon addon-my-color">
                     <input type="checkbox"
-                    class="c_recebe"
-                    id="c_recebe_capa"
-                    name="s_capa"
+                    class="js-checkbox-recebe"
+                    id="check-capacidade-recebe"
+                    name="check-capacidade-recebe"
                     {% if s_minuta.recebe.c_capa %}
                     checked="checked"
                     {% endif %} />
@@ -534,8 +544,8 @@
                 </span>
                 <input type="text"
                 class="form-control text-right js-input-change"
-                id="v_capa"
-                name="v_capa"
+                id="tabela-capacidade-recebe"
+                name="tabela-capacidade-recebe"
                 value="{{ s_minuta.recebe.v_capa|stringformat:'.2f' }}" />
                 <span class="input-group-addon addon-blue">
                     UN
@@ -551,7 +561,8 @@
                 </span>
                 <input type="texy"
                 class="total-recebe form-control text-right"
-                id="t_recebe_capa"
+                id="valor-capacidade-recebe"
+                name="valor-capacidade-recebe"
                 value="{{ s_minuta.recebe.v_capa|stringformat:'.2f' }}"
                 readonly />
             </div>
@@ -565,9 +576,9 @@
                 </span>
                 <div class="input-group-addon addon-my-color">
                     <input type="checkbox"
-                    class="c_recebe"
-                    id="c_recebe_peri"
-                    name="s_peri"
+                    class="js-checkbox-recebe"
+                    id="check-perimetro-recebe"
+                    name="check-perimetro-recebe"
                     {% if s_minuta.recebe.c_peri %}
                     checked="checked"
                     {% endif %} />
@@ -581,8 +592,8 @@
                     &nbsp%&nbsp
                 </span>
                 <input type="text"
-                id="v_peri"
-                name="v_peri"
+                id="tabela-perimetro-recebe"
+                name="tabela-perimetro-recebe"
                 class="form-control text-right js-input-change"
                 value="{{ s_minuta.recebe.v_peri|stringformat:'.2f' }}" />
                 <span class="input-group-addon addon-blue">
@@ -590,8 +601,8 @@
                 </span>
                 <input type="text"
                 class="form-control text-right js-input-change"
-                id="m_peri"
-                name="m_peri"
+                id="minuta-perimetro-recebe"
+                name="minuta-perimetro-recebe"
                 value="{{ s_minuta.recebe.m_peri|stringformat:'.2f' }}" />
                 <span class="input-group-addon addon-my-color">
                     =
@@ -601,7 +612,8 @@
                 </span>
                 <input type="texy"
                 class="total-recebe form-control text-right"
-                id="t_recebe_peri"
+                id="valor-perimetro-recebe"
+                name="valor-perimetro-recebe"
                 value="{{ s_minuta.recebe.t_peri|stringformat:'.2f' }}"
                 readonly />
             </div>
@@ -615,9 +627,9 @@
                 </span>
                 <div class="input-group-addon addon-my-color">
                     <input type="checkbox"
-                    class="c_recebe"
-                    id="c_recebe_pnoi"
-                    name="s_pnoi"
+                    class="js-checkbox-recebe"
+                    id="check-pernoite-recebe"
+                    name="check-pernoite-recebe"
                     {% if s_minuta.recebe.c_pnoi %}
                     checked="checked"
                     {% endif %} />
@@ -632,16 +644,16 @@
                 </span>
                 <input type="text"
                 class="form-control text-right js-input-change"
-                id="v_pnoi"
-                name="v_pnoi"
+                id="tabela-pernoite-recebe"
+                name="tabela-pernoite-recebe"
                 value="{{ s_minuta.recebe.v_pnoi|stringformat:'.2f' }}" />
                 <span class="input-group-addon addon-blue">
                     R$
                 </span>
                 <input type="text"
                 class="form-control text-right js-input-change"
-                id="m_pnoi"
-                name="m_pnoi"
+                id="minuta-pernoite-recebe"
+                name="minuta-pernoite-recebe"
                 value="{{ s_minuta.recebe.m_peri|stringformat:'.2f' }}" />
                 <span class="input-group-addon addon-my-color">
                     =
@@ -651,7 +663,8 @@
                 </span>
                 <input type="texy"
                 class="total-recebe form-control text-right"
-                id="t_recebe_pnoi"
+                id="valor-pernoite-recebe"
+                name="valor-pernoite-recebe"
                 value="{{ s_minuta.recebe.t_pnoi|stringformat:'.2f' }}"
                 readonly />
             </div>
@@ -665,9 +678,9 @@
                 </span>
                 <div class="input-group-addon addon-my-color">
                     <input type="checkbox"
-                    class="c_recebe"
-                    id="c_recebe_ajud"
-                    name="s_ajud"
+                    class="js-checkbox-recebe"
+                    id="check-ajudante-recebe"
+                    name="check-ajudante-recebe"
                     {% if s_minuta.recebe.c_ajud %}
                     checked="checked"
                     {% endif %} />
@@ -682,17 +695,17 @@
                 </span>
                 <input type="text"
                 class="form-control text-right js-input-change"
-                id="v_ajud"
-                name="v_ajud"
+                id="tabela-ajudante-recebe"
+                name="tabela-ajudante-recebe"
                 value="{{ s_minuta.recebe.v_ajud|stringformat:'.2f' }}" />
                 <span class="input-group-addon addon-blue">
                     UN
                 </span>
                 <input type="text"
                 class="form-control text-right js-input-change"
-                id="m_ajud"
-                name="m_ajud"
-                value="{{ s_minuta.recebe.m_ajud|stringformat:'.0f' }}" />
+                id="minuta-ajudante-recebe"
+                name="minuta-ajudante-recebe"
+                value="{{ s_ajudante-minuta.recebe.m_ajud|stringformat:'.0f' }}" />
                 <span class="input-group-addon addon-my-color">
                     =
                 </span>
@@ -701,7 +714,8 @@
                 </span>
                 <input type="texy"
                 class="total-recebe form-control text-right"
-                id="t_recebe_ajud"
+                id="valor-ajudante-recebe"
+                name="valor-ajudante-recebe"
                 value="{{ s_minuta.recebe.t_ajud|stringformat:'.2f' }}"
                 readonly />
             </div>
@@ -719,9 +733,9 @@
                 </span>
                 <div class="input-group-addon addon-my-color">
                     <input type="checkbox"
-                    class="c_recebe"
-                    id="c_recebe_desp{{ despesa.idMinutaItens }}"
-                    name="s_desp"
+                    class="js-checkbox-recebe"
+                    id="check-despesa-recebe-{{ despesa.idMinutaItens }}"
+                    name="check-despesa-recebe-{{ despesa.idMinutaItens }}"
                     checked="checked" />
                 </div>
             </div>
@@ -734,8 +748,8 @@
                 </span>
                 <input type="text"
                 class="form-control text-right js-input-change"
-                id="v_desp{{ despesa.idMinutaItens }}"
-                name="v_desp{{ despesa.idMinutaItens }}"
+                id="tabela-despesa-recebe-{{ despesa.idMinutaItens }}"
+                name="tabela-despesa-recebe-{{ despesa.idMinutaItens }}"
                 value="{{ despesa.Valor|stringformat:'.2f' }}" />
                 <span class="input-group-addon addon-blue">
                     UN
@@ -752,7 +766,8 @@
                 </span>
                 <input type="texy"
                 class="total-recebe form-control text-right"
-                id="t_recebe_desp{{ despesa.idMinutaItens }}"
+                id="valor-despesa-recebe-{{ despesa.idMinutaItens }}"
+                name="valor-despesa-recebe-{{ despesa.idMinutaItens }}"
                 value="{{ despesa.Valor|stringformat:'.2f' }}"
                 readonly />
             </div>
