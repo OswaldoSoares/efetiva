@@ -197,7 +197,7 @@
                     UN
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change"
+                class="form-control text-right js-input-change js-unidade"
                 id="minuta-kilometragem-paga"
                 name="minuta-kilometragem-paga"
                 value="{{ s_minuta.paga.m_kilm|stringformat:'.0f' }}" />
@@ -248,7 +248,7 @@
                     UN
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change"
+                class="form-control text-right js-input-change js-unidade"
                 id="minuta-entrega-paga"
                 name="minuta-entrega-paga"
                 value="{{ s_minuta.paga.m_entr|stringformat:'.0f' }}" />
@@ -350,7 +350,7 @@
                     UN
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change"
+                class="form-control text-right js-input-change js-unidade"
                 id="minuta-entrega-volume-paga"
                 name="minuta-entrega-volume-paga"
                 value="{{ s_minuta.paga.m_evol|stringformat:'.0f' }}" />
@@ -401,7 +401,7 @@
                     UN
                 </span>
                 <input type="text"
-                class="form-control text-right"
+                class="form-control text-right js-unidade"
                 value="1"
                 readonly />
                 <span class="input-group-addon addon-my-color">
@@ -451,7 +451,8 @@
                     UN
                 </span>
                 <input type="text"
-                class="form-control text-right" value="1"
+                class="form-control text-right js-unidade"
+                value="1"
                 readonly />
                 <span class="input-group-addon addon-my-color">
                     =
@@ -602,7 +603,7 @@
                     UN
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change"
+                class="form-control text-right js-input-change js-unidade"
                 id="minuta-ajudante-paga"
                 name="minuta-ajudante-paga"
                 value="{{ s_minuta.paga.m_ajud|stringformat:'.0f' }}" />

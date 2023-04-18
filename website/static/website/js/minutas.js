@@ -1167,114 +1167,124 @@ function calculosMudarInputPaga(element_select, valor_digitado) {
 // Utilizado no Card-Receitas
 // Calcula valor-item-recebe
 function calculosMudarInputRecebe(element_select, valor_digitado) {
-    if (element_select == 'v_taxa') {
+    if (element_select == 'tabela-taxa-recebe') {
         // TAXA DE EXPEDIÇÃO RECEBE
-        $('#t_recebe_taxa').val(
+        $('#valor-taxa-recebe').val(
             valor_digitado
         )
-    } else if (element_select == 'v_segu' || element_select == 'm_segu') {
+    } else if (element_select == 'tabela-seguro-recebe'
+     || element_select == 'minuta-seguro-recebe') {
         // SEGURO RECEBE
-        $('#t_recebe_segu').val(
+        console.log("aqio")
+        $('#valor-seguro-recebe').val(
             calculaPorcentagem(
-                $('#v_segu').val(),
-                $('#m_segu').val()
+                $('#tabela-seguro-recebe').val(),
+                $('#minuta-seguro-recebe').val()
             )
         )
-    } else if (element_select == 'v_porc' || element_select == 'm_porc') {
+    } else if (element_select == 'tabela-porcentagem-recebe'
+     || element_select == 'minuta-porcentagem-recebe') {
         // PORCENTAGEM RECEBE
-        $('#t_recebe_porc').val(
+        $('#valor-porcentagem-recebe').val(
             calculaPorcentagem(
-                $('#v_porc').val(),
-                $('#m_porc').val()
+                $('#tabela-porcentagem-recebe').val(),
+                $('#minuta-porcentagem-recebe').val()
             )
         )
-    } else if (element_select == 'v_hora' || element_select == 'm_hora') {
+    } else if (element_select == 'tabela-hora-recebe'
+     || element_select == 'minuta-hora-recebe') {
         // HORA RECEBE
-        $('#t_recebe_hora').val(
+        $('#valor-hora-recebe').val(
             calculaHora(
                 '100',
-                $('#v_hora').val(),
-                $('#m_hora').val()
+                $('#tabela-hora-recebe').val(),
+                $('#minuta-hora-recebe').val()
             )
         )
-    } else if (element_select == 'v_exce' || element_select == 'm_exce') {
+    } else if (element_select == 'tabela-excedente-recebe'
+     || element_select == 'minuta-excedente-recebe') {
         // EXCEDENTE RECEBE
-        $('#t_recebe_exce').val(
+        $('#valor-excedente-recebe').val(
             calculaHora(
-                $('#v_exce').val(),
-                $('#v_hora').val(),
-                $('#m_exce').val()
+                $('#tabela-excedente-recebe').val(),
+                $('#tabela-hora-recebe').val(),
+                $('#minuta-excedente-recebe').val()
             )
         )
-    } else if (element_select == 'v_kilm' || element_select == 'm_kilm') {
+    } else if (element_select == 'tabela-kilometragem-recebe'
+     || element_select == 'minuta-kilometragem-recebe') {
         // KILOMETRAGEM RECEBE
-        $('#t_recebe_kilm').val(
+        $('#valor-kilometragem-recebe').val(
             calculaMultiplo(
-                $('#v_kilm').val(),
-                $('#m_kilm').val()
+                $('#tabela-kilometragem-recebe').val(),
+                $('#minuta-kilometragem-recebe').val()
             )
         )
-    } else if (element_select == 'v_entr' || element_select == 'm_entr') {
+    } else if (element_select == 'tabela-entrega-recebe'
+     || element_select == 'minuta-entrega-recebe') {
         // ENTREGA RECEBE
-        $('#t_recebe_entr').val(
+        $('#valor-entrega-recebe').val(
             calculaMultiplo(
-                $('#v_entr').val(),
-                $('#m_entr').val()
+                $('#tabela-entrega-recebe').val(),
+                $('#minuta-entrega-recebe').val()
             )
         )
-    } else if (element_select == 'v_enkg' || element_select == 'm_enkg') {
+    } else if (element_select == 'tabela-entrega-kg-recebe'
+     || element_select == 'minuta-entrega-kg-recebe') {
         // ENTREGA KG RECEBE
-        $('#t_recebe_enkg').val(
+        $('#valor-entrega-kg-recebe').val(
             calculaMultiplo(
-                $('#v_enkg').val(),
-                $('#m_enkg').val()
+                $('#tabela-entrega-kg-recebe').val(),
+                $('#minuta-entrega-kg-recebe').val()
             )
         )
-    } else if (element_select == 'v_evol' || element_select == 'm_evol') {
+    } else if (element_select == 'tabela-entrega-volume-recebe'
+     || element_select == 'minuta-entrega-volume-recebe') {
         // ENTREGA VOLUME RECEBE
-        $('#t_recebe_evol').val(
+        $('#valor-entrega-volume-recebe').val(
             calculaMultiplo(
-                $('#v_evol').val(),
-                $('#m_evol').val()
+                $('#tabela-entrega-volume-recebe').val(),
+                $('#minuta-entrega-volume-recebe').val()
             )
         )
-    } else if (element_select == 'v_said') {
+    } else if (element_select == 'tabela-saida-recebe') {
         // SAÍDA RECEBE
-        $('#t_recebe_said').val(
+        $('#valor-saida-recebe').val(
             valor_digitado
         )
-    } else if (element_select == 'v_capa') {
+    } else if (element_select == 'tabela-capacidade-recebe') {
         // CAPACIDADE RECEBE
-        $('#t_recebe_capa').val(
+        $('#valor-capacidade-recebe').val(
             valor_digitado
         )
-    } else if (element_select == 'v_peri' || element_select == 'm_peri') {
+    } else if (element_select == 'tabela-perimetro-recebe'
+     || element_select == 'minuta-perimetro-recebe') {
         // PERIMETRO RECEBE
-        $('#t_recebe_peri').val(
+        $('#valor-perimetro-recebe').val(
             calculaPorcentagem(
-                $('#v_peri').val(),
-                $('#m_peri').val()
+                $('#tabela-perimetro-recebe').val(),
+                $('#minuta-perimetro-recebe').val()
             )
         )
-    } else if (element_select == 'v_pnoi' || element_select == 'm_pnoi') {
+    } else if (element_select == 'tabela-pernoite-recebe' || element_select == 'minuta-pernoite-recebe') {
         // PERNOITE RECEBE
-        $('#t_recebe_pnoi').val(
+        $('#valor-pernoite-recebe').val(
             calculaPorcentagem(
-                $('#v_pnoi').val(),
-                $('#m_pnoi').val()
+                $('#tabela-pernoite-recebe').val(),
+                $('#minuta-pernoite-recebe').val()
             )
         )
-    } else if (element_select == 'v_ajud' || element_select == 'm_ajud') {
+    } else if (element_select == 'tabela-ajudante-recebe' || element_select == 'minuta-ajudante-recebe') {
         // AJUDANTE RECEBE
-        $('#t_recebe_ajud').val(
+        $('#valor-ajudante-recebe').val(
             calculaMultiplo(
-                $('#v_ajud').val(),
-                $('#m_ajud').val()
+                $('#tabela-ajudante-recebe').val(),
+                $('#minuta-ajudante-recebe').val()
             )
         )
-    } else if (element_select.substring(0, 6) == 'v_desp') {
+    } else if (element_select.substring(0, 21) == 'tabela-despesa-recebe') {
         // DESPESA RECEBE
-        $('#t_recebe_' + element_select.substring(2)).val(
+        $('#valor-despesa-recebe-' + element_select.substring(2)).val(
             valor_digitado
         )
     } 
@@ -1282,7 +1292,7 @@ function calculosMudarInputRecebe(element_select, valor_digitado) {
     formatUnmask();
     formatMask();
     // Faz a soma geral com os valores atualizados 
-    somaReceita();
+    somaReceitas();
 }
 
 // Utilizado no Card-Entrega (Formulário Modal)
@@ -1319,6 +1329,12 @@ $(document).on('click', '#chk-saida', function(event) {
 function formatMask() {
     $(".js-decimal").each(function() {
         $(this).mask('#.##0,00', { reverse: true })
+        if ($(this).attr("id") == "tabela-seguro-recebe") {
+            $(this).mask('#.##0,000', { reverse: true })
+        }
+    });
+    $(".js-unidade").each(function() {
+        $(this).mask('#.##0', { reverse: true })
     });
     $('.total-recebe').mask('#.##0,00', { reverse: true })
     $('.total-pagamentos').mask('#.##0,00', { reverse: true })
@@ -1328,6 +1344,9 @@ function formatMask() {
 // remove , e . de milhar pt-BR
 function formatUnmask() {
     $(".js-decimal").each(function() {
+        $(this).unmask()
+    });
+    $(".js-unidade").each(function() {
         $(this).unmask()
     });
     $('.total-recebe').unmask()
@@ -1408,8 +1427,10 @@ $(document).on('change', '.js-input-change', function() {
         // Verifica se o valor do elemento e inteiro se for acrescenta o ',00' ao final - Bug do plugin mask e altera a
         // variavel valor_digitado
     if ($(this).val() % 1 === 0) {
-        valor_digitado = $(this).val() + ',00'
-        $(this).val(valor_digitado)
+        if ($(this).hasClass("js-decimal")) {
+            valor_digitado = $(this).val() + ',00'
+            $(this).val(valor_digitado)
+        }
     } else {
         valor_digitado = $(this).val()
     }
@@ -1463,7 +1484,7 @@ function recarregaFinanceiro(html_paga, html_recebe) {
     $('.html-form-recebe').html(html_recebe);
     formatUnmask();
     formatMask();
-    somaReceita();
+    somaReceitas();
     somaPagamentos();
     verificaCheckboxPaga();
     verificaCheckboxRecebe();
@@ -1510,16 +1531,16 @@ function somaPagamentos() {
 // Utilizada no Card-Receitas
 // Soma total das receitas
 function somaReceitas() {
-    var valor_receita = 0.00;
+    var valor_recebe = 0.00;
     $(".total-recebe").each(function() {
-        valor_receita += parseFloat($(this).val().replace('.', '').replace(',', '.'))
+        valor_recebe += parseFloat($(this).val().replace('.', '').replace(',', '.'))
     });
-    $("#totalrecebe").text(valor_receita.toFixed(2))
-    $("#totalrecebe").unmask()
-    $("#totalrecebe").mask('#.##0,00', { reverse: true })
-    var text_total = $("#totalrecebe").text();
+    $("#total-receitas").text(valor_recebe.toFixed(2))
+    $("#total-receitas").unmask()
+    $("#total-receitas").mask('#.##0,00', { reverse: true })
+    var text_total = $("#total-receitas").text();
     var text_total = "TOTAL R$ " + text_total
-    $("#totalrecebe").text(text_total)
+    $("#total-receitas").text(text_total)
 }
 
 // Utilizado no Card-Pagamentos
