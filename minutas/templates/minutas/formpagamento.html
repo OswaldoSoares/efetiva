@@ -36,7 +36,7 @@
                     &nbsp%&nbsp
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change"
+                class="form-control text-right js-input-change js-decimal"
                 id="tabela-porcentagem-paga"
                 name="tabela-porcentagem-paga"
                 value="{{ s_minuta.paga.v_porc|stringformat:'.2f' }}" />
@@ -44,7 +44,7 @@
                     R$
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change"
+                class="form-control text-right js-input-change js-decimal"
                 id="minuta-porcentagem-paga"
                 name="minuta-porcentagem-paga"
                 value="{{ s_minuta.paga.m_porc|stringformat:'.2f' }}" />
@@ -55,7 +55,7 @@
                     R$
                 </span>
                 <input type="text"
-                class="total-paga form-control text-right"
+                class="total-paga form-control text-right js-decimal"
                 id="valor-porcentagem-paga"
                 name="valor-porcentagem-paga"
                 value="{{ s_minuta.paga.t_porc|stringformat:'.2f' }}"
@@ -87,9 +87,9 @@
                     R$
                 </span>
                 <input type="text"
+                class="form-control text-right js-input-change js-decimal"
                 id="tabela-hora-paga"
                 name="tabela-hora-paga"
-                class="form-control text-right js-input-change"
                 value="{{ s_minuta.paga.v_hora|stringformat:'.2f' }}" />
                 <span class="input-group-addon addon-blue">
                     HS
@@ -106,7 +106,7 @@
                     R$
                 </span>
                 <input type="text"
-                class="total-paga form-control text-right"
+                class="total-paga form-control text-right js-decimal"
                 id="valor-hora-paga"
                 name="valor-hora-paga"
                 value="{{ s_minuta.paga.t_hora|stringformat:'.2f' }}"
@@ -138,7 +138,7 @@
                     &nbsp%&nbsp
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change"
+                class="form-control text-right js-input-change js-decimal"
                 id="tabela-excedente-paga"
                 name="tabela-excedente-paga"
                 value="{{ s_minuta.paga.v_exce|stringformat:'.2f' }}" />
@@ -157,7 +157,7 @@
                     R$
                 </span>
                 <input type="text"
-                class="total-paga form-control text-right"
+                class="total-paga form-control text-right js-decimal"
                 id="valor-excedente-paga"
                 name="valor-excedente-paga"
                 value="{{ s_minuta.paga.t_exce|stringformat:'.2f' }}"
@@ -189,9 +189,9 @@
                     R$
                 </span>
                 <input type="text"
+                class="form-control text-right js-input-change js-decimal"
                 id="tabela-kilometragem-paga"
                 name="tabela-kilometragem-paga"
-                class="form-control text-right js-input-change"
                 value="{{ s_minuta.paga.v_kilm|stringformat:'.2f' }}" />
                 <span class="input-group-addon addon-blue">
                     UN
@@ -208,7 +208,7 @@
                     R$
                 </span>
                 <input type="text"
-                class="total-paga form-control text-right"
+                class="total-paga form-control text-right js-decimal"
                 id="valor-kilometragem-paga"
                 name="valor-kilometragem-paga"
                 value="{{ s_minuta.paga.t_kilm|stringformat:'.2f' }}"
@@ -240,7 +240,7 @@
                     R$
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change"
+                class="form-control text-right js-input-change js-decimal"
                 id="tabela-entrega-paga"
                 name="tabela-entrega-paga"
                 value="{{ s_minuta.paga.v_entr|stringformat:'.2f' }}" />
@@ -259,7 +259,7 @@
                     R$
                 </span>
                 <input type="text"
-                class="total-paga form-control text-right"
+                class="total-paga form-control text-right js-decimal"
                 id="valor-entrega-paga"
                 name="valor-entrega-paga"
                 value="{{ s_minuta.paga.t_entr|stringformat:'.2f' }}"
@@ -291,7 +291,7 @@
                     R$
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change"
+                class="form-control text-right js-input-change js-decimal"
                 id="tabela-entrega-kg-paga"
                 name="tabela-entrega-kg-paga"
                 value="{{ s_minuta.paga.v_enkg|stringformat:'.2f' }}" />
@@ -299,7 +299,7 @@
                     KG
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change"
+                class="form-control text-right js-input-change js-decimal"
                 id="minuta-entrega-kg-paga"
                 name="minuta-entrega-kg-paga"
                 value="{{ s_minuta.paga.m_enkg|stringformat:'.2f' }}" />
@@ -310,7 +310,7 @@
                     R$
                 </span>
                 <input type="text"
-                class="total-paga form-control text-right"
+                class="total-paga form-control text-right js-decimal"
                 id="valor-entrega-kg-paga"
                 name="valor-entrega-kg-paga"
                 value="{{ s_minuta.paga.t_enkg|stringformat:'.2f' }}"
@@ -342,7 +342,7 @@
                     R$
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change"
+                class="form-control text-right js-input-change js-decimal"
                 id="tabela-entrega-volume-paga"
                 name="tabela-entrega-volume-paga"
                 value="{{ s_minuta.paga.v_evol|stringformat:'.2f' }}" />
@@ -361,7 +361,7 @@
                     R$
                 </span>
                 <input type="text"
-                class="total-paga form-control text-right"
+                class="total-paga form-control text-right js-decimal"
                 id="valor-entrega-volume-paga"
                 name="valor-entrega-volume-paga"
                 value="{{ s_minuta.paga.t_evol|stringformat:'.2f' }}"
@@ -393,9 +393,9 @@
                     R$
                 </span>
                 <input type="text"
+                class="form-control text-right js-input-change js-decimal"
                 id="tabela-saida-paga"
                 name="tabela-saida-paga"
-                class="form-control text-right js-input-change"
                 value="{{ s_minuta.paga.v_said|stringformat:'.2f' }}" />
                 <span class="input-group-addon addon-blue">
                     UN
@@ -411,7 +411,7 @@
                     R$
                 </span>
                 <input type="text"
-                class="total-paga form-control text-right"
+                class="total-paga form-control text-right js-decimal"
                 id="valor-saida-paga"
                 name="valor-saida-paga"
                 value="{{ s_minuta.paga.v_said|stringformat:'.2f' }}"
@@ -443,7 +443,7 @@
                     R$
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change"
+                class="form-control text-right js-input-change js-decimal"
                 id="tabela-capacidade-paga"
                 name="tabela-capacidade-paga"
                 value="{{ s_minuta.paga.v_capa|stringformat:'.2f' }}" />
@@ -460,7 +460,7 @@
                     R$
                 </span>
                 <input type="text"
-                class="total-paga form-control text-right"
+                class="total-paga form-control text-right js-decimal"
                 id="valor-capacidade-paga"
                 name="valor-capacidade-paga"
                 value="{{ s_minuta.paga.v_capa|stringformat:'.2f' }}"
@@ -492,15 +492,15 @@
                     &nbsp%&nbsp
                 </span>
                 <input type="text"
+                class="form-control text-right js-input-change js-decimal"
                 id="tabela-perimetro-paga"
                 name="tabela-perimetro-paga"
-                class="form-control text-right js-input-change"
                 value="{{ s_minuta.paga.v_peri|stringformat:'.2f' }}" />
                 <span class="input-group-addon addon-blue">
                     R$
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change"
+                class="form-control text-right js-input-change js-decimal"
                 id="minuta-perimetro-paga"
                 name="minuta-perimetro-paga"
                 value="{{ s_minuta.paga.m_peri|stringformat:'.2f' }}" />
@@ -511,7 +511,7 @@
                     R$
                 </span>
                 <input type="text"
-                class="total-paga form-control text-right"
+                class="total-paga form-control text-right js-decimal"
                 id="valor-perimetro-paga"
                 name="valor-perimetro-paga"
                 value="{{ s_minuta.paga.t_peri|stringformat:'.2f' }}"
@@ -543,7 +543,7 @@
                     &nbsp%&nbsp
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change"
+                class="form-control text-right js-input-change js-decimal"
                 id="tabela-pernoite-paga"
                 name="tabela-pernoite-paga"
                 value="{{ s_minuta.paga.v_pnoi|stringformat:'.2f' }}" />
@@ -551,7 +551,7 @@
                     R$
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change"
+                class="form-control text-right js-input-change js-decimal"
                 id="minuta-pernoite-paga"
                 name="minuta-pernoite-paga"
                 value="{{ s_minuta.paga.m_peri|stringformat:'.2f' }}" />
@@ -562,7 +562,7 @@
                     R$
                 </span>
                 <input type="text"
-                class="total-paga form-control text-right"
+                class="total-paga form-control text-right js-decimal"
                 id="valor-pernoite-paga"
                 name="valor-pernoite-paga"
                 value="{{ s_minuta.paga.t_pnoi|stringformat:'.2f' }}"
@@ -594,7 +594,7 @@
                     R$
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change"
+                class="form-control text-right js-input-change js-decimal"
                 id="tabela-ajudante-paga"
                 name="tabela-ajudante-paga"
                 value="{{ s_minuta.paga.v_ajud|stringformat:'.2f' }}" />
@@ -613,7 +613,7 @@
                     R$
                 </span>
                 <input type="text"
-                class="total-paga form-control text-right"
+                class="total-paga form-control text-right js-decimal"
                 id="valor-ajudante-paga"
                 name="valor-ajudante-paga"
                 value="{{ s_minuta.paga.t_ajud|stringformat:'.2f' }}"
