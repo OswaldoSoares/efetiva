@@ -760,83 +760,18 @@ $(document).ready(function() {
     $(".js-criaminutaentrega").click(loadForm);
     $(".js-editaminutaentrega").click(loadForm);
     $(".js-excluiminutaentrega").click(loadForm);
-
-    // Versão Nova - Cadastra Entrega (Form) //
-    $(document).on('click', '#chk-perimetro', function(event) {
-        alert("OK")
-        if ($('#chk-perimetro').is(':checked')) {
-            $('.js-perimetro-hide').hide();
-            $('#js-perimetro-div').removeClass('col-md-2');
-            $('#js-perimetro-div').addClass('col-md-12');
-            $('#id_Nota').val('PERIMETRO');
-            $('#id_Estado').focus();
-        } else {
-            $('.js-perimetro-hide').show();
-            $('#js-perimetro-div').removeClass('col-md-12');
-            $('#js-perimetro-div').addClass('col-md-2');
-            $('#id_Nota').val('');
-            $('#id_Nota').focus();
-        }
-    });
-
-    // Versão Nova - Cadastra Entrega (Form) //
-    $(document).on('click', '#chk-saida', function(event) {
-        if ($('#chk-saida').is(":checked")) {
-            $('#id_Nota').val($('#label-chk-saida').attr('saida'))
-            $('#id_ValorNota').focus();
-        } else {
-            $('#id_Nota').val('')
-            $('#id_Nota').focus();
-        }
-    });
+ 
 
     
 
-    // Versão Nova //
-    // Ao modificar um checkbox //
-    $(document).on('change', '.c_recebe', function() {
-        var checkbox_change = $(this).attr('id').substring(9)
-        var visible = $('#js-recebe-' + checkbox_change).is(':visible')
-        $('#js-recebe-' + checkbox_change).fadeToggle(500)
-        if (visible) {
-            $('#t_recebe_' + checkbox_change).val('0,00')
-            somaReceita();
-        } else {
-            var valor_digitado = $('#v_' + checkbox_change).val()
-            verificaElemento('v_' + checkbox_change, valor_digitado)
-            $('#v_' + checkbox_change).select()
-        }
-    })
-
-    $(document).on('change', '.js-input-change', function() {
-        // Cria as variaveis como o nome do atributo e com valor 0
-        var element_select = $(this).attr('name')
-        var valor_digitado = '0,00'
-            // Verifica se o valor do elemento e inteiro se for acrescenta o ',00' ao final - Bug do plugin mask e altera a
-            // variavel valor_digitado
-        if ($(this).val() % 1 === 0) {
-            valor_digitado = $(this).val() + ',00'
-            $(this).val(valor_digitado)
-        } else {
-            valor_digitado = $(this).val()
-        }
-        verificaElemento(element_select, valor_digitado)
-    })
-
+    // Utilizado na Versão Nova
     verificaSwitchPaga();
     verificaSwitchRecebe();
     mostraChecklist();
     formatMask();
-
     verificaCheckboxPaga();
-
 });
 
-function filtroMenuSelecionado(item) {
-    alert($(item).attr('class'))
-    $(item).removeClass('i-button')
-    alert($(item).attr('class'))
-}
 
 function calculaPorcentagem(v_porcentagem, v_valor) {
     var valor1 = parseFloat(
@@ -872,8 +807,7 @@ function calculaHora(v_porcentagem, v_valor1, v_hora) {
     return ((valor_hora * horas) + (valor_minuto * minutos)).toFixed(2)
 }
 
-function verificaElemento(element_select, valor_digitado) {
-    // verifica o elemento e realiza as operações, quando necessárias para retornar o total
+function calculosMudarInputRecebe(element_select, valor_digitado) {
     if (element_select == 'v_taxa') {
         // TAXA DE EXPEDIÇÃO RECEBE
         $('#t_recebe_taxa').val(
@@ -984,7 +918,17 @@ function verificaElemento(element_select, valor_digitado) {
         $('#t_recebe_' + element_select.substring(2)).val(
             valor_digitado
         )
-    } else if (element_select == 'tabela-porcentagem-paga'
+    } 
+    // recarrega mask
+    formatUnmask();
+    formatMask();
+    // Faz a soma geral com os valores atualizados 
+    somaReceita();
+    somaPagamentos();
+}
+
+function calculosMudarInputPaga(element_select, valor_digitado) {
+    if (element_select == 'tabela-porcentagem-paga'
      || element_select == 'minuta-porcentagem-paga') {
         // PORCENTAGEM PAGA
         $('#valor-porcentagem-paga').val(
@@ -1083,12 +1027,6 @@ function verificaElemento(element_select, valor_digitado) {
             valor_digitado
         )
     }
-    // recarrega mask
-    formatUnmask();
-    formatMask();
-    // Faz a soma geral com os valores atualizados 
-    somaReceita();
-    somaPagamentos();
 }
 
 function recarregaFinanceiro(html_paga, html_recebe) {
@@ -1254,73 +1192,7 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
     });
 }
 
-// Apenas roda na versão mais nova do financeiro
-var somaReceita = function() {
-    var valor_receita = 0.00;
-    $(".total-recebe").each(function() {
-        valor_receita += parseFloat($(this).val().replace('.', '').replace(',', '.'))
-    });
-    $("#totalrecebe").text(valor_receita.toFixed(2))
-    $("#totalrecebe").unmask()
-    $("#totalrecebe").mask('#.##0,00', { reverse: true })
-    var text_total = $("#totalrecebe").text();
-    var text_total = "TOTAL R$ " + text_total
-    $("#totalrecebe").text(text_total)
-}
 
-// Apenas roda na versão mais nova do financeiro
-var somaPagamentos = function() {
-    var valor_paga = 0.00;
-    $(".total-paga").each(function() {
-        valor_paga += parseFloat($(this).val().replace('.', '').replace(',', '.'))
-    });
-    $("#total-pagamentos").text(valor_paga.toFixed(2))
-    $("#total-pagamentos").unmask()
-    $("#total-pagamentos").mask('#.##0,00', { reverse: true })
-    var text_total = $("#total-pagamentos").text();
-    var text_total = "TOTAL R$ " + text_total
-    $("#total-pagamentos").text(text_total)
-    somaMotorista();
-}
-
-// Apenas roda na versão mais nova do financeiro
-var somaMotorista = function() {
-    var valor_paga = 0.00;
-    $(".total-paga").each(function() {
-        if ($(this).attr("id") != "valor-ajudante-paga") {
-            valor_paga += parseFloat($(this).val().replace('.', '').replace(',', '.'))
-        }
-    });
-    $("#total-motorista").text(valor_paga.toFixed(2))
-    if (valor_paga > 0) {
-        $(".div-motorista").slideDown(500)
-    } else {
-        $(".div-motorista").slideUp(500)
-    }
-    $("#total-motorista").unmask()
-    $("#total-motorista").mask('#.##0,00', { reverse: true })
-    var text_total = $("#total-motorista").text();
-    var text_total = "R$ " + text_total
-    $("#total-motorista").text(text_total)
-}
-
-var verificaTotalHoras = function() {
-    if ($(".total-horas").text() == '00:00 Hs') {
-        $(".calcula-horas").slideUp(500)
-        $('#id_HoraFinal').val('00:00')
-    } else {
-        $(".calcula-horas").slideDown(500)
-    }
-}
-
-var verificaTotalKMs = function() {
-    if ($(".total-kms").text() == '0 KMs') {
-        $(".calcula-kms").slideUp(500)
-        $('#id_KMFinal').val(0)
-    } else {
-        $(".calcula-kms").slideDown(500)
-    }
-}
 
 function verificaSwitchPaga() {
     if ($('#js-checkbox-paga_porc').is(':not(:checked)')) {
@@ -1406,77 +1278,6 @@ function verificaSwitchRecebe() {
     }
 };
 
-var mostraMensagemErro = function() {
-    $(".div-erro").slideDown(500)
-    $(".div-erro").delay(5000).slideUp(500)
-}
-
-var mostraMensagemSucesso = function() {
-    $(".div-sucesso").slideDown(500)
-    $(".div-sucesso").delay(5000).slideUp(500)
-}
-
-var EscondeCategoria = function() {
-    $(".html-categoria").hide()
-}
-
-var MostraCategoria = function() {
-    $(".html-categoria").delay(1000).slideDown(500)
-}
-
-var EscondeCliente = function() {
-    $(".html-cliente-data").hide()
-}
-
-var MostraCliente = function() {
-    $(".html-cliente-data").delay(1000).slideDown(500)
-}
-
-var EscondeVeiculo = function() {
-    $(".html-veiculo").hide()
-}
-
-var MostraVeiculo = function() {
-    $(".html-veiculo").delay(1000).slideDown(500)
-}
-
-var EscondeInfo = function() {
-    $(".html-coleta-entrega-obs").hide()
-}
-
-var MostraInfo = function() {
-    $(".html-coleta-entrega-obs").delay(1000).slideDown(500)
-}
-
-var EscondeDespesa = function() {
-    $(".html-despesa").hide()
-}
-
-var MostraDespesa = function() {
-    $(".html-despesa").delay(1000).slideDown(500)
-}
-
-var EscondeEntrega = function() {
-    $(".card-entrega").hide()
-}
-
-var MostraEntrega = function() {
-    $(".card-entrega").delay(1000).slideDown(500)
-}
-
-var escondeChecklist = function() {
-    $(".html-checklist").hide()
-}
-
-var mostraChecklist = function() {
-    $(".html-checklist").slideDown(500)
-    $(".chk-red").each(function() {
-        $('.conclui-minuta').slideUp(500)
-    });
-    $(".chk-red-gera-paga").each(function() {
-        $('.conclui-minuta').slideUp(500)
-    });
-}
 
 // Versão Nova //
 $(document).on('click', '.js-adiciona-romaneio-minuta', function() {
@@ -1558,7 +1359,7 @@ $(document).on('change', '.js-checkbox-paga', function() {
         $(input_valor).val('0,00')
     } else {
         var valor_digitado = $(input_tabela).val()
-        verificaElemento(input_tabela.replace("#", ""), valor_digitado)
+        calculosMudarInputPaga(input_tabela.replace("#", ""), valor_digitado)
         $(input_tabela).select()
     }
     somaPagamentos();
@@ -1579,3 +1380,207 @@ function formatUnmask() {
     $('.total-recebe').unmask()
     $('.total-pagamentos').unmask()
 }
+
+
+$(document).on('change', '.c_recebe', function() {
+    var checkbox_change = $(this).attr('id').substring(9)
+    var visible = $('#js-recebe-' + checkbox_change).is(':visible')
+    $('#js-recebe-' + checkbox_change).fadeToggle(500)
+    if (visible) {
+        $('#t_recebe_' + checkbox_change).val('0,00')
+        somaReceita();
+    } else {
+        var valor_digitado = $('#v_' + checkbox_change).val()
+        calculosMudarInputRecebe('v_' + checkbox_change, valor_digitado)
+        $('#v_' + checkbox_change).select()
+    }
+})
+
+$(document).on('change', '.js-input-change', function() {
+    // Cria as variaveis como o nome do atributo e com valor 0
+    var element_select = $(this).attr('name')
+    var valor_digitado = '0,00'
+        // Verifica se o valor do elemento e inteiro se for acrescenta o ',00' ao final - Bug do plugin mask e altera a
+        // variavel valor_digitado
+    if ($(this).val() % 1 === 0) {
+        valor_digitado = $(this).val() + ',00'
+        $(this).val(valor_digitado)
+    } else {
+        valor_digitado = $(this).val()
+    }
+    calculosMudarInputRecebe(element_select, valor_digitado)
+    calculosMudarInputPaga(element_select, valor_digitado)
+})
+
+
+
+
+
+var mostraMensagemErro = function() {
+    $(".div-erro").slideDown(500)
+    $(".div-erro").delay(5000).slideUp(500)
+}
+
+var mostraMensagemSucesso = function() {
+    $(".div-sucesso").slideDown(500)
+    $(".div-sucesso").delay(5000).slideUp(500)
+}
+
+var EscondeCategoria = function() {
+    $(".html-categoria").hide()
+}
+
+var MostraCategoria = function() {
+    $(".html-categoria").delay(1000).slideDown(500)
+}
+
+var EscondeCliente = function() {
+    $(".html-cliente-data").hide()
+}
+
+var MostraCliente = function() {
+    $(".html-cliente-data").delay(1000).slideDown(500)
+}
+
+var EscondeVeiculo = function() {
+    $(".html-veiculo").hide()
+}
+
+var MostraVeiculo = function() {
+    $(".html-veiculo").delay(1000).slideDown(500)
+}
+
+var EscondeInfo = function() {
+    $(".html-coleta-entrega-obs").hide()
+}
+
+var MostraInfo = function() {
+    $(".html-coleta-entrega-obs").delay(1000).slideDown(500)
+}
+
+var EscondeDespesa = function() {
+    $(".html-despesa").hide()
+}
+
+var MostraDespesa = function() {
+    $(".html-despesa").delay(1000).slideDown(500)
+}
+
+var EscondeEntrega = function() {
+    $(".card-entrega").hide()
+}
+
+var MostraEntrega = function() {
+    $(".card-entrega").delay(1000).slideDown(500)
+}
+
+var escondeChecklist = function() {
+    $(".html-checklist").hide()
+}
+
+var mostraChecklist = function() {
+    $(".html-checklist").slideDown(500)
+    $(".chk-red").each(function() {
+        $('.conclui-minuta').slideUp(500)
+    });
+    $(".chk-red-gera-paga").each(function() {
+        $('.conclui-minuta').slideUp(500)
+    });
+}
+
+// Apenas roda na versão mais nova do financeiro
+var somaReceita = function() {
+    var valor_receita = 0.00;
+    $(".total-recebe").each(function() {
+        valor_receita += parseFloat($(this).val().replace('.', '').replace(',', '.'))
+    });
+    $("#totalrecebe").text(valor_receita.toFixed(2))
+    $("#totalrecebe").unmask()
+    $("#totalrecebe").mask('#.##0,00', { reverse: true })
+    var text_total = $("#totalrecebe").text();
+    var text_total = "TOTAL R$ " + text_total
+    $("#totalrecebe").text(text_total)
+}
+
+// Apenas roda na versão mais nova do financeiro
+var somaPagamentos = function() {
+    var valor_paga = 0.00;
+    $(".total-paga").each(function() {
+        valor_paga += parseFloat($(this).val().replace('.', '').replace(',', '.'))
+    });
+    $("#total-pagamentos").text(valor_paga.toFixed(2))
+    $("#total-pagamentos").unmask()
+    $("#total-pagamentos").mask('#.##0,00', { reverse: true })
+    var text_total = $("#total-pagamentos").text();
+    var text_total = "TOTAL R$ " + text_total
+    $("#total-pagamentos").text(text_total)
+    somaMotorista();
+}
+
+// Apenas roda na versão mais nova do financeiro
+var somaMotorista = function() {
+    var valor_paga = 0.00;
+    $(".total-paga").each(function() {
+        if ($(this).attr("id") != "valor-ajudante-paga") {
+            valor_paga += parseFloat($(this).val().replace('.', '').replace(',', '.'))
+        }
+    });
+    $("#total-motorista").text(valor_paga.toFixed(2))
+    if (valor_paga > 0) {
+        $(".div-motorista").slideDown(500)
+    } else {
+        $(".div-motorista").slideUp(500)
+    }
+    $("#total-motorista").unmask()
+    $("#total-motorista").mask('#.##0,00', { reverse: true })
+    var text_total = $("#total-motorista").text();
+    var text_total = "R$ " + text_total
+    $("#total-motorista").text(text_total)
+}
+
+var verificaTotalHoras = function() {
+    if ($(".total-horas").text() == '00:00 Hs') {
+        $(".calcula-horas").slideUp(500)
+        $('#id_HoraFinal').val('00:00')
+    } else {
+        $(".calcula-horas").slideDown(500)
+    }
+}
+
+var verificaTotalKMs = function() {
+    if ($(".total-kms").text() == '0 KMs') {
+        $(".calcula-kms").slideUp(500)
+        $('#id_KMFinal').val(0)
+    } else {
+        $(".calcula-kms").slideDown(500)
+    }
+}
+
+// Versão Nova - Cadastra Entrega (Form) //
+$(document).on('click', '#chk-perimetro', function(event) {
+    alert("OK")
+    if ($('#chk-perimetro').is(':checked')) {
+        $('.js-perimetro-hide').hide();
+        $('#js-perimetro-div').removeClass('col-md-2');
+        $('#js-perimetro-div').addClass('col-md-12');
+        $('#id_Nota').val('PERIMETRO');
+        $('#id_Estado').focus();
+    } else {
+        $('.js-perimetro-hide').show();
+        $('#js-perimetro-div').removeClass('col-md-12');
+        $('#js-perimetro-div').addClass('col-md-2');
+        $('#id_Nota').val('');
+        $('#id_Nota').focus();
+    }
+});
+
+// Versão Nova - Cadastra Entrega (Form) //
+$(document).on('click', '#chk-saida', function(event) {
+    if ($('#chk-saida').is(":checked")) {
+        $('#id_Nota').val($('#label-chk-saida').attr('saida'))
+        $('#id_ValorNota').focus();
+    } else {
+        $('#id_Nota').val('')
+        $('#id_Nota').focus();
+    }
+});
