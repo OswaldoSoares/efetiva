@@ -2,257 +2,263 @@
 {% load permission_tags %}
 
 {% block mainminuta %}
-
-<main class="index-minuta">
-    <div class="col-01">
-        <div class="article minutas-atual">
-            {% if t_aberta %}
-                <article class="article-card ac-lista js-card-minuta-aberta">
-                    <div class="article-minuta-titulo">
-                        <span>ABERTA</span>
-                    </div>
-                    {% for minutas in m_aberta %}
-                    <div class="ac-minuta-base">
-                        <div class="ac-itens">
-                            <div class="dados-minuta">
-                                <div class="linha-minuta">
-                                    <i class="bi bi-file-text i-button-null">
-                                        <span>{{ minutas.Minuta }}</span>
-                                        <span>{{ minutas.Data }}</span>
-                                        <span>{{ minutas.Hora }}</span>
-                                    </i>
-                                </div>
-                                <div class="linha-minuta">
-                                    <i class="bi bi-building i-button-null">
-                                        <span>{{ minutas.Cliente }}</span>
-                                    </i>
-                                </div>
-                            </div>
-                            <div class="dados-minuta">
-                                <div class="linha-minuta linha-motorista">
-                                    {% if minutas.Motorista %}
-                                    <i class="bi bi-person-square i-button-null">
-                                        <span>{{ minutas.Motorista }}</span>
-                                    </i>
-                                    {% endif %}
-                                </div>
-                                <div class="linha-minuta linha-motorista">
-                                    {% if minutas.Veiculo %}
-                                    <i class="bi bi-truck i-button-null">
-                                        <span>{{ minutas.Veiculo }}</span>
-                                    </i>
-                                    {% endif %}
-                                </div>
-                            </div>
+<main class="section-grid grid-three">
+    <section class="grid-column">
+        {% if t_aberta %}
+        <div class="card card-minutas-abertas">
+            <div class="card-header">
+                <span>ABERTA</span>
+            </div>
+            {% for minutas in m_aberta %}
+            <div class="card-body">
+                <div class="ac-itens">
+                    <div class="dados-minuta">
+                        <div class="linha-minuta">
+                            <i class="bi bi-file-text i-button-null">
+                                <span>{{ minutas.Minuta }}</span>
+                                <span>{{ minutas.Data }}</span>
+                                <span>{{ minutas.Hora }}</span>
+                            </i>
                         </div>
-                        <div class="icones-minuta">
-                            {% if itens.StatusMinuta == 'FECHADA' or itens.StatusMinuta == 'CONCLUIDA'%}
-                            {% if user|can:'estorna_minuta' %}
-                            <i class="bi bi-reply-all i-button"
-                                onclick="window.location.href = '{% url 'estorna_minuta' minutas.idMinuta %}'">
+                        <div class="linha-minuta">
+                            <i class="bi bi-building i-button-null">
+                                <span>{{ minutas.Cliente }}</span>
+                            </i>
+                        </div>
+                    </div>
+                    <div class="dados-minuta">
+                        <div class="linha-minuta linha-motorista">
+                            {% if minutas.Motorista %}
+                            <i class="bi bi-person-square i-button-null">
+                                <span>{{ minutas.Motorista }}</span>
                             </i>
                             {% endif %}
+                        </div>
+                        <div class="linha-minuta linha-motorista">
+                            {% if minutas.Veiculo %}
+                            <i class="bi bi-truck i-button-null">
+                                <span>{{ minutas.Veiculo }}</span>
+                            </i>
                             {% endif %}
-                            <i class="bi bi-printer i-button"
-                                    onclick="window.location.href = '{% url 'imprimeminuta' minutas.idMinuta %}'">
-                            </i>
-                            <i class="bi bi-folder i-button"
-                                    onclick="window.location.href = '{% url 'consultaminuta' minutas.idMinuta %}'">
-                            </i>
-                            <i class="bi bi-folder i-button"
-                                    onclick="window.location.href = '{% url 'minuta' minutas.idMinuta %}'">
-                            </i>
                         </div>
                     </div>
-                    <div class="linha-divisoria"></div>
-                    {% endfor %}
-                    <div class="article-minuta-rodape">
-                        {% if t_aberta == 1 %}
-                        <span>{{ t_aberta }} MINUTA ABERTA </span>
-                        {% else %}
-                        <span>{{ t_aberta }} MINUTAS ABERTAS </span>
-                        {% endif %}
-                    </div>
-                </article>
-            {% endif %}
-            {% if t_concluida %}
-                <article class="article-card ac-lista">
-                    <div class="article-minuta-titulo">
-                        <span>CONCLUÍDA</span>
-                    </div>
-                    {% for minutas in m_concluida %}
-                    <div class="ac-minuta-base">
-                        <div class="ac-itens">
-                            <div class="dados-minuta">
-                                <div class="linha-minuta">
-                                    <i class="bi bi-file-text">
-                                        <span>{{ minutas.Minuta }}</span>
-                                        <span>{{ minutas.Data }}</span>
-                                        <span>{{ minutas.Hora }}</span>
-                                    </i>
-                                </div>
-                                <div class="linha-minuta">
-                                    <i class="bi bi-building">
-                                        <span>{{ minutas.Cliente }}</span>
-                                    </i>
-                                </div>
-                            </div>
-                            <div class="dados-minuta">
-                                <div class="linha-minuta linha-motorista">
-                                    {% if minutas.Motorista %}
-                                    <i class="bi bi-person-square"><span>{{ minutas.Motorista }}</span></i>
-                                    {% endif %}
-                                </div>
-                                <div class="linha-minuta linha-motorista">
-                                    {% if minutas.Veiculo %}
-                                    <i class="bi bi-truck"><span>{{ minutas.Veiculo }}</span></i>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="icones-minuta">
-                            <i class="bi bi-reply-all i-button"
-                            onclick="window.location.href = '{% url 'estorna_minuta' minutas.idMinuta %}'"></i>
-                            <i class="bi bi-printer i-button"
-                            onclick="window.location.href = '{% url 'imprimeminuta' minutas.idMinuta %}'"></i>
-                            <i class="bi bi-folder i-button"
-                            onclick="window.location.href = '{% url 'consultaminuta' minutas.idMinuta %}'"></i>
-                            <i class="bi bi-folder i-button"
-                            onclick="window.location.href = '{% url 'minuta' minutas.idMinuta %}'"></i>
-                        </div>
-                    </div>
-                    <div class="linha-divisoria"></div>
-                    {% endfor %}
-                    <div class="article-minuta-rodape">
-                        {% if t_concluida == 1 %}
-                        <span>{{ t_concluida }} MINUTA CONCLUÍDA </span>
-                        {% else %}
-                        <span>{{ t_concluida }} MINUTAS CONCLUÍDAS </span>
-                        {% endif %}
-                    </div>
-                </article>
-            {% endif %}
-            {% if t_fechada %}
-                <article class="article-card ac-lista">
-                    <div class="article-minuta-titulo">
-                        <span>FECHADA</span>
-                    </div>
-                    {% for minutas in m_fechada %}
-                    <div class="ac-minuta-base">
-                        <div class="ac-itens">
-                            <div class="dados-minuta">
-                                <div class="linha-minuta">
-                                    <i class="bi bi-file-text">
-                                        <span>{{ minutas.Minuta }}</span>
-                                        <span>{{ minutas.Data }}</span>
-                                        <span>{{ minutas.Hora }}</span>
-                                    </i>
-                                </div>
-                                <div class="linha-minuta">
-                                    <i class="bi bi-building">
-                                        <span>{{ minutas.Cliente }}</span>
-                                    </i>
-                                </div>
-                            </div>
-                            <div class="dados-minuta">
-                                <div class="linha-minuta linha-motorista">
-                                    {% if minutas.Motorista %}
-                                    <i class="bi bi-person-square">
-                                        <span>{{ minutas.Motorista }}</span>
-                                    </i>
-                                    {% endif %}
-                                </div>
-                                <div class="linha-minuta linha-motorista">
-                                    {% if minutas.Veiculo %}
-                                    <i class="bi bi-truck">
-                                        <span>{{ minutas.Veiculo }}</span>
-                                    </i>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="icones-minuta">
-                            <i class="bi bi-reply-all i-button"
-                                    onclick="window.location.href = '{% url 'estorna_minuta' minutas.idMinuta %}'">
-                            </i>
-                            <i class="bi bi-printer i-button"
-                                    onclick="window.location.href = '{% url 'imprimeminuta' minutas.idMinuta %}'">
-                            </i>
-                            <i class="bi bi-folder i-button"
-                                    onclick="window.location.href = '{% url 'consultaminuta' minutas.idMinuta %}'">
-                            </i>
-                            <i class="bi bi-folder i-button"
-                                    onclick="window.location.href = '{% url 'minuta' minutas.idMinuta %}'">
-                            </i>
-                        </div>
-                    </div>
-                    <div class="linha-divisoria"></div>
-                    {% endfor %}
-                    <div class="article-minuta-rodape">
-                        {% if t_fechada == 1 %}
-                        <span>{{ t_fechada }} MINUTA FECHADA </span>
-                        {% else %}
-                        <span>{{ t_fechada }} MINUTAS FECHADAS </span>
-                        {% endif %}
-                    </div>
-                </article>
-            {% endif %}
+                </div>
+                <div class="icones-minuta">
+                    {% if itens.StatusMinuta == 'FECHADA' or itens.StatusMinuta == 'CONCLUIDA'%}
+                    {% if user|can:'estorna_minuta' %}
+                    <i class="bi bi-reply-all i-button"
+                        onclick="window.location.href = '{% url 'estorna_minuta' minutas.idMinuta %}'">
+                    </i>
+                    {% endif %}
+                    {% endif %}
+                    <i class="bi bi-printer i-button"
+                            onclick="window.location.href = '{% url 'imprimeminuta' minutas.idMinuta %}'">
+                    </i>
+                    <i class="bi bi-folder i-button"
+                            onclick="window.location.href = '{% url 'consultaminuta' minutas.idMinuta %}'">
+                    </i>
+                    <i class="bi bi-folder i-button"
+                            onclick="window.location.href = '{% url 'minuta' minutas.idMinuta %}'">
+                    </i>
+                </div>
+            </div>
+            <div class="linha-divisoria"></div>
+            {% endfor %}
+            <div class="card-footer">
+                {% if t_aberta == 1 %}
+                <span>{{ t_aberta }} MINUTA ABERTA </span>
+                {% else %}
+                <span>{{ t_aberta }} MINUTAS ABERTAS </span>
+                {% endif %}
+            </div>
         </div>
-        <!-- <div class="box-loader">
-            <div class="loader"></div>
-            <span>Aguarde, carregando minutas...</span>
-        </div> -->
+        {% endif %}
+        {% if t_concluida %}
+        <div class="card card-minutas-concluidas">
+            <div class="card-header">
+                <span>CONCLUÍDA</span>
+            </div>
+            {% for minutas in m_concluida %}
+            <div class="card-body">
+                <div class="ac-itens">
+                    <div class="dados-minuta">
+                        <div class="linha-minuta">
+                            <i class="bi bi-file-text">
+                                <span>{{ minutas.Minuta }}</span>
+                                <span>{{ minutas.Data }}</span>
+                                <span>{{ minutas.Hora }}</span>
+                            </i>
+                        </div>
+                        <div class="linha-minuta">
+                            <i class="bi bi-building">
+                                <span>{{ minutas.Cliente }}</span>
+                            </i>
+                        </div>
+                    </div>
+                    <div class="dados-minuta">
+                        <div class="linha-minuta linha-motorista">
+                            {% if minutas.Motorista %}
+                            <i class="bi bi-person-square"><span>{{ minutas.Motorista }}</span></i>
+                            {% endif %}
+                        </div>
+                        <div class="linha-minuta linha-motorista">
+                            {% if minutas.Veiculo %}
+                            <i class="bi bi-truck"><span>{{ minutas.Veiculo }}</span></i>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="icones-minuta">
+                    <i class="bi bi-reply-all i-button"
+                    onclick="window.location.href = '{% url 'estorna_minuta' minutas.idMinuta %}'"></i>
+                    <i class="bi bi-printer i-button"
+                    onclick="window.location.href = '{% url 'imprimeminuta' minutas.idMinuta %}'"></i>
+                    <i class="bi bi-folder i-button"
+                    onclick="window.location.href = '{% url 'consultaminuta' minutas.idMinuta %}'"></i>
+                    <i class="bi bi-folder i-button"
+                    onclick="window.location.href = '{% url 'minuta' minutas.idMinuta %}'"></i>
+                </div>
+            </div>
+            <div class="linha-divisoria"></div>
+            {% endfor %}
+            <div class="card-footer">
+                {% if t_concluida == 1 %}
+                <span>{{ t_concluida }} MINUTA CONCLUÍDA </span>
+                {% else %}
+                <span>{{ t_concluida }} MINUTAS CONCLUÍDAS </span>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+        {% if t_fechada %}
+        <div class="card card-minutas-fechadas">
+            <div class="card-header">
+                <span>FECHADA</span>
+            </div>
+            {% for minutas in m_fechada %}
+            <div class="card-body">
+                <div class="ac-itens">
+                    <div class="dados-minuta">
+                        <div class="linha-minuta">
+                            <i class="bi bi-file-text">
+                                <span>{{ minutas.Minuta }}</span>
+                                <span>{{ minutas.Data }}</span>
+                                <span>{{ minutas.Hora }}</span>
+                            </i>
+                        </div>
+                        <div class="linha-minuta">
+                            <i class="bi bi-building">
+                                <span>{{ minutas.Cliente }}</span>
+                            </i>
+                        </div>
+                    </div>
+                    <div class="dados-minuta">
+                        <div class="linha-minuta linha-motorista">
+                            {% if minutas.Motorista %}
+                            <i class="bi bi-person-square">
+                                <span>{{ minutas.Motorista }}</span>
+                            </i>
+                            {% endif %}
+                        </div>
+                        <div class="linha-minuta linha-motorista">
+                            {% if minutas.Veiculo %}
+                            <i class="bi bi-truck">
+                                <span>{{ minutas.Veiculo }}</span>
+                            </i>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="icones-minuta">
+                    <i class="bi bi-reply-all i-button"
+                            onclick="window.location.href = '{% url 'estorna_minuta' minutas.idMinuta %}'">
+                    </i>
+                    <i class="bi bi-printer i-button"
+                            onclick="window.location.href = '{% url 'imprimeminuta' minutas.idMinuta %}'">
+                    </i>
+                    <i class="bi bi-folder i-button"
+                            onclick="window.location.href = '{% url 'consultaminuta' minutas.idMinuta %}'">
+                    </i>
+                    <i class="bi bi-folder i-button"
+                            onclick="window.location.href = '{% url 'minuta' minutas.idMinuta %}'">
+                    </i>
+                </div>
+            </div>
+            <div class="linha-divisoria"></div>
+            {% endfor %}
+            <div class="card-footer">
+                {% if t_fechada == 1 %}
+                <span>{{ t_fechada }} MINUTA FECHADA </span>
+                {% else %}
+                <span>{{ t_fechada }} MINUTAS FECHADAS </span>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
         <div class="article minutas-consulta">
             {% include 'minutas/filtraminuta.html' %}
         </div>
-    </div>
-    <div class="col-02">
-        <div class="i-adicionar-minuta">
-            <i class="bi bi-plus-square i-button" onclick="openMyModal(event); return false;"
-               data-title="CADASTRA MINUTA" data-action="{% url 'adicionaminuta' %}" data-button-save-label="SALVAR">
-                NOVA MINUTA</i>
-        </div>
-        <article class="article-card ac-lista">
-            <div class="article-minuta-titulo">
+    </section>
+    <section class="grid-column">
+        <div class="card card-consulta">
+            <div class="card-header">
                 <span>CONSULTAS</span>
             </div>
-            <div class="filtro-container">
-                <div class="article-filtro">
-                    <i class="bi bi-caret-right-fill i-button list-cliente">CLIENTES</i>
-                    {% include 'minutas/filtrocliente.html' %}
-                </div>
-                <div>
-                    <i class="bi bi-caret-right-fill i-button list-colaborador">COLABORADORES</i>
-                    {% include 'minutas/filtrocolaborador.html' %}
-                </div>
-                <div>
-                    <i class="bi bi-caret-right-fill i-button list-veiculo">VEÍCULOS</i>
-                    {% include 'minutas/filtroveiculo.html' %}
-                </div>
-                <div>
-                    <i class="bi bi-caret-right-fill i-button list-entrega-cidade">ENTREGAS - CIDADES</i>
-                    {% include 'minutas/filtroentregacidade.html' %}
-                </div>
-                <div>
-                    <i class="bi bi-caret-right-fill i-button digita-destinatario">DESTINATÁRIOS DOS CLIENTES</i>
-                    <div class="filtro-destinatario">
-                        <div class="col-md-10">
-                            <input type="text" class="form-control form-control-search text-search">
-                        </div>
-                        <div class="col-md-2">
-                            <div class="icones-minuta">
-                                <i class="bi bi-search i-button search-destinatario"
-                                   data-filtro-consulta="Destinatarios" data-meses="0" data-anos="2"></i>
+            <div class="card-body">
+                <div class="filtro-container">
+                    <div class="article-filtro">
+                        <i class="bi bi-caret-right-fill i-button list-cliente">CLIENTES</i>
+                        {% include 'minutas/filtrocliente.html' %}
+                    </div>
+                    <div>
+                        <i class="bi bi-caret-right-fill i-button list-colaborador">COLABORADORES</i>
+                        {% include 'minutas/filtrocolaborador.html' %}
+                    </div>
+                    <div>
+                        <i class="bi bi-caret-right-fill i-button list-veiculo">VEÍCULOS</i>
+                        {% include 'minutas/filtroveiculo.html' %}
+                    </div>
+                    <div>
+                        <i class="bi bi-caret-right-fill i-button list-entrega-cidade">ENTREGAS - CIDADES</i>
+                        {% include 'minutas/filtroentregacidade.html' %}
+                    </div>
+                    <div>
+                        <i class="bi bi-caret-right-fill i-button digita-destinatario">DESTINATÁRIOS DOS CLIENTES</i>
+                        <div class="filtro-destinatario">
+                            <div class="col-md-10">
+                                <input type="text" class="form-control form-control-search text-search">
+                            </div>
+                            <div class="col-md-2">
+                                <div class="icones-minuta">
+                                    <i class="bi bi-search i-button search-destinatario"
+                                    data-filtro-consulta="Destinatarios" data-meses="0" data-anos="2"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="article-minuta-rodape">
+            <div class="card-footer">
             </div>
-        </article>
-    </div>
+        </div>
+        <div class="card card-nova-minuta">
+            <div class="card-header">
+                <span>NOVA MINUTA</span>
+            </div>
+            <div class="card-body">
+                <i class="bi bi-plus-square i-button"
+                onclick="openMyModal(event); return false;"
+                data-title="CADASTRA MINUTA"
+                data-action="{% url 'adicionaminuta' %}"
+                data-button-save-label="SALVAR"></i>
+            </div>
+            <div class="card-footer">
+            </div>
+        </div>
+    </section>
+</main>
 
+<main class="index-minuta">
     <!-- div modal -->
     <div class="modal fade bd-example-modal-lg" id="MyModal" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -274,7 +280,6 @@
         </div>
     </div>
 </main>
-
 
 <!-- DIV MODAL -->
 <div class="modal fade" id="modal-formulario" >

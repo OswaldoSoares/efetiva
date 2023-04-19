@@ -6525,7 +6525,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .grid-column {
-    /* background-color: #a94442; */
+    background-color: #a94442;
     width: 100%;
 }
 
@@ -6604,12 +6604,18 @@ main .fp-recibo-tabela .fp-recibo-print {
     .section-grid {
         grid-template-columns: 1fr 1fr 1fr;
     }
+    /* .grid-three {
+        grid-template-columns: 2fr 1fr;
+    } */
 }
 
 @media only screen and (min-width: 1366px) {
     .section-grid {
         grid-template-columns: 1fr 1fr 1fr 1fr;
     }
+    /* .grid-three {
+        grid-template-columns: 2fr 1fr;
+    } */
 }
 
 .input-fake {
