@@ -402,7 +402,7 @@ $(document).ready(function() {
         }, 800);
     });
 
-    verificaTotalKMs()
+    verificaTotalKms()
     verificaTotalHoras()
     // Versão Nova //
     $(".div-sucesso").hide()
@@ -803,7 +803,7 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                         EscondeVeiculo()
                         $('.html-veiculo').html(xhr['html_veiculo']);
                         MostraVeiculo()
-                        verificaTotalKMs()
+                        verificaTotalKms()
                     } else if (xhr['c_view'] == 'insere_ajudante') {
                         $('.html-ajudante').html(xhr['html_ajudante']);
                     } else if (xhr['c_view'] == 'edita_minuta_veiculo_solicitado') {
@@ -822,7 +822,7 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                             } else {
                                 $('.html-veiculo').html(xhr['html_veiculo']);
                                 MostraVeiculo()
-                                verificaTotalKMs()
+                                verificaTotalKms()
                             }
                         }
                     } else if (xhr['c_view'] == 'edita_minuta_veiculo_escolhido') {
@@ -831,28 +831,28 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                         EscondeVeiculo()
                         $('.html-veiculo').html(xhr['html_veiculo']);
                         MostraVeiculo()
-                        verificaTotalKMs()
+                        verificaTotalKms()
                     } else if (xhr['c_view'] == 'edita_minuta_coleta_entrega_obs') {
                         $(".mensagem-sucesso").text(xhr['html_mensagem']);
                         mostraMensagemSucesso()
                         EscondeInfo()
                         $('.html-coleta-entrega-obs').html(xhr['html_coleta_entrega_obs']);
                         MostraInfo()
-                        verificaTotalKMs()
+                        verificaTotalKms()
                     } else if (xhr['c_view'] == 'insere_minuta_despesa') {
                         $(".mensagem-sucesso").text(xhr['html_mensagem']);
                         mostraMensagemSucesso()
                         EscondeDespesa()
                         $('.html-despesa').html(xhr['html_despesa']);
                         MostraDespesa()
-                        verificaTotalKMs()
+                        verificaTotalKms()
                     } else if (xhr['c_view'] == 'insere_minuta_entrega') {
                         $(".mensagem-sucesso").text(xhr['html_mensagem']);
                         mostraMensagemSucesso()
                         EscondeEntrega()
                         $('.card-entrega').html(xhr['html_entrega']);
                         MostraEntrega()
-                        verificaTotalKMs()
+                        verificaTotalKms()
                     }
                     if (cbAfterSuccess) { cbAfterSuccess(modal); }
                 }
@@ -1246,63 +1246,6 @@ $(document).on('click', '#chk-saida', function(event) {
     }
 });
 
-// Utilizado no Card-Receitas e no Card-Pagamentos
-// aplica , e . de milhar pt-BR
-function formatMask() {
-    $(".js-decimal").each(function() {
-        $(this).mask('#.##0,00', { reverse: true })
-        if ($(this).attr("id") == "tabela-seguro-recebe") {
-            $(this).mask('#.##0,000', { reverse: true })
-        }
-    });
-    $(".js-unidade").each(function() {
-        $(this).mask('#.##0', { reverse: true })
-    });
-    $('.total-recebe').mask('#.##0,00', { reverse: true })
-    $('.total-pagamentos').mask('#.##0,00', { reverse: true })
-}
-
-// Utilizado no Card-Receitas e no Card-Pagamentos
-// remove , e . de milhar pt-BR
-function formatUnmask() {
-    $(".js-decimal").each(function() {
-        $(this).unmask()
-    });
-    $(".js-unidade").each(function() {
-        $(this).unmask()
-    });
-    $('.total-recebe').unmask()
-    $('.total-pagamentos').unmask()
-}
-
-// Card Entregas e Card Romaneio
-$(document).on('click', '.js-adiciona-romaneio-minuta', function() {
-    var idromaneio = $(this).data('idromaneio')
-    var idminuta = $(this).data('idminuta')
-    var idcliente = $(this).data('idcliente')
-    $.ajax({
-        type: 'GET',
-        url: '/minutas/adiciona_romaneio_minuta',
-        data: {
-            idromaneio: idromaneio,
-            idminuta: idminuta,
-            idcliente: idcliente
-        },
-        beforeSend: function() {
-            $('.card-entrega').hide()
-            $('.card-romaneio').hide()
-            $(".box-loader").show()
-        },
-        success: function(data) {
-            $('.card-entrega').html(data['html_entrega'])
-            $('.card-entrega').show()
-            $('.card-romaneio').html(data['html_romaneio'])
-            $('.card-romaneio').show()
-            $(".box-loader").hide()
-        },
-    });
-});
-
 // Utilizada no Catd-Minuta
 // para atualizar data de fechamento da minuta
 $(document).on('submit', '#form-edita-hora', function(event) {
@@ -1383,7 +1326,7 @@ $(document).on('submit', '#form-edita-km', function(event) {
             $(".html-checklist").show();
             $('.html-form-paga').show();
             $('.html-form-recebe').show();
-            verificaTotalKMs()
+            verificaTotalKms()
             mostraChecklist();
             formatUnmask();
             formatMask();
@@ -1396,6 +1339,63 @@ $(document).on('submit', '#form-edita-km', function(event) {
         error: function(error) {
             console.log(error)
         }
+    });
+});
+
+// Utilizado no Card-Receitas e no Card-Pagamentos
+// aplica , e . de milhar pt-BR
+function formatMask() {
+    $(".js-decimal").each(function() {
+        $(this).mask('#.##0,00', { reverse: true })
+        if ($(this).attr("id") == "tabela-seguro-recebe") {
+            $(this).mask('#.##0,000', { reverse: true })
+        }
+    });
+    $(".js-unidade").each(function() {
+        $(this).mask('#.##0', { reverse: true })
+    });
+    $('.total-recebe').mask('#.##0,00', { reverse: true })
+    $('.total-pagamentos').mask('#.##0,00', { reverse: true })
+}
+
+// Utilizado no Card-Receitas e no Card-Pagamentos
+// remove , e . de milhar pt-BR
+function formatUnmask() {
+    $(".js-decimal").each(function() {
+        $(this).unmask()
+    });
+    $(".js-unidade").each(function() {
+        $(this).unmask()
+    });
+    $('.total-recebe').unmask()
+    $('.total-pagamentos').unmask()
+}
+
+// Card Entregas e Card Romaneio
+$(document).on('click', '.js-adiciona-romaneio-minuta', function() {
+    var idromaneio = $(this).data('idromaneio')
+    var idminuta = $(this).data('idminuta')
+    var idcliente = $(this).data('idcliente')
+    $.ajax({
+        type: 'GET',
+        url: '/minutas/adiciona_romaneio_minuta',
+        data: {
+            idromaneio: idromaneio,
+            idminuta: idminuta,
+            idcliente: idcliente
+        },
+        beforeSend: function() {
+            $('.card-entrega').hide()
+            $('.card-romaneio').hide()
+            $(".box-loader").show()
+        },
+        success: function(data) {
+            $('.card-entrega').html(data['html_entrega'])
+            $('.card-entrega').show()
+            $('.card-romaneio').html(data['html_romaneio'])
+            $('.card-romaneio').show()
+            $(".box-loader").hide()
+        },
     });
 });
 
@@ -1606,7 +1606,7 @@ function verificaTotalHoras() {
 
 // Utilizada no Card-Minuta
 // Mostrra o calculo de Kms
-function verificaTotalKMs() {
+function verificaTotalKms() {
     if ($(".total-kms").text() == '0 KMs') {
         $(".calcula-kms").hide()
         $('#id_KMFinal').val(0)
