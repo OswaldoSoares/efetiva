@@ -1,0 +1,51 @@
+<div>
+    <div class="div-flex">
+        <div class="linha-minuta">
+            <i class="bi bi-file-text i-button-null">
+                <span>{{ minutas.Minuta }}</span>
+                <span>{{ minutas.Data }}</span>
+                <span>{{ minutas.Hora }}</span>
+            </i>
+        </div>
+        <div class="linha-minuta">
+            <span>{{ minutas.Cliente }}
+                <i class="bi bi-building i-button-null"></i>
+            </span>
+        </div>
+    </div>
+</div>
+<div>
+    {% if minutas.Motorista %}
+    <div class="div-flex">
+        <div class="linha-minuta linha-motorista">
+            <i class="bi bi-person-square i-button-null">
+                <span>{{ minutas.Motorista }}</span>
+            </i>
+            {% endif %}
+        </div>
+        <div class="linha-minuta linha-motorista">
+            {% if minutas.Veiculo %}
+            <span>{{ minutas.Veiculo }} 
+                <i class="bi bi-truck i-button-null"></i>
+            </span>
+        </div>
+    </div>
+    {% endif %}
+</div>
+<div class="icones-minuta">
+    <div class="div-botoes">
+        {% if minutas.status != "ABERTA" %}
+        <i class="bi bi-reply-all i-button"
+        onclick="window.location.href = '{% url 'estorna_minuta' minutas.idMinuta %}'"
+        title="Estorna Minuta {{ minutas.Minuta }}"></i>
+        {% endif %}
+        <i class="bi bi-printer i-button"
+        onclick="window.location.href = '{% url 'imprimeminuta' minutas.idMinuta %}'"
+        title="Imprime Minuta {{ minutas.Minuta }}"></i>
+        <i class="bi bi-folder i-button"
+        onclick="window.location.href = '{% url 'consultaminuta' minutas.idMinuta %}'"></i>
+        <i class="bi bi-folder i-button"
+        onclick="window.location.href = '{% url 'minuta' minutas.idMinuta %}'"
+        title="Consulta Minuta {{ minutas.Minuta }}"></i>
+    </div>
+</div>

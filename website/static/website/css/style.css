@@ -9,13 +9,15 @@
     --corsidebar: #cd6090;
     --corfundo: white;
     --color1: #363636;
-    --color2: #4f4f4f;
-    --color3: yellow;
+    --color2: #414141;
+    /* --color2: #4f4f4f; */
+    --color3: #ffd433;
     --color4: dodgerblue;
     --color5: deeppink;
     --color6: white;
     --color7: #696969;
-    --color8: #F5DEB3;
+    --color8: #afafaf;
+    /* --color8: #F5DEB3; */
     --color9: black;
     --color10: #f3eeeb;
 }
@@ -690,7 +692,6 @@ main .consulta .consulta-body {
 }
 
 .consulta_tabelaveiculo {
-    /*   background: yellow;*/
     width: 75%;
     height: auto;
     overflow: hidden;
@@ -1933,7 +1934,7 @@ main .usuario-out {
 
 .page403_01 {
     font-size: 300px;
-    color: yellow;
+    color: var(--color3);
     text-shadow: 2px 2px dodgerblue;
     margin: 0;
     padding: 0;
@@ -1941,14 +1942,14 @@ main .usuario-out {
 
 .page403_02 {
     font-size: 70px;
-    color: yellow;
+    color: var(--color3);
     text-shadow: 2px 2px dodgerblue;
     margin: 0;
     padding: 0;
 }
 
 .page403 section {
-    color: yellow;
+    color: var(--color3);
     /*text-shadow: 1px 1px dodgerblue;*/
     font-size: 18px;
     font-weight: bold;
@@ -3627,19 +3628,19 @@ main .fp-recibo-tabela .fp-recibo-print {
 .new-switch--shadow+label:before {
     right: 1px;
     background-color: #4f4f4f;
-    border: 1px solid yellow;
+    border: 1px solid var(--color3);
     transition: all 0.4s;
 }
 
 .new-switch--shadow+label:after {
     width: 10px;
-    background-color: yellow;
+    background-color: var(--color3);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
     transition: all 0.4s;
 }
 
 .new-switch--shadow:checked+label:before {
-    background-color: yellow;
+    background-color: var(--color3);
 }
 
 .new-switch--shadow:checked+label:after {
@@ -3656,7 +3657,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 /* ============== */
 
 .menu {
-    background-color: #696969;
+    background-color: var(--color7);
     position: fixed;
     top: 0;
     width: 100%;
@@ -3672,7 +3673,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 
 .menu .menu-nav-icons a {
     display: inline-block;
-    color: yellow;
+    color: var(--color3);
     background-color: black;
     font-size: 25px;
     font-weight: bold;
@@ -3709,7 +3710,7 @@ main .fp-recibo-tabela .fp-recibo-print {
     .menu .menu-nav-icons a {
         /*display: none;*/
         text-align: left;
-        color: yellow;
+        color: var(--color3);
         background-color: black;
         font-size: 0px;
         font-weight: bold;
@@ -3720,7 +3721,7 @@ main .fp-recibo-tabela .fp-recibo-print {
     }
     #menu-dots {
         background-color: black;
-        color: yellow;
+        color: var(--color3);
         display: block;
         font-size: 20px;
         padding: 5px;
@@ -3789,7 +3790,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 
 .loader {
     margin: auto;
-    border: 10px solid #696969;
+    border: 10px solid var(--color7);
     border-radius: 50%;
     border-top: 10px solid dodgerblue;
     border-bottom: 10px solid dodgerblue;
@@ -4223,7 +4224,6 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-cartao-ponto .itens-cartao-ponto .item-ausencia {
-    /* background-color: yellow; */
     width: 40%;
     text-align: center;
 }
@@ -6525,7 +6525,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .grid-column {
-    background-color: #a94442;
+    /* background-color: #a94442; */
     width: 100%;
 }
 
@@ -6577,6 +6577,10 @@ main .fp-recibo-tabela .fp-recibo-print {
     padding: 0 0.8rem;
 }
 
+.card-body {
+    min-height: 1rem;
+}
+
 .card-footer span {
     line-height: 3rem;
     font-size: 1.2rem;
@@ -6594,6 +6598,10 @@ main .fp-recibo-tabela .fp-recibo-print {
     border-bottom: 2px solid var(--color7);
 }
 
+.card-body span {
+    color: var(--color6);
+}
+
 @media only screen and (min-width: 715px) {
     .section-grid {
         grid-template-columns: 1fr 1fr;
@@ -6604,18 +6612,18 @@ main .fp-recibo-tabela .fp-recibo-print {
     .section-grid {
         grid-template-columns: 1fr 1fr 1fr;
     }
-    /* .grid-three {
-        grid-template-columns: 2fr 1fr;
-    } */
+    .grid-three {
+        grid-template-columns: 1fr 1fr;
+    }
 }
 
 @media only screen and (min-width: 1366px) {
     .section-grid {
         grid-template-columns: 1fr 1fr 1fr 1fr;
     }
-    /* .grid-three {
-        grid-template-columns: 2fr 1fr;
-    } */
+    .grid-three {
+        grid-template-columns: 1.5fr 1.5fr 1fr;
+    }
 }
 
 .input-fake {
@@ -6657,6 +6665,15 @@ main .fp-recibo-tabela .fp-recibo-print {
     align-items: center;
     justify-content: space-between;
     padding: 0 0.8rem;
+}
+
+.div-botoes {
+    text-align: center;
+}
+
+.div-botoes i {
+    padding: 0 0.7rem;
+    font-size: 1.6rem;
 }
 
 .font-menor {

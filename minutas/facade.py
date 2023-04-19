@@ -687,6 +687,7 @@ class MinutasStatus:
                 "Data": m.DataMinuta,
                 "Hora": m.HoraInicial,
                 "Veiculo": m.idVeiculo,
+                "status": m.StatusMinuta,
             }
             for m in abertas
         ]
