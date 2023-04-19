@@ -933,14 +933,7 @@ var mostraChecklist = function() {
 
 
 
-var verificaTotalKMs = function() {
-    if ($(".total-kms").text() == '0 KMs') {
-        $(".calcula-kms").slideUp(500)
-        $('#id_KMFinal').val(0)
-    } else {
-        $(".calcula-kms").slideDown(500)
-    }
-}
+
 
 
 
@@ -1350,7 +1343,7 @@ $(document).on('submit', '#form-edita-hora', function(event) {
             somaPagamentos();
             verificaCheckboxPaga();
             verificaCheckboxRecebe();
-            $(".box-loader").hide();              
+            $(".box-loader").hide();
         },
         error: function(error) {
             console.log(error)
@@ -1358,15 +1351,22 @@ $(document).on('submit', '#form-edita-hora', function(event) {
     });
 });
 
+// Utilizada no Catd-Minuta
+// para atualizar km final da minuta
 $(document).on('submit', '#form-edita-km', function(event) {
     event.preventDefault();
-    $(".div-sucesso").hide()
-    $(".div-erro").hide()
-    var url = $(this).attr('action') || action;
     $.ajax({
-        type: $(this).attr('method'),
-        url: url,
+        type: "POST",
+        url: "/minutas/editakmfinal/",
         data: $(this).serialize(),
+        beforeSend: function() {
+            $(".box-loader").show()
+            $(".div-sucesso").hide()
+            $(".div-erro").hide()
+            $(".html-checklist").hide()
+            $('.html-form-paga').hide();
+            $('.html-form-recebe').hide();
+        },
         success: function(data) {
             if (data.html_tipo_mensagem == 'ERROR') {
                 $(".mensagem-erro").text(data.html_mensagem);
@@ -1376,12 +1376,22 @@ $(document).on('submit', '#form-edita-km', function(event) {
                 $(".mensagem-sucesso").text(data.html_mensagem);
                 mostraMensagemSucesso()
             }
-            recarregaFinanceiro(data['html_pagamento'], data['html_recebimento'])
-            $(".html-checklist").hide();
-            $('.html-checklist').html(data['html_checklist']);
-            mostraChecklist();
             $(".total-kms").text(data.html_total_kms);
+            $('.html-checklist').html(data['html_checklist']); 
+            $('.html-form-paga').html(data['html_pagamento']);
+            $('.html-form-recebe').html(data['html_recebimento']);
+            $(".html-checklist").show();
+            $('.html-form-paga').show();
+            $('.html-form-recebe').show();
             verificaTotalKMs()
+            mostraChecklist();
+            formatUnmask();
+            formatMask();
+            somaReceitas();
+            somaPagamentos();
+            verificaCheckboxPaga();
+            verificaCheckboxRecebe();
+            $(".box-loader").hide();
         },
         error: function(error) {
             console.log(error)
@@ -1591,5 +1601,16 @@ function verificaTotalHoras() {
         $('#id_HoraFinal').val('00:00')
     } else {
         $(".calcula-horas").show()
+    }
+}
+
+// Utilizada no Card-Minuta
+// Mostrra o calculo de Kms
+function verificaTotalKMs() {
+    if ($(".total-kms").text() == '0 KMs') {
+        $(".calcula-kms").hide()
+        $('#id_KMFinal').val(0)
+    } else {
+        $(".calcula-kms").show()
     }
 }

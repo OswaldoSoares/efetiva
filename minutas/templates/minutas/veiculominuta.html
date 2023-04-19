@@ -47,7 +47,7 @@
         </div>
         <input type="hidden" name="idMinuta" value="{{ s_minuta.idminuta }}">
     </form>
-    <form class="html-km-final" method="post" action="{% url 'editakmfinal' %}" id="form-edita-km">
+    <form class="html-km-final" id="form-edita-km">
         {% csrf_token %}
         <div class="card-body-item">
             <div class="input-group">
