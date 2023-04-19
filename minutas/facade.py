@@ -765,6 +765,7 @@ def filtra_consulta(request, filtro, filtro_consulta, meses, anos):
                 "Data": m.DataMinuta,
                 "Hora": m.HoraInicial,
                 "Veiculo": m.idVeiculo,
+                "status": m.StatusMinuta,
             }
             for m in minutas
         ]
@@ -780,6 +781,7 @@ def filtra_consulta(request, filtro, filtro_consulta, meses, anos):
                 "Data": m.idMinuta.DataMinuta,
                 "Hora": m.idMinuta.HoraInicial,
                 "Veiculo": m.idMinuta.idVeiculo,
+                "status": m.idMinuta.StatusMinuta,
             }
             for m in minutas
         ]
@@ -796,6 +798,7 @@ def filtra_consulta(request, filtro, filtro_consulta, meses, anos):
                 "Data": m.DataMinuta,
                 "Hora": m.HoraInicial,
                 "Veiculo": m.idVeiculo,
+                "status": m.StatusMinuta,
             }
             for m in minutas
         ]
@@ -812,6 +815,7 @@ def filtra_consulta(request, filtro, filtro_consulta, meses, anos):
                 "Data": m.idMinuta.DataMinuta,
                 "Hora": m.idMinuta.HoraInicial,
                 "Veiculo": m.idMinuta.idVeiculo,
+                "status": m.idMinuta.StatusMinuta,
             }
             for m in minutas
         ]
@@ -832,6 +836,7 @@ def filtra_consulta(request, filtro, filtro_consulta, meses, anos):
                 "Data": m.idMinuta.DataMinuta,
                 "Hora": m.idMinuta.HoraInicial,
                 "Veiculo": m.idMinuta.idVeiculo,
+                "status": m.idMinuta.StatusMinuta,
             }
             for m in minutas
         ]

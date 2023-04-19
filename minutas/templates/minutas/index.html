@@ -44,6 +44,9 @@
                 </span>
             </div> 
         </div>
+        <div class="card card-minutas-consulta">
+            {% include "minutas/filtraminuta.html" %}
+        </div>
     </section>
     <section class="grid-column">
         <div class="card card-minutas-fechadas">
@@ -65,9 +68,6 @@
                     FECHADA{{ t_fechada|pluralize|upper }}
                 </span>
             </div>
-        </div>
-        <div class="article minutas-consulta">
-            {% include 'minutas/filtraminuta.html' %}
         </div>
     </section>
     <section class="grid-column">

@@ -3472,18 +3472,6 @@ main .fp-recibo-tabela .fp-recibo-print {
     margin-right: 5px;
 }
 
-.i-button,
-.i-button:active,
-.i-button:focus {
-    color: var(--color3);
-    text-decoration: none;
-}
-
-.i-button:hover {
-    color: var(--color4);
-    cursor: pointer;
-    text-decoration: none;
-}
 
 .i-button-form {
     background-color: #4f4f4f;
@@ -6667,6 +6655,10 @@ main .fp-recibo-tabela .fp-recibo-print {
     padding: 0 0.8rem;
 }
 
+.div-flex p {
+    padding-top: 1rem;
+}
+
 .div-botoes {
     text-align: center;
 }
@@ -6709,4 +6701,18 @@ main .fp-recibo-tabela .fp-recibo-print {
     font-size: 1.1rem;
     line-height: 1.5rem;
     border-radius: 0.2rem;  
+}
+
+/* Cor dos itens clicaveis */
+.i-button,
+.i-button:active,
+.i-button:focus {
+    color: var(--color3);
+    text-decoration: none;
+}
+
+.i-button:hover {
+    color: var(--color4);
+    cursor: pointer;
+    text-decoration: none;
 }

@@ -277,8 +277,12 @@ $(document).ready(function() {
         } else {
             $(".minutas-atual").hide()
         }
+        $(".card-minutas-abertas").hide();
+        $(".card-minutas-concluidas").hide();
+        $(".card-minutas-fechadas").hide();
         $(".box-loader").show()
         $(this).removeClass("i-button")
+        $(this).addClass("i-button-null")
         var filtro = $(this).attr('data-filtro')
         var filtro_consula = $(this).attr('data-filtro-consulta')
         var meses = $(this).attr('data-meses')
@@ -293,7 +297,7 @@ $(document).ready(function() {
                 Anos: anos,
             },
             success: function(data) {
-                $(".minutas-consulta").html(data['html_filtra_minuta'])
+                $(".card-minutas-consulta").html(data['html_filtra_minuta'])
                 $(".box-loader").hide()
                 $(".minutas-consulta").show()
             },
