@@ -7,7 +7,7 @@
     <div class="html-cliente-data">
         {% include 'minutas/clientedataminuta.html' %}
     </div>
-    <form class="html-hora-final" method="post" action="{% url 'editahorafinal' %}" id="form-edita-hora">
+    <form class="html-hora-final" id="form-edita-hora">
         {% csrf_token %}
         <div class="card-body-item">
             <div class="input-group">
@@ -15,7 +15,10 @@
                 {{ form_hora_final.HoraFinal }}
                 <div class="input-group-addon addon-my-color">
                     {% if not s_minuta.paga_realizada %}
-                    <button type="submit" class="i-button-form"><i class="bi bi-save i-button"></i></button>
+                    <button type="submit"
+                     class="i-button-form">
+                        <i class="bi bi-save i-button"></i>
+                    </button>
                     {% else %}
                     <i class="bi bi-check"></i>
                     {% endif %}

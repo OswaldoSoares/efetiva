@@ -1,67 +1,6 @@
 $(document).ready(function() {
     /* Versão Nova */
-    $(document).on('submit', '#form-edita-hora', function(event) {
-        event.preventDefault();
-        $(".div-sucesso").hide()
-        $(".div-erro").hide()
-        var url = $(this).attr('action') || action;
-        $.ajax({
-            type: $(this).attr('method'),
-            url: url,
-            data: $(this).serialize(),
-            success: function(data) {
-                if (data.html_tipo_mensagem == 'ERROR') {
-                    $(".mensagem-erro").text(data.html_mensagem);
-                    mostraMensagemErro()
-                }
-                if (data.html_tipo_mensagem == 'SUCESSO') {
-                    $(".mensagem-sucesso").text(data.html_mensagem);
-                    mostraMensagemSucesso()
-                }
-                $(".total-horas").text(data.html_total_horas);
-                verificaTotalHoras();
-                recarregaFinanceiro(data['html_pagamento'], data['html_recebimento'])
-                escondeChecklist();
-                $('.html-checklist').html(data['html_checklist']);
-                mostraChecklist();
-            },
-            error: function(error) {
-                console.log(error)
-            }
-        });
-    });
-
-    /* Versão Nova */
-    $(document).on('submit', '#form-edita-km', function(event) {
-        event.preventDefault();
-        $(".div-sucesso").hide()
-        $(".div-erro").hide()
-        var url = $(this).attr('action') || action;
-        $.ajax({
-            type: $(this).attr('method'),
-            url: url,
-            data: $(this).serialize(),
-            success: function(data) {
-                if (data.html_tipo_mensagem == 'ERROR') {
-                    $(".mensagem-erro").text(data.html_mensagem);
-                    mostraMensagemErro()
-                }
-                if (data.html_tipo_mensagem == 'SUCESSO') {
-                    $(".mensagem-sucesso").text(data.html_mensagem);
-                    mostraMensagemSucesso()
-                }
-                recarregaFinanceiro(data['html_pagamento'], data['html_recebimento'])
-                escondeChecklist();
-                $('.html-checklist').html(data['html_checklist']);
-                mostraChecklist();
-                $(".total-kms").text(data.html_total_kms);
-                verificaTotalKMs()
-            },
-            error: function(error) {
-                console.log(error)
-            }
-        });
-    });
+    
 
     /* Versão Nova - Função que envia formulário com os itens de
     recebimento para serem processados pelo servidor */
@@ -139,7 +78,7 @@ $(document).ready(function() {
                 idMinuta: idminuta,
             },
             success: function(data) {
-                escondeChecklist()
+                $(".html-checklist").hide()
                 $('.html-checklist').html(data['html_checklist']);
                 mostraChecklist();
             },
@@ -171,7 +110,7 @@ $(document).ready(function() {
                     MostraVeiculo();
                 }
                 recarregaFinanceiro(data['html_pagamento'], data['html_recebimento'])
-                escondeChecklist();
+                $(".html-checklist").hide()
                 $('.html-checklist').html(data['html_checklist']);
                 mostraChecklist();
             },
@@ -194,7 +133,7 @@ $(document).ready(function() {
             },
             success: function(data) {
                 recarregaFinanceiro(data['html_pagamento'], data['html_recebimento'])
-                escondeChecklist();
+                $(".html-checklist").hide()
                 $('.html-checklist').html(data['html_checklist']);
                 mostraChecklist();
                 EscondeDespesa();
@@ -220,7 +159,7 @@ $(document).ready(function() {
             },
             success: function(data) {
                 recarregaFinanceiro(data['html_pagamento'], data['html_recebimento'])
-                escondeChecklist();
+                $(".html-checklist").hide()
                 $('.html-checklist').html(data['html_checklist']);
                 mostraChecklist();
                 EscondeEntrega()
@@ -849,7 +788,7 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                 } else {
                     $(modal).modal('hide');
                     recarregaFinanceiro(xhr['html_pagamento'], xhr['html_recebimento'])
-                    escondeChecklist();
+                    $(".html-checklist").hide()
                     $('.html-checklist').html(xhr['html_checklist']);
                     mostraChecklist();
                     if (xhr['c_view'] == 'adiciona_minuta') {
@@ -977,9 +916,6 @@ var MostraEntrega = function() {
     $(".card-entrega").delay(1000).slideDown(500)
 }
 
-var escondeChecklist = function() {
-    $(".html-checklist").hide()
-}
 
 var mostraChecklist = function() {
     $(".html-checklist").slideDown(500)
@@ -995,14 +931,7 @@ var mostraChecklist = function() {
 
 
 
-var verificaTotalHoras = function() {
-    if ($(".total-horas").text() == '00:00 Hs') {
-        $(".calcula-horas").slideUp(500)
-        $('#id_HoraFinal').val('00:00')
-    } else {
-        $(".calcula-horas").slideDown(500)
-    }
-}
+
 
 var verificaTotalKMs = function() {
     if ($(".total-kms").text() == '0 KMs') {
@@ -1381,6 +1310,85 @@ $(document).on('click', '.js-adiciona-romaneio-minuta', function() {
     });
 });
 
+// Utilizada no Catd-Minuta
+// para atualizar data de fechamento da minuta
+$(document).on('submit', '#form-edita-hora', function(event) {
+    event.preventDefault();
+    $.ajax({
+        type: "POST",
+        url: "/minutas/editahorafinal/",
+        data: $(this).serialize(),
+        beforeSend: function() {
+            $(".box-loader").show()
+            $(".div-sucesso").hide()
+            $(".div-erro").hide()
+            $(".html-checklist").hide()
+            $('.html-form-paga').hide();
+            $('.html-form-recebe').hide();
+        },
+        success: function(data) {
+            if (data.html_tipo_mensagem == 'ERROR') {
+                $(".mensagem-erro").text(data.html_mensagem);
+                mostraMensagemErro()
+            }
+            if (data.html_tipo_mensagem == 'SUCESSO') {
+                $(".mensagem-sucesso").text(data.html_mensagem);
+                mostraMensagemSucesso()
+            }
+            $(".total-horas").text(data.html_total_horas);
+            $('.html-checklist').html(data['html_checklist']); 
+            $('.html-form-paga').html(data['html_pagamento']);
+            $('.html-form-recebe').html(data['html_recebimento']);
+            $(".html-checklist").show();
+            $('.html-form-paga').show();
+            $('.html-form-recebe').show();
+            verificaTotalHoras();
+            mostraChecklist();
+            formatUnmask();
+            formatMask();
+            somaReceitas();
+            somaPagamentos();
+            verificaCheckboxPaga();
+            verificaCheckboxRecebe();
+            $(".box-loader").hide();              
+        },
+        error: function(error) {
+            console.log(error)
+        }
+    });
+});
+
+$(document).on('submit', '#form-edita-km', function(event) {
+    event.preventDefault();
+    $(".div-sucesso").hide()
+    $(".div-erro").hide()
+    var url = $(this).attr('action') || action;
+    $.ajax({
+        type: $(this).attr('method'),
+        url: url,
+        data: $(this).serialize(),
+        success: function(data) {
+            if (data.html_tipo_mensagem == 'ERROR') {
+                $(".mensagem-erro").text(data.html_mensagem);
+                mostraMensagemErro()
+            }
+            if (data.html_tipo_mensagem == 'SUCESSO') {
+                $(".mensagem-sucesso").text(data.html_mensagem);
+                mostraMensagemSucesso()
+            }
+            recarregaFinanceiro(data['html_pagamento'], data['html_recebimento'])
+            $(".html-checklist").hide();
+            $('.html-checklist').html(data['html_checklist']);
+            mostraChecklist();
+            $(".total-kms").text(data.html_total_kms);
+            verificaTotalKMs()
+        },
+        error: function(error) {
+            console.log(error)
+        }
+    });
+});
+
 // Utilizado no Card-Pagamentos
 // Mudança de estado do checkbox
 $(document).on('change', '.js-checkbox-paga', function() {
@@ -1574,3 +1582,14 @@ function verificaCheckboxRecebe() {
         }
     });
 };
+
+// Utilizada no Card-Minuta
+// Mostrra o calculo de horas
+function verificaTotalHoras() {
+    if ($(".total-horas").text() == '00:00 Hs') {
+        $(".calcula-horas").hide()
+        $('#id_HoraFinal').val('00:00')
+    } else {
+        $(".calcula-horas").show()
+    }
+}
