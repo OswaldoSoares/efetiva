@@ -105,9 +105,9 @@ $(document).ready(function() {
                 if (cargo == 'AJUDANTE') {
                     $('.html-ajudante').html(data['html_ajudante']);
                 } else if (cargo == 'MOTORISTA') {
-                    EscondeVeiculo()
+                    $(".html-veiculo").hide()
                     $('.html-veiculo').html(data['html_veiculo']);
-                    MostraVeiculo();
+                    $(".html-veiculo").delay(1000).slideDown(500)
                 }
                 recarregaFinanceiro(data['html_pagamento'], data['html_recebimento'])
                 $(".html-checklist").hide()
@@ -136,9 +136,9 @@ $(document).ready(function() {
                 $(".html-checklist").hide()
                 $('.html-checklist').html(data['html_checklist']);
                 mostraChecklist();
-                EscondeDespesa();
+                $(".html-despesa").hide()
                 $('.html-despesa').html(data['html_despesa']);
-                MostraDespesa();
+                $(".html-despesa").delay(1000).slideDown(500)
             },
             error: function(error) {
                 console.log(error)
@@ -162,9 +162,9 @@ $(document).ready(function() {
                 $(".html-checklist").hide()
                 $('.html-checklist').html(data['html_checklist']);
                 mostraChecklist();
-                EscondeEntrega()
+                $(".card-entrega").hide()
                 $('.card-entrega').html(data['html_entrega']);
-                MostraEntrega()
+                $(".card-entrega").delay(1000).slideDown(500)
             },
             error: function(error) {
                 console.log(error)
@@ -796,13 +796,13 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                     } else if (xhr['c_view'] == 'edita_minuta') {
                         $(".mensagem-sucesso").text(xhr['html_mensagem']);
                         mostraMensagemSucesso()
-                        EscondeCliente()
+                        $(".html-cliente-data").hide()
                         $('.html-cliente-data').html(xhr['html_cliente_data']);
-                        MostraCliente()
+                        $(".html-cliente-data").delay(1000).slideDown(500)
                     } else if (xhr['c_view'] == 'insere_motorista') {
-                        EscondeVeiculo()
+                        $(".html-veiculo").hide()
                         $('.html-veiculo').html(xhr['html_veiculo']);
-                        MostraVeiculo()
+                        $(".html-veiculo").delay(1000).slideDown(500)
                         verificaTotalKms()
                     } else if (xhr['c_view'] == 'insere_ajudante') {
                         $('.html-ajudante').html(xhr['html_ajudante']);
@@ -814,44 +814,44 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                         if (xhr['html_tipo_mensagem'] == 'SUCESSO') {
                             $(".mensagem-sucesso").text(xhr['html_mensagem']);
                             mostraMensagemSucesso()
-                            EscondeCategoria();
+                            $(".html-categoria").hide()
                             $(".html-categoria").html(xhr['html_categoria']);
-                            MostraCategoria()
+                            $(".html-categoria").delay(1000).slideDown(500)
                             if (xhr['html_veiculo'] == '') {
-                                EscondeVeiculo()
+                                $(".html-veiculo").hide()
                             } else {
                                 $('.html-veiculo').html(xhr['html_veiculo']);
-                                MostraVeiculo()
+                                $(".html-veiculo").delay(1000).slideDown(500)
                                 verificaTotalKms()
                             }
                         }
                     } else if (xhr['c_view'] == 'edita_minuta_veiculo_escolhido') {
                         $(".mensagem-sucesso").text(xhr['html_mensagem']);
                         mostraMensagemSucesso()
-                        EscondeVeiculo()
+                        $(".html-veiculo").hide()
                         $('.html-veiculo').html(xhr['html_veiculo']);
-                        MostraVeiculo()
+                        $(".html-veiculo").delay(1000).slideDown(500)
                         verificaTotalKms()
                     } else if (xhr['c_view'] == 'edita_minuta_coleta_entrega_obs') {
                         $(".mensagem-sucesso").text(xhr['html_mensagem']);
                         mostraMensagemSucesso()
-                        EscondeInfo()
+                        $(".html-coleta-entrega-obs").hide()
                         $('.html-coleta-entrega-obs').html(xhr['html_coleta_entrega_obs']);
-                        MostraInfo()
+                        $(".html-coleta-entrega-obs").delay(1000).slideDown(500)
                         verificaTotalKms()
                     } else if (xhr['c_view'] == 'insere_minuta_despesa') {
                         $(".mensagem-sucesso").text(xhr['html_mensagem']);
                         mostraMensagemSucesso()
-                        EscondeDespesa()
+                        $(".html-despesa").hide()
                         $('.html-despesa').html(xhr['html_despesa']);
-                        MostraDespesa()
+                        $(".html-despesa").delay(1000).slideDown(500)
                         verificaTotalKms()
                     } else if (xhr['c_view'] == 'insere_minuta_entrega') {
                         $(".mensagem-sucesso").text(xhr['html_mensagem']);
                         mostraMensagemSucesso()
-                        EscondeEntrega()
+                        $(".card-entrega").hide()
                         $('.card-entrega').html(xhr['html_entrega']);
-                        MostraEntrega()
+                        $(".card-entrega").delay(1000).slideDown(500)
                         verificaTotalKms()
                     }
                     if (cbAfterSuccess) { cbAfterSuccess(modal); }
@@ -868,74 +868,8 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
     });
 }
 
-var EscondeCategoria = function() {
-    $(".html-categoria").hide()
-}
-
-var MostraCategoria = function() {
-    $(".html-categoria").delay(1000).slideDown(500)
-}
-
-var EscondeCliente = function() {
-    $(".html-cliente-data").hide()
-}
-
-var MostraCliente = function() {
-    $(".html-cliente-data").delay(1000).slideDown(500)
-}
-
-var EscondeVeiculo = function() {
-    $(".html-veiculo").hide()
-}
-
-var MostraVeiculo = function() {
-    $(".html-veiculo").delay(1000).slideDown(500)
-}
-
-var EscondeInfo = function() {
-    $(".html-coleta-entrega-obs").hide()
-}
-
-var MostraInfo = function() {
-    $(".html-coleta-entrega-obs").delay(1000).slideDown(500)
-}
-
-var EscondeDespesa = function() {
-    $(".html-despesa").hide()
-}
-
-var MostraDespesa = function() {
-    $(".html-despesa").delay(1000).slideDown(500)
-}
-
-var EscondeEntrega = function() {
-    $(".card-entrega").hide()
-}
-
-var MostraEntrega = function() {
-    $(".card-entrega").delay(1000).slideDown(500)
-}
-
-
-var mostraChecklist = function() {
-    $(".html-checklist").slideDown(500)
-    $(".chk-red").each(function() {
-        $('.conclui-minuta').slideUp(500)
-    });
-    $(".chk-red-gera-paga").each(function() {
-        $('.conclui-minuta').slideUp(500)
-    });
-}
-
-
-
-
-
-
-
-
-
-
+// DAQUI PARA BAIXO
+// ESTÁ EM ORDEM ALFABETICA E CATALOGADA
 
 // Utilizado no Card-Receitas e no Card-Pagamentos
 // Calcular inputs de Time
@@ -1483,6 +1417,17 @@ $(document).on('click', '.js-remove-romaneio-minuta', function() {
         },
     });
 });
+
+// Mostra os itens necessários no checklist
+function mostraChecklist() {
+    $(".html-checklist").slideDown(500)
+    $(".chk-red").each(function() {
+        $('.conclui-minuta').slideUp(500)
+    });
+    $(".chk-red-gera-paga").each(function() {
+        $('.conclui-minuta').slideUp(500)
+    });
+}
 
 // Mostra a div de mensagem com a mensagem de erro
 function mostraMensagemErro() {
