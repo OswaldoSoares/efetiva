@@ -1272,7 +1272,7 @@ def html_ajudantes(request, data, idminuta):
 def html_categoria(request, data, idminuta):
     contexto = cria_contexto(idminuta)
     data["html_categoria"] = render_to_string(
-        "minutas/categoriaminuta.html", contexto, request=request
+        "minutas/html_card_minuta_categoria_solicitada.html", contexto, request=request
     )
     data["html_veiculo"] = render_to_string(
         "minutas/veiculominuta.html", contexto, request=request
