@@ -1057,7 +1057,7 @@ def edita_veiculo_solicitado(request, idminuta, idcategoriaveiculo):
     data["html_mensagem"] = mensagem
     data["html_tipo_mensagem"] = tipo_mensagem
     data["html_veiculo"] = render_to_string(
-        "minutas/veiculominuta.html", contexto, request=request
+        "minutas/html_card_minuta_veiculo.html", contexto, request=request
     )
     c_return = JsonResponse(data)
     return c_return
@@ -1256,7 +1256,7 @@ def html_cliente_data(request, data, idminuta):
 def html_motorista(request, data, idminuta):
     contexto = cria_contexto(idminuta)
     data["html_veiculo"] = render_to_string(
-        "minutas/veiculominuta.html", contexto, request=request
+        "minutas/html_card_minuta_veiculo.html", contexto, request=request
     )
     return data
 
@@ -1275,7 +1275,7 @@ def html_categoria(request, data, idminuta):
         "minutas/html_card_minuta_categoria_solicitada.html", contexto, request=request
     )
     data["html_veiculo"] = render_to_string(
-        "minutas/veiculominuta.html", contexto, request=request
+        "minutas/html_card_minuta_veiculo.html", contexto, request=request
     )
     return data
 
@@ -1283,7 +1283,7 @@ def html_categoria(request, data, idminuta):
 def html_veiculo(request, data, idminuta):
     contexto = cria_contexto(idminuta)
     data["html_veiculo"] = render_to_string(
-        "minutas/veiculominuta.html", contexto, request=request
+        "minutas/html_card_minuta_veiculo.html", contexto, request=request
     )
     return data
 
