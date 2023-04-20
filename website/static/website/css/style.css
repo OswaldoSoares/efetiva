@@ -5881,9 +5881,7 @@ main .fp-recibo-tabela .fp-recibo-print {
     background-color: red;
 }
 
-.i-button-null {
-    color: var(--color8);
-}
+
 
 .i-button-null-text {
     font-size: 16px;
@@ -6716,4 +6714,8 @@ main .fp-recibo-tabela .fp-recibo-print {
     color: var(--color4);
     cursor: pointer;
     text-decoration: none;
+}
+
+.i-button-null {
+    color: var(--color8);
 }
