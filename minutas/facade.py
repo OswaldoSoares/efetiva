@@ -1248,7 +1248,7 @@ def remove_entrega(request, idminutanota, idminuta):
 def html_cliente_data(request, data, idminuta):
     contexto = cria_contexto(idminuta)
     data["html_cliente_data"] = render_to_string(
-        "minutas/clientedataminuta.html", contexto, request=request
+        "minutas/html_card_minuta_cliente_dia.html", contexto, request=request
     )
     return data
 
