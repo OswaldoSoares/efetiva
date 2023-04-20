@@ -29,16 +29,16 @@
         </div>
     </section>
     <section class="grid-column">
+        <div class="html-form-paga">
+            {% include 'minutas/formpagamento.html' %}
+        </div>
+    </section>
+    <section class="grid-column">
         {% if user|can:'demonstrativo_minuta' %}
         <div class="html-form-recebe">
             {% include 'minutas/formrecebimento.html' %}
         </div>
         {% endif %}
-    </section>
-    <section class="grid-column">
-        <div class="html-form-paga">
-            {% include 'minutas/formpagamento.html' %}
-        </div>
     </section>
     <!-- div modal -->
     <div class="modal fade bd-example-modal-lg" id="MyModal" tabindex="-1">

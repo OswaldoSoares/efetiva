@@ -3,7 +3,6 @@
     <span>PAGAMENTOS</span>
 </div>
 <!-- Card - Body -->
-<!--TODO: Alterar id no arquivo js e aqui-->
 <form method="post" id="js-gera-pagamentos">
     <div class="card-body">
         {% csrf_token %}
@@ -621,47 +620,46 @@
                 readonly />
             </div>
         </div>
-    </div>
-    {% if s_minuta.ajudantes or s_minuta.motorista %}
-    <div class="linha-divisoria-nova"></div>
-    {% endif %}
-    {% for motorista in s_minuta.motorista %}
-    {% if motorista.obj.TipoPgto != 'MENSALISTA' %}
-    <div class="card-body-item div-motorista">
-        <div class="input-group">
-            <i class="bi bi-person-square input-group-addon addon-my-color"></i>
-            <div class="input-fake div-flex font-menor">
-                <span>
-                    {{ motorista.apelido }}
-                </span>
-                <span id="total-motorista">
-                    R$ {{ s_minuta.paga_motorista|stringformat:'.2f' }}
-                </span>
+        {% if s_minuta.ajudantes or s_minuta.motorista %}
+        <div class="linha-divisoria-nova"></div>
+        {% endif %}
+        {% for motorista in s_minuta.motorista %}
+        {% if motorista.obj.TipoPgto != 'MENSALISTA' %}
+        <div class="card-body-item div-motorista">
+            <div class="input-group">
+                <i class="bi bi-person-square input-group-addon addon-my-color"></i>
+                <div class="input-fake div-flex font-menor">
+                    <span>
+                        {{ motorista.apelido }}
+                    </span>
+                    <span id="total-motorista">
+                        R$ {{ s_minuta.paga_motorista|stringformat:'.2f' }}
+                    </span>
+                </div>
+                <i class="bi bi-check input-group-addon addon-my-color"></i>
             </div>
-            <i class="bi bi-check input-group-addon addon-my-color"></i>
         </div>
-    </div>
-    </div>
-    {% endif %}
-    {% endfor %}
-    {% for ajudante in s_minuta.ajudantes %}
-    {% if ajudante.tipo != 'MENSALISTA' %}
-    <div class="card-body-item div-ajudante">
-        <div class="input-group">
-            <i class="bi bi-person input-group-addon addon-my-color"></i>
-            <div class="input-fake div-flex font-menor">
-                <span>
-                    {{ ajudante.apelido }}
-                </span>
-                <span id="total-ajudante">
-                    R$ {{ s_minuta.paga.v_ajud|stringformat:'.2f' }}
-                </span>
+        {% endif %}
+        {% endfor %}
+        {% for ajudante in s_minuta.ajudantes %}
+        {% if ajudante.tipo != 'MENSALISTA' %}
+        <div class="card-body-item div-ajudante">
+            <div class="input-group">
+                <i class="bi bi-person input-group-addon addon-my-color"></i>
+                <div class="input-fake div-flex font-menor">
+                    <span>
+                        {{ ajudante.apelido }}
+                    </span>
+                    <span id="total-ajudante">
+                        R$ {{ s_minuta.paga.v_ajud|stringformat:'.2f' }}
+                    </span>
+                </div>
+                <i class="bi bi-check input-group-addon addon-my-color"></i>
             </div>
-            <i class="bi bi-check input-group-addon addon-my-color"></i>
         </div>
+        {% endif %}
+        {% endfor %}
     </div>
-    {% endif %}
-    {% endfor %}
     <div class="card-footer">
         <div class="div-flex">
             {% if s_minuta.paga_minuta %}
