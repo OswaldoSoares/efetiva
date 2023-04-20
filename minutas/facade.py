@@ -1301,7 +1301,7 @@ def html_filtro_veiculo(request, lista_veiculos):
 def html_coleta_entrega_obs(request, data, idminuta):
     contexto = cria_contexto(idminuta)
     data["html_coleta_entrega_obs"] = render_to_string(
-        "minutas/coletaentregaobsminuta.html", contexto, request=request
+        "minutas/html_card_minuta_coleta_entrega_obs.html", contexto, request=request
     )
     return data
 

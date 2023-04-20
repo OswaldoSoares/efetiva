@@ -1,0 +1,102 @@
+<!-- Mostra local da Coleta da minuta -->
+<div class="card-body-item article-info">
+    <div class="input-group">
+        <i class="bi bi-upload
+        i-button-null
+        input-group-addon addon-my-color"
+        title="LOCAL COLETA"></i>
+        <span class="form-control
+        input-fake"
+        title="{{ s_minuta.coleta }}">
+            {% if s_minuta.coleta != '' %}
+                {{ s_minuta.coleta|slice:"0:30" }}
+                {% if s_minuta.coleta|length > 30 %}
+                    ...
+                {% endif %}
+            {% else %}
+                COLETA NÃO INFORMADA.
+            {% endif %}
+        </span>
+        <div class="input-group-addon
+        addon-my-color">
+            {% if not s_minuta.paga_realizada %}
+                <i class="bi bi-pencil-square i-button"
+                onclick="openMyModal(event); return false;"
+                data-title="COLETA - ENTREGA - OBS"
+                data-action="{% url 'editacoletaentregaobs' %}"
+                data-button-save-label="EDITA"
+                data-idminuta="{{ s_minuta.idminuta }}"></i>
+            {% else %}
+                <i class="bi bi-check"></i>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<!-- Mostra local de Entrega da minuta -->
+<div class="card-body-item article-info">
+    <div class="input-group">
+        <i class="bi bi-download
+        i-button-null
+        input-group-addon addon-my-color"
+        title="LOCAL ENTREGA"></i>
+        <span class="form-control
+        input-fake"
+        title="{{ s_minuta.entrega }}">
+            {% if s_minuta.entrega != '' %}
+                {{ s_minuta.entrega|slice:"0:30" }}
+                {% if s_minuta.entrega|length > 30 %}
+                    ...
+                {% endif %}
+            {% else %}
+                ENTREGA NÃO INFORMADA.
+            {% endif %}
+        </span>
+        <div class="input-group-addon addon-my-color">
+            {% if not s_minuta.paga_realizada %}
+                <i class="bi bi-pencil-square i-button"
+                onclick="openMyModal(event); return false;"
+                data-title="COLETA - ENTREGA - OBS"
+                data-action="{% url 'editacoletaentregaobs' %}"
+                data-button-save-label="EDITA"
+                data-idminuta="{{ s_minuta.idminuta }}"></i>
+            {% else %}
+                <i class="bi bi-check"></i>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<!-- Mostra Observações da minuta -->
+<div class="card-body-item article-info">
+    <div class="input-group">
+        <i class="bi bi-info-circle-fill
+        i-button-null
+        input-group-addon
+        addon-my-color"
+        title="OBSERVAÇÕES"></i>
+        <span class="form-control
+        input-fake"
+        title="{{ s_minuta.obs }}">
+            {% if s_minuta.obs != '' %}
+                {{ s_minuta.obs|slice:"0:30" }}
+                {% if s_minuta.obs|length > 30 %}
+                    ...
+                {% endif %}
+            {% else %}
+                OBSERVAÇÕES NÃO INFORMADA.
+            {% endif %}
+        </span>
+        <div class="input-group-addon
+        addon-my-color">
+            {% if not s_minuta.paga_realizada %}
+                <i class="bi bi-pencil-square i-button"
+                onclick="openMyModal(event); return false;"
+                data-title="COLETA - ENTREGA - OBS"
+                data-action="{% url 'editacoletaentregaobs' %}"
+                data-button-save-label="EDITA"
+                data-idminuta="{{ s_minuta.idminuta }}"></i>
+            {% else %}
+                <i class="bi bi-check"></i>
+            {% endif %}
+        </div>
+    </div>
+</div>
