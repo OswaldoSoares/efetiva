@@ -39,9 +39,9 @@
         onclick="window.location.href = '{% url 'estorna_minuta' minutas.idMinuta %}'"
         title="Estorna Minuta {{ minutas.Minuta }}"></i>
         {% endif %}
-        <i class="bi bi-printer i-button"
-        onclick="window.location.href = '{% url 'imprimeminuta' minutas.idMinuta %}'"
-        title="Imprime Minuta {{ minutas.Minuta }}"></i>
+        <a class="bi bi-printer i-button"
+        href="{% url 'imprimeminuta' minutas.idMinuta %}"
+        target="_blank"></a>
         <i class="bi bi-folder i-button"
         onclick="window.location.href = '{% url 'consultaminuta' minutas.idMinuta %}'"></i>
         <i class="bi bi-folder i-button"
