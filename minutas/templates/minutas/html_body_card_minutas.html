@@ -1,6 +1,7 @@
 <div>
     <div class="div-flex">
         <div class="linha-minuta">
+            <!-- Número e data da minuta -->
             <i class="bi bi-file-text i-button-null">
                 <span>{{ minutas.Minuta }}</span>
                 <span>{{ minutas.Data }}</span>
@@ -8,6 +9,7 @@
             </i>
         </div>
         <div class="linha-minuta">
+            <!-- Cliente da minuta -->
             <span>{{ minutas.Cliente }}
                 <i class="bi bi-building i-button-null"></i>
             </span>
@@ -15,15 +17,18 @@
     </div>
 </div>
 <div>
+    <!-- Apenas mostra se tiver motorista -->
     {% if minutas.Motorista %}
     <div class="div-flex">
         <div class="linha-minuta linha-motorista">
+            <!-- Motorista da Minuta -->
             <i class="bi bi-person-square i-button-null">
                 <span>{{ minutas.Motorista }}</span>
             </i>
             {% endif %}
         </div>
         <div class="linha-minuta linha-motorista">
+            <!-- Veículo da minuta -->
             {% if minutas.Veiculo %}
             <span>{{ minutas.Veiculo }} 
                 <i class="bi bi-truck i-button-null"></i>
@@ -32,18 +37,25 @@
     </div>
     {% endif %}
 </div>
+<!-- Botões de acesso a Minuta -->
 <div class="icones-minuta">
     <div class="div-botoes">
+        <!-- Botão Estorna Minuta -->
         {% if minutas.status != "ABERTA" %}
         <i class="bi bi-reply-all i-button"
         onclick="window.location.href = '{% url 'estorna_minuta' minutas.idMinuta %}'"
         title="Estorna Minuta {{ minutas.Minuta }}"></i>
         {% endif %}
+        <!-- Botão Imprime Minuta -->
         <a class="bi bi-printer i-button"
         href="{% url 'imprimeminuta' minutas.idMinuta %}"
         target="_blank"></a>
+        <!-- Botão Consulta Minuta Anrigo -->
+        <!-- TODO será removido -->
         <i class="bi bi-folder i-button"
-        onclick="window.location.href = '{% url 'consultaminuta' minutas.idMinuta %}'"></i>
+        onclick="window.location.href='{% url 'consultaminuta' minutas.idMinuta %}'"
+        title="Consulta Minuta Antigo"></i>
+        <!-- Botão Consulta Minuta -->
         <i class="bi bi-folder i-button"
         onclick="window.location.href = '{% url 'minuta' minutas.idMinuta %}'"
         title="Consulta Minuta {{ minutas.Minuta }}"></i>
