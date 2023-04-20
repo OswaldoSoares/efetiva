@@ -1264,7 +1264,7 @@ def html_motorista(request, data, idminuta):
 def html_ajudantes(request, data, idminuta):
     contexto = cria_contexto(idminuta)
     data["html_ajudante"] = render_to_string(
-        "minutas/ajudantesminuta.html", contexto, request=request
+        "minutas/html_card_minuta_ajudantes.html", contexto, request=request
     )
     return data
 
