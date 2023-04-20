@@ -44,6 +44,7 @@ body {
     background-attachment: fixed;
     font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
     /* max-height: 93vh; */
+    overflow-y: scroll;
 }
 
 .meu-container {

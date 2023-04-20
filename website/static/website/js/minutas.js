@@ -1,10 +1,19 @@
 $(document).ready(function() {
-    /* Versão Nova */
-    
+    $(".box-loader").hide()
+    $(".filtro-dados").hide()
+    $(".card-minutas-consulta").hide();
+    $(".div-sucesso").hide()
+    $(".div-erro").hide()
+    verificaTotalKms()
+    verificaTotalHoras()
+    verificaCheckboxPaga();
+    verificaCheckboxRecebe();
+    mostraChecklist();
+    formatMask();
 
     /* Versão Nova - Função que envia formulário com os itens de
     recebimento para serem processados pelo servidor */
-    $(document).on('submit', '#js-gera-receitas', function(event) {
+    $(document).on("submit", "#js-gera-receitas", function(event) {
         event.preventDefault();
         $.ajax({
             type: "POST",
@@ -21,7 +30,7 @@ $(document).ready(function() {
                     error.status + " " + error.message + " "
                     + "- entre em contato com o administrador do aplicativo."
                 );
-                $('html, body').scrollTop(0);
+                $("html, body").scrollTop(0);
                 $(".box-loader").hide();
                 mostraMensagemErro()
                 console.log(error)
@@ -30,18 +39,18 @@ $(document).ready(function() {
     });
     
     /* Versão Nova */
-    $(document).on('submit', '#js-gera-pagamentos', function(event) {
+    $(document).on("submit", "#js-gera-pagamentos", function(event) {
         event.preventDefault();
         $.ajax({
             type: "POST",
-            url: '/minutas/gera_pagamentos',
+            url: "/minutas/gera_pagamentos",
             data: $(this).serialize(),
             before: function() {
                 $(".box-loader").show();
             },
             success: function(data) {
                 $(".box-loader").hide();
-                window.location.href = '/minutas/minuta/' + data['html_idminuta'] + '/'
+                window.location.href = "/minutas/minuta/" + data["html_idminuta"] + "/"
             },
             error: function(error) {
                 console.log(error)
@@ -50,17 +59,17 @@ $(document).ready(function() {
     });
 
     // Versão Nova //
-    $(document).on('click', '.estorna-pagamentos', function(event) {
+    $(document).on("click", ".estorna-pagamentos", function(event) {
         $(".container").hide()
-        var idminuta = $(this).attr('idMinuta')
+        var idminuta = $(this).attr("idMinuta")
         $.ajax({
-            type: 'GET',
-            url: '/minutas/estornapagamentos',
+            type: "GET",
+            url: "/minutas/estornapagamentos",
             data: {
                 idMinuta: idminuta,
             },
             success: function(data) {
-                window.location.href = '/minutas/minuta/' + data['html_idminuta'] + '/'
+                window.location.href = "/minutas/minuta/" + data["html_idminuta"] + "/"
             },
             error: function(error) {
                 console.log(error)
@@ -69,17 +78,17 @@ $(document).ready(function() {
     });
 
     // Versão Nova //
-    $(document).on('click', '.conclui-minuta', function(event) {
-        var idminuta = $(this).attr('idMinuta')
+    $(document).on("click", ".conclui-minuta", function(event) {
+        var idminuta = $(this).attr("idMinuta")
         $.ajax({
-            type: 'GET',
-            url: '/minutas/concluirminuta',
+            type: "GET",
+            url: "/minutas/concluirminuta",
             data: {
                 idMinuta: idminuta,
             },
             success: function(data) {
                 $(".html-checklist").hide()
-                $('.html-checklist').html(data['html_checklist']);
+                $(".html-checklist").html(data["html_checklist"]);
                 mostraChecklist();
             },
             error: function(error) {
@@ -89,29 +98,29 @@ $(document).ready(function() {
     });
 
     // Versão Nova //
-    $(document).on('click', '.remove-colaborador', function(event) {
-        var idminutacolaboradores = $(this).attr('idMinutaColaboradores')
-        var idminuta = $(this).attr('idMinuta')
-        var cargo = $(this).attr('Cargo')
+    $(document).on("click", ".remove-colaborador", function(event) {
+        var idminutacolaboradores = $(this).attr("idMinutaColaboradores")
+        var idminuta = $(this).attr("idMinuta")
+        var cargo = $(this).attr("Cargo")
         $.ajax({
-            type: 'GET',
-            url: '/minutas/removecolaborador',
+            type: "GET",
+            url: "/minutas/removecolaborador",
             data: {
                 idMinutaColaboradores: idminutacolaboradores,
                 idMinuta: idminuta,
                 Cargo: cargo
             },
             success: function(data) {
-                if (cargo == 'AJUDANTE') {
-                    $('.html-ajudante').html(data['html_ajudante']);
-                } else if (cargo == 'MOTORISTA') {
+                if (cargo == "AJUDANTE") {
+                    $(".html-ajudante").html(data["html_ajudante"]);
+                } else if (cargo == "MOTORISTA") {
                     $(".html-veiculo").hide()
-                    $('.html-veiculo').html(data['html_veiculo']);
+                    $(".html-veiculo").html(data["html_veiculo"]);
                     $(".html-veiculo").delay(1000).slideDown(500)
                 }
-                recarregaFinanceiro(data['html_pagamento'], data['html_recebimento'])
+                recarregaFinanceiro(data["html_pagamento"], data["html_recebimento"])
                 $(".html-checklist").hide()
-                $('.html-checklist').html(data['html_checklist']);
+                $(".html-checklist").html(data["html_checklist"]);
                 mostraChecklist();
             },
             error: function(error) {
@@ -121,23 +130,23 @@ $(document).ready(function() {
     });
 
     // Versão Nova //
-    $(document).on('click', '.remove-despesa', function(event) {
-        var idminutaitens = $(this).attr('idMinutaItens')
-        var idminuta = $(this).attr('idMinuta')
+    $(document).on("click", ".remove-despesa", function(event) {
+        var idminutaitens = $(this).attr("idMinutaItens")
+        var idminuta = $(this).attr("idMinuta")
         $.ajax({
-            type: 'GET',
-            url: '/minutas/removedespesa',
+            type: "GET",
+            url: "/minutas/removedespesa",
             data: {
                 idMinutaItens: idminutaitens,
                 idMinuta: idminuta,
             },
             success: function(data) {
-                recarregaFinanceiro(data['html_pagamento'], data['html_recebimento'])
+                recarregaFinanceiro(data["html_pagamento"], data["html_recebimento"])
                 $(".html-checklist").hide()
-                $('.html-checklist').html(data['html_checklist']);
+                $(".html-checklist").html(data["html_checklist"]);
                 mostraChecklist();
                 $(".html-despesa").hide()
-                $('.html-despesa').html(data['html_despesa']);
+                $(".html-despesa").html(data["html_despesa"]);
                 $(".html-despesa").delay(1000).slideDown(500)
             },
             error: function(error) {
@@ -147,23 +156,23 @@ $(document).ready(function() {
     });
 
     // Versão Nova //
-    $(document).on('click', '.remove-entrega', function(event) {
-        var idminutanotas = $(this).attr('idMinutaNotas')
-        var idminuta = $(this).attr('idMinuta')
+    $(document).on("click", ".remove-entrega", function(event) {
+        var idminutanotas = $(this).attr("idMinutaNotas")
+        var idminuta = $(this).attr("idMinuta")
         $.ajax({
-            type: 'GET',
-            url: '/minutas/removeentrega',
+            type: "GET",
+            url: "/minutas/removeentrega",
             data: {
                 idMinutaNotas: idminutanotas,
                 idMinuta: idminuta,
             },
             success: function(data) {
-                recarregaFinanceiro(data['html_pagamento'], data['html_recebimento'])
+                recarregaFinanceiro(data["html_pagamento"], data["html_recebimento"])
                 $(".html-checklist").hide()
-                $('.html-checklist').html(data['html_checklist']);
+                $(".html-checklist").html(data["html_checklist"]);
                 mostraChecklist();
                 $(".card-entrega").hide()
-                $('.card-entrega').html(data['html_entrega']);
+                $(".card-entrega").html(data["html_entrega"]);
                 $(".card-entrega").delay(1000).slideDown(500)
             },
             error: function(error) {
@@ -172,229 +181,22 @@ $(document).ready(function() {
         });
     });
 
-    // Versão Nova - Consultas //
-    $(document).on('click', '.list-cliente', function(event) {
-        $(".fd-colaborador").hide()
-        $(".list-colaborador").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
-        $(".fd-veiculo").hide()
-        $(".list-veiculo").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
-        $(".fd-entrega-cidade").hide()
-        $(".list-entrega-cidade").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
-        $(".filtro-destinatario").hide()
-        $(".digita-destinatario").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
-        if ($('.fd-cliente').is(':hidden')) {
-            $(".fd-cliente").show()
-            $(this).removeClass("bi-caret-right-fill").addClass("bi-caret-down-fill");
-        } else {
-            $(".fd-cliente").hide()
-            $(this).removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
-        }
-    });
 
-    // Versão Nova - Consultas //
-    $(document).on('click', '.list-colaborador', function(event) {
-        $(".fd-cliente").hide()
-        $(".list-cliente").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
-        $(".fd-veiculo").hide()
-        $(".list-veiculo").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
-        $(".fd-entrega-cidade").hide()
-        $(".list-entrega-cidade").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
-        $(".filtro-destinatario").hide()
-        $(".digita-destinatario").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
-        if ($('.fd-colaborador').is(':hidden')) {
-            $(".fd-colaborador").show()
-            $(this).removeClass("bi-caret-right-fill").addClass("bi-caret-down-fill");
-        } else {
-            $(".fd-colaborador").hide()
-            $(this).removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
-        }
-    });
-
-    // Versão Nova - Consultas //
-    $(document).on('click', '.list-veiculo', function(event) {
-        $(".fd-cliente").hide()
-        $(".list-cliente").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
-        $(".fd-colaborador").hide()
-        $(".list-colaborador").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
-        $(".fd-entrega-cidade").hide()
-        $(".list-entrega-cidade").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
-        $(".filtro-destinatario").hide()
-        $(".digita-destinatario").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
-        if ($('.fd-veiculo').is(':hidden')) {
-            $(".fd-veiculo").show()
-            $(this).removeClass("bi-caret-right-fill").addClass("bi-caret-down-fill");
-        } else {
-            $(".fd-veiculo").hide()
-            $(this).removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
-        }
-    });
-
-    // Versão Nova - Consultas //
-    $(document).on('click', '.list-entrega-cidade', function(event) {
-        $(".fd-cliente").hide()
-        $(".list-cliente").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
-        $(".fd-colaborador").hide()
-        $(".list-colaborador").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
-        $(".fd-veiculo").hide()
-        $(".list-veiculo").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
-        $(".filtro-destinatario").hide()
-        $(".digita-destinatario").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
-        if ($('.fd-entrega-cidade').is(':hidden')) {
-            $(".fd-entrega-cidade").show()
-            $(this).removeClass("bi-caret-right-fill").addClass("bi-caret-down-fill");
-        } else {
-            $(".fd-entrega-cidade").hide()
-            $(this).removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
-        }
-    });
-
-    // Versão Nova - Consultas //
-    $(document).on('click', '.digita-destinatario', function(event) {
-        $(".fd-cliente").hide()
-        $(".list-cliente").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
-        $(".fd-colaborador").hide()
-        $(".list-colaborador").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
-        $(".fd-veiculo").hide()
-        $(".list-veiculo").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
-        $(".fd-entrega-cidade").hide()
-        $(".list-entrega-cidade").removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
-        if ($('.filtro-destinatario').is(':hidden')) {
-            $(".filtro-destinatario").show()
-            $(this).removeClass("bi-caret-right-fill").addClass("bi-caret-down-fill");
-        } else {
-            $(".filtro-destinatario").hide()
-            $(this).removeClass("bi-caret-down-fill").addClass("bi-caret-right-fill");
-        }
-    });
-
-    // Versão Nova - Consultas //
-    $(document).on('click', '.filtro-consulta', function(event) {
-        $(".filtro-lista").each(function() {
-            $(this).addClass("i-button")
-        });
-        if ($(".minutas-atual").is(":hidden")) {
-            $(".minutas-consulta").hide()
-        } else {
-            $(".minutas-atual").hide()
-        }
-        $(".card-minutas-abertas").hide();
-        $(".card-minutas-concluidas").hide();
-        $(".card-minutas-fechadas").hide();
-        $(".box-loader").show()
-        $(this).removeClass("i-button")
-        $(this).addClass("i-button-null")
-        var filtro = $(this).attr('data-filtro')
-        var filtro_consula = $(this).attr('data-filtro-consulta')
-        var meses = $(this).attr('data-meses')
-        var anos = $(this).attr('data-anos')
-        $.ajax({
-            type: 'GET',
-            url: '/minutas/filtraminuta',
-            data: {
-                Filtro: filtro,
-                FiltroConsulta: filtro_consula,
-                Meses: meses,
-                Anos: anos,
-            },
-            success: function(data) {
-                $(".card-minutas-consulta").html(data['html_filtra_minuta'])
-                $(".box-loader").hide()
-                $(".minutas-consulta").show()
-            },
-            error: function(error) {
-                console.log(error)
-            }
-        });
-    });
-
-    // Versão Nova - Consultas //
-    $(document).on('click', '.filtro-periodo', function(event) {
-        $(".minutas-consulta").hide()
-        $(".box-loader").show()
-        var filtro = $(this).attr('data-filtro')
-        var filtro_consula = $(this).attr('data-filtro-consulta')
-        var meses = $(this).attr('data-meses')
-        var anos = $(this).attr('data-anos')
-        var menu_selecionado = $(this)
-        $.ajax({
-            type: 'GET',
-            url: '/minutas/filtraminuta',
-            data: {
-                Filtro: filtro,
-                FiltroConsulta: filtro_consula,
-                Meses: meses,
-                Anos: anos,
-            },
-            success: function(data) {
-                $(".minutas-consulta").html(data['html_filtra_minuta'])
-                $(".filtro-periodo").each(function() {
-                    if ($(this).text() == menu_selecionado.text()) {
-                        $(this).removeClass("i-button")
-                    } else {
-                        $(this).addClass("i-button")
-                    }
-                });
-                $(".box-loader").hide()
-                $(".minutas-consulta").show()
-            },
-            error: function(error) {
-                console.log(error)
-            }
-        })
-    });
-
-    // Versão Nova - Consultas //
-    $(document).on('click', '.search-destinatario', function(event) {
-        $(".filtro-lista").each(function() {
-            $(this).addClass("i-button")
-        });
-        if ($(".minutas-atual").is(":hidden")) {
-            $(".minutas-consulta").hide()
-        } else {
-            $(".minutas-atual").hide()
-        }
-        $(".box-loader").show()
-        var filtro = $(".text-search").val()
-        var filtro_consula = $(this).attr('data-filtro-consulta')
-        var meses = $(this).attr('data-meses')
-        var anos = $(this).attr('data-anos')
-        var menu_selecionado = $(this)
-        $.ajax({
-            type: 'GET',
-            url: '/minutas/filtraminuta',
-            data: {
-                Filtro: filtro,
-                FiltroConsulta: filtro_consula,
-                Meses: meses,
-                Anos: anos,
-            },
-            success: function(data) {
-                $(".minutas-consulta").html(data['html_filtra_minuta'])
-                $(".box-loader").hide()
-                $(".minutas-consulta").show()
-            },
-            error: function(error) {
-                console.log(error)
-            }
-        })
-    });
-
-
-    $('#MyModal').on('shown.bs.modal', function() {
+    $("#MyModal").on("shown.bs.modal", function() {
         setTimeout(function() { // Delay para função loadCubagem, após janela estar carregada
             $(".form-radio").click(function() {
                 $(".escolha-veiculo").fadeOut(500)
                 var filtro = $(this).val()
                 $.ajax({
-                    type: 'GET',
-                    url: '/minutas/filtraveiculoescolhido',
+                    type: "GET",
+                    url: "/minutas/filtraveiculoescolhido",
                     data: {
-                        idobj: $('#idminuta').attr('idminuta'),
-                        idPessoal: $("#idpessoal").attr('idpessoal'),
+                        idobj: $("#idminuta").attr("idminuta"),
+                        idPessoal: $("#idpessoal").attr("idpessoal"),
                         Filtro: filtro,
                     },
                     success: function(data) {
-                        $(".html-escolhido").html(data['html_filtro'])
+                        $(".html-escolhido").html(data["html_filtro"])
                         $(".escolha-veiculo").fadeIn(500)
                     },
                     error: function(error) {
@@ -406,20 +208,10 @@ $(document).ready(function() {
         }, 800);
     });
 
-    verificaTotalKms()
-    verificaTotalHoras()
-    // Versão Nova //
-    $(".div-sucesso").hide()
-    // Versão Nova //
-    $(".div-erro").hide()
-    $(".filtro-dados").hide()
-    $(".minutas-consulta").hide()
-    // Versão Nova //
-    $(".box-loader").hide()
-    $(".filtro-destinatario").hide()
+    
 
     // JQuery da Janela Modal Antigo
-    $('#modal-formulario').on('shown.bs.modal', function() {
+    $("#modal-formulario").on("shown.bs.modal", function() {
         setTimeout(function() { // Delay para função loadCubagem, após janela estar carregada
             $("#id_Propriedade").change(function() {
                 var obj = $(this)
@@ -428,8 +220,8 @@ $(document).ready(function() {
 
                 $.ajax({
                     url: obj.attr("data-url"),
-                    type: 'get',
-                    dataType: 'json',
+                    type: "get",
+                    dataType: "json",
                     data: {
                         propriedade: propriedade,
                         idminutacolaboradores,
@@ -444,64 +236,64 @@ $(document).ready(function() {
             $("#id_Propriedade").focus(); // Configura o foco inicial
         }, 800);
 
-        $('#id_NotaGuia').change(function() {
-            if ($('#id_NotaGuia').val() != 0) {
-                nota_guia = $('#id_NotaGuia').val()
-                id_minuta = $('#id_idMinuta').val()
-                $('#id_Nome').attr('readonly', 'readonly')
-                $('#id_Estado').attr('readonly', 'readonly')
-                $('#id_Cidade').attr('readonly', 'readonly')
+        $("#id_NotaGuia").change(function() {
+            if ($("#id_NotaGuia").val() != 0) {
+                nota_guia = $("#id_NotaGuia").val()
+                id_minuta = $("#id_idMinuta").val()
+                $("#id_Nome").attr("readonly", "readonly")
+                $("#id_Estado").attr("readonly", "readonly")
+                $("#id_Cidade").attr("readonly", "readonly")
                 $.ajax({
-                    url: '/minutas/buscaminutaentrega',
-                    type: 'get',
-                    dataType: 'json',
+                    url: "/minutas/buscaminutaentrega",
+                    type: "get",
+                    dataType: "json",
                     data: {
                         nota_guia: nota_guia,
                         id_minuta: id_minuta,
                     },
                     beforeSend: function() {},
                     success: function(data) {
-                        $('#id_Nome').val(data.nota_guia_nome);
-                        $('#id_Estado').val(data.nota_guia_estado);
-                        $('#id_Cidade').val(data.nota_guia_cidade);
+                        $("#id_Nome").val(data.nota_guia_nome);
+                        $("#id_Estado").val(data.nota_guia_estado);
+                        $("#id_Cidade").val(data.nota_guia_cidade);
                     }
                 });
 
             } else {
-                $('#id_Nome').removeAttr('readonly')
-                $('#id_Estado').removeAttr('readonly')
-                $('#id_Cidade').removeAttr('readonly')
+                $("#id_Nome").removeAttr("readonly")
+                $("#id_Estado").removeAttr("readonly")
+                $("#id_Cidade").removeAttr("readonly")
             }
         });
-        $('#id_Nota').focusout(function() {
-            if ($('#id_Nota').val().toUpperCase() == 'PERIMETRO') {
-                $('#id_Estado').focus();
-                $('#id_ValorNota').attr('readonly', 'readonly')
-                $('#id_Peso').attr('readonly', 'readonly')
-                $('#id_Volume').attr('readonly', 'readonly')
-                $('#id_NotaGuia').attr('disabled', 'disabled')
-                $('#id_Nome').attr('readonly', 'readonly')
+        $("#id_Nota").focusout(function() {
+            if ($("#id_Nota").val().toUpperCase() == "PERIMETRO") {
+                $("#id_Estado").focus();
+                $("#id_ValorNota").attr("readonly", "readonly")
+                $("#id_Peso").attr("readonly", "readonly")
+                $("#id_Volume").attr("readonly", "readonly")
+                $("#id_NotaGuia").attr("disabled", "disabled")
+                $("#id_Nome").attr("readonly", "readonly")
             }
         });
         $("#id_EntregaNota").click(function() {
-            $('#id_NotaGuia').removeAttr('disabled');
-            $('#id_NotaGuia').val("0");
+            $("#id_NotaGuia").removeAttr("disabled");
+            $("#id_NotaGuia").val("0");
         });
     });
 
     // Versão Antiga //
     var mostravalores = function(obj) {
-        var switch_id = obj.attr('id');
-        var ta_id = '#' + switch_id.replace('sw', 'ta');
-        var mi_id = '#' + switch_id.replace('sw', 'mi');
-        var to_id = '#' + switch_id.replace('sw', 'to');
-        var hi_id = '#' + switch_id.replace('sw', 'hi');
+        var switch_id = obj.attr("id");
+        var ta_id = "#" + switch_id.replace("sw", "ta");
+        var mi_id = "#" + switch_id.replace("sw", "mi");
+        var to_id = "#" + switch_id.replace("sw", "to");
+        var hi_id = "#" + switch_id.replace("sw", "hi");
         if (obj.is(":checked")) {
             if ($(mi_id).length) {
-                if ($(ta_id).attr('meu_tipo') == '%' && $(mi_id).attr('meu_tipo') == 'R$') {
-                    $(to_id).text('R$ ' + ($(ta_id).val() / 100 * $(mi_id).val()).toFixed(2).replace('.', ','))
+                if ($(ta_id).attr("meu_tipo") == "%" && $(mi_id).attr("meu_tipo") == "R$") {
+                    $(to_id).text("R$ " + ($(ta_id).val() / 100 * $(mi_id).val()).toFixed(2).replace(".", ","))
                     $(hi_id).val(($(ta_id).val() / 100 * $(mi_id).val()))
-                } else if ($(ta_id).attr('meu_tipo') == 'R$' && $(mi_id).attr('meu_tipo') == 'HS') {
+                } else if ($(ta_id).attr("meu_tipo") == "R$" && $(mi_id).attr("meu_tipo") == "HS") {
                     if (ta_id == "#ta-horas-recebe") {
                         var valor_hora = $("#ta-horas-recebe").val();
                         var horas = $("#mi-horas-recebe").val().substring(0, 2);
@@ -509,7 +301,7 @@ $(document).ready(function() {
                         total_horas = horas * valor_hora
                         total_minutos = minutos * (valor_hora / 60).toFixed(5)
                         total_horas_recebe = total_horas + total_minutos
-                        $(to_id).text('R$ ' + total_horas_recebe.toFixed(2).replace('.', ','))
+                        $(to_id).text("R$ " + total_horas_recebe.toFixed(2).replace(".", ","))
                         $(hi_id).val(total_horas_recebe)
                     } else if (ta_id == "#ta-horas-paga") {
                         var valor_hora = $("#ta-horas-paga").val();
@@ -518,10 +310,10 @@ $(document).ready(function() {
                         total_horas = horas * valor_hora
                         total_minutos = minutos * (valor_hora / 60).toFixed(5)
                         total_horas_paga = total_horas + total_minutos
-                        $(to_id).text('R$ ' + total_horas_paga.toFixed(2).replace('.', ','))
+                        $(to_id).text("R$ " + total_horas_paga.toFixed(2).replace(".", ","))
                         $(hi_id).val(total_horas_paga)
                     }
-                } else if ($(ta_id).attr('meu_tipo') == '%' && $(mi_id).attr('meu_tipo') == 'HS') {
+                } else if ($(ta_id).attr("meu_tipo") == "%" && $(mi_id).attr("meu_tipo") == "HS") {
                     if (ta_id == "#ta-horasexcede-recebe") {
                         var valor_hora_excede = $("#ta-horas-recebe").val() * ($(ta_id).val() / 100)
                         var horas = $("#mi-horasexcede-recebe").val().substring(0, 2);
@@ -529,7 +321,7 @@ $(document).ready(function() {
                         total_horas_excede = horas * valor_hora_excede
                         total_minutos_excede = minutos * (valor_hora_excede / 60).toFixed(5)
                         total_horas_excede_recebe = total_horas_excede + total_minutos_excede
-                        $(to_id).text('R$ ' + total_horas_excede_recebe.toFixed(2).replace('.', ','))
+                        $(to_id).text("R$ " + total_horas_excede_recebe.toFixed(2).replace(".", ","))
                         $(hi_id).val(total_horas_excede_recebe)
                     } else if (ta_id == "#ta-horasexcede-paga") {
                         var valor_hora_excede = $("#ta-horas-paga").val() * ($(ta_id).val() / 100)
@@ -538,51 +330,51 @@ $(document).ready(function() {
                         total_horas_excede = horas * valor_hora_excede
                         total_minutos_excede = minutos * (valor_hora_excede / 60).toFixed(5)
                         total_horas_excede_paga = total_horas_excede + total_minutos_excede
-                        $(to_id).text('R$ ' + total_horas_excede_paga.toFixed(2).replace('.', ','))
+                        $(to_id).text("R$ " + total_horas_excede_paga.toFixed(2).replace(".", ","))
                         $(hi_id).val(total_horas_excede_paga)
                     }
-                } else if ($(ta_id).attr('meu_tipo') == 'R$' && $(mi_id).attr('meu_tipo') == 'UN') {
-                    $(to_id).text('R$ ' + ($(ta_id).val() * $(mi_id).val()).toFixed(2).replace('.', ','))
+                } else if ($(ta_id).attr("meu_tipo") == "R$" && $(mi_id).attr("meu_tipo") == "UN") {
+                    $(to_id).text("R$ " + ($(ta_id).val() * $(mi_id).val()).toFixed(2).replace(".", ","))
                     $(hi_id).val($(ta_id).val() * $(mi_id).val())
-                    $(mi_id).val(parseFloat($(mi_id).val()).toFixed(0).replace('.', ','))
-                } else if ($(ta_id).attr('meu_tipo') == 'R$' && $(mi_id).attr('meu_tipo') == 'KG') {
-                    $(to_id).text('R$ ' + ($(ta_id).val() * $(mi_id).val()).toFixed(2).replace('.', ','))
+                    $(mi_id).val(parseFloat($(mi_id).val()).toFixed(0).replace(".", ","))
+                } else if ($(ta_id).attr("meu_tipo") == "R$" && $(mi_id).attr("meu_tipo") == "KG") {
+                    $(to_id).text("R$ " + ($(ta_id).val() * $(mi_id).val()).toFixed(2).replace(".", ","))
                     $(hi_id).val($(ta_id).val() * $(mi_id).val())
                 }
             } else {
-                if (to_id == '#to-desconto-recebe') {
-                    $(to_id).text('R$ ' + ($(ta_id).val() * -1).toFixed(2).replace('.', ','))
+                if (to_id == "#to-desconto-recebe") {
+                    $(to_id).text("R$ " + ($(ta_id).val() * -1).toFixed(2).replace(".", ","))
                     $(hi_id).val($(ta_id).val() * -1)
                 } else {
-                    $(to_id).text('R$ ' + ($(ta_id).val() * 1).toFixed(2).replace('.', ','))
+                    $(to_id).text("R$ " + ($(ta_id).val() * 1).toFixed(2).replace(".", ","))
                     $(hi_id).val($(ta_id).val())
                 }
             }
         } else {
-            $(to_id).text('R$ 0,00')
+            $(to_id).text("R$ 0,00")
             $(hi_id).val(0.00)
         }
         somaPerimetro();
         // Calcula novamente o pernoite e o perimetro caso tenha alguma mudança
-        if ($('#to-perimetro-recebe').is(":checked")) {
-            $('#to-perimetro-recebe').text('R$ ' + ($('#ta-perimetro-recebe').val() / 100 * $('#mi-perimetro-recebe').val())
-                .toFixed(2).replace('.', ','))
-            $('#hi-perimetro-recebe').val(($('#ta-perimetro-recebe').val() / 100 * $('#mi-perimetro-recebe').val()))
+        if ($("#to-perimetro-recebe").is(":checked")) {
+            $("#to-perimetro-recebe").text("R$ " + ($("#ta-perimetro-recebe").val() / 100 * $("#mi-perimetro-recebe").val())
+                .toFixed(2).replace(".", ","))
+            $("#hi-perimetro-recebe").val(($("#ta-perimetro-recebe").val() / 100 * $("#mi-perimetro-recebe").val()))
         }
-        if ($('#to-pernoite-recebe').is(":checked")) {
-            $('#to-pernoite-recebe').text('R$ ' + ($('#ta-pernoite-recebe').val() / 100 * $('#mi-pernoite-recebe').val())
-                .toFixed(2).replace('.', ','))
-            $('#hi-pernoite-recebe').val(($('#ta-pernoite-recebe').val() / 100 * $('#mi-pernoite-recebe').val()))
+        if ($("#to-pernoite-recebe").is(":checked")) {
+            $("#to-pernoite-recebe").text("R$ " + ($("#ta-pernoite-recebe").val() / 100 * $("#mi-pernoite-recebe").val())
+                .toFixed(2).replace(".", ","))
+            $("#hi-pernoite-recebe").val(($("#ta-pernoite-recebe").val() / 100 * $("#mi-pernoite-recebe").val()))
         }
-        if ($('#to-perimetro-paga').is(":checked")) {
-            $('#to-perimetro-paga').text('R$ ' + ($('#ta-perimetro-paga').val() / 100 * $('#mi-perimetro-paga').val())
-                .toFixed(2).replace('.', ','))
-            $('#hi-perimetro-paga').val(($('#ta-perimetro-paga').val() / 100 * $('#mi-perimetro-paga').val()))
+        if ($("#to-perimetro-paga").is(":checked")) {
+            $("#to-perimetro-paga").text("R$ " + ($("#ta-perimetro-paga").val() / 100 * $("#mi-perimetro-paga").val())
+                .toFixed(2).replace(".", ","))
+            $("#hi-perimetro-paga").val(($("#ta-perimetro-paga").val() / 100 * $("#mi-perimetro-paga").val()))
         }
-        if ($('#to-pernoite-paga').is(":checked")) {
-            $('#to-pernoite-paga').text('R$ ' + ($('#ta-pernoite-paga').val() / 100 * $('#mi-pernoite-paga').val())
-                .toFixed(2).replace('.', ','))
-            $('#hi-pernoite-paga').val(($('#ta-pernoite-paga').val() / 100 * $('#mi-pernoite-paga').val()))
+        if ($("#to-pernoite-paga").is(":checked")) {
+            $("#to-pernoite-paga").text("R$ " + ($("#ta-pernoite-paga").val() / 100 * $("#mi-pernoite-paga").val())
+                .toFixed(2).replace(".", ","))
+            $("#hi-pernoite-paga").val(($("#ta-pernoite-paga").val() / 100 * $("#mi-pernoite-paga").val()))
         }
         totais();
     };
@@ -597,39 +389,39 @@ $(document).ready(function() {
         $(".valor-paga").each(function() {
             valor_paga += parseFloat($(this).val())
         });
-        $("#totalrecebe").text('R$ ' + valor_recebe.toFixed(2).replace('.', ','))
-        $("#totalpaga").text('R$ ' + valor_paga.toFixed(2).replace('.', ','))
-        $(".saldo-minuta").text('Saldo da Minuta R$ ' + (valor_recebe - valor_paga).toFixed(2).replace('.', ','))
+        $("#totalrecebe").text("R$ " + valor_recebe.toFixed(2).replace(".", ","))
+        $("#totalpaga").text("R$ " + valor_paga.toFixed(2).replace(".", ","))
+        $(".saldo-minuta").text("Saldo da Minuta R$ " + (valor_recebe - valor_paga).toFixed(2).replace(".", ","))
     }
 
     // Versão Antiga //
     var somaPerimetro = function() {
         var soma_recebe = 0.00
-        soma_recebe += $('#hi-porcentagem-recebe').val() * 1
-        soma_recebe += $('#hi-horas-recebe').val() * 1
-        soma_recebe += $('#hi-horasexcede-recebe').val() * 1
-        soma_recebe += $('#hi-kilometragem-recebe').val() * 1
-        soma_recebe += $('#hi-entregas-recebe').val() * 1
-        soma_recebe += $('#hi-entregaskg-recebe').val() * 1
-        soma_recebe += $('#hi-entregasvolume-recebe').val() * 1
-        soma_recebe += $('#hi-saida-recebe').val() * 1
-        soma_recebe += $('#hi-capacidade-recebe').val() * 1
+        soma_recebe += $("#hi-porcentagem-recebe").val() * 1
+        soma_recebe += $("#hi-horas-recebe").val() * 1
+        soma_recebe += $("#hi-horasexcede-recebe").val() * 1
+        soma_recebe += $("#hi-kilometragem-recebe").val() * 1
+        soma_recebe += $("#hi-entregas-recebe").val() * 1
+        soma_recebe += $("#hi-entregaskg-recebe").val() * 1
+        soma_recebe += $("#hi-entregasvolume-recebe").val() * 1
+        soma_recebe += $("#hi-saida-recebe").val() * 1
+        soma_recebe += $("#hi-capacidade-recebe").val() * 1
         soma_recebe = (soma_recebe * 1).toFixed(2)
-        $('#mi-perimetro-recebe').val(soma_recebe)
-        $('#mi-pernoite-recebe').val(soma_recebe)
+        $("#mi-perimetro-recebe").val(soma_recebe)
+        $("#mi-pernoite-recebe").val(soma_recebe)
         var soma_paga = 0.00
-        soma_paga += $('#hi-porcentagem-paga').val() * 1
-        soma_paga += $('#hi-horas-paga').val() * 1
-        soma_paga += $('#hi-horasexcede-paga').val() * 1
-        soma_paga += $('#hi-kilometragem-paga').val() * 1
-        soma_paga += $('#hi-entregas-paga').val() * 1
-        soma_paga += $('#hi-entregaskg-paga').val() * 1
-        soma_paga += $('#hi-entregasvolume-paga').val() * 1
-        soma_paga += $('#hi-saida-paga').val() * 1
-        soma_paga += $('#hi-capacidade-paga').val() * 1
+        soma_paga += $("#hi-porcentagem-paga").val() * 1
+        soma_paga += $("#hi-horas-paga").val() * 1
+        soma_paga += $("#hi-horasexcede-paga").val() * 1
+        soma_paga += $("#hi-kilometragem-paga").val() * 1
+        soma_paga += $("#hi-entregas-paga").val() * 1
+        soma_paga += $("#hi-entregaskg-paga").val() * 1
+        soma_paga += $("#hi-entregasvolume-paga").val() * 1
+        soma_paga += $("#hi-saida-paga").val() * 1
+        soma_paga += $("#hi-capacidade-paga").val() * 1
         soma_paga = (soma_paga * 1).toFixed(2)
-        $('#mi-perimetro-paga').val(soma_paga)
-        $('#mi-pernoite-paga').val(soma_paga)
+        $("#mi-perimetro-paga").val(soma_paga)
+        $("#mi-pernoite-paga").val(soma_paga)
     }
 
     // Versão Antiga //
@@ -641,8 +433,8 @@ $(document).ready(function() {
 
         $.ajax({
             url: obj.attr("data-url"),
-            type: 'get',
-            dataType: 'json',
+            type: "get",
+            dataType: "json",
             data: {
                 idminuta: idminuta,
             },
@@ -652,28 +444,28 @@ $(document).ready(function() {
             },
             success: function(data) {
                 $("#modal-formulario .modal-content").html(data.html_form);
-                if ($('#id_NotaGuia').val() != 0) {
-                    $('#id_Nome').attr('readonly', 'readonly')
-                    $('#id_Estado').attr('readonly', 'readonly')
-                    $('#id_Cidade').attr('readonly', 'readonly')
+                if ($("#id_NotaGuia").val() != 0) {
+                    $("#id_Nome").attr("readonly", "readonly")
+                    $("#id_Estado").attr("readonly", "readonly")
+                    $("#id_Cidade").attr("readonly", "readonly")
                 }
             }
         });
 
     };
 
-    $('.switch').each(function() {
+    $(".switch").each(function() {
         mostravalores($(this));
     });
 
-    $('.switch').change(function() {
+    $(".switch").change(function() {
         mostravalores($(this));
     });
 
     
-    $('.demonstrativo-input').change(function() {
-        if ($(this).attr('type') != 'time') {
-            if ($(this).attr('id') == 'ta-seguro-recebe') {
+    $(".demonstrativo-input").change(function() {
+        if ($(this).attr("type") != "time") {
+            if ($(this).attr("id") == "ta-seguro-recebe") {
                 $(this).val(parseFloat($(this).val()).toFixed(3))
             } else {
                 $(this).val(parseFloat($(this).val()).toFixed(2))
@@ -681,14 +473,14 @@ $(document).ready(function() {
         };
     });
 
-    $('.demonstrativo-input').change(function() {
-        var elemento_alterado = '#sw' + $(this).attr('id').substring(2, 50)
-        var obj = $('input').filter(elemento_alterado)
+    $(".demonstrativo-input").change(function() {
+        var elemento_alterado = "#sw" + $(this).attr("id").substring(2, 50)
+        var obj = $("input").filter(elemento_alterado)
         mostravalores(obj);
     });
 
     // Versão Antiga //
-    $("#mi-ajudante-paga").attr('readonly', 'readonly');
+    $("#mi-ajudante-paga").attr("readonly", "readonly");
     $(".js-criaminuta").click(loadForm);
     $(".js-editaminuta").click(loadForm);
     $(".js-imprimeminuta").click(loadForm);
@@ -703,40 +495,21 @@ $(document).ready(function() {
     $(".js-criaminutaentrega").click(loadForm);
     $(".js-editaminutaentrega").click(loadForm);
     $(".js-excluiminutaentrega").click(loadForm);
- 
-
-    
-
-    // Utilizado na Versão Nova
-    verificaCheckboxPaga();
-    verificaCheckboxRecebe();
-    mostraChecklist();
-    formatMask();
 });
 
-
-
-
-
-
-
-
-
-
-
 function openMyModal(event) {
-    var modal = initModalDialog(event, '#MyModal');
-    var url = $(event.target).data('action');
+    var modal = initModalDialog(event, "#MyModal");
+    var url = $(event.target).data("action");
     $.ajax({
         type: "GET",
         url: url,
         data: {
-            idobj: $(event.target).data('idminuta'),
-            idPessoal: $(event.target).data('idpessoal'),
+            idobj: $(event.target).data("idminuta"),
+            idPessoal: $(event.target).data("idpessoal"),
         }
     }).done(function(data, textStatus, jqXHR) {
-        modal.find('.modal-body').html(data.html_form);
-        modal.modal('show');
+        modal.find(".modal-body").html(data.html_form);
+        modal.modal("show");
         formAjaxSubmit(modal, url, null, null);
     }).fail(function(jqXHR, textStatus, errorThrown) {
         $(".mensagem-erro").text(errorThrown);
@@ -747,114 +520,114 @@ function openMyModal(event) {
 function initModalDialog(event, modal_element) {
     var modal = $(modal_element);
     var target = $(event.target);
-    var title = target.data('title') || '';
-    var subtitle = target.data('subtitle') || '';
-    var dialog_class = (target.data('dialog-class') || '') + ' modal-dialog';
-    var icon_class = (target.data('icon') || 'fa-laptop') + ' fa modal-icon';
-    var button_save_label = target.data('button-save-label') || 'Save changes';
-    modal.find('.modal-dialog').attr('class', dialog_class);
-    modal.find('.modal-title').text(title);
-    modal.find('.modal-subtitle').text(subtitle);
-    modal.find('.modal-header .title-wrapper i').attr('class', icon_class);
-    modal.find('.modal-footer .btn-save').text(button_save_label);
-    modal.find('.modal-body').html('');
-    modal.data('target', target);
+    var title = target.data("title") || "";
+    var subtitle = target.data("subtitle") || "";
+    var dialog_class = (target.data("dialog-class") || "") + " modal-dialog";
+    var icon_class = (target.data("icon") || "fa-laptop") + " fa modal-icon";
+    var button_save_label = target.data("button-save-label") || "Save changes";
+    modal.find(".modal-dialog").attr("class", dialog_class);
+    modal.find(".modal-title").text(title);
+    modal.find(".modal-subtitle").text(subtitle);
+    modal.find(".modal-header .title-wrapper i").attr("class", icon_class);
+    modal.find(".modal-footer .btn-save").text(button_save_label);
+    modal.find(".modal-body").html("");
+    modal.data("target", target);
     return modal;
 }
 
 function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
-    var form = modal.find('.modal-body form');
-    var header = $(modal).find('.modal-header');
-    var btn_save = modal.find('.modal-footer .btn-save');
+    var form = modal.find(".modal-body form");
+    var header = $(modal).find(".modal-header");
+    var btn_save = modal.find(".modal-footer .btn-save");
     if (btn_save) {
-        modal.find('.modal-body form .form-submit-row').hide();
-        btn_save.off().on('click', function(event) {
-            modal.find('.modal-body form').submit();
+        modal.find(".modal-body form .form-submit-row").hide();
+        btn_save.off().on("click", function(event) {
+            modal.find(".modal-body form").submit();
         });
     }
     if (cbAfterLoad) {
         cbAfterLoad(modal);
     }
-    modal.find('form input:visible').first().focus();
-    $(form).on('submit', function(event) {
+    modal.find("form input:visible").first().focus();
+    $(form).on("submit", function(event) {
         event.preventDefault();
-        header.addClass('loading');
-        var url = $(this).attr('action') || action;
+        header.addClass("loading");
+        var url = $(this).attr("action") || action;
         $.ajax({
-            type: $(this).attr('method'),
+            type: $(this).attr("method"),
             url: url,
-            idobj: $(this).attr('idobj'),
+            idobj: $(this).attr("idobj"),
             data: $(this).serialize(),
             success: function(xhr, ajaxOptions, thrownError) {
-                $(modal).find('.modal-body').html(xhr['html_form']);
-                if ($(xhr['html_form']).find('.errorlist').length > 0) {
+                $(modal).find(".modal-body").html(xhr["html_form"]);
+                if ($(xhr["html_form"]).find(".errorlist").length > 0) {
                     formAjaxSubmit(modal, url, cbAfterLoad, cbAfterSuccess);
                 } else {
-                    $(modal).modal('hide');
-                    recarregaFinanceiro(xhr['html_pagamento'], xhr['html_recebimento'])
+                    $(modal).modal("hide");
+                    recarregaFinanceiro(xhr["html_pagamento"], xhr["html_recebimento"])
                     $(".html-checklist").hide()
-                    $('.html-checklist').html(xhr['html_checklist']);
+                    $(".html-checklist").html(xhr["html_checklist"]);
                     mostraChecklist();
-                    if (xhr['c_view'] == 'adiciona_minuta') {
-                        window.location.href = '/minutas/minuta/' + xhr['id_minuta_salva'] + '/'
-                    } else if (xhr['c_view'] == 'edita_minuta') {
-                        $(".mensagem-sucesso").text(xhr['html_mensagem']);
+                    if (xhr["c_view"] == "adiciona_minuta") {
+                        window.location.href = "/minutas/minuta/" + xhr["id_minuta_salva"] + "/"
+                    } else if (xhr["c_view"] == "edita_minuta") {
+                        $(".mensagem-sucesso").text(xhr["html_mensagem"]);
                         mostraMensagemSucesso()
                         $(".html-cliente-data").hide()
-                        $('.html-cliente-data').html(xhr['html_cliente_data']);
+                        $(".html-cliente-data").html(xhr["html_cliente_data"]);
                         $(".html-cliente-data").delay(1000).slideDown(500)
-                    } else if (xhr['c_view'] == 'insere_motorista') {
+                    } else if (xhr["c_view"] == "insere_motorista") {
                         $(".html-veiculo").hide()
-                        $('.html-veiculo').html(xhr['html_veiculo']);
+                        $(".html-veiculo").html(xhr["html_veiculo"]);
                         $(".html-veiculo").delay(1000).slideDown(500)
                         verificaTotalKms()
-                    } else if (xhr['c_view'] == 'insere_ajudante') {
-                        $('.html-ajudante').html(xhr['html_ajudante']);
-                    } else if (xhr['c_view'] == 'edita_minuta_veiculo_solicitado') {
-                        if (xhr['html_tipo_mensagem'] == 'ERROR') {
+                    } else if (xhr["c_view"] == "insere_ajudante") {
+                        $(".html-ajudante").html(xhr["html_ajudante"]);
+                    } else if (xhr["c_view"] == "edita_minuta_veiculo_solicitado") {
+                        if (xhr["html_tipo_mensagem"] == "ERROR") {
                             $(".mensagem-erro").text(data.html_mensagem);
                             mostraMensagemErro()
                         }
-                        if (xhr['html_tipo_mensagem'] == 'SUCESSO') {
-                            $(".mensagem-sucesso").text(xhr['html_mensagem']);
+                        if (xhr["html_tipo_mensagem"] == "SUCESSO") {
+                            $(".mensagem-sucesso").text(xhr["html_mensagem"]);
                             mostraMensagemSucesso()
                             $(".html-categoria").hide()
-                            $(".html-categoria").html(xhr['html_categoria']);
+                            $(".html-categoria").html(xhr["html_categoria"]);
                             $(".html-categoria").delay(1000).slideDown(500)
-                            if (xhr['html_veiculo'] == '') {
+                            if (xhr["html_veiculo"] == "") {
                                 $(".html-veiculo").hide()
                             } else {
-                                $('.html-veiculo').html(xhr['html_veiculo']);
+                                $(".html-veiculo").html(xhr["html_veiculo"]);
                                 $(".html-veiculo").delay(1000).slideDown(500)
                                 verificaTotalKms()
                             }
                         }
-                    } else if (xhr['c_view'] == 'edita_minuta_veiculo_escolhido') {
-                        $(".mensagem-sucesso").text(xhr['html_mensagem']);
+                    } else if (xhr["c_view"] == "edita_minuta_veiculo_escolhido") {
+                        $(".mensagem-sucesso").text(xhr["html_mensagem"]);
                         mostraMensagemSucesso()
                         $(".html-veiculo").hide()
-                        $('.html-veiculo').html(xhr['html_veiculo']);
+                        $(".html-veiculo").html(xhr["html_veiculo"]);
                         $(".html-veiculo").delay(1000).slideDown(500)
                         verificaTotalKms()
-                    } else if (xhr['c_view'] == 'edita_minuta_coleta_entrega_obs') {
-                        $(".mensagem-sucesso").text(xhr['html_mensagem']);
+                    } else if (xhr["c_view"] == "edita_minuta_coleta_entrega_obs") {
+                        $(".mensagem-sucesso").text(xhr["html_mensagem"]);
                         mostraMensagemSucesso()
                         $(".html-coleta-entrega-obs").hide()
-                        $('.html-coleta-entrega-obs').html(xhr['html_coleta_entrega_obs']);
+                        $(".html-coleta-entrega-obs").html(xhr["html_coleta_entrega_obs"]);
                         $(".html-coleta-entrega-obs").delay(1000).slideDown(500)
                         verificaTotalKms()
-                    } else if (xhr['c_view'] == 'insere_minuta_despesa') {
-                        $(".mensagem-sucesso").text(xhr['html_mensagem']);
+                    } else if (xhr["c_view"] == "insere_minuta_despesa") {
+                        $(".mensagem-sucesso").text(xhr["html_mensagem"]);
                         mostraMensagemSucesso()
                         $(".html-despesa").hide()
-                        $('.html-despesa').html(xhr['html_despesa']);
+                        $(".html-despesa").html(xhr["html_despesa"]);
                         $(".html-despesa").delay(1000).slideDown(500)
                         verificaTotalKms()
-                    } else if (xhr['c_view'] == 'insere_minuta_entrega') {
-                        $(".mensagem-sucesso").text(xhr['html_mensagem']);
+                    } else if (xhr["c_view"] == "insere_minuta_entrega") {
+                        $(".mensagem-sucesso").text(xhr["html_mensagem"]);
                         mostraMensagemSucesso()
                         $(".card-entrega").hide()
-                        $('.card-entrega').html(xhr['html_entrega']);
+                        $(".card-entrega").html(xhr["html_entrega"]);
                         $(".card-entrega").delay(1000).slideDown(500)
                         verificaTotalKms()
                     }
@@ -866,14 +639,14 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                 mostraMensagemErro()
             },
             complete: function() {
-                header.removeClass('loading');
+                header.removeClass("loading");
             }
         });
     });
 }
 
 // DAQUI PARA BAIXO
-// ESTÁ EM ORDEM ALFABETICA E CATALOGADA
+// ESTÁ EM ORDEM ALFABETICA E CATALOGADA 19/04/2023
 
 // Utilizado no Card-Receitas e no Card-Pagamentos
 // Calcular inputs de Time
@@ -882,9 +655,9 @@ function calculaHora(v_porcentagem, v_valor1, v_hora) {
     var minutos = v_hora.substring(3, 5)
     var valor_hora = (
         parseFloat
-            (v_porcentagem.replace('.', '').replace(',', '.')
+            (v_porcentagem.replace(".", "").replace(",", ".")
         ) / 100 * parseFloat(
-                v_valor1.replace('.', '').replace(',', '.')
+                v_valor1.replace(".", "").replace(",", ".")
             )
     )
     var valor_minuto = (valor_hora / 60)
@@ -895,10 +668,10 @@ function calculaHora(v_porcentagem, v_valor1, v_hora) {
 // Calcular inputs de Numeros
 function calculaMultiplo(v_valor1, v_valor2) {
     var valor1 = parseFloat(
-        v_valor1.replace('.', '').replace(',', '.')
+        v_valor1.replace(".", "").replace(",", ".")
     )
     var valor2 = parseFloat(
-        v_valor2.replace('.', '').replace(',', '.')
+        v_valor2.replace(".", "").replace(",", ".")
     )
     return (valor1 * valor2).toFixed(2)
 }
@@ -907,10 +680,10 @@ function calculaMultiplo(v_valor1, v_valor2) {
 // Calcular inputs de Porcentagem
 function calculaPorcentagem(v_porcentagem, v_valor) {
     var valor1 = parseFloat(
-        v_porcentagem.replace('.', '').replace(',', '.')
+        v_porcentagem.replace(".", "").replace(",", ".")
     ) / 100
     var valor2 = parseFloat(
-        v_valor.replace('.', '').replace(',', '.')
+        v_valor.replace(".", "").replace(",", ".")
     )
     return (valor1 * valor2).toFixed(2)
 }
@@ -918,102 +691,102 @@ function calculaPorcentagem(v_porcentagem, v_valor) {
 // Utilizado no Card-Pagamentos
 // Calcula valor-item-paga
 function calculosMudarInputPaga(element_select, valor_digitado) {
-    if (element_select == 'tabela-porcentagem-paga'
-     || element_select == 'minuta-porcentagem-paga') {
+    if (element_select == "tabela-porcentagem-paga"
+     || element_select == "minuta-porcentagem-paga") {
         // PORCENTAGEM PAGA
-        $('#valor-porcentagem-paga').val(
+        $("#valor-porcentagem-paga").val(
             calculaPorcentagem(
-                $('#tabela-porcentagem-paga').val(),
-                $('#minuta-porcentagem-paga').val()
+                $("#tabela-porcentagem-paga").val(),
+                $("#minuta-porcentagem-paga").val()
             )
         )
-    } else if (element_select == 'tabela-hora-paga'
-     || element_select == 'minuta-hora-paga') {
+    } else if (element_select == "tabela-hora-paga"
+     || element_select == "minuta-hora-paga") {
         // HORA PAGA
-        $('#valor-hora-paga').val(
+        $("#valor-hora-paga").val(
             calculaHora(
-                '100',
-                $('#tabela-hora-paga').val(),
-                $('#minuta-hora-paga').val()
+                "100",
+                $("#tabela-hora-paga").val(),
+                $("#minuta-hora-paga").val()
             )
         )
-    } else if (element_select == 'tabela-excedente-paga'
-     || element_select == 'minuta-excedente-paga') {
+    } else if (element_select == "tabela-excedente-paga"
+     || element_select == "minuta-excedente-paga") {
         // EXCEDENTE PAGA
-        $('#valor-excedente-paga').val(
+        $("#valor-excedente-paga").val(
             calculaHora(
-                $('#tabela-excedente-paga').val(),
-                $('#tabela-hora-paga').val(),
-                $('#minuta-excedente-paga').val()
+                $("#tabela-excedente-paga").val(),
+                $("#tabela-hora-paga").val(),
+                $("#minuta-excedente-paga").val()
             )
         )
-    } else if (element_select == 'tabela-kilometragem-paga'
-     || element_select == 'minuta-kilometragem-paga') {
+    } else if (element_select == "tabela-kilometragem-paga"
+     || element_select == "minuta-kilometragem-paga") {
         // KILOMETRAGEM PAGA
-        $('#valor-kilometragem-paga').val(
+        $("#valor-kilometragem-paga").val(
             calculaMultiplo(
-                $('#tabela-kilometragem-paga').val(),
-                $('#minuta-kilometragem-paga').val()
+                $("#tabela-kilometragem-paga").val(),
+                $("#minuta-kilometragem-paga").val()
             )
         )
-    } else if (element_select == 'tabela-entrega-paga'
-     || element_select == 'minuta-entrega-paga') {
+    } else if (element_select == "tabela-entrega-paga"
+     || element_select == "minuta-entrega-paga") {
         // ENTREGA RECEBE
-        $('#valor-entrega-paga').val(
+        $("#valor-entrega-paga").val(
             calculaMultiplo(
-                $('#tabela-entrega-paga').val(),
-                $('#minuta-entrega-paga').val()
+                $("#tabela-entrega-paga").val(),
+                $("#minuta-entrega-paga").val()
             )
         )
-    } else if (element_select == 'tabela-entrega-kg-paga'
-     || element_select == 'minuta-entrega-kg-paga') {
+    } else if (element_select == "tabela-entrega-kg-paga"
+     || element_select == "minuta-entrega-kg-paga") {
         // ENTREGA KG RECEBE
-        $('#valor-entrega-kg-paga').val(
+        $("#valor-entrega-kg-paga").val(
             calculaMultiplo(
-                $('#tabela-entrega-kg-paga').val(),
-                $('#minuta-entrega-kg-paga').val()
+                $("#tabela-entrega-kg-paga").val(),
+                $("#minuta-entrega-kg-paga").val()
             )
         )
-    } else if (element_select == 'tabela-entrega-volume-paga'
-     || element_select == 'minuta-entrega-volume-paga') {
+    } else if (element_select == "tabela-entrega-volume-paga"
+     || element_select == "minuta-entrega-volume-paga") {
         // ENTREGA VOLUME RECEBE
-        $('#valor-entrega-volume-paga').val(
+        $("#valor-entrega-volume-paga").val(
             calculaMultiplo(
-                $('#tabela-entrega-volume-paga').val(),
-                $('#minuta-entrega-volume-paga').val()
+                $("#tabela-entrega-volume-paga").val(),
+                $("#minuta-entrega-volume-paga").val()
             )
         )
-    } else if (element_select == 'tabela-saida-paga') {
+    } else if (element_select == "tabela-saida-paga") {
         // SAÍDA RECEBE
-        $('#valor-saida-paga').val(
+        $("#valor-saida-paga").val(
             valor_digitado
         )
-    } else if (element_select == 'tabela-capacidade-paga') {
+    } else if (element_select == "tabela-capacidade-paga") {
         // CAPACIDADE RECEBE
-        $('#valor-capacidade-paga').val(
+        $("#valor-capacidade-paga").val(
             valor_digitado
         )
-    } else if (element_select == 'tabela-perimetro-paga'
-     || element_select == 'minuta-perimetro-paga') {
+    } else if (element_select == "tabela-perimetro-paga"
+     || element_select == "minuta-perimetro-paga") {
         // PERIMETRO RECEBE
-        $('#valor-perimetro-paga').val(
+        $("#valor-perimetro-paga").val(
             calculaPorcentagem(
-                $('#tabela-perimetro-paga').val(),
-                $('#minuta-perimetro-paga').val()
+                $("#tabela-perimetro-paga").val(),
+                $("#minuta-perimetro-paga").val()
             )
         )
-    } else if (element_select == 'tabela-pernoite-paga'
-     || element_select == 'minuta-pernoite-paga') {
+    } else if (element_select == "tabela-pernoite-paga"
+     || element_select == "minuta-pernoite-paga") {
         // PERNOITE RECEBE
-        $('#valor-pernoite-paga').val(
+        $("#valor-pernoite-paga").val(
             calculaPorcentagem(
-                $('#tabela-pernoite-paga').val(),
-                $('#minuta-pernoite-paga').val()
+                $("#tabela-pernoite-paga").val(),
+                $("#minuta-pernoite-paga").val()
             )
         )
     } else if (element_select == "tabela-ajudante-paga") {
         // AJUDANTE PAGA
-        $('#valor-ajudante-paga').val(
+        $("#valor-ajudante-paga").val(
             valor_digitado
         )
     }
@@ -1027,124 +800,124 @@ function calculosMudarInputPaga(element_select, valor_digitado) {
 // Utilizado no Card-Receitas
 // Calcula valor-item-recebe
 function calculosMudarInputRecebe(element_select, valor_digitado) {
-    if (element_select == 'tabela-taxa-recebe') {
+    if (element_select == "tabela-taxa-recebe") {
         // TAXA DE EXPEDIÇÃO RECEBE
-        $('#valor-taxa-recebe').val(
+        $("#valor-taxa-recebe").val(
             valor_digitado
         )
-    } else if (element_select == 'tabela-seguro-recebe'
-     || element_select == 'minuta-seguro-recebe') {
+    } else if (element_select == "tabela-seguro-recebe"
+     || element_select == "minuta-seguro-recebe") {
         // SEGURO RECEBE
         console.log("aqio")
-        $('#valor-seguro-recebe').val(
+        $("#valor-seguro-recebe").val(
             calculaPorcentagem(
-                $('#tabela-seguro-recebe').val(),
-                $('#minuta-seguro-recebe').val()
+                $("#tabela-seguro-recebe").val(),
+                $("#minuta-seguro-recebe").val()
             )
         )
-    } else if (element_select == 'tabela-porcentagem-recebe'
-     || element_select == 'minuta-porcentagem-recebe') {
+    } else if (element_select == "tabela-porcentagem-recebe"
+     || element_select == "minuta-porcentagem-recebe") {
         // PORCENTAGEM RECEBE
-        $('#valor-porcentagem-recebe').val(
+        $("#valor-porcentagem-recebe").val(
             calculaPorcentagem(
-                $('#tabela-porcentagem-recebe').val(),
-                $('#minuta-porcentagem-recebe').val()
+                $("#tabela-porcentagem-recebe").val(),
+                $("#minuta-porcentagem-recebe").val()
             )
         )
-    } else if (element_select == 'tabela-hora-recebe'
-     || element_select == 'minuta-hora-recebe') {
+    } else if (element_select == "tabela-hora-recebe"
+     || element_select == "minuta-hora-recebe") {
         // HORA RECEBE
-        $('#valor-hora-recebe').val(
+        $("#valor-hora-recebe").val(
             calculaHora(
-                '100',
-                $('#tabela-hora-recebe').val(),
-                $('#minuta-hora-recebe').val()
+                "100",
+                $("#tabela-hora-recebe").val(),
+                $("#minuta-hora-recebe").val()
             )
         )
-    } else if (element_select == 'tabela-excedente-recebe'
-     || element_select == 'minuta-excedente-recebe') {
+    } else if (element_select == "tabela-excedente-recebe"
+     || element_select == "minuta-excedente-recebe") {
         // EXCEDENTE RECEBE
-        $('#valor-excedente-recebe').val(
+        $("#valor-excedente-recebe").val(
             calculaHora(
-                $('#tabela-excedente-recebe').val(),
-                $('#tabela-hora-recebe').val(),
-                $('#minuta-excedente-recebe').val()
+                $("#tabela-excedente-recebe").val(),
+                $("#tabela-hora-recebe").val(),
+                $("#minuta-excedente-recebe").val()
             )
         )
-    } else if (element_select == 'tabela-kilometragem-recebe'
-     || element_select == 'minuta-kilometragem-recebe') {
+    } else if (element_select == "tabela-kilometragem-recebe"
+     || element_select == "minuta-kilometragem-recebe") {
         // KILOMETRAGEM RECEBE
-        $('#valor-kilometragem-recebe').val(
+        $("#valor-kilometragem-recebe").val(
             calculaMultiplo(
-                $('#tabela-kilometragem-recebe').val(),
-                $('#minuta-kilometragem-recebe').val()
+                $("#tabela-kilometragem-recebe").val(),
+                $("#minuta-kilometragem-recebe").val()
             )
         )
-    } else if (element_select == 'tabela-entrega-recebe'
-     || element_select == 'minuta-entrega-recebe') {
+    } else if (element_select == "tabela-entrega-recebe"
+     || element_select == "minuta-entrega-recebe") {
         // ENTREGA RECEBE
-        $('#valor-entrega-recebe').val(
+        $("#valor-entrega-recebe").val(
             calculaMultiplo(
-                $('#tabela-entrega-recebe').val(),
-                $('#minuta-entrega-recebe').val()
+                $("#tabela-entrega-recebe").val(),
+                $("#minuta-entrega-recebe").val()
             )
         )
-    } else if (element_select == 'tabela-entrega-kg-recebe'
-     || element_select == 'minuta-entrega-kg-recebe') {
+    } else if (element_select == "tabela-entrega-kg-recebe"
+     || element_select == "minuta-entrega-kg-recebe") {
         // ENTREGA KG RECEBE
-        $('#valor-entrega-kg-recebe').val(
+        $("#valor-entrega-kg-recebe").val(
             calculaMultiplo(
-                $('#tabela-entrega-kg-recebe').val(),
-                $('#minuta-entrega-kg-recebe').val()
+                $("#tabela-entrega-kg-recebe").val(),
+                $("#minuta-entrega-kg-recebe").val()
             )
         )
-    } else if (element_select == 'tabela-entrega-volume-recebe'
-     || element_select == 'minuta-entrega-volume-recebe') {
+    } else if (element_select == "tabela-entrega-volume-recebe"
+     || element_select == "minuta-entrega-volume-recebe") {
         // ENTREGA VOLUME RECEBE
-        $('#valor-entrega-volume-recebe').val(
+        $("#valor-entrega-volume-recebe").val(
             calculaMultiplo(
-                $('#tabela-entrega-volume-recebe').val(),
-                $('#minuta-entrega-volume-recebe').val()
+                $("#tabela-entrega-volume-recebe").val(),
+                $("#minuta-entrega-volume-recebe").val()
             )
         )
-    } else if (element_select == 'tabela-saida-recebe') {
+    } else if (element_select == "tabela-saida-recebe") {
         // SAÍDA RECEBE
-        $('#valor-saida-recebe').val(
+        $("#valor-saida-recebe").val(
             valor_digitado
         )
-    } else if (element_select == 'tabela-capacidade-recebe') {
+    } else if (element_select == "tabela-capacidade-recebe") {
         // CAPACIDADE RECEBE
-        $('#valor-capacidade-recebe').val(
+        $("#valor-capacidade-recebe").val(
             valor_digitado
         )
-    } else if (element_select == 'tabela-perimetro-recebe'
-     || element_select == 'minuta-perimetro-recebe') {
+    } else if (element_select == "tabela-perimetro-recebe"
+     || element_select == "minuta-perimetro-recebe") {
         // PERIMETRO RECEBE
-        $('#valor-perimetro-recebe').val(
+        $("#valor-perimetro-recebe").val(
             calculaPorcentagem(
-                $('#tabela-perimetro-recebe').val(),
-                $('#minuta-perimetro-recebe').val()
+                $("#tabela-perimetro-recebe").val(),
+                $("#minuta-perimetro-recebe").val()
             )
         )
-    } else if (element_select == 'tabela-pernoite-recebe' || element_select == 'minuta-pernoite-recebe') {
+    } else if (element_select == "tabela-pernoite-recebe" || element_select == "minuta-pernoite-recebe") {
         // PERNOITE RECEBE
-        $('#valor-pernoite-recebe').val(
+        $("#valor-pernoite-recebe").val(
             calculaPorcentagem(
-                $('#tabela-pernoite-recebe').val(),
-                $('#minuta-pernoite-recebe').val()
+                $("#tabela-pernoite-recebe").val(),
+                $("#minuta-pernoite-recebe").val()
             )
         )
-    } else if (element_select == 'tabela-ajudante-recebe' || element_select == 'minuta-ajudante-recebe') {
+    } else if (element_select == "tabela-ajudante-recebe" || element_select == "minuta-ajudante-recebe") {
         // AJUDANTE RECEBE
-        $('#valor-ajudante-recebe').val(
+        $("#valor-ajudante-recebe").val(
             calculaMultiplo(
-                $('#tabela-ajudante-recebe').val(),
-                $('#minuta-ajudante-recebe').val()
+                $("#tabela-ajudante-recebe").val(),
+                $("#minuta-ajudante-recebe").val()
             )
         )
-    } else if (element_select.substring(0, 21) == 'tabela-despesa-recebe') {
+    } else if (element_select.substring(0, 21) == "tabela-despesa-recebe") {
         // DESPESA RECEBE
-        $('#valor-despesa-recebe-' + element_select.substring(2)).val(
+        $("#valor-despesa-recebe-" + element_select.substring(2)).val(
             valor_digitado
         )
     } 
@@ -1156,37 +929,111 @@ function calculosMudarInputRecebe(element_select, valor_digitado) {
 }
 
 // Utilizado no Card-Entrega (Formulário Modal)
-$(document).on('click', '#chk-perimetro', function(event) {
+$(document).on("click", "#chk-perimetro", function(event) {
     alert("OK")
-    if ($('#chk-perimetro').is(':checked')) {
-        $('.js-perimetro-hide').hide();
-        $('#js-perimetro-div').removeClass('col-md-2');
-        $('#js-perimetro-div').addClass('col-md-12');
-        $('#id_Nota').val('PERIMETRO');
-        $('#id_Estado').focus();
+    if ($("#chk-perimetro").is(":checked")) {
+        $(".js-perimetro-hide").hide();
+        $("#js-perimetro-div").removeClass("col-md-2");
+        $("#js-perimetro-div").addClass("col-md-12");
+        $("#id_Nota").val("PERIMETRO");
+        $("#id_Estado").focus();
     } else {
-        $('.js-perimetro-hide').show();
-        $('#js-perimetro-div').removeClass('col-md-12');
-        $('#js-perimetro-div').addClass('col-md-2');
-        $('#id_Nota').val('');
-        $('#id_Nota').focus();
+        $(".js-perimetro-hide").show();
+        $("#js-perimetro-div").removeClass("col-md-12");
+        $("#js-perimetro-div").addClass("col-md-2");
+        $("#id_Nota").val("");
+        $("#id_Nota").focus();
     }
 });
 
 // Utilizado no Card-Entrega (Formulário Modal)
-$(document).on('click', '#chk-saida', function(event) {
-    if ($('#chk-saida').is(":checked")) {
-        $('#id_Nota').val($('#label-chk-saida').attr('saida'))
-        $('#id_ValorNota').focus();
+$(document).on("click", "#chk-saida", function(event) {
+    if ($("#chk-saida").is(":checked")) {
+        $("#id_Nota").val($("#label-chk-saida").attr("saida"))
+        $("#id_ValorNota").focus();
     } else {
-        $('#id_Nota').val('')
-        $('#id_Nota').focus();
+        $("#id_Nota").val("")
+        $("#id_Nota").focus();
     }
+});
+
+// Utilizado no card-consulta
+$(document).on("click", ".filtro-consulta", function(event) {
+    var filtro = $(this).attr("data-filtro")
+    var filtro_consula = $(this).data("filtro-consulta")
+    var meses = $(this).data("meses")
+    var anos = $(this).data("anos")
+    $.ajax({
+        type: "GET",
+        url: "/minutas/filtraminuta",
+        data: {
+            Filtro: filtro,
+            FiltroConsulta: filtro_consula,
+            Meses: meses,
+            Anos: anos,
+        },
+        beforeSend: function() {
+            $(".box-loader").show()
+            $(".filtro-lista").each(function() {
+                $(this).addClass("i-button")
+            });
+            $(this).removeClass("filtro-consulta")
+            $(this).removeClass("i-button")
+            $(this).addClass("i-button-null")
+            $(".card-minutas-abertas").hide();
+            $(".card-minutas-concluidas").hide();
+            $(".card-minutas-fechadas").hide();
+        },                
+        success: function(data) {
+            $(".card-minutas-consulta").html(data["html_filtra_minuta"])
+            $(".card-minutas-consulta").show()
+            $(".box-loader").hide()
+        },
+        error: function(error) {
+            console.log(error)
+        }
+    });
+});
+
+// Utilizado no card-minutas-consulta
+$(document).on("click", ".filtro-periodo", function(event) {
+    var filtro = $(this).data("filtro")
+    var filtro_consula = $(this).data("filtro-consulta")
+    var meses = $(this).data("meses")
+    var anos = $(this).data("anos")
+    var menu_selecionado = $(this)
+    $.ajax({
+        type: "GET",
+        url: "/minutas/filtraminuta",
+        data: {
+            Filtro: filtro,
+            FiltroConsulta: filtro_consula,
+            Meses: meses,
+            Anos: anos,
+        },
+        beforeSend: function() {
+            $(".box-loader").show()
+            $(".filtro-periodo").each(function() {
+                if ($(this).text() == menu_selecionado.text()) {
+                    $(this).removeClass("i-button")
+                } else {
+                    $(this).addClass("i-button")
+                }
+            });
+        },
+        success: function(data) {
+            $(".card-minutas-consulta").html(data["html_filtra_minuta"])
+            $(".box-loader").hide()
+        },
+        error: function(error) {
+            console.log(error)
+        }
+    })
 });
 
 // Utilizada no Catd-Minuta
 // para atualizar data de fechamento da minuta
-$(document).on('submit', '#form-edita-hora', function(event) {
+$(document).on("submit", "#form-edita-hora", function(event) {
     event.preventDefault();
     $.ajax({
         type: "POST",
@@ -1197,25 +1044,25 @@ $(document).on('submit', '#form-edita-hora', function(event) {
             $(".div-sucesso").hide()
             $(".div-erro").hide()
             $(".html-checklist").hide()
-            $('.html-form-paga').hide();
-            $('.html-form-recebe').hide();
+            $(".html-form-paga").hide();
+            $(".html-form-recebe").hide();
         },
         success: function(data) {
-            if (data.html_tipo_mensagem == 'ERROR') {
+            if (data.html_tipo_mensagem == "ERROR") {
                 $(".mensagem-erro").text(data.html_mensagem);
                 mostraMensagemErro()
             }
-            if (data.html_tipo_mensagem == 'SUCESSO') {
+            if (data.html_tipo_mensagem == "SUCESSO") {
                 $(".mensagem-sucesso").text(data.html_mensagem);
                 mostraMensagemSucesso()
             }
             $(".total-horas").text(data.html_total_horas);
-            $('.html-checklist').html(data['html_checklist']); 
-            $('.html-form-paga').html(data['html_pagamento']);
-            $('.html-form-recebe').html(data['html_recebimento']);
+            $(".html-checklist").html(data["html_checklist"]); 
+            $(".html-form-paga").html(data["html_pagamento"]);
+            $(".html-form-recebe").html(data["html_recebimento"]);
             $(".html-checklist").show();
-            $('.html-form-paga').show();
-            $('.html-form-recebe').show();
+            $(".html-form-paga").show();
+            $(".html-form-recebe").show();
             verificaTotalHoras();
             mostraChecklist();
             formatUnmask();
@@ -1234,7 +1081,7 @@ $(document).on('submit', '#form-edita-hora', function(event) {
 
 // Utilizada no Catd-Minuta
 // para atualizar km final da minuta
-$(document).on('submit', '#form-edita-km', function(event) {
+$(document).on("submit", "#form-edita-km", function(event) {
     event.preventDefault();
     $.ajax({
         type: "POST",
@@ -1245,25 +1092,25 @@ $(document).on('submit', '#form-edita-km', function(event) {
             $(".div-sucesso").hide()
             $(".div-erro").hide()
             $(".html-checklist").hide()
-            $('.html-form-paga').hide();
-            $('.html-form-recebe').hide();
+            $(".html-form-paga").hide();
+            $(".html-form-recebe").hide();
         },
         success: function(data) {
-            if (data.html_tipo_mensagem == 'ERROR') {
+            if (data.html_tipo_mensagem == "ERROR") {
                 $(".mensagem-erro").text(data.html_mensagem);
                 mostraMensagemErro()
             }
-            if (data.html_tipo_mensagem == 'SUCESSO') {
+            if (data.html_tipo_mensagem == "SUCESSO") {
                 $(".mensagem-sucesso").text(data.html_mensagem);
                 mostraMensagemSucesso()
             }
             $(".total-kms").text(data.html_total_kms);
-            $('.html-checklist').html(data['html_checklist']); 
-            $('.html-form-paga').html(data['html_pagamento']);
-            $('.html-form-recebe').html(data['html_recebimento']);
+            $(".html-checklist").html(data["html_checklist"]); 
+            $(".html-form-paga").html(data["html_pagamento"]);
+            $(".html-form-recebe").html(data["html_recebimento"]);
             $(".html-checklist").show();
-            $('.html-form-paga').show();
-            $('.html-form-recebe').show();
+            $(".html-form-paga").show();
+            $(".html-form-recebe").show();
             verificaTotalKms()
             mostraChecklist();
             formatUnmask();
@@ -1284,16 +1131,16 @@ $(document).on('submit', '#form-edita-km', function(event) {
 // aplica , e . de milhar pt-BR
 function formatMask() {
     $(".js-decimal").each(function() {
-        $(this).mask('#.##0,00', { reverse: true })
+        $(this).mask("#.##0,00", { reverse: true })
         if ($(this).attr("id") == "tabela-seguro-recebe") {
-            $(this).mask('#.##0,000', { reverse: true })
+            $(this).mask("#.##0,000", { reverse: true })
         }
     });
     $(".js-unidade").each(function() {
-        $(this).mask('#.##0', { reverse: true })
+        $(this).mask("#.##0", { reverse: true })
     });
-    $('.total-recebe').mask('#.##0,00', { reverse: true })
-    $('.total-pagamentos').mask('#.##0,00', { reverse: true })
+    $(".total-recebe").mask("#.##0,00", { reverse: true })
+    $(".total-pagamentos").mask("#.##0,00", { reverse: true })
 }
 
 // Utilizado no Card-Receitas e no Card-Pagamentos
@@ -1305,33 +1152,33 @@ function formatUnmask() {
     $(".js-unidade").each(function() {
         $(this).unmask()
     });
-    $('.total-recebe').unmask()
-    $('.total-pagamentos').unmask()
+    $(".total-recebe").unmask()
+    $(".total-pagamentos").unmask()
 }
 
 // Card Entregas e Card Romaneio
-$(document).on('click', '.js-adiciona-romaneio-minuta', function() {
-    var idromaneio = $(this).data('idromaneio')
-    var idminuta = $(this).data('idminuta')
-    var idcliente = $(this).data('idcliente')
+$(document).on("click", ".js-adiciona-romaneio-minuta", function() {
+    var idromaneio = $(this).data("idromaneio")
+    var idminuta = $(this).data("idminuta")
+    var idcliente = $(this).data("idcliente")
     $.ajax({
-        type: 'GET',
-        url: '/minutas/adiciona_romaneio_minuta',
+        type: "GET",
+        url: "/minutas/adiciona_romaneio_minuta",
         data: {
             idromaneio: idromaneio,
             idminuta: idminuta,
             idcliente: idcliente
         },
         beforeSend: function() {
-            $('.card-entrega').hide()
-            $('.card-romaneio').hide()
+            $(".card-entrega").hide()
+            $(".card-romaneio").hide()
             $(".box-loader").show()
         },
         success: function(data) {
-            $('.card-entrega').html(data['html_entrega'])
-            $('.card-entrega').show()
-            $('.card-romaneio').html(data['html_romaneio'])
-            $('.card-romaneio').show()
+            $(".card-entrega").html(data["html_entrega"])
+            $(".card-entrega").show()
+            $(".card-romaneio").html(data["html_romaneio"])
+            $(".card-romaneio").show()
             $(".box-loader").hide()
         },
     });
@@ -1339,14 +1186,14 @@ $(document).on('click', '.js-adiciona-romaneio-minuta', function() {
 
 // Utilizado no Card-Pagamentos
 // Mudança de estado do checkbox
-$(document).on('change', '.js-checkbox-paga', function() {
-    var div_mostra = $(this).attr('id').replace("check", "#js");
-    var visible = $(div_mostra).is(':visible')
-    var input_tabela = $(this).attr('id').replace("check", "#tabela");
-    var input_valor = $(this).attr('id').replace("check", "#valor");
+$(document).on("change", ".js-checkbox-paga", function() {
+    var div_mostra = $(this).attr("id").replace("check", "#js");
+    var visible = $(div_mostra).is(":visible")
+    var input_tabela = $(this).attr("id").replace("check", "#tabela");
+    var input_valor = $(this).attr("id").replace("check", "#valor");
     $(div_mostra).slideToggle(500)
     if (visible) {
-        $(input_valor).val('0,00')
+        $(input_valor).val("0,00")
     } else {
         var valor_digitado = $(input_tabela).val()
         calculosMudarInputPaga(input_tabela.replace("#", ""), valor_digitado)
@@ -1357,14 +1204,14 @@ $(document).on('change', '.js-checkbox-paga', function() {
 
 // Utilizado no Card-Receitas
 // Mudança de estado do checkbox
-$(document).on('change', '.js-checkbox-recebe', function() {
-    var div_mostra = $(this).attr('id').replace("check", "#js");
-    var visible = $(div_mostra).is(':visible')
-    var input_tabela = $(this).attr('id').replace("check", "#tabela");
-    var input_valor = $(this).attr('id').replace("check", "#valor");
+$(document).on("change", ".js-checkbox-recebe", function() {
+    var div_mostra = $(this).attr("id").replace("check", "#js");
+    var visible = $(div_mostra).is(":visible")
+    var input_tabela = $(this).attr("id").replace("check", "#tabela");
+    var input_valor = $(this).attr("id").replace("check", "#valor");
     $(div_mostra).slideToggle(500)
     if (visible) {
-        $(input_valor).val('0,00')
+        $(input_valor).val("0,00")
     } else {
         var valor_digitado = $(input_tabela).val()
         calculosMudarInputRecebe(input_tabela.replace("#", ""), valor_digitado)
@@ -1373,18 +1220,17 @@ $(document).on('change', '.js-checkbox-recebe', function() {
     somaReceitas();
 })
 
-
 // Utilizado no Card-Receitas e no Card-Pagamentos
 // ao mudar qualquer input com a class js-input-change
-$(document).on('change', '.js-input-change', function() {
+$(document).on("change", ".js-input-change", function() {
     // Cria as variaveis como o nome do atributo e com valor 0
-    var element_select = $(this).attr('name')
-    var valor_digitado = '0,00'
-        // Verifica se o valor do elemento e inteiro se for acrescenta o ',00' ao final - Bug do plugin mask e altera a
+    var element_select = $(this).attr("name")
+    var valor_digitado = "0,00"
+        // Verifica se o valor do elemento e inteiro se for acrescenta o ",00" ao final - Bug do plugin mask e altera a
         // variavel valor_digitado
     if ($(this).val() % 1 === 0) {
         if ($(this).hasClass("js-decimal")) {
-            valor_digitado = $(this).val() + ',00'
+            valor_digitado = $(this).val() + ",00"
             $(this).val(valor_digitado)
         }
     } else {
@@ -1395,41 +1241,70 @@ $(document).on('change', '.js-input-change', function() {
 })
 
 // Card Entregas e Card Romaneio
-$(document).on('click', '.js-remove-romaneio-minuta', function() {
-    var romaneio = $(this).data('romaneio')
-    var idminuta = $(this).data('idminuta')
-    var idcliente = $(this).data('idcliente')
+$(document).on("click", ".js-remove-romaneio-minuta", function() {
+    var romaneio = $(this).data("romaneio")
+    var idminuta = $(this).data("idminuta")
+    var idcliente = $(this).data("idcliente")
     $.ajax({
-        type: 'GET',
-        url: '/minutas/remove_romaneio_minuta',
+        type: "GET",
+        url: "/minutas/remove_romaneio_minuta",
         data: {
             romaneio: romaneio,
             idminuta: idminuta,
             idcliente: idcliente,
         },
         beforeSend: function() {
-            $('.card-entrega').hide()
-            $('.card-romaneio').hide()
+            $(".card-entrega").hide()
+            $(".card-romaneio").hide()
             $(".box-loader").show()
         },
         success: function(data) {
-            $('.card-entrega').html(data['html_entrega'])
-            $('.card-entrega').show()
-            $('.card-romaneio').html(data['html_romaneio'])
-            $('.card-romaneio').show()
+            $(".card-entrega").html(data["html_entrega"])
+            $(".card-entrega").show()
+            $(".card-romaneio").html(data["html_romaneio"])
+            $(".card-romaneio").show()
             $(".box-loader").hide()
         },
     });
 });
 
+// Utilizado no card-consulta
+// Mostra lista de filtro
+$(document).on("click", ".lista-consulta", function(event) {
+    $(".lista-consulta").each(function() {
+        $(this).removeClass("bi-caret-down").addClass("bi-caret-right");
+    });
+    $(this).removeClass("bi-caret-right").addClass("bi-caret-down");
+    var filtro = ".filtro-" + $(this).data("filtro") + "-lista"
+    if ($(filtro).is(":visible")) {
+        $(filtro).hide();
+        $(this).removeClass("bi-caret-down").addClass("bi-caret-right");
+    } else {
+        $(".filtro-cliente-lista").hide();
+        $(".filtro-colaborador-lista").hide();
+        $(".filtro-veiculo-lista").hide();
+        $(".filtro-entrega-cidade-lista").hide();
+        if ($(this).data("filtro") == "cliente") {
+            $(".filtro-cliente-lista").show();
+        } else if ($(this).data("filtro") == "colaborador") {
+            $(".filtro-colaborador-lista").show();
+        } else if ($(this).data("filtro") == "veiculo") {
+            $(".filtro-veiculo-lista").show();
+        } else if ($(this).data("filtro") == "entrega-cidade") {
+            $(".filtro-entrega-cidade-lista").show();
+        }
+    }
+});
+
+// Utilizado no card-checklist
 // Mostra os itens necessários no checklist
 function mostraChecklist() {
     $(".html-checklist").slideDown(500)
     $(".chk-red").each(function() {
-        $('.conclui-minuta').slideUp(500)
+        $(".conclui-minuta").slideUp(500)
     });
     $(".chk-red-gera-paga").each(function() {
-        $('.conclui-minuta').slideUp(500)
+        $(".conclui-minuta").slideUp(500)
     });
 }
 
@@ -1447,8 +1322,8 @@ function mostraMensagemSucesso() {
 
 // TODO VERIFICAR NECESSIDADE E APRIMORAR SE NECESSÁRIO
 function recarregaFinanceiro(html_paga, html_recebe) {
-    $('.html-form-paga').html(html_paga);
-    $('.html-form-recebe').html(html_recebe);
+    $(".html-form-paga").html(html_paga);
+    $(".html-form-recebe").html(html_recebe);
     formatUnmask();
     formatMask();
     somaReceitas();
@@ -1463,7 +1338,7 @@ function somaMotorista() {
     var valor_paga = 0.00;
     $(".total-paga").each(function() {
         if ($(this).attr("id") != "valor-ajudante-paga") {
-            valor_paga += parseFloat($(this).val().replace('.', '').replace(',', '.'))
+            valor_paga += parseFloat($(this).val().replace(".", "").replace(",", "."))
         }
     });
     $("#total-motorista").text(valor_paga.toFixed(2))
@@ -1473,7 +1348,7 @@ function somaMotorista() {
         $(".div-motorista").slideUp(500)
     }
     $("#total-motorista").unmask()
-    $("#total-motorista").mask('#.##0,00', { reverse: true })
+    $("#total-motorista").mask("#.##0,00", { reverse: true })
     var text_total = $("#total-motorista").text();
     var text_total = "R$ " + text_total
     $("#total-motorista").text(text_total)
@@ -1484,11 +1359,11 @@ function somaMotorista() {
 function somaPagamentos() {
     var valor_paga = 0.00;
     $(".total-paga").each(function() {
-        valor_paga += parseFloat($(this).val().replace('.', '').replace(',', '.'))
+        valor_paga += parseFloat($(this).val().replace(".", "").replace(",", "."))
     });
     $("#total-pagamentos").text(valor_paga.toFixed(2))
     $("#total-pagamentos").unmask()
-    $("#total-pagamentos").mask('#.##0,00', { reverse: true })
+    $("#total-pagamentos").mask("#.##0,00", { reverse: true })
     var text_total = $("#total-pagamentos").text();
     var text_total = "TOTAL R$ " + text_total
     $("#total-pagamentos").text(text_total)
@@ -1500,11 +1375,11 @@ function somaPagamentos() {
 function somaReceitas() {
     var valor_recebe = 0.00;
     $(".total-recebe").each(function() {
-        valor_recebe += parseFloat($(this).val().replace('.', '').replace(',', '.'))
+        valor_recebe += parseFloat($(this).val().replace(".", "").replace(",", "."))
     });
     $("#total-receitas").text(valor_recebe.toFixed(2))
     $("#total-receitas").unmask()
-    $("#total-receitas").mask('#.##0,00', { reverse: true })
+    $("#total-receitas").mask("#.##0,00", { reverse: true })
     var text_total = $("#total-receitas").text();
     var text_total = "TOTAL R$ " + text_total
     $("#total-receitas").text(text_total)
@@ -1513,14 +1388,14 @@ function somaReceitas() {
 // Utilizado no Card-Pagamentos
 // Mostra inputs dos itens de acordo com o estado do checkbox
 function verificaCheckboxPaga() {
-    $('.total-paga').each(function() {
+    $(".total-paga").each(function() {
         check_altera = $(this).attr("name").replace("valor", "#check");
         div_mostra = $(this).attr("name").replace("valor", "#js");
         if (parseFloat($(this).val()) > parseFloat(0,00)) {
-            $(check_altera).prop('checked', true)
+            $(check_altera).prop("checked", true)
             $(div_mostra).slideDown(500)
         } else {
-            $(check_altera).prop('checked', false)
+            $(check_altera).prop("checked", false)
             $(div_mostra).slideUp(500)
         }
     });
@@ -1529,14 +1404,14 @@ function verificaCheckboxPaga() {
 // Utilizado no Card-Pagamentos
 // Mostra inputs dos itens de acordo com o estado do checkbox
 function verificaCheckboxRecebe() {
-    $('.total-recebe').each(function() {
+    $(".total-recebe").each(function() {
         check_altera = $(this).attr("name").replace("valor", "#check");
         div_mostra = $(this).attr("name").replace("valor", "#js");
         if (parseFloat($(this).val()) > parseFloat(0,00)) {
-            $(check_altera).prop('checked', true)
+            $(check_altera).prop("checked", true)
             $(div_mostra).slideDown(500)
         } else {
-            $(check_altera).prop('checked', false)
+            $(check_altera).prop("checked", false)
             $(div_mostra).slideUp(500)
         }
     });
@@ -1545,9 +1420,9 @@ function verificaCheckboxRecebe() {
 // Utilizada no Card-Minuta
 // Mostrra o calculo de horas
 function verificaTotalHoras() {
-    if ($(".total-horas").text() == '00:00 Hs') {
+    if ($(".total-horas").text() == "00:00 Hs") {
         $(".calcula-horas").hide()
-        $('#id_HoraFinal').val('00:00')
+        $("#id_HoraFinal").val("00:00")
     } else {
         $(".calcula-horas").show()
     }
@@ -1556,9 +1431,9 @@ function verificaTotalHoras() {
 // Utilizada no Card-Minuta
 // Mostrra o calculo de Kms
 function verificaTotalKms() {
-    if ($(".total-kms").text() == '0 KMs') {
+    if ($(".total-kms").text() == "0 KMs") {
         $(".calcula-kms").hide()
-        $('#id_KMFinal').val(0)
+        $("#id_KMFinal").val(0)
     } else {
         $(".calcula-kms").show()
     }
