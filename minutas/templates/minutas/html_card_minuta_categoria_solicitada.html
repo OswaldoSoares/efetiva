@@ -14,7 +14,8 @@
                  <!-- Mostra se ... -->
                  <!-- TODO -->
                 {% if not s_minuta.paga_realizada %}    
-                    <i class="bi bi-pencil-square i-button"
+                    <i class="bi bi-pencil-square
+                    i-button"
                     data-dialog-class="modal-sm"
                     onclick="openMyModal(event); return false;"
                     data-title="VEÍCULO SOLICITADO"
@@ -22,7 +23,8 @@
                     data-button-save-label="EDITAR"
                     data-idminuta="{{ s_minuta.idminuta }}"></i>
                 {% else %}
-                    <i class="bi bi-check i-button-null"></i>
+                    <i class="bi bi-check
+                    i-button-null"></i>
                 {% endif %}
             </div>
         </div>
@@ -44,14 +46,16 @@
                 <!-- Mostra se ... -->
                 <!-- TODO -->
                 {% if not s_minuta.paga_realizada %}
-                    <i class="bi bi-plus-square i-button"
+                    <i class="bi bi-plus-square
+                    i-button"
                     onclick="openMyModal(event); return false;"
                     data-title="VEÍCULO SOLICITADO"
                     data-action="{% url 'editaveiculosolicitado' %}"
                     data-button-save-label="EDITAR"
                     data-idminuta="{{ s_minuta.idminuta }}"></i>
                 {% else %}    
-                    <i class="bi bi-check i-button-null"></i>
+                    <i class="bi bi-check
+                    i-button-null"></i>
                 {% endif %}
             </div>
         </div>

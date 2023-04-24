@@ -98,10 +98,11 @@ $(document).ready(function() {
     });
 
     // Versão Nova //
-    $(document).on("click", ".remove-colaborador", function(event) {
-        var idminutacolaboradores = $(this).attr("idMinutaColaboradores")
-        var idminuta = $(this).attr("idMinuta")
-        var cargo = $(this).attr("Cargo")
+    $(document).on("click", ".js-remove-colaborador", function(event) {
+        var idminutacolaboradores = $(this).data("idminutacolaboradores")
+        var idminuta = $(this).data("idminuta")
+        var cargo = $(this).data("cargo")
+        alert(idminutacolaboradores +" - "+ idminuta +" - "+ cargo)
         $.ajax({
             type: "GET",
             url: "/minutas/removecolaborador",

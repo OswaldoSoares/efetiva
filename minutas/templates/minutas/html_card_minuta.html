@@ -136,9 +136,12 @@
             {% endif %}
         {% endif %}
     {% endif %}
-    <i class="bi bi-printer i-button js-imprimeminuta"
+    <a class="bi bi-printer i-button"
+    href="{% url 'imprimeminuta' s_minuta.idminuta %}"
+    target="_blank"></a>
+    {% comment %} <a class="bi bi-printer i-button js-imprimeminuta"
     title="IMPRIME MINUTA"
     idminuta="{{ s_minuta.idminuta }}"
     onclick="window.location.href = 
-    '{% url 'imprimeminuta' s_minuta.idminuta %}'"></i>
+    '{% url 'imprimeminuta' s_minuta.idminuta %}'"></a> {% endcomment %}
 </div>

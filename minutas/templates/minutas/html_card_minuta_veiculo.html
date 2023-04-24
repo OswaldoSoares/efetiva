@@ -17,10 +17,11 @@
                 addon-my-color">
                     {% if not s_minuta.paga_realizada %}
                         <i class="bi bi-trash
-                        i-button remove-colaborador"
-                        idMinuta="{{ s_minuta.idminuta }}"
-                        Cargo="MOTORISTA"
-                        idMinutaColaboradores="
+                        i-button js-
+                        js-remove-colaborador"
+                        data-idMinuta="{{ s_minuta.idminuta }}"
+                        data-Cargo="MOTORISTA"
+                        data-idMinutaColaboradores="
                         {{ motorista.idMinutaColaboradores }}"></i>
                     {% else %}
                         <i class="bi bi-check i-button-null"></i>
@@ -44,7 +45,8 @@
                 <div class="input-group-addon
                 addon-my-color">
                     {% if not s_minuta.paga_realizada %}
-                        <i class="bi bi-pencil-square i-button"
+                        <i class="bi bi-pencil-square
+                        i-button"
                         onclick="openMyModal(event); return false;"
                         data-title="VEÍCULO"
                         data-action="{% url 'editaveiculoescolhido' %}"
@@ -52,7 +54,8 @@
                         data-idminuta="{{ s_minuta.idminuta }}"
                         data-idpessoal="{{ motorista.obj.idPessoal }}"></i>
                     {% else %}
-                        <i class="bi bi-check i-button-null"></i>
+                        <i class="bi bi-check
+                        i-button-null"></i>
                     {% endif %}
                 </div>
             </div>
@@ -75,10 +78,12 @@
                         {% if not s_minuta.paga_realizada %}
                             <button type="submit"
                             class="i-button-form">
-                                <i class="bi bi-save i-button"></i>
+                                <i class="bi bi-save
+                                i-button"></i>
                             </button>
                         {% else %}
-                            <i class="bi bi-check i-button-null"></i>
+                            <i class="bi bi-check
+                            i-button-null"></i>
                         {% endif %}
                     </div>
                 </div>
@@ -98,14 +103,17 @@
                     input-group-addon
                     addon-my-color"></i>
                     {{ form_km_final.KMFinal }}
-                    <div class="input-group-addon addon-my-color">
+                    <div class="input-group-addon
+                    addon-my-color">
                         {% if not s_minuta.paga_realizada %}
                             <button type="submit"
                             class="i-button-form">
-                            <i class="bi bi-save i-button"></i>
+                            <i class="bi bi-save
+                            i-button"></i>
                             </button>
                         {% else %}
-                            <i class="bi bi-check i-button-null"></i>
+                            <i class="bi bi-check
+                            i-button-null"></i>
                         {% endif %}
                     </div>
                 </div>
@@ -126,7 +134,8 @@
                     {{ s_minuta.total_kms }} KMs</span>
                 <div class="input-group-addon
                 addon-my-color">
-                    <i class="bi bi-check i-button-null"></i>
+                    <i class="bi bi-check
+                    i-button-null"></i>
                 </div>
             </div>
         </div>
@@ -153,7 +162,8 @@
                             data-idminuta="{{ s_minuta.idminuta }}"
                             data-idpessoal="{{ motorista.obj.idPessoal }}"></i>
                         {% else %}
-                            <i class="bi bi-check i-button-null"></i>
+                            <i class="bi bi-check
+                            i-button-null"></i>
                         {% endif %}
                     </div>
                 </div>
@@ -181,7 +191,8 @@
                         data-button-save-label="INSERIR"
                         data-idminuta="{{ s_minuta.idminuta }}"></i>
                     {% else %}
-                        <i class="bi bi-check i-button-null"></i>
+                        <i class="bi bi-check
+                        i-button-null"></i>
                     {% endif %}
                 </div>
             </div>

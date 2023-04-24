@@ -15,13 +15,16 @@
             addon-my-color">
                 <!-- TODO -->
                 {% if not s_minuta.paga_realizada %}
-                    <i class="bi bi-trash i-button remove-colaborador"
-                    idMinuta="{{ s_minuta.idminuta }}"
-                    Cargo="AJUDANTE"
-                    idMinutaColaboradores="
+                    <i class="bi bi-trash
+                    i-button
+                    js-remove-colaborador"
+                    data-idMinuta="{{ s_minuta.idminuta }}"
+                    data-Cargo="AJUDANTE"
+                    data-idMinutaColaboradores="
                     {{ ajudante.idMinutaColaboradores }}"></i>
                 {% else %}
-                    <i class="bi bi-check i-button-null"></i>
+                    <i class="bi bi-check
+                    i-button-null"></i>
                 {% endif %}
             </div>
         </div>
