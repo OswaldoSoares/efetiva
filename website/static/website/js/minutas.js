@@ -87,8 +87,8 @@ $(document).ready(function() {
                 idMinuta: idminuta,
             },
             success: function(data) {
-                $(".html-checklist").hide()
-                $(".html-checklist").html(data["html_checklist"]);
+                $(".card-checklist").hide()
+                $(".card-checklist").html(data["html_checklist"]);
                 mostraChecklist();
             },
             error: function(error) {
@@ -120,8 +120,8 @@ $(document).ready(function() {
                     $(".html-veiculo").delay(1000).slideDown(500)
                 }
                 recarregaFinanceiro(data["html_pagamento"], data["html_recebimento"])
-                $(".html-checklist").hide()
-                $(".html-checklist").html(data["html_checklist"]);
+                $(".card-checklist").hide()
+                $(".card-checklist").html(data["html_checklist"]);
                 mostraChecklist();
             },
             error: function(error) {
@@ -143,8 +143,8 @@ $(document).ready(function() {
             },
             success: function(data) {
                 recarregaFinanceiro(data["html_pagamento"], data["html_recebimento"])
-                $(".html-checklist").hide()
-                $(".html-checklist").html(data["html_checklist"]);
+                $(".card-checklist").hide()
+                $(".card-checklist").html(data["html_checklist"]);
                 mostraChecklist();
                 $(".html-despesa").hide()
                 $(".html-despesa").html(data["html_despesa"]);
@@ -169,8 +169,8 @@ $(document).ready(function() {
             },
             success: function(data) {
                 recarregaFinanceiro(data["html_pagamento"], data["html_recebimento"])
-                $(".html-checklist").hide()
-                $(".html-checklist").html(data["html_checklist"]);
+                $(".card-checklist").hide()
+                $(".card-checklist").html(data["html_checklist"]);
                 mostraChecklist();
                 $(".card-entrega").hide()
                 $(".card-entrega").html(data["html_entrega"]);
@@ -550,6 +550,7 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
         cbAfterLoad(modal);
     }
     modal.find("form input:visible").first().focus();
+    title = modal.find(".modal-title").text();
     $(form).on("submit", function(event) {
         event.preventDefault();
         header.addClass("loading");
@@ -559,6 +560,9 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
             url: url,
             idobj: $(this).attr("idobj"),
             data: $(this).serialize(),
+            beforeSend: function() {
+                $(".box-loader").show();
+            },
             success: function(xhr, ajaxOptions, thrownError) {
                 $(modal).find(".modal-body").html(xhr["html_form"]);
                 if ($(xhr["html_form"]).find(".errorlist").length > 0) {
@@ -566,8 +570,8 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                 } else {
                     $(modal).modal("hide");
                     recarregaFinanceiro(xhr["html_pagamento"], xhr["html_recebimento"])
-                    $(".html-checklist").hide()
-                    $(".html-checklist").html(xhr["html_checklist"]);
+                    $(".card-checklist").hide()
+                    $(".card-checklist").html(xhr["html_checklist"]);
                     mostraChecklist();
                     if (xhr["c_view"] == "adiciona_minuta") {
                         window.location.href = "/minutas/minuta/" + xhr["id_minuta_salva"] + "/"
@@ -584,7 +588,7 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                         verificaTotalKms()
                     } else if (xhr["c_view"] == "insere_ajudante") {
                         $(".html-ajudante").html(xhr["html_ajudante"]);
-                    } else if (xhr["c_view"] == "edita_minuta_veiculo_solicitado") {
+                    } else if (title == "VEÍCULO SOLICITADO") {
                         if (xhr["html_tipo_mensagem"] == "ERROR") {
                             $(".mensagem-erro").text(data.html_mensagem);
                             mostraMensagemErro()
@@ -594,12 +598,12 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                             mostraMensagemSucesso()
                             $(".html-categoria").hide()
                             $(".html-categoria").html(xhr["html_categoria"]);
-                            $(".html-categoria").delay(1000).slideDown(500)
+                            $(".html-categoria").show()
                             if (xhr["html_veiculo"] == "") {
                                 $(".html-veiculo").hide()
                             } else {
                                 $(".html-veiculo").html(xhr["html_veiculo"]);
-                                $(".html-veiculo").delay(1000).slideDown(500)
+                                $(".html-veiculo").show();
                                 verificaTotalKms()
                             }
                         }
@@ -633,9 +637,11 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                         verificaTotalKms()
                     }
                     if (cbAfterSuccess) { cbAfterSuccess(modal); }
+                    $(".box-loader").hide();
                 }
             },
             error: function(xhr, ajaxOptions, thrownError) {
+                $(".box-loader").hide();
                 $(".mensagem-erro").text(thrownError);
                 mostraMensagemErro()
             },
@@ -1044,7 +1050,7 @@ $(document).on("submit", "#form-edita-hora", function(event) {
             $(".box-loader").show()
             $(".div-sucesso").hide()
             $(".div-erro").hide()
-            $(".html-checklist").hide()
+            $(".card-checklist").hide()
             $(".html-form-paga").hide();
             $(".html-form-recebe").hide();
         },
@@ -1058,10 +1064,10 @@ $(document).on("submit", "#form-edita-hora", function(event) {
                 mostraMensagemSucesso()
             }
             $(".total-horas").text(data.html_total_horas);
-            $(".html-checklist").html(data["html_checklist"]); 
+            $(".card-checklist").html(data["html_checklist"]); 
             $(".html-form-paga").html(data["html_pagamento"]);
             $(".html-form-recebe").html(data["html_recebimento"]);
-            $(".html-checklist").show();
+            $(".card-checklist").show();
             $(".html-form-paga").show();
             $(".html-form-recebe").show();
             verificaTotalHoras();
@@ -1092,7 +1098,7 @@ $(document).on("submit", "#form-edita-km", function(event) {
             $(".box-loader").show()
             $(".div-sucesso").hide()
             $(".div-erro").hide()
-            $(".html-checklist").hide()
+            $(".card-checklist").hide()
             $(".html-form-paga").hide();
             $(".html-form-recebe").hide();
         },
@@ -1106,10 +1112,10 @@ $(document).on("submit", "#form-edita-km", function(event) {
                 mostraMensagemSucesso()
             }
             $(".total-kms").text(data.html_total_kms);
-            $(".html-checklist").html(data["html_checklist"]); 
+            $(".card-checklist").html(data["html_checklist"]); 
             $(".html-form-paga").html(data["html_pagamento"]);
             $(".html-form-recebe").html(data["html_recebimento"]);
-            $(".html-checklist").show();
+            $(".card-checklist").show();
             $(".html-form-paga").show();
             $(".html-form-recebe").show();
             verificaTotalKms()
@@ -1120,6 +1126,7 @@ $(document).on("submit", "#form-edita-km", function(event) {
             somaPagamentos();
             verificaCheckboxPaga();
             verificaCheckboxRecebe();
+            $('html, body').scrollTop(0);
             $(".box-loader").hide();
         },
         error: function(error) {
@@ -1300,7 +1307,7 @@ $(document).on("click", ".lista-consulta", function(event) {
 // Utilizado no card-checklist
 // Mostra os itens necessários no checklist
 function mostraChecklist() {
-    $(".html-checklist").slideDown(500)
+    $(".card-checklist").slideDown(500)
     $(".chk-red").each(function() {
         $(".conclui-minuta").slideUp(500)
     });
