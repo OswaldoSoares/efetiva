@@ -96,7 +96,7 @@ section {
 /* header */
 
 .header {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.3)), url("/static/website/img/wallpaper.jpg");
+    background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.3)), url("/static/website/img/wallpaper01.jpg");
     min-height: 100vh;
     background-position: center;
     background-size: cover;
@@ -119,29 +119,36 @@ section {
 }
 
 .logo-e-toggler {
-    font-size: 1.65rem;
+    background-color: antiquewhite;
+    font-size: 1.6rem;
     padding: 0.8rem 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 700px;
 }
 
 .navbar-logo {
     background-color: transparent;
     font-weight: 500;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     color: var(--night-rider);
-    width: 200px;
+    width: 280px;
     height: 72px;
 }
 
 .navbar-logo img {
-    width: 100%;
+    width: 20%;
     height: 100%;
     object-fit: contain;
 }
 
 .navbar-logo span {
-    color: var(--mount-meadow);
+    color: var(--white-smoke);
+    font-size: 1rem;
+    text-align: center;
 }
 
 .navbar-toggler {
@@ -277,7 +284,7 @@ section {
 }
 
 .foto2 {
-    background-image: url("/static/core/img/plotter.jpg");
+    background-image: url("/static/website/img/wallpaper02.jpg");
     min-height: 100vh;
     background-position: center;
     background-size: cover;
@@ -320,10 +327,6 @@ section {
 }
 
 @media screen and (min-width: 992px) {
-    /* .navbar { */
-    /* background: transparent; */
-    /* margin-top: 1.4rem; */
-    /* } */
     .navbar .container {
         display: flex;
         align-items: center;
@@ -331,10 +334,18 @@ section {
     }
     .navbar-logo {
         background-color: transparent;
-        width: 200px;
+        width: 350px;
         height: 72px;
         color: var(--white-smoke);
         font-size: 2rem;
+        justify-content: center;
+    }
+    .navbar-logo img {
+        width: 25%;
+        padding-right: 10px;
+    }    
+    .navbar-logo span {
+        font-size: 1.2rem;
     }
     .navbar-toggler {
         display: none;
