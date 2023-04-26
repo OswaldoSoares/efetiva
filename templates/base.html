@@ -4,22 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+          content="width=device-width, user-scalable=no,
+          initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    {% comment %} <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"> {% endcomment %}
-    <!--<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">-->
-    {% comment %} <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/js/all.js"
-        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/> {% endcomment %}
-    {% comment %} <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.1.1/css/all.css"
-        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/> {% endcomment %}
-    <link rel="stylesheet" href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css"> 
-        <link rel="stylesheet" href="{% static 'website/css/style.css' %}">
-        <link rel="stylesheet" href="{% static 'website/css/icofont/icofont.min.css' %}">
-    {% comment %} <link rel="stylesheet" href="{% static 'website/css/all.css' %}"> {% endcomment %}
-    {% comment %} <link rel="stylesheet" href="{% static 'website/css/regular.css' %}"> {% endcomment %}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet"
+    href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css"> 
+    <link rel="stylesheet"
+    href="{% static 'website/css/style.css' %}">
+    <link rel="stylesheet"
+    href="{% static 'website/css/icofont/icofont.min.css' %}">
+    <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <title>
+        {% block title %}
+        {% endblock %}
+    </title>
 </head>
 <body>
     {% load static %}
@@ -31,46 +32,99 @@
     <div class="menu">
         <i class="bi bi-three-dots-vertical" id="menu-dots"></i>
         <nav class="menu-nav-icons">
-            <a href="{% url 'index_website' %}">
-                <i class="bi bi-clipboard-data"><span>Painel Geral</span></i></a>
-            <a href="{% url 'indexcliente' %}">
-                <i class="bi bi-building"><span>Clientes</span></i></a>
-            <a href="{% url 'indexpessoal' %}">
-                <i class="bi bi-people"><span>Colaboradores</span></i></a>
-            <a href="{% url 'index_despesas' %}">
-                <i class="bi bi-bag"><span>Despesas</span></i></a>
-            <a href="{% url 'index_faturamento' %}">
-                <i class="bi bi-bank"><span>Faturamento</span></i></a>
-            <a href="{% url 'index_minuta' %}">
-                <i class="bi bi-file-text"><span>Minutas</span></i></a>
-            <a href="{% url 'index_romaneio' %}">
-                <i class="bi bi-list-check"><span>Romaneios</span></i></a>
-            <a href="{% url 'indexorcamento' %}">
-                <i class="bi bi-layout-text-window-reverse"><span>Orçamentos</span></i></a>
-            <a href="{% url 'parametro' %}">
-                <i class="bi bi-gear"><span>Parametros</span></i></a>
-            <a href="{% url 'index_pagamento' %}">
-                <i class="bi bi-cash"><span>Pagamentos</span></i></a>
-            <a href="{% url 'indexveiculo' %}">
-                <i class="bi bi-truck"><span>Veículos</span></i></a>
+            <a class="bi bi-clipboard-data"
+            href="{% url 'index_website' %}">
+                <span>
+                    Painel Geral
+                </span>
+            </a>
+            <a class="bi bi-building"
+            href="{% url 'indexcliente' %}">
+                <span>
+                    Clientes
+                </span>
+            </a>
+            <a class="bi bi-people"
+            href="{% url 'indexpessoal' %}">
+                <span>
+                    Colaboradores
+                </span>
+            </a>
+            <a class="bi bi-bag"
+            href="">
+                <span>
+                    Despesas
+                </span>
+            </a>
+            <a class="bi bi-bank"
+            href="{% url 'index_faturamento' %}">
+                <span>
+                    Faturamento
+                </span>
+            </a>
+            <a class="bi bi-file-text"
+            href="{% url 'index_minuta' %}">
+                <span>
+                    Minutas
+                </span>
+            </a>
+            <a class="bi bi-cone-striped"
+            href="{% url 'index_despesas' %}">
+                <span>
+                    Multas
+                </span>
+            </a>
+            <a class="bi bi-list-check"
+            href="{% url 'index_romaneio' %}">
+                <span>
+                    Romaneios
+                </span>
+            </a>
+            <a class="bi bi-layout-text-window-reverse"
+            href="{% url 'indexorcamento' %}">
+                <span>
+                    Orçamentos
+                </span>
+            </a>
+            <a class="bi bi-gear"
+            href="{% url 'parametro' %}">
+                <span>
+                    Parametros
+                </span>
+            </a>
+            <a class="bi bi-cash"
+            href="{% url 'index_pagamento' %}">
+                <span>
+                    Pagamentos
+                </span>
+            </a>
+            <a class="bi bi-truck"
+            href="{% url 'indexveiculo' %}">
+                <span>
+                    Veículos
+                </span>
+            </a>
             {% if request.user.is_authenticated %}
-            <a href=" {% url 'logout' %}">
-                <i class="bi bi-person-circle"><span>{{ user }}</span></i></a>
+                <a class="bi bi-person-circle"
+                href=" {% url 'logout' %}">
+                    <span>
+                        {{ user }}
+                    </span>
+                </a>
             {% else %}
-            <a  href="{% url 'cadastrausuario' %}">
-                <i class="bi bi-shield-plus"><span>Cadastre-se</span></i></a>
+                <a class="bi bi-shield-plus"
+                href="{% url 'cadastrausuario' %}">
+                    <span>
+                        Cadastre-se
+                    </span>
+                </a>
             {% endif %}
         </nav>
     </div>
     <div class="meu-container">       
         <div class="conteudo">
             <div class="mensagem">
-                <div class="div-erro">
-                    <span><b>ERROR:</b></span><span class="mensagem-erro"></span>
-                </div>
-                <div class="div-sucesso">
-                    <span><b>SUCESSO:</b></span><span class="mensagem-sucesso"></span>
-                </div>
+                <p class="mensagem-color"><p>
             </div>
             <section>
                 {% block dashboard %}

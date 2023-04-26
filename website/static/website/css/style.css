@@ -20,6 +20,8 @@
     /* --color8: #F5DEB3; */
     --color9: black;
     --color10: #f3eeeb;
+    --color11: lightcoral;
+    --color12: lightgreen;
 }
 
 
@@ -48,7 +50,7 @@ body {
 }
 
 .meu-container {
-    margin-top: 79px;
+    margin-top: 60px;
     padding: 0;
     width: 100%;
     display: flex;
@@ -3538,20 +3540,10 @@ main .fp-recibo-tabela .fp-recibo-print {
     color: lightcoral;
 }
 
-.mensagem {
-    margin-left: 2.5%;
-    width: 95%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
+  
+  
 .div-erro {
-    margin-top: 10px;
-    background-color: #ebccd1;
-    color: #a94442;
-    border: solid 1px white;
+    color: lightcoral;
     width: 100%;
     padding: 5px;
     display: flex;
@@ -3646,7 +3638,6 @@ main .fp-recibo-tabela .fp-recibo-print {
 /* ============== */
 
 .menu {
-    background-color: var(--color7);
     position: fixed;
     top: 0;
     width: 100%;
@@ -3654,7 +3645,9 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .menu .menu-nav-icons {
+    background-color: var(--color9);
     width: 100%;
+    height: 65px;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 0;
     text-align: center;
@@ -3664,14 +3657,13 @@ main .fp-recibo-tabela .fp-recibo-print {
     display: inline-block;
     color: var(--color3);
     background-color: black;
-    font-size: 25px;
+    font-size: 20px;
     font-weight: bold;
-    box-shadow: 1px 3px 5px 0 rgba(0, 0, 0, 0.26);
     text-decoration: none;
     border-top: none;
-    width: 100px;
-    margin: 0px auto 0 auto;
-    padding: 10px 0;
+    width: auto;
+    margin: 0 10px;
+    padding: 10px 5px 0px 5px;
     box-sizing: border-box;
 }
 
@@ -3681,7 +3673,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 
 .menu .menu-nav-icons a span {
     display: block;
-    font-size: 12px;
+    font-size: 1.15rem;
     font-weight: bold;
     line-height: 2;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
@@ -6719,3 +6711,39 @@ main .fp-recibo-tabela .fp-recibo-print {
 .i-button-null {
     color: var(--color5);
 }
+
+/* DIV para mostrar mensagens */
+.mensagem {
+    background-color: var(--color9);
+    border-top: 1px solid var(--color1);
+    height: 30px;
+    line-height: 30px;
+    width: 100%;
+    position: relative;
+    margin-top: 5px;
+    padding: 10px;
+    overflow: hidden;
+  }
+  
+  .mensagem p {
+    position: absolute;
+    bottom: -30px;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  .mensagem-color {
+    color: var(--color4);
+  }
+
+  .mensagem-error-color {
+    color: var(--color11);
+  }
+
+  .mensagem-success-color {
+    color: var(--color12);
+  }

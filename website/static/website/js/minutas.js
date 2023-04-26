@@ -2,8 +2,6 @@ $(document).ready(function() {
     $(".box-loader").hide()
     $(".filtro-dados").hide()
     $(".card-minutas-consulta").hide();
-    $(".div-sucesso").hide()
-    $(".div-erro").hide()
     verificaTotalKms()
     verificaTotalHoras()
     verificaCheckboxPaga();
@@ -1048,28 +1046,12 @@ $(document).on("submit", "#form-edita-hora", function(event) {
         data: $(this).serialize(),
         beforeSend: function() {
             $(".box-loader").show()
-            $(".div-sucesso").hide()
-            $(".div-erro").hide()
-            $(".card-checklist").hide()
-            $(".html-form-paga").hide();
-            $(".html-form-recebe").hide();
         },
         success: function(data) {
-            if (data.html_tipo_mensagem == "ERROR") {
-                $(".mensagem-erro").text(data.html_mensagem);
-                mostraMensagemErro()
-            }
-            if (data.html_tipo_mensagem == "SUCESSO") {
-                $(".mensagem-sucesso").text(data.html_mensagem);
-                mostraMensagemSucesso()
-            }
             $(".total-horas").text(data.html_total_horas);
             $(".card-checklist").html(data["html_checklist"]); 
             $(".html-form-paga").html(data["html_pagamento"]);
             $(".html-form-recebe").html(data["html_recebimento"]);
-            $(".card-checklist").show();
-            $(".html-form-paga").show();
-            $(".html-form-recebe").show();
             verificaTotalHoras();
             mostraChecklist();
             formatUnmask();
@@ -1079,6 +1061,20 @@ $(document).on("submit", "#form-edita-hora", function(event) {
             verificaCheckboxPaga();
             verificaCheckboxRecebe();
             $(".box-loader").hide();
+            if (data.html_tipo_mensagem == "ERROR") {
+                $(".mensagem p").removeClass("mensagem-color")
+                $(".mensagem p").removeClass("mensagem-success-color")
+                $(".mensagem p").addClass("mensagem-error-color")
+                mensagem = data.html_mensagem
+                exibirMensagem(mensagem);
+            }
+            if (data.html_tipo_mensagem == "SUCESSO") {
+                $(".mensagem p").removeClass("mensagem-color")
+                $(".mensagem p").removeClass("mensagem-error-color")
+                $(".mensagem p").addClass("mensagem-success-color")
+                mensagem = data.html_mensagem
+                exibirMensagem(mensagem);
+            }
         },
         error: function(error) {
             console.log(error)
@@ -1096,8 +1092,6 @@ $(document).on("submit", "#form-edita-km", function(event) {
         data: $(this).serialize(),
         beforeSend: function() {
             $(".box-loader").show()
-            $(".div-sucesso").hide()
-            $(".div-erro").hide()
             $(".card-checklist").hide()
             $(".html-form-paga").hide();
             $(".html-form-recebe").hide();
@@ -1317,9 +1311,22 @@ function mostraChecklist() {
 }
 
 // Mostra a div de mensagem com a mensagem de erro
+function exibirMensagem(mensagem) {
+    $('.mensagem p').text(mensagem);
+    $('.mensagem p').animate({bottom: '0'}, 1000);
+    setTimeout(function() {
+        $('.mensagem p').animate({bottom: '60px'}, 1000); 
+        $('.mensagem p').animate({bottom: '-30px'}, 0);
+    }, 3000);
+}
+
+// Mostra a div de mensagem com a mensagem de erro
 function mostraMensagemErro() {
-    $(".div-erro").slideDown(500)
-    $(".div-erro").delay(5000).slideUp(500)
+    $('.mensagem p').animate({bottom: '0'}, 500); /* duração da animação */
+    setTimeout(function() {
+        $('.mensagem p').animate({bottom: '60px'}, 500); /* duração da animação */
+        $('.mensagem p').animate({bottom: '-30px'}, 0); /* duração da animação */
+    }, 5000); /* tempo em que a mensagem fica na tela */
 }
 
 // Mostra a div de mensagem com a mensagem de sucesso
