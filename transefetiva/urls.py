@@ -1,4 +1,5 @@
 from clientes import urls as clientes_urls
+from core import urls as core_urls
 from despesas import urls as despesas_urls
 from django.conf import settings
 from django.conf.urls.static import static
@@ -18,6 +19,7 @@ urlpatterns = (
     [
         path("admin/", admin.site.urls),
         path("clientes/", include(clientes_urls)),
+        path("core/", include(core_urls)),
         path("despesas/", include(despesas_urls)),
         path("faturamentos/", include(faturamentos_urls)),
         path("minutas/", include(minutas_urls)),
