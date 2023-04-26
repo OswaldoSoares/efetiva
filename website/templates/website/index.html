@@ -16,6 +16,7 @@
     <title>Document</title>
 </head>
 <body>
+    <!-- start of header -->
     <header class="header">
         <nav class="navbar">
             <div class="container">
@@ -50,37 +51,39 @@
                             </a>
                         </li>
                         {% if user.is_authenticated %}
-                        <li class="nav-item">
-                            <a href="{% url 'index_core' %}"
-                            class="nav-link">
-                                ÁREA RESTRITA
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a href="{% url 'index_core' %}"
+                                class="nav-link">
+                                    ÁREA RESTRITA
+                                </a>
+                            </li>
                         {% else %}
-                        <li class="nav-item">
-                            <a href="" class="nav-link">
-                                login
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a href="" class="nav-link">
+                                    login
+                                </a>
+                            </li>
                         {% endif %}
                     </ul>                        
                 </div>
             </div>
         </nav>
         <div class = "hero-div center container">
-            <h1 class="animate__animated animate__fadeInDown  animate__slow">
-                ENTREGAS COLETAS LOCAÇÕES TRANSPORTES DEDICADOS
-            </h1>
-            <p class = "animate__animated animate__fadeInUp animate__slow">
-                Serviço de entregas com a mais alta competência.
-            </p>
-            <div class = "hero-btns animate__animated animate__fadeInUp animate__slow">
-                <button type = "button" class = "btn-trans">
-                    Sobre Nós
-                </button>
-                <button type = "button" class = "btn-white">
-                    Saiba Mais
-                </button>
+            <div class = "hero-div center container">
+                <h1 class="animate__animated animate__fadeInDown  animate__slow">
+                    ENTREGAS COLETAS LOCAÇÕES TRANSPORTES DEDICADOS
+                </h1>
+                <p class = "animate__animated animate__fadeInUp animate__slow">
+                    Serviço de entregas com a mais alta competência.
+                </p>
+                <div class = "hero-btns animate__animated animate__fadeInUp animate__slow">
+                    <button type = "button" class = "btn-trans">
+                        Sobre Nós
+                    </button>
+                    <button type = "button" class = "btn-white">
+                        Saiba Mais
+                    </button>
+                </div>
             </div>
         </div>
     </header>
