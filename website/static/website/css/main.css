@@ -44,7 +44,7 @@ button {
     background: transparent;
 }
 
-.container {
+.my-container {
     max-width: 1320px;
     margin: 0 auto;
     padding: 0 1rem;
@@ -119,7 +119,6 @@ section {
 }
 
 .logo-e-toggler {
-    background-color: antiquewhite;
     font-size: 1.6rem;
     padding: 0.8rem 0;
     display: flex;
@@ -162,6 +161,11 @@ section {
 
 .nav-item {
     padding: 0.6rem 0;
+}
+
+.nav-item a {
+    text-decoration: none;
+    color: var(--white-smoke);
 }
 
 .nav-link {
@@ -327,7 +331,7 @@ section {
 }
 
 @media screen and (min-width: 992px) {
-    .navbar .container {
+    .navbar .my-container {
         display: flex;
         align-items: center;
         justify-content: space-between;
