@@ -1,31 +1,110 @@
-{% extends 'usuarios/baseusuarios.html' %}
+<!DOCTYPE html>
 {% load static %}
-
-{% block mainusuario %}
-<main class="article form-logout">
-    <div class="article-card">
-        <div class="article-card-titulo">
-            <span>LOGOUT</span>
-        </div>
-        <form method="post">
-            <div class="article-card-body">
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- normalize css -->
+    <link rel = "stylesheet" href = "{% static 'website/resources/normalize.css' %}">
+    <!-- font -->
+    <link rel = "stylesheet" href = "{% static 'website/resources/font.css' %}">
+    <!-- animate css -->
+    <link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{% static 'website/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'website/css/style.css' %}">
+    <title>Document</title>
+</head>
+<body>
+    <!-- start of header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo-e-toggle">
+                    <div class="navbar-logo">
+                        <img src="{% static 'website/img/logo.png' %}">
+                        <span>
+                            TRANSEFETIVA TRANSPORTES
+                        </span>
+                    </div>
+                </div>
+                <div class="navbar-collapse">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a href="{% url 'index_website' %}" class="nav-link">
+                                Home
+                            </a>
+                        </li>
+                        {% if user.is_authenticated %}
+                            <li class="nav-item">
+                                <a href="{% url 'index_core' %}"
+                                class="nav-link">
+                                    ÁREA RESTRITA
+                                </a>
+                            </li>
+                        {% endif %} 
+                    </ul>                        
+                </div>
+            </div>
+        </nav>
+        <div class = "hero-div center container">
+            <div class="card card-login">
+                <form method="post">
                 {% csrf_token %}
-                <div class="item-form">
-                    <span>{{ user }}</span>
-                </div>
-                <div class="item-form">
-                    <span>Você está logado!</span>
-                </div>
-                <div class="item-form">
-                    <a href="{% url 'senha' %}" class="bi bi-key i-button">
-                        mudar senha
-                    </a>
-                </div>
+                    <div class="card-header">
+                        <span>LOGOUT</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-body-item">
+                            <div class="input-group">
+                                <i class="bi bi-person-circle
+                                i-button-null
+                                input-group-addon
+                                addon-my-color"></i>
+                                <span class="form-control
+                                input-fake">
+                                {{ user }}, você está logado!
+                                </span>
+                                <div class="input-group-addon
+                                addon-my-color">
+                                    <i class="bi bi-check
+                                    i-button-null"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body-item">
+                            <div class="input-group">
+                                <i class="bi bi-key
+                                i-button-null
+                                input-group-addon
+                                addon-my-color"></i>
+                                <span class="form-control
+                                input-fake">
+                                    Alterar Senha
+                                </span>
+                                <div class="input-group-addon
+                                addon-my-color">
+                                    <a href="{% url 'senha' %}"
+                                    class="bi bi-pencil-square i-button"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{% url 'sair' %}"
+                        class="bi bi-door-open i-button"></a>
+                    </div>
+                </form>
             </div>
-            <div class="article-card-footer">
-                <a href="{% url 'sair' %}" class="bi bi-door-open i-button"></a>
-            </div>
-        </form>
-    </div>
-</main>
-{% endblock %}
+        </div>
+    </header>
+    <!-- end of header -->
+</body>
+
+<!-- jQuery -->
+<script src="{% static 'website/js/jquery-3.5.1.min.js' %}"></script>
+<script src="{% static 'website/js/website.js' %}"></script>
+<script src="{% static 'website/js/bootstrap.min.js' %}"></script>

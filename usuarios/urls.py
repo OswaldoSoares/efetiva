@@ -13,8 +13,8 @@ urlpatterns = [
         ),
         name="login",
     ),
-    path("logout", tela_logout, name="logout"),
-    path("sair", auth_views.LogoutView.as_view(), name="sair"),
+    path("logout", tela_logout, name="logout",),
+    path("sair", auth_views.LogoutView.as_view(), name="sair",),
     path(
         "senha",
         auth_views.PasswordChangeView.as_view(
