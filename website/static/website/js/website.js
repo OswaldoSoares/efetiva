@@ -135,3 +135,7 @@ $(document).ready(function(){
         });
 
     }
+
+    $(document).on('click', "#navbar-toggler", function() {
+        $(".navbar-collapse").slideToggle(400);
+    });
