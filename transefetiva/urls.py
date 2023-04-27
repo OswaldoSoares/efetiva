@@ -36,3 +36,4 @@ urlpatterns = (
 )
 
 handler403 = "usuarios.views.my_403_template"
+handler404 = "usuarios.views.my_404_template"
