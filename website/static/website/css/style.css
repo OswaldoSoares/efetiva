@@ -22,8 +22,8 @@
     --color10: #f3eeeb;
     --color11: lightcoral;
     --color12: lightgreen;
+    --color13: #8B0000;
 }
-
 
 /* Arquivo base.html */
 
@@ -6523,9 +6523,10 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-body {
+    background-color: var(--color2);
     width: 100%;
     height: auto;
-    background-color: var(--color2);
+    min-height: 1rem;
 }
 
 .card-footer {
@@ -6554,10 +6555,6 @@ main .fp-recibo-tabela .fp-recibo-print {
     font-size: 1.8rem;
     vertical-align: middle;
     padding: 0 0.8rem;
-}
-
-.card-body {
-    min-height: 1rem;
 }
 
 .card-footer span {
@@ -6621,7 +6618,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .form-control-minuta {
-    background-color: var(--color10);
+    background-color: var(--color8);
     color: var(--color9);
     border: 1px solid var(--color1);
     text-align: center;
@@ -6747,3 +6744,80 @@ main .fp-recibo-tabela .fp-recibo-print {
   .mensagem-success-color {
     color: var(--color12);
   }
+
+  .card-login {
+    min-width: 350px;
+    max-width: 350px;
+  }
+
+ .card-login .card-header {
+    background-color: var(--color1);
+    color: var(--color6);
+    height: 3rem;
+    border-radius: 1rem 1rem 0 0;
+    text-align: center;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--color7);
+}
+
+.card-login .card-body {
+    background-color: var(--color2);
+    width: 100%;
+    height: auto;
+    min-height: 1rem;
+}
+
+.card-login .card-footer {
+    background-color: var(--color1);
+    color: var(--color6);
+    height: 3rem;
+    border-radius: 0 0 1rem 1rem ;
+    text-align: center;
+    vertical-align: middle;
+    padding-top: 0.5rem;
+    margin-bottom: 5px;
+}
+
+.card-login .card-header span {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 2rem;
+    vertical-align: middle;
+}
+
+.card-login .card-header i {
+    font-size: 2.5rem;
+    vertical-align: middle;
+    padding: 0 0.8rem;
+}
+
+.card-login .card-header .i-button {
+    font-size: 1.8rem;
+    vertical-align: middle;
+    padding: 0 0.8rem;
+}
+
+.card-login .card-footer span {
+    line-height: 3rem;
+    font-size: 1.2rem;
+    vertical-align: middle;
+}
+
+.card-login .card-footer .i-button {
+    line-height: 2rem;
+    font-size: 1.5rem;
+    vertical-align: middle;
+    padding: 0 10px;
+    border: none;
+}
+
+.card-login .card-body-item {
+    border-bottom: 2px solid var(--color7);
+}
+
+.card-login .card-body span {
+    color: var(--color6);
+}
+
+.form-control-center {
+    text-align: center;
+}

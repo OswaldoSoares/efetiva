@@ -59,7 +59,8 @@
                             </li>
                         {% else %}
                             <li class="nav-item">
-                                <a href="" class="nav-link">
+                                <a href="{% url 'login' %}"
+                                class="nav-link">
                                     login
                                 </a>
                             </li>
@@ -68,22 +69,24 @@
                 </div>
             </div>
         </nav>
+        <div class="conteudo-base">
+            {% block mainusuario %}
+            {% endblock %}
+        </div>
         <div class = "hero-div center container">
-            <div class = "hero-div center container">
-                <h1 class="animate__animated animate__fadeInDown  animate__slow">
-                    ENTREGAS COLETAS LOCAÇÕES TRANSPORTES DEDICADOS
-                </h1>
-                <p class = "animate__animated animate__fadeInUp animate__slow">
-                    Serviço de entregas com a mais alta competência.
-                </p>
-                <div class = "hero-btns animate__animated animate__fadeInUp animate__slow">
-                    <button type = "button" class = "btn-trans">
-                        Sobre Nós
-                    </button>
-                    <button type = "button" class = "btn-white">
-                        Saiba Mais
-                    </button>
-                </div>
+            <h1 class="animate__animated animate__fadeInDown  animate__slow">
+                ENTREGAS COLETAS LOCAÇÕES TRANSPORTES DEDICADOS
+            </h1>
+            <p class = "animate__animated animate__fadeInUp animate__slow">
+                Serviço de entregas com a mais alta competência.
+            </p>
+            <div class = "hero-btns animate__animated animate__fadeInUp animate__slow">
+                <button type = "button" class = "btn-trans">
+                    Sobre Nós
+                </button>
+                <button type = "button" class = "btn-white">
+                    Saiba Mais
+                </button>
             </div>
         </div>
     </header>
@@ -108,6 +111,6 @@
 </body>
 
 <!-- jQuery -->
-<script src="{% static 'core/js/jquery-3.5.1.min.js' %}"></script>
-<!-- magnific popup -->
-<script src = "resources/Magnific-Popup-master/dist/jquery.magnific-popup.js"></script>
+<script src="{% static 'website/js/jquery-3.5.1.min.js' %}"></script>
+<script src="{% static 'website/js/website.js' %}"></script>
+<script src="{% static 'website/js/bootstrap.min.js' %}"></script>
