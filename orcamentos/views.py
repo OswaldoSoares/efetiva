@@ -1,4 +1,3 @@
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from rolepermissions.decorators import has_permission_decorator
 
@@ -6,7 +5,6 @@ from .forms import CadastraOrcamento
 from orcamentos import facade
 
 
-@login_required(login_url='login')
 @has_permission_decorator('modulo_clientes')
 def index_orcamento(request):
     contexto = facade.create_orcamento_context()

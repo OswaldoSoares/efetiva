@@ -4,13 +4,14 @@ from veiculos.models import CategoriaVeiculo
 from .models import Parametros
 from .forms import CadastraParametro, CadastraParametroTabelaPadrao
 from website import facade
+from rolepermissions.decorators import has_permission_decorator
 
 
 def index_website(request):
     return render(request, "website/index.html")
 
 
-@login_required(login_url="login")
+@has_permission_decorator("modulo_clientes")
 def parametros(request):
     # parametro = facade.get_parametros_all()
     # categoria_veiculos = CategoriaVeiculo.objects.all()

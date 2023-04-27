@@ -1,6 +1,6 @@
 import datetime
 
-from django.contrib.auth.decorators import login_required
+
 from django.http import JsonResponse
 from django.shortcuts import render
 
@@ -9,9 +9,10 @@ from despesas.print import print_multas_pagar
 from website.facade import str_hoje
 
 from .forms import CadastraAbastecimento
+from rolepermissions.decorators import has_permission_decorator
 
 
-@login_required(login_url="login")
+@has_permission_decorator("modulo_despesas")
 def index_despesas(request):
     contexto = facade.create_despesas_context()
     categorias = facade.create_contexto_categoria()

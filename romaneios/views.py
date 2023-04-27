@@ -4,8 +4,10 @@ from minutas.facade import filtra_veiculo, motoristas_disponiveis
 from romaneios import facade
 from romaneios.print import print_notas_status, print_romaneio
 from website.facade import str_hoje
+from rolepermissions.decorators import has_permission_decorator
 
 
+@has_permission_decorator("modulo_clientes")
 def index_romaneio(request):
     clientes = facade.create_contexto_seleciona_cliente()
     contexto = {"clientes": clientes}
