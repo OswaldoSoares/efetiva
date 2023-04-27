@@ -20,5 +20,5 @@ def cadastra_usuario(request):
 
 def my_403_template(request, exception):
     context = {'exception': exception}
-    return render(request, '403.html', context, status=403)
+    return render(request, 'website/403.html', context, status=403)
 
