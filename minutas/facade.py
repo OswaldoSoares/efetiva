@@ -185,14 +185,10 @@ class MinutaSelecionada:
         return excede
 
     def get_quantidade_entregas(self):
-        if (
-            MinutaNotas.objects.values("Cidade")
-            .filter(idMinuta=self.idminuta)
-            .exclude(Cidade="SÃO PAULO")
-        ):
-            return True
-        else:
-            return False
+        entregas = self.entregas
+        lista = [x["NotaGuia"] for x in entregas]
+        nova_lista = [x for x in lista if x == "0"]
+        return len(nova_lista)
 
     def get_perimetro(self):
         perimetro = (
@@ -291,7 +287,7 @@ class MinutaSelecionada:
                     )
                     v_paga["c_kilm"] = True if int(phkesc[2:3]) else False
                     v_paga["v_entr"] = self.filtro_tabela_veiculo()["EntregaPaga"]
-                    v_paga["m_entr"] = self.t_entregas["total_entregas"]
+                    v_paga["m_entr"] = self.quantidade_entregas
                     v_paga["t_entr"] = (
                         self.filtro_tabela_veiculo()["EntregaPaga"] * v_paga["m_entr"]
                     )
@@ -422,7 +418,7 @@ class MinutaSelecionada:
                 )
                 v_recebe["c_kilm"] = True if int(phkesc[2:3]) else False
                 v_recebe["v_entr"] = self.filtro_tabela_veiculo()["EntregaCobra"]
-                v_recebe["m_entr"] = self.t_entregas["total_entregas"]
+                v_recebe["m_entr"] = self.quantidade_entregas
                 v_recebe["t_entr"] = (
                     self.filtro_tabela_veiculo()["EntregaCobra"] * v_recebe["m_entr"]
                 )
@@ -584,6 +580,7 @@ class MinutaEntrega:
                 "Peso": itens.Peso,
                 "Volume": itens.Volume,
                 "Nome": itens.Nome,
+                "NotaGuia": itens.NotaGuia,
                 "Bairro": itens.Bairro,
                 "Cidade": itens.Cidade,
                 "Estado": itens.Estado,
