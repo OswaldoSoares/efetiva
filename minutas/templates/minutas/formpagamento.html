@@ -488,8 +488,10 @@
                     class="js-checkbox-paga"
                     id="check-perimetro-paga"
                     name="check-perimetro-paga"
+                    {% if s_minuta.perimetro %}
                     {% if s_minuta.paga.c_peri %}
                     checked="checked"
+                    {% endif %}
                     {% endif %} />
                 </div>
             </div>
@@ -523,7 +525,11 @@
                 class="total-paga form-control text-right js-decimal"
                 id="valor-perimetro-paga"
                 name="valor-perimetro-paga"
+                {% if s_minuta.perimetro %}
                 value="{{ s_minuta.paga.t_peri|stringformat:'.2f' }}"
+                {% else %}
+                value="0.00"
+                {% endif %}
                 readonly />
             </div>
         </div>
