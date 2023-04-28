@@ -74,7 +74,9 @@ class MinutaSelecionada:
         self.despesas = MinutaDespesa(idminuta).descricao
         self.t_despesas = self.total_despesas()
         self.entregas = MinutaEntrega(idminuta).nota
+        self.quantidade_entregas = self.get_quantidade_entregas()
         self.t_entregas = self.total_notas()
+        self.perimetro = self.get_perimetro()
         self.romaneio = self.get_romaneio()
         self.tabela = ClienteTabela(minuta.idCliente).tabela
         self.tabela_veiculo = ClienteTabelaVeiculo(minuta.idCliente).tabela
@@ -181,6 +183,24 @@ class MinutaSelecionada:
         excede_str = str(excede)
         excede = datetime.strptime(excede_str, "%H:%M:%S")
         return excede
+
+    def get_quantidade_entregas(self):
+        if (
+            MinutaNotas.objects.values("Cidade")
+            .filter(idMinuta=self.idminuta)
+            .exclude(Cidade="SÃO PAULO")
+        ):
+            return True
+        else:
+            return False
+
+    def get_perimetro(self):
+        perimetro = (
+            MinutaNotas.objects.values("Cidade")
+            .filter(idMinuta=self.idminuta)
+            .exclude(Cidade="SÃO PAULO")
+        )
+        return True if perimetro else False
 
     def total_notas(self):
         d_total_notas = dict()

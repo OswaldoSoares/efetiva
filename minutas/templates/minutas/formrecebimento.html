@@ -589,8 +589,10 @@
                     class="js-checkbox-recebe"
                     id="check-perimetro-recebe"
                     name="check-perimetro-recebe"
+                    {% if s_minuta.perimetro %}
                     {% if s_minuta.recebe.c_peri %}
                     checked="checked"
+                    {% endif %}
                     {% endif %} />
                 </div>
             </div>
@@ -624,7 +626,11 @@
                 class="total-recebe form-control text-right js-decimal"
                 id="valor-perimetro-recebe"
                 name="valor-perimetro-recebe"
+                {% if s_minuta.perimetro %}
                 value="{{ s_minuta.recebe.t_peri|stringformat:'.2f' }}"
+                {% else %}
+                value="0.00"
+                {% endif %}
                 readonly />
             </div>
         </div>
