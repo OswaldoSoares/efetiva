@@ -157,7 +157,11 @@ urlpatterns = [
     path("inseredespesa/", insere_minuta_despesa, name="inseredespesa"),
     path("removedespesa/", remove_minuta_despesa, name="removedespesa"),
     path("insereentrega/", insere_minuta_entrega, name="insereentrega"),
-    path("removeentrega/", remove_minuta_entrega, name="removeentrega"),
+    path(
+        "remove_entrega/",
+        remove_minuta_entrega,
+        name="remove_entrega",
+    ),
     path("atualizaformpg/", atualiza_form_pg, name="atualizaformpg"),
     path("gerapagamentos/", gera_pagamentos, name="gerapagamentos"),
     path("estornapagamentos/", estorna_pagamentos, name="estornapagamentos"),

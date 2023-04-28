@@ -155,30 +155,7 @@ $(document).ready(function() {
     });
 
     // Versão Nova //
-    $(document).on("click", ".remove-entrega", function(event) {
-        var idminutanotas = $(this).attr("idMinutaNotas")
-        var idminuta = $(this).attr("idMinuta")
-        $.ajax({
-            type: "GET",
-            url: "/minutas/removeentrega",
-            data: {
-                idMinutaNotas: idminutanotas,
-                idMinuta: idminuta,
-            },
-            success: function(data) {
-                recarregaFinanceiro(data["html_pagamento"], data["html_recebimento"])
-                $(".card-checklist").hide()
-                $(".card-checklist").html(data["html_checklist"]);
-                mostraChecklist();
-                $(".card-entrega").hide()
-                $(".card-entrega").html(data["html_entrega"]);
-                $(".card-entrega").delay(1000).slideDown(500)
-            },
-            error: function(error) {
-                console.log(error)
-            }
-        });
-    });
+    
 
 
     $("#MyModal").on("shown.bs.modal", function() {
@@ -1243,6 +1220,33 @@ $(document).on("change", ".js-input-change", function() {
 })
 
 // Card Entregas e Card Romaneio
+$(document).on("click", ".js-remove-entrega", function(event) {
+    var idminutanotas = $(this).attr("idMinutaNotas")
+    var idminuta = $(this).attr("idMinuta")
+    $.ajax({
+        type: "GET",
+        url: "/minutas/remove_entrega",
+        data: {
+            idMinutaNotas: idminutanotas,
+            idMinuta: idminuta,
+        },
+        beforeSend: function() {
+            $(".box-loader").show();
+        },
+        success: function(data) {
+            recarregaFinanceiro(data["html_pagamento"], data["html_recebimento"])
+            $(".card-checklist").html(data["html_checklist"]);
+            mostraChecklist();
+            $(".card-entrega").html(data["html_entrega"]);
+            $(".box-loader").hide();
+        },
+        error: function(error) {
+            console.log(error)
+        }
+    });
+});
+
+// Card Entregas e Card Romaneio
 $(document).on("click", ".js-remove-romaneio-minuta", function() {
     var romaneio = $(this).data("romaneio")
     var idminuta = $(this).data("idminuta")
@@ -1256,15 +1260,11 @@ $(document).on("click", ".js-remove-romaneio-minuta", function() {
             idcliente: idcliente,
         },
         beforeSend: function() {
-            $(".card-entrega").hide()
-            $(".card-romaneio").hide()
             $(".box-loader").show()
         },
         success: function(data) {
             $(".card-entrega").html(data["html_entrega"])
-            $(".card-entrega").show()
             $(".card-romaneio").html(data["html_romaneio"])
-            $(".card-romaneio").show()
             $(".box-loader").hide()
         },
     });
