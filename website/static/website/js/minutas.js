@@ -8,6 +8,8 @@ $(document).ready(function() {
     verificaCheckboxRecebe();
     mostraChecklist();
     formatMask();
+    somaReceitas();
+    somaPagamentos();
 
     /* Versão Nova - Função que envia formulário com os itens de
     recebimento para serem processados pelo servidor */
@@ -776,6 +778,7 @@ function calculosMudarInputPaga(element_select, valor_digitado) {
     formatUnmask();
     formatMask();
     // Faz a soma geral com os valores atualizados 
+    somaPhkescPagamentos();
     somaPagamentos();
 }
 
@@ -908,9 +911,7 @@ function calculosMudarInputRecebe(element_select, valor_digitado) {
     formatMask();
     // Faz a soma geral com os valores atualizados 
     somaPhkescReceitas();
-    setTimeout(function() {        
-        somaReceitas();
-    }, 500);
+    somaReceitas();
 }
 
 // Utilizado no Card-Entrega (Formulário Modal)
@@ -1037,9 +1038,8 @@ $(document).on("submit", "#form-edita-hora", function(event) {
             formatUnmask();
             formatMask();
             somaPhkescReceitas();
-            setTimeout(function() {        
-                somaReceitas();
-            }, 500);
+            somaReceitas();
+            somaPhkescPagamentos();
             somaPagamentos();
             verificaCheckboxPaga();
             verificaCheckboxRecebe();
@@ -1100,9 +1100,8 @@ $(document).on("submit", "#form-edita-km", function(event) {
             formatUnmask();
             formatMask();
             somaPhkescReceitas();
-            setTimeout(function() {        
-                somaReceitas();
-            }, 500);
+            somaReceitas();
+            somaPhkescPagamentos();
             somaPagamentos();
             verificaCheckboxPaga();
             verificaCheckboxRecebe();
@@ -1128,7 +1127,7 @@ function formatMask() {
         $(this).mask("#.##0", { reverse: true })
     });
     $(".total-recebe").mask("#.##0,00", { reverse: true })
-    $(".total-pagamentos").mask("#.##0,00", { reverse: true })
+    $(".total-paga").mask("#.##0,00", { reverse: true })
 }
 
 // Utilizado no Card-Receitas e no Card-Pagamentos
@@ -1187,6 +1186,7 @@ $(document).on("change", ".js-checkbox-paga", function() {
         calculosMudarInputPaga(input_tabela.replace("#", ""), valor_digitado)
         $(input_tabela).select()
     }
+    somaPhkescPagamentos();
     somaPagamentos();
 })
 
@@ -1206,9 +1206,7 @@ $(document).on("change", ".js-checkbox-recebe", function() {
         $(input_tabela).select()
     }
     somaPhkescReceitas();
-    setTimeout(function() {        
-        somaReceitas();
-    }, 500);
+    somaReceitas();
 })
 
 // Utilizado no Card-Receitas e no Card-Pagamentos
@@ -1354,9 +1352,8 @@ function recarregaFinanceiro(html_paga, html_recebe) {
     formatUnmask();
     formatMask();
     somaPhkescReceitas();
-    setTimeout(function() {        
-        somaReceitas();
-    }, 500);
+    somaReceitas();
+    somaPhkescPagamentos();
     somaPagamentos();
     verificaCheckboxPaga();
     verificaCheckboxRecebe();
@@ -1394,14 +1391,47 @@ function somaPagamentos() {
     $("#total-pagamentos").text(valor_paga.toFixed(2))
     $("#total-pagamentos").unmask()
     $("#total-pagamentos").mask("#.##0,00", { reverse: true })
+    $(text_total).unmask()
+    $(text_total).mask("#.##0,00", { reverse: true })
     var text_total = $("#total-pagamentos").text();
-    var text_total = "TOTAL R$ " + text_total
+    var text_total = "TOTAL: R$ " + text_total
     $("#total-pagamentos").text(text_total)
     somaMotorista();
 }
 
 // Utilizada no Card-Receitas
-// Soma total das receitas
+// Soma total phkesc pagamentos
+function somaPhkescPagamentos() {
+    var valor_phkesc = 0.00;
+    $(".total-phkesc-paga").each(function() {
+        valor_phkesc += parseFloat($(this).val().replace(".", "").replace(",", "."))
+    });
+    $("#minuta-perimetro-paga").val(valor_phkesc.toFixed(2))
+    $("#minuta-perimetro-paga").unmask()
+    $("#minuta-perimetro-paga").mask("#.##0,00", { reverse: true })
+    $("#valor-perimetro-paga").val(
+        calculaPorcentagem(
+            $("#tabela-perimetro-paga").val(),
+            $("#minuta-perimetro-paga").val()
+        )
+    )
+    $("#valor-perimetro-paga").unmask()
+    $("#valor-perimetro-paga").mask("#.##0,00", { reverse: true })
+    $("#minuta-pernoite-paga").val(valor_phkesc.toFixed(2))
+    $("#minuta-pernoite-paga").unmask()
+    $("#minuta-pernoite-paga").mask("#.##0,00", { reverse: true })
+    $("#valor-pernoite-paga").val(
+        calculaPorcentagem(
+            $("#tabela-pernoite-paga").val(),
+            $("#minuta-pernoite-paga").val()
+        )
+    )
+    $("#valor-pernoite-paga").unmask()
+    $("#valor-pernoite-paga").mask("#.##0,00", { reverse: true })
+}
+
+// Utilizada no Card-Receitas
+// Soma total phkesc receitas
 function somaPhkescReceitas() {
     var valor_phkesc = 0.00;
     $(".total-phkesc-recebe").each(function() {
@@ -1416,6 +1446,8 @@ function somaPhkescReceitas() {
             $("#minuta-perimetro-recebe").val()
         )
     )
+    $("#valor-perimetro-recebe").unmask()
+    $("#valor-perimetro-recebe").mask("#.##0,00", { reverse: true })
     $("#minuta-pernoite-recebe").val(valor_phkesc.toFixed(2))
     $("#minuta-pernoite-recebe").unmask()
     $("#minuta-pernoite-recebe").mask("#.##0,00", { reverse: true })
@@ -1425,6 +1457,8 @@ function somaPhkescReceitas() {
             $("#minuta-pernoite-recebe").val()
         )
     )
+    $("#valor-pernoite-recebe").unmask()
+    $("#valor-pernoite-recebe").mask("#.##0,00", { reverse: true })
 }
 
 // Utilizada no Card-Receitas
@@ -1438,7 +1472,7 @@ function somaReceitas() {
     $("#total-receitas").unmask()
     $("#total-receitas").mask("#.##0,00", { reverse: true })
     var text_total = $("#total-receitas").text();
-    var text_total = "TOTAL R$ " + text_total
+    var text_total = "TOTAL: R$ " + text_total
     $("#total-receitas").text(text_total)
 }
 
