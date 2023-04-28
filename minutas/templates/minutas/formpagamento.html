@@ -635,6 +635,61 @@
                 readonly />
             </div>
         </div>
+        <!-- Despesas -->
+        {% if s_minuta.motorista.0.obj.TipoPgto != 'MENSALISTA' %}
+        {% if s_minuta.despesas %}
+        <div class="linha-divisoria-nova"></div>
+        {% endif %}
+        {% for despesa in s_minuta.despesas %}
+        <div class="card-body-item">
+            <div class="input-group">
+                <i class="bi bi-bag input-group-addon addon-my-color"></i>
+                <span class="form-control input-fake">
+                    {{ despesa.Descricao }}
+                </span>
+                <div class="input-group-addon addon-my-color">
+                    <input type="checkbox"
+                    class="js-checkbox-paga"
+                    id="check-despesa-paga-{{ despesa.idMinutaItens }}"
+                    name="check-despesa-paga-{{ despesa.idMinutaItens }}"
+                    checked="checked" />
+                </div>
+            </div>
+        </div>
+        <!-- Valores Despesas -->
+        <div class="card-body-item" id="js-despesa-paga-{{ despesa.idMinutaItens }}">
+            <div class="input-group input-group-sm transparente">
+                <span class="input-group-addon addon-blue">
+                    R$
+                </span>
+                <input type="text"
+                class="form-control text-right js-input-change js-decimal"
+                id="tabela-despesa-paga-{{ despesa.idMinutaItens }}"
+                name="tabela-despesa-paga-{{ despesa.idMinutaItens }}"
+                value="{{ despesa.Valor|stringformat:'.2f' }}" />
+                <span class="input-group-addon addon-blue">
+                    UN
+                </span>
+                <input type="text"
+                class="form-control text-right js-unidade"
+                value="1"
+                readonly />
+                <span class="input-group-addon addon-my-color">
+                    =
+                </span>
+                <span class="input-group-addon addon-blue">
+                    R$
+                </span>
+                <input type="text"
+                class="total-paga form-control text-right js-decimal"
+                id="valor-despesa-paga-{{ despesa.idMinutaItens }}"
+                name="valor-despesa-paga-{{ despesa.idMinutaItens }}"
+                value="{{ despesa.Valor|stringformat:'.2f' }}"
+                readonly />
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
         {% if s_minuta.ajudantes or s_minuta.motorista %}
         <div class="linha-divisoria-nova"></div>
         {% endif %}

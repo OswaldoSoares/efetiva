@@ -773,7 +773,11 @@ function calculosMudarInputPaga(element_select, valor_digitado) {
         $("#valor-ajudante-paga").val(
             valor_digitado
         )
-    }
+    } else if (element_select.substring(0, 19) == "tabela-despesa-paga") {
+    // DESPESA RECEBE
+    var element_replace = element_select.replace("tabela", "#valor")
+    $(element_replace).val(valor_digitado )
+} 
     // recarrega mask
     formatUnmask();
     formatMask();
@@ -902,9 +906,8 @@ function calculosMudarInputRecebe(element_select, valor_digitado) {
         )
     } else if (element_select.substring(0, 21) == "tabela-despesa-recebe") {
         // DESPESA RECEBE
-        $("#valor-despesa-recebe-" + element_select.substring(2)).val(
-            valor_digitado
-        )
+        var element_replace = element_select.replace("tabela", "#valor")
+        $(element_replace).val(valor_digitado )
     } 
     // recarrega mask
     formatUnmask();
