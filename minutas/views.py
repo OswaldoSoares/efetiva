@@ -2341,4 +2341,5 @@ def gera_receitas(request):
 
 
 def gera_pagamentos(request):
+    print(request.POST)
     facade.gera_itens_pagamento(request)
