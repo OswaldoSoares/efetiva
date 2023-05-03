@@ -39,11 +39,11 @@ $(document).ready(function() {
     });
     
     /* Versão Nova */
-    $(document).on("submit", "#js-gera-pagamentos", function(event) {
+    $(document).on("submit", "#js-gera-pagamentos-ajudantes", function(event) {
         event.preventDefault();
         $.ajax({
             type: "POST",
-            url: "/minutas/gera_pagamentos",
+            url: "/minutas/gera_pagamentos_ajudantes",
             data: $(this).serialize(),
             before: function() {
                 $(".box-loader").show();

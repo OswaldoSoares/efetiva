@@ -1643,7 +1643,6 @@ def gera_itens_pagamento(request):
         insere_pernoite_paga(request)
     if request.POST.get("check-ajudante-paga"):
         insere_ajudante_paga(request)
-
     lista_despesas = []
     for i in request.POST:
         if i[0:18] == "check-despesa-paga":
@@ -1652,6 +1651,11 @@ def gera_itens_pagamento(request):
         item_tabela = "tabela-despesa-paga" + i
         item_decricao = "descricao-despesa-paga" + i
         insere_despesa_paga(item_tabela, item_decricao, request)
+
+
+def gera_itens_pagamento_ajudantes(request):
+    if request.POST.get("check-ajudante-paga"):
+        insere_ajudante_paga(request)
 
 
 def insere_porcentagem_paga(request):

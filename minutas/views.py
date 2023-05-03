@@ -2340,6 +2340,6 @@ def gera_receitas(request):
     pass
 
 
-def gera_pagamentos(request):
+def gera_pagamentos_ajudantes(request):
     print(request.POST)
-    facade.gera_itens_pagamento(request)
+    facade.gera_itens_pagamento_ajudantes(request)

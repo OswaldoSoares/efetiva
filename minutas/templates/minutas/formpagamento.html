@@ -3,7 +3,7 @@
     <span>PAGAMENTOS</span>
 </div>
 <!-- Card - Body -->
-<form method="post" id="js-gera-pagamentos">
+<form method="post" id="js-gera-pagamentos-ajudantes">
     <div class="card-body">
         {% csrf_token %}
         <input type="hidden"
@@ -743,7 +743,7 @@
             <button type="submit"
             class="i-button-form-rodape">
                 <i class="bi bi-credit-card i-button"
-                title="Gera pagamentos"></i>
+                title="Gera pagamentos ajudantes"></i>
             </button>
             {% else %}
             <i class="bi bi-reply-all i-button estorna-pagamentos"

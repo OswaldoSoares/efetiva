@@ -40,7 +40,6 @@ from .views import (
     filtra_minuta,
     filtra_minuta_veiculo_escolhido,
     filtraminutaveiculo,
-    gera_pagamentos,
     imprimeminuta,
     index_minuta,
     insere_ajudante,
@@ -53,7 +52,7 @@ from .views import (
     remove_minuta_entrega,
     remove_romaneio_minuta,
     gera_receitas,
-    gera_pagamentos,
+    gera_pagamentos_ajudantes,
 )
 
 urlpatterns = [
@@ -163,7 +162,6 @@ urlpatterns = [
         name="remove_entrega",
     ),
     path("atualizaformpg/", atualiza_form_pg, name="atualizaformpg"),
-    path("gerapagamentos/", gera_pagamentos, name="gerapagamentos"),
     path("estornapagamentos/", estorna_pagamentos, name="estornapagamentos"),
     path("concluirminuta/", concluir_minuta, name="concluirminuta"),
     path(
@@ -182,8 +180,8 @@ urlpatterns = [
         name="gera_receitas",
     ),
     path(
-        "gera_pagamentos",
-        gera_pagamentos,
-        name="gera_pagamentos",
+        "gera_pagamentos_ajudantes",
+        gera_pagamentos_ajudantes,
+        name="gera_pagamentos_ajudantes",
     ),
 ]
