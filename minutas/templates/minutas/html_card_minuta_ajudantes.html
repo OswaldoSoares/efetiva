@@ -9,12 +9,25 @@
             <span class="form-control
             input-fake"
             title="{{ ajudante.nome }}">
-                {{ ajudante.apelido }}
+                {{ ajudante.apelido }}-{{ ajudante.tipo }}
             </span>
             <div class="input-group-addon
             addon-my-color">
                 <!-- TODO -->
-                {% if not s_minuta.paga_realizada_ajudantes %}
+                {% if ajudante.tipo == "MINUTA" or ajudante.tipo == "SAIDA"%}
+                    {% if not s_minuta.paga_realizada_ajudantes %}
+                        <i class="bi bi-x-square
+                        i-button
+                        js-remove-colaborador"
+                        data-idMinuta="{{ s_minuta.idminuta }}"
+                        data-Cargo="AJUDANTE"
+                        data-idMinutaColaboradores="
+                        {{ ajudante.idMinutaColaboradores }}"></i>
+                    {% else %}
+                        <i class="bi bi-check
+                        i-button-null"></i>
+                    {% endif %}
+                {% else %}
                     <i class="bi bi-x-square
                     i-button
                     js-remove-colaborador"
@@ -22,9 +35,6 @@
                     data-Cargo="AJUDANTE"
                     data-idMinutaColaboradores="
                     {{ ajudante.idMinutaColaboradores }}"></i>
-                {% else %}
-                    <i class="bi bi-check
-                    i-button-null"></i>
                 {% endif %}
             </div>
         </div>
