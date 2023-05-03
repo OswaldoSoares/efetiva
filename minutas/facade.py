@@ -1191,31 +1191,37 @@ def edita_km_final(request, idminuta, km_final):
 
 
 def ajudantes_disponiveis(idminuta):
-    ajudantes_minuta = MinutaColaboradores.objects.filter(
-        idMinuta=idminuta,
-        Cargo="AJUDANTE",
-    ).values("idPessoal")
+    # EXCLUI O COLABORADOR TRANSEFETIVA (Coringa)
+    ajudantes_minuta = (
+        MinutaColaboradores.objects.filter(
+            idMinuta=idminuta,
+            Cargo="AJUDANTE",
+        )
+        .exclude(idPessoal_id=17)
+        .values("idPessoal")
+    )
     ajudantes_pagos = MinutaItens.objects.filter(
         idMinuta=idminuta,
         Descricao="AJUDANTE",
         TipoItens="PAGA",
     )
     if ajudantes_pagos:
-        pessoas = Pessoal.objects.filter(
-            StatusPessoal=True,
-        ).exclude(
-            idPessoal__in=ajudantes_minuta
-        ).exclude(
-            TipoPgto="MINUTA",            
-        ).exclude(
-            TipoPgto="SAIDA",
+        pessoas = (
+            Pessoal.objects.filter(
+                StatusPessoal=True,
+            )
+            .exclude(idPessoal__in=ajudantes_minuta)
+            .exclude(
+                TipoPgto="MINUTA",
+            )
+            .exclude(
+                TipoPgto="SAIDA",
+            )
         )
     else:
-        pessoas = Pessoal.objects.filter(
-            StatusPessoal=True
-        ).exclude(
+        pessoas = Pessoal.objects.filter(StatusPessoal=True).exclude(
             idPessoal__in=ajudantes_minuta
-        )    
+        )
     return pessoas
 
 

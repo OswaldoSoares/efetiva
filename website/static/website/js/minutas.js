@@ -102,7 +102,6 @@ $(document).ready(function() {
         var idminutacolaboradores = $(this).data("idminutacolaboradores")
         var idminuta = $(this).data("idminuta")
         var cargo = $(this).data("cargo")
-        alert(idminutacolaboradores +" - "+ idminuta +" - "+ cargo)
         $.ajax({
             type: "GET",
             url: "/minutas/removecolaborador",
