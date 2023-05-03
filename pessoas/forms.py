@@ -25,17 +25,15 @@ CATEGORIAS = [
 TIPOPGTO = [
     ("", ""),
     ("MENSALISTA", "MENSALISTA"),
-    ("SAIDA", "SAIDA"),
     ("MINUTA", "MINUTA"),
+    ("NENHUM", "NENHUM"),
+    ("SAIDA", "SAIDA"),
 ]
 
 TIPODOC = [
     ("", ""),
     ("RG", "RG"),
-    (
-        "CPF",
-        "CPF",
-    ),
+    ("CPF", "CPF"),
     ("HABILITAÇÃO", "HABILITAÇÃO"),
     ("RESERVISTA", "RESERVISTA"),
     ("PASSAPORTE", "PASSAPORTE"),

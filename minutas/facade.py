@@ -94,6 +94,7 @@ class MinutaSelecionada:
         self.paga_motorista = self.valor_total_motorista()
         self.paga_minuta = self.valor_total_minuta()
         self.paga_realizada = self.verifica_pagamento()
+        self.paga_realizada_ajudantes = self.verifica_pagamento_ajudantes()
         self.recebe = self.carrega_valores_recebe()
         self.recebe_minuta = self.valor_recebe_total_minuta()
         self.recebe_realizada = self.verifica_recebimentos()
@@ -478,8 +479,24 @@ class MinutaSelecionada:
         return total
 
     def verifica_pagamento(self):
-        paga = MinutaItens.objects.filter(TipoItens="PAGA", idMinuta=self.idminuta)
+        paga = MinutaItens.objects.filter(
+            TipoItens="PAGA", idMinuta=self.idminuta
+        ).exclude(Descricao="AJUDANTE")
         return True if paga else False
+
+    def verifica_pagamento_ajudantes(self):
+        pagamentos = MinutaItens.objects.filter(
+            TipoItens="PAGA", Descricao="AJUDANTE", idMinuta=self.idminuta
+        )
+        lista = [
+            {
+                "idminutaitens": i.idMinutaItens,
+                "valorbase": i.ValorBase,
+            }
+            for i in pagamentos
+        ]
+        print(lista)
+        return lista
 
     def verifica_recebimentos(self):
         recebe = MinutaItens.objects.filter(TipoItens="RECEBE", idMinuta=self.idminuta)
@@ -1175,11 +1192,30 @@ def edita_km_final(request, idminuta, km_final):
 
 def ajudantes_disponiveis(idminuta):
     ajudantes_minuta = MinutaColaboradores.objects.filter(
-        idMinuta=idminuta, Cargo="AJUDANTE"
+        idMinuta=idminuta,
+        Cargo="AJUDANTE",
     ).values("idPessoal")
-    pessoas = Pessoal.objects.filter(StatusPessoal=True).exclude(
-        idPessoal__in=ajudantes_minuta
+    ajudantes_pagos = MinutaItens.objects.filter(
+        idMinuta=idminuta,
+        Descricao="AJUDANTE",
+        TipoItens="PAGA",
     )
+    if ajudantes_pagos:
+        pessoas = Pessoal.objects.filter(
+            StatusPessoal=True,
+        ).exclude(
+            idPessoal__in=ajudantes_minuta
+        ).exclude(
+            TipoPgto="MINUTA",            
+        ).exclude(
+            TipoPgto="SAIDA",
+        )
+    else:
+        pessoas = Pessoal.objects.filter(
+            StatusPessoal=True
+        ).exclude(
+            idPessoal__in=ajudantes_minuta
+        )    
     return pessoas
 
 
@@ -1641,8 +1677,6 @@ def gera_itens_pagamento(request):
         insere_perimetro_paga(request)
     if request.POST.get("check-pernoite-paga"):
         insere_pernoite_paga(request)
-    if request.POST.get("check-ajudante-paga"):
-        insere_ajudante_paga(request)
     lista_despesas = []
     for i in request.POST:
         if i[0:18] == "check-despesa-paga":
@@ -1996,7 +2030,7 @@ def insere_minuta_item(
     obj.Tempo = tempo
     obj.idMinuta_id = idminuta
     obj.Obs = obs
-    # obj.save()
+    obj.save()
 
 
 def estorna_paga(idminuta):

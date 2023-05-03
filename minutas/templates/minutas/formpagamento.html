@@ -585,6 +585,7 @@
             </div>
         </div>
         <!-- Ajudante -->
+        {% if not s_minuta.paga_realizada_ajudantes %}
         <div class="card-body-item">
             <div class="input-group">
                 <i class="bi bi-wallet2 input-group-addon addon-my-color"></i>
@@ -598,6 +599,7 @@
                     name="check-ajudante-paga"
                     {% if s_minuta.paga.c_ajud %}
                     checked="checked"
+                    readonly
                     {% endif %} />
                 </div>
             </div>
@@ -635,6 +637,7 @@
                 readonly />
             </div>
         </div>
+        {% endif %}
         <!-- Despesas -->
         {% if s_minuta.motorista.0.obj.TipoPgto != 'MENSALISTA' %}
         {% if s_minuta.despesas %}
@@ -739,7 +742,7 @@
             {% if s_minuta.paga_minuta %}
             {% if s_minuta.motorista or s_minuta.ajudantes %}
             {% if s_minuta.status_minuta == 'ABERTA' %}
-            {% if not s_minuta.paga_realizada %}
+            {% if not s_minuta.paga_realizada_ajudantes %}
             <button type="submit"
             class="i-button-form-rodape">
                 <i class="bi bi-credit-card i-button"
