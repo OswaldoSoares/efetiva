@@ -52,19 +52,16 @@ $(document).ready(function() {
                 $(".html-form-paga").html("");
             },
             success: function(data) {
-                $(".box-loader").hide();
                 $(".card-minuta").html(data["html_card_minuta"]);
                 $(".card-checklist").html(data["html_card_checklist"]);
                 $(".html-form-paga").html(data["html_card_pagamentos"]);
-                console.log(data["html_card_minutas"]);
-                console.log(data["html_card_checklist"]);
-                console.log(data["html_card_pagamentos"]);
                 verificaCheckboxPaga();
                 verificaCheckboxRecebe();
                 mostraChecklist();
                 formatMask();
                 somaReceitas();
                 somaPagamentos();
+                $("html, body").scrollTop(0);
                 $(".box-loader").hide();
             },
             error: function(error) {
@@ -95,10 +92,8 @@ $(document).ready(function() {
                 formatMask();
                 somaReceitas();
                 somaPagamentos();
+                $("html, body").scrollTop(0);
                 $(".box-loader").hide();
-                console.log(data["html_card_minutas"]);
-                console.log(data["html_card_checklist"]);
-                console.log(data["html_card_pagamentos"]);
             },
             error: function(error) {
                 console.log(error)

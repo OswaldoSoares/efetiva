@@ -71,6 +71,7 @@ class MinutaSelecionada:
         self.cliente = minuta.idCliente.Fantasia
         self.motorista = MinutaMotorista(idminuta).nome
         self.ajudantes = MinutaAjudantes(idminuta).nome
+        self.ajudante_avulso = self.get_ajudante_avulso()
         self.veiculo_solicitado = minuta.idCategoriaVeiculo
         self.veiculo = minuta.idVeiculo
         self.km_inicial = minuta.KMInicial
@@ -153,6 +154,15 @@ class MinutaSelecionada:
         if self.ajudantes:
             saidas = len(self.entregas)
             return saidas
+
+    def get_ajudante_avulso(self):
+        ajudantes = self.ajudantes
+        lista_tipo_pgto = []
+        for i in ajudantes:
+            lista_tipo_pgto.append(i["tipo"])
+        if "SAIDA" in lista_tipo_pgto or "MINITA" in lista_tipo_pgto:
+            return True        
+
 
     def get_total_horas(self):
         periodo = timedelta(hours=0, minutes=0)
