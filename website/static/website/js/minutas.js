@@ -45,12 +45,27 @@ $(document).ready(function() {
             type: "POST",
             url: "/minutas/gera_pagamentos_ajudantes",
             data: $(this).serialize(),
-            before: function() {
+            beforeSend: function() {
                 $(".box-loader").show();
+                $(".card-minuta").html("");
+                $(".card-checklist").html("");
+                $(".html-form-paga").html("");
             },
             success: function(data) {
                 $(".box-loader").hide();
-                window.location.href = "/minutas/minuta/" + data["html_idminuta"] + "/"
+                $(".card-minuta").html(data["html_card_minuta"]);
+                $(".card-checklist").html(data["html_card_checklist"]);
+                $(".html-form-paga").html(data["html_card_pagamentos"]);
+                console.log(data["html_card_minutas"]);
+                console.log(data["html_card_checklist"]);
+                console.log(data["html_card_pagamentos"]);
+                verificaCheckboxPaga();
+                verificaCheckboxRecebe();
+                mostraChecklist();
+                formatMask();
+                somaReceitas();
+                somaPagamentos();
+                $(".box-loader").hide();
             },
             error: function(error) {
                 console.log(error)
@@ -59,17 +74,31 @@ $(document).ready(function() {
     });
 
     // Versão Nova //
-    $(document).on("click", ".estorna-pagamentos", function(event) {
-        $(".container").hide()
+    $(document).on("click", ".estorna-pagamentos-ajudantes", function(event) {
         var idminuta = $(this).attr("idMinuta")
         $.ajax({
             type: "GET",
-            url: "/minutas/estornapagamentos",
+            url: "/minutas/estorna_pagamentos_ajudantes",
             data: {
-                idMinuta: idminuta,
+                idminuta: idminuta,
+            },
+            beforeSend: function() {
+                $(".box-loader").show();
             },
             success: function(data) {
-                window.location.href = "/minutas/minuta/" + data["html_idminuta"] + "/"
+                $(".card-minuta").html(data["html_card_minuta"]);
+                $(".card-checklist").html(data["html_card_checklist"]);
+                $(".html-form-paga").html(data["html_card_pagamentos"]);
+                verificaCheckboxPaga();
+                verificaCheckboxRecebe();
+                mostraChecklist();
+                formatMask();
+                somaReceitas();
+                somaPagamentos();
+                $(".box-loader").hide();
+                console.log(data["html_card_minutas"]);
+                console.log(data["html_card_checklist"]);
+                console.log(data["html_card_pagamentos"]);
             },
             error: function(error) {
                 console.log(error)

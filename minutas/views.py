@@ -2341,5 +2341,18 @@ def gera_receitas(request):
 
 
 def gera_pagamentos_ajudantes(request):
-    print(request.POST)
+    idminuta = request.POST.get("idminuta")
     facade.gera_itens_pagamento_ajudantes(request)
+    contexto = facade.cria_contexto(idminuta)
+    contexto.update({"idminuta": idminuta})
+    data = facade.create_data_gera_pagamentos_ajudantes(request, contexto)
+    return data
+
+
+def estorna_pagamentos_ajudantes(request):
+    idminuta = request.GET.get("idminuta")
+    facade.exclui_pagamentos_ajudantes(idminuta)
+    contexto = facade.cria_contexto(idminuta)
+    contexto.update({"idminuta": idminuta})
+    data = facade.create_data_exclui_pagamentos_ajudantes(request, contexto)
+    return data

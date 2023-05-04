@@ -30,7 +30,7 @@ from .views import (
     editaminutakminicial,
     editaminutaveiculo,
     estorna_minuta,
-    estorna_pagamentos,
+    estorna_pagamentos_ajudantes,
     exclui_minuta,
     excluiminutaajudante,
     excluiminutadespesa,
@@ -162,7 +162,11 @@ urlpatterns = [
         name="remove_entrega",
     ),
     path("atualizaformpg/", atualiza_form_pg, name="atualizaformpg"),
-    path("estornapagamentos/", estorna_pagamentos, name="estornapagamentos"),
+    path(
+        "estorna_pagamentos_ajudantes",
+        estorna_pagamentos_ajudantes,
+        name="estorna_pagamentos_ajudantes",
+    ),
     path("concluirminuta/", concluir_minuta, name="concluirminuta"),
     path(
         "adiciona_romaneio_minuta",

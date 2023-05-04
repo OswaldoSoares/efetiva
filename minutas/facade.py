@@ -18,7 +18,11 @@ from pessoas.models import Pessoal
 from romaneios.models import NotasClientes, RomaneioNotas, Romaneios
 from veiculos.models import CategoriaVeiculo, Veiculo
 
-from minutas.forms import CadastraMinutaKMFinal, CadastraMinutaKMInicial
+from minutas.forms import (
+    CadastraMinutaKMFinal,
+    CadastraMinutaKMInicial,
+    CadastraMinutaHoraFinal,
+)
 from minutas.models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas
 
 
@@ -82,8 +86,6 @@ class MinutaSelecionada:
         self.tabela_veiculo = ClienteTabelaVeiculo(minuta.idCliente).tabela
         self.tabela_perimetro = ClienteTabelaPerimetro(minuta.idCliente).tabela
         self.tabela_capacidade = ClienteTabelaCapacidade(minuta.idCliente).tabela
-        self.valores_recebe = self.carrega_valores_recebe()
-        self.valores_paga = self.carrega_valores_paga()
         self.total_horas = self.get_total_horas()
         self.total_horas_str = self.get_total_horas_str()
         self.total_kms = self.get_total_kms()
@@ -495,7 +497,6 @@ class MinutaSelecionada:
             }
             for i in pagamentos
         ]
-        print(lista)
         return lista
 
     def verifica_recebimentos(self):
@@ -1101,10 +1102,12 @@ def cria_contexto(idminuta):
     s_minuta = MinutaSelecionada(idminuta)
     minuta = Minuta.objects.filter(idMinuta=idminuta)
     minutaform = get_object_or_404(minuta, idMinuta=idminuta)
+    form_hora_final = CadastraMinutaHoraFinal(instance=minutaform)
     form_km_inicial = CadastraMinutaKMInicial(instance=minutaform)
     form_km_final = CadastraMinutaKMFinal(instance=minutaform)
     contexto = {
         "s_minuta": s_minuta,
+        "form_hora_final": form_hora_final,
         "form_km_inicial": form_km_inicial,
         "form_km_final": form_km_final,
     }
@@ -2043,3 +2046,49 @@ def estorna_paga(idminuta):
     pagamentos = MinutaItens.objects.filter(TipoItens="PAGA", idMinuta=idminuta)
     for i in pagamentos:
         i.delete()
+
+
+def exclui_pagamentos_ajudantes(idminuta):
+    pagamentos = MinutaItens.objects.filter(
+        TipoItens="PAGA",
+        Descricao="AJUDANTE",
+        idMinuta=idminuta,
+    )
+    pagamentos.delete()
+
+
+def create_data_gera_pagamentos_ajudantes(request, contexto):
+    data = dict()
+    data = html_card_minuta(request, data, contexto)
+    data = html_card_checklist(request, data, contexto)
+    data = html_card_pagamentos(request, data, contexto)
+    return JsonResponse(data)
+
+
+def html_card_minuta(request, data, contexto):
+    data["html_card_minuta"] = render_to_string(
+        "minutas/html_card_minuta.html", contexto, request=request
+    )
+    return data
+
+
+def html_card_checklist(request, data, contexto):
+    data["html_card_checklist"] = render_to_string(
+        "minutas/checklistminuta.html", contexto, request=request
+    )
+    return data
+
+
+def html_card_pagamentos(request, data, contexto):
+    data["html_card_pagamentos"] = render_to_string(
+        "minutas/formpagamento.html", contexto, request=request
+    )
+    return data
+
+
+def create_data_exclui_pagamentos_ajudantes(request, contexto):
+    data = dict()
+    data = html_card_minuta(request, data, contexto)
+    data = html_card_checklist(request, data, contexto)
+    data = html_card_pagamentos(request, data, contexto)
+    return JsonResponse(data)
