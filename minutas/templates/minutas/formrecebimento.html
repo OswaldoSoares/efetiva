@@ -38,7 +38,11 @@
                     R$
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change js-decimal"
+                class="form-control
+                form-control-minuta
+                text-right
+                js-input-change
+                js-decimal"
                 id="tabela-taxa-recebe"
                 name="tabela-taxa-recebe"
                 value="{{ s_minuta.recebe.v_taxa|stringformat:'.2f' }}" />
@@ -46,7 +50,7 @@
                     UN
                 </span>
                 <input type="text"
-                class="form-control text-right js-unidade"
+                class="form-control form-control-minuta text-right js-unidade"
                 value="1"
                 readonly />
                 <span class="input-group-addon addon-my-color">
@@ -56,7 +60,11 @@
                     R$
                 </span>
                 <input type="text"
-                class="total-recebe form-control text-right js-decimal"
+                class="form-control
+                form-control-minuta
+                text-right
+                total-recebe
+                js-decimal"
                 id="valor-taxa-recebe"
                 name="valor-taxa-recebe"
                 value="{{ s_minuta.recebe.v_taxa|stringformat:'.2f' }}"
@@ -91,7 +99,11 @@
                     &nbsp%&nbsp
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change js-decimal"
+                class="form-control
+                form-control-minuta
+                text-right
+                js-input-change
+                js-decimal"
                 id="tabela-seguro-recebe"
                 name="tabela-seguro-recebe"
                 value="{{ s_minuta.recebe.v_segu|stringformat:'.3f' }}" />
@@ -99,7 +111,11 @@
                     R$
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change js-decimal"
+                class="form-control
+                form-control-minuta
+                text-right
+                js-input-change
+                js-decimal"
                 id="minuta-seguro-recebe"
                 name="minuta-seguro-recebe"
                 value="{{ s_minuta.recebe.m_segu|stringformat:'.2f' }}" />
@@ -110,7 +126,11 @@
                     R$
                 </span>
                 <input type="text"
-                class="total-recebe form-control text-right js-decimal"
+                class="form-control
+                form-control-minuta
+                text-right
+                total-recebe
+                js-decimal"
                 id="valor-seguro-recebe"
                 name="valor-seguro-recebe"
                 value="{{ s_minuta.recebe.t_segu|stringformat:'.2f' }}"
@@ -145,7 +165,11 @@
                     &nbsp%&nbsp
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change js-decimal"
+                class="form-control
+                form-control-minuta
+                text-right
+                js-input-change
+                js-decimal"
                 id="tabela-porcentagem-recebe"
                 name="tabela-porcentagem-recebe"
                 value="{{ s_minuta.recebe.v_porc|stringformat:'.2f' }}" />
@@ -153,7 +177,11 @@
                     R$
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change js-decimal"
+                class="form-control
+                form-control-minuta
+                text-right
+                js-input-change
+                js-decimal"
                 id="minuta-porcentagem-recebe"
                 name="minuta-porcentagem-recebe"
                 value="{{ s_minuta.recebe.m_porc|stringformat:'.2f' }}" />
@@ -164,8 +192,12 @@
                     R$
                 </span>
                 <input type="text"
-                class="total-recebe total-phkesc-recebe form-control
-                text-right js-decimal"
+                class="form-control
+                form-control-minuta
+                text-right
+                total-recebe
+                total-phkesc-recebe
+                js-decimal"
                 id="valor-porcentagem-recebe"
                 name="valor-porcentagem-recebe"
                 value="{{ s_minuta.recebe.t_porc|stringformat:'.2f' }}"
@@ -202,13 +234,20 @@
                 <input type="text"
                 id="tabela-hora-recebe"
                 name="tabela-hora-recebe"
-                class="form-control text-right js-input-change js-decimal"
+                class="form-control
+                form-control-minuta
+                text-right
+                js-input-change
+                js-decimal"
                 value="{{ s_minuta.recebe.v_hora|stringformat:'.2f' }}" />
                 <span class="input-group-addon addon-blue">
                     HS
                 </span>
                 <input type="time"
-                class="form-control text-right js-input-change"
+                class="form-control
+                form-control-minuta
+                text-right
+                js-input-change"
                 id="minuta-hora-recebe"
                 name="minuta-hora-recebe"
                 value="{{ s_minuta.recebe.m_hora }}" />
@@ -219,8 +258,12 @@
                     R$
                 </span>
                 <input type="text"
-                class="total-recebe total-phkesc-recebe form-control
-                text-right js-decimal"
+                class="form-control
+                form-control-minuta
+                text-right
+                total-recebe
+                total-phkesc-recebe
+                js-decimal"
                 id="valor-hora-recebe"
                 name="valor-hora-recebe"
                 value="{{ s_minuta.recebe.t_hora|stringformat:'.2f' }}"
@@ -255,7 +298,11 @@
                     &nbsp%&nbsp
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change js-decimal"
+                class="form-control
+                form-control-minuta
+                text-right
+                js-input-change
+                js-decimal"
                 id="tabela-excedente-recebe"
                 name="tabela-excedente-recebe"
                 value="{{ s_minuta.recebe.v_exce|stringformat:'.2f' }}" />
@@ -263,7 +310,10 @@
                     HS
                 </span>
                 <input type="time"
-                class="form-control text-right js-input-change"
+                class="form-control
+                form-control-minuta
+                text-right
+                js-input-change"
                 id="minuta-excedente-recebe"
                 name="minuta-excedente-recebe"
                 value="{{ s_minuta.recebe.m_exce }}" />
@@ -274,8 +324,12 @@
                     R$
                 </span>
                 <input type="text"
-                class="total-recebe total-phkesc-recebe form-control
-                text-right js-decimal"
+                class="form-control
+                form-control-minuta
+                text-right
+                total-recebe
+                total-phkesc-recebe
+                js-decimal"
                 id="valor-excedente-recebe"
                 name="valor-excedente-recebe"
                 value="{{ s_minuta.recebe.t_exce|stringformat:'.2f' }}"
@@ -310,7 +364,11 @@
                     R$
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change js-decimal"
+                class="form-control
+                form-control-minuta
+                text-right
+                js-input-change
+                js-decimal"
                 id="tabela-kilometragem-recebe"
                 name="tabela-kilometragem-recebe"
                 value="{{ s_minuta.recebe.v_kilm|stringformat:'.2f' }}" />
@@ -318,7 +376,11 @@
                     UN
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change js-unidade"
+                class="form-control
+                form-control-minuta
+                text-right
+                js-input-change
+                js-unidade"
                 id="minuta-kilometragem-recebe"
                 name="minuta-kilometragem-recebe"
                 value="{{ s_minuta.recebe.m_kilm|stringformat:'.0f' }}" />
@@ -329,8 +391,12 @@
                     R$
                 </span>
                 <input type="text"
-                class="total-recebe total-phkesc-recebe form-control
-                text-right"
+                class="form-control
+                form-control-minuta
+                text-right
+                total-recebe
+                total-phkesc-recebe
+                js-decimal"
                 id="valor-kilometragem-recebe"
                 name="valor-kilometragem-recebe"
                 value="{{ s_minuta.recebe.t_kilm|stringformat:'.2f' }}"
@@ -365,7 +431,11 @@
                     R$
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change js-decimal"
+                class="form-control
+                form-control-minuta
+                text-right
+                js-input-change
+                js-decimal"
                 id="tabela-entrega-recebe"
                 name="tabela-entrega-recebe"
                 value="{{ s_minuta.recebe.v_entr|stringformat:'.2f' }}" />
@@ -373,7 +443,11 @@
                     UN
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change js-unidade"
+                class="form-control
+                form-control-minuta
+                text-right
+                js-input-change
+                js-unidade"
                 id="minuta-entrega-recebe"
                 name="minuta-entrega-recebe"
                 value="{{ s_minuta.recebe.m_entr|stringformat:'.0f' }}" />
@@ -384,8 +458,12 @@
                     R$
                 </span>
                 <input type="text"
-                class="total-recebe total-phkesc-recebe form-control
-                text-right js-decimal"
+                class="form-control
+                form-control-minuta
+                text-right
+                total-recebe
+                total-phkesc-recebe
+                js-decimal"
                 id="valor-entrega-recebe"
                 name="valor-entrega-recebe"
                 value="{{ s_minuta.recebe.t_entr|stringformat:'.2f' }}"
@@ -420,7 +498,11 @@
                     R$
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change js-decimal"
+                class="form-control
+                form-control-minuta
+                text-right
+                js-input-change
+                js-decimal"
                 id="tabela-entrega-kg-recebe"
                 name="tabela-entrega-kg-recebe"
                 value="{{ s_minuta.recebe.v_enkg|stringformat:'.2f' }}" />
@@ -428,7 +510,10 @@
                     KG
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change js-decimal"
+                class="form-control
+                form-control-minuta
+                text-right js-input-change
+                js-decimal"
                 id="minuta-entrega-kg-recebe"
                 name="minuta-entrega-kg-recebe"
                 value="{{ s_minuta.recebe.m_enkg|stringformat:'.2f' }}" />
@@ -439,8 +524,12 @@
                     R$
                 </span>
                 <input type="text"
-                class="total-recebe total-phkesc-recebe form-control
-                text-right js-decimal"
+                class="form-control
+                form-control-minuta
+                text-right
+                total-recebe
+                total-phkesc-recebe
+                js-decimal"
                 id="valor-entrega-kg-recebe"
                 name="valor-entrega-kg-recebe"
                 value="{{ s_minuta.recebe.t_enkg|stringformat:'.2f' }}"
@@ -475,7 +564,11 @@
                     R$
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change js-decimal"
+                class="form-control
+                form-control-minuta
+                text-right
+                js-input-change
+                js-decimal"
                 id="tabela-entrega-volume-recebe"
                 name="tabela-entrega-volume-recebe"
                 value="{{ s_minuta.recebe.v_evol|stringformat:'.2f' }}" />
@@ -483,7 +576,11 @@
                     UN
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change js-unidade"
+                class="form-control
+                form-control-minuta
+                text-right
+                js-input-change
+                js-unidade"
                 id="minuta-entrega-volume-recebe"
                 name="minuta-entrega-volume-recebe"
                 value="{{ s_minuta.recebe.m_evol|stringformat:'.0f' }}" />
@@ -494,8 +591,12 @@
                     R$
                 </span>
                 <input type="text"
-                class="total-recebe total-phkesc-recebe form-control
-                text-right js-decimal"
+                class="form-control
+                form-control-minuta
+                text-right
+                total-recebe
+                total-phkesc-recebe
+                js-decimal"
                 id="valor-entrega-volume-recebe"
                 name="valor-entrega-volume-recebe"
                 value="{{ s_minuta.recebe.t_evol|stringformat:'.2f' }}"
@@ -532,13 +633,20 @@
                 <input type="text"
                 id="tabela-saida-recebe"
                 name="tabela-saida-recebe"
-                class="form-control text-right js-input-change js-decimal"
+                class="form-control
+                form-control-minuta
+                text-right
+                js-input-change
+                js-decimal"
                 value="{{ s_minuta.recebe.v_said|stringformat:'.2f' }}" />
                 <span class="input-group-addon addon-blue">
                     UN
                 </span>
                 <input type="text"
-                class="form-control text-right js-unidade"
+                class="form-control
+                form-control-minuta
+                text-right
+                js-unidade"
                 value="1"
                 readonly />
                 <span class="input-group-addon addon-my-color">
@@ -548,8 +656,12 @@
                     R$
                 </span>
                 <input type="text"
-                class="total-recebe total-phkesc-recebe form-control
-                text-right js-decimal"
+                class="form-control
+                form-control-minuta
+                text-right
+                total-recebe
+                total-phkesc-recebe
+                js-decimal"
                 id="valor-saida-recebe"
                 name="valor-saida-recebe"
                 value="{{ s_minuta.recebe.v_said|stringformat:'.2f' }}"
@@ -584,7 +696,11 @@
                     R$
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change js-decimal"
+                class="form-control
+                form-control-recebe
+                text-right
+                js-input-change
+                js-decimal"
                 id="tabela-capacidade-recebe"
                 name="tabela-capacidade-recebe"
                 value="{{ s_minuta.recebe.v_capa|stringformat:'.2f' }}" />
@@ -592,7 +708,10 @@
                     UN
                 </span>
                 <input type="text"
-                class="form-control text-right js-unidade"
+                class="form-control
+                form-control-recebe
+                text-right
+                js-unidade"
                 value="1"
                 readonly />
                 <span class="input-group-addon addon-my-color">
@@ -602,8 +721,12 @@
                     R$
                 </span>
                 <input type="text"
-                class="total-recebe total-phkesc-recebe form-control
-                text-right js-decimal"
+                class="form-control
+                form-control-recebe
+                text-right
+                total-recebe
+                total-phkesc-recebe
+                js-decimal"
                 id="valor-capacidade-recebe"
                 name="valor-capacidade-recebe"
                 value="{{ s_minuta.recebe.v_capa|stringformat:'.2f' }}"
@@ -642,13 +765,21 @@
                 <input type="text"
                 id="tabela-perimetro-recebe"
                 name="tabela-perimetro-recebe"
-                class="form-control text-right js-input-change js-decimal"
+                class="form-control
+                form-control-minuta
+                text-right
+                js-input-change
+                js-decimal"
                 value="{{ s_minuta.recebe.v_peri|stringformat:'.2f' }}" />
                 <span class="input-group-addon addon-blue">
                     R$
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change js-decimal"
+                class="form-control
+                form-control-minuta
+                text-right
+                js-input-change
+                js-decimal"
                 id="minuta-perimetro-recebe"
                 name="minuta-perimetro-recebe"
                 value="{{ s_minuta.recebe.m_peri|stringformat:'.2f' }}" />
@@ -659,7 +790,11 @@
                     R$
                 </span>
                 <input type="text"
-                class="total-recebe form-control text-right js-decimal"
+                class="form-control
+                form-control-minuta
+                text-right
+                total-recebe
+                js-decimal"
                 id="valor-perimetro-recebe"
                 name="valor-perimetro-recebe"
                 {% if s_minuta.perimetro %}
@@ -698,7 +833,11 @@
                     &nbsp%&nbsp
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change js-decimal"
+                class="form-control
+                form-control-minuta
+                text-right
+                js-input-change
+                js-decimal"
                 id="tabela-pernoite-recebe"
                 name="tabela-pernoite-recebe"
                 value="{{ s_minuta.recebe.v_pnoi|stringformat:'.2f' }}" />
@@ -706,7 +845,11 @@
                     R$
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change js-decimal"
+                class="form-control
+                form-control-minuta
+                text-right
+                js-input-change
+                js-decimal"
                 id="minuta-pernoite-recebe"
                 name="minuta-pernoite-recebe"
                 value="{{ s_minuta.recebe.m_peri|stringformat:'.2f' }}" />
@@ -717,7 +860,11 @@
                     R$
                 </span>
                 <input type="text"
-                class="total-recebe form-control text-right js-decimal"
+                class="form-control
+                form-control-minuta
+                text-right
+                total-recebe
+                js-decimal"
                 id="valor-pernoite-recebe"
                 name="valor-pernoite-recebe"
                 value="{{ s_minuta.recebe.t_pnoi|stringformat:'.2f' }}"
@@ -752,7 +899,11 @@
                     R$
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change js-decimal"
+                class="form-control
+                form-control-minuta
+                text-right
+                js-input-change
+                js-decimal"
                 id="tabela-ajudante-recebe"
                 name="tabela-ajudante-recebe"
                 value="{{ s_minuta.recebe.v_ajud|stringformat:'.2f' }}" />
@@ -760,7 +911,11 @@
                     UN
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change js-unidade"
+                class="form-control
+                form-control-minuta
+                text-right
+                js-input-change
+                js-unidade"
                 id="minuta-ajudante-recebe"
                 name="minuta-ajudante-recebe"
                 value="{{ s_minuta.recebe.m_ajud|stringformat:'.0f' }}" />
@@ -771,7 +926,11 @@
                     R$
                 </span>
                 <input type="text"
-                class="total-recebe form-control text-right js-decimal"
+                class="form-control
+                form-control-minuta
+                text-right
+                total-recebe
+                js-decimal"
                 id="valor-ajudante-recebe"
                 name="valor-ajudante-recebe"
                 value="{{ s_minuta.recebe.t_ajud|stringformat:'.2f' }}"
@@ -808,7 +967,11 @@
                     R$
                 </span>
                 <input type="text"
-                class="form-control text-right js-input-change js-decimal"
+                class="form-control
+                form-control-minuta
+                text-right
+                js-input-change
+                js-decimal"
                 id="tabela-despesa-recebe-{{ despesa.idMinutaItens }}"
                 name="tabela-despesa-recebe-{{ despesa.idMinutaItens }}"
                 value="{{ despesa.Valor|stringformat:'.2f' }}" />
@@ -816,7 +979,10 @@
                     UN
                 </span>
                 <input type="text"
-                class="form-control text-right js-unidade"
+                class="form-control
+                form-control-minuta
+                text-right
+                js-unidade"
                 value="1"
                 readonly />
                 <span class="input-group-addon addon-my-color">
@@ -826,7 +992,11 @@
                     R$
                 </span>
                 <input type="text"
-                class="total-recebe form-control text-right js-decimal"
+                class="form-control
+                form-control-minuta
+                text-right
+                total-recebe
+                js-decimal"
                 id="valor-despesa-recebe-{{ despesa.idMinutaItens }}"
                 name="valor-despesa-recebe-{{ despesa.idMinutaItens }}"
                 value="{{ despesa.Valor|stringformat:'.2f' }}"
