@@ -1,41 +1,42 @@
 <div>
     <div class="div-flex">
-        <div class="linha-minuta">
-            <!-- Número e data da minuta -->
-            <i class="bi bi-file-text i-button-null">
-                <span>{{ minutas.Minuta }}</span>
-                <span>{{ minutas.Data }}</span>
-                <span>{{ minutas.Hora }}</span>
-            </i>
-        </div>
-        <div class="linha-minuta">
-            <!-- Cliente da minuta -->
-            <span>{{ minutas.Cliente }}
-                <i class="bi bi-building i-button-null"></i>
-            </span>
-        </div>
+        <!-- Número e data da minuta -->
+        <i class="bi bi-file-text i-button-null">
+            <span>{{ minutas.Minuta }}</span>
+            <span>{{ minutas.Data }}</span>
+            <span>{{ minutas.Hora }}</span>
+        </i>
+        {% if minutas.Motorista %}
+            <div class="linha-minuta">
+                <!-- Motorista da Minuta -->
+                <span>
+                    {{ minutas.Motorista }}
+                    <i class="bi bi-person-square
+                    i-button-null"> </i>
+                </span>
+            </div>
+        {% else %}
+            <div></div>
+        {% endif %}
     </div>
 </div>
 <div>
-    <!-- Apenas mostra se tiver motorista -->
-    {% if minutas.Motorista %}
     <div class="div-flex">
-        <div class="linha-minuta linha-motorista">
-            <!-- Motorista da Minuta -->
-            <i class="bi bi-person-square i-button-null">
-                <span>{{ minutas.Motorista }}</span>
-            </i>
-            {% endif %}
-        </div>
-        <div class="linha-minuta linha-motorista">
+        <!-- Cliente da minuta -->
+        <i class="bi bi-building i-button-null">
+            <span>
+                {{ minutas.Cliente }}
+            </span>
+        </i>
+        {% if minutas.Veiculo %}
             <!-- Veículo da minuta -->
-            {% if minutas.Veiculo %}
             <span>{{ minutas.Veiculo }} 
                 <i class="bi bi-truck i-button-null"></i>
             </span>
-        </div>
+        {% else %}
+            <div></div>
+        {% endif %}
     </div>
-    {% endif %}
 </div>
 <!-- Botões de acesso a Minuta -->
 <div class="icones-minuta">
