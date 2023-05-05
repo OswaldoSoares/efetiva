@@ -1,8 +1,8 @@
 {% load humanize %}
 <div class="card-header">
     <span>ENTREGAS</span>
-    {% if not s_minuta.paga_realizada %}
-    <i class="bi bi-plus-square i-button"
+    {% if s_minuta.status_minuta == "ABERTA" %}
+    <i class="bi bi-plus-lg i-button"
     onclick="openMyModal(event); return false;"
     data-title="INSERE ENTREGA"
     data-action="{% url 'insereentrega' %}"
@@ -15,7 +15,7 @@
     <div class="card-body-item">
         <div class="input-group">
             <div class="input-group-addon addon-my-color">
-                <i class="bi bi-list-check"></i>
+                <i class="bi bi-list-check i-button-null"></i>
             </div>
             <div class="form-control input-fake">
                 <span>
@@ -23,14 +23,15 @@
                 </span>
             </div>
             <div class="input-group-addon addon-my-color">
-                {% if not s_minuta.paga_realizada %}
-                <i class="bi bi-x-square i-button js-remove-romaneio-minuta"
+                {% if s_minuta.status_minuta == "ABERTA" %}
+                <i class="bi bi-x-lg i-button js-remove-romaneio-minuta"
                 data-idminuta="{{ s_minuta.idminuta }}"
                 data-romaneio="{{ romaneio }}"
                 data-idcliente="{{ s_minuta.idcliente }}"
                 title="Remove Romaneio da Minuta"></i>
                 {% else %}
-                <i class="bi bi-check"></i>
+                <i class="bi bi-check
+                i-button-null"></i>
                 {% endif %}
             </div>
         </div>
@@ -42,40 +43,47 @@
     {% for entrega in s_minuta.entregas %}
     <div class="card-body-item">
         <div class="input-group">
-            <div class="input-group-addon addon-my-color">
+            <i class="input-group-addon
+            addon-my-color
+            i-button-null">
                 {{ forloop.counter|stringformat:".2d" }}
-            </div>
+            </i>
             <div class="input-fake div-flex font-menor">
                 <span>
-                    <i class="bi bi-file-text"></i>
+                    <i class="bi bi-file-text
+                    i-button-null"></i>
                         {{ entrega.Nota }}
                 </span>
                 {% if entrega.ValorNota %}
-                <span>
-                    R$ {{ entrega.ValorNota|intcomma }}
-                </span>
+                    <span>
+                        <i class="i-button-null">R$</i>
+                        {{ entrega.ValorNota|intcomma }}
+                    </span>
                 {% endif %}
                 {% if entrega.Peso %}
-                <span>
-                    <i class="bi bi-truck-flatbed"></i>
-                        {{ entrega.Peso|intcomma }}
-                </span>
+                    <span>
+                        <i class="bi bi-truck-flatbed
+                        i-button-null"></i>
+                            {{ entrega.Peso|intcomma }}
+                    </span>
                 {% endif %}
                 {% if entrega.Volume %}
-                <span>
-                    <i class="bi bi-grid-fill"></i>
-                        {{ entrega.Volume }}
-                </span>
+                    <span>
+                        <i class="bi bi-grid-fill
+                        i-button-null"></i>
+                            {{ entrega.Volume }}
+                    </span>
                 {% endif %}
             </div>
             <div class="input-group-addon addon-my-color">
-                {% if not s_minuta.paga_realizada %}
-                <i class="bi bi-x-square i-button js-remove-entrega"
-                idMinuta="{{ s_minuta.idminuta }}"
-                idMinutaNotas="{{ entrega.idMinutaNotas }}"
-                title="Remove Nota Fiscal das Entregas"></i>
+                {% if s_minuta.status_minuta == "ABERTA" %}
+                    <i class="bi bi-x-lg i-button js-remove-entrega"
+                    idMinuta="{{ s_minuta.idminuta }}"
+                    idMinutaNotas="{{ entrega.idMinutaNotas }}"
+                    title="Remove Nota Fiscal das Entregas"></i>
                 {% else %}
-                <i class="bi bi-check"></i>
+                    <i class="bi bi-check
+                    i-button-null"></i>
                 {% endif %}
             </div>
         </div>
@@ -83,22 +91,25 @@
     {% if entrega.Nome %}
     <div class="card-body-item">
         <span class="form-control input-fake linha-add">
-            <i class="bi bi-shop"></i> {{ entrega.Nome }}
+            <i class="bi bi-shop
+            i-button-null"></i>
+            {{ entrega.Nome }}
         </span>
     </div>
     {% endif %}
     {% if entrega.Bairro or entrega.Cidade or entrega.Estado %}
     <div class="card-body-item">
         <span class="form-control input-fake linha-add">
-            <i class="bi bi-geo-alt-fill"></i>
+            <i class="bi bi-geo-alt-fill
+            i-button-null"></i>
             {% if entrega.Bairro %}
-            {{ entrega.Bairro }} -
+                {{ entrega.Bairro }} -
             {% endif %}
             {% if entrega.Cidade %}
-            {{ entrega.Cidade }} -
+                {{ entrega.Cidade }} -
             {% endif %}
             {% if entrega.Estado %}
-            {{ entrega.Estado }}
+                {{ entrega.Estado }}
             {% endif %}
         </span>
     </div>
@@ -110,21 +121,19 @@
     <div class="div-flex">
         <span>
             <i class="bi bi-geo-alt-fill"></i>
-                {{ s_minuta.quantidade_entregas }}
+            {{ s_minuta.quantidade_entregas }}
         </span>
         <span>
             R$ {{ s_minuta.t_entregas.valor_entregas|intcomma }}
         </span>
         <span>
             <i class="bi bi-truck-flatbed"></i>
-                {{ s_minuta.t_entregas.peso_entregas|intcomma }}
+            {{ s_minuta.t_entregas.peso_entregas|intcomma }}
         </span>
         <span>
             <i class="bi bi-grid-fill"></i>
-                {{ s_minuta.t_entregas.volume_entregas }}
+            {{ s_minuta.t_entregas.volume_entregas }}
         </span>
     </div>
-    {% else %}
-    <span>ENTREGAS NÃO ENCONTRADAS</span>
     {% endif %}
 </div>

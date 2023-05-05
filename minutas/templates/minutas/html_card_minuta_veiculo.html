@@ -15,8 +15,8 @@
                 </span>
                 <div class="input-group-addon
                 addon-my-color">
-                    {% if not s_minuta.paga_realizada %}
-                        <i class="bi bi-trash
+                    {% if s_minuta.status_minuta == "ABERTA" %}
+                        <i class="bi bi-x-lg
                         i-button js-
                         js-remove-colaborador"
                         data-idMinuta="{{ s_minuta.idminuta }}"
@@ -44,7 +44,7 @@
                 </span>
                 <div class="input-group-addon
                 addon-my-color">
-                    {% if not s_minuta.paga_realizada %}
+                    {% if s_minuta.status_minuta == "ABERTA" %}
                         <i class="bi bi-pencil-square
                         i-button"
                         onclick="openMyModal(event); return false;"
@@ -75,7 +75,7 @@
                     {{ form_km_inicial.KMInicial }}
                     <div class="input-group-addon
                     addon-my-color">
-                        {% if not s_minuta.paga_realizada %}
+                        {% if s_minuta.status_minuta == "ABERTA" %}
                             <button type="submit"
                             class="i-button-form">
                                 <i class="bi bi-save
@@ -105,7 +105,7 @@
                     {{ form_km_final.KMFinal }}
                     <div class="input-group-addon
                     addon-my-color">
-                        {% if not s_minuta.paga_realizada %}
+                        {% if s_minuta.status_minuta == "ABERTA" %}
                             <button type="submit"
                             class="i-button-form">
                             <i class="bi bi-save
@@ -153,8 +153,9 @@
                     </span>
                     <div class="input-group-addon
                     addon-my-color">
-                        {% if not s_minuta.paga_realizada %}
-                            <i class="bi bi-plus-square i-button"
+                        {% if s_minuta.status_minuta == "ABERTA" %}
+                            <i class="bi bi-plus-lg
+                            i-button"
                             onclick="openMyModal(event); return false;"
                             data-title="VEÍCULO"
                             data-action="{% url 'editaveiculoescolhido' %}"
@@ -183,8 +184,9 @@
                 </span>
                 <div class="input-group-addon
                 addon-my-color">
-                    {% if not s_minuta.paga_realizada %}
-                        <i class="bi bi-plus-square i-button"
+                    {% if s_minuta.status_minuta == "ABERTA" %}
+                        <i class="bi bi-plus-lg
+                        i-button"
                         onclick="openMyModal(event); return false;"
                         data-title="INSERE MOTORISTA"
                         data-action="{% url 'inseremotorista' %}"

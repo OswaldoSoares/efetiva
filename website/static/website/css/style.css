@@ -23,6 +23,7 @@
     --color11: lightcoral;
     --color12: lightgreen;
     --color13: #8B0000;
+    --color14: #d7cec7;
 }
 
 /* Arquivo base.html */
@@ -6617,11 +6618,12 @@ main .fp-recibo-tabela .fp-recibo-print {
     padding: 0.5rem 0.5rem;
 }
 
-.form-control-minuta {
-    background-color: var(--color8);
-    color: var(--color9);
-    border: 1px solid var(--color1);
-    text-align: center;
+.form-control-minuta,
+.form-control-minuta:read-only {
+    background-color: var(--color14);
+    color: var(--color13);
+    border: 1px solid var(--color7);
+    /* text-align: center; */
 }
 
 .addon-my-color {
@@ -6706,7 +6708,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .i-button-null {
-    color: var(--color5);
+    color: var(--color14);
 }
 
 /* DIV para mostrar mensagens */
@@ -6820,4 +6822,5 @@ main .fp-recibo-tabela .fp-recibo-print {
 
 .form-control-center {
     text-align: center;
-}
+}  
+  

@@ -23,7 +23,7 @@
                 {{ form_hora_final.HoraFinal }}
                 <div class="input-group-addon
                 addon-my-color">
-                    {% if not s_minuta.paga_realizada %}
+                    {% if s_minuta.status_minuta == 'ABERTA' %}
                         <button type="submit"
                         class="i-button-form">
                             <i class="bi bi-save i-button"></i>
@@ -52,7 +52,8 @@
             </span>
             <div class="input-group-addon
             addon-my-color">
-                <i class="bi bi-check i-button-null"></i>
+                <i class="bi bi-check
+                i-button-null"></i>
             </div>
         </div>
     </div>
@@ -69,7 +70,7 @@
         {% include 'minutas/html_card_minuta_ajudantes.html' %}
     </div>
     <!-- Inlui Adicionar ajudante -->
-    {% if not s_minuta.paga_realizada %}
+    {% if s_minuta.status_minuta == "ABERTA" %}
     <div class="card-body-item">
         <div class="input-group">
             <i class="bi bi-person-plus-fill
@@ -81,7 +82,8 @@
                 INSERE AJUDANTE
             </span>
             <div class="input-group-addon addon-my-color">
-                <i class="bi bi-plus-square i-button"
+                <i class="bi bi-plus-lg
+                i-button"
                 onclick="openMyModal(event); return false;"
                 data-title="INSERE AJUDANTE"
                 data-action="{% url 'insereajudante' %}"

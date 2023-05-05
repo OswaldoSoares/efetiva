@@ -5,7 +5,10 @@
     <!-- HORA FINAL -->
     <div class="card-body-item">
         <div class="input-group">
-            <i class="bi bi-check-square input-group-addon addon-my-color"></i>
+            <i class="bi bi-check-square
+            input-group-addon
+            addon-my-color
+            i-button-null"></i>
             <span class="form-control input-fake">HORA FINAL</span>
             <div class="checkbox input-group-addon addon-my-color">
                 {% if s_minuta.hora_final > s_minuta.hora_inicial %}
@@ -20,9 +23,15 @@
     <div class="card-body-item">
         <div class="input-group">
             {% if s_minuta.entregas %}
-            <i class="bi bi-check-square input-group-addon addon-my-color"></i>
+            <i class="bi bi-check-square
+            input-group-addon
+            addon-my-color
+            i-button-null"></i>
             {% else %}
-            <i class="bi bi-square input-group-addon addon-my-color"></i>
+            <i class="bi bi-square
+            input-group-addon
+            addon-my-color
+            i-button-null"></i>
             {% endif %}
             <span class="form-control input-fake">VEÍCULO SOLICITADO</span>
             <div class="checkbox input-group-addon addon-my-color">
@@ -45,7 +54,10 @@
     {% if s_minuta.veiculo_solicitado %}
     <div class="card-body-item">
         <div class="input-group">
-            <i class="bi bi-check-square input-group-addon addon-my-color"></i>
+            <i class="bi bi-check-square
+            input-group-addon
+            addon-my-color
+            i-button-null"></i>
             <span class="form-control input-fake">MOTORISTA</span>
             <div class="checkbox input-group-addon addon-my-color">
                 {% if s_minuta.motorista %}
@@ -60,7 +72,10 @@
     {% if s_minuta.motorista %}
     <div class="card-body-item">
         <div class="input-group">
-            <i class="bi bi-check-square input-group-addon addon-my-color"></i>
+            <i class="bi bi-check-square
+            input-group-addon
+            addon-my-color
+            i-button-null"></i>
             <span class="form-control input-fake">VEÍCULO</span>
             <div class="checkbox input-group-addon addon-my-color">
                 {% if s_minuta.veiculo %}
@@ -75,7 +90,10 @@
     {% if s_minuta.veiculo %}
     <div class="card-body-item">
         <div class="input-group">
-            <i class="bi bi-check-square input-group-addon addon-my-color"></i>
+            <i class="bi bi-check-square
+            input-group-addon
+            addon-my-color
+            i-button-null"></i>
             <span class="form-control input-fake">KM INICIAL</span>
             <div class="checkbox input-group-addon addon-my-color">
                 {% if s_minuta.km_inicial %}
@@ -90,7 +108,10 @@
     {% if s_minuta.km_inicial %}
     <div class="card-body-item">
         <div class="input-group">
-            <i class="bi bi-check-square input-group-addon addon-my-color"></i>
+            <i class="bi bi-check-square
+            input-group-addon
+            addon-my-color
+            i-button-null"></i>
             <span class="form-control input-fake">KM FINAL</span>
             <div class="checkbox input-group-addon addon-my-color">
                 {% if s_minuta.km_final %}
@@ -104,7 +125,10 @@
     {% endif %}
     <div class="card-body-item">
         <div class="input-group">
-            <i class="bi bi-square input-group-addon addon-my-color"></i>
+            <i class="bi bi-square
+            input-group-addon
+            addon-my-color
+            i-button-null"></i>
             <span class="form-control input-fake">AJUDANTE</span>
             <div class="checkbox input-group-addon addon-my-color">
                 {% if s_minuta.ajudantes %}
@@ -118,7 +142,10 @@
     {% if s_minuta.ajudante_avulso %}
     <div class="card-body-item">
         <div class="input-group">
-            <i class="bi bi-check-square input-group-addon addon-my-color"></i>
+            <i class="bi bi-check-square
+            input-group-addon
+            addon-my-color
+            i-button-null"></i>
             <span class="form-control input-fake">PAGAMENTOS DE AJUDANTES</span>
             <div class="checkbox input-group-addon addon-my-color">
                 {% if s_minuta.paga_realizada_ajudantes %}
@@ -132,7 +159,10 @@
     {% endif %}
     <div class="card-body-item">
         <div class="input-group">
-            <i class="bi bi-check-square input-group-addon addon-my-color"></i>
+            <i class="bi bi-check-square
+            input-group-addon
+            addon-my-color
+            i-button-null"></i>
             <span class="form-control input-fake">CONCLUIR MINUTA</span>
             <div class="checkbox input-group-addon addon-my-color">
                 {% if s_minuta.status_minuta == 'CONCLUIDA' %}

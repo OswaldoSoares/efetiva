@@ -11,9 +11,7 @@
                 {{ s_minuta.veiculo_solicitado }}
             </span>
             <div class="input-group-addon addon-my-color">
-                 <!-- Mostra se ... -->
-                 <!-- TODO -->
-                {% if not s_minuta.paga_realizada %}    
+                {% if s_minuta.status_minuta == 'ABERTA' %}    
                     <i class="bi bi-pencil-square
                     i-button"
                     data-dialog-class="modal-sm"
@@ -43,9 +41,7 @@
             </span>
             <div class="input-group-addon
             addon-my-color">
-                <!-- Mostra se ... -->
-                <!-- TODO -->
-                {% if not s_minuta.paga_realizada %}
+                {% if s_minuta.status_minuta == 'ABERTA' %}
                     <i class="bi bi-plus-square
                     i-button"
                     onclick="openMyModal(event); return false;"

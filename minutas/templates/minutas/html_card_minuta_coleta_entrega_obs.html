@@ -19,7 +19,7 @@
         </span>
         <div class="input-group-addon
         addon-my-color">
-            {% if not s_minuta.paga_realizada %}
+            {% if s_minuta.status_minuta == "ABERTA" %}
                 <i class="bi bi-pencil-square
                 i-button"
                 onclick="openMyModal(event); return false;"
@@ -54,7 +54,7 @@
             {% endif %}
         </span>
         <div class="input-group-addon addon-my-color">
-            {% if not s_minuta.paga_realizada %}
+            {% if s_minuta.status_minuta == "ABERTA" %}
                 <i class="bi bi-pencil-square
                 i-button"
                 onclick="openMyModal(event); return false;"
@@ -91,7 +91,7 @@
         </span>
         <div class="input-group-addon
         addon-my-color">
-            {% if not s_minuta.paga_realizada %}
+            {% if s_minuta.status_minuta == "ABERTA" %}
                 <i class="bi bi-pencil-square
                 i-button"
                 onclick="openMyModal(event); return false;"

@@ -13,28 +13,32 @@
             </span>
             <div class="input-group-addon
             addon-my-color">
-                <!-- TODO -->
-                {% if ajudante.tipo == "MINUTA" or ajudante.tipo == "SAIDA"%}
-                    {% if not s_minuta.paga_realizada_ajudantes %}
-                        <i class="bi bi-x-square
+                {% if s_minuta.status_minuta == "ABERTA" %}
+                    {% if ajudante.tipo == "MINUTA" or ajudante.tipo == "SAIDA" %}
+                        {% if not s_minuta.paga_realizada_ajudantes %}
+                            <i class="bi bi-x-lg
+                            i-button
+                            js-remove-colaborador"
+                            data-idMinuta="{{ s_minuta.idminuta }}"
+                            data-Cargo="AJUDANTE"
+                            data-idMinutaColaboradores="
+                            {{ ajudante.idMinutaColaboradores }}"></i>
+                        {% else %}
+                            <i class="bi bi-check
+                            i-button-null"></i>
+                        {% endif %}
+                    {% else %}
+                        <i class="bi bi-x-lg
                         i-button
                         js-remove-colaborador"
                         data-idMinuta="{{ s_minuta.idminuta }}"
                         data-Cargo="AJUDANTE"
                         data-idMinutaColaboradores="
                         {{ ajudante.idMinutaColaboradores }}"></i>
-                    {% else %}
-                        <i class="bi bi-check
-                        i-button-null"></i>
                     {% endif %}
                 {% else %}
-                    <i class="bi bi-x-square
-                    i-button
-                    js-remove-colaborador"
-                    data-idMinuta="{{ s_minuta.idminuta }}"
-                    data-Cargo="AJUDANTE"
-                    data-idMinutaColaboradores="
-                    {{ ajudante.idMinutaColaboradores }}"></i>
+                    <i class="bi bi-check
+                    i-button-null"></i>
                 {% endif %}
             </div>
         </div>
