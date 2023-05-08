@@ -2084,7 +2084,7 @@ def html_card_minuta(request, data, contexto):
     )
     return data
 
-# TODO Duas funções fazendo a mesma coisa
+# TODO Duas funções fazendo a mesma coisa (html_checllist)
 def html_card_checklist(request, data, contexto):
     data["html_card_checklist"] = render_to_string(
         "minutas/html_card_checklist.html", contexto, request=request

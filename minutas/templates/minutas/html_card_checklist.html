@@ -51,6 +51,7 @@
             </div>
         </div>
     </div>
+    <!-- MOTORISTA -->    
     {% if s_minuta.veiculo_solicitado %}
     <div class="card-body-item">
         <div class="input-group">
@@ -69,6 +70,7 @@
         </div>
     </div>
     {% endif %}
+    <!-- VEÍCULO UTILIZADO -->
     {% if s_minuta.motorista %}
     <div class="card-body-item">
         <div class="input-group">
@@ -87,6 +89,7 @@
         </div>
     </div>
     {% endif %}
+    <!-- KM INICIAL -->
     {% if s_minuta.veiculo %}
     <div class="card-body-item">
         <div class="input-group">
@@ -105,6 +108,7 @@
         </div>
     </div>
     {% endif %}
+    <!-- KM FINAL -->
     {% if s_minuta.km_inicial %}
     <div class="card-body-item">
         <div class="input-group">
@@ -123,6 +127,7 @@
         </div>
     </div>
     {% endif %}
+    <!-- AJUDANTE -->
     <div class="card-body-item">
         <div class="input-group">
             <i class="bi bi-square
@@ -139,6 +144,7 @@
             </div>
         </div>
     </div>
+    <!-- PAGAMENTO DE AJUDANTES -->
     {% if s_minuta.ajudante_avulso %}
     <div class="card-body-item">
         <div class="input-group">
@@ -146,7 +152,7 @@
             input-group-addon
             addon-my-color
             i-button-null"></i>
-            <span class="form-control input-fake">PAGAMENTOS DE AJUDANTES</span>
+            <span class="form-control input-fake">PAGAMENTOS DE AJUDANTE</span>
             <div class="checkbox input-group-addon addon-my-color">
                 {% if s_minuta.paga_realizada_ajudantes %}
                     <i class="bi bi-check-square chk-green"></i>
@@ -157,6 +163,7 @@
         </div>
     </div>
     {% endif %}
+    <!-- CONCLUIR MINUTA -->
     <div class="card-body-item">
         <div class="input-group">
             <i class="bi bi-check-square
@@ -173,6 +180,25 @@
             </div>
         </div>
     </div>
+    <!-- PAGAMENTO DE AJUDANTES -->
+    {% if s_minuta.motorista %}
+    <div class="card-body-item">
+        <div class="input-group">
+            <i class="bi bi-check-square
+            input-group-addon
+            addon-my-color
+            i-button-null"></i>
+            <span class="form-control input-fake">PAGAMENTOS DE MOTORISTA</span>
+            <div class="checkbox input-group-addon addon-my-color">
+                {% if s_minuta.paga_realizada_motorista %}
+                    <i class="bi bi-check-square chk-green"></i>
+                {%  else %}
+                    <i class="bi bi-square chk-red-gera-paga"></i>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
 </div>
 <div class="card-footer">
     {% if s_minuta.status_minuta == 'ABERTA' %}
