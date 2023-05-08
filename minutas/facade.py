@@ -723,7 +723,7 @@ class MinutasStatus:
 
     @staticmethod
     def get_minutas_abertas(status_minuta):
-        abertas = Minuta.objects.filter(StatusMinuta=status_minuta)
+        abertas = Minuta.objects.filter(StatusMinuta=status_minuta).order_by("-Minuta")
         lista = [
             {
                 "idMinuta": m.idMinuta,
