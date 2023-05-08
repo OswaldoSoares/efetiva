@@ -1408,7 +1408,7 @@ def html_recebimento(request, data, idminuta):
 def html_pagamento(request, data, idminuta):
     contexto = cria_contexto(idminuta)
     data["html_pagamento"] = render_to_string(
-        "minutas/formpagamento.html", contexto, request=request
+        "minutas/html_card_pagamentos.html", contexto, request=request
     )
     return data
 
@@ -2092,9 +2092,10 @@ def html_card_checklist(request, data, contexto):
     return data
 
 
+# TODO Duas funções fazendo a mesma coisa (html_checllist)
 def html_card_pagamentos(request, data, contexto):
     data["html_card_pagamentos"] = render_to_string(
-        "minutas/formpagamento.html", contexto, request=request
+        "minutas/html_card_pagamentos.html", contexto, request=request
     )
     return data
 
