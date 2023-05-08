@@ -96,7 +96,7 @@ class MinutaSelecionada:
         self.paga = self.carrega_valores_paga()
         self.paga_motorista = self.valor_total_motorista()
         self.paga_minuta = self.valor_total_minuta()
-        self.paga_realizada = self.verifica_pagamento()
+        self.paga_realizada_motorista = self.verifica_pagamento_motorista()
         self.paga_realizada_ajudantes = self.verifica_pagamento_ajudantes()
         self.recebe = self.carrega_valores_recebe()
         self.recebe_minuta = self.valor_recebe_total_minuta()
@@ -490,15 +490,18 @@ class MinutaSelecionada:
         total += float(self.t_despesas["valor_despesas"])
         return total
 
-    def verifica_pagamento(self):
-        paga = MinutaItens.objects.filter(
-            TipoItens="PAGA", idMinuta=self.idminuta
+    def verifica_pagamento_motorista(self):
+        pagamentos = MinutaItens.objects.filter(
+            TipoItens="PAGA",
+            idMinuta=self.idminuta,
         ).exclude(Descricao="AJUDANTE")
-        return True if paga else False
+        return True if pagamentos else False
 
     def verifica_pagamento_ajudantes(self):
         pagamentos = MinutaItens.objects.filter(
-            TipoItens="PAGA", Descricao="AJUDANTE", idMinuta=self.idminuta
+            TipoItens="PAGA",
+            Descricao="AJUDANTE",
+            idMinuta=self.idminuta,
         )
         lista = [
             {
