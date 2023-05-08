@@ -179,6 +179,7 @@ def notas_romaneio(pdf, contexto):
         else:
             coleta = "ENTREGA"
         id_not = x.idNotasClientes.idNotasClientes
+        emitente = nome_curto(x.idNotasClientes.Emitente)
         data_nota = datetime.strftime(x.idNotasClientes.DataColeta, "%d/%m/%Y")
         serie = x.idNotasClientes.SerieNota
         numero = x.idNotasClientes.NumeroNota
@@ -212,9 +213,9 @@ def notas_romaneio(pdf, contexto):
                 con_compl = f"{informa}"
         pdf.setFont("Times-Roman", 9)
         pdf.drawString(
-            cmp(12), cmp(linha), f"NOTA: {numero} - SÉRIE {serie} - {data_nota}"
+            cmp(12), cmp(linha), f"NOTA: {numero} - SÉRIE {serie} - {data_nota}   {emitente}"
         )
-        pdf.drawCentredString(cmp(105), cmp(linha), f"{coleta}")
+        pdf.drawCentredString(cmp(125), cmp(linha), f"{coleta}")
         pdf.setFillColor(HexColor("#FF0000"))
         pdf.drawRightString(cmp(198), cmp(linha), f"{status_nota}")
         pdf.setFillColor(HexColor("#000000"))

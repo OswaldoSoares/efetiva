@@ -52,6 +52,30 @@
                 </div>
                 {% endif %}
             </div>
+            <!-- EMITENTE -->
+            <div class="item-form">
+                <div class="button" title="EMITENTE NOTA FISCAL">
+                    <i class="bi bi-pencil i-button-null"></i>
+                </div>
+                <div class="item-field">
+                    {% if nota_form %}
+                    <input type="text"
+                    class="form-control"
+                    id="emitente"
+                    name="emitente"
+                    placeholder="EMITENTE"
+                    value="{{ nota_form.emitente }}">
+                    {% else %}
+                    <input type="text"
+                    class="form-control"
+                    id="emitente"
+                    name="emitente"
+                    placeholder="EMITENTE"
+                    >
+                    {% endif %}
+                </div>
+            </div>
+
             <div class="item-form">
                 <div class="button" title="DATA DA NOTA">
                     <i class="bi bi-calendar i-button-null"></i>

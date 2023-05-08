@@ -692,6 +692,7 @@ $(document).on('submit', '.js-carrega-xml', function(event) {
             //$(".box-loader").show();
         },
         success: function(data) {
+            $("#emitente").val(data["emitente"])
             $("#datanota").val(data["data_nf"])
             $("#serienota").val(data["serie_nf"])
             $("#numeronota").val(data["numero_nf"])
