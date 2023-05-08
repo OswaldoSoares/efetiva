@@ -2,12 +2,14 @@
 <div class="card-header">
     <span>ROMANEIOS</span>
 </div>
-{% for rom in romaneios %}
 <div class="card-body">
+{% for rom in romaneios %}
     <div class="card-body-item">
         <div class="input-group">
             <i class="bi bi-list-check input-group-addon addon-my-color"></i>
-            <div class="input-fake div-flex font-menor">
+            <div class="input-fake
+            div-flex
+            font-menor">
                 <span>
                     {{ rom.romaneio|stringformat:'05d' }} - {{ rom.data_romaneio }}
                 </span>
@@ -16,27 +18,28 @@
                 </span>
             </div>
             <div class="input-group-addon addon-my-color">
-                <i class="bi bi-check-square i-button js-adiciona-romaneio-minuta"
+                <i class="bi bi-check-square
+                i-button
+                js-adiciona-romaneio-minuta"
                 data-idromaneio="{{ rom.idromaneio }}"
                 data-idminuta="{{ s_minuta.idminuta }}"
                 data-idcliente="{{ s_minuta.idcliente }}"></i>
             </div>
         </div>
     </div>
+    {% endfor %}
 </div>
-{% endfor %}
 <div class="card-footer">
     {% if romaneio %}
-    {% for romaneio in romaneios %}
-    {% if forloop.last %}
-    <span>
-        <b>
-            {{ forloop.counter|stringformat:"02d" }} ROMANEIO{{ forloop.counter|pluralize|upper }}
-        </b>
-    </span>
-    {% endif %}
-    {% endfor %}
-    {% else %}
-    <span>ROMANEIOS NÃO ENCONTRADOS</span>
+        {% for romaneio in romaneios %}
+        {% if forloop.last %}
+        <span>
+            <b>
+                {{ forloop.counter|stringformat:"02d" }} ROMANEIO
+                {{ forloop.counter|pluralize|upper }}
+            </b>
+        </span>
+        {% endif %}
+        {% endfor %}
     {% endif %}
 </div>

@@ -71,6 +71,23 @@
         </div>
     </section>
     <section class="grid-column">
+        <div class="card card-nova-minuta">
+            <div class="card-header">
+                <span>ADICIONA MINUTA</span>
+            </div>
+            <div class="card-body">
+            </div>
+            <div class="card-footer">
+                <div class="div-botoes">
+                    <i class="bi bi-plus-square i-button"
+                    onclick="openMyModal(event); return false;"
+                    data-title="CADASTRA MINUTA"
+                    data-action="{% url 'adicionaminuta' %}"
+                    data-button-save-label="SALVAR"
+                    title="Adiciona Nova Minuta"></i>
+                </div>
+            </div>
+        </div>
         <div class="card card-consulta">
             <div class="card-header">
                 <span>CONSULTAS</span>
@@ -164,23 +181,6 @@
                 </div>
             </div>
             <div class="card-footer">
-            </div>
-        </div>
-        <div class="card card-nova-minuta">
-            <div class="card-header">
-                <span>ADICIONA MINUTA</span>
-            </div>
-            <div class="card-body">
-            </div>
-            <div class="card-footer">
-                <div class="div-botoes">
-                    <i class="bi bi-plus-square i-button"
-                    onclick="openMyModal(event); return false;"
-                    data-title="CADASTRA MINUTA"
-                    data-action="{% url 'adicionaminuta' %}"
-                    data-button-save-label="SALVAR"
-                    title="Adiciona Nova Minuta"></i>
-                </div>
             </div>
         </div>
     </section>
