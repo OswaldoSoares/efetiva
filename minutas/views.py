@@ -2340,9 +2340,13 @@ def gera_receitas(request):
     pass
 
 
-def gera_pagamentos_ajudantes(request):
+def gera_pagamentos(request):
     idminuta = request.POST.get("idminuta")
-    facade.gera_itens_pagamento_ajudantes(request)
+    pagamento_de = request.POST.get("pagamento")
+    if pagamento_de == "AJUDANTE":
+        facade.gera_itens_pagamento_ajudantes(request)
+    elif pagamento_de == "MOTORISTA":
+        facade.gera_itens_pagamento_motorista(request)
     contexto = facade.cria_contexto(idminuta)
     contexto.update({"idminuta": idminuta})
     data = facade.create_data_gera_pagamentos_ajudantes(request, contexto)
@@ -2352,6 +2356,14 @@ def gera_pagamentos_ajudantes(request):
 def estorna_pagamentos_ajudantes(request):
     idminuta = request.GET.get("idminuta")
     facade.exclui_pagamentos_ajudantes(idminuta)
+    contexto = facade.cria_contexto(idminuta)
+    contexto.update({"idminuta": idminuta})
+    data = facade.create_data_exclui_pagamentos_ajudantes(request, contexto)
+    return data
+
+def estorna_pagamentos_motorista(request):
+    idminuta = request.GET.get("idminuta")
+    facade.exclui_pagamentos_motorista(idminuta)
     contexto = facade.cria_contexto(idminuta)
     contexto.update({"idminuta": idminuta})
     data = facade.create_data_exclui_pagamentos_ajudantes(request, contexto)

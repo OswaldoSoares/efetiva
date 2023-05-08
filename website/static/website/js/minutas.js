@@ -39,11 +39,11 @@ $(document).ready(function() {
     });
     
     /* Versão Nova */
-    $(document).on("submit", "#js-gera-pagamentos-ajudantes", function(event) {
+    $(document).on("submit", "#js-gera-pagamentos", function(event) {
         event.preventDefault();
         $.ajax({
             type: "POST",
-            url: "/minutas/gera_pagamentos_ajudantes",
+            url: "/minutas/gera_pagamentos",
             data: $(this).serialize(),
             beforeSend: function() {
                 $(".box-loader").show();
@@ -76,6 +76,37 @@ $(document).ready(function() {
         $.ajax({
             type: "GET",
             url: "/minutas/estorna_pagamentos_ajudantes",
+            data: {
+                idminuta: idminuta,
+            },
+            beforeSend: function() {
+                $(".box-loader").show();
+            },
+            success: function(data) {
+                $(".card-minuta").html(data["html_card_minuta"]);
+                $(".card-checklist").html(data["html_card_checklist"]);
+                $(".html-form-paga").html(data["html_card_pagamentos"]);
+                verificaCheckboxPaga();
+                verificaCheckboxRecebe();
+                mostraChecklist();
+                formatMask();
+                somaReceitas();
+                somaPagamentos();
+                $("html, body").scrollTop(0);
+                $(".box-loader").hide();
+            },
+            error: function(error) {
+                console.log(error)
+            }
+        });
+    });
+
+    // Versão Nova //
+    $(document).on("click", ".estorna-pagamentos-motorista", function(event) {
+        var idminuta = $(this).attr("idMinuta")
+        $.ajax({
+            type: "GET",
+            url: "/minutas/estorna_pagamentos_motorista",
             data: {
                 idminuta: idminuta,
             },

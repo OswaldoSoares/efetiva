@@ -3,7 +3,7 @@
     <span>PAGAMENTOS</span>
 </div>
 <!-- Card - Body -->
-<form method="post" id="js-gera-pagamentos-ajudantes">
+<form method="post" id="js-gera-pagamentos">
     <div class="card-body">
         {% csrf_token %}
         <input type="hidden"
@@ -945,8 +945,11 @@
             {% if s_minuta.status_minuta == 'ABERTA' %}
                 {% if s_minuta.ajudantes %}
                     {% if not s_minuta.paga_realizada_ajudantes %}
+                        <input type="hidden"
+                        name="pagamento"
+                        value="AJUDANTE" />
                         <button type="submit"
-                        class="i-button-form-rodape">
+                        class="i-button-form-rodape" >
                             <i class="bi bi-credit-card i-button"
                             title="Gera pagamentos de ajudantes"></i>
                         </button>
@@ -961,6 +964,9 @@
             {% elif s_minuta.status_minuta == 'CONCLUIDA' %}
                 {% if s_minuta.motorista %}
                     {% if not s_minuta.paga_realizada_motorista %}
+                        <input type="hidden"
+                        name="pagamento"
+                        value="MOTORISTA" />
                         <button type="submit"
                         class="i-button-form-rodape">
                             <i class="bi bi-credit-card i-button"
@@ -969,7 +975,7 @@
                     {% else %}
                         <i class="bi bi-reply i-button estorna-pagamentos-motorista"
                         idMinuta="{{ s_minuta.idminuta }}"
-                        title="Estorna pagamentos de ajudantes"></i>
+                        title="Estorna pagamentos de motorista"></i>
                     {% endif %}
                 {% else %}
                     <div>OK</div>

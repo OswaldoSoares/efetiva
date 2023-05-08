@@ -1676,7 +1676,7 @@ def html_romaneio(request, data, contexto):
     return data
 
 
-def gera_itens_pagamento(request):
+def gera_itens_pagamento_motorista(request):
     if request.POST.get("check-porcentagem-paga"):
         insere_porcentagem_paga(request)
     if request.POST.get("check-hora-paga"):
@@ -1712,7 +1712,6 @@ def gera_itens_pagamento(request):
 def gera_itens_pagamento_ajudantes(request):
     if request.POST.get("check-ajudante-paga"):
         insere_ajudante_paga(request)
-
 
 def insere_porcentagem_paga(request):
     idminuta = request.POST.get("idminuta")
@@ -2067,6 +2066,14 @@ def exclui_pagamentos_ajudantes(idminuta):
         Descricao="AJUDANTE",
         idMinuta=idminuta,
     )
+    pagamentos.delete()
+
+
+def exclui_pagamentos_motorista(idminuta):
+    pagamentos = MinutaItens.objects.filter(
+        TipoItens="PAGA",
+        idMinuta=idminuta,
+    ).exclude(Descricao="AJUDANTE")
     pagamentos.delete()
 
 
