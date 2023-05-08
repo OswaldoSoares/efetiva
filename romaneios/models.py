@@ -7,6 +7,7 @@ from veiculos.models import Veiculo
 
 class NotasClientes(models.Model):
     idNotasClientes = models.AutoField(primary_key=True)
+    Emitente = models.CharField(max_length=200, blank=True, null=True)
     DataColeta = models.DateField(default=0)
     LocalColeta = models.CharField(max_length=200)
     NumeroNota = models.CharField(max_length=15, default=0)
