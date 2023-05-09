@@ -1705,8 +1705,12 @@ def gera_itens_pagamento_motorista(request):
             lista_despesas.append(i[18:])
     for i in lista_despesas:
         item_tabela = "tabela-despesa-paga" + i
-        item_decricao = "descricao-despesa-paga" + i
-        insere_despesa_paga(item_tabela, item_decricao, request)
+        item_descricao = "descricao-despesa-paga" + i
+        insere_despesa_paga(
+            request.POST.get(item_tabela),
+            request.POST.get(item_descricao),
+            request
+        )
 
 
 def gera_itens_pagamento_ajudantes(request):
@@ -2006,13 +2010,13 @@ def insere_ajudante_paga(request):
     )
 
 
-def insere_despesa_paga(item_tabela, item_decricao, request):
+def insere_despesa_paga(item_tabela, item_descricao, request):
     idminuta = request.POST.get("idminuta")
     hora_zero = timedelta(days=0, hours=0, minutes=0)
     obs = ""
-    base = float(request.POST.get(item_tabela).replace(".", "").replace(",", "."))
+    base = float(item_tabela.replace(".", "").replace(",", "."))
     insere_minuta_item(
-        item_decricao,
+        item_descricao,
         "PAGA",
         "P",
         base,
