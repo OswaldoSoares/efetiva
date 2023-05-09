@@ -6649,9 +6649,10 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .div-botoes {
-    text-align: center;
+    justify-content: center;
 }
 
+.div-botoes a,
 .div-botoes i {
     padding: 0 0.7rem;
     font-size: 1.6rem;
