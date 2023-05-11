@@ -2117,3 +2117,18 @@ def create_data_exclui_pagamentos_ajudantes(request, contexto):
     data = html_card_checklist(request, data, contexto)
     data = html_card_pagamentos(request, data, contexto)
     return JsonResponse(data)
+
+
+def create_data_minuta_checklist_pagamentos(request, contexto):
+    data = dict()
+    data = html_card_minuta(request, data, contexto)
+    data = html_card_checklist(request, data, contexto)
+    data = html_card_pagamentos(request, data, contexto)
+    return JsonResponse(data)
+
+
+def define_novo_status_minuta(idminuta, status_novo):
+    minuta = Minuta.objects.filter(idMinuta=idminuta)
+    obj = Minuta(minuta)
+    obj.StatusMinuta = status_novo
+    return True if obj.save(update_fields=["StatusMinuta"]) else False

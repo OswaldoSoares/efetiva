@@ -668,9 +668,17 @@ def vales_funcionario(_var):
     return lista
 
 
-def insere_vale_contra_cheque(_id_val, _id_cc):
-    vale = Vales.objects.get(idVales=_id_val)
-    create_contra_cheque_itens(_id_cc, vale.Descricao, vale.Valor, "D", "", _id_val)
+def insere_vale_contra_cheque(idvale, idcontracheque):
+    vale = Vales.objects.get(idVales=idvale)
+    descricao = f"{vale.Descricao} {datetime.datetime.strftime(vale.Data, '%d/%m/%Y')}"
+    create_contra_cheque_itens(
+        idcontracheque,
+        descricao,
+        vale.Valor,
+        "D",
+        "",
+        idvale,
+    )
 
 
 def delete_vales(_id_val):

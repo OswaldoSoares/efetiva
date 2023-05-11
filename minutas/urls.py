@@ -54,6 +54,7 @@ from .views import (
     gera_receitas,
     gera_pagamentos,
     estorna_pagamentos_motorista,
+    estorna_minuta_concluida,
 )
 
 urlpatterns = [
@@ -194,4 +195,9 @@ urlpatterns = [
         estorna_pagamentos_motorista,
         name="estorna_pagamentos_motorista",
     ),
+    path(
+        "estorna_minuta_concluida",
+        estorna_minuta_concluida,
+        name="estorna_minuta_concluida",
+    )
 ]

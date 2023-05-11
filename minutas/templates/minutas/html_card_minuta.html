@@ -115,14 +115,6 @@
 </div>
 <!-- Footer -->
 <div class="card-footer">
-    {% if s_minuta.status_minuta == 'FECHADA' or s_minuta.status_minuta == 'CONCLUIDA'%}
-        {% if user|can:'estorna_minuta' %}
-            <i class="bi bi-reply-all i-button"
-            title="ESTORNA MINUTA"
-            onclick="window.location.href = 
-            '{% url 'estorna_minuta' s_minuta.idminuta %}'"></i>
-        {% endif %}
-    {% endif %}
     {% if s_minuta.status_minuta == 'ABERTA' %}
         {% if not s_minuta.paga_realizada %}
             {% if user|can:'edita_minuta' %}
@@ -139,9 +131,4 @@
     <a class="bi bi-printer i-button"
     href="{% url 'imprimeminuta' s_minuta.idminuta %}"
     target="_blank"></a>
-    {% comment %} <a class="bi bi-printer i-button js-imprimeminuta"
-    title="IMPRIME MINUTA"
-    idminuta="{{ s_minuta.idminuta }}"
-    onclick="window.location.href = 
-    '{% url 'imprimeminuta' s_minuta.idminuta %}'"></a> {% endcomment %}
 </div>

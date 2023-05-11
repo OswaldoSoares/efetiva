@@ -101,6 +101,38 @@ $(document).ready(function() {
         });
     });
 
+    $(document).on("click", ".js-estorna-minuta-concluida", function(event) {
+        var idminuta = $(this).data("idminuta")
+        var proximo_status = $(this).data("proximo-status")
+        $.ajax({
+            type: "GET",
+            url: "/minutas/estorna_minuta_concluida",
+            data: {
+                idminuta: idminuta,
+                proximo_status: proximo_status,
+            },
+            beforeSend: function() {
+                $(".box-loader").show();
+            },
+            success: function(data) {
+                $(".card-minuta").html(data["html_card_minuta"]);
+                $(".card-checklist").html(data["html_card_checklist"]);
+                $(".html-form-paga").html(data["html_card_pagamentos"]);
+                verificaCheckboxPaga();
+                verificaCheckboxRecebe();
+                mostraChecklist();
+                formatMask();
+                somaReceitas();
+                somaPagamentos();
+                $("html, body").scrollTop(0);
+                $(".box-loader").hide();
+            },
+            error: function(error) {
+                console.log(error)
+            }
+        });
+    });
+
     // Versão Nova //
     $(document).on("click", ".estorna-pagamentos-motorista", function(event) {
         var idminuta = $(this).attr("idMinuta")

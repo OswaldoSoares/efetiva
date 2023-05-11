@@ -2368,3 +2368,13 @@ def estorna_pagamentos_motorista(request):
     contexto.update({"idminuta": idminuta})
     data = facade.create_data_exclui_pagamentos_ajudantes(request, contexto)
     return data
+
+
+def estorna_minuta_concluida(request):
+    idminuta = request.GET.get("idminuta")
+    proximo_status = request.GET.get("proximo_status")
+    facade.define_novo_status_minuta(idminuta, proximo_status)
+    contexto = facade.cria_contexto(idminuta)
+    contexto.update({"idminuta": idminuta})
+    data = facade.create_data_minuta_checklist_pagamentos(request, contexto)
+    return data
