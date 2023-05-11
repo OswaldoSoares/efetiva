@@ -1,7 +1,7 @@
 {% extends 'romaneios/baseromaneios.html' %}
 {% block mainromaneios %}
-<main class='article'>
-    <div>
+<main class="section-grid grid-romaneio">
+    <section class="grid-column">
         <article class="article-card card-romaneios-cliente">
             {% include 'romaneios/html_form_seleciona_cliente.html' %}
         </article>
@@ -13,18 +13,18 @@
         </article>
         <article class="article-card card-quantidade-notas">
         </article>
-    </div>
-    <div>
+    </section>
+    <section class="grid-column">
         <article class="article-card card-lista-notas-cliente">
         </article>
         <article class="article-card card-lista-ocorrencia">
         </article>
-    </div>
-    <div>
+    </section>
+    <section class="grid-column">
         <article class="article-card card-lista-romaneios">
         </article>
         <article class="article-card card-lista-notas-romaneio">
         </article>
-    </div>
+    </section>
 </main>
 {% endblock %}

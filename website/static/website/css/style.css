@@ -5154,7 +5154,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-romaneios-cliente {
-    width: 300px;
+    width: 100%;
 }
 
 .card-romaneios-cliente .item-cliente {
@@ -5207,7 +5207,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-form-notas-cliente {
-    width: 300px;
+    width: 100%;
 }
 
 .card-form-notas-cliente .item-nota {
@@ -5260,7 +5260,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-form-romaneios {
-    width: 300px;
+    width: 100%;
 }
 
 .card-form-romaneios .item-romaneio {
@@ -5299,7 +5299,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-lista-notas-cliente {
-    width: 660px;
+    width: 100%;
 }
 
 .card-lista-notas-cliente .article-card-titulo {
@@ -5439,7 +5439,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-lista-ocorrencia {
-    width: 660px;
+    width: 100%;
 }
 
 .card-lista-ocorrencia .item-nota {
@@ -5620,7 +5620,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 
 .card-lista-notas-romaneio,
 .card-lista-romaneios {
-    width: 270px;
+    width: 100%;
 }
 
 .card-lista-notas-romaneio .item-romaneio,
@@ -5738,7 +5738,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 
 .card-filtro-despesas-multa,
 .card-filtro-notas-romaneios {
-    width: 300px;
+    width: 100%;
 }
 
 .card-filtro-despesas-multa .itens-filtro,
@@ -5769,7 +5769,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .card-quantidade-notas {
-    width: 300px;
+    width: 100%;
 }
 
 .card-quantidade-notas .itens-quantidade {
@@ -6582,6 +6582,10 @@ main .fp-recibo-tabela .fp-recibo-print {
     .section-grid {
         grid-template-columns: 1fr 1fr;
     }
+    .grid-romaneio {
+        grid-template-columns: 0.75fr 1.25fr;
+    
+    }
 }
 
 @media only screen and (min-width: 1070px) {
@@ -6591,6 +6595,10 @@ main .fp-recibo-tabela .fp-recibo-print {
     .grid-three {
         grid-template-columns: 1fr 1fr;
     }
+    .grid-romaneio {
+        grid-template-columns: 0.66fr 1.33fr;
+    
+    }
 }
 
 @media only screen and (min-width: 1366px) {
@@ -6599,6 +6607,10 @@ main .fp-recibo-tabela .fp-recibo-print {
     }
     .grid-three {
         grid-template-columns: 1.5fr 1.5fr 1fr;
+    }
+    .grid-romaneio {
+        grid-template-columns: 1fr 2fr 1fr;
+
     }
 }
 
