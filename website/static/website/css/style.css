@@ -6648,7 +6648,12 @@ main .fp-recibo-tabela .fp-recibo-print {
     max-width: 1.5rem;
 }
 
+.addon-larger {
+    min-width: 9rem; 
+}
+
 .div-flex {
+    width: 100%;
     height: 3rem;
     display: flex;
     align-items: center;
@@ -6658,6 +6663,11 @@ main .fp-recibo-tabela .fp-recibo-print {
 
 .div-flex p {
     padding-top: 1rem;
+}
+
+.div-direction-column {
+    flex-direction: column;
+    height: 4rem;
 }
 
 .div-botoes {
@@ -6836,3 +6846,26 @@ main .fp-recibo-tabela .fp-recibo-print {
     text-align: center;
 }  
   
+.ver-tamanho {
+    background-color: tomato;
+}
+
+.tamanho-10 {
+    width: 10%;
+}
+
+.tamanho-20 {
+    width: 20%;
+}
+
+.tamanho-30 {
+    width: 30%;
+}
+
+.tamanho-40 {
+    width: 40%;
+}
+
+.tamanho-50 {
+    width: 50%;
+}

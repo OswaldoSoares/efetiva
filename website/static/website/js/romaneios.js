@@ -83,7 +83,7 @@ $(document).on('click', '.js-nota-pendente', function() {
             $(".card-quantidade-notas").hide()
         },
         success: function(data) {
-            $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente_reduzida)
+            $(".card-lista-notas-cliente").html(data.html_card_lista_notas_cliente)
             $(".card-lista-notas-cliente").show()
             $(".card-lista-romaneios").show()
             $(".js-adiciona-nota-romaneio").hide()
@@ -176,7 +176,7 @@ $(document).on('click', '.js-filtro-status', function() {
             $(".box-loader").show()
         },
         success: function(data) {
-            $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente_reduzida)
+            $(".card-lista-notas-cliente").html(data.html_card_lista_notas_cliente)
             $(".card-lista-notas-cliente").show()
             $(".card-lista-romaneios").show()
             $(".js-adiciona-nota-romaneio").hide()
@@ -203,7 +203,7 @@ $(document).on('click', '.js-imprime-notas-status', function() {
             $(".box-loader").show()
         },
         success: function(data) {
-            $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente_reduzida)
+            $(".card-lista-notas-cliente").html(data.html_card_lista_notas_cliente)
             $(".card-lista-notas-cliente").show()
             $(".card-lista-romaneios").show()
             $(".js-adiciona-nota-romaneio").hide()
@@ -650,7 +650,7 @@ $(document).on('click', '.js-sort-notas', function() {
         },
         success: function(data) {
             $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente)
-            $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente_reduzida)
+            $(".card-lista-notas-cliente").html(data.html_card_lista_notas_cliente)
             $(".card-lista-notas-cliente").show()
             $(".js-envia-telegram-relatorio").hide()
             if (anr_hidden) {

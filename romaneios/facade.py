@@ -34,12 +34,14 @@ def create_contexto_seleciona_notas(id_cli, sort_nota):
     lista = [
         {
             "emitente": x.Emitente,
+            "emitente_curto": nome_curto(x.Emitente),
             "id_nota_clientes": x.idNotasClientes,
             "local_coleta": x.LocalColeta,
             "data_nota": x.DataColeta,
             "serie_nota": x.SerieNota,
             "numero_nota": x.NumeroNota,
             "destinatario": x.Destinatario,
+            "destinatario_curto": nome_curto(x.Destinatario),
             "cnpj": x.CNPJ,
             "endereco": x.Endereco,
             "endereco_compl": x.Endereco
@@ -92,6 +94,7 @@ def create_contexto_ocorrencia_notas(_id_not):
     lista = [
         {
             "emitente": x.Emitente,
+            "emitente_curto": nome_curto(x.Emitente),
             "id_nota_clientes": x.idNotasClientes,
             "local_coleta": x.LocalColeta,
             "data_nota": x.DataColeta,
@@ -99,6 +102,7 @@ def create_contexto_ocorrencia_notas(_id_not):
             "numero_nota": x.NumeroNota,
             "cnpj": x.CNPJ,
             "destinatario": x.Destinatario,
+            "destinatario_curto": nome_curto(x.Destinatario),
             "endereco": x.Endereco
             + " "
             + x.Bairro
@@ -197,7 +201,7 @@ def create_data_sort_notas(request, contexto):
     if contexto["tipo_sort"] == "completo":
         html_lista_notas_cliente(request, contexto, data)
     else:
-        html_lista_notas_cliente_reduzida(request, contexto, data)
+        html_card_lista_notas_cliente(request, contexto, data)
     return JsonResponse(data)
 
 
@@ -211,7 +215,7 @@ def create_data_filtro_nota(request, contexto):
 
 def create_data_filtro_status_reduzida(request, contexto):
     data = dict()
-    html_lista_notas_cliente_reduzida(request, contexto, data)
+    html_card_lista_notas_cliente(request, contexto, data)
     html_quantidade_notas(request, contexto, data)
     return JsonResponse(data)
 
@@ -251,14 +255,14 @@ def html_lista_ocorrencia(request, contexto, data):
 
 def html_lista_notas_cliente(request, contexto, data):
     data["html_lista_notas_cliente"] = render_to_string(
-        "romaneios/html_lista_notas_cliente_reduzida.html", contexto, request=request
+        "romaneios/html_card_lista_notas_cliente.html", contexto, request=request
     )
     return data
 
 
-def html_lista_notas_cliente_reduzida(request, contexto, data):
-    data["html_lista_notas_cliente_reduzida"] = render_to_string(
-        "romaneios/html_lista_notas_cliente_reduzida.html", contexto, request=request
+def html_card_lista_notas_cliente(request, contexto, data):
+    data["html_card_lista_notas_cliente"] = render_to_string(
+        "romaneios/html_card_lista_notas_cliente.html", contexto, request=request
     )
     return data
 
@@ -657,10 +661,12 @@ def create_contexto_filtro_notas_status(id_cli, sort_status, order_nota):
                 "id_nota_clientes": x.idNotasClientes,
                 "local_coleta": x.LocalColeta,
                 "emitente": x.Emitente,
+                "emitente_curto": nome_curto(x.Emitente),
                 "data_nota": x.DataColeta,
                 "serie_nota": x.SerieNota,
                 "numero_nota": x.NumeroNota,
                 "destinatario": x.Destinatario,
+                "destinatario_curto": nome_curto(x.Destinatario),
                 "cnpj": x.CNPJ,
                 "endereco": x.Endereco,
                 "endereco_compl": x.Endereco
@@ -932,12 +938,14 @@ def create_contexto_filtro_nota(nota, idcliente):
     lista = [
         {
             "emitente": x.Emitente,
-            "id_nota_clientes": x.idNotasClientes,
+            "emitente_curto": x.Emitente,
+            "id_nota_clientes": nome_curto(x.idNotasClientes),
             "local_coleta": x.LocalColeta,
             "data_nota": x.DataColeta,
             "serie_nota": x.SerieNota,
             "numero_nota": x.NumeroNota,
             "destinatario": x.Destinatario,
+            "destinatario_curto": nome_curto(x.Destinatario),
             "cnpj": x.CNPJ,
             "endereco": x.Endereco,
             "endereco_compl": x.Endereco
