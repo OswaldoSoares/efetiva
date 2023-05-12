@@ -81,7 +81,7 @@
                         <i class="bi bi-file-text
                         i-button
                         js-nota-pendente
-                        tamanhoo-20
+                        tamanhoo-15
                         text-left"
                         data-idnotaclientes="{{ nota.id_nota_clientes }}"
                         title="Número Nota">
@@ -92,7 +92,7 @@
                     {% else %}
                         <i class="bi bi-file-text
                         i-button-null
-                        tamanho-20
+                        tamanho-15
                         text-left"
                         title="Número Nota">
                             <span>
@@ -111,13 +111,25 @@
                     </i>
                     <i class="bi bi-shop
                     i-button-null
-                    tamanho-40
+                    tamanho-30
                     text-left"
                     title="Destinatario: {{ nota.destinatario }}">
                         <span>
                             {{ nota.destinatario_curto }}
                         </span>
                     </i>
+                    <div class="tamanho-15">
+                        {% if nota.romaneio_numero %}
+                        <i class="bi bi-file-text
+                        i-button-null
+                        tamanho-40"
+                        title="Número Romaneio">
+                            <span>
+                                {{ nota.romaneio_numero|stringformat:"05d" }}
+                            </span>
+                        </i>
+                        {% endif %}
+                    </div>
                 </div>
                 <div class="div-flex">
                     <i class="bi bi-geo-alt i-button-null">

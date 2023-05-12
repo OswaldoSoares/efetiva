@@ -31,45 +31,7 @@ def create_contexto_seleciona_notas(id_cli, sort_nota):
         .exclude(StatusNota__startswith="ENTREGUE")
         .exclude(StatusNota="NOTA CADASTRADA")
     )
-    lista = [
-        {
-            "emitente": x.Emitente,
-            "emitente_curto": nome_curto(x.Emitente),
-            "id_nota_clientes": x.idNotasClientes,
-            "local_coleta": x.LocalColeta,
-            "data_nota": x.DataColeta,
-            "serie_nota": x.SerieNota,
-            "numero_nota": x.NumeroNota,
-            "destinatario": x.Destinatario,
-            "destinatario_curto": nome_curto(x.Destinatario),
-            "cnpj": x.CNPJ,
-            "endereco": x.Endereco,
-            "endereco_compl": x.Endereco
-            + " "
-            + x.Bairro
-            + " "
-            + x.CEP[0:5]
-            + "-"
-            + x.CEP[5:]
-            + " "
-            + x.Cidade
-            + " "
-            + x.Estado,
-            "bairro": x.Bairro,
-            "cep": x.CEP[0:5] + "-" + x.CEP[5:],
-            "cidade": x.Cidade,
-            "estado": x.Estado,
-            "contato": x.Contato,
-            "informa": x.Informa,
-            "volume": x.Volume,
-            "peso": x.Peso,
-            "valor": x.Valor,
-            "statusnota": x.StatusNota,
-            "historico": x.Historico,
-            "idcliente": x.idCliente_id,
-        }
-        for x in notas
-    ]
+    lista = create_lista_notas_clientes(notas)
     return lista
 
 
@@ -91,40 +53,7 @@ def create_contexto_seleciona_ocorrencia(id_not, sort_ocorrencia):
 
 def create_contexto_ocorrencia_notas(_id_not):
     notas = NotasClientes.objects.filter(idNotasClientes=_id_not)
-    lista = [
-        {
-            "emitente": x.Emitente,
-            "emitente_curto": nome_curto(x.Emitente),
-            "id_nota_clientes": x.idNotasClientes,
-            "local_coleta": x.LocalColeta,
-            "data_nota": x.DataColeta,
-            "serie_nota": x.SerieNota,
-            "numero_nota": x.NumeroNota,
-            "cnpj": x.CNPJ,
-            "destinatario": x.Destinatario,
-            "destinatario_curto": nome_curto(x.Destinatario),
-            "endereco": x.Endereco
-            + " "
-            + x.Bairro
-            + " "
-            + x.CEP[0:5]
-            + "-"
-            + x.CEP[5:]
-            + " "
-            + x.Cidade
-            + " "
-            + x.Estado,
-            "contato": x.Contato,
-            "informa": x.Informa,
-            "volume": x.Volume,
-            "peso": x.Peso,
-            "valor": x.Valor,
-            "statusnota": x.StatusNota,
-            "historico": x.Historico,
-            "idcliente": x.idCliente_id,
-        }
-        for x in notas
-    ]
+    lista = create_lista_notas_clientes(notas)
     return lista
 
 
@@ -653,6 +582,7 @@ def create_contexto_filtro_notas_status(id_cli, sort_status, order_nota):
             romaneio = RomaneioNotas.objects.filter(
                 idNotasClientes=x.idNotasClientes
             ).latest("idRomaneioNotas")
+            romaneio_numero = romaneio.idRomaneio.Romaneio
             placa = romaneio.idRomaneio.idVeiculo.Placa
             motorista = nome_curto(romaneio.idRomaneio.idMotorista.Nome)
             placa_motorista.append({"motorista": motorista, "placa": placa})
@@ -694,6 +624,7 @@ def create_contexto_filtro_notas_status(id_cli, sort_status, order_nota):
                 "idcliente": x.idCliente_id,
                 "ocorrencia": ocorrencia,
                 "placa_motorista": placa_motorista,
+                "romaneio_numero": romaneio_numero,
             }
         )
     return {"notas": lista, "cliente": cliente, "sort_status": sort_status}
@@ -935,45 +866,7 @@ def create_contexto_imprime_romaneio(idromaneio, idcliente):
 
 def create_contexto_filtro_nota(nota, idcliente):
     notas = NotasClientes.objects.filter(NumeroNota=nota, idCliente=idcliente)
-    lista = [
-        {
-            "emitente": x.Emitente,
-            "emitente_curto": x.Emitente,
-            "id_nota_clientes": nome_curto(x.idNotasClientes),
-            "local_coleta": x.LocalColeta,
-            "data_nota": x.DataColeta,
-            "serie_nota": x.SerieNota,
-            "numero_nota": x.NumeroNota,
-            "destinatario": x.Destinatario,
-            "destinatario_curto": nome_curto(x.Destinatario),
-            "cnpj": x.CNPJ,
-            "endereco": x.Endereco,
-            "endereco_compl": x.Endereco
-            + " "
-            + x.Bairro
-            + " "
-            + x.CEP[0:5]
-            + "-"
-            + x.CEP[5:]
-            + " "
-            + x.Cidade
-            + " "
-            + x.Estado,
-            "bairro": x.Bairro,
-            "cep": x.CEP[0:5] + "-" + x.CEP[5:],
-            "cidade": x.Cidade,
-            "estado": x.Estado,
-            "contato": x.Contato,
-            "informa": x.Informa,
-            "volume": x.Volume,
-            "peso": x.Peso,
-            "valor": x.Valor,
-            "statusnota": x.StatusNota,
-            "historico": x.Historico,
-            "idcliente": x.idCliente_id,
-        }
-        for x in notas
-    ]
+    lista = create_lista_notas_clientes(notas)
     return lista
 
 
@@ -1106,3 +999,47 @@ def create_contexto_quantidade_entregas(notas_romaneio):
     entregas = len(list(set(entregas)))
     falta_entregar = len(list(set(falta_entregar)))
     return entregas, falta_entregar
+
+
+def create_lista_notas_clientes(notas):
+    lista = [
+        {
+            "emitente": x.Emitente,
+            "emitente_curto": nome_curto(x.Emitente),
+            "id_nota_clientes": x.idNotasClientes,
+            "local_coleta": x.LocalColeta,
+            "data_nota": x.DataColeta,
+            "serie_nota": x.SerieNota,
+            "numero_nota": x.NumeroNota,
+            "destinatario": x.Destinatario,
+            "destinatario_curto": nome_curto(x.Destinatario),
+            "cnpj": x.CNPJ,
+            "endereco": x.Endereco,
+            "endereco_compl": x.Endereco
+            + " "
+            + x.Bairro
+            + " "
+            + x.CEP[0:5]
+            + "-"
+            + x.CEP[5:]
+            + " "
+            + x.Cidade
+            + " "
+            + x.Estado,
+            "bairro": x.Bairro,
+            "cep": x.CEP[0:5] + "-" + x.CEP[5:],
+            "cidade": x.Cidade,
+            "estado": x.Estado,
+            "contato": x.Contato,
+            "informa": x.Informa,
+            "volume": x.Volume,
+            "peso": x.Peso,
+            "valor": x.Valor,
+            "statusnota": x.StatusNota,
+            "historico": x.Historico,
+            "idcliente": x.idCliente_id,
+        }
+        for x in notas
+    ]
+    return lista
+    
