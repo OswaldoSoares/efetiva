@@ -578,6 +578,7 @@ def create_contexto_filtro_notas_status(id_cli, sort_status, order_nota):
                     }
                 )
         placa_motorista = []
+        romaneio_numero = None
         if x.StatusNota == "EM ROTA":
             romaneio = RomaneioNotas.objects.filter(
                 idNotasClientes=x.idNotasClientes
@@ -1042,4 +1043,88 @@ def create_lista_notas_clientes(notas):
         for x in notas
     ]
     return lista
-    
+
+def create_contexto_notas(idcliente, sort_status, order_nota):    
+    cliente = Cliente.objects.get(idCliente=idcliente)
+    if sort_status == "SEM FILTRO":
+        notas = (
+            NotasClientes.objects.filter(idCliente=idcliente)
+            .order_by("NumeroNota")
+            .exclude(StatusNota="COLETA CANCELADA")
+            .exclude(StatusNota="DEVOLVIDA NO CLIENTE")
+            .exclude(StatusNota__startswith="ENTREGUE")
+            .exclude(StatusNota="NOTA CADASTRADA")
+        ).order_by(order_nota)
+    else:
+        notas = NotasClientes.objects.filter(
+            StatusNota=sort_status, idCliente_id=idcliente
+        ).order_by(order_nota)
+    lista = []
+    for x in notas:
+        ocorrencia = None
+        if x.StatusNota == "RECUSADA":
+            ocorrencia = NotasOcorrencias.objects.filter(
+                idNotasClientes=x.idNotasClientes, TipoOcorrencia="RECUSADA"
+            )
+            lista_ocorrencia = []
+            for y in ocorrencia:
+                data_ocorrencia = y.DataOcorrencia
+                desc_ocorrencia = y.Ocorrencia
+                lista_ocorrencia.append(
+                    {
+                        "ocorrencia": desc_ocorrencia,
+                        "data_ocorrencia": data_ocorrencia,
+                    }
+                )
+        placa_motorista = []
+        romaneio_numero = None
+        if x.StatusNota == "EM ROTA":
+            romaneio = RomaneioNotas.objects.filter(
+                idNotasClientes=x.idNotasClientes
+            ).latest("idRomaneioNotas")
+            romaneio_numero = romaneio.idRomaneio.Romaneio
+            placa = romaneio.idRomaneio.idVeiculo.Placa
+            motorista = nome_curto(romaneio.idRomaneio.idMotorista.Nome)
+            placa_motorista.append({"motorista": motorista, "placa": placa})
+        lista.append(
+            {
+                "id_nota_clientes": x.idNotasClientes,
+                "local_coleta": x.LocalColeta,
+                "emitente": x.Emitente,
+                "emitente_curto": nome_curto(x.Emitente),
+                "data_nota": x.DataColeta,
+                "serie_nota": x.SerieNota,
+                "numero_nota": x.NumeroNota,
+                "destinatario": x.Destinatario,
+                "destinatario_curto": nome_curto(x.Destinatario),
+                "cnpj": x.CNPJ,
+                "endereco": x.Endereco,
+                "endereco_compl": x.Endereco
+                + " "
+                + x.Bairro
+                + " "
+                + x.CEP[0:5]
+                + "-"
+                + x.CEP[5:]
+                + " "
+                + x.Cidade
+                + " "
+                + x.Estado,
+                "bairro": x.Bairro,
+                "cep": x.CEP[0:5] + "-" + x.CEP[5:],
+                "cidade": x.Cidade,
+                "estado": x.Estado,
+                "contato": x.Contato,
+                "informa": x.Informa,
+                "volume": x.Volume,
+                "peso": x.Peso,
+                "valor": x.Valor,
+                "statusnota": x.StatusNota,
+                "historico": x.Historico,
+                "idcliente": x.idCliente_id,
+                "ocorrencia": ocorrencia,
+                "placa_motorista": placa_motorista,
+                "romaneio_numero": romaneio_numero,
+            }
+        )
+    return {"notas": lista, "cliente": cliente, "sort_status": sort_status}
