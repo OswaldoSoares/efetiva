@@ -315,18 +315,19 @@ def carrega_xml(request):
 
 
 def orderna_notas(request):
-    id_cli = request.GET.get("cliente")
+    idcliente = request.GET.get("cliente")
     sort_nota = request.GET.get("sort")
     tipo_sort = request.GET.get("tipo_sort")
     filtro_status = request.GET.get("status")
-    if tipo_sort == "completo":
-        notas = facade.create_contexto_seleciona_notas(id_cli, sort_nota)
-        contexto = {"notas": notas, "idcliente": id_cli, "tipo_sort": tipo_sort}
-    else:
-        contexto = facade.create_contexto_filtro_notas_status(
-            id_cli, filtro_status, sort_nota
-        )
-        contexto.update({"idcliente": id_cli, "tipo_sort": tipo_sort})
+    contexto = facade.create_contexto_notas(idcliente, filtro_status, sort_nota)
+    # if tipo_sort == "completo":
+    #     notas = facade.create_contexto_seleciona_notas(idcliente, sort_nota)
+    #     contexto = {"notas": notas, "idcliente": idcliente, "tipo_sort": tipo_sort}
+    # else:
+    #     contexto = facade.create_contexto_filtro_notas_status(
+    #         idcliente, filtro_status, sort_nota
+    #     )
+    contexto.update({"idcliente": idcliente, "tipo_sort": tipo_sort})
     data = facade.create_data_sort_notas(request, contexto)
     return data
 
