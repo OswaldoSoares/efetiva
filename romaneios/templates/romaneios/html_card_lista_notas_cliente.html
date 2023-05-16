@@ -8,7 +8,9 @@
 <div class="card-body">
     <div id="reduzida-exist"></div>
     <div class="card-body-item">
-        <div class="div-flex">
+        <div class="div-flex
+        font-menor">
+            <!-- Orderner por nota -->
             <i class="bi bi-file-text
             i-button
             js-sort-notas"
@@ -17,20 +19,34 @@
             title="Ordernar por nota">
                 <span>NOTA</span>
             </i>
-            <i class="bi bi-trash
+            <!-- Orderner por emitente -->
+            <i class="bi bi-pencil
             i-button
             js-sort-notas"
             data-idcliente="{{ idcliente }}"
-            data-sort="Destinatario">
+            data-sort="Emitente"
+            title="Ordernar por emitente">
+                <span>EMITENTE</span>
+            </i>
+            <!-- Orderner por destinatário -->
+            <i class="bi bi-shop
+            i-button
+            js-sort-notas"
+            data-idcliente="{{ idcliente }}"
+            data-sort="Destinatario"
+            title="Ordernar por destinatário">
                 <span>DESTINATARIO</span>
             </i>
-            <i class="bi bi-trash
+            <!-- Orderner por endereço -->
+            <i class="bi bi-geo
             i-button
             js-sort-notas"
             data-idcliente="{{ idcliente }}"
-            data-sort="Endereco">
+            data-sort="Endereco"
+            title="Ordernar por endereço">
                 <span>ENDEREÇO</span>
             </i>
+            <!-- Orderner por bairro -->
             <i class="bi bi-geo
             i-button
             js-sort-notas"
@@ -39,26 +55,40 @@
             title="Ordernar por bairro">
                 <span>BAIRRO</span>
             </i>
+            <!-- Orderner por CEP -->
+            <i class="bi bi-geo
+            i-button
+            js-sort-notas"
+            data-idcliente="{{ idcliente }}"
+            data-sort="CEP"
+            title="Ordernar por CEP">
+                <span>CEP</span>
+            </i>
+            <!-- Orderner por cidade -->
+            <i class="bi bi-geo
+            i-button
+            js-sort-notas"
+            data-idcliente="{{ idcliente }}"
+            data-sort="Cidade"
+            title="Ordernar por cidade">
+                <span>CIDADE</span>
+            </i>
+            <!-- Orderner por estado -->
+            <i class="bi bi-geo
+            i-button
+            js-sort-notas"
+            data-idcliente="{{ idcliente }}"
+            data-sort="Estado"
+            title="Ordernar por estado">
+                <span>ESTADO</span>
+            </i>
+            <!-- Orderner por status da nota -->
             <i class="bi bi-trash
             i-button
             js-sort-notas"
             data-idcliente="{{ idcliente }}"
-            data-sort="CEP">
-                <span>CEP</span>
-            </i>
-            <i class="bi bi-trash i-button js-sort-notas"
-            data-idcliente="{{ idcliente }}"
-            data-sort="Cidade">
-                <span>CIDADE</span>
-            </i>
-            <i class="bi bi-trash i-button js-sort-notas"
-            data-idcliente="{{ idcliente }}"
-            data-sort="Estado">
-                <span>ESTADO</span>
-            </i>
-            <i class="bi bi-trash i-button js-sort-notas"
-            data-idcliente="{{ idcliente }}"
-            data-sort="-StatusNota">
+            data-sort="-StatusNota"
+            title="Ordernar por status da nota">
                 <span>STATUS</span>
             </i>
         </div>
@@ -66,43 +96,40 @@
     {% for nota in notas %}
     <div class="card-body-item">
         <div class="input-group">
-            <i class="input-group-addon
-            addon-my-color
-            i-button-null">
-                {{ forloop.counter|stringformat:".2d" }}
-            </i>
+            {% if nota.statusnota == "NOTA CADASTRADA" %}
+                <i class="input-group-addon
+                addon-my-color
+                i-button
+                js-nota-pendente"
+                data-idnotaclientes="{{ nota.id_nota_clientes }}"
+                title="Número Nota">
+                    {{ forloop.counter|stringformat:".2d" }}
+                </i>
+            {% else %}
+                <i class="input-group-addon
+                addon-my-color
+                i-button-null">
+                    {{ forloop.counter|stringformat:".2d" }}
+                </i>
+            {% endif %}
             <div class="input-fake
             div-flex
             div-direction-column
             font-menor"
             id="nota-{{ nota.id_nota_clientes }}">
                 <div class="div-flex">
-                    {% if nota.statusnota == "NOTA CADASTRADA" %}
-                        <i class="bi bi-file-text
-                        i-button
-                        js-nota-pendente
-                        tamanhoo-15
-                        text-left"
-                        data-idnotaclientes="{{ nota.id_nota_clientes }}"
-                        title="Número Nota">
-                            <span>
-                                {{ nota.numero_nota }}
-                            </span>
-                        </i> 
-                    {% else %}
-                        <i class="bi bi-file-text
-                        i-button-null
-                        tamanho-15
-                        text-left"
-                        title="Número Nota">
-                            <span>
-                                {{ nota.numero_nota }}
-                            </span>
-                        </i>
-                    {% endif %}
+                    <i class="bi bi-file-text
+                    i-button-null
+                    tamanho-15
+                    text-left"
+                    title="Número Nota">
+                        <span>
+                            {{ nota.numero_nota }}
+                        </span>
+                    </i>
                     <i class="bi bi-pencil
                     i-button-null
-                    tamanho-40
+                    tamanho-35
                     text-left"
                     title="Emitente: {{ nota.emitente }}">
                         <span>
@@ -111,7 +138,7 @@
                     </i>
                     <i class="bi bi-shop
                     i-button-null
-                    tamanho-30
+                    tamanho-35
                     text-left"
                     title="Destinatario: {{ nota.destinatario }}">
                         <span>
@@ -134,7 +161,7 @@
                 <div class="div-flex">
                     <i class="bi bi-geo-alt i-button-null">
                         <span>
-                            {{ nota.endereco_compl|slice:"0:85" }}
+                            {{ nota.endereco_compl|slice:"0:75" }}
                         </span>
                     </i>
                 </div>
@@ -172,19 +199,21 @@
 </div>
 <div class="card-footer">
     <div class="div-flex">
-        <div class="botoes">
-            <a class="bi bi-printer i-button js-print-relatorio"
-            href="{% url 'imprime_notas_status' %}?StatusNota={{ sort_status }}&idCliente={{ idcliente }}"
-            title="Imprime Romaneio" target="_blank"></a>
-            <i class="bi bi-cursor i-button js-envia-telegram-relatorio"
-            data-idcliente="{{ idcliente }}" title="Envia Relatorio no Telegram"></i>
-        </div>
-        <div class="quantidade">
-            {% for nota in notas %}
-            {% if forloop.last %}
-            <span><b>{{ forloop.counter|stringformat:"02d" }} NOTA{{ forloop.counter|pluralize|upper }}</b></span>
-            {% endif %}
-            {% endfor %}
-        </div>
+        {% if notas %}
+            <div class="botoes">
+                <a class="bi bi-printer i-button js-print-relatorio"
+                href="{% url 'imprime_notas_status' %}?StatusNota={{ sort_status }}&idCliente={{ idcliente }}"
+                title="Imprime Romaneio" target="_blank"></a>
+                <i class="bi bi-cursor i-button js-envia-telegram-relatorio"
+                data-idcliente="{{ idcliente }}" title="Envia Relatorio no Telegram"></i>
+            </div>
+            <div class="quantidade">
+                {% for nota in notas %}
+                {% if forloop.last %}
+                <span><b>{{ forloop.counter|stringformat:"02d" }} NOTA{{ forloop.counter|pluralize|upper }}</b></span>
+                {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
     </div>
 </div>

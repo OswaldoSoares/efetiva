@@ -10,7 +10,7 @@ from clientes.models import Cliente
 from django.db.models import Max
 from django.http import JsonResponse
 from django.template.loader import render_to_string
-from minutas.facade import nome_curto
+from website.facade import nome_curto
 from website.models import FileUpload
 
 from romaneios.models import NotasClientes, NotasOcorrencias, RomaneioNotas, Romaneios
@@ -22,10 +22,10 @@ def create_contexto_seleciona_cliente():
     return lista
 
 
-def create_contexto_seleciona_notas(id_cli, sort_nota):
+def create_contexto_seleciona_notas(id_cli, order_nota):
     notas = (
         NotasClientes.objects.filter(idCliente=id_cli)
-        .order_by(sort_nota)
+        .order_by(order_nota)
         .exclude(StatusNota="COLETA CANCELADA")
         .exclude(StatusNota="DEVOLVIDA NO CLIENTE")
         .exclude(StatusNota__startswith="ENTREGUE")
@@ -353,7 +353,7 @@ def altera_status_remove_romaneio(id_rom, id_not, hoje):
     obj.save(update_fields=["StatusNota"])
 
 
-# TODO FUNÇÃO NÃO ESTÁ SENDO USADA - VERIFICAR 28/03/2023
+# TODO FUNÇÃO NÃO ESTÁ SENDO USADA - VERIFICAR NECESSIDADE 28/03/2023
 def update_ocorrencia(ocorrencia_form, id_ocor):
     ocorrencia = NotasOcorrencias.objects.get(idNotasOcorrencia=id_ocor)
     obj = ocorrencia
