@@ -427,12 +427,13 @@ def envia_telegram_relatorio(request):
 
 
 def filtra_status(request):
-    filtro_status = request.GET.get("status")
-    id_cli = request.GET.get("cliente")
-    contexto = facade.create_contexto_filtro_notas_status(
-        id_cli, filtro_status, "NumeroNota"
-    )
-    contexto.update({"idcliente": id_cli})
+    filter_status = request.GET.get("status")
+    idcliente = request.GET.get("cliente")
+    contexto = facade.create_contexto_notas(idcliente, filter_status, "NumeroNota")
+    # contexto = facade.create_contexto_filtro_notas_status(
+    #     idcliente, filter_status, "NumeroNota"
+    # )
+    contexto.update({"idcliente": idcliente})
     data = facade.create_data_filtro_status_reduzida(request, contexto)
     return data
 
