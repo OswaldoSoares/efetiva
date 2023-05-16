@@ -1,49 +1,46 @@
 <form class="js-seleciona-cliente" method="post" action="">
     {% csrf_token %}
-    <div class="article-card-titulo">
+    <!-- Header -->
+    <div class="card-header">
         <span>CLIENTES</span>
     </div>
-    <div class="article-card-body">
-        <div class="borda-top"></div>
-        <div class="item-cliente">
-            <div class="item-form">
-                <div class="button">
-                    <i class="bi bi-building i-button-null" title="Cliente"></i>
-                </div>
-                <div class="item-field">
-                    <select class="form-control js-cliente" name="cliente" id="cliente">
-                        <option value="0">SELECIONE UM CLIENTE</option>
-                        {% for cliente in clientes %}
-                        {% if despesa %}
-                            {% if despesa.categoria == categoria.idcategoria %}
+    <!-- Body -->
+    <div class="card-body">
+        <div class="card-body-item">
+            <div class="input-group">
+                <i class="bi bi-building
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
+                <select class="form-control js-cliente" name="cliente" id="cliente">
+                    <option value="0">SELECIONE UM CLIENTE</option>
+                    {% for cliente in clientes %}
+                    {% if despesa %}
+                        {% if despesa.categoria == categoria.idcategoria %}
                             <option value="{{ cliente.idcliente }}" selected>
                                 {{ cliente.fantasia }}
                             </option>
-                            {% else %}
-                            <option value="{{ cliente.idcliente }}">
-                                {{ cliente.fantasia }}
-                            </option>
-                            {% endif %}
                         {% else %}
                             <option value="{{ cliente.idcliente }}">
                                 {{ cliente.fantasia }}
                             </option>
                         {% endif %}
-                        {% endfor %}
-                    </select>
+                    {% else %}
+                        <option value="{{ cliente.idcliente }}">
+                            {{ cliente.fantasia }}
+                        </option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+                <div class="input-group-addon addon-my-color">
+                    <button class="bi bi-save2
+                    i-button"
+                    title="Selecionar Cliente"></button>
                 </div>
-            </div>
-            <div class="item-form">
-                {% if erro_seleciona %}
-                <div class="error">
-                    <span>{{ erro_seleciona }}<span>
-                </div>
-                {% endif %}
             </div>
         </div>
-        <div class="borda-bottom"></div>
     </div>
-    <div class="article-card-footer">
-        <button class="bi bi-save2 i-button" title="Selecionar Cliente"></button>
-    </div>
+    <!-- Footer -->
+    <div class="card-footer"></div>
 </form>
