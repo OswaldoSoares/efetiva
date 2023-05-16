@@ -342,13 +342,14 @@ def imprime_romaneio(request):
 
 
 def imprime_notas_status(request):
-    status = request.GET.get("StatusNota")
-    id_cli = request.GET.get("idCliente")
-    ordem = request.GET.get("ordem")
-    if not ordem:
-        ordem = "NumeroNota"
-    contexto = facade.create_contexto_filtro_notas_status(id_cli, status, ordem)
-    contexto.update({"sort_status": status})
+    filter_status = request.GET.get("StatusNota")
+    idcliente = request.GET.get("idCliente")
+    order_nota = request.GET.get("ordem")
+    if not order_nota:
+        order_nota = "NumeroNota"
+    contexto = facade.create_contexto_notas(idcliente, filter_status, order_nota)
+    # contexto = facade.create_contexto_filtro_notas_status(idcliente, sort_status, order_nota)
+    contexto.update({"sort_status": filter_status})
     response = print_notas_status(contexto)
     return response
 

@@ -1044,9 +1044,9 @@ def create_lista_notas_clientes(notas):
     ]
     return lista
 
-def create_contexto_notas(idcliente, sort_status, order_nota):    
+def create_contexto_notas(idcliente, filter_status, order_nota):    
     cliente = Cliente.objects.get(idCliente=idcliente)
-    if sort_status == "SEM FILTRO":
+    if filter_status == "SEM FILTRO":
         notas = (
             NotasClientes.objects.filter(idCliente=idcliente)
             .order_by("NumeroNota")
@@ -1057,7 +1057,7 @@ def create_contexto_notas(idcliente, sort_status, order_nota):
         ).order_by(order_nota)
     else:
         notas = NotasClientes.objects.filter(
-            StatusNota=sort_status, idCliente_id=idcliente
+            StatusNota=filter_status, idCliente_id=idcliente
         ).order_by(order_nota)
     lista = []
     for x in notas:
@@ -1127,4 +1127,4 @@ def create_contexto_notas(idcliente, sort_status, order_nota):
                 "romaneio_numero": romaneio_numero,
             }
         )
-    return {"notas": lista, "cliente": cliente, "sort_status": sort_status}
+    return {"notas": lista, "cliente": cliente, "sort_status": filter_status}
