@@ -121,15 +121,14 @@ def exclui_nota_cliente(request):
     idnota = request.GET.get("idNota")
     idcliente = request.GET.get("idCliente")
     facade.delete_notas_cliente(idnota)
-    notas = facade.create_contexto_seleciona_notas(idcliente, "NumeroNota")
-    cliente = facade.create_contexto_cliente(idcliente)
+    # notas = facade.create_contexto_seleciona_notas(idcliente, "NumeroNota")
+    contexto = facade.create_contexto_notas(idcliente, "SEM FILTRO", "NumeroNota")
+    # cliente = facade.create_contexto_cliente(idcliente)
     hoje = str_hoje()
-    contexto = {
-        "notas": notas,
-        "cliente": cliente,
+    contexto.update({
         "hoje": hoje,
         "idcliente": idcliente,
-    }
+    })
     quantidade_notas = facade.create_contexto_quantidades_status(idcliente)
     contexto.update({"rotas": quantidade_notas[0]["rota"]})
     contexto.update({"cadastrada": quantidade_notas[0]["cadastrada"]})
