@@ -21,19 +21,6 @@ def create_contexto_seleciona_cliente():
     lista = [{"idcliente": x.idCliente, "fantasia": x.Fantasia} for x in clientes]
     return lista
 
-# TODO exclui
-def create_contexto_seleciona_notas(id_cli, order_nota):
-    notas = (
-        NotasClientes.objects.filter(idCliente=id_cli)
-        .order_by(order_nota)
-        .exclude(StatusNota="COLETA CANCELADA")
-        .exclude(StatusNota="DEVOLVIDA NO CLIENTE")
-        .exclude(StatusNota__startswith="ENTREGUE")
-        .exclude(StatusNota="NOTA CADASTRADA")
-    )
-    lista = create_lista_notas_clientes(notas)
-    return lista
-
 
 def create_contexto_seleciona_ocorrencia(id_not, sort_ocorrencia):
     ocorrencia = NotasOcorrencias.objects.filter(idNotasClientes=id_not)
