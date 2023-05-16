@@ -21,7 +21,7 @@ def create_contexto_seleciona_cliente():
     lista = [{"idcliente": x.idCliente, "fantasia": x.Fantasia} for x in clientes]
     return lista
 
-
+# TODO exclui
 def create_contexto_seleciona_notas(id_cli, order_nota):
     notas = (
         NotasClientes.objects.filter(idCliente=id_cli)
@@ -544,7 +544,7 @@ def create_contexto_quantidades_status(idcliente):
     ]
     return lista
 
-
+# TODO excluir
 def create_contexto_filtro_notas_status(id_cli, sort_status, order_nota):
     cliente = Cliente.objects.get(idCliente=id_cli)
     if sort_status == "SEM FILTRO":

@@ -61,26 +61,27 @@ def adiciona_nota_cliente(request):
     error, msg = facade.valida_notas_cliente(request)
     nota_form = facade.read_nota_post(request)
     id_not = request.POST.get("idnota")
+    idcliente = request.POST.get("cliente")
+    filtro_status = request.POST.get("filtro")
     if not error:
         if id_not:
             facade.update_notas_cliente(nota_form, id_not)
         else:
             facade.save_notas_cliente(nota_form)
         nota_form = dict()
-    idcliente = request.POST.get("cliente")
-    notas = facade.create_contexto_seleciona_notas(idcliente, "NumeroNota")
+    # notas = facade.create_contexto_seleciona_notas(idcliente, "NumeroNota")
+    contexto = facade.create_contexto_notas(idcliente, filtro_status, "NumeroNota")
     hoje = str_hoje()
-    filtro_status = request.POST.get("filtro")
-    if filtro_status:
-        contexto = facade.create_contexto_filtro_notas_status(
-            idcliente, filtro_status, "NumeroNota"
-        )
-    else:
-        cliente = facade.create_contexto_cliente(idcliente)
-        contexto = {
-            "notas": notas,
-            "cliente": cliente,
-        }
+    # if filtro_status:
+    #     contexto = facade.create_contexto_filtro_notas_status(
+    #         idcliente, filtro_status, "NumeroNota"
+    #     )
+    # else:
+    #     cliente = facade.create_contexto_cliente(idcliente)
+    #     contexto = {
+    #         "notas": notas,
+    #         "cliente": cliente,
+    #     }
     contexto.update({"hoje": hoje, "idcliente": idcliente})
     contexto.update({"nota_form": nota_form, "error": error})
     contexto.update(msg)
