@@ -284,9 +284,10 @@ def exclui_nota_romaneio(request):
     hoje = str_hoje()
     facade.delete_nota_romaneio(idromaneionotas)
     facade.altera_status_remove_romaneio(idromaneio, idnota, hoje)
-    contexto = facade.create_contexto_filtro_notas_status(
-        idcliente, filtro_status, "NumeroNota"
-    )
+    contexto = facade.create_contexto_notas(idcliente, filtro_status, "NumeroNota")
+    # contexto = facade.create_contexto_filtro_notas_status(
+    #     idcliente, filtro_status, "NumeroNota"
+    # )
     notas_romaneio = facade.create_contexto_notas_romaneio(idromaneio)
     romaneio = facade.create_contexto_seleciona_romaneio(idromaneio)
     quantidade_notas = facade.create_contexto_quantidades_status(idcliente)
