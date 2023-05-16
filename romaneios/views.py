@@ -441,11 +441,12 @@ def filtra_status(request):
 def nota_deposito(request):
     idnotasclientes = request.GET.get("idNotaClientes")
     facade.altera_status_pendente(idnotasclientes)
-    filtro_status = request.GET.get("status")
+    filter_status = request.GET.get("status")
     idcliente = request.GET.get("cliente")
-    contexto = facade.create_contexto_filtro_notas_status(
-        idcliente, filtro_status, "NumeroNota"
-    )
+    contexto = facade.create_contexto_notas(idcliente, filter_status, "NumeroNota")
+    # contexto = facade.create_contexto_filtro_notas_status(
+    #     idcliente, filtro_status, "NumeroNota"
+    # )
     contexto.update({"idcliente": idcliente})
     quantidade_notas = facade.create_contexto_quantidades_status(idcliente)
     contexto.update({"rotas": quantidade_notas[0]["rota"]})
