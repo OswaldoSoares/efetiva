@@ -6454,6 +6454,11 @@ main .fp-recibo-tabela .fp-recibo-print {
 
 /* NOVO ESTILO 10/04/2009 */
 /* MINUTA */
+label {
+  margin: 0;
+  padding: 0;
+}
+
 .section-grid {
   /* background-color: #a94442; */
   padding: 5px;
@@ -6677,6 +6682,7 @@ main .fp-recibo-tabela .fp-recibo-print {
   background-color: transparent;
   color: var(--color3);
   text-decoration: none;
+  border: none;
 }
 
 .i-button:hover {
@@ -6834,6 +6840,10 @@ main .fp-recibo-tabela .fp-recibo-print {
   min-width: 50%;
 }
 
+.tamanho-80 {
+  min-width: 80%;
+}
+
 .text-left {
   text-align: left !important;
 }
@@ -6845,3 +6855,14 @@ main .fp-recibo-tabela .fp-recibo-print {
 .text-right {
   text-align: right !important;
 }
+
+.error-form {
+  width: 100%;
+  background-color: var(--color13);
+  color: var(--color14);
+  height: 1.5rem;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+  

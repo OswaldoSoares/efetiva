@@ -1,157 +1,196 @@
 <form class="js-gera-notas-cliente" method="post" action="">
     {% csrf_token %}
     <input type="hidden" id="filtro" name="filtro" value="">
-    <div class="article-card-titulo">
-        <i class="bi bi-plus-circle i-button js-mostra-body-nota"></i>
-        <i class="bi bi-dash-circle i-button js-oculta-body-nota"></i>
-        <span class="titulo-retrai-card">{{ cliente }}</span>
+    <div class="card-header">
+        <span class="titulo-retrai-card">
+            {{ cliente }}
+        </span>
+        <i class="bi bi-chevron-down i-button js-mostra-oculta-form-nota"></i>
         <input type="hidden" id="id_cliente" value="{{ idcliente }}">
     </div>
-    <div class="article-card-body body-nota">
-        <div class="item-nota">
-            <div class="item-form">
-                <div class="button" title="LOCAL DE COLETA">
-                    <i class="bi bi-building i-button-null"></i>
-                </div>
-                <div class="item-field">
+    <div class="card-body">
+        <div class="card-body-item js-mostra-form-nota">
+            <!-- LOCAL DE COLETA -->
+            <div class="input-group">
+                <i class="bi bi-building
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                title="LOCAL DE COLETA"></i>
+                {% if nota_form %}
+                <input type="hidden" name="idnota" value="{{ nota_form.id_nota_clientes }}"> {% endif %}
+                <select class="form-control
+                form-control-minuta js-cliente" name="localcoleta" id="localcoleta">
+                    <option value="">SELECIONE LOCAL COLETA</option>
                     {% if nota_form %}
-                    <input type="hidden" name="idnota" value="{{ nota_form.id_nota_clientes }}"> {% endif %}
-                    <select class="form-control js-cliente" name="localcoleta" id="localcoleta">
-                        <option value="">SELECIONE LOCAL COLETA</option>
-                        {% if nota_form %}
-                            {% if nota_form.local_coleta == cliente %}
-                            <option value="{{ cliente }}" selected>
-                                {{ cliente }}
-                            </option>
-                            <option value="DESTINATÁRIO">
-                                DESTINATÁRIO
-                            </option>
-                            {% else %}
-                            <option value="{{ cliente }}">
-                                {{ cliente }}
-                            </option>
-                            <option value="DESTINATÁRIO" selected>
-                                DESTINATÁRIO
-                            </option>
-                            {% endif %}
+                        {% if nota_form.local_coleta == cliente %}
+                        <option value="{{ cliente }}" selected>
+                            {{ cliente }}
+                        </option>
+                        <option value="DESTINATÁRIO">
+                            DESTINATÁRIO
+                        </option>
                         {% else %}
-                            <option value={{ cliente }}>
-                                {{ cliente }}
-                            </option>
-                            <option value="DESTINATÁRIO">
-                                DESTINATÁRIO
-                            </option>
+                        <option value="{{ cliente }}">
+                            {{ cliente }}
+                        </option>
+                        <option value="DESTINATÁRIO" selected>
+                            DESTINATÁRIO
+                        </option>
                         {% endif %}
-                    </select>
-                </div>
+                    {% else %}
+                        <option value={{ cliente }}>
+                            {{ cliente }}
+                        </option>
+                        <option value="DESTINATÁRIO">
+                            DESTINATÁRIO
+                        </option>
+                    {% endif %}
+                </select>
+                <i class="bi bi-check
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
             </div>
-            <div class="item-form">
-                {% if erro_local_coleta %}
-                <div class="error">
-                    <span>{{ erro_local_coleta }}<span>
+            <!-- LOCAL DE COLETA - ERROR -->
+            {% if erro_local_coleta %}
+                <div class="error-form">
+                    <span>
+                        {{ erro_local_coleta }}
+                    <span>
                 </div>
-                {% endif %}
-            </div>
+            {% endif %}
             <!-- EMITENTE -->
-            <div class="item-form">
-                <div class="button" title="EMITENTE NOTA FISCAL">
-                    <i class="bi bi-pencil i-button-null"></i>
-                </div>
-                <div class="item-field">
-                    {% if nota_form %}
+            <div class="input-group">
+                <i class="bi bi-pencil
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
+                {% if nota_form %}
                     <input type="text"
-                    class="form-control"
+                    class="form-control form-control--minuta"
                     id="emitente"
                     name="emitente"
                     placeholder="EMITENTE"
                     value="{{ nota_form.emitente }}">
-                    {% else %}
+                {% else %}
                     <input type="text"
-                    class="form-control"
+                    class="form-control form-control-minuta"
                     id="emitente"
                     name="emitente"
                     placeholder="EMITENTE"
                     >
-                    {% endif %}
-                </div>
+                {% endif %}
+                <i class="bi bi-check
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
             </div>
-
-            <div class="item-form">
-                <div class="button" title="DATA DA NOTA">
-                    <i class="bi bi-calendar i-button-null"></i>
-                </div>
-                <div class="item-field">
-                    {% if nota_form %}
-                    <input class="form-control" type="date"
+            <!-- Data da nota -->
+            <div class="input-group">
+                <i class="bi bi-calendar
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
+                {% if nota_form %}
+                    <input class="form-control form-control-minuta" type="date"
                     name="datanota" id="datanota"
                     value={{ nota_form.data_nota }}>
-                    {% else %}
-                    <input class="form-control" type="date"
+                {% else %}
+                    <input class="form-control form-control-minuta" type="date"
                     name="datanota" id="datanota"
                     value={{ hoje }}>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="item-form">
-                {% if erro_datacoleta %}
-                <div class="error">
-                    <span>{{ erro_datacoleta }}<span>
-                </div>
                 {% endif %}
+                <i class="bi bi-check
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
             </div>
-            <div class="item-form">
-                <div class="button" title="SÉRIE DA NOTA">
-                    <i class="bi bi-file-earmark-binary i-button-null"></i>
+            {% if erro_datacoleta %}
+                <div class="error-form">
+                    <span>
+                        {{ erro_datacoleta }}
+                    <span>
                 </div>
-                <div class="item-field">
-                    {% if nota_form %}
-                    <input class="form-control" type="text"
-                    name="serienota" placeholder="SÉRIE DA NOTA"
-                    id="serienota" value="{{ nota_form.serie_nota }}">
-                    {% else %}
-                    <input class="form-control" type="text"
-                    name="serienota" placeholder="SÉRIE DA NOTA"
+            {% endif %}
+
+            <div class="input-group">
+                <i class="bi bi-file-earmark-binary
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
+                {% if nota_form %}
+                    <input class="form-control
+                    form-control-minuta"
+                    type="text"
+                    name="serienota"
+                    placeholder="SÉRIE DA NOTA"
+                    id="serienota"
+                    value="{{ nota_form.serie_nota }}">
+                {% else %}
+                    <input class="form-control
+                    form-control-minuta"
+                    type="text"
+                    name="serienota"
+                    placeholder="SÉRIE DA NOTA"
                     id="serienota">
-                    {% endif %}
-                </div>
-            </div>
-            <div class="item-form">
-                {% if error_serienota %}
-                <div class="error">
-                    <span>{{ error_serienota }}<span>
-                </div>
                 {% endif %}
+                <i class="bi bi-check
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
             </div>
-            <div class="item-form">
-                <div class="button" title="NÚMERO DA NOTA">
-                    <i class="bi bi-file-text i-button-null"></i>
+            {% if error_serienota %}
+                <div class="error">
+                    <span>
+                        {{ error_serienota }}
+                    <span>
                 </div>
-                <div class="item-field">
-                    {% if nota_form %}
-                    <input class="form-control" type="text"
+            {% endif %}
+            <div class="input-group">
+                <i class="bi bi-file-text
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
+                {% if nota_form %}
+                    <input class="form-control
+                    form-control-minuta" type="text"
                     name="numeronota" placeholder="NÚMERO DA NOTA"
                     id="numeronota" value="{{ nota_form.numero_nota }}">
-                    {% else %}
-                    <input class="form-control" type="text"
+                {% else %}
+                    <input class="form-control
+                    form-control-minuta" type="text"
                     name="numeronota" placeholder="NÚMERO DA NOTA"
                     id="numeronota">
-                    {% endif %}
-                </div>
+                {% endif %}
+                <i class="bi bi-check
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
             </div>
-            <div class="item-form">
-                {% if error_numeronota %}
+            {% if error_numeronota %}
                 <div class="error">
                     <span>{{ error_numeronota }}<span>
                 </div>
-                {% endif %}
-            </div>
-            <div class="item-form">
-                <div class="button" title="LOCAL DA ENTREGA">
-                    <i class="bi bi-shop i-button-null"></i>
-                </div>
-                <div class="item-field">
-                    {% if nota_form %}
-                    <input class="form-control" type="text" name="destinatario"
+            {% endif %}
+            <div class="input-group">
+                <i class="bi bi-shop
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
+                {% if nota_form %}
+                    <input class="form-control
+                    form-control-minuta" type="text" name="destinatario"
                     placeholder="DESTINATÁRIO" list="destinatarios"
                     id="destinatario" value="{{ nota_form.destinatario }}">
                     <datalist id="destinatarios">
@@ -159,8 +198,9 @@
                         <option value="{{ dest }}">
                         {% endfor %}
                     </datalist>
-                    {% else %}
-                    <input class="form-control" type="text" name="destinatario"
+                {% else %}
+                    <input class="form-control
+                    form-control-minuta" type="text" name="destinatario"
                     placeholder="DESTINATÁRIO" list="destinatarios"
                     id="destinatario">
                     <datalist id="destinatarios">
@@ -168,8 +208,12 @@
                         <option value="{{ dest }}">
                         {% endfor %}
                     </datalist>
-                    {% endif %}
-                </div>
+                {% endif %}
+                <i class="bi bi-check
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
             </div>
             <div class="item-form">
                 {% if error_destinatario %}
@@ -178,19 +222,26 @@
                 </div>
                 {% endif %}
             </div>
-            <div class="item-form">
-                <div class="button" title="CNPJ">
-                    <i class="bi bi-window i-button-null"></i>
-                </div>
-                <div class="item-field">
-                    {% if nota_form %}
-                    <input class="form-control" type="text" name="cnpj"
+            <div class="input-group">
+                <i class="bi bi-window
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
+                {% if nota_form %}
+                    <input class="form-control
+                    form-control-minuta" type="text" name="cnpj"
                     placeholder="CNPJ" id="cnpj" value="{{ nota_form.cnpj }}">
-                    {% else %}
-                    <input class="form-control" type="text" name="cnpj"
+                {% else %}
+                    <input class="form-control
+                    form-control-minuta" type="text" name="cnpj"
                     placeholder="CNPJ" id="cnpj">
-                    {% endif %}
-                </div>
+                {% endif %}
+                <i class="bi bi-check
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
             </div>
             <div class="item-form">
                 {% if error_cnpj %}
@@ -199,13 +250,15 @@
                 </div>
                 {% endif %}
             </div>
-            <div class="item-form">
-                <div class="button" title="ENDEREÇO DA ENTREGA">
-                    <i class="bi bi-geo-alt-fill i-button-null"></i>
-                </div>
-                <div class="item-field">
-                    {% if nota_form %}
-                    <input class="form-control" type="text" name="endereco"
+            <div class="input-group">
+                <i class="bi bi-geo-alt-fill
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
+                {% if nota_form %}
+                    <input class="form-control
+                    form-control-minuta" type="text" name="endereco"
                     list="enderecos" placeholder="ENDEREÇO"
                     id="endereco" value="{{ nota_form.endereco }}">
                     <datalist id="enderecos">
@@ -213,8 +266,9 @@
                         <option value="{{ ende }}">
                         {% endfor %}
                     </datalist>
-                    {% else %}
-                    <input class="form-control" type="text" name="endereco"
+                {% else %}
+                    <input class="form-control
+                    form-control-minuta" type="text" name="endereco"
                     list="enderecos" placeholder="ENDEREÇO"
                     id="endereco">
                     <datalist id="enderecos">
@@ -222,8 +276,12 @@
                         <option value="{{ ende }}">
                         {% endfor %}
                     </datalist>
-                    {% endif %}
-                </div>
+                {% endif %}
+                <i class="bi bi-check
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
             </div>
             <div class="item-form">
                 {% if error_endereco %}
@@ -232,20 +290,27 @@
                 </div>
                 {% endif %}
             </div>
-            <div class="item-form">
-                <div class="button" title="CEP DA ENTREGA">
-                    <i class="bi bi-geo-alt-fill i-button-null"></i>
-                </div>
-                <div class="item-field">
-                    {% if nota_form %}
-                    <input class="form-control" type="text" maxlength="8"
+            <div class="input-group">
+                <i class="bi bi-geo-alt-fill
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
+                {% if nota_form %}
+                    <input class="form-control
+                    form-control-minuta" type="text" maxlength="8"
                     name="cep" placeholder="CEP"
                     id="cep" value="{{ nota_form.cep }}">
-                    {% else %}
-                    <input class="form-control" type="text" maxlength="8"
+                {% else %}
+                    <input class="form-control
+                    form-control-minuta" type="text" maxlength="8"
                     name="cep" placeholder="CEP" id="cep">
-                    {% endif %}
-                </div>
+                {% endif %}
+                <i class="bi bi-check
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
             </div>
             <div class="item-form">
                 {% if error_cep %}
@@ -254,13 +319,15 @@
                 </div>
                 {% endif %}
             </div>
-            <div class="item-form">
-                <div class="button" title="BAIRRO DA ENTREGA">
-                    <i class="bi bi-geo-alt-fill i-button-null"></i>
-                </div>
-                <div class="item-field">
-                    {% if nota_form %}
-                    <input class="form-control" type="text" name="bairro"
+            <div class="input-group">
+                <i class="bi bi-geo-alt-fill
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
+                {% if nota_form %}
+                    <input class="form-control
+                    form-control-minuta" type="text" name="bairro"
                     list="bairros" placeholder="BAIRRO"
                     id="bairro" value="{{ nota_form.bairro }}">
                     <datalist id="bairros">
@@ -268,16 +335,21 @@
                         <option value="{{ bair }}">
                         {% endfor %}
                     </datalist>
-                    {% else %}
-                    <input class="form-control" type="text" name="bairro"
+                {% else %}
+                    <input class="form-control
+                    form-control-minuta" type="text" name="bairro"
                     list="bairros" placeholder="BAIRRO" id="bairro">
                     <datalist id="bairros">
                         {% for bair in bairros %}
                         <option value="{{ bair }}">
                         {% endfor %}
                     </datalist>
-                    {% endif %}
-                </div>
+                {% endif %}
+                <i class="bi bi-check
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
             </div>
             <div class="item-form">
                 {% if error_bairro %}
@@ -286,20 +358,27 @@
                 </div>
                 {% endif %}
             </div>
-            <div class="item-form">
-                <div class="button" title="CIDADE DA ENTREGA">
-                    <i class="bi bi-geo-alt-fill i-button-null"></i>
-                </div>
-                <div class="item-field">
-                    {% if nota_form %}
-                    <input class="form-control" type="text"
+            <div class="input-group">
+                <i class="bi bi-geo-alt-fill
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
+                {% if nota_form %}
+                    <input class="form-control
+                    form-control-minuta" type="text"
                     name="cidade" value="SÃO PAULO"
                     id="cidade" value="{{ nota_form.cidade }}">
-                    {% else %}
-                    <input class="form-control" type="text"
+                {% else %}
+                    <input class="form-control
+                    form-control-minuta" type="text"
                     name="cidade" value="SÃO PAULO" id="cidade">
-                    {% endif %}
-                </div>
+                {% endif %}
+                <i class="bi bi-check
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
             </div>
             <div class="item-form">
                 {% if error_cidade %}
@@ -308,20 +387,27 @@
                 </div>
                 {% endif %}
             </div>
-            <div class="item-form">
-                <div class="button" title="ESTADO DA ENTREGA">
-                    <i class="bi bi-geo-alt-fill i-button-null"></i>
-                </div>
-                <div class="item-field">
-                    {% if nota_form %}
-                    <input class="form-control" type="text"
+            <div class="input-group">
+                <i class="bi bi-geo-alt-fill
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
+                {% if nota_form %}
+                    <input class="form-control
+                    form-control-minuta" type="text"
                     name="estado" value="{{ nota_form.estado }}"
                     id="estado">
-                    {% else %}
-                    <input class="form-control" type="text"
+                {% else %}
+                    <input class="form-control
+                    form-control-minuta" type="text"
                     name="estado" value="SP" id="estado">
-                    {% endif %}
-                </div>
+                {% endif %}
+                <i class="bi bi-check
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
             </div>
             <div class="item-form">
                 {% if error_estado %}
@@ -330,20 +416,27 @@
                 </div>
                 {% endif %}
             </div>
-            <div class="item-form">
-                <div class="button" title="CONTATO DA ENTREGA">
-                    <i class="bi bi-person-badge i-button-null"></i>
-                </div>
-                <div class="item-field">
-                    {% if nota_form %}
-                    <input class="form-control" type="text"
+            <div class="input-group">
+                <i class="bi bi-person-badge
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
+                {% if nota_form %}
+                    <input class="form-control
+                    form-control-minuta" type="text"
                     name="contato" placeholder="CONTATO" id="contato"
                     value="{{ nota_form.contato }}">
-                    {% else %}
-                    <input class="form-control" type="text"
+                {% else %}
+                    <input class="form-control
+                    form-control-minuta" type="text"
                     name="contato" placeholder="CONTATO" id="contato">
-                    {% endif %}
-                </div>
+                {% endif %}
+                <i class="bi bi-check
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
             </div>
             <div class="item-form">
                 {% if error_contato %}
@@ -352,21 +445,28 @@
                 </div>
                 {% endif %}
             </div>
-            <div class="item-form">
-                <div class="button" title="INFORMAÇÕES DA ENTREGA">
-                    <i class="bi bi-info-square i-button-null"></i>
-                </div>
-                <div class="item-field">
-                    {% if nota_form %}
-                    <input class="form-control" type="text"
+            <div class="input-group">
+                <i class="bi bi-info-square
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
+                {% if nota_form %}
+                    <input class="form-control
+                    form-control-minuta" type="text"
                     name="informa" placeholder="INFORMAÇÕES"
                     id="informa" value="{{ nota_form.informa }}">
-                    {% else %}
-                    <input class="form-control" type="text"
+                {% else %}
+                    <input class="form-control
+                    form-control-minuta" type="text"
                     name="informa" placeholder="INFORMAÇÕES"
                     id="informa">
-                    {% endif %}
-                </div>
+                {% endif %}
+                <i class="bi bi-check
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
             </div>
             <div class="item-form">
                 {% if error_informa %}
@@ -375,20 +475,27 @@
                 </div>
                 {% endif %}
             </div>
-            <div class="item-form">
-                <div class="button" title="VOLUME">
-                    <i class="bi bi-grid-fill i-button-null"></i>
-                </div>
-                <div class="item-field">
-                    {% if nota_form %}
-                    <input class="form-control" type="number"
+            <div class="input-group">
+                <i class="bi bi-grid-fill
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
+                {% if nota_form %}
+                    <input class="form-control
+                    form-control-minuta" type="number"
                     name="volume" step="1.00" value="{{ nota_form.volume }}"
                     id="volume">
-                    {% else %}
-                    <input class="form-control" type="number"
+                {% else %}
+                    <input class="form-control
+                    form-control-minuta" type="number"
                     name="volume" step="1.00" value="0" id="volume">
-                    {% endif %}
-                </div>
+                {% endif %}
+                <i class="bi bi-check
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
             </div>
             <div class="item-form">
                 {% if error_volume %}
@@ -397,20 +504,27 @@
                 </div>
                 {% endif %}
             </div>
-            <div class="item-form">
-                <div class="button" title="PESO">
-                    <i class="bi bi-truck-flatbed i-button-null"></i>
-                </div>
-                <div class="item-field">
-                    {% if nota_form %}
-                    <input class="form-control" type="number"
+            <div class="input-group">
+                <i class="bi bi-truck-flatbed
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
+                {% if nota_form %}
+                    <input class="form-control
+                    form-control-minuta" type="number"
                     name="peso" step="0.001" value="{{ nota_form.peso }}"
                     id="peso">
-                    {% else %}
-                    <input class="form-control" type="number"
+                {% else %}
+                    <input class="form-control
+                    form-control-minuta" type="number"
                     name="peso" step="0.001" value="0.00" id="peso">
-                    {% endif %}
-                </div>
+                {% endif %}
+                <i class="bi bi-check
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
             </div>
             <div class="item-form">
                 {% if error_peso %}
@@ -419,20 +533,27 @@
                 </div>
                 {% endif %}
             </div>
-            <div class="item-form">
-                <div class="button" title="VALOR">
-                    <i class="bi bi-currency-dollar i-button-null"></i>
-                </div>
-                <div class="item-field">
-                    {% if nota_form %}
-                    <input class="form-control" type="number"
+            <div class="input-group">
+                <i class="bi bi-currency-dollar
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
+                {% if nota_form %}
+                    <input class="form-control
+                    form-control-minuta" type="number"
                     name="valor" step="0.01" value="{{ nota_form.valor }}"
                     id="valor">
-                    {% else %}
-                    <input class="form-control" type="number"
-                    name="valor" step="0.01" value="0.00" id="valor">
-                    {% endif %}
-                </div>
+                {% else %}
+                    <input class="form-control
+                    form-control-minuta" type="number"
+                    name="valor" step="0.01" value="0.00" id="valor" />
+                {% endif %}
+                <i class="bi bi-check
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
             </div>
             <div class="item-form">
                 {% if error_valor %}
@@ -448,14 +569,69 @@
             {% endif %}
         </div>
     </div>
-    <div class="article-card-footer">
-        <button class="bi bi-save2 i-button body-nota" title="Salva Nota"></button>
+    <div class="card-footer">
+        <button class="bi bi-save2 i-button js-mostra-form-nota" title="Salva Nota"></button>
     </div>
 </form>
-<form class="file-body js-carrega-xml" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <input type="file" name="uploadFile" class="file js-file-xml" id="file-xml" value="">
-    <label for="file-xml" class="bi bi-folder i-button custonBtn radius-left"></label>
-    <span class="filenameTxt js-xmlTxt">Selecionar XML</span>
-    <button type="submit" class="bi bi-cloud-arrow-up i-button custonBtn radius-right"></button>
+<form class="js-carrega-xml js-mostra-form-nota" method="post" enctype="multipart/form-data">
+{% csrf_token %}
+    <div class="card-header">
+        <span>ARQUIVO XML</span>
+    </div>
+    <div class="card-body">
+        <div class="card-body-item">
+            <div class="input-group">
+                <div class="input-group-addon addon-my-color">
+                    <input type="file"
+                    class="file js-file-xml"
+                    id="file-xml"
+                    name="uploadFile"
+                    value="">
+                    <label class="bi bi-file
+                    i-button"
+                    for="file-xml"></label>
+                </div>
+                <span class="form-control form-control-minuta js-xmlTxt">
+                    Selecionar arquivo XML
+                </span>
+                <div class="input-group-addon addon-my-color">
+                    <button type="submit"
+                    class="bi bi-cloud-arrow-up
+                    i-button"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer"></div>
+</form>
+<form class="js-carrega-xml js-mostra-form-nota" method="post" enctype="multipart/form-data">
+{% csrf_token %}
+    <div class="card-header">
+        <span>PASTA XML</span>
+    </div>
+    <div class="card-body">
+        <div class="card-body-item">
+            <div class="input-group">
+                <div class="input-group-addon addon-my-color">
+                    <input type="file"
+                    class="file js-file-xml"
+                    id="file-xml"
+                    name="uploadFile"
+                    value="">
+                    <label class="bi bi-folder
+                    i-button"
+                    for="file-xml"></label>
+                </div>
+                <span class="form-control form-control-minuta js-xmlTxt">
+                    Selecionar pasta de arquivos XML
+                </span>
+                <div class="input-group-addon addon-my-color">
+                    <button type="submit"
+                    class="bi bi-cloud-arrow-up
+                    i-button"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer"></div>
 </form>

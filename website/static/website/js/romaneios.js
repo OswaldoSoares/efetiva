@@ -27,10 +27,7 @@ $(document).on('submit', '.js-seleciona-cliente', function(event) {
                 $(".card-quantidade-notas").show()
                 $(".card-filtro-notas-romaneios").html(data.html_filtro_notas_romaneios)
                 $(".card-filtro-notas-romaneios").show()
-                $(".mostra-body-nota").show()
-                $(".body-nota").hide()
-                $(".js-oculta-body-nota").hide()
-                $(".file-body").hide()
+                $(".js-mostra-form-nota").slideToggle(500)
                 $(".mostra-body-romaneio").show()
                 $(".body-romaneio").hide()
                 $(".js-oculta-body-romaneio").hide()
@@ -94,20 +91,15 @@ $(document).on('click', '.js-nota-pendente', function() {
     });
 });
 
-$(document).on('click', '.js-mostra-body-nota', function() {
-    $(".body-nota").show()
-    $(".js-mostra-body-nota").hide()
-    $(".js-oculta-body-nota").show()
-    $(".file-body").show()
+$(document).on('click', '.js-mostra-oculta-form-nota', function() {
+    mostraBodyNota();
 })
 
-$(document).on('click', '.js-oculta-body-nota', function() {
-    $(".body-nota").hide()
-    $(".js-mostra-body-nota").show()
-    $(".js-oculta-body-nota").hide()
-    $(".file-body").hide()
-    LimpaFormNota()
-})
+
+var mostraBodyNota = function() {
+    $(".js-mostra-form-nota").slideToggle(500)
+    $(".js-mostra-oculta-form-nota").toggleClass("bi-chevron-up");
+}
 
 $(document).on('click', '.js-mostra-body-romaneio', function() {
     $(".body-romaneio").show()
@@ -143,10 +135,6 @@ $(document).on('submit', '.js-gera-notas-cliente', function(event) {
             $(".card-quantidade-notas").html(data.html_quantidade_notas)
             $(".card-quantidade-notas").show()
             $(".box-loader").hide();
-            $(".js-oculta-body-nota").hide()
-            $(".body-nota").hide()
-            $(".js-mostra-body-nota").show()
-            $(".file-body").hide()
             $(window).scrollTop(0)
         },
     });
@@ -343,10 +331,7 @@ $(document).on('click', '.js-edita-notas-cliente', function() {
         success: function(data) {
             $(".card-form-notas-cliente").html(data.html_form_notas_cliente)
             $(".card-form-notas-cliente").show()
-            $(".js-oculta-body-nota").show()
-            $(".body-nota").show()
-            $(".file-body").show()
-            $(".js-mostra-body-nota").hide()
+            mostraBodyNota()
             $(".card-form-romaneios").html(data.html_form_romaneios)
             $(".card-form-romaneios").show()
                 // CarregaMask()
@@ -670,7 +655,7 @@ $(document).on('click', '.js-sort-notas', function() {
 $(document).on('change', $('.js-file-xml'), function() {
     if ($('.js-file-xml').val()) {
         $('.js-xmlTxt').text($('.js-file-xml').val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]);
-        $('.js-xmlTxt').text($('.js-xmlTxt').text().substring(0, 23) + '...');
+        $('.js-xmlTxt').text($('.js-xmlTxt').text().substring(0, 28) + '...');
     } else {
         $('.js-xmlTxt').text('Selecionar XML.');
     }
