@@ -96,22 +96,21 @@
     {% for nota in notas %}
     <div class="card-body-item">
         <div class="input-group">
-            {% if nota.statusnota == "NOTA CADASTRADA" %}
-                <i class="input-group-addon
-                addon-my-color
-                i-button
-                js-nota-pendente"
-                data-idnotaclientes="{{ nota.id_nota_clientes }}"
-                title="Número Nota">
-                    {{ forloop.counter|stringformat:".2d" }}
-                </i>
-            {% else %}
-                <i class="input-group-addon
-                addon-my-color
-                i-button-null">
-                    {{ forloop.counter|stringformat:".2d" }}
-                </i>
-            {% endif %}
+            <div class="input-group-addon
+            addon-my-color">
+                {% if nota.statusnota == "NOTA CADASTRADA" %}
+                    <i class="i-button
+                    js-nota-pendente"
+                    data-idnotaclientes="{{ nota.id_nota_clientes }}"
+                    title="Número Nota">
+                        {{ forloop.counter|stringformat:".2d" }}
+                    </i>
+                {% else %}
+                    <i class="i-button-null">
+                        {{ forloop.counter|stringformat:".2d" }}
+                    </i>
+                {% endif %}
+            </div>
             <div class="input-fake
             div-flex
             div-direction-column
