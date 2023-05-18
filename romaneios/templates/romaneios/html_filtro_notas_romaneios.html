@@ -1,49 +1,79 @@
-<div class="article-card-titulo">
+<div class="card-header">
     <span>CONSULTAS</span>
 </div>
-<div class="article-card-body">
-    <div class="itens-filtro">
-        <div class="item-icon">
-            <i class="bi bi-exclamation-circle i-button-null"></i>
-        </div>
-        <div class="item-filtro">
-            <select class="form-control" id="select-status">
-                <option value="SEM FILTRO">SEM FILTRO</option>
-                {% for status in status_nota %}
-                <option value="{{ status.StatusNota }}">{{ status.StatusNota }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div class="item-button">
-            <i class="bi bi-filter-circle i-button js-filtro-status"
-            data-idcliente="{{ idcliente }}"></i>
+<div class="card-body">
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon
+            addon-my-color">
+                <i class="bi bi-exclamation-circle
+                i-button-null"></i>
+            </div>
+            <div>
+                <select class="form-control
+                form-control-minuta"
+                id="select-status">
+                    <option value="SEM FILTRO">
+                        SEM FILTRO
+                    </option>
+                    {% for status in status_nota %}
+                    <option value="{{ status.StatusNota }}">
+                        {{ status.StatusNota }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="input-group-addon
+            addon-my-color">
+                <i class="bi bi-filter-circle i-button
+                js-filtro-status"
+                data-idcliente="{{ idcliente }}"></i>
+            </div>
         </div>
     </div>
-    <div class="itens-filtro">
-        <div class="item-icon">
-            <i class="bi bi-file-text i-button-null"></i>
-        </div>
-        <div class="item-filtro">
-            <input class="form-control filtra-nota" type="text"
-            placeholder="BUSCA NOTA">
-        </div>
-        <div class="item-button">
-            <i class="bi bi-search i-button js-filtra-nota"></i>
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon
+            addon-my-color">
+                <i class="bi bi-file-text
+                i-button-null"></i>
+            </div>
+            <div>
+                <input type="text"
+                class="form-control
+                form-control-minuta
+                filtra-nota"
+                placeholder="BUSCA NOTA">
+            </div>
+            <div class="input-group-addon
+            addon-my-color">
+                <i class="bi bi-search
+                i-button
+                js-filtra-nota"></i>
+            </div>
         </div>
     </div>
-    <div class="itens-filtro">
-        <div class="item-icon">
-            <i class="bi bi-file-text i-button-null"></i>
-        </div>
-        <div class="item-filtro">
-            <input class="form-control filtra-romaneio" type="text"
-            placeholder="BUSCA ROMANEIO">
-        </div>
-        <div class="item-button">
-            <i class="bi bi-search i-button js-filtra-romaneio"></i>
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon
+            addon-my-color">
+                <i class="bi bi-file-text
+                i-button-null"></i>
+            </div>
+            <div>
+                <input type="text"
+                class="form-control
+                form-control-minuta
+                filtra-romaneio"
+                placeholder="BUSCA ROMANEIO">
+            </div>
+            <div class="input-group-addon
+            addon-my-color">
+                <i class="bi bi-search
+                i-button
+                js-filtra-romaneio"></i>
+            </div>
         </div>
     </div>
 </div>
-<div class="article-card-footer">
-
-</div>
+<div class="card-footer"></div>
