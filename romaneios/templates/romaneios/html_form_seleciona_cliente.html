@@ -8,13 +8,20 @@
     <div class="card-body">
         <div class="card-body-item">
             <div class="input-group">
-                <i class="bi bi-building
-                input-group-addon
-                addon-my-color
-                i-button-null"
-                ></i>
-                <select class="form-control js-cliente" name="cliente" id="cliente">
-                    <option value="0">SELECIONE UM CLIENTE</option>
+                <div class="input-group-addon
+                addon-my-color">
+                    <i class="bi bi-building
+                    i-button-null"
+                    ></i>
+                </div>
+                <select class="form-control
+                form-control-minuta
+                js-cliente"
+                id="cliente"
+                name="cliente" >
+                    <option value="0">
+                        SELECIONE UM CLIENTE
+                    </option>
                     {% for cliente in clientes %}
                     {% if despesa %}
                         {% if despesa.categoria == categoria.idcategoria %}
@@ -33,7 +40,8 @@
                     {% endif %}
                     {% endfor %}
                 </select>
-                <div class="input-group-addon addon-my-color">
+                <div class="input-group-addon
+                addon-my-color">
                     <button class="bi bi-save2
                     i-button"
                     title="Selecionar Cliente"></button>
