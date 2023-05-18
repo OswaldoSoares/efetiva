@@ -5,9 +5,6 @@ $(document).on('submit', '.js-seleciona-cliente', function(event) {
         url: '/romaneios/seleciona_cliente',
         data: $(this).serialize(),
         beforeSend: function() {
-            $(".card-romaneios-cliente").hide()
-            $(".card-lista-notas-cliente").hide()
-            $(".card-lista-notas-romaneio").hide()
             $(".box-loader").show();
         },
         success: function(data) {
@@ -122,14 +119,10 @@ $(document).on('submit', '.js-gera-notas-cliente', function(event) {
         data: $(this).serialize(),
         beforeSend: function() {
             $(".box-loader").show();
-            $(".card-romaneios-cliente").hide()
-            $(".card-lista-notas-cliente").hide()
-            $(".card-quantidade-notas").hide()
         },
         success: function(data) {
             $(".card-form-notas-cliente").html(data.html_form_notas_cliente)
             $(".card-form-notas-cliente").show()
-            $(".card-form-romaneios").show()
             $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente)
             $(".card-lista-notas-cliente").show()
             $(".card-quantidade-notas").html(data.html_quantidade_notas)
@@ -511,36 +504,25 @@ $(document).on('click', '.js-retorna-lista-romaneio', function() {
 });
 
 $(document).on('click', '.js-exclui-notas-cliente', function() {
-    var _id_nota = $(this).data("idnota")
-    var _id_cliente = $(this).data("idcliente")
-    if ($("#reduzida-exist").length) {
-        var _card_reduzida = true
-        var _div_nota = "#nota-" + _id_nota
-        $(_div_nota).hide()
-    } else {
-        var _card_reduzida = false
-    }
+    var idnota = $(this).data("idnota")
+    var idcliente = $(this).data("idcliente")
+    var filtro = $("#select-status").val()
     $.ajax({
         type: 'GET',
         url: '/romaneios/exclui_nota_cliente',
         data: {
-            idNota: _id_nota,
-            idCliente: _id_cliente,
+            idNota: idnota,
+            idCliente: idcliente,
+            filtro: filtro,
         },
         beforeSend: function() {
             $(".box-loader").show();
-            if (_card_reduzida == false) {
-                $(".card-lista-notas-cliente").hide()
-            }
-            $(".card-quantidade-notas").hide()
         },
         success: function(data) {
-            if (_card_reduzida == false) {
-                $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente)
-                $(".card-lista-notas-cliente").show()
-                $(".card-quantidade-notas").html(data.html_quantidade_notas)
-                $(".card-quantidade-notas").show()
-            }
+            $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente)
+            $(".card-lista-notas-cliente").show()
+            $(".card-quantidade-notas").html(data.html_quantidade_notas)
+            $(".card-quantidade-notas").show()
             $(".box-loader").hide();
         },
     });

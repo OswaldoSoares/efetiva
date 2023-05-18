@@ -108,10 +108,9 @@ def edita_nota_cliente(request):
 def exclui_nota_cliente(request):
     idnota = request.GET.get("idNota")
     idcliente = request.GET.get("idCliente")
+    filtro_status = request.GET.get("filtro")
     facade.delete_notas_cliente(idnota)
-    # notas = facade.create_contexto_seleciona_notas(idcliente, "NumeroNota")
-    contexto = facade.create_contexto_notas(idcliente, "SEM FILTRO", "NumeroNota")
-    # cliente = facade.create_contexto_cliente(idcliente)
+    contexto = facade.create_contexto_notas(idcliente, filtro_status, "NumeroNota")
     hoje = str_hoje()
     contexto.update({
         "hoje": hoje,
@@ -429,12 +428,8 @@ def filtra_status(request):
 def nota_deposito(request):
     idnotasclientes = request.GET.get("idNotaClientes")
     facade.altera_status_pendente(idnotasclientes)
-    filter_status = request.GET.get("status")
     idcliente = request.GET.get("cliente")
-    contexto = facade.create_contexto_notas(idcliente, filter_status, "NumeroNota")
-    # contexto = facade.create_contexto_filtro_notas_status(
-    #     idcliente, filtro_status, "NumeroNota"
-    # )
+    contexto = facade.create_contexto_notas(idcliente, "NOTA CADASTRADA", "NumeroNota")
     contexto.update({"idcliente": idcliente})
     quantidade_notas = facade.create_contexto_quantidades_status(idcliente)
     contexto.update({"rotas": quantidade_notas[0]["rota"]})
