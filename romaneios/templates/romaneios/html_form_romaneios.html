@@ -1,57 +1,112 @@
 <form class="js-gera-romaneios" method="post" action="">
     {% csrf_token %}
-    <div class="article-card-titulo">
-        <i class="bi bi-plus-circle i-button js-mostra-body-romaneio"></i>
-        <i class="bi bi-dash-circle i-button js-oculta-body-romaneio"></i>
-        <span class="titulo-retrai-card">ROMANEIO</span>
+    <!-- Header -->
+    <div class="card-header">
+        <span>
+            ROMANEIO
+        </span>
+        <i class="bi bi-chevron-down i-button js-mostra-oculta-form-romaneio"></i>
     </div>
-    <div class="article-card-body body-romaneio">
-        <div class="item-romaneio">
-            <div class="item-form">
-                <div class="button" title="DATA DO ROMANEIO">
-                    <i class="bi bi-calendar i-button-null"></i>
+    <div class="card-body js-mostra-form-romaneio">
+        <div class="card-body-item">
+            <div class="input-group">
+                <div class="input-group-addon
+                addon-my-color"
+                title="DATA DO ROMANEIO">
+                    <i class="bi bi-calendar
+                    i-button-null"></i>
                 </div>
-                <div class="item-field">
+                <div>
                     {% if romaneio %}
-                    <input class="form-control" type="date"
-                    value="{{ romaneio.DataRomaneio }}" id="data_romaneio" name="data_romaneio">
+                        <input type="date"
+                        class="form-control
+                        form-control-minuta"
+                        id="data_romaneio"
+                        name="data_romaneio"
+                        value="{{ romaneio.DataRomaneio }}" />
                     {% else %}
-                    <input class="form-control" type="date"
-                    value="{{ hoje }}" id="data_romaneio" name="data_romaneio">
+                        <input type="date"
+                        class="form-control
+                        form-control-minuta"
+                        id="data_romaneio"
+                        name="data_romaneio"
+                        value="{{ hoje }}" />
                     {% endif %}
                 </div>
-            </div>
-            <div class="item-form">
-                <div class="button" title="MOTORISTA">
-                    <i class="bi bi-person-square i-button-null"></i>
-                </div>
-                <div class="item-field">
-                    <select class="form-control" id="motorista" name="motorista">
-                        <option value="SEM MOTORISTA">SELECIONE O MOTORISTA</option>
-                        {% for moto in motoristas %}
-                        <option value="{{ moto.idPessoal }}">{{ moto.Nome }}</option>
-                        {% endfor %}
-                    </select>
+                <div class="input-group-addon
+                addon-my-color">
+                    <i class="icofont-keyboard
+                    i-button-null"></i>
                 </div>
             </div>
-            <div class="item-form">
-                <div class="button" title="VEÍCULO">
-                    <i class="bi bi-truck i-button-null"></i>
-                </div>
-                <div class="item-field">
-                    <select class="form-control" id="veiculo" name="veiculo">
-                        <option value="SEM VEICULO">SELECIONE O VEÍCULO</option>
-                        {% for veic in veiculos %}
-                        <option value="{{ veic.idVeiculo }}">{{ veic.Veiculo }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
-            <input type="hidden" name="idRomaneio" value="{{ romaneio.idromaneio }}">
-            <input type="hidden" name="idCliente" value="{{ idcliente }}">
         </div>
+        <div class="card-body-item">
+            <div class="input-group">
+                <div class="input-group-addon
+                addon-my-color"
+                title="MOTORISTA">
+                    <i class="bi bi-person-square
+                    i-button-null"></i>
+                </div>
+                <div>
+                    <select class="form-control
+                    form-control-minuta"
+                    id="motorista"
+                    name="motorista">
+                        <option value="">
+                            SELECIONE O MOTORISTA
+                        </option>
+                        {% for moto in motoristas %}
+                            <option value="{{ moto.idPessoal }}">
+                                {{ moto.Nome }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="input-group-addon
+                addon-my-color">
+                    <i class="icofont-keyboard
+                    i-button-null"></i>
+                </div>
+            </div>
+        </div>
+        <div class="card-body-item">
+            <div class="input-group">
+                <div class="input-group-addon
+                addon-my-color"
+                title="VEÍCULO">
+                    <i class="bi bi-truck
+                    i-button-null"></i>
+                </div>
+                <div>
+                    <select class="form-control
+                    form-control-minuta"
+                    id="veiculo"
+                    name="veiculo">
+                        <option value="Ol">
+                            SELECIONE O VEÍCULO
+                        </option>
+                        {% for veic in veiculos %}
+                            <option value="{{ veic.idVeiculo }}">
+                                {{ veic.Veiculo }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="input-group-addon
+                addon-my-color">
+                    <i class="icofont-keyboard
+                    i-button-null"></i>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="idRomaneio" value="{{ romaneio.idromaneio }}">
+        <input type="hidden" name="idCliente" value="{{ idcliente }}">
     </div>
-    <div class="article-card-footer">
-        <button class="bi bi-save2 i-button body-romaneio" title="Salva Romaneio"></button>
+    <div class="card-footer">
+        <button class="bi bi-save2
+        i-button
+        js-mostra-form-romaneio"
+        title="Salva Romaneio"></button>
     </div>
 </form>

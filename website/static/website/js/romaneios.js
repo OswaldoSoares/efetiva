@@ -5,6 +5,7 @@ $(document).on('submit', '.js-seleciona-cliente', function(event) {
         url: '/romaneios/seleciona_cliente',
         data: $(this).serialize(),
         beforeSend: function() {
+            $(".card-romaneios-cliente").hide()
             $(".box-loader").show();
         },
         success: function(data) {
@@ -25,9 +26,7 @@ $(document).on('submit', '.js-seleciona-cliente', function(event) {
                 $(".card-filtro-notas-romaneios").html(data.html_filtro_notas_romaneios)
                 $(".card-filtro-notas-romaneios").show()
                 $(".js-mostra-form-nota").slideToggle(500)
-                $(".mostra-body-romaneio").show()
-                $(".body-romaneio").hide()
-                $(".js-oculta-body-romaneio").hide()
+                $(".js-mostra-form-romaneio").slideToggle(500)
                 $(".js-adiciona-nota-romaneio").hide()
                 $(".js-envia-telegram-relatorio").hide()
             }
@@ -89,27 +88,22 @@ $(document).on('click', '.js-nota-pendente', function() {
 });
 
 $(document).on('click', '.js-mostra-oculta-form-nota', function() {
-    mostraBodyNota();
+    mostraBodyFormNota();
 })
 
-
-var mostraBodyNota = function() {
+var mostraBodyFormNota = function() {
     $(".js-mostra-form-nota").slideToggle(500)
     $(".js-mostra-oculta-form-nota").toggleClass("bi-chevron-up");
 }
 
-$(document).on('click', '.js-mostra-body-romaneio', function() {
-    $(".body-romaneio").show()
-    $(".js-mostra-body-romaneio").hide()
-    $(".js-oculta-body-romaneio").show()
-});
+$(document).on('click', '.js-mostra-oculta-form-romaneio', function() {
+    mostraBodyFormRomaneio();
+})
 
-$(document).on('click', '.js-oculta-body-romaneio', function() {
-    $(".body-romaneio").hide()
-    $(".js-mostra-body-romaneio").show()
-    $(".js-oculta-body-romaneio").hide()
-    LimpaFormRomaneio()
-});
+var mostraBodyFormRomaneio = function() {
+    $(".js-mostra-form-romaneio").slideToggle(500)
+    $(".js-mostra-oculta-form-romaneio").toggleClass("bi-chevron-up");
+}
 
 $(document).on('submit', '.js-gera-notas-cliente', function(event) {
     event.preventDefault();
@@ -274,9 +268,7 @@ $(document).on('submit', '.js-gera-romaneios', function(event) {
         success: function(data) {
             $(".card-lista-romaneios").html(data.html_lista_romaneios)
             $(".card-lista-romaneios").show()
-            $(".js-oculta-body-romaneio").hide()
-            $(".body-romaneio").hide()
-            $(".js-mostra-body-romaneio").show()
+            mostraBodyFormRomaneio();
             $(".box-loader").hide();
         },
     });
@@ -324,7 +316,7 @@ $(document).on('click', '.js-edita-notas-cliente', function() {
         success: function(data) {
             $(".card-form-notas-cliente").html(data.html_form_notas_cliente)
             $(".card-form-notas-cliente").show()
-            mostraBodyNota()
+            mostraBodyFormNota()
             $(".card-form-romaneios").html(data.html_form_romaneios)
             $(".card-form-romaneios").show()
                 // CarregaMask()
@@ -399,9 +391,7 @@ $(document).on('click', '.js-edita-romaneio', function() {
             $(".card-form-notas-cliente").show()
             $(".card-form-romaneios").html(data.html_form_romaneios)
             $(".card-form-romaneios").show()
-            $(".js-oculta-body-romaneio").show()
-            $(".body-romaneio").show()
-            $(".js-mostra-body-romaneio").hide()
+            mostraBodyFormRomaneio();
             $(".box-loader").hide();
         },
     });
