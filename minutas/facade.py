@@ -2129,7 +2129,8 @@ def create_data_minuta_checklist_pagamentos(request, contexto):
 
 
 def define_novo_status_minuta(idminuta, status_novo):
-    minuta = Minuta.objects.filter(idMinuta=idminuta)
+    minuta = Minuta.objects.get(idMinuta=idminuta)
     obj = Minuta(minuta)
+    obj.idMinuta = minuta.idMinuta
     obj.StatusMinuta = status_novo
     return True if obj.save(update_fields=["StatusMinuta"]) else False

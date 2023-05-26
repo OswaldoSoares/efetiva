@@ -126,6 +126,11 @@
                 data-idminuta="{{ s_minuta.idminuta }}"></i>
             {% endif %}
         {% endif %}
+    {% else %}
+        <i class="bi bi-reply i-button js-estorna-minuta-concluida"
+        data-idminuta="{{ s_minuta.idminuta }}"
+        data-proximo-status="ABERTA"
+        title="Estorna minuta concluída"></i>
     {% endif %}
     <a class="bi bi-printer i-button"
     href="{% url 'imprimeminuta' s_minuta.idminuta %}"
