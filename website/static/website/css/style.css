@@ -6644,6 +6644,10 @@ label {
   font-size: 1.2rem;
 }
 
+.font-menor-2 {
+  font-size: 1.1rem;
+}
+
 .addon-blue {
   background-color: var(--color4);
   color: var(--color6);
@@ -6812,6 +6816,14 @@ label {
   background-color: tomato;
 }
 
+.ver-tamanho-2 {
+  background-color: blueviolet;
+}
+
+.linhas-3 {
+  height: 5rem;
+}
+
 .tamanho-10 {
   min-width: 10%;
 }
@@ -6822,6 +6834,10 @@ label {
 
 .tamanho-20 {
   min-width: 20%;
+}
+
+.tamanho-25 {
+  min-width: 25%;
 }
 
 .tamanho-30 {
@@ -6838,6 +6854,18 @@ label {
 
 .tamanho-50 {
   min-width: 50%;
+}
+
+.tamanho-60 {
+  min-width: 60%;
+}
+
+.tamanho-65 {
+  min-width: 65%;
+}
+
+.tamanho-75 {
+  min-width: 75%;
 }
 
 .tamanho-80 {

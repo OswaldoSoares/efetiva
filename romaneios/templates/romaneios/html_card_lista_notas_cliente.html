@@ -114,37 +114,47 @@
             <div class="input-fake
             div-flex
             div-direction-column
-            font-menor"
+            font-menor-2
+            linhas-3"
             id="nota-{{ nota.id_nota_clientes }}">
                 <div class="div-flex">
                     <i class="bi bi-file-text
                     i-button-null
-                    tamanho-15
+                    tamanho-10
                     text-left"
                     title="Número Nota">
                         <span>
                             {{ nota.numero_nota }}
                         </span>
                     </i>
-                    <i class="bi bi-pencil
+                    <i class="bi bi-currency-dollar
                     i-button-null
-                    tamanho-35
+                    tamanho-15
                     text-left"
-                    title="Emitente: {{ nota.emitente }}">
+                    title="Valor">
                         <span>
-                            {{ nota.emitente_curto }}
+                            {{ nota.valor }}
                         </span>
                     </i>
-                    <i class="bi bi-shop
+                    <i class="bi bi-truck-flatbed
                     i-button-null
-                    tamanho-35
+                    tamanho-15
                     text-left"
-                    title="Destinatario: {{ nota.destinatario }}">
+                    title="Peso">
                         <span>
-                            {{ nota.destinatario_curto }}
+                            {{ nota.peso }}
                         </span>
                     </i>
-                    <div class="tamanho-15">
+                    <i class="bi bi-grid-fill
+                    i-button-null
+                    tamanho-10
+                    text-left"
+                    title="Volume">
+                        <span>
+                            {{ nota.volume }}
+                        </span>
+                    </i>
+                    <div class="tamanho-50 text-left">
                         {% if nota.romaneio_numero %}
                         <i class="bi bi-file-text
                         i-button-null
@@ -158,9 +168,42 @@
                     </div>
                 </div>
                 <div class="div-flex">
-                    <i class="bi bi-geo-alt i-button-null">
+                    <i class="bi bi-pencil
+                    i-button-null
+                    tamanho-25
+                    text-left"
+                    title="Emitente: {{ nota.emitente }}">
                         <span>
-                            {{ nota.endereco_compl|slice:"0:75" }}
+                            {{ nota.emitente_curto|slice:"0:16" }}
+                        </span>
+                    </i>
+                    <i class="bi bi-geo-alt
+                    i-button-null
+                    tamanho-75
+                    text-left"
+                    title="Endereço Emitente: {{ nota.endereco_compl_emi }}">
+                        <span>
+                            {{ nota.endereco_compl_emi|slice:"0:60" }}
+                        </span>
+                    </i>
+                </div>
+                <div class="div-flex">
+                    <i class="bi bi-shop
+                    i-button-null
+                    tamanho-25
+                    text-left"
+                    title="Destinatario: {{ nota.destinatario }}">
+                        <span>
+                            {{ nota.destinatario_curto|slice:"0:16" }}
+                        </span>
+                    </i>
+                    <i class="bi bi-geo-alt
+                    i-button-null
+                    tamanho-75
+                    text-left"
+                    title="Endereço Destinatario: {{ nota.endereco_compl }}">
+                        <span>
+                            {{ nota.endereco_compl|slice:"0:60" }}
                         </span>
                     </i>
                 </div>
