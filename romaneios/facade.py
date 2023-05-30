@@ -2,11 +2,13 @@ import datetime
 import os
 import xml.etree.ElementTree as ET
 from cgitb import html
-from decimal import Decimal
 from xml.dom import ValidationErr
 
 import requests
 from clientes.models import Cliente
+
+
+from decimal import Decimal
 from django.db.models import Max
 from django.http import JsonResponse
 from django.template.loader import render_to_string
@@ -208,6 +210,11 @@ def read_nota_post(request):
     nota_post = dict()
     nota_post["local_coleta"] = request.POST.get("localcoleta")
     nota_post["emitente"] = request.POST.get("emitente")
+    nota_post["endereco_emi"] = request.POST.get("endereco_emi")
+    nota_post["cep_emi"] = request.POST.get("cep_emi")
+    nota_post["bairro_emi"] = request.POST.get("bairro_emi")
+    nota_post["cidade_emi"] = request.POST.get("cidade_emi")
+    nota_post["estado_emi"] = request.POST.get("estado_emi")
     nota_post["data_nota"] = request.POST.get("datanota")
     nota_post["serie_nota"] = request.POST.get("serienota")
     nota_post["numero_nota"] = request.POST.get("numeronota")
@@ -243,6 +250,11 @@ def read_nota_database(_id_not):
     nota_database["id_nota_clientes"] = nota.idNotasClientes
     nota_database["local_coleta"] = nota.LocalColeta
     nota_database["emitente"] = nota.Emitente
+    nota_database["endereco_emi"] = nota.Endereco_emi
+    nota_database["cep_emi"] = nota.CEP_emi
+    nota_database["bairro_emi"] = nota.Bairro_emi
+    nota_database["cidade_emi"] = nota.Cidade_emi
+    nota_database["estado_emi"] = nota.Estado_emi
     nota_database["data_nota"] = datetime.datetime.strftime(nota.DataColeta, "%Y-%m-%d")
     nota_database["serie_nota"] = nota.SerieNota
     nota_database["numero_nota"] = nota.NumeroNota
@@ -266,6 +278,11 @@ def save_notas_cliente(nota):
     obj = NotasClientes()
     obj.LocalColeta = nota["local_coleta"]
     obj.Emitente = nota["emitente"]
+    obj.Endereco_emi = nota["endereco_emi"]
+    obj.CEP_emi = nota["cep_emi"]
+    obj.Bairro_emi = nota["bairro_emi"]
+    obj.Cidade_emi = nota["cidade_emi"]
+    obj.Estado_emi = nota["estado_emi"]
     obj.DataColeta = nota["data_nota"]
     obj.SerieNota = nota["serie_nota"]
     obj.NumeroNota = nota["numero_nota"]
@@ -357,6 +374,11 @@ def update_notas_cliente(nota_form, id_not):
     obj = nota
     obj.LocalColeta = nota_form["local_coleta"]
     obj.Emitente = nota_form["emitente"]
+    obj.Endereco_emi = nota_form["endereco_emi"]
+    obj.CEP_emi = nota_form["cep_emi"]
+    obj.Bairro_emi = nota_form["bairro_emi"]
+    obj.Cidade_emi = nota_form["cidade_emi"]
+    obj.Estado_emi = nota_form["estado_emi"]
     obj.DataColeta = nota_form["data_nota"]
     obj.SerieNota = nota_form["serie_nota"]
     obj.NumeroNota = nota_form["numero_nota"]
@@ -597,6 +619,7 @@ def ler_nota_xml(nota):
     serie = "{http://www.portalfiscal.inf.br/nfe}serie"
     nNF = "{http://www.portalfiscal.inf.br/nfe}nNF"
     emit = "{http://www.portalfiscal.inf.br/nfe}emit"
+    enderEmit = "{http://www.portalfiscal.inf.br/nfe}enderEmit"
     dest = "{http://www.portalfiscal.inf.br/nfe}dest"
     xCNPJ = "{http://www.portalfiscal.inf.br/nfe}CNPJ"
     xNome = "{http://www.portalfiscal.inf.br/nfe}xNome"
@@ -624,6 +647,49 @@ def ler_nota_xml(nota):
         emitente = nodefind.text
     else:
         emitente = ""
+    caminho_endereco_emi = f"{NFe}/{infNFe}/{emit}/{enderEmit}/{xLgr}"
+    nodefind = doc.find(caminho_endereco_emi)
+    if not nodefind is None:
+        endereco_emi = nodefind.text
+    else:
+        endereco_emi = ""
+    caminho_numero_emi = f"{NFe}/{infNFe}/{emit}/{enderEmit}/{nro}"
+    nodefind = doc.find(caminho_numero_emi)
+    if not nodefind is None:
+        numero_emi = nodefind.text
+    else:
+        numero_emi = ""
+    caminho_complemento_emi = f"{NFe}/{infNFe}/{emit}/{enderEmit}/{xCpl}"
+    nodefind = doc.find(caminho_complemento_emi)
+    if not nodefind is None:
+        complemento_emi = nodefind.text
+        endereco_emi = f"{endereco_emi}, {numero_emi}{complemento_emi}"
+    else:
+        endereco_emi = f"{endereco_emi}, {numero_emi}"
+    caminho_bairro_emi = f"{NFe}/{infNFe}/{emit}/{enderEmit}/{xBairro}"
+    nodefind = doc.find(caminho_bairro_emi)
+    if not nodefind is None:
+        bairro_emi = nodefind.text
+    else:
+        bairro_emi = ""
+    caminho_CEP_emi = f"{NFe}/{infNFe}/{emit}/{enderEmit}/{xCEP}"
+    nodefind = doc.find(caminho_CEP_emi)
+    if not nodefind is None:
+        cep_emi = nodefind.text
+    else:
+        cep_emi = ""
+    caminho_cidade_emi = f"{NFe}/{infNFe}/{emit}/{enderEmit}/{xMun}"
+    nodefind = doc.find(caminho_cidade_emi)
+    if not nodefind is None:
+        cidade_emi = nodefind.text
+    else:
+        cidade_emi = ""
+    caminho_estado_emi = f"{NFe}/{infNFe}/{emit}/{enderEmit}/{uf}"
+    nodefind = doc.find(caminho_estado_emi)
+    if not nodefind is None:
+        estado_emi = nodefind.text
+    else:
+        estado_emi = ""
     caminho_dhemi = f"{NFe}/{infNFe}/{ide}/{dhEmi}"
     nodefind = doc.find(caminho_dhemi)
     if not nodefind is None:
@@ -729,6 +795,11 @@ def ler_nota_xml(nota):
         valor = 0.00
     lista = {
         "emitente": emitente,
+        "endereco_emi": endereco_emi,
+        "bairro_emi": bairro_emi,
+        "cep_emi": cep_emi,
+        "cidade_emi": cidade_emi,
+        "estado_emi": estado_emi,
         "data_nf": data_nf,
         "serie_nf": serie_nf,
         "numero_nf": numero_nf,
@@ -908,6 +979,22 @@ def create_lista_notas_clientes(notas):
         {
             "emitente": x.Emitente,
             "emitente_curto": nome_curto(x.Emitente),
+            "endereco_emi": x.Endereco_emi,
+            "endereco_compl_emi": x.Endereco_emi
+            + " "
+            + x.Bairro_emi
+            + " "
+            + x.CEP_emi[0:5]
+            + "-"
+            + x.CEP_emi[5:]
+            + " "
+            + x.Cidade_emi
+            + " "
+            + x.Estado_emi,
+            "bairro_emi": x.Bairro_emi,
+            "cep_emi": x.CEP_emi[0:5] + "-" + x.CEP_emi[5:],
+            "cidade_emi": x.Cidade_emi,
+            "estado_emi": x.Estado_emi,
             "id_nota_clientes": x.idNotasClientes,
             "local_coleta": x.LocalColeta,
             "data_nota": x.DataColeta,
@@ -945,7 +1032,8 @@ def create_lista_notas_clientes(notas):
     ]
     return lista
 
-def create_contexto_notas(idcliente, filter_status, order_nota):    
+
+def create_contexto_notas(idcliente, filter_status, order_nota):
     cliente = Cliente.objects.get(idCliente=idcliente)
     if filter_status == "SEM FILTRO":
         notas = (
@@ -987,12 +1075,28 @@ def create_contexto_notas(idcliente, filter_status, order_nota):
             placa = romaneio.idRomaneio.idVeiculo.Placa
             motorista = nome_curto(romaneio.idRomaneio.idMotorista.Nome)
             placa_motorista.append({"motorista": motorista, "placa": placa})
+        if x.CEP_emi:
+            cep_emitente = f"{x.CEP_emi[0:5]}-{x.CEP_emi[5:]}"
+        else:
+            cep_emitente = None
+        if x.CEP:
+            cep_destinatario = f"{x.CEP[0:5]}-{x.CEP[5:]}"
+        else:
+            cep_destinatario = None
         lista.append(
             {
                 "id_nota_clientes": x.idNotasClientes,
                 "local_coleta": x.LocalColeta,
                 "emitente": x.Emitente,
                 "emitente_curto": nome_curto(x.Emitente),
+                "endereco_emi": x.Endereco_emi,
+                "endereco_compl_emi": (
+                    f"{x.Endereco_emi} {x.Bairro_emi} {cep_emitente} {x.Cidade_emi} {x.Estado_emi}"
+                ),
+                "bairro_emi": x.Bairro_emi,
+                "cep_emi": cep_emitente,
+                "cidade_emi": x.Cidade_emi,
+                "estado_emi": x.Estado_emi,
                 "data_nota": x.DataColeta,
                 "serie_nota": x.SerieNota,
                 "numero_nota": x.NumeroNota,
@@ -1000,19 +1104,11 @@ def create_contexto_notas(idcliente, filter_status, order_nota):
                 "destinatario_curto": nome_curto(x.Destinatario),
                 "cnpj": x.CNPJ,
                 "endereco": x.Endereco,
-                "endereco_compl": x.Endereco
-                + " "
-                + x.Bairro
-                + " "
-                + x.CEP[0:5]
-                + "-"
-                + x.CEP[5:]
-                + " "
-                + x.Cidade
-                + " "
-                + x.Estado,
+                "endereco_compl": (
+                    f"{x.Endereco} {x.Bairro} {cep_destinatario} {x.Cidade} {x.Estado}"
+                ),
                 "bairro": x.Bairro,
-                "cep": x.CEP[0:5] + "-" + x.CEP[5:],
+                "cep": cep_destinatario,
                 "cidade": x.Cidade,
                 "estado": x.Estado,
                 "contato": x.Contato,

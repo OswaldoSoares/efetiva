@@ -650,6 +650,11 @@ $(document).on('submit', '.js-carrega-xml', function(event) {
         },
         success: function(data) {
             $("#emitente").val(data["emitente"])
+            $("#endereco_emi").val(data["endereco_emi"])
+            $("#bairro_emi").val(data["bairro_emi"])
+            $("#cep_emi").val(data["cep_emi"])
+            $("#cidade_emi").val(data["cidade_emi"])
+            $("#estado_emi").val(data["estado_emi"])
             $("#datanota").val(data["data_nf"])
             $("#serienota").val(data["serie_nf"])
             $("#numeronota").val(data["numero_nf"])

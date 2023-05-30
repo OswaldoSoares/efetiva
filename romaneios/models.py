@@ -8,6 +8,11 @@ from veiculos.models import Veiculo
 class NotasClientes(models.Model):
     idNotasClientes = models.AutoField(primary_key=True)
     Emitente = models.CharField(max_length=200, blank=True, null=True)
+    Endereco_emi = models.CharField(max_length=200, blank=True, null=True)
+    CEP_emi = models.CharField(max_length=8, blank=True, null=True)
+    Bairro_emi = models.CharField(max_length=100, blank=True, null=True)
+    Cidade_emi = models.CharField(max_length=30, default="SÃO PAULO")
+    Estado_emi = models.CharField(max_length=2, default="SP")
     DataColeta = models.DateField(default=0)
     LocalColeta = models.CharField(max_length=200)
     NumeroNota = models.CharField(max_length=15, default=0)

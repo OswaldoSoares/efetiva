@@ -89,6 +89,177 @@
                 i-button-null"
                 ></i>
             </div>
+            <!-- Endereço Emitente -->
+            <div class="input-group">
+                <i class="bi bi-geo-alt-fill
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
+                {% if nota_form %}
+                    <input class="form-control
+                    form-control-minuta" type="text" name="endereco_emi"
+                    list="enderecos" placeholder="ENDEREÇO"
+                    id="endereco_emi" value="{{ nota_form.endereco_emi }}">
+                    <datalist id="enderecos">
+                        {% for ende in enderecos %}
+                        <option value="{{ ende }}">
+                        {% endfor %}
+                    </datalist>
+                {% else %}
+                    <input class="form-control
+                    form-control-minuta" type="text" name="endereco_emi"
+                    list="enderecos" placeholder="ENDEREÇO"
+                    id="endereco_emi">
+                    <datalist id="enderecos">
+                        {% for ende in enderecos %}
+                        <option value="{{ ende }}">
+                        {% endfor %}
+                    </datalist>
+                {% endif %}
+                <i class="bi bi-check
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
+            </div>
+            <div class="item-form">
+                {% if error_endereco_emi %}
+                <div class="error">
+                    <span>{{ error_endereco_emi }}<span>
+                </div>
+                {% endif %}
+            </div>
+            <!-- CEP Emitente -->
+            <div class="input-group">
+                <i class="bi bi-geo-alt-fill
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
+                {% if nota_form %}
+                    <input class="form-control
+                    form-control-minuta" type="text" maxlength="8"
+                    name="cep_emi" placeholder="CEP"
+                    id="cep_emi" value="{{ nota_form.cep_emi }}">
+                {% else %}
+                    <input class="form-control
+                    form-control-minuta" type="text" maxlength="8"
+                    name="cep_emi" placeholder="CEP" id="cep_emi">
+                {% endif %}
+                <i class="bi bi-check
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
+            </div>
+            <div class="item-form">
+                {% if error_cep_emi %}
+                <div class="error">
+                    <span>{{ error_cep_emi }}<span>
+                </div>
+                {% endif %}
+            </div>
+            <!-- Bairro Emitente -->
+            <div class="input-group">
+                <i class="bi bi-geo-alt-fill
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
+                {% if nota_form %}
+                    <input class="form-control
+                    form-control-minuta" type="text" name="bairro_emi"
+                    list="bairros" placeholder="BAIRRO"
+                    id="bairro_emi" value="{{ nota_form.bairro_emi }}">
+                    <datalist id="bairros">
+                        {% for bairro in bairros %}
+                        <option value="{{ bairro }}">
+                        {% endfor %}
+                    </datalist>
+                {% else %}
+                    <input class="form-control
+                    form-control-minuta" type="text" name="bairro_emi"
+                    list="bairros" placeholder="BAIRRO" id="bairro_emi">
+                    <datalist id="bairros">
+                        {% for bairro in bairros %}
+                        <option value="{{ bairro }}">
+                        {% endfor %}
+                    </datalist>
+                {% endif %}
+                <i class="bi bi-check
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
+            </div>
+            <div class="item-form">
+                {% if error_bairro_emi %}
+                <div class="error">
+                    <span>{{ error_bairro_emi }}<span>
+                </div>
+                {% endif %}
+            </div>
+            <!-- Cidade Emitente -->
+            <div class="input-group">
+                <i class="bi bi-geo-alt-fill
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
+                {% if nota_form %}
+                    <input class="form-control
+                    form-control-minuta" type="text"
+                    name="cidade_emi" value="SÃO PAULO"
+                    id="cidade_emi" value="{{ nota_form.cidade_emi }}">
+                {% else %}
+                    <input class="form-control
+                    form-control-minuta" type="text"
+                    name="cidade_emi" value="SÃO PAULO" id="cidade_emi">
+                {% endif %}
+                <i class="bi bi-check
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
+            </div>
+            <div class="item-form">
+                {% if error_cidade_emi %}
+                <div class="error">
+                    <span>{{ error_cidade_emi }}<span>
+                </div>
+                {% endif %}
+            </div>
+            <!-- Estado Emitente -->
+            <div class="input-group">
+                <i class="bi bi-geo-alt-fill
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
+                {% if nota_form %}
+                    <input class="form-control
+                    form-control-minuta" type="text"
+                    name="estado_emi" value="{{ nota_form.estado_emi }}"
+                    id="estado_emi">
+                {% else %}
+                    <input class="form-control
+                    form-control-minuta" type="text"
+                    name="estado_emi" value="SP" id="estado_emi">
+                {% endif %}
+                <i class="bi bi-check
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
+            </div>
+            <div class="item-form">
+                {% if error_estado_emi %}
+                <div class="error">
+                    <span>{{ error_estado_emi }}<span>
+                </div>
+                {% endif %}
+            </div>
             <!-- Data da nota -->
             <div class="input-group">
                 <i class="bi bi-calendar
