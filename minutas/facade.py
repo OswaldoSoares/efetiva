@@ -10,7 +10,7 @@ from clientes.models import (
 from dateutil.relativedelta import relativedelta
 
 # from django.db.models import Max
-from django.db.models import Max
+from django.db.models import Max, Sum
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
@@ -83,6 +83,7 @@ class MinutaSelecionada:
         self.t_entregas = self.total_notas()
         self.perimetro = self.get_perimetro()
         self.romaneio = self.get_romaneio()
+        self.romaneio_pesos = self.get_romaneio_pesos()
         self.tabela = ClienteTabela(minuta.idCliente).tabela
         self.tabela_veiculo = ClienteTabelaVeiculo(minuta.idCliente).tabela
         self.tabela_perimetro = ClienteTabelaPerimetro(minuta.idCliente).tabela
@@ -114,6 +115,15 @@ class MinutaSelecionada:
         for i in romaneio:
             num_romaneio.append(i.Romaneio)
         return num_romaneio
+
+    def get_romaneio_pesos(self):
+        romaneios = self.romaneio
+        lista_romaneio_peso = []
+        for i in romaneios:
+            peso = RomaneioNotas.objects.filter(idRomaneio=i).aggregate(peso=Sum("idNotasClientes__Peso"))
+            lista_romaneio_peso.append({"romaneio": i, "peso": peso["peso"]})
+        print(lista_romaneio_peso)
+        return(lista_romaneio_peso)
 
     def total_ajudantes(self):
         self.total_ajudantes_avulso()

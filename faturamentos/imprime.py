@@ -225,7 +225,8 @@ def imprime_fatura_pdf(fatura):
     for index, itens in enumerate(minutas):
         s_minuta = MinutaSelecionada(minutas[index].idMinuta).__dict__
         romaneios = s_minuta["romaneio"]
-        lista_romaneios = " - ".join(str(e) for e in romaneios)
+        romaneios_pesos = s_minuta["romaneio_pesos"]
+        lista_romaneios = " - ".join(f"{str(e['romaneio'])}  {str(e['peso'])} Kg" for e in romaneios_pesos)
         inicialkm = minutas[index].KMInicial
         finalkm = minutas[index].KMFinal
         totalkm = finalkm - inicialkm
