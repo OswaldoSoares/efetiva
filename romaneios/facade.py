@@ -40,8 +40,8 @@ def create_contexto_seleciona_ocorrencia(id_not, sort_ocorrencia):
     return lista
 
 
-def create_contexto_ocorrencia_notas(_id_not):
-    notas = NotasClientes.objects.filter(idNotasClientes=_id_not)
+def create_contexto_ocorrencia_notas(idnota):
+    notas = NotasClientes.objects.filter(idNotasClientes=idnota)
     lista = create_lista_notas_clientes(notas)
     return lista
 
@@ -975,61 +975,54 @@ def create_contexto_quantidade_entregas(notas_romaneio):
 
 
 def create_lista_notas_clientes(notas):
-    lista = [
-        {
-            "emitente": x.Emitente,
-            "emitente_curto": nome_curto(x.Emitente),
-            "endereco_emi": x.Endereco_emi,
-            "endereco_compl_emi": x.Endereco_emi
-            + " "
-            + x.Bairro_emi
-            + " "
-            + x.CEP_emi[0:5]
-            + "-"
-            + x.CEP_emi[5:]
-            + " "
-            + x.Cidade_emi
-            + " "
-            + x.Estado_emi,
-            "bairro_emi": x.Bairro_emi,
-            "cep_emi": x.CEP_emi[0:5] + "-" + x.CEP_emi[5:],
-            "cidade_emi": x.Cidade_emi,
-            "estado_emi": x.Estado_emi,
-            "id_nota_clientes": x.idNotasClientes,
-            "local_coleta": x.LocalColeta,
-            "data_nota": x.DataColeta,
-            "serie_nota": x.SerieNota,
-            "numero_nota": x.NumeroNota,
-            "destinatario": x.Destinatario,
-            "destinatario_curto": nome_curto(x.Destinatario),
-            "cnpj": x.CNPJ,
-            "endereco": x.Endereco,
-            "endereco_compl": x.Endereco
-            + " "
-            + x.Bairro
-            + " "
-            + x.CEP[0:5]
-            + "-"
-            + x.CEP[5:]
-            + " "
-            + x.Cidade
-            + " "
-            + x.Estado,
-            "bairro": x.Bairro,
-            "cep": x.CEP[0:5] + "-" + x.CEP[5:],
-            "cidade": x.Cidade,
-            "estado": x.Estado,
-            "contato": x.Contato,
-            "informa": x.Informa,
-            "volume": x.Volume,
-            "peso": x.Peso,
-            "valor": x.Valor,
-            "statusnota": x.StatusNota,
-            "historico": x.Historico,
-            "idcliente": x.idCliente_id,
-        }
-        for x in notas
-    ]
+    lista = []
+    for x in notas:
+        if x.CEP_emi:
+            cep_emitente = {x.CEP_emi[0:5]}-{x.CEP_emi[5:]}
+        else:
+            cep_emitente = "00000-000"
+        if x.CEP:
+            cep_destinatario = {x.CEP[0:5]}-{x.CEP[5:]}
+        else:
+            cep_destinatario = "00000-000"
+        lista.append(
+            {
+                "emitente": x.Emitente,
+                "emitente_curto": nome_curto(x.Emitente),
+                "endereco_emi": x.Endereco_emi,
+                "endereco_compl_emi": (
+                    f"{x.Endereco_emi} {x.Bairro_emi} {cep_emitente} {x.Cidade_emi} {x.Estado_emi}"
+                ),
+                "bairro_emi": x.Bairro_emi,
+                "cep_emi": cep_emitente,
+                "cidade_emi": x.Cidade_emi,
+                "estado_emi": x.Estado_emi,
+                "id_nota_clientes": x.idNotasClientes,
+                "local_coleta": x.LocalColeta,
+                "data_nota": x.DataColeta,
+                "serie_nota": x.SerieNota,
+                "numero_nota": x.NumeroNota,
+                "destinatario": x.Destinatario,
+                "destinatario_curto": nome_curto(x.Destinatario),
+                "cnpj": x.CNPJ,
+                "endereco": x.Endereco,
+                "endereco_compl": (
+                    f"{x.Endereco} {x.Bairro} {cep_destinatario} {x.Cidade} {x.Estado}"
+                ),
+                "bairro": x.Bairro,
+                "cep": cep_destinatario,
+                "cidade": x.Cidade,
+                "estado": x.Estado,
+                "contato": x.Contato,
+                "informa": x.Informa,
+                "volume": x.Volume,
+                "peso": x.Peso,
+                "valor": x.Valor,
+                "statusnota": x.StatusNota,
+                "historico": x.Historico,
+                "idcliente": x.idCliente_id,
+            }
+        )
     return lista
 
 
