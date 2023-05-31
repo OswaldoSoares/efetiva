@@ -13,7 +13,7 @@ from reportlab.pdfgen import canvas
 from reportlab.platypus import Paragraph
 from romaneios.models import RomaneioNotas
 from transefetiva.settings.settings import STATIC_ROOT
-from website.facade import valor_ponto_milhar
+from website.facade import nome_curto, valor_ponto_milhar
 from website.models import FileUpload
 
 from .models import Fatura
@@ -245,7 +245,7 @@ def imprime_fatura_pdf(fatura):
         minuta_hora_final = minutas[index].HoraFinal.strftime("%H:%M")
         minuta_motorista = None
         if minuta_colaboradores:
-            minuta_motorista = minuta_colaboradores[0].idPessoal
+            minuta_motorista = nome_curto(minuta_colaboradores[0].idPessoal.Nome)
         minuta_veiculo = minutas[index].idCategoriaVeiculo
         minuta_placa = None
         if minutas[index].idVeiculo:
@@ -270,8 +270,8 @@ def imprime_fatura_pdf(fatura):
             convertemp(12), convertemp(linha), "DATA: {}".format(minuta_data)
         )
         if romaneios:
-            pdf.drawCentredString(
-                convertemp(105),
+            pdf.drawRightString(
+                convertemp(198),
                 convertemp(linha),
                 f"MINUTA: {minuta_numero} - ROMANEIO(S): {lista_romaneios}",
             )
@@ -279,24 +279,27 @@ def imprime_fatura_pdf(fatura):
             pdf.drawCentredString(
                 convertemp(105), convertemp(linha), "MINUTA: {}".format(minuta_numero)
             )
-        if minuta_placa:
-            pdf.drawRightString(
-                convertemp(198),
-                convertemp(linha),
-                "VEÍCULO: {} - {}".format(minuta_veiculo, minuta_placa),
-            )
         linha -= 3
         pdf.setFillColor(HexColor("#0000FF"))
         tamanho_font = 8
         pdf.setFont("Times-Roman", tamanho_font)
         if minuta_motorista:
-            pdf.drawString(
-                convertemp(12), convertemp(linha), "{}".format(minuta_motorista)
-            )
+            if minuta_placa:
+                pdf.drawString(
+                    convertemp(12),
+                    convertemp(linha),
+                    f"{minuta_motorista} - {minuta_veiculo} - {minuta_placa}",
+                )
+            else:
+                pdf.drawString(
+                    convertemp(12),
+                    convertemp(linha),
+                    f"{minuta_motorista}",
+                )
         pdf.drawCentredString(
             convertemp(105),
             convertemp(linha),
-            "HORA INICIAL: {} HS ATÉ AS {} HS".format(
+            "HORARIO: {} HS ATÉ AS {} HS".format(
                 minuta_hora_inicial, minuta_hora_final
             ),
         )
