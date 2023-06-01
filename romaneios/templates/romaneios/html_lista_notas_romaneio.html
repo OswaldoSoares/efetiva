@@ -65,25 +65,47 @@
              {{ nr.idnotasclientes.NumeroNota }}
         </div>
     </div>
-    <div class="item-nr {% cycle 'linha-p' 'linha-i' %}">
-        <div class="item-destinatario" title="Destinatario">
-            <i class="bi bi-shop i-button-null"></i>
-             {{ nr.idnotasclientes.Destinatario|slice:"0:32" }}
+    {% if nr.idnotasclientes.LocalColeta == "DESTINATÁRIO" %}
+        <div class="item-nr {% cycle 'linha-p' 'linha-i' %}">
+            <div class="item-destinatario" title="Emitente">
+                <i class="bi bi-pencil i-button-null"></i>
+                {{ nr.idnotasclientes.Emitente|slice:"0:32" }}
+            </div>
         </div>
-    </div>
-    <div class="item-nr {% cycle 'linha-p' 'linha-i' %}">
-        <div class="item-endereco" title="Endereço">
-            <i class="bi bi-geo-alt i-button-null"></i>
-             {{ nr.idnotasclientes.Endereco|slice:"0:32" }}
+        <div class="item-nr {% cycle 'linha-p' 'linha-i' %}">
+            <div class="item-endereco" title="Endereço">
+                <i class="bi bi-geo-alt i-button-null"></i>
+                {{ nr.idnotasclientes.Endereco_emi|slice:"0:32" }}
+            </div>
         </div>
-    </div>
-    <div class="item-nr {% cycle 'linha-p' 'linha-i' %}">
-        <div class="item-endereco-compl" title="Bairro-Cidade">
-            <i class="bi bi-geo-alt i-button-null"></i>
-             {{ nr.idnotasclientes.Bairro|slice:"0:18" }} -
-              {{ nr.idnotasclientes.Cidade }}
+        <div class="item-nr {% cycle 'linha-p' 'linha-i' %}">
+            <div class="item-endereco-compl" title="Bairro-Cidade">
+                <i class="bi bi-geo-alt i-button-null"></i>
+                {{ nr.idnotasclientes.Bairro_emi|slice:"0:18" }} -
+                {{ nr.idnotasclientes.Cidade_emi }}
+            </div>
         </div>
-    </div>
+    {% else %}
+        <div class="item-nr {% cycle 'linha-p' 'linha-i' %}">
+            <div class="item-destinatario" title="Destinatario">
+                <i class="bi bi-shop i-button-null"></i>
+                {{ nr.idnotasclientes.Destinatario|slice:"0:32" }}
+            </div>
+        </div>
+        <div class="item-nr {% cycle 'linha-p' 'linha-i' %}">
+            <div class="item-endereco" title="Endereço">
+                <i class="bi bi-geo-alt i-button-null"></i>
+                {{ nr.idnotasclientes.Endereco|slice:"0:32" }}
+            </div>
+        </div>
+        <div class="item-nr {% cycle 'linha-p' 'linha-i' %}">
+            <div class="item-endereco-compl" title="Bairro-Cidade">
+                <i class="bi bi-geo-alt i-button-null"></i>
+                {{ nr.idnotasclientes.Bairro|slice:"0:18" }} -
+                {{ nr.idnotasclientes.Cidade }}
+            </div>
+        </div>
+    {% endif %}
     <div class="item-nr {% cycle 'linha-p' 'linha-i' %}">
         <div class="item-endereco-compl" title="Bairro-Cidade">
             {% if nr.idnotasclientes.StatusNota == 'EM ROTA' %}
