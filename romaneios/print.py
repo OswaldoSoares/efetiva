@@ -176,24 +176,37 @@ def notas_romaneio(pdf, contexto):
     for indice, x in enumerate(contexto["notas"]):
         if x.idNotasClientes.LocalColeta == "DESTINATÁRIO":
             coleta = "COLETA"
+            local = x.idNotasClientes.Emitente
+            cnpj = "00000000000000"
+            endereco = x.idNotasClientes.Endereco_emi
+            bairro = x.idNotasClientes.Bairro_emi
+            if x.idNotasClientes.CEP_emi:
+                cep = f"{x.idNotasClientes.CEP_emi[0:5]}-{x.idNotasClientes.CEP_emi[5:]}"
+            else:
+                cep = "00000-000"
+            cidade = x.idNotasClientes.Cidade_emi
+            estado = x.idNotasClientes.Estado_emi
+            end_compl = f"{endereco} - {bairro} - CEP: {cep} - {cidade} - {estado}"
         else:
             coleta = "ENTREGA"
+            local = x.idNotasClientes.Destinatario
+            cnpj = x.idNotasClientes.CNPJ
+            endereco = x.idNotasClientes.Endereco
+            bairro = x.idNotasClientes.Bairro
+            if x.idNotasClientes.CEP:
+                cep = f"{x.idNotasClientes.CEP[0:5]}-{x.idNotasClientes.CEP[5:]}"
+            else:
+                cep = "00000-000"
+            cidade = x.idNotasClientes.Cidade
+            estado = x.idNotasClientes.Estado
+            end_compl = f"{endereco} - {bairro} - CEP: {cep} - {cidade} - {estado}"
         id_not = x.idNotasClientes.idNotasClientes
         emitente = nome_curto(x.idNotasClientes.Emitente)
         data_nota = datetime.strftime(x.idNotasClientes.DataColeta, "%d/%m/%Y")
         serie = x.idNotasClientes.SerieNota
         numero = x.idNotasClientes.NumeroNota
-        destinatario = x.idNotasClientes.Destinatario
-        cnpj = x.idNotasClientes.CNPJ
         # Cliente não quer que coloca pontos e traços no CNPJ - 29/03/2023
         # cnpj = f"{cnpj[0:2]}.{cnpj[2:5]}.{cnpj[5:8]}/{cnpj[8:12]}-{cnpj[12:15]}"
-        endereco = x.idNotasClientes.Endereco
-        endereco = x.idNotasClientes.Endereco
-        bairro = x.idNotasClientes.Bairro
-        cep = x.idNotasClientes.CEP[0:5] + "-" + x.idNotasClientes.CEP[5:]
-        cidade = x.idNotasClientes.Cidade
-        estado = x.idNotasClientes.Estado
-        end_compl = f"{endereco} - {bairro} - CEP: {cep} - {cidade} - {estado}"
         volume = x.idNotasClientes.Volume
         peso = f"{valor_ponto_milhar(x.idNotasClientes.Peso)}"
         valor = f"{valor_ponto_milhar(x.idNotasClientes.Valor)}"
@@ -221,7 +234,7 @@ def notas_romaneio(pdf, contexto):
         pdf.setFillColor(HexColor("#000000"))
         linha -= 2.5
         pdf.setFont("Times-Roman", 7)
-        pdf.drawString(cmp(12), cmp(linha), f"{destinatario} - CNPJ: {cnpj}")
+        pdf.drawString(cmp(12), cmp(linha), f"{local} - CNPJ: {cnpj}")
         linha -= 2.5
         pdf.drawString(cmp(12), cmp(linha), f"{end_compl}")
         linha -= 2.5
