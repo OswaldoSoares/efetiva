@@ -344,10 +344,17 @@ def imprime_fatura_pdf(fatura):
                 custo = minuta_valor / soma_valor * 100
             else:
                 custo = None
-            enderecos = [
-                f"{i.idNotasClientes.Endereco} - {i.idNotasClientes.Bairro}"
-                for i in notas_romaneio
-            ]
+            # f"{i.idNotasClientes.Endereco} - {i.idNotasClientes.Bairro}"
+            enderecos = []
+            for i in notas_romaneio:
+                if i.idNotasClientes.LocalColeta == "DESTINATÁRIO":
+                    enderecos.append(
+                        f"{i.idNotasClientes.Endereco_emi} - {i.idNotasClientes.Bairro_emi}"
+                    )
+                else:
+                    enderecos.append(
+                        f"{i.idNotasClientes.Endereco} - {i.idNotasClientes.Bairro}"
+                    )
             entregas = list(set(enderecos))
             notas_dados = [
                 {
@@ -361,6 +368,12 @@ def imprime_fatura_pdf(fatura):
                     "Estado": x.idNotasClientes.Estado,
                     "Nome": x.idNotasClientes.Destinatario,
                     "Endereco": x.idNotasClientes.Endereco,
+                    "Bairro_emi": x.idNotasClientes.Bairro_emi,
+                    "CEP_emi": x.idNotasClientes.CEP_emi,
+                    "Cidade_emi": x.idNotasClientes.Cidade_emi,
+                    "Estado_emi": x.idNotasClientes.Estado_emi,
+                    "Emitente": x.idNotasClientes.Emitente,
+                    "Endereco_emi": x.idNotasClientes.Endereco_emi,
                     "LocalColeta": x.idNotasClientes.LocalColeta,
                     "StatusNota": x.idNotasClientes.StatusNota,
                     "Contato": x.idNotasClientes.Contato,
@@ -603,15 +616,21 @@ def print_notas_da_minuta_unidade(
     for index, x in enumerate(notas_dados):
         if x["LocalColeta"] == "DESTINATÁRIO":
             coleta = "COLETA"
+            destinatario = x["Emitente"]
+            endereco = x["Endereco_emi"]
+            bairro = x["Bairro_emi"]
+            cep = f'{x["CEP_emi"][0:5]}-{x["CEP_emi"][5:]}'
+            cidade = x["Cidade_emi"]
+            estado = x["Estado_emi"]
         else:
             coleta = "ENTREGA"
-        numero = x["Nota"]
-        destinatario = x["Nome"]
-        endereco = x["Endereco"]
-        bairro = x["Bairro"]
-        cep = x["CEP"][0:5] + "-" + x["CEP"][5:]
-        cidade = x["Cidade"]
-        estado = x["Estado"]
+            destinatario = x["Nome"]
+            endereco = x["Endereco"]
+            bairro = x["Bairro"]
+            cep = f'{x["CEP"][0:5]}-{x["CEP"][5:]}'
+            cidade = x["Cidade"]
+            estado = x["Estado"]
+        numero = x["Nota"]        
         volume = x["Volume"]
         peso = x["Peso"]
         valor = x["ValorNota"]
