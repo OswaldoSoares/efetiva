@@ -543,12 +543,14 @@ def create_contexto_quantidades_status(idcliente):
     cadastrada = len(notas.filter(StatusNota="NOTA CADASTRADA"))
     pendente = len(notas.filter(StatusNota="PENDENTE"))
     recusada = len(notas.filter(StatusNota="RECUSADA"))
+    coletada = len(notas.filter(StatusNota="COLETADA"))
     lista = [
         {
             "rota": rota,
             "cadastrada": cadastrada,
             "pendente": pendente,
             "recusada": recusada,
+            "coletada": coletada,
         }
     ]
     return lista

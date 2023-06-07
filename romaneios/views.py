@@ -48,6 +48,7 @@ def seleciona_cliente(request):
         contexto.update({"cadastrada": quantidade_notas[0]["cadastrada"]})
         contexto.update({"pendente": quantidade_notas[0]["pendente"]})
         contexto.update({"recusada": quantidade_notas[0]["recusada"]})
+        contexto.update({"coletada": quantidade_notas[0]["coletada"]})
         data = facade.create_data_cliente_selecionado(request, contexto)
     else:
         clientes = facade.create_contexto_seleciona_cliente()
@@ -174,6 +175,7 @@ def adiciona_ocorrencia(request):
     contexto.update({"cadastrada": quantidade_notas[0]["cadastrada"]})
     contexto.update({"pendente": quantidade_notas[0]["pendente"]})
     contexto.update({"recusada": quantidade_notas[0]["recusada"]})
+    contexto.update({"coletada": quantidade_notas[0]["coletada"]})
     if idromaneio:
         notas_romaneio = facade.create_contexto_notas_romaneio(idromaneio)
         (
@@ -258,6 +260,7 @@ def adiciona_nota_romaneio(request):
     contexto.update({"cadastrada": quantidade_notas[0]["cadastrada"]})
     contexto.update({"pendente": quantidade_notas[0]["pendente"]})
     contexto.update({"recusada": quantidade_notas[0]["recusada"]})
+    contexto.update({"coletada": quantidade_notas[0]["coletada"]})
     data = facade.create_data_lista_notas_romaneio(request, contexto)
     return data
 
@@ -286,6 +289,7 @@ def exclui_nota_romaneio(request):
             "cadastrada": quantidade_notas[0]["cadastrada"],
             "pendente": quantidade_notas[0]["pendente"],
             "recusada": quantidade_notas[0]["recusada"],
+            "coletada": quantidade_notas[0]["coletada"],
         }
     )
     data = facade.create_data_lista_notas_romaneio(request, contexto)
@@ -436,5 +440,6 @@ def nota_deposito(request):
     contexto.update({"cadastrada": quantidade_notas[0]["cadastrada"]})
     contexto.update({"pendente": quantidade_notas[0]["pendente"]})
     contexto.update({"recusada": quantidade_notas[0]["recusada"]})
+    contexto.update({"coletada": quantidade_notas[0]["coletada"]})
     data = facade.create_data_filtro_status_reduzida(request, contexto)
     return data

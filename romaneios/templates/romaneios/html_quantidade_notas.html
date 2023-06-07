@@ -18,7 +18,9 @@
             </div>
             <div class="input-group-addon
             addon-my-color">
-                <span>{{ rotas }}</span>
+                <span>
+                    {{ rotas|stringformat:".3d" }}
+                </span>
             </div>
         </div>
     </div>
@@ -36,7 +38,9 @@
             </div>
             <div class="input-group-addon
             addon-my-color">
-                <span>{{ cadastrada }}</span>
+                <span>
+                    {{ cadastrada|stringformat:".3d" }}
+                </span>
             </div>
         </div>
     </div>
@@ -54,7 +58,9 @@
             </div>
             <div class="input-group-addon
             addon-my-color">
-                <span>{{ pendente }}</span>
+                <span>
+                    {{ pendente|stringformat:".3d" }}
+                </span>
             </div>
         </div>
     </div>
@@ -72,7 +78,29 @@
             </div>
             <div class="input-group-addon
             addon-my-color">
-                <span>{{ recusada }}</span>
+                <span>
+                    {{ recusada|stringformat:".3d" }}
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon
+            addon-my-color">
+                <i class="bi bi-file-text
+                i-button-null"></i>
+            </div>
+            <div>
+                <span class="form-control input-fake">
+                    COLETADA
+                </span>
+            </div>
+            <div class="input-group-addon
+            addon-my-color">
+                <span>
+                    {{ coletada|stringformat:".3d" }}
+                </span>
             </div>
         </div>
     </div>
