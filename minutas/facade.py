@@ -122,7 +122,6 @@ class MinutaSelecionada:
         for i in romaneios:
             peso = RomaneioNotas.objects.filter(idRomaneio=i).aggregate(peso=Sum("idNotasClientes__Peso"))
             lista_romaneio_peso.append({"romaneio": i, "peso": peso["peso"]})
-        print(lista_romaneio_peso)
         return(lista_romaneio_peso)
 
     def total_ajudantes(self):
@@ -1601,10 +1600,16 @@ def save_notas_romaneio_minuta(id_rom, id_min):
         nota["peso"] = nota_cliente.Peso
         nota["volume"] = nota_cliente.Volume
         nota["nome"] = nota_cliente.Destinatario
-        nota["endereco"] = nota_cliente.Endereco
-        nota["bairro"] = nota_cliente.Bairro
-        nota["cidade"] = nota_cliente.Cidade
-        nota["estado"] = nota_cliente.Estado
+        if nota_cliente.LocalColeta == "DESTINATÁRIO":
+            nota["endereco"] = nota_cliente.Endereco_emi
+            nota["bairro"] = nota_cliente.Bairro_emi
+            nota["cidade"] = nota_cliente.Cidade_emi
+            nota["estado"] = nota_cliente.Estado_emi
+        else:
+            nota["endereco"] = nota_cliente.Endereco
+            nota["bairro"] = nota_cliente.Bairro
+            nota["cidade"] = nota_cliente.Cidade
+            nota["estado"] = nota_cliente.Estado
         nota["notaguia"] = 0
         nota["idminuta"] = id_min
         lista.append(nota)
