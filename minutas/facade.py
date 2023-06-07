@@ -1599,13 +1599,14 @@ def save_notas_romaneio_minuta(id_rom, id_min):
         nota["valor"] = nota_cliente.Valor
         nota["peso"] = nota_cliente.Peso
         nota["volume"] = nota_cliente.Volume
-        nota["nome"] = nota_cliente.Destinatario
         if nota_cliente.LocalColeta == "DESTINATÁRIO":
+            nota["nome"] = nota_cliente.Emitente
             nota["endereco"] = nota_cliente.Endereco_emi
             nota["bairro"] = nota_cliente.Bairro_emi
             nota["cidade"] = nota_cliente.Cidade_emi
             nota["estado"] = nota_cliente.Estado_emi
         else:
+            nota["nome"] = nota_cliente.Destinatario
             nota["endereco"] = nota_cliente.Endereco
             nota["bairro"] = nota_cliente.Bairro
             nota["cidade"] = nota_cliente.Cidade
