@@ -315,11 +315,10 @@ $(document).on('click', '.js-edita-notas-cliente', function() {
         },
         success: function(data) {
             $(".card-form-notas-cliente").html(data.html_form_notas_cliente)
+            $(".js-mostra-oculta-form-nota").toggleClass("bi-chevron-up");
             $(".card-form-notas-cliente").show()
-            mostraBodyFormNota()
             $(".card-form-romaneios").html(data.html_form_romaneios)
             $(".card-form-romaneios").show()
-                // CarregaMask()
             $(".box-loader").hide();
             $('#filtro').val($("#select-status").val())
             $(window).scrollTop(0)
