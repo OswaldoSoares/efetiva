@@ -25,13 +25,13 @@ def seleciona_cliente(request):
         contexto = facade.create_contexto_notas(idcliente, "SEM FILTRO", "-NumeroNota")
         # cliente = facade.create_contexto_cliente(idcliente)
         hoje = str_hoje()
-        destinatarios = facade.lista_destinatarios()
+        locais = facade.lista_locais()
         enderecos = facade.lista_enderecos()
         bairros = facade.lista_bairros()
         contexto.update({
             "hoje": hoje,
             "idcliente": idcliente,
-            "destinatarios": destinatarios,
+            "locais": locais,
             "enderecos": enderecos,
             "bairros": bairros,
             "sort_status": "SEM FILTRO",
@@ -89,7 +89,7 @@ def edita_nota_cliente(request):
     cliente = facade.create_contexto_cliente(_id_cli)
     error, msg = False, dict()
     nota_form = facade.read_nota_database(_id_not)
-    destinatarios = facade.lista_destinatarios()
+    locais = facade.lista_locais()
     enderecos = facade.lista_enderecos()
     bairros = facade.lista_bairros()
     contexto = {
@@ -97,7 +97,7 @@ def edita_nota_cliente(request):
         "cliente": cliente,
         "error": error,
         "idcliente": _id_cli,
-        "destinatarios": destinatarios,
+        "locais": locais,
         "enderecos": enderecos,
         "bairros": bairros,
     }

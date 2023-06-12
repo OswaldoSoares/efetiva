@@ -576,13 +576,22 @@ def create_contexto_seleciona_romaneio(id_rom):
     return lista
 
 
-def lista_destinatarios():
+def lista_locais():
     destinatarios = (
         NotasClientes.objects.values("Destinatario").distinct().order_by("Destinatario")
     )
+    emitentes = (
+        NotasClientes.objects.values("Emitente").distinct().order_by("Emitente")
+    )
     lista = []
     for x in destinatarios:
-        lista.append(x["Destinatario"])
+        if x["Destinatario"]:
+            lista.append(x["Destinatario"].strip())
+    for x in emitentes:
+        if x["Emitente"]:
+            lista.append(x["Emitente"].strip())
+    lista = list(set(lista))
+    lista.sort()
     return lista
 
 

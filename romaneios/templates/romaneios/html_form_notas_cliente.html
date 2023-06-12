@@ -74,15 +74,21 @@
                     id="emitente"
                     name="emitente"
                     placeholder="EMITENTE"
-                    value="{{ nota_form.emitente }}">
+                    value="{{ nota_form.emitente }}"
+                    list="emitentes" />
                 {% else %}
                     <input type="text"
                     class="form-control form-control-minuta"
                     id="emitente"
                     name="emitente"
                     placeholder="EMITENTE"
-                    >
+                    list="emitentes" />
                 {% endif %}
+                <datalist id="emitentes">
+                    {% for local in locais %}
+                    <option value="{{ local }}">
+                    {% endfor %}
+                </datalist>
                 <i class="bi bi-check
                 input-group-addon
                 addon-my-color
@@ -363,23 +369,18 @@
                     <input class="form-control
                     form-control-minuta" type="text" name="destinatario"
                     placeholder="DESTINATÁRIO" list="destinatarios"
-                    id="destinatario" value="{{ nota_form.destinatario }}">
-                    <datalist id="destinatarios">
-                        {% for dest in destinatarios %}
-                        <option value="{{ dest }}">
-                        {% endfor %}
-                    </datalist>
+                    id="destinatario" value="{{ nota_form.destinatario }}" />
                 {% else %}
                     <input class="form-control
                     form-control-minuta" type="text" name="destinatario"
                     placeholder="DESTINATÁRIO" list="destinatarios"
-                    id="destinatario">
-                    <datalist id="destinatarios">
-                        {% for dest in destinatarios %}
-                        <option value="{{ dest }}">
-                        {% endfor %}
-                    </datalist>
+                    id="destinatario" />
                 {% endif %}
+                <datalist id="destinatarios">
+                    {% for local in locais %}
+                    <option value="{{ local }}">
+                    {% endfor %}
+                </datalist>
                 <i class="bi bi-check
                 input-group-addon
                 addon-my-color
