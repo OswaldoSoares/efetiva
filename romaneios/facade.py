@@ -615,10 +615,21 @@ def lista_enderecos():
 
 
 def lista_bairros():
-    destinatarios = NotasClientes.objects.values("Bairro").distinct().order_by("Bairro")
+    destinatarios = (
+        NotasClientes.objects.values("Bairro").distinct().order_by("Bairro")
+    )
+    emitentes = (
+        NotasClientes.objects.values("Bairro_emi").distinct().order_by("Bairro_emi")
+    )
     lista = []
     for x in destinatarios:
-        lista.append(x["Bairro"])
+        if x["Bairro"]:
+            lista.append(x["Bairro"])
+    for x in emitentes:
+        if x["Bairro_emi"]:
+            lista.append(x["Bairro_emi"])
+    lista = list(set(lista))
+    lista.sort()
     return lista
 
 
