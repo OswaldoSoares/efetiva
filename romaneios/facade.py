@@ -599,9 +599,18 @@ def lista_enderecos():
     destinatarios = (
         NotasClientes.objects.values("Endereco").distinct().order_by("Endereco")
     )
+    emitentes = (
+        NotasClientes.objects.values("Endereco_emi").distinct().order_by("Endereco_emi")
+    )
     lista = []
     for x in destinatarios:
-        lista.append(x["Endereco"])
+        if x["Endereco"]:
+            lista.append(x["Endereco"])
+    for x in emitentes:
+        if x["Endereco_emi"]:
+            lista.append(x["Endereco_emi"])
+    lista = list(set(lista))
+    lista.sort()
     return lista
 
 
