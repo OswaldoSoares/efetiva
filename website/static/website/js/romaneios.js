@@ -134,31 +134,34 @@ $(document).on('click', '.js-print-relatorio', function() {
 
 $(document).on('click', '.js-filtro-status', function() {
     $('#filtro').val($("#select-status").val())
-    var _status = $("#select-status").val()
+    var status = $("#select-status").val()
     var id_cliente = $(this).data("idcliente")
-    $.ajax({
-        type: 'GET',
-        url: '/romaneios/filtra_status',
-        data: {
-            status: _status,
-            cliente: id_cliente,
-        },
-        beforeSend: function() {
-            $(".card-lista-notas-cliente").hide()
-            $(".card-lista-ocorrencia").hide()
-            $(".card-lista-romaneios").hide()
-            $(".card-lista-notas-romaneio").hide()
-            $(".box-loader").show()
-        },
-        success: function(data) {
-            $(".card-lista-notas-cliente").html(data.html_card_lista_notas_cliente)
-            $(".card-lista-notas-cliente").show()
-            $(".card-lista-romaneios").show()
-            $(".js-adiciona-nota-romaneio").hide()
-            $(".js-envia-telegram-relatorio").hide()
-            $(".box-loader").hide()
-        },
-    });
+    if (status != "") {
+        $.ajax({
+            type: 'GET',
+            url: '/romaneios/filtra_status',
+            data: {
+                status: status,
+                cliente: id_cliente,
+            },
+            beforeSend: function() {
+                $(".card-lista-notas-cliente").hide()
+                $(".card-lista-ocorrencia").hide()
+                $(".card-lista-romaneios").hide()
+                $(".card-lista-notas-romaneio").hide()
+                $(".box-loader").show()
+            },
+            success: function(data) {
+                $(".card-lista-notas-cliente").html(data.html_card_lista_notas_cliente)
+                $(".js-notas-filtro").html("NOTAS " + status)
+                $(".card-lista-notas-cliente").show()
+                $(".card-lista-romaneios").show()
+                $(".js-adiciona-nota-romaneio").hide()
+                $(".js-envia-telegram-relatorio").hide()
+                $(".box-loader").hide()
+            },
+        });
+    }
 });
 
 $(document).on('click', '.js-imprime-notas-status', function() {

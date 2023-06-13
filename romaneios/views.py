@@ -22,7 +22,7 @@ def seleciona_cliente(request):
         else:
             idcliente = request.GET.get("cliente")
         # notas = facade.create_contexto_seleciona_notas(idcliente, "-NumeroNota")
-        contexto = facade.create_contexto_notas(idcliente, "SEM FILTRO", "-NumeroNota")
+        contexto = facade.create_contexto_notas(idcliente, "PENDENTE", "-NumeroNota")
         # cliente = facade.create_contexto_cliente(idcliente)
         hoje = str_hoje()
         locais = facade.lista_locais()
@@ -34,7 +34,7 @@ def seleciona_cliente(request):
             "locais": locais,
             "enderecos": enderecos,
             "bairros": bairros,
-            "sort_status": "SEM FILTRO",
+            "sort_status": "PENDENTE",
         })
         romaneios = facade.create_contexto_romaneios(idcliente)
         contexto.update({"romaneios": romaneios})
