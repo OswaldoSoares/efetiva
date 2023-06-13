@@ -633,6 +633,50 @@ def lista_bairros():
     return lista
 
 
+def create_data_busca_endereco(local):
+    destinatarios = (
+        NotasClientes.objects.filter(Destinatario=local)
+    )
+    emitentes = (
+        NotasClientes.objects.filter(Emitente=local)
+    )
+    lista = []
+    for x in destinatarios:
+        if x.Endereco:
+            lista.append(
+                {
+                    "endereco": x.Endereco,
+                    "bairro": x.Bairro,
+                    "cep": f'{x.CEP[0:5]}-{x.CEP[5:]}',
+                    "cidade": x.Cidade,
+                    "estado": x.Estado,
+                }
+            )
+    for x in emitentes:
+        if x.Endereco_emi:
+            lista.append(
+                {
+                    "endereco": x.Endereco_emi,
+                    "bairro": x.Bairro_emi,
+                    "cep": f'{x.CEP_emi[0:5]}-{x.CEP_emi[5:]}',
+                    "cidade": x.Cidade_emi,
+                    "estado": x.Estado_emi,
+                }
+            )
+    endereco_completo = []
+    msg = False
+    if len(lista) > 0:
+        # Remove dicionários repetidos usando um loop e set()
+        lista_sem_repeticao = list(set(tuple(sorted(dicionario.items())) for dicionario in lista))
+        # Converte os dicionários de volta para sua forma original
+        lista_sem_repeticao = [dict(item) for item in lista_sem_repeticao]
+        endereco_completo = lista_sem_repeticao[-1]
+        if len(lista_sem_repeticao) > 1:
+            msg = "ESTE EMITENTE POSSUI MAIS DE UM ENDEREÇO, VERIFIQUE SE ESTÁ CORRETO"
+    contexto = {"endereco": endereco_completo, "mensagem": msg}
+    return JsonResponse(contexto)
+
+
 def save_nota_romaneio(id_nota, id_romaneio):
     obj = RomaneioNotas()
     obj.idNotasClientes_id = id_nota

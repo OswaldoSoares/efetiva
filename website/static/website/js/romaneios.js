@@ -326,6 +326,48 @@ $(document).on('click', '.js-edita-notas-cliente', function() {
     });
 });
 
+$(document).on('blur', '#emitente', function() {
+    if ($("#emitente").val() != "") {
+        local = $("#emitente").val()
+        $.ajax({
+            type: "GET",
+            url: "/romaneios/busca_local_nota",
+            data: {
+                local: local,
+            },
+            beforeSend: function() {},
+            success: function(data) {
+                $("#endereco_emi").val(data.endereco.endereco)
+                $("#bairro_emi").val(data.endereco.bairro)
+                $("#cep_emi").val(data.endereco.cep)
+                $("#cidade_emi").val(data.endereco.cidade)
+                $("#estado_emi").val(data.endereco.estado)
+                if (data.mensagem) {
+                    console.log(data.mensagem)
+                    $(".mensagem p").removeClass("mensagem-color")
+                    $(".mensagem p").removeClass("mensagem-success-color")
+                    $(".mensagem p").addClass("mensagem-error-color")
+                    exibirMensagem(data.mensagem);
+                }
+            },
+        });
+    }
+});
+
+// Mostra a div de mensagem com a mensagem de erro
+function exibirMensagem(mensagem) {
+    $('.mensagem p').text(mensagem);
+    $('.mensagem p').animate({bottom: '0'}, 1000);
+    setTimeout(function() {
+        $('.mensagem p').animate({bottom: '60px'}, 1000); 
+        $('.mensagem p').animate({bottom: '-30px'}, 0);
+    }, 3000);
+}
+
+$(document).on('blur', '#destinatario', function() {
+    alert("Destinatario")
+});
+
 $(document).on('click', '.js-envia-telegram-romaneio', function() {
     var romaneio = $(this).data("romaneio")
     var idcliente = $(this).data("idcliente")
