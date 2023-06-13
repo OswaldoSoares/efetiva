@@ -365,7 +365,31 @@ function exibirMensagem(mensagem) {
 }
 
 $(document).on('blur', '#destinatario', function() {
-    alert("Destinatario")
+    if ($("#destimatario").val() != "") {
+        local = $("#destinatario").val()
+        $.ajax({
+            type: "GET",
+            url: "/romaneios/busca_local_nota",
+            data: {
+                local: local,
+            },
+            beforeSend: function() {},
+            success: function(data) {
+                $("#endereco").val(data.endereco.endereco)
+                $("#bairro").val(data.endereco.bairro)
+                $("#cep").val(data.endereco.cep)
+                $("#cidade").val(data.endereco.cidade)
+                $("#estado").val(data.endereco.estado)
+                if (data.mensagem) {
+                    console.log(data.mensagem)
+                    $(".mensagem p").removeClass("mensagem-color")
+                    $(".mensagem p").removeClass("mensagem-success-color")
+                    $(".mensagem p").addClass("mensagem-error-color")
+                    exibirMensagem(data.mensagem);
+                }
+            },
+        });
+    }
 });
 
 $(document).on('click', '.js-envia-telegram-romaneio', function() {
