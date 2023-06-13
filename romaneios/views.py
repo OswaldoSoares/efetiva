@@ -129,6 +129,7 @@ def exclui_nota_cliente(request):
     contexto.update({"cadastrada": quantidade_notas[0]["cadastrada"]})
     contexto.update({"pendente": quantidade_notas[0]["pendente"]})
     contexto.update({"recusada": quantidade_notas[0]["recusada"]})
+    contexto.update({"coletada": quantidade_notas[0]["coletada"]})
     data = facade.create_data_cliente_selecionado(request, contexto)
     return data
 
