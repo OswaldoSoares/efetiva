@@ -117,6 +117,7 @@ $(document).on('submit', '.js-gera-notas-cliente', function(event) {
         },
         success: function(data) {
             $(".card-form-notas-cliente").html(data.html_form_notas_cliente)
+            $(".js-mostra-oculta-form-nota").toggleClass("bi-chevron-up")
             $(".card-form-notas-cliente").show()
             $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente)
             $(".js-notas-filtro").html("NOTAS CADASTRADAS")

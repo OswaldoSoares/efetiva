@@ -57,10 +57,12 @@ def seleciona_cliente(request):
         data = facade.create_data_seleciona_cliente(request, contexto)
     return data
 
+
 def busca_local_nota(request):
     local = request.GET.get("local")
     data = facade.create_data_busca_endereco(local)
     return data
+
 
 def adiciona_nota_cliente(request):
     error, msg = facade.valida_notas_cliente(request)
@@ -83,6 +85,7 @@ def adiciona_nota_cliente(request):
     contexto.update({"cadastrada": quantidade_notas[0]["cadastrada"]})
     contexto.update({"pendente": quantidade_notas[0]["pendente"]})
     contexto.update({"recusada": quantidade_notas[0]["recusada"]})
+    contexto.update({"coletada": quantidade_notas[0]["coletada"]})
     data = facade.create_data_cliente_selecionado(request, contexto)
     return data
 
