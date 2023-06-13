@@ -647,7 +647,7 @@ def create_data_busca_endereco(local):
                 {
                     "endereco": x.Endereco,
                     "bairro": x.Bairro,
-                    "cep": f'{x.CEP[0:5]}-{x.CEP[5:]}',
+                    "cep": x.CEP,
                     "cidade": x.Cidade,
                     "estado": x.Estado,
                 }
@@ -658,7 +658,7 @@ def create_data_busca_endereco(local):
                 {
                     "endereco": x.Endereco_emi,
                     "bairro": x.Bairro_emi,
-                    "cep": f'{x.CEP_emi[0:5]}-{x.CEP_emi[5:]}',
+                    "cep": x.CEP_emi,
                     "cidade": x.Cidade_emi,
                     "estado": x.Estado_emi,
                 }
@@ -1113,19 +1113,9 @@ def create_lista_notas_clientes(notas):
 
 def create_contexto_notas(idcliente, filter_status, order_nota):
     cliente = Cliente.objects.get(idCliente=idcliente)
-    if filter_status == "SEM FILTRO":
-        notas = (
-            NotasClientes.objects.filter(idCliente=idcliente)
-            .order_by("NumeroNota")
-            .exclude(StatusNota="COLETA CANCELADA")
-            .exclude(StatusNota="DEVOLVIDA NO CLIENTE")
-            .exclude(StatusNota__startswith="ENTREGUE")
-            .exclude(StatusNota="NOTA CADASTRADA")
-        ).order_by(order_nota)
-    else:
-        notas = NotasClientes.objects.filter(
-            StatusNota=filter_status, idCliente_id=idcliente
-        ).order_by(order_nota)
+    notas = NotasClientes.objects.filter(
+        StatusNota=filter_status, idCliente_id=idcliente
+    ).order_by(order_nota)
     lista = []
     for x in notas:
         ocorrencia = None

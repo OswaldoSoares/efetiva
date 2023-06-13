@@ -77,6 +77,7 @@ $(document).on('click', '.js-nota-pendente', function() {
         },
         success: function(data) {
             $(".card-lista-notas-cliente").html(data.html_card_lista_notas_cliente)
+            $(".js-notas-filtro").html("NOTAS CADASTRADAS")
             $(".card-lista-notas-cliente").show()
             $(".card-lista-romaneios").show()
             $(".js-adiciona-nota-romaneio").hide()
@@ -118,6 +119,7 @@ $(document).on('submit', '.js-gera-notas-cliente', function(event) {
             $(".card-form-notas-cliente").html(data.html_form_notas_cliente)
             $(".card-form-notas-cliente").show()
             $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente)
+            $(".js-notas-filtro").html("NOTAS CADASTRADAS")
             $(".card-lista-notas-cliente").show()
             $(".card-quantidade-notas").html(data.html_quantidade_notas)
             $(".card-quantidade-notas").show()
