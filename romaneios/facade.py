@@ -1063,11 +1063,11 @@ def create_lista_notas_clientes(notas):
     lista = []
     for x in notas:
         if x.CEP_emi:
-            cep_emitente = {x.CEP_emi[0:5]}-{x.CEP_emi[5:]}
+            cep_emitente = f"{x.CEP_emi[0:5]}-{x.CEP_emi[5:]}"
         else:
             cep_emitente = "00000-000"
         if x.CEP:
-            cep_destinatario = {x.CEP[0:5]}-{x.CEP[5:]}
+            cep_destinatario = f"{x.CEP[0:5]}-{x.CEP[5:]}"
         else:
             cep_destinatario = "00000-000"
         lista.append(
