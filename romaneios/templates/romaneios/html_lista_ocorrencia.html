@@ -1,169 +1,364 @@
 {% load humanize %}
-<div class="article-card-titulo">
-    <span>NOTA</span>
+<div class="card-header">
+    <span>
+        OCORRÊNCIAS
+    </span>
 </div>
-<div class="article-card-body">
-    {% for nota in notas %}
-    <div class="item-nota">
-        <div class="item-numero" title="Número Nota" draggable="true">
-            <i class="bi bi-file-text i-button-null"></i> {{ nota.numero_nota }}
-        </div>
-        <div class="item-data" title="Data da Coleta">
-            <i class="bi bi-calendar i-button-null"></i> {{ nota.data_coleta }}
-        </div>
-        <div class="item-local" title="Local da Coleta">
-            <i class="bi bi-building i-button-null"></i> {{ nota.local_coleta|slice:"0:12" }}
-        </div>
-        <div class="item-volume" title="Volume">
-            <i class="bi bi-grid-fill i-button-null"></i> {{ nota.volume }}
-        </div>
-        <div class="item-peso" title="Peso">
-            <i class="bi bi-truck-flatbed i-button-null"></i> {{ nota.peso }}
-        </div>
-        <div class="item-valor" title="Valor">
-            <i class="bi bi-currency-dollar i-button-null"></i> R$ {{ nota.valor|intcomma }}
-        </div>
-    </div>
-    <div class="item-nota">
-        <div class="item-destinatario">
-            <i class="bi bi-shop i-button-null"
-            title="Destinatário"></i> {{ nota.destinatario }}
-            {% if nota.contato %}
-            <i class="bi bi-person-badge i-button-null"
-            title="Contato"></i> {{ nota.contato }}
-            {% endif %}
-        </div>
-        <div class="item-status" title="Status">
-            <i class="bi bi-exclamation-circle i-button-null"></i> {{ nota.statusnota }}
-        </div>
-    </div>
-    <div class="item-nota">
-        <div class="item-endereco">
-            <i class="bi bi-geo-alt i-button-null"
-            title="Endereço"></i> {{ nota.endereco }}
-        </div>
-    </div>
-    {% if nota.informa %}
-    <div class="item-nota">
-        <div class="item-endereco" title="Informações">
-            <i class="bi bi-info-square i-button-null"
-            title="Informações"></i> {{ nota.informa }}
-        </div>
-    </div>
-    {% endif %}
-    <div class="item-nota">
-        <div class="item-button">
-            <i class="bi bi-arrow-left-circle i-button
-            js-retorna-lista-notas" title="Retorna Lista"
-            data-idnota={{ nota.id_nota_clientes }}
-            data-idcliente={{ nota.idcliente }}></i>
-        </div>
-    </div>
-    {% if forloop.last %}
-    <div class="borda-bottom"></div>
-    {% endif %}
-    {% endfor %}
-    {% for ocorrencia in ocorrencias %}
-    <div class="item-ocorrencia">
-        <div class="item-data">
-            <i class="bi bi-"></i> {{ ocorrencia.data_ocorrencia }}
-            <i class="bi bi-"></i> {{ ocorrencia.tipo_ocorrencia }}
-        </div>
-        <div class="item-descricao">
-            <i class="bi bi-"></i> {{ ocorrencia.ocorrencia}}
-        </div>
-        <i class="bi bi-"></i> {{ ocorrencia.id_nota_clientes}}
-    </div>
-    <i class="bi bi-" data-idnotasocorrencia="{{ ocorrencia.id_notas_ocorrencia }}"></i> 
-    {% endfor %}
-    <form class="js-gera-ocorrencia" method="post" action="">
-        {% csrf_token %}
-        <div class="item-form-ocorrencia">
-            <div class="item-form-dia">
-                <div class="button" title="DATA DA OCORRÊNCIA">
-                    <i class="bi bi-calendar i-button-null"></i>
-                </div>
-                <div class="item-field">
-                    {% if nota_form %}
-                    <input class="form-control" type="date"
-                    name="data_ocorrencia" value={{ ocorrencia_form.data_ocorrencia }}>
-                    {% else %}
-                    <input class="form-control" type="date"
-                    name="data_ocorrencia" value={{ hoje }}>
-                    {% endif %}
+<form class="js-gera-ocorrencia" method="post" action="">
+{% csrf_token %}
+    <div class="card-body">
+        {% for nota in notas %}
+            <div class="card-body-item">
+                <div class="input-group">
+                    <div class="input-group-addon
+                    addon-my-color">
+                        <i class="bi bi-file-text
+                        i-button-null"></i>
+                    </div>
+                    <div class="input-fake
+                    div-flex
+                    div-direction-column
+                    font-menor-2
+                    linhas-3"
+                    id="nota-{{ nota.id_nota_clientes }}">
+                        <div class="div-flex">
+                            <i class="bi bi-file-text
+                            i-button-null
+                            tamanho-15
+                            text-left"
+                            title="Número Nota">
+                                <span>
+                                    {{ nota.numero_nota }}
+                                </span>
+                            </i>
+                            <i class="bi bi-currency-dollar
+                            i-button-null
+                            tamanho-15
+                            text-left"
+                            title="Valor">
+                                <span>
+                                    {{ nota.valor }}
+                                </span>
+                            </i>
+                            <i class="bi bi-truck-flatbed
+                            i-button-null
+                            tamanho-15
+                            text-left"
+                            title="Peso">
+                                <span>
+                                    {{ nota.peso }}
+                                </span>
+                            </i>
+                            <i class="bi bi-grid-fill
+                            i-button-null
+                            tamanho-10
+                            text-left"
+                            title="Volume">
+                                <span>
+                                    {{ nota.volume }}
+                                </span>
+                            </i>
+                            <div class="tamanho-50 text-left">
+                                {% if nota.romaneio_numero %}
+                                <i class="bi bi-file-text
+                                i-button-null
+                                tamanho-35"
+                                title="Número Romaneio">
+                                    <span>
+                                        {{ nota.romaneio_numero|stringformat:"05d" }}
+                                    </span>
+                                </i>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="div-flex">
+                            <i class="bi bi-pencil
+                            i-button-null
+                            tamanho-25
+                            text-left"
+                            title="Emitente: {{ nota.emitente }}">
+                                <span>
+                                    {{ nota.emitente_curto|slice:"0:16" }}
+                                </span>
+                            </i>
+                            <i class="bi bi-geo-alt
+                            i-button-null
+                            tamanho-75
+                            text-left"
+                            title="Endereço Emitente: {{ nota.endereco_compl_emi }}">
+                                <span>
+                                    {{ nota.endereco_compl_emi|slice:"0:60" }}
+                                </span>
+                            </i>
+                        </div>
+                        <div class="div-flex">
+                            <i class="bi bi-shop
+                            i-button-null
+                            tamanho-25
+                            text-left"
+                            title="Destinatario: {{ nota.destinatario }}">
+                                <span>
+                                    {{ nota.destinatario_curto|slice:"0:16" }}
+                                </span>
+                            </i>
+                            <i class="bi bi-geo-alt
+                            i-button-null
+                            tamanho-75
+                            text-left"
+                            title="Endereço Destinatario: {{ nota.endereco_compl }}">
+                                <span>
+                                    {{ nota.endereco_compl|slice:"0:60" }}
+                                </span>
+                            </i>
+                        </div>
+                        {% if nota.informa %}
+                        <div class="div-flex">
+                            <i class="bi bi-info-square
+                            i-button-null
+                            tamanho-100
+                            text-left"
+                            title="Informações">
+                                <span>
+                                    {{ nota.informa }}
+                                </span>
+                            </i>
+                        </div>
+                        {% endif %}
+                        <div class="div-flex">
+                            <i class="bi bi-exclamation-circle
+                            i-button-null
+                            tamanho-100
+                            text-center"
+                            title="Status da Nota">
+                                <span>
+                                    {{ nota.statusnota }}
+                                </span>
+                            </i>
+                        </div>
+                    </div>
+                    <div class="input-group-addon
+                    addon-my-color addon-larger">
+                        <!-- Botão retorna -->
+                        <i class="bi bi-arrow-left-circle i-button
+                        js-retorna-lista-notas" title="Retorna Lista"
+                        data-idnota={{ nota.id_nota_clientes }}
+                        data-idcliente={{ nota.idcliente }}></i>
+                    </div>
                 </div>
             </div>
-            <div class="item-form-tipo">
-                <div class="button" title="TIPO OCORRÊNCIA">
-                    <i class="bi bi-calendar i-button-null"></i>
-                </div>
-                <div class="item-field">
-                    {% if nota_form %}
-                    <select class="form-control" name="tipo_ocorrencia"
-                    id="tipo_ocorrencia">
-                        <option value="">SELECIONA TIPO OCORRÊNCIA</option>
-                        <option value="COLETA CANCELADA">COLETA CANCELADA</option>
-                        <option value="COLETADA">COLETADA</option>
-                        <option value="DEVOLVIDA NO CLIENTE">DEVOLVIDA NO CLIENTE</option>
-                        <option value="ENTREGUE">ENTREGUE</option>
-                        <option value="ENTREGUE NO CLIENTE">ENTREGUE NO CLIENTE</option>
-                        <option value="NÃO COLETADA">NÃO COLETADA</option>
-                        <option value="RECUSADA">RECUSADA</option>
-                    </select>
-                    {% else %}
-                    <select class="form-control" name="tipo_ocorrencia"
-                    id="tipo_ocorrencia">
-                        <option value="">SELECIONA TIPO OCORRÊNCIA</option>
-                        <option value="COLETA CANCELADA">COLETA CANCELADA</option>
-                        <option value="COLETADA">COLETADA</option>
-                        <option value="DEVOLVIDA NO CLIENTE">DEVOLVIDA NO CLIENTE</option>
-                        <option value="ENTREGUE">ENTREGUE</option>
-                        <option value="ENTREGUE NO CLIENTE">ENTREGUE NO CLIENTE</option>
-                        <option value="NÃO COLETADA">NÃO COLETADA</option>
-                        <option value="RECUSADA">RECUSADA</option>
-                    </select>
-                    {% endif %}
+        {% endfor %}
+        {% for ocorrencia in ocorrencias %}
+            <div class="card-body-item">
+                <div class="input-group">
+                    <div class="input-group-addon
+                    addon-my-color">
+                        <i class="i-button-null">
+                            {{ forloop.counter|stringformat:".2d" }}
+                        </i>
+                    </div>
+                    <div class="input-fake
+                    div-flex
+                    div-direction-column
+                    font-menor-2
+                    fundo-destaque
+                    linhas-3"
+                    id="nota-{{ nota.id_nota_clientes }}">
+                        <div class="div-flex">
+                            <span>
+                                {{ ocorrencia.data_ocorrencia }}
+                            </span>
+                            <span>
+                                {{ ocorrencia.tipo_ocorrencia }}
+                            </span>
+                        </div>
+                        <div class="div-flex">
+                            <span>
+                                {{ ocorrencia.ocorrencia}}
+                            </span>
+                        </div>
+                        <div class="div-flex">
+                            <span>
+                                {{ ocorrencia.id_nota_clientes}}
+                            </span>
+                        </div>
+                        <i class="bi bi-" data-idnotasocorrencia="{{ ocorrencia.id_notas_ocorrencia }}"></i> 
+                    </div>
+                    <div class="input-group-addon
+                    addon-my-color addon-larger">
+                        <!-- Botão retorna -->
+                        {% if forloop.last %}
+                            <i class="bi bi-x-circle i-button
+                            js-retorna-lista-notas" title="Retorna Lista"
+                            data-idnota={{ nota.id_nota_clientes }}
+                            data-idcliente={{ nota.idcliente }}></i>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
-            <input class="form-control" type="hidden"
-            name="data_agendada" value={{ hoje }}>
-        </div>
-        <div class="item-form-ocorrencia">
-            <div class="item-form item-form-descricao">
-                <div class="button" title="DESCRIÇÃO DA OCORRÊNCIA">
-                    <i class="bi bi-calendar i-button-null"></i>
+        {% endfor %}
+        <div class="linha-divisoria-nova"></div>
+        <div class="card-body-item">
+            <div class="input-group">
+                <div class="input-group-addon
+                addon-my-color"
+                title="DATA DA OCORRÊNCIA">
+                    <i class="bi bi-calendar
+                    i-button-null"></i>
                 </div>
-                <div class="item-field">
+                <div>
+                    {% if nota_form %}
+                        <input type="date"
+                        class="form-control
+                        form-control-minuta"
+                        name="data_ocorrencia"
+                        value="{{ ocorrencia_form.data_ocorrencia }}" />
+                    {% else %}
+                        <input type="date"
+                        class="form-control
+                        form-control-minuta"
+                        name="data_ocorrencia"
+                        value="{{ hoje }}" />
+                    {% endif %}
+                </div>
+                <div class="input-group-addon
+                addon-my-color">
+                    <i class="bi bi-check
+                    i-button-null"></i>
+                </div>
+            </div>
+        </div>
+        <div class="card-body-item">
+            <div class="input-group">
+                <div class="input-group-addon
+                addon-my-color"
+                title="TIPO OCORRÊNCIA">
+                    <i class="bi bi-calendar
+                    i-button-null"></i>
+                </div>
+                <div>
+                    {% if nota_form %}
+                        <select class="form-control
+                        form-control-minuta"
+                        id="tipo_ocorrencia"
+                        name="tipo_ocorrencia">
+                            <option value="">
+                                SELECIONA TIPO OCORRÊNCIA
+                            </option>
+                            <option value="COLETA CANCELADA">
+                                COLETA CANCELADA
+                            </option>
+                            <option value="COLETADA">
+                                COLETADA
+                            </option>
+                            <option value="DEVOLVIDA NO CLIENTE">
+                                DEVOLVIDA NO CLIENTE
+                            </option>
+                            <option value="ENTREGUE">
+                                ENTREGUE
+                            </option>
+                            <option value="ENTREGUE NO CLIENTE">
+                                ENTREGUE NO CLIENTE
+                            </option>
+                            <option value="NÃO COLETADA">
+                                NÃO COLETADA
+                            </option>
+                            <option value="RECUSADA">
+                                RECUSADA
+                            </option>
+                        </select>
+                    {% else %}
+                        <select class="form-control
+                        form-control-minuta"
+                        id="tipo_ocorrencia"
+                        name="tipo_ocorrencia">
+                            <option value="">
+                                SELECIONA TIPO OCORRÊNCIA
+                            </option>
+                            <option value="COLETA CANCELADA">
+                                COLETA CANCELADA
+                            </option>
+                            <option value="COLETADA">
+                                COLETADA
+                            </option>
+                            <option value="DEVOLVIDA NO CLIENTE">
+                                DEVOLVIDA NO CLIENTE
+                            </option>
+                            <option value="ENTREGUE">
+                                ENTREGUE
+                            </option>
+                            <option value="ENTREGUE NO CLIENTE">
+                                ENTREGUE NO CLIENTE
+                            </option>
+                            <option value="NÃO COLETADA">
+                                NÃO COLETADA
+                            </option>
+                            <option value="RECUSADA">
+                                RECUSADA
+                            </option>
+                        </select>
+                    {% endif %}
+                </div>
+                <div class="input-group-addon
+                addon-my-color">
+                    <i class="bi bi-check
+                    i-button-null"></i>
+                </div>
+                <input class="form-control" type="hidden"
+                name="data_agendada" value={{ hoje }}>
+            </div>
+        </div>
+        <div class="card-body-item">
+            <div class="input-group">
+                <div class="input-group-addon
+                addon-my-color"
+                title="DESCRIÇÃO DA OCORRÊNCIA">
+                    <i class="bi bi-calendar
+                    i-button-null"></i>
+                </div>
+                <div>
                     {% if ocorrencia_form %}
-                    <textarea class="form-control" name="ocorrencia" id="ocorrencia"
-                    cols="40" rows="3">{{ ocorrencia_form.ocorrencia }}</textarea>
+                        <textarea class="form-control
+                        form-control-minuta"
+                        id="ocorrencia"
+                        name="ocorrencia"
+                        cols="40" rows="3">
+                            {{ ocorrencia_form.ocorrencia }}
+                        </textarea>
                     {% else %}
-                    <textarea class="form-control" name="ocorrencia" id="ocorrencia"
-                    cols="40" rows="3" placeholder="DESCRIÇÃO DA OCORRÊNCIA"></textarea>
+                        <textarea class="form-control
+                        form-control-minuta"
+                        id="ocorrencia"
+                        name="ocorrencia"
+                        placeholder="DESCRIÇÃO DA OCORRÊNCIA"
+                        cols="40" rows="3"></textarea>
                     {% endif %}
                 </div>
-            </div>
-            <div class="item-form">
-                {% if erro_ocorrencia %}
-                <div class="error">
-                    <span>{{ erro_ocorrencia }}<span>
+                <div class="input-group-addon
+                addon-my-color">
+                    <i class="bi bi-check
+                    i-button-null"></i>
                 </div>
-                {% endif %}
             </div>
         </div>
         <input type="hidden" name="id_nota_clientes" value="{{ id_nota }}">
         <input type="hidden" name="idcliente" value="{{ idcliente }}">
-        <div class="item-form-ocorrencia">
+    </div>
+    <div class="card-footer">
+        <div class="div-flex">
             {% if not statusnota == "ENTREGUE" %}
-            <button class="bi bi-save2 i-button"></button>
+                <button class="bi bi-save2 i-button"></button>
+            {% else %}
+                <div></div>
             {% endif %}
+            {% for ocorrencia in ocorrencias %}
+                {% if forloop.last %}
+                    <span>
+                        <b>
+                            {{ forloop.counter|stringformat:"02d" }} OCORRÊNCIA{{ forloop.counter|pluralize|upper }}
+                        </b>
+                    </span>
+                {% endif %}
+            {% endfor %}
         </div>
-    </form>
-</div>
-<div class="article-card-footer">
-    {% for ocorrencia in ocorrencias %}
-    {% if forloop.last %}
-    <span><b>{{ forloop.counter|stringformat:"02d" }} OCORRÊNCIA{{ forloop.counter|pluralize|upper }}</b></span>
-    {% endif %}
-    {% endfor %}
-</div>
+    </div>
+</form>

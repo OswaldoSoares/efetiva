@@ -6614,11 +6614,12 @@ label {
 
 .div-flex {
   width: 100%;
-  height: 3rem;
+  height: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 0.8rem;
+  /* margin-top: 0.1rem; */
 }
 
 .div-flex p {
@@ -6820,8 +6821,14 @@ label {
   background-color: blueviolet;
 }
 
+.fundo-destaque {
+  background-color: var(--color8);  
+  color: var(--color13);
+}
+
 .linhas-3 {
-  height: 5rem;
+  height: auto;
+  min-height: 3rem;
 }
 
 .tamanho-10 {
@@ -6870,6 +6877,10 @@ label {
 
 .tamanho-80 {
   min-width: 80%;
+}
+
+.tamanho-100 {
+  min-width: 100%;
 }
 
 .text-left {

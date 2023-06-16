@@ -138,7 +138,6 @@ def ocorrencia_nota_cliente(request):
     idnota = request.GET.get("idNota")
     idcliente = request.GET.get("idCliente")
     notas = facade.create_contexto_ocorrencia_notas(idnota)
-    print(notas)
     ocorrencias = facade.create_contexto_seleciona_ocorrencia(idnota, "NumeroNota")
     hoje = str_hoje()
     contexto = {
