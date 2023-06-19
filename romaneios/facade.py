@@ -155,6 +155,7 @@ def create_data_ocorrencia_selecionada(request, contexto):
     data = dict()
     html_lista_ocorrencia(request, contexto, data)
     html_lista_notas_romaneio(request, contexto, data)
+    html_quantidade_notas(request, contexto, data)
     return JsonResponse(data)
 
 
