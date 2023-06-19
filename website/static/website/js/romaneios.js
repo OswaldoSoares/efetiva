@@ -545,6 +545,29 @@ $(document).on('click', '.js-filtra-emitente', function() {
     });
 });
 
+$(document).on('click', '.js-filtra-destinatario', function() {
+    var destinatario = $(".filtra-destinatario").val()
+    var idcliente = $("#id_cliente").val()
+    $.ajax({
+        type: 'GET',
+        url: '/romaneios/seleciona_filtro_destinatario',
+        data: {
+            destinatario: destinatario,
+            idcliente: idcliente,
+        },
+        beforeSend: function() {
+            $(".box-loader").show();
+            $(".card-lista-notas-cliente").hide()
+            $(".filtra-romaneio").val("");
+        },
+        success: function(data) {
+            $(".card-lista-notas-cliente").html(data.html_lista_notas_cliente)
+            $(".card-lista-notas-cliente").show()
+            $(".box-loader").hide();
+        },
+    });
+});
+
 $(document).on('click', '.js-adiciona-nota-romaneio', function() {
     var _id_nota = $(this).data("idnota")
     var _id_romaneio = $('#id_romaneio').val()
