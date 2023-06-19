@@ -27,6 +27,7 @@ from .views import (
     reabre_romaneio,
     busca_local_nota,
     exclui_ocorrencia,
+    seleciona_filtro_emitente,
 )
 
 urlpatterns = [
@@ -159,5 +160,10 @@ urlpatterns = [
         "exclui_ocorrencia",
         exclui_ocorrencia,
         name="exclui_ocorrencia",
+    ),
+    path(
+        "seleciona_filtro_emitente",
+        seleciona_filtro_emitente,
+        name="seleciona_filtro_emitente",
     ),
 ]

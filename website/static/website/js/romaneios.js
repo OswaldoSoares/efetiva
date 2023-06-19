@@ -527,7 +527,7 @@ $(document).on('click', '.js-filtra-emitente', function() {
     var idcliente = $("#id_cliente").val()
     $.ajax({
         type: 'GET',
-        url: '/romaneios/seleciona_emitente',
+        url: '/romaneios/seleciona_filtro_emitente',
         data: {
             emitente: emitente,
             idcliente: idcliente,
