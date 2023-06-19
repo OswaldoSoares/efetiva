@@ -306,6 +306,7 @@ $(document).on('submit', '.js-gera-romaneios', function(event) {
             $(".card-lista-romaneios").html(data.html_lista_romaneios)
             $(".card-lista-romaneios").show()
             mostraBodyFormRomaneio();
+            LimpaFormRomaneio();
             $(".box-loader").hide();
         },
     });
@@ -354,8 +355,6 @@ $(document).on('click', '.js-edita-notas-cliente', function() {
             $(".card-form-notas-cliente").html(data.html_form_notas_cliente)
             $(".js-mostra-oculta-form-nota").toggleClass("bi-chevron-up");
             $(".card-form-notas-cliente").show()
-            $(".card-form-romaneios").html(data.html_form_romaneios)
-            $(".card-form-romaneios").show()
             $(".box-loader").hide();
             $('#filtro').val($("#select-status").val())
             $(window).scrollTop(0)
@@ -485,16 +484,16 @@ $(document).on('click', '.js-edita-romaneio', function() {
             idCliente: idcliente,
         },
         beforeSend: function() {
-            $(".card-form-notas-cliente").hide()
+            $(".card-form-romaneios").hide()
             $(".box-loader").show();
         },
         success: function(data) {
-            $(".card-form-notas-cliente").html(data.html_form_notas_cliente)
-            $(".card-form-notas-cliente").show()
+            console.log(data)
             $(".card-form-romaneios").html(data.html_form_romaneios)
+            $(".js-mostra-oculta-form-romaneio").toggleClass("bi-chevron-up");
             $(".card-form-romaneios").show()
-            mostraBodyFormRomaneio();
             $(".box-loader").hide();
+            $(window).scrollTop(0)
         },
     });
 });

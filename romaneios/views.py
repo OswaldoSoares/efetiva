@@ -255,7 +255,7 @@ def adiciona_romaneio(request):
     else:
         facade.save_romaneio(romaneio)
     romaneios = facade.create_contexto_romaneios(idcliente)
-    contexto = {"romaneios": romaneios}
+    contexto = {"romaneios": romaneios, "idcliente": idcliente}
     data = facade.create_data_romaneios(request, contexto)
     return data
 
@@ -268,6 +268,7 @@ def edita_romaneio(request):
     motoristas = motoristas_disponiveis()
     veiculos = filtra_veiculo("17", "TRANSPORTADORA")
     contexto.update({"motoristas": motoristas, "veiculos": veiculos})
+    print(f"[INFO] - contexto: {contexto}")
     data = facade.create_data_edita_romaneio(request, contexto)
     return data
 

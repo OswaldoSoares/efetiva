@@ -55,9 +55,21 @@
                             SELECIONE O MOTORISTA
                         </option>
                         {% for moto in motoristas %}
-                            <option value="{{ moto.idPessoal }}">
-                                {{ moto.Nome }}
-                            </option>
+                            {% if romaneio %}
+                                {% if romaneio.motorista.Nome == moto.Nome %}
+                                    <option value="{{ moto.idPessoal }}" selected>
+                                        {{ moto.Nome }}
+                                    </option>
+                                {% else %}
+                                    <option value="{{ moto.idPessoal }}">
+                                        {{ moto.Nome }}
+                                    </option>
+                                {% endif %}
+                            {% else %}
+                                <option value="{{ moto.idPessoal }}">
+                                    {{ moto.Nome }}
+                                </option>
+                            {% endif %}
                         {% endfor %}
                     </select>
                 </div>
@@ -79,13 +91,25 @@
                     form-control-minuta"
                     id="veiculo"
                     name="veiculo">
-                        <option value="Ol">
+                        <option value="">
                             SELECIONE O VEÍCULO
                         </option>
                         {% for veic in veiculos %}
-                            <option value="{{ veic.idVeiculo }}">
-                                {{ veic.Veiculo }}
-                            </option>
+                            {% if romaneio %}
+                                {% if romaneio.veiculo.idVeiculo == veic.idVeiculo %}
+                                    <option value="{{ veic.idVeiculo }}" selected>
+                                        {{ veic.Veiculo }}
+                                    </option>
+                                {% else %}
+                                    <option value="{{ veic.idVeiculo }}">
+                                        {{ veic.Veiculo }}
+                                    </option>       
+                                {% endif %}
+                            {% else %}
+                                <option value="{{ veic.idVeiculo }}">
+                                    {{ veic.Veiculo }}
+                                </option>
+                            {% endif %}
                         {% endfor %}
                     </select>
                 </div>
