@@ -84,7 +84,13 @@
                 class="form-control
                 form-control-minuta
                 filtra-romaneio"
-                placeholder="BUSCA EMITENTE">
+                placeholder="BUSCA EMITENTE"
+                list="list-emitentes" />
+                <datalist id="list-emitentes">
+                    {% for local in locais %}
+                    <option value="{{ local }}">
+                    {% endfor %}
+                </datalist>
             </div>
             <div class="input-group-addon
             addon-my-color">
@@ -93,7 +99,7 @@
                 js-filtra-emitente"></i>
             </div>
         </div>
-    </div>-
+    </div>
     <div class="card-body-item">
         <div class="input-group">
             <div class="input-group-addon
@@ -106,7 +112,13 @@
                 class="form-control
                 form-control-minuta
                 filtra-romaneio"
-                placeholder="BUSCA DESTINATÁRIO">
+                placeholder="BUSCA DESTINATÁRIO"
+                list="list-destinatarios" />
+                <datalist id="list-destinatarios">
+                    {% for local in locais %}
+                    <option value="{{ local }}">
+                    {% endfor %}
+                </datalist>
             </div>
             <div class="input-group-addon
             addon-my-color">
