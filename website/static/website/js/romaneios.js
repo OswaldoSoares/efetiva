@@ -261,6 +261,36 @@ $(document).on('submit', '.js-gera-ocorrencia', function(event) {
     });
 });
 
+$(document).on('click', '.js-exclui-ocorrencia', function() {
+    var idnotasocorrencia = $(this).data('idnotasocorrencia');
+    var idnota = $(this).data('idnota');
+    var idcliente = $('#idcliente').val();
+    var lnr_visible = $(".card-lista-notas-romaneio").is(":visible")
+    $.ajax({
+        type: 'GET',
+        url: '/romaneios/exclui_ocorrencia',
+        data: {
+            idnotasocorrencia: idnotasocorrencia,
+            idnota: idnota,
+            idcliente: idcliente,
+        },
+        beforeSend: function() {
+            $(".box-loader").show();
+        },
+        success: function(data) {
+            $(".card-lista-ocorrencia").html(data.html_lista_ocorrencia)
+            $(".card-lista-ocorrencia").show()
+            if (lnr_visible) {
+                $(".card-lista-notas-romaneio").html(data.html_lista_notas_romaneio)
+                $(".card-lista-notas-romaneio").show()
+            }
+            $(".card-quantidade-notas").html(data.html_quantidade_notas)
+            $(".card-quantidade-notas").show()
+            $(".box-loader").hide();
+        },
+    });
+});
+
 $(document).on('submit', '.js-gera-romaneios', function(event) {
     event.preventDefault();
     $.ajax({

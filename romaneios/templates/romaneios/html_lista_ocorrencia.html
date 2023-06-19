@@ -185,12 +185,14 @@
                     </div>
                     <div class="input-group-addon
                     addon-my-color addon-larger">
-                        <!-- Botão retorna -->
+                        <!-- Botão delete ocorrência -->
                         {% if forloop.last %}
-                            <i class="bi bi-x-circle i-button
-                            js-retorna-lista-notas" title="Retorna Lista"
-                            data-idnota={{ nota.id_nota_clientes }}
-                            data-idcliente={{ nota.idcliente }}></i>
+                            <i class="bi bi-x-circle
+                            i-button
+                            js-exclui-ocorrencia"
+                            title="Exclui ocorrência"
+                            data-idnotasocorrencia="{{ ocorrencia.id_notas_ocorrencia }}"
+                            data-idnota="{{ ocorrencia.id_notas_clientes }}"></i>
                         {% endif %}
                     </div>
                 </div>
@@ -340,25 +342,32 @@
                 </div>
             </div>
         </div>
-        <input type="hidden" name="id_nota_clientes" value="{{ id_nota }}">
-        <input type="hidden" name="idcliente" value="{{ idcliente }}">
+        <input type="hidden"
+        name="id_nota_clientes"
+        value="{{ id_nota }}">
+        <input type="hidden"
+        id="idcliente"
+        name="idcliente"
+        value="{{ idcliente }}">
     </div>
     <div class="card-footer">
         <div class="div-flex">
-            {% if not statusnota == "ENTREGUE" %}
-                <button class="bi bi-save2 i-button"></button>
-            {% else %}
-                <div></div>
-            {% endif %}
-            {% for ocorrencia in ocorrencias %}
-                {% if forloop.last %}
-                    <span>
-                        <b>
-                            {{ forloop.counter|stringformat:"02d" }} OCORRÊNCIA{{ forloop.counter|pluralize|upper }}
-                        </b>
-                    </span>
+            {% if ocorrencias %}
+                {% if not statusnota == "ENTREGUE" %}
+                    <button class="bi bi-save2 i-button"></button>
+                {% else %}
+                    <div></div>
                 {% endif %}
-            {% endfor %}
+                {% for ocorrencia in ocorrencias %}
+                    {% if forloop.last %}
+                        <span>
+                            <b>
+                                {{ forloop.counter|stringformat:"02d" }} OCORRÊNCIA{{ forloop.counter|pluralize|upper }}
+                            </b>
+                        </span>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
         </div>
     </div>
 </form>

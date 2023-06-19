@@ -174,6 +174,7 @@ def adiciona_ocorrencia(request):
         "hoje": hoje,
         "id_nota": idnota,
         "idcliente": idcliente,
+        "statusnota": notas[0]["statusnota"],
     }
     contexto.update({"error": error})
     contexto.update(msg)
@@ -198,6 +199,49 @@ def adiciona_ocorrencia(request):
                 "quantidade_falta": quantidade_falta,
             }
         )
+    print(contexto)
+    data = facade.create_data_ocorrencia_selecionada(request, contexto)
+    return data
+
+def exclui_ocorrencia(request):
+    idnotasocorrencia = request.GET.get("idnotasocorrencia")
+    idnota = request.GET.get("idnota")
+    idcliente = request.GET.get("idcliente")
+    facade.delete_ocorrencia(idnotasocorrencia, idnota)
+    idromaneio = facade.create_contexto_romaneio_tem_nota(idnota)
+    notas = facade.create_contexto_ocorrencia_notas(idnota)
+    ocorrencias = facade.create_contexto_seleciona_ocorrencia(idnota, "NumeroNota")
+    hoje = str_hoje()
+    contexto = {
+        "notas": notas,
+        "ocorrencias": ocorrencias,
+        "hoje": hoje,
+        "id_nota": idnota,
+        "idcliente": idcliente,
+        "statusnota": notas[0]["statusnota"],
+    }
+    quantidade_notas = facade.create_contexto_quantidades_status(idcliente)
+    contexto.update({"rotas": quantidade_notas[0]["rota"]})
+    contexto.update({"cadastrada": quantidade_notas[0]["cadastrada"]})
+    contexto.update({"pendente": quantidade_notas[0]["pendente"]})
+    contexto.update({"recusada": quantidade_notas[0]["recusada"]})
+    contexto.update({"coletada": quantidade_notas[0]["coletada"]})
+    if idromaneio:
+        notas_romaneio = facade.create_contexto_notas_romaneio(idromaneio)
+        (
+            quantidade_entregas,
+            quantidade_falta,
+        ) = facade.create_contexto_quantidade_entregas(notas_romaneio)
+        romaneio = facade.create_contexto_seleciona_romaneio(idromaneio)
+        contexto.update(
+            {
+                "notas_romaneio": notas_romaneio,
+                "romaneios": romaneio,
+                "quantidade_entregas": quantidade_entregas,
+                "quantidade_falta": quantidade_falta,
+            }
+    )
+    print(contexto)
     data = facade.create_data_ocorrencia_selecionada(request, contexto)
     return data
 

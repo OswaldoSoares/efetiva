@@ -24,8 +24,8 @@ def create_contexto_seleciona_cliente():
     return lista
 
 
-def create_contexto_seleciona_ocorrencia(id_not, sort_ocorrencia):
-    ocorrencia = NotasOcorrencias.objects.filter(idNotasClientes=id_not)
+def create_contexto_seleciona_ocorrencia(idnota, sort_ocorrencia):
+    ocorrencia = NotasOcorrencias.objects.filter(idNotasClientes=idnota)
     lista = [
         {
             "id_notas_ocorrencia": x.idNotasOcorrencia,
@@ -369,6 +369,24 @@ def update_ocorrencia(ocorrencia_form, id_ocor):
     obj.save()
 
 
+def delete_ocorrencia(idnotasocorrencia, idnota):
+    ocorrencia = NotasOcorrencias.objects.get(idNotasOcorrencia=idnotasocorrencia)
+    obj = ocorrencia
+    obj.delete()
+    ultimo_status = (
+        NotasOcorrencias.objects.filter(idNotasClientes_id=idnota)
+        .values("TipoOcorrencia")
+        .last()
+    )
+    nota = NotasClientes.objects.get(idNotasClientes=idnota)
+    obj = nota
+    if not ultimo_status:
+        obj.StatusNota = "PENDENTE"
+    else:
+        obj.StatusNota = ultimo_status["TipoOcorrencia"]
+    obj.save(update_fields=["StatusNota"])
+
+
 def update_notas_cliente(nota_form, id_not):
     nota = NotasClientes.objects.get(idNotasClientes=id_not)
     obj = nota
@@ -580,9 +598,7 @@ def lista_locais():
     destinatarios = (
         NotasClientes.objects.values("Destinatario").distinct().order_by("Destinatario")
     )
-    emitentes = (
-        NotasClientes.objects.values("Emitente").distinct().order_by("Emitente")
-    )
+    emitentes = NotasClientes.objects.values("Emitente").distinct().order_by("Emitente")
     lista = []
     for x in destinatarios:
         if x["Destinatario"]:
@@ -615,9 +631,7 @@ def lista_enderecos():
 
 
 def lista_bairros():
-    destinatarios = (
-        NotasClientes.objects.values("Bairro").distinct().order_by("Bairro")
-    )
+    destinatarios = NotasClientes.objects.values("Bairro").distinct().order_by("Bairro")
     emitentes = (
         NotasClientes.objects.values("Bairro_emi").distinct().order_by("Bairro_emi")
     )
@@ -634,12 +648,8 @@ def lista_bairros():
 
 
 def create_data_busca_endereco(local):
-    destinatarios = (
-        NotasClientes.objects.filter(Destinatario=local)
-    )
-    emitentes = (
-        NotasClientes.objects.filter(Emitente=local)
-    )
+    destinatarios = NotasClientes.objects.filter(Destinatario=local)
+    emitentes = NotasClientes.objects.filter(Emitente=local)
     lista = []
     for x in destinatarios:
         if x.Endereco:
@@ -667,7 +677,9 @@ def create_data_busca_endereco(local):
     msg = False
     if len(lista) > 0:
         # Remove dicionários repetidos usando um loop e set()
-        lista_sem_repeticao = list(set(tuple(sorted(dicionario.items())) for dicionario in lista))
+        lista_sem_repeticao = list(
+            set(tuple(sorted(dicionario.items())) for dicionario in lista)
+        )
         # Converte os dicionários de volta para sua forma original
         lista_sem_repeticao = [dict(item) for item in lista_sem_repeticao]
         endereco_completo = lista_sem_repeticao[-1]
