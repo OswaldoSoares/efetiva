@@ -28,6 +28,7 @@ from .views import (
     busca_local_nota,
     exclui_ocorrencia,
     seleciona_filtro_emitente,
+    seleciona_filtro_destinatario,
 )
 
 urlpatterns = [
@@ -165,5 +166,10 @@ urlpatterns = [
         "seleciona_filtro_emitente",
         seleciona_filtro_emitente,
         name="seleciona_filtro_emitente",
+    ),
+    path(
+        "seleciona_filtro_destinatario",
+        seleciona_filtro_destinatario,
+        name="seleciona_filtro_destinatario",
     ),
 ]

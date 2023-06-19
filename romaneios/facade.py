@@ -937,6 +937,12 @@ def create_contexto_filtro_emitente(emitente, idcliente):
     return lista
 
 
+def create_contexto_filtro_destinatario(destinatario, idcliente):
+    notas = NotasClientes.objects.filter(Destinatario=destinatario, idCliente=idcliente)
+    lista = create_lista_notas_clientes(notas)
+    return lista
+
+
 def fecha_romaneio_cliente(idromaneio):
     romaneio = Romaneios.objects.get(idRomaneio=idromaneio)
     obj = romaneio

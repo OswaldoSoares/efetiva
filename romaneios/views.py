@@ -318,6 +318,30 @@ def seleciona_filtro_emitente(request):
     return data
 
 
+def seleciona_filtro_destinatario(request):
+    destinatario = request.GET.get("destinatario")
+    idcliente = request.GET.get("idcliente")
+    notas = facade.create_contexto_filtro_destinatario(destinatario, idcliente)
+    idromaneio = None
+    notas_romaneio = None
+    romaneio = None
+    if notas:
+        idromaneio = facade.create_contexto_romaneio_tem_nota(
+            int(notas[0]["id_nota_clientes"])
+        )
+    contexto = {"notas": notas, "idcliente": idcliente}
+    contexto.update(
+        {
+            "notas_romaneio": notas_romaneio,
+            "romaneios": romaneio,
+            "idcliente": idcliente,
+            "id_rom": idromaneio,
+        }
+    )
+    data = facade.create_data_filtro_nota(request, contexto)
+    return data
+
+
 def adiciona_nota_romaneio(request):
     idnota = request.GET.get("idNota")
     idromaneio = request.GET.get("idRomaneio")
