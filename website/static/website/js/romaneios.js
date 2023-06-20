@@ -616,6 +616,7 @@ $(document).on('click', '.js-exclui-nota-romaneio', function() {
             $(".box-loader").show()
             $(".card-lista-notas-cliente").hide()
             $(".card-lista-notas-romaneio").hide()
+            $(".card-lista-ocorrencia").hide()
             $(".card-quantidade-notas").hide()
         },
         success: function(data) {
