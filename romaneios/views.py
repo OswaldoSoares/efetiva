@@ -329,6 +329,7 @@ def seleciona_filtro_destinatario(request):
         idromaneio = facade.create_contexto_romaneio_tem_nota(
             int(notas[0]["id_nota_clientes"])
         )
+    print(f"[INFO] idromaneio: {idromaneio}")
     contexto = {"notas": notas, "idcliente": idcliente}
     contexto.update(
         {

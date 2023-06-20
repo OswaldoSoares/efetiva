@@ -518,13 +518,13 @@ def create_contexto_notas_romaneio(idromaneio):
     return lista
 
 
-def create_contexto_romaneio_tem_nota(id_nota):
-    romaneio = RomaneioNotas.objects.filter(idNotasClientes=id_nota)
-    id_rom = None
+def create_contexto_romaneio_tem_nota(idnota):
+    romaneio = RomaneioNotas.objects.filter(idNotasClientes=idnota)
+    numero_romaneio = None
     if romaneio:
         romaneio = romaneio.latest("idRomaneio_id")
-        id_rom = romaneio.idRomaneio.Romaneio
-    return id_rom
+        numero_romaneio = romaneio.idRomaneio.Romaneio
+    return numero_romaneio
 
 
 def create_data_lista_notas_romaneio(request, contexto):
