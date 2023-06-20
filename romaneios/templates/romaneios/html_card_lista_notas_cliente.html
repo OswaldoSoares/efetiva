@@ -156,14 +156,28 @@
                             {{ nota.volume }}
                         </span>
                     </i>
-                    <div class="tamanho-50 text-left">
+                    <div class="tamanho-10 text-left">
                         {% if nota.romaneio_numero %}
-                        <i class="bi bi-file-text
-                        i-button-null
-                        tamanho-35"
+                        <i class="bi bi-list-check
+                        i-button
+                        tamanho-35
+                        js-seleciona-romaneio"
                         title="Número Romaneio">
                             <span>
                                 {{ nota.romaneio_numero|stringformat:"05d" }}
+                            </span>
+                        </i>
+                        {% endif %}
+                    </div>
+                    <div class="tamanho-40 text-left">
+                        {% if nota.romaneio_numero %}
+                        <i class="bi bi-calendar
+                        i-button-null
+                        tamanho-35
+                        js-seleciona-romaneio"
+                        title="Número Romaneio">
+                            <span>
+                                {{ nota.romaneio_data }}
                             </span>
                         </i>
                         {% endif %}
