@@ -979,12 +979,12 @@ def last_chat_id_telegram(token):
 # enviar mensagens utilizando o bot para um gruppo específico
 def send_message(message, idcliente):
     token = "5778267083:AAEha8jgzCRYr_niZ7JM4EB5MWDX2Zkk98o"
-    if idcliente == "11":
-        chat_id = "-666092318"  # Telegram Transefetiva - LogCatavento
-    elif idcliente == "7":
-        chat_id = "-994748069"  # Telegram Transefetiva - Kite
-    else:
-        chat_id = "-785462150"  # Telegram TransEfetiva - Operacional
+    # if idcliente == "11":
+    #     chat_id = "-666092318"  # Telegram Transefetiva - LogCatavento
+    # elif idcliente == "7":
+    #     chat_id = "-994748069"  # Telegram Transefetiva - Kite
+    # else:
+    chat_id = "-785462150"  # Telegram TransEfetiva - Operacional
     try:
         data = {"chat_id": chat_id, "text": message}
         url = f"https://api.telegram.org/bot{token}/sendMessage"
@@ -995,12 +995,12 @@ def send_message(message, idcliente):
 
 def send_arquivo(romaneio, idcliente):
     token = "5778267083:AAEha8jgzCRYr_niZ7JM4EB5MWDX2Zkk98o"
-    if idcliente == "11":
-        chat_id = "-666092318"  # Telegram Transefetiva - LogCatavento
-    elif idcliente == "7":
-        chat_id = "-994748069"  # Telegram Transefetiva - Kite
-    else:
-        chat_id = "-785462150"  # Telegram TransEfetiva - Operacional
+    # if idcliente == "11":
+    #     chat_id = "-666092318"  # Telegram Transefetiva - LogCatavento
+    # elif idcliente == "7":
+    #     chat_id = "-994748069"  # Telegram Transefetiva - Kite
+    # else:
+    chat_id = "-785462150"  # Telegram TransEfetiva - Operacional
     rom_numero = str(romaneio).zfill(5)
     descricao_arquivo = f"Romaneio_{str(rom_numero).zfill(5)}.pdf"
     arquivo = FileUpload.objects.filter(DescricaoUpload=descricao_arquivo)
@@ -1015,12 +1015,12 @@ def send_arquivo(romaneio, idcliente):
 
 def send_arquivo_relatorio(sort_status, idcliente):
     token = "5778267083:AAEha8jgzCRYr_niZ7JM4EB5MWDX2Zkk98o"
-    if idcliente == "11":
-        chat_id = "-666092318"  # Telegram Transefetiva - LogCatavento
-    elif idcliente == "7":
-        chat_id = "-994748069"  # Telegram Transefetiva - Kite
-    else:
-        chat_id = "-785462150"  # Telegram TransEfetiva - Operacional
+    # if idcliente == "11":
+    #     chat_id = "-666092318"  # Telegram Transefetiva - LogCatavento
+    # elif idcliente == "7":
+    #     chat_id = "-994748069"  # Telegram Transefetiva - Kite
+    # else:
+    chat_id = "-785462150"  # Telegram TransEfetiva - Operacional
     descricao_arquivo = f"Notas {sort_status}.pdf"
     arquivo = FileUpload.objects.filter(DescricaoUpload=descricao_arquivo)
     url = f"https://api.telegram.org/bot{token}/sendDocument?chat_id={chat_id}"
