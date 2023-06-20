@@ -1160,14 +1160,18 @@ def create_contexto_notas(idcliente, filter_status, order_nota):
                 )
         placa_motorista = []
         romaneio_numero = None
-        if x.StatusNota == "EM ROTA":
+        romaneio_data = None
+        if x.StatusNota != "PENDENTE" or x.StatusNota != "NOTA CADASTRADA":
             romaneio = RomaneioNotas.objects.filter(
                 idNotasClientes=x.idNotasClientes
-            ).latest("idRomaneioNotas")
-            romaneio_numero = romaneio.idRomaneio.Romaneio
-            placa = romaneio.idRomaneio.idVeiculo.Placa
-            motorista = nome_curto(romaneio.idRomaneio.idMotorista.Nome)
-            placa_motorista.append({"motorista": motorista, "placa": placa})
+            )
+            if romaneio:
+                romaneio.latest("idRomaneio")
+                romaneio_numero = romaneio[0].idRomaneio.Romaneio
+                romaneio_data = romaneio[0].idRomaneio.DataRomaneio
+                placa = romaneio[0].idRomaneio.idVeiculo.Placa
+                motorista = nome_curto(romaneio[0].idRomaneio.idMotorista.Nome)
+                placa_motorista.append({"motorista": motorista, "placa": placa})
         if x.CEP_emi:
             cep_emitente = f"{x.CEP_emi[0:5]}-{x.CEP_emi[5:]}"
         else:
@@ -1215,6 +1219,7 @@ def create_contexto_notas(idcliente, filter_status, order_nota):
                 "ocorrencia": ocorrencia,
                 "placa_motorista": placa_motorista,
                 "romaneio_numero": romaneio_numero,
+                "romaneio_data": romaneio_data,
             }
         )
     return {"notas": lista, "cliente": cliente, "sort_status": filter_status}
