@@ -162,11 +162,11 @@
                         i-button
                         tamanho-35
                         js-seleciona-romaneio"
-                        data-idromaneio="{{ nota.romaneio_idromaneio }}"
+                        data-idromaneio="{{ nota.romaneio.0.idRomaneio.idRomaneio }}"
                         data-idcliente="{{ idcliente }}"
                         title="Número Romaneio">
                             <span>
-                                {{ nota.romaneio_numero|stringformat:"05d" }}
+                                {{ nota.romaneio.0.idRomaneio.Romaneio|stringformat:"05d" }}
                             </span>
                         </i>
                         {% endif %}
@@ -179,7 +179,7 @@
                         js-seleciona-romaneio"
                         title="Número Romaneio">
                             <span>
-                                {{ nota.romaneio_data }}
+                                {{ nota.romaneio.0.idRomaneio.DataRomaneio }}
                             </span>
                         </i>
                         {% endif %}
