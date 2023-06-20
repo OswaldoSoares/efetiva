@@ -1159,16 +1159,16 @@ def create_contexto_notas(idcliente, filter_status, order_nota):
                     }
                 )
         placa_motorista = []
+        romaneio_idromaneio = None
         romaneio_numero = None
         romaneio_data = None
+        romaneio = None
         if x.StatusNota != "PENDENTE" or x.StatusNota != "NOTA CADASTRADA":
             romaneio = RomaneioNotas.objects.filter(
                 idNotasClientes=x.idNotasClientes
             )
             if romaneio:
                 romaneio.latest("idRomaneio")
-                romaneio_numero = romaneio[0].idRomaneio.Romaneio
-                romaneio_data = romaneio[0].idRomaneio.DataRomaneio
                 placa = romaneio[0].idRomaneio.idVeiculo.Placa
                 motorista = nome_curto(romaneio[0].idRomaneio.idMotorista.Nome)
                 placa_motorista.append({"motorista": motorista, "placa": placa})
@@ -1218,8 +1218,7 @@ def create_contexto_notas(idcliente, filter_status, order_nota):
                 "idcliente": x.idCliente_id,
                 "ocorrencia": ocorrencia,
                 "placa_motorista": placa_motorista,
-                "romaneio_numero": romaneio_numero,
-                "romaneio_data": romaneio_data,
+                "romaneio": romaneio,
             }
         )
     return {"notas": lista, "cliente": cliente, "sort_status": filter_status}
