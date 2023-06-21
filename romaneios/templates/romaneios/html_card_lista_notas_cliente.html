@@ -248,15 +248,13 @@
                     data-idcliente={{ nota.idcliente }}></i>
                 {% endif %}
                 <!-- Botão adiciona nota no romaneio aberto -->
-                {% if not nota.statusnota == "NOTA CADASTRADA" %}
-                    {% if not nota.statusnota == "EM ROTA" %}
-                        <i class="bi bi-check-square
-                        i-button
-                        js-adiciona-nota-romaneio"
-                        title="Adiciona no Romaneio"
-                        data-idnota={{ nota.id_nota_clientes }}
-                        data-idcliente={{ nota.idcliente }}></i>
-                    {% endif %}
+                {% if nota.statusnota == "PENDENTE" %}
+                    <i class="bi bi-check-square
+                    i-button
+                    js-adiciona-nota-romaneio"
+                    title="Adiciona no Romaneio"
+                    data-idnota={{ nota.id_nota_clientes }}
+                    data-idcliente={{ nota.idcliente }}></i>
                 {% endif %}
             </div>
         </div>
