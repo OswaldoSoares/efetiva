@@ -13,11 +13,30 @@
                 <select class="form-control
                 form-control-minuta"
                 id="select-status">
-                    {% for status in status_nota %}
-                    <option value="{{ status.StatusNota }}">
-                        {{ status.StatusNota }}
+                    <option value="COLETADA">
+                        COLETADA
                     </option>
-                    {% endfor %}
+                    <option value="DEVOLVIDA NO CLIENTE">
+                        DEVOLVIDA NO CLIENTE
+                    </option>
+                    <option value="EM ROTA">
+                        EM ROTA
+                    </option>
+                    <option value="ENTREGUE">
+                        ENTREGUE
+                    </option>
+                    <option value="ENTREGUE NO CLIENTE">
+                        ENTREGUE NO CLIENTE
+                    </option>
+                    <option value="NOTAS CADASTRADA">
+                        NOTAS CADASTRADA
+                    </option>
+                    <option value="PENDENTE">
+                        PENDENTE
+                    </option>
+                    <option value="RECUSADA">
+                        RECUSADA
+                    </option>
                 </select>
             </div>
             <div class="input-group-addon
