@@ -239,17 +239,23 @@
                 data-idnota={{ nota.id_nota_clientes }}
                 data-idcliente={{ nota.idcliente }}></i>
                 <!-- Botão exclui nota -->
-                <i class="bi bi-trash i-button
-                js-exclui-notas-cliente" title="Exclui Nota"
-                data-idnota={{ nota.id_nota_clientes }}
-                data-idcliente={{ nota.idcliente }}></i>
-                <!-- Botão adiciona nota no tomaneio aberto -->
-                {% if not nota.statusnota == "NOTA CADASTRADA" %}
-                    {% if not nota.statusnota == "EM ROTA" %}
-                    <i class="bi bi-check-square i-button
-                    js-adiciona-nota-romaneio" title="Adiciona no Romaneio"
+                {% if nota.statusnota == "NOTA CADASTRADA" or nota.statusnota == "PENDENTE" %}
+                    <i class="bi bi-trash
+                    i-button
+                    js-exclui-notas-cliente"
+                    title="Exclui Nota"
                     data-idnota={{ nota.id_nota_clientes }}
                     data-idcliente={{ nota.idcliente }}></i>
+                {% endif %}
+                <!-- Botão adiciona nota no romaneio aberto -->
+                {% if not nota.statusnota == "NOTA CADASTRADA" %}
+                    {% if not nota.statusnota == "EM ROTA" %}
+                        <i class="bi bi-check-square
+                        i-button
+                        js-adiciona-nota-romaneio"
+                        title="Adiciona no Romaneio"
+                        data-idnota={{ nota.id_nota_clientes }}
+                        data-idcliente={{ nota.idcliente }}></i>
                     {% endif %}
                 {% endif %}
             </div>
