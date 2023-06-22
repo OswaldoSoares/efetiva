@@ -331,7 +331,7 @@ $(document).on('click', '.js-ocorrencia-notas-cliente', function() {
         success: function(data) {
             $(".card-lista-ocorrencia").html(data.html_lista_ocorrencia)
             $(".card-lista-ocorrencia").show()
-                // CarregaMask()
+            $(window).scrollTop(0)
             $(".box-loader").hide();
         },
     });

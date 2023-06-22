@@ -320,6 +320,8 @@ def save_ocorrencia(ocorrencia, idcliente):
         ocorrencia["ocorrencia"] = "ENTREGA EFETUADA COM SUCESSO."
     texto = f"""
     Nota: {nota.NumeroNota} - Valor R$ {nota.Valor} - Peso: {nota.Peso} - Volume {nota.Volume}
+    Emitente: {nota.Emitente}
+    Endereço: {nota.Endereco_emi} - {nota.Bairro_emi} - CEP: {nota.CEP_emi} - {nota.Cidade_emi} - {nota.Estado_emi}
     Destinatário: {nota.Destinatario}
     Endereço: {nota.Endereco} - {nota.Bairro} - CEP: {nota.CEP} - {nota.Cidade} - {nota.Estado}
     Tipo de Ocorrência: {ocorrencia["tipo_ocorrencia"]}
