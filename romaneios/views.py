@@ -281,6 +281,7 @@ def seleciona_romaneio(request):
         notas_romaneio
     )
     romaneio = facade.create_contexto_seleciona_romaneio(idromaneio)
+    peso = facade.create_contexto_peso_romaneio(notas_romaneio)
     arquivo = facade.create_contexto_pdf_romaneio(romaneio[0]["romaneio"])
     contexto = {
         "notas_romaneio": notas_romaneio,
@@ -290,6 +291,7 @@ def seleciona_romaneio(request):
         "quantidade_entregas": quantidade_entregas,
         "quantidade_falta": quantidade_falta,
     }
+    contexto.update(peso)
     data = facade.create_data_lista_notas_romaneio(request, contexto)
     return data
 
