@@ -134,25 +134,31 @@
     </div>
     {% endfor %}
 </div>
-<div class="article-card-footer">
-    <div class="">
-        {% for romaneio in notas_romaneio %}
-        {% if forloop.last %}
-        <span>
-            <b>
-                {{ forloop.counter|stringformat:"02d" }}
-                NOTA{{ forloop.counter|pluralize|upper }}
-            </b>
-        </span>
-        {% endif %}
-        {% endfor %}
-    </div>
-    <div>
-        <span>
-            <b>
-                {{ quantidade_falta|stringformat:"02d" }}/{{ quantidade_entregas|stringformat:"02d" }}
-                ENTREGA{{ quantidade_entregas|pluralize|upper }}
-            </b>
-        </span>
+<div class="card-footer">
+    <div class="div-flex">
+        <div>
+            {% for romaneio in notas_romaneio %}
+            {% if forloop.last %}
+            <span>
+                <b>
+                    {{ forloop.counter|stringformat:"02d" }}
+                    NOTA{{ forloop.counter|pluralize|upper }}
+                </b>
+            </span>
+            {% endif %}
+            {% endfor %}
+        </div>
+        <div>
+            <i class="bi bi-truck-flatbed"></i>
+            {{ peso|intcomma }}
+        </div>
+        <div>
+            <span>
+                <b>
+                    {{ quantidade_falta|stringformat:"02d" }}/{{ quantidade_entregas|stringformat:"02d" }}
+                    ENTREGA{{ quantidade_entregas|pluralize|upper }}
+                </b>
+            </span>
+        </div>
     </div>
 </div>
