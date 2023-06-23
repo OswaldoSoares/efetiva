@@ -1060,6 +1060,13 @@ def altera_status_pendente(id_not):
     obj.save(update_fields=["StatusNota"])
 
 
+def create_contexto_peso_romaneio(notas_romaneio):
+    peso = Decimal(0.000)
+    for x in notas_romaneio:
+        peso += x['idnotasclientes'].Peso
+    return {"peso": peso}
+
+
 def create_contexto_quantidade_entregas(notas_romaneio):
     entregas = []
     falta_entregar = []
