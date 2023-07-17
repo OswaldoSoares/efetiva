@@ -1587,7 +1587,7 @@ function verificaCheckboxPaga() {
     $(".total-paga").each(function() {
         check_altera = $(this).attr("name").replace("valor", "#check");
         div_mostra = $(this).attr("name").replace("valor", "#js");
-        if (parseFloat($(this).val()) > parseFloat(0,00)) {
+        if (parseFloat($(this).val()) > parseFloat(0.00)) {
             $(check_altera).prop("checked", true)
             $(div_mostra).slideDown(500)
         } else {
@@ -1603,7 +1603,7 @@ function verificaCheckboxRecebe() {
     $(".total-recebe").each(function() {
         check_altera = $(this).attr("name").replace("valor", "#check");
         div_mostra = $(this).attr("name").replace("valor", "#js");
-        if (parseFloat($(this).val()) > parseFloat(0,00)) {
+        if (parseFloat($(this).val()) > parseFloat(0.00)) {
             $(check_altera).prop("checked", true)
             $(div_mostra).slideDown(500)
         } else {
