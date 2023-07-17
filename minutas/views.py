@@ -2379,3 +2379,9 @@ def estorna_minuta_concluida(request):
     contexto.update({"idminuta": idminuta})
     data = facade.create_data_minuta_checklist_pagamentos(request, contexto)
     return data
+
+
+def minutas_periodo(request):
+    inicial = request.GET.get("inicial")
+    final = request.GET.get("final")
+    print(inicial, final)
