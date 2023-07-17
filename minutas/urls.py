@@ -55,6 +55,7 @@ from .views import (
     gera_pagamentos,
     estorna_pagamentos_motorista,
     estorna_minuta_concluida,
+    minutas_periodo,
 )
 
 urlpatterns = [
@@ -199,5 +200,10 @@ urlpatterns = [
         "estorna_minuta_concluida",
         estorna_minuta_concluida,
         name="estorna_minuta_concluida",
-    )
+    ),
+    path(
+        "minutas_periodo",
+        minutas_periodo,
+        name="minutas_periodo",
+    ),
 ]
