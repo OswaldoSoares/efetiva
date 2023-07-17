@@ -1642,7 +1642,7 @@ $(document).on("click", ".js-minutas-periodo", function(event) {
     var periodo_final = $("#periodo-final").val()
     $.ajax({
         type: "GET",
-        url: "/minutas/minutas-periodo",
+        url: "/minutas/minutas_periodo",
         data: {
             inicial: periodo_inicial,
             final: periodo_final,
