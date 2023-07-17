@@ -2384,4 +2384,6 @@ def estorna_minuta_concluida(request):
 def minutas_periodo(request):
     inicial = request.GET.get("inicial")
     final = request.GET.get("final")
-    print(inicial, final)
+    contexto = facade.create_contexto_minutas_periodo(inicial, final)
+    response = print_minutas_periodo(contexto)
+    return response
