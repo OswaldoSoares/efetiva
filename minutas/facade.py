@@ -2193,4 +2193,4 @@ def create_contexto_minutas_periodo(inicial, final):
     print(start_queries)
     print("tempo: %.2fs" % (end - start))
     print(end_queries)
-    return minutas
+    return {"minutas": minutas}
