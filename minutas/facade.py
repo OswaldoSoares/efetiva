@@ -2169,12 +2169,10 @@ def create_contexto_minutas_periodo(inicial, final):
         print(f'[INFO] - ID: {x["idminuta"]}')
         print(f'[INFO] - Minuta: {x["numero"]}')
         print(f'[INFO] - Cliente: {x["cliente"]}')
-        print(f'[INFO] - Motorista: {x["motorista"][0]["apelido"]}')
+        if x["motorista"]:
+            print(f'[INFO] - Motorista: {x["motorista"][0]["apelido"]}')
         if x["ajudantes"]:
             for y in x["ajudantes"]:
-                print(f'[INFO] - Ajudante: {y["apelido"]}')
-        if x["ajudante_avulso"]:
-            for y in x["ajudante_avulso"]:
                 print(f'[INFO] - Ajudante: {y["apelido"]}')
         print(f'[INFO] - Solicitado: {x["veiculo_solicitado"]}')
         print(f'[INFO] - Placa: {x["veiculo"]}')
