@@ -1634,3 +1634,25 @@ function verificaTotalKms() {
         $(".calcula-kms").show()
     }
 }
+
+// Utilizada no Card-Relatorio
+// Atualiza parametro href ao alterar data inicial
+$(document).on("input", "#periodo-inicial", function(event) {
+    $("#print-minutas-periodo").prop('href', function() {
+        var href = $("#print-minutas-periodo").prop('href');
+        var url = new URL(href);
+        url.searchParams.set('inicial', $("#periodo-inicial").val());
+        $("#print-minutas-periodo").attr("href", url.toString());
+    });
+});
+
+// Utilizada no Card-Relatorio
+// Atualiza parametro href ao alterar data final
+$(document).on("input", "#periodo-final", function(event) {
+    $("#print-minutas-periodo").prop('href', function() {
+        var href = $("#print-minutas-periodo").prop('href');
+        var url = new URL(href);
+        url.searchParams.set('final', $("#periodo-final").val());
+        $("#print-minutas-periodo").attr("href", url.toString());
+    });
+});
