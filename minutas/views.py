@@ -2389,5 +2389,6 @@ def minutas_periodo(request):
     inicial = request.GET.get("inicial")
     final = request.GET.get("final")
     contexto = facade.create_contexto_minutas_periodo(inicial, final)
+    contexto.update({"inicial": inicial, "final": final})
     response = print_minutas_periodo(contexto)
     return response
