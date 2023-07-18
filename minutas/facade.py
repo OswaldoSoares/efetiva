@@ -1,3 +1,8 @@
+import decimal
+import time
+from django.db import connection, reset_queries
+
+
 from datetime import date, datetime, timedelta
 
 from clientes.models import (
@@ -2150,3 +2155,44 @@ def define_novo_status_minuta(idminuta, status_novo):
     obj.idMinuta = minuta.idMinuta
     obj.StatusMinuta = status_novo
     return True if obj.save(update_fields=["StatusMinuta"]) else False
+
+
+def create_contexto_minutas_periodo(inicial, final):
+    reset_queries()
+    start = time.time()
+    start_queries = len(connection.queries)
+    minuta = Minuta.objects.filter(DataMinuta__range=[inicial, final])
+    minutas = []
+    for x in minuta:
+        minutas.append(MinutaSelecionada(x.idMinuta).__dict__)
+    for x in minutas:
+        print(f'[INFO] - ID: {x["idminuta"]}')
+        print(f'[INFO] - Minuta: {x["numero"]}')
+        print(f'[INFO] - Cliente: {x["cliente"]}')
+        print(f'[INFO] - Motorista: {x["motorista"][0]["apelido"]}')
+        if x["ajudantes"]:
+            for y in x["ajudantes"]:
+                print(f'[INFO] - Ajudante: {y["apelido"]}')
+        if x["ajudante_avulso"]:
+            for y in x["ajudante_avulso"]:
+                print(f'[INFO] - Ajudante: {y["apelido"]}')
+        print(f'[INFO] - Solicitado: {x["veiculo_solicitado"]}')
+        print(f'[INFO] - Placa: {x["veiculo"]}')
+        if x["despesas"]:
+            for y in x["despesas"]:
+                print(f'[INFO] - Descricão: {y["Descricao"]}')
+                print(f'[INFO] - Valor: {y["Valor"]}')
+                print(f'[INFO] - Obs: {y["Obs"]}')
+        print(f'[INFO] - Entregas: {x["quantidade_entregas"]}')
+        print(f'[INFO] - Peso: {x["t_entregas"]["peso_entregas"]}')
+        print(f'[INFO] - Romaneios: {x["romaneio"]}')
+        print(f'[INFO] - Peso Romaneio: {x["romaneio_pesos"]}')
+        print(f'[INFO] - Seguro: {x["recebe"]["t_segu"]}')
+        print(f'[INFO] - Total Minuta: {x["recebe_minuta"]}')
+        print(f'[INFO] - Status: {x["status_minuta"]}')
+    end = time.time()
+    end_queries = len(connection.queries)
+    print(start_queries)
+    print("tempo: %.2fs" % (end - start))
+    print(end_queries)
+    return minutas
