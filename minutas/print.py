@@ -42,3 +42,10 @@ def header(pdf, titulo):
     pdf.drawRightString(cmp(282), cmp(196.4), f"PÁGINA: {pagina}")
     pdf.line(cmp(10), cmp(195), cmp(287), cmp(195))
     return pdf
+
+def body(pdf, contexto):
+    minutas = contexto["minutas"]
+    for x in minutas:
+        print(x)
+        # minuta = minutas[]
+    return pdf
