@@ -9,12 +9,14 @@ from reportlab.platypus import Paragraph
 from website.facade import cmp
 
 
-def print_minutas_periodo(minutas):
-    descricao_arquivo = f"Minutas Periodo.pdf"
+def print_minutas_periodo(contexto):
+    descricao_arquivo = f"Minutas Periodo {contexto['inicial']} - {contexto['final']}.pdf"
     response = HttpResponse(content_type="application/pdf")
-    response["Content-Disposition"] = f"filename={descricao_arquivo}"
+    response["Content-Disposition"] = f'filename="{descricao_arquivo}"'
     buffer = BytesIO()
     pdf = canvas.Canvas(buffer)
+
+    pdf.roundRect(cmp(10), cmp(10), cmp(190), cmp(277), 10)
 
     pdf.setTitle(descricao_arquivo)
     pdf.save()
@@ -22,4 +24,4 @@ def print_minutas_periodo(minutas):
     pdf = buffer.getvalue()
     buffer.close()
     response.write(pdf)
-    return [response, pdf]
+    return response
