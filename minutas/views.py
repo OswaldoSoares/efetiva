@@ -27,6 +27,7 @@ from veiculos.models import Veiculo
 from minutas import facade
 from minutas.facade import MinutaDespesa, MinutaEntrega, MinutaSelecionada
 from minutas.print import print_minutas_periodo
+from website.facade import str_hoje
 
 from .facade import (
     MinutasStatus,
@@ -288,6 +289,7 @@ def index_minuta(request):
     minuta_status = Minuta.objects.all().values_list("StatusMinuta", flat=True)
     minuta_status = sorted(list(dict.fromkeys(minuta_status)))
     minutacolaboradores = MinutaColaboradores.objects.filter(Cargo="MOTORISTA")
+    hoje = str_hoje()
     return render(
         request,
         "minutas/index.html",
@@ -306,6 +308,7 @@ def index_minuta(request):
             "minuta": minuta,
             "minuta_status": minuta_status,
             "minutacolaboradores": minutacolaboradores,
+            "hoje": hoje,
         },
     )
 
