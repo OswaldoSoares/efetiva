@@ -1634,27 +1634,3 @@ function verificaTotalKms() {
         $(".calcula-kms").show()
     }
 }
-
-// Utilizada no Card-Relatorio
-// Relatório minutas periodo
-$(document).on("click", ".js-minutas-periodo", function(event) {
-    var periodo_inicial = $("#periodo-inicial").val()
-    var periodo_final = $("#periodo-final").val()
-    $.ajax({
-        type: "GET",
-        url: "/minutas/minutas_periodo",
-        data: {
-            inicial: periodo_inicial,
-            final: periodo_final,
-        },
-        beforeSend: function() {
-            $(".box-loader").show();
-        },
-        success: function(data) {
-            $(".box-loader").hide();
-        },
-        error: function(error) {
-            console.log(error)
-        }
-    });
-});
