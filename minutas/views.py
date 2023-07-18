@@ -26,6 +26,7 @@ from veiculos.models import Veiculo
 
 from minutas import facade
 from minutas.facade import MinutaDespesa, MinutaEntrega, MinutaSelecionada
+from minutas.print import print_minutas_periodo
 
 from .facade import (
     MinutasStatus,
