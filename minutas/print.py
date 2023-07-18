@@ -23,6 +23,7 @@ def print_minutas_periodo(contexto):
     buffer = BytesIO()
     pdf = canvas.Canvas(buffer, pagesize=landscape(A4))
     header(pdf, descricao_arquivo)
+    body(pdf, contexto)
     pdf.setTitle(f"{descricao_arquivo}.pdf")
     pdf.save()
     buffer.seek(0)
