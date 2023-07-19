@@ -886,7 +886,7 @@ def rescisao_ferias_meses(data_inicial, data_final):
         mes_final = data_final.month
     else:
         mes_final = data_final.month - 1
-    meses = mes_final - mes_inicial
+    meses = mes_final - mes_inicial + 1
     return meses
 
 
@@ -901,7 +901,7 @@ def rescisao_descimo_terceiro_meses(data_inicial, data_final):
         mes_final = data_final.month
     else:
         mes_final = data_final.month - 1
-    meses = mes_final - mes_inicial
+    meses = mes_final - mes_inicial + 1 
     return meses
 
 
