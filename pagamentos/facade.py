@@ -207,7 +207,7 @@ def cartao_ponto(var):
         create_cartao_ponto(idpessoal, pdm, udm, adm, dem, var)
     else:
         var["cartao_ponto"] = cp
-        update_cartao_ponto(var)
+        # update_cartao_ponto(var)
     print(f"[INFO 03] - {len(connection.queries)}")
     cp = CartaoPonto.objects.filter(Dia__range=[pdm, udm], idPessoal=idpessoal)
     print(f"[INFO 04] - {len(connection.queries)}")
