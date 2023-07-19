@@ -174,7 +174,7 @@ class MinutaSelecionada:
         lista_tipo_pgto = []
         for i in ajudantes:
             lista_tipo_pgto.append(i["tipo"])
-        if "SAIDA" in lista_tipo_pgto or "MINITA" in lista_tipo_pgto:
+        if "SAIDA" in lista_tipo_pgto or "MINUTA" in lista_tipo_pgto:
             return True        
 
 
