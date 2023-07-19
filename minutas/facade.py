@@ -391,14 +391,14 @@ class MinutaSelecionada:
         v_recebe = cria_dict_recebe()
         tabela_veiculo = self.filtro_tabela_veiculo()
         capacidade = [
-            itens["CapacidadePaga"]
+            itens["CapacidadeCobra"]
             for itens in self.tabela_capacidade
             if itens["CapacidadeInicial"]
             <= self.total_kms()
             <= itens["CapacidadeFinal"]
         ]
         perimetro = [
-            itens["PerimetroPaga"]
+            itens["PerimetroCobra"]
             for itens in self.tabela_perimetro
             if itens["PerimetroInicial"]
             <= self.get_total_kms()
