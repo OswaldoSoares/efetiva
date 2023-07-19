@@ -836,11 +836,11 @@ def create_contexto_print_decimo_terceiro(idpes, idparcela):
 
 def create_contexto_verbas_rescisoria(idpessoal):
     colaborador = Colaborador(idpessoal).__dict__
-    aquisitvo = (
+    aquisitivo = (
         Aquisitivo.objects.filter(idPessoal=idpessoal).order_by("-DataInicial").first()
     )
-    meses_ferias = rescisao_ferias_meses(aquisitvo.DataInicial, aquisitvo.DataFinal)
-    meses_decimo_terceiro = rescisao_descimo_terceiro_meses(aquisitvo.DataFinal)
+    meses_ferias = rescisao_ferias_meses(aquisitivo.DataInicial, aquisitivo.DataFinal)
+    meses_decimo_terceiro = rescisao_descimo_terceiro_meses(aquisitivo.DataFinal)
     rescisao_salario = colaborador["salario"][0]["salario"]
     rescisao_ferias = rescisao_salario / 12 * meses_ferias
     rescisao_terco_ferias = rescisao_ferias / 3
