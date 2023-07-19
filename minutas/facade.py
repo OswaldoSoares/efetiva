@@ -392,6 +392,7 @@ class MinutaSelecionada:
     def carrega_valores_recebe(self):
         v_recebe = cria_dict_recebe()
         tabela_veiculo = self.filtro_tabela_veiculo()
+        recebe_perimetro = self.perimetro
         capacidade = [
             itens["CapacidadeCobra"]
             for itens in self.tabela_capacidade
@@ -471,7 +472,7 @@ class MinutaSelecionada:
                 if capacidade:
                     v_recebe["v_capa"] = capacidade[0]
                 v_recebe["c_capa"] = True if int(phkesc[7:8]) else False
-                if perimetro:
+                if perimetro and recebe_perimetro:
                     v_recebe["v_peri"] = perimetro[0]
                     v_recebe["c_peri"] = True
                 v_recebe = self.base_valor_perimetro(v_recebe)
