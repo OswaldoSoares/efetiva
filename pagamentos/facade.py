@@ -1733,8 +1733,8 @@ def create_data_estorna_recibo_colaborador(request, contexto):
 
 def create_data_html_recibos_colaborador(request, contexto):
     data = dict()
-    data["html_minutas"] = html_minutasavulso(datainicial, datafinal, idpessoal)
-    data["html_recibos"] = html_recibo_avulso(datainicial, datafinal, idpessoal)
+    # BUG data["html_minutas"] = html_minutasavulso(datainicial, datafinal, idpessoal)
+    # BUG data["html_recibos"] = html_recibo_avulso(datainicial, datafinal, idpessoal)
     c_return = JsonResponse(data)
     return c_return
 
