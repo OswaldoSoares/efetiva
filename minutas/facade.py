@@ -147,6 +147,7 @@ class MinutaSelecionada:
         total_horas = self.get_total_horas()
         dezhoras = timedelta(days=0, hours=10, minutes=0)
         fator = 0.00
+        recebe_extra_ajudante = float(self.tabela[0]["AjudanteCobra"])
         if total_horas < dezhoras:
             horas = str(total_horas)[0:1]
         else:
@@ -159,11 +160,11 @@ class MinutaSelecionada:
                 if int(minutos) < itens:
                     fator = fator_decimal[index]
                     break
-        recebe_extra_ajudante = float(self.tabela[0]["AjudanteCobraHoraExtra"]) * fator
-        recebe_extra_ajudante += float(self.tabela[0]["AjudanteCobraHoraExtra"]) * (
-            int(horas) - 10
-        )
-        recebe_extra_ajudante += float(self.tabela[0]["AjudanteCobra"])
+            recebe_extra_ajudante = float(self.tabela[0]["AjudanteCobraHoraExtra"]) * fator
+            recebe_extra_ajudante += float(self.tabela[0]["AjudanteCobraHoraExtra"]) * (
+                int(horas) - 10
+            )
+            recebe_extra_ajudante += float(self.tabela[0]["AjudanteCobra"])
         return recebe_extra_ajudante
 
     def saidas_ajudante(self):
@@ -481,8 +482,14 @@ class MinutaSelecionada:
                 )
                 v_recebe["m_pnoi"] = v_recebe["m_peri"]
         if self.total_ajudantes() > 0:
+            """ Valor a ser cobrado de cada ajudante, o valor era recuperado
+            da tabela (self.tabela[0]["AjudanteCobra"]), mas passou a ser cobrado
+            pelo valor retornado do metodo self.extra_ajudante_cobra()), que já
+            verifica e retorna o valor com as horas extra se tiver ou retirna o
+            valor da tabela. 19/07/2023.
+            """
             v_recebe["v_ajud"] = float(self.tabela[0]["AjudanteCobra"])
-            # TODO Hora Extra ajudante cobra
+            v_recebe["v_ajud"] = float(self.extra_ajudante_cobra())
             v_recebe["m_ajud"] = self.total_ajudantes()
             v_recebe["t_ajud"] = v_recebe["v_ajud"] * v_recebe["m_ajud"]
             v_recebe["c_ajud"] = True
