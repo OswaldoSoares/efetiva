@@ -81,7 +81,8 @@ def body(pdf, contexto, titulo):
         despesas = ', '.join(map(str, despesas)).replace('[', '').replace(']', '')
         entregas = x["quantidade_entregas"]
         peso = f'{x["t_entregas"]["peso_entregas"]:.3f}'.replace('.', ',')
-        total_minuta = f'{x["recebe_minuta"]:.2f}'.replace('.', ',')
+        calculo = f'{x["recebe_minuta"]:.2f}'.replace('.', ',')
+        valor_minuta = f'{x["valor_minuta"]:.2f}'.replace('.', ',')
         pdf.setFillColor(HexColor("#B0C4DE"))
         pdf.setStrokeColor(HexColor("#B0C4DE"))
         pdf.rect(cmp(12), cmp(linha-4), cmp(275), cmp(4), fill=1, stroke=0)
@@ -100,9 +101,10 @@ def body(pdf, contexto, titulo):
         pdf.drawString(cmp(12), cmp(linha-3), f"AJs: {ajudantes}")
         if romaneios:
             pdf.drawString(cmp(130), cmp(linha-3), f"Romaneios: {romaneios} - Peso: {peso} - Entregas: {entregas}")
-        pdf.drawRightString(cmp(285), cmp(linha-3), f"Fatura R$ {total_minuta}")
+        pdf.drawRightString(cmp(285), cmp(linha-3), f"Calculo R$ {calculo}")
         linha -= 4
         if despesas:
             pdf.drawString(cmp(12), cmp(linha-3), f"{despesas}")
-            linha -= 4
+        pdf.drawRightString(cmp(285), cmp(linha-3), f"Valor R$ {valor_minuta}")
+        linha -= 4
     return pdf
