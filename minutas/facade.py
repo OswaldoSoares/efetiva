@@ -107,6 +107,8 @@ class MinutaSelecionada:
         self.recebe = self.carrega_valores_recebe()
         self.recebe_minuta = self.valor_recebe_total_minuta()
         self.recebe_realizada = self.verifica_recebimentos()
+        self.fatura = minuta.idFatura
+        self.valor_minuta = minuta.Valor
 
     def get_total_kms(self):
         calculo_kms = self.km_final - self.km_inicial
