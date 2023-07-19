@@ -2167,29 +2167,6 @@ def create_contexto_minutas_periodo(inicial, final):
     minutas = []
     for x in minuta:
         minutas.append(MinutaSelecionada(x.idMinuta).__dict__)
-    for x in minutas:
-        print(f'[INFO] - ID: {x["idminuta"]}')
-        print(f'[INFO] - Minuta: {x["numero"]}')
-        print(f'[INFO] - Cliente: {x["cliente"]}')
-        if x["motorista"]:
-            print(f'[INFO] - Motorista: {x["motorista"][0]["apelido"]}')
-        if x["ajudantes"]:
-            for y in x["ajudantes"]:
-                print(f'[INFO] - Ajudante: {y["apelido"]}')
-        print(f'[INFO] - Solicitado: {x["veiculo_solicitado"]}')
-        print(f'[INFO] - Placa: {x["veiculo"]}')
-        if x["despesas"]:
-            for y in x["despesas"]:
-                print(f'[INFO] - Descricão: {y["Descricao"]}')
-                print(f'[INFO] - Valor: {y["Valor"]}')
-                print(f'[INFO] - Obs: {y["Obs"]}')
-        print(f'[INFO] - Entregas: {x["quantidade_entregas"]}')
-        print(f'[INFO] - Peso: {x["t_entregas"]["peso_entregas"]}')
-        print(f'[INFO] - Romaneios: {x["romaneio"]}')
-        print(f'[INFO] - Peso Romaneio: {x["romaneio_pesos"]}')
-        print(f'[INFO] - Seguro: {x["recebe"]["t_segu"]}')
-        print(f'[INFO] - Total Minuta: {x["recebe_minuta"]}')
-        print(f'[INFO] - Status: {x["status_minuta"]}')
     end = time.time()
     end_queries = len(connection.queries)
     print(start_queries)
