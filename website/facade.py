@@ -112,8 +112,10 @@ def converter_mes_ano(_mes_ano):
     return _mes, _ano
 
 
-def valor_ponto_milhar(valor):
-    return f"{valor:,.2f}".replace(".", "_").replace(",", ".").replace("_", ",")
+def valor_ponto_milhar(valor, digitos_decimal):
+    formato_decimal = f",.{digitos_decimal}f"
+    valor_formatado = format(float(valor), f"{formato_decimal}").replace(",", "_").replace(".", ",").replace("_", ".")
+    return valor_formatado
 
 
 class DiasFeriados:
