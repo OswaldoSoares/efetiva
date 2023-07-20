@@ -3,6 +3,7 @@ from datetime import datetime, time, timedelta
 from decimal import Decimal
 from io import BytesIO
 from textwrap import wrap
+from clientes.facade import create_contexto_seleciona_cliente
 
 from clientes.models import (
     FoneContatoCliente,
@@ -268,6 +269,7 @@ def index_minuta(request):
     t_concluida = len(m_concluida)
     m_fechada = MinutasStatus("FECHADA").minutas
     t_fechada = len(m_fechada)
+    clientes = create_contexto_seleciona_cliente()
     filtro_cliente = filtro_clientes()
     filtro_colaborador = filtro_colaboradores()
     filtro_veiculo = filtro_veiculos()
@@ -290,10 +292,7 @@ def index_minuta(request):
     minuta_status = sorted(list(dict.fromkeys(minuta_status)))
     minutacolaboradores = MinutaColaboradores.objects.filter(Cargo="MOTORISTA")
     hoje = str_hoje()
-    return render(
-        request,
-        "minutas/index.html",
-        {
+    contexto = {
             "m_aberta": m_aberta,
             "m_concluida": m_concluida,
             "m_fechada": m_fechada,
@@ -309,8 +308,10 @@ def index_minuta(request):
             "minuta_status": minuta_status,
             "minutacolaboradores": minutacolaboradores,
             "hoje": hoje,
-        },
-    )
+        }
+    contexto.update({"clientes": clientes})
+    print(contexto)
+    return render(request, "minutas/index.html", contexto)
 
 
 def consultaminuta(request, idmin):
