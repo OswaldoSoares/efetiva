@@ -1656,3 +1656,14 @@ $(document).on("input", "#periodo-final", function(event) {
         $("#print-minutas-periodo").attr("href", url.toString());
     });
 });
+
+// Utilizada no Card-Relatorio
+// Atualiza parametro href ao alterar o cliente
+$(document).on("input", "#cliente", function(event) {
+    $("#print-minutas-periodo").prop('href', function() {
+        var href = $("#print-minutas-periodo").prop('href');
+        var url = new URL(href);
+        url.searchParams.set('final', $("#cliente").val());
+        $("#print-minutas-periodo").attr("href", url.toString());
+    });
+});
