@@ -217,7 +217,7 @@
                             i-button"
                             id="print-minutas-periodo"
                             title="Imprime Romaneio"
-                            href="{% url 'minutas_periodo' %}?inicial={{ hoje }}&final={{ hoje }}"
+                            href="{% url 'minutas_periodo' %}?inicial={{ hoje }}&final={{ hoje }}&cliente=0"
                             target="_blank"></a>
                         </div>
                     </div>
@@ -248,12 +248,8 @@
                         </div>
                         <div class="input-group-addon
                         addon-my-color">
-                            <a class="bi bi-check
-                            i-button-null"
-                            id="print-minutas-periodo"
-                            title="Imprime Romaneio"
-                            href="{% url 'minutas_periodo' %}?inicial={{ hoje }}&final={{ hoje }}&cliente=0"
-                            target="_blank"></a>
+                            <i class="bi bi-check
+                            i-button-null"></i>
                         </div>
                     </div>
                 </div>
