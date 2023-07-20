@@ -8,7 +8,7 @@ from reportlab.pdfgen import canvas
 from reportlab.platypus import Paragraph
 from reportlab.lib.pagesizes import A4, landscape
 
-from website.facade import cmp
+from website.facade import cmp, valor_ponto_milhar
 import datetime
 
 
@@ -65,10 +65,10 @@ def body(pdf, contexto, titulo):
             motorista = x["motorista"][0]["apelido"]
         placa = x["veiculo"]
         entregas = str(x["quantidade_entregas"]).zfill(2)
-        peso = f'{x["t_entregas"]["peso_entregas"]:,.3f}'.replace('.', '_').replace(",", ".").replace("_", ",")
-        seguro = f'{x["recebe"]["t_segu"]:,.2f}'.replace('.', '_').replace(",", ".").replace("_", ",")
-        calculo = f'{x["recebe_minuta"]:,.2f}'.replace('.', '_').replace(",", ".").replace("_", ",")
-        valor_minuta = f'{x["valor_minuta"]:,.2f}'.replace('.', '_').replace(",", ".").replace("_", ",")
+        peso_total = valor_ponto_milhar(x["t_entregas"]["peso_entregas"], 3)
+        valor_seguro = valor_ponto_milhar(x["recebe"]["t_segu"], 2)
+        valor_calculo = valor_ponto_milhar(x["recebe_minuta"], 2)
+        valor_minuta = valor_ponto_milhar(x["valor_minuta"], 2)
         pdf.setFillColor(HexColor("#B0C4DE"))
         pdf.rect(cmp(10), cmp(linha-4), cmp(277), cmp(4), fill=1, stroke=0)
         pdf.setFillColor(HexColor("#000000"))
@@ -80,7 +80,7 @@ def body(pdf, contexto, titulo):
         if motorista:
             pdf.drawString(cmp(175), cmp(linha-3), f"{motorista}")
         pdf.drawString(cmp(230), cmp(linha-3), f"{placa}")
-        pdf.drawRightString(cmp(285), cmp(linha-3), f'ENTREGAS: {entregas}')
+        pdf.drawRightString(cmp(285), cmp(linha-3), f"ENTREGAS: {entregas}")
         pdf.line(cmp(10), cmp(linha), cmp(287), cmp(linha))
         linha -= 3.5
         linha_top = linha - 0.5
@@ -94,21 +94,27 @@ def body(pdf, contexto, titulo):
         linha -= 3.5
         linha_for = linha
         for y in x["ajudantes"]:
-            pdf.drawString(cmp(12), cmp(linha_for-3), f'{y["apelido"]}')
+            apelido = y["apelido"]
+            pdf.drawString(cmp(12), cmp(linha_for-3), f"{apelido}")
             linha_for -= 3
         linha_final = linha_for
         linha_for = linha
         for y in x["romaneio_pesos"]:
-            pdf.drawCentredString(cmp(75), cmp(linha_for-3), f'{y["romaneio"]}')
-            pdf.drawRightString(cmp(118), cmp(linha_for-3), f'{y["peso"]:,.3f} kg'.replace('.', '_').replace(",", ".").replace("_", ","))
+            romaneio = y["romaneio"]
+            peso = valor_ponto_milhar(y["peso"], 3)
+            pdf.drawCentredString(cmp(75), cmp(linha_for-3), f"{romaneio}")
+            pdf.drawRightString(cmp(118), cmp(linha_for-3), f"{peso} kg")
             linha_for -= 3
         if linha_final > linha_for:
             linha_final = linha_for
         linha_for = linha
         for y in x["despesas"]:
-            pdf.drawString(cmp(152), cmp(linha_for-3), f'{y["Descricao"]}')
-            pdf.drawRightString(cmp(238), cmp(linha_for-3), f'R$ {y["Valor"]:,.2f}'.replace('.', '_').replace(",", ".").replace("_", ","))
-            pdf.drawString(cmp(242), cmp(linha_for-3), f'{y["Obs"]}')
+            descricao = y["Descricao"]
+            valor_despesa = valor_ponto_milhar(y["Valor"], 2)
+            obs = y["Obs"]
+            pdf.drawString(cmp(152), cmp(linha_for-3), f"{descricao}")
+            pdf.drawRightString(cmp(238), cmp(linha_for-3), f"R$ {valor_despesa}")
+            pdf.drawString(cmp(242), cmp(linha_for-3), f"{obs}")
             linha_for -= 3
         if linha_final > linha_for:
             linha_final = linha_for
@@ -120,13 +126,14 @@ def body(pdf, contexto, titulo):
         if x["romaneio_pesos"] and x["despesas"]:
             pdf.line(cmp(10), cmp(linha), cmp(287), cmp(linha))
             if x["romaneio_pesos"]:
-                pdf.drawRightString(cmp(118), cmp(linha-3), f'Peso Total: {peso} kg')
+                pdf.drawRightString(cmp(118), cmp(linha-3), f'Peso Total: {peso_total} kg')
             if x["despesas"]:
-                pdf.drawRightString(cmp(238), cmp(linha-3), f'Total Despesas: R$ {x["t_despesas"]["valor_despesas"]}')
+                total_despesas = valor_ponto_milhar(x["t_despesas"]["valor_despesas"], 2)
+                pdf.drawRightString(cmp(238), cmp(linha-3), f"Total Despesas: R$ {total_despesas}")
             linha -= 4
         pdf.line(cmp(10), cmp(linha), cmp(287), cmp(linha))
-        pdf.drawCentredString(cmp(56.5), cmp(linha-3), f"Seguro: R$ {seguro}")
-        pdf.drawCentredString(cmp(148.5), cmp(linha-3), f"Calculo R$ {calculo}")
+        pdf.drawCentredString(cmp(56.5), cmp(linha-3), f"Seguro: R$ {valor_seguro}")
+        pdf.drawCentredString(cmp(148.5), cmp(linha-3), f"Calculo R$ {valor_calculo}")
         pdf.drawCentredString(cmp(240.5), cmp(linha-3), f"Valor R$ {valor_minuta}")
         linha -= 4
     pdf.line(cmp(10), cmp(linha), cmp(287), cmp(linha))
