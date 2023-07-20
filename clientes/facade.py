@@ -288,3 +288,9 @@ def save_phkesc(idtabelacliente, phkesc_cobra, phkesc_paga):
     obj.save()
     c_return = redirect('consultacliente', tabela.idCliente_id)
     return c_return
+
+
+def create_contexto_seleciona_cliente():
+    clientes = Cliente.objects.all()
+    lista = [{"idcliente": x.idCliente, "fantasia": x.Fantasia} for x in clientes]
+    return lista
