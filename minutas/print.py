@@ -38,22 +38,23 @@ def header(pdf, titulo):
     data_hora = agora.strftime("%d/%m/%Y %H:%M")
     pagina = str(pdf.getPageNumber()).zfill(2)
     pdf.setFont("Courier-Bold", 9)
-    pdf.roundRect(cmp(10), cmp(10), cmp(277), cmp(190), 10)
+    # pdf.roundRect(cmp(10), cmp(10), cmp(277), cmp(190), 10)
     pdf.drawString(cmp(15), cmp(196.4), f"{data_hora}")
     pdf.drawCentredString(cmp(148.5), cmp(196.4), titulo)
     pdf.drawRightString(cmp(282), cmp(196.4), f"PÁGINA: {pagina}")
-    pdf.line(cmp(10), cmp(195), cmp(287), cmp(195))
     return pdf
 
 
 def body(pdf, contexto, titulo):
     minutas = contexto["minutas"]
-    linha = 194
+    linha = 195
     for x in minutas:
         if linha <= 20:
+            pdf.line(cmp(10), cmp(linha), cmp(287), cmp(linha))
+            pdf.roundRect(cmp(10), cmp(10), cmp(277), cmp(190), 10)
             pdf.showPage()
             header(pdf, titulo)
-            linha = 194
+            linha = 195
         data = x["data"].strftime("%d/%m/%Y")
         minuta = x["numero"]
         status_minuta = x["status_minuta"]
@@ -63,30 +64,13 @@ def body(pdf, contexto, titulo):
         if x["motorista"]:
             motorista = x["motorista"][0]["apelido"]
         placa = x["veiculo"]
-        seguro = f'{x["recebe"]["t_segu"]:.2f}'.replace('.', ',')
-        romaneios = None
-        if x["romaneio"]:
-            romaneios = ', '.join(map(str, x["romaneio"])).replace('[', '').replace(']', '')
-        ajudantes = []
-        if x["ajudantes"]:
-            for y in x["ajudantes"]:
-                ajudantes.append(y["apelido"])
-        else:
-            ajudantes.append("NENHUM AJUDANTE INSERIDO")
-        ajudantes = ', '.join(map(str, ajudantes)).replace('[', '').replace(']', '')
-        despesas = []
-        if x["despesas"]:
-            for y in x["despesas"]:
-                despesas.append(f'{y["Descricao"]} - R$ {y["Valor"]}')
-        despesas = ', '.join(map(str, despesas)).replace('[', '').replace(']', '')
-        entregas = x["quantidade_entregas"]
-        peso = f'{x["t_entregas"]["peso_entregas"]:.3f}'.replace('.', ',')
-        calculo = f'{x["recebe_minuta"]:.2f}'.replace('.', ',')
-        valor_minuta = f'{x["valor_minuta"]:.2f}'.replace('.', ',')
+        entregas = str(x["quantidade_entregas"]).zfill(2)
+        peso = f'{x["t_entregas"]["peso_entregas"]:,.3f}'.replace('.', '_').replace(",", ".").replace("_", ",")
+        seguro = f'{x["recebe"]["t_segu"]:,.2f}'.replace('.', '_').replace(",", ".").replace("_", ",")
+        calculo = f'{x["recebe_minuta"]:,.2f}'.replace('.', '_').replace(",", ".").replace("_", ",")
+        valor_minuta = f'{x["valor_minuta"]:,.2f}'.replace('.', '_').replace(",", ".").replace("_", ",")
         pdf.setFillColor(HexColor("#B0C4DE"))
-        pdf.setStrokeColor(HexColor("#B0C4DE"))
-        pdf.rect(cmp(12), cmp(linha-4), cmp(275), cmp(4), fill=1, stroke=0)
-        pdf.setStrokeColor(HexColor("#000000"))
+        pdf.rect(cmp(10), cmp(linha-4), cmp(277), cmp(4), fill=1, stroke=0)
         pdf.setFillColor(HexColor("#000000"))
         pdf.drawString(cmp(12), cmp(linha-3), f"{data}")
         pdf.drawString(cmp(33), cmp(linha-3), f"{minuta}")
@@ -96,15 +80,55 @@ def body(pdf, contexto, titulo):
         if motorista:
             pdf.drawString(cmp(175), cmp(linha-3), f"{motorista}")
         pdf.drawString(cmp(230), cmp(linha-3), f"{placa}")
-        pdf.drawRightString(cmp(285), cmp(linha-3), f"Seguro: R$ {seguro}")
+        pdf.drawRightString(cmp(285), cmp(linha-3), f'ENTREGAS: {entregas}')
+        pdf.line(cmp(10), cmp(linha), cmp(287), cmp(linha))
         linha -= 3.5
-        pdf.drawString(cmp(12), cmp(linha-3), f"AJs: {ajudantes}")
-        if romaneios:
-            pdf.drawString(cmp(130), cmp(linha-3), f"Romaneios: {romaneios} - Peso: {peso} - Entregas: {entregas}")
-        pdf.drawRightString(cmp(285), cmp(linha-3), f"Calculo R$ {calculo}")
+        linha_top = linha - 0.5
+        pdf.drawCentredString(cmp(35), cmp(linha-3), "AJUDANTES")
+        pdf.drawCentredString(cmp(75), cmp(linha-3), "ROMANEIO")
+        pdf.drawCentredString(cmp(105), cmp(linha-3), "PESO")
+        # pdf.drawCentredString(cmp(135), cmp(linha-3), "ENTREGAS")
+        pdf.drawCentredString(cmp(175), cmp(linha-3), "DESPESAS DESCRIÇÃO")
+        pdf.drawCentredString(cmp(225), cmp(linha-3), "VALOR")
+        pdf.drawCentredString(cmp(263.5), cmp(linha-3), "OBS")
+        linha -= 3.5
+        linha_for = linha
+        for y in x["ajudantes"]:
+            pdf.drawString(cmp(12), cmp(linha_for-3), f'{y["apelido"]}')
+            linha_for -= 3
+        linha_final = linha_for
+        linha_for = linha
+        for y in x["romaneio_pesos"]:
+            pdf.drawCentredString(cmp(75), cmp(linha_for-3), f'{y["romaneio"]}')
+            pdf.drawRightString(cmp(118), cmp(linha_for-3), f'{y["peso"]:,.3f} kg'.replace('.', '_').replace(",", ".").replace("_", ","))
+            linha_for -= 3
+        if linha_final > linha_for:
+            linha_final = linha_for
+        linha_for = linha
+        for y in x["despesas"]:
+            pdf.drawString(cmp(152), cmp(linha_for-3), f'{y["Descricao"]}')
+            pdf.drawRightString(cmp(238), cmp(linha_for-3), f'R$ {y["Valor"]:,.2f}'.replace('.', '_').replace(",", ".").replace("_", ","))
+            pdf.drawString(cmp(242), cmp(linha_for-3), f'{y["Obs"]}')
+            linha_for -= 3
+        if linha_final > linha_for:
+            linha_final = linha_for
+        linha = linha_final - 1
+        pdf.line(cmp(60), cmp(linha), cmp(60), cmp(linha_top))
+        pdf.line(cmp(90), cmp(linha), cmp(90), cmp(linha_top))
+        pdf.line(cmp(120), cmp(linha), cmp(120), cmp(linha_top))
+        pdf.line(cmp(150), cmp(linha), cmp(150), cmp(linha_top))
+        if x["romaneio_pesos"] and x["despesas"]:
+            pdf.line(cmp(10), cmp(linha), cmp(287), cmp(linha))
+            if x["romaneio_pesos"]:
+                pdf.drawRightString(cmp(118), cmp(linha-3), f'Peso Total: {peso} kg')
+            if x["despesas"]:
+                pdf.drawRightString(cmp(238), cmp(linha-3), f'Total Despesas: R$ {x["t_despesas"]["valor_despesas"]}')
+            linha -= 4
+        pdf.line(cmp(10), cmp(linha), cmp(287), cmp(linha))
+        pdf.drawCentredString(cmp(56.5), cmp(linha-3), f"Seguro: R$ {seguro}")
+        pdf.drawCentredString(cmp(148.5), cmp(linha-3), f"Calculo R$ {calculo}")
+        pdf.drawCentredString(cmp(240.5), cmp(linha-3), f"Valor R$ {valor_minuta}")
         linha -= 4
-        if despesas:
-            pdf.drawString(cmp(12), cmp(linha-3), f"{despesas}")
-        pdf.drawRightString(cmp(285), cmp(linha-3), f"Valor R$ {valor_minuta}")
-        linha -= 4
+    pdf.line(cmp(10), cmp(linha), cmp(287), cmp(linha))
+    pdf.roundRect(cmp(10), cmp(10), cmp(277), cmp(190), 10)
     return pdf
