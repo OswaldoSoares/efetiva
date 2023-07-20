@@ -208,8 +208,8 @@ def notas_romaneio(pdf, contexto):
         # Cliente não quer que coloca pontos e traços no CNPJ - 29/03/2023
         # cnpj = f"{cnpj[0:2]}.{cnpj[2:5]}.{cnpj[5:8]}/{cnpj[8:12]}-{cnpj[12:15]}"
         volume = x.idNotasClientes.Volume
-        peso = f"{valor_ponto_milhar(x.idNotasClientes.Peso)}"
-        valor = f"{valor_ponto_milhar(x.idNotasClientes.Valor)}"
+        peso = f"{valor_ponto_milhar(x.idNotasClientes.Peso, 3)}"
+        valor = f"{valor_ponto_milhar(x.idNotasClientes.Valor, 2)}"
         vol_compl = f"VOLUME: {volume} - PESO: {peso} - VALOR: R$ {valor}"
         status_nota = x.idNotasClientes.StatusNota
         contato = x.idNotasClientes.Contato
@@ -253,8 +253,8 @@ def notas_romaneio(pdf, contexto):
                 pdf.line(cmp(10), cmp(14), cmp(200), cmp(14))
                 notas = str(len(contexto["notas"])).zfill(2)
                 entregas = str(int(contexto["quantidade_entregas"])).zfill(2)
-                total_romaneio_str = f"{valor_ponto_milhar(total_romaneio)}"
-                peso_romaneio_str = f"{valor_ponto_milhar(peso_romaneio)}"
+                total_romaneio_str = f"{valor_ponto_milhar(total_romaneio, 2)}"
+                peso_romaneio_str = f"{valor_ponto_milhar(peso_romaneio, 3)}"
                 pagina = str(pdf.getPageNumber()).zfill(2)
                 pdf.drawString(
                     cmp(20),
@@ -275,8 +275,8 @@ def notas_romaneio(pdf, contexto):
     pdf.line(cmp(10), cmp(14), cmp(200), cmp(14))
     notas = str(len(contexto["notas"])).zfill(2)
     entregas = str(int(contexto["quantidade_entregas"])).zfill(2)
-    total_romaneio_str = f"{valor_ponto_milhar(total_romaneio)}"
-    peso_romaneio_str = f"{valor_ponto_milhar(peso_romaneio)}"
+    total_romaneio_str = f"{valor_ponto_milhar(total_romaneio, 2)}"
+    peso_romaneio_str = f"{valor_ponto_milhar(peso_romaneio, 3)}"
     pagina = str(pdf.getPageNumber()).zfill(2)
     pdf.drawString(cmp(20), cmp(11), f"{notas} NOTAS - {entregas} ENTREGAS"),
     pdf.drawCentredString(
