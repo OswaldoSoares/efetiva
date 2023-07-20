@@ -50,6 +50,8 @@ def body(pdf, contexto, titulo):
     # BUG O final de cada pagina está estourando o limite, corrigir isso.
     minutas = contexto["minutas"]
     linha = 195
+    total_seguro_geral = 0.00
+    total_despesas_geral = Decimal(0.00)
     for x in minutas:
         if linha <= 20:
             pdf.line(cmp(10), cmp(linha), cmp(287), cmp(linha))
@@ -131,9 +133,12 @@ def body(pdf, contexto, titulo):
                 pdf.drawRightString(cmp(118), cmp(linha-3), f'Peso Total: {peso_total} kg')
             if x["despesas"]:
                 total_despesas = valor_ponto_milhar(x["t_despesas"]["valor_despesas"], 2)
+                total_despesas_geral += x["t_despesas"]["valor_despesas"]
                 pdf.drawRightString(cmp(238), cmp(linha-3), f"Total Despesas: R$ {total_despesas}")
             linha -= 4
         valor_seguro = valor_ponto_milhar(x["recebe"]["t_segu"], 2)
+        print(type(x["recebe"]["t_segu"]))
+        total_seguro_geral += x["recebe"]["t_segu"]
         valor_calculo = valor_ponto_milhar(x["recebe_minuta"], 2)
         valor_minuta = valor_ponto_milhar(x["valor_minuta"], 2)
         pdf.line(cmp(10), cmp(linha), cmp(287), cmp(linha))
@@ -142,5 +147,11 @@ def body(pdf, contexto, titulo):
         pdf.drawCentredString(cmp(240.5), cmp(linha-3), f"Valor R$ {valor_minuta}")
         linha -= 4
     pdf.line(cmp(10), cmp(linha), cmp(287), cmp(linha))
+    total_seguro_geral = valor_ponto_milhar(total_seguro_geral, 2)
+    total_despesas_geral = valor_ponto_milhar(total_despesas_geral, 2)
+    pdf.line(cmp(10), cmp(15.5), cmp(287), cmp(15.5))
+    pdf.drawString(cmp(12), cmp(12), f"TOTAL SEGUROS: R$ {total_seguro_geral}")
+    pdf.drawCentredString(cmp(148.5), cmp(12), f"{str(len(minutas)).zfill(2)} MINUTAS")
+    pdf.drawRightString(cmp(285), cmp(12), f"TOTAL DESPESAS: R$ {total_despesas_geral}")
     pdf.roundRect(cmp(10), cmp(10), cmp(277), cmp(190), 10)
     return pdf
