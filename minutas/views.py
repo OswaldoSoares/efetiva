@@ -310,7 +310,6 @@ def index_minuta(request):
             "hoje": hoje,
         }
     contexto.update({"clientes": clientes})
-    print(contexto)
     return render(request, "minutas/index.html", contexto)
 
 
