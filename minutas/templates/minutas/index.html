@@ -199,12 +199,14 @@
                         <div class="input-fake
                         div-flex">
                             <input type="date"
-                            class="form-control"
+                            class="form-control
+                            form-control-minuta"
                             id="periodo-inicial"
                             name="periodo-inicial"
                             value="{{ hoje }}">
                             <input type="date"
-                            class="form-control"
+                            class="form-control
+                            form-control-minuta"
                             id="periodo-final"
                             name="periodo-final"
                             value="{{ hoje }}">
@@ -219,7 +221,43 @@
                             target="_blank"></a>
                         </div>
                     </div>
-                </div>                
+                </div>
+                <div class="card-body-item">
+                    <div class="input-group">
+                        <div class="input-group-addon
+                        addon-my-color">
+                            <i class="bi bi-calendar
+                            i-button-null">
+                            </i>
+                        </div>
+                        <div class="input-fake
+                        div-flex">
+                            <select class="form-control
+                            form-control-minuta"
+                            id="cliente"
+                            name="cliente" >
+                                <option value="0">
+                                    SELECIONE UM CLIENTE
+                                </option>
+                                {% for cliente in clientes %}
+                                    <option value="{{ cliente.idcliente }}">
+                                        {{ cliente.fantasia }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="input-group-addon
+                        addon-my-color">
+                            <a class="bi bi-check
+                            i-button-null"
+                            id="print-minutas-periodo"
+                            title="Imprime Romaneio"
+                            href="{% url 'minutas_periodo' %}?inicial={{ hoje }}&final={{ hoje }}&cliente=0"
+                            target="_blank"></a>
+                        </div>
+                    </div>
+                </div>
+
             </div>
             <div class="card-footer">
             </div>
