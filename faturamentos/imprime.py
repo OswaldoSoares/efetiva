@@ -401,7 +401,7 @@ def imprime_fatura_pdf(fatura):
             pdf.drawCentredString(
                 convertemp(105),
                 convertemp(linha),
-                f"{len(entregas):0>2} ENTREGAS - PESO: {valor_ponto_milhar(soma_peso)} - VALOR: {valor_ponto_milhar(soma_valor)}",
+                f"{len(entregas):0>2} ENTREGAS - PESO: {valor_ponto_milhar(soma_peso, 3)} - VALOR: {valor_ponto_milhar(soma_valor, 2)}",
             )
             if soma_valor > 0:
                 pdf.drawRightString(
@@ -637,7 +637,7 @@ def print_notas_da_minuta_unidade(
         status_nota = x["StatusNota"]
         contato = x["Contato"]
         end_compl = f"{endereco} - {bairro} - CEP: {cep} - {cidade} - {estado}"
-        vol_compl = f"VOLUME: {volume} - PESO: {valor_ponto_milhar(peso)} - VALOR: R$ {valor_ponto_milhar(valor)} - {status_nota} - {contato}"
+        vol_compl = f"VOLUME: {volume} - PESO: {valor_ponto_milhar(peso, 3)} - VALOR: R$ {valor_ponto_milhar(valor, 2)} - {status_nota} - {contato}"
         para_compl = f"{end_compl} - {vol_compl}"
         tamanho_font = 7
         pdf.setFont("Times-Roman", tamanho_font)
