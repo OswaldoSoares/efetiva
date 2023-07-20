@@ -1,3 +1,4 @@
+from decimal import Decimal
 from io import BytesIO
 from django.core.files.base import ContentFile
 from django.http import HttpResponse
@@ -66,10 +67,6 @@ def body(pdf, contexto, titulo):
             motorista = x["motorista"][0]["apelido"]
         placa = x["veiculo"]
         entregas = str(x["quantidade_entregas"]).zfill(2)
-        peso_total = valor_ponto_milhar(x["t_entregas"]["peso_entregas"], 3)
-        valor_seguro = valor_ponto_milhar(x["recebe"]["t_segu"], 2)
-        valor_calculo = valor_ponto_milhar(x["recebe_minuta"], 2)
-        valor_minuta = valor_ponto_milhar(x["valor_minuta"], 2)
         pdf.setFillColor(HexColor("#B0C4DE"))
         pdf.rect(cmp(10), cmp(linha-4), cmp(277), cmp(4), fill=1, stroke=0)
         pdf.setFillColor(HexColor("#000000"))
@@ -100,9 +97,12 @@ def body(pdf, contexto, titulo):
             linha_for -= 3
         linha_final = linha_for
         linha_for = linha
+        peso_total = Decimal(0.00)
         for y in x["romaneio_pesos"]:
             romaneio = y["romaneio"]
             peso = valor_ponto_milhar(y["peso"], 3)
+            if y["peso"]:
+                peso_total += y["peso"]
             pdf.drawCentredString(cmp(75), cmp(linha_for-3), f"{romaneio}")
             pdf.drawRightString(cmp(118), cmp(linha_for-3), f"{peso} kg")
             linha_for -= 3
@@ -124,7 +124,8 @@ def body(pdf, contexto, titulo):
         pdf.line(cmp(90), cmp(linha), cmp(90), cmp(linha_top))
         pdf.line(cmp(120), cmp(linha), cmp(120), cmp(linha_top))
         pdf.line(cmp(150), cmp(linha), cmp(150), cmp(linha_top))
-        if x["romaneio_pesos"] and x["despesas"]:
+        peso_total = valor_ponto_milhar(peso_total, 3)
+        if x["romaneio_pesos"] or x["despesas"]:
             pdf.line(cmp(10), cmp(linha), cmp(287), cmp(linha))
             if x["romaneio_pesos"]:
                 pdf.drawRightString(cmp(118), cmp(linha-3), f'Peso Total: {peso_total} kg')
@@ -132,6 +133,9 @@ def body(pdf, contexto, titulo):
                 total_despesas = valor_ponto_milhar(x["t_despesas"]["valor_despesas"], 2)
                 pdf.drawRightString(cmp(238), cmp(linha-3), f"Total Despesas: R$ {total_despesas}")
             linha -= 4
+        valor_seguro = valor_ponto_milhar(x["recebe"]["t_segu"], 2)
+        valor_calculo = valor_ponto_milhar(x["recebe_minuta"], 2)
+        valor_minuta = valor_ponto_milhar(x["valor_minuta"], 2)
         pdf.line(cmp(10), cmp(linha), cmp(287), cmp(linha))
         pdf.drawCentredString(cmp(56.5), cmp(linha-3), f"Seguro: R$ {valor_seguro}")
         pdf.drawCentredString(cmp(148.5), cmp(linha-3), f"Calculo R$ {valor_calculo}")
