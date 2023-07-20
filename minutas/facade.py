@@ -2167,11 +2167,14 @@ def define_novo_status_minuta(idminuta, status_novo):
     return True if obj.save(update_fields=["StatusMinuta"]) else False
 
 
-def create_contexto_minutas_periodo(inicial, final):
+def create_contexto_minutas_periodo(inicial, final, idcliente):
     reset_queries()
     start = time.time()
     start_queries = len(connection.queries)
-    minuta = Minuta.objects.filter(DataMinuta__range=[inicial, final])
+    if idcliente == 0:
+        minuta = Minuta.objects.filter(DataMinuta__range=[inicial, final])
+    else:
+        minuta = Minuta.objects.filter(idCliente=idcliente, DataMinuta__range=[inicial, final])
     minutas = []
     for x in minuta:
         minutas.append(MinutaSelecionada(x.idMinuta).__dict__)
