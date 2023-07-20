@@ -1663,7 +1663,7 @@ $(document).on("input", "#cliente", function(event) {
     $("#print-minutas-periodo").prop('href', function() {
         var href = $("#print-minutas-periodo").prop('href');
         var url = new URL(href);
-        url.searchParams.set('final', $("#cliente").val());
+        url.searchParams.set('cliente', $("#cliente").val());
         $("#print-minutas-periodo").attr("href", url.toString());
     });
 });
