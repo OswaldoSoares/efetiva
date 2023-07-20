@@ -46,6 +46,7 @@ def header(pdf, titulo):
 
 
 def body(pdf, contexto, titulo):
+    # BUG O final de cada pagina está estourando o limite, corrigir isso.
     minutas = contexto["minutas"]
     linha = 195
     for x in minutas:
