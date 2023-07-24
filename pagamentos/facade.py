@@ -688,13 +688,13 @@ def delete_vales(_id_val):
 
 
 def dias_admitido(_var):
-    _da = _var["admissao"]
-    _dd = _var["demissao"]
-    _dh = datetime.datetime.now().date()
-    if _dd:
-        _dias = _dd - _da
+    data_admissao = _var["admissao"]
+    data_demissao = _var["demissao"]
+    data_hoje = datetime.datetime.now().date()
+    if data_demissao:
+        _dias = data_demissao - data_admissao
     else:
-        _dias = _dh - _da
+        _dias = data_hoje - data_admissao
     return _dias.days
 
 
