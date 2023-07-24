@@ -839,9 +839,13 @@ def create_contexto_verbas_rescisoria(idpessoal):
     aquisitivo = (
         Aquisitivo.objects.filter(idPessoal=idpessoal).order_by("-DataInicial").first()
     )
-    meses_ferias = rescisao_ferias_meses(aquisitivo.DataInicial, aquisitivo.DataFinal)
-    # TODO Na rescisão precisa verificar os pagamento de 13º já efetuados
-    meses_decimo_terceiro = rescisao_descimo_terceiro_meses(colaborador["data_admissao"], colaborador["data_demissao"])
+    if facade_pagamentos.dias_admitido > 16:
+        meses_ferias = rescisao_ferias_meses(aquisitivo.DataInicial, aquisitivo.DataFinal)
+        # TODO Na rescisão precisa verificar os pagamento de 13º já efetuados
+        meses_decimo_terceiro = rescisao_descimo_terceiro_meses(colaborador["data_admissao"], colaborador["data_demissao"])
+    else:
+        meses_ferias = 0
+        meses_decimo_terceiro = 0
     rescisao_salario = colaborador["salario"][0]["salario"]
     rescisao_ferias = rescisao_salario / 12 * meses_ferias
     rescisao_terco_ferias = rescisao_ferias / 3
