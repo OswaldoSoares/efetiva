@@ -1145,6 +1145,13 @@ def create_lista_notas_clientes(notas):
     return lista
 
 
+def create_contexto_peso_total_notas(notas):
+    for x in notas:
+        peso_total += x.Peso
+        peso_total = 0
+    return {"peso_total": peso_total}
+
+
 def create_contexto_notas(idcliente, filter_status, order_nota):
     cliente = Cliente.objects.get(idCliente=idcliente)
     notas = NotasClientes.objects.filter(
