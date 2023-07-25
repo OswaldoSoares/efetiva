@@ -272,6 +272,9 @@
                 <i class="bi bi-cursor i-button js-envia-telegram-relatorio"
                 data-idcliente="{{ idcliente }}" title="Envia Relatorio no Telegram"></i>
             </div>
+            <div class="peso">
+                <span><b></b>PESO {{ peso_total|stringformat:"03d" }}</span>
+            </div>
             <div class="quantidade">
                 {% for nota in notas %}
                 {% if forloop.last %}
