@@ -1237,4 +1237,5 @@ def create_contexto_notas(idcliente, filter_status, order_nota):
                 "romaneio": romaneio,
             }
         )
-    return {"notas": lista, "cliente": cliente, "sort_status": filter_status}
+    peso_total = create_contexto_peso_total_notas(notas)
+    return {"notas": lista, "cliente": cliente, "sort_status": filter_status, "peso_total": peso_total}
