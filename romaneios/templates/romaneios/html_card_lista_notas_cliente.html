@@ -273,7 +273,7 @@
                 data-idcliente="{{ idcliente }}" title="Envia Relatorio no Telegram"></i>
             </div>
             <div class="peso">
-                <span><b></b>PESO {{ peso_total|stringformat:"03d" }}</span>
+                <span><b></b>PESO: {{ peso_total|intcomma }} kg</span>
             </div>
             <div class="quantidade">
                 {% for nota in notas %}
