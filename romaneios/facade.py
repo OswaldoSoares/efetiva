@@ -1146,9 +1146,9 @@ def create_lista_notas_clientes(notas):
 
 
 def create_contexto_peso_total_notas(notas):
+    peso_total = 0
     for x in notas:
         peso_total += x.Peso
-        peso_total = 0
     return {"peso_total": peso_total}
 
 
