@@ -248,7 +248,7 @@
                     data-idcliente={{ nota.idcliente }}></i>
                 {% endif %}
                 <!-- Botão adiciona nota no romaneio aberto -->
-                {% if nota.statusnota == "PENDENTE" %}
+                {% if nota.statusnota == "PENDENTE" or nota.statusnota == "RECUSADA" %}
                     <i class="bi bi-check-square
                     i-button
                     js-adiciona-nota-romaneio"
