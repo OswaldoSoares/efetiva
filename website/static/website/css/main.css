@@ -310,10 +310,35 @@ section {
 }
 
 .footer {
-    background-color: antiquewhite;
+    background-color: var(--black);
+    color: var(--white-smoke);
     height: 50vh;
+    font-size: 1.5rem;
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    display: flex;
+    align-items: cemter;
+    justify-content: space-around;
 }
 
+.footer .phones {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: center;
+    
+}
+
+.footer .andress {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: center;
+
+}
+
+.ancora-margin-superior[id] {
+    scroll-margin-top: 72px;
+}
 
 /* #### Media Queries #### */
 
