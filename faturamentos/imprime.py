@@ -19,7 +19,7 @@ from website.models import FileUpload
 from .models import Fatura
 
 
-def decricao_servico(dict_servicos, perimetro_inicial, perimetro_final):
+def decricao_servico(dict_servicos, perimetro_inicial, perimetro_final, s_minuta):
     servicos = ""
     texto_taxa = ""
     texto_seguro = ""
@@ -486,7 +486,7 @@ def imprime_fatura_pdf(fatura):
         minuta_itens = MinutaItens.objects.values().filter(
             idMinuta=minutas[index].idMinuta, RecebePaga="R"
         )
-        servicos = decricao_servico(minuta_itens, perimetro_inicial, perimetro_final)
+        servicos = decricao_servico(minuta_itens, perimetro_inicial, perimetro_final, s_minuta)
         para = Paragraph(servicos, style=styles_claro)
         para.wrapOn(pdf, convertemp(186), convertemp(297))
         linha -= para.height * 0.352777
