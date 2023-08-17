@@ -94,7 +94,7 @@ def decricao_servico(dict_servicos, perimetro_inicial, perimetro_final, s_minuta
                     valor_ajudantes = float(s_minuta["tabela"][0]["AjudanteCobra"]) * ajudantes
                     extra_ajudantes = total_ajudantes - valor_ajudantes
                     texto_ajudante = "&#x2713 {} AJUDANTE(S) &#x27BA R$ {} EXTRA {}".format(
-                        itens["Quantidade"], itens["Valor"], extra_ajudantes
+                        itens["Quantidade"], valor_ajudantes, round(extra_ajudantes, 2)
                     )
                 else:
                     texto_ajudante = "&#x2713 {} AJUDANTE(S) &#x27BA R$ {} ".format(
