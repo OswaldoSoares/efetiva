@@ -87,9 +87,19 @@ def decricao_servico(dict_servicos, perimetro_inicial, perimetro_final, s_minuta
                     servicos, itens["Porcento"], itens["Valor"]
                 )
             if itens["Descricao"] == "AJUDANTE":
-                texto_ajudante = "&#x2713 {} AJUDANTE(S) &#x27BA R$ {} ".format(
-                    itens["Quantidade"], itens["Valor"]
-                )
+                # TODO Melhorar este código
+                if s_minuta["recebe"]["t_exce"] > 0:
+                    ajudantes = itens["Quantidade"]
+                    total_ajudantes = s_minuta["recebe"]["t_ajud"]
+                    valor_ajudantes = float(s_minuta["tabela"][0]["AjudanteCobra"]) * ajudantes
+                    extra_ajudantes = total_ajudantes - valor_ajudantes
+                    texto_ajudante = "&#x2713 {} AJUDANTE(S) &#x27BA R$ {} EXTRA {}".format(
+                        itens["Quantidade"], itens["Valor"], extra_ajudantes
+                    )
+                else:
+                    texto_ajudante = "&#x2713 {} AJUDANTE(S) &#x27BA R$ {} ".format(
+                        itens["Quantidade"], itens["Valor"]
+                    )
             if itens["Descricao"] == "DESCONTO":
                 texto_desconto = "&#x2713 DESCONTO &#x27BA R$ {} ".format(
                     itens["Valor"]
