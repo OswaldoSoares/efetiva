@@ -1,3 +1,4 @@
+from decimal import Decimal
 from io import BytesIO
 
 from clientes.models import Cliente, TabelaPerimetro
@@ -90,11 +91,11 @@ def decricao_servico(dict_servicos, perimetro_inicial, perimetro_final, s_minuta
                 # TODO Melhorar este código
                 if s_minuta["recebe"]["t_exce"] > 0:
                     ajudantes = itens["Quantidade"]
-                    total_ajudantes = s_minuta["recebe"]["t_ajud"]
-                    valor_ajudantes = float(s_minuta["tabela"][0]["AjudanteCobra"]) * ajudantes
+                    total_ajudantes = Decimal(s_minuta["recebe"]["t_ajud"])
+                    valor_ajudantes = Decimal(s_minuta["tabela"][0]["AjudanteCobra"]) * ajudantes
                     extra_ajudantes = total_ajudantes - valor_ajudantes
-                    texto_ajudante = "&#x2713 {} AJUDANTE(S) &#x27BA R$ {} EXTRA {}".format(
-                        itens["Quantidade"], valor_ajudantes, round(extra_ajudantes, 2)
+                    texto_ajudante = "&#x2713 {} AJUDANTE(S) &#x27BA R$ {} EXTRA R$ {}".format(
+                        itens["Quantidade"], valor_ajudantes, extra_ajudantes
                     )
                 else:
                     texto_ajudante = "&#x2713 {} AJUDANTE(S) &#x27BA R$ {} ".format(
