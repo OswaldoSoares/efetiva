@@ -29,6 +29,7 @@ from .views import (
     exclui_ocorrencia,
     seleciona_filtro_emitente,
     seleciona_filtro_destinatario,
+    carrega_pasta_xml,
 )
 
 urlpatterns = [
@@ -172,4 +173,9 @@ urlpatterns = [
         seleciona_filtro_destinatario,
         name="seleciona_filtro_destinatario",
     ),
+    path(
+        "carrega_pasta_xml",
+        carrega_pasta_xml,
+        name="carrega_pasta_xml",
+    )
 ]
