@@ -102,7 +102,7 @@ def decricao_servico(dict_servicos, perimetro_inicial, perimetro_final, s_minuta
                         itens["Quantidade"], itens["Valor"]
                     )
             if itens["Descricao"] == "DESCONTO":
-                texto_desconto = "&#x2713 DESCONTO &#x27BA R$ {} ".format(
+                texto_desconto = "&#x2713 DESCONTO &#x27BA R$ {}".format(
                     itens["Valor"]
                 )
     servicos = "{} {} {} {} {}".format(
@@ -110,8 +110,8 @@ def decricao_servico(dict_servicos, perimetro_inicial, perimetro_final, s_minuta
     )
     for itens in dict_servicos:
         if itens["TipoItens"] == "DESPESA":
-            servicos = "{} &#x2713 {} &#x27BA R$ {},".format(
-                servicos, itens["Descricao"], itens["Valor"]
+            servicos = "{} &#x2713 {} &#x27BA R$ {} - {},".format(
+                servicos, itens["Descricao"], itens["Valor"], itens["Obs"]
             )
     return servicos
 
