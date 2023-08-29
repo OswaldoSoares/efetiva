@@ -822,6 +822,41 @@ $(document).on('submit', '.js-carrega-xml', function(event) {
     });
 });
 
+$(document).on('submit', '.js-carrega-pasta-xml', function(event) {
+    event.preventDefault();
+    var formData = new FormData($(this)[0])
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    formData.append('csrfmiddlewaretoken', csrftoken);
+    var input = document.getElementById('directory-xml');
+    var files = input.files
+    var xmlFiles = [];
+    $.each(files, function(index, value) {
+        if (value.name.endsWith('.xml')) {
+            xmlFiles.push(value);
+        }
+    });
+    $.each(xmlFiles, function(index, value) {
+        formData.append('xml_files', value)
+    });
+    var xmlFiles_length = xmlFiles.length
+    $('.js-total-xml').text(xmlFiles_length + ' Arquivos XML')
+    $.ajax({
+        type: $(this).attr('method'),
+        url: '/romaneios/carrega_pasta_xml',
+        processData: false,
+        contentType: false,
+        data: formData,
+        beforeSend: function() {
+            $(".text-loader").text("Aguarde, Salvando " + xmlFiles_length + " arquivos XML");
+            $(".box-loader").show();
+        },
+        success: function(data) {
+            $(".box-loader").hide();
+            $(".text-loader").text("Aguarde...");
+        },
+    });
+});
+
 var LimpaFormNota = function() {
     hoje = Hoje()
     $("#localcoleta").val("")
