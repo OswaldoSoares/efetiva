@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render
 from minutas.facade import filtra_veiculo, motoristas_disponiveis
 
@@ -406,7 +407,17 @@ def ler_nota_xml(request):
 def carrega_xml(request):
     file = request.FILES["uploadFile"]
     dados = facade.ler_nota_xml(file)
-    return dados
+    return JsonResponse(dados)
+
+
+def carrega_pasta_xml(request):
+    print(f"[INFO] - AQUI")
+    files = request.FILES.getlist("xml_files")
+    for x in files:
+        facade.ler_nota_xml(x)
+    # print(f"[INFO] - {files}")
+    dados = dict()
+    return JsonResponse(dados)
 
 
 def orderna_notas(request):
