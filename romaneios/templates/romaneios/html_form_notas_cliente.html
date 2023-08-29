@@ -776,7 +776,7 @@
     </div>
     <div class="card-footer"></div>
 </form>
-<form class="js-carrega-xml js-mostra-form-nota" method="post" enctype="multipart/form-data">
+<form class="js-carrega-pasta-xml js-mostra-form-nota" method="post" enctype="multipart/form-data">
 {% csrf_token %}
     <div class="card-header">
         <span>PASTA XML</span>
@@ -786,15 +786,15 @@
             <div class="input-group">
                 <div class="input-group-addon addon-my-color">
                     <input type="file"
-                    class="file js-file-xml"
-                    id="file-xml"
-                    name="uploadFile"
-                    value="">
+                    class="file"
+                    id="directory-xml"
+                    name="directory-xml"
+                    multiple webkitdirectory directory>
                     <label class="bi bi-folder
                     i-button"
-                    for="file-xml"></label>
+                    for="directory-xml"></label>
                 </div>
-                <span class="form-control form-control-minuta js-xmlTxt">
+                <span class="form-control form-control-minuta js-total-xml">
                     Selecionar pasta de arquivos XML
                 </span>
                 <div class="input-group-addon addon-my-color">
