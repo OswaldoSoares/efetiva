@@ -906,7 +906,7 @@ def ler_nota_xml(nota):
         "peso": peso,
         "valor": valor,
     }
-    return JsonResponse(lista)
+    return lista
 
 
 def create_contexto_imprime_romaneio(idromaneio, idcliente):
