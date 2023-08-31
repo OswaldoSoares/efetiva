@@ -19,3 +19,4 @@ manage.py
 transefetiva/settings/.env
 .pytest_cache
 .vscode
+.python-version
