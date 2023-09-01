@@ -702,182 +702,182 @@ def save_nota_romaneio(id_nota, id_romaneio):
 def ler_nota_xml(nota):
     tree = ET.parse(nota)
     doc = tree.getroot()
-    NFe = "{http://www.portalfiscal.inf.br/nfe}NFe"
-    infNFe = "{http://www.portalfiscal.inf.br/nfe}infNFe"
+    nfe = "{http://www.portalfiscal.inf.br/nfe}nfe"
+    infnfe = "{http://www.portalfiscal.inf.br/nfe}infnfe"
     ide = "{http://www.portalfiscal.inf.br/nfe}ide"
-    dhEmi = "{http://www.portalfiscal.inf.br/nfe}dhEmi"
+    dhemi = "{http://www.portalfiscal.inf.br/nfe}dhemi"
     serie = "{http://www.portalfiscal.inf.br/nfe}serie"
-    nNF = "{http://www.portalfiscal.inf.br/nfe}nNF"
+    nnf = "{http://www.portalfiscal.inf.br/nfe}nnf"
     emit = "{http://www.portalfiscal.inf.br/nfe}emit"
-    enderEmit = "{http://www.portalfiscal.inf.br/nfe}enderEmit"
+    ender_emit = "{http://www.portalfiscal.inf.br/nfe}ender_emit"
     dest = "{http://www.portalfiscal.inf.br/nfe}dest"
-    xCNPJ = "{http://www.portalfiscal.inf.br/nfe}CNPJ"
-    xNome = "{http://www.portalfiscal.inf.br/nfe}xNome"
-    enderDest = "{http://www.portalfiscal.inf.br/nfe}enderDest"
-    xLgr = "{http://www.portalfiscal.inf.br/nfe}xLgr"
+    xcnpj = "{http://www.portalfiscal.inf.br/nfe}CNPJ"
+    xnome = "{http://www.portalfiscal.inf.br/nfe}xnome"
+    ender_dest = "{http://www.portalfiscal.inf.br/nfe}ender_dest"
+    xlgr = "{http://www.portalfiscal.inf.br/nfe}xlgr"
     nro = "{http://www.portalfiscal.inf.br/nfe}nro"
-    xCpl = "{http://www.portalfiscal.inf.br/nfe}xCpl"
-    xBairro = "{http://www.portalfiscal.inf.br/nfe}xBairro"
-    xCEP = "{http://www.portalfiscal.inf.br/nfe}CEP"
-    xMun = "{http://www.portalfiscal.inf.br/nfe}xMun"
-    uf = "{http://www.portalfiscal.inf.br/nfe}UF"
+    xcpl = "{http://www.portalfiscal.inf.br/nfe}xcpl"
+    xbairro = "{http://www.portalfiscal.inf.br/nfe}xbairro"
+    xcep = "{http://www.portalfiscal.inf.br/nfe}CEP"
+    xmun = "{http://www.portalfiscal.inf.br/nfe}xmun"
+    estado = "{http://www.portalfiscal.inf.br/nfe}UF"
     telefone = "{http://www.portalfiscal.inf.br/nfe}Telefone"
-    infAdic = "{http://www.portalfiscal.inf.br/nfe}infAdic"
-    infCpl = "{http://www.portalfiscal.inf.br/nfe}infCpl"
+    inf_adic = "{http://www.portalfiscal.inf.br/nfe}inf_adic"
+    inf_cpl = "{http://www.portalfiscal.inf.br/nfe}inf_cpl"
     transp = "{http://www.portalfiscal.inf.br/nfe}transp"
     vol = "{http://www.portalfiscal.inf.br/nfe}vol"
-    qVol = "{http://www.portalfiscal.inf.br/nfe}qVol"
-    pesoB = "{http://www.portalfiscal.inf.br/nfe}pesoB"
-    ICMSTot = "{http://www.portalfiscal.inf.br/nfe}ICMSTot"
+    qvol = "{http://www.portalfiscal.inf.br/nfe}qvol"
+    peso_bruto = "{http://www.portalfiscal.inf.br/nfe}peso_bruto"
+    icms_total = "{http://www.portalfiscal.inf.br/nfe}icms_total"
     total = "{http://www.portalfiscal.inf.br/nfe}total"
-    vNF = "{http://www.portalfiscal.inf.br/nfe}vNF"
-    caminho_emitente = f"{NFe}/{infNFe}/{emit}/{xNome}"
+    valor_nf = "{http://www.portalfiscal.inf.br/nfe}valor_nf"
+    caminho_emitente = f"{nfe}/{infnfe}/{emit}/{xnome}"
     nodefind = doc.find(caminho_emitente)
     if not nodefind is None:
         emitente = nodefind.text
     else:
         emitente = ""
-    caminho_endereco_emi = f"{NFe}/{infNFe}/{emit}/{enderEmit}/{xLgr}"
+    caminho_endereco_emi = f"{nfe}/{infnfe}/{emit}/{ender_emit}/{xlgr}"
     nodefind = doc.find(caminho_endereco_emi)
     if not nodefind is None:
         endereco_emi = nodefind.text
     else:
         endereco_emi = ""
-    caminho_numero_emi = f"{NFe}/{infNFe}/{emit}/{enderEmit}/{nro}"
+    caminho_numero_emi = f"{nfe}/{infnfe}/{emit}/{ender_emit}/{nro}"
     nodefind = doc.find(caminho_numero_emi)
     if not nodefind is None:
         numero_emi = nodefind.text
     else:
         numero_emi = ""
-    caminho_complemento_emi = f"{NFe}/{infNFe}/{emit}/{enderEmit}/{xCpl}"
+    caminho_complemento_emi = f"{nfe}/{infnfe}/{emit}/{ender_emit}/{xcpl}"
     nodefind = doc.find(caminho_complemento_emi)
     if not nodefind is None:
         complemento_emi = nodefind.text
         endereco_emi = f"{endereco_emi}, {numero_emi}{complemento_emi}"
     else:
         endereco_emi = f"{endereco_emi}, {numero_emi}"
-    caminho_bairro_emi = f"{NFe}/{infNFe}/{emit}/{enderEmit}/{xBairro}"
+    caminho_bairro_emi = f"{nfe}/{infnfe}/{emit}/{ender_emit}/{xbairro}"
     nodefind = doc.find(caminho_bairro_emi)
     if not nodefind is None:
         bairro_emi = nodefind.text
     else:
         bairro_emi = ""
-    caminho_CEP_emi = f"{NFe}/{infNFe}/{emit}/{enderEmit}/{xCEP}"
+    caminho_CEP_emi = f"{nfe}/{infnfe}/{emit}/{ender_emit}/{xcep}"
     nodefind = doc.find(caminho_CEP_emi)
     if not nodefind is None:
         cep_emi = nodefind.text
     else:
         cep_emi = ""
-    caminho_cidade_emi = f"{NFe}/{infNFe}/{emit}/{enderEmit}/{xMun}"
+    caminho_cidade_emi = f"{nfe}/{infnfe}/{emit}/{ender_emit}/{xmun}"
     nodefind = doc.find(caminho_cidade_emi)
     if not nodefind is None:
         cidade_emi = nodefind.text
     else:
         cidade_emi = ""
-    caminho_estado_emi = f"{NFe}/{infNFe}/{emit}/{enderEmit}/{uf}"
+    caminho_estado_emi = f"{nfe}/{infnfe}/{emit}/{ender_emit}/{estado}"
     nodefind = doc.find(caminho_estado_emi)
     if not nodefind is None:
         estado_emi = nodefind.text
     else:
         estado_emi = ""
-    caminho_dhemi = f"{NFe}/{infNFe}/{ide}/{dhEmi}"
+    caminho_dhemi = f"{nfe}/{infnfe}/{ide}/{dhemi}"
     nodefind = doc.find(caminho_dhemi)
     if not nodefind is None:
         data_nf = datetime.datetime.strptime(nodefind.text[0:10], "%Y-%m-%d").date()
     else:
         data_nf = ""
-    caminho_serie = f"{NFe}/{infNFe}/{ide}/{serie}"
+    caminho_serie = f"{nfe}/{infnfe}/{ide}/{serie}"
     nodefind = doc.find(caminho_serie)
     if not nodefind is None:
         serie_nf = nodefind.text
     else:
         serie_nf = ""
-    caminho_numero_nf = f"{NFe}/{infNFe}/{ide}/{nNF}"
+    caminho_numero_nf = f"{nfe}/{infnfe}/{ide}/{nnf}"
     nodefind = doc.find(caminho_numero_nf)
     if not nodefind is None:
         numero_nf = nodefind.text
     else:
         numero_nf = ""
-    caminho_cnpj = f"{NFe}/{infNFe}/{dest}/{xCNPJ}"
+    caminho_cnpj = f"{nfe}/{infnfe}/{dest}/{xcnpj}"
     nodefind = doc.find(caminho_cnpj)
     if not nodefind is None:
         cnpj = nodefind.text
     else:
         cnpj = ""
-    caminho_destinatario = f"{NFe}/{infNFe}/{dest}/{xNome}"
+    caminho_destinatario = f"{nfe}/{infnfe}/{dest}/{xnome}"
     nodefind = doc.find(caminho_destinatario)
     if not nodefind is None:
         destinatario = nodefind.text
     else:
         destinatario = ""
-    caminho_endereco = f"{NFe}/{infNFe}/{dest}/{enderDest}/{xLgr}"
+    caminho_endereco = f"{nfe}/{infnfe}/{dest}/{ender_dest}/{xlgr}"
     nodefind = doc.find(caminho_endereco)
     if not nodefind is None:
         endereco = nodefind.text
     else:
         endereco = ""
-    caminho_numero = f"{NFe}/{infNFe}/{dest}/{enderDest}/{nro}"
+    caminho_numero = f"{nfe}/{infnfe}/{dest}/{ender_dest}/{nro}"
     nodefind = doc.find(caminho_numero)
     if not nodefind is None:
         numero = nodefind.text
     else:
         numero = ""
-    caminho_complemento = f"{NFe}/{infNFe}/{dest}/{enderDest}/{xCpl}"
+    caminho_complemento = f"{nfe}/{infnfe}/{dest}/{ender_dest}/{xcpl}"
     nodefind = doc.find(caminho_complemento)
     if not nodefind is None:
         complemento = nodefind.text
         endereco = f"{endereco}, {numero}{complemento}"
     else:
         endereco = f"{endereco}, {numero}"
-    caminho_bairro = f"{NFe}/{infNFe}/{dest}/{enderDest}/{xBairro}"
+    caminho_bairro = f"{nfe}/{infnfe}/{dest}/{ender_dest}/{xbairro}"
     nodefind = doc.find(caminho_bairro)
     if not nodefind is None:
         bairro = nodefind.text
     else:
         bairro = ""
-    caminho_CEP = f"{NFe}/{infNFe}/{dest}/{enderDest}/{xCEP}"
+    caminho_CEP = f"{nfe}/{infnfe}/{dest}/{ender_dest}/{xcep}"
     nodefind = doc.find(caminho_CEP)
     if not nodefind is None:
         cep = nodefind.text
     else:
         cep = ""
-    caminho_cidade = f"{NFe}/{infNFe}/{dest}/{enderDest}/{xMun}"
+    caminho_cidade = f"{nfe}/{infnfe}/{dest}/{ender_dest}/{xmun}"
     nodefind = doc.find(caminho_cidade)
     if not nodefind is None:
         cidade = nodefind.text
     else:
         cidade = ""
-    caminho_estado = f"{NFe}/{infNFe}/{dest}/{enderDest}/{uf}"
+    caminho_estado = f"{nfe}/{infnfe}/{dest}/{ender_dest}/{estado}"
     nodefind = doc.find(caminho_estado)
     if not nodefind is None:
         estado = nodefind.text
     else:
         estado = ""
-    caminho_telefone = f"{NFe}/{infNFe}/{dest}/{enderDest}/{telefone}"
+    caminho_telefone = f"{nfe}/{infnfe}/{dest}/{ender_dest}/{telefone}"
     nodefind = doc.find(caminho_telefone)
     if not nodefind is None:
         telefone = nodefind.text
     else:
         telefone = ""
-    caminho_info = f"{NFe}/{infNFe}/{infAdic}/{infCpl}"
+    caminho_info = f"{nfe}/{infnfe}/{inf_adic}/{inf_cpl}"
     nodefind = doc.find(caminho_info)
     if not nodefind is None:
         informa = nodefind.text
     else:
         informa = ""
-    caminho_volume = f"{NFe}/{infNFe}/{transp}/{vol}/{qVol}"
+    caminho_volume = f"{nfe}/{infnfe}/{transp}/{vol}/{qvol}"
     nodefind = doc.find(caminho_volume)
     if not nodefind is None:
         volume = nodefind.text
     else:
         volume = 0
-    caminho_peso = f"{NFe}/{infNFe}/{transp}/{vol}/{pesoB}"
+    caminho_peso = f"{nfe}/{infnfe}/{transp}/{vol}/{peso_bruto}"
     nodefind = doc.find(caminho_peso)
     if not nodefind is None:
         peso = nodefind.text
     else:
         peso = 0.000
-    caminho_valor = f"{NFe}/{infNFe}/{total}/{ICMSTot}/{vNF}"
+    caminho_valor = f"{nfe}/{infnfe}/{total}/{icms_total}/{valor_nf}"
     nodefind = doc.find(caminho_valor)
     if not nodefind is None:
         valor = nodefind.text
