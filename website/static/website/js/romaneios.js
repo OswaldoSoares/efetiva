@@ -781,6 +781,20 @@ $(document).on('change', $('.js-file-xml'), function() {
     }
 });
 
+$(document).on('change', $('.js-directory-xml'), function() {
+    alert('OK')
+    var input = document.getElementById('directory-xml');
+    var files = input.files
+    var xmlFiles = [];
+    $.each(files, function(index, value) {
+        if (value.name.endsWith('.xml')) {
+            xmlFiles.push(value);
+        }
+    });
+    var xmlFiles_length = xmlFiles.length
+    $('.js-total-xml').text(xmlFiles_length + ' Arquivos XML')
+});
+
 $(document).on('submit', '.js-carrega-xml', function(event) {
     event.preventDefault();
     var formData = new FormData($(this)[0])
