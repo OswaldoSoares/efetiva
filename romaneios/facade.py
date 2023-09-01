@@ -783,7 +783,8 @@ def ler_nota_xml(nota):
     caminho_dhemi = f"{nfe}/{infnfe}/{ide}/{dhemi}"
     nodefind = doc.find(caminho_dhemi)
     if nodefind is not None:
-        data_nf = datetime.datetime.strptime(nodefind.text[0:10], "%Y-%m-%d").date()
+        data_nf = datetime.datetime.strptime(
+            nodefind.text[0:10], "%Y-%m-%d").date()
     else:
         data_nf = ""
     caminho_serie = f"{nfe}/{infnfe}/{ide}/{serie}"
