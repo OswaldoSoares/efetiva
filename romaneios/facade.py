@@ -762,8 +762,8 @@ def ler_nota_xml(nota):
         bairro_emi = nodefind.text
     else:
         bairro_emi = ""
-    caminho_CEP_emi = f"{nfe}/{infnfe}/{emit}/{ender_emit}/{xcep}"
-    nodefind = doc.find(caminho_CEP_emi)
+    caminho_cep_emi = f"{nfe}/{infnfe}/{emit}/{ender_emit}/{xcep}"
+    nodefind = doc.find(caminho_cep_emi)
     if nodefind is not None:
         cep_emi = nodefind.text
     else:
