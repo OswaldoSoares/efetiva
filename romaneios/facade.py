@@ -821,9 +821,6 @@ def ler_nota_xml(nota):
             f"{nfe}/{infnfe}/{total}/{icms_total}/{valor_nf}",
         ),
     }
-    print(lista)
-    for x in lista:
-        print(x)
     return lista
 
 
