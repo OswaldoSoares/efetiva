@@ -702,212 +702,341 @@ def save_nota_romaneio(id_nota, id_romaneio):
 def ler_nota_xml(nota):
     tree = ET.parse(nota)
     doc = tree.getroot()
-    nfe = "{http://www.portalfiscal.inf.br/nfe}nfe"
-    infnfe = "{http://www.portalfiscal.inf.br/nfe}infnfe"
+    nfe = "{http://www.portalfiscal.inf.br/nfe}NFe"
+    infnfe = "{http://www.portalfiscal.inf.br/nfe}infNFe"
     ide = "{http://www.portalfiscal.inf.br/nfe}ide"
-    dhemi = "{http://www.portalfiscal.inf.br/nfe}dhemi"
+    dhemi = "{http://www.portalfiscal.inf.br/nfe}dhEmi"
     serie = "{http://www.portalfiscal.inf.br/nfe}serie"
-    nnf = "{http://www.portalfiscal.inf.br/nfe}nnf"
+    nnf = "{http://www.portalfiscal.inf.br/nfe}nNF"
     emit = "{http://www.portalfiscal.inf.br/nfe}emit"
-    ender_emit = "{http://www.portalfiscal.inf.br/nfe}ender_emit"
+    ender_emit = "{http://www.portalfiscal.inf.br/nfe}enderEmit"
     dest = "{http://www.portalfiscal.inf.br/nfe}dest"
     xcnpj = "{http://www.portalfiscal.inf.br/nfe}CNPJ"
-    xnome = "{http://www.portalfiscal.inf.br/nfe}xnome"
-    ender_dest = "{http://www.portalfiscal.inf.br/nfe}ender_dest"
-    xlgr = "{http://www.portalfiscal.inf.br/nfe}xlgr"
+    xnome = "{http://www.portalfiscal.inf.br/nfe}xNome"
+    ender_dest = "{http://www.portalfiscal.inf.br/nfe}enderDest"
+    xlgr = "{http://www.portalfiscal.inf.br/nfe}xLgr"
     nro = "{http://www.portalfiscal.inf.br/nfe}nro"
-    xcpl = "{http://www.portalfiscal.inf.br/nfe}xcpl"
-    xbairro = "{http://www.portalfiscal.inf.br/nfe}xbairro"
+    xcpl = "{http://www.portalfiscal.inf.br/nfe}xCpl"
+    xbairro = "{http://www.portalfiscal.inf.br/nfe}xBairro"
     xcep = "{http://www.portalfiscal.inf.br/nfe}CEP"
-    xmun = "{http://www.portalfiscal.inf.br/nfe}xmun"
+    xmun = "{http://www.portalfiscal.inf.br/nfe}xMun"
     estado = "{http://www.portalfiscal.inf.br/nfe}UF"
     telefone = "{http://www.portalfiscal.inf.br/nfe}Telefone"
-    inf_adic = "{http://www.portalfiscal.inf.br/nfe}inf_adic"
-    inf_cpl = "{http://www.portalfiscal.inf.br/nfe}inf_cpl"
+    inf_adic = "{http://www.portalfiscal.inf.br/nfe}infAdic"
+    inf_cpl = "{http://www.portalfiscal.inf.br/nfe}infCpl"
     transp = "{http://www.portalfiscal.inf.br/nfe}transp"
     vol = "{http://www.portalfiscal.inf.br/nfe}vol"
     qvol = "{http://www.portalfiscal.inf.br/nfe}qvol"
-    peso_bruto = "{http://www.portalfiscal.inf.br/nfe}peso_bruto"
-    icms_total = "{http://www.portalfiscal.inf.br/nfe}icms_total"
+    peso_bruto = "{http://www.portalfiscal.inf.br/nfe}pesoB"
+    icms_total = "{http://www.portalfiscal.inf.br/nfe}ICMSTot"
     total = "{http://www.portalfiscal.inf.br/nfe}total"
-    valor_nf = "{http://www.portalfiscal.inf.br/nfe}valor_nf"
-    caminho_emitente = f"{nfe}/{infnfe}/{emit}/{xnome}"
+    valor_nf = "{http://www.portalfiscal.inf.br/nfe}vNF"
+    lista = {
+        'emitente': xml_emitente(
+            doc,
+            f"{nfe}/{infnfe}/{emit}/{xnome}",
+        ),
+        'endereco_emi': xml_endereco_emi(
+            doc,
+            f"{nfe}/{infnfe}/{emit}/{ender_emit}/{xlgr}",
+            f"{nfe}/{infnfe}/{emit}/{ender_emit}/{nro}",
+            f"{nfe}/{infnfe}/{emit}/{ender_emit}/{xcpl}",
+        ),
+        'bairro_emi': xml_bairro_emi(
+            doc,
+            f"{nfe}/{infnfe}/{emit}/{ender_emit}/{xbairro}",
+        ),
+        'cep_emi': xml_cep_emi(
+            doc,
+            f"{nfe}/{infnfe}/{emit}/{ender_emit}/{xcep}",
+        ),
+        'cidade_emi': xml_cidade_emi(
+            doc,
+            f"{nfe}/{infnfe}/{emit}/{ender_emit}/{xmun}",
+        ),
+        'estado_emi': xml_estado_emi(
+            doc,
+            f"{nfe}/{infnfe}/{emit}/{ender_emit}/{estado}",
+        ),
+        'data_nf': xml_data_nf(
+            doc,
+            f"{nfe}/{infnfe}/{ide}/{dhemi}",
+        ),
+        'serie_nf': xml_serie_nf(
+            doc,
+            f"{nfe}/{infnfe}/{ide}/{serie}",
+        ),
+        'numero_nf': xml_numero_nf(
+            doc,
+            f"{nfe}/{infnfe}/{ide}/{nnf}",
+        ),
+        'cnpj': xml_cnpj(
+            doc,
+            f"{nfe}/{infnfe}/{dest}/{xcnpj}",
+        ),
+        'destinatario': xml_destinatario(
+            doc,
+            f"{nfe}/{infnfe}/{dest}/{xnome}",
+        ),
+        'endereco': xml_endereco(
+            doc,
+            f"{nfe}/{infnfe}/{dest}/{ender_dest}/{xlgr}",
+            f"{nfe}/{infnfe}/{dest}/{ender_dest}/{nro}",
+            f"{nfe}/{infnfe}/{dest}/{ender_dest}/{xcpl}",
+        ),
+        'bairro': xml_bairro(
+            doc,
+            f"{nfe}/{infnfe}/{dest}/{ender_dest}/{xbairro}",
+        ),
+        'cep': xml_cep(
+            doc,
+            f"{nfe}/{infnfe}/{dest}/{ender_dest}/{xcep}",
+        ),
+        'cidade': xml_cidade(
+            doc,
+            f"{nfe}/{infnfe}/{dest}/{ender_dest}/{xmun}",
+        ),
+        'estado': xml_estado(
+            doc,
+            f"{nfe}/{infnfe}/{dest}/{ender_dest}/{estado}",
+        ),
+        'telefone': xml_telefone(
+            doc,
+            f"{nfe}/{infnfe}/{dest}/{ender_dest}/{telefone}",
+        ),
+        'informa': xml_informa(
+            doc,
+            f"{nfe}/{infnfe}/{inf_adic}/{inf_cpl}",
+        ),
+        'volume': xml_volume(
+            doc,
+            f"{nfe}/{infnfe}/{transp}/{vol}/{qvol}",
+        ),
+        'peso': xml_peso(
+            doc,
+            f"{nfe}/{infnfe}/{transp}/{vol}/{peso_bruto}",
+        ),
+        'valor': xml_valor(
+            doc,
+            f"{nfe}/{infnfe}/{total}/{icms_total}/{valor_nf}",
+        ),
+    }
+    print(lista)
+    for x in lista:
+        print(x)
+    return lista
+
+
+def xml_emitente(doc, caminho_emitente):
     nodefind = doc.find(caminho_emitente)
     if nodefind is not None:
         emitente = nodefind.text
     else:
         emitente = ""
-    caminho_endereco_emi = f"{nfe}/{infnfe}/{emit}/{ender_emit}/{xlgr}"
+    return emitente
+
+
+def xml_endereco_emi(doc, caminho_endereco_emi, caminho_numero_emi, caminho_complemento_emi):
     nodefind = doc.find(caminho_endereco_emi)
     if nodefind is not None:
         endereco_emi = nodefind.text
     else:
         endereco_emi = ""
-    caminho_numero_emi = f"{nfe}/{infnfe}/{emit}/{ender_emit}/{nro}"
     nodefind = doc.find(caminho_numero_emi)
     if nodefind is not None:
         numero_emi = nodefind.text
     else:
         numero_emi = ""
-    caminho_complemento_emi = f"{nfe}/{infnfe}/{emit}/{ender_emit}/{xcpl}"
     nodefind = doc.find(caminho_complemento_emi)
     if nodefind is not None:
         complemento_emi = nodefind.text
         endereco_emi = f"{endereco_emi}, {numero_emi}{complemento_emi}"
     else:
         endereco_emi = f"{endereco_emi}, {numero_emi}"
-    caminho_bairro_emi = f"{nfe}/{infnfe}/{emit}/{ender_emit}/{xbairro}"
+    return endereco_emi
+
+
+def xml_bairro_emi(doc, caminho_bairro_emi):
     nodefind = doc.find(caminho_bairro_emi)
     if nodefind is not None:
         bairro_emi = nodefind.text
     else:
         bairro_emi = ""
-    caminho_cep_emi = f"{nfe}/{infnfe}/{emit}/{ender_emit}/{xcep}"
+    return bairro_emi
+
+
+def xml_cep_emi(doc, caminho_cep_emi):
     nodefind = doc.find(caminho_cep_emi)
     if nodefind is not None:
         cep_emi = nodefind.text
     else:
         cep_emi = ""
-    caminho_cidade_emi = f"{nfe}/{infnfe}/{emit}/{ender_emit}/{xmun}"
+    return cep_emi
+
+
+def xml_cidade_emi(doc, caminho_cidade_emi):
     nodefind = doc.find(caminho_cidade_emi)
     if nodefind is not None:
         cidade_emi = nodefind.text
     else:
         cidade_emi = ""
-    caminho_estado_emi = f"{nfe}/{infnfe}/{emit}/{ender_emit}/{estado}"
+    return cidade_emi
+
+
+def xml_estado_emi(doc, caminho_estado_emi):
     nodefind = doc.find(caminho_estado_emi)
     if nodefind is not None:
         estado_emi = nodefind.text
     else:
         estado_emi = ""
-    caminho_dhemi = f"{nfe}/{infnfe}/{ide}/{dhemi}"
+    return estado_emi
+
+
+def xml_data_nf(doc, caminho_dhemi):
     nodefind = doc.find(caminho_dhemi)
     if nodefind is not None:
         data_nf = datetime.datetime.strptime(
             nodefind.text[0:10], "%Y-%m-%d").date()
     else:
         data_nf = ""
-    caminho_serie = f"{nfe}/{infnfe}/{ide}/{serie}"
+    return data_nf
+
+
+def xml_serie_nf(doc, caminho_serie):
     nodefind = doc.find(caminho_serie)
     if nodefind is not None:
         serie_nf = nodefind.text
     else:
         serie_nf = ""
-    caminho_numero_nf = f"{nfe}/{infnfe}/{ide}/{nnf}"
+    return serie_nf
+
+
+def xml_numero_nf(doc, caminho_numero_nf):
     nodefind = doc.find(caminho_numero_nf)
     if nodefind is not None:
         numero_nf = nodefind.text
     else:
         numero_nf = ""
-    caminho_cnpj = f"{nfe}/{infnfe}/{dest}/{xcnpj}"
+    return numero_nf
+
+
+def xml_cnpj(doc, caminho_cnpj):
     nodefind = doc.find(caminho_cnpj)
     if nodefind is not None:
         cnpj = nodefind.text
     else:
         cnpj = ""
-    caminho_destinatario = f"{nfe}/{infnfe}/{dest}/{xnome}"
+    return cnpj
+
+
+def xml_destinatario(doc, caminho_destinatario):
     nodefind = doc.find(caminho_destinatario)
     if nodefind is not None:
         destinatario = nodefind.text
     else:
         destinatario = ""
-    caminho_endereco = f"{nfe}/{infnfe}/{dest}/{ender_dest}/{xlgr}"
+    return destinatario
+
+
+def xml_endereco(doc, caminho_endereco, caminho_numero, caminho_complemento):
     nodefind = doc.find(caminho_endereco)
     if nodefind is not None:
         endereco = nodefind.text
     else:
         endereco = ""
-    caminho_numero = f"{nfe}/{infnfe}/{dest}/{ender_dest}/{nro}"
     nodefind = doc.find(caminho_numero)
     if nodefind is not None:
         numero = nodefind.text
     else:
         numero = ""
-    caminho_complemento = f"{nfe}/{infnfe}/{dest}/{ender_dest}/{xcpl}"
     nodefind = doc.find(caminho_complemento)
     if nodefind is not None:
         complemento = nodefind.text
         endereco = f"{endereco}, {numero}{complemento}"
     else:
         endereco = f"{endereco}, {numero}"
-    caminho_bairro = f"{nfe}/{infnfe}/{dest}/{ender_dest}/{xbairro}"
+    return endereco
+
+
+def xml_bairro(doc, caminho_bairro):
     nodefind = doc.find(caminho_bairro)
     if nodefind is not None:
         bairro = nodefind.text
     else:
         bairro = ""
-    caminho_cep = f"{nfe}/{infnfe}/{dest}/{ender_dest}/{xcep}"
+    return bairro
+
+
+def xml_cep(doc, caminho_cep):
     nodefind = doc.find(caminho_cep)
     if nodefind is not None:
         cep = nodefind.text
     else:
         cep = ""
-    caminho_cidade = f"{nfe}/{infnfe}/{dest}/{ender_dest}/{xmun}"
+    return cep
+
+
+def xml_cidade(doc, caminho_cidade):
     nodefind = doc.find(caminho_cidade)
     if nodefind is not None:
         cidade = nodefind.text
     else:
         cidade = ""
-    caminho_estado = f"{nfe}/{infnfe}/{dest}/{ender_dest}/{estado}"
+    return cidade
+
+
+def xml_estado(doc, caminho_estado):
     nodefind = doc.find(caminho_estado)
     if nodefind is not None:
         estado = nodefind.text
     else:
         estado = ""
-    caminho_telefone = f"{nfe}/{infnfe}/{dest}/{ender_dest}/{telefone}"
+    return estado
+
+
+def xml_telefone(doc, caminho_telefone):
     nodefind = doc.find(caminho_telefone)
     if nodefind is not None:
         telefone = nodefind.text
     else:
         telefone = ""
-    caminho_info = f"{nfe}/{infnfe}/{inf_adic}/{inf_cpl}"
+    return telefone
+
+
+def xml_informa(doc, caminho_info):
     nodefind = doc.find(caminho_info)
     if nodefind is not None:
         informa = nodefind.text
     else:
         informa = ""
-    caminho_volume = f"{nfe}/{infnfe}/{transp}/{vol}/{qvol}"
+    return informa
+
+
+def xml_volume(doc, caminho_volume):
     nodefind = doc.find(caminho_volume)
     if nodefind is not None:
         volume = nodefind.text
     else:
         volume = 0
-    caminho_peso = f"{nfe}/{infnfe}/{transp}/{vol}/{peso_bruto}"
+    return volume
+
+
+def xml_peso(doc, caminho_peso):
     nodefind = doc.find(caminho_peso)
     if nodefind is not None:
         peso = nodefind.text
     else:
         peso = 0.000
-    caminho_valor = f"{nfe}/{infnfe}/{total}/{icms_total}/{valor_nf}"
+    return peso
+
+
+def xml_valor(doc, caminho_valor):
     nodefind = doc.find(caminho_valor)
     if nodefind is not None:
         valor = nodefind.text
     else:
         valor = 0.00
-    lista = {
-        "emitente": emitente,
-        "endereco_emi": endereco_emi,
-        "bairro_emi": bairro_emi,
-        "cep_emi": cep_emi,
-        "cidade_emi": cidade_emi,
-        "estado_emi": estado_emi,
-        "data_nf": data_nf,
-        "serie_nf": serie_nf,
-        "numero_nf": numero_nf,
-        "cnpj": cnpj,
-        "destinatario": destinatario,
-        "endereco": endereco,
-        "bairro": bairro,
-        "cep": cep,
-        "cidade": cidade,
-        "estado": estado,
-        "telefone": telefone,
-        "informa": informa,
-        "volume": volume,
-        "peso": peso,
-        "valor": valor,
-    }
-    return lista
+    return valor
 
 
 def create_contexto_imprime_romaneio(idromaneio, idcliente):
