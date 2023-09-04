@@ -411,12 +411,12 @@ def carrega_xml(request):
 
 
 def carrega_pasta_xml(request):
-    print(f"[INFO] - AQUI")
+    """ Carrega pasta com arquivos XML """
     files = request.FILES.getlist("xml_files")
     for x in files:
+        print(f'[INFO] - Arquivos {x}')
         facade.ler_nota_xml(x)
-    # print(f"[INFO] - {files}")
-    dados = dict()
+    dados = {}
     return JsonResponse(dados)
 
 
