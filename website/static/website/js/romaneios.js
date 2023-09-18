@@ -782,7 +782,6 @@ $(document).on('change', $('.js-file-xml'), function() {
 });
 
 $(document).on('change', $('.js-directory-xml'), function() {
-    alert('OK')
     var input = document.getElementById('directory-xml');
     var files = input.files
     var xmlFiles = [];
@@ -838,7 +837,7 @@ $(document).on('submit', '.js-carrega-xml', function(event) {
 
 $(document).on('submit', '.js-carrega-pasta-xml', function(event) {
     event.preventDefault();
-    var formData = new FormData($(this)[0])
+    var formData = new FormData()
     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
     formData.append('csrfmiddlewaretoken', csrftoken);
     var input = document.getElementById('directory-xml');
@@ -846,11 +845,8 @@ $(document).on('submit', '.js-carrega-pasta-xml', function(event) {
     var xmlFiles = [];
     $.each(files, function(index, value) {
         if (value.name.endsWith('.xml')) {
-            xmlFiles.push(value);
+            formData.append('xml_files', value)
         }
-    });
-    $.each(xmlFiles, function(index, value) {
-        formData.append('xml_files', value)
     });
     var xmlFiles_length = xmlFiles.length
     $('.js-total-xml').text(xmlFiles_length + ' Arquivos XML')
