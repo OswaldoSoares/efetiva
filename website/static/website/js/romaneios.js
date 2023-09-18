@@ -850,6 +850,11 @@ $(document).on('submit', '.js-carrega-pasta-xml', function(event) {
     });
     var xmlFiles_length = xmlFiles.length
     $('.js-total-xml').text(xmlFiles_length + ' Arquivos XML')
+    if (xmlFiles == 0) {
+        $('.btn-pasta-arquvios-xml').hide()
+    } else {
+        $('.btn-pasta-arquivos-xml').show()
+    }
     $.ajax({
         type: $(this).attr('method'),
         url: '/romaneios/carrega_pasta_xml',
