@@ -91,6 +91,7 @@ $(document).on('click', '.js-nota-pendente', function() {
 
 $(document).on('click', '.js-mostra-oculta-form-nota', function() {
     mostraBodyFormNota();
+    $(".btn-pasta-arquivos-xml").hide()
 })
 
 var mostraBodyFormNota = function() {
