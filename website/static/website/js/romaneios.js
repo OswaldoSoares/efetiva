@@ -782,6 +782,7 @@ $(document).on('change', $('.js-file-xml'), function() {
 });
 
 $(document).on('change', $('.js-directory-xml'), function() {
+    $('#btn-pasta-arquvios-xml').hide()
     var input = document.getElementById('directory-xml');
     var files = input.files
     var xmlFiles = [];
@@ -791,6 +792,15 @@ $(document).on('change', $('.js-directory-xml'), function() {
         }
     });
     var xmlFiles_length = xmlFiles.length
+    if (xmlFiles.length === 0) {
+        $(".btn-pasta-arquivos-xml").hide()
+        $(".btn-extra-pasta-arquivos-xml").show()
+        console.log("Oswaldo - js-directory-xml change")
+    } else {
+        $(".btn-pasta-arquivos-xml").show()
+        $(".btn-extra-pasta-arquivos-xml").hide()
+    }
+    console.log(xmlFiles)
     $('.js-total-xml').text(xmlFiles_length + ' Arquivos XML')
 });
 
@@ -850,11 +860,6 @@ $(document).on('submit', '.js-carrega-pasta-xml', function(event) {
     });
     var xmlFiles_length = xmlFiles.length
     $('.js-total-xml').text(xmlFiles_length + ' Arquivos XML')
-    if (xmlFiles == 0) {
-        $('.btn-pasta-arquvios-xml').hide()
-    } else {
-        $('.btn-pasta-arquivos-xml').show()
-    }
     $.ajax({
         type: $(this).attr('method'),
         url: '/romaneios/carrega_pasta_xml',
