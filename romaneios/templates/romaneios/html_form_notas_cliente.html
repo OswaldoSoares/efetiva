@@ -783,6 +783,49 @@
     </div>
     <div class="card-body">
         <div class="card-body-item">
+            <!-- LOCAL DE COLETA -->
+            <div class="input-group">
+                <i class="bi bi-building
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                title="LOCAL DE COLETA"></i>
+                {% if nota_form %}
+                <input type="hidden" name="idnota" value="{{ nota_form.id_nota_clientes }}"> {% endif %}
+                <select class="form-control
+                form-control-minuta js-cliente" name="localcoleta" id="localcoleta">
+                    <option value="">SELECIONE LOCAL COLETA</option>
+                    {% if nota_form %}
+                        {% if nota_form.local_coleta == cliente %}
+                        <option value="{{ cliente }}" selected>
+                            {{ cliente }}
+                        </option>
+                        <option value="DESTINATÁRIO">
+                            DESTINATÁRIO
+                        </option>
+                        {% else %}
+                        <option value="{{ cliente }}">
+                            {{ cliente }}
+                        </option>
+                        <option value="DESTINATÁRIO" selected>
+                            DESTINATÁRIO
+                        </option>
+                        {% endif %}
+                    {% else %}
+                        <option value={{ cliente }}>
+                            {{ cliente }}
+                        </option>
+                        <option value="DESTINATÁRIO">
+                            DESTINATÁRIO
+                        </option>
+                    {% endif %}
+                </select>
+                <i class="bi bi-check
+                input-group-addon
+                addon-my-color
+                i-button-null"
+                ></i>
+            </div>
             <div class="input-group">
                 <div class="input-group-addon addon-my-color">
                     <input type="file"
