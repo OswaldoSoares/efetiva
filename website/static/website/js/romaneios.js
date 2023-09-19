@@ -795,12 +795,10 @@ $(document).on('change', $('.js-directory-xml'), function() {
     if (xmlFiles.length === 0) {
         $(".btn-pasta-arquivos-xml").hide()
         $(".btn-extra-pasta-arquivos-xml").show()
-        console.log("Oswaldo - js-directory-xml change")
     } else {
         $(".btn-pasta-arquivos-xml").show()
         $(".btn-extra-pasta-arquivos-xml").hide()
     }
-    console.log(xmlFiles)
     $('.js-total-xml').text(xmlFiles_length + ' Arquivos XML')
 });
 
