@@ -793,7 +793,7 @@ $(document).on('change', $('.js-directory-xml'), function() {
         }
     });
     var xmlFiles_length = xmlFiles.length
-    if (xmlFiles.length === 0) {
+    if (xmlFiles.length == 0) {
         $(".btn-pasta-arquivos-xml").hide()
         $(".btn-extra-pasta-arquivos-xml").show()
     } else {
@@ -848,7 +848,9 @@ $(document).on('submit', '.js-carrega-pasta-xml', function(event) {
     event.preventDefault();
     var formData = new FormData()
     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-    formData.append('csrfmiddlewaretoken', csrftoken);
+    var local_coleta = $("#localcoleta-pasta").val();
+    formData.append("csrfmiddlewaretoken", csrftoken);
+    formData.append("local_coleta", local_coleta);
     var input = document.getElementById('directory-xml');
     var files = input.files
     var xmlFiles = [];
