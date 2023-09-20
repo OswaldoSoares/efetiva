@@ -849,8 +849,10 @@ $(document).on('submit', '.js-carrega-pasta-xml', function(event) {
     var formData = new FormData()
     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
     var local_coleta = $("#localcoleta-pasta").val();
+    var id_cliente = $("#id_cliente").val();
     formData.append("csrfmiddlewaretoken", csrftoken);
     formData.append("local_coleta", local_coleta);
+    formData.append("id_cliente", id_cliente);
     var input = document.getElementById('directory-xml');
     var files = input.files
     var xmlFiles = [];
