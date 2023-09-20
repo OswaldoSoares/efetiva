@@ -412,13 +412,16 @@ def carrega_xml(request):
 
 def carrega_pasta_xml(request):
     """ Carrega pasta com arquivos XML """
-    print(request.POST)
     local_coleta = request.POST.get("local_coleta")
+    id_cliente = request.POST.get("id_cliente")
     files = request.FILES.getlist("xml_files")
     if local_coleta:
         for x in files:
-            print(f'[INFO] - Arquivos {x}')
-            facade.ler_nota_xml(x)
+            nota = facade.ler_nota_xml(x)
+            nota['local_coleta'] = local_coleta
+            nota['id_cliente'] = id_cliente
+            nota_xml = facade.read_nota_xml(nota)
+            facade.save_notas_cliente(nota_xml)
     dados = {}
     return JsonResponse(dados)
 
