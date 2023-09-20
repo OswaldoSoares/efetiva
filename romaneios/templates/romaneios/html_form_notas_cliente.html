@@ -6,7 +6,7 @@
             {{ cliente }}
         </span>
         <i class="bi bi-chevron-down i-button js-mostra-oculta-form-nota"></i>
-        <input type="hidden" id="id_cliente" value="{{ idcliente }}">
+       <input type="hidden" id="id_cliente" value="{{ idcliente }}">
     </div>
     <div class="card-body">
         <div class="card-body-item js-mostra-form-nota">
@@ -18,7 +18,8 @@
                 i-button-null"
                 title="LOCAL DE COLETA"></i>
                 {% if nota_form %}
-                <input type="hidden" name="idnota" value="{{ nota_form.id_nota_clientes }}"> {% endif %}
+                <input type="hidden" name="idnota" value="{{ nota_form.id_nota_clientes }}">
+                {% endif %}
                 <select class="form-control
                 form-control-minuta js-cliente" name="localcoleta" id="localcoleta">
                     <option value="">SELECIONE LOCAL COLETA</option>
@@ -783,6 +784,7 @@
     </div>
     <div class="card-body">
         <div class="card-body-item">
+             <input type="hidden" id="id_cliente" value="{{ idcliente }}">
             <!-- LOCAL DE COLETA -->
             <div class="input-group">
                 <i class="bi bi-building
