@@ -275,6 +275,34 @@ def read_nota_database(_id_not):
     return nota_database
 
 
+def read_nota_xml(nota):
+    nota_xml = dict()
+    nota_xml["local_coleta"] = nota["local_coleta"]
+    nota_xml["emitente"] = nota['emitente']
+    nota_xml["endereco_emi"] = nota['endereco_emi']
+    nota_xml["cep_emi"] = nota['cep_emi']
+    nota_xml["bairro_emi"] = nota['bairro_emi']
+    nota_xml["cidade_emi"] = nota['cidade_emi']
+    nota_xml["estado_emi"] = nota['estado_emi']
+    nota_xml["data_nota"] = datetime.datetime.strftime(nota['data_nf'], "%Y-%m-%d")
+    nota_xml["serie_nota"] = nota['serie_nf']
+    nota_xml["numero_nota"] = nota['numero_nf']
+    nota_xml["destinatario"] = nota['destinatario']
+    nota_xml["cnpj"] = nota['cnpj']
+    nota_xml["endereco"] = nota['endereco']
+    nota_xml["cep"] = nota['cep']
+    nota_xml["bairro"] = nota['bairro']
+    nota_xml["cidade"] = nota['cidade']
+    nota_xml["estado"] = nota['estado']
+    nota_xml["contato"] = nota['telefone']
+    nota_xml["informa"] = nota['informa']
+    nota_xml["volume"] = nota['volume']
+    nota_xml["peso"] = str(nota['peso'])
+    nota_xml["valor"] = str(nota['valor'])
+    nota_xml["idcliente"] = nota['id_cliente']
+    return nota_xml
+
+
 def save_notas_cliente(nota):
     obj = NotasClientes()
     obj.LocalColeta = nota["local_coleta"]
