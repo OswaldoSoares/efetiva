@@ -422,8 +422,16 @@ def carrega_pasta_xml(request):
             nota['id_cliente'] = id_cliente
             nota_xml = facade.read_nota_xml(nota)
             facade.save_notas_cliente(nota_xml)
-    dados = {}
-    return JsonResponse(dados)
+    contexto = facade.create_contexto_notas(id_cliente, "NOTA CADASTRADA", "NumeroNota")
+    contexto.update({"idcliente": id_cliente})
+    quantidade_notas = facade.create_contexto_quantidades_status(id_cliente)
+    contexto.update({"rotas": quantidade_notas[0]["rota"]})
+    contexto.update({"cadastrada": quantidade_notas[0]["cadastrada"]})
+    contexto.update({"pendente": quantidade_notas[0]["pendente"]})
+    contexto.update({"recusada": quantidade_notas[0]["recusada"]})
+    contexto.update({"coletada": quantidade_notas[0]["coletada"]})
+    data = facade.create_data_filtro_status_reduzida(request, contexto)
+    return data
 
 
 def orderna_notas(request):
