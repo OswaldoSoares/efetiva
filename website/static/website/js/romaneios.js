@@ -872,11 +872,21 @@ $(document).on('submit', '.js-carrega-pasta-xml', function(event) {
         beforeSend: function() {
             $(".text-loader").text("Aguarde, Salvando " + xmlFiles_length + " arquivos XML");
             $(".box-loader").show();
+            $(".card-lista-notas-cliente").hide()
+            $(".card-quantidade-notas").hide()
         },
         success: function(data) {
-            $(".box-loader").hide();
             $(".text-loader").text("Aguarde...");
-        },
+            $(".card-lista-notas-cliente").html(data.html_card_lista_notas_cliente)
+            $(".js-notas-filtro").html("NOTAS CADASTRADAS")
+            $(".card-lista-notas-cliente").show()
+            $(".card-lista-romaneios").show()
+            $(".js-adiciona-nota-romaneio").hide()
+            $(".card-quantidade-notas").html(data.html_quantidade_notas)
+            $(".card-quantidade-notas").show()
+            $(".box-loader").hide()
+            $(window).scrollTop(0)
+       },
     });
 });
 
