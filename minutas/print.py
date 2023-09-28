@@ -1,13 +1,9 @@
 import datetime
 from decimal import Decimal
 from io import BytesIO
-from django.core.files.base import ContentFile
 from django.http import HttpResponse
 from reportlab.lib.colors import HexColor
-from reportlab.lib.enums import TA_JUSTIFY
-from reportlab.lib.styles import ParagraphStyle
 from reportlab.pdfgen import canvas
-from reportlab.platypus import Paragraph
 from reportlab.lib.pagesizes import A4, landscape
 from website.facade import cmp, valor_ponto_milhar
 
