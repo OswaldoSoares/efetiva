@@ -1,3 +1,6 @@
+"""
+    Modulo impressões de relátorios
+"""
 import os
 from datetime import datetime
 from decimal import Decimal
@@ -286,7 +289,10 @@ def notas_romaneio(pdf, contexto):
             end_compl = f"{endereco} - {bairro} - CEP: {cep} - {cidade} - {estado}"
         id_not = item.idNotasClientes.idNotasClientes
         emitente = nome_curto(item.idNotasClientes.Emitente)
-        data_nota = datetime.strftime(item.idNotasClientes.DataColeta, "%d/%m/%Y")
+        data_nota = datetime.strftime(
+            item.idNotasClientes.DataColeta,
+            "%d/%m/%Y",
+        )
         serie = item.idNotasClientes.SerieNota
         numero = item.idNotasClientes.NumeroNota
         # Cliente não quer que coloca pontos e traços no CNPJ - 29/03/2023
@@ -346,7 +352,7 @@ def notas_romaneio(pdf, contexto):
                     cmp(20),
                     cmp(11),
                     f"{notas} NOTAS - {entregas} ENTREGAS",
-                ),
+                )
                 pdf.drawCentredString(
                     cmp(105),
                     cmp(11),
