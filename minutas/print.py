@@ -52,6 +52,7 @@ def body(pdf, contexto, titulo):
     linha = 195
     total_seguro_geral = 0.00
     total_despesas_geral = Decimal(0.00)
+    total_peso_geral = Decimal(0.00)
     for x in minutas:
         if linha <= 20:
             pdf.line(cmp(10), cmp(linha), cmp(287), cmp(linha))
@@ -105,6 +106,7 @@ def body(pdf, contexto, titulo):
             peso = valor_ponto_milhar(y["peso"], 3)
             if y["peso"]:
                 peso_total += y["peso"]
+                total_peso_geral += y["peso"]
             pdf.drawCentredString(cmp(75), cmp(linha_for-3), f"{romaneio}")
             pdf.drawRightString(cmp(118), cmp(linha_for-3), f"{peso} kg")
             linha_for -= 3
@@ -149,9 +151,13 @@ def body(pdf, contexto, titulo):
     pdf.line(cmp(10), cmp(linha), cmp(287), cmp(linha))
     total_seguro_geral = valor_ponto_milhar(total_seguro_geral, 2)
     total_despesas_geral = valor_ponto_milhar(total_despesas_geral, 2)
+    total_peso_geral = valor_ponto_milhar(total_peso_geral, 3)
     pdf.line(cmp(10), cmp(15.5), cmp(287), cmp(15.5))
-    pdf.drawString(cmp(12), cmp(12), f"TOTAL SEGUROS: R$ {total_seguro_geral}")
-    pdf.drawCentredString(cmp(148.5), cmp(12), f"{str(len(minutas)).zfill(2)} MINUTAS")
-    pdf.drawRightString(cmp(285), cmp(12), f"TOTAL DESPESAS: R$ {total_despesas_geral}")
+    pdf.drawString(cmp(12), cmp(12), f"{str(len(minutas)).zfill(2)} MINUTAS")
+    pdf.drawRightString(
+        cmp(285),
+        cmp(12),
+        f"TOTAL SEGUROS: R$ {total_seguro_geral} - PESO TOTAL: {total_peso_geral} kg - TOTAL DESPESAS: R$ {total_despesas_geral}"
+    )
     pdf.roundRect(cmp(10), cmp(10), cmp(277), cmp(190), 10)
     return pdf
