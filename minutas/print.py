@@ -139,7 +139,6 @@ def body(pdf, contexto, titulo):
                 pdf.drawRightString(cmp(238), cmp(linha-3), f"Total Despesas: R$ {total_despesas}")
             linha -= 4
         valor_seguro = valor_ponto_milhar(x["recebe"]["t_segu"], 2)
-        print(type(x["recebe"]["t_segu"]))
         total_seguro_geral += x["recebe"]["t_segu"]
         valor_calculo = valor_ponto_milhar(x["recebe_minuta"], 2)
         valor_minuta = valor_ponto_milhar(x["valor_minuta"], 2)
