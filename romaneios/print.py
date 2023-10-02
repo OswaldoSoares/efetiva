@@ -428,15 +428,15 @@ def notas_status(pdf, contexto):
     )
     linha = 242.8
     for item_x in contexto["notas"]:
+        serie = "NÃO INFORMADA"
+        cnpj = "NÃO INFORMADO"
+        placa = "NÃO INFORMADA"
+        motorista = "NÃO INFORMADO"
         data_nota = datetime.strftime(item_x["data_nota"], "%d/%m/%Y")
         if item_x["serie_nota"]:
             serie = item_x["serie_nota"]
-        else:
-            serie = "NÃO INFORMADA"
         if item_x["cnpj"]:
             cnpj = item_x["cnpj"]
-        else:
-            cnpj = "NÃO INFORMADO"
         valor = (
             f"{item_x['valor']:,.2f}".replace(
                 ",",
@@ -454,9 +454,6 @@ def notas_status(pdf, contexto):
         if item_x["placa_motorista"]:
             placa = item_x["placa_motorista"][0]["placa"]
             motorista = item_x["placa_motorista"][0]["motorista"]
-        else:
-            placa = "NÃO INFORMADA"
-            motorista = "NÃO INFORMADO"
         pdf.setFont("Times-Roman", 9)
         if item_x["local_coleta"] == "DESTINATÁRIO":
             pdf.drawString(
@@ -507,20 +504,26 @@ def notas_status(pdf, contexto):
         pdf.line(cmp(12), cmp(linha), cmp(198), cmp(linha))
         linha -= 3
         if linha < 20:
-            pdf.line(cmp(10), cmp(14), cmp(200), cmp(14))
-            notas = str(len(contexto["notas"])).zfill(3)
-            pagina = str(pdf.getPageNumber()).zfill(2)
-            pdf.drawString(cmp(20), cmp(11), f"{notas} NOTAS")
-            pdf.drawRightString(cmp(190), cmp(11), f"PÁGINA {pagina}")
-            pdf.showPage()
+            notas_status_fim_pagina(pdf, contexto)
             header(pdf)
             header_nota_status(pdf, contexto)
             header_cliente(pdf, contexto)
             linha = 242.8
+    notas_status_fim_pagina(pdf, contexto)
+    return pdf
+
+
+def notas_status_fim_pagina(pdf, contexto):
+    """
+
+    Args:
+        pdf:
+        contexto:
+
+    """
     pdf.line(cmp(10), cmp(14), cmp(200), cmp(14))
     notas = str(len(contexto["notas"])).zfill(3)
     pagina = str(pdf.getPageNumber()).zfill(2)
     pdf.drawString(cmp(20), cmp(11), f"{notas} NOTAS")
     pdf.drawRightString(cmp(190), cmp(11), f"PÁGINA {pagina}")
     pdf.showPage()
-    return pdf
