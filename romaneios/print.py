@@ -68,7 +68,7 @@ def print_romaneio(contexto):
     response["Content-Disposition"] = f'filename="ROMANEIO {rom_numero}.pdf'
     buffer = BytesIO()
     pdf = canvas.Canvas(buffer)
-    header(pdf, contexto)
+    header(pdf)
     header_romaneio(pdf, contexto)
     header_cliente(pdf, contexto)
     notas_romaneio(pdf, contexto)
@@ -111,7 +111,7 @@ def print_notas_status(contexto):
     response["Content-Disposition"] = f'filename="RELATÓRIO - NOTAS: {status_nota}.pdf'
     buffer = BytesIO()
     pdf = canvas.Canvas(buffer)
-    header(pdf, contexto)
+    header(pdf)
     header_nota_status(pdf, contexto)
     header_cliente(pdf, contexto)
     notas_status(pdf, contexto)
@@ -360,7 +360,7 @@ def notas_romaneio(pdf, contexto):
                 )
                 pdf.drawRightString(cmp(190), cmp(11), f"PÁGINA {pagina}")
                 pdf.showPage()
-                header(pdf, contexto)
+                header(pdf)
                 header_romaneio(pdf, contexto)
                 header_cliente(pdf, contexto)
                 linha = 242.8
@@ -483,7 +483,7 @@ def notas_status(pdf, contexto):
             pdf.drawString(cmp(20), cmp(11), f"{notas} NOTAS")
             pdf.drawRightString(cmp(190), cmp(11), f"PÁGINA {pagina}")
             pdf.showPage()
-            header(pdf, contexto)
+            header(pdf)
             header_nota_status(pdf, contexto)
             header_cliente(pdf, contexto)
             linha = 242.8
