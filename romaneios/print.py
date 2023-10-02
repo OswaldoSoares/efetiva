@@ -5,7 +5,6 @@ import os
 from datetime import datetime
 from decimal import Decimal
 from io import BytesIO
-from pprint import pprint
 
 from django.core.files.base import ContentFile
 from django.http import HttpResponse
@@ -260,7 +259,6 @@ def notas_romaneio(pdf, contexto):
     total_romaneio = Decimal(0.00)
     peso_romaneio = Decimal(0.00)
     for indice, item in enumerate(contexto["notas"]):
-        pprint(item.idNotasClientes.NumeroNota)
         local_endereco = local_servico(item)
         id_not = item.idNotasClientes.idNotasClientes
         data_nota = datetime.strftime(
