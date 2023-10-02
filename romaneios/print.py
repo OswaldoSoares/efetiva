@@ -427,18 +427,18 @@ def notas_status(pdf, contexto):
         textColor=HexColor("#FF0000"),
     )
     linha = 242.8
-    for x in contexto["notas"]:
-        data_nota = datetime.strftime(x["data_nota"], "%d/%m/%Y")
-        if x["serie_nota"]:
-            serie = x["serie_nota"]
+    for item_x in contexto["notas"]:
+        data_nota = datetime.strftime(item_x["data_nota"], "%d/%m/%Y")
+        if item_x["serie_nota"]:
+            serie = item_x["serie_nota"]
         else:
             serie = "NÃO INFORMADA"
-        if x["cnpj"]:
-            cnpj = x["cnpj"]
+        if item_x["cnpj"]:
+            cnpj = item_x["cnpj"]
         else:
             cnpj = "NÃO INFORMADO"
         valor = (
-            f"{x['valor']:,.2f}".replace(
+            f"{item_x['valor']:,.2f}".replace(
                 ",",
                 "*",
             )
@@ -451,21 +451,24 @@ def notas_status(pdf, contexto):
                 ".",
             )
         )
-        if x["placa_motorista"]:
-            placa = x["placa_motorista"][0]["placa"]
-            motorista = x["placa_motorista"][0]["motorista"]
+        if item_x["placa_motorista"]:
+            placa = item_x["placa_motorista"][0]["placa"]
+            motorista = item_x["placa_motorista"][0]["motorista"]
         else:
             placa = "NÃO INFORMADA"
             motorista = "NÃO INFORMADO"
         pdf.setFont("Times-Roman", 9)
-        if x["local_coleta"] == "DESTINATÁRIO":
+        if item_x["local_coleta"] == "DESTINATÁRIO":
             pdf.drawString(
                 cmp(12),
                 cmp(linha),
                 (
-                    f"{x['numero_nota']} - {x['emitente'][0:9]}... "
-                    f"- {x['endereco_emi'][0:30]} - {x['bairro_emi']} "
-                    f"- CEP: {x['cep_emi']} - {x['cidade_emi'][0:9]}"
+                    f"{item_x['numero_nota']} "
+                    f"- {item_x['emitente'][0:9]}... "
+                    f"- {item_x['endereco_emi'][0:30]} "
+                    f"- {item_x['bairro_emi']} "
+                    f"- CEP: {item_x['cep_emi']} "
+                    f"- {item_x['cidade_emi'][0:9]}"
                 ),
             )
         else:
@@ -473,9 +476,12 @@ def notas_status(pdf, contexto):
                 cmp(12),
                 cmp(linha),
                 (
-                    f"{x['numero_nota']} - {x['destinatario'][0:9]}... "
-                    f"- {x['endereco'][0:30]} - {x['bairro']} "
-                    f"- CEP: {x['cep']} - {x['cidade'][0:9]}"
+                    f"{item_x['numero_nota']} "
+                    f"- {item_x['destinatario'][0:9]}... "
+                    f"- {item_x['endereco'][0:30]} "
+                    f"- {item_x['bairro']} "
+                    f"- CEP: {item_x['cep']} "
+                    f"- {item_x['cidade'][0:9]}"
                 ),
             )
         if contexto["sort_status"] == "EM ROTA":
@@ -488,10 +494,10 @@ def notas_status(pdf, contexto):
                     f"- CNPJ: {cnpj} - {motorista} - {placa}",
                 ),
             )
-        if x["ocorrencia"]:
-            for y in x["ocorrencia"]:
-                data_ocorrencia = y.DataOcorrencia
-                ocorrencia = f"{data_ocorrencia} - {y.Ocorrencia}"
+        if item_x["ocorrencia"]:
+            for item_y in item_x["ocorrencia"]:
+                data_ocorrencia = item_y.DataOcorrencia
+                ocorrencia = f"{data_ocorrencia} - {item_y.Ocorrencia}"
                 if ocorrencia:
                     para = Paragraph(ocorrencia, style=styles_claro)
                     para.wrapOn(pdf, cmp(186), cmp(297))
