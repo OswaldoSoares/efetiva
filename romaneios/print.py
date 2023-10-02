@@ -5,6 +5,7 @@ import os
 from datetime import datetime
 from decimal import Decimal
 from io import BytesIO
+from pprint import pprint
 
 from django.core.files.base import ContentFile
 from django.http import HttpResponse
@@ -432,18 +433,23 @@ def notas_status(pdf, contexto):
             serie = x["serie_nota"]
         else:
             serie = "NÃO INFORMADA"
-        numero = x["numero_nota"]
-        destinatario = x["destinatario"]
         if x["cnpj"]:
             cnpj = x["cnpj"]
         else:
             cnpj = "NÃO INFORMADO"
-        endereco = x["endereco"]
-        bairro = x["bairro"]
-        cep = x["cep"]
-        cidade = x["cidade"]
         valor = (
-            f"{x['valor']:,.2f}".replace(",", "*").replace(".", ",").replace("*", ".")
+            f"{x['valor']:,.2f}".replace(
+                ",",
+                "*",
+            )
+            .replace(
+                ".",
+                ",",
+            )
+            .replace(
+                "*",
+                ".",
+            )
         )
         if x["placa_motorista"]:
             placa = x["placa_motorista"][0]["placa"]
@@ -452,17 +458,35 @@ def notas_status(pdf, contexto):
             placa = "NÃO INFORMADA"
             motorista = "NÃO INFORMADO"
         pdf.setFont("Times-Roman", 9)
-        pdf.drawString(
-            cmp(12),
-            cmp(linha),
-            f"{numero} - {destinatario[0:9]}... - {endereco[0:30]} - {bairro} - CEP: {cep} - {cidade[0:9]}",
-        )
+        if x["local_coleta"] == "DESTINATÁRIO":
+            pdf.drawString(
+                cmp(12),
+                cmp(linha),
+                (
+                    f"{x['numero_nota']} - {x['emitente'][0:9]}... "
+                    f"- {x['endereco_emi'][0:30]} - {x['bairro_emi']} "
+                    f"- CEP: {x['cep_emi']} - {x['cidade_emi'][0:9]}"
+                ),
+            )
+        else:
+            pdf.drawString(
+                cmp(12),
+                cmp(linha),
+                (
+                    f"{x['numero_nota']} - {x['destinatario'][0:9]}... "
+                    f"- {x['endereco'][0:30]} - {x['bairro']} "
+                    f"- CEP: {x['cep']} - {x['cidade'][0:9]}"
+                ),
+            )
         if contexto["sort_status"] == "EM ROTA":
             linha -= 3
             pdf.drawString(
                 cmp(12),
                 cmp(linha),
-                f"{data_nota} - {serie} - VALOR: R$ {valor} - CNPJ: {cnpj} - {motorista} - {placa}",
+                (
+                    f"{data_nota} - {serie} - VALOR: R$ {valor} "
+                    f"- CNPJ: {cnpj} - {motorista} - {placa}",
+                ),
             )
         if x["ocorrencia"]:
             for y in x["ocorrencia"]:
