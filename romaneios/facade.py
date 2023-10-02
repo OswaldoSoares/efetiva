@@ -2,20 +2,19 @@ import datetime
 import os
 import xml.etree.ElementTree as ET
 from cgitb import html
+from decimal import Decimal
 from xml.dom import ValidationErr
 
 import requests
 from clientes.models import Cliente
-
-
-from decimal import Decimal
 from django.db.models import Max
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from website.facade import nome_curto
 from website.models import FileUpload
 
-from romaneios.models import NotasClientes, NotasOcorrencias, RomaneioNotas, Romaneios
+from romaneios.models import (NotasClientes, NotasOcorrencias, RomaneioNotas,
+                              Romaneios)
 
 
 def create_contexto_seleciona_cliente():
@@ -754,7 +753,7 @@ def ler_nota_xml(nota):
     inf_cpl = "{http://www.portalfiscal.inf.br/nfe}infCpl"
     transp = "{http://www.portalfiscal.inf.br/nfe}transp"
     vol = "{http://www.portalfiscal.inf.br/nfe}vol"
-    qvol = "{http://www.portalfiscal.inf.br/nfe}qvol"
+    qvol = "{http://www.portalfiscal.inf.br/nfe}qVol"
     peso_bruto = "{http://www.portalfiscal.inf.br/nfe}pesoB"
     icms_total = "{http://www.portalfiscal.inf.br/nfe}ICMSTot"
     total = "{http://www.portalfiscal.inf.br/nfe}total"
