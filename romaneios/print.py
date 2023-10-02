@@ -5,6 +5,7 @@ import os
 from datetime import datetime
 from decimal import Decimal
 from io import BytesIO
+from pprint import pprint
 
 from django.core.files.base import ContentFile
 from django.http import HttpResponse
@@ -255,93 +256,63 @@ def notas_romaneio(pdf, contexto):
         contexto:
 
     """
-    styles_claro = ParagraphStyle(
-        "claro",
-        fontName="Times-Roman",
-        fontSize=7,
-        leading=9,
-        alignment=TA_JUSTIFY,
-    )
     linha = 242.8
     total_romaneio = Decimal(0.00)
     peso_romaneio = Decimal(0.00)
     for indice, item in enumerate(contexto["notas"]):
-        if item.idNotasClientes.LocalColeta == "DESTINATÁRIO":
-            coleta = "COLETA"
-            local = item.idNotasClientes.Emitente
-            cnpj = "00000000000000"
-            endereco = item.idNotasClientes.Endereco_emi
-            bairro = item.idNotasClientes.Bairro_emi
-            if item.idNotasClientes.CEP_emi:
-                cep = (
-                    f"{item.idNotasClientes.CEP_emi[0:5]}"
-                    f"-{item.idNotasClientes.CEP_emi[5:]}"
-                )
-            else:
-                cep = "00000-000"
-            cidade = item.idNotasClientes.Cidade_emi
-            estado = item.idNotasClientes.Estado_emi
-            end_compl = f"{endereco} - {bairro} - CEP: {cep} " f"- {cidade} - {estado}"
-        else:
-            coleta = "ENTREGA"
-            local = item.idNotasClientes.Destinatario
-            cnpj = item.idNotasClientes.CNPJ
-            endereco = item.idNotasClientes.Endereco
-            bairro = item.idNotasClientes.Bairro
-            if item.idNotasClientes.CEP:
-                cep = (
-                    f"{item.idNotasClientes.CEP[0:5]}"
-                    f"-{item.idNotasClientes.CEP[5:]}"
-                )
-            else:
-                cep = "00000-000"
-            cidade = item.idNotasClientes.Cidade
-            estado = item.idNotasClientes.Estado
-            end_compl = f"{endereco} - {bairro} - CEP: {cep} " f"- {cidade} - {estado}"
+        pprint(item.idNotasClientes.NumeroNota)
+        local_endereco = local_servico(item)
         id_not = item.idNotasClientes.idNotasClientes
-        emitente = nome_curto(item.idNotasClientes.Emitente)
         data_nota = datetime.strftime(
             item.idNotasClientes.DataColeta,
             "%d/%m/%Y",
         )
-        serie = item.idNotasClientes.SerieNota
-        numero = item.idNotasClientes.NumeroNota
-        volume = item.idNotasClientes.Volume
-        peso = f"{valor_ponto_milhar(item.idNotasClientes.Peso, 3)}"
-        valor = f"{valor_ponto_milhar(item.idNotasClientes.Valor, 2)}"
-        vol_compl = f"VOLUME: {volume} - PESO: {peso} - VALOR: R$ {valor}"
+        nota_fical = (
+            f"NOTA: {item.idNotasClientes.NumeroNota} "
+            f"- SÉRIE {item.idNotasClientes.SerieNota} "
+            f"- {data_nota}   {nome_curto(item.idNotasClientes.Emitente)}"
+        )
+        vol_compl = (
+            f"VOLUME: {item.idNotasClientes.Volume} "
+            f"- PESO: {valor_ponto_milhar(item.idNotasClientes.Peso, 3)} "
+            f"- VALOR: R$ {valor_ponto_milhar(item.idNotasClientes.Valor, 2)}"
+        )
         status_nota = item.idNotasClientes.StatusNota
-        contato = item.idNotasClientes.Contato
-        informa = item.idNotasClientes.Informa
-        con_compl = None
         peso_romaneio += item.idNotasClientes.Peso
         total_romaneio += item.idNotasClientes.Valor
-        if contato and informa:
-            con_compl = f"{contato} {informa}"
-        else:
-            if contato:
-                con_compl = f"{contato}"
-            if informa:
-                con_compl = f"{informa}"
-        pdf.setFont("Times-Roman", 9)
-        pdf.drawString(
-            cmp(12),
-            cmp(linha),
-            f"NOTA: {numero} - SÉRIE {serie} - {data_nota}   {emitente}",
+        contato_compl = contato_completo(
+            item.idNotasClientes.Contato,
+            item.idNotasClientes.Informa,
         )
-        pdf.drawCentredString(cmp(125), cmp(linha), f"{coleta}")
+        pdf.setFont("Times-Roman", 9)
+        pdf.drawString(cmp(12), cmp(linha), f"{nota_fical}")
+        pdf.drawCentredString(
+            cmp(125),
+            cmp(linha),
+            f"{local_endereco['coleta']}",
+        )
         pdf.setFillColor(HexColor("#FF0000"))
         pdf.drawRightString(cmp(198), cmp(linha), f"{status_nota}")
         pdf.setFillColor(HexColor("#000000"))
         linha -= 2.5
         pdf.setFont("Times-Roman", 7)
-        pdf.drawString(cmp(12), cmp(linha), f"{local} - CNPJ: {cnpj}")
+        pdf.drawString(
+            cmp(12),
+            cmp(linha),
+            f"{local_endereco['local']} - CNPJ: {local_endereco['cnpj']}",
+        )
         linha -= 2.5
-        pdf.drawString(cmp(12), cmp(linha), f"{end_compl}")
+        pdf.drawString(
+            cmp(12),
+            cmp(linha),
+            f"{local_endereco['endereco']} - {local_endereco['bairro']} "
+            f"- CEP: {local_endereco['cep']} - {local_endereco['cidade']} "
+            f"- {local_endereco['estado']}",
+        )
         linha -= 2.5
         pdf.drawString(cmp(12), cmp(linha), f"{vol_compl}")
-        if con_compl:
-            para = Paragraph(con_compl, style=styles_claro)
+        if contato_compl:
+            para = Paragraph(contato_compl, style=styles_claro())
             para.wrapOn(pdf, cmp(186), cmp(297))
             linha -= para.height * 0.352777
             para.drawOn(pdf, cmp(12), cmp(linha))
@@ -351,41 +322,23 @@ def notas_romaneio(pdf, contexto):
         linha -= 3
         if not indice == len(contexto["notas"]) - 1:
             if linha < 50:
-                pdf.line(cmp(10), cmp(14), cmp(200), cmp(14))
-                notas = str(len(contexto["notas"])).zfill(2)
-                entregas = str(int(contexto["quantidade_entregas"])).zfill(2)
-                total_romaneio_str = f"{valor_ponto_milhar(total_romaneio, 2)}"
-                peso_romaneio_str = f"{valor_ponto_milhar(peso_romaneio, 3)}"
-                pagina = str(pdf.getPageNumber()).zfill(2)
-                pdf.drawString(
-                    cmp(20),
-                    cmp(11),
-                    f"{notas} NOTAS - {entregas} ENTREGAS",
+                notas_romaneio_fim_pagina(
+                    pdf,
+                    contexto,
+                    total_romaneio,
+                    peso_romaneio,
                 )
-                pdf.drawCentredString(
-                    cmp(105),
-                    cmp(11),
-                    f"R$ {total_romaneio_str} - PESO {peso_romaneio_str}",
-                )
-                pdf.drawRightString(cmp(190), cmp(11), f"PÁGINA {pagina}")
                 pdf.showPage()
                 header(pdf)
                 header_romaneio(pdf, contexto)
                 header_cliente(pdf, contexto)
                 linha = 242.8
-    pdf.line(cmp(10), cmp(14), cmp(200), cmp(14))
-    notas = str(len(contexto["notas"])).zfill(2)
-    entregas = str(int(contexto["quantidade_entregas"])).zfill(2)
-    total_romaneio_str = f"{valor_ponto_milhar(total_romaneio, 2)}"
-    peso_romaneio_str = f"{valor_ponto_milhar(peso_romaneio, 3)}"
-    pagina = str(pdf.getPageNumber()).zfill(2)
-    pdf.drawString(cmp(20), cmp(11), f"{notas} NOTAS - {entregas} ENTREGAS")
-    pdf.drawCentredString(
-        cmp(105),
-        cmp(11),
-        f"R$ {total_romaneio_str} - PESO {peso_romaneio_str}",
+    notas_romaneio_fim_pagina(
+        pdf,
+        contexto,
+        total_romaneio,
+        peso_romaneio,
     )
-    pdf.drawRightString(cmp(190), cmp(11), f"PÁGINA {pagina}")
 
 
 def ocorrencia_nota(id_not, status, pdf, linha):
@@ -426,14 +379,6 @@ def notas_status(pdf, contexto):
 
 
     """
-    styles_claro = ParagraphStyle(
-        "claro",
-        fontName="Times-Roman",
-        fontSize=7,
-        leading=9,
-        alignment=TA_JUSTIFY,
-        textColor=HexColor("#FF0000"),
-    )
     linha = 242.8
     for item_x in contexto["notas"]:
         serie = "NÃO INFORMADA"
@@ -504,7 +449,7 @@ def notas_status(pdf, contexto):
                 data_ocorrencia = item_y.DataOcorrencia
                 ocorrencia = f"{data_ocorrencia} - {item_y.Ocorrencia}"
                 if ocorrencia:
-                    para = Paragraph(ocorrencia, style=styles_claro)
+                    para = Paragraph(ocorrencia, style=styles_claro())
                     para.wrapOn(pdf, cmp(186), cmp(297))
                     linha -= para.height * 0.352777
                     para.drawOn(pdf, cmp(12), cmp(linha))
@@ -535,3 +480,135 @@ def notas_status_fim_pagina(pdf, contexto):
     pdf.drawString(cmp(20), cmp(11), f"{notas} NOTAS")
     pdf.drawRightString(cmp(190), cmp(11), f"PÁGINA {pagina}")
     pdf.showPage()
+
+
+def notas_romaneio_fim_pagina(pdf, contexto, total_romaneio, peso_romaneio):
+    """
+
+    Args:
+        pdf:
+        contexto:
+        total_romaneio:
+        peso_romaneio:
+
+    """
+    pdf.line(
+        cmp(10),
+        cmp(14),
+        cmp(200),
+        cmp(14),
+    )
+    notas = str(len(contexto["notas"])).zfill(2)
+    entregas = str(int(contexto["quantidade_entregas"])).zfill(2)
+    total_romaneio_str = f"{valor_ponto_milhar(total_romaneio, 2)}"
+    peso_romaneio_str = f"{valor_ponto_milhar(peso_romaneio, 3)}"
+    pagina = str(pdf.getPageNumber()).zfill(2)
+    pdf.drawString(
+        cmp(20),
+        cmp(11),
+        f"{notas} NOTAS - {entregas} ENTREGAS",
+    )
+    pdf.drawCentredString(
+        cmp(105),
+        cmp(11),
+        f"R$ {total_romaneio_str} - PESO {peso_romaneio_str}",
+    )
+    pdf.drawRightString(
+        cmp(190),
+        cmp(11),
+        f"PÁGINA {pagina}",
+    )
+
+
+def styles_claro():
+    """
+
+    Returns:
+
+
+    """
+    style = ParagraphStyle(
+        "claro",
+        fontName="Times-Roman",
+        fontSize=7,
+        leading=9,
+        alignment=TA_JUSTIFY,
+    )
+    return style
+
+
+def contato_completo(contato, informa):
+    """
+
+    Args:
+        contato:
+        informa:
+
+    Returns:
+
+
+    """
+    contato_compl = None
+    if contato and informa:
+        contato_compl = f"{contato} {informa}"
+    else:
+        if contato:
+            contato_compl = f"{contato}"
+        if informa:
+            contato_compl = f"{informa}"
+    return contato_compl
+
+
+def local_servico(item):
+    """
+
+    Args:
+        item:
+
+    Returns:
+
+
+    """
+    coleta = None
+    local = None
+    cnpj = "00000000000000"
+    endereco = None
+    bairro = None
+    cep = "00000-000"
+    cidade = None
+    estado = None
+    if item.idNotasClientes.LocalColeta == "DESTINATÁRIO":
+        coleta = "COLETA"
+        local = item.idNotasClientes.Emitente
+        endereco = item.idNotasClientes.Endereco_emi
+        bairro = item.idNotasClientes.Bairro_emi
+        if item.idNotasClientes.CEP_emi:
+            cep = (
+                f"{item.idNotasClientes.CEP_emi[0:5]}"
+                f"-{item.idNotasClientes.CEP_emi[5:]}"
+            )
+        cidade = item.idNotasClientes.Cidade_emi
+        estado = item.idNotasClientes.Estado_emi
+    else:
+        coleta = "ENTREGA"
+        local = item.idNotasClientes.Destinatario
+        cnpj = item.idNotasClientes.CNPJ
+        endereco = item.idNotasClientes.Endereco
+        bairro = item.idNotasClientes.Bairro
+        if item.idNotasClientes.CEP:
+            cep = (
+                f"{item.idNotasClientes.CEP[0:5]}"
+                f"-{item.idNotasClientes.CEP[5:]}"
+            )
+        cidade = item.idNotasClientes.Cidade
+        estado = item.idNotasClientes.Estado
+    return {
+        "coleta": coleta,
+        "local": local,
+        "cnpj": cnpj,
+        "endereco": endereco,
+        "bairro": bairro,
+        "cep": cep,
+        "cidade": cidade,
+        "estado": estado,
+    }
