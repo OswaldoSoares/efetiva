@@ -5,18 +5,16 @@ import os
 from datetime import datetime
 from decimal import Decimal
 from io import BytesIO
-from pprint import pprint
 
 from django.core.files.base import ContentFile
 from django.http import HttpResponse
-from minutas.facade import nome_curto
 from reportlab.lib.colors import HexColor
 from reportlab.lib.enums import TA_JUSTIFY
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.pdfgen import canvas
 from reportlab.platypus import Paragraph
 from transefetiva.settings.settings import STATIC_ROOT
-from website.facade import valor_ponto_milhar
+from website.facade import nome_curto, valor_ponto_milhar
 from website.models import FileUpload
 
 from romaneios.models import NotasOcorrencias
@@ -109,7 +107,9 @@ def print_notas_status(contexto):
             except FileNotFoundError:
                 print("OK")
     response = HttpResponse(content_type="application/pdf")
-    response["Content-Disposition"] = f'filename="RELATÓRIO - NOTAS: {status_nota}.pdf'
+    response["Content-Disposition"] = (
+        f"filename='RELATÓRIO' " f"- NOTAS: {status_nota}.pdf"
+    )
     buffer = BytesIO()
     pdf = canvas.Canvas(buffer)
     header(pdf)
@@ -139,9 +139,13 @@ def header(pdf):
     """
     url = f"{STATIC_ROOT}/website/img/transportadora.jpg"
     empresa = "TRANSEFETIVA TRANSPORTE - EIRELLI - ME"
-    endereco = "RUA OLIMPIO PORTUGAL, 245 - MOOCA - SÃO PAULO - SP - CEP 03112-010"
+    rua = "RUA OLIMPIO PORTUGAL, 245 - MOOCA"
+    cidade = "SÃO PAULO - SP - CEP 03112-010"
+    endereco = f"{rua} - {cidade}"
     telefone = "(11) 2305-0582 - WHATSAPP (11) 94167-0583"
-    email = "e-mail: transefetiva@terra.com.br - operacional.efetiva@terra.com.br"
+    email_1 = "transefetiva@terra.com.br"
+    email_2 = "operacional.efetiva@terra.com.br"
+    email = f"e-mail: {email_1} - {email_2}"
     pdf.roundRect(cmp(10), cmp(10), cmp(190), cmp(277), 10)
     pdf.drawImage(url, cmp(12), cmp(265), cmp(40), cmp(20))
     pdf.setFont("Times-Bold", 18)
@@ -269,12 +273,15 @@ def notas_romaneio(pdf, contexto):
             endereco = item.idNotasClientes.Endereco_emi
             bairro = item.idNotasClientes.Bairro_emi
             if item.idNotasClientes.CEP_emi:
-                cep = f"{item.idNotasClientes.CEP_emi[0:5]}-{item.idNotasClientes.CEP_emi[5:]}"
+                cep = (
+                    f"{item.idNotasClientes.CEP_emi[0:5]}"
+                    f"-{item.idNotasClientes.CEP_emi[5:]}"
+                )
             else:
                 cep = "00000-000"
             cidade = item.idNotasClientes.Cidade_emi
             estado = item.idNotasClientes.Estado_emi
-            end_compl = f"{endereco} - {bairro} - CEP: {cep} - {cidade} - {estado}"
+            end_compl = f"{endereco} - {bairro} - CEP: {cep} " f"- {cidade} - {estado}"
         else:
             coleta = "ENTREGA"
             local = item.idNotasClientes.Destinatario
@@ -282,12 +289,15 @@ def notas_romaneio(pdf, contexto):
             endereco = item.idNotasClientes.Endereco
             bairro = item.idNotasClientes.Bairro
             if item.idNotasClientes.CEP:
-                cep = f"{item.idNotasClientes.CEP[0:5]}-{item.idNotasClientes.CEP[5:]}"
+                cep = (
+                    f"{item.idNotasClientes.CEP[0:5]}"
+                    f"-{item.idNotasClientes.CEP[5:]}"
+                )
             else:
                 cep = "00000-000"
             cidade = item.idNotasClientes.Cidade
             estado = item.idNotasClientes.Estado
-            end_compl = f"{endereco} - {bairro} - CEP: {cep} - {cidade} - {estado}"
+            end_compl = f"{endereco} - {bairro} - CEP: {cep} " f"- {cidade} - {estado}"
         id_not = item.idNotasClientes.idNotasClientes
         emitente = nome_curto(item.idNotasClientes.Emitente)
         data_nota = datetime.strftime(
@@ -296,8 +306,6 @@ def notas_romaneio(pdf, contexto):
         )
         serie = item.idNotasClientes.SerieNota
         numero = item.idNotasClientes.NumeroNota
-        # Cliente não quer que coloca pontos e traços no CNPJ - 29/03/2023
-        # cnpj = f"{cnpj[0:2]}.{cnpj[2:5]}.{cnpj[5:8]}/{cnpj[8:12]}-{cnpj[12:15]}"
         volume = item.idNotasClientes.Volume
         peso = f"{valor_ponto_milhar(item.idNotasClientes.Peso, 3)}"
         valor = f"{valor_ponto_milhar(item.idNotasClientes.Valor, 2)}"
