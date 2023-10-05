@@ -1,0 +1,35 @@
+<!-- Header -->
+<div class="card-header">
+    <span>PAGAMENTO MENSALISTAS</span>
+</div>
+<!-- Body -->
+<div class="card-body">
+    <div class-"card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon
+            addon-my-color">
+                <i class="bi bi-calendar
+                i-button-null"></i>
+            </div>
+            <select class="form-control
+            form-control-minuta
+            select-mes-ano"
+            id="meses"
+            name="meses">
+                {% for itens in mes_ano %}
+                    <option value="{{ itens }}">{{ itens|upper }}</option>
+                {% endfor %}
+            </select>
+            <div class="input-group-addon
+            addon-my-color">
+                <i class="bi bi-clipboard-check
+                i-button
+                js-seleciona-mes-ano"
+                title="Seleciona Mês/Ano"></i>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer -->
+<div class="card-footer"></div>
+
