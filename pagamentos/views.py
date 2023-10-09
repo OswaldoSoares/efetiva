@@ -16,8 +16,8 @@ from .print import (print_contracheque, print_recibo,
 @has_permission_decorator("modulo_pagamentos")
 def index_pagamento(request):
     contexto = {}
-    contextovales = facade.cria_contexto_pagamentos()
-    contexto.update(contextovales)
+    contexto_mes_ano = facade.cria_contexto_pagamentos()
+    contexto.update(contexto_mes_ano)
     contextoavulso = facade.create_context_avulso()
     contexto.update(contextoavulso)
     return render(request, "pagamentos/index.html", contexto)
