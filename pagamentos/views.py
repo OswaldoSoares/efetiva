@@ -4,12 +4,13 @@ from django.shortcuts import render
 from django.template.loader import render_to_string
 from minutas.models import MinutaColaboradores, MinutaItens
 from rolepermissions.decorators import has_permission_decorator
-
-from pagamentos import facade
 from website.facade import str_hoje
 
+from pagamentos import facade
+
 from .forms import CadastraCartaoPonto
-from .print import print_contracheque, print_recibo, print_relatorio_saldo_avulso
+from .print import (print_contracheque, print_recibo,
+                    print_relatorio_saldo_avulso)
 
 
 @has_permission_decorator("modulo_pagamentos")
@@ -51,7 +52,9 @@ def adiciona_contra_cheque_itens(request):
     _valor = request.POST.get("valor")
     _registro = request.POST.get("registro")
     _idcontracheque = request.POST.get("idContraCheque")
-    facade.create_contracheque_itens(_descricao, _valor, "", _registro, _idcontracheque)
+    facade.create_contracheque_itens(
+        _descricao, _valor, "", _registro, _idcontracheque
+    )
     _mes_ano = request.POST.get("mes_ano")
     _id_pes = request.POST.get("idPessoal")
     contexto = facade.create_contexto_funcionario(_mes_ano, _id_pes)
@@ -239,7 +242,9 @@ def seleciona_colaborador_avulso(request):
     c_datainicial = request.GET.get("DataInicial")
     c_datafinal = request.GET.get("DataFinal")
     c_idpesssoal = request.GET.get("idPessoal")
-    data = facade.seleciona_minutasavulso(c_datainicial, c_datafinal, c_idpesssoal)
+    data = facade.seleciona_minutasavulso(
+        c_datainicial, c_datafinal, c_idpesssoal
+    )
     return data
 
 
@@ -305,7 +310,9 @@ def form_paga_recibo(request):
     idrecibo = request.GET.get("idrecibo")
     idpessoal = request.GET.get("idpessoal")
     recibo = request.GET.get("recibo")
-    valor_recibo = request.GET.get("valor_recibo").replace(".", "").replace(",", ".")
+    valor_recibo = (
+        request.GET.get("valor_recibo").replace(".", "").replace(",", ".")
+    )
     hoje = str_hoje()
     contexto = {
         "idrecibo": idrecibo,
