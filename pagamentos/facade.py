@@ -1,11 +1,9 @@
-import calendar
 import datetime
-from decimal import Decimal
 
-from django.db import connection
 from dateutil.relativedelta import relativedelta
 from despesas.models import Multas
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import connection
 from django.db.models import DecimalField, ExpressionWrapper, F, Max, Min, Sum
 from django.http import JsonResponse
 from django.template.loader import render_to_string
@@ -13,17 +11,10 @@ from minutas.facade import nome_curto, nome_curto_underscore
 from minutas.models import MinutaColaboradores, MinutaItens
 from pessoas import facade
 from pessoas.forms import CadastraContraCheque, CadastraContraChequeItens
-from pessoas.models import (
-    Agenda,
-    CartaoPonto,
-    ContaPessoal,
-    ContraCheque,
-    ContraChequeItens,
-    Pessoal,
-    Salario,
-    Vales,
-)
-from website.facade import DiasFeriados, Feriados, converter_mes_ano, extremos_mes
+from pessoas.models import (Agenda, CartaoPonto, ContaPessoal, ContraCheque,
+                            ContraChequeItens, Pessoal, Salario, Vales)
+from website.facade import (DiasFeriados, Feriados, converter_mes_ano,
+                            extremos_mes)
 from website.models import FileUpload
 
 from pagamentos.forms import CadastraCartaoPonto
@@ -61,7 +52,9 @@ class FolhaContraCheque:
         self.funcionarios = self.get_funcionarios(_mes, _ano)
         self.mes = _mes
         self.paga = False
-        self.total_adiantamento = self.get_total_adiantamento(self.funcionarios)
+        self.total_adiantamento = self.get_total_adiantamento(
+            self.funcionarios
+        )
         self.total_pagamento = self.get_total_pagamento(self.funcionarios)
 
     @staticmethod
@@ -183,7 +176,13 @@ def cartao_ponto(var):
         Dia__range=[var["primeiro_dia"], var["ultimo_dia"]],
         idPessoal=var["id_pessoal"],
     ).values(
-        "idPessoal", "Dia", "Entrada", "Saida", "Conducao", "Remunerado", "CarroEmpresa"
+        "idPessoal",
+        "Dia",
+        "Entrada",
+        "Saida",
+        "Conducao",
+        "Remunerado",
+        "CarroEmpresa",
     )
     if not cartao_de_ponto:
         create_cartao_ponto(
@@ -291,7 +290,9 @@ def contra_cheque_itens(var):
         contra_cheque_itens = ContraChequeItens.objects.filter(
             idContraCheque=contra_cheque_id, Descricao="SALARIO"
         )
-        if dias_remunerado == int(datetime.datetime.strftime(var["ultimo_dia"], "%d")):
+        if dias_remunerado == int(
+            datetime.datetime.strftime(var["ultimo_dia"], "%d")
+        ):
             dias_remunerado = 30
         salario = salario_base / 30 * int(dias_remunerado)
         if contra_cheque_itens:
@@ -323,7 +324,9 @@ def contra_cheque_itens(var):
             )
     else:
         if contra_cheque_itens:
-            delete_contra_cheque_itens(contra_cheque_itens[0].idContraChequeItens)
+            delete_contra_cheque_itens(
+                contra_cheque_itens[0].idContraChequeItens
+            )
     contra_cheque_itens = ContraChequeItens.objects.filter(
         idContraCheque=contra_cheque_id
     )
@@ -388,20 +391,24 @@ class FolhaVale:
 
 
 def seleciona_mes_ano_folha() -> list:
-    """Cria uma lista com os Meses/Anos, para selecionar o mês da folha de
-    pagamento. O Mês/Ano máximo será o próximo mês da data atual e o Mês/Ano
-    minimo será Janeiro/2021.
+    """Cria uma lista com os Meses/Anos, para selecionar o mês da
+    folha de pagamento. O Mês/Ano máximo será o próximo mês da data
+    atual e o Mês/Ano minimo será Janeiro/2021.
 
     Returns:
         list: Lista com valores dos Meses e Anos
     """
-    v_data_primeira_folha = datetime.datetime.strptime("31-12-2020", "%d-%m-%Y")
+    v_data_primeira_folha = datetime.datetime.strptime(
+        "31-12-2020", "%d-%m-%Y"
+    )
     hoje = datetime.datetime.today()
-    pdm = hoje + relativedelta(day=1)
+    primeiro_dia_mes = hoje + relativedelta(day=1)
     lista_mes_ano = []
-    while pdm > v_data_primeira_folha:
-        lista_mes_ano.append(datetime.datetime.strftime(pdm, "%B/%Y"))
-        pdm = pdm - relativedelta(months=1)
+    while primeiro_dia_mes > v_data_primeira_folha:
+        lista_mes_ano.append(
+            datetime.datetime.strftime(primeiro_dia_mes, "%B/%Y")
+        )
+        primeiro_dia_mes = primeiro_dia_mes - relativedelta(months=1)
     return lista_mes_ano
 
 
@@ -441,7 +448,9 @@ def create_contexto_funcionario(mes_ano, id) -> JsonResponse:
     var = dict()
     get_pessoa(id, var)
     var["mes"], var["ano"] = converter_mes_ano(mes_ano)
-    var["primeiro_dia"], var["ultimo_dia"] = extremos_mes(var["mes"], var["ano"])
+    var["primeiro_dia"], var["ultimo_dia"] = extremos_mes(
+        var["mes"], var["ano"]
+    )
     # TODO Necessário inverter as posições do _cartao_ponto e Minutas.
     # com minuta antes, não é calculado a hora extra
     _cartao_ponto = cartao_ponto(var)
@@ -671,7 +680,9 @@ def vales_funcionario(_var):
 
 def insere_vale_contra_cheque(idvale, idcontracheque):
     vale = Vales.objects.get(idVales=idvale)
-    descricao = f"{vale.Descricao} {datetime.datetime.strftime(vale.Data, '%d/%m/%Y')}"
+    descricao = (
+        f"{vale.Descricao} {datetime.datetime.strftime(vale.Data, '%d/%m/%Y')}"
+    )
     create_contra_cheque_itens(
         idcontracheque,
         descricao,
@@ -762,7 +773,8 @@ def minutas_contra_cheque(_var):
     _pdm = _var["primeiro_dia"]
     _udm = _var["ultimo_dia"]
     minutas = MinutaColaboradores.objects.filter(
-        idPessoal=_var["id_pessoal"], idMinuta_id__DataMinuta__range=(_pdm, _udm)
+        idPessoal=_var["id_pessoal"],
+        idMinuta_id__DataMinuta__range=(_pdm, _udm),
     ).exclude(idMinuta_id__StatusMinuta="ABERTA")
     lista = []
     lista_filtrada = []
@@ -808,7 +820,11 @@ def minutas_contra_cheque(_var):
                     obj.save(update_fields=["Saida"])
         extra = _hez + _hsz
         verifica_lista = next(
-            (i for i, y in enumerate(lista) if y["minuta"] == x.idMinuta.Minuta),
+            (
+                i
+                for i, y in enumerate(lista)
+                if y["minuta"] == x.idMinuta.Minuta
+            ),
             None,
         )
         if verifica_lista == None:
@@ -893,7 +909,12 @@ def cria_contexto_pagamentos():
 
 
 def create_cartao_ponto(
-    v_idpessoal, v_primeiro_dia_mes, v_ultimo_dia_mes, v_admissao, v_demissao, _var
+    v_idpessoal,
+    v_primeiro_dia_mes,
+    v_ultimo_dia_mes,
+    v_admissao,
+    v_demissao,
+    _var,
 ):
     feriados = DiasFeriados().__dict__["feriados"]
     dia = v_primeiro_dia_mes
@@ -1050,7 +1071,9 @@ def altera_carro_empresa(_id_cp):
 
 def verifica_falta(v_cartao_ponto):
     print(f"[INFO] - {len(connection.queries)}")
-    faltas = len(v_cartao_ponto.filter(Ausencia__exact="FALTA", Alteracao="ROBOT"))
+    faltas = len(
+        v_cartao_ponto.filter(Ausencia__exact="FALTA", Alteracao="ROBOT")
+    )
     # for itens in v_cartao_ponto:
     #     if not itens.Ausencia == "-------":
     #         if not itens.Ausencia == "FÉRIAS":
@@ -1068,7 +1091,9 @@ def verifica_falta(v_cartao_ponto):
             if not itens.Ausencia == "-------":
                 if not itens.Ausencia == "FÉRIAS":
                     if itens.Dia.weekday() == 5 or itens.Dia.weekday() == 6:
-                        obj = CartaoPonto.objects.get(idCartaoPonto=itens.idCartaoPonto)
+                        obj = CartaoPonto.objects.get(
+                            idCartaoPonto=itens.idCartaoPonto
+                        )
                         obj.Remunerado = False
                         obj.save(update_fields=["Remunerado"])
                         faltas -= 1
@@ -1102,7 +1127,9 @@ def imprime_contra_cheque_pagamento(_id_cc, tipo):
     _mes = meses.index(_cc[0].MesReferencia) + 1
     _ano = _cc[0].AnoReferencia
     _var["mes"], _var["ano"] = _mes, _ano
-    _var["primeiro_dia"], _var["ultimo_dia"] = extremos_mes(_var["mes"], _var["ano"])
+    _var["primeiro_dia"], _var["ultimo_dia"] = extremos_mes(
+        _var["mes"], _var["ano"]
+    )
     # minutas = minutas_contra_cheque(_var)
     _carto_ponto = cartao_ponto(_var)
     minutas = select_minutas_contracheque(_mes, _ano, _cc[0].idPessoal_id)
@@ -1221,13 +1248,17 @@ def calcula_extras(_var):
     _sb = _var["salario_base"]
     _pdm = _var["primeiro_dia"]
     _udm = _var["ultimo_dia"]
-    _cp = CartaoPonto.objects.filter(Dia__range=[_pdm, _udm], idPessoal=_id_pes)
+    _cp = CartaoPonto.objects.filter(
+        Dia__range=[_pdm, _udm], idPessoal=_id_pes
+    )
     _hz = datetime.timedelta(hours=0, minutes=0)
     _te = _hz
     for x in _cp:
         _he = datetime.datetime.strptime("07:00:00", "%H:%M:%S").time()
         _he = datetime.timedelta(hours=_he.hour, minutes=_he.minute)
-        _hfe = datetime.timedelta(hours=x.Entrada.hour, minutes=x.Entrada.minute)
+        _hfe = datetime.timedelta(
+            hours=x.Entrada.hour, minutes=x.Entrada.minute
+        )
         _te += _he - _hfe if _hfe < _he else _hz
         _hs = datetime.datetime.strptime("17:00:00", "%H:%M:%S").time()
         _hs = datetime.timedelta(hours=_hs.hour, minutes=_hs.minute)
@@ -1264,13 +1295,17 @@ def calcula_atrazo(_var):
     _sb = _var["salario_base"]
     _pdm = _var["primeiro_dia"]
     _udm = _var["ultimo_dia"]
-    _cp = CartaoPonto.objects.filter(Dia__range=[_pdm, _udm], idPessoal=_id_pes)
+    _cp = CartaoPonto.objects.filter(
+        Dia__range=[_pdm, _udm], idPessoal=_id_pes
+    )
     _hz = datetime.timedelta(hours=0, minutes=0)
     _ta = _hz
     for x in _cp:
         _he = datetime.datetime.strptime("07:00:00", "%H:%M:%S").time()
         _he = datetime.timedelta(hours=_he.hour, minutes=_he.minute)
-        _hfe = datetime.timedelta(hours=x.Entrada.hour, minutes=x.Entrada.minute)
+        _hfe = datetime.timedelta(
+            hours=x.Entrada.hour, minutes=x.Entrada.minute
+        )
         _ta += _hfe - _he if _hfe > _he else _hz
     _vda = Decimal(_sb) / 30 / 9 / 60 / 60 * _ta.seconds
     return _ta, _vda
@@ -1291,7 +1326,9 @@ def busca_item_contra_cheque(v_id: int, v_des: str):
         obj: ContraChequeItens ou None
     """
     obj = None
-    v_cci = ContraChequeItens.objects.filter(idContraCheque=v_id, Descricao=v_des)
+    v_cci = ContraChequeItens.objects.filter(
+        idContraCheque=v_id, Descricao=v_des
+    )
     if v_cci:
         obj = v_cci[0]
     return obj
@@ -1333,7 +1370,9 @@ def create_contexto_avulsos_a_receber(datainicial, datafinal):
         colaborador = MinutaColaboradores.objects.filter(
             idPessoal__Nome=colaboradores["idPessoal__Nome"], Pago=False
         ).exclude(idMinuta__StatusMinuta="ABERTA")
-        _banco = ContaPessoal.objects.filter(idPessoal=colaboradores["idPessoal_id"])
+        _banco = ContaPessoal.objects.filter(
+            idPessoal=colaboradores["idPessoal_id"]
+        )
         _vc = False
         if len(_banco) > 1:
             _vc = True
@@ -1343,7 +1382,9 @@ def create_contexto_avulsos_a_receber(datainicial, datafinal):
                 base_valor = ExpressionWrapper(
                     F("Valor") / F("Quantidade"), output_field=DecimalField()
                 )
-                ajudante = MinutaItens.objects.values(ValorAjudante=base_valor).filter(
+                ajudante = MinutaItens.objects.values(
+                    ValorAjudante=base_valor
+                ).filter(
                     TipoItens="PAGA",
                     idMinuta=itens.idMinuta,
                     Descricao="AJUDANTE",
@@ -1357,7 +1398,10 @@ def create_contexto_avulsos_a_receber(datainicial, datafinal):
                     MinutaItens.objects.filter(
                         TipoItens="PAGA",
                         idMinuta=itens.idMinuta,
-                        idMinuta_id__DataMinuta__range=[datainicial, datafinal],
+                        idMinuta_id__DataMinuta__range=[
+                            datainicial,
+                            datafinal,
+                        ],
                     )
                     .exclude(Descricao="AJUDANTE")
                     .aggregate(ValorMotorista=Sum("Valor"))
@@ -1393,8 +1437,12 @@ def calcula_total_vales(idpessoal):
 
 def seleciona_minutasavulso(datainicial, datafinal, idpessoal):
     data = dict()
-    data["html_minutas"] = html_minutasavulso(datainicial, datafinal, idpessoal)
-    data["html_recibos"] = html_recibo_avulso(datainicial, datafinal, idpessoal)
+    data["html_minutas"] = html_minutasavulso(
+        datainicial, datafinal, idpessoal
+    )
+    data["html_recibos"] = html_recibo_avulso(
+        datainicial, datafinal, idpessoal
+    )
     c_return = JsonResponse(data)
     return c_return
 
@@ -1488,8 +1536,12 @@ def create_pagamento_avulso(datainicial, datafinal, idpessoal, zerado):
                 obj.save(update_fields=["Pago", "idRecibo_id"])
     data = dict()
     data["html_saldoavulso"] = html_saldo_avulso(datainicial, datafinal)
-    data["html_minutas"] = html_minutasavulso(datainicial, datafinal, idpessoal)
-    data["html_recibos"] = html_recibo_avulso(datainicial, datafinal, idpessoal)
+    data["html_minutas"] = html_minutasavulso(
+        datainicial, datafinal, idpessoal
+    )
+    data["html_recibos"] = html_recibo_avulso(
+        datainicial, datafinal, idpessoal
+    )
     data["numero_recibo"] = new_idrecibo
     c_return = JsonResponse(data)
     return c_return
@@ -1547,8 +1599,12 @@ def create_contexto_itens_pagamento_avulso(datainicial, datafinal, idpessoal):
                     )
     data = dict()
     data["html_saldoavulso"] = html_saldo_avulso(datainicial, datafinal)
-    data["html_minutas"] = html_minutasavulso(datainicial, datafinal, idpessoal)
-    data["html_recibos"] = html_recibo_avulso(datainicial, datafinal, idpessoal)
+    data["html_minutas"] = html_minutasavulso(
+        datainicial, datafinal, idpessoal
+    )
+    data["html_recibos"] = html_recibo_avulso(
+        datainicial, datafinal, idpessoal
+    )
     c_return = JsonResponse(data)
     return c_return
 
@@ -1557,7 +1613,10 @@ def create_contracheque(mesreferencia, anoreferencia, valor, idpessoal):
     colaborador = facade.get_pessoal(idpessoal)
     admissao = colaborador[0].DataAdmissao
     if int(anoreferencia) >= admissao.year:
-        if int(mesreferencia) >= admissao.month or int(anoreferencia) > admissao.year:
+        if (
+            int(mesreferencia) >= admissao.month
+            or int(anoreferencia) > admissao.year
+        ):
             salario = get_salario(idpessoal)
             contracheque = busca_contracheque(
                 meses[int(mesreferencia) - 1], anoreferencia, idpessoal
@@ -1607,7 +1666,9 @@ def create_contracheque(mesreferencia, anoreferencia, valor, idpessoal):
                     dias_mes = 30 - admissao.day + 1
                     salario = salario[0].Salario / 30 * dias_mes
                     altera_contracheque_itens(
-                        contracheque_itens, salario, "{}d".format(dias_mes).zfill(2)
+                        contracheque_itens,
+                        salario,
+                        "{}d".format(dias_mes).zfill(2),
                     )
                 else:
                     altera_contracheque_itens(
@@ -1616,11 +1677,15 @@ def create_contracheque(mesreferencia, anoreferencia, valor, idpessoal):
 
 
 # TODO Função valido para as duas versões
-def create_contracheque_itens(descricao, valor, referencia, registro, idcontracheque):
+def create_contracheque_itens(
+    descricao, valor, referencia, registro, idcontracheque
+):
     if float(valor) > 0:
         saldo = saldo_contracheque(idcontracheque)
         if float(valor) <= float(saldo["Liquido"]) or descricao == "SALARIO":
-            if not busca_contrachequeitens(idcontracheque, descricao, registro):
+            if not busca_contrachequeitens(
+                idcontracheque, descricao, registro
+            ):
                 obj = ContraChequeItens()
                 obj.Descricao = descricao
                 obj.Valor = valor
@@ -1636,7 +1701,10 @@ def busca_feriados(mesreferencia, anoreferencia):
     dias_feriado_mes = []
     for x in lista_feriados:
         feriado = datetime.datetime.strptime(x, "%Y-%m-%d")
-        if int(anoreferencia) == feriado.year and int(mesreferencia) == feriado.month:
+        if (
+            int(anoreferencia) == feriado.year
+            and int(mesreferencia) == feriado.month
+        ):
             dias_feriado_mes.append(feriado.day)
     return dias_feriado_mes
 
@@ -1646,7 +1714,9 @@ def create_cartaoponto(mesreferencia, anoreferencia, idpessoal):
     colaborador = facade.get_pessoal(idpessoal)
     admissao = colaborador[0].DataAdmissao
     dias_feriado_mes = busca_feriados(mesreferencia, anoreferencia)
-    if not busca_cartaoponto_referencia(mesreferencia, anoreferencia, idpessoal):
+    if not busca_cartaoponto_referencia(
+        mesreferencia, anoreferencia, idpessoal
+    ):
         if int(anoreferencia) >= admissao.year:
             if (
                 int(mesreferencia) >= admissao.month
@@ -1655,7 +1725,9 @@ def create_cartaoponto(mesreferencia, anoreferencia, idpessoal):
                 admissao = datetime.datetime(
                     admissao.year, admissao.month, admissao.day
                 )
-                referencia = calendar.monthrange(int(anoreferencia), int(mesreferencia))
+                referencia = calendar.monthrange(
+                    int(anoreferencia), int(mesreferencia)
+                )
                 for x in range(1, referencia[1] + 1):
                     dia = "{}-{}-{}".format(anoreferencia, mesreferencia, x)
                     dia = datetime.datetime.strptime(dia, "%Y-%m-%d")
@@ -1674,12 +1746,17 @@ def create_cartaoponto(mesreferencia, anoreferencia, idpessoal):
                     obj.idPessoal_id = idpessoal
                     obj.save()
     else:
-        if int(mesreferencia) == admissao.month and int(anoreferencia) == admissao.year:
+        if (
+            int(mesreferencia) == admissao.month
+            and int(anoreferencia) == admissao.year
+        ):
             confere_admissao(idpessoal, admissao)
 
 
 def confere_admissao(idpessoal, admissao):
-    cartaoponto = busca_cartaoponto_referencia(admissao.month, admissao.year, idpessoal)
+    cartaoponto = busca_cartaoponto_referencia(
+        admissao.month, admissao.year, idpessoal
+    )
     for itens in cartaoponto:
         dia_cartaoponto = get_cartaopontoid(itens.idCartaoPonto)
         obj = dia_cartaoponto
@@ -1694,7 +1771,9 @@ def confere_admissao(idpessoal, admissao):
 
 
 def exclui_recibo(idrecibo):
-    Vales.objects.filter(idRecibo_id=idrecibo).update(idRecibo_id=None, Pago=False)
+    Vales.objects.filter(idRecibo_id=idrecibo).update(
+        idRecibo_id=None, Pago=False
+    )
     MinutaColaboradores.objects.filter(idRecibo_id=idrecibo).update(
         idRecibo_id=None, Pago=False
     )
@@ -1714,7 +1793,9 @@ def create_data_form_paga_recibo_colaborador(request, contexto):
 
 def html_form_paga_recibo_colaborador(request, contexto, data):
     data["html_form_paga_recibo_colaborador"] = render_to_string(
-        "pagamentos/html_form_paga_recibo_colaborador.html", contexto, request=request
+        "pagamentos/html_form_paga_recibo_colaborador.html",
+        contexto,
+        request=request,
     )
     return data
 
@@ -1764,7 +1845,9 @@ def get_contrachequereferencia(mesreferencia, anoreferencia, idpessoal):
 def get_contrachequeitens(idcontracheque, descricao, registro):
     try:
         contrachequeitens = ContraChequeItens.objects.get(
-            idContraCheque=idcontracheque, Descricao=descricao, Registro=registro
+            idContraCheque=idcontracheque,
+            Descricao=descricao,
+            Registro=registro,
         )
     except ObjectDoesNotExist:
         contrachequeitens = None
@@ -1800,7 +1883,9 @@ def busca_cartaoponto_referencia(mesreferencia, anoreferencia, idpessoal):
 
 def busca_contracheque(mesreferencia, anoreferencia, idpessoal):
     contracheque = ContraCheque.objects.filter(
-        MesReferencia=mesreferencia, AnoReferencia=anoreferencia, idPessoal=idpessoal
+        MesReferencia=mesreferencia,
+        AnoReferencia=anoreferencia,
+        idPessoal=idpessoal,
     )
     return contracheque
 
@@ -1915,11 +2000,17 @@ def calcula_faltas(mesreferencia, anoreferencia, idpessoal):
     admissao = colaborador[0].DataAdmissao
     demissao = colaborador[0].DataDemissao
     mes_dias = 30
-    if int(anoreferencia) == admissao.year and int(mesreferencia) == admissao.month:
+    if (
+        int(anoreferencia) == admissao.year
+        and int(mesreferencia) == admissao.month
+    ):
         mes_dias -= admissao.day - 1
         dia = admissao
     if demissao:
-        if int(anoreferencia) == demissao.year and int(mesreferencia) == demissao.month:
+        if (
+            int(anoreferencia) == demissao.year
+            and int(mesreferencia) == demissao.month
+        ):
             mes_dias -= 30 - demissao.day
             diafinal = demissao
     faltas = CartaoPonto.objects.filter(
@@ -1931,11 +2022,15 @@ def calcula_faltas(mesreferencia, anoreferencia, idpessoal):
         salario = (float(salario[0].Salario) / 30 * mes_dias) - desconto
     else:
         salario = float(salario[0].Salario) - desconto
-    contracheque = get_contrachequereferencia(mesreferencia, anoreferencia, idpessoal)
+    contracheque = get_contrachequereferencia(
+        mesreferencia, anoreferencia, idpessoal
+    )
     contrachequeitens = get_contrachequeitens(
         contracheque[0].idContraCheque, "SALARIO", "C"
     )
-    altera_contracheque_itens(contrachequeitens, salario, f"{mes_dias-faltas}d")
+    altera_contracheque_itens(
+        contrachequeitens, salario, f"{mes_dias-faltas}d"
+    )
 
 
 def calcula_horas_extras(mesreferencia, anoreferencia, idpessoal):
@@ -1946,14 +2041,18 @@ def calcula_horas_extras(mesreferencia, anoreferencia, idpessoal):
     valorhoraextra = (
         float(salario[0].Salario) / 30 / 9 / 60 / 60 * 1.5 * totalextra.seconds
     )
-    contracheque = get_contrachequereferencia(mesreferencia, anoreferencia, idpessoal)
+    contracheque = get_contrachequereferencia(
+        mesreferencia, anoreferencia, idpessoal
+    )
     if totalextra > horazero:
         if contracheque:
             contrachequeitens = get_contrachequeitens(
                 contracheque[0].idContraCheque, "HORA EXTRA", "C"
             )
             if contrachequeitens:
-                altera_contracheque_itens(contrachequeitens, valorhoraextra, totalextra)
+                altera_contracheque_itens(
+                    contrachequeitens, valorhoraextra, totalextra
+                )
             else:
                 if valorhoraextra > 0:
                     create_contracheque_itens(
@@ -1973,7 +2072,9 @@ def total_horas_extras(mesreferencia, anoreferencia, idpessoal):
     )
     totalextra = datetime.timedelta(hours=0, minutes=0)
     for x in cartaoponto:
-        horaentradapadrao = datetime.datetime.strptime("07:00:00", "%H:%M:%S").time()
+        horaentradapadrao = datetime.datetime.strptime(
+            "07:00:00", "%H:%M:%S"
+        ).time()
         horaentradapadrao = datetime.timedelta(
             hours=horaentradapadrao.hour, minutes=horaentradapadrao.minute
         )
@@ -1982,11 +2083,15 @@ def total_horas_extras(mesreferencia, anoreferencia, idpessoal):
         )
         if horaentradareal < horaentradapadrao:
             totalextra += horaentradapadrao - horaentradareal
-        horasaidapadrao = datetime.datetime.strptime("17:00:00", "%H:%M:%S").time()
+        horasaidapadrao = datetime.datetime.strptime(
+            "17:00:00", "%H:%M:%S"
+        ).time()
         horasaidapadrao = datetime.timedelta(
             hours=horasaidapadrao.hour, minutes=horasaidapadrao.minute
         )
-        horasaidareal = datetime.timedelta(hours=x.Saida.hour, minutes=x.Saida.minute)
+        horasaidareal = datetime.timedelta(
+            hours=x.Saida.hour, minutes=x.Saida.minute
+        )
         if horasaidareal > horasaidapadrao:
             totalextra += horasaidareal - horasaidapadrao
     return totalextra
@@ -1997,8 +2102,12 @@ def calcula_horas_atrazo(mesreferencia, anoreferencia, idpessoal):
     totalatrazo = total_horas_atrazo(mesreferencia, anoreferencia, idpessoal)
     horazero = datetime.datetime.strptime("00:00:00", "%H:%M:%S").time()
     horazero = datetime.timedelta(hours=horazero.hour, minutes=horazero.minute)
-    valorhoraatrazo = float(salario[0].Salario) / 30 / 9 / 60 / 60 * totalatrazo.seconds
-    contracheque = get_contrachequereferencia(mesreferencia, anoreferencia, idpessoal)
+    valorhoraatrazo = (
+        float(salario[0].Salario) / 30 / 9 / 60 / 60 * totalatrazo.seconds
+    )
+    contracheque = get_contrachequereferencia(
+        mesreferencia, anoreferencia, idpessoal
+    )
     if totalatrazo > horazero:
         if contracheque:
             contrachequeitens = get_contrachequeitens(
@@ -2027,7 +2136,9 @@ def total_horas_atrazo(mesreferencia, anoreferencia, idpessoal):
     )
     totalatrazo = datetime.timedelta(hours=0, minutes=0)
     for x in cartaoponto:
-        horaentradapadrao = datetime.datetime.strptime("07:00:00", "%H:%M:%S").time()
+        horaentradapadrao = datetime.datetime.strptime(
+            "07:00:00", "%H:%M:%S"
+        ).time()
         horaentradapadrao = datetime.timedelta(
             hours=horaentradapadrao.hour, minutes=horaentradapadrao.minute
         )
@@ -2097,7 +2208,9 @@ def print_recibo(idrecibo):
     reciboitens = []
     recibo = Recibo.objects.get(idRecibo=idrecibo)
     colaborador = Pessoal.objects.get(idPessoal=recibo.idPessoal_id)
-    conta_colaborador = ContaPessoal.objects.filter(idPessoal=recibo.idPessoal_id)
+    conta_colaborador = ContaPessoal.objects.filter(
+        idPessoal=recibo.idPessoal_id
+    )
     _banco = ContaPessoal.objects.filter(idPessoal=recibo.idPessoal_id)
     _vc = False
     if len(_banco) > 1:
@@ -2160,9 +2273,12 @@ def create_contexto_imprime_relatorio_saldo_avulso(datainicial, datafinal):
 
 
 def create_contexto_saldo_avulso(datainicial, datafinal):
-    saldo, saldototal, saldovales, totalselect = create_contexto_avulsos_a_receber(
-        datainicial, datafinal
-    )
+    (
+        saldo,
+        saldototal,
+        saldovales,
+        totalselect,
+    ) = create_contexto_avulsos_a_receber(datainicial, datafinal)
     contexto = {
         "saldo_colaborador": saldo,
         "saldo_total": saldototal,
@@ -2238,7 +2354,9 @@ def create_contexto_minutas_avulso_receber(datainicial, datafinal, idpessoal):
 
 def html_adiantamento(request, contexto, data):
     data["html_adiantamento"] = render_to_string(
-        "pagamentos/html_adiantamento_automatico.html", contexto, request=request
+        "pagamentos/html_adiantamento_automatico.html",
+        contexto,
+        request=request,
     )
     return data
 
@@ -2387,7 +2505,9 @@ def html_minutasavulso(datainicial, datafinal, idpessoal):
 
 
 def html_minutascontracheque(mesreferencia, anoreferencia, idpessoal):
-    minutas = select_minutas_contracheque(mesreferencia, anoreferencia, idpessoal)
+    minutas = select_minutas_contracheque(
+        mesreferencia, anoreferencia, idpessoal
+    )
     context = {"minutas": minutas, "idPessoal": idpessoal}
     c_return = render_to_string("pagamentos/minutascontracheque.html", context)
     return c_return
@@ -2423,9 +2543,12 @@ def html_saldo_avulso(datainicial, datafinal):
     :param datafinal:
     :return: render_to_string através da variável c_return
     """
-    saldo, saldototal, saldovales, totalselect = create_contexto_avulsos_a_receber(
-        datainicial, datafinal
-    )
+    (
+        saldo,
+        saldototal,
+        saldovales,
+        totalselect,
+    ) = create_contexto_avulsos_a_receber(datainicial, datafinal)
     context = {
         "saldo": saldo,
         "saldototal": saldototal,
