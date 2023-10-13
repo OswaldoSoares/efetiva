@@ -80,7 +80,9 @@ class Colaborador:
         self.tipo_pgto = colaborador.TipoPgto
         self.status_pessoal = colaborador.StatusPessoal
         self.data_admissao = colaborador.DataAdmissao
-        self.data_completa_ano = self.data_admissao + relativedelta(years=+1, days=-1)
+        self.data_completa_ano = self.data_admissao + relativedelta(
+            years=+1, days=-1
+        )
         self.data_demissao = colaborador.DataDemissao
         self.foto = colaborador.Foto
         self.documentos = ColaboradorDocumentos(idpes).docs
@@ -178,18 +180,24 @@ class Colaborador:
     def get_aquisitivo(self):
         if self.tipo_pgto == "MENSALISTA":
             salvar = False
-            aquisitivo = Aquisitivo.objects.filter(idPessoal=self.idpes).order_by(
-                "-DataInicial"
-            )
+            aquisitivo = Aquisitivo.objects.filter(
+                idPessoal=self.idpes
+            ).order_by("-DataInicial")
             aquisitivo_inicial = self.data_admissao
-            aquisitivo_final = aquisitivo_inicial + relativedelta(years=+1, days=-1)
+            aquisitivo_final = aquisitivo_inicial + relativedelta(
+                years=+1, days=-1
+            )
             if not aquisitivo:
                 salvar = True
             else:
                 if not self.data_demissao:
-                    if aquisitivo[0].DataFinal < datetime.datetime.today().date():
-                        aquisitivo_inicial = self.data_admissao + relativedelta(
-                            years=+len(aquisitivo)
+                    if (
+                        aquisitivo[0].DataFinal
+                        < datetime.datetime.today().date()
+                    ):
+                        aquisitivo_inicial = (
+                            self.data_admissao
+                            + relativedelta(years=+len(aquisitivo))
                         )
                         aquisitivo_final = aquisitivo_inicial + relativedelta(
                             years=+1, days=-1
@@ -201,9 +209,9 @@ class Colaborador:
                 obj.DataFinal = aquisitivo_final
                 obj.idPessoal_id = self.idpes
                 obj.save()
-                aquisitivo = Aquisitivo.objects.filter(idPessoal=self.idpes).order_by(
-                    "-DataInicial"
-                )
+                aquisitivo = Aquisitivo.objects.filter(
+                    idPessoal=self.idpes
+                ).order_by("-DataInicial")
             lista = [
                 {
                     "aquisitivo_inicial": i.DataInicial,
@@ -228,7 +236,8 @@ class Colaborador:
                 Remunerado=False,
             )
             lista = [
-                datetime.datetime.strftime(i.Dia, "%d/%m/%Y") for i in cartao_ponto
+                datetime.datetime.strftime(i.Dia, "%d/%m/%Y")
+                for i in cartao_ponto
             ]
         else:
             lista = []
@@ -372,7 +381,9 @@ def get_pessoal_mensalista_ativo():
 
 
 def get_pessoal_nao_mensalista_ativo():
-    return Pessoal.objects.filter(StatusPessoal=True).exclude(TipoPgto="MENSALISTA")
+    return Pessoal.objects.filter(StatusPessoal=True).exclude(
+        TipoPgto="MENSALISTA"
+    )
 
 
 def get_pessoal(idpessoa: int):
@@ -502,7 +513,9 @@ def altera_contracheque_itens(contrachequeitens, valorhoraextra):
 
 def busca_contracheque(mesreferencia, anoreferencia, idpessoal):
     qs_contracheque = ContraCheque.objects.filter(
-        MesReferencia=mesreferencia, AnoReferencia=anoreferencia, idPessoal=idpessoal
+        MesReferencia=mesreferencia,
+        AnoReferencia=anoreferencia,
+        idPessoal=idpessoal,
     )
     if qs_contracheque:
         return True
@@ -567,11 +580,15 @@ def create_cartaoponto(mesreferencia, anoreferencia, idpessoal):
     admissao = colaborador[0].DataAdmissao
     if int(anoreferencia) >= admissao.year:
         if int(mesreferencia) >= admissao.month:
-            admissao = datetime.datetime(admissao.year, admissao.month, admissao.day)
+            admissao = datetime.datetime(
+                admissao.year, admissao.month, admissao.day
+            )
             if not busca_cartaoponto_referencia(
                 mesreferencia, anoreferencia, idpessoal
             ):
-                referencia = calendar.monthrange(int(anoreferencia), int(mesreferencia))
+                referencia = calendar.monthrange(
+                    int(anoreferencia), int(mesreferencia)
+                )
                 for x in range(1, referencia[1] + 1):
                     dia = "{}-{}-{}".format(anoreferencia, mesreferencia, x)
                     dia = datetime.datetime.strptime(dia, "%Y-%m-%d")
@@ -837,16 +854,22 @@ def create_contexto_print_decimo_terceiro(idpes, idparcela):
 def create_contexto_verbas_rescisoria(idpessoal):
     colaborador = Colaborador(idpessoal).__dict__
     aquisitivo = (
-        Aquisitivo.objects.filter(idPessoal=idpessoal).order_by("-DataInicial").first()
+        Aquisitivo.objects.filter(idPessoal=idpessoal)
+        .order_by("-DataInicial")
+        .first()
     )
     variavel = dict()
     variavel["admissao"] = colaborador["data_admissao"]
     variavel["demissao"] = colaborador["data_demissao"]
     dias_admitido_colaborador = facade_pagamentos.dias_admitido(variavel)
     if dias_admitido_colaborador > 16:
-        meses_ferias = rescisao_ferias_meses(aquisitivo.DataInicial, aquisitivo.DataFinal)
+        meses_ferias = rescisao_ferias_meses(
+            aquisitivo.DataInicial, aquisitivo.DataFinal
+        )
         # TODO Na rescisão precisa verificar os pagamento de 13º já efetuados
-        meses_decimo_terceiro = rescisao_descimo_terceiro_meses(colaborador["data_admissao"], colaborador["data_demissao"])
+        meses_decimo_terceiro = rescisao_descimo_terceiro_meses(
+            colaborador["data_admissao"], colaborador["data_demissao"]
+        )
     else:
         meses_ferias = 0
         meses_decimo_terceiro = 0
@@ -854,7 +877,9 @@ def create_contexto_verbas_rescisoria(idpessoal):
     rescisao_ferias = rescisao_salario / 12 * meses_ferias
     rescisao_terco_ferias = rescisao_ferias / 3
     rescisao_descimo_terceiro = rescisao_salario / 12 * meses_decimo_terceiro
-    _mes_ano = datetime.datetime.strftime(colaborador["data_demissao"], "%B/%Y")
+    _mes_ano = datetime.datetime.strftime(
+        colaborador["data_demissao"], "%B/%Y"
+    )
     folha = facade_pagamentos.create_contexto_funcionario(_mes_ano, idpessoal)
     rescisao = [
         {
@@ -909,7 +934,7 @@ def rescisao_descimo_terceiro_meses(data_inicial, data_final):
         mes_final = data_final.month
     else:
         mes_final = data_final.month - 1
-    meses = mes_final - mes_inicial + 1 
+    meses = mes_final - mes_inicial + 1
     return meses
 
 
@@ -927,7 +952,9 @@ def create_data_form_exclui_documento_colaborador(request, contexto):
 
 def html_form_adiciona_documento_colaborador(request, contexto, data):
     data["html_form_documento_colaborador"] = render_to_string(
-        "pessoas/html_form_documento_colaborador.html", contexto, request=request
+        "pessoas/html_form_documento_colaborador.html",
+        contexto,
+        request=request,
     )
     return data
 
@@ -1033,7 +1060,9 @@ def create_data_form_exclui_fone_colaborador(request, contexto):
 
 def html_form_adiciona_fone_colaborador(request, contexto, data):
     data["html_form_fone_colaborador"] = render_to_string(
-        "pessoas/html_form_telefone_colaborador.html", contexto, request=request
+        "pessoas/html_form_telefone_colaborador.html",
+        contexto,
+        request=request,
     )
     return data
 
@@ -1259,7 +1288,9 @@ def create_contexto_exclui_ferias(idferias):
     inicio = datetime.datetime.strftime(ferias.DataInicial, "%d/%m/%Y")
     final = datetime.datetime.strftime(ferias.DataFinal, "%d/%m/%Y")
     idpessoal = ferias.idPessoal_id
-    mensagem = f"Confirma a exclusão do periodo de férias de: {inicio} - {final}?"
+    mensagem = (
+        f"Confirma a exclusão do periodo de férias de: {inicio} - {final}?"
+    )
     js_class = "js-exclui-periodo-ferias"
     return {
         "mensagem": mensagem,
@@ -1287,13 +1318,17 @@ def create_data_form_paga_decimo_terceiro(request, contexto):
 
 def html_form_paga_decimo_terceiro(request, contexto, data):
     data["html_form_paga_decimo_terceiro"] = render_to_string(
-        "pessoas/html_form_paga_decimo_terceiro.html", contexto, request=request
+        "pessoas/html_form_paga_decimo_terceiro.html",
+        contexto,
+        request=request,
     )
     return data
 
 
 def paga_parcela(idparcela, data_pgto):
-    obj = ParcelasDecimoTerceiro.objects.get(idParcelasDecimoTerceiro=idparcela)
+    obj = ParcelasDecimoTerceiro.objects.get(
+        idParcelasDecimoTerceiro=idparcela
+    )
     obj.DataPgto = data_pgto
     obj.Pago = True
     obj.save(update_fields=["DataPgto", "Pago"])
@@ -1403,8 +1438,12 @@ def valida_periodo_ferias(request):
     msg = dict()
     error = False
     hoje = datetime.datetime.today()
-    data_inicio = datetime.datetime.strptime(request.POST.get("inicio"), "%Y-%m-%d")
-    data_termino = datetime.datetime.strptime(request.POST.get("termino"), "%Y-%m-%d")
+    data_inicio = datetime.datetime.strptime(
+        request.POST.get("inicio"), "%Y-%m-%d"
+    )
+    data_termino = datetime.datetime.strptime(
+        request.POST.get("termino"), "%Y-%m-%d"
+    )
     dias = (data_termino - data_inicio).days + 1
     if dias < 5:
         msg["erro_termino"] = "O Período não pode ser menor que 5 dias."
@@ -1450,7 +1489,9 @@ def salva_periodo_ferias_colaborador(idpessoal, inicio, termino, idaquisitivo):
         mes_ano = datetime.datetime.strftime(nova_data, "%B/%Y")
         mes, ano = converter_mes_ano(mes_ano)
         pdm, udm = extremos_mes(mes, ano)
-        cp = CartaoPonto.objects.filter(Dia__range=[pdm, udm], idPessoal=idpessoal)
+        cp = CartaoPonto.objects.filter(
+            Dia__range=[pdm, udm], idPessoal=idpessoal
+        )
         if not cp:
             facade_pagamentos.create_cartao_ponto(
                 idpessoal, pdm, udm, admissao, demissao, var
@@ -1460,7 +1501,9 @@ def salva_periodo_ferias_colaborador(idpessoal, inicio, termino, idaquisitivo):
             mes_ano = datetime.datetime.strftime(nova_data, "%B/%Y")
             mes, ano = converter_mes_ano(mes_ano)
             pdm, udm = extremos_mes(mes, ano)
-            cp = CartaoPonto.objects.filter(Dia__range=[pdm, udm], idPessoal=idpessoal)
+            cp = CartaoPonto.objects.filter(
+                Dia__range=[pdm, udm], idPessoal=idpessoal
+            )
             if not cp:
                 facade_pagamentos.create_cartao_ponto(
                     idpessoal, pdm, udm, admissao, demissao, var
@@ -1499,7 +1542,9 @@ def create_data_form_altera_demissao(request, contexto):
 
 def html_form_altera_demissao(request, contexto, data):
     data["html_form_demissao_colaborador"] = render_to_string(
-        "pessoas/html_form_demissao_colaborador.html", contexto, request=request
+        "pessoas/html_form_demissao_colaborador.html",
+        contexto,
+        request=request,
     )
     return data
 
@@ -1509,7 +1554,9 @@ def valida_demissao_colaborador(request):
     msg = dict()
     error = False
     hoje = datetime.datetime.today()
-    data_demissao = datetime.datetime.strptime(request.POST.get("demissao"), "%Y-%m-%d")
+    data_demissao = datetime.datetime.strptime(
+        request.POST.get("demissao"), "%Y-%m-%d"
+    )
     if data_demissao > hoje:
         msg["erro_demissao"] = "Você não pode utilizar uma data futura."
         error = True
@@ -1536,7 +1583,9 @@ def read_demissao_database(idpessoal):
 def salva_demissao(idpessoal, demissao):
     colaborador = Pessoal.objects.get(idPessoal=idpessoal)
     aquisitivo = (
-        Aquisitivo.objects.filter(idPessoal=idpessoal).order_by("-DataInicial").first()
+        Aquisitivo.objects.filter(idPessoal=idpessoal)
+        .order_by("-DataInicial")
+        .first()
     )
     obj = Pessoal(colaborador)
     obj.idPessoal = idpessoal
