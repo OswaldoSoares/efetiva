@@ -1549,9 +1549,12 @@ def salva_demissao(idpessoal, demissao):
 
 
 def altera_status(idpessoal):
+    """
+        Altera o status do colaborador usando XOR Toggle
+    Args:
+        idpessoal: Chave primária
+
+    """
     colaborador = Pessoal.objects.get(idPessoal=idpessoal)
-    if colaborador.StatusPessoal:
-        colaborador.StatusPessoal = False
-    else:
-        colaborador.StatusPessoal = True
+    colaborador.StatusPessoal ^= True
     colaborador.save()
