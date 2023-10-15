@@ -1623,3 +1623,18 @@ def aquisitivo_save(data_inicial, data_final, colaborador):
         data_final,
         colaborador,
     )
+
+
+def get_colaborador(idpessoal):
+    """
+        Recebe do db o colaborador com a primary key informada
+        como argumento
+    Args:
+        idpessoal: Primary Key
+
+    Returns:
+        colaborador: type -> pessoas.models.Pessoal
+
+    """
+    colaborador = Pessoal.objects.get(idPessoal=idpessoal)
+    return colaborador
