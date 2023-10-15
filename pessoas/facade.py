@@ -1617,7 +1617,7 @@ def altera_status(idpessoal):
 
 def aquisitivo_save(data_inicial, data_final, colaborador):
     """
-        Salva no db o período aquitivito do colaborador
+        Salva no db o período aquisitito do colaborador
     Args:
         data_inicial: Data inicial do período
         data_final: Data final do período
