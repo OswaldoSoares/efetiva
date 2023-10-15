@@ -204,11 +204,17 @@ class Colaborador:
                         )
                         salvar = True
             if salvar:
-                obj = Aquisitivo()
-                obj.DataInicial = aquisitivo_inicial
-                obj.DataFinal = aquisitivo_final
-                obj.idPessoal_id = self.idpes
-                obj.save()
+                colaborador = Pessoal.objects.get(idPessoal=self.idpes)
+                aquisitivo_save(
+                    aquisitivo_inicial,
+                    aquisitivo_final,
+                    colaborador,
+                )
+                #  obj = Aquisitivo()
+                #  obj.DataInicial = aquisitivo_inicial
+                #  obj.DataFinal = aquisitivo_final
+                #  obj.idPessoal_id = self.idpes
+                #  obj.save()
                 aquisitivo = Aquisitivo.objects.filter(
                     idPessoal=self.idpes
                 ).order_by("-DataInicial")
