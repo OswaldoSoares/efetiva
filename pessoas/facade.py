@@ -1607,3 +1607,19 @@ def altera_status(idpessoal):
     colaborador = Pessoal.objects.get(idPessoal=idpessoal)
     colaborador.StatusPessoal ^= True
     colaborador.save()
+
+
+def aquisitivo_save(data_inicial, data_final, colaborador):
+    """
+        Salva no db o período aquitivito do colaborador
+    Args:
+        data_inicial: Data inicial do período
+        data_final: Data final do período
+        colaborador: Colaborador
+
+    """
+    Aquisitivo.objects.create(
+        data_inicial,
+        data_final,
+        colaborador,
+    )
