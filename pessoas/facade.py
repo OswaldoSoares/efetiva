@@ -1642,5 +1642,8 @@ def get_colaborador(idpessoal):
         colaborador: type -> pessoas.models.Pessoal
 
     """
-    colaborador = Pessoal.objects.get(idPessoal=idpessoal)
+    try:
+        colaborador = Pessoal.objects.get(idPessoal=idpessoal)
+    except Pessoal.DoesNotExist:  # pylint: disable=no-member
+        colaborador = False
     return colaborador
