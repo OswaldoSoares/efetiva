@@ -1683,3 +1683,24 @@ def aquisitivo_admissao(colaborador):
             data_inicial = colaborador.DataAdmissao
             data_final = data_inicial + relativedelta(years=+1, days=-1)
             aquisitivo_save(data_inicial, data_final, colaborador)
+
+
+def aquisitivo_aniversario(colaborador):
+    """
+        Verifica se já possui ao menos 1 aquisitivo no db, caso tenha
+        e passado o ultimo aquisitivo como datas inicial e final e
+        cria aquisitivos anuais até a data final for maior que a data
+        de hoje.
+    Args:
+        colaborador:
+
+    """
+    aquisitivo = get_aquisitivo(colaborador)
+    if aquisitivo:
+        ultimo_aquisitivo = aquisitivo.last()
+        data_inicial = ultimo_aquisitivo.DataInicial
+        data_final = ultimo_aquisitivo.DataFinal
+        while data_final < datetime.datetime.now().date():
+            data_inicial = data_inicial + relativedelta(years=+1)
+            data_final = data_final + relativedelta(years=+1)
+            aquisitivo_save(data_inicial, data_final, colaborador)
