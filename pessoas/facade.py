@@ -1625,9 +1625,9 @@ def aquisitivo_save(data_inicial, data_final, colaborador):
 
     """
     Aquisitivo.objects.create(
-        data_inicial,
-        data_final,
-        colaborador,
+        DataInicial=data_inicial,
+        DataFinal=data_final,
+        idPessoal=colaborador,
     )
 
 
