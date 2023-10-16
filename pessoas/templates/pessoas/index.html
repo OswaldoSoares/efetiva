@@ -1,65 +1,36 @@
 {% extends 'pessoas/basepessoas.html' %}
 {% block mainpessoal %}
-<main class="article">
-    <article class="article-card card-lista-colaboradores">
-        {% include "pessoas/html_lista_colaboradores.html" %}
-    </article>
-    <article class="article-card card-dados-colaborador"></article>
-    <div class="div-tres-colaborador">
-        <article class="article-card card-ferias-colaborador"></article>
-        <article class="article-card card-decimo-terceiro"></article>
-        <article class="article-card card-multas-colaborador"></article>
-        <article class="article-card card-verbas-rescisoria"></article>
-        <article class="article-card card-recibos-colaborador"></article>
-        <article class="article-card card-form-colaborador"></article>
-    </div>
-    <article class="article-card">
-        <i class="bi bi-person-x i-button custonBtn radius-all button-demissao js-demissao"
-        title="Insere Demissão"></i>
-    </article>
-    {% now "n" as mes %}
-    {% if mes|add:0 > 10 %}
-    <article class="article-card">
-        <i class="i-button custonBtn radius-all button-decimo-terceiro js-atualiza-decimo-terceiro"
-        title="Atualiza 13º dos colaboradores">13º</i>
-    </article>
-    {% endif %}
+<main class="section-grid grid-three">
+    <section class="grid-column">
+        <article class="article-card card-lista-colaboradores">
+            {% include "pessoas/html_lista_colaboradores.html" %}
+        </article>
+    </section>
+    <section class="grid-column">
+        <article class="article-card card-dados-colaborador"></article>
+    </section>
+    <section class="grid-column">
+        <div class="div-tres-colaborador">
+            <article class="article-card card-ferias-colaborador"></article>
+            <article class="article-card card-decimo-terceiro"></article>
+            <article class="article-card card-multas-colaborador"></article>
+            <article class="article-card card-verbas-rescisoria"></article>
+            <article class="article-card card-recibos-colaborador"></article>
+            <article class="article-card card-form-colaborador"></article>
+        </div>
+        <article class="article-card">
+            <i class="bi bi-person-x i-button custonBtn radius-all button-demissao js-demissao"
+            title="Insere Demissão"></i>
+        </article>
+        {% now "n" as mes %}
+        {% if mes|add:0 > 10 %}
+        <article class="article-card">
+            <i class="i-button custonBtn radius-all button-decimo-terceiro js-atualiza-decimo-terceiro"
+            title="Atualiza 13º dos colaboradores">13º</i>
+        </article>
+        {% endif %}
+    </section>
 </main>
-    {% comment %} <table class="tabela">
-        <tbody>
-            {% for itens in pessoal %}
-                <tr class="tabelalinha">
-                    <td class="primeiracoluna"> {{ itens.Nome }}</td>
-                    <td>{{ itens.Categoria }}</td>
-                    <td>{{ itens.DataNascimento }}</td>
-                    {% if itens.StatusPessoal %}
-                    <td class="status_pessoa"><b>ATIVO</b></td>
-                    <td class="seleciona-registo">
-                        <div class="seleciona-registro-botoes">
-                            <button class="btn btn-primary btn-xs glyphicon glyphicon-folder-open"
-                                    onclick="window.location.href = '{% url 'consultapessoa' itens.idPessoal %}'">
-                            </button>
-                            <button class="btn btn-success btn-xs glyphicon glyphicon-thumbs-up"
-                                    onclick="window.location.href = '{% url 'bloqueiapessoa' itens.idPessoal %}'">
-                            </button>
-                        </div>
-                    </td>
-                    {% else %}
-                    <td class="status_pessoa"><b>BLOQUEADO</b></td>
-                    <td class="seleciona-registo">
-                        <div class="seleciona-regitro-botoes">
-                            <button class="btn btn-danger btn-xs glyphicon glyphicon-thumbs-down"
-                                    onclick="window.location.href = '{% url 'bloqueiapessoa' itens.idPessoal %}'">
-                            </button>
-                        </div>
-
-                    </td>
-                    {% endif %}
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table> {% endcomment %}
-
     <!-- DIV MODAL -->
     <div class="modal fade" id="modal-formulario" >
         <div class="modal-dialog">
