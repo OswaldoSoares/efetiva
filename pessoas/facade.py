@@ -1647,3 +1647,23 @@ def get_colaborador(idpessoal):
     except Pessoal.DoesNotExist:  # pylint: disable=no-member
         colaborador = False
     return colaborador
+
+
+def get_aquisitivo(colaborador):
+    """
+        Recebe do db os aquisitivos do colaborador informado como
+        argumento
+    Args:
+        colaborador: pessoas.models.Pessoal
+
+    Returns:
+        aquisitivo: type -> django.db.models.query.Queryset
+
+    """
+    try:
+        aquisitivo = Aquisitivo.objects.filter(idPessoal=colaborador).order_by(
+            "DataInicial"
+        )
+    except Aquisitivo.DoesNotExist:  # pylint: disable=no-member
+        aquisitivo = False
+    return aquisitivo
