@@ -1667,3 +1667,19 @@ def get_aquisitivo(colaborador):
     except Aquisitivo.DoesNotExist:  # pylint: disable=no-member
         aquisitivo = False
     return aquisitivo
+
+
+def aquisitivo_admissao(colaborador):
+    """
+        Verifica se o colaborador tem aquisitivo no db, caso não tenha
+        cria aquisitivo com a data de admissão como data inicial e como
+        data final o dia em que completa 1 ano.
+    Args:
+        colaborador: pessoas.models.Pessoal
+
+    """
+    if colaborador.TipoPgto == "MENSALISTA":
+        if not get_aquisitivo(colaborador):
+            data_inicial = colaborador.DataAdmissao
+            data_final = data_inicial + relativedelta(years=+1, days=-1)
+            aquisitivo_save(data_inicial, data_final, colaborador)
