@@ -1757,3 +1757,32 @@ def contra_cheque_ano_mes_integer(query):
     )
     query = query.order_by("-ano_mes_integer")
     return query
+
+
+def get_contra_cheque_aquisitivo(
+    aquisitivo_selecionado, contra_cheque_annotate
+):
+    """
+        Seleciona o contra cheque referente a data final
+        do aquisitivo selecionado, passado como parametro.
+        Cria a variavel ano_mes para comparar com o campo
+        annotate ano_mes_integer criado nos contra cheques
+        do colaborador e passado como parametro.
+    Args:
+        aquisitivo_selecionado: pessoas.models.Aquisitivo
+        contra_cheque_annotate: django.db.models.query.Queryset
+
+    Returns:
+        contra cheque: type -> pessoas.models.ContraCheque
+
+    """
+    if aquisitivo_selecionado:
+        ano = aquisitivo_selecionado.DataFinal.year
+        mes = aquisitivo_selecionado.DataFinal.month
+        ano_mes = ano * 100 + mes
+        contra_cheque_selecionado = None
+        for itens in contra_cheque_annotate:
+            if ano_mes == itens.ano_mes_integer:
+                contra_cheque_selecionado = itens
+                break
+        return contra_cheque_selecionado
