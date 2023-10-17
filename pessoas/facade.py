@@ -1805,3 +1805,20 @@ def get_contra_cheque_itens(contra_cheque):
         )
     return contra_cheque_itens
 
+
+def get_salario_contra_cheque(contra_cheque_itens):
+    """
+        Verifica nos itens do contra cheque o que tem
+        como descricao "SALARIO" e retorna o valor
+    Args:
+        contra_cheque_itens: django.db.models.query.Queryset
+
+    Returns:
+        salario: -> decimal.Decimal
+
+    """
+    for itens in contra_cheque_itens:
+        if itens.Descricao == "SALARIO":
+            salario = itens.Valor
+            break
+    return salario
