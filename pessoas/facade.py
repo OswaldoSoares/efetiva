@@ -1786,3 +1786,22 @@ def get_contra_cheque_aquisitivo(
                 contra_cheque_selecionado = itens
                 break
         return contra_cheque_selecionado
+
+
+def get_contra_cheque_itens(contra_cheque):
+    """
+        Recebe do db os itens referente ao contra
+        cheque informado como argumento.
+    Args:
+        contra_cheque: pessoas.models.ContraCheque
+
+    Returns:
+        contra_cheque_itens: type -> django.db.models.query.Queryset
+
+    """
+    if contra_cheque:
+        contra_cheque_itens = ContraChequeItens.objects.filter(
+            idContraCheque=contra_cheque
+        )
+    return contra_cheque_itens
+
