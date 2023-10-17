@@ -4,7 +4,17 @@ import os
 from django.db import connection
 
 from dateutil.relativedelta import relativedelta
-from django.db.models import Sum, Max
+from django.db.models import (
+    Sum,
+    Max,
+    F,
+    ExpressionWrapper,
+    IntegerField,
+    DateField,
+    When,
+    Case,
+    Value,
+)
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from decimal import Decimal
@@ -12,6 +22,7 @@ from PIL import Image, ImageDraw
 from despesas import facade as facade_multa
 from pagamentos import facade as facade_pagamentos
 from pagamentos.models import Recibo
+
 
 from pessoas.forms import CadastraSalario, CadastraVale, CadastraDemissao
 from pessoas.models import (
@@ -1704,3 +1715,45 @@ def aquisitivo_aniversario(colaborador):
             data_inicial = data_inicial + relativedelta(years=+1)
             data_final = data_final + relativedelta(years=+1)
             aquisitivo_save(data_inicial, data_final, colaborador)
+
+
+def contra_cheque_ano_mes_integer(query):
+    """
+        Adiciona um campo na query contra cheque passada como
+        parametro, que contem o ano e o mes em forma integer
+        utilizada para ordenar decrescente a query
+    Args:
+        query: django.db.models.query.Queryset
+
+    Returns:
+        query: type -> django.db.models.query.Queryset, ordernada
+        por ano_mes decrescente
+
+    """
+    query = query.annotate(
+        mes=ExpressionWrapper(
+            Case(
+                When(MesReferencia="JANEIRO", then=Value(1)),
+                When(MesReferencia="FEVEREIRO", then=Value(2)),
+                When(MesReferencia="MARÇO", then=Value(3)),
+                When(MesReferencia="ABRIL", then=Value(4)),
+                When(MesReferencia="MAIO", then=Value(5)),
+                When(MesReferencia="JUNHO", then=Value(6)),
+                When(MesReferencia="JULHO", then=Value(7)),
+                When(MesReferencia="AGOSTO", then=Value(8)),
+                When(MesReferencia="SETEMBRO", then=Value(9)),
+                When(MesReferencia="OUTUBRO", then=Value(10)),
+                When(MesReferencia="NOVEMBRO", then=Value(11)),
+                When(MesReferencia="DEZEMBRO", then=Value(12)),
+                default=Value(1),
+                output_field=IntegerField(),
+            ),
+            output_field=IntegerField(),
+        ),
+        ano_mes_integer=ExpressionWrapper(
+            F("AnoReferencia") * 100 + F("mes"),
+            output_field=DateField(),
+        ),
+    )
+    query = query.order_by("-ano_mes_integer")
+    return query
