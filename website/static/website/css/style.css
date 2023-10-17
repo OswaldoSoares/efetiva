@@ -6431,7 +6431,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 }
 
 .tipo-mensalista {
-  color: var(--color8);
+  color: var(--color8) !important;
 }
 
 /* MODULO PESSOAS - END */
@@ -6504,18 +6504,18 @@ label {
 }
 
 .card-header span {
-  font-size: 2.5rem;
+  font-size: 2.2rem;
   vertical-align: middle;
 }
 
 .card-header i {
-  font-size: 2.5rem;
+  font-size: 2.2rem;
   vertical-align: middle;
   padding: 0 0.8rem;
 }
 
 .card-header .i-button {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   vertical-align: middle;
   padding: 0 0.8rem;
 }
