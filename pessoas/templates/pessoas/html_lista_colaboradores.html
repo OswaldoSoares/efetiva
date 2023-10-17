@@ -1,5 +1,6 @@
 {% load humanize %}
-<div class="article-card-titulo titulo-icone">
+<!-- Header -->
+<div class="card-header titulo-icone">
     <div><span>COLABORADORES</span></div>
     <div>
         {% for it in colaboradores %}
@@ -15,35 +16,38 @@
         {% endfor %}
     </div>
 </div>
-<div class="article-card-body">
+<!-- Body -->
+<div class="card-body">
     {% for it in colaboradores %}
-    <div class="itens-lista">
-        {% if it.tipo_pgto == "MENSALISTA"%}
-        <div class="item-nome tipo-mensalista">
-            <span data-tooltip="{{ it.nome }}"
-            data-tooltip-position="right">{{ it.nome_curto }}</span>
-        </div>
-        {% else %}
-        <div class="item-nome">
-            <span data-tooltip="{{ it.nome }}"
-            data-tooltip-position="right">{{ it.nome_curto }}</span>
-        </div>
-        {% endif %}
-        <div class="item-button">
-            {% if it.decimo_terceiro %}
-            <i>13º</i>
+    <div class="card-body-item">
+        <div class="input-group">
+            <i class="bi bi-person-square
+            input-group-addon
+            addon-my-color
+            i-button-null"></i>
+            {% if it.tipo_pgto == "MENSALISTA"%}
+            <span class="form-control
+            input-fake
+            tipo-mensalista"
+            {% else %}
+            <span class="form-control
+            input-fake"
             {% endif %}
-        </div>
-        <div class="item-button">
-            <i class="bi bi-folder-symlink i-button js-seleciona-colaborador"
+            data-tooltip="{{ it.nome }}"
+            data-tooltip-position="right">{{ it.nome_curto }}</span>
+            <i class="bi bi-folder-symlink
+            input-group-addon
+            addon-my-color
+            i-button
+            js-seleciona-colaborador"
             data-idpessoal="{{ it.idpessoal }}"></i>
         </div>
     </div>
     {% endfor %}
 </div>
-<div class="article-card-footer">
-    <div class="itens-lista">
-        <div class="item-nome">
+<div class="card-footer">
+    <div class="div-flex">
+        <div>
             {% for it in colaboradores %}
             {% if forloop.last %}
             {{ forloop.counter|stringformat:"02d" }}
@@ -51,13 +55,11 @@
             {% endif %}
             {% endfor %}
         </div>
-        <div class="item-button"></div>
-        <div class="item-button">
-            <i class="bi bi-plus-circle i-button"
-            onclick="openMyModal(event); return false;"
-            data-title="CADASTRO DE COLABORADOR"
-            data-action="{% url 'criapessoa' %}"
-            data-button-save-label="SALVAR"></i>
-        </div>
+        <div></div>
+        <i class="bi bi-plus-circle i-button"
+        onclick="openMyModal(event); return false;"
+        data-title="CADASTRO DE COLABORADOR"
+        data-action="{% url 'criapessoa' %}"
+        data-button-save-label="SALVAR"></i>
     </div>
 </div>
