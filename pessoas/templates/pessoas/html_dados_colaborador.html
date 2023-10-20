@@ -1,268 +1,160 @@
 {% load static %}
 {% load humanize %}
-<div class="article-card-titulo">
-    <span>{{ colaborador.nome_curto }}</span>
+<!-- Header -->
+<div class="card-header">
+    <span>DOCS - FONE - BANCO</span>
 </div>
-<div class="article-card-body">
-    <figure class="containerimg">
-        {% if colaborador.foto %}
-        <img src="/media/{{ colaborador.foto }}"
-        alt="" class="foto">
-        {% else %}
-        <img src="{% static 'website/img/usuario.png' %}"
-        alt="" class="foto">
-        {% endif %}
-        <span>{{ colaborador.nome }}</span>
-        <div class="botoes">
-            <form class="file-body js-salva-foto" method="post"
-            enctype="multipart/form-data">
-                {% csrf_token %}
-                <input type="file" class="file js-carrega-foto" id="file_foto">
-                <label for="file_foto" title="Carregar Foto"
-                class="bi bi-camera i-button custonBtn radius-left"></label>
-                <input type="hidden" value="{{ colaborador.idpes }}"
-                id="idpessoal" name="idpessoal">
-                <button type="submit" class="js-salva-foto submit_btn"></button>
-                {% if colaborador.status_pessoal %}
-                <i class="icofont-thumbs-up i-button custonBtn radius-right js-altera-status-colaborador"
-                data-idpessoal"{{ colaborador.idpes }}" data-lista=""
-                title="Bloquear Colaborador"></i>
-                {% else %}
-                <i class="icofont-thumbs-down i-button custonBtn radius-right js-altera-status-colaborador"
-                data-idpessoal"{{ colaborador.idpes }}" data-lista="{{ colaborador.status_pessoal }}"
-                title="Desbloquear Colaborador"></i>
-                {% endif %}
-            </form>
-        </div>
-    </figure>
-    <div class="linha-divisoria"></div>
-    <div class="itens-dados">
-        <div class="item-descricao">
-            <i class="bi bi-geo-alt i-button-null"></i>
-            <span>ENDEREÇO:</span>
-        </div>
-        <div class="item-valor">
-            {{ colaborador.endereco_completo }}
-        </div>
-    </div>
-    <div class="itens-dados">
-        <div class="item-descricao">
-            <i class="bi bi-geo-fill i-button-null"></i>
-            <span>CIDADE:</span>
-        </div>
-        <div class="item-valor">
-            {{ colaborador.cidade_estado }}
-        </div>
-    </div>
-    {% if colaborador.mae  %}
-    <div class="itens-dados">
-        <div class="item-descricao">
-            <i class="bi bi-gender-female i-button-null"></i>
-            <span>MÃE:</span>
-        </div>
-        <div class="item-valor">
-            {{ colaborador.mae }}
-        </div>
-    </div>
-    {% endif %}
-    {% if colaborador.pai  %}
-    <div class="itens-dados">
-        <div class="item-descricao">
-            <i class="bi bi-gender-male i-button-null"></i>
-            <span>PAI:</span>
-        </div>
-        <div class="item-valor">
-            {{ colaborador.pai }}
-        </div>
-    </div>
-    {% endif %}
-    <div class="itens-dados">
-        <div class="item-descricao">
-            <i class="icofont-star-alt-1 i-button-null"></i>
-            <span>DATA NASCIMENTO:</span>
-        </div>
-        <div class="item-valor">
-            {{ colaborador.data_nascimento }}
-        </div>
-    </div>
-    <div class="itens-dados">
-        <div class="item-descricao">
-            <i class="bi bi-list i-button-null"></i>
-            <span>CATEGORIA:</span>
-        </div>
-        <div class="item-valor">
-            {{ colaborador.categoria }}
-        </div>
-    </div>
-    {% if colaborador.tipo_pgto == "MENSALISTA" %}
-    {% if colaborador.data_admissao  %}
-    <div class="itens-dados">
-        <div class="item-descricao">
-            <i class="bi bi-calendar-date i-button-null"></i>
-            <span>DATA ADMISSÃO:</span>
-        </div>
-        <div class="item-valor">
-            {{ colaborador.data_admissao}}
-        </div>
-    </div>
-    {% endif %}
-    {% if colaborador.data_demissao  %}
-    <div class="itens-dados">
-        <div class="item-descricao">
-            <i class="bi bi-calendar-date i-button-null"></i>
-            <span>DATA DEMISSÃO:</span>
-        </div>
-        <div class="item-valor">
-            {{ colaborador.data_demissao}}
-        </div>
-    </div>
-    {% endif %}
-    <div class="itens-dados">
-        <div class="item-descricao">
-            <i class="icofont-money i-button-null"></i>
-            <span>SALÁRIO:</span>
-        </div>
-        <div class="item-valor">
-            R$ {{ colaborador.salario.0.salario|intcomma }}
-        </div>
-    </div>
-    {% endif %}
-    <div class="itens-dados">
-        <div class="item-descricao">
-            <i class="bi bi-currency-dollar i-button-null"></i>
-            <span>TIPO PAGAMENTO:</span>
-        </div>
-        <div class="item-valor">
-            {{ colaborador.tipo_pgto }}
-        </div>
-    </div>
-    {% if colaborador.tipo_pgto == "MENSALISTA" %}
-    <div class="itens-dados">
-        <div class="item-descricao">
-            <i class="icofont-bus-alt-2 i-button-null"></i>
-            <span>VALE TRANSPORTE:</span>
-        </div>
-        <div class="item-valor">
-            R$ {{ colaborador.salario.0.transporte|intcomma }}
-        </div>
-    </div>
-    {% endif %}
-    {% if colaborador.tipo_pgto == "MENSALISTA" %}
-    <div class="itens-dados">
-        <div class="item-descricao">
-            <i class="bi bi-house i-button-null"></i>
-            <span>FALTAS:</span>
-        </div>
-        <div class="item-valor">
-            {{ colaborador.faltas|length  }}
-        </div>
-    </div>
-    {% endif %}
-    <div class="linha-divisoria"></div>
+<!-- Body -->
+<div class="card-body">
     {% for x in colaborador.documentos %}
-    <div class="itens-dados">
-        <div class="item-descricao">
-            <i class="icofont-ui-v-card i-button-null"></i>
-            <span>{{ x.tipo }}: </span>
-        </div>
-        <div class="item-valor">
-            {{ x.documento }} - {{ x.data_doc }}
-            <i class="bi bi-pencil-square i-button js-altera-documento-colaborador"
-            data-iddocpessoal="{{ x.iddoc }}"
-            data-idpessoal="{{ colaborador.idpes }}"></i>
-            <i class="bi bi-trash i-button js-exclui-documento-colaborador"
-            data-iddocpessoal="{{ x.iddoc }}"></i>
+    <div class="card-body-item">
+        <div class="input-group">
+            <i class="icofont-ui-v-card
+            i-button-null
+            input-group-addon
+            addon-my-color"
+               title="Documento"></i>
+            {% if x.tipo == "HABILITAÇÃO" %}
+            <span class="form-control input-fake font-menor">
+                CNH: {{ x.documento }}
+            </span>
+            {% else %}
+            <span class="form-control input-fake font-menor">                
+                {{ x.tipo }}: {{ x.documento }}
+            </span>
+            {% endif %}
+            <div class="input-group-addon
+            addon-my-color">
+                <i class="bi bi-pencil-square
+                i-button
+                js-altera-documento-colaborador"
+                   data-iddocpessoal="{{ x.iddoc }}"
+                   data-idpessoal="{{ colaborador.idpes }}"></i>
+            </div>
+            <div class="input-group-addon
+            addon-my-color">
+                <i class="bi bi-trash
+                i-button
+                js-exclui-documento-colaborador"
+                   data-iddocpessoal="{{ x.iddoc }}"></i>
+            </div>
         </div>
     </div>
     {% endfor %}
     {% for x in colaborador.telefones %}
-    <div class="itens-dados">
-        <div class="item-descricao">
-            <i class="icofont-ui-dial-phone i-button-null"></i>
-            <span>{{ x.tipo }}: </span>
-        </div>
-        <div class="item-valor">
-            {{ x.fone }} {% if x.contato %} - {{ x.contato }} {% endif %}
-            <i class="bi bi-pencil-square i-button js-altera-telefone-colaborador"
-            data-idfonepessoal="{{ x.idfone }}"
-            data-idpessoal="{{ colaborador.idpes }}"></i>
-            <i class="bi bi-trash i-button js-exclui-telefone-colaborador"
-            data-idfonepessoal="{{ x.idfone }}"></i>
+    <div class="card-body-item">
+        <div class="input-group">
+            <i class="icofont-ui-dial-phone
+            i-button-null
+            input-group-addon
+            addon-my-color"
+               title="Telefone"></i>
+            <span class="form-control input-fake font-menor">
+                {{ x.tipo }}: {{ x.fone }}
+                {% if x.contato %}
+                - {{ x.contato }}
+                {% endif %}
+            </span>
+            <div class="input-group-addon
+            addon-my-color">
+                <i class="bi bi-pencil-square
+                i-button
+                js-altera-telefone-colaborador"
+                   data-idfonepessoal="{{ x.idfone }}"
+                   data-idpessoal="{{ colaborador.idpes }}"></i>
+            </div>
+            <div class="input-group-addon
+            addon-my-color">
+                <i class="bi bi-trash
+                i-button
+                js-exclui-telefone-colaborador"
+                   data-idfonepessoal="{{ x.idfone }}"></i>
+            </div>
         </div>
     </div>
     {% endfor %}
     {% for x in colaborador.bancos %}
-    <div class="itens-dados">
+    <div class="card-body-item">
         {% if x.pix %}
-        <div class="item-descricao">
-            <i class="icofont-bank i-button-null"></i>
-            <span>CHAVE PIX: </span>
-        </div>
-        <div class="item-valor">
-            {{ x.pix }}
-            <i class="bi bi-pencil-square i-button js-altera-conta-colaborador"
-            data-idcontapessoal="{{ x.idconta }}"
-            data-idpessoal="{{ colaborador.idpes }}"></i>
-            <i class="bi bi-trash i-button js-exclui-conta-colaborador"
-            data-idcontapessoal="{{ x.idconta }}"></i>
+        <div class="input-group">
+            <i class="icofont-bank
+            i-button-null
+            input-group-addon
+            addon-my-color"
+               title="Chave PIX"></i>
+            <span class="form-control input-fake font-menor linha-4">
+                CHAVE PIX: {{ x.pix }}
+            </span>
+            <div class="input-group-addon
+            addon-my-color">
+                <i class="bi bi-pencil-square
+                i-button
+                js-altera-conta-colaborador"
+                   data-idcontapessoal="{{ x.idconta }}"
+                   data-idpessoal="{{ colaborador.idpes }}"></i>
+            </div>
+            <div class="input-group-addon
+            addon-my-color">
+                <i class="bi bi-trash
+                i-button
+                js-exclui-conta-colaborador"
+                   data-idcontapessoal="{{ x.idconta }}"></i>
+            </div>
         </div>
         {% else %}
-        <div class="item-descricao">
-            <i class="icofont-bank i-button-null"></i>
-            <span>{{ x.banco }}: </span>
-        </div>
-        <div class="item-valor">
-            AG: {{ x.agencia }}
-            {% if x.tipo == "CORRENTE" %}
-             - C/C:
-             {% else %}
-             - C/P:
-            {% endif %}
-             {{ x.conta }}
-            <i class="bi bi-pencil-square i-button js-altera-conta-colaborador"
-            data-idcontapessoal="{{ x.idconta }}"
-            data-idpessoal="{{ colaborador.idpes }}"></i>
-            <i class="bi bi-trash i-button js-exclui-conta-colaborador"
-            data-idcontapessoal="{{ x.idconta }}"></i> 
+        <div class="input-group">
+            <i class="icofont-bank
+            i-button-null
+            input-group-addon
+            addon-my-color"
+               title="Dados Bancário"></i>
+            <span class="form-control input-fake font-menor linha-4">
+                {{ x.banco }}: AG: {{ x.agencia }}
+                {% if x.tipo == "CORRENTE" %}
+                 - C/C:
+                {% else %}
+                 - C/P:
+                {% endif %}
+                {{ x.conta }}
+            </span>
+            <div class="input-group-addon
+            addon-my-color">
+                <i class="bi bi-pencil-square
+                i-button
+                js-altera-conta-colaborador"
+                   data-idcontapessoal="{{ x.idconta }}"
+                   data-idpessoal="{{ colaborador.idpes }}"></i>
+            </div>
+            <div class="input-group-addon
+            addon-my-color">
+                <i class="bi bi-trash
+                i-button
+                js-exclui-conta-colaborador"
+                   data-idcontapessoal="{{ x.idconta }}"></i> 
+            </div>
         </div>
         {% endif %}
     </div>
-    <div class="itens-dados">
+    <div class="input-group">
         {% if x.titular %}
-        <div class="item-descricao">
-            <span>&#x27A5 TITULAR: </span>
-        </div>
-        <div class="item-valor">
-            {{ x.titular }} {% if x.documento %} - {{ x.documento }} {% endif %}
+        <i class="bi bi-person-circle
+        i-button-null
+        input-group-addon
+        addon-my-color"
+           title="Titular da Conta"></i>
+        <span class="form-control input-fake font-menor-2 text-left linha-4">
+            {{ x.titular }}
+            {% if x.documento %}
+            - {{ x.documento }}
+            {% endif %}
+        </span>
+        <div class="input-group-addon
+        addon-my-color">
+            <i class="bi bi-check"></i>
         </div>
         {% endif %}
     </div>
     {% endfor %}
 </div>
-<div class="article-card-footer">
-    <i class="bi bi-pencil-square i-button"
-    title="EDITAR COLABORADOR"
-    onclick="openMyModal(event); return false;"
-    data-title="EDITA CADASTRO DE COLABORADOR"
-    data-action="{% url 'editapessoa' colaborador.idpes %}"
-    data-button-save-label="ALTERAR"></i>
-    <i class="icofont-ui-v-card i-button js-adiciona-documento-colaborador"
-    title="Adiciona Documento" data-idpessoal="{{ colaborador.idpes }}"></i>
-    <i class="icofont-ui-dial-phone i-button js-adiciona-telefone-colaborador"
-    title="Adiciona Telefone" data-idpessoal="{{ colaborador.idpes }}"></i>
-    <i class="icofont-bank-alt i-button js-adiciona-conta-colaborador"
-    title="Adiciona Conta Bancária" data-idpessoal="{{ colaborador.idpes }}"></i>
-    {% if colaborador.tipo_pgto == "MENSALISTA" %}
-    <i class="bi bi-currency-dollar i-button js-altera-salario-colaborador"
-    title="Altera Valor do Salário e do Vale Transporte"
-    data-idpessoal="{{ colaborador.idpes }}"></i>
-    {% endif %}
-    {% if colaborador.data_demissao %}
-    <i class="icofont-calculator i-button js-verbas-rescisoria"
-    title="Verbas Rescisoria"
-    data-idpessoal="{{ colaborador.idpes }}"></i>
-    {% endif %}
-    <a class="bi bi-printer i-button" target="_blank"
-    href="{% url 'print_ficha_colaborador' %}?idpes={{ colaborador.idpes }}"
-    title="Imprime Ficha do Colaborador"></a>
-</div>
+<!-- Card Footer -->
+<div class="card-footer"></div>
