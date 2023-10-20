@@ -1,9 +1,109 @@
+{% load static %}
+{% load humanize %}
 <!-- Header -->
-< div class="card-header">
+<div class="card-header">
+    <span>{{ colaborador.nome_curto }}</span>
 </div>
 <!-- Body -->
 <div class="card-body">
+	<figure class="containerimg">
+        {% if colaborador.foto %}
+        <img src="/media/{{ colaborador.foto }}"
+             alt=""
+             class="foto">
+        {% else %}
+        <img src="{% static 'website/img/usuario.png' %}"
+             alt=""
+             class="foto">
+        {% endif %}
+        <span>{{ colaborador.nome }}</span>
+    </figure>
+    <div class="div-botoes">
+        <form class="file-body js-salva-foto"
+              method="post"
+              enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file"
+                   class="file js-carrega-foto"
+                   id="file_foto">
+            <label for="file_foto"
+                   title="Carregar Foto"
+                   class="bi bi-camera
+                   i-button
+                   custonBtn
+                   radius-left"></label>
+            <input type="hidden"
+                   value="{{ colaborador.idpes }}"
+                   id="idpessoal"
+                   name="idpessoal">
+            <button type="submit"
+                    class="js-salva-foto submit_btn"></button>
+            {% if colaborador.status_pessoal %}
+            <i class="icofont-thumbs-up
+            i-button
+            custonBtn
+            radius-right
+            js-altera-status-colaborador"
+               data-idpessoal"{{ colaborador.idpes }}"
+               data-lista=""
+               title="Bloquear Colaborador"></i>
+            {% else %}
+            <i class="icofont-thumbs-down
+            i-button
+            custonBtn
+            radius-right
+            js-altera-status-colaborador"
+               data-idpessoal"{{ colaborador.idpes }}"
+               data-lista="{{ colaborador.status_pessoal }}"
+               title="Desbloquear Colaborador"></i>
+            {% endif %}
+        </form>
+    </div>
 </div>
 <!-- Footer -->
 <div class="card-footer">
+    <div class="div-flex">
+        <i class="bi bi-pencil-square
+        i-button"
+           title="Edita colaborador"
+           onclick="openMyModal(event); return false;"
+           data-title="EDITA CADASTRO DE COLABORADOR"
+           data-action="{% url 'editapessoa' colaborador.idpes %}"
+           data-button-save-label="ALTERAR"></i>
+        <i class="icofont-ui-v-card
+        i-button
+        js-adiciona-documento-colaborador"
+           title="Adiciona Documento"
+           data-idpessoal="{{ colaborador.idpes }}"></i>
+        <i class="icofont-ui-dial-phone
+        i-button
+        js-adiciona-telefone-colaborador"
+           title="Adiciona Telefone"
+           data-idpessoal="{{ colaborador.idpes }}"></i>
+        <i class="icofont-bank-alt
+        i-button
+        js-adiciona-conta-colaborador"
+           title="Adiciona Conta Bancária"
+           data-idpessoal="{{ colaborador.idpes }}"></i>
+        {% if colaborador.tipo_pgto == "MENSALISTA" %}
+        <i class="bi bi-currency-dollar
+        i-button
+        js-altera-salario-colaborador"
+           title="Altera Valor do Salário e do Vale Transporte"
+           data-idpessoal="{{ colaborador.idpes }}"></i>
+        {% endif %}
+        {% if colaborador.data_demissao %}
+        <i class="icofont-calculator
+        i-button
+        js-verbas-rescisoria"
+           title="Verbas Rescisoria"
+           data-idpessoal="{{ colaborador.idpes }}"></i>
+        {% endif %}
+        <a class="bi bi-printer
+        i-button"
+           target="_blank"
+           href="{% url 'print_ficha_colaborador' %}?idpes={{ colaborador.idpes }}"
+           title="Imprime Ficha do Colaborador"></a>
+    </div>
+
 </div>
