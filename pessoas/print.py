@@ -309,7 +309,9 @@ def print_pdf_ferias(contexto):
         )
         pdf.setFont("Times-Roman", 11)
         linhaitens = 0
-        salario_base = contexto["colaborador"]["salario_ferias"]
+        #  salario_base = contexto["colaborador"]["salario_ferias"]
+        salario_base = contexto["salario_aquisitivo"]
+        print(salario_base)
         aquisitivo_inicial = datetime.datetime.strftime(
             contexto["aquisitivo"].DataInicial, "%d/%m/%Y"
         )
@@ -396,9 +398,7 @@ def print_pdf_ferias(contexto):
         pdf.drawString(
             cmp(10),
             cmp(linha - 144),
-            "R$ {}".format(contexto["colaborador"]["salario"][0]["salario"]).replace(
-                ".", ","
-            ),
+            "R$ {}".format(contexto["salario_aquisitivo"]).replace(".", ","),
         )
     pdf.setFont("Times-Roman", 9)
     pdf.setFillColor(HexColor("#808080"))
