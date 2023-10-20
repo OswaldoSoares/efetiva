@@ -1,62 +1,55 @@
 {% extends 'pessoas/basepessoas.html' %}
 {% block mainpessoal %}
-<main class="section-grid grid-three">
+<main class="section-grid grid-romaneio">
     <section class="grid-column">
-        <article class="article-card card-lista-colaboradores">
+        <article class="card card-lista-colaboradores">
             {% include "pessoas/html_lista_colaboradores.html" %}
         </article>
     </section>
     <section class="grid-column">
-        <article class="article-card card-dados-colaborador"></article>
-    </section>
-    <section class="grid-column">
-        <div class="div-tres-colaborador">
-            <article class="article-card card-ferias-colaborador"></article>
-            <article class="article-card card-decimo-terceiro"></article>
-            <article class="article-card card-multas-colaborador"></article>
-            <article class="article-card card-verbas-rescisoria"></article>
-            <article class="article-card card-recibos-colaborador"></article>
-            <article class="article-card card-form-colaborador"></article>
-        </div>
+        <article class="card card-ferias-colaborador"></article>
+        <article class="card card-decimo-terceiro"></article>
+        <article class="card card-multas-colaborador"></article>
+        <article class="card card-verbas-rescisoria"></article>
+        <article class="card card-recibos-colaborador"></article>
+        <article class="card card-form-colaborador"></article>
+        <!--
         <article class="article-card">
             <i class="bi bi-person-x i-button custonBtn radius-all button-demissao js-demissao"
             title="Insere Demissão"></i>
         </article>
-        {% now "n" as mes %}
-        {% if mes|add:0 > 10 %}
+        {% comment %} {% now "n" as mes %} {% endcomment %}
+        {% comment %} {% if mes|add:0 > 10 %} {% endcomment %}
         <article class="article-card">
             <i class="i-button custonBtn radius-all button-decimo-terceiro js-atualiza-decimo-terceiro"
             title="Atualiza 13º dos colaboradores">13º</i>
         </article>
-        {% endif %}
+        {% comment %} {% endif %} {% endcomment %}
+        -->
+    </section>
+    <section class="grid-column">
+        <article class="card card-foto-colaborador"></article>
+        <article class="card card-info-colaborador"></article>
+        <article class="card card-dados-colaborador"></article>
     </section>
 </main>
-    <!-- DIV MODAL -->
-    <div class="modal fade" id="modal-formulario" >
-        <div class="modal-dialog">
-            <div class="modal-content">
-
+<!-- DIV MODAL -->
+<div class="modal fade bd-example-modal-lg" id="MyModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title"><b>CADASTRO DE COLABORADORES</b></h4>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">FECHAR</button>
+                <button type="submit" class="btn btn-success btn-save">CRIAR</button>
             </div>
         </div>
     </div>
-    <!-- DIV MODAL -->
-    <div class="modal fade bd-example-modal-lg" id="MyModal" tabindex="-1">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title"><b>CADASTRO DE COLABORADORES</b></h4>
-                </div>
-                <div class="modal-body">
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">FECHAR</button>
-                    <button type="submit" class="btn btn-success btn-save">CRIAR</button>
-                </div>
-            </div>
-        </div>
-    </div>
+</div>
 {% endblock %}
