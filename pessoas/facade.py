@@ -769,6 +769,8 @@ def create_data_consulta_colaborador(request, contexto):
     tipo_pgto = contexto["colaborador"]["tipo_pgto"]
     data = dict()
     html_lista_colaboradores_ativo(request, contexto, data)
+    html_card_foto_colaborador(request, contexto, data)
+    html_card_info_colaborador(request, contexto, data)
     html_dados_colaborador(request, contexto, data)
     if tipo_pgto == "MENSALISTA":
         html_ferias_colaborador(request, contexto, data)
