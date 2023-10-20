@@ -169,8 +169,12 @@ class Vales(models.Model):
 class Salario(models.Model):
     idSalario = models.AutoField(primary_key=True)
     Salario = models.DecimalField(decimal_places=2, max_digits=9, default=1.00)
-    HorasMensais = models.DecimalField(decimal_places=2, max_digits=6, default=220.00)
-    ValeTransporte = models.DecimalField(decimal_places=2, max_digits=9, default=0.00)
+    HorasMensais = models.DecimalField(
+        decimal_places=2, max_digits=6, default=220.00
+    )
+    ValeTransporte = models.DecimalField(
+        decimal_places=2, max_digits=9, default=0.00
+    )
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.PROTECT, default=1)
 
     class Meta:
@@ -278,7 +282,9 @@ class DecimoTerceiro(models.Model):
     idDecimoTerceiro = models.AutoField(primary_key=True)
     Ano = models.IntegerField(default=0)
     Dozeavos = models.IntegerField(default=0)
-    ValorBase = models.DecimalField(decimal_places=2, max_digits=9, default=0.00)
+    ValorBase = models.DecimalField(
+        decimal_places=2, max_digits=9, default=0.00
+    )
     Valor = models.DecimalField(decimal_places=2, max_digits=9, default=0.00)
     Pago = models.BooleanField(default=False)
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
@@ -299,7 +305,9 @@ class ParcelasDecimoTerceiro(models.Model):
     Valor = models.DecimalField(decimal_places=2, max_digits=9, default=0.00)
     Pago = models.BooleanField(default=False)
     DataPgto = models.DateField(blank=True, null=True)
-    idDecimoTerceiro = models.ForeignKey(DecimoTerceiro, on_delete=models.CASCADE)
+    idDecimoTerceiro = models.ForeignKey(
+        DecimoTerceiro, on_delete=models.CASCADE
+    )
 
     class Meta:
         db_table = "decimo_terceiro_parcelas"
