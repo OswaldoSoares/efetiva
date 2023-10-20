@@ -1,8 +1,229 @@
+{% load humanize %}
 <!-- Header -->
 <div class="card-header">
+	<span>INFORMAÇÕES</span>
 </div>
 <!-- Body -->
 <div class="card-body">
+	<div class="card-body-item">
+		<div class="input-group">
+            <i class="bi bi-geo-alt
+			i-button-null
+			input-group-addon
+			addon-my-color"
+			   title="Endereço"></i>
+			<span class="form-control input-fake font-menor linha-4">
+				{{ colaborador.endereco }}
+			</span>
+			<i class="bi bi-check
+			i-button-null
+			input-group-addon
+			addon-my-color"></i>
+		</div>
+	</div>
+	<div class="card-body-item">
+        <div class="input-group">
+            <i class="bi bi-geo-alt
+			i-button-null
+			input-group-addon
+			addon-my-color"
+			   title="Bairro"></i>
+			<span class="form-control input-fake font-menor">
+				{{ colaborador.bairro }}
+			</span>
+			<i class="bi bi-check
+			i-button-null
+			input-group-addon
+			addon-my-color"></i>
+		</div>
+	</div>
+	<div class="card-body-item">
+        <div class="input-group">
+            <i class="bi bi-geo-fill
+			i-button-null
+			input-group-addon
+			addon-my-color"
+			   title="Cidade, Estado e CEP"></i>
+			<span class="form-control input-fake font-menor">
+				{{ colaborador.cidade_estado }}
+			</span>
+			<i class="bi bi-check
+			i-button-null
+			input-group-addon
+			addon-my-color"></i>
+		</div>
+	</div>
+    {% if colaborador.mae  %}
+	<div class="card-body-item">
+        <div class="input-group">
+            <i class="bi bi-gender-female
+			i-button-null
+			input-group-addon
+			addon-my-color"
+			   title="Nome da Mãe"></i>
+			<span class="form-control input-fake font-menor linha-4">
+				{{ colaborador.mae }}
+			</span>
+			<i class="bi bi-check
+			i-button-null
+			input-group-addon
+			addon-my-color"></i>
+		</div>
+	</div>
+    {% endif %}
+    {% if colaborador.pai %}
+	<div class="card-body-item">
+        <div class="input-group">
+            <i class="bi bi-gender-male
+			i-button-null
+			input-group-addon
+			addon-my-color"
+			   title="Nome do Pai"></i>
+			<span class="form-control input-fake font-menor linha-4">
+				{{ colaborador.pai }}
+			</span>
+			<i class="bi bi-check
+			i-button-null
+			input-group-addon
+			addon-my-color"></i>
+		</div>
+	</div>
+    {% endif %}
+	<div class="card-body-item">
+
+        <div class="input-group">
+            <i class="icofont-star-alt-1
+			i-button-null
+			input-group-addon
+			addon-my-color"
+			   title="Data de Nascimento"></i>
+			<span class="form-control input-fake font-menor">
+				NASCIMENTO {{ colaborador.data_nascimento }}
+			</span>
+			<i class="bi bi-check
+			i-button-null
+			input-group-addon
+			addon-my-color"></i>
+		</div>
+	</div>
+	<div class="card-body-item">
+        <div class="input-group">
+            <i class="bi bi-list
+			i-button-null
+			input-group-addon
+			addon-my-color"
+			   title="Função do Colaborador"></i>
+			<span class="form-control input-fake font-menor">
+				{{ colaborador.categoria }}
+			</span>
+			<i class="bi bi-check
+			i-button-null
+			input-group-addon
+			addon-my-color"></i>
+		</div>
+	</div>
+    {% if colaborador.tipo_pgto == "MENSALISTA" %}
+    {% if colaborador.data_admissao  %}
+	<div class="card-body-item">
+        <div class="input-group">
+            <i class="bi bi-calendar-date
+			i-button-null
+			input-group-addon
+			addon-my-color"
+			   title="Data de Admissão"></i>
+			<span class="form-control input-fake font-menor">
+				ADMISSÃO {{ colaborador.data_admissao }}
+			</span>
+			<i class="bi bi-check
+			i-button-null
+			input-group-addon
+			addon-my-color"></i>
+		</div>
+	</div>
+    {% endif %}
+    {% if colaborador.data_demissao  %}
+	<div class="card-body-item">
+        <div class="input-group">
+            <i class="bi bi-calendar-date
+			i-button-null
+			input-group-addon
+			addon-my-color"
+			   title="Dta de Demissão"></i>
+			<span class="form-control input-fake font-menor">
+				DEMISSÃO {{ colaborador.data_demissao }}
+			</span>
+			<i class="bi bi-check
+			i-button-null
+			input-group-addon
+			addon-my-color"></i>
+		</div>
+	</div>
+    {% endif %}
+	<div class="card-body-item">
+        <div class="input-group">
+            <i class="icofont-money
+			i-button-null
+			input-group-addon
+			addon-my-color"
+			   title="Valor do Salário Atual"></i>
+			<span class="form-control input-fake font-menor">
+				R$ {{ colaborador.salario.0.salario|intcomma }}
+			</span>
+			<i class="bi bi-check
+			i-button-null
+			input-group-addon
+			addon-my-color"></i>
+		</div>
+	</div>
+	<div class="card-body-item">
+        <div class="input-group">
+            <i class="icofont-bus-alt-2
+			i-button-null
+			input-group-addon
+			addon-my-color"
+			   title="Valor do Vale Transporte Diário"></i>
+			<span class="form-control input-fake font-menor">
+				R$ {{ colaborador.salario.0.transporte|intcomma }}
+			</span>
+			<i class="bi bi-check
+			i-button-null
+			input-group-addon
+			addon-my-color"></i>
+		</div>
+	</div>
+	<div class="card-body-item">
+        <div class="input-group">
+            <i class="bi bi-house
+			i-button-null
+			input-group-addon
+			addon-my-color"
+			   title="Faltas Cometidas no Ano Aquisitivo"></i>
+			<span class="form-control input-fake font-menor">
+				{{ colaborador.faltas|length }} FALTAS
+			</span>
+			<i class="bi bi-check
+			i-button-null
+			input-group-addon
+			addon-my-color"></i>
+		</div>
+	</div>
+    {% endif %}
+	<div class="card-body-item">
+        <div class="input-group">
+            <i class="bi bi-currency-dollar
+			i-button-null
+			input-group-addon
+			addon-my-color"
+			   title="Forma de Recebimento"></i>
+			<span class="form-control input-fake font-menor">
+				{{ colaborador.tipo_pgto }}
+			</span>
+			<i class="bi bi-check
+			i-button-null
+			input-group-addon
+			addon-my-color"></i>
+		</div>
+	</div>
 </div>
 <!-- footer -->
 <div class="card-footer">
