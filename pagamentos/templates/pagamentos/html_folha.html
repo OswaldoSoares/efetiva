@@ -1,25 +1,36 @@
 {% load humanize %}
 {% if v_folha %}
-<div class="article-card-titulo card-folha">
-  <span>FOLHA</span>
+<!-- Header -->
+<div class="card-header">
+	<span>FOLHA</span>
 </div>
-<div class="article-card-body">
-  {% for key, value in v_folha.funcionarios.items %}
-  <div class="itens-folha">
-    <div class="item-nome">
-      <span>{{ key }}</span>
-    </div>
-    <div class="item-salario">
-      <span>R$ {{ value.salario_base|intcomma }}</span>
-    </div>
-    <div class="item-button">
-      <i
-        class="bi bi-folder-symlink i-button js-seleciona-funcionario"
-        data-idpessoal="{{ value.idpessoal }}"
-      ></i>
-    </div>
-  </div>
-  {% endfor %}
+<!-- Body -->
+<div class="card-body">
+	{% for key, value in v_folha.funcionarios.itens %}
+	<div class="card-body-item">
+		<div class="input-group">
+			<div class="input-group-addon
+			addon-my-color">
+				<i class="bi bi-building
+				i-button-null"></i>
+			</div>
+			<div class="inpur-fake
+			div-flex
+			div-direction-column">
+				<span>{{ key }}</span>
+				<span>R$ {{ value.salario_base|intcomma }}</span>
+			</div>
+			<div class="input-group-addon
+			addon-my-color">
+				<i class="bi bi-folder-symlink
+				i-button
+				js-seleciona-funcionario"
+	  			data-idpessoal="{{ value.idpessoal }}"></i>
+			</div>
+		</div>
+	</div>
+	{% endfor %}
 </div>
-<div class="article-card-footer"></div>
+<!-- Footer -->
+<div class="card-footer"></div>
 {% endif %}
