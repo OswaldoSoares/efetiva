@@ -784,3 +784,8 @@ $(document).on("input", '#causa', function() {
         $("#print-rescisao-trabalho").attr("href", url.toString());
     });
 });
+
+$(document).on('click', '.js-toggle-multas', function() {
+    $(".js-mostra-dados-multa").slideToggle(500)
+    $(".js-toggle-multas").toggleClass("icofont-square-up");
+});
