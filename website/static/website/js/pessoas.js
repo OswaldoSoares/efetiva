@@ -12,16 +12,23 @@ $(document).on('click', ".js-seleciona-colaborador", function() {
             id_pessoal: id_pessoal,
         },
         beforeSend: function() {
+            $(".card-foto-colaborador").hide()
+            $(".card-info-colaborador").hide()
             $(".card-dados-colaborador").hide()
             $(".card-ferias-colaborador").hide()
             $(".card-multas-colaborador").hide()
             $(".card-decimo-terceiro").hide()
             $(".card-form-colaborador").hide()
             $(".card-recibos-colaborador").hide()
+            $(".card-verbas-rescisoria").hide()
             $(".box-loader").show()
         },
         success: function(data) {
+            $(".card-foto-colaborador").html(data.html_card_foto_colaborador)
+            $(".card-info-colaborador").html(data.html_card_info_colaborador)
             $(".card-dados-colaborador").html(data.html_dados_colaborador)
+            $(".card-foto-colaborador").show()
+            $(".card-info-colaborador").show()
             $(".card-dados-colaborador").show()
             var url = $(".foto").attr("src");
             // Força o recarregamento da foto sem utilizar o cache
@@ -38,6 +45,7 @@ $(document).on('click', ".js-seleciona-colaborador", function() {
                 $(".button-demissao").hide()
             }
             $(".card-multas-colaborador").html(data.html_multas_colaborador)
+            $(".js-mostra-dados-multa").hide()
             $(".card-multas-colaborador").show()
             $(".box-loader").hide()
         },
@@ -734,13 +742,13 @@ $(document).on('click', '.js-altera-status-colaborador', function() {
         beforeSend: function() {
             $(".box-loader").show()
             $(".card-lista-colaboradores").hide()
-            $(".card-dados-colaborador").hide()
+            $(".card-foto-colaborador").hide()
         },
         success: function(data) {
             $(".card-lista-colaboradores").html(data.html_lista_colaboradores_ativo)
-            $(".card-dados-colaborador").html(data.html_dados_colaborador)
+            $(".card-foto-colaborador").html(data.html_card_foto_colaborador)
             $(".card-lista-colaboradores").show()
-            $(".card-dados-colaborador").show()
+            $(".card-foto-colaborador").show()
             $(".box-loader").hide()
         },
     });
