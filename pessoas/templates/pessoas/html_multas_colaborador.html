@@ -1,34 +1,99 @@
-<div class="article-card-titulo">
+{% if multas %}
+<!-- Header -->
+<div class="card-header div-flex">
+    <div class="input-group-addon
+    addon-my-color"></div>
     <span>MULTAS</span>
+    <i class="icofont-square-down
+    js-toggle-multas
+    i-button"></i>
 </div>
-<div class="article-card-body">
+<!-- Body -->
+<div class="card-body">
     {% for i in multas %}
     {% if i.vale %}
-    <div class="item-multas">
-        <div class="item-dia" title="Data e Hora da Multa">
-            <i class="bi bi-calendar i-button-null"></i> {{ i.data }} {{ i.hora }}
-        </div>        
+    <div class="card-body-item">
+        <div class="input-group">
+            <i class="bi bi-calendar
+            i-button-null
+            input-group-addon
+            addon-my-color"
+               title="Data e Hora da Infração"></i>
+            <span class="form-control input-fake">
+                {{ i.data }} {{ i.hora }}
+            </span>
+            {% if a == a %}
+            <div class="input-group-addon
+            addon-my-color">
+                <i class="icofont-tick-boxed i-button-null"></i>
+            </div>
+            {% else %}
+            <div class="input-group-addon
+            addon-my-color">
+                <i class="icofont-square i-button-null"></i>
+            </div>
+            {% endif %}
+        </div>
+        <div class="input-group js-mostra-dados-multa">
+            <i class="bi bi-question-diamond
+            i-button-null
+            input-group-addon
+            addon-my-color"
+               title="Tipo de Infração"></i>
+            <span class="form-control input-fake font-menor">
+                {{ i.infracao|slice:"0:70" }}
+            </span>
+            <div class="input-group-addon
+            addon-my-color">
+                <i class="bi bi-check"></i>
+            </div>
+        </div>
+        <div class="input-group js-mostra-dados-multa">
+            <i class="bi bi-geo-alt
+            i-button-null
+            input-group-addon
+            addon-my-color"
+               title="Local da Infração"></i>
+            <span class="form-control input-fake">
+                {{ i.local|slice:"0:70" }}
+            </span>
+            <div class="input-group-addon
+            addon-my-color">
+                <i class="bi bi-check"></i>
+            </div>
+        </div>
+        <div class="input-group js-mostra-dados-multa">
+            <i class="icofont-pay
+            i-button-null
+            input-group-addon
+            addon-my-color"
+               title="Vale Registrado"></i>
+            <span class="form-control input-fake">
+                  {{ i.vale }}
+            </span>
+            <div class="input-group-addon
+            addon-my-color">
+                <i class="bi bi-check"></i>
+            </div>
+        </div>
+        <div class="input-group js-mostra-dados-multa">
+            <i class="icofont-bill-alt
+            i-button-null
+            input-group-addon
+            addon-my-color"
+               title="Valor da Multa"></i>
+            <span class="form-control input-fake">
+                R$ {{ i.valor }}
+            </span>
+            <div class="input-group-addon
+            addon-my-color">
+                <i class="bi bi-check"></i>
+            </div>
+        </div>
     </div>
-    <div class="itens-multas">
-        <div class="item-infracao">
-            <i class="bi bi-question-diamond i-button-null"></i> {{ i.infracao|slice:"0:35" }}
-        </div>        
-    </div>
-    <div class="itens-multas">
-        <div class="item-local">
-            <i class="bi bi-geo-alt i-button-null"></i> {{ i.local|slice:"0:35" }}
-        </div>        
-    </div>
-    <div class="itens-multas">
-        <div class="AIT">
-            <i class="icofont-bill-alt i-button-null"></i> {{ i.vale }}
-        </div>        
-        <div class="AIT">
-            R$ {{ i.valor }}
-        </div>        
-    </div>
-    <div class="linha-divisoria"></div>
     {% endif %}
     {% endfor %}
 </div>
-<div class="article-card-footer"></div>
+<!-- Footer -->
+<div class="card-footer"></div>
+{% endif %}
