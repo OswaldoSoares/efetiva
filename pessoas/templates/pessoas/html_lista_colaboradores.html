@@ -25,22 +25,23 @@
             input-group-addon
             addon-my-color
             i-button-null"></i>
-            {% if it.tipo_pgto == "MENSALISTA"%}
+            {% if it.tipo_pgto == "MENSALISTA" %}
             <span class="form-control
             input-fake
             tipo-mensalista"
+                  title="{{ it.nome }}">{{ it.nome_curto }}</span>
             {% else %}
             <span class="form-control
             input-fake"
+                  title="{{ it.nome }}">{{ it.nome_curto }}</span>
             {% endif %}
-            data-tooltip="{{ it.nome }}"
-            data-tooltip-position="right">{{ it.nome_curto }}</span>
-            <i class="bi bi-folder-symlink
-            input-group-addon
-            addon-my-color
-            i-button
-            js-seleciona-colaborador"
-            data-idpessoal="{{ it.idpessoal }}"></i>
+            <div class="input-group-addon
+            addon-my-color">
+                <i class="bi bi-folder-symlink
+                i-button
+                js-seleciona-colaborador"
+                   data-idpessoal="{{ it.idpessoal }}"></i>
+            </div>
         </div>
     </div>
     {% endfor %}
