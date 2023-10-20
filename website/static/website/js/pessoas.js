@@ -15,6 +15,7 @@ $(document).on('click', ".js-seleciona-colaborador", function() {
             $(".card-foto-colaborador").hide()
             $(".card-info-colaborador").hide()
             $(".card-dados-colaborador").hide()
+            $(".card-contra-cheque-colaborador").hide()
             $(".card-ferias-colaborador").hide()
             $(".card-multas-colaborador").hide()
             $(".card-decimo-terceiro").hide()
