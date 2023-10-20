@@ -5957,9 +5957,9 @@ main .fp-recibo-tabela .fp-recibo-print {
   border: 0;
   margin: 0;
   padding: 0;
-  background-color: var(--color1);
+  background-color: red;
   width: 40px;
-  height: 40px;
+  height: 0px;
   font-size: 20px;
   padding: 5px;
   display: flex;
@@ -6149,71 +6149,7 @@ main .fp-recibo-tabela .fp-recibo-print {
 
 /* MODULO PESSOAS - START */
 
-.card-lista-colaboradores {
-  width: 300px;
-}
-
-.card-lista-colaboradores .itens-lista {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  color: var(--color6);
-}
-
-.card-lista-colaboradores .itens-lista .item-nome {
-  width: 80%;
-  padding-left: 5px;
-  text-align: left;
-}
-
-.card-lista-colaboradores .itens-lista .item-button {
-  width: 10%;
-  text-align: center;
-}
-
-.card-lista-colaboradores .article-card-footer {
-  color: var(--color6);
-  font-size: 14px;
-}
-
-.card-dados-colaborador {
-  width: 700px;
-}
-
-.card-dados-colaborador .itens-dados {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  color: var(--color6);
-}
-
-.card-dados-colaborador .itens-dados .item-descricao {
-  width: 22%;
-  padding-left: 5px;
-  text-align: left;
-}
-
-.card-dados-colaborador .itens-dados .item-valor {
-  width: 78%;
-  padding-right: 5px;
-  text-align: right;
-}
-
-.card-dados-colaborador .article-card-footer {
-  color: var(--color6);
-  font-size: 16px;
-}
-
-.card-dados-colaborador .article-card-footer i {
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-.card-dados-colaborador figure {
+.card-foto-colaborador figure {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -6223,7 +6159,11 @@ main .fp-recibo-tabela .fp-recibo-print {
   color: var(--color8);
 }
 
-.card-dados-colaborador .foto {
+.card-foto-colaborador figure span {
+  padding-top: 5px;
+}
+
+.card-foto-colaborador .foto {
   width: 150px;
   height: 150px;
   border-radius: 50%;
@@ -6258,105 +6198,6 @@ main .fp-recibo-tabela .fp-recibo-print {
   align-items: flex-start;
   justify-content: flex-start;
   flex-wrap: wrap;
-}
-
-.card-decimo-terceiro {
-  width: 280px;
-}
-
-.card-decimo-terceiro .decimo-terceiro-dados {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  color: var(--color6);
-  padding: 0 5px;
-}
-
-.card-decimo-terceiro .linha-separadora {
-  border-bottom: 1px solid var(--color9);
-}
-
-.card-decimo-terceiro .itens-parcelas {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  color: var(--color6);
-}
-
-.card-decimo-terceiro .itens-parcelas .item-parcela {
-  width: 34%;
-  padding-left: 5px;
-  text-align: left;
-}
-
-.card-decimo-terceiro .itens-parcelas .item-valor {
-  width: 50%;
-  padding-right: 5px;
-  text-align: right;
-}
-
-.card-decimo-terceiro .itens-parcelas .item-button {
-  width: 8%;
-  text-align: center;
-}
-
-.card-decimo-terceiro .article-card-footer {
-  color: var(--color6);
-  font-size: 16px;
-}
-
-.card-ferias-colaborador {
-  width: 280px;
-}
-
-.card-ferias-colaborador .itens-ferias,
-.card-ferias-colaborador .itens-ferias-periodo {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  color: var(--color6);
-}
-
-.card-ferias-colaborador .itens-ferias .item-titulo {
-  width: 28%;
-  text-align: center;
-}
-
-.card-ferias-colaborador .itens-ferias .item-data {
-  width: 29%;
-  text-align: center;
-}
-
-.card-ferias-colaborador .itens-ferias .item-button {
-  width: 7%;
-  text-align: center;
-}
-
-.card-ferias-colaborador .itens-ferias-periodo .item-button {
-  width: 10%;
-  text-align: center;
-}
-
-.card-ferias-colaborador .itens-ferias-periodo .item-inicio {
-  width: 30%;
-  text-align: center;
-}
-
-.card-ferias-colaborador .itens-ferias-periodo .item-final {
-  width: 30%;
-  text-align: center;
-}
-
-.card-ferias-colaborador .itens-ferias-periodo .item-dias {
-  width: 20%;
-  text-align: center;
-  padding-left: 5px;
 }
 
 .card-form-colaborador {
@@ -6528,7 +6369,7 @@ label {
 
 .card-footer .i-button {
   line-height: 3rem;
-  font-size: 2rem;
+  font-size: 1.6rem;
   vertical-align: middle;
   padding: 0 10px;
 }
@@ -6576,6 +6417,7 @@ label {
 
 .input-fake {
   background-color: var(--color2);
+  /* background-color: red; */
   color: var(--color6);
   border: 1px solid var(--color1);
   text-align: center;
@@ -6830,6 +6672,10 @@ label {
   height: auto;
   min-height: 3rem;
 }
+
+.linha-4 {
+  height: auto;
+  min-height: 4rem;
 
 .tamanho-10 {
   min-width: 10%;
