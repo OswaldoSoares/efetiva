@@ -1,7 +1,6 @@
 import pytest
 from django.test import Client
 from django.urls import reverse
-from minutas.models import Minuta
 from rolepermissions.checkers import has_permission
 
 
