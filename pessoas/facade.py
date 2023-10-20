@@ -1822,3 +1822,17 @@ def get_salario_contra_cheque(contra_cheque_itens):
             salario = itens.Valor
             break
     return salario
+
+
+def html_card_foto_colaborador(request, contexto, data):
+    data["html_card_foto_colaborador"] = render_to_string(
+        "pessoas/card_foto_colaborador.html", contexto, request=request
+    )
+    return data
+
+
+def html_card_info_colaborador(request, contexto, data):
+    data["html_card_info_colaborador"] = render_to_string(
+        "pessoas/card_info_colaborador.html", contexto, request=request
+    )
+    return data
