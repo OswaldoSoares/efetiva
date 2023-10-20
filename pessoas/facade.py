@@ -1849,3 +1849,12 @@ def html_card_info_colaborador(request, contexto, data):
         "pessoas/card_info_colaborador.html", contexto, request=request
     )
     return data
+
+
+def html_card_contra_cheque_colaborador(request, contexto, data):
+    data["html_card_contra_cheque_colaborador"] = render_to_string(
+        "pessoas/card_contra_cheque_colaborador.html",
+        contexto,
+        request=request,
+    )
+    return data
