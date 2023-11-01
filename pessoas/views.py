@@ -683,3 +683,16 @@ def print_rescisao_trabalho(request):
     contexto.update({"causa": causa})
     response = print_pdf_rescisao_trabalho(request, contexto)
     return response
+
+
+def seleciona_aquisitivo(request):
+    idpessoal = request.GET.get("idpessoal")
+    idaquisitivo = request.GET.get("idaquisitivo")
+    descricao = request.GET.get("descricao")
+    contexto = facade.create_contexto_contra_cheque(
+        idpessoal,
+        idaquisitivo,
+        descricao,
+    )
+    data = facade.create_data_contra_cheque(request, contexto)
+    return data
