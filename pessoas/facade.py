@@ -800,6 +800,13 @@ def html_ferias_colaborador(request, contexto, data):
     return data
 
 
+def html_vales_colaborador(request, contexto, data):
+    data["html_vales_colaborador"] = render_to_string(
+        "pessoas/card_vales_colaborador.html", contexto, request=request
+    )
+    return data
+
+
 def html_multas_colaborador(request, contexto, data):
     data["html_multas_colaborador"] = render_to_string(
         "pessoas/html_multas_colaborador.html", contexto, request=request
