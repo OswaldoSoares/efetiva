@@ -696,3 +696,16 @@ def seleciona_aquisitivo(request):
     )
     data = facade.create_data_contra_cheque(request, contexto)
     return data
+
+
+def adiciona_vale_contra_cheque(request):
+    idvale = request.GET.get("idvale")
+    idcontracheque = request.GET.get("idcontracheque")
+    idpessoal = request.GET.get("idpessoal")
+    colaborador = facade.get_colaborador(idpessoal)
+    facade.create_contra_cheque_itens_vale(idcontracheque, idvale)
+    contexto = facade.contexto_contra_cheque_id(idcontracheque)
+    vales = facade.get_vales_colaborador(colaborador)
+    contexto.update({"vales": vales})
+    data = facade.data_adiciona_vale_contra_cheque(request, contexto)
+    return data
