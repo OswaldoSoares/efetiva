@@ -6483,6 +6483,12 @@ label {
   font-size: 1.6rem;
 }
 
+.div-form-control {
+  width: 100%;
+  height: calc(2.25rem + 2px);
+  line-height: 1.5;
+}
+
 .font-menor {
   font-size: 1.2rem;
 }
