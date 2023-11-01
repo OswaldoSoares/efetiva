@@ -761,8 +761,18 @@ def html_recibos_colaborador(request, contexto, data):
 
 def create_contexto_consulta_colaborador(idpessoal):
     colaborador = Colaborador(idpessoal).__dict__
+    colaborador_futuro = get_colaborador(idpessoal)
+    aquisitivo = get_aquisitivo(colaborador_futuro)
     multas = facade_multa.multas_pagar("MOTORISTA", idpessoal)
-    return {"colaborador": colaborador, "multas": multas}
+    vales = get_vales_colaborador(colaborador_futuro)
+    hoje = datetime.datetime.today().date()
+    return {
+        "colaborador": colaborador,
+        "vales": vales,
+        "multas": multas,
+        "hoje": hoje,
+        "aquisitivo": aquisitivo,
+    }
 
 
 def create_data_consulta_colaborador(request, contexto):
