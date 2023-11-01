@@ -2128,6 +2128,12 @@ def get_vales_colaborador(colaborador):
     return lista
 
 
+def get_saldo_vales_colaborador(vales):
+    pagar = [d for d in vales if not d["checked"]]
+    total = sum(item["valor"] for item in pagar)
+    return total
+
+
 def contexto_vales_colaborador(colaborador):
     vales = get_vales_colaborador(colaborador)
     contexto = {"vales": vales}
