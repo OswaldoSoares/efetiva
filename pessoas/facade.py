@@ -1902,9 +1902,15 @@ def create_contexto_contra_cheque(idpessoal, idaquisitivo, descricao):
             )
         atualiza_salario_ferias_dias_referencia(idpessoal, idaquisitivo)
     contra_cheque_itens = get_contra_cheque_itens(contra_cheque)
+    credito, debito, saldo_contra_cheque = get_saldo_contra_cheque(
+        contra_cheque_itens
+    )
     contexto = {
         "contra_cheque": contra_cheque,
         "contra_cheque_itens": contra_cheque_itens,
+        "credito": credito,
+        "debito": debito,
+        "saldo_contra_cheque": saldo_contra_cheque,
     }
     return contexto
 
