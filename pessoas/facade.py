@@ -2144,6 +2144,19 @@ def get_saldo_vales_colaborador(vales):
     return total
 
 
+def get_saldo_contra_cheque(contra_cheque_itens):
+    itens_credito = contra_cheque_itens.filter(Registro="C")
+    creditos = itens_credito.aggregate(Total=Sum("Valor"))
+    itens_debito = contra_cheque_itens.filter(Registro="D")
+    debitos = itens_debito.aggregate(Total=Sum("Valor"))
+    if creditos["Total"] is None:
+        creditos["Total"] = Decimal(0.00)
+    if debitos["Total"] is None:
+        debitos["Total"] = Decimal(0.00)
+    total = creditos["Total"] - debitos["Total"]
+    return creditos["Total"], debitos["Total"], total
+
+
 def contexto_vales_colaborador(colaborador):
     vales = get_vales_colaborador(colaborador)
     saldo_vales = get_saldo_vales_colaborador(vales)
