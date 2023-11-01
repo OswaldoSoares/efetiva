@@ -6423,6 +6423,106 @@ label {
   text-align: center;
 }
 
+.input-fake-left {
+  text-align: left !important;
+  border: none !important;
+}
+
+.imput-fake-center {
+  text-align: center !important;
+  border: none !important;
+}
+
+.imput-fake-right {
+  text-align: right;
+  border: none;
+}
+
+.tamanho-5 {
+  min-width: 5%;
+}
+
+.tamanho-10 {
+  min-width: 10%;
+}
+
+.tamanho-15 {
+  min-width: 15%;
+}
+
+.tamanho-20 {
+  min-width: 20%;
+}
+
+.tamanho-25 {
+  min-width: 25%;
+}
+
+.tamanho-30 {
+  min-width: 30%;
+}
+
+.tamanho-35 {
+  min-width: 35%;
+}
+
+.tamanho-40 {
+  min-width: 40%;
+}
+
+.tamanho-50 {
+  min-width: 50%;
+}
+
+.tamanho-60 {
+  min-width: 60%;
+}
+
+.tamanho-65 {
+  min-width: 65% !important;
+}
+
+.tamanho-75 {
+  min-width: 75%;
+}
+
+.tamanho-80 {
+  min-width: 80%;
+}
+
+.tamanho-100 {
+  min-width: 100%;
+}
+
+.text-left {
+  text-align: left !important;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.test-red {
+  background-color: red !important;
+  /* min-width: 60%; */
+}
+
+.test-yellow {
+  background-color: yellow !important;
+}
+
+.test-green {
+  background-color: green !important;
+}
+
+.test-blue {
+  background-color: blue !important;
+}
+
 .linha-add {
   background-color: var(--color2);
   height: 2.5rem;
@@ -6681,69 +6781,6 @@ label {
 .linha-4 {
   height: auto;
   min-height: 4rem;
-
-.tamanho-10 {
-  min-width: 10%;
-}
-
-.tamanho-15 {
-  min-width: 15%;
-}
-
-.tamanho-20 {
-  min-width: 20%;
-}
-
-.tamanho-25 {
-  min-width: 25%;
-}
-
-.tamanho-30 {
-  min-width: 30%;
-}
-
-.tamanho-35 {
-  min-width: 35%;
-}
-
-.tamanho-40 {
-  min-width: 40%;
-}
-
-.tamanho-50 {
-  min-width: 50%;
-}
-
-.tamanho-60 {
-  min-width: 60%;
-}
-
-.tamanho-65 {
-  min-width: 65%;
-}
-
-.tamanho-75 {
-  min-width: 75%;
-}
-
-.tamanho-80 {
-  min-width: 80%;
-}
-
-.tamanho-100 {
-  min-width: 100%;
-}
-
-.text-left {
-  text-align: left !important;
-}
-
-.text-center {
-  text-align: center !important;
-}
-
-.text-right {
-  text-align: right !important;
 }
 
 .error-form {
