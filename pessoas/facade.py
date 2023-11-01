@@ -1858,8 +1858,9 @@ def get_salario_contra_cheque(contra_cheque_itens):
     for itens in contra_cheque_itens:
         if itens.Descricao == "SALARIO":
             salario = itens.Valor
+            return salario
             break
-    return salario
+    return False
 
 
 def html_card_foto_colaborador(request, contexto, data):
