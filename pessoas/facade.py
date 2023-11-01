@@ -1884,3 +1884,293 @@ def html_card_contra_cheque_colaborador(request, contexto, data):
         request=request,
     )
     return data
+
+
+def create_contexto_contra_cheque(idpessoal, idaquisitivo, descricao):
+    contra_cheque = busca_contra_cheque_aquisitivo(
+        idpessoal, idaquisitivo, descricao
+    )
+    contra_cheque_itens = get_contra_cheque_itens(contra_cheque)
+    if not contra_cheque_itens:
+        create_contra_cheque_itens(descricao, 0.00, "C", "30dd", contra_cheque)
+    atualiza_salario_ferias_dias_referencia(idpessoal, idaquisitivo)
+    contra_cheque_itens = get_contra_cheque_itens(contra_cheque)
+    contexto = {
+        "contra_cheque": contra_cheque,
+        "contra_cheque_itens": contra_cheque_itens,
+    }
+    return contexto
+
+
+def atualiza_salario_ferias_dias_referencia(idpessoal, idaquisitivo):
+    """
+
+    Args:
+        idpessoal:
+        idaquisitivo:
+
+    Returns:
+
+
+    """
+    colaborador = get_colaborador(idpessoal)
+    aquisitivo = get_aquisitivo_id(idaquisitivo)
+    contra_cheque = get_contra_cheque_descricao(colaborador, "PAGAMENTO")
+    contra_cheque = contra_cheque_ano_mes_integer(contra_cheque)
+    contra_cheque = get_contra_cheque_aquisitivo(aquisitivo, contra_cheque)
+    contra_cheque_itens = get_contra_cheque_itens(contra_cheque)
+    salario_contra_cheque = get_salario_contra_cheque(contra_cheque_itens)
+    faltas = aquisitivo_faltas(colaborador, aquisitivo)
+    salario_ferias = aquisitivo_salario_ferias(salario_contra_cheque, faltas)
+    mes = aquisitivo.DataFinal.month
+    ano = aquisitivo.DataFinal.year
+    contra_cheque_ferias = get_contra_cheque_mes_ano_descricao(
+        colaborador, mes, ano, "FERIAS"
+    )
+    contra_cheque_itens = get_contra_cheque_itens(contra_cheque_ferias)
+    contra_cheque_item = contra_cheque_itens.filter(Descricao="FERIAS")
+    update_contra_cheque_item_valor(contra_cheque_item, salario_ferias)
+    referencia = tabela_faltas_aquisitivo(faltas)
+    update_contra_cheque_item_referencia(contra_cheque_item, referencia)
+    return (
+        colaborador,
+        aquisitivo,
+        contra_cheque,
+        contra_cheque_itens,
+        salario_contra_cheque,
+        salario_ferias,
+        faltas,
+        referencia,
+        contra_cheque_ferias,
+    )
+
+
+def get_salarios_aquisitivo(colaborador, aquisitivos):
+    contra_cheque = get_contra_cheque_descricao(colaborador, "PAGAMENTO")
+    contra_cheque = contra_cheque_ano_mes_integer(contra_cheque)
+    salarios = []
+    for itens in aquisitivos:
+        aquisitivo_selecionado = get_aquisitivo_id(itens.idAquisitivo)
+        contra_cheque_aquisitivo = get_contra_cheque_aquisitivo(
+            aquisitivo_selecionado, contra_cheque
+        )
+        if contra_cheque_aquisitivo:
+            contra_cheque_itens = get_contra_cheque_itens(
+                contra_cheque_aquisitivo
+            )
+            salario_contra_cheque = get_salario_contra_cheque(
+                contra_cheque_itens
+            )
+            salarios.append(
+                {"Data": itens.DataFinal, "salario": salario_contra_cheque}
+            )
+    return salarios
+
+
+def tabela_faltas_aquisitivo(faltas):
+    dias = "30dd"
+    if len(faltas) > 5:
+        dias = "24dd"
+    if len(faltas) > 14:
+        dias = "18dd"
+    if len(faltas) > 23:
+        dias = "12dd"
+    if len(faltas) > 32:
+        dias = "0dd"
+    return dias
+
+
+def create_data_contra_cheque(request, contexto):
+    data = {}
+    data = html_card_contra_cheque_colaborador(request, contexto, data)
+    return JsonResponse(data)
+
+
+def busca_contra_cheque_aquisitivo(idpessoal, idaquisitivo, descricao):
+    colaborador = get_colaborador(idpessoal)
+    aquisitivo = get_aquisitivo_id(idaquisitivo)
+    ano = aquisitivo.DataFinal.year
+    mes = aquisitivo.DataFinal.month
+    try:
+        contra_cheque = get_contra_cheque_mes_ano_descricao(
+            colaborador, mes, ano, descricao
+        )
+    except ContraCheque.DoesNotExist:  # pylint: disable=no-member
+        create_contra_cheque(meses[mes - 1], ano, "FERIAS", colaborador)
+        contra_cheque = get_contra_cheque_mes_ano_descricao(
+            colaborador, mes, ano, descricao
+        )
+    return contra_cheque
+
+
+def get_contra_cheque_mes_ano_descricao(colaborador, mes, ano, descricao):
+    contra_cheque = ContraCheque.objects.get(
+        idPessoal=colaborador,
+        MesReferencia=meses[mes - 1],
+        AnoReferencia=ano,
+        Descricao=descricao,
+    )
+    return contra_cheque
+
+
+def create_contra_cheque(mes, ano, descricao, colaborador):
+    ContraCheque.objects.create(
+        MesReferencia=mes,
+        AnoReferencia=ano,
+        Valor=0.00,
+        Pago=False,
+        Descricao=descricao,
+        idPessoal=colaborador,
+    )
+
+
+def get_aquisitivo_id(idaquisitivo):
+    aquisitivo = Aquisitivo.objects.get(idAquisitivo=idaquisitivo)
+    return aquisitivo
+
+
+def get_contra_cheque_itens(contra_cheque):
+    contra_cheque_itens = ContraChequeItens.objects.filter(
+        idContraCheque=contra_cheque
+    )
+    return contra_cheque_itens
+
+
+def create_contra_cheque_itens(
+    descricao, valor, registro, referencia, contra_cheque
+):
+    ContraChequeItens.objects.create(
+        Descricao=descricao,
+        Valor=valor,
+        Registro=registro,
+        Referencia=referencia,
+        idContraCheque=contra_cheque,
+    )
+
+
+def create_contra_cheque_itens_vale(idcontracheque, idvale):
+    vale = get_vale_id(idvale)
+    ContraChequeItens.objects.create(
+        Descricao=vale.Descricao,
+        Valor=vale.Valor,
+        Registro="D",
+        idContraCheque_id=idcontracheque,
+        Vales_id=idvale,
+    )
+
+
+def get_vale_id(idvale):
+    vale = Vales.objects.get(idVales=idvale)
+    return vale
+
+
+def aquisitivo_faltas(colaborador, aquisitivo):
+    inicio = aquisitivo.DataInicial
+    final = aquisitivo.DataFinal
+    cartao_ponto = CartaoPonto.objects.filter(
+        idPessoal=colaborador,
+        Dia__range=[inicio, final],
+        Ausencia="FALTA",
+        Remunerado=False,
+    )
+    lista = [
+        datetime.datetime.strftime(i.Dia, "%d/%m/%Y") for i in cartao_ponto
+    ]
+    return lista
+
+
+def aquisitivo_salario_ferias(salario, faltas):
+    salario = salario
+    salario_dia = salario / 30
+    faltas = len(faltas)
+    if faltas < 6:
+        salario_ferias = salario
+    elif 5 < faltas < 15:
+        salario_ferias = salario_dia * 24
+    elif 14 < faltas < 24:
+        salario_ferias = salario_dia * 18
+    elif 23 < faltas < 33:
+        salario_ferias = salario_dia * 12
+    else:
+        salario_ferias = Decimal(0.00)
+    salario_ferias = round(salario_ferias, 2)
+    return salario_ferias
+
+
+def update_contra_cheque_item_valor(contra_cheque_item, valor):
+    obj = contra_cheque_item[0]
+    obj.Valor = valor
+    obj.save()
+
+
+def update_contra_cheque_item_referencia(contra_cheque_item, referencia):
+    obj = contra_cheque_item[0]
+    obj.Referencia = referencia
+    obj.save()
+
+
+def get_vales_colaborador(colaborador):
+    vales = Vales.objects.filter(idPessoal=colaborador).order_by("-Data")
+    lista = []
+    for item in vales:
+        checked = False
+        if ContraChequeItens.objects.filter(Vales_id=item.idVales):
+            checked = True
+        lista.append(
+            {
+                "idvale": item.idVales,
+                "data": item.Data,
+                "descricao": item.Descricao,
+                "valor": item.Valor,
+                "checked": checked,
+            }
+        )
+    return lista
+
+
+def contexto_vales_colaborador(colaborador):
+    vales = get_vales_colaborador(colaborador)
+    contexto = {"vales": vales}
+    return contexto
+
+
+def contexto_contra_cheque_id(idcontracheque):
+    contra_cheque = get_contra_cheque_id(idcontracheque)
+    contra_cheque_itens = get_contra_cheque_itens(contra_cheque)
+    contexto = {
+        "contra_cheque": contra_cheque,
+        "contra_cheque_itens": contra_cheque_itens,
+    }
+    return contexto
+
+
+def get_contra_cheque_id(idcontracheque):
+    contra_cheque = ContraCheque.objects.get(idContraCheque=idcontracheque)
+    return contra_cheque
+
+
+def data_adiciona_vale_contra_cheque(request, contexto):
+    data = {}
+    data["html_card_contra_cheque_colaborador"] = render_to_string(
+        "pessoas/card_contra_cheque_colaborador.html",
+        contexto,
+        request=request,
+    )
+    data["html_vales_colaborador"] = render_to_string(
+        "pessoas/card_vales_colaborador.html",
+        contexto,
+        request=request,
+    )
+    return JsonResponse(data)
+
+
+def delete_contra_cheque_itens(idcontrachequeitens):
+    contra_cheque_itens = get_contra_cheque_itens_id(idcontrachequeitens)
+    contra_cheque_itens.delete()
+
+
+def get_contra_cheque_itens_id(idcontrachequeitens):
+    contra_cheque_item = ContraChequeItens.objects.get(
+        idContraChequeItens=idcontrachequeitens
+    )
+    return contra_cheque_item
