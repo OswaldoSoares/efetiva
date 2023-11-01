@@ -787,7 +787,9 @@ def create_data_consulta_colaborador(request, contexto):
         html_decimo_terceiro(request, contexto, data)
     else:
         html_recibos_colaborador(request, contexto, data)
+    html_vales_colaborador(request, contexto, data)
     html_multas_colaborador(request, contexto, data)
+    data["colaborador"] = contexto["colaborador"]["idpes"]
     return JsonResponse(data)
 
 
