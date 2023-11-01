@@ -53,23 +53,44 @@ from .views import (
     altera_lista,
     verba_rescisoria,
     print_rescisao_trabalho,
+    seleciona_aquisitivo,
+    adiciona_vale_contra_cheque,
+    exclui_contra_cheque_item,
 )
 
 
 urlpatterns = [
     path("", indexpessoal, name="indexpessoal"),
-    path("consultapessoa/<int:idpessoa>/", consulta_pessoa, name="consultapessoa"),
+    path(
+        "consultapessoa/<int:idpessoa>/",
+        consulta_pessoa,
+        name="consultapessoa",
+    ),
     path("criapessoa/", cria_pessoa, name="criapessoa"),
     path("editapessoa/<int:idpessoa>/", edita_pessoa, name="editapessoa"),
     path("excluipessoa/<int:idpessoa>/", excluipessoa, name="excluipessoa"),
-    path("bloqueiapessoa/<int:idpessoa>/", bloqueia_pessoa, name="bloqueiapessoa"),
+    path(
+        "bloqueiapessoa/<int:idpessoa>/",
+        bloqueia_pessoa,
+        name="bloqueiapessoa",
+    ),
     path("criadocpessoa/", criadocpessoa, name="criadocpessoa"),
-    path("excluidocpessoa/<int:idpesdoc>/", excluidocpessoa, name="excluidocpessoa"),
+    path(
+        "excluidocpessoa/<int:idpesdoc>/",
+        excluidocpessoa,
+        name="excluidocpessoa",
+    ),
     path("criafonepessoa/", criafonepessoa, name="criafonepessoa"),
-    path("excluifomepessoa/<int:idpesfon>/", excluifonepessoa, name="excluifonepessoa"),
+    path(
+        "excluifomepessoa/<int:idpesfon>/",
+        excluifonepessoa,
+        name="excluifonepessoa",
+    ),
     path("criacontapessoa/", criacontapessoa, name="criacontapessoa"),
     path(
-        "excluicontapessoa/<int:idpescon>/", excluicontapessoa, name="excluicontapessoa"
+        "excluicontapessoa/<int:idpescon>/",
+        excluicontapessoa,
+        name="excluicontapessoa",
     ),
     path("editasalario/", edita_salario, name="editasalario"),
     path("editademissao", edita_demissao, name="editademissao"),
