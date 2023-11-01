@@ -71,12 +71,18 @@
 		<i class="icofont-rounded-left-down input-group-addon
 		addon-my-color"></i>
 		<div class="div-flex div-form-control">
-			<div class="tamanho-80 text-left">
+			<div class="tamanho-30 text-left">
+				<span>Total R$ {{ saldo_contra_cheque|intcomma }}</span>
+			</div>
+			<div class="tamanho-30 text-center">
 				<i class="icofont-printer i-button" title="Imprime Contra-Cheque"></i>
 				<i class="icofont-bill-alt i-button" title="Informa Pagamento"></i>
 			</div>
 			<div class="tamanho-20 text-right">
-				<span>R$ 0.00</span>
+				<span>R$ {{ credito|intcomma }}</span>
+			</div>
+			<div class="tamanho-20 text-right">
+				<span>R$ {{ debito|intcomma }}</span>
 			</div>
 		</div>
 		<i class="icofont-rounded-right-down input-group-addon
