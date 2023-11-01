@@ -2138,7 +2138,8 @@ def get_saldo_vales_colaborador(vales):
 
 def contexto_vales_colaborador(colaborador):
     vales = get_vales_colaborador(colaborador)
-    contexto = {"vales": vales}
+    saldo_vales = get_saldo_vales_colaborador(vales)
+    contexto = {"vales": vales, "saldo_vales": saldo_vales}
     return contexto
 
 
