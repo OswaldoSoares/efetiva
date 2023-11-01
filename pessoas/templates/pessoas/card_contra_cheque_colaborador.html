@@ -1,3 +1,4 @@
+{% load humanize %}
 <!-- Header -->
 <div class="card-header">
 	<span>
@@ -32,14 +33,14 @@
 					</span>
 					{% else %}
 					<span>
-						R$ {{ itens.Valor }}
+						R$ {{ itens.Valor|intcomma }}
 					</span>
 					{% endif %}
 				</div>
 				<div class="tamanho-20 text-right">
 					{% if itens.Registro == 'D' %}
 					<span>
-						R$ {{ itens.Valor }}
+						R$ {{ itens.Valor|intcomma }}
 					</span>
 					{% else %}
 					<span>
