@@ -2183,3 +2183,10 @@ def get_contra_cheque_itens_id(idcontrachequeitens):
         idContraChequeItens=idcontrachequeitens
     )
     return contra_cheque_item
+
+
+def busca_um_terco_ferias(contra_cheque_itens):
+    um_terco = contra_cheque_itens.filter(Descricao="1/3 FERIAS")
+    if not um_terco:
+        return False
+    return True
