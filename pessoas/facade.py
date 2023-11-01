@@ -1565,7 +1565,6 @@ def create_contexto_print_ferias(idpes, idaquisitivo, idparcela):
     colaborador = Colaborador(idpes).__dict__
     colaborador_model = get_colaborador(idpes)
     aquisitivo = Aquisitivo.objects.filter(idAquisitivo=idaquisitivo)[0]
-    print(aquisitivo)
     contra_cheque = ContraCheque.objects.filter(idPessoal=colaborador_model)
     contra_cheque_annotate = contra_cheque_ano_mes_integer(contra_cheque)
     contra_cheque_selecionado = get_contra_cheque_aquisitivo(
