@@ -1,0 +1,69 @@
+{% load humanize %}
+<!-- Header -->
+<div class="card-header div-flex">
+	<div class="input-group-addon
+    addon-my-color"></div>
+    <span>VALES</span>
+	<i class="icofont-square-up
+	js-toggle-vales
+	i-button"></i>
+</div>
+<!-- Body -->
+<div class="card-body">
+	{% for vale in vales %}
+	{% if not vale.checked %}
+	<div class="card-body-item js-mostra-vales">
+		<div class="input-group">
+			<i class="icofont-coins
+			input-group-addon
+			addon-my-color
+			i-button-null"></i>
+			<div class="div-flex div-form-control">
+				<div class="tamanho-15 text-left">
+					<span>
+						{{ vale.data }}
+					</span>
+				</div>
+				<div class="tamanho-65 text-left">
+					<span>
+						{{ vale.descricao }}
+					</span>
+				</div>
+				<div class="tamanho-20 text-right">
+					<span>
+						R$ {{ vale.valor|intcomma }}
+					</span>
+				</div>
+			</div>
+			<div class="input-group-addon
+			addon-my-color">
+				<i class="icofont-square
+				i-button
+				js-pessoas-seleciona-vale
+				js-pessoas-toggle-vales-selecionaveis"
+	   			   title="Adicionar vale ao contra cheque"
+				   data-idvale="{{ vale.idvale }}"
+				   data-idpessoal="{{ colaborador.idpes }}"></i>
+			</div>
+		</div>
+	</div>
+	{% endif %}
+	{% endfor %}
+</div>
+<!-- Footer -->
+<div class="card-footer">
+	<div class="input-group">
+		<i class="icofont-rounded-left-down input-group-addon
+		addon-my-color"></i>
+		<div class="div-flex div-form-control">
+			<div class="tamanho-80 text-left">
+				<span>TOTAL DOS VALES</span>
+			</div>
+			<div class="tamanho-20 text-right">
+				<span>R$ 0,00</span>
+			</div>
+		</div>
+		<i class="icofont-rounded-right-down input-group-addon
+		addon-my-color"></i>
+	</div>
+</div>
