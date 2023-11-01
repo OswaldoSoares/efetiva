@@ -1748,6 +1748,13 @@ def aquisitivo_aniversario(colaborador):
             aquisitivo_save(data_inicial, data_final, colaborador)
 
 
+def get_contra_cheque_descricao(colaborador, descricao):
+    contra_cheque_descricao = ContraCheque.objects.filter(
+        idPessoal=colaborador, Descricao=descricao
+    )
+    return contra_cheque_descricao
+
+
 def contra_cheque_ano_mes_integer(query):
     """
         Adiciona um campo na query contra cheque passada como
