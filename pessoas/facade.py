@@ -1895,7 +1895,12 @@ def create_contexto_contra_cheque(idpessoal, idaquisitivo, descricao):
     contra_cheque_itens = get_contra_cheque_itens(contra_cheque)
     if not contra_cheque_itens:
         create_contra_cheque_itens(descricao, 0.00, "C", "30dd", contra_cheque)
-    atualiza_salario_ferias_dias_referencia(idpessoal, idaquisitivo)
+    if descricao == "FERIAS":
+        if not busca_um_terco_ferias(contra_cheque_itens):
+            create_contra_cheque_itens(
+                "1/3 FERIAS", 0.00, "C", "30dd", contra_cheque
+            )
+        atualiza_salario_ferias_dias_referencia(idpessoal, idaquisitivo)
     contra_cheque_itens = get_contra_cheque_itens(contra_cheque)
     contexto = {
         "contra_cheque": contra_cheque,
