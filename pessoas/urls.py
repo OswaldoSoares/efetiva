@@ -260,4 +260,19 @@ urlpatterns = [
         print_rescisao_trabalho,
         name="print_rescisao_trabalho",
     ),
+    path(
+        "seleciona_aquisitivo",
+        seleciona_aquisitivo,
+        name="seleciona_aquisitivo",
+    ),
+    path(
+        "adiciona_vale_contra_cheque",
+        adiciona_vale_contra_cheque,
+        name="adiciona_vale_contra_cheque",
+    ),
+    path(
+        "exclui_contra_cheque_item",
+        exclui_contra_cheque_item,
+        name="exclui_contra_cheque_item",
+    ),
 ]
