@@ -23,14 +23,36 @@
                    data-idaquisitivo="{{ i.idaquisitivo }}"
                    data-idpessoal="{{ colaborador.idpes }}"></i>
             </div>
+            {% if i.aquisitivo_final <  hoje %}
             <div class="input-group-addon
             addon-my-color">
-                <a class="bi bi-printer
-                i-button"
-                   target="_blank"
-                   href="{% url 'print_ferias' %}?idpes={{ colaborador.idpes }}&idaquisitivo={{ i.idaquisitivo }}"
-                   title="Imprime Férias"></a>
+                <i class="icofont-square
+                   i-button
+                   js-seleciona-aquisitivo"
+                   title="Pagar Férias"
+                   data-idpessoal="{{ colaborador.idpes }}"
+                   data-idaquisitivo="{{ i.idaquisitivo }}"
+                   data-descricao="FERIAS"></i>
             </div>
+            {% else %}
+            <div class="input-group-addon
+            addon-my-color">
+                <i class="icofont-square
+                   i-button-null"
+                   title="Pagar Férias"
+                   data-idaquisitivo="{{ i.idaquisitivo }}"
+                   data-descricao="FERIAS"></i>
+            </div>
+            {% endif %}
+
+            {% comment %} <div class="input-group-addon {% endcomment %}
+            {% comment %} addon-my-color"> {% endcomment %}
+                {% comment %} <a class="bi bi-printer {% endcomment %}
+                {% comment %} i-button" {% endcomment %}
+                   {% comment %} target="_blank" {% endcomment %}
+                   {% comment %} href="{% url 'print_ferias' %}?idpes={{ colaborador.idpes }}&idaquisitivo={{ i.idaquisitivo }}" {% endcomment %}
+                   {% comment %} title="Imprime Férias"></a> {% endcomment %}
+            {% comment %} </div> {% endcomment %}
         </div>
     </div>
     {% for ferias in colaborador.ferias %}
