@@ -1939,6 +1939,9 @@ def atualiza_salario_ferias_dias_referencia(idpessoal, idaquisitivo):
     update_contra_cheque_item_valor(contra_cheque_item, salario_ferias)
     referencia = tabela_faltas_aquisitivo(faltas)
     update_contra_cheque_item_referencia(contra_cheque_item, referencia)
+    contra_cheque_item = contra_cheque_itens.filter(Descricao="1/3 FERIAS")
+    update_contra_cheque_item_valor(contra_cheque_item, salario_ferias / 3)
+    update_contra_cheque_item_referencia(contra_cheque_item, referencia)
     return (
         colaborador,
         aquisitivo,
