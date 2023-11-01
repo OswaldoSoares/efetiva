@@ -17,11 +17,13 @@ $(document).on('click', ".js-seleciona-colaborador", function() {
             $(".card-dados-colaborador").hide()
             $(".card-contra-cheque-colaborador").hide()
             $(".card-ferias-colaborador").hide()
+            $(".card-vales-colaborador").hide()
             $(".card-multas-colaborador").hide()
             $(".card-decimo-terceiro").hide()
             $(".card-form-colaborador").hide()
             $(".card-recibos-colaborador").hide()
             $(".card-verbas-rescisoria").hide()
+            localStorage.setItem("idcontracheque", "")
             $(".box-loader").show()
         },
         success: function(data) {
@@ -45,9 +47,15 @@ $(document).on('click', ".js-seleciona-colaborador", function() {
                 $(".card-recibos-colaborador").show()
                 $(".button-demissao").hide()
             }
+            $(".card-vales-colaborador").html(data.html_vales_colaborador)
             $(".card-multas-colaborador").html(data.html_multas_colaborador)
             $(".js-mostra-dados-multa").hide()
+            $(".js-mostra-vales").show()
+            $(".card-vales-colaborador").show()
             $(".card-multas-colaborador").show()
+            valesSelecionaveis()
+            $(window).scrollTop(0)
+            localStorage.setItem("idpessoal", data.colaborador)
             $(".box-loader").hide()
         },
         error: function(errorThrown) {
@@ -789,4 +797,100 @@ $(document).on("input", '#causa', function() {
 $(document).on('click', '.js-toggle-multas', function() {
     $(".js-mostra-dados-multa").slideToggle(500)
     $(".js-toggle-multas").toggleClass("icofont-square-up");
+    $(".js-toggle-multas").toggleClass("icofont-square-down");
+});
+
+$(document).on('click', '.js-toggle-vales', function() {
+    $(".js-mostra-vales").slideToggle(500)
+    $(".js-toggle-vales").toggleClass("icofont-square-up");
+    $(".js-toggle-vales").toggleClass("icofont-square-down");
+});
+
+$(document).on('click', '.js-seleciona-aquisitivo', function() {
+    var idpessoal = $(this).data("idpessoal")
+    var idaquisitivo = $(this).data("idaquisitivo")
+    var descricao = $(this).data("descricao")
+    $.ajax({
+        type: "GET",
+        url: "/pessoas/seleciona_aquisitivo",
+        data: {
+            idpessoal: idpessoal,
+            idaquisitivo: idaquisitivo,
+            descricao:  descricao,
+        },
+        beforeSend: function() {
+            $(".box-loader").show()
+            $(".card-contra-cheque-colaborador").hide()
+            localStorage.setItem("idcontracheque", "")
+        },
+        success: function(data) {
+            $(".card-contra-cheque-colaborador").html(data.html_card_contra_cheque_colaborador)
+            $(".card-contra-cheque-colaborador").show()
+            localStorage.setItem("idcontracheque", $("#idcontracheque").data("idcontracheque"))
+            valesSelecionaveis()
+            $(".box-loader").hide()
+        },
+    });
+});
+
+$(document).on('click', '.js-pessoas-seleciona-vale', function() {
+    var idvale = $(this).data("idvale")
+    var idpessoal = localStorage.getItem("idpessoal")
+    var idcontracheque = localStorage.getItem("idcontracheque")
+    if (idcontracheque != "") {
+        $.ajax({
+            type: "GET",
+            url: "/pessoas/adiciona_vale_contra_cheque",
+            data: {
+                idvale: idvale,
+                idpessoal: idpessoal,
+                idcontracheque: idcontracheque,
+            },
+            beforeSend: function() {
+                $(".box-loader").show()
+                $(".card-contra-chqeue-colaborador").hide()
+                $(".card-vales-colaborador").hide()
+            },
+            success: function(data) {
+                $(".card-contra-cheque-colaborador").html(data.html_card_contra_cheque_colaborador)
+                $(".card-vales-colaborador").html(data.html_vales_colaborador)
+                $(".card-contra-cheque-colaborador").show()
+                $(".card-vales-colaborador").show()
+                $(".box-loader").hide()
+            },
+        });
+    }
+});
+
+var valesSelecionaveis = function() {
+    $(".js-pessoas-toggle-vales-selecionaveis").toggleClass("i-button");
+    $(".js-pessoas-toggle-vales-selecionaveis").toggleClass("i-button-null");       
+    $(".js-pessoas-toggle-vales-selecionaveis").toggleClass("js-pessoas-seleciona-vale");       
+}
+
+$(document).on('click', '.js-pessoas-exclui-contra-cheque-item', function () {
+    var idpessoal = localStorage.getItem("idpessoal")
+    var idcontracheque = $(this).data("idcontracheque")
+    var idcontrachequeitens = $(this).data("idcontrachequeitens")
+    $.ajax({
+        type: "GET",
+        url: "/pessoas/exclui_contra_cheque_item",
+        data: {
+            idpessoal: idpessoal,
+            idcontracheque: idcontracheque,
+            idcontrachequeitens: idcontrachequeitens,
+        },
+        beforeSend: function() {
+            $(".box-loader").show()
+            $(".card-contra-chqeue-colaborador").hide()
+            $(".card-vales-colaborador").hide()
+        },
+        success: function(data) {
+            $(".card-contra-cheque-colaborador").html(data.html_card_contra_cheque_colaborador)
+            $(".card-vales-colaborador").html(data.html_vales_colaborador)
+            $(".card-contra-cheque-colaborador").show()
+            $(".card-vales-colaborador").show()
+            $(".box-loader").hide()
+        },
+    });
 });
