@@ -10,8 +10,19 @@ from pessoas.print import (
     print_pdf_ferias,
     print_pdf_rescisao_trabalho,
 )
-from website.facade import dict_tipo_conta, dict_tipo_doc, dict_tipo_fone, str_hoje
-from .models import Pessoal, DocPessoal, FonePessoal, ContaPessoal, ContraChequeItens
+from website.facade import (
+    dict_tipo_conta,
+    dict_tipo_doc,
+    dict_tipo_fone,
+    str_hoje,
+)
+from .models import (
+    Pessoal,
+    DocPessoal,
+    FonePessoal,
+    ContaPessoal,
+    ContraChequeItens,
+)
 from .forms import (
     CadastraPessoal,
     CadastraDocPessoal,
@@ -41,7 +52,9 @@ def cria_pessoa(request):
     c_url = "/pessoas/criapessoa/"
     c_view = "cria_pessoa"
     idpessoal = None
-    data = facade.form_pessoa(request, c_form, c_idobj, c_url, c_view, idpessoal)
+    data = facade.form_pessoa(
+        request, c_form, c_idobj, c_url, c_view, idpessoal
+    )
     return data
 
 
@@ -51,7 +64,9 @@ def edita_pessoa(request, idpessoa):
     c_url = "/pessoas/editapessoa/{}/".format(c_idobj)
     c_view = "edita_pessoa"
     idpessoal = "edita_pessoa"
-    data = facade.form_pessoa(request, c_form, c_idobj, c_url, c_view, idpessoal)
+    data = facade.form_pessoa(
+        request, c_form, c_idobj, c_url, c_view, idpessoal
+    )
     return data
 
 
@@ -60,7 +75,9 @@ def excluipessoa(request, idpessoa):
     c_url = "/pessoas/excluipessoa/{}/".format(c_idobj)
     c_view = "exclui_pessoa"
     idpessoal = idpessoa
-    data = facade.form_exclui_pessoal(request, c_idobj, c_url, c_view, idpessoal)
+    data = facade.form_exclui_pessoal(
+        request, c_idobj, c_url, c_view, idpessoal
+    )
     return data
 
 
@@ -154,7 +171,9 @@ def salva_form(request, form, template_name, idpes):
         else:
             data["form_is_valid"] = False
     context = {"form": form}
-    data["html_form"] = render_to_string(template_name, context, request=request)
+    data["html_form"] = render_to_string(
+        template_name, context, request=request
+    )
     return JsonResponse(data)
 
 
@@ -168,7 +187,9 @@ def edita_salario(request):
     c_salario = request.POST.get("Salario")
     c_horas_mensais = float(request.POST.get("HorasMensais"))
     c_valetransporte = request.POST.get("ValeTransporte")
-    facade.save_salario(c_pessoal, c_salario, c_horas_mensais, c_valetransporte)
+    facade.save_salario(
+        c_pessoal, c_salario, c_horas_mensais, c_valetransporte
+    )
     return redirect("consultapessoa", c_pessoal)
 
 
@@ -193,7 +214,9 @@ def cria_contracheque(request):
     c_anoreferencia = request.POST.get("AnoReferencia")
     c_valor = 0.00
     c_pessoal = request.POST.get("idPessoal")
-    facade.create_contracheque(c_mesreferencia, c_anoreferencia, c_valor, c_pessoal)
+    facade.create_contracheque(
+        c_mesreferencia, c_anoreferencia, c_valor, c_pessoal
+    )
     return redirect("consultapessoa", c_pessoal)
 
 
@@ -213,7 +236,9 @@ def cria_contrachequeitens(request):
     c_mes = request.POST.get("MesReferencia")
     c_ano = request.POST.get("AnoReferencia")
     c_idpessoal = request.POST.get("idPessoal")
-    facade.create_contracheque_itens(c_descricao, c_valor, c_registro, c_idcontracheque)
+    facade.create_contracheque_itens(
+        c_descricao, c_valor, c_registro, c_idcontracheque
+    )
     data = facade.seleciona_contracheque(request, c_mes, c_ano, c_idpessoal)
     return data
 
@@ -255,7 +280,9 @@ def adiciona_documento_colaborador(request):
     hoje = str_hoje()
     tipo_doc = dict_tipo_doc()
     contexto = {"idpessoal": idpessoal, "hoje": hoje, "tipo_doc": tipo_doc}
-    data = facade.create_data_form_adiciona_documento_colaborador(request, contexto)
+    data = facade.create_data_form_adiciona_documento_colaborador(
+        request, contexto
+    )
     return data
 
 
@@ -269,7 +296,9 @@ def altera_documento_colaborador(request):
         "idpessoal": idpessoal,
         "tipo_doc": tipo_doc,
     }
-    data = facade.create_data_form_adiciona_documento_colaborador(request, contexto)
+    data = facade.create_data_form_adiciona_documento_colaborador(
+        request, contexto
+    )
     return data
 
 
@@ -298,14 +327,20 @@ def salva_documento_colaborador(request):
             "error": error,
         }
         contexto.update(msg)
-        data = facade.create_data_form_adiciona_documento_colaborador(request, contexto)
+        data = facade.create_data_form_adiciona_documento_colaborador(
+            request, contexto
+        )
     return data
 
 
 def exclui_documento_colaborador(request):
     iddocpessoal = request.GET.get("iddocpessoal")
-    contexto = facade.create_contexto_exclui_documento_colaborador(iddocpessoal)
-    data = facade.create_data_form_exclui_documento_colaborador(request, contexto)
+    contexto = facade.create_contexto_exclui_documento_colaborador(
+        iddocpessoal
+    )
+    data = facade.create_data_form_exclui_documento_colaborador(
+        request, contexto
+    )
     return data
 
 
@@ -363,7 +398,9 @@ def salva_telefone_colaborador(request):
             "error": error,
         }
         contexto.update(msg)
-        data = facade.create_data_form_adiciona_fone_colaborador(request, contexto)
+        data = facade.create_data_form_adiciona_fone_colaborador(
+            request, contexto
+        )
     return data
 
 
@@ -387,7 +424,9 @@ def adiciona_conta_colaborador(request):
     idpessoal = request.GET.get("idpessoal")
     tipo_conta = dict_tipo_conta()
     contexto = {"idpessoal": idpessoal, "tipo_conta": tipo_conta}
-    data = facade.create_data_form_adiciona_conta_colaborador(request, contexto)
+    data = facade.create_data_form_adiciona_conta_colaborador(
+        request, contexto
+    )
     return data
 
 
@@ -401,7 +440,9 @@ def altera_conta_colaborador(request):
         "idpessoal": idpessoal,
         "tipo_conta": tipo_conta,
     }
-    data = facade.create_data_form_adiciona_conta_colaborador(request, contexto)
+    data = facade.create_data_form_adiciona_conta_colaborador(
+        request, contexto
+    )
     return data
 
 
@@ -428,7 +469,9 @@ def salva_conta_colaborador(request):
             "error": error,
         }
         contexto.update(msg)
-        data = facade.create_data_form_adiciona_conta_colaborador(request, contexto)
+        data = facade.create_data_form_adiciona_conta_colaborador(
+            request, contexto
+        )
     return data
 
 
@@ -593,7 +636,9 @@ def print_ferias(request):
     idpes = request.GET.get("idpes")
     idaquisitivo = request.GET.get("idaquisitivo")
     idparcela = request.GET.get("idparcela")
-    contexto = facade.create_contexto_print_ferias(idpes, idaquisitivo, idparcela)
+    contexto = facade.create_contexto_print_ferias(
+        idpes, idaquisitivo, idparcela
+    )
     response = print_pdf_ferias(contexto)
     return response
 
