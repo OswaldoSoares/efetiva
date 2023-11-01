@@ -2110,7 +2110,7 @@ def update_contra_cheque_item_referencia(contra_cheque_item, referencia):
 
 
 def get_vales_colaborador(colaborador):
-    vales = Vales.objects.filter(idPessoal=colaborador).order_by("-Data")
+    vales = Vales.objects.filter(idPessoal=colaborador).order_by("Data")
     lista = []
     for item in vales:
         checked = False
