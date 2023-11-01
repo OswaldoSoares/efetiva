@@ -765,10 +765,12 @@ def create_contexto_consulta_colaborador(idpessoal):
     aquisitivo = get_aquisitivo(colaborador_futuro)
     multas = facade_multa.multas_pagar("MOTORISTA", idpessoal)
     vales = get_vales_colaborador(colaborador_futuro)
+    saldo_vales = get_saldo_vales_colaborador(vales)
     hoje = datetime.datetime.today().date()
     return {
         "colaborador": colaborador,
         "vales": vales,
+        "saldo_vales": saldo_vales,
         "multas": multas,
         "hoje": hoje,
         "aquisitivo": aquisitivo,
