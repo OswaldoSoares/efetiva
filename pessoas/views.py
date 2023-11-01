@@ -709,3 +709,16 @@ def adiciona_vale_contra_cheque(request):
     contexto.update({"vales": vales})
     data = facade.data_adiciona_vale_contra_cheque(request, contexto)
     return data
+
+
+def exclui_contra_cheque_item(request):
+    idcontrachequeitens = request.GET.get("idcontrachequeitens")
+    idcontracheque = request.GET.get("idcontracheque")
+    idpessoal = request.GET.get("idpessoal")
+    colaborador = facade.get_colaborador(idpessoal)
+    facade.delete_contra_cheque_itens(idcontrachequeitens)
+    contexto = facade.contexto_contra_cheque_id(idcontracheque)
+    vales = facade.get_vales_colaborador(colaborador)
+    contexto.update({"vales": vales})
+    data = facade.data_adiciona_vale_contra_cheque(request, contexto)
+    return data
