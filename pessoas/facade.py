@@ -2221,6 +2221,14 @@ def busca_um_terco_ferias(contra_cheque_itens):
     if not um_terco:
         return False
     return True
+
+
+# TODO renomear para get_decimo_terceiro após exclusão da get_decimo_terceiro atual
+def get_decimo_terceiro_colaborador(colaborador):
+    decimo_terceiro = DecimoTerceiro.objects.filter(idPessoal=colaborador)
+    return decimo_terceiro
+
+
 def verifica_decimo_terceiro(colaborador):
     decimo_terceiro = get_decimo_terceiro_colaborador(colaborador)
     hoje = datetime.datetime.today()
