@@ -2249,9 +2249,9 @@ def verifica_decimo_terceiro(colaborador):
         ano = ano + 1
 
 
-def get_parcelas_decimo_terceiro(decimo_terceiro):
+def get_parcelas_decimo_terceiro(colaborador):
     parcelas = ParcelasDecimoTerceiro.objects.filter(
-        idDecimoTerceiro=decimo_terceiro
+        idDecimoTerceiro__idPessoal=colaborador
     )
     return parcelas
 
