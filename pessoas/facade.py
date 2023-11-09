@@ -2256,12 +2256,20 @@ def get_parcelas_decimo_terceiro(decimo_terceiro):
     return parcelas
 
 
-def verifica_parcelas_decimo_terceiro(decimo_terceiro):
-    parcelas = get_parcelas_decimo_terceiro(decimo_terceiro)
-    if not parcelas:
-        ParcelasDecimoTerceiro.objects.create(
-            Parcela=1, Valor=0, Pago=False, idDecimoTerceiro=decimo_terceiro
-        )
-        ParcelasDecimoTerceiro.objects.create(
-            Parcela=2, Valor=0, Pago=False, idDecimoTerceiro=decimo_terceiro
-        )
+def verifica_parcelas_decimo_terceiro(colaborador):
+    decimo_terceiro = get_decimo_terceiro_colaborador(colaborador)
+    for itens in decimo_terceiro:
+        parcelas = get_parcelas_decimo_terceiro(itens)
+        if not parcelas:
+            ParcelasDecimoTerceiro.objects.create(
+                Parcela=1,
+                Valor=0,
+                Pago=False,
+                idDecimoTerceiro=itens,
+            )
+            ParcelasDecimoTerceiro.objects.create(
+                Parcela=2,
+                Valor=0,
+                Pago=False,
+                idDecimoTerceiro=itens,
+            )
