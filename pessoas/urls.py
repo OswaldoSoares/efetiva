@@ -54,6 +54,7 @@ from .views import (
     verba_rescisoria,
     print_rescisao_trabalho,
     seleciona_aquisitivo,
+    seleciona_parcela,
     adiciona_vale_contra_cheque,
     exclui_contra_cheque_item,
 )
@@ -285,6 +286,11 @@ urlpatterns = [
         "seleciona_aquisitivo",
         seleciona_aquisitivo,
         name="seleciona_aquisitivo",
+    ),
+    path(
+        "seleciona_parcela",
+        seleciona_parcela,
+        name="seleciona_parcela",
     ),
     path(
         "adiciona_vale_contra_cheque",
