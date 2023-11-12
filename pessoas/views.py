@@ -698,6 +698,19 @@ def seleciona_aquisitivo(request):
     return data
 
 
+def seleciona_parcela(request):
+    idpessoal = request.GET.get("idpessoal")
+    idparcela = request.GET.get("idparcela")
+    descricao = request.GET.get("descricao")
+    contexto = facade.create_contexto_contra_cheque(
+        idpessoal,
+        idparcela,
+        descricao,
+    )
+    data = facade.create_data_contra_cheque(request, contexto)
+    return data
+
+
 def adiciona_vale_contra_cheque(request):
     idvale = request.GET.get("idvale")
     idcontracheque = request.GET.get("idcontracheque")
