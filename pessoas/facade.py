@@ -769,6 +769,8 @@ def create_contexto_consulta_colaborador(idpessoal):
     verifica_decimo_terceiro((colaborador_futuro))
     decimo_terceiro = get_decimo_terceiro_colaborador(colaborador_futuro)
     decimo_terceiro = decimo_terceiro.order_by("-Ano")
+    verifica_parcelas_decimo_terceiro(colaborador_futuro)
+    parcelas_decimo_terceiro = get_parcelas_decimo_terceiro(colaborador_futuro)
     hoje = datetime.datetime.today().date()
     return {
         "colaborador": colaborador,
@@ -776,6 +778,7 @@ def create_contexto_consulta_colaborador(idpessoal):
         "saldo_vales": saldo_vales,
         "multas": multas,
         "decimo_terceiro": decimo_terceiro,
+        "parcelas_decimo_terceiro": parcelas_decimo_terceiro,
         "hoje": hoje,
         "aquisitivo": aquisitivo,
     }
