@@ -2263,7 +2263,9 @@ def get_parcelas_decimo_terceiro(colaborador):
 def verifica_parcelas_decimo_terceiro(colaborador):
     decimo_terceiro = get_decimo_terceiro_colaborador(colaborador)
     for itens in decimo_terceiro:
-        parcelas = get_parcelas_decimo_terceiro(itens)
+        parcelas = ParcelasDecimoTerceiro.objects.filter(
+            idDecimoTerceiro=itens
+        )
         if not parcelas:
             ParcelasDecimoTerceiro.objects.create(
                 Parcela=1,
