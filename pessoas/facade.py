@@ -799,6 +799,7 @@ def create_data_consulta_colaborador(request, contexto):
     html_vales_colaborador(request, contexto, data)
     html_multas_colaborador(request, contexto, data)
     data["colaborador"] = contexto["colaborador"]["idpes"]
+    data["categoria"] = contexto["colaborador"]["categoria"]
     return JsonResponse(data)
 
 
