@@ -1926,6 +1926,7 @@ def create_contexto_contra_cheque(idpessoal, idselecionado, descricao):
             )
             atualiza_dozeavos_decimo_terceiro(idpessoal, idparcela, descricao)
     contra_cheque_itens = get_contra_cheque_itens(contra_cheque)
+    contra_cheque_itens = contra_cheque_itens.order_by("idContraChequeItens")
     credito, debito, saldo_contra_cheque = get_saldo_contra_cheque(
         contra_cheque_itens
     )
@@ -2278,6 +2279,7 @@ def contexto_vales_colaborador(colaborador):
 def contexto_contra_cheque_id(idcontracheque):
     contra_cheque = get_contra_cheque_id(idcontracheque)
     contra_cheque_itens = get_contra_cheque_itens(contra_cheque)
+    contra_cheque_itens = contra_cheque_itens.order_by("idContraChequeItens")
     credito, debito, saldo_contra_cheque = get_saldo_contra_cheque(
         contra_cheque_itens
     )
