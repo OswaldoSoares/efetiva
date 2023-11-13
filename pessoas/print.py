@@ -946,3 +946,38 @@ def base_contra_cheque(pdf, linha):
         cmp(linha - 83), cmp(-197), "_______________________________"
     )
     pdf.drawString(cmp(linha - 83), cmp(-201), "ASSINATURA DO FUNCIONÁRIO")
+def contra_cheque_dados(pdf, contexto):
+    linha = 297
+    pdf.setFillColor(HexColor("#808080"))
+    pdf.setFont("Times-Roman", 14)
+    pdf.drawString(
+        cmp(101.6),
+        cmp(linha - 11),
+        f'RECIBO DE {contexto["contra_cheque"].Descricao}',
+    )
+    pdf.setFillColor(HexColor("#000000"))
+    pdf.setFont("Times-Roman", 10)
+    pdf.drawString(
+        cmp(5.8),
+        cmp(linha - 27.2),
+        f'{contexto["colaborador"].idPessoal}'.zfill(4),
+    )
+    pdf.drawString(
+        cmp(20.2),
+        cmp(linha - 27.4),
+        f'{contexto["colaborador"].Nome}',
+    )
+    pdf.drawString(
+        cmp(102.6),
+        cmp(linha - 27.2),
+        f'{contexto["colaborador"].Categoria}',
+    )
+    salario_base = valor_ponto_milhar(0, 2)
+    pdf.drawString(
+        cmp(10),
+        cmp(linha - 144),
+        f"R$ {salario_base}",
+    )
+    return pdf
+
+
