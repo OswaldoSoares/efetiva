@@ -878,3 +878,71 @@ def formulario_rescisao_trabalho(pdf, contexto):
     pdf.line(cmp(10), cmp(linha), cmp(200), cmp(linha))
     pdf.line(cmp(50), cmp(19), cmp(160), cmp(19))
     return pdf
+
+
+def base_contra_cheque(pdf, linha):
+    pdf.setFillColor(HexColor("#000000"))
+    pdf.rect(cmp(5), cmp(linha - 18.5), cmp(173), cmp(13.5), fill=0)
+    pdf.rect(cmp(5), cmp(linha - 28.3), cmp(173), cmp(9.3), fill=0)
+    pdf.rect(cmp(5), cmp(linha - 36), cmp(173), cmp(4.8), fill=0)
+    pdf.rect(cmp(5), cmp(linha - 116.3), cmp(173), cmp(79.8), fill=0)
+    pdf.rect(cmp(5), cmp(linha - 134.1), cmp(111.1), cmp(17.3), fill=0)
+    pdf.rect(cmp(5), cmp(linha - 144.8), cmp(173), cmp(10.2), fill=0)
+    pdf.rect(cmp(116.1), cmp(linha - 125.2), cmp(61.9), cmp(8.4), fill=0)
+    pdf.rect(cmp(116.1), cmp(linha - 134.1), cmp(61.9), cmp(8.4), fill=0)
+    pdf.rect(cmp(180.9), cmp(linha - 144.8), cmp(24.1), cmp(139.8), fill=0)
+    pdf.line(cmp(16.7), cmp(linha - 36), cmp(16.7), cmp(linha - 31.2))
+    pdf.line(cmp(95.9), cmp(linha - 36), cmp(95.9), cmp(linha - 31.2))
+    pdf.line(cmp(116.1), cmp(linha - 36), cmp(116.1), cmp(linha - 31.2))
+    pdf.line(cmp(147.8), cmp(linha - 36), cmp(147.8), cmp(linha - 31.2))
+    pdf.line(cmp(16.7), cmp(linha - 116.3), cmp(16.7), cmp(linha - 36.5))
+    pdf.line(cmp(95.9), cmp(linha - 116.3), cmp(95.9), cmp(linha - 36.5))
+    pdf.line(cmp(116.1), cmp(linha - 116.3), cmp(116.1), cmp(linha - 36.5))
+    pdf.line(cmp(147.8), cmp(linha - 116.3), cmp(147.8), cmp(linha - 36.5))
+    pdf.line(cmp(147.8), cmp(linha - 125.2), cmp(147.8), cmp(linha - 116.8))
+    pdf.line(cmp(147.8), cmp(linha - 134.1), cmp(147.8), cmp(linha - 125.7))
+    pdf.setFont("Times-Roman", 11)
+    pdf.drawString(
+        cmp(6), cmp(linha - 13.8), "TRANSEFETIVA TRANSPORTES - EIRELLI - ME"
+    )
+    pdf.drawString(cmp(6), cmp(linha - 17.7), "CNPJ: 21.602.117/0001-15")
+    pdf.setFillColor(HexColor("#808080"))
+    pdf.setFont("Times-Roman", 10)
+    pdf.drawString(cmp(5.8), cmp(linha - 22.9), "{}".format("Código"))
+    pdf.drawString(cmp(20.2), cmp(linha - 22.9), "Nome do Funcionário")
+    pdf.drawString(
+        cmp(102.6),
+        cmp(linha - 22.9),
+        "CBO    Emp.   Local   Dept.  Setor   Seção   Fl.",
+    )
+    pdf.drawCentredString(cmp(10.85), cmp(linha - 35), "Cód.")
+    pdf.drawCentredString(cmp(56.3), cmp(linha - 35), "Descrição")
+    pdf.drawCentredString(cmp(106), cmp(linha - 35), "Referência")
+    pdf.drawCentredString(cmp(131.95), cmp(linha - 35), "Vencimentos")
+    pdf.drawCentredString(cmp(162.9), cmp(linha - 35), "Descontos")
+    pdf.setFont("Times-Roman", 9)
+    pdf.drawCentredString(
+        cmp(131.95), cmp(linha - 119.7), "Total de Vencimentos"
+    )
+    pdf.drawCentredString(cmp(162.9), cmp(linha - 119.7), "Total de Descontos")
+    pdf.drawCentredString(
+        cmp(131.95), cmp(linha - 132), "Valor Líquido \u279C"
+    )
+    pdf.setFont("Times-Roman", 10)
+    pdf.drawString(cmp(10), cmp(linha - 139), "SALÁRIO BASE")
+    pdf.setFillColor(HexColor("#808080"))
+    pdf.line(cmp(0), cmp(148.5), cmp(210), cmp(148.5))
+    pdf.rotate(90)
+    linha = 297
+    pdf.setFont("Times-Roman", 9)
+    pdf.drawString(
+        cmp(linha - 138),
+        cmp(-186),
+        "DECLARO TER RECEBIDO A IMPORTÂNCIA LÍQUIDA DISCRIMINADA NESTE RECIBO",
+    )
+    pdf.drawString(cmp(linha - 133), cmp(-197), "_____/_____/_____")
+    pdf.drawString(cmp(linha - 133), cmp(-201), "          DATA       ")
+    pdf.drawString(
+        cmp(linha - 83), cmp(-197), "_______________________________"
+    )
+    pdf.drawString(cmp(linha - 83), cmp(-201), "ASSINATURA DO FUNCIONÁRIO")
