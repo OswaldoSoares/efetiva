@@ -75,18 +75,23 @@
 				<span>Total R$ {{ saldo_contra_cheque|intcomma }}</span>
 			</div>
 			<div class="tamanho-30 text-center">
+				{% if saldo_contra_cheque > 0 %}
 				<i class="icofont-printer i-button" title="Imprime Contra-Cheque"></i>
 				<i class="icofont-bill-alt i-button" title="Informa Pagamento"></i>
+				{% endif %}
 			</div>
 			<div class="tamanho-20 text-right">
 				<span>R$ {{ credito|intcomma }}</span>
 			</div>
 			<div class="tamanho-20 text-right">
+				{% if debito > 0 %}
 				<span>R$ {{ debito|intcomma }}</span>
+				{% else %}
+				<span>R$ 0,00</span>
+				{% endif %}
 			</div>
 		</div>
 		<i class="icofont-rounded-right-down input-group-addon
 		addon-my-color"></i>
 	</div>
-
 </div>
