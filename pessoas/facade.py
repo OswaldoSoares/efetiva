@@ -2027,6 +2027,28 @@ def busca_contra_cheque_aquisitivo(idpessoal, idaquisitivo, descricao):
     return contra_cheque
 
 
+def busca_contra_cheque_parcela(idpessoal, idparcela, descricao):
+    colaborador = get_colaborador(idpessoal)
+    parcela_decimo_terceiro = get_parcelas_decimo_terceiro_id(idparcela)
+    ano = parcela_decimo_terceiro.idDecimoTerceiro.Ano
+    if parcela_decimo_terceiro.Parcela == 1:
+        mes = 11
+    else:
+        mes = 12
+    try:
+        contra_cheque = get_contra_cheque_mes_ano_descricao(
+            colaborador, mes, ano, descricao
+        )
+    except ContraCheque.DoesNotExist:  # pylint: disable=no-member
+        create_contra_cheque(
+            meses[mes - 1], ano, "DECIMO TERCEIRO", colaborador
+        )
+        contra_cheque = get_contra_cheque_mes_ano_descricao(
+            colaborador, mes, ano, descricao
+        )
+    return contra_cheque
+
+
 def get_contra_cheque_mes_ano_descricao(colaborador, mes, ano, descricao):
     contra_cheque = ContraCheque.objects.get(
         idPessoal=colaborador,
