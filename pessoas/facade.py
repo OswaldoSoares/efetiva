@@ -2053,6 +2053,13 @@ def get_aquisitivo_id(idaquisitivo):
     return aquisitivo
 
 
+def get_parcelas_decimo_terceiro_id(idparcela):
+    parcela = ParcelasDecimoTerceiro.objects.get(
+        idParcelasDecimoTerceiro=idparcela
+    )
+    return parcela
+
+
 def get_contra_cheque_itens(contra_cheque):
     contra_cheque_itens = ContraChequeItens.objects.filter(
         idContraCheque=contra_cheque
