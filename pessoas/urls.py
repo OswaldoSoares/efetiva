@@ -57,6 +57,7 @@ from .views import (
     seleciona_parcela,
     adiciona_vale_contra_cheque,
     exclui_contra_cheque_item,
+    imprime_contra_cheque,
 )
 
 
@@ -301,5 +302,10 @@ urlpatterns = [
         "exclui_contra_cheque_item",
         exclui_contra_cheque_item,
         name="exclui_contra_cheque_item",
+    ),
+    path(
+        "imprime_contra_cheque",
+        imprime_contra_cheque,
+        name="imprime_contra_cheque",
     ),
 ]
