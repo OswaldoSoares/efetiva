@@ -1895,29 +1895,51 @@ def html_card_contra_cheque_colaborador(request, contexto, data):
     return data
 
 
-def create_contexto_contra_cheque(idpessoal, idaquisitivo, descricao):
-    contra_cheque = busca_contra_cheque_aquisitivo(
-        idpessoal, idaquisitivo, descricao
-    )
-    contra_cheque_itens = get_contra_cheque_itens(contra_cheque)
-    if not contra_cheque_itens:
-        create_contra_cheque_itens(descricao, 0.00, "C", "30dd", contra_cheque)
+def create_contexto_contra_cheque(idpessoal, idselecionado, descricao):
+    colaborador = Colaborador(idpessoal).__dict__
+    colaborador_futuro = get_colaborador(idpessoal)
     if descricao == "FERIAS":
-        if not busca_um_terco_ferias(contra_cheque_itens):
+        idaquisitivo = idselecionado
+        contra_cheque = busca_contra_cheque_aquisitivo(
+            idpessoal, idaquisitivo, descricao
+        )
+        contra_cheque_itens = get_contra_cheque_itens(contra_cheque)
+        if not contra_cheque_itens:
             create_contra_cheque_itens(
-                "1/3 FERIAS", 0.00, "C", "30dd", contra_cheque
+                descricao, 0.00, "C", "30dd", contra_cheque
             )
-        atualiza_salario_ferias_dias_referencia(idpessoal, idaquisitivo)
+            if not busca_um_terco_ferias(contra_cheque_itens):
+                create_contra_cheque_itens(
+                    "1/3 FERIAS", 0.00, "C", "30dd", contra_cheque
+                )
+            atualiza_salario_ferias_dias_referencia(idpessoal, idaquisitivo)
+    elif descricao[:15] == "DECIMO TERCEIRO":
+        idparcela = idselecionado
+        contra_cheque = busca_contra_cheque_parcela(
+            idpessoal, idparcela, descricao[:15]
+        )
+        contra_cheque_itens = get_contra_cheque_itens(contra_cheque)
+        if not contra_cheque_itens:
+            create_contra_cheque_itens(
+                descricao, 0.00, "C", "12da", contra_cheque
+            )
+            atualiza_dozeavos_decimo_terceiro(idpessoal, idparcela, descricao)
     contra_cheque_itens = get_contra_cheque_itens(contra_cheque)
     credito, debito, saldo_contra_cheque = get_saldo_contra_cheque(
         contra_cheque_itens
     )
+    decimo_terceiro = get_decimo_terceiro_colaborador(colaborador_futuro)
+    decimo_terceiro = decimo_terceiro.order_by("-Ano")
+    parcelas_decimo_terceiro = get_parcelas_decimo_terceiro(colaborador_futuro)
     contexto = {
         "contra_cheque": contra_cheque,
         "contra_cheque_itens": contra_cheque_itens,
         "credito": credito,
         "debito": debito,
         "saldo_contra_cheque": saldo_contra_cheque,
+        "decimo_terceiro": decimo_terceiro,
+        "parcelas_decimo_terceiro": parcelas_decimo_terceiro,
+        "colaborador": colaborador,
     }
     return contexto
 
