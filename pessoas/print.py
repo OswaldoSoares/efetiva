@@ -946,6 +946,9 @@ def base_contra_cheque(pdf, linha):
         cmp(linha - 83), cmp(-197), "_______________________________"
     )
     pdf.drawString(cmp(linha - 83), cmp(-201), "ASSINATURA DO FUNCIONÁRIO")
+    return pdf
+
+
 def print_contra_cheque(contexto):
     response = HttpResponse(content_type="application/pdf")
     response["Content-Disposition"] = f'filename="Contra Cheque.pdf"'
