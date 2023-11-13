@@ -1968,6 +1968,44 @@ def atualiza_salario_ferias_dias_referencia(idpessoal, idaquisitivo):
     )
 
 
+def atualiza_dozeavos_decimo_terceiro(idpessoal, idparcela, descricao):
+    colaborador = get_colaborador(idpessoal)
+    hoje = datetime.datetime.today()
+    salario = Salario.objects.get(idPessoal=idpessoal)
+    admissao = colaborador.DataAdmissao
+    if admissao.year < hoje.year:
+        avos = 12
+    else:
+        avos = 12 - admissao.month
+        if admissao.day < 17:
+            avos += 1
+    valor = salario.Salario / 12 * avos
+    parcela = get_parcelas_decimo_terceiro_id(idparcela)
+    decimo_terceiro = get_decimo_terceiro_id(parcela.idDecimoTerceiro_id)
+    decimo_terceiro.ValorBase = salario.Salario
+    decimo_terceiro.Valor = valor
+    decimo_terceiro.Dozeavos = avos
+    decimo_terceiro.save()
+    parcelas = ParcelasDecimoTerceiro.objects.filter(
+        idDecimoTerceiro=decimo_terceiro
+    )
+    parcelas.update(Valor=valor / 2)
+    if parcela.Parcela == 1:
+        mes = 11
+    else:
+        mes = 12
+    ano = parcela.idDecimoTerceiro.Ano
+    contra_cheque_decimo_terceiro = get_contra_cheque_mes_ano_descricao(
+        colaborador, mes, ano, "DECIMO TERCEIRO"
+    )
+    contra_cheque_itens = get_contra_cheque_itens(
+        contra_cheque_decimo_terceiro
+    )
+    contra_cheque_item = contra_cheque_itens.filter(Descricao=descricao)
+    update_contra_cheque_item_valor(contra_cheque_item, valor / 2)
+    update_contra_cheque_item_referencia(contra_cheque_item, f"{avos}da")
+
+
 def get_salarios_aquisitivo(colaborador, aquisitivos):
     contra_cheque = get_contra_cheque_descricao(colaborador, "PAGAMENTO")
     contra_cheque = contra_cheque_ano_mes_integer(contra_cheque)
