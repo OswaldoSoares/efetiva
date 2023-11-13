@@ -1026,3 +1026,15 @@ def contra_cheque_itens(pdf, contexto):
             )
         linhaitens += 4
     return pdf
+
+
+def contra_cheque_totais(pdf, contexto):
+    credito = f'R$ {valor_ponto_milhar(contexto["credito"], 2)}'
+    debito = f'R$ {valor_ponto_milhar(contexto["debito"], 2)}'
+    saldo = f'R$ {valor_ponto_milhar(contexto["saldo_contra_cheque"], 2)}'
+    linha = 297
+    pdf.setFont("Times-Roman", 11)
+    pdf.drawRightString(cmp(142.6), cmp(linha - 124), credito)
+    pdf.drawRightString(cmp(171.7), cmp(linha - 124), debito)
+    pdf.drawRightString(cmp(171.7), cmp(linha - 132), saldo)
+    return pdf
