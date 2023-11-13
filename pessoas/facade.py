@@ -2278,9 +2278,15 @@ def contexto_vales_colaborador(colaborador):
 def contexto_contra_cheque_id(idcontracheque):
     contra_cheque = get_contra_cheque_id(idcontracheque)
     contra_cheque_itens = get_contra_cheque_itens(contra_cheque)
+    credito, debito, saldo_contra_cheque = get_saldo_contra_cheque(
+        contra_cheque_itens
+    )
     contexto = {
         "contra_cheque": contra_cheque,
         "contra_cheque_itens": contra_cheque_itens,
+        "credito": credito,
+        "debito": debito,
+        "saldo_contra_cheque": saldo_contra_cheque,
     }
     return contexto
 
