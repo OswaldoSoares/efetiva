@@ -18,29 +18,59 @@
             addon-my-color"></i>
             <div class="div-flex div-form-control">
                 <div class="tamanho-30 text-left">
-                    <span>{{ item.Ano }}</span>
+                    <span></span>
                 </div>
                 <div class="tamanho-30 text-center">
-                    <span>{{ item.Dozeavos|stringformat:"02d" }}/12</span>
+                    <span>{{ item.Ano }} - {{ item.Dozeavos|stringformat:"02d" }}/12</span>
                 </div>
                 <div class="tamanho-40 text-right">
                     <span>R$ {{ item.Valor|intcomma }}</span>
                 </div>
             </div>
-            <i class="bi bi-check
-            input-group-addon
-            addon-my-color"></i>
+            <div class="input-group-addon
+            addon-my-color">
+                <i class="icofont-check
+                i-button-null"></i>
+            </div>
         </div>
     </div>
+        {% for parcela in parcelas_decimo_terceiro %}
+        {% if parcela.idDecimoTerceiro_id == item.idDecimoTerceiro %}
+            <div class="card-body-item js-mostra-decimo-terceiro">
+                <div class="input-group">
+                    <i class="bi bi-check
+                    input-group-addon
+                    addon-my-color"></i>
+                    <div class="div-flex div-form-control">
+                        <div class="tamanho-50 text-left">
+                            <span>{{ parcela.Parcela }}ª PARCELA</span>
+                        </div>
+                        <div class="tamanho-50 text-right">
+                            <span>R$ {{ parcela.Valor|intcomma }}</span>
+                        </div>
+                    </div>
+                    <div class="input-group-addon
+                    addon-my-color">
+                        {% if parcela.Pago %}
+                        <i class="icofont-square
+                        i-button-null"></i>
+                        {% else %}
+                        <i class="icofont-square
+                        i-button
+                        js-seleciona-parcela"
+                           title="Pagar Parcela Décimo Terceiro"
+                           data-idpessoal="{{ colaborador.idpes }}"
+                           data-idparcela="{{ parcela.idParcelasDecimoTerceiro }}"
+                           data-descricao="DECIMO TERCEIRO ({{ parcela.Parcela }}ª PARCELA)"></i>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        {% endfor %}
     {% endfor %}
     {% for y in i.parcelas %}
         <div class="itens-parcelas">
-            <div class="item-parcela">
-                <span>{{ y.Parcela }}ª PARCELA</span>
-            </div>
-            <div class="item-valor">
-                <span>R$ {{ y.Valor }}</span>
-            </div>
             <div class="item-button">
                 <a class="bi bi-printer i-button" target="_blank"
                 href="{% url 'print_decimo_terceiro' %}?idparcela={{ y.idParcelasDecimoTerceiro }}&idpes={{ colaborador.idpes }}"
