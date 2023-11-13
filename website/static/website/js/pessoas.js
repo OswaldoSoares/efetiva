@@ -51,6 +51,7 @@ $(document).on('click', ".js-seleciona-colaborador", function() {
             $(".card-multas-colaborador").html(data.html_multas_colaborador)
             $(".js-mostra-dados-multa").hide()
             $(".js-mostra-vales").show()
+            $(".js-mostra-ferias").hide()
             $(".card-vales-colaborador").show()
             $(".card-multas-colaborador").show()
             valesSelecionaveis()
@@ -804,6 +805,12 @@ $(document).on('click', '.js-toggle-vales', function() {
     $(".js-mostra-vales").slideToggle(500)
     $(".js-toggle-vales").toggleClass("icofont-square-up");
     $(".js-toggle-vales").toggleClass("icofont-square-down");
+});
+
+$(document).on('click', '.js-toggle-ferias', function() {
+    $(".js-mostra-ferias").slideToggle(500)
+    $(".js-toggle-ferias").toggleClass("icofont-square-up");
+    $(".js-toggle-ferias").toggleClass("icofont-square-down");
 });
 
 $(document).on('click', '.js-seleciona-aquisitivo', function() {

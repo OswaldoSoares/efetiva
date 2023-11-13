@@ -1,11 +1,16 @@
 <!-- Header -->
-<div class="card-header">
+<div class="card-header div-flex">
+	<div class="input-group-addon
+    addon-my-color"></div>
     <span>FÉRIAS</span>
+	<i class="icofont-square-down
+	js-toggle-ferias
+	i-button"></i>
 </div>
 <!-- Body -->
 <div class="card-body">
     {% for i in colaborador.aquisitivo %}
-    <div class="card-body-item">
+    <div class="card-body-item js-mostra-ferias">
         <div class="input-group">
             <i class="bi bi-check
             i-button-null
@@ -57,7 +62,7 @@
     </div>
     {% for ferias in colaborador.ferias %}
     {% if i.idaquisitivo == ferias.idaquisitivo %}
-    <div class="card-body-item">
+    <div class="card-body-item js-mostra-ferias">
         <div class="input-group">
             <i class="icofont-beach
             i-button-null
