@@ -48,16 +48,19 @@ $(document).on('click', ".js-seleciona-colaborador", function() {
                 $(".button-demissao").hide()
             }
             $(".card-vales-colaborador").html(data.html_vales_colaborador)
-            $(".card-multas-colaborador").html(data.html_multas_colaborador)
-            $(".js-mostra-dados-multa").hide()
+            if (data.categoria == "MOTORISTA") {
+                $(".card-multas-colaborador").html(data.html_multas_colaborador)
+                $(".card-multas-colaborador").show()
+                $(".js-mostra-dados-multa").hide()
+            }
             $(".js-mostra-vales").show()
             $(".js-mostra-ferias").hide()
             $(".js-mostra-decimo-terceiro").hide()
             $(".card-vales-colaborador").show()
-            $(".card-multas-colaborador").show()
             valesSelecionaveis()
             $(window).scrollTop(0)
             localStorage.setItem("idpessoal", data.colaborador)
+            console.log(data.categoria)
             $(".box-loader").hide()
         },
         error: function(errorThrown) {
