@@ -2006,6 +2006,13 @@ def atualiza_dozeavos_decimo_terceiro(idpessoal, idparcela, descricao):
     update_contra_cheque_item_referencia(contra_cheque_item, f"{avos}da")
 
 
+def get_decimo_terceiro_id(id_decimo_terceiro):
+    decimo_terceiro = DecimoTerceiro.objects.get(
+        idDecimoTerceiro=id_decimo_terceiro
+    )
+    return decimo_terceiro
+
+
 def get_salarios_aquisitivo(colaborador, aquisitivos):
     contra_cheque = get_contra_cheque_descricao(colaborador, "PAGAMENTO")
     contra_cheque = contra_cheque_ano_mes_integer(contra_cheque)
