@@ -9,6 +9,7 @@ from pessoas.print import (
     print_pdf_ficha_colaborador,
     print_pdf_ferias,
     print_pdf_rescisao_trabalho,
+    print_contra_cheque,
 )
 from website.facade import (
     dict_tipo_conta,
@@ -733,3 +734,13 @@ def exclui_contra_cheque_item(request):
     contexto.update(facade.contexto_vales_colaborador(colaborador))
     data = facade.data_adiciona_vale_contra_cheque(request, contexto)
     return data
+
+
+def imprime_contra_cheque(request):
+    idcontracheque = request.GET.get("idcontracheque")
+    idpessoal = request.GET.get("idpessoal")
+    contexto = facade.contexto_contra_cheque_id(idcontracheque)
+    colaborador = facade.get_colaborador(idpessoal)
+    contexto.update({"colaborador": colaborador})
+    response = print_contra_cheque(contexto)
+    return response
