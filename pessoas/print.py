@@ -946,6 +946,26 @@ def base_contra_cheque(pdf, linha):
         cmp(linha - 83), cmp(-197), "_______________________________"
     )
     pdf.drawString(cmp(linha - 83), cmp(-201), "ASSINATURA DO FUNCIONÁRIO")
+def print_contra_cheque(contexto):
+    response = HttpResponse(content_type="application/pdf")
+    response["Content-Disposition"] = f'filename="Contra Cheque.pdf"'
+    buffer = BytesIO()
+    pdf = canvas.Canvas(buffer)
+    pdf.setFont("Times-Roman", 10)
+    linha = 297
+    contra_cheque_dados(pdf, contexto)
+    contra_cheque_itens(pdf, contexto)
+    contra_cheque_totais(pdf, contexto)
+    base_contra_cheque(pdf, linha)
+    pdf.setTitle("Contra Cheque")
+    pdf.save()
+    buffer.seek(0)
+    pdf = buffer.getvalue()
+    buffer.close()
+    response.write(pdf)
+    return response
+
+
 def contra_cheque_dados(pdf, contexto):
     linha = 297
     pdf.setFillColor(HexColor("#808080"))
@@ -981,3 +1001,28 @@ def contra_cheque_dados(pdf, contexto):
     return pdf
 
 
+def contra_cheque_itens(pdf, contexto):
+    linha = 297
+    linhaitens = 0
+    for itens in contexto["contra_cheque_itens"]:
+        pdf.drawString(
+            cmp(17.5),
+            cmp(linha - 41.2 - linhaitens),
+            f"{itens.Descricao}",
+        )
+        pdf.drawCentredString(
+            cmp(106),
+            cmp(linha - 41.2 - linhaitens),
+            f"{itens.Referencia}",
+        )
+        valor = valor_ponto_milhar(itens.Valor, 2)
+        if itens.Registro == "C":
+            pdf.drawRightString(
+                cmp(142.6), cmp(linha - 41.2 - linhaitens), f"R$ {valor}"
+            )
+        else:
+            pdf.drawRightString(
+                cmp(171.7), cmp(linha - 41.2 - linhaitens), f"R$ {valor}"
+            )
+        linhaitens += 4
+    return pdf
