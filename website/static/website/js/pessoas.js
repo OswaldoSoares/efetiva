@@ -833,6 +833,36 @@ $(document).on('click', '.js-seleciona-aquisitivo', function() {
     });
 });
 
+$(document).on('click', '.js-seleciona-parcela', function() {
+    var idpessoal = $(this).data("idpessoal")
+    var idparcela = $(this).data("idparcela")
+    var descricao = $(this).data("descricao")
+    $.ajax({
+        type: "GET",
+        url: "/pessoas/seleciona_parcela",
+        data: {
+            idpessoal: idpessoal,
+            idparcela: idparcela,
+            descricao:  descricao,
+        },
+        beforeSend: function() {
+            $(".box-loader").show()
+            $(".card-contra-cheque-colaborador").hide()
+            $(".card-decimo-terceiro").hide()
+            localStorage.setItem("idcontracheque", "")
+        },
+        success: function(data) {
+            $(".card-contra-cheque-colaborador").html(data.html_card_contra_cheque_colaborador)
+            $(".card-contra-cheque-colaborador").show()
+            $(".card-decimo-terceiro").html(data.html_decimo_terceiro)
+            $(".card-decimo-terceiro").show()
+            localStorage.setItem("idcontracheque", $("#idcontracheque").data("idcontracheque"))
+            valesSelecionaveis()
+            $(".box-loader").hide()
+        },
+    });
+});
+
 $(document).on('click', '.js-pessoas-seleciona-vale', function() {
     var idvale = $(this).data("idvale")
     var idpessoal = localStorage.getItem("idpessoal")
