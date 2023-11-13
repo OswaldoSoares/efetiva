@@ -2006,6 +2006,7 @@ def tabela_faltas_aquisitivo(faltas):
 def create_data_contra_cheque(request, contexto):
     data = {}
     data = html_card_contra_cheque_colaborador(request, contexto, data)
+    data = html_decimo_terceiro(request, contexto, data)
     return JsonResponse(data)
 
 
