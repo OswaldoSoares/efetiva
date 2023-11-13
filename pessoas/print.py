@@ -7,7 +7,7 @@ from reportlab.pdfgen import canvas
 from pessoas.facade import do_crop
 from romaneios.print import header
 from transefetiva.settings.settings import STATIC_ROOT
-from website.facade import cmp
+from website.facade import cmp, valor_ponto_milhar
 
 
 def print_pdf_decimno_terceiro(contexto):
