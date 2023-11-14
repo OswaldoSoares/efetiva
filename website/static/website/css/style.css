@@ -6413,6 +6413,8 @@ label {
   .grid-romaneio {
     grid-template-columns: 1fr 2fr 1fr;
   }
+  .grid-pagamento {
+    grid-template-columns: 1fr 1fr 2fr ;
 }
 
 .input-fake {
