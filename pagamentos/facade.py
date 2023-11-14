@@ -435,7 +435,6 @@ def create_contexto_folha(mes_ano: str) -> JsonResponse:
 def create_data_seleciona_mes_ano(request, contexto):
     data = dict()
     html_folha(request, contexto, data)
-    html_saldo(request, contexto, data)
     html_adiantamento(request, contexto, data)
     return JsonResponse(data)
 
@@ -543,7 +542,6 @@ def create_data_ausencia_falta(request, contexto):
     html_cartao_ponto(request, contexto, data)
     html_funcionario(request, contexto, data)
     html_contra_cheque(request, contexto, data)
-    html_saldo(request, contexto, data)
     return JsonResponse(data)
 
 
@@ -551,7 +549,6 @@ def create_data_altera_horario(request, contexto):
     data = dict()
     html_cartao_ponto(request, contexto, data)
     html_contra_cheque(request, contexto, data)
-    html_saldo(request, contexto, data)
     return JsonResponse(data)
 
 
@@ -560,7 +557,6 @@ def create_data_atestada(request, contexto):
     html_cartao_ponto(request, contexto, data)
     html_funcionario(request, contexto, data)
     html_contra_cheque(request, contexto, data)
-    html_saldo(request, contexto, data)
     return JsonResponse(data)
 
 
@@ -569,14 +565,12 @@ def create_data_altera_carro(request, contexto):
     html_cartao_ponto(request, contexto, data)
     html_funcionario(request, contexto, data)
     html_contra_cheque(request, contexto, data)
-    html_saldo(request, contexto, data)
     return JsonResponse(data)
 
 
 def create_data_cci(request, contexto):
     data = dict()
     html_contra_cheque(request, contexto, data)
-    html_saldo(request, contexto, data)
     html_vales_pagamento(request, contexto, data)
     return JsonResponse(data)
 
@@ -591,7 +585,6 @@ def create_data_vale(request, contexto):
 def create_data_seleciona_vale(request, contexto):
     data = dict()
     html_contra_cheque(request, contexto, data)
-    html_saldo(request, contexto, data)
     html_vales_pagamento(request, contexto, data)
     return JsonResponse(data)
 
@@ -1548,7 +1541,6 @@ def create_pagamento_avulso(datainicial, datafinal, idpessoal, zerado):
                 obj.idRecibo_id = new_idrecibo
                 obj.save(update_fields=["Pago", "idRecibo_id"])
     data = dict()
-    data["html_saldoavulso"] = html_saldo_avulso(datainicial, datafinal)
     data["html_minutas"] = html_minutasavulso(
         datainicial, datafinal, idpessoal
     )
@@ -1611,7 +1603,6 @@ def create_contexto_itens_pagamento_avulso(datainicial, datafinal, idpessoal):
                         }
                     )
     data = dict()
-    data["html_saldoavulso"] = html_saldo_avulso(datainicial, datafinal)
     data["html_minutas"] = html_minutasavulso(
         datainicial, datafinal, idpessoal
     )
@@ -1917,12 +1908,6 @@ def busca_adiantamento(idcontracheque):
         return True
     else:
         return False
-
-
-def seleciona_saldoavulso(datainicial, datafinal):
-    data = dict()
-    data["html_saldoavulso"] = html_saldo_avulso(datainicial, datafinal)
-    return JsonResponse(data)
 
 
 def periodo_cartaoponto(mesreferencia, anoreferencia):
@@ -2538,13 +2523,6 @@ def html_recibo_avulso(datainicial, datafinal, idpessoal):
     }
     c_return = render_to_string("pagamentos/reciboavulso.html", context)
     return c_return
-
-
-def html_saldo(request, contexto, data):
-    data["html_saldo"] = render_to_string(
-        "pagamentos/html_saldo.html", contexto, request=request
-    )
-    return data
 
 
 def html_saldo_avulso(datainicial, datafinal):
