@@ -9,12 +9,9 @@
         <article class="card card-folha js-folha">
             {% include 'pagamentos/html_folha.html' %}
         </article>
-        {% comment %} <article class="article-card card-saldo-pagamento js-saldo"> {% endcomment %}
-            {% comment %} {% include 'pagamentos/html_saldo.html' %} {% endcomment %}
-        {% comment %} </article> {% endcomment %}
-        {% comment %} <article class="article-card card-adiantamento js-adiantamento"> {% endcomment %}
-            {% comment %} {% include 'pagamentos/html_adiantamento_automatico.html' %} {% endcomment %}
-        {% comment %} </article> {% endcomment %}
+        <article class="card card-adiantamento js-adiantamento">
+            {% include 'pagamentos/html_adiantamento_automatico.html' %}
+        </article>
     </section>
     <section class="grid-column">
         <article class="card card-cartao-ponto js-cartao-ponto">
