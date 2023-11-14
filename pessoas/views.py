@@ -5,9 +5,7 @@ from django.template.loader import render_to_string
 from rolepermissions.decorators import has_permission_decorator
 from pessoas import facade
 from pessoas.print import (
-    print_pdf_decimno_terceiro,
     print_pdf_ficha_colaborador,
-    print_pdf_ferias,
     print_pdf_rescisao_trabalho,
     print_contra_cheque,
 )
