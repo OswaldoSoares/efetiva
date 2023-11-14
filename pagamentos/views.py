@@ -9,8 +9,11 @@ from website.facade import str_hoje
 from pagamentos import facade
 
 from .forms import CadastraCartaoPonto
-from .print import (print_contracheque, print_recibo,
-                    print_relatorio_saldo_avulso)
+from .print import (
+    print_contracheque,
+    print_recibo,
+    print_relatorio_saldo_avulso,
+)
 
 
 @has_permission_decorator("modulo_pagamentos")
@@ -259,6 +262,7 @@ def seleciona_funcionario(request):
 def seleciona_mes_ano(request):
     _mes_ano = request.GET.get("mes_ano")
     contexto = facade.create_contexto_folha(_mes_ano)
+    print(contexto)
     data = facade.create_data_seleciona_mes_ano(request, contexto)
     return data
 
