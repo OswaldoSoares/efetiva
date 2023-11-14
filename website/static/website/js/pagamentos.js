@@ -1,13 +1,5 @@
 $(document).ready(function() {
-    // tamanhoCardBody();
-    $(".div-um").show()
-    $(".div-dois").hide()
-    $(".div-tres").hide()
-    $(".div-quatro").hide()
-    $(".div-cinco").show()
-    $(".div-seis").hide()
-    $(".div-sete").hide()
-    $(".card-form-colaborador").hide()
+    $(".card-cartao-ponto").hide()
 });
 
 // Seleciona mês e ano para pagamento de colaboradores mensalistas
