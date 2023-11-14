@@ -38,9 +38,6 @@ $(document).on("click", ".js-seleciona-funcionario", function(event) {
             idpessoal: v_idpessoal,
         },
         beforeSend: function() {
-            $(".div-dois").show();
-            $(".div-tres").show();
-            $(".div-quatro").show();
             $('.box-loader').show();
         },
         success: function(data) {
@@ -55,6 +52,7 @@ $(document).on("click", ".js-seleciona-funcionario", function(event) {
             $(".js-files-pagamento").html(data.html_files_pagamento);
             $(".js-agenda-pagamento").html(data.html_agenda_pagamento);
             $(".js-itens-agenda-pagamento").html(data.html_itens_agenda_pagamento);
+            $(".card-cartao-ponto").show()
             $('.box-loader').hide();
             tamanhoCardBody();
         },
