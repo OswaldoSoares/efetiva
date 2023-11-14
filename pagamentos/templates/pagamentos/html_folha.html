@@ -11,15 +11,24 @@
 		<div class="input-group">
 			<div class="input-group-addon
 			addon-my-color">
-				<i class="bi bi-building
+				<i class="icofont-waiter
 				i-button-null"></i>
 			</div>
 			<div class="div-form-control div-flex font-menor">
-				<div class="tamanho-70 text-left">
-					<span>{{ key }}</span>
+				<div class="tamanho-50 text-left">
+					<span title="Salário R$ {{ value.salario_base|intcomma }}">
+						{{ key }}
+					</span>
 				</div>
-				<div class="tamanho-30 text-right">
-					<span>R$ {{ value.salario_base|intcomma }}</span>
+				<div class="tamanho-25 text-right">
+					<span title="Valor do Adiantamento">
+						R$ {{ value.adiantamento|intcomma }}
+					</span>
+				</div>
+				<div class="tamanho-25 text-right">
+					<span title="Saldo a Receber">
+						R$ {{ value.saldo_mes|intcomma }}
+					</span>
 				</div>
 			</div>
 			<div class="input-group-addon
