@@ -1,5 +1,6 @@
 $(document).ready(function() {
     $(".card-cartao-ponto").hide()
+    $(".card-funcionario-pagamento").hide();
 });
 
 // Seleciona mês e ano para pagamento de colaboradores mensalistas
@@ -52,6 +53,7 @@ $(document).on("click", ".js-seleciona-funcionario", function(event) {
             $(".js-files-pagamento").html(data.html_files_pagamento);
             $(".js-agenda-pagamento").html(data.html_agenda_pagamento);
             $(".js-itens-agenda-pagamento").html(data.html_itens_agenda_pagamento);
+            $(".card-funcionario-pagamento").show();
             $(".card-cartao-ponto").show()
             $('.box-loader').hide();
             tamanhoCardBody();
