@@ -43,5 +43,25 @@
 	{% endfor %}
 </div>
 <!-- Footer -->
-<div class="card-footer"></div>
+<div class="card-footer">
+	<div class="input-group">
+		<i class="icofont-rounded-left-down input-group-addon
+		addon-my-color"></i>
+		<div class="div-flex div-form-control">
+			<div class="tamanho-50 text-left">
+				<span>
+					{{ v_folha.funcionarios|length }}
+				</span>
+			</div>
+			<div class="tamanho-25 text-right">
+				<span>R$ {{ v_folha.total_adiantamento|intcomma }}</span>
+			</div>
+			<div class="tamanho-25 text-right">
+				<span>R$ {{ v_folha.total_pagamento |intcomma}}</span>
+			</div>
+		</div>
+		<i class="icofont-rounded-right-down input-group-addon
+		addon-my-color"></i>
+	</div>
+</div>
 {% endif %}
