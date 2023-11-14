@@ -1,55 +1,212 @@
 {% load permission_tags %}
 {% if nome %}
+<!-- Header -->
 <div class="article-card-titulo">
-<span>{{ nome }}</span>
+    <span>{{ nome }}</span>
 </div>
-<div class="article-card-body js-body-funcionario">
+<!-- Body -->
+<div class="card-body js-body-funcionario font-menor">
     {% if user|can:'pagamentos_folha' %}
-        <div class="itens-funcionario-pagamento">
-            <span>FUNÇÃO:</span>
-            <span>{{ categoria }}</span>
+        <div class="card-body-item">
+            <div class="input-group">
+                <i class="bi bi-check
+                input-group-addon
+                addon-my-color"></i>
+                <div class="div-form-control div-flex">
+                    <div class="tamanho-50 text-left">
+                        <span>FUNÇÃO:</span>
+                    </div>
+                    <div class="tamanho-50 text-right">
+                        <span>{{ categoria }}</span>
+                    </div>
+                </div>
+                <div class="input-group-addon
+                addon-my-color">
+                    <i class="bi bi-check"></i>
+                </div>
+            </div>
         </div>
-        <div class="itens-funcionario-pagamento">
-            <span>DATA DA ADMISSÃO:</span>
-            <span>{{ admissao }}</span>
+        <div class="card-body-item">
+            <div class="input-group">
+                <i class="bi bi-check
+                input-group-addon
+                addon-my-color"></i>
+                <div class="div-form-control div-flex">
+                    <div class="tamanho-50 text-left">
+                        <span>DATA DA ADMISSÃO:</span>
+                    </div>
+                    <div class="tamanho-50 text-right">
+                        <span>{{ admissao }}</span>
+                    </div>
+                </div>
+                <div class="input-group-addon
+                addon-my-color">
+                    <i class="bi bi-check"></i>
+                </div>
+            </div>
         </div>
         {% if demissao %}
-        <div class="itens-funcionario-pagamento">
-            <span>DATA DA DEMISSÃO:</span>
-            <span>{{ demissao }}</span>
+        <div class="card-body-item">
+            <div class="input-group">
+                <i class="bi bi-check
+                input-group-addon
+                addon-my-color"></i>
+                <div class="div-form-control div-flex">
+                    <div class="tamanho-50 text-left">
+                        <span>DATA DA DEMISSÃO:</span>
+                    </div>
+                    <div class="tamanho-50 text-right">
+                        <span>{{ demissao }}</span>
+                    </div>
+                </div>
+                <div class="input-group-addon
+                addon-my-color">
+                    <i class="bi bi-check"></i>
+                </div>
+            </div>
         </div>
         {% endif %}
-        <div class="itens-funcionario-pagamento">
-            <span>DIAS NA EMPRESA:</span>
-            <span>{{ dias_admitido }} DIA{{ dias_admitido|pluralize|upper }}</span>
+        <div class="card-body-item">
+            <div class="input-group">
+                <i class="bi bi-check
+                input-group-addon
+                addon-my-color"></i>
+                <div class="div-form-control div-flex">
+                    <div class="tamanho-50 text-left">
+                        <span>
+                            DIAS NA EMPRESA:
+                        </span>
+                    </div>
+                    <div class="tamanho-50 text-right">
+                        <span>
+                            {{ dias_admitido }} DIA{{ dias_admitido|pluralize|upper }}
+                        </span>
+                    </div>
+                </div>
+                <div class="input-group-addon
+                addon-my-color">
+                    <i class="bi bi-check"></i>
+                </div>
+            </div>
         </div>
-        <div class="itens-funcionario-pagamento">
-            <span>VALOR DIA:</span>
-            <span>R$ {{ valor_dia|stringformat:'.2f' }}</span>
+        <div class="card-body-item">
+            <div class="input-group">
+                <i class="bi bi-check
+                input-group-addon
+                addon-my-color"></i>
+                <div class="div-form-control div-flex">
+                    <div class="tamanho-50 text-left">
+                        <span>VALOR DIA:</span>
+                    </div>
+                    <div class="tamanho-50 text-right">
+                        <span>R$ {{ valor_dia|stringformat:'.2f' }}</span>
+                    </div>
+                </div>
+                <div class="input-group-addon
+                addon-my-color">
+                    <i class="bi bi-check"></i>
+                </div>
+            </div>
         </div>
-        <div class="itens-funcionario-pagamento">
-            <span>VALOR HORA:</span>
-            <span>R$ {{ valor_hora|stringformat:'.2f' }}</span>
+        <div class="card-body-item">
+            <div class="input-group">
+                <i class="bi bi-check
+                input-group-addon
+                addon-my-color"></i>
+                <div class="div-form-control div-flex">
+                    <div class="tamanho-50 text-left">
+                        <span>VALOR HORA:</span>
+                    </div>
+                    <div class="tamanho-50 text-right">
+                        <span>R$ {{ valor_hora|stringformat:'.2f' }}</span>
+                    </div>
+                </div>
+                <div class="input-group-addon
+                addon-my-color">
+                    <i class="bi bi-check"></i>
+                </div>
+            </div>
         </div>
-        <div class="itens-funcionario-pagamento">
-            <span>VALOR HORA EXTRA:</span>
-            <span>R$ {{ valor_extra|stringformat:'.2f' }}</span>
+        <div class="card-body-item">
+            <div class="input-group">
+                <i class="bi bi-check
+                input-group-addon
+                addon-my-color"></i>
+                <div class="div-form-control div-flex">
+                    <div class="tamanho-50 text-left">
+                        <span>VALOR HORA EXTRA:</span>
+                    </div>
+                    <div class="tamanho-50 text-right">
+                        <span>R$ {{ valor_extra|stringformat:'.2f' }}</span>
+                    </div>
+                </div>
+                <div class="input-group-addon
+                addon-my-color">
+                    <i class="bi bi-check"></i>
+                </div>
+            </div>
         </div>
-        <div class="itens-funcionario-pagamento">
-            <span>DIAS REMUNERADO:</span>
-            <span>{{ dias_remunerado }}</span>
+        <div class="card-body-item">
+            <div class="input-group">
+                <i class="bi bi-check
+                input-group-addon
+                addon-my-color"></i>
+                <div class="div-form-control div-flex">
+                    <div class="tamanho-50 text-left">
+                        <span>DIAS REMUNERADO:</span>
+                    </div>
+                    <div class="tamanho-50 text-right">
+                        <span>{{ dias_remunerado }}</span>
+                    </div>
+                </div>
+                <div class="input-group-addon
+                addon-my-color">
+                    <i class="bi bi-check"></i>
+                </div>
+            </div>
         </div>
-        <div class="itens-funcionario-pagamento">
-            <span>DIAS TRABALHADO:</span>
-            <span>{{ dias_trabalhado }}</span>
+        <div class="card-body-item">
+            <div class="input-group">
+                <i class="bi bi-check
+                input-group-addon
+                addon-my-color"></i>
+                <div class="div-form-control div-flex">
+                    <div class="tamanho-50 text-left">
+                        <span>DIAS TRABALHADO:</span>
+                    </div>
+                    <div class="tamanho-50 text-right">
+                        <span>{{ dias_trabalhado }}</span>
+                    </div>
+                </div>
+                <div class="input-group-addon
+                addon-my-color">
+                    <i class="bi bi-check"></i>
+                </div>
+            </div>
         </div>
-        <div class="itens-funcionario-pagamento">
-            <span>DIAS CONDUÇÃO:</span>
-            <span>{{ dias_transporte }}</span>
+        <div class="card-body-item">
+            <div class="input-group">
+                <i class="bi bi-check
+                input-group-addon
+                addon-my-color"></i>
+                <div class="div-form-control div-flex">
+                    <div class="tamanho-50 text-left">
+                        <span>DIAS CONDUÇÃO:</span>
+                    </div>
+                    <div class="tamanho-50 text-right">
+                        <span>{{ dias_transporte }}</span>
+                    </div>
+                </div>
+                <div class="input-group-addon
+                addon-my-color">
+                    <i class="bi bi-check"></i>
+                </div>
+            </div>
         </div>
     {% else %}
         <div class="ponto">.</div>
     {% endif %}
 </div>
+<!-- Footer -->
 <div class="article-card-footer"></div>
 {% endif %}
