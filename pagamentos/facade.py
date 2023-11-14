@@ -12,10 +12,22 @@ from minutas.facade import nome_curto, nome_curto_underscore
 from minutas.models import MinutaColaboradores, MinutaItens
 from pessoas import facade
 from pessoas.forms import CadastraContraCheque, CadastraContraChequeItens
-from pessoas.models import (Agenda, CartaoPonto, ContaPessoal, ContraCheque,
-                            ContraChequeItens, Pessoal, Salario, Vales)
-from website.facade import (DiasFeriados, Feriados, converter_mes_ano,
-                            extremos_mes)
+from pessoas.models import (
+    Agenda,
+    CartaoPonto,
+    ContaPessoal,
+    ContraCheque,
+    ContraChequeItens,
+    Pessoal,
+    Salario,
+    Vales,
+)
+from website.facade import (
+    DiasFeriados,
+    Feriados,
+    converter_mes_ano,
+    extremos_mes,
+)
 from website.models import FileUpload
 
 from pagamentos.forms import CadastraCartaoPonto
