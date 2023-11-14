@@ -6339,7 +6339,7 @@ label {
     grid-template-columns: 1fr 2fr 1fr;
   }
   .grid-pagamento {
-    grid-template-columns: 1fr 1fr 2fr;
+    grid-template-columns: 1.3fr 1fr 1.7fr;
 }
 
 .input-fake {
