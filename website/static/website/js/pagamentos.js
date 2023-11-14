@@ -171,8 +171,8 @@ $(document).on("change", ".select-mes-ano", function(event) {
 
 $(document).on("click", ".js-altera-falta", function(event) {
     var v_mes_ano = $(".select-mes-ano option:selected").text();
-    var v_idcartaoponto = $(this).attr("idcartaoponto");
-    var v_idpessoal = $(this).attr("idpessoal");
+    var v_idcartaoponto = $(this).data("idcartaoponto");
+    var v_idpessoal = $(this).data("idpessoal");
     $.ajax({
         type: "GET",
         dataType: "json",
@@ -201,8 +201,8 @@ $(document).on("click", ".js-altera-falta", function(event) {
 
 $(document).on("click", ".js-altera-carro-empresa", function(event) {
     var v_mes_ano = $(".select-mes-ano option:selected").text();
-    var v_idcartaoponto = $(this).attr("idcartaoponto");
-    var v_idpessoal = $(this).attr("idpessoal");
+    var v_idcartaoponto = $(this).data("idcartaoponto");
+    var v_idpessoal = $(this).data("idpessoal");
     $.ajax({
         type: "GET",
         dataType: "json",
@@ -231,8 +231,8 @@ $(document).on("click", ".js-altera-carro-empresa", function(event) {
 
 $(document).on("click", ".js-atestada", function(event) {
     var v_mes_ano = $(".select-mes-ano option:selected").text();
-    var v_idcartaoponto = $(this).attr("idcartaoponto");
-    var v_idpessoal = $(this).attr("idpessoal");
+    var v_idcartaoponto = $(this).data("idcartaoponto");
+    var v_idpessoal = $(this).data("idpessoal");
     $.ajax({
         type: "GET",
         dataType: "json",
@@ -714,10 +714,10 @@ $(document).on("submit", ".js-paga-recibo-colaborador", function(event) {
 });
 
 $(document).on("click", ".js-gera-pagamento-avulso", function(event) {
-    var idpessoal = $(this).attr("idpessoal");
-    var datainicial = $(this).attr("datainicial");
-    var datafinal = $(this).attr("datafinal");
-    var zerado = $(this).attr("zerado");
+    var idpessoal = $(this).data("idpessoal");
+    var datainicial = $(this).data("datainicial");
+    var datafinal = $(this).data("datafinal");
+    var zerado = $(this).data("zerado");
     $.ajax({
         type: "GET",
         dataType: "json",
@@ -747,9 +747,9 @@ $(document).on("click", ".js-gera-pagamento-avulso", function(event) {
 });
 
 $(document).on("click", ".js-seleciona-colaborador-avulso", function(event) {
-    var datainicial = $(this).attr("datainicial");
-    var datafinal = $(this).attr("datafinal");
-    var idpessoal = $(this).attr("idpessoal");
+    var datainicial = $(this).data("datainicial");
+    var datafinal = $(this).data("datafinal");
+    var idpessoal = $(this).data("idpessoal");
     $.ajax({
         type: "GET",
         dataType: "json",
@@ -877,10 +877,10 @@ function valeselect(idpessoal) {
     $(".switchmini").each(function() {
         if (
             $(this).is(":checked") &&
-            $(this).attr("idPessoal") == idpessoal.substring(6)
+            $(this).data("idPessoal") == idpessoal.substring(6)
         ) {
-            total += parseFloat($(this).attr("valorvale").replace(",", "."));
-            data.push($(this).attr("id"));
+            total += parseFloat($(this).data("valorvale").replace(",", "."));
+            data.push($(this).data("id"));
         }
         $(idpessoal).text("R$ " + total.toFixed(2).replace(".", ","));
     });
@@ -899,8 +899,8 @@ function estadoswitchmini(idpessoal) {
     estado_switchmini = "Manual-";
     $(".switchmini").each(function() {
         if ($(this).is(":checked")) {
-            if ($(this).attr("idpessoal") == idpessoal) {
-                estado_switchmini += $(this).attr("idvales") + "-";
+            if ($(this).data("idpessoal") == idpessoal) {
+                estado_switchmini += $(this).data("idvales") + "-";
             }
         }
     });
