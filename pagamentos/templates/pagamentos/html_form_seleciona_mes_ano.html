@@ -1,6 +1,6 @@
 <!-- Header -->
 <div class="card-header">
-    <span>PAGAMENTO MENSALISTAS</span>
+    <span>MENSALISTAS</span>
 </div>
 <!-- Body -->
 <div class="card-body">
@@ -14,8 +14,8 @@
             <select class="form-control
             form-control-minuta
             select-mes-ano"
-            id="meses"
-            name="meses">
+                    id="meses"
+                    name="meses">
                 {% for itens in mes_ano %}
                     <option value="{{ itens }}">{{ itens|upper }}</option>
                 {% endfor %}
@@ -25,7 +25,7 @@
                 <i class="bi bi-clipboard-check
                 i-button
                 js-seleciona-mes-ano"
-                title="Seleciona Mês/Ano"></i>
+                   title="Seleciona Mês/Ano"></i>
             </div>
         </div>
     </div>
