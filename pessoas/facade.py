@@ -1827,6 +1827,8 @@ def get_contra_cheque_aquisitivo(
     if aquisitivo_selecionado:
         ano = aquisitivo_selecionado.DataFinal.year
         mes = aquisitivo_selecionado.DataFinal.month
+        ano = 2022
+        mes = 12
         ano_mes = ano * 100 + mes
         contra_cheque_selecionado = None
         for itens in contra_cheque_annotate:
