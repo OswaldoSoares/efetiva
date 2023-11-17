@@ -2204,7 +2204,6 @@ def aquisitivo_faltas(colaborador, aquisitivo):
 
 
 def aquisitivo_salario_ferias(salario, faltas):
-    salario = salario
     salario_dia = salario / 30
     faltas = len(faltas)
     if faltas < 6:
