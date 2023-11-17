@@ -1869,7 +1869,7 @@ def get_salario_contra_cheque(contra_cheque_itens):
     """
     for itens in contra_cheque_itens:
         if itens.Descricao == "SALARIO":
-            salario = itens.Valor
+            salario = round(itens.Valor / int(itens.Referencia[:-1]) * 30)
             return salario
             break
     return False
