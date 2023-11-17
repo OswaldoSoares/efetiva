@@ -1915,7 +1915,7 @@ def create_contexto_contra_cheque(idpessoal, idselecionado, descricao):
                 create_contra_cheque_itens(
                     "1/3 FERIAS", 0.00, "C", "30dd", contra_cheque
                 )
-            atualiza_salario_ferias_dias_referencia(idpessoal, idaquisitivo)
+        atualiza_salario_ferias_dias_referencia(idpessoal, idaquisitivo)
     elif descricao[:15] == "DECIMO TERCEIRO":
         idparcela = idselecionado
         contra_cheque = busca_contra_cheque_parcela(
@@ -1926,7 +1926,7 @@ def create_contexto_contra_cheque(idpessoal, idselecionado, descricao):
             create_contra_cheque_itens(
                 descricao, 0.00, "C", "12da", contra_cheque
             )
-            atualiza_dozeavos_decimo_terceiro(idpessoal, idparcela, descricao)
+        atualiza_dozeavos_decimo_terceiro(idpessoal, idparcela, descricao)
     contra_cheque_itens = get_contra_cheque_itens(contra_cheque)
     contra_cheque_itens = contra_cheque_itens.order_by("idContraChequeItens")
     credito, debito, saldo_contra_cheque = get_saldo_contra_cheque(
