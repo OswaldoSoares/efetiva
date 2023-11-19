@@ -2400,3 +2400,17 @@ def verifica_parcelas_decimo_terceiro(colaborador):
                 Pago=False,
                 idDecimoTerceiro=itens,
             )
+
+
+def get_salario_base_contra_cheque_itens(contra_cheque_itens):
+    contra_cheque_itens = list(contra_cheque_itens.values())
+    ferias = next(
+        (
+            item
+            for item in contra_cheque_itens
+            if item["Descricao"] == "FERIAS"
+        ),
+        None,
+    )
+    salario = round(ferias["Valor"] / int(ferias["Referencia"][:-1]) * 30)
+    return salario
