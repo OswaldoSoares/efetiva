@@ -100,7 +100,9 @@ def dict_tipo_conta() -> dict:
 
 
 def extremos_mes(_mes, _ano):
-    first_day = datetime.datetime.strptime(f"1-{int(_mes)}-{int(_ano)}", "%d-%m-%Y")
+    first_day = datetime.datetime.strptime(
+        f"1-{int(_mes)}-{int(_ano)}", "%d-%m-%Y"
+    )
     last_day = first_day + relativedelta(months=+1, days=-1)
     return first_day, last_day
 
@@ -115,12 +117,32 @@ def converter_mes_ano(_mes_ano):
 def valor_ponto_milhar(valor, digitos_decimal):
     if valor:
         formato_decimal = f",.{digitos_decimal}f"
-        valor_formatado = format(float(valor), f"{formato_decimal}").replace(",", "_").replace(".", ",").replace("_", ".")
+        valor_formatado = (
+            format(float(valor), f"{formato_decimal}")
+            .replace(",", "_")
+            .replace(".", ",")
+            .replace("_", ".")
+        )
         return valor_formatado
     else:
         string = "0"
         valor_return = f"0,{string * digitos_decimal}"
         return valor_return
+
+
+def queries_inicio():
+    reset_queries()
+    start = time.time()
+    start_queries = len(connection.queries)
+    return start, start_queries
+
+
+def queries_termino(start, start_queries):
+    end = time.time()
+    end_queries = len(connection.queries)
+    print(start_queries)
+    print("tempo: %.2fs" % (end - start))
+    print(end_queries)
 
 
 class DiasFeriados:
@@ -129,7 +151,9 @@ class DiasFeriados:
 
     @staticmethod
     def get_dias_feriados():
-        feriados = Parametros.objects.filter(Chave="FERIADO").order_by("-Valor")
+        feriados = Parametros.objects.filter(Chave="FERIADO").order_by(
+            "-Valor"
+        )
         lista = [
             datetime.datetime.strptime(itens.Valor, "%Y-%m-%d").date()
             for itens in feriados
@@ -145,7 +169,9 @@ class Feriados:
 
     @staticmethod
     def get_feriados():
-        feriados = Parametros.objects.filter(Chave="FERIADO").order_by("-Valor")
+        feriados = Parametros.objects.filter(Chave="FERIADO").order_by(
+            "-Valor"
+        )
         lista = [itens.Valor for itens in feriados]
         return lista
 
@@ -209,7 +235,12 @@ def form_parametro(request, c_form, c_idobj, c_url, c_view):
             form.save()
     else:
         form = c_form(instance=c_instance)
-    context = {"form": form, "c_idobj": c_idobj, "c_url": c_url, "c_view": c_view}
+    context = {
+        "form": form,
+        "c_idobj": c_idobj,
+        "c_url": c_url,
+        "c_view": c_view,
+    }
     data["html_form"] = render_to_string(
         "website/formparametros.html", context, request=request
     )
