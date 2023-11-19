@@ -1,5 +1,6 @@
 # import email
 import datetime
+import time
 
 from clientes.facade import get_cliente
 from django.http import JsonResponse
@@ -10,7 +11,7 @@ from website.forms import CadastraFeriado
 
 from .models import Parametros
 
-# from imap_tools import MailBox, AND
+from django.db import connection, reset_queries
 
 
 def nome_curto(nome):
