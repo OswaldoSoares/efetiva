@@ -2086,12 +2086,20 @@ def busca_contra_cheque_aquisitivo(idpessoal, idaquisitivo, descricao):
     aquisitivo = get_aquisitivo_id(idaquisitivo)
     ano = aquisitivo.DataFinal.year
     mes = aquisitivo.DataFinal.month
+    aquisitivo_inicial = datetime.datetime.strftime(
+        aquisitivo.DataInicial, "%d/%m/%Y"
+    )
+    aquisitivo_final = datetime.datetime.strftime(
+        aquisitivo.DataFinal, "%d/%m/%Y"
+    )
+    obs = f"AQUISITIVO {aquisitivo_inicial} - {aquisitivo_final}"
     try:
         contra_cheque = get_contra_cheque_mes_ano_descricao(
             colaborador, mes, ano, descricao
         )
+        update_contra_cheque_obs(contra_cheque, obs)
     except ContraCheque.DoesNotExist:  # pylint: disable=no-member
-        create_contra_cheque(meses[mes - 1], ano, "FERIAS", colaborador)
+        create_contra_cheque(meses[mes - 1], ano, "FERIAS", colaborador, obs)
         contra_cheque = get_contra_cheque_mes_ano_descricao(
             colaborador, mes, ano, descricao
         )
