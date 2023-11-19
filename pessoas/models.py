@@ -194,6 +194,7 @@ class ContraCheque(models.Model):
     Valor = models.DecimalField(decimal_places=2, max_digits=9, default=0.00)
     Pago = models.BooleanField(default=False)
     Descricao = models.CharField(max_length=15, blank=15)
+    Obs = models.TextField(blank=True)
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
 
     class Meta:
