@@ -2229,6 +2229,12 @@ def aquisitivo_salario_ferias(salario, faltas):
     return salario_ferias
 
 
+def update_contra_cheque_obs(contra_cheque, obs):
+    obj = contra_cheque
+    obj.Obs = obs
+    obj.save()
+
+
 def update_contra_cheque_item_valor(contra_cheque_item, valor):
     obj = contra_cheque_item[0]
     obj.Valor = valor
