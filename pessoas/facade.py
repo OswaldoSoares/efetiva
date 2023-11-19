@@ -2029,7 +2029,7 @@ def atualiza_dozeavos_decimo_terceiro(idpessoal, idparcela, descricao):
     )
     contra_cheque_item = contra_cheque_itens.filter(Descricao=descricao)
     update_contra_cheque_item_valor(contra_cheque_item, valor / 2)
-    update_contra_cheque_item_referencia(contra_cheque_item, f"{avos}da")
+    update_contra_cheque_item_referencia(contra_cheque_item, f"{avos}a")
 
 
 def get_decimo_terceiro_id(id_decimo_terceiro):
@@ -2062,15 +2062,15 @@ def get_salarios_aquisitivo(colaborador, aquisitivos):
 
 
 def tabela_faltas_aquisitivo(faltas):
-    dias = "30dd"
+    dias = "30d"
     if len(faltas) > 5:
-        dias = "24dd"
+        dias = "24d"
     if len(faltas) > 14:
-        dias = "18dd"
+        dias = "18d"
     if len(faltas) > 23:
-        dias = "12dd"
+        dias = "12d"
     if len(faltas) > 32:
-        dias = "0dd"
+        dias = "0d"
     return dias
 
 
