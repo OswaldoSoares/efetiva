@@ -5,11 +5,18 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 from minutas.facade import nome_curto
 from minutas.models import Minuta, MinutaColaboradores
+
 from pagamentos.facade import create_vales
 from pessoas.models import Pessoal, Vales
 from veiculos.models import Veiculo
 
-from despesas.models import Abastecimento, Categorias, Despesas, Multas, SubCategorias
+from despesas.models import (
+    Abastecimento,
+    Categorias,
+    Despesas,
+    Multas,
+    SubCategorias,
+)
 
 
 def create_despesas_context():
@@ -20,10 +27,13 @@ def create_despesas_context():
     hoje = datetime.datetime.strftime(hoje, "%Y-%m-%d")
     motoristas = Pessoal.objects.all().exclude(Categoria="AJUDANTE")
     lista_motoristas = [
-        {"idpessoal": i.idPessoal, "nome": nome_curto(i.Nome)} for i in motoristas
+        {"idpessoal": i.idPessoal, "nome": nome_curto(i.Nome)}
+        for i in motoristas
     ]
     veiculos = Veiculo.objects.filter(Proprietario_id=17)
-    lista_veiculos = [{"idveiculo": i.idVeiculo, "placa": i.Placa} for i in veiculos]
+    lista_veiculos = [
+        {"idveiculo": i.idVeiculo, "placa": i.Placa} for i in veiculos
+    ]
     context = {
         "abastecimento": abastecimento,
         "veiculos": veiculos,
@@ -68,7 +78,12 @@ def form_despesa(request, c_form, c_idobj, c_url, c_view):
     data = dict()
     c_instance = None
     form = c_form(instance=c_instance)
-    contexto = {"form": form, "c_idobj": c_idobj, "c_url": c_url, "c_view": c_view}
+    contexto = {
+        "form": form,
+        "c_idobj": c_idobj,
+        "c_url": c_url,
+        "c_view": c_view,
+    }
     data["html_html"] = render_to_string(
         "despesas/formdespesa.html", contexto, request=request
     )
@@ -90,7 +105,9 @@ def valida_multa(request):
         msg["erro_doc"] = "Obrigatório o número da penalidade."
         error = True
     # Valida Data da infração
-    _data = datetime.datetime.strptime(request.POST.get("data"), "%Y-%m-%d").date()
+    _data = datetime.datetime.strptime(
+        request.POST.get("data"), "%Y-%m-%d"
+    ).date()
     _hoje = datetime.datetime.today().date()
     if _data >= _hoje:
         msg["erro_data"] = "Data da infração tem que ser anterior a hoje."
@@ -148,7 +165,9 @@ def valida_multa(request):
     _linha_sp = _linha_sp.replace(".", "")
     _linha_sp = _linha_sp.replace(" ", "")
     if not len(_linha_sp) == 48:
-        msg["erro_linha_sp"] = "A quantidade de digitos tem que ser igual a 48."
+        msg[
+            "erro_linha_sp"
+        ] = "A quantidade de digitos tem que ser igual a 48."
         error = True
     return error, msg
 
@@ -178,10 +197,16 @@ def save_multa(multa, idmulta):
         obj.idMulta = multa_selecionada.idMulta
     obj.NumeroAIT = multa["numero_ait"]
     obj.NumeroDOC = multa["numero_doc"]
-    obj.DataMulta = datetime.datetime.strptime(multa["data_multa"], "%Y-%m-%d").date()
-    obj.HoraMulta = datetime.datetime.strptime(multa["hora_multa"], "%H:%M").time()
+    obj.DataMulta = datetime.datetime.strptime(
+        multa["data_multa"], "%Y-%m-%d"
+    ).date()
+    obj.HoraMulta = datetime.datetime.strptime(
+        multa["hora_multa"], "%H:%M"
+    ).time()
     obj.ValorMulta = multa["valor_multa"]
-    obj.Vencimento = datetime.datetime.strptime(multa["vencimento"], "%Y-%m-%d").date()
+    obj.Vencimento = datetime.datetime.strptime(
+        multa["vencimento"], "%Y-%m-%d"
+    ).date()
     obj.Infracao = multa["infracao"]
     obj.Local = multa["local"]
     obj.DescontaMotorista = multa["desconta_motorista"]
@@ -199,7 +224,9 @@ def save_multa(multa, idmulta):
 
 def busca_vale_multa(_des):
     try:
-        vale = Vales.objects.filter(Descricao__startswith=f"MULTA - {_des}").get()
+        vale = Vales.objects.filter(
+            Descricao__startswith=f"MULTA - {_des}"
+        ).get()
         return vale.idVales
     except Vales.DoesNotExist:
         return False
@@ -312,7 +339,10 @@ def multas_pagar(filtro, valor):
             if x.idVeiculo_id == int(valor):
                 adiciona_lista = True
         elif filtro == "DIA MULTA":
-            if x.DataMulta == datetime.datetime.strptime(valor, "%Y-%m-%d").date():
+            if (
+                x.DataMulta
+                == datetime.datetime.strptime(valor, "%Y-%m-%d").date()
+            ):
                 adiciona_lista = True
         elif filtro == "PENALIDADE":
             if x.NumeroDOC == valor:
@@ -404,7 +434,9 @@ def save_despesa(_des):
     obj.SubCategoria_id = _des["subcategoria"]
     obj.Descricao = _des["descricao"]
     obj.Valor = _des["valor"]
-    obj.Vencimento = datetime.datetime.strptime(_des["vencimento"], "%Y-%m-%d").date()
+    obj.Vencimento = datetime.datetime.strptime(
+        _des["vencimento"], "%Y-%m-%d"
+    ).date()
     obj.DataPgto = datetime.datetime.strptime("2001-01-01", "%Y-%m-%d").date()
     obj.save()
 
@@ -468,7 +500,8 @@ def html_form_despesas(request, contexto, data):
 def create_contexto_categoria():
     categorias = Categorias.objects.all().order_by("Categoria")
     lista = [
-        {"idcategoria": x.idCategoria, "categoria": x.Categoria} for x in categorias
+        {"idcategoria": x.idCategoria, "categoria": x.Categoria}
+        for x in categorias
     ]
     return lista
 
@@ -579,7 +612,9 @@ def html_choice_subcategoria(request, contexto, data):
 
 
 def create_contexto_despesas():
-    despesas = Despesas.objects.filter(DataPgto="2001-01-01").order_by("-Vencimento")
+    despesas = Despesas.objects.filter(DataPgto="2001-01-01").order_by(
+        "-Vencimento"
+    )
     lista = [
         {
             "id_despesa": x.id_Despesa,
