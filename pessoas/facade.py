@@ -2153,6 +2153,13 @@ def busca_contra_cheque_pagamento(idpessoal, mes, ano):
     return contra_cheque
 
 
+def get_contra_cheque_mes_ano_pagamento(mes, ano):
+    contra_cheque = ContraCheque.objects.filter(
+        MesReferencia=meses[mes - 1], AnoReferencia=ano, Descricao="PAGAMENTO"
+    )
+    return contra_cheque
+
+
 def get_contra_cheque_mes_ano_descricao(colaborador, mes, ano, descricao):
     contra_cheque = ContraCheque.objects.get(
         idPessoal=colaborador,
