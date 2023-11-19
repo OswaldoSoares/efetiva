@@ -2112,7 +2112,7 @@ def busca_contra_cheque_parcela(idpessoal, idparcela, descricao):
         )
     except ContraCheque.DoesNotExist:  # pylint: disable=no-member
         create_contra_cheque(
-            meses[mes - 1], ano, "DECIMO TERCEIRO", colaborador
+            meses[mes - 1], ano, "DECIMO TERCEIRO", colaborador, None
         )
         contra_cheque = get_contra_cheque_mes_ano_descricao(
             colaborador, mes, ano, descricao
@@ -2130,13 +2130,14 @@ def get_contra_cheque_mes_ano_descricao(colaborador, mes, ano, descricao):
     return contra_cheque
 
 
-def create_contra_cheque(mes, ano, descricao, colaborador):
+def create_contra_cheque(mes, ano, descricao, colaborador, obs):
     ContraCheque.objects.create(
         MesReferencia=mes,
         AnoReferencia=ano,
         Valor=0.00,
         Pago=False,
         Descricao=descricao,
+        Obs=obs,
         idPessoal=colaborador,
     )
 
