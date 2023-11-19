@@ -584,11 +584,16 @@ def contra_cheque_dados(pdf, contexto):
         cmp(linha - 27.2),
         f'{contexto["colaborador"].Categoria}',
     )
-    salario_base = valor_ponto_milhar(0, 2)
+    salario_base = valor_ponto_milhar(contexto["salario_base"], 2)
     pdf.drawString(
         cmp(10),
         cmp(linha - 144),
         f"R$ {salario_base}",
+    )
+    pdf.drawString(
+        cmp(8),
+        cmp(linha - 124),
+        f'{contexto["contra_cheque"].Obs}',
     )
     return pdf
 
