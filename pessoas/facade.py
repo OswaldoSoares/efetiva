@@ -2128,6 +2128,31 @@ def busca_contra_cheque_parcela(idpessoal, idparcela, descricao):
     return contra_cheque
 
 
+def busca_contra_cheque_pagamento(idpessoal, mes, ano):
+    colaborador = get_colaborador(idpessoal)
+    salario = get_salario(colaborador)
+    adiantamento = salario / 100 * 40
+    try:
+        contra_cheque = get_contra_cheque_mes_ano_descricao(
+            colaborador, mes, ano, "PAGAMENTO"
+        )
+    except ContraCheque.DoesNotExist:  # pylint: disable=no-member
+        print(colaborador, " - chequei aqui")
+        create_contra_cheque(
+            meses[mes - 1], ano, "PAGAMENTO", colaborador, None
+        )
+        contra_cheque = get_contra_cheque_mes_ano_descricao(
+            colaborador, mes, ano, "PAGAMENTO"
+        )
+        create_contra_cheque_itens(
+            "SALARIO", salario, "C", "30d", contra_cheque
+        )
+        create_contra_cheque_itens(
+            "ADIANTAMENTO", adiantamento, "D", "40%", contra_cheque
+        )
+    return contra_cheque
+
+
 def get_contra_cheque_mes_ano_descricao(colaborador, mes, ano, descricao):
     contra_cheque = ContraCheque.objects.get(
         idPessoal=colaborador,
