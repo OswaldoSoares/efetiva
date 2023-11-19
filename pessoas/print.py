@@ -562,6 +562,12 @@ def contra_cheque_dados(pdf, contexto):
         f'RECIBO DE {contexto["contra_cheque"].Descricao}',
     )
     pdf.setFillColor(HexColor("#000000"))
+    pdf.setFont("Times-Roman", 11)
+    pdf.drawString(
+        cmp(122.8),
+        cmp(linha - 17.7),
+        f'{contexto["contra_cheque"].AnoReferencia}',
+    )
     pdf.setFont("Times-Roman", 10)
     pdf.drawString(
         cmp(5.8),
