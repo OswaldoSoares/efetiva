@@ -1909,11 +1909,11 @@ def create_contexto_contra_cheque(idpessoal, idselecionado, descricao):
         contra_cheque_itens = get_contra_cheque_itens(contra_cheque)
         if not contra_cheque_itens:
             create_contra_cheque_itens(
-                descricao, 0.00, "C", "30dd", contra_cheque
+                descricao, 0.00, "C", "30d", contra_cheque
             )
             if not busca_um_terco_ferias(contra_cheque_itens):
                 create_contra_cheque_itens(
-                    "1/3 FERIAS", 0.00, "C", "30dd", contra_cheque
+                    "1/3 FERIAS", 0.00, "C", "30d", contra_cheque
                 )
         atualiza_salario_ferias_dias_referencia(idpessoal, idaquisitivo)
     elif descricao[:15] == "DECIMO TERCEIRO":
