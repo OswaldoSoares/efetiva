@@ -2626,3 +2626,30 @@ def get_valores_salario_transporte_colaborador():
         idPessoal__TipoPgto="MENSALISTA", idPessoal__DataDemissao__isnull=True
     )
     return salarios
+
+
+def create_contra_cheques_folha(colaboradores, mes, ano):
+    mes_extenso = meses[int(mes) - 1]
+    registros_contra_cheque = []
+    for colaborador in colaboradores:
+        registros_contra_cheque.append(
+            ContraCheque(
+                MesReferencia=mes_extenso,
+                AnoReferencia=ano,
+                Valor=0.00,
+                Pago=False,
+                Descricao="PAGAMENTO",
+                idPessoal_id=colaborador["idPessoal"],
+            )
+        )
+        registros_contra_cheque.append(
+            ContraCheque(
+                MesReferencia=mes_extenso,
+                AnoReferencia=ano,
+                Valor=0.00,
+                Pago=False,
+                Descricao="ADIANTAMENTO",
+                idPessoal_id=colaborador["idPessoal"],
+            )
+        )
+    ContraCheque.objects.bulk_create(registros_contra_cheque)
