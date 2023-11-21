@@ -252,9 +252,9 @@ def seleciona_colaborador_avulso(request):
 
 
 def seleciona_funcionario(request):
-    _mes_ano = request.GET.get("mes_ano")
-    _id_pes = request.GET.get("idpessoal")
-    contexto = facade.create_contexto_funcionario(_mes_ano, _id_pes)
+    idpessoal = request.GET.get("idpessoal")
+    mes_ano = request.GET.get("mes_ano")
+    contexto = facade.create_contexto_mensalista(idpessoal, mes_ano)
     data = facade.create_data_seleciona_funcionario(request, contexto)
     return data
 
