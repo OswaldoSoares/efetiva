@@ -2898,3 +2898,46 @@ def get_minutas_periodo_contra_cheque(
         )
     )
     return minutas
+
+
+def atualiza_cartao_ponto_minutas(cartao_ponto, minutas):
+    registros_cartao_ponto = []
+    for minuta in minutas:
+        dia = next(
+            (
+                item
+                for item in cartao_ponto
+                if item["Dia"] == minuta["data_minuta"]
+            ),
+            None,
+        )
+        if (
+            minuta["hora_inicial"] < dia["Entrada"]
+            and dia["Alteracao"] != "MANUAL"
+        ):
+            dia["Entrada"] = minuta["hora_inicial"]
+            registros_cartao_ponto.append(
+                CartaoPonto(
+                    idCartaoPonto=dia["idCartaoPonto"],
+                    Entrada=minuta["hora_inicial"],
+                    Saida=dia["Saida"],
+                    idPessoal_id=dia["idPessoal_id"],
+                )
+            )
+        if (
+            minuta["hora_final"] > dia["Saida"]
+            and dia["Alteracao"] != "MANUAL"
+        ):
+            dia["Saida"] = minuta["hora_final"]
+            registros_cartao_ponto.append(
+                CartaoPonto(
+                    idCartaoPonto=dia["idCartaoPonto"],
+                    Entrada=dia["Entrada"],
+                    Saida=minuta["hora_final"],
+                    idPessoal_id=dia["idPessoal_id"],
+                )
+            )
+    CartaoPonto.objects.bulk_update(
+        registros_cartao_ponto, ["Entrada", "Saida"]
+    )
+    return cartao_ponto
