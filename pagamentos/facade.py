@@ -2877,3 +2877,24 @@ def create_contexto_mensalista(idpessoal, mes_ano):
     }
     contexto.update(ccc)
     return contexto
+
+
+def get_minutas_periodo_contra_cheque(
+    idpessoal, primeiro_dia_mes, ultimo_dia_mes
+):
+    minutas = list(
+        MinutaColaboradores.objects.filter(
+            idPessoal=idpessoal,
+            idMinuta_id__DataMinuta__range=(primeiro_dia_mes, ultimo_dia_mes),
+        )
+        .exclude(idMinuta_id__StatusMinuta="ABERTA")
+        .values(
+            idminuta=F("idMinuta"),
+            minuta=F("idMinuta_id__Minuta"),
+            data_minuta=F("idMinuta_id__DataMinuta"),
+            hora_inicial=F("idMinuta_id__HoraInicial"),
+            hora_final=F("idMinuta_id__HoraFinal"),
+            fantasia=F("idMinuta_id__idCliente_id__Fantasia"),
+        )
+    )
+    return minutas
