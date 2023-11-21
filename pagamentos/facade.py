@@ -20,16 +20,26 @@ from pessoas.models import (
     Salario,
     Vales,
 )
+from pessoas.facade import (
+    get_contra_cheque_mes_ano_descricao,
+    get_contra_cheque_mes_ano_pagamento,
+    get_contra_cheque_mes_ano_adiantamento,
+    get_contra_cheque_mes_ano_descricao,
+    get_colaborador,
+    create_contexto_contra_cheque,
+)
 from website.facade import (
     DiasFeriados,
     Feriados,
     converter_mes_ano,
     extremos_mes,
+    queries_inicio,
+    queries_termino,
 )
 from website.models import FileUpload
 
 from pagamentos.forms import CadastraCartaoPonto
-from pagamentos.models import Recibo, ReciboItens
+from pagamentos.models import FolhaPagamento, Recibo, ReciboItens
 
 meses = [
     "JANEIRO",
