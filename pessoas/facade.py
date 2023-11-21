@@ -2124,7 +2124,7 @@ def busca_contra_cheque_parcela(idpessoal, idparcela, descricao):
         )
     except ContraCheque.DoesNotExist:  # pylint: disable=no-member
         create_contra_cheque(
-            meses[mes - 1], ano, "DECIMO TERCEIRO", colaborador, None
+            meses[mes - 1], ano, "DECIMO TERCEIRO", colaborador, ""
         )
         contra_cheque = get_contra_cheque_mes_ano_descricao(
             colaborador, mes, ano, descricao
@@ -2142,9 +2142,7 @@ def busca_contra_cheque_pagamento(idpessoal, mes, ano):
         )
     except ContraCheque.DoesNotExist:  # pylint: disable=no-member
         print(colaborador, " - chequei aqui")
-        create_contra_cheque(
-            meses[mes - 1], ano, "PAGAMENTO", colaborador, None
-        )
+        create_contra_cheque(meses[mes - 1], ano, "PAGAMENTO", colaborador, "")
         contra_cheque = get_contra_cheque_mes_ano_descricao(
             colaborador, mes, ano, "PAGAMENTO"
         )
