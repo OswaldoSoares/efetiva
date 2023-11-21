@@ -261,8 +261,7 @@ def seleciona_funcionario(request):
 
 def seleciona_mes_ano(request):
     _mes_ano = request.GET.get("mes_ano")
-    contexto = facade.create_contexto_folha(_mes_ano)
-    print(contexto)
+    contexto = facade.create_contexto_folha_pagamento(_mes_ano)
     data = facade.create_data_seleciona_mes_ano(request, contexto)
     return data
 
