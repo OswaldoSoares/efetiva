@@ -2437,15 +2437,19 @@ def verifica_parcelas_decimo_terceiro(colaborador):
             )
 
 
-def get_salario_base_contra_cheque_itens(contra_cheque_itens):
+def get_salario_base_contra_cheque_itens(contra_cheque_itens, tipo):
     contra_cheque_itens = list(contra_cheque_itens.values())
-    ferias = next(
-        (
-            item
-            for item in contra_cheque_itens
-            if item["Descricao"] == "FERIAS"
-        ),
+    filtro = next(
+        (item for item in contra_cheque_itens if item["Descricao"] == tipo),
         None,
     )
-    salario = round(ferias["Valor"] / int(ferias["Referencia"][:-1]) * 30)
+    salario = Decimal(0.00)
+    if tipo == "FERIAS":
+        salario = round(filtro["Valor"] / int(filtro["Referencia"][:-1]) * 30)
+    elif tipo[:15] == "DECIMO TERCEIRO":
+        salario = round(
+            filtro["Valor"] / int(filtro["Referencia"][:-1]) * 12 * 2
+        )
+    elif tipo == "ADIANTAMENTO":
+        salario = round(filtro["Valor"] / 40 * 100)
     return salario
