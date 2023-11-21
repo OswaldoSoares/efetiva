@@ -1,6 +1,7 @@
 $(document).ready(function() {
     $(".card-cartao-ponto").hide()
-    $(".card-funcionario-pagamento").hide();
+    $(".card-folha").hide()
+    $(".card-funcionario-pagamento").hide()
 });
 
 // Seleciona mês e ano para pagamento de colaboradores mensalistas
@@ -18,8 +19,10 @@ $(document).on("click", ".js-seleciona-mes-ano", function(event) {
             $('.box-loader').show();
         },
         success: function(data) {
-            $(".js-folha").html(data.html_folha);
-            $(".js-saldo").html(data.html_saldo);
+            $(".card-folha").html(data.html_folha);
+            $(".card-folha").show();
+            $(".card-contra-cheque").show();
+            $(".s-saldo").html(data.html_saldo);
             $(".js-adiantamento").html(data.html_adiantamento);
             $('.box-loader').hide()
         },
