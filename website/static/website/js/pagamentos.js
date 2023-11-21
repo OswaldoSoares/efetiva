@@ -59,6 +59,7 @@ $(document).on("click", ".js-seleciona-funcionario", function(event) {
             $(".js-itens-agenda-pagamento").html(data.html_itens_agenda_pagamento);
             $(".card-funcionario-pagamento").show();
             $(".card-cartao-ponto").show()
+            localStorage.setItem("idcontracheque", $("#idcontracheque").data("idcontracheque"))
             $('.box-loader').hide();
             tamanhoCardBody();
         },
