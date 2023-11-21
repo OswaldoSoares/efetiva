@@ -2653,3 +2653,81 @@ def create_contra_cheques_folha(colaboradores, mes, ano):
             )
         )
     ContraCheque.objects.bulk_create(registros_contra_cheque)
+
+
+def create_contra_cheque_itens_folha(
+    colaboradores, mes, ano, salarios, dias_conducao
+):
+    registro_contra_cheque_itens = []
+    contra_cheque_pagamento = list(
+        get_contra_cheque_mes_ano_pagamento(int(mes), ano).values()
+    )
+    contra_cheque_adiantamento = list(
+        get_contra_cheque_mes_ano_adiantamento(int(mes), ano).values()
+    )
+    for colaborador in colaboradores:
+        filtro_pagamento = next(
+            (
+                item
+                for item in contra_cheque_pagamento
+                if item["idPessoal_id"] == colaborador["idPessoal"]
+            ),
+            None,
+        )
+        filtro_adiantamento = next(
+            (
+                item
+                for item in contra_cheque_adiantamento
+                if item["idPessoal_id"] == colaborador["idPessoal"]
+            ),
+            None,
+        )
+        filtro_salario = next(
+            (
+                item
+                for item in salarios
+                if item["idPessoal_id"] == colaborador["idPessoal"]
+            ),
+            None,
+        )
+        salario = filtro_salario["Salario"]
+        valor_conducao = filtro_salario["ValeTransporte"] * dias_conducao
+        adiantamento = salario / 100 * 40
+        registro_contra_cheque_itens.append(
+            ContraChequeItens(
+                Descricao="SALARIO",
+                Valor=salario,
+                Registro="C",
+                Referencia="30d",
+                idContraCheque_id=filtro_pagamento["idContraCheque"],
+            )
+        )
+        registro_contra_cheque_itens.append(
+            ContraChequeItens(
+                Descricao="ADIANTAMENTO",
+                Valor=adiantamento,
+                Registro="D",
+                Referencia="40%",
+                idContraCheque_id=filtro_pagamento["idContraCheque"],
+            )
+        )
+        if valor_conducao > Decimal(0.00):
+            registro_contra_cheque_itens.append(
+                ContraChequeItens(
+                    Descricao="VALE TRANSPORTE",
+                    Valor=valor_conducao,
+                    Registro="C",
+                    Referencia=f"{dias_conducao}d",
+                    idContraCheque_id=filtro_pagamento["idContraCheque"],
+                )
+            )
+        registro_contra_cheque_itens.append(
+            ContraChequeItens(
+                Descricao="ADIANTAMENTO",
+                Valor=adiantamento,
+                Registro="C",
+                Referencia="40%",
+                idContraCheque_id=filtro_adiantamento["idContraCheque"],
+            )
+        )
+    ContraChequeItens.objects.bulk_create(registro_contra_cheque_itens)
