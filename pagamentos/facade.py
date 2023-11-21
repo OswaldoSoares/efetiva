@@ -4,13 +4,11 @@ from decimal import Decimal
 from dateutil.relativedelta import relativedelta
 from despesas.models import Multas
 from django.core.exceptions import ObjectDoesNotExist
-from django.db import connection
 from django.db.models import DecimalField, ExpressionWrapper, F, Max, Min, Sum
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from minutas.facade import nome_curto, nome_curto_underscore
 from minutas.models import MinutaColaboradores, MinutaItens
-from pessoas import facade
 from pessoas.forms import CadastraContraCheque, CadastraContraChequeItens
 from pessoas.models import (
     Agenda,
