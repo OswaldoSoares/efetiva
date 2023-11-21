@@ -76,8 +76,9 @@
 			</div>
 			<div class="tamanho-30 text-center">
 				{% if saldo_contra_cheque > 0 %}
-				<a class="icofont-printer i-button" target="_blank"
-                href="{% url 'imprime_contra_cheque' %}?idcontracheque={{ contra_cheque.idContraCheque }}&idpessoal={{ colaborador.idpes }}"></a>
+				<a class="icofont-printer i-button"
+				target="_blank"
+				href="{% url 'imprime_contra_cheque' %}?idcontracheque={{ contra_cheque.idContraCheque }}&idpessoal={{ colaborador.idpes }}&tipo={{ tipo }}"></a>
 				<i class="icofont-bill-alt
 				i-button"
 	   			   title="Informa Pagamento"></i>
