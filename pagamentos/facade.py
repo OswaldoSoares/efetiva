@@ -2619,3 +2619,10 @@ def get_colaboradores_mensalistas_admitidos():
         TipoPgto="MENSALISTA", DataDemissao__isnull=True
     )
     return colaboradores
+
+
+def get_valores_salario_transporte_colaborador():
+    salarios = Salario.objects.filter(
+        idPessoal__TipoPgto="MENSALISTA", idPessoal__DataDemissao__isnull=True
+    )
+    return salarios
