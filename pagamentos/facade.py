@@ -2812,6 +2812,7 @@ def get_cartao_ponto_colaborador(idpessoal, primeiro_dia_mes, ultimo_dia_mes):
 
 
 def create_contexto_mensalista(idpessoal, mes_ano):
+    colaborador = get_colaborador(idpessoal)
     mes, ano = converter_mes_ano(mes_ano)
     primeiro_dia_mes, ultimo_dia_mes = extremos_mes(mes, ano)
     cartao_ponto = get_cartao_ponto_colaborador(
@@ -2821,6 +2822,7 @@ def create_contexto_mensalista(idpessoal, mes_ano):
         idpessoal, int(mes), ano, "ADIANTAMENTO"
     )
     ccc = create_contexto_contra_cheque(idpessoal, contra_ch, "ADIANTAMENTO")
+    vales = get_vales_colaborador(colaborador)
     #  minutas = minutas_contra_cheque(var)
     #  var["dias_falta"] = dias_falta(_cartao_ponto)
     #  var["dias_remunerado"] = dias_remunerado(_cartao_ponto, var["ultimo_dia"])
@@ -2850,6 +2852,7 @@ def create_contexto_mensalista(idpessoal, mes_ano):
         "cartao_ponto": cartao_ponto,
         "mes_ano": mes_ano,
         "contra_cheque": contra_cheque,
+        "vales": vales,
         "tipo": "ADIANTAMENTO",
         #  "nome": var["nome_curto"],
         #  "nome_underscore": var["nome_curto_u"],
