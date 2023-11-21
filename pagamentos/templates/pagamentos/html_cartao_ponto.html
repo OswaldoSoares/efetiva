@@ -5,7 +5,7 @@
 <!-- Body -->
 <div class="card-body">
     {% for dias in cartao_ponto %}
-    {% if dias.ausencia %}
+    {% if dias.Ausencia %}
     <div class="card-body-item">
         <div class="input-group">
             <i class="icofont-home input-group-addon addon-my-color"></i>
@@ -13,28 +13,28 @@
             </div>
             <div class="div-form-control div-flex font-menor">
                 <div class="tamanho-50 text-left">
-                    <span>{{ dias.dia }}</span>
+                    <span>{{ dias.Dia }}</span>
                 </div>
                 <div class="tamanho-50 text-center">
-                    <span>{{ dias.ausencia }}</span>
+                    <span>{{ dias.Ausencia }}</span>
                 </div>
             </div>
             <div class="input-group-addon addon-my-color">
-                {% if dias.remunerado %}
+                {% if dias.Remunerado %}
                     <i class="icofont-dollar i-button js-atestada"
-                       data-idpessoal="{{ idpessoal }}"
-                       data-idcartaoponto="{{ dias.idcartaoponto }}"></i>
+                       data-idpessoal="{{ dias.idPessoal_id }}"
+                       data-idcartaoponto="{{ dias.idCartaoPonto }}"></i>
                 {% else %}
                     <i class="icofont-close i-button js-atestada"
-                       data-idpessoal="{{ idpessoal }}"
-                       data-idcartaoponto="{{ dias.idcartaoponto }}"></i>
+                       data-idpessoal="{{ dias.idPessoal_id }}"
+                       data-idcartaoponto="{{ dias.idCartaoPonto }}"></i>
                 {% endif %}
             </div>
             <div class="input-group-addon addon-my-color">
-                {% if dias.ausencia == 'FALTA' %}
+                {% if dias.Ausencia == 'FALTA' %}
                     <i class="icofont-home i-button js-altera-falta"
-                       data-idpessoal="{{ idpessoal }}"
-                       data-idcartaoponto="{{ dias.idcartaoponto }}"></i>
+                       data-idpessoal="{{ dias.idPessoal_id }}"
+                       data-idcartaoponto="{{ dias.idCartaoPonto }}"></i>
                 {% else %}
                     <i class="icofont-home"></i>
                 {% endif %}
@@ -50,19 +50,19 @@
                    data-action="{% url 'altera_horario_cartao_ponto' %}"
                    data-title="EDITA CARTÃO DE PONTO"
                    data-button-save-label="ALTERAR"
-                   data-idcartaoponto="{{ dias.idcartaoponto }}"
-                   data-idpessoal="{{ idpessoal }}"></i>
+                   data-idcartaoponto="{{ dias.idCartaoPonto }}"
+                   data-idpessoal="{{ dias.idPessoal_id }}"></i>
             </div>
             <div class="input-group-addon addon-my-color">
-                {% if dias.transporte %}
-                    {% if dias.carro_empresa %}
+                {% if dias.Conducao %}
+                    {% if dias.CarroEmpresa %}
                         <i class="icofont-truck-alt i-button js-altera-carro-empresa"
-                           data-idpessoal="{{ idpessoal }}"
-                           data-idcartaoponto="{{ dias.idcartaoponto }}"></i>
+                           data-idpessoal="{{ dias.idPessoal_id }}"
+                           data-idcartaoponto="{{ dias.idCartaoPonto }}"></i>
                     {% else %}
                         <i class="icofont-bus-alt-2 i-button js-altera-carro-empresa"
-                           data-idpessoal="{{ idpessoal }}"
-                           data-idcartaoponto="{{ dias.idcartaoponto }}"></i>
+                           data-idpessoal="{{ dias.idPessoal_id }}"
+                           data-idcartaoponto="{{ dias.idCartaoPonto }}"></i>
                     {% endif %}  
                 {% else %}
                     <i class="icofont-bicycle-alt-1"></i>
