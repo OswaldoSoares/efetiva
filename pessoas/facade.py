@@ -2157,7 +2157,18 @@ def busca_contra_cheque_pagamento(idpessoal, mes, ano):
 
 def get_contra_cheque_mes_ano_pagamento(mes, ano):
     contra_cheque = ContraCheque.objects.filter(
-        MesReferencia=meses[mes - 1], AnoReferencia=ano, Descricao="PAGAMENTO"
+        MesReferencia=meses[mes - 1],
+        AnoReferencia=ano,
+        Descricao="PAGAMENTO",
+    )
+    return contra_cheque
+
+
+def get_contra_cheque_mes_ano_adiantamento(mes, ano):
+    contra_cheque = ContraCheque.objects.filter(
+        MesReferencia=meses[mes - 1],
+        AnoReferencia=ano,
+        Descricao="ADIANTAMENTO",
     )
     return contra_cheque
 
