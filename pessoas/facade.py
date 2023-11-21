@@ -2340,6 +2340,7 @@ def contexto_contra_cheque_id(idcontracheque):
         "credito": credito,
         "debito": debito,
         "saldo_contra_cheque": saldo_contra_cheque,
+        "tipo": contra_cheque.Descricao,
     }
     return contexto
 
