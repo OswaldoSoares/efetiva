@@ -2731,3 +2731,55 @@ def create_contra_cheque_itens_folha(
             )
         )
     ContraChequeItens.objects.bulk_create(registro_contra_cheque_itens)
+
+
+def create_cartao_ponto_folha(colaboradores, mes, ano, salarios):
+    feriados = DiasFeriados().__dict__["feriados"]
+    primeiro_dia_mes, ultimo_dia_mes = extremos_mes(mes, ano)
+    registros_cartao_ponto = []
+    for colaborador in colaboradores:
+        dia = primeiro_dia_mes
+        filtro_salario = next(
+            (
+                item
+                for item in salarios
+                if item["idPessoal_id"] == colaborador["idPessoal"]
+            ),
+            None,
+        )
+        valor_conducao = filtro_salario["ValeTransporte"]
+        if valor_conducao > Decimal(0.00):
+            dias_conducao = 0
+        while dia < ultimo_dia_mes + relativedelta(days=1):
+            hora_entrada = "07:00"
+            hora_saida = "17:00"
+            remunerado = True
+            conducao = False
+            if dia.weekday() == 5 or dia.weekday() == 6:
+                ausencia = dias[dia.weekday()]
+            else:
+                ausencia = ""
+                if valor_conducao > Decimal(0.00):
+                    conducao = True
+                    dias_conducao += 1
+            if dia.date() in feriados:
+                ausencia = "FERIADO"
+                if valor_conducao > Decimal(0.00):
+                    conducao = False
+                    dias_conducao -= 1
+            registros_cartao_ponto.append(
+                CartaoPonto(
+                    Dia=dia,
+                    Entrada=hora_entrada,
+                    Saida=hora_saida,
+                    Ausencia=ausencia,
+                    Alteracao="ROBOT",
+                    Conducao=conducao,
+                    Remunerado=remunerado,
+                    CarroEmpresa=False,
+                    idPessoal_id=colaborador["idPessoal"],
+                )
+            )
+            dia = dia + relativedelta(days=1)
+    CartaoPonto.objects.bulk_create(registros_cartao_ponto)
+    return dias_conducao
