@@ -737,11 +737,12 @@ def exclui_contra_cheque_item(request):
 def imprime_contra_cheque(request):
     idcontracheque = request.GET.get("idcontracheque")
     idpessoal = request.GET.get("idpessoal")
+    tipo = request.GET.get("tipo")
     contexto = facade.contexto_contra_cheque_id(idcontracheque)
     colaborador = facade.get_colaborador(idpessoal)
     contexto.update({"colaborador": colaborador})
     salario_base = facade.get_salario_base_contra_cheque_itens(
-        contexto["contra_cheque_itens"]
+        contexto["contra_cheque_itens"], tipo
     )
     contexto.update({"salario_base": salario_base})
     response = print_contra_cheque(contexto)
