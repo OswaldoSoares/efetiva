@@ -2373,7 +2373,9 @@ def html_cartao_ponto(request, contexto, data):
 
 def html_contra_cheque(request, contexto, data):
     data["html_contra_cheque"] = render_to_string(
-        "pagamentos/html_contra_cheque.html", contexto, request=request
+        "pessoas/card_contra_cheque_colaborador.html",
+        contexto,
+        request=request,
     )
     return data
 
