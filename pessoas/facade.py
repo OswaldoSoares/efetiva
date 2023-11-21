@@ -1927,6 +1927,9 @@ def create_contexto_contra_cheque(idpessoal, idselecionado, descricao):
                 descricao, 0.00, "C", "12da", contra_cheque
             )
         atualiza_dozeavos_decimo_terceiro(idpessoal, idparcela, descricao)
+    elif descricao == "ADIANTAMENTO":
+        # TODO Corrigir
+        contra_cheque = idselecionado
     contra_cheque_itens = get_contra_cheque_itens(contra_cheque)
     contra_cheque_itens = contra_cheque_itens.order_by("idContraChequeItens")
     credito, debito, saldo_contra_cheque = get_saldo_contra_cheque(
