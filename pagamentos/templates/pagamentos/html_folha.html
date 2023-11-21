@@ -1,12 +1,11 @@
 {% load humanize %}
-{% if v_folha %}
 <!-- Header -->
 <div class="card-header">
 	<span>FOLHA</span>
 </div>
 <!-- Body -->
 <div class="card-body">
-	{% for key, value in v_folha.funcionarios.items %}
+	{% for contra_cheque in dados %}
 	<div class="card-body-item">
 		<div class="input-group">
 			<div class="input-group-addon
@@ -17,7 +16,7 @@
 			<div class="div-form-control div-flex font-menor">
 				<div class="tamanho-50 text-left">
 					<span title="Salário R$ {{ value.salario_base|intcomma }}">
-						{{ key }}
+						{{ contra_cheque.nome_curto  }}
 					</span>
 				</div>
 				<div class="tamanho-25 text-right">
@@ -27,7 +26,7 @@
 				</div>
 				<div class="tamanho-25 text-right">
 					<span title="Saldo a Receber">
-						R$ {{ value.saldo_mes|intcomma }}
+						R$ {{ contra_cheque.saldo_mes|intcomma }}
 					</span>
 				</div>
 			</div>
@@ -36,7 +35,10 @@
 				<i class="bi bi-folder-symlink
 				i-button
 				js-seleciona-funcionario"
-	  			data-idpessoal="{{ value.idpessoal }}"></i>
+	   			   data-idpessoal="{{ contra_cheque.idPessoal_id }}"
+			   	   data-idcontracheque="{{ contra_cheque.idContraCheque }}"
+		  		   data-mes=""
+		 		   data-ano=""></i>
 			</div>
 		</div>
 	</div>
@@ -64,4 +66,3 @@
 		addon-my-color"></i>
 	</div>
 </div>
-{% endif %}
