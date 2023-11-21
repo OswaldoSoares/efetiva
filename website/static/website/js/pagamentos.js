@@ -917,3 +917,33 @@ document.addEventListener("keydown", function(event) {
         event.preventDefault();
     }
 });
+
+
+$(document).on('click', '.js-pessoas-seleciona-vale', function() {
+    var idvale = $(this).data("idvale")
+    var idpessoal = localStorage.getItem("idpessoal")
+    var idcontracheque = localStorage.getItem("idcontracheque")
+    if (idcontracheque != "") {
+        $.ajax({
+            type: "GET",
+            url: "/pessoas/adiciona_vale_contra_cheque",
+            data: {
+                idvale: idvale,
+                idpessoal: idpessoal,
+                idcontracheque: idcontracheque,
+            },
+            beforeSend: function() {
+                $(".box-loader").show()
+                $(".card-contra-cheque-colaborador").hide()
+                $(".card-vales-colaborador").hide()
+            },
+            success: function(data) {
+                $(".card-contra-cheque-colaborador").html(data.html_card_contra_cheque_colaborador)
+                $(".card-vales-colaborador").html(data.html_vales_colaborador)
+                $(".card-contra-cheque-colaborador").show()
+                $(".card-vales-colaborador").show()
+                $(".box-loader").hide()
+            },
+        });
+    }
+});
