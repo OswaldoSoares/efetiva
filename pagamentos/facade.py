@@ -192,7 +192,6 @@ def dias_trabalhado(cp):
 
 def cartao_ponto(var):
     # Revisão Inicio - 10/01/2023
-    print(f"[INFO] CARTÃO DE PONTO - {len(connection.queries)}")
     cartao_de_ponto = CartaoPonto.objects.filter(
         Dia__range=[var["primeiro_dia"], var["ultimo_dia"]],
         idPessoal=var["id_pessoal"],
@@ -214,7 +213,6 @@ def cartao_ponto(var):
             var["demissao"],
             var,
         )
-    print(f"[INFO] CARTÃO DE PONTO - {len(connection.queries)}")
     # Revisão Final - 10/01/2023
     idpessoal = var["id_pessoal"]
     pdm = var["primeiro_dia"]
@@ -222,20 +220,15 @@ def cartao_ponto(var):
     adm = var["admissao"]
     dem = var["demissao"]
     cp = CartaoPonto.objects.filter(Dia__range=[pdm, udm], idPessoal=idpessoal)
-    print(f"[INFO 02] - {len(connection.queries)}")
     if not cp:
         create_cartao_ponto(idpessoal, pdm, udm, adm, dem, var)
     else:
         var["cartao_ponto"] = cp
         # BUG
         # update_cartao_ponto(var)
-    print(f"[INFO 03] - {len(connection.queries)}")
     cp = CartaoPonto.objects.filter(Dia__range=[pdm, udm], idPessoal=idpessoal)
-    print(f"[INFO 04] - {len(connection.queries)}")
     verifica_falta(cp)
-    print(f"[INFO 05] - {len(connection.queries)}")
     cp = CartaoPonto.objects.filter(Dia__range=[pdm, udm], idPessoal=idpessoal)
-    print(f"[INFO] - {len(connection.queries)}")
     lista = [
         {
             "idcartaoponto": x.idCartaoPonto,
@@ -250,7 +243,7 @@ def cartao_ponto(var):
         }
         for x in cp
     ]
-    print(f"[INFO] - {len(connection.queries)}")
+    print(lista)
     return lista
 
 
@@ -1084,7 +1077,6 @@ def altera_carro_empresa(_id_cp):
 
 
 def verifica_falta(v_cartao_ponto):
-    print(f"[INFO] - {len(connection.queries)}")
     faltas = len(
         v_cartao_ponto.filter(Ausencia__exact="FALTA", Alteracao="ROBOT")
     )
@@ -1099,7 +1091,6 @@ def verifica_falta(v_cartao_ponto):
     #                 obj = CartaoPonto.objects.get(idCartaoPonto=itens.idCartaoPonto)
     #                 obj.Remunerado = True
     #                 obj.save(update_fields=["Remunerado"])
-    print(f"[INFO] - {len(connection.queries)}")
     if faltas > 0:
         for itens in v_cartao_ponto:
             if not itens.Ausencia == "-------":
@@ -1126,7 +1117,6 @@ def verifica_falta(v_cartao_ponto):
                             faltas -= 1
                             if faltas == 0:
                                 break
-    print(f"[INFO] - {len(connection.queries)}")
 
 
 # TODO Melhorar código
