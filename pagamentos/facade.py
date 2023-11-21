@@ -2799,3 +2799,12 @@ def dados_folha_pagamento(folha, colaboradores, salarios):
         contra_cheque, key=lambda item: item["idPessoal__Nome"]
     )
     return contra_cheque
+
+
+def get_cartao_ponto_colaborador(idpessoal, primeiro_dia_mes, ultimo_dia_mes):
+    cartao_ponto = list(
+        CartaoPonto.objects.filter(
+            Dia__range=[primeiro_dia_mes, ultimo_dia_mes], idPessoal=idpessoal
+        ).values()
+    )
+    return cartao_ponto
