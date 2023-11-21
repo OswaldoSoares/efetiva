@@ -71,44 +71,56 @@
 
             <div class="div-form-control div-flex font-menor">
                 <div class="tamanho-50 text-left">
-                    <span>{{ dias.dia }}</span>
+                    <span>{{ dias.Dia }}</span>
                 </div>
                 <div class="tamanho-25 text-center">
-                    {% if dias.entrada|time:"H:i" > '07:00' %}
-                        <span class="item-atrazo">{{ dias.entrada }}</span>
-                    {% elif dias.entrada|time:"H:i" == '07:00' %}
-                        <span class="item-padrao">{{ dias.entrada }}</span>
-                    {% elif dias.entrada|time:"H:i" < '07:00' %}
-                        <span class="item-extra">{{ dias.entrada }}</span>
+                    {% if dias.Entrada|time:"H:i" > '07:00' %}
+                        <span class="item-atrazo">{{ dias.Entrada }}</span>
+                    {% elif dias.Entrada|time:"H:i" == '07:00' %}
+                        <span class="item-padrao">{{ dias.Entrada }}</span>
+                    {% elif dias.Entrada|time:"H:i" < '07:00' %}
+                        <span class="item-extra">{{ dias.Entrada }}</span>
                     {% endif %}
                 </div>
                 <div class="tamanho-25 text-center">
-                    {% if dias.saida|time:"H:i" > '17:00' %}
-                        <span class="item-extra">{{ dias.saida }}</span>
+                    {% if dias.Saida|time:"H:i" > '17:00' %}
+                        <span class="item-extra">{{ dias.Saida }}</span>
                     {% else %}
-                        <span class="item-padrao">{{ dias.saida }}</span>
+                        <span class="item-padrao">{{ dias.Saida }}</span>
                     {% endif %}
                 </div>
             </div>
             <div class="input-group-addon addon-my-color">
-                {% if dias.remunerado %}
+                {% if dias.Remunerado %}
                     <i class="icofont-dollar i-button js-atestada"
-                       data-idpessoal="{{ idpessoal }}"
-                       data-idcartaoponto="{{ dias.idcartaoponto }}"></i>
+                       data-idpessoal="{{ dias.idPessoal_id }}"
+                       data-idcartaoponto="{{ dias.idCartaoPonto }}"></i>
                 {% else %}
                     <i class="icofont-close i-button js-atestada"
-                       data-idpessoal="{{ idpessoal }}"
-                       data-idcartaoponto="{{ dias.idcartaoponto }}"></i>
+                       data-idpessoal="{{ dias.idPessoal_id }}"
+                       data-idcartaoponto="{{ dias.idCartaoPonto }}"></i>
                 {% endif %}
             </div>
             <div class="input-group-addon addon-my-color">
                 <i class="icofont-calendar i-button js-altera-falta"
-                   data-idpessoal="{{ idpessoal }}"
-                   data-idcartaoponto="{{ dias.idcartaoponto }}"></i>
+                   data-idpessoal="{{ dias.idPessoal_id }}"
+                   data-idcartaoponto="{{ dias.idCartaoPonto }}"></i>
             </div>
         </div>
     </div>
     {% endif %}
     {% endfor %}
 </div>
-<div class="article-card-footer"></div>
+<div class="card-footer">
+	<div class="input-group">
+		<i class="icofont-rounded-left-down input-group-addon
+		addon-my-color"></i>
+		<div class="div-flex div-form-control">
+			<div class="tamanho-100">
+                <span></span>
+			</div>
+		</div>
+		<i class="icofont-rounded-right-down input-group-addon
+		addon-my-color"></i>
+	</div>
+</div>
