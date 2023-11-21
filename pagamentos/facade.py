@@ -2783,3 +2783,19 @@ def create_cartao_ponto_folha(colaboradores, mes, ano, salarios):
             dia = dia + relativedelta(days=1)
     CartaoPonto.objects.bulk_create(registros_cartao_ponto)
     return dias_conducao
+
+
+def dados_folha_pagamento(folha, colaboradores, salarios):
+    mes = meses.index(folha.MesReferencia) + 1
+    ano = folha.AnoReferencia
+    contra_cheque = list(
+        get_contra_cheque_mes_ano_pagamento(mes, ano).values(
+            "idContraCheque", "idPessoal_id", "idPessoal__Nome"
+        )
+    )
+    for item in contra_cheque:
+        item["nome_curto"] = nome_curto(item["idPessoal__Nome"])
+    contra_cheque = sorted(
+        contra_cheque, key=lambda item: item["idPessoal__Nome"]
+    )
+    return contra_cheque
