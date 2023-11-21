@@ -22,6 +22,7 @@ $(document).on("click", ".js-seleciona-mes-ano", function(event) {
             $(".card-folha").html(data.html_folha);
             $(".card-folha").show();
             $(".card-contra-cheque").show();
+            $(".card-vales-colaborador").show();
             $(".s-saldo").html(data.html_saldo);
             $(".js-adiantamento").html(data.html_adiantamento);
             $('.box-loader').hide()
