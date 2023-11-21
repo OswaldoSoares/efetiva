@@ -2555,7 +2555,7 @@ def html_saldo_avulso(datainicial, datafinal):
 
 def html_vales(request, contexto, data):
     data["html_vales"] = render_to_string(
-        "pagamentos/html_vales.html", contexto, request=request
+        "pessoas/card_vales_colaborador.html", contexto, request=request
     )
     return data
 
