@@ -2808,3 +2808,72 @@ def get_cartao_ponto_colaborador(idpessoal, primeiro_dia_mes, ultimo_dia_mes):
         ).values()
     )
     return cartao_ponto
+
+
+def create_contexto_mensalista(idpessoal, mes_ano):
+    mes, ano = converter_mes_ano(mes_ano)
+    primeiro_dia_mes, ultimo_dia_mes = extremos_mes(mes, ano)
+    cartao_ponto = get_cartao_ponto_colaborador(
+        idpessoal, primeiro_dia_mes, ultimo_dia_mes
+    )
+    contra_ch = get_contra_cheque_mes_ano_descricao(
+        idpessoal, int(mes), ano, "ADIANTAMENTO"
+    )
+    ccc = create_contexto_contra_cheque(idpessoal, contra_ch, "ADIANTAMENTO")
+    #  minutas = minutas_contra_cheque(var)
+    #  var["dias_falta"] = dias_falta(_cartao_ponto)
+    #  var["dias_remunerado"] = dias_remunerado(_cartao_ponto, var["ultimo_dia"])
+    #  var["dias_transporte"] = dias_transporte(_cartao_ponto)
+    #  var["dias_carro_empresa"] = dias_carro_empresa(_cartao_ponto)
+    #  var["dias_trabalhado"] = dias_trabalhado(_cartao_ponto)
+    #  _cc = contra_cheque(var)
+    #  var["id_contra_cheque"] = _cc["idcontracheque"]
+    #  atrazo(var)
+    #  hora_extra(var)
+    #  _adiantamento = False
+    #  if busca_item_contra_cheque(var["id_contra_cheque"], "ADIANTAMENTO"):
+    #  _adiantamento = True
+    #  _cci = contra_cheque_itens(var)
+    #  _tv, _td, _st = totais_contra_cheque(var)
+    #  vales = vales_funcionario(var)
+    #  hoje = datetime.datetime.today()
+    #  hoje = datetime.datetime.strftime(hoje, "%Y-%m-%d")
+    #  files = FileUpload.objects.filter(
+    #  DescricaoUpload__startswith=f"{var['nome_curto_u']}_MES_{var['mes']}_{var['ano']}"
+    #  )
+    #  agenda = Agenda.objects.filter(
+    #  idPessoal=var["id_pessoal"],
+    #  Dia__range=[var["primeiro_dia"], var["ultimo_dia"]],
+    #  )
+    contexto = {
+        "cartao_ponto": cartao_ponto,
+        "mes_ano": mes_ano,
+        "contra_cheque": contra_cheque,
+        "tipo": "ADIANTAMENTO",
+        #  "nome": var["nome_curto"],
+        #  "nome_underscore": var["nome_curto_u"],
+        #  "idpessoal": var["id_pessoal"],
+        #  "admissao": var["admissao"],
+        #  "demissao": var["demissao"],
+        #  "categoria": var["categoria"],
+        #  "contra_cheque": _cc,
+        #  "contra_cheque_itens": _cci,
+        #  "vencimentos": _tv,
+        #  "descontos": _td,
+        #  "saldo": _st,
+        #  "adiantamento": _adiantamento,
+        #  "dias_admitido": dias_admitido(var),
+        #  "dias_remunerado": var["dias_remunerado"],
+        #  "dias_trabalhado": var["dias_trabalhado"],
+        #  "dias_transporte": var["dias_transporte"] - var["dias_carro_empresa"],
+        #  "valor_dia": var["salario_base"] / 30,
+        #  "valor_hora": var["salario_base"] / 30 / 9,
+        #  "valor_extra": var["salario_base"] / 30 / 9 * Decimal(1.5),
+        #  "minutas": minutas,
+        #  "vales": vales,
+        #  "hoje": hoje,
+        #  "files": files,
+        #  "agenda": agenda,
+    }
+    contexto.update(ccc)
+    return contexto
