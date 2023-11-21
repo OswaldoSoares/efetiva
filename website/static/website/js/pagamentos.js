@@ -947,3 +947,30 @@ $(document).on('click', '.js-pessoas-seleciona-vale', function() {
         });
     }
 });
+
+$(document).on('click', '.js-pessoas-exclui-contra-cheque-item', function () {
+    var idpessoal = localStorage.getItem("idpessoal")
+    var idcontracheque = $(this).data("idcontracheque")
+    var idcontrachequeitens = $(this).data("idcontrachequeitens")
+    $.ajax({
+        type: "GET",
+        url: "/pessoas/exclui_contra_cheque_item",
+        data: {
+            idpessoal: idpessoal,
+            idcontracheque: idcontracheque,
+            idcontrachequeitens: idcontrachequeitens,
+        },
+        beforeSend: function() {
+            $(".box-loader").show()
+            $(".card-contra-chqeue-colaborador").hide()
+            $(".card-vales-colaborador").hide()
+        },
+        success: function(data) {
+            $(".card-contra-cheque-colaborador").html(data.html_card_contra_cheque_colaborador)
+            $(".card-vales-colaborador").html(data.html_vales_colaborador)
+            $(".card-contra-cheque-colaborador").show()
+            $(".card-vales-colaborador").show()
+            $(".box-loader").hide()
+        },
+    });
+});
