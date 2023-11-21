@@ -2602,3 +2602,13 @@ def busca_folha(mes, ano, colaboradores, salarios):
             colaboradores, mes, ano, salarios, dias_conducao
         )
     return folha
+
+
+def create_folha(mes, ano):
+    FolhaPagamento.objects.create(
+        MesReferencia=mes,
+        AnoReferencia=ano,
+        Valor=0.00,
+        Colaboradores=0,
+        Pago=False,
+    )
