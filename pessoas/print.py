@@ -563,11 +563,21 @@ def contra_cheque_dados(pdf, contexto):
     )
     pdf.setFillColor(HexColor("#000000"))
     pdf.setFont("Times-Roman", 11)
-    pdf.drawString(
-        cmp(122.8),
-        cmp(linha - 17.7),
-        f'{contexto["contra_cheque"].AnoReferencia}',
-    )
+    descricao = contexto["contra_cheque"].Descricao
+    mes = contexto["contra_cheque"].MesReferencia
+    ano = contexto["contra_cheque"].AnoReferencia
+    if descricao == "FERIAS" or descricao[:15] == "DECIMO TERCEIRO":
+        pdf.drawString(
+            cmp(122.8),
+            cmp(linha - 17.7),
+            f"{ano}",
+        )
+    else:
+        pdf.drawString(
+            cmp(122.8),
+            cmp(linha - 17.7),
+            f"{mes}/{ano}",
+        )
     pdf.setFont("Times-Roman", 10)
     pdf.drawString(
         cmp(5.8),
