@@ -2581,3 +2581,24 @@ def create_contexto_folha_pagamento(mes_ano):
         "salarios": salarios,
     }
     return contexto
+
+
+def busca_folha(mes, ano, colaboradores, salarios):
+    mes_extenso = meses[int(mes) - 1]
+    try:
+        folha = FolhaPagamento.objects.get(
+            MesReferencia=mes_extenso, AnoReferencia=ano
+        )
+    except FolhaPagamento.DoesNotExist:
+        create_folha(mes_extenso, ano)
+        folha = FolhaPagamento.objects.get(
+            MesReferencia=mes_extenso, AnoReferencia=ano
+        )
+        create_contra_cheques_folha(colaboradores, mes, ano)
+        dias_conducao = create_cartao_ponto_folha(
+            colaboradores, mes, ano, salarios
+        )
+        create_contra_cheque_itens_folha(
+            colaboradores, mes, ano, salarios, dias_conducao
+        )
+    return folha
