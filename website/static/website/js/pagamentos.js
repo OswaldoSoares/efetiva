@@ -937,13 +937,11 @@ $(document).on('click', '.js-pessoas-seleciona-vale', function() {
             },
             beforeSend: function() {
                 $(".box-loader").show()
-                $(".card-contra-cheque-colaborador").hide()
-                $(".card-vales-colaborador").hide()
             },
             success: function(data) {
-                $(".card-contra-cheque-colaborador").html(data.html_card_contra_cheque_colaborador)
+                $(".card-contra-cheque").html(data.html_card_contra_cheque_colaborador)
+                $(".card-contra-cheque").show()
                 $(".card-vales-colaborador").html(data.html_vales_colaborador)
-                $(".card-contra-cheque-colaborador").show()
                 $(".card-vales-colaborador").show()
                 $(".box-loader").hide()
             },
