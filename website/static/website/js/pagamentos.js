@@ -50,15 +50,16 @@ $(document).on("click", ".js-seleciona-funcionario", function(event) {
             $(".js-cartao-ponto").html(data.html_cartao_ponto);
             $(".js-itens-contra-cheque").html(data.html_itens_contra_cheque);
             $(".js-contra-cheque").html(data.html_contra_cheque);
-            $(".js-cria-vales").html(data.html_vales);
             $(".js-adiantamento").html(data.html_adiantamento);
             $(".js-minutas-pagamento").html(data.html_minutas);
             $(".js-lista-vales").html(data.html_vales_pagamento);
             $(".js-files-pagamento").html(data.html_files_pagamento);
             $(".js-agenda-pagamento").html(data.html_agenda_pagamento);
             $(".js-itens-agenda-pagamento").html(data.html_itens_agenda_pagamento);
-            $(".card-funcionario-pagamento").show();
+            $(".card-funcionario-pagamento").show()
             $(".card-cartao-ponto").show()
+            $(".card-vales-colaborador").html(data.html_vales);
+            $(".card-vales-colaborador").show()
             localStorage.setItem("idcontracheque", $("#idcontracheque").data("idcontracheque"))
             $('.box-loader').hide();
             tamanhoCardBody();
@@ -964,13 +965,11 @@ $(document).on('click', '.js-pessoas-exclui-contra-cheque-item', function () {
         },
         beforeSend: function() {
             $(".box-loader").show()
-            $(".card-contra-chqeue-colaborador").hide()
-            $(".card-vales-colaborador").hide()
         },
         success: function(data) {
-            $(".card-contra-cheque-colaborador").html(data.html_card_contra_cheque_colaborador)
+            $(".card-contra-cheque").html(data.html_card_contra_cheque_colaborador)
+            $(".card-contra-cheque").show()
             $(".card-vales-colaborador").html(data.html_vales_colaborador)
-            $(".card-contra-cheque-colaborador").show()
             $(".card-vales-colaborador").show()
             $(".box-loader").hide()
         },
