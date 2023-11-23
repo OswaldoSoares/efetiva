@@ -5,16 +5,15 @@ $(".box-loader").hide()
 function openMyModal(event) {
     var modal = initModalDialog(event, '#MyModal');
     var url = $(event.target).data('action');
-    var idobj = $(event.target).data('idobj');
-    var descricao = $(event.target).data('descricao');
+    idpessoal = localStorage.getItem("idpessoal");
     $.ajax({
         type: "GET",
         url: url,
         data : {
-            idobj: idobj,
-            descricao: descricao,        }
+            idpessoal: idpessoal,
+        }
     }).done(function(data, textStatus, jqXHR) {
-        modal.find('.modal-body').html(data.html_form);
+        modal.find('.modal-body').html(data.html_modal);
         $('.box-loader').hide()
         modal.modal('show');
         formAjaxSubmit(modal, url, null, null);
