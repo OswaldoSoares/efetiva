@@ -63,12 +63,20 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
             url: url,
             formData: formData,
             data: $(this).serialize(),
+            beforeSend: function() {
+                $(".box-loader").show()
+            },
             success: function(xhr, ajaxOptions, thrownError) {
                 $(modal).find('.modal-body').html(xhr['html_form']);
                 if ($(xhr['html_form']).find('.errorlist').length > 0) {
                     formAjaxSubmit(modal, url, cbAfterLoad, cbAfterSuccess);
                 } else {
                     $(modal).modal('hide');
+                    if (xhr["html_vales_colaborador"]) {
+                        alert("Ei você ai")    
+                        $(".card-vales-colaborador").html(xhr["html_vales_colaborador"])
+                    }
+                    $(".box-loader").hide()
                     if (cbAfterSuccess) { 
                         cbAfterSuccess(modal);
                     }
