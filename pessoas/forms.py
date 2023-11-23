@@ -122,17 +122,21 @@ class CadastraPessoal(forms.ModelForm):
             "Cidade": forms.TextInput(attrs={"class": "form-control"}),
             "Estado": forms.TextInput(attrs={"class": "form-control"}),
             "DataNascimento": MeuDateInput(
-                format="%Y-%m-%d", attrs={"class": "form-control", "max": "2020/01/29"}
+                format="%Y-%m-%d",
+                attrs={"class": "form-control", "max": "2020/01/29"},
             ),
             "Mae": forms.TextInput(attrs={"class": "form-control"}),
             "Pai": forms.TextInput(attrs={"class": "form-control"}),
             "DataAdmissao": MeuDateInput(
-                format="%Y-%m-%d", attrs={"class": "form-control", "max": "2020/01/29"}
+                format="%Y-%m-%d",
+                attrs={"class": "form-control", "max": "2020/01/29"},
             ),
             "Categoria": forms.Select(
                 attrs={"class": "form-control"}, choices=CATEGORIAS
             ),
-            "TipoPgto": forms.Select(attrs={"class": "form-control"}, choices=TIPOPGTO),
+            "TipoPgto": forms.Select(
+                attrs={"class": "form-control"}, choices=TIPOPGTO
+            ),
         }
 
 
@@ -150,7 +154,9 @@ class CadastraDocPessoal(forms.ModelForm):
                 attrs={"class": "formfields"}, choices=TIPODOC
             ),
             "Documento": forms.TextInput(attrs={"class": "formfields"}),
-            "Data": MeuDateInput(format="%Y-%m-%d", attrs={"class": "formfields"}),
+            "Data": MeuDateInput(
+                format="%Y-%m-%d", attrs={"class": "formfields"}
+            ),
             "idPessoal": forms.HiddenInput(),
         }
 
@@ -159,9 +165,15 @@ class CadastraFonePessoal(forms.ModelForm):
     class Meta:
         model = FonePessoal
         fields = ("TipoFone", "Fone", "Contato", "idPessoal")
-        labels = {"TipoFone": "OPERADORA", "Fone": "TELEFONE", "Contato": "CONTATO"}
+        labels = {
+            "TipoFone": "OPERADORA",
+            "Fone": "TELEFONE",
+            "Contato": "CONTATO",
+        }
         widgets = {
-            "TipoFone": forms.Select(attrs={"class": "formfields"}, choices=TIPOFONE),
+            "TipoFone": forms.Select(
+                attrs={"class": "formfields"}, choices=TIPOFONE
+            ),
             "Fone": forms.TextInput(attrs={"class": "formfields"}),
             "Contato": forms.TextInput(attrs={"class": "formfields"}),
             "idPessoal": forms.HiddenInput(),
@@ -194,7 +206,9 @@ class CadastraContaPessoal(forms.ModelForm):
             "Banco": forms.TextInput(attrs={"class": "formfields"}),
             "Agencia": forms.TextInput(attrs={"class": "formfields"}),
             "Conta": forms.TextInput(attrs={"class": "formfields"}),
-            "TipoConta": forms.Select(attrs={"class": "formfields"}, choices=TIPOCONTA),
+            "TipoConta": forms.Select(
+                attrs={"class": "formfields"}, choices=TIPOCONTA
+            ),
             "PIX": forms.TextInput(attrs={"class": "formfields"}),
             "Titular": forms.TextInput(attrs={"class": "formfields"}),
             "Documento": forms.TextInput(attrs={"class": "formfields"}),
@@ -215,7 +229,9 @@ class CadastraSalario(forms.ModelForm):
             "Salario": forms.NumberInput(attrs={"class": "form-control"}),
             "idPessoal": forms.HiddenInput(),
             "HorasMensais": forms.NumberInput(attrs={"class": "form-control"}),
-            "ValeTransporte": forms.NumberInput(attrs={"class": "form-control"}),
+            "ValeTransporte": forms.NumberInput(
+                attrs={"class": "form-control"}
+            ),
         }
 
 
@@ -234,7 +250,9 @@ class CadastraVale(forms.ModelForm):
             "idPessoal": "COLABORADOR",
         }
         widgets = {
-            "Data": MeuDateInput(format="%Y-%m-%d", attrs={"class": "form-control"}),
+            "Data": MeuDateInput(
+                format="%Y-%m-%d", attrs={"class": "form-control"}
+            ),
             "Descricao": forms.TextInput(attrs={"class": "form-control"}),
             "Valor": forms.NumberInput(attrs={"class": "form-control"}),
             "idPessoal": forms.Select(attrs={"class": "form-control"}),
@@ -250,7 +268,10 @@ class CadastraContraCheque(forms.ModelForm):
     class Meta:
         model = ContraCheque
         fields = ("MesReferencia", "AnoReferencia", "Valor", "idPessoal")
-        labels = {"MesReferencia": "MÊS REFERÊNCIA", "AnoReferencia": "ANO REFERÊNCIA"}
+        labels = {
+            "MesReferencia": "MÊS REFERÊNCIA",
+            "AnoReferencia": "ANO REFERÊNCIA",
+        }
         widgets = {
             "MesReferencia": forms.Select(
                 attrs={"class": "form-control"}, choices=MESREFERENCIA
