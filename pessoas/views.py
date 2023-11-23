@@ -747,3 +747,12 @@ def imprime_contra_cheque(request):
     contexto.update({"salario_base": salario_base})
     response = print_contra_cheque(contexto)
     return response
+
+
+def adiciona_vale_colaborador(request):
+    if request.method == "POST":
+        idpessoal = int(request.POST.get("idpessoal"))
+    else:
+        idpessoal = int(request.GET.get("idpessoal"))
+    data = facade.modal_vale_colaborador(request, idpessoal)
+    return data
