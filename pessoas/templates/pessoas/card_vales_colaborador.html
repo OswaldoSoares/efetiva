@@ -1,8 +1,15 @@
 {% load humanize %}
 <!-- Header -->
 <div class="card-header div-flex">
-	<div class="input-group-addon
-    addon-my-color"></div>
+	<i class="icofont-ui-add
+	input-group-addon
+    addon-my-color
+	i-button"
+	onclick="openMyModal(event); return false;"
+ data-title="CADASTRA VALE"
+ data-action="{% url 'adiciona_vale_colaborador' %}"
+ data-button-save-label="SALVAR"
+ title="Adiciona Vale"></i>
     <span>VALES</span>
 	<i class="icofont-square-up
 	js-toggle-vales
