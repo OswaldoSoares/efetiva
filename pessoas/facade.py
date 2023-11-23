@@ -24,7 +24,12 @@ from pagamentos import facade as facade_pagamentos
 from pagamentos.models import Recibo
 
 
-from pessoas.forms import CadastraSalario, CadastraVale, CadastraDemissao
+from pessoas.forms import (
+    CadastraSalario,
+    CadastraVale,
+    CadastraDemissao,
+    FormVale,
+)
 from pessoas.models import (
     Aquisitivo,
     DecimoTerceiro,
@@ -2464,3 +2469,42 @@ def get_salario_base_contra_cheque_itens(contra_cheque_itens, tipo):
     elif tipo == "ADIANTAMENTO":
         salario = round(filtro["Valor"] / 40 * 100)
     return salario
+
+
+def modal_vale_colaborador(request, idpessoal):
+    data = dict()
+    if request.method == "POST":
+        descricao = request.POST.get("Descricao").upper()
+        data_vale = request.POST.get("Data")
+        valor = float(request.POST.get("Valor"))
+        parcela = int(request.POST.get("Parcela"))
+        registro_vales = []
+        if parcela == 1:
+            registro_vales.append(
+                Vales(
+                    Descricao=descricao,
+                    Data=data_vale,
+                    Valor=valor,
+                    idPessoal_id=idpessoal,
+                )
+            )
+        else:
+            valor_parcela = valor / parcela
+            for item in range(parcela):
+                registro_vales.append(
+                    Vales(
+                        Descricao=f"{descricao} P-{item+1}/{parcela}",
+                        Data=data_vale,
+                        Valor=round(valor_parcela, 2),
+                        idPessoal_id=idpessoal,
+                    )
+                )
+        Vales.objects.bulk_create(registro_vales)
+        contexto = contexto_vales_colaborador(idpessoal)
+        html_vales_colaborador(request, contexto, data)
+    else:
+        contexto = {"form": FormVale, "idpessoal": idpessoal}
+        data["html_modal"] = render_to_string(
+            "pessoas/modal_vale_colaborador.html", contexto, request=request
+        )
+    return JsonResponse(data)
