@@ -308,3 +308,21 @@ class CadastraDemissao(forms.ModelForm):
                 format="%Y-%m-%d", attrs={"class": "form-control"}
             )
         }
+
+
+class FormVale(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(FormVale, self).__init__(*args, **kwargs)
+        self.fields["Data"].initial = datetime.date.today()
+
+    class Meta:
+        model = Vales
+        fields = ("idPessoal", "Data", "Descricao", "Valor")
+        widgets = {
+            "Data": MeuDateInput(
+                format="%Y-%m-%d", attrs={"class": "form-control"}
+            ),
+            "Descricao": forms.TextInput(attrs={"class": "form-control"}),
+            "Valor": forms.NumberInput(attrs={"class": "form-control"}),
+            "idPessoal": forms.Select(attrs={"class": "form-control"}),
+        }
