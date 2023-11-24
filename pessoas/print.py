@@ -604,11 +604,7 @@ def contra_cheque_dados(pdf, contexto):
         cmp(linha - 144),
         f"R$ {salario_base}",
     )
-    pdf.drawString(
-        cmp(8),
-        cmp(linha - 124),
-        f'{contexto["contra_cheque"].Obs}',
-    )
+    contra_cheque_obs(pdf, contexto)
     return pdf
 
 
@@ -649,3 +645,29 @@ def contra_cheque_totais(pdf, contexto):
     pdf.drawRightString(cmp(171.7), cmp(linha - 124), debito)
     pdf.drawRightString(cmp(171.7), cmp(linha - 132), saldo)
     return pdf
+
+
+def contra_cheque_obs(pdf, contexto):
+    dict_obs = ast.literal_eval(contexto["contra_cheque"].Obs)
+    obs = ""
+    for item_x in dict_obs:
+        if isinstance(dict_obs[item_x], str):
+            obs = obs + f"* {dict_obs[item_x]} "
+        elif isinstance(dict_obs[item_x], dict):
+            for item_y in dict_obs[item_x]:
+                if isinstance(dict_obs[item_x][item_y], dict):
+                    obs = obs + f"* {dict_obs[item_x][item_y]} "
+    obs = obs.replace("{", "").replace("}", "").replace("'", "")
+    obs = obs[:-1]
+    styles_claro = ParagraphStyle(
+        "claro",
+        fontName="Times-Roman",
+        fontSize=7,
+        leading=9,
+        alignment=TA_JUSTIFY,
+    )
+    para = Paragraph(obs, style=styles_claro)
+    linha = 297
+    para.wrapOn(pdf, cmp(105), cmp(297))
+    linha -= para.height * 0.352777
+    para.drawOn(pdf, cmp(8), cmp(linha - 117.7))
