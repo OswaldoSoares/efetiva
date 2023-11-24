@@ -1,9 +1,13 @@
 import datetime
+import ast
 from decimal import Decimal
 from io import BytesIO
 from django.http import HttpResponse
 from reportlab.lib.colors import HexColor
+from reportlab.lib.styles import ParagraphStyle
 from reportlab.pdfgen import canvas
+from reportlab.platypus import Paragraph
+from reportlab.lib.enums import TA_JUSTIFY
 from pessoas.facade import do_crop
 from romaneios.print import header
 from transefetiva.settings.settings import STATIC_ROOT
