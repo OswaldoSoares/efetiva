@@ -73,7 +73,6 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                 } else {
                     $(modal).modal('hide');
                     if (xhr["html_vales_colaborador"]) {
-                        alert("Ei você ai")    
                         $(".card-vales-colaborador").html(xhr["html_vales_colaborador"])
                     }
                     $(".box-loader").hide()
