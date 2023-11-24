@@ -1,6 +1,7 @@
 import calendar
 import datetime
 import os
+import ast
 from django.db import connection
 
 from dateutil.relativedelta import relativedelta
@@ -1906,6 +1907,7 @@ def html_card_contra_cheque_colaborador(request, contexto, data):
 def create_contexto_contra_cheque(idpessoal, idselecionado, descricao):
     colaborador = Colaborador(idpessoal).__dict__
     colaborador_futuro = get_colaborador(idpessoal)
+    contas = get_contas_bancaria_colaborador(colaborador_futuro)
     if descricao == "FERIAS":
         idaquisitivo = idselecionado
         contra_cheque = busca_contra_cheque_aquisitivo(
@@ -1935,6 +1937,8 @@ def create_contexto_contra_cheque(idpessoal, idselecionado, descricao):
     elif descricao == "ADIANTAMENTO":
         # TODO Corrigir
         contra_cheque = idselecionado
+    if contas:
+        update_contas_bancaria_obs(contra_cheque, contas, "contas")
     contra_cheque_itens = get_contra_cheque_itens(contra_cheque)
     contra_cheque_itens = contra_cheque_itens.order_by("idContraChequeItens")
     credito, debito, saldo_contra_cheque = get_saldo_contra_cheque(
@@ -1955,6 +1959,38 @@ def create_contexto_contra_cheque(idpessoal, idselecionado, descricao):
         "tipo": descricao,
     }
     return contexto
+
+
+def update_contas_bancaria_obs(contra_cheque, contas, chave):
+    dict_contas = dict()
+    for index, conta in enumerate(contas):
+        dict_contas[index + 1] = {}
+        if conta["PIX"]:
+            dict_contas[index + 1]["PIX"] = conta["PIX"]
+        if conta["Banco"]:
+            dict_contas[index + 1]["BANCO"] = conta["Banco"]
+        if conta["Agencia"]:
+            dict_contas[index + 1]["AGENCIA"] = conta["Agencia"]
+        if conta["Conta"]:
+            dict_contas[index + 1]["CONTA"] = conta["Conta"]
+        if conta["TipoConta"]:
+            dict_contas[index + 1]["TIPO"] = conta["TipoConta"]
+        if conta["Titular"]:
+            dict_contas[index + 1]["TITULAR"] = conta["Titular"]
+        if conta["Documento"]:
+            dict_contas[index + 1]["CPF"] = conta["Documento"]
+    try:
+        dict_obs = ast.literal_eval(contra_cheque.Obs)
+        if not dict_obs.get("contas"):
+            dict_obs["contas"] = ""
+    except:
+        dict_obs = dict({"contas": ""})
+    if dict_obs["contas"] != dict_contas:
+        print("ok")
+        dict_obs["contas"] = dict_contas
+        obj = contra_cheque
+        obj.Obs = dict_obs
+        obj.save()
 
 
 def atualiza_salario_ferias_dias_referencia(idpessoal, idaquisitivo):
@@ -2106,9 +2142,13 @@ def busca_contra_cheque_aquisitivo(idpessoal, idaquisitivo, descricao):
         contra_cheque = get_contra_cheque_mes_ano_descricao(
             colaborador, mes, ano, descricao
         )
-        update_contra_cheque_obs(contra_cheque, obs)
+        update_contra_cheque_obs(contra_cheque, obs, "aquisitivo")
     except ContraCheque.DoesNotExist:  # pylint: disable=no-member
-        create_contra_cheque(meses[mes - 1], ano, "FERIAS", colaborador, obs)
+        nova_obs = dict()
+        nova_obs["aquisitivo"] = obs
+        create_contra_cheque(
+            meses[mes - 1], ano, "FERIAS", colaborador, nova_obs
+        )
         contra_cheque = get_contra_cheque_mes_ano_descricao(
             colaborador, mes, ano, descricao
         )
@@ -2279,10 +2319,17 @@ def aquisitivo_salario_ferias(salario, faltas):
     return salario_ferias
 
 
-def update_contra_cheque_obs(contra_cheque, obs):
-    obj = contra_cheque
-    obj.Obs = obs
-    obj.save()
+def update_contra_cheque_obs(contra_cheque, obs, chave):
+    try:
+        dict_obs = ast.literal_eval(contra_cheque.Obs)
+    except:
+        dict_obs = dict()
+    consulta_chave = dict_obs[chave]
+    if consulta_chave != obs:
+        dict_obs[chave] = obs
+        obj = contra_cheque
+        obj.Obs = dict_obs
+        obj.save()
 
 
 def update_contra_cheque_item_valor(contra_cheque_item, valor):
@@ -2508,3 +2555,9 @@ def modal_vale_colaborador(request, idpessoal):
             "pessoas/modal_vale_colaborador.html", contexto, request=request
         )
     return JsonResponse(data)
+
+
+def get_contas_bancaria_colaborador(colaborador):
+    contas = ContaPessoal.objects.filter(idPessoal=colaborador)
+    contas = list(contas.values())
+    return contas
