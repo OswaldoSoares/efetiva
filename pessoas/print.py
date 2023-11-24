@@ -467,7 +467,8 @@ def formulario_rescisao_trabalho(pdf, contexto):
     return pdf
 
 
-def base_contra_cheque(pdf, linha):
+def base_contra_cheque(pdf):
+    linha = 297
     pdf.setFillColor(HexColor("#000000"))
     pdf.rect(cmp(5), cmp(linha - 18.5), cmp(173), cmp(13.5), fill=0)
     pdf.rect(cmp(5), cmp(linha - 28.3), cmp(173), cmp(9.3), fill=0)
@@ -542,11 +543,10 @@ def print_contra_cheque(contexto):
     buffer = BytesIO()
     pdf = canvas.Canvas(buffer)
     pdf.setFont("Times-Roman", 10)
-    linha = 297
     contra_cheque_dados(pdf, contexto)
     contra_cheque_itens(pdf, contexto)
     contra_cheque_totais(pdf, contexto)
-    base_contra_cheque(pdf, linha)
+    base_contra_cheque(pdf)
     pdf.setTitle("Contra Cheque")
     pdf.save()
     buffer.seek(0)
