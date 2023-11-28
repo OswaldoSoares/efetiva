@@ -291,28 +291,30 @@ def read_nota_database(_id_not):
 def read_nota_xml(nota):
     nota_xml = dict()
     nota_xml["local_coleta"] = nota["local_coleta"]
-    nota_xml["emitente"] = nota['emitente']
-    nota_xml["endereco_emi"] = nota['endereco_emi']
-    nota_xml["cep_emi"] = nota['cep_emi']
-    nota_xml["bairro_emi"] = nota['bairro_emi']
-    nota_xml["cidade_emi"] = nota['cidade_emi']
-    nota_xml["estado_emi"] = nota['estado_emi']
-    nota_xml["data_nota"] = datetime.datetime.strftime(nota['data_nf'], "%Y-%m-%d")
-    nota_xml["serie_nota"] = nota['serie_nf']
-    nota_xml["numero_nota"] = nota['numero_nf']
-    nota_xml["destinatario"] = nota['destinatario']
-    nota_xml["cnpj"] = nota['cnpj']
-    nota_xml["endereco"] = nota['endereco']
-    nota_xml["cep"] = nota['cep']
-    nota_xml["bairro"] = nota['bairro']
-    nota_xml["cidade"] = nota['cidade']
-    nota_xml["estado"] = nota['estado']
-    nota_xml["contato"] = nota['telefone']
-    nota_xml["informa"] = nota['informa']
-    nota_xml["volume"] = nota['volume']
-    nota_xml["peso"] = str(nota['peso'])
-    nota_xml["valor"] = str(nota['valor'])
-    nota_xml["idcliente"] = nota['id_cliente']
+    nota_xml["emitente"] = nota["emitente"]
+    nota_xml["endereco_emi"] = nota["endereco_emi"]
+    nota_xml["cep_emi"] = nota["cep_emi"]
+    nota_xml["bairro_emi"] = nota["bairro_emi"]
+    nota_xml["cidade_emi"] = nota["cidade_emi"]
+    nota_xml["estado_emi"] = nota["estado_emi"]
+    nota_xml["data_nota"] = datetime.datetime.strftime(
+        nota["data_nf"], "%Y-%m-%d"
+    )
+    nota_xml["serie_nota"] = nota["serie_nf"]
+    nota_xml["numero_nota"] = nota["numero_nf"]
+    nota_xml["destinatario"] = nota["destinatario"]
+    nota_xml["cnpj"] = nota["cnpj"]
+    nota_xml["endereco"] = nota["endereco"]
+    nota_xml["cep"] = nota["cep"]
+    nota_xml["bairro"] = nota["bairro"]
+    nota_xml["cidade"] = nota["cidade"]
+    nota_xml["estado"] = nota["estado"]
+    nota_xml["contato"] = nota["telefone"]
+    nota_xml["informa"] = nota["informa"]
+    nota_xml["volume"] = nota["volume"]
+    nota_xml["peso"] = str(nota["peso"])
+    nota_xml["valor"] = str(nota["valor"])
+    nota_xml["idcliente"] = nota["id_cliente"]
     return nota_xml
 
 
@@ -797,91 +799,91 @@ def ler_nota_xml(nota):
     total = "{http://www.portalfiscal.inf.br/nfe}total"
     valor_nf = "{http://www.portalfiscal.inf.br/nfe}vNF"
     lista = {
-        'emitente': xml_emitente(
+        "emitente": xml_emitente(
             doc,
             f"{nfe}/{infnfe}/{emit}/{xnome}",
         ),
-        'endereco_emi': xml_endereco_emi(
+        "endereco_emi": xml_endereco_emi(
             doc,
             f"{nfe}/{infnfe}/{emit}/{ender_emit}/{xlgr}",
             f"{nfe}/{infnfe}/{emit}/{ender_emit}/{nro}",
             f"{nfe}/{infnfe}/{emit}/{ender_emit}/{xcpl}",
         ),
-        'bairro_emi': xml_bairro_emi(
+        "bairro_emi": xml_bairro_emi(
             doc,
             f"{nfe}/{infnfe}/{emit}/{ender_emit}/{xbairro}",
         ),
-        'cep_emi': xml_cep_emi(
+        "cep_emi": xml_cep_emi(
             doc,
             f"{nfe}/{infnfe}/{emit}/{ender_emit}/{xcep}",
         ),
-        'cidade_emi': xml_cidade_emi(
+        "cidade_emi": xml_cidade_emi(
             doc,
             f"{nfe}/{infnfe}/{emit}/{ender_emit}/{xmun}",
         ),
-        'estado_emi': xml_estado_emi(
+        "estado_emi": xml_estado_emi(
             doc,
             f"{nfe}/{infnfe}/{emit}/{ender_emit}/{estado}",
         ),
-        'data_nf': xml_data_nf(
+        "data_nf": xml_data_nf(
             doc,
             f"{nfe}/{infnfe}/{ide}/{dhemi}",
         ),
-        'serie_nf': xml_serie_nf(
+        "serie_nf": xml_serie_nf(
             doc,
             f"{nfe}/{infnfe}/{ide}/{serie}",
         ),
-        'numero_nf': xml_numero_nf(
+        "numero_nf": xml_numero_nf(
             doc,
             f"{nfe}/{infnfe}/{ide}/{nnf}",
         ),
-        'cnpj': xml_cnpj(
+        "cnpj": xml_cnpj(
             doc,
             f"{nfe}/{infnfe}/{dest}/{xcnpj}",
         ),
-        'destinatario': xml_destinatario(
+        "destinatario": xml_destinatario(
             doc,
             f"{nfe}/{infnfe}/{dest}/{xnome}",
         ),
-        'endereco': xml_endereco(
+        "endereco": xml_endereco(
             doc,
             f"{nfe}/{infnfe}/{dest}/{ender_dest}/{xlgr}",
             f"{nfe}/{infnfe}/{dest}/{ender_dest}/{nro}",
             f"{nfe}/{infnfe}/{dest}/{ender_dest}/{xcpl}",
         ),
-        'bairro': xml_bairro(
+        "bairro": xml_bairro(
             doc,
             f"{nfe}/{infnfe}/{dest}/{ender_dest}/{xbairro}",
         ),
-        'cep': xml_cep(
+        "cep": xml_cep(
             doc,
             f"{nfe}/{infnfe}/{dest}/{ender_dest}/{xcep}",
         ),
-        'cidade': xml_cidade(
+        "cidade": xml_cidade(
             doc,
             f"{nfe}/{infnfe}/{dest}/{ender_dest}/{xmun}",
         ),
-        'estado': xml_estado(
+        "estado": xml_estado(
             doc,
             f"{nfe}/{infnfe}/{dest}/{ender_dest}/{estado}",
         ),
-        'telefone': xml_telefone(
+        "telefone": xml_telefone(
             doc,
             f"{nfe}/{infnfe}/{dest}/{ender_dest}/{telefone}",
         ),
-        'informa': xml_informa(
+        "informa": xml_informa(
             doc,
             f"{nfe}/{infnfe}/{inf_adic}/{inf_cpl}",
         ),
-        'volume': xml_volume(
+        "volume": xml_volume(
             doc,
             f"{nfe}/{infnfe}/{transp}/{vol}/{qvol}",
         ),
-        'peso': xml_peso(
+        "peso": xml_peso(
             doc,
             f"{nfe}/{infnfe}/{transp}/{vol}/{peso_bruto}",
         ),
-        'valor': xml_valor(
+        "valor": xml_valor(
             doc,
             f"{nfe}/{infnfe}/{total}/{icms_total}/{valor_nf}",
         ),
@@ -1264,7 +1266,7 @@ def altera_status_pendente(id_not):
 def create_contexto_peso_romaneio(notas_romaneio):
     peso = Decimal(0.000)
     for x in notas_romaneio:
-        peso += x['idnotasclientes'].Peso
+        peso += x["idnotasclientes"].Peso
     return {"peso": peso}
 
 
