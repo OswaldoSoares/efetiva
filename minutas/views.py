@@ -15,7 +15,12 @@ from clientes.models import (
 from django.db.models import F, Max, Sum, Value
 from django.db.models.functions import Concat
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import get_list_or_404, get_object_or_404, redirect, render
+from django.shortcuts import (
+    get_list_or_404,
+    get_object_or_404,
+    redirect,
+    render,
+)
 from django.template.loader import render_to_string
 from django.templatetags.static import static
 from django.urls import reverse
@@ -155,7 +160,9 @@ def salvaminutaitens(
     )
     obj = MinutaItens()
     if minutaitens:
-        obj.idMinutaItens = list(minutaitens.values("idMinutaItens")[0].values())[0]
+        obj.idMinutaItens = list(
+            minutaitens.values("idMinutaItens")[0].values()
+        )[0]
     obj.Descricao = descricao
     obj.TipoItens = tipoitens
     obj.RecebePaga = recebepaga
@@ -244,7 +251,9 @@ def altera_status_minuta(novo_status, idminuta):
 
 
 def kmfinal_veiculo(idveiculo):
-    veiculo = Minuta.objects.filter(idVeiculo=idveiculo).aggregate(Max("KMFinal"))
+    veiculo = Minuta.objects.filter(idVeiculo=idveiculo).aggregate(
+        Max("KMFinal")
+    )
     kmfinal = [item for item in veiculo.values()]
     return kmfinal[0]
 
@@ -283,9 +292,9 @@ def index_minuta(request):
         if meu_filtro_status == "CONCLUIDA":
             minuta = Minuta.objects.filter(StatusMinuta=meu_filtro_status)
         else:
-            minuta = Minuta.objects.filter(StatusMinuta=meu_filtro_status).order_by(
-                "-Minuta"
-            )
+            minuta = Minuta.objects.filter(
+                StatusMinuta=meu_filtro_status
+            ).order_by("-Minuta")
     else:
         minuta = Minuta.objects.filter(StatusMinuta="ABERTA").values()
     minuta_status = Minuta.objects.all().values_list("StatusMinuta", flat=True)
@@ -333,7 +342,9 @@ def consultaminuta(request, idmin):
     )
     # Cria variaveis idcliente - idcategoriaveiculo - horainicial - horafinal - dataminuta
     idcliente = list(minuta.values("idCliente")[0].values())[0]
-    idcategoriaveiculo = list(minuta.values("idCategoriaVeiculo")[0].values())[0]
+    idcategoriaveiculo = list(minuta.values("idCategoriaVeiculo")[0].values())[
+        0
+    ]
     horainicial = list(minuta.values("HoraInicial")[0].values())[0]
     horafinal = list(minuta.values("HoraFinal")[0].values())[0]
     dataminuta = list(minuta.values("DataMinuta")[0].values())[0]
@@ -342,18 +353,24 @@ def consultaminuta(request, idmin):
     # Cria variavel phksec de cobrança - taxa expedição - valor ajudante
     phkescrecebe = list(tabelacliente.values("phkescCobra")[0].values())[0]
     phkescpaga = list(tabelacliente.values("phkescPaga")[0].values())[0]
-    valortaxaexpedicao = list(tabelacliente.values("TaxaExpedicao")[0].values())[0]
+    valortaxaexpedicao = list(
+        tabelacliente.values("TaxaExpedicao")[0].values()
+    )[0]
     s_minuta = MinutaSelecionada(idmin).__dict__
     romaneios = s_minuta["romaneio"]
     # TODO Removido a multiplcação da taxa de expedição pelo numero de romaneios 15/05/2023
     # if romaneios:
     #     valortaxaexpedicao = valortaxaexpedicao * len(romaneios)
     porcentagemseguro = list(tabelacliente.values("Seguro")[0].values())[0]
-    valorajudanterecebe = list(tabelacliente.values("AjudanteCobra")[0].values())[0]
+    valorajudanterecebe = list(
+        tabelacliente.values("AjudanteCobra")[0].values()
+    )[0]
     valor_ajudante_recebe_hora_extra = list(
         tabelacliente.values("AjudanteCobraHoraExtra")[0].values()
     )[0]
-    valorajudantepaga = list(tabelacliente.values("AjudantePaga")[0].values())[0]
+    valorajudantepaga = list(tabelacliente.values("AjudantePaga")[0].values())[
+        0
+    ]
     # Cria queryset obj tabela veículo
     tabelaveiculo = TabelaVeiculo.objects.filter(
         idCliente=idcliente, idCategoriaVeiculo=idcategoriaveiculo
@@ -403,19 +420,27 @@ def consultaminuta(request, idmin):
         valorporcentagempaga = list(
             tabelaveiculo.values("PorcentagemPaga")[0].values()
         )[0]
-        valorhorarecebe = list(tabelaveiculo.values("HoraCobra")[0].values())[0]
+        valorhorarecebe = list(tabelaveiculo.values("HoraCobra")[0].values())[
+            0
+        ]
         valorhorapaga = list(tabelaveiculo.values("HoraPaga")[0].values())[0]
         valorkmrecebe = list(tabelaveiculo.values("KMCobra")[0].values())[0]
         valorkmpaga = list(tabelaveiculo.values("KMPaga")[0].values())[0]
-        valorentrega_recebe = list(tabelaveiculo.values("EntregaCobra")[0].values())[0]
+        valorentrega_recebe = list(
+            tabelaveiculo.values("EntregaCobra")[0].values()
+        )[0]
         valorentregakg_recebe = list(
             tabelaveiculo.values("EntregaKGCobra")[0].values()
         )[0]
         valorentregavolume_recebe = list(
             tabelaveiculo.values("EntregaVolumeCobra")[0].values()
         )[0]
-        valorentrega_paga = list(tabelaveiculo.values("EntregaPaga")[0].values())[0]
-        valorentregakg_paga = list(tabelaveiculo.values("EntregaKGPaga")[0].values())[0]
+        valorentrega_paga = list(
+            tabelaveiculo.values("EntregaPaga")[0].values()
+        )[0]
+        valorentregakg_paga = list(
+            tabelaveiculo.values("EntregaKGPaga")[0].values()
+        )[0]
         valorentregavolume_paga = list(
             tabelaveiculo.values("EntregaVolumePaga")[0].values()
         )[0]
@@ -423,7 +448,9 @@ def consultaminuta(request, idmin):
         # TODO VALOR DA ENTREGA MUDOU PARA TABELA DE CLIENTE 03/10/2020
         # valorentrega = list(tabelaveiculo.values('EntregaCobra')[0].values())[0]
         # minimoentrega = list(tabelaveiculo.values('EntregaMinimo')[0].values())[0]
-        valorsaidarecebe = list(tabelaveiculo.values("SaidaCobra")[0].values())[0]
+        valorsaidarecebe = list(
+            tabelaveiculo.values("SaidaCobra")[0].values()
+        )[0]
         valorsaidapaga = list(tabelaveiculo.values("SaidaPaga")[0].values())[0]
         # Cria variavel dezhoras para verificar quantidade de digitos da
         # horas excedentes e minimo
@@ -552,7 +579,9 @@ def consultaminuta(request, idmin):
             fator = Decimal(1.00)
         else:
             fator = Decimal(0.00)
-        calcula_ajudante_recebe_hora_extra = valor_ajudante_recebe_hora_extra * fator
+        calcula_ajudante_recebe_hora_extra = (
+            valor_ajudante_recebe_hora_extra * fator
+        )
         calcula_ajudante_recebe_hora_extra += (
             valor_ajudante_recebe_hora_extra * Decimal(int(horas) - 10)
         )
@@ -841,30 +870,34 @@ def consultaminuta(request, idmin):
         )
         tabela_recebe_e_paga[str(item)]["type_swr"] = "checkbox"
         # Coluna 3 Recebe - tipo moeda ou porcentagem
-        tabela_recebe_e_paga[str(item)]["type_tabela_recebe"] = type_tabela_recebe[
-            index
-        ]
+        tabela_recebe_e_paga[str(item)][
+            "type_tabela_recebe"
+        ] = type_tabela_recebe[index]
         # Columa 3 Recebe - valores das tabelas
         tabela_recebe_e_paga[str(item)]["id_tr"] = (
             "ta-%s-recebe" % keys_nome_recebe[index]
         )
         tabela_recebe_e_paga[str(item)]["name_tr"] = "tabela-recebe"
-        tabela_recebe_e_paga[str(item)]["value_tr"] = values_tabela_recebe[index]
+        tabela_recebe_e_paga[str(item)]["value_tr"] = values_tabela_recebe[
+            index
+        ]
         tabela_recebe_e_paga[str(item)]["class_tr"] = (
             "demonstrativo-input change-%s-recebe" % keys_nome_recebe[index]
         )
         tabela_recebe_e_paga[str(item)]["type_tr"] = "number"
         tabela_recebe_e_paga[str(item)]["step_tr"] = "0.01"
         # Coluna 4 Recebe - tipo moeda ou tempo ou unidade ou kg
-        tabela_recebe_e_paga[str(item)]["type_minuta_recebe"] = type_minuta_recebe[
-            index
-        ]
+        tabela_recebe_e_paga[str(item)][
+            "type_minuta_recebe"
+        ] = type_minuta_recebe[index]
         # Columa 4 Recebe - valores das tabelas
         tabela_recebe_e_paga[str(item)]["id_mr"] = (
             "mi-%s-recebe" % keys_nome_recebe[index]
         )
         tabela_recebe_e_paga[str(item)]["name_mr"] = "minuta-recebe"
-        tabela_recebe_e_paga[str(item)]["value_mr"] = values_minuta_recebe[index]
+        tabela_recebe_e_paga[str(item)]["value_mr"] = values_minuta_recebe[
+            index
+        ]
         tabela_recebe_e_paga[str(item)]["class_mr"] = (
             "demonstrativo-input change-%s-recebe" % keys_nome_recebe[index]
         )
@@ -884,7 +917,9 @@ def consultaminuta(request, idmin):
     # Configura os valores a pagar das chaves do dict
     for index, item in enumerate(keys_paga):
         # Coluna 2 Paga - Switch
-        tabela_recebe_e_paga[str(item)]["id_swp"] = "sw-%s-paga" % keys_nome_paga[index]
+        tabela_recebe_e_paga[str(item)]["id_swp"] = (
+            "sw-%s-paga" % keys_nome_paga[index]
+        )
         tabela_recebe_e_paga[str(item)]["name_swp"] = "switch"
         tabela_recebe_e_paga[str(item)]["checked_swp"] = switch_paga.get(
             "%s" % keys_nome_paga[index]
@@ -897,9 +932,13 @@ def consultaminuta(request, idmin):
         )
         tabela_recebe_e_paga[str(item)]["type_swp"] = "checkbox"
         # Coluna 3 Paga - tipo moeda ou porcentagem
-        tabela_recebe_e_paga[str(item)]["type_tabela_paga"] = type_tabela_paga[index]
+        tabela_recebe_e_paga[str(item)]["type_tabela_paga"] = type_tabela_paga[
+            index
+        ]
         # Columa 3 Paga - valores das tabelas
-        tabela_recebe_e_paga[str(item)]["id_tp"] = "ta-%s-paga" % keys_nome_paga[index]
+        tabela_recebe_e_paga[str(item)]["id_tp"] = (
+            "ta-%s-paga" % keys_nome_paga[index]
+        )
         tabela_recebe_e_paga[str(item)]["name_tp"] = "tabela-paga"
         tabela_recebe_e_paga[str(item)]["value_tp"] = values_tabela_paga[index]
         tabela_recebe_e_paga[str(item)]["class_tp"] = (
@@ -908,9 +947,13 @@ def consultaminuta(request, idmin):
         tabela_recebe_e_paga[str(item)]["type_tp"] = "number"
         tabela_recebe_e_paga[str(item)]["step_tp"] = "0.01"
         # Coluna 4 Paga - tipo moeda ou tempo ou unidade ou kg
-        tabela_recebe_e_paga[str(item)]["type_minuta_paga"] = type_minuta_paga[index]
+        tabela_recebe_e_paga[str(item)]["type_minuta_paga"] = type_minuta_paga[
+            index
+        ]
         # Columa 4 Paga - valores das tabelas
-        tabela_recebe_e_paga[str(item)]["id_mp"] = "mi-%s-paga" % keys_nome_paga[index]
+        tabela_recebe_e_paga[str(item)]["id_mp"] = (
+            "mi-%s-paga" % keys_nome_paga[index]
+        )
         tabela_recebe_e_paga[str(item)]["name_mp"] = "minuta-paga"
         tabela_recebe_e_paga[str(item)]["value_mp"] = values_minuta_paga[index]
         tabela_recebe_e_paga[str(item)]["class_mp"] = (
@@ -922,9 +965,13 @@ def consultaminuta(request, idmin):
             tabela_recebe_e_paga[str(item)]["type_mp"] = "number"
             tabela_recebe_e_paga[str(item)]["step_mp"] = "0.01"
         # Coluna 5 Paga - totais
-        tabela_recebe_e_paga[str(item)]["id_top"] = "to-%s-paga" % keys_nome_paga[index]
+        tabela_recebe_e_paga[str(item)]["id_top"] = (
+            "to-%s-paga" % keys_nome_paga[index]
+        )
         # Coluna 5 Paga - totais input hidden
-        tabela_recebe_e_paga[str(item)]["id_hip"] = "hi-%s-paga" % keys_nome_paga[index]
+        tabela_recebe_e_paga[str(item)]["id_hip"] = (
+            "hi-%s-paga" % keys_nome_paga[index]
+        )
     # Cria contexto para enviar ao template
     contexto = {
         "tabela_recebe_e_paga": tabela_recebe_e_paga,
@@ -1066,14 +1113,24 @@ def imprimeminuta(request, idmin):
 
         url = f"{STATIC_ROOT}/website/img/transportadora.jpg"
         pdf.roundRect(
-            convertemp(10), convertemp(10), convertemp(190), convertemp(277), 10
+            convertemp(10),
+            convertemp(10),
+            convertemp(190),
+            convertemp(277),
+            10,
         )
         pdf.drawImage(
-            url, convertemp(12), convertemp(265), convertemp(40), convertemp(20)
+            url,
+            convertemp(12),
+            convertemp(265),
+            convertemp(40),
+            convertemp(20),
         )
         pdf.setFont("Times-Bold", 18)
         pdf.drawString(
-            convertemp(56), convertemp(279), "TRANSEFETIVA TRANSPORTE - EIRELLI - ME"
+            convertemp(56),
+            convertemp(279),
+            "TRANSEFETIVA TRANSPORTE - EIRELLI - ME",
         )
         pdf.setFont("Times-Roman", 12)
         pdf.drawString(
@@ -1083,14 +1140,19 @@ def imprimeminuta(request, idmin):
         )
         pdf.setFont("Times-Roman", 12)
         pdf.drawString(
-            convertemp(70), convertemp(268), "(11) 2305-0582 - WHATSAPP (11) 94167-0583"
+            convertemp(70),
+            convertemp(268),
+            "(11) 2305-0582 - WHATSAPP (11) 94167-0583",
         )
         pdf.drawString(
             convertemp(67),
             convertemp(263),
-            "e-mail: transefetiva@terra.com.br - " "operacional.efetiva@terra.com.br",
+            "e-mail: transefetiva@terra.com.br - "
+            "operacional.efetiva@terra.com.br",
         )
-        pdf.line(convertemp(10), convertemp(260), convertemp(200), convertemp(260))
+        pdf.line(
+            convertemp(10), convertemp(260), convertemp(200), convertemp(260)
+        )
         # ----
         pdf.setFillColor(HexColor("#FFFFFF"))
         pdf.setStrokeColor(HexColor("#FFFFFF"))
@@ -1119,18 +1181,30 @@ def imprimeminuta(request, idmin):
         # ----
         pdf.setFont("Times-Roman", 10)
         pdf.setFillColor(HexColor("#c1c1c1"))
-        pdf.rect(convertemp(10), convertemp(249), convertemp(95), convertemp(5), fill=1)
+        pdf.rect(
+            convertemp(10),
+            convertemp(249),
+            convertemp(95),
+            convertemp(5),
+            fill=1,
+        )
         pdf.setFillColor(HexColor("#000000"))
-        pdf.drawCentredString(convertemp(57.5), convertemp(250.3), "DADOS DO CLIENTE")
+        pdf.drawCentredString(
+            convertemp(57.5), convertemp(250.3), "DADOS DO CLIENTE"
+        )
         # ----
         pdf.setFont("Times-Roman", 8)
         pdf.drawString(
-            convertemp(11), convertemp(246), "CLIENTE: " + str(minuta.idCliente.Nome)
+            convertemp(11),
+            convertemp(246),
+            "CLIENTE: " + str(minuta.idCliente.Nome),
         )
         endereco = minuta.idCliente.Endereco + " - " + minuta.idCliente.Bairro
         if len(endereco) > 45:
             pdf.drawString(
-                convertemp(11), convertemp(242), "ENDEREÇO: " + endereco[0:45] + "..."
+                convertemp(11),
+                convertemp(242),
+                "ENDEREÇO: " + endereco[0:45] + "...",
             )
         else:
             pdf.drawString(
@@ -1151,7 +1225,9 @@ def imprimeminuta(request, idmin):
             + minuta.idCliente.CEP,
         )
         pdf.drawString(
-            convertemp(11), convertemp(234), "INSCRIÇÃO CNPJ:" + minuta.idCliente.CNPJ
+            convertemp(11),
+            convertemp(234),
+            "INSCRIÇÃO CNPJ:" + minuta.idCliente.CNPJ,
         )
         pdf.drawString(
             convertemp(11),
@@ -1160,18 +1236,26 @@ def imprimeminuta(request, idmin):
         )
         if contato:
             pdf.drawString(
-                convertemp(11), convertemp(226), "CONTATO: " + contato[0].Contato
+                convertemp(11),
+                convertemp(226),
+                "CONTATO: " + contato[0].Contato,
             )
             pdf.drawString(
                 convertemp(11), convertemp(222), "TELEFONE: " + contato[0].Fone
             )
         # ----
-        pdf.line(convertemp(105), convertemp(249), convertemp(105), convertemp(217))
+        pdf.line(
+            convertemp(105), convertemp(249), convertemp(105), convertemp(217)
+        )
         # ----
         pdf.setFont("Times-Roman", 10)
         pdf.setFillColor(HexColor("#c1c1c1"))
         pdf.rect(
-            convertemp(105), convertemp(249), convertemp(95), convertemp(5), fill=1
+            convertemp(105),
+            convertemp(249),
+            convertemp(95),
+            convertemp(5),
+            fill=1,
         )
         pdf.setFillColor(HexColor("#000000"))
         pdf.drawCentredString(
@@ -1194,7 +1278,9 @@ def imprimeminuta(request, idmin):
         if motorista:
             y -= 4
             pdf.drawString(
-                convertemp(106), convertemp(y), "MOTORISTA: {}".format(motorista)
+                convertemp(106),
+                convertemp(y),
+                "MOTORISTA: {}".format(motorista),
             )
         if ajudante:
             if ajudante.count() == 1:
@@ -1217,12 +1303,16 @@ def imprimeminuta(request, idmin):
                         )
                     else:
                         pdf.drawString(
-                            convertemp(126), convertemp(y), str(ajudante[x].idPessoal)
+                            convertemp(126),
+                            convertemp(y),
+                            str(ajudante[x].idPessoal),
                         )
         if minuta.KMInicial:
             y -= 4
             pdf.drawString(
-                convertemp(106), convertemp(y), "KM Inicial: " + str(minuta.KMInicial)
+                convertemp(106),
+                convertemp(y),
+                "KM Inicial: " + str(minuta.KMInicial),
             )
         y -= 4
         pdf.drawString(
@@ -1233,13 +1323,23 @@ def imprimeminuta(request, idmin):
         # ----
         pdf.setFont("Times-Roman", 10)
         pdf.setFillColor(HexColor("#c1c1c1"))
-        pdf.rect(convertemp(10), convertemp(212), convertemp(95), convertemp(5), fill=1)
+        pdf.rect(
+            convertemp(10),
+            convertemp(212),
+            convertemp(95),
+            convertemp(5),
+            fill=1,
+        )
         pdf.setFillColor(HexColor("#000000"))
         pdf.drawCentredString(
-            convertemp(57.5), convertemp(213.3), "DESCRIÇÃO DO SERVIÇO EXECUTADO"
+            convertemp(57.5),
+            convertemp(213.3),
+            "DESCRIÇÃO DO SERVIÇO EXECUTADO",
         )
         # ----
-        pdf.line(convertemp(105), convertemp(212), convertemp(105), convertemp(172))
+        pdf.line(
+            convertemp(105), convertemp(212), convertemp(105), convertemp(172)
+        )
         # TODO Excluido custo operacional da minuta 18/09/2020
         # pdf.setFont("Times-Roman", 10)
         # pdf.setFillColor(HexColor("#c1c1c1"))
@@ -1250,7 +1350,11 @@ def imprimeminuta(request, idmin):
         pdf.setFont("Times-Roman", 10)
         pdf.setFillColor(HexColor("#c1c1c1"))
         pdf.rect(
-            convertemp(10), convertemp(167), convertemp(190), convertemp(5), fill=1
+            convertemp(10),
+            convertemp(167),
+            convertemp(190),
+            convertemp(5),
+            fill=1,
         )
         pdf.setFillColor(HexColor("#000000"))
         pdf.drawCentredString(
@@ -1259,7 +1363,13 @@ def imprimeminuta(request, idmin):
         # ----
         pdf.setFont("Times-Roman", 10)
         pdf.setFillColor(HexColor("#c1c1c1"))
-        pdf.rect(convertemp(10), convertemp(87), convertemp(190), convertemp(5), fill=1)
+        pdf.rect(
+            convertemp(10),
+            convertemp(87),
+            convertemp(190),
+            convertemp(5),
+            fill=1,
+        )
         pdf.setFillColor(HexColor("#000000"))
         pdf.drawCentredString(
             convertemp(105), convertemp(88.3), "LOCAIS DE ENTREGAS E COLETAS"
@@ -1267,7 +1377,9 @@ def imprimeminuta(request, idmin):
         pdf.setFont("Times-Roman", 8)
         entregacoleta = ""
         if minuta.Entrega and minuta.Coleta:
-            entregacoleta = "ENTREGA: " + minuta.Entrega + " - COLETA: " + minuta.Coleta
+            entregacoleta = (
+                "ENTREGA: " + minuta.Entrega + " - COLETA: " + minuta.Coleta
+            )
         elif minuta.Entrega:
             entregacoleta = "ENTREGA: " + minuta.Entrega
         elif minuta.Coleta:
@@ -1279,13 +1391,21 @@ def imprimeminuta(request, idmin):
                 if linha == 4:
                     break
                 y -= 3
-                pdf.drawString(convertemp(11), convertemp(y), wrap_entcol[linha])
+                pdf.drawString(
+                    convertemp(11), convertemp(y), wrap_entcol[linha]
+                )
         else:
             pdf.drawString(convertemp(11), convertemp(84.4), entregacoleta)
         # ----
         pdf.setFont("Times-Roman", 10)
         pdf.setFillColor(HexColor("#c1c1c1"))
-        pdf.rect(convertemp(10), convertemp(69), convertemp(190), convertemp(5), fill=1)
+        pdf.rect(
+            convertemp(10),
+            convertemp(69),
+            convertemp(190),
+            convertemp(5),
+            fill=1,
+        )
         pdf.setFillColor(HexColor("#000000"))
         pdf.drawCentredString(convertemp(105), convertemp(70.3), "OBSERVAÇÕES")
         pdf.setFont("Times-Roman", 8)
@@ -1303,14 +1423,24 @@ def imprimeminuta(request, idmin):
         # ----
         pdf.setFont("Times-Roman", 10)
         pdf.setFillColor(HexColor("#c1c1c1"))
-        pdf.rect(convertemp(10), convertemp(51), convertemp(190), convertemp(5), fill=1)
+        pdf.rect(
+            convertemp(10),
+            convertemp(51),
+            convertemp(190),
+            convertemp(5),
+            fill=1,
+        )
         pdf.setFillColor(HexColor("#000000"))
-        pdf.drawCentredString(convertemp(105), convertemp(52.3), "KILOMETRAGEM")
+        pdf.drawCentredString(
+            convertemp(105), convertemp(52.3), "KILOMETRAGEM"
+        )
         pdf.setFont("Times-Roman", 12)
         pdf.drawString(convertemp(11), convertemp(45.5), "KM INICIAL: ")
         pdf.drawString(convertemp(106), convertemp(45.5), "KM FINAL: ")
         # ----
-        pdf.line(convertemp(10), convertemp(43), convertemp(200), convertemp(43))
+        pdf.line(
+            convertemp(10), convertemp(43), convertemp(200), convertemp(43)
+        )
         # ----
         pdf.roundRect(
             convertemp(12), convertemp(12), convertemp(101), convertemp(19), 3
@@ -1330,9 +1460,13 @@ def imprimeminuta(request, idmin):
         pdf.drawText(textobject)
         # ----
         pdf.setFont("Times-Roman", 10)
-        pdf.line(convertemp(118), convertemp(15), convertemp(194), convertemp(15))
+        pdf.line(
+            convertemp(118), convertemp(15), convertemp(194), convertemp(15)
+        )
         pdf.drawString(
-            convertemp(118), convertemp(12), "DATA, ASSINATURA E CARIMBO DO CLIENTE"
+            convertemp(118),
+            convertemp(12),
+            "DATA, ASSINATURA E CARIMBO DO CLIENTE",
         )
         # Close the PDF object cleanly.
         pdf.setTitle("Minuta.pdf")
@@ -1683,7 +1817,9 @@ def fecha_minuta(request, idmin):
                         "00:00",
                         idmin,
                     )
-    dados_descricao_despesa_recebe = request.POST.getlist("descricao-despesa-recebe")
+    dados_descricao_despesa_recebe = request.POST.getlist(
+        "descricao-despesa-recebe"
+    )
     dados_valor_despesa_recebe = request.POST.getlist("valor-despesa-recebe")
     for index, itens in enumerate(dados_descricao_despesa_recebe, start=0):
         float(dados_valor_despesa_recebe[index].replace(",", "."))
@@ -1699,7 +1835,9 @@ def fecha_minuta(request, idmin):
             "00:00",
             idmin,
         )
-    dados_descricao_despesa_paga = request.POST.getlist("descricao-despesa-paga")
+    dados_descricao_despesa_paga = request.POST.getlist(
+        "descricao-despesa-paga"
+    )
     dados_valor_despesa_paga = request.POST.getlist("valor-despesa-paga")
     for index, itens in enumerate(dados_descricao_despesa_paga, start=0):
         float(dados_valor_despesa_paga[index].replace(",", "."))
@@ -1720,9 +1858,9 @@ def fecha_minuta(request, idmin):
         if itens.Valor == 0:
             excluiminutaitens(itens.idMinutaItens)
         altera_status_minuta("FECHADA", idmin)
-    valor_minuta = MinutaItens.objects.filter(idMinuta=idmin, RecebePaga="R").aggregate(
-        totalminuta=Sum("Valor")
-    )
+    valor_minuta = MinutaItens.objects.filter(
+        idMinuta=idmin, RecebePaga="R"
+    ).aggregate(totalminuta=Sum("Valor"))
     cria_minuta_fatura(valor_minuta["totalminuta"], idmin)
     return redirect("consultaminuta", idmin)
 
@@ -1735,14 +1873,14 @@ def estorna_minuta(request, idmin):
         altera_status_minuta("ABERTA", idmin)
     elif minuta.StatusMinuta == "FECHADA":
         altera_status_minuta("ABERTA", idmin)
-        itens_minuta_recebe_excluir = MinutaItens.objects.filter(idMinuta=idmin).filter(
-            TipoItens="RECEBE"
-        )
+        itens_minuta_recebe_excluir = MinutaItens.objects.filter(
+            idMinuta=idmin
+        ).filter(TipoItens="RECEBE")
         for itens in itens_minuta_recebe_excluir:
             excluiminutaitens(itens.idMinutaItens)
-        itens_minuta_paga_excluir = MinutaItens.objects.filter(idMinuta=idmin).filter(
-            RecebePaga="P"
-        )
+        itens_minuta_paga_excluir = MinutaItens.objects.filter(
+            idMinuta=idmin
+        ).filter(RecebePaga="P")
         for itens in itens_minuta_paga_excluir:
             excluiminutaitens(itens.idMinutaItens)
     return redirect("consultaminuta", idmin)
@@ -1759,7 +1897,9 @@ def criaminutamotorista(request):
         idminuta = request.POST.get("idMinuta")
         form = CadastraMinutaMotorista(request.POST)
         # Altera field idVeiculo conforme motorista escolhido
-        veiculo = Veiculo.objects.filter(Motorista=request.POST.get("idPessoal"))
+        veiculo = Veiculo.objects.filter(
+            Motorista=request.POST.get("idPessoal")
+        )
         if veiculo.count() == 1:
             idveiculo = ""
             for x in veiculo:
@@ -1788,7 +1928,9 @@ def criaminutamotorista(request):
         form = CadastraMinutaMotorista(
             initial={"idMinuta": idminuta, "Cargo": "MOTORISTA"}
         )
-    return salva_form(request, form, "minutas/criaminutamotorista.html", idminuta)
+    return salva_form(
+        request, form, "minutas/criaminutamotorista.html", idminuta
+    )
 
 
 def excluiminutamotorista(request, idmincol):
@@ -1800,7 +1942,9 @@ def excluiminutamotorista(request, idmincol):
     if request.method == "POST":
         motoristaminuta.delete()
         # Altera field idVeiculo para null
-        minuta = get_object_or_404(Minuta, idMinuta=motoristaminuta.idMinuta_id)
+        minuta = get_object_or_404(
+            Minuta, idMinuta=motoristaminuta.idMinuta_id
+        )
         obj = Minuta()
         obj.idMinuta = minuta.idMinuta
         obj.Minuta = minuta.Minuta
@@ -1835,7 +1979,9 @@ def criaminutaajudante(request):
         form = CadastraMinutaAjudante(
             initial={"idMinuta": idminuta, "Cargo": "AJUDANTE"}
         )
-    return salva_form(request, form, "minutas/criaminutaajudante.html", idminuta)
+    return salva_form(
+        request, form, "minutas/criaminutaajudante.html", idminuta
+    )
 
 
 def excluiminutaajudante(request, idmincol):
@@ -1919,17 +2065,27 @@ def criaminutadespesa(request):
             idminuta = request.POST.get("idMinuta")
             despesa = buscaminutadespesa(descricao, idminuta)
             if despesa:
-                idminutaitem = list(despesa.values("idMinutaItens")[0].values())[0]
-                minutaitens = get_object_or_404(MinutaItens, idMinutaItens=idminutaitem)
-                form = CadastraMinutaDespesa(request.POST, instance=minutaitens)
+                idminutaitem = list(
+                    despesa.values("idMinutaItens")[0].values()
+                )[0]
+                minutaitens = get_object_or_404(
+                    MinutaItens, idMinutaItens=idminutaitem
+                )
+                form = CadastraMinutaDespesa(
+                    request.POST, instance=minutaitens
+                )
             else:
                 form = CadastraMinutaDespesa(request.POST)
-            return salva_form(request, form, "minutas/colsultaminuta.html", idminuta)
+            return salva_form(
+                request, form, "minutas/colsultaminuta.html", idminuta
+            )
     return redirect("consultaminuta", request.POST.get("idMinuta"))
 
 
 def buscaminutadespesa(descricao, idminuta):
-    buscadespesa = MinutaItens.objects.filter(Descricao=descricao, idMinuta=idminuta)
+    buscadespesa = MinutaItens.objects.filter(
+        Descricao=descricao, idMinuta=idminuta
+    )
     return buscadespesa
 
 
@@ -1954,7 +2110,9 @@ def criaminutaentrega(request):
     else:
         idminuta = request.GET.get("idminuta")
         form = CadastraMinutaNota(idminuta, initial={"idMinuta": idminuta})
-    return salva_form(request, form, "minutas/criaminutaentrega.html", idminuta)
+    return salva_form(
+        request, form, "minutas/criaminutaentrega.html", idminuta
+    )
 
 
 def editaminutaentrega(request, idminent):
@@ -1996,7 +2154,8 @@ def excluiminutaentrega(request, idminent):
 
 def buscaminutaentrega(request):
     nota_guia = MinutaNotas.objects.filter(
-        idMinuta_id=request.GET.get("id_minuta"), Nota=request.GET.get("nota_guia")
+        idMinuta_id=request.GET.get("id_minuta"),
+        Nota=request.GET.get("nota_guia"),
     )
     nota_guia_nome = list(nota_guia.values("Nome")[0].values())[0]
     nota_guia_cidade = list(nota_guia.values("Cidade")[0].values())[0]
@@ -2019,15 +2178,21 @@ def filtraminutaveiculo(request):
     veiculo = ""
     if propriedade == "1":
         veiculo = Veiculo.objects.annotate(
-            Veiculo=Concat("Marca", Value(" - "), "Modelo", Value(" - "), "Placa")
+            Veiculo=Concat(
+                "Marca", Value(" - "), "Modelo", Value(" - "), "Placa"
+            )
         ).filter(Motorista=idmotorista)
     elif propriedade == "2":
         veiculo = Veiculo.objects.annotate(
-            Veiculo=Concat("Marca", Value(" - "), "Modelo", Value(" - "), "Placa")
+            Veiculo=Concat(
+                "Marca", Value(" - "), "Modelo", Value(" - "), "Placa"
+            )
         ).filter(Motorista=17)
     elif propriedade == "3":
         veiculo = Veiculo.objects.annotate(
-            Veiculo=Concat("Marca", Value(" - "), "Modelo", Value(" - "), "Placa")
+            Veiculo=Concat(
+                "Marca", Value(" - "), "Modelo", Value(" - "), "Placa"
+            )
         ).all()
     listaveiculo = []
     for x in veiculo:
@@ -2104,7 +2269,9 @@ def salva_form(request, form, template_name, idmin):
         "numerominuta": numerominuta,
         "numeroidminuta": numeroidminuta,
     }
-    data["html_form"] = render_to_string(template_name, context, request=request)
+    data["html_form"] = render_to_string(
+        template_name, context, request=request
+    )
     return JsonResponse(data)
 
 
@@ -2140,7 +2307,9 @@ def filtra_minuta(request):
     c_filtro_consulta = request.GET.get("FiltroConsulta")
     c_meses = request.GET.get("Meses")
     c_anos = request.GET.get("Anos")
-    data = filtra_consulta(request, c_filtro, c_filtro_consulta, c_meses, c_anos)
+    data = filtra_consulta(
+        request, c_filtro, c_filtro_consulta, c_meses, c_anos
+    )
     return data
 
 
@@ -2366,6 +2535,7 @@ def estorna_pagamentos_ajudantes(request):
     data = facade.create_data_exclui_pagamentos_ajudantes(request, contexto)
     return data
 
+
 def estorna_pagamentos_motorista(request):
     idminuta = request.GET.get("idminuta")
     facade.exclui_pagamentos_motorista(idminuta)
@@ -2389,7 +2559,9 @@ def minutas_periodo(request):
     inicial = request.GET.get("inicial")
     final = request.GET.get("final")
     idcliente = int(request.GET.get("cliente"))
-    contexto = facade.create_contexto_minutas_periodo(inicial, final, idcliente)
+    contexto = facade.create_contexto_minutas_periodo(
+        inicial, final, idcliente
+    )
     contexto.update({"inicial": inicial, "final": final})
     response = print_minutas_periodo(contexto)
     return response
