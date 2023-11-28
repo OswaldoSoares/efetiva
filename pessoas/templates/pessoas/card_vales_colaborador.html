@@ -44,6 +44,17 @@
 			</div>
 			<div class="input-group-addon
 			addon-my-color">
+				<i class="icofont-trash i-button"
+                    onclick="openMyModal(event); return false;"
+                    data-title="EXCLUI VALE"
+                    data-action="{% url 'exclui_vale_colaborador' %}"
+                    data-button-save-label="CONFIRMAR"
+					data-confirma="confirma_vale"
+	 			    data-idconfirma="{{ vale.idvale }}"
+                    title="Exclui Vale"></i>
+			</div>
+			<div class="input-group-addon
+			addon-my-color">
 				<i class="icofont-square
 				i-button
 				js-pessoas-seleciona-vale
