@@ -1,19 +1,27 @@
 <form method="post" action="">
     {% csrf_token %}
-    <div class="card-body">
-        <div class="itens-cadastro">
-            <div class="item-form">
-                <span>
-                    CONFIRMA EXCLUSÃO DO VALE
-                </span>
-            </div>
-            <div class="item-form">
-                <span>
-                    {{ vale.Data }} - {{ vale.Descricao }} - {{ vale.Valor }}
-                </span>
-            </div>
-            <input type="hidden" name="idvale" value="{{ vale.idVales }}">
-            <input type="hidden" name="idpessoal" value="{{ idpessoal  }}">
+    <div>
+        <div class="text-center font-maior">
+            <span>
+                CONFIRMA EXCLUSÃO DO VALE
+            </span>
         </div>
+        <div class="text-center">
+            <span>
+                DATA: {{ vale.Data }}
+            </span>
+        </div>
+        <div class="text-center">
+            <span>
+                DESCRIÇÃO: {{ vale.Descricao }}
+            </span>
+        </div>
+        <div class="text-center">
+            <span>
+                VALOR: R$ {{ vale.Valor }}
+            </span>
+        </div>
+        <input type="hidden" name="idvale" value="{{ vale.idVales }}">
+        <input type="hidden" name="idpessoal" value="{{ idpessoal  }}">
     </div>
 </form>
