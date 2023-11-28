@@ -302,22 +302,22 @@ def index_minuta(request):
     minutacolaboradores = MinutaColaboradores.objects.filter(Cargo="MOTORISTA")
     hoje = str_hoje()
     contexto = {
-            "m_aberta": m_aberta,
-            "m_concluida": m_concluida,
-            "m_fechada": m_fechada,
-            "t_aberta": t_aberta,
-            "t_concluida": t_concluida,
-            "t_fechada": t_fechada,
-            "filtro_cliente": filtro_cliente,
-            "filtro_colaborador": filtro_colaborador,
-            "filtro_veiculo": filtro_veiculo,
-            "filtro_cidade": filtro_cidade,
-            "faturada": faturada,
-            "minuta": minuta,
-            "minuta_status": minuta_status,
-            "minutacolaboradores": minutacolaboradores,
-            "hoje": hoje,
-        }
+        "m_aberta": m_aberta,
+        "m_concluida": m_concluida,
+        "m_fechada": m_fechada,
+        "t_aberta": t_aberta,
+        "t_concluida": t_concluida,
+        "t_fechada": t_fechada,
+        "filtro_cliente": filtro_cliente,
+        "filtro_colaborador": filtro_colaborador,
+        "filtro_veiculo": filtro_veiculo,
+        "filtro_cidade": filtro_cidade,
+        "faturada": faturada,
+        "minuta": minuta,
+        "minuta_status": minuta_status,
+        "minutacolaboradores": minutacolaboradores,
+        "hoje": hoje,
+    }
     contexto.update({"clientes": clientes})
     return render(request, "minutas/index.html", contexto)
 
