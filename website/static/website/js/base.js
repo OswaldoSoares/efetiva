@@ -5,12 +5,16 @@ $(".box-loader").hide()
 function openMyModal(event) {
     var modal = initModalDialog(event, '#MyModal');
     var url = $(event.target).data('action');
-    idpessoal = localStorage.getItem("idpessoal");
+    var idpessoal = localStorage.getItem("idpessoal");
+    var confirma = $(event.target).data("confirma")
+    var idconfirma = $(event.target).data("idconfirma")
     $.ajax({
         type: "GET",
         url: url,
         data : {
             idpessoal: idpessoal,
+            confirma: confirma,
+            idconfirma: idconfirma,
         }
     }).done(function(data, textStatus, jqXHR) {
         modal.find('.modal-body').html(data.html_modal);
