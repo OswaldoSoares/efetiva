@@ -756,3 +756,16 @@ def adiciona_vale_colaborador(request):
         idpessoal = int(request.GET.get("idpessoal"))
     data = facade.modal_vale_colaborador(request, idpessoal)
     return data
+
+
+def exclui_vale_colaborador(request):
+    if request.method == "POST":
+        idvale = request.POST.get("idvale")
+        idpessoal = request.POST.get("idpessoal")
+        data = facade.exclui_vale_colaborador_id(request, idvale, idpessoal)
+    else:
+        confirma = request.GET.get("confirma")
+        idconfirma = request.GET.get("idconfirma")
+        idpessoal = request.GET.get("idpessoal")
+        data = facade.modal_confirma(request, confirma, idconfirma, idpessoal)
+    return data
