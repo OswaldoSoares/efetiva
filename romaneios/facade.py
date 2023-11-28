@@ -13,13 +13,19 @@ from django.template.loader import render_to_string
 from website.facade import nome_curto
 from website.models import FileUpload
 
-from romaneios.models import (NotasClientes, NotasOcorrencias, RomaneioNotas,
-                              Romaneios)
+from romaneios.models import (
+    NotasClientes,
+    NotasOcorrencias,
+    RomaneioNotas,
+    Romaneios,
+)
 
 
 def create_contexto_seleciona_cliente():
     clientes = Cliente.objects.all()
-    lista = [{"idcliente": x.idCliente, "fantasia": x.Fantasia} for x in clientes]
+    lista = [
+        {"idcliente": x.idCliente, "fantasia": x.Fantasia} for x in clientes
+    ]
     return lista
 
 
@@ -77,7 +83,9 @@ def valida_ocorrencia(request):
     # Valida Tipo Ocorrencia
     tipo_ocorrencia = request.POST.get("tipo_ocorrencia")
     if tipo_ocorrencia == "":
-        msg["erro_tipo_ocorrencia"] = "Obrigatório selecionar o tipo de ocorrencia."
+        msg[
+            "erro_tipo_ocorrencia"
+        ] = "Obrigatório selecionar o tipo de ocorrencia."
         error = True
     return error, msg
 
@@ -173,14 +181,18 @@ def html_lista_ocorrencia(request, contexto, data):
 
 def html_lista_notas_cliente(request, contexto, data):
     data["html_lista_notas_cliente"] = render_to_string(
-        "romaneios/html_card_lista_notas_cliente.html", contexto, request=request
+        "romaneios/html_card_lista_notas_cliente.html",
+        contexto,
+        request=request,
     )
     return data
 
 
 def html_card_lista_notas_cliente(request, contexto, data):
     data["html_card_lista_notas_cliente"] = render_to_string(
-        "romaneios/html_card_lista_notas_cliente.html", contexto, request=request
+        "romaneios/html_card_lista_notas_cliente.html",
+        contexto,
+        request=request,
     )
     return data
 
@@ -255,7 +267,9 @@ def read_nota_database(_id_not):
     nota_database["bairro_emi"] = nota.Bairro_emi
     nota_database["cidade_emi"] = nota.Cidade_emi
     nota_database["estado_emi"] = nota.Estado_emi
-    nota_database["data_nota"] = datetime.datetime.strftime(nota.DataColeta, "%Y-%m-%d")
+    nota_database["data_nota"] = datetime.datetime.strftime(
+        nota.DataColeta, "%Y-%m-%d"
+    )
     nota_database["serie_nota"] = nota.SerieNota
     nota_database["numero_nota"] = nota.NumeroNota
     nota_database["destinatario"] = nota.Destinatario
@@ -339,7 +353,9 @@ def save_ocorrencia(ocorrencia, idcliente):
     obj.Ocorrencia = ocorrencia["ocorrencia"]
     obj.idNotasClientes_id = ocorrencia["idnotaclientes"]
     obj.save()
-    nota = NotasClientes.objects.get(idNotasClientes=ocorrencia["idnotaclientes"])
+    nota = NotasClientes.objects.get(
+        idNotasClientes=ocorrencia["idnotaclientes"]
+    )
     obj = nota
     obj.StatusNota = ocorrencia["tipo_ocorrencia"]
     obj.save(update_fields=["StatusNota"])
@@ -400,7 +416,9 @@ def update_ocorrencia(ocorrencia_form, id_ocor):
 
 
 def delete_ocorrencia(idnotasocorrencia, idnota):
-    ocorrencia = NotasOcorrencias.objects.get(idNotasOcorrencia=idnotasocorrencia)
+    ocorrencia = NotasOcorrencias.objects.get(
+        idNotasOcorrencia=idnotasocorrencia
+    )
     obj = ocorrencia
     obj.delete()
     ultimo_status = (
@@ -515,9 +533,9 @@ def update_romaneio(romaneio_form, id_rom):
 
 
 def create_contexto_romaneios(idcliente):
-    romaneios = Romaneios.objects.filter(idCliente=idcliente, Fechado=False).order_by(
-        "-Romaneio"
-    )
+    romaneios = Romaneios.objects.filter(
+        idCliente=idcliente, Fechado=False
+    ).order_by("-Romaneio")
     lista = [
         {
             "idromaneio": x.idRomaneio,
@@ -531,7 +549,9 @@ def create_contexto_romaneios(idcliente):
     if lista:
         for index, itens in enumerate(lista):
             if lista[index]["motorista"]:
-                lista[index]["apelido"] = nome_curto(lista[index]["motorista"].Nome)
+                lista[index]["apelido"] = nome_curto(
+                    lista[index]["motorista"].Nome
+                )
     return lista
 
 
@@ -580,7 +600,9 @@ def html_filtro_notas_romaneios(request, contexto, data):
 
 def create_contexto_filtro_status():
     status_nota = (
-        NotasClientes.objects.values("StatusNota").distinct().order_by("StatusNota")
+        NotasClientes.objects.values("StatusNota")
+        .distinct()
+        .order_by("StatusNota")
     )
     return status_nota
 
@@ -620,15 +642,23 @@ def create_contexto_seleciona_romaneio(id_rom):
     if lista:
         for index, itens in enumerate(lista):
             if lista[index]["motorista"]:
-                lista[index]["apelido"] = nome_curto(lista[index]["motorista"].Nome)
+                lista[index]["apelido"] = nome_curto(
+                    lista[index]["motorista"].Nome
+                )
     return lista
 
 
 def lista_locais():
     destinatarios = (
-        NotasClientes.objects.values("Destinatario").distinct().order_by("Destinatario")
+        NotasClientes.objects.values("Destinatario")
+        .distinct()
+        .order_by("Destinatario")
     )
-    emitentes = NotasClientes.objects.values("Emitente").distinct().order_by("Emitente")
+    emitentes = (
+        NotasClientes.objects.values("Emitente")
+        .distinct()
+        .order_by("Emitente")
+    )
     lista = []
     for x in destinatarios:
         if x["Destinatario"]:
@@ -643,10 +673,14 @@ def lista_locais():
 
 def lista_enderecos():
     destinatarios = (
-        NotasClientes.objects.values("Endereco").distinct().order_by("Endereco")
+        NotasClientes.objects.values("Endereco")
+        .distinct()
+        .order_by("Endereco")
     )
     emitentes = (
-        NotasClientes.objects.values("Endereco_emi").distinct().order_by("Endereco_emi")
+        NotasClientes.objects.values("Endereco_emi")
+        .distinct()
+        .order_by("Endereco_emi")
     )
     lista = []
     for x in destinatarios:
@@ -661,9 +695,13 @@ def lista_enderecos():
 
 
 def lista_bairros():
-    destinatarios = NotasClientes.objects.values("Bairro").distinct().order_by("Bairro")
+    destinatarios = (
+        NotasClientes.objects.values("Bairro").distinct().order_by("Bairro")
+    )
     emitentes = (
-        NotasClientes.objects.values("Bairro_emi").distinct().order_by("Bairro_emi")
+        NotasClientes.objects.values("Bairro_emi")
+        .distinct()
+        .order_by("Bairro_emi")
     )
     lista = []
     for x in destinatarios:
@@ -860,7 +898,9 @@ def xml_emitente(doc, caminho_emitente):
     return emitente
 
 
-def xml_endereco_emi(doc, caminho_endereco_emi, caminho_numero_emi, caminho_complemento_emi):
+def xml_endereco_emi(
+    doc, caminho_endereco_emi, caminho_numero_emi, caminho_complemento_emi
+):
     nodefind = doc.find(caminho_endereco_emi)
     if nodefind is not None:
         endereco_emi = nodefind.text
@@ -920,7 +960,8 @@ def xml_data_nf(doc, caminho_dhemi):
     nodefind = doc.find(caminho_dhemi)
     if nodefind is not None:
         data_nf = datetime.datetime.strptime(
-            nodefind.text[0:10], "%Y-%m-%d").date()
+            nodefind.text[0:10], "%Y-%m-%d"
+        ).date()
     else:
         data_nf = ""
     return data_nf
@@ -1088,13 +1129,17 @@ def create_contexto_filtro_nota(nota, idcliente):
 
 
 def create_contexto_filtro_emitente(emitente, idcliente):
-    notas = NotasClientes.objects.filter(Emitente=emitente, idCliente=idcliente)
+    notas = NotasClientes.objects.filter(
+        Emitente=emitente, idCliente=idcliente
+    )
     lista = create_lista_notas_clientes(notas)
     return lista
 
 
 def create_contexto_filtro_destinatario(destinatario, idcliente):
-    notas = NotasClientes.objects.filter(Destinatario=destinatario, idCliente=idcliente)
+    notas = NotasClientes.objects.filter(
+        Destinatario=destinatario, idCliente=idcliente
+    )
     lista = create_lista_notas_clientes(notas)
     return lista
 
@@ -1127,7 +1172,9 @@ def last_chat_id_telegram(token):
                     return json_result["message"]["chat"]["id"]
             print("Nenhum grupo encontrado")
         else:
-            print(f"A resposta falhou, código de status {response.status_code}")
+            print(
+                f"A resposta falhou, código de status {response.status_code}"
+            )
     except Exception as e:
         print("Erro no getUpdates:", e)
 
@@ -1341,7 +1388,9 @@ def create_contexto_notas(idcliente, filter_status, order_nota):
                 romaneio.latest("idRomaneio")
                 placa = romaneio[0].idRomaneio.idVeiculo.Placa
                 motorista = nome_curto(romaneio[0].idRomaneio.idMotorista.Nome)
-                placa_motorista.append({"motorista": motorista, "placa": placa})
+                placa_motorista.append(
+                    {"motorista": motorista, "placa": placa}
+                )
         if x.CEP_emi:
             cep_emitente = f"{x.CEP_emi[0:5]}-{x.CEP_emi[5:]}"
         else:
@@ -1392,4 +1441,9 @@ def create_contexto_notas(idcliente, filter_status, order_nota):
             }
         )
     peso_total = create_contexto_peso_total_notas(notas)
-    return {"notas": lista, "cliente": cliente, "sort_status": filter_status, "peso_total": peso_total}
+    return {
+        "notas": lista,
+        "cliente": cliente,
+        "sort_status": filter_status,
+        "peso_total": peso_total,
+    }
