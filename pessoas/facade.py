@@ -2574,3 +2574,13 @@ def modal_confirma(request, confirma, idconfirma, idpessoal):
             request=request,
         )
         return JsonResponse(data)
+
+
+def exclui_vale_colaborador_id(request, idvale, idpessoal):
+    vale = get_vale_id(idvale)
+    idpessoal = vale.idPessoal
+    vale.delete()
+    data = dict()
+    contexto = contexto_vales_colaborador(idpessoal)
+    html_vales_colaborador(request, contexto, data)
+    return JsonResponse(data)
