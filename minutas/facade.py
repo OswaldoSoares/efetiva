@@ -28,7 +28,12 @@ from minutas.forms import (
     CadastraMinutaKMInicial,
     CadastraMinutaHoraFinal,
 )
-from minutas.models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas
+from minutas.models import (
+    Minuta,
+    MinutaColaboradores,
+    MinutaItens,
+    MinutaNotas,
+)
 
 
 def nome_curto(nome):
@@ -92,7 +97,9 @@ class MinutaSelecionada:
         self.tabela = ClienteTabela(minuta.idCliente).tabela
         self.tabela_veiculo = ClienteTabelaVeiculo(minuta.idCliente).tabela
         self.tabela_perimetro = ClienteTabelaPerimetro(minuta.idCliente).tabela
-        self.tabela_capacidade = ClienteTabelaCapacidade(minuta.idCliente).tabela
+        self.tabela_capacidade = ClienteTabelaCapacidade(
+            minuta.idCliente
+        ).tabela
         self.total_horas = self.get_total_horas()
         self.total_horas_str = self.get_total_horas_str()
         self.total_kms = self.get_total_kms()
@@ -127,9 +134,11 @@ class MinutaSelecionada:
         romaneios = self.romaneio
         lista_romaneio_peso = []
         for i in romaneios:
-            peso = RomaneioNotas.objects.filter(idRomaneio=i).aggregate(peso=Sum("idNotasClientes__Peso"))
+            peso = RomaneioNotas.objects.filter(idRomaneio=i).aggregate(
+                peso=Sum("idNotasClientes__Peso")
+            )
             lista_romaneio_peso.append({"romaneio": i, "peso": peso["peso"]})
-        return(lista_romaneio_peso)
+        return lista_romaneio_peso
 
     def total_ajudantes(self):
         self.total_ajudantes_avulso()
@@ -160,10 +169,12 @@ class MinutaSelecionada:
                 if int(minutos) < itens:
                     fator = fator_decimal[index]
                     break
-            recebe_extra_ajudante = float(self.tabela[0]["AjudanteCobraHoraExtra"]) * fator
-            recebe_extra_ajudante += float(self.tabela[0]["AjudanteCobraHoraExtra"]) * (
-                int(horas) - 10
+            recebe_extra_ajudante = (
+                float(self.tabela[0]["AjudanteCobraHoraExtra"]) * fator
             )
+            recebe_extra_ajudante += float(
+                self.tabela[0]["AjudanteCobraHoraExtra"]
+            ) * (int(horas) - 10)
             recebe_extra_ajudante += float(self.tabela[0]["AjudanteCobra"])
         return recebe_extra_ajudante
 
@@ -178,8 +189,7 @@ class MinutaSelecionada:
         for i in ajudantes:
             lista_tipo_pgto.append(i["tipo"])
         if "SAIDA" in lista_tipo_pgto or "MINUTA" in lista_tipo_pgto:
-            return True        
-
+            return True
 
     def get_total_horas(self):
         periodo = timedelta(hours=0, minutes=0)
@@ -236,7 +246,9 @@ class MinutaSelecionada:
         d_total_notas["volume_entregas"] = sum(
             [itens["Volume"] for itens in self.entregas]
         )
-        d_total_notas["peso_entregas"] = sum([itens["Peso"] for itens in self.entregas])
+        d_total_notas["peso_entregas"] = sum(
+            [itens["Peso"] for itens in self.entregas]
+        )
         d_total_notas["total_entregas"] = len(self.entregas)
         return d_total_notas
 
@@ -295,11 +307,15 @@ class MinutaSelecionada:
                     v_paga["v_porc"] = tabela_veiculo["PorcentagemPaga"]
                     v_paga["m_porc"] = self.t_entregas["valor_entregas"]
                     v_paga["t_porc"] = (
-                        tabela_veiculo["PorcentagemPaga"] / 100 * v_paga["m_porc"]
+                        tabela_veiculo["PorcentagemPaga"]
+                        / 100
+                        * v_paga["m_porc"]
                     )
                     v_paga["c_porc"] = True if int(phkesc[0:1]) else False
                     v_paga["v_hora"] = self.filtro_tabela_veiculo()["HoraPaga"]
-                    v_paga["m_hora"] = self.filtro_tabela_veiculo()["HoraMinimo"]
+                    v_paga["m_hora"] = self.filtro_tabela_veiculo()[
+                        "HoraMinimo"
+                    ]
                     v_paga["t_hora"] = calcula_valor_hora(
                         100, v_paga["m_hora"], v_paga["v_hora"]
                     )
@@ -313,29 +329,40 @@ class MinutaSelecionada:
                     v_paga["v_kilm"] = self.filtro_tabela_veiculo()["KMPaga"]
                     v_paga["m_kilm"] = self.get_total_kms()
                     v_paga["t_kilm"] = (
-                        self.filtro_tabela_veiculo()["KMPaga"] * self.get_total_kms()
+                        self.filtro_tabela_veiculo()["KMPaga"]
+                        * self.get_total_kms()
                     )
                     v_paga["c_kilm"] = True if int(phkesc[2:3]) else False
-                    v_paga["v_entr"] = self.filtro_tabela_veiculo()["EntregaPaga"]
+                    v_paga["v_entr"] = self.filtro_tabela_veiculo()[
+                        "EntregaPaga"
+                    ]
                     v_paga["m_entr"] = self.quantidade_entregas
                     v_paga["t_entr"] = (
-                        self.filtro_tabela_veiculo()["EntregaPaga"] * v_paga["m_entr"]
+                        self.filtro_tabela_veiculo()["EntregaPaga"]
+                        * v_paga["m_entr"]
                     )
                     v_paga["c_entr"] = True if int(phkesc[3:4]) else False
-                    v_paga["v_enkg"] = self.filtro_tabela_veiculo()["EntregaKGPaga"]
+                    v_paga["v_enkg"] = self.filtro_tabela_veiculo()[
+                        "EntregaKGPaga"
+                    ]
                     v_paga["m_enkg"] = self.t_entregas["peso_entregas"]
                     v_paga["t_enkg"] = (
-                        self.filtro_tabela_veiculo()["EntregaKGPaga"] * v_paga["m_enkg"]
+                        self.filtro_tabela_veiculo()["EntregaKGPaga"]
+                        * v_paga["m_enkg"]
                     )
                     v_paga["c_enkg"] = True if int(phkesc[4:5]) else False
-                    v_paga["v_evol"] = self.filtro_tabela_veiculo()["EntregaVolumePaga"]
+                    v_paga["v_evol"] = self.filtro_tabela_veiculo()[
+                        "EntregaVolumePaga"
+                    ]
                     v_paga["m_evol"] = self.t_entregas["volume_entregas"]
                     v_paga["t_evol"] = (
                         self.filtro_tabela_veiculo()["EntregaVolumePaga"]
                         * v_paga["m_evol"]
                     )
                     v_paga["c_evol"] = True if int(phkesc[5:6]) else False
-                    v_paga["v_said"] = self.filtro_tabela_veiculo()["SaidaPaga"]
+                    v_paga["v_said"] = self.filtro_tabela_veiculo()[
+                        "SaidaPaga"
+                    ]
                     v_paga["c_said"] = True if int(phkesc[6:7]) else False
                     if capacidade:
                         v_paga["v_capa"] = capacidade[0]
@@ -351,7 +378,9 @@ class MinutaSelecionada:
         if self.total_ajudantes_avulso() > 0:
             v_paga["v_ajud"] = float(self.tabela[0]["AjudantePaga"])
             if int(self.entrega_saida()[0:1]) > 2:
-                v_paga["v_ajud"] = float(self.tabela[0]["AjudantePaga"]) + 10.00
+                v_paga["v_ajud"] = (
+                    float(self.tabela[0]["AjudantePaga"]) + 10.00
+                )
             v_paga["m_ajud"] = self.total_ajudantes_avulso()
             v_paga["t_ajud"] = v_paga["v_ajud"] * self.total_ajudantes_avulso()
             v_paga["c_ajud"] = True
@@ -414,7 +443,9 @@ class MinutaSelecionada:
         #     v_recebe["v_taxa"] = self.tabela[0]["TaxaExpedicao"] * len(self.romaneio)
         # else:
         v_recebe["v_taxa"] = self.tabela[0]["TaxaExpedicao"]
-        v_recebe["c_taxa"] = True if self.tabela[0]["TaxaExpedicao"] > 0 else False
+        v_recebe["c_taxa"] = (
+            True if self.tabela[0]["TaxaExpedicao"] > 0 else False
+        )
         if tabela_veiculo:
             if self.motorista:
                 v_recebe["v_segu"] = self.tabela[0]["Seguro"]
@@ -428,7 +459,9 @@ class MinutaSelecionada:
                 v_recebe["v_porc"] = tabela_veiculo["PorcentagemCobra"]
                 v_recebe["m_porc"] = self.t_entregas["valor_entregas"]
                 v_recebe["t_porc"] = (
-                    tabela_veiculo["PorcentagemCobra"] / 100 * v_recebe["m_porc"]
+                    tabela_veiculo["PorcentagemCobra"]
+                    / 100
+                    * v_recebe["m_porc"]
                 )
                 v_recebe["c_porc"] = True if int(phkesc[0:1]) else False
                 v_recebe["v_hora"] = self.filtro_tabela_veiculo()["HoraCobra"]
@@ -446,22 +479,31 @@ class MinutaSelecionada:
                 v_recebe["v_kilm"] = self.filtro_tabela_veiculo()["KMCobra"]
                 v_recebe["m_kilm"] = self.get_total_kms()
                 v_recebe["t_kilm"] = (
-                    self.filtro_tabela_veiculo()["KMCobra"] * self.get_total_kms()
+                    self.filtro_tabela_veiculo()["KMCobra"]
+                    * self.get_total_kms()
                 )
                 v_recebe["c_kilm"] = True if int(phkesc[2:3]) else False
-                v_recebe["v_entr"] = self.filtro_tabela_veiculo()["EntregaCobra"]
+                v_recebe["v_entr"] = self.filtro_tabela_veiculo()[
+                    "EntregaCobra"
+                ]
                 v_recebe["m_entr"] = self.quantidade_entregas
                 v_recebe["t_entr"] = (
-                    self.filtro_tabela_veiculo()["EntregaCobra"] * v_recebe["m_entr"]
+                    self.filtro_tabela_veiculo()["EntregaCobra"]
+                    * v_recebe["m_entr"]
                 )
                 v_recebe["c_entr"] = True if int(phkesc[3:4]) else False
-                v_recebe["v_enkg"] = self.filtro_tabela_veiculo()["EntregaKGCobra"]
+                v_recebe["v_enkg"] = self.filtro_tabela_veiculo()[
+                    "EntregaKGCobra"
+                ]
                 v_recebe["m_enkg"] = self.t_entregas["peso_entregas"]
                 v_recebe["t_enkg"] = (
-                    self.filtro_tabela_veiculo()["EntregaKGCobra"] * v_recebe["m_enkg"]
+                    self.filtro_tabela_veiculo()["EntregaKGCobra"]
+                    * v_recebe["m_enkg"]
                 )
                 v_recebe["c_enkg"] = True if int(phkesc[4:5]) else False
-                v_recebe["v_evol"] = self.filtro_tabela_veiculo()["EntregaVolumeCobra"]
+                v_recebe["v_evol"] = self.filtro_tabela_veiculo()[
+                    "EntregaVolumeCobra"
+                ]
                 v_recebe["m_evol"] = self.t_entregas["volume_entregas"]
                 v_recebe["t_evol"] = (
                     self.filtro_tabela_veiculo()["EntregaVolumeCobra"]
@@ -482,7 +524,7 @@ class MinutaSelecionada:
                 )
                 v_recebe["m_pnoi"] = v_recebe["m_peri"]
         if self.total_ajudantes() > 0:
-            """ Valor a ser cobrado de cada ajudante, o valor era recuperado
+            """Valor a ser cobrado de cada ajudante, o valor era recuperado
             da tabela (self.tabela[0]["AjudanteCobra"]), mas passou a ser cobrado
             pelo valor retornado do metodo self.extra_ajudante_cobra()), que já
             verifica e retorna o valor com as horas extra se tiver ou retirna o
@@ -538,7 +580,9 @@ class MinutaSelecionada:
         return lista
 
     def verifica_recebimentos(self):
-        recebe = MinutaItens.objects.filter(TipoItens="RECEBE", idMinuta=self.idminuta)
+        recebe = MinutaItens.objects.filter(
+            TipoItens="RECEBE", idMinuta=self.idminuta
+        )
         return True if recebe else False
 
 
@@ -593,7 +637,9 @@ class MinutaDespesa:
 
     @staticmethod
     def get_despesas(idminuta):
-        despesas = MinutaItens.objects.filter(idMinuta=idminuta, TipoItens="DESPESA")
+        despesas = MinutaItens.objects.filter(
+            idMinuta=idminuta, TipoItens="DESPESA"
+        )
         lista = [
             {
                 "idMinutaItens": itens.idMinutaItens,
@@ -751,7 +797,9 @@ class MinutasStatus:
 
     @staticmethod
     def get_minutas_abertas(status_minuta):
-        abertas = Minuta.objects.filter(StatusMinuta=status_minuta).order_by("-Minuta")
+        abertas = Minuta.objects.filter(StatusMinuta=status_minuta).order_by(
+            "-Minuta"
+        )
         lista = [
             {
                 "idMinuta": m.idMinuta,
@@ -824,7 +872,9 @@ def filtra_consulta(request, filtro, filtro_consulta, meses, anos):
         meses = 0
     if not anos:
         anos = 100
-    mes_anterior = dia_hoje - relativedelta(years=int(anos), months=int(meses), day=1)
+    mes_anterior = dia_hoje - relativedelta(
+        years=int(anos), months=int(meses), day=1
+    )
     lista = []
     if filtro_consulta == "Clientes":
         minutas = Minuta.objects.filter(
@@ -878,7 +928,9 @@ def filtra_consulta(request, filtro, filtro_consulta, meses, anos):
     elif filtro_consulta == "Entregas_Cidades":
         local = filtro.split(" *** ")
         minutas = MinutaNotas.objects.filter(
-            Cidade=local[0], Estado=local[1], idMinuta_id__DataMinuta__gte=mes_anterior
+            Cidade=local[0],
+            Estado=local[1],
+            idMinuta_id__DataMinuta__gte=mes_anterior,
         ).order_by("-idMinuta__DataMinuta")
         lista_base = [
             {
@@ -896,7 +948,8 @@ def filtra_consulta(request, filtro, filtro_consulta, meses, anos):
     elif filtro_consulta == "Destinatarios":
         minutas = (
             MinutaNotas.objects.filter(
-                Nome__contains=filtro, idMinuta_id__DataMinuta__gte=mes_anterior
+                Nome__contains=filtro,
+                idMinuta_id__DataMinuta__gte=mes_anterior,
             )
             .order_by("-idMinuta__DataMinuta")
             .distinct()
@@ -1111,7 +1164,9 @@ def proxima_minuta():
 
 
 def km_atual(idveiculo):
-    km_final = Minuta.objects.filter(idVeiculo=idveiculo).aggregate(Max("KMFinal"))
+    km_final = Minuta.objects.filter(idVeiculo=idveiculo).aggregate(
+        Max("KMFinal")
+    )
     return km_final
 
 
@@ -1183,9 +1238,7 @@ def edita_km_inicial(request, idminuta, km_inicial):
     if km_inicial >= obj.KMFinal:
         obj.KMInicial = km_inicial
         obj.KMFinal = 0
-        mensagem = (
-            "A KILOMETRAGEM INICIAL FOi ATUALIZADA, A KILOMETRAGEM FINAL FOI ZERADA"
-        )
+        mensagem = "A KILOMETRAGEM INICIAL FOi ATUALIZADA, A KILOMETRAGEM FINAL FOI ZERADA"
         tipo_mensagem = "SUCESSO"
         obj.save(update_fields=["KMInicial", "KMFinal"])
     else:
@@ -1267,7 +1320,9 @@ def ajudantes_disponiveis(idminuta):
 
 
 def motoristas_disponiveis():
-    pessoas = Pessoal.objects.filter(StatusPessoal=True).exclude(Categoria="AJUDANTE")
+    pessoas = Pessoal.objects.filter(StatusPessoal=True).exclude(
+        Categoria="AJUDANTE"
+    )
     return pessoas
 
 
@@ -1295,7 +1350,9 @@ def filtra_veiculo(idpessoal, opcao):
         veiculos = Veiculo.objects.all().order_by("Marca", "Modelo", "Placa")
     lista_veiculos = []
     for veiculo in veiculos:
-        descricao_veiculo = f"{veiculo.Marca} - {veiculo.Modelo} - {veiculo.Placa}"
+        descricao_veiculo = (
+            f"{veiculo.Marca} - {veiculo.Modelo} - {veiculo.Placa}"
+        )
         lista_veiculos.append(
             {"idVeiculo": veiculo.idVeiculo, "Veiculo": descricao_veiculo}
         )
@@ -1372,7 +1429,9 @@ def html_ajudantes(request, data, idminuta):
 def html_categoria(request, data, idminuta):
     contexto = cria_contexto(idminuta)
     data["html_categoria"] = render_to_string(
-        "minutas/html_card_minuta_categoria_solicitada.html", contexto, request=request
+        "minutas/html_card_minuta_categoria_solicitada.html",
+        contexto,
+        request=request,
     )
     data["html_veiculo"] = render_to_string(
         "minutas/html_card_minuta_veiculo.html", contexto, request=request
@@ -1401,7 +1460,9 @@ def html_filtro_veiculo(request, lista_veiculos):
 def html_coleta_entrega_obs(request, data, idminuta):
     contexto = cria_contexto(idminuta)
     data["html_coleta_entrega_obs"] = render_to_string(
-        "minutas/html_card_minuta_coleta_entrega_obs.html", contexto, request=request
+        "minutas/html_card_minuta_coleta_entrega_obs.html",
+        contexto,
+        request=request,
     )
     return data
 
@@ -1470,7 +1531,13 @@ def forn_minuta(request, c_form, c_idobj, c_url, c_view):
                     obj.idCliente = cliente
                     obj.DataMinuta = request.POST.get("DataMinuta")
                     obj.HoraInicial = request.POST.get("HoraInicial")
-                    obj.save(update_fields=["idCliente", "DataMinuta", "HoraInicial"])
+                    obj.save(
+                        update_fields=[
+                            "idCliente",
+                            "DataMinuta",
+                            "HoraInicial",
+                        ]
+                    )
                     mensagem = "OS ITENS CLIENTE, DATA E HORA INICIAL DA MINUTA FORAM ATUALIZADOS."
                     tipo_mensagem = "SUCESSO"
                     data = html_cliente_data(request, data, c_idobj)
@@ -1608,7 +1675,9 @@ def save_notas_romaneio_minuta(id_rom, id_min):
     rom_notas = RomaneioNotas.objects.filter(idRomaneio=id_rom)
     lista = []
     for x in rom_notas:
-        nota_cliente = NotasClientes.objects.get(idNotasClientes=x.idNotasClientes_id)
+        nota_cliente = NotasClientes.objects.get(
+            idNotasClientes=x.idNotasClientes_id
+        )
         nota = dict()
         nota["numero"] = nota_cliente.NumeroNota
         nota["valor"] = nota_cliente.Valor
@@ -1633,7 +1702,11 @@ def save_notas_romaneio_minuta(id_rom, id_min):
     atual = -1
     for itens in nova_lista:
         proximo = next(
-            (i for i, x in enumerate(nova_lista) if x["endereco"] == itens["endereco"]),
+            (
+                i
+                for i, x in enumerate(nova_lista)
+                if x["endereco"] == itens["endereco"]
+            ),
             None,
         )
         if atual == proximo:
@@ -1672,7 +1745,9 @@ def create_data_adiciona_romaneio_minuta(request, id_min):
 
 
 def remove_numero_romaneio_minuta(numero_romaneio, idminuta):
-    romaneio = Romaneios.objects.get(idMinuta=idminuta, Romaneio=numero_romaneio)
+    romaneio = Romaneios.objects.get(
+        idMinuta=idminuta, Romaneio=numero_romaneio
+    )
     obj = romaneio
     obj.idMinuta_id = None
     obj.save(update_fields=["idMinuta_id"])
@@ -1741,7 +1816,7 @@ def gera_itens_pagamento_motorista(request):
         insere_despesa_paga(
             request.POST.get(item_tabela),
             request.POST.get(item_descricao),
-            request
+            request,
         )
 
 
@@ -1749,15 +1824,20 @@ def gera_itens_pagamento_ajudantes(request):
     if request.POST.get("check-ajudante-paga"):
         insere_ajudante_paga(request)
 
+
 def insere_porcentagem_paga(request):
     idminuta = request.POST.get("idminuta")
     hora_zero = timedelta(days=0, hours=0, minutes=0)
     obs = ""
     base = float(
-        request.POST.get("minuta-porcentagem-paga").replace(".", "").replace(",", ".")
+        request.POST.get("minuta-porcentagem-paga")
+        .replace(".", "")
+        .replace(",", ".")
     )
     porcento = float(
-        request.POST.get("tabela-porcentagem-paga").replace(".", "").replace(",", ".")
+        request.POST.get("tabela-porcentagem-paga")
+        .replace(".", "")
+        .replace(",", ".")
     )
     valor = base * porcento / 100
     insere_minuta_item(
@@ -1781,7 +1861,9 @@ def insere_hora_paga(request):
     base = float(
         request.POST.get("tabela-hora-paga").replace(".", "").replace(",", ".")
     )
-    tempo = datetime.strptime(request.POST.get("minuta-hora-paga"), "%H:%M").time()
+    tempo = datetime.strptime(
+        request.POST.get("minuta-hora-paga"), "%H:%M"
+    ).time()
     valor = calcula_valor_hora(100, tempo, base)
     tempo = timedelta(days=0, hours=tempo.hour, minutes=tempo.minute)
     insere_minuta_item(
@@ -1804,7 +1886,9 @@ def insere_excedente_paga(request):
     obs = ""
     porcento = float(request.POST.get("tabela-excedente-paga"))
     base = float(request.POST.get("tabela-hora-paga"))
-    tempo = datetime.strptime(request.POST.get("minuta-excedente-paga"), "%H:%M")
+    tempo = datetime.strptime(
+        request.POST.get("minuta-excedente-paga"), "%H:%M"
+    )
     valor = calcula_valor_hora(porcento, tempo, base)
     tempo = timedelta(days=0, hours=tempo.hour, minutes=tempo.minute)
     insere_minuta_item(
@@ -1827,7 +1911,9 @@ def insere_kilometragem_paga(request):
     hora_zero = timedelta(days=0, hours=0, minutes=0)
     obs = ""
     base = float(
-        request.POST.get("tabela-kilometragem-paga").replace(".", "").replace(",", ".")
+        request.POST.get("tabela-kilometragem-paga")
+        .replace(".", "")
+        .replace(",", ".")
     )
     unidade = float(request.POST.get("minuta-kilometragem-paga"))
     valor = base * unidade
@@ -1851,7 +1937,9 @@ def insere_entrega_paga(request):
     hora_zero = timedelta(days=0, hours=0, minutes=0)
     obs = ""
     base = float(
-        request.POST.get("tabela-entrega-paga").replace(".", "").replace(",", ".")
+        request.POST.get("tabela-entrega-paga")
+        .replace(".", "")
+        .replace(",", ".")
     )
     unidade = float(request.POST.get("minuta-entrega-paga"))
     valor = base * unidade
@@ -1875,10 +1963,14 @@ def insere_entrega_kg_paga(request):
     hora_zero = timedelta(days=0, hours=0, minutes=0)
     obs = ""
     base = float(
-        request.POST.get("tabela-entrega-kg-paga").replace(".", "").replace(",", ".")
+        request.POST.get("tabela-entrega-kg-paga")
+        .replace(".", "")
+        .replace(",", ".")
     )
     peso = float(
-        request.POST.get("minuta-entrega-kg-paga").replace(".", "").replace(",", ".")
+        request.POST.get("minuta-entrega-kg-paga")
+        .replace(".", "")
+        .replace(",", ".")
     )
     valor = base * peso
     insere_minuta_item(
@@ -1927,7 +2019,9 @@ def insere_saida_paga(request):
     hora_zero = timedelta(days=0, hours=0, minutes=0)
     obs = ""
     base = float(
-        request.POST.get("tabela-saida-paga").replace(".", "").replace(",", ".")
+        request.POST.get("tabela-saida-paga")
+        .replace(".", "")
+        .replace(",", ".")
     )
     insere_minuta_item(
         "SAIDA",
@@ -1949,7 +2043,9 @@ def insere_capacidade_paga(request):
     hora_zero = timedelta(days=0, hours=0, minutes=0)
     obs = ""
     base = float(
-        request.POST.get("tabela-capacidade-paga").replace(".", "").replace(",", ".")
+        request.POST.get("tabela-capacidade-paga")
+        .replace(".", "")
+        .replace(",", ".")
     )
     insere_minuta_item(
         "CAPACIDADE PESO",
@@ -1971,10 +2067,14 @@ def insere_perimetro_paga(request):
     hora_zero = timedelta(days=0, hours=0, minutes=0)
     obs = ""
     base = float(
-        request.POST.get("minuta-perimetro-paga").replace(".", "").replace(",", ".")
+        request.POST.get("minuta-perimetro-paga")
+        .replace(".", "")
+        .replace(",", ".")
     )
     porcento = float(
-        request.POST.get("tabela-perimetro-paga").replace(".", "").replace(",", ".")
+        request.POST.get("tabela-perimetro-paga")
+        .replace(".", "")
+        .replace(",", ".")
     )
     valor = base * porcento / 100
     insere_minuta_item(
@@ -1997,10 +2097,14 @@ def insere_pernoite_paga(request):
     hora_zero = timedelta(days=0, hours=0, minutes=0)
     obs = ""
     base = float(
-        request.POST.get("minuta-pernoite-paga").replace(".", "").replace(",", ".")
+        request.POST.get("minuta-pernoite-paga")
+        .replace(".", "")
+        .replace(",", ".")
     )
     porcento = float(
-        request.POST.get("tabela-pernoite-paga").replace(".", "").replace(",", ".")
+        request.POST.get("tabela-pernoite-paga")
+        .replace(".", "")
+        .replace(",", ".")
     )
     valor = base * porcento / 100
     insere_minuta_item(
@@ -2023,7 +2127,9 @@ def insere_ajudante_paga(request):
     hora_zero = timedelta(days=0, hours=0, minutes=0)
     obs = ""
     base = float(
-        request.POST.get("tabela-ajudante-paga").replace(".", "").replace(",", ".")
+        request.POST.get("tabela-ajudante-paga")
+        .replace(".", "")
+        .replace(",", ".")
     )
     unidade = float(request.POST.get("minuta-ajudante-paga"))
     valor = base * unidade
@@ -2091,7 +2197,9 @@ def insere_minuta_item(
 
 
 def estorna_paga(idminuta):
-    pagamentos = MinutaItens.objects.filter(TipoItens="PAGA", idMinuta=idminuta)
+    pagamentos = MinutaItens.objects.filter(
+        TipoItens="PAGA", idMinuta=idminuta
+    )
     for i in pagamentos:
         i.delete()
 
@@ -2126,6 +2234,7 @@ def html_card_minuta(request, data, contexto):
         "minutas/html_card_minuta.html", contexto, request=request
     )
     return data
+
 
 # TODO Duas funções fazendo a mesma coisa (html_checllist)
 def html_card_checklist(request, data, contexto):
@@ -2174,7 +2283,9 @@ def create_contexto_minutas_periodo(inicial, final, idcliente):
     if idcliente == 0:
         minuta = Minuta.objects.filter(DataMinuta__range=[inicial, final])
     else:
-        minuta = Minuta.objects.filter(idCliente=idcliente, DataMinuta__range=[inicial, final])
+        minuta = Minuta.objects.filter(
+            idCliente=idcliente, DataMinuta__range=[inicial, final]
+        )
     minutas = []
     for x in minuta:
         minutas.append(MinutaSelecionada(x.idMinuta).__dict__)
