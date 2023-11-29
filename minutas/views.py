@@ -406,6 +406,13 @@ def consultaminuta(request, idmin):
     porcepernoite = 100
     numero_saidas_do_ajudante = -1
     dezhoras = timedelta(days=0, hours=10, minutes=0)
+    # Cria variaveis totalhoras - minimohoras - excedehoras (Type timedelta) - geradas pela função horascobra
+    # 29/11/2023 repete o codigo antes do if tabelaveiculo, para minutas sem veiculo só com ajudante, para poder
+    # cobrar extra.
+    horaminimo = datetime.strptime("10:00", "%H:%M")
+    totalhoras, minimohoras, excedehoras = horascobra(
+        horainicial, horafinal, dataminuta, horaminimo
+    )
     if tabelaveiculo:
         # Cria variavel horaminimo
         horaminimo = list(tabelaveiculo.values("HoraMinimo")[0].values())[0]
