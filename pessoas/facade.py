@@ -673,7 +673,7 @@ def form_pessoa(request, c_form, c_idobj, c_url, c_view, idpessoal):
         "c_view": c_view,
         "idpessoal": idpessoal,
     }
-    data["html_form"] = render_to_string(
+    data["html_modal"] = render_to_string(
         "pessoas/formpessoa.html", context, request=request
     )
     data["c_view"] = c_view
