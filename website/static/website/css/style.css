@@ -6274,11 +6274,11 @@ label {
   vertical-align: middle;
 }
 
-.card-header i {
-  font-size: 2.2rem;
-  vertical-align: middle;
-  padding: 0 0.8rem;
-}
+/* .card-header i { */
+  /* font-size: 2.2rem; */
+  /* vertical-align: middle; */
+  /* padding: 0 0.8rem; */
+/* } */
 
 .card-header .i-button {
   font-size: 1.6rem;

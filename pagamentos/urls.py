@@ -30,6 +30,7 @@ from .views import (
     seleciona_vales,
     imprime_relatorio_saldo_avulso,
     form_paga_recibo,
+    seleciona_contra_cheque,
 )
 
 urlpatterns = [
@@ -165,5 +166,10 @@ urlpatterns = [
         "form_paga_recibo",
         form_paga_recibo,
         name="form_paga_recibo",
+    ),
+    path(
+        "seleciona_contra_cheque",
+        seleciona_contra_cheque,
+        name="seleciona_contra_cheque",
     ),
 ]

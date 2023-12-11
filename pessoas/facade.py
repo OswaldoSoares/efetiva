@@ -47,7 +47,12 @@ from pessoas.models import (
     CartaoPonto,
 )
 from minutas.models import MinutaColaboradores
-from website.facade import converter_mes_ano, nome_curto, extremos_mes
+from website.facade import (
+    converter_mes_ano,
+    nome_curto,
+    extremos_mes,
+    nome_curto_underscore,
+)
 
 from transefetiva.settings.settings import MEDIA_ROOT
 
@@ -1937,6 +1942,9 @@ def create_contexto_contra_cheque(idpessoal, idselecionado, descricao):
     elif descricao == "ADIANTAMENTO":
         # TODO Corrigir
         contra_cheque = idselecionado
+    elif descricao == "PAGAMENTO":
+        # TODO Corrigir
+        contra_cheque = idselecionado
     if contas:
         update_contas_bancaria_obs(contra_cheque, contas, "contas")
     contra_cheque_itens = get_contra_cheque_itens(contra_cheque)
@@ -2584,3 +2592,65 @@ def exclui_vale_colaborador_id(request, idvale, idpessoal):
     contexto = contexto_vales_colaborador(idpessoal)
     html_vales_colaborador(request, contexto, data)
     return JsonResponse(data)
+
+
+def colaborador_info(idpessoal):
+    colaborador = list(Pessoal.objects.filter(idPessoal=idpessoal).values())
+    colaborador[0]["nome_curto"] == nome_curto(colaborador[0].Nome)
+    colaborador[0]["nome_curtoi_u"] == nome_curto_underscore(
+        colaborador[0].Nome
+    )
+    colaborador[0]["endereco_completo"] == get_endereco_completo(
+        colaborador.Endereco, colaborador.Bairro
+    )
+    colaborador[0]["cidade_estado"] == get_endereco_completo(
+        colaborador.Cidade, colaborador.Estado, colaborador.CEP
+    )
+    return colaborador
+
+
+def get_endereco_completo(endereco, bairro):
+    endereco_completo = ""
+    if endereco:
+        endereco_completo = endereco
+    if endereco and bairro:
+        endereco_completo = endereco_completo + " - " + bairro
+    if not endereco and bairro:
+        endereco_completo = bairro
+    return endereco_completo
+
+
+def get_cidade_estado(cidade, estado, cep):
+    cidade_estado = ""
+    if cidade:
+        cidade_estado = cidade
+    if cidade and estado:
+        cidade_estado = cidade_estado + " - " + estado
+    if not cidade and estado:
+        cidade_estado = estado
+    if cep:
+        if cidade_estado == "":
+            cidade_estado = "CEP: " + cep
+        else:
+            cidade_estado = cidade_estado + " - CEP: " + cep
+    return cidade_estado
+
+
+    #  @staticmethod
+    #  def get_faltas_aquisitivo(self):
+    #  if self.tipo_pgto == "MENSALISTA":
+    #  inicio = self.aquisitivo[0]["aquisitivo_inicial"]
+    #  final = self.aquisitivo[0]["aquisitivo_final"]
+    #  cartao_ponto = CartaoPonto.objects.filter(
+    #  idPessoal=self.idpes,
+    #  Dia__range=[inicio, final],
+    #  Ausencia="FALTA",
+    #  Remunerado=False,
+    #  )
+    #  lista = [
+    #  datetime.datetime.strftime(i.Dia, "%d/%m/%Y")
+    #  for i in cartao_ponto
+    #  ]
+    #  else:
+    #  lista = []
+    #  return lista

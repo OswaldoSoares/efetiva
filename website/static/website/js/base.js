@@ -78,6 +78,7 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                     $(modal).modal('hide');
                     if (xhr["html_vales_colaborador"]) {
                         $(".card-vales-colaborador").html(xhr["html_vales_colaborador"])
+                        valesSelecionaveis()
                     }
                     $(".box-loader").hide()
                     if (cbAfterSuccess) { 

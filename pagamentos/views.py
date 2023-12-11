@@ -311,6 +311,7 @@ def imprime_recibo(request):
 
 def form_paga_recibo(request):
     idrecibo = request.GET.get("idrecibo")
+
     idpessoal = request.GET.get("idpessoal")
     recibo = request.GET.get("recibo")
     valor_recibo = (
@@ -335,4 +336,16 @@ def paga_recibo(request):
     data_pgto = request.POST.get("data_pgto")
     facade.paga_recibo_colabotador(idrecibo, data_pgto)
     data = []
+    return data
+
+
+def seleciona_contra_cheque(request):
+    idpessoal = request.GET.get("idpessoal")
+    mes_ano = request.GET.get("mes_ano")
+    descricao = request.GET.get("descricao")
+    print(request.GET)
+    contexto = facade.create_contexto_contra_cheque_colaborador(
+        idpessoal, mes_ano, descricao
+    )
+    data = facade.create_data_contra_cheque_colaborador(request, contexto)
     return data

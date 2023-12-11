@@ -1,76 +1,61 @@
 {% load permission_tags %}
-{% if nome %}
 <!-- Header -->
-<div class="article-card-titulo">
-    <span>{{ nome }}</span>
+<div class="card-header">
+	<div class="input-group">
+		<i class="icofont-rounded-left-up input-group-addon addon-my-color i-button-null"></i>
+		<div class="div-flex div-form-control">
+			<div class="tamanho-100 text-center">
+                <span>{{ nome_curto }}</span>
+			</div>
+		</div>
+		<i class="icofont-square-up input-group-addon addon-my-color i-button body-funcionario-pagamento-toggle"></i>
+		<i class="icofont-rounded-right-up group-addon addon-my-color i-button-null"></i>
+	</div>
 </div>
 <!-- Body -->
-<div class="card-body js-body-funcionario font-menor">
+<div class="card-body font-menor body-funcionario-pagamento">
     {% if user|can:'pagamentos_folha' %}
         <div class="card-body-item">
             <div class="input-group">
-                <i class="bi bi-check
-                input-group-addon
-                addon-my-color"></i>
+                <div class="input-group-addon addon-my-color">
+                    <i class="icofont-check i-button-null"></i>
+                </div>
                 <div class="div-form-control div-flex">
                     <div class="tamanho-50 text-left">
                         <span>FUNÇÃO:</span>
                     </div>
                     <div class="tamanho-50 text-right">
-                        <span>{{ categoria }}</span>
+                        <span>{{ colaborador.Categoria }}</span>
                     </div>
                 </div>
-                <div class="input-group-addon
-                addon-my-color">
-                    <i class="bi bi-check"></i>
+                <div class="input-group-addon addon-my-color">
+                    <i class="icofont-check i-button-null"></i>
                 </div>
             </div>
         </div>
         <div class="card-body-item">
             <div class="input-group">
-                <i class="bi bi-check
-                input-group-addon
-                addon-my-color"></i>
+                <div class="input-group-addon addon-my-color">
+                    <i class="icofont-check i-button-null"></i>
+                </div>
                 <div class="div-form-control div-flex">
                     <div class="tamanho-50 text-left">
                         <span>DATA DA ADMISSÃO:</span>
                     </div>
                     <div class="tamanho-50 text-right">
-                        <span>{{ admissao }}</span>
+                        <span>{{ colaborador.DataAdmissao }}</span>
                     </div>
                 </div>
-                <div class="input-group-addon
-                addon-my-color">
-                    <i class="bi bi-check"></i>
+                <div class="input-group-addon addon-my-color">
+                    <i class="icofont-check i-button-null"></i>
                 </div>
             </div>
         </div>
-        {% if demissao %}
         <div class="card-body-item">
             <div class="input-group">
-                <i class="bi bi-check
-                input-group-addon
-                addon-my-color"></i>
-                <div class="div-form-control div-flex">
-                    <div class="tamanho-50 text-left">
-                        <span>DATA DA DEMISSÃO:</span>
-                    </div>
-                    <div class="tamanho-50 text-right">
-                        <span>{{ demissao }}</span>
-                    </div>
+                <div class="input-group-addon addon-my-color">
+                    <i class="icofont-check i-button-null"></i>
                 </div>
-                <div class="input-group-addon
-                addon-my-color">
-                    <i class="bi bi-check"></i>
-                </div>
-            </div>
-        </div>
-        {% endif %}
-        <div class="card-body-item">
-            <div class="input-group">
-                <i class="bi bi-check
-                input-group-addon
-                addon-my-color"></i>
                 <div class="div-form-control div-flex">
                     <div class="tamanho-50 text-left">
                         <span>
@@ -83,17 +68,16 @@
                         </span>
                     </div>
                 </div>
-                <div class="input-group-addon
-                addon-my-color">
-                    <i class="bi bi-check"></i>
+                <div class="input-group-addon addon-my-color">
+                    <i class="icofont-check i-button-null"></i>
                 </div>
             </div>
         </div>
         <div class="card-body-item">
             <div class="input-group">
-                <i class="bi bi-check
-                input-group-addon
-                addon-my-color"></i>
+                <div class="input-group-addon addon-my-color">
+                    <i class="icofont-check i-button-null"></i>
+                </div>
                 <div class="div-form-control div-flex">
                     <div class="tamanho-50 text-left">
                         <span>VALOR DIA:</span>
@@ -102,17 +86,16 @@
                         <span>R$ {{ valor_dia|stringformat:'.2f' }}</span>
                     </div>
                 </div>
-                <div class="input-group-addon
-                addon-my-color">
-                    <i class="bi bi-check"></i>
+                <div class="input-group-addon addon-my-color">
+                    <i class="icofont-check i-button-null"></i>
                 </div>
             </div>
         </div>
         <div class="card-body-item">
             <div class="input-group">
-                <i class="bi bi-check
-                input-group-addon
-                addon-my-color"></i>
+                <div class="input-group-addon addon-my-color">
+                    <i class="icofont-check i-button-null"></i>
+                </div>
                 <div class="div-form-control div-flex">
                     <div class="tamanho-50 text-left">
                         <span>VALOR HORA:</span>
@@ -121,17 +104,16 @@
                         <span>R$ {{ valor_hora|stringformat:'.2f' }}</span>
                     </div>
                 </div>
-                <div class="input-group-addon
-                addon-my-color">
-                    <i class="bi bi-check"></i>
+                <div class="input-group-addon addon-my-color">
+                    <i class="icofont-check i-button-null"></i>
                 </div>
             </div>
         </div>
         <div class="card-body-item">
             <div class="input-group">
-                <i class="bi bi-check
-                input-group-addon
-                addon-my-color"></i>
+                <div class="input-group-addon addon-my-color">
+                    <i class="icofont-check i-button-null"></i>
+                </div>
                 <div class="div-form-control div-flex">
                     <div class="tamanho-50 text-left">
                         <span>VALOR HORA EXTRA:</span>
@@ -140,66 +122,65 @@
                         <span>R$ {{ valor_extra|stringformat:'.2f' }}</span>
                     </div>
                 </div>
-                <div class="input-group-addon
-                addon-my-color">
-                    <i class="bi bi-check"></i>
+                <div class="input-group-addon addon-my-color">
+                    <i class="icofont-check i-button-null"></i>
                 </div>
             </div>
         </div>
         <div class="card-body-item">
             <div class="input-group">
-                <i class="bi bi-check
-                input-group-addon
-                addon-my-color"></i>
+                <div class="input-group-addon addon-my-color">
+                    <i class="icofont-check i-button-null"></i>
+                </div>
                 <div class="div-form-control div-flex">
                     <div class="tamanho-50 text-left">
-                        <span>DIAS REMUNERADO:</span>
+                        <span>REMUNERADO:</span>
                     </div>
                     <div class="tamanho-50 text-right">
-                        <span>{{ dias_remunerado }}</span>
+                        <span>{{ dias_remunerado }} DIA{{ dias_remunerado|pluralize|upper }}
+</span>
                     </div>
                 </div>
-                <div class="input-group-addon
-                addon-my-color">
-                    <i class="bi bi-check"></i>
+                <div class="input-group-addon addon-my-color">
+                    <i class="icofont-check i-button-null"></i>
                 </div>
             </div>
         </div>
         <div class="card-body-item">
             <div class="input-group">
-                <i class="bi bi-check
-                input-group-addon
-                addon-my-color"></i>
+                <div class="input-group-addon addon-my-color">
+                    <i class="icofont-check i-button-null"></i>
+                </div>
                 <div class="div-form-control div-flex">
                     <div class="tamanho-50 text-left">
-                        <span>DIAS TRABALHADO:</span>
+                        <span>TRABALHADO:</span>
                     </div>
                     <div class="tamanho-50 text-right">
-                        <span>{{ dias_trabalhado }}</span>
+                        <span>{{ dias_trabalhado }} DIA{{ dias_trabalhado|pluralize|upper }}
+</span>
                     </div>
                 </div>
-                <div class="input-group-addon
-                addon-my-color">
-                    <i class="bi bi-check"></i>
+                <div class="input-group-addon addon-my-color">
+                    <i class="icofont-check i-button-null"></i>
                 </div>
             </div>
         </div>
         <div class="card-body-item">
             <div class="input-group">
-                <i class="bi bi-check
-                input-group-addon
-                addon-my-color"></i>
+                <div class="input-group-addon addon-my-color">
+                    <i class="icofont-check i-button-null"></i>
+                </div>
                 <div class="div-form-control div-flex">
                     <div class="tamanho-50 text-left">
-                        <span>DIAS CONDUÇÃO:</span>
+                        <span>CONDUÇÃO:</span>
                     </div>
                     <div class="tamanho-50 text-right">
-                        <span>{{ dias_transporte }}</span>
+                        <span>{{ dias_transporte }} DIA{{ dias_transporte|pluralize|upper }}
+</span>
                     </div>
                 </div>
-                <div class="input-group-addon
-                addon-my-color">
-                    <i class="bi bi-check"></i>
+                <div class="input-group-addon addon-my-color">
+                    <i class="icofont-check i-button-null"></i>
                 </div>
             </div>
         </div>
@@ -208,5 +189,23 @@
     {% endif %}
 </div>
 <!-- Footer -->
-<div class="article-card-footer"></div>
-{% endif %}
+<div class="card-footer">
+	<div class="input-group">
+		<i class="icofont-rounded-left-down input-group-addon
+		addon-my-color"></i>
+		<div class="div-flex div-form-control">
+	    	<div class="tamanho-50 text-center">
+                <span>
+                    <i class="icofont-dollar i-button js-contra-cheque-adiantamento">ADIANTAMENTO</i>
+                </span>
+			</div>
+    		<div class="tamanho-50 text-center">
+                <span>
+                    <i class="icofont-dollar i-button js-contra-cheque-pagamento">PAGAMENTO</i>
+                </span>
+			</div>
+		</div>
+		<i class="icofont-rounded-right-down input-group-addon
+		addon-my-color"></i>
+	</div>
+</div>

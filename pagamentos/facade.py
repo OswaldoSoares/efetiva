@@ -149,46 +149,46 @@ def get_pessoa(idpessoal, var):
     return var
 
 
-def dias_falta(cp):
-    dias = 0
-    for itens in cp:
-        if itens["ausencia"] == "FALTA" and itens["alteracao"] == "ROBOT":
-            dias += 1
-    return dias
+def dias_falta(cartao_ponto):
+    total_dias = 0
+    for dia in cartao_ponto:
+        if dia["Ausencia"] == "FALTA" and dia["Alteracao"] == "ROBOT":
+            total_dias += 1
+    return total_dias
 
 
-def dias_remunerado(cp, ultimo_dia):
-    dias = 0
-    for itens in cp:
-        if itens["remunerado"]:
-            dias += 1
+def dias_remunerado(cartao_ponto, ultimo_dia):
+    total_dias = 0
+    for dia in cartao_ponto:
+        if dia["Remunerado"]:
+            total_dias += 1
     # if ultimo_dia.day == 31:
     #     dias -= 1
-    return dias
+    return total_dias
 
 
-def dias_transporte(cp):
-    dias = 0
-    for itens in cp:
-        if itens["transporte"]:
-            dias += 1
-    return dias
+def dias_transporte(cartao_ponto):
+    total_dias = 0
+    for dia in cartao_ponto:
+        if dia["Conducao"]:
+            total_dias += 1
+    return total_dias
 
 
-def dias_carro_empresa(cp):
-    dias = 0
-    for itens in cp:
-        if itens["carro_empresa"]:
-            dias += 1
-    return dias
+def dias_carro_empresa(cartao_ponto):
+    total_dias = 0
+    for dia in cartao_ponto:
+        if dia["CarroEmpresa"]:
+            total_dias += 1
+    return total_dias
 
 
-def dias_trabalhado(cp):
-    dias = 0
-    for itens in cp:
-        if itens["ausencia"] == "":
-            dias += 1
-    return dias
+def dias_trabalhado(cartao_ponto):
+    total_dias = 0
+    for dia in cartao_ponto:
+        if dia["Ausencia"] == "":
+            total_dias += 1
+    return total_dias
 
 
 def cartao_ponto(var):
@@ -706,15 +706,13 @@ def delete_vales(_id_val):
     vale.delete()
 
 
-def dias_admitido(_var):
-    data_admissao = _var["admissao"]
-    data_demissao = _var["demissao"]
+def dias_admitido(admissao, demissao):
     data_hoje = datetime.datetime.now().date()
-    if data_demissao:
-        _dias = data_demissao - data_admissao
+    if demissao:
+        total_dias = demissao - admissao
     else:
-        _dias = data_hoje - data_admissao
-    return _dias.days
+        total_dias = data_hoje - admissao
+    return total_dias.days
 
 
 def hora_extra(_var):
@@ -2562,7 +2560,7 @@ def html_vales(request, contexto, data):
 
 def html_vales_pagamento(request, contexto, data):
     data["html_vales_pagamento"] = render_to_string(
-        "pagamentos/html_vales_pagamento.html", contexto, request=request
+        "pagamentos/html_vales.html", contexto, request=request
     )
     return data
 
@@ -2813,22 +2811,22 @@ def get_cartao_ponto_colaborador(idpessoal, primeiro_dia_mes, ultimo_dia_mes):
 
 def create_contexto_mensalista(idpessoal, mes_ano):
     colaborador = get_colaborador(idpessoal)
+    salario = list(get_salario(colaborador).values("Salario"))[0]
     mes, ano = converter_mes_ano(mes_ano)
     primeiro_dia_mes, ultimo_dia_mes = extremos_mes(mes, ano)
     cartao_ponto = get_cartao_ponto_colaborador(
         idpessoal, primeiro_dia_mes, ultimo_dia_mes
     )
-    contra_ch = get_contra_cheque_mes_ano_descricao(
-        idpessoal, int(mes), ano, "ADIANTAMENTO"
-    )
-    ccc = create_contexto_contra_cheque(idpessoal, contra_ch, "ADIANTAMENTO")
     vales = get_vales_colaborador(colaborador)
-    #  minutas = minutas_contra_cheque(var)
+    minutas = get_minutas_periodo_contra_cheque(
+        idpessoal, primeiro_dia_mes, ultimo_dia_mes
+    )
+    atualiza_cartao_ponto_minutas(cartao_ponto, minutas)
+    atualiza_itens_contra_cheque(
+        colaborador, cartao_ponto, minutas, salario, mes, ano
+    )
+
     #  var["dias_falta"] = dias_falta(_cartao_ponto)
-    #  var["dias_remunerado"] = dias_remunerado(_cartao_ponto, var["ultimo_dia"])
-    #  var["dias_transporte"] = dias_transporte(_cartao_ponto)
-    #  var["dias_carro_empresa"] = dias_carro_empresa(_cartao_ponto)
-    #  var["dias_trabalhado"] = dias_trabalhado(_cartao_ponto)
     #  _cc = contra_cheque(var)
     #  var["id_contra_cheque"] = _cc["idcontracheque"]
     #  atrazo(var)
@@ -2839,8 +2837,17 @@ def create_contexto_mensalista(idpessoal, mes_ano):
     #  _cci = contra_cheque_itens(var)
     #  _tv, _td, _st = totais_contra_cheque(var)
     #  vales = vales_funcionario(var)
-    #  hoje = datetime.datetime.today()
-    #  hoje = datetime.datetime.strftime(hoje, "%Y-%m-%d")
+    hoje = datetime.datetime.today()
+    hoje = datetime.datetime.strftime(hoje, "%Y-%m-%d")
+    total_dias_admitido = dias_admitido(
+        colaborador.DataAdmissao, colaborador.DataDemissao
+    )
+    total_dias_remunerado = dias_remunerado(cartao_ponto, ultimo_dia_mes)
+    total_dias_trabalhado = dias_trabalhado(cartao_ponto)
+    total_dias_transporte = dias_transporte(cartao_ponto) - dias_carro_empresa(
+        cartao_ponto
+    )
+
     #  files = FileUpload.objects.filter(
     #  DescricaoUpload__startswith=f"{var['nome_curto_u']}_MES_{var['mes']}_{var['ano']}"
     #  )
@@ -2849,37 +2856,28 @@ def create_contexto_mensalista(idpessoal, mes_ano):
     #  Dia__range=[var["primeiro_dia"], var["ultimo_dia"]],
     #  )
     contexto = {
+        "colaborador": colaborador,
+        "nome_curto": nome_curto(colaborador.Nome),
+        "nome_underscore": nome_curto_underscore(colaborador.Nome),
+        "idpessoal": idpessoal,
         "cartao_ponto": cartao_ponto,
         "mes_ano": mes_ano,
         "contra_cheque": contra_cheque,
         "vales": vales,
-        "tipo": "ADIANTAMENTO",
-        #  "nome": var["nome_curto"],
-        #  "nome_underscore": var["nome_curto_u"],
-        #  "idpessoal": var["id_pessoal"],
-        #  "admissao": var["admissao"],
-        #  "demissao": var["demissao"],
-        #  "categoria": var["categoria"],
-        #  "contra_cheque": _cc,
-        #  "contra_cheque_itens": _cci,
-        #  "vencimentos": _tv,
-        #  "descontos": _td,
-        #  "saldo": _st,
-        #  "adiantamento": _adiantamento,
-        #  "dias_admitido": dias_admitido(var),
-        #  "dias_remunerado": var["dias_remunerado"],
-        #  "dias_trabalhado": var["dias_trabalhado"],
-        #  "dias_transporte": var["dias_transporte"] - var["dias_carro_empresa"],
-        #  "valor_dia": var["salario_base"] / 30,
-        #  "valor_hora": var["salario_base"] / 30 / 9,
-        #  "valor_extra": var["salario_base"] / 30 / 9 * Decimal(1.5),
-        #  "minutas": minutas,
-        #  "vales": vales,
-        #  "hoje": hoje,
+        "tipo": "PAGAMENTO",
+        "minutas": minutas,
+        "hoje": hoje,
+        "dias_admitido": total_dias_admitido,
+        "dias_remunerado": total_dias_remunerado,
+        "dias_trabalhado": total_dias_trabalhado,
+        "dias_transporte": total_dias_transporte,
+        "salario": salario["Salario"],
+        "valor_dia": salario["Salario"] / 30,
+        "valor_hora": salario["Salario"] / 30 / 9,
+        "valor_extra": salario["Salario"] / 30 / 9 * Decimal(1.5),
         #  "files": files,
         #  "agenda": agenda,
     }
-    contexto.update(ccc)
     return contexto
 
 
@@ -2945,3 +2943,155 @@ def atualiza_cartao_ponto_minutas(cartao_ponto, minutas):
         registros_cartao_ponto, ["Entrada", "Saida"]
     )
     return cartao_ponto
+
+
+def atualiza_itens_contra_cheque(
+    colaborador, cartao_ponto, minutas, salario, mes, ano
+):
+    horas_extras = horas_extras_colaborador(cartao_ponto, minutas)
+    hora_zerada = datetime.datetime.strptime("00:00:00", "%H:%M:%S").time()
+    if horas_extras > hora_zerada:
+        valor_horas_extras = calcula_horas_extras_colaborador(
+            salario["Salario"], horas_extras
+        )
+        contra_cheque = busca_contracheque("NOVEMBRO", 2023, colaborador)
+        contra_cheque = contra_cheque.filter(Descricao="PAGAMENTO")
+        #  filtro_hora_extra = list(filter(lambda contra_cheque_itens: contra_cheque_itens["Descricao"] == "HORA EXTRA", contra_cheque_itens))
+        print(contra_cheque[0].idContraCheque)
+        contra_cheque_itens = busca_contrachequeitens(
+            contra_cheque[0].idContraCheque, "HORA EXTRA", "C"
+        )
+        print(contra_cheque_itens)
+        registro_contra_cheque_itens = []
+        if contra_cheque_itens:
+            registro_contra_cheque_itens.append(
+                ContraChequeItens(
+                    idContraChequeItens=contra_cheque_itens[
+                        0
+                    ].idContraChequeItens,
+                    Valor=valor_horas_extras,
+                    Referencia=horas_extras,
+                )
+            )
+            ContraChequeItens.objects.bulk_update(
+                registro_contra_cheque_itens, ["Valor", "Referencia"]
+            )
+        else:
+            registro_contra_cheque_itens.append(
+                ContraChequeItens(
+                    Descricao="HORA EXTRA",
+                    Valor=valor_horas_extras,
+                    Registro="C",
+                    Referencia=horas_extras,
+                    idContraCheque_id=contra_cheque[0].idContraCheque,
+                )
+            )
+            ContraChequeItens.objects.bulk_create(registro_contra_cheque_itens)
+
+
+def horas_extras_colaborador(cartao_ponto, minutas):
+    hora_entrada_padrao = datetime.timedelta(hours=7, minutes=0)
+    hora_saida_padrao = datetime.timedelta(hours=17, minutes=0)
+    horas_extras_mensal = datetime.timedelta(hours=0, minutes=0)
+    for itens in cartao_ponto:
+        horas_extras_entrada = datetime.timedelta(hours=0, minutes=0)
+        horas_extras_saida = datetime.timedelta(hours=0, minutes=0)
+        hora_entrada_cartao_ponto = datetime.timedelta(
+            hours=itens["Entrada"].hour,
+            minutes=itens["Entrada"].minute,
+        )
+        hora_saida_cartao_ponto = datetime.timedelta(
+            hours=itens["Saida"].hour, minutes=itens["Saida"].minute
+        )
+        if hora_entrada_cartao_ponto < hora_entrada_padrao:
+            horas_extras_entrada += (
+                hora_entrada_padrao - hora_entrada_cartao_ponto
+            )
+            hora = datetime.datetime.strptime(
+                str(hora_entrada_cartao_ponto), "%H:%M:%S"
+            ).time()
+            minuta = list(
+                filter(
+                    lambda minutas: minutas["data_minuta"] == itens["Dia"]
+                    and minutas["hora_final"] == hora,
+                    minutas,
+                )
+            )
+            if minuta:
+                if "hora_extra" in minuta:
+                    horas_extras_existente = datetime.timedelta(
+                        hours=minuta[0]["hora_extra"].hour,
+                        minutes=minuta[0]["hora_extra"].minute,
+                    )
+                else:
+                    horas_extras_existente = datetime.timedelta(
+                        hours=0, minutes=0
+                    )
+                horas_extras_nova = (
+                    horas_extras_existente + horas_extras_entrada
+                )
+                minuta[0]["hora_extra"] = datetime.datetime.strptime(
+                    str(horas_extras_nova), "%H:%M:%S"
+                ).time
+        if hora_saida_cartao_ponto > hora_saida_padrao:
+            horas_extras_saida += hora_saida_cartao_ponto - hora_saida_padrao
+            hora = datetime.datetime.strptime(
+                str(hora_saida_cartao_ponto), "%H:%M:%S"
+            ).time()
+            minuta = list(
+                filter(
+                    lambda minutas: minutas["data_minuta"] == itens["Dia"]
+                    and minutas["hora_final"] == hora,
+                    minutas,
+                )
+            )
+            if minuta:
+                if "hora_extra" in minuta:
+                    horas_extras_existente = datetime.timedelta(
+                        hours=minuta[0]["hora_extra"].hour,
+                        minutes=minuta[0]["hora_extra"].minute,
+                    )
+                else:
+                    horas_extras_existente = datetime.timedelta(
+                        hours=0, minutes=0
+                    )
+                horas_extras_nova = horas_extras_existente + horas_extras_saida
+                minuta[0]["hora_extra"] = datetime.datetime.strptime(
+                    str(horas_extras_nova), "%H:%M:%S"
+                ).time
+        horas_extras_mensal += horas_extras_entrada + horas_extras_saida
+    horas_extras_mensal = datetime.datetime.strptime(
+        str(horas_extras_mensal), "%H:%M:%S"
+    ).time()
+    return horas_extras_mensal
+
+
+def calcula_horas_extras_colaborador(salario, horas_extras):
+    horas_extras = datetime.timedelta(
+        hours=horas_extras.hour, minutes=horas_extras.minute
+    )
+    valor_horas_extras = (
+        float(salario) / 30 / 9 / 60 / 60 * 1.5 * horas_extras.seconds
+    )
+    return valor_horas_extras
+
+
+def texste():
+    pass
+
+
+def create_contexto_contra_cheque_colaborador(idpessoal, mes_ano, descricao):
+    mes, ano = converter_mes_ano(mes_ano)
+    contra_cheque = get_contra_cheque_mes_ano_descricao(
+        idpessoal, int(mes), ano, descricao
+    )
+    contexto = create_contexto_contra_cheque(
+        idpessoal, contra_cheque, descricao
+    )
+    return contexto
+
+
+def create_data_contra_cheque_colaborador(request, contexto):
+    data = dict()
+    html_contra_cheque(request, contexto, data)
+    return JsonResponse(data)
