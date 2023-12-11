@@ -44,6 +44,7 @@ $(document).on("click", ".js-seleciona-funcionario", function(event) {
             idpessoal: v_idpessoal,
         },
         beforeSend: function() {
+            $(".card-contra-cheque").hide()
             $('.box-loader').show();
         },
         success: function(data) {
