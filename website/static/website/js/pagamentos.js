@@ -62,6 +62,7 @@ $(document).on("click", ".js-seleciona-funcionario", function(event) {
             // $(".body-minutas-pagamento").hide()
             $(".card-vales-colaborador").show()
             localStorage.setItem("idcontracheque", $("#idcontracheque").data("idcontracheque"))
+            localStorage.setItem("idpessoal", v_idpessoal)
             $('.box-loader').hide();
         },
     });
