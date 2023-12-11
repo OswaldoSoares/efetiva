@@ -2511,9 +2511,14 @@ def verifica_parcelas_decimo_terceiro(colaborador):
 def get_salario_base_contra_cheque_itens(contra_cheque_itens, tipo):
     contra_cheque_itens = list(contra_cheque_itens.values())
     filtro = next(
-        (item for item in contra_cheque_itens if item["Descricao"] == tipo),
+        (
+            item
+            for item in contra_cheque_itens
+            if item["Descricao"] == "SALARIO"
+        ),
         None,
     )
+    print(contra_cheque_itens)
     salario = Decimal(0.00)
     if tipo == "FERIAS":
         salario = round(filtro["Valor"] / int(filtro["Referencia"][:-1]) * 30)
@@ -2523,6 +2528,8 @@ def get_salario_base_contra_cheque_itens(contra_cheque_itens, tipo):
         )
     elif tipo == "ADIANTAMENTO":
         salario = round(filtro["Valor"] / 40 * 100)
+    elif tipo == "PAGAMENTO":
+        salario = round(filtro["Valor"] / int(filtro["Referencia"][:-1]) * 30)
     return salario
 
 
@@ -2634,7 +2641,6 @@ def get_cidade_estado(cidade, estado, cep):
         else:
             cidade_estado = cidade_estado + " - CEP: " + cep
     return cidade_estado
-
 
     #  @staticmethod
     #  def get_faltas_aquisitivo(self):

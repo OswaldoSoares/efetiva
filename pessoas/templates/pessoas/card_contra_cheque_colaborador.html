@@ -79,6 +79,9 @@
 				<a class="icofont-printer i-button"
 				target="_blank"
 				href="{% url 'imprime_contra_cheque' %}?idcontracheque={{ contra_cheque.idContraCheque }}&idpessoal={{ colaborador.idpes }}&tipo={{ tipo }}"></a>
+				{% comment %} <a class="bi bi-printer i-button" {% endcomment %}
+        {% comment %} href="{% url 'print_contra_cheque_pagamento' %}?idcc={{ contra_cheque.idContraCheque }}" {% endcomment %}
+        {% comment %} target="_blank"></a> {% endcomment %}
 				<i class="icofont-bill-alt
 				i-button"
 	   			   title="Informa Pagamento"></i>
