@@ -6572,7 +6572,8 @@ label {
 }
 
 .i-button-null {
-  color: var(--color14);
+  color: var(--color11);
+  color: #fff7ba;
 }
 
 /* DIV para mostrar mensagens */
