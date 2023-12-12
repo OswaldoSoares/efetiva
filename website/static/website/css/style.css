@@ -1756,11 +1756,6 @@ main .usuario-out {
   }
 }
 
-.card {
-  display: inline-block;
-  -webkit-column-break-inside: avoid;
-}
-
 .modal {
   z-index: 10000;
   align-items: center;
@@ -6237,18 +6232,76 @@ label {
   width: 100%;
 }
 
+.addon-my-color {
+  background-color: var(--color1);
+  max-width: 4rem;
+  color: var(--color6);
+  border: 1px solid var(--color1);
+}
+
+.addon-my-color i {
+  max-width: 1.5rem;
+}
+
+.div-flex {
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.5rem;
+}
+
+.div-flex p {
+  padding-top: 1rem;
+}
+
+.div-form-control {
+  width: 100%;
+  line-height: 2.3rem;
+}
+
+/* Altera Bootstrap CSS */
+.input-group {
+  padding: 0.2rem 0.2rem;
+}
+
+.input-group > .form-control,
+.input-group > .input-group-addon {
+  height: calc(2rem + 2px);
+  padding: 0.25rem 0.5rem;
+  font-size: 1.1rem;
+  line-height: 1.5rem;
+  border-radius: 0.2rem;
+}
+
 .card {
   width: 100%;
+  display: inline-block;
+  -webkit-column-break-inside: avoid;
 }
 
 .card-header {
-  background-color: var(--color1);
-  color: var(--color6);
-  height: 4rem;
-  border-radius: 1rem 1rem 0 0;
-  text-align: center;
+    background-color: var(--color1);
+    color: var(--color6);
+    height: 4rem;
+    padding-top: 0.5rem; 
+    font-size: 2.0rem;
+    border-radius: 1rem 1rem 0 0;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #999999;
+    border-bottom: 2px solid var(--color7);
+}
+
+.card-header span {
+  font-size: 2.2rem;
   vertical-align: middle;
-  border-bottom: 1px solid var(--color7);
+}
+
+.card-header i {
+  font-size: 1.4rem;
+  font-weight: bold;
 }
 
 .card-body {
@@ -6258,53 +6311,39 @@ label {
   min-height: 3rem;
 }
 
-.card-footer {
-  background-color: var(--color1);
-  color: var(--color6);
-  height: 4rem;
-  border-radius: 0 0 1rem 1rem;
-  text-align: center;
-  vertical-align: middle;
-  padding-top: 0.5rem;
-  margin-bottom: 5px;
-}
-
-.card-header span {
-  font-size: 2.2rem;
-  vertical-align: middle;
-}
-
-/* .card-header i { */
-  /* font-size: 2.2rem; */
-  /* vertical-align: middle; */
-  /* padding: 0 0.8rem; */
-/* } */
-
-.card-header .i-button {
-  font-size: 1.6rem;
-  vertical-align: middle;
-  padding: 0 0.8rem;
-}
-
-.card-footer span {
-  line-height: 3rem;
-  font-size: 1.2rem;
-  vertical-align: middle;
-}
-
-.card-footer .i-button {
-  line-height: 3rem;
-  font-size: 1.6rem;
-  vertical-align: middle;
-  padding: 0 10px;
-}
-
 .card-body-item {
+  border: 1px solid #999999;
+  border-top: none;
   border-bottom: 2px solid var(--color7);
 }
 
 .card-body span {
   color: var(--color6);
+}
+
+.card-body i {
+  font-size: 1.4rem;
+}
+
+.card-footer {
+  background-color: var(--color1);
+  color: var(--color8);
+  height: 3rem;
+  font-size: 1.4rem;
+  border-radius: 0 0 1rem 1rem;
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid #999999;
+  border-top: none;
+}
+
+.card-footer span {
+  font-size: 1.4rem;
+}
+
+.card-footer i {
+  font-size: 1.4rem;
+  font-weight: bold;
 }
 
 @media only screen and (min-width: 715px) {
@@ -6466,32 +6505,8 @@ label {
   /* text-align: center; */
 }
 
-.addon-my-color {
-  background-color: var(--color1);
-  max-width: 4rem;
-  color: var(--color6);
-  border: 1px solid var(--color1);
-}
-
-.addon-my-color i {
-  max-width: 1.5rem;
-}
-
 .addon-larger {
   min-width: 9rem;
-}
-
-.div-flex {
-  width: 100%;
-  height: auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 0.8rem;
-}
-
-.div-flex p {
-  padding-top: 1rem;
 }
 
 .div-direction-column {
@@ -6507,12 +6522,6 @@ label {
 .div-botoes i {
   padding: 0 0.7rem;
   font-size: 1.6rem;
-}
-
-.div-form-control {
-  width: 100%;
-  height: calc(2.25rem + 2px);
-  line-height: 1.5;
 }
 
 .font-maior {
@@ -6544,20 +6553,6 @@ label {
 
 .transparente {
   background-color: var(--color7);
-}
-
-/* Altera Bootstrap CSS */
-.input-group-sm {
-  padding: 0.2rem 0.2rem;
-}
-
-.input-group-sm > .form-control,
-.input-group-sm > .input-group-addon {
-  height: calc(2rem + 2px);
-  padding: 0.25rem 0.5rem;
-  font-size: 1.1rem;
-  line-height: 1.5rem;
-  border-radius: 0.2rem;
 }
 
 /* Cor dos itens clicaveis */
