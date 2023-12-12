@@ -1,35 +1,53 @@
 <!-- Header -->
 <div class="card-header">
-    <span>MENSALISTAS</span>
+    <div class="input-group">
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-up i-button-null"></i>
+        </div>
+        <div class="div-form-control">
+            <span>MENSALISTAS</span>
+        </div>
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-up i-button-null"></i>
+        </div>
+    </div>
 </div>
 <!-- Body -->
 <div class="card-body">
-    <div class-"card-body-item">
+    <div class="card-body-item">
         <div class="input-group">
-            <div class="input-group-addon
-            addon-my-color">
-                <i class="bi bi-calendar
-                i-button-null"></i>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-calendar i-button-null"></i>
             </div>
-            <select class="form-control
-            form-control-minuta
-            select-mes-ano"
-                    id="meses"
-                    name="meses">
-                {% for itens in mes_ano %}
-                    <option value="{{ itens }}">{{ itens|upper }}</option>
-                {% endfor %}
-            </select>
-            <div class="input-group-addon
-            addon-my-color">
-                <i class="bi bi-clipboard-check
-                i-button
-                js-seleciona-mes-ano"
+            <div class="div-flex div-form-control">
+                <div class="tamanho-100">
+                    <select class="select-mes-ano form-control form-control-minuta"
+                            id="meses" name="meses">
+                        {% for itens in mes_ano %}
+                        <option value="{{ itens }}">{{ itens|upper }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-square i-button js-seleciona-mes-ano js-toggle-checked"
                    title="Seleciona Mês/Ano"></i>
             </div>
         </div>
     </div>
 </div>
 <!-- Footer -->
-<div class="card-footer"></div>
+<div class="card-footer">
+    <div class="input-group">
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-down i-button-null"></i>
+        </div>
+        <div class="tamanho-100">
+            <span></span>
+        </div>
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-down i-button-null"></i>
+        </div>
+    </div>
+</div>
 
