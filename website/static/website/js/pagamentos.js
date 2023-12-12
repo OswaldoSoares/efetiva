@@ -31,6 +31,12 @@ $(document).on("click", ".js-seleciona-mes-ano", function(event) {
     });
 });
 
+// Seleciona mês e ano para pagamento de colaboradores mensalistas
+$(".select-mes-ano").change(function() {
+    $(".js-seleciona-mes-ano").removeClass("icofont-checked")
+    $(".js-seleciona-mes-ano").addClass("icofont-square")
+});
+
 // Seleciona funcionário mensalista
 $(document).on("click", ".js-seleciona-funcionario", function(event) {
     v_mes_ano = $(".select-mes-ano option:selected").text();
@@ -928,3 +934,7 @@ $(document).on('click', '.js-contra-cheque-pagamento', function() {
     });
 });
 
+$(document).on('click', '.js-toggle-checked', function() {
+    $(this).removeClass("icofont-square")
+    $(this).addClass("icofont-checked")
+});
