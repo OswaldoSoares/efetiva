@@ -6327,7 +6327,7 @@ label {
 
 .card-footer {
   background-color: var(--color1);
-  color: var(--color8);
+  color: var(--color6);
   height: 3rem;
   font-size: 1.4rem;
   border-radius: 0 0 1rem 1rem;
@@ -6531,7 +6531,7 @@ label {
 }
 
 .font-menor {
-  font-size: 1.2rem;
+  font-size: 1.2rem !important;
 }
 
 .font-menor-2 {
