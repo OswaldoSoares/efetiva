@@ -2868,6 +2868,18 @@ def adiciona_saldo_colaborador_contra_cheque(
     return contra_cheque
 
 
+def adiciona_valor_salario_colaborador_contra_cheque(contra_cheque, salarios):
+    salario = list(
+        filter(
+            lambda salarios: salarios["idPessoal_id"]
+            == contra_cheque["idpessoal"],
+            salarios,
+        )
+    )
+    contra_cheque["salario"] = salario[0]["Salario"]
+    return contra_cheque
+
+
 def get_cartao_ponto_colaborador(idpessoal, primeiro_dia_mes, ultimo_dia_mes):
     cartao_ponto = list(
         CartaoPonto.objects.filter(
