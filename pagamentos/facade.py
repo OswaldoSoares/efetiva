@@ -2571,14 +2571,11 @@ def create_contexto_folha_pagamento(mes_ano):
     colaboradores = list(get_colaboradores_mensalistas_admitidos().values())
     salarios = list(get_valores_salario_transporte_colaborador().values())
     folha = busca_folha(mes, ano, colaboradores, salarios)
-    dados = dados_folha_pagamento(folha, colaboradores, salarios)
+    contexto = {"folha": folha}
+    contexto.update(
+        contra_cheques_folha_pagamento(folha, colaboradores, salarios)
+    )
     queries_termino(start, start_queries)
-    contexto = {
-        "folha": folha,
-        "dados": dados,
-        "colaboradores": colaboradores,
-        "salarios": salarios,
-    }
     return contexto
 
 
