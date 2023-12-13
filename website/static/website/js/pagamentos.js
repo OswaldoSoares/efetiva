@@ -64,6 +64,8 @@ $(".select-mes-ano").change(function() {
     $(".card-vales-colaborador").hide();
     $(".js-seleciona-mes-ano").removeClass("icofont-checked")
     $(".js-seleciona-mes-ano").addClass("icofont-square")
+    $(".js-seleciona-funcionario").removeClass("icofont-checked")
+    $(".js-seleciona-funcionario").addClass("icofont-square")
 });
 
 // Seleciona funcionário mensalista
