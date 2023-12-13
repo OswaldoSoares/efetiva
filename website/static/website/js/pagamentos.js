@@ -213,23 +213,6 @@ $(document).on("click", ".js-atestada", function(event) {
     });
 });
 
-$(document).on('submit', '.js-gera-adiantamento', function(event) {
-    event.preventDefault();
-    var v_mes_ano = $('#mes_ano_adiantamento').val();
-    $.ajax({
-        type: $(this).attr('method'),
-        url: '/pagamentos/adiantamento',
-        data: $(this).serialize(),
-        beforeSend: function() {
-            $('.box-loader').show()
-        },
-        success: function(data) {
-            $('.box-loader').hide()
-        },
-    });
-});
-
-
 $(document).on('click', '.js-gera-adiantamento-automatico', function() {
     var v_mes_ano = $(".select-mes-ano option:selected").text();
     $.ajax({
