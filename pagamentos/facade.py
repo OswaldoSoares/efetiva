@@ -437,7 +437,6 @@ def create_contexto_folha(mes_ano: str) -> JsonResponse:
 def create_data_seleciona_mes_ano(request, contexto):
     data = dict()
     html_card_folha_pagamento(request, contexto, data)
-    html_adiantamento(request, contexto, data)
     return JsonResponse(data)
 
 
@@ -1225,25 +1224,6 @@ def imprime_contra_cheque_pagamento(_id_cc, tipo):
         "multas": lista_multas,
     }
     return contexto
-
-
-def adiantamento_automatico(_mes_ano):
-    _mes, _ano = converter_mes_ano(_mes_ano)
-    _folha = FolhaContraCheque(_mes, _ano).__dict__["funcionarios"]
-    _funcionarios = []
-    for x in _folha:
-        _funcionarios.append(x)
-    _mes = meses[int(_mes) - 1]
-    for x in _funcionarios:
-        _id_pes = _folha[x]["idpessoal"]
-        _valor = _folha[x]["adiantamento"]
-        _contra_cheque = ContraCheque.objects.filter(
-            idPessoal=_id_pes, MesReferencia=_mes, AnoReferencia=_ano
-        ).values("idContraCheque")
-        _id_cc = _contra_cheque[0]["idContraCheque"]
-        if busca_item_contra_cheque(_id_cc, "ADIANTAMENTO") == None:
-            create_contracheque_itens("ADIANTAMENTO", _valor, "", "D", _id_cc)
-    return _folha
 
 
 def calcula_extras(_var):
@@ -2345,15 +2325,6 @@ def create_contexto_minutas_avulso_receber(datainicial, datafinal, idpessoal):
         "datafinal": datafinal,
     }
     return context["pagar"]
-
-
-def html_adiantamento(request, contexto, data):
-    data["html_adiantamento"] = render_to_string(
-        "pagamentos/html_adiantamento_automatico.html",
-        contexto,
-        request=request,
-    )
-    return data
 
 
 def html_agenda_pagamento(request, contexto, data):

@@ -1,7 +1,6 @@
 from django.urls import path
 
 from .views import (
-    adiantamento_automatico,
     adiciona_agenda,
     adiciona_contra_cheque_itens,
     adiciona_vales,
@@ -76,11 +75,6 @@ urlpatterns = [
         "atestada",
         atestada,
         name="atestada",
-    ),
-    path(
-        "adiantamento_automatico",
-        adiantamento_automatico,
-        name="adiantamento_automatico",
     ),
     path(
         "adiciona_contra_cheque_itens",

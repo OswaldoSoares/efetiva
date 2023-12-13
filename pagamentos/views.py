@@ -26,14 +26,6 @@ def index_pagamento(request):
     return render(request, "pagamentos/index.html", contexto)
 
 
-def adiantamento_automatico(request):
-    _mes_ano = request.GET.get("mes_ano")
-    facade.adiantamento_automatico(_mes_ano)
-    contexto = facade.create_contexto_folha(_mes_ano)
-    data = facade.create_data_seleciona_mes_ano(request, contexto)
-    return data
-
-
 def adiciona_agenda(request):
     _descricao = request.POST.get("descricao")
     _data = request.POST.get("data")

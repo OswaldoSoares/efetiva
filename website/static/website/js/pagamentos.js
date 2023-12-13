@@ -213,36 +213,6 @@ $(document).on("click", ".js-atestada", function(event) {
     });
 });
 
-$(document).on('click', '.js-gera-adiantamento-automatico', function() {
-    var v_mes_ano = $(".select-mes-ano option:selected").text();
-    $.ajax({
-        type: $(this).attr('method'),
-        url: '/pagamentos/adiantamento_automatico',
-        data: {
-            mes_ano: v_mes_ano,
-        },
-        beforeSend: function() {
-            $('.box-loader').show()
-        },
-        success: function(data) {
-            $(".js-folha").html(data.html_folha);
-            $(".js-saldo").html(data.html_saldo);
-            $(".js-adiantamento").html(data.html_adiantamento);
-            $(".js-funcionario-pagamento").html('');
-            $(".js-cartao-ponto").html('');
-            $(".js-itens-contra-cheque").html('');
-            $(".js-contra-cheque").html('');
-            $(".js-cria-vales").html('')
-            $(".js-minutas-pagamento").html('')
-            $(".js-lista-vales").html('')
-            $(".js-files-pagamento").html('')
-            $(".js-agenda-pagamento").html('')
-            $(".js-itens-agenda-pagamento").html('');
-            $('.box-loader').hide()
-        },
-    });
-});
-
 $(document).on('submit', '.js-gera-contra-cheque-itens', function(event) {
     event.preventDefault();
     var v_mes_ano = $(".select-mes-ano option:selected").text();
