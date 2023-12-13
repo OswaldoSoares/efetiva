@@ -109,29 +109,6 @@ $(document).on("click", ".js-seleciona-funcionario", function(event) {
     });
 });
 
-var maxHeight = 0;
-var topPosition = 0;
-
-var tamanho_body_saldo_avulso;
-
-var tamanhoCardBodyAvulso = function() {
-    var saldo_avulso_top = $('.js-body-saldo-avulso').position().top
-    var saldo_avulso_height = $('.js-body-saldo-avulso').height()
-    var saldo_avulso_area = saldo_avulso_top + saldo_avulso_height
-    var minutas_avulso_top = $('.js-body-minutas-avulso').position().top
-    var minutas_avulso_height = $('.js-body-minutas-avulso').height()
-    var minutas_avulso_area = minutas_avulso_top + minutas_avulso_height
-    var recibos_avulso_top = $('.js-body-recibos-avulso').position().top
-    var recibos_avulso_height = $('.js-body-recibos-avulso').height()
-    var recibos_avulso_area = recibos_avulso_top + recibos_avulso_height
-    var areas = [saldo_avulso_area, minutas_avulso_area, recibos_avulso_area]
-    maior = Math.max(...areas)
-    $('.js-body-saldo-avulso').height(maior - saldo_avulso_top)
-    $('.js-body-minutas-avulso').height(maior - minutas_avulso_top)
-    $('.js-body-recibos-avulso').height(maior - recibos_avulso_top)
-}
-
-
 
 $(document).on("change", ".select-mes-ano", function(event) {
     $(".js-saldo").html('');
@@ -563,11 +540,9 @@ $(document).on("click", ".js-periodo-avulso", function(event) {
             $(".div-quatro").hide()
             $(".card-minutas-avulso").hide()
             $(".card-recibos-avulso").hide()
-            $(".js-body-saldo-avulso").height(tamanho_body_saldo_avulso)
         },
         success: function(data) {
             $(".card-saldo-avulso").html(data.html_saldoavulso);
-            tamanho_body_saldo_avulso = $('.js-body-saldo-avulso').height()
             $(".div-seis").show();
             $(".div-sete").show();
             $(".box-loader").hide();
@@ -621,7 +596,6 @@ $(document).on("click", ".estorna-recibo", function(event) {
         },
         success: function(data) {
             $(".card-saldo-avulso").html(data.html_saldoavulso);
-            tamanho_body_saldo_avulso = $('.js-body-saldo-avulso').height()
             $(".box-loader").hide();
         },
         error: function(error) {
@@ -651,7 +625,6 @@ $(document).on("click", ".js-form-paga-recibo", function(event) {
         success: function(data) {
             $(".card-form-colaborador").html(data.html_form_paga_recibo_colaborador);
             $(".card-form-colaborador").show()
-            tamanho_body_saldo_avulso = $('.js-body-saldo-avulso').height()
             $(".box-loader").hide();
         },
         error: function(error) {
@@ -702,11 +675,9 @@ $(document).on("click", ".js-gera-pagamento-avulso", function(event) {
         },
         success: function(data) {
             $(".card-saldo-avulso").html(data.html_saldoavulso);
-            tamanho_body_saldo_avulso = $('.js-body-saldo-avulso').height()
             $(".card-minutas-avulso").html(data.html_minutas);
             $(".card-recibos-avulso").html(data.html_recibos);
             $(".js-recibo-novo").get(0).click();
-            tamanhoCardBodyAvulso();
             $(".box-loader").hide();
         },
         error: function(error) {
@@ -730,7 +701,6 @@ $(document).on("click", ".js-seleciona-colaborador-avulso", function(event) {
         },
         beforeSend: function() {
             $(".box-loader").show()
-            $(".js-body-saldo-avulso").height(tamanho_body_saldo_avulso)
             $(".card-saldo-avulso").hide()
             $(".card-minutas-avulso").hide()
             $(".card-recibos-avulso").hide()
@@ -742,7 +712,6 @@ $(document).on("click", ".js-seleciona-colaborador-avulso", function(event) {
             $(".card-minutas-avulso").show();
             $(".card-recibos-avulso").show();
             $(".js-recibo-avulso-zerado").hide();
-            tamanhoCardBodyAvulso();
             $(".box-loader").hide();
         },
         error: function(error) {
