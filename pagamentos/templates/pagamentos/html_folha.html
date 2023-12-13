@@ -1,41 +1,67 @@
 {% load humanize %}
 <!-- Header -->
 <div class="card-header">
-	<span>FOLHA</span>
+    <div class="input-group">
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-up"></i>
+        </div>
+        <div class="div-form-control">
+            <span>FOLHA</span>
+        </div>
+        <div class=" input-group-addon addon-my-color">
+			<i class="icofont-rounded-right-up"></i>
+        </div>
+    </div>
 </div>
 <!-- Body -->
 <div class="card-body">
-	{% for contra_cheque in dados %}
+	{% comment %} <div class="card-body-item"> {% endcomment %}
+		{% comment %} <div class="input-group"> {% endcomment %}
+			{% comment %} <div class="input-group-addon addon-my-color"> {% endcomment %}
+				{% comment %} <i class="icofont-check i-button-null"></i> {% endcomment %}
+			{% comment %} </div> {% endcomment %}
+			{% comment %} <div class="div-flex div-form-control font-menor"> {% endcomment %}
+				{% comment %} <div class="tamanho-50 text-left"> {% endcomment %}
+					{% comment %} <span>COLABORADOR</span> {% endcomment %}
+				{% comment %} </div> {% endcomment %}
+				{% comment %} <div class="tamanho-25 text-right"> {% endcomment %}
+					{% comment %} <span>ADIANTAMENTO</span> {% endcomment %}
+				{% comment %} </div> {% endcomment %}
+				{% comment %} <div class="tamanho-25 text-right"> {% endcomment %}
+					{% comment %} <span>PAGAMENTO</span> {% endcomment %}
+				{% comment %} </div> {% endcomment %}
+			{% comment %} </div> {% endcomment %}
+			{% comment %} <div class="input-group-addon addon-my-color"> {% endcomment %}
+				{% comment %} <i class="icofont-check i-button-null"></i> {% endcomment %}
+			{% comment %} </div> {% endcomment %}
+		{% comment %} </div> {% endcomment %}
+	{% comment %} </div> {% endcomment %}
+	{% for contra_cheque in contra_cheques %}
 	<div class="card-body-item">
 		<div class="input-group">
-			<div class="input-group-addon
-			addon-my-color">
-				<i class="icofont-waiter
-				i-button-null"></i>
+			<div class="input-group-addon addon-my-color">
+				<i class="i-button-null">{{ forloop.counter|stringformat:"02d" }}</i>
 			</div>
-			<div class="div-form-control div-flex font-menor">
+			<div class="div-flex div-form-control font-menor">
 				<div class="tamanho-50 text-left">
-					<span title="Salário R$ {{ value.salario_base|intcomma }}">
-						{{ contra_cheque.nome_curto  }}
+					<span title="Salário Atual: R$ {{ contra_cheque.salario|intcomma }}">
+						{{ contra_cheque.nome  }}
 					</span>
 				</div>
 				<div class="tamanho-25 text-right">
-					<span title="Valor do Adiantamento">
-						R$ {{ value.adiantamento|intcomma }}
+					<span title="Saldo do Adiantamento">
+						R$ {{ contra_cheque.saldo_adiantamento|intcomma }}
 					</span>
 				</div>
 				<div class="tamanho-25 text-right">
-					<span title="Saldo a Receber">
-						R$ {{ contra_cheque.saldo_mes|intcomma }}
+					<span title="Saldo do Pagamento">
+						R$ {{ contra_cheque.saldo_pagamento|intcomma }}
 					</span>
 				</div>
 			</div>
-			<div class="input-group-addon
-			addon-my-color">
-				<i class="bi bi-folder-symlink
-				i-button
-				js-seleciona-funcionario"
-	   			   data-idpessoal="{{ contra_cheque.idPessoal_id }}"
+			<div class="input-group-addon addon-my-color">
+				<i class="icofont-square i-button js-seleciona-funcionario js-toggle-checked"
+	   			   data-idpessoal="{{ contra_cheque.idpessoal }}"
 			   	   data-idcontracheque="{{ contra_cheque.idContraCheque }}"
 		  		   data-mes=""
 		 		   data-ano=""></i>
@@ -46,23 +72,29 @@
 </div>
 <!-- Footer -->
 <div class="card-footer">
-	<div class="input-group">
-		<i class="icofont-rounded-left-down input-group-addon
-		addon-my-color"></i>
+    <div class="input-group">
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-down"></i>
+        </div>
 		<div class="div-flex div-form-control">
 			<div class="tamanho-50 text-left">
-				<span>
-					{{ v_folha.funcionarios|length }}
+				<span class="font-menor">
+					TOTAL R$ {{ total_folha|intcomma }}
 				</span>
 			</div>
 			<div class="tamanho-25 text-right">
-				<span>R$ {{ v_folha.total_adiantamento|intcomma }}</span>
+				<span class="font-menor">
+					R$ {{ total_saldo_adiantamento|intcomma }}
+				</span>
 			</div>
 			<div class="tamanho-25 text-right">
-				<span>R$ {{ v_folha.total_pagamento |intcomma}}</span>
+				<span class="font-menor">
+					R$ {{ total_saldo_pagamento |intcomma}}
+				</span>
 			</div>
 		</div>
-		<i class="icofont-rounded-right-down input-group-addon
-		addon-my-color"></i>
-	</div>
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-down"></i>
+        </div>
+    </div>
 </div>
