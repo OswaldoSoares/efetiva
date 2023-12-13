@@ -2781,19 +2781,69 @@ def create_cartao_ponto_folha(colaboradores, mes, ano, salarios):
     return dias_conducao
 
 
-def dados_folha_pagamento(folha, colaboradores, salarios):
+def contra_cheques_folha_pagamento(folha, colaboradores, salarios):
     mes = meses.index(folha.MesReferencia) + 1
     ano = folha.AnoReferencia
-    contra_cheque = list(
+    contra_cheques_adiantamento = list(
+        get_contra_cheque_mes_ano_adiantamento(mes, ano).values(
+            "idContraCheque", "idPessoal_id", "idPessoal__Nome"
+        )
+    )
+    contra_cheques_pagamento = list(
         get_contra_cheque_mes_ano_pagamento(mes, ano).values(
             "idContraCheque", "idPessoal_id", "idPessoal__Nome"
         )
     )
-    for item in contra_cheque:
-        item["nome_curto"] = nome_curto(item["idPessoal__Nome"])
-    contra_cheque = sorted(
-        contra_cheque, key=lambda item: item["idPessoal__Nome"]
+    contra_cheques = []
+    for colaborador in colaboradores:
+        filtro_adiantamento = list(
+            filter(
+                lambda contra_cheques_adiantamento: contra_cheques_adiantamento[
+                    "idPessoal_id"
+                ]
+                == colaborador["idPessoal"],
+                contra_cheques_adiantamento,
+            )
+        )
+        filtro_pagamento = list(
+            filter(
+                lambda contra_cheques_pagamento: contra_cheques_pagamento[
+                    "idPessoal_id"
+                ]
+                == colaborador["idPessoal"],
+                contra_cheques_pagamento,
+            )
+        )
+        contra_cheques.append(
+            {
+                "nome": nome_curto(colaborador["Nome"]),
+                "idpessoal": colaborador["idPessoal"],
+                "idadiantamento": filtro_adiantamento[0]["idContraCheque"],
+                "idpagamento": filtro_pagamento[0]["idContraCheque"],
+            }
+        )
+    lista_contra_cheques = []
+    for contra_cheque in contra_cheques:
+        lista_contra_cheques.append(contra_cheque["idadiantamento"])
+        lista_contra_cheques.append(contra_cheque["idpagamento"])
+    contra_cheque_itens = list(
+        ContraChequeItens.objects.filter(
+            idContraCheque_id__in=lista_contra_cheques
+        ).values()
     )
+    for contra_cheque in contra_cheques:
+        adiciona_saldo_colaborador_contra_cheque(
+            contra_cheque, contra_cheque_itens, "idadiantamento"
+        )
+        adiciona_saldo_colaborador_contra_cheque(
+            contra_cheque, contra_cheque_itens, "idpagamento"
+        )
+        adiciona_valor_salario_colaborador_contra_cheque(
+            contra_cheque, salarios
+        )
+    contexto = {"contra_cheques": contra_cheques}
+    contexto.update(totais_contra_cheques(contra_cheques, contra_cheque_itens))
+    return contexto
     return contra_cheque
 
 
