@@ -2880,6 +2880,31 @@ def adiciona_valor_salario_colaborador_contra_cheque(contra_cheque, salarios):
     return contra_cheque
 
 
+def totais_contra_cheques(contra_cheques, contra_cheque_itens):
+    total_saldo_adiantamento = sum(
+        item["saldo_adiantamento"] for item in contra_cheques
+    )
+    total_saldo_pagamento = sum(
+        item["saldo_pagamento"] for item in contra_cheques
+    )
+    total_folha_debito = sum(
+        item["Valor"]
+        for item in contra_cheque_itens
+        if item["Registro"] == "D" and item["Vales_id"] == 0
+    )
+    total_folha_credito = sum(
+        item["Valor"]
+        for item in contra_cheque_itens
+        if item["Registro"] == "C"
+    )
+    contexto = {
+        "total_saldo_adiantamento": total_saldo_adiantamento,
+        "total_saldo_pagamento": total_saldo_pagamento,
+        "total_folha": total_folha_credito - total_folha_debito,
+    }
+    return contexto
+
+
 def get_cartao_ponto_colaborador(idpessoal, primeiro_dia_mes, ultimo_dia_mes):
     cartao_ponto = list(
         CartaoPonto.objects.filter(
