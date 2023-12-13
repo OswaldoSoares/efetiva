@@ -2844,6 +2844,27 @@ def contra_cheques_folha_pagamento(folha, colaboradores, salarios):
     contexto = {"contra_cheques": contra_cheques}
     contexto.update(totais_contra_cheques(contra_cheques, contra_cheque_itens))
     return contexto
+
+
+def adiciona_saldo_colaborador_contra_cheque(
+    contra_cheque, contra_cheque_itens, id
+):
+    filtro = list(
+        filter(
+            lambda contra_cheque_itens: contra_cheque_itens[
+                "idContraCheque_id"
+            ]
+            == contra_cheque[id],
+            contra_cheque_itens,
+        )
+    )
+    debito = sum(item["Valor"] for item in filtro if item["Registro"] == "D")
+    credito = sum(item["Valor"] for item in filtro if item["Registro"] == "C")
+    saldo = credito - debito
+    if id == "idadiantamento":
+        contra_cheque["saldo_adiantamento"] = saldo
+    else:
+        contra_cheque["saldo_pagamento"] = saldo
     return contra_cheque
 
 
