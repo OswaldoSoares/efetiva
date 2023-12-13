@@ -20,7 +20,6 @@ $(document).on("click", ".js-seleciona-mes-ano", function(event) {
         beforeSend: function() {
             localStorage.setItem("mes_ano", mes_ano)
             $(".js-saldo").html('');
-            $(".js-adiantamento").html('')
             $(".js-funcionario-pagamento").html('');
             $(".js-cartao-ponto").html('');
             $(".js-itens-contra-cheque").html('');
@@ -50,7 +49,6 @@ $(document).on("click", ".js-seleciona-mes-ano", function(event) {
 // Seleciona mês e ano para pagamento de colaboradores mensalistas
 $(".select-mes-ano").change(function() {
     $(".js-saldo").html('');
-    $(".js-adiantamento").html('')
     $(".js-funcionario-pagamento").html('');
     $(".js-cartao-ponto").html('');
     $(".js-itens-contra-cheque").html('');
@@ -112,7 +110,6 @@ $(document).on("click", ".js-seleciona-funcionario", function(event) {
 
 $(document).on("change", ".select-mes-ano", function(event) {
     $(".js-saldo").html('');
-    $(".js-adiantamento").html('')
     $(".js-funcionario-pagamento").html('');
     $(".js-cartao-ponto").html('');
     $(".js-itens-contra-cheque").html('');
