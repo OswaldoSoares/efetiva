@@ -81,6 +81,8 @@ $(document).on("click", ".js-seleciona-funcionario", function(event) {
             idpessoal: v_idpessoal,
         },
         beforeSend: function() {
+            $(".js-seleciona-funcionario").removeClass("icofont-checked")
+            $(".js-seleciona-funcionario").addClass("icofont-square")
             $(".card-contra-cheque").hide()
             $('.box-loader').show();
         },
