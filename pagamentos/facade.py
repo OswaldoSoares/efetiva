@@ -2798,19 +2798,13 @@ def contra_cheques_folha_pagamento(folha, colaboradores, salarios):
     for colaborador in colaboradores:
         filtro_adiantamento = list(
             filter(
-                lambda contra_cheques_adiantamento: contra_cheques_adiantamento[
-                    "idPessoal_id"
-                ]
-                == colaborador["idPessoal"],
+                lambda item: item["idPessoal_id"] == colaborador["idPessoal"],
                 contra_cheques_adiantamento,
             )
         )
         filtro_pagamento = list(
             filter(
-                lambda contra_cheques_pagamento: contra_cheques_pagamento[
-                    "idPessoal_id"
-                ]
-                == colaborador["idPessoal"],
+                lambda item: item["idPessoal_id"] == colaborador["idPessoal"],
                 contra_cheques_pagamento,
             )
         )
@@ -2851,10 +2845,7 @@ def adiciona_saldo_colaborador_contra_cheque(
 ):
     filtro = list(
         filter(
-            lambda contra_cheque_itens: contra_cheque_itens[
-                "idContraCheque_id"
-            ]
-            == contra_cheque[id],
+            lambda item: item["idContraCheque_id"] == contra_cheque[id],
             contra_cheque_itens,
         )
     )
@@ -2871,8 +2862,7 @@ def adiciona_saldo_colaborador_contra_cheque(
 def adiciona_valor_salario_colaborador_contra_cheque(contra_cheque, salarios):
     salario = list(
         filter(
-            lambda salarios: salarios["idPessoal_id"]
-            == contra_cheque["idpessoal"],
+            lambda item: item["idPessoal_id"] == contra_cheque["idpessoal"],
             salarios,
         )
     )
