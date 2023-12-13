@@ -2871,6 +2871,9 @@ def adiciona_valor_salario_colaborador_contra_cheque(contra_cheque, salarios):
 
 
 def totais_contra_cheques(contra_cheques, contra_cheque_itens):
+    total_saldo_adiantamento = Decimal(0.00)
+    total_saldo_pagamento = Decimal(0.00)
+    total_folha = Decimal(0.00)
     total_saldo_adiantamento = sum(
         item["saldo_adiantamento"] for item in contra_cheques
     )
@@ -2887,10 +2890,11 @@ def totais_contra_cheques(contra_cheques, contra_cheque_itens):
         for item in contra_cheque_itens
         if item["Registro"] == "C"
     )
+    total_folha = total_folha_credito - total_folha_debito
     contexto = {
         "total_saldo_adiantamento": total_saldo_adiantamento,
         "total_saldo_pagamento": total_saldo_pagamento,
-        "total_folha": total_folha_credito - total_folha_debito,
+        "total_folha": total_folha,
     }
     return contexto
 
