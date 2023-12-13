@@ -436,7 +436,7 @@ def create_contexto_folha(mes_ano: str) -> JsonResponse:
 
 def create_data_seleciona_mes_ano(request, contexto):
     data = dict()
-    html_folha(request, contexto, data)
+    html_card_folha_pagamento(request, contexto, data)
     html_adiantamento(request, contexto, data)
     return JsonResponse(data)
 
@@ -2386,9 +2386,9 @@ def html_files_pagamento(request, contexto, data):
     return data
 
 
-def html_folha(request, contexto, data):
-    data["html_folha"] = render_to_string(
-        "pagamentos/html_folha.html", contexto, request=request
+def html_card_folha_pagamento(request, contexto, data):
+    data["html_card_folha_pagamento"] = render_to_string(
+        "pagamentos/card_folha_pagamento.html", contexto, request=request
     )
     return data
 

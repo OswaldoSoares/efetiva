@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $(".card-cartao-ponto").hide()
-    $(".card-folha").hide()
+    $(".card-folha-pagamento").hide()
     $(".card-funcionario-pagamento").hide()
     $(".card-contra-cheque").hide()
     $(".card-minutas-pagamento").hide()
@@ -19,7 +19,6 @@ $(document).on("click", ".js-seleciona-mes-ano", function(event) {
         },
         beforeSend: function() {
             localStorage.setItem("mes_ano", mes_ano)
-            $(".js-folha").html('');
             $(".js-saldo").html('');
             $(".js-adiantamento").html('')
             $(".js-funcionario-pagamento").html('');
@@ -35,11 +34,13 @@ $(document).on("click", ".js-seleciona-mes-ano", function(event) {
             $(".card-vales-colaborador").hide();
 
             $(".card-periodo-avulso").hide();
+
+            $(".card-folha-pagamento").hide();
             $('.box-loader').show();
         },
         success: function(data) {
-            $(".card-folha").html(data.html_folha);
-            $(".card-folha").show();
+            $(".card-folha-pagamento").html(data.html_card_folha_pagamento);
+            $(".card-folha-pagamento").show();
             // $(".s-saldo").html(data.html_saldo);
             $('.box-loader').hide()
         },
@@ -48,7 +49,6 @@ $(document).on("click", ".js-seleciona-mes-ano", function(event) {
 
 // Seleciona mês e ano para pagamento de colaboradores mensalistas
 $(".select-mes-ano").change(function() {
-    $(".js-folha").html('');
     $(".js-saldo").html('');
     $(".js-adiantamento").html('')
     $(".js-funcionario-pagamento").html('');
@@ -66,6 +66,7 @@ $(".select-mes-ano").change(function() {
     $(".js-seleciona-mes-ano").addClass("icofont-square")
     $(".js-seleciona-funcionario").removeClass("icofont-checked")
     $(".js-seleciona-funcionario").addClass("icofont-square")
+    $(".card-folha-pagamento").hide()
 });
 
 // Seleciona funcionário mensalista
@@ -133,7 +134,6 @@ var tamanhoCardBodyAvulso = function() {
 
 
 $(document).on("change", ".select-mes-ano", function(event) {
-    $(".js-folha").html('');
     $(".js-saldo").html('');
     $(".js-adiantamento").html('')
     $(".js-funcionario-pagamento").html('');
@@ -146,6 +146,8 @@ $(document).on("change", ".select-mes-ano", function(event) {
     $(".js-files-pagamento").html('')
     $(".js-agenda-pagamento").html('')
     $(".js-itens-agenda-pagamento").html('');
+
+    $(".card-folha-pagamento").hide()
 });
 
 
