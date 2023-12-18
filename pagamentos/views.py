@@ -103,12 +103,13 @@ def atestada(request):
 
 
 def ausencia_falta(request):
-    _mes_ano = request.GET.get("mes_ano")
-    _id_pes = request.GET.get("idpessoal")
-    _id_cp = request.GET.get("idcartaoponto")
-    facade.altera_ausencia_falta(_id_cp)
-    contexto = facade.create_contexto_funcionario(_mes_ano, _id_pes)
-    contexto.update(facade.create_contexto_folha(_mes_ano))
+    mes_ano = request.GET.get("mes_ano")
+    idpessoal = request.GET.get("idpessoal")
+    idcartaoponto = request.GET.get("idcartaoponto")
+    ausencia = request.GET.get("ausencia")
+    facade.altera_ausencia_falta(idcartaoponto, ausencia)
+    contexto = facade.create_contexto_mensalista(idpessoal, mes_ano)
+    contexto.update(facade.create_contexto_folha_pagamento(mes_ano))
     data = facade.create_data_ausencia_falta(request, contexto)
     return data
 
