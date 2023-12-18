@@ -2550,7 +2550,9 @@ def create_contexto_folha_pagamento(mes_ano):
     contexto.update(
         contra_cheques_folha_pagamento(folha, colaboradores, salarios)
     )
-    queries_termino(start, start_queries)
+    queries_termino(
+        start, start_queries, "[INFO] Create contexto folha pagamento"
+    )
     return contexto
 
 
