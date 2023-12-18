@@ -162,8 +162,12 @@ def dias_remunerado(cartao_ponto, ultimo_dia):
     for dia in cartao_ponto:
         if dia["Remunerado"]:
             total_dias += 1
-    # if ultimo_dia.day == 31:
-    #     dias -= 1
+    if ultimo_dia.day == 31:
+        total_dias -= 1
+    if ultimo_dia.day == 29:
+        total_dias += 1
+    if ultimo_dia.day == 28:
+        total_dias += 2
     return total_dias
 
 
