@@ -2971,6 +2971,7 @@ def get_minutas_periodo_contra_cheque(
 
 
 def atualiza_cartao_ponto_minutas(cartao_ponto, minutas):
+    start, start_queries = queries_inicio()
     registros_cartao_ponto = []
     for minuta in minutas:
         dia = next(
