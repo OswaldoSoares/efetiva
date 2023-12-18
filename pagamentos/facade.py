@@ -2903,21 +2903,9 @@ def create_contexto_mensalista(idpessoal, mes_ano):
         idpessoal, primeiro_dia_mes, ultimo_dia_mes
     )
     atualiza_cartao_ponto_minutas(cartao_ponto, minutas)
-    atualiza_itens_contra_cheque(
+    atualiza_itens_contra_cheque_pagamento(
         colaborador, cartao_ponto, minutas, salario, mes, ano
     )
-
-    #  var["dias_falta"] = dias_falta(_cartao_ponto)
-    #  _cc = contra_cheque(var)
-    #  var["id_contra_cheque"] = _cc["idcontracheque"]
-    #  atrazo(var)
-    #  hora_extra(var)
-    #  _adiantamento = False
-    #  if busca_item_contra_cheque(var["id_contra_cheque"], "ADIANTAMENTO"):
-    #  _adiantamento = True
-    #  _cci = contra_cheque_itens(var)
-    #  _tv, _td, _st = totais_contra_cheque(var)
-    #  vales = vales_funcionario(var)
     hoje = datetime.datetime.today()
     hoje = datetime.datetime.strftime(hoje, "%Y-%m-%d")
     total_dias_admitido = dias_admitido(
@@ -2943,7 +2931,6 @@ def create_contexto_mensalista(idpessoal, mes_ano):
         "idpessoal": idpessoal,
         "cartao_ponto": cartao_ponto,
         "mes_ano": mes_ano,
-        "contra_cheque": contra_cheque,
         "vales": vales,
         "tipo": "PAGAMENTO",
         "minutas": minutas,
