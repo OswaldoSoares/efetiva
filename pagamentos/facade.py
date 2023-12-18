@@ -544,9 +544,9 @@ def create_data_seleciona_funcionario(request, contexto):
 
 def create_data_ausencia_falta(request, contexto):
     data = dict()
+    html_card_folha_pagamento(request, contexto, data)
     html_cartao_ponto(request, contexto, data)
     html_funcionario(request, contexto, data)
-    html_contra_cheque(request, contexto, data)
     return JsonResponse(data)
 
 
