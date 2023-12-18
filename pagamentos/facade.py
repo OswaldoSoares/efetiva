@@ -1023,34 +1023,39 @@ def update_cartao_ponto(_var):
         )
 
 
-def altera_ausencia_falta(_id_cp):
-    _cp = CartaoPonto.objects.get(idCartaoPonto=_id_cp)
-    obj = _cp
-    if obj.Ausencia == "FALTA":
-        obj.Ausencia = ""
-        obj.Alteracao = "ROBOT"
-        obj.Conducao = True
-        obj.Remunerado = True
-    elif obj.Ausencia == "FÉRIAS":
-        obj.Conducao = False
-        obj.Remunerado = False
-    else:
-        obj.Ausencia = "FALTA"
-        obj.Alteracao = "MANUAL"
-        obj.Conducao = False
-        obj.Remunerado = False
-    obj.Entrada = "07:00:00"
-    obj.Saida = "17:00:00"
-    obj.save(
-        update_fields=[
-            "Ausencia",
-            "Alteracao",
-            "Entrada",
-            "Saida",
-            "Conducao",
-            "Remunerado",
-        ]
-    )
+# Atualizada em 14/12/2023 - Manter
+def altera_ausencia_falta(idcartaoponto, ausencia):
+    registros_cartao_ponto = []
+    if ausencia != "FERIAS":
+        if ausencia == "FALTA":
+            registros_cartao_ponto.append(
+                CartaoPonto(
+                    Ausencia="",
+                    Alteracao="ROBOT",
+                    Conducao=True,
+                    Remunerado=True,
+                    idCartaoPonto=idcartaoponto,
+                )
+            )
+        else:
+            registros_cartao_ponto.append(
+                CartaoPonto(
+                    Ausencia="FALTA",
+                    Alteracao="MANUAL",
+                    Conducao=False,
+                    Remunerado=False,
+                    idCartaoPonto=idcartaoponto,
+                )
+            )
+        CartaoPonto.objects.bulk_update(
+            registros_cartao_ponto,
+            [
+                "Ausencia",
+                "Alteracao",
+                "Conducao",
+                "Remunerado",
+            ],
+        )
 
 
 def falta_remunerada(_id_cp):
