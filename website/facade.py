@@ -138,12 +138,11 @@ def queries_inicio():
     return start, start_queries
 
 
-def queries_termino(start, start_queries):
+def queries_termino(start, start_queries, info):
     end = time.time()
     end_queries = len(connection.queries)
-    print(start_queries)
-    print("tempo: %.2fs" % (end - start))
-    print(end_queries)
+    print(connection.queries)
+    print(f"{info} - Queries {end_queries} - Tempo: {'%.2fs' % (end - start)}")
 
 
 class DiasFeriados:
