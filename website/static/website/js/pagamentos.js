@@ -866,7 +866,7 @@ $(document).on('click', '.js-pessoas-exclui-contra-cheque-item', function () {
 $(document).on('click', '.js-contra-cheque-pagamento', function() {
     var idpessoal = localStorage.getItem("idpessoal")
     var mes_ano = localStorage.getItem("mes_ano")
-    var descricao = "PAGAMENTO"
+    var descricao = $(this).data("descricao")
     $.ajax({
         type: "GET",
         url: "/pagamentos/seleciona_contra_cheque",
