@@ -127,26 +127,27 @@ $(document).on("change", ".select-mes-ano", function(event) {
 
 
 $(document).on("click", ".js-altera-falta", function(event) {
-    var v_mes_ano = $(".select-mes-ano option:selected").text();
-    var v_idcartaoponto = $(this).data("idcartaoponto");
-    var v_idpessoal = $(this).data("idpessoal");
+    var mes_ano = $(".select-mes-ano option:selected").text();
+    var idcartaoponto = $(this).data("idcartaoponto");
+    var idpessoal = $(this).data("idpessoal");
+    var ausencia = $(this).data("ausencia");
     $.ajax({
         type: "GET",
         dataType: "json",
         url: "/pagamentos/ausencia_falta",
         data: {
-            mes_ano: v_mes_ano,
-            idcartaoponto: v_idcartaoponto,
-            idpessoal: v_idpessoal,
+            mes_ano: mes_ano,
+            idcartaoponto: idcartaoponto,
+            idpessoal: idpessoal,
+            ausencia: ausencia,
         },
         beforeSend: function() {
             $('.box-loader').show()
         },
         success: function(data) {
+            $(".card-folha-pagamento").html(data.html_card_folha_pagamento);
             $(".js-cartao-ponto").html(data.html_cartao_ponto);
             $(".js-funcionario-pagamento").html(data.html_funcionario);
-            $(".js-contra-cheque").html(data.html_contra_cheque);
-            $(".js-saldo").html(data.html_saldo);
             $('.box-loader').hide()
         },
         error: function(error, data) {
