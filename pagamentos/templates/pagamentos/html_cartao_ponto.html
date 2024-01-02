@@ -34,23 +34,30 @@
                 </div>
             </div>
             <div class="input-group-addon addon-my-color">
-                {% if dias.Remunerado %}
+                {% if dias.Ausencia == "SÁBADO" or dias.Ausencia == "DOMINGO" or dias.Ausencia == "FERIADO" %}
+                    <i class="icofont-check i-button-null"></i>
+                {% else %}
+                    {% if dias.Remunerado %}
                     <i class="icofont-dollar i-button js-atestada"
                        data-idpessoal="{{ dias.idPessoal_id }}"
-                       data-idcartaoponto="{{ dias.idCartaoPonto }}"></i>
-                {% else %}
+                       data-idcartaoponto="{{ dias.idCartaoPonto }}"
+                       data-remunerado="{{ dias.Remunerado }}"></i>
+                    {% else %}
                     <i class="icofont-close i-button js-atestada"
                        data-idpessoal="{{ dias.idPessoal_id }}"
-                       data-idcartaoponto="{{ dias.idCartaoPonto }}"></i>
+                       data-idcartaoponto="{{ dias.idCartaoPonto }}"
+                       data-remunerado="{{ dias.Remunerado }}"></i>
+                    {% endif %}
                 {% endif %}
             </div>
             <div class="input-group-addon addon-my-color">
                 {% if dias.Ausencia == 'FALTA' %}
                     <i class="icofont-home i-button js-altera-falta"
                        data-idpessoal="{{ dias.idPessoal_id }}"
+                       data-ausencia="{{ dias.Ausencia }}"
                        data-idcartaoponto="{{ dias.idCartaoPonto }}"></i>
                 {% else %}
-                    <i class="icofont-home"></i>
+                    <i class="icofont-home i-button-null"></i>
                 {% endif %}
             </div>
         </div>
