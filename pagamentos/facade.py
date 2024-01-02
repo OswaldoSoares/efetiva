@@ -3022,47 +3022,16 @@ def atualiza_itens_contra_cheque_pagamento(
     contra_cheque = busca_contracheque(meses[int(mes) - 1], ano, colaborador)
     contra_cheque = contra_cheque.filter(Descricao="PAGAMENTO")
     contra_cheque_itens = busca_contrachequeitens(
-        contra_cheque[0].idContraCheque, "SALARIO", "C"
     )
     registro_contra_cheque_itens = []
-    faltas = list(
-        filter(lambda item: item["Ausencia"] == "FALTA", cartao_ponto)
-    )
-    semanas = []
     if faltas:
-        for falta in faltas:
-            semanas.append(datetime.datetime.strftime(falta["Dia"], "%W"))
-        filtra_semanas = set(semanas)
-        dias_falta_semana = []
-        for semana in filtra_semanas:
-            dias_falta_semana.append(semanas.count(semana))
-        dias_descontar_descanso = 0
-        for item in dias_falta_semana:
-            if item == 1:
-                dias_descontar_descanso += 1
-            else:
-                dias_descontar_descanso += 2
         valor_dia = salario["Salario"] / 30
-        valor_receber = valor_dia * (
-            30 - len(faltas) - dias_descontar_descanso
-        )
-        if (
-            contra_cheque_itens[0].Referencia
-            != f"{30 - len(faltas) - dias_descontar_descanso}d"
-        ):
-            print(contra_cheque_itens)
             registro_contra_cheque_itens.append(
                 ContraChequeItens(
-                    idContraChequeItens=contra_cheque_itens[
-                        0
-                    ].idContraChequeItens,
-                    Valor=valor_receber,
-                    Referencia=f"{30 - len(faltas) - dias_descontar_descanso}d",
                 )
             )
     else:
         if contra_cheque_itens[0].Referencia != "30d":
-            print(contra_cheque_itens)
             registro_contra_cheque_itens.append(
                 ContraChequeItens(
                     idContraChequeItens=contra_cheque_itens[
