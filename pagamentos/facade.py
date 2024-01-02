@@ -1058,19 +1058,18 @@ def altera_ausencia_falta(idcartaoponto, ausencia):
         )
 
 
-def falta_remunerada(_id_cp):
-    _cp = CartaoPonto.objects.get(idCartaoPonto=_id_cp)
-    obj = _cp
-    if obj.Ausencia == "FALTA":
-        if obj.Alteracao == "MANUAL":
-            obj.Alteracao = "ROBOT"
-        else:
-            obj.Alteracao = "MANUAL"
-        if obj.Remunerado == True:
-            obj.Remunerado = False
-        else:
-            obj.Remunerado = True
-    obj.save(update_fields=["Alteracao", "Remunerado"])
+def falta_remunerada(idcartaoponto, remunerado):
+    registros_cartao_ponto = []
+    registros_cartao_ponto.append(
+        CartaoPonto(
+            Alteracao="MANUAL",
+            Remunerado=False if remunerado == "True" else True,
+            idCartaoPonto=idcartaoponto,
+        )
+    )
+    CartaoPonto.objects.bulk_update(
+        registros_cartao_ponto, ["Alteracao", "Remunerado"]
+    )
 
 
 def altera_carro_empresa(_id_cp):
