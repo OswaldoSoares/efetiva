@@ -92,12 +92,13 @@ def altera_horario_cartao_ponto(request):
 
 
 def atestada(request):
-    _mes_ano = request.GET.get("mes_ano")
-    _id_pes = request.GET.get("idpessoal")
-    _id_cp = request.GET.get("idcartaoponto")
-    facade.falta_remunerada(_id_cp)
-    contexto = facade.create_contexto_funcionario(_mes_ano, _id_pes)
-    contexto.update(facade.create_contexto_folha(_mes_ano))
+    mes_ano = request.GET.get("mes_ano")
+    idpessoal = request.GET.get("idpessoal")
+    idcartaoponto = request.GET.get("idcartaoponto")
+    remunerado = request.GET.get("remunerado")
+    facade.falta_remunerada(idcartaoponto, remunerado)
+    contexto = facade.create_contexto_mensalista(idpessoal, mes_ano)
+    contexto.update(facade.create_contexto_folha(mes_ano))
     data = facade.create_data_atestada(request, contexto)
     return data
 
