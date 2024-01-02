@@ -3069,20 +3069,33 @@ def atualiza_item_faltas(colaborador, cartao_ponto, salario, mes, ano, faltas):
             contra_cheque_itens.delete()
 
 
-    else:
-        if contra_cheque_itens[0].Referencia != "30d":
-            registro_contra_cheque_itens.append(
-                ContraChequeItens(
-                    idContraChequeItens=contra_cheque_itens[
-                        0
-                    ].idContraChequeItens,
-                    Valor=salario["Salario"],
-                    Referencia="30d",
-                )
-            )
-    ContraChequeItens.objects.bulk_update(
-        registro_contra_cheque_itens, ["Valor", "Referencia"]
-    )
+def atualiza_item_desconto_dsr():
+    semanas_faltas = []
+    for falta in faltas:
+        semanas_faltas.append(datetime.datetime.strftime(falta["Dia"], "%V"))
+        semanas_faltas = set(semanas_faltas)
+        primeiro_dia_mes = datetime.datetime.strptime(
+            f"1/{mes}/{ano}", "%d/%m/%Y"
+        )
+        primeiro_dia_mes_posterior = primeiro_dia_mes + relativedelta(months=1)
+        ultimo_dia_mes = primeiro_dia_mes_posterior - datetime.timedelta(1)
+        if 1 <= primeiro_dia_mes.weekday() <= 4:
+            # verifica faltas mes anterior
+            pass
+        semanas_feriado = []
+        desconto_dsr = 0
+        lista_feriados = list(
+            Parametros.objects.filter(
+                Chave="FERIADO",
+                Valor__gte=primeiro_dia_mes,
+                Valor__lte=ultimo_dia_mes,
+            ).values()
+        )
+        if lista_feriados:
+            for feriado in lista_feriados:
+                dia = datetime.datetime.strptime(feriado["Valor"], "%Y-%m-%d")
+                semanas_feriado.append(datetime.datetime.strftime(dia, "%V"))
+            semanas_feriado = set(semanas_feriado)
 
 
 def atualiza_item_horas_extras(colaborador, horas_extras, salario, mes, ano):
