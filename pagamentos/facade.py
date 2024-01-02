@@ -3072,7 +3072,6 @@ def atualiza_itens_contra_cheque_pagamento(
                     Referencia="30d",
                 )
             )
-
     ContraChequeItens.objects.bulk_update(
         registro_contra_cheque_itens, ["Valor", "Referencia"]
     )
