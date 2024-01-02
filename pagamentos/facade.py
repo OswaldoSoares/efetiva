@@ -3017,8 +3017,9 @@ def atualiza_cartao_ponto_minutas(cartao_ponto, minutas):
 def atualiza_itens_contra_cheque_pagamento(
     colaborador, cartao_ponto, minutas, salario, mes, ano
 ):
+    contra_cheque = busca_contracheque(meses[int(mes) - 1], ano, colaborador)
+    contra_cheque = contra_cheque.filter(Descricao="PAGAMENTO")
     horas_extras = horas_extras_colaborador(cartao_ponto, minutas)
-    atualiza_item_horas_extras(colaborador, horas_extras, salario, mes, ano)
     faltas = list(
         filter(
             lambda item: item["Ausencia"] == "FALTA"
@@ -3026,23 +3027,34 @@ def atualiza_itens_contra_cheque_pagamento(
             cartao_ponto,
         )
     )
-    atualiza_item_faltas(colaborador, cartao_ponto, salario, mes, ano, faltas)
-    atualiza_item_desconto_dsr(mes, ano, faltas, colaborador, salario)
+    update_itens = []
+    create_itens = []
+    atualiza_item_faltas(
+        contra_cheque, salario, faltas, update_itens, create_itens
+    )
+    atualiza_item_desconto_dsr(
+        contra_cheque, salario, faltas, update_itens, create_itens, mes, ano
+    )
+    atualiza_item_horas_extras(
+        contra_cheque, salario, horas_extras, update_itens, create_itens
+    )
+    ContraChequeItens.objects.bulk_update(
+        update_itens, ["Valor", "Referencia"]
+    )
+    ContraChequeItens.objects.bulk_create(create_itens)
 
 
-def atualiza_item_faltas(colaborador, cartao_ponto, salario, mes, ano, faltas):
-    contra_cheque = busca_contracheque(meses[int(mes) - 1], ano, colaborador)
-    contra_cheque = contra_cheque.filter(Descricao="PAGAMENTO")
+def atualiza_item_faltas(
+    contra_cheque, salario, faltas, update_itens, create_itens
+):
     contra_cheque_itens = busca_contrachequeitens(
         contra_cheque[0].idContraCheque, "FALTAS", "D"
     )
-    registro_contra_cheque_itens = []
+    valor_dia = salario["Salario"] / 30
     if faltas:
-        valor_dia = salario["Salario"] / 30
         if contra_cheque_itens:
             if len(faltas) != int(contra_cheque_itens[0].Referencia):
-                print("alterado")
-                registro_contra_cheque_itens.append(
+                update_itens.append(
                     ContraChequeItens(
                         idContraChequeItens=contra_cheque_itens[
                             0
@@ -3051,11 +3063,8 @@ def atualiza_item_faltas(colaborador, cartao_ponto, salario, mes, ano, faltas):
                         Referencia=len(faltas),
                     )
                 )
-            ContraChequeItens.objects.bulk_update(
-                registro_contra_cheque_itens, ["Valor", "Referencia"]
-            )
         else:
-            registro_contra_cheque_itens.append(
+            create_itens.append(
                 ContraChequeItens(
                     Descricao="FALTAS",
                     Valor=len(faltas) * valor_dia,
@@ -3064,19 +3073,18 @@ def atualiza_item_faltas(colaborador, cartao_ponto, salario, mes, ano, faltas):
                     idContraCheque_id=contra_cheque[0].idContraCheque,
                 )
             )
-            ContraChequeItens.objects.bulk_create(registro_contra_cheque_itens)
     else:
         if contra_cheque_itens:
             contra_cheque_itens.delete()
 
 
-def atualiza_item_desconto_dsr(mes, ano, faltas, colaborador, salario):
-    contra_cheque = busca_contracheque(meses[int(mes) - 1], ano, colaborador)
-    contra_cheque = contra_cheque.filter(Descricao="PAGAMENTO")
+def atualiza_item_desconto_dsr(
+    contra_cheque, salario, faltas, update_itens, create_itens, mes, ano
+):
     contra_cheque_itens = busca_contrachequeitens(
         contra_cheque[0].idContraCheque, "DSR SOBRE FALTAS", "D"
     )
-    registro_contra_cheque_itens = []
+    valor_dia = salario["Salario"] / 30
     semanas_faltas = []
     for falta in faltas:
         semanas_faltas.append(datetime.datetime.strftime(falta["Dia"], "%V"))
@@ -3104,14 +3112,14 @@ def atualiza_item_desconto_dsr(mes, ano, faltas, colaborador, salario):
         semanas_feriados = list(map(int, semanas_feriados))
         semanas_feriados = set(semanas_feriados)
         for semana in semanas_faltas:
+            if semana == 52:
+                semana = 0
             if semana + 1 in semanas_feriados:
                 desconto_dsr += 1
     if desconto_dsr > 0:
-        valor_dia = salario["Salario"] / 30
         if contra_cheque_itens:
             if desconto_dsr != int(contra_cheque_itens[0].Referencia):
-                print("alterado")
-                registro_contra_cheque_itens.append(
+                update_itens.append(
                     ContraChequeItens(
                         idContraChequeItens=contra_cheque_itens[
                             0
@@ -3120,11 +3128,8 @@ def atualiza_item_desconto_dsr(mes, ano, faltas, colaborador, salario):
                         Referencia=desconto_dsr,
                     )
                 )
-            ContraChequeItens.objects.bulk_update(
-                registro_contra_cheque_itens, ["Valor", "Referencia"]
-            )
         else:
-            registro_contra_cheque_itens.append(
+            create_itens.append(
                 ContraChequeItens(
                     Descricao="DSR SOBRE FALTAS",
                     Valor=desconto_dsr * valor_dia,
@@ -3133,30 +3138,24 @@ def atualiza_item_desconto_dsr(mes, ano, faltas, colaborador, salario):
                     idContraCheque_id=contra_cheque[0].idContraCheque,
                 )
             )
-            ContraChequeItens.objects.bulk_create(registro_contra_cheque_itens)
     else:
         if contra_cheque_itens:
             contra_cheque_itens.delete()
-    print(f"FALTAS {semanas_faltas}, FERIADOS {semanas_feriados}")
-    print(desconto_dsr)
 
 
-def atualiza_item_horas_extras(colaborador, horas_extras, salario, mes, ano):
+def atualiza_item_horas_extras(
+    contra_cheque, salario, horas_extras, update_itens, create_itens
+):
+    contra_cheque_itens = busca_contrachequeitens(
+        contra_cheque[0].idContraCheque, "HORA EXTRA", "C"
+    )
     hora_zerada = datetime.datetime.strptime("00:00:00", "%H:%M:%S").time()
     if horas_extras > hora_zerada:
         valor_horas_extras = calcula_horas_extras_colaborador(
             salario["Salario"], horas_extras
         )
-        contra_cheque = busca_contracheque(
-            meses[int(mes) - 1], ano, colaborador
-        )
-        contra_cheque = contra_cheque.filter(Descricao="PAGAMENTO")
-        contra_cheque_itens = busca_contrachequeitens(
-            contra_cheque[0].idContraCheque, "HORA EXTRA", "C"
-        )
-        registro_contra_cheque_itens = []
         if contra_cheque_itens:
-            registro_contra_cheque_itens.append(
+            update_itens.append(
                 ContraChequeItens(
                     idContraChequeItens=contra_cheque_itens[
                         0
@@ -3165,11 +3164,8 @@ def atualiza_item_horas_extras(colaborador, horas_extras, salario, mes, ano):
                     Referencia=horas_extras,
                 )
             )
-            ContraChequeItens.objects.bulk_update(
-                registro_contra_cheque_itens, ["Valor", "Referencia"]
-            )
         else:
-            registro_contra_cheque_itens.append(
+            create_itens.append(
                 ContraChequeItens(
                     Descricao="HORA EXTRA",
                     Valor=valor_horas_extras,
@@ -3178,7 +3174,9 @@ def atualiza_item_horas_extras(colaborador, horas_extras, salario, mes, ano):
                     idContraCheque_id=contra_cheque[0].idContraCheque,
                 )
             )
-            ContraChequeItens.objects.bulk_create(registro_contra_cheque_itens)
+    else:
+        if contra_cheque_itens:
+            ContraChequeItens.delete()
 
 
 def horas_extras_colaborador(cartao_ponto, minutas):
