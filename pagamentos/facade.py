@@ -3019,6 +3019,17 @@ def atualiza_itens_contra_cheque_pagamento(
 ):
     horas_extras = horas_extras_colaborador(cartao_ponto, minutas)
     atualiza_item_horas_extras(colaborador, horas_extras, salario, mes, ano)
+    faltas = list(
+        filter(
+            lambda item: item["Ausencia"] == "FALTA"
+            and item["Remunerado"] == False,
+            cartao_ponto,
+        )
+    )
+    atualiza_item_faltas(colaborador, cartao_ponto, salario, mes, ano, faltas)
+
+
+def atualiza_item_faltas(colaborador, cartao_ponto, salario, mes, ano, faltas):
     contra_cheque = busca_contracheque(meses[int(mes) - 1], ano, colaborador)
     contra_cheque = contra_cheque.filter(Descricao="PAGAMENTO")
     contra_cheque_itens = busca_contrachequeitens(
