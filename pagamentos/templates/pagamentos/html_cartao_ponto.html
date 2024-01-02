@@ -1,18 +1,32 @@
 <!-- Header -->
 <div class="card-header">
-    <span>CARTÃO DE PONTO</span>
+    <div class="input-group">
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-up"></i>
+        </div>
+        <div class="div-form-control">
+            <span>CARTÃO DE PONTO</span>
+        </div>
+        <div class=" input-group-addon addon-my-color">
+			<i class="icofont-rounded-right-up"></i>
+        </div>
+    </div>
 </div>
 <!-- Body -->
+{% if cartao_ponto %}
 <div class="card-body">
     {% for dias in cartao_ponto %}
     {% if dias.Ausencia %}
     <div class="card-body-item">
         <div class="input-group">
-            <i class="icofont-home input-group-addon addon-my-color"></i>
-            <div class="icofont-home input-group-addon addon-my-color">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-home i-button-null"></i>
             </div>
-            <div class="div-form-control div-flex font-menor">
-                <div class="tamanho-50 text-left">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-home i-button-null"></i>
+            </div>
+            <div class="div-flex div-form-control font-menor">
+                <div class="tamanho-50 text-center">
                     <span>{{ dias.Dia }}</span>
                 </div>
                 <div class="tamanho-50 text-center">
@@ -68,9 +82,8 @@
                     <i class="icofont-bicycle-alt-1"></i>
                 {% endif %}
             </div>
-
-            <div class="div-form-control div-flex font-menor">
-                <div class="tamanho-50 text-left">
+            <div class="div-flex div-form-control font-menor">
+                <div class="tamanho-50 text-center">
                     <span>{{ dias.Dia }}</span>
                 </div>
                 <div class="tamanho-25 text-center">
@@ -111,16 +124,20 @@
     {% endif %}
     {% endfor %}
 </div>
+{% endif %}
+<!-- Footer -->
 <div class="card-footer">
-	<div class="input-group">
-		<i class="icofont-rounded-left-down input-group-addon
-		addon-my-color"></i>
+    <div class="input-group">
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-down"></i>
+        </div>
 		<div class="div-flex div-form-control">
-			<div class="tamanho-100">
-                <span></span>
+			<div class="tamanho-100 text-left">
+				<span></span>
 			</div>
 		</div>
-		<i class="icofont-rounded-right-down input-group-addon
-		addon-my-color"></i>
-	</div>
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-down"></i>
+        </div>
+    </div>
 </div>
