@@ -3027,6 +3027,7 @@ def atualiza_itens_contra_cheque_pagamento(
         )
     )
     atualiza_item_faltas(colaborador, cartao_ponto, salario, mes, ano, faltas)
+    atualiza_item_desconto_dsr(mes, ano, faltas, colaborador, salario)
 
 
 def atualiza_item_faltas(colaborador, cartao_ponto, salario, mes, ano, faltas):
