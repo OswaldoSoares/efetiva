@@ -37,7 +37,7 @@ from website.facade import (
     queries_inicio,
     queries_termino,
 )
-from website.models import FileUpload
+from website.models import FileUpload, Parametros
 
 from pagamentos.forms import CadastraCartaoPonto
 from pagamentos.models import FolhaPagamento, Recibo, ReciboItens
