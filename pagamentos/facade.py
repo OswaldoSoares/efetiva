@@ -2898,6 +2898,7 @@ def create_contexto_mensalista(idpessoal, mes_ano):
     cartao_ponto = get_cartao_ponto_colaborador(
         idpessoal, primeiro_dia_mes, ultimo_dia_mes
     )
+    verifica_feriados(cartao_ponto, mes, ano)
     vales = get_vales_colaborador(colaborador)
     minutas = get_minutas_periodo_contra_cheque(
         idpessoal, primeiro_dia_mes, ultimo_dia_mes
@@ -2947,6 +2948,34 @@ def create_contexto_mensalista(idpessoal, mes_ano):
         #  "agenda": agenda,
     }
     return contexto
+
+
+def verifica_feriados(cartao_ponto, mes, ano):
+    primeiro_dia_mes, ultimo_dia_mes = extremos_mes(mes, ano)
+    lista_feriados = list(
+        Parametros.objects.filter(
+            Chave="FERIADO",
+            Valor__gte=primeiro_dia_mes,
+            Valor__lte=ultimo_dia_mes,
+        ).values()
+    )
+    registros_cartao_ponto = []
+    for feriado in lista_feriados:
+        dia = datetime.datetime.strptime(feriado["Valor"], "%Y-%m-%d").date()
+        filtro = list(filter(lambda item: item["Dia"] == dia, cartao_ponto))
+        if filtro[0]["Ausencia"] != "FERIADO" and dia.weekday() != 6:
+            filtro[0]["Ausencia"] = "FERIADO"
+            filtro[0]["Conducao"] = False
+            registros_cartao_ponto.append(
+                CartaoPonto(
+                    idCartaoPonto=filtro[0]["idCartaoPonto"],
+                    Ausencia="FERIADO",
+                    Conducao=False,
+                )
+            )
+    CartaoPonto.objects.bulk_update(
+        registros_cartao_ponto, ["Ausencia", "Conducao"]
+    )
 
 
 def get_minutas_periodo_contra_cheque(
