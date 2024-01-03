@@ -3068,10 +3068,66 @@ def atualiza_itens_contra_cheque_pagamento(
     atualiza_item_horas_extras(
         contra_cheque, salario, horas_extras, update_itens, create_itens
     )
+    atualiza_item_atrazos(
+        contra_cheque, salario, cartao_ponto, update_itens, create_itens
+    )
     ContraChequeItens.objects.bulk_update(
         update_itens, ["Valor", "Referencia"]
     )
     ContraChequeItens.objects.bulk_create(create_itens)
+
+
+def atualiza_item_atrazos(
+    contra_cheque, salario, cartao_ponto, update_itens, create_itens
+):
+    contra_cheque_itens = busca_contrachequeitens(
+        contra_cheque[0], "ATRAZOS", "D"
+    )
+    hora_zerada = datetime.timedelta(hours=0, minutes=0)
+    atrazos = hora_zerada
+    for dia in cartao_ponto:
+        hora_entrada_padrao = datetime.datetime.strptime(
+            "07:00:00", "%H:%M:%S"
+        ).time()
+        hora_entrada_timedelta = datetime.timedelta(
+            hours=hora_entrada_padrao.hour, minutes=hora_entrada_padrao.minute
+        )
+        hora_entrada_dia = datetime.timedelta(
+            hours=dia["Entrada"].hour, minutes=dia["Entrada"].minute
+        )
+        atrazos += (
+            hora_entrada_dia - hora_entrada_timedelta
+            if hora_entrada_dia > hora_entrada_timedelta
+            else hora_zerada
+        )
+    valor_desconto_atrazos = (
+        salario["Salario"] / 30 / 9 / 60 / 60 * atrazos.seconds
+    )
+    if atrazos > hora_zerada:
+        if contra_cheque_itens:
+            if str(atrazos) != contra_cheque_itens[0].Referencia:
+                update_itens.append(
+                    ContraChequeItens(
+                        idContraChequeItens=contra_cheque_itens[
+                            0
+                        ].idContraChequeItens,
+                        Valor=valor_desconto_atrazos,
+                        Referencia=atrazos,
+                    )
+                )
+        else:
+            create_itens.append(
+                ContraChequeItens(
+                    Descricao="ATRAZOS",
+                    Valor=valor_desconto_atrazos,
+                    Registro="D",
+                    Referencia=atrazos,
+                    idContraCheque_id=contra_cheque[0].idContraCheque,
+                )
+            )
+    else:
+        if contra_cheque_itens:
+            contra_cheque_itens.delete()
 
 
 def atualiza_item_faltas(
