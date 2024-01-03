@@ -3192,7 +3192,8 @@ def atualiza_item_desconto_dsr(
     if lista_feriados:
         for feriado in lista_feriados:
             dia = datetime.datetime.strptime(feriado["Valor"], "%Y-%m-%d")
-            semanas_feriados.append(datetime.datetime.strftime(dia, "%V"))
+            if dia.weekday() != 6:
+                semanas_feriados.append(datetime.datetime.strftime(dia, "%V"))
         semanas_feriados = list(map(int, semanas_feriados))
         semanas_feriados = set(semanas_feriados)
         for semana in semanas_faltas:
