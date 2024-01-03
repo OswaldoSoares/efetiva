@@ -2890,7 +2890,9 @@ def get_cartao_ponto_colaborador(idpessoal, primeiro_dia_mes, ultimo_dia_mes):
 
 def create_contexto_mensalista(idpessoal, mes_ano):
     colaborador = get_colaborador(idpessoal)
-    salario = list(get_salario(colaborador).values("Salario"))[0]
+    salario = list(
+        get_salario(colaborador).values("Salario", "ValeTransporte")
+    )[0]
     mes, ano = converter_mes_ano(mes_ano)
     primeiro_dia_mes, ultimo_dia_mes = extremos_mes(mes, ano)
     cartao_ponto = get_cartao_ponto_colaborador(
