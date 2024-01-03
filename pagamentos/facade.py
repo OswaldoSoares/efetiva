@@ -3068,6 +3068,9 @@ def atualiza_itens_contra_cheque_pagamento(
     atualiza_item_horas_extras(
         contra_cheque, salario, horas_extras, update_itens, create_itens
     )
+    atualiza_item_vale_transporte(
+        contra_cheque, salario, cartao_ponto, update_itens, create_itens
+    )
     atualiza_item_atrazos(
         contra_cheque, salario, cartao_ponto, update_itens, create_itens
     )
@@ -3256,6 +3259,40 @@ def atualiza_item_horas_extras(
                     Valor=valor_horas_extras,
                     Registro="C",
                     Referencia=horas_extras,
+                    idContraCheque_id=contra_cheque[0].idContraCheque,
+                )
+            )
+    else:
+        if contra_cheque_itens:
+            ContraChequeItens.delete()
+
+
+def atualiza_item_vale_transporte(
+    contra_cheque, salario, cartao_ponto, update_itens, create_itens
+):
+    contra_cheque_itens = busca_contrachequeitens(
+        contra_cheque[0].idContraCheque, "VALE TRANSPORTE", "C"
+    )
+    dias = dias_transporte(cartao_ponto)
+    valor_transporte = salario["ValeTransporte"]
+    if valor_transporte > Decimal(0.00):
+        if contra_cheque_itens:
+            update_itens.append(
+                ContraChequeItens(
+                    idContraChequeItens=contra_cheque_itens[
+                        0
+                    ].idContraChequeItens,
+                    Valor=valor_transporte * dias,
+                    Referencia=dias,
+                )
+            )
+        else:
+            create_itens.append(
+                ContraChequeItens(
+                    Descricao="VALE TRANSPORTE",
+                    Valor=valor_transporte * dias,
+                    Registro="C",
+                    Referencia=dias,
                     idContraCheque_id=contra_cheque[0].idContraCheque,
                 )
             )
