@@ -3121,9 +3121,7 @@ def atualiza_item_desconto_dsr(
     semanas_faltas = list(map(int, semanas_faltas))
     semanas_faltas = set(semanas_faltas)
     desconto_dsr = len(semanas_faltas)
-    primeiro_dia_mes = datetime.datetime.strptime(f"1/{mes}/{ano}", "%d/%m/%Y")
-    primeiro_dia_mes_posterior = primeiro_dia_mes + relativedelta(months=1)
-    ultimo_dia_mes = primeiro_dia_mes_posterior - datetime.timedelta(1)
+    primeiro_dia_mes, ultimo_dia_mes = extremos_mes(mes, ano)
     if 1 <= primeiro_dia_mes.weekday() <= 4:
         # verifica faltas mes anterior
         pass
