@@ -248,7 +248,6 @@ def cartao_ponto(var):
         }
         for x in cp
     ]
-    print(lista)
     return lista
 
 
