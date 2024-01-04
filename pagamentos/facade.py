@@ -3061,6 +3061,7 @@ def atualiza_cartao_ponto_minutas(cartao_ponto, minutas):
 def atualiza_itens_contra_cheque_pagamento(
     colaborador, cartao_ponto, minutas, salario, mes, ano
 ):
+    start, start_queries = queries_inicio()
     contra_cheque = busca_contracheque(meses[int(mes) - 1], ano, colaborador)
     contra_cheque = contra_cheque.filter(Descricao="PAGAMENTO")
     horas_extras = horas_extras_colaborador(cartao_ponto, minutas)
@@ -3092,6 +3093,9 @@ def atualiza_itens_contra_cheque_pagamento(
         update_itens, ["Valor", "Referencia"]
     )
     ContraChequeItens.objects.bulk_create(create_itens)
+    queries_termino(
+        start, start_queries, "[INFO] Atualiza Itens Contra-Cheque"
+    )
 
 
 def atualiza_item_atrazos(
