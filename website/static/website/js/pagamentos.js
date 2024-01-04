@@ -188,26 +188,28 @@ $(document).on("click", ".js-altera-carro-empresa", function(event) {
 });
 
 $(document).on("click", ".js-atestada", function(event) {
-    var v_mes_ano = $(".select-mes-ano option:selected").text();
-    var v_idcartaoponto = $(this).data("idcartaoponto");
-    var v_idpessoal = $(this).data("idpessoal");
+    var mes_ano = $(".select-mes-ano option:selected").text();
+    var idcartaoponto = $(this).data("idcartaoponto");
+    var idpessoal = $(this).data("idpessoal");
+    var remunerado = $(this).data("remunerado");
     $.ajax({
         type: "GET",
         dataType: "json",
         url: "/pagamentos/atestada",
         data: {
-            mes_ano: v_mes_ano,
-            idcartaoponto: v_idcartaoponto,
-            idpessoal: v_idpessoal
+            mes_ano: mes_ano,
+            idcartaoponto: idcartaoponto,
+            idpessoal: idpessoal,
+            remunerado: remunerado,
         },
         beforeSend: function() {
             $('.box-loader').show()
         },
         success: function(data) {
+            $(".card-folha-pagamento").html(data.html_card_folha_pagamento);
             $(".js-cartao-ponto").html(data.html_cartao_ponto);
             $(".js-funcionario-pagamento").html(data.html_funcionario);
             $(".js-contra-cheque").html(data.html_contra_cheque);
-            $(".js-saldo").html(data.html_saldo);
             $('.box-loader').hide();
         },
         error: function(error, data) {
