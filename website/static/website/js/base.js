@@ -3,22 +3,27 @@ $(".div-erro").hide()
 $(".box-loader").hide()
 
 function openMyModal(event) {
+    console.log("Aqui estou 2024")
     var modal = initModalDialog(event, '#MyModal');
     var url = $(event.target).data('action');
     var idpessoal = localStorage.getItem("idpessoal");
+    var mes_ano = localStorage.getItem("mes_ano");
     var confirma = $(event.target).data("confirma")
     var idconfirma = $(event.target).data("idconfirma")
+    var idcartaoponto = $(event.target).data("idcartaoponto")
     $.ajax({
         type: "GET",
         url: url,
         data : {
             idpessoal: idpessoal,
+            mes_ano: mes_ano,
             confirma: confirma,
             idconfirma: idconfirma,
+            idcartaoponto: idcartaoponto,
         }
     }).done(function(data, textStatus, jqXHR) {
-        modal.find('.modal-body').html(data.html_modal);
         $('.box-loader').hide()
+        modal.find('.modal-body').html(data.html_modal);
         modal.modal('show');
         formAjaxSubmit(modal, url, null, null);
     }).fail(function(jqXHR, textStatus, errorThrown) {
@@ -76,6 +81,13 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                     formAjaxSubmit(modal, url, cbAfterLoad, cbAfterSuccess);
                 } else {
                     $(modal).modal('hide');
+                    console.log(xhr)
+                    if (xhr["html_card_folha_pagamento"]) {
+                        $(".card-folha-pagamento").html(xhr["html_card_folha_pagamento"])
+                    }
+                    if (xhr["html_cartao_ponto"]) {
+                        $(".card-cartao-ponto").html(xhr["html_cartao_ponto"])
+                    }
                     if (xhr["html_vales_colaborador"]) {
                         $(".card-vales-colaborador").html(xhr["html_vales_colaborador"])
                         valesSelecionaveis()
