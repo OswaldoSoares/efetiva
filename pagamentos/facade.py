@@ -1082,14 +1082,19 @@ def falta_remunerada(idcartaoponto, remunerado):
     )
 
 
-def altera_carro_empresa(_id_cp):
-    _cp = CartaoPonto.objects.get(idCartaoPonto=_id_cp)
-    obj = _cp
-    if obj.CarroEmpresa == True:
-        obj.CarroEmpresa = False
-    else:
-        obj.CarroEmpresa = True
-    obj.save(update_fields=["CarroEmpresa"])
+def altera_carro_empresa(idcartaoponto, carro_empresa):
+    registros_cartao_ponto = []
+    registros_cartao_ponto.append(
+        CartaoPonto(
+            Alteracao="MANUAL",
+            Conducao=True if carro_empresa == "True" else False,
+            CarroEmpresa=False if carro_empresa == "True" else True,
+            idCartaoPonto=idcartaoponto,
+        )
+    )
+    CartaoPonto.objects.bulk_update(
+        registros_cartao_ponto, ["Alteracao", "CarroEmpresa", "Conducao"]
+    )
 
 
 def verifica_falta(v_cartao_ponto):
