@@ -2593,7 +2593,7 @@ def html_vales_pagamento(request, contexto, data):
 
 
 def create_contexto_folha_pagamento(mes_ano):
-    start, start_queries = queries_inicio()
+    #  start, start_queries = queries_inicio()
     mes, ano = converter_mes_ano(mes_ano)
     colaboradores = list(get_colaboradores_mensalistas_admitidos().values())
     salarios = list(get_valores_salario_transporte_colaborador().values())
@@ -2602,9 +2602,9 @@ def create_contexto_folha_pagamento(mes_ano):
     contexto.update(
         contra_cheques_folha_pagamento(folha, colaboradores, salarios)
     )
-    queries_termino(
-        start, start_queries, "[INFO] Create contexto folha pagamento"
-    )
+    #  queries_termino(
+    #  start, start_queries, "[INFO] Create contexto folha pagamento"
+    #  )
     return contexto
 
 
@@ -3047,7 +3047,7 @@ def get_minutas_periodo_contra_cheque(
 
 
 def atualiza_cartao_ponto_minutas(cartao_ponto, minutas):
-    start, start_queries = queries_inicio()
+    #  start, start_queries = queries_inicio()
     registros_cartao_ponto = []
     for minuta in minutas:
         dia = next(
@@ -3087,14 +3087,14 @@ def atualiza_cartao_ponto_minutas(cartao_ponto, minutas):
     CartaoPonto.objects.bulk_update(
         registros_cartao_ponto, ["Entrada", "Saida"]
     )
-    queries_termino(start, start_queries, "[INFO] Atualiza Cartão Ponto")
+    #  queries_termino(start, start_queries, "[INFO] Atualiza Cartão Ponto")
     return cartao_ponto
 
 
 def atualiza_itens_contra_cheque_pagamento(
     colaborador, cartao_ponto, minutas, salario, mes, ano
 ):
-    start, start_queries = queries_inicio()
+    #  start, start_queries = queries_inicio()
     contra_cheque = busca_contracheque(meses[int(mes) - 1], ano, colaborador)
     contra_cheque = contra_cheque.filter(Descricao="PAGAMENTO")
     horas_extras = horas_extras_colaborador(cartao_ponto, minutas)
@@ -3126,9 +3126,9 @@ def atualiza_itens_contra_cheque_pagamento(
         update_itens, ["Valor", "Referencia"]
     )
     ContraChequeItens.objects.bulk_create(create_itens)
-    queries_termino(
-        start, start_queries, "[INFO] Atualiza Itens Contra-Cheque"
-    )
+    #  queries_termino(
+    #  start, start_queries, "[INFO] Atualiza Itens Contra-Cheque"
+    #  )
 
 
 def atualiza_item_atrazos(
