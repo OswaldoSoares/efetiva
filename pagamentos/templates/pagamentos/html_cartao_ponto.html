@@ -66,13 +66,14 @@
     <div class="card-body-item">
         <div class="input-group">
             <div class="input-group-addon addon-my-color">
-                <i class="bi bi-stopwatch i-button"
+                <i class="icofont-stopwatch i-button"
                    onclick="openMyModal(event); return false"
                    data-action="{% url 'altera_horario_cartao_ponto' %}"
                    data-title="EDITA CARTÃO DE PONTO"
                    data-button-save-label="ALTERAR"
                    data-idcartaoponto="{{ dias.idCartaoPonto }}"
-                   data-idpessoal="{{ dias.idPessoal_id }}"></i>
+                   data-idpessoal="{{ dias.idPessoal_id }}"
+                   title="Altera Horário de Entrada e Saída"></i>
             </div>
             <div class="input-group-addon addon-my-color">
                 {% if dias.CarroEmpresa %}
