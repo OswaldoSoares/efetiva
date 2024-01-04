@@ -124,13 +124,14 @@ def carrega_agenda(request):
 
 
 def carro_empresa(request):
-    _mes_ano = request.GET.get("mes_ano")
-    _id_pes = request.GET.get("idpessoal")
-    _id_cp = request.GET.get("idcartaoponto")
-    facade.altera_carro_empresa(_id_cp)
-    contexto = facade.create_contexto_funcionario(_mes_ano, _id_pes)
-    contexto.update(facade.create_contexto_folha(_mes_ano))
-    data = facade.create_data_altera_carro(request, contexto)
+    mes_ano = request.GET.get("mes_ano")
+    idpessoal = request.GET.get("idpessoal")
+    idcartaoponto = request.GET.get("idcartaoponto")
+    carro_empresa = request.GET.get("carro_empresa")
+    facade.altera_carro_empresa(idcartaoponto, carro_empresa)
+    contexto = facade.create_contexto_mensalista(idpessoal, mes_ano)
+    contexto.update(facade.create_contexto_folha_pagamento(mes_ano))
+    data = facade.create_data_altera_cartao_ponto(request, contexto)
     return data
 
 
