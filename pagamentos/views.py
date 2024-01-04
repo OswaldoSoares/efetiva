@@ -76,18 +76,15 @@ def adiciona_vales(request):
 
 
 def altera_horario_cartao_ponto(request):
-    _mes_ano = request.GET.get("mes_ano")
-    _id_cp = request.GET.get("idcartaoponto")
     if request.method == "POST":
-        _mes_ano = request.POST.get("mes_ano")
-        _id_pes = request.POST.get("idPessoal")
-        _id_cp = request.POST.get("idcartaoponto")
-        data = facade.form_modal_horario(request, _id_cp, _mes_ano)
-        contexto = facade.create_contexto_funcionario(_mes_ano, _id_pes)
-        contexto.update(facade.create_contexto_folha(_mes_ano))
-        data = facade.create_data_altera_horario(request, contexto)
+        mes_ano = request.POST.get("mes_ano")
+        idpessoal = request.POST.get("idPessoal")
+        data = facade.modal_horario_cartao_ponto(request)
+        contexto = facade.create_contexto_mensalista(idpessoal, mes_ano)
+        contexto.update(facade.create_contexto_folha_pagamento(mes_ano))
+        data = facade.create_data_altera_cartao_ponto(request, contexto)
     else:
-        data = facade.form_modal_horario(request, _id_cp, _mes_ano)
+        data = facade.modal_horario_cartao_ponto(request)
     return data
 
 
