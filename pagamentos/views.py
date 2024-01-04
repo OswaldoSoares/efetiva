@@ -98,8 +98,8 @@ def atestada(request):
     remunerado = request.GET.get("remunerado")
     facade.falta_remunerada(idcartaoponto, remunerado)
     contexto = facade.create_contexto_mensalista(idpessoal, mes_ano)
-    contexto.update(facade.create_contexto_folha(mes_ano))
-    data = facade.create_data_atestada(request, contexto)
+    contexto.update(facade.create_contexto_folha_pagamento(mes_ano))
+    data = facade.create_data_altera_cartao_ponto(request, contexto)
     return data
 
 
@@ -111,7 +111,7 @@ def ausencia_falta(request):
     facade.altera_ausencia_falta(idcartaoponto, ausencia)
     contexto = facade.create_contexto_mensalista(idpessoal, mes_ano)
     contexto.update(facade.create_contexto_folha_pagamento(mes_ano))
-    data = facade.create_data_ausencia_falta(request, contexto)
+    data = facade.create_data_altera_cartao_ponto(request, contexto)
     return data
 
 
