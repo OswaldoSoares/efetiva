@@ -75,18 +75,20 @@
                    data-idpessoal="{{ dias.idPessoal_id }}"></i>
             </div>
             <div class="input-group-addon addon-my-color">
-                {% if dias.Conducao %}
-                    {% if dias.CarroEmpresa %}
-                        <i class="icofont-truck-alt i-button js-altera-carro-empresa"
-                           data-idpessoal="{{ dias.idPessoal_id }}"
-                           data-idcartaoponto="{{ dias.idCartaoPonto }}"></i>
-                    {% else %}
+                {% if dias.CarroEmpresa %}
+                    <i class="icofont-truck-alt i-button js-altera-carro-empresa"
+                       data-idpessoal="{{ dias.idPessoal_id }}"
+                       data-idcartaoponto="{{ dias.idCartaoPonto }}"
+                       data-carro_empresa="{{ dias.CarroEmpresa }}"></i>
+                {% else %}
+                    {% if dias.Conducao %}
                         <i class="icofont-bus-alt-2 i-button js-altera-carro-empresa"
                            data-idpessoal="{{ dias.idPessoal_id }}"
-                           data-idcartaoponto="{{ dias.idCartaoPonto }}"></i>
+                           data-idcartaoponto="{{ dias.idCartaoPonto }}"
+                           data-carro_empresa="{{ dias.CarroEmpresa }}"></i>
+                    {% else %}
+                        <i class="icofont-bicycle-alt-1"></i>
                     {% endif %}  
-                {% else %}
-                    <i class="icofont-bicycle-alt-1"></i>
                 {% endif %}
             </div>
             <div class="div-flex div-form-control font-menor">
