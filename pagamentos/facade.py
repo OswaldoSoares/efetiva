@@ -2175,6 +2175,39 @@ def list_avulsos_ativo():
     return facade.get_pessoal_nao_mensalista_ativo()
 
 
+def modal_horario_cartao_ponto(request):
+    data = dict()
+    if request.method == "POST":
+        registros_cartao_ponto = []
+        registros_cartao_ponto.append(
+            CartaoPonto(
+                Alteracao="MANUAL",
+                Entrada=request.POST.get("Entrada"),
+                Saida=request.POST.get("Saida"),
+                idCartaoPonto=request.POST.get("idcartaoponto"),
+            )
+        )
+        CartaoPonto.objects.bulk_update(
+            registros_cartao_ponto, ["Alteracao", "Entrada", "Saida"]
+        )
+    else:
+        cartao_ponto = CartaoPonto.objects.get(
+            idCartaoPonto=request.GET.get("idcartaoponto")
+        )
+        contexto = {
+            "form": CadastraCartaoPonto(instance=cartao_ponto),
+            "mes_ano": request.GET.get("mes_ano"),
+            "idcartaoponto": request.GET.get("idcartaoponto"),
+        }
+        data["html_modal"] = render_to_string(
+            "pagamentos/modal_horario_cartao_ponto.html",
+            contexto,
+            request=request,
+        )
+    return JsonResponse(data)
+
+
+# Excluir sem uso
 def form_modal_horario(request, _id_cp, _mes_ano):
     data = dict()
     c_instance = None
