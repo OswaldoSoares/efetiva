@@ -575,6 +575,14 @@ def create_data_altera_carro(request, contexto):
     return JsonResponse(data)
 
 
+def create_data_altera_cartao_ponto(request, contexto):
+    data = dict()
+    html_card_folha_pagamento(request, contexto, data)
+    html_cartao_ponto(request, contexto, data)
+    html_funcionario(request, contexto, data)
+    return JsonResponse(data)
+
+
 def create_data_cci(request, contexto):
     data = dict()
     html_contra_cheque(request, contexto, data)
