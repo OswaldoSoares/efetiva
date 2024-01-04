@@ -541,6 +541,7 @@ def create_data_seleciona_funcionario(request, contexto):
     return JsonResponse(data)
 
 
+# Excluir sem uso
 def create_data_ausencia_falta(request, contexto):
     data = dict()
     html_card_folha_pagamento(request, contexto, data)
@@ -556,6 +557,7 @@ def create_data_altera_horario(request, contexto):
     return JsonResponse(data)
 
 
+# Excluir sem uso
 def create_data_atestada(request, contexto):
     data = dict()
     html_cartao_ponto(request, contexto, data)
@@ -564,6 +566,7 @@ def create_data_atestada(request, contexto):
     return JsonResponse(data)
 
 
+# Excluir sem uso
 def create_data_altera_carro(request, contexto):
     data = dict()
     html_cartao_ponto(request, contexto, data)
