@@ -1,0 +1,24 @@
+<form class="row g-3" method="post" action="{{ url }}" idpessoal="{{ idpessoal }}">
+  {% csrf_token %}
+  <div class="col-md-6">
+    <label for="id_HoraEntrada" class="form-label">HORA ENTRADA:</label>
+    {{ form.Entrada }}
+  </div>
+  <div class="col-md-6">
+    <label for="id_HoraSaida" class="form-label">HORA SAÍDA:</label>
+    {{ form.Saida }}
+  </div>
+  {% comment %} {{ form.Dia.as_hidden }} {% endcomment %}
+  {% comment %} {{ form.Ausencia.as_hidden }} {% endcomment %}
+  {{ form.idPessoal.as_hidden }}
+  <input
+    type="hidden"
+    name="idcartaoponto"
+    value="{{ idcartaoponto }}"
+    id="id_idcartaoponto"
+  />
+  {% comment %} <input type="hidden" name="Alteracao" value="MANUAL" id="id_Alteracao" /> {% endcomment %}
+  {% comment %} <input type="hidden" name="Conducao" value=True id="id_Conducao" /> {% endcomment %}
+  {% comment %} <input type="hidden" name="Remunerado" value=True id="id_Remunerado" /> {% endcomment %}
+  <input type="hidden" name="mes_ano" value="{{ mes_ano }}" id="id_mesano" />
+</form>
