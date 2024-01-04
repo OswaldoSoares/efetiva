@@ -2930,9 +2930,7 @@ def create_contexto_mensalista(idpessoal, mes_ano):
     )
     total_dias_remunerado = dias_remunerado(cartao_ponto, ultimo_dia_mes)
     total_dias_trabalhado = dias_trabalhado(cartao_ponto)
-    total_dias_transporte = dias_transporte(cartao_ponto) - dias_carro_empresa(
-        cartao_ponto
-    )
+    total_dias_transporte = dias_transporte(cartao_ponto)
 
     #  files = FileUpload.objects.filter(
     #  DescricaoUpload__startswith=f"{var['nome_curto_u']}_MES_{var['mes']}_{var['ano']}"
