@@ -87,6 +87,8 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                     }
                     if (xhr["html_cartao_ponto"]) {
                         $(".card-cartao-ponto").html(xhr["html_cartao_ponto"])
+                        $(".card-contra-cheque").hide()
+                        $(".body-funcionario-pagamento").hide()
                     }
                     if (xhr["html_vales_colaborador"]) {
                         $(".card-vales-colaborador").html(xhr["html_vales_colaborador"])

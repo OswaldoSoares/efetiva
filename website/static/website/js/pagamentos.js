@@ -145,12 +145,14 @@ $(document).on("click", ".js-altera-falta", function(event) {
             ausencia: ausencia,
         },
         beforeSend: function() {
+            $(".card-contra-cheque").hide()
             $('.box-loader').show()
         },
         success: function(data) {
             $(".card-folha-pagamento").html(data.html_card_folha_pagamento);
             $(".js-cartao-ponto").html(data.html_cartao_ponto);
             $(".js-funcionario-pagamento").html(data.html_funcionario);
+            $(".body-funcionario-pagamento").hide()
             $('.box-loader').hide()
         },
         error: function(error, data) {
@@ -175,12 +177,14 @@ $(document).on("click", ".js-altera-carro-empresa", function(event) {
             carro_empresa: carro_empresa,
         },
         beforeSend: function() {
+            $(".card-contra-cheque").hide()
             $('.box-loader').show()
         },
         success: function(data) {
             $(".card-folha-pagamento").html(data.html_card_folha_pagamento);
             $(".js-cartao-ponto").html(data.html_cartao_ponto);
             $(".js-funcionario-pagamento").html(data.html_funcionario);
+            $(".body-funcionario-pagamento").hide()
             $(".js-saldo").html(data.html_saldo);
             $('.box-loader').hide()
         },
@@ -206,12 +210,14 @@ $(document).on("click", ".js-atestada", function(event) {
             remunerado: remunerado,
         },
         beforeSend: function() {
+            $(".card-contra-cheque").hide()
             $('.box-loader').show()
         },
         success: function(data) {
             $(".card-folha-pagamento").html(data.html_card_folha_pagamento);
             $(".js-cartao-ponto").html(data.html_cartao_ponto);
             $(".js-funcionario-pagamento").html(data.html_funcionario);
+            $(".body-funcionario-pagamento").hide()
             $(".js-contra-cheque").html(data.html_contra_cheque);
             $('.box-loader').hide();
         },
