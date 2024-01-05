@@ -88,8 +88,11 @@ $(document).on("click", ".js-seleciona-funcionario", function(event) {
         success: function(data) {
             $(".card-cartao-ponto").html(data.html_cartao_ponto);
             $(".card-funcionario-pagamento").html(data.html_funcionario);
+            $(".body-funcionario-pagamento").hide()
             $(".card-minutas-pagamento").html(data.html_minutas);
+            $(".body-minutas-pagamento").hide()
             $(".card-vales-colaborador").html(data.html_vales);
+            $(".body-vales-colaborador").hide()
             // $(".js-lista-vales").html(data.html_vales_pagamento);
             // $(".js-files-pagamento").html(data.html_files_pagamento);
             // $(".js-agenda-pagamento").html(data.html_agenda_pagamento);
@@ -802,4 +805,23 @@ $(document).on('click', '.js-contra-cheque-pagamento', function() {
 $(document).on('click', '.js-toggle-checked', function() {
     $(this).removeClass("icofont-square")
     $(this).addClass("icofont-checked")
+});
+
+
+$(document).on('click', ".js-body-funcionario-pagamento-toggle", function() {
+    $(this).toggleClass("icofont-simple-up")
+    $(this).toggleClass("icofont-simple-down")
+    $(".body-funcionario-pagamento").slideToggle(500)
+});
+
+$(document).on('click', ".js-body-minutas-pagamento-toggle", function() {
+    $(this).toggleClass("icofont-simple-up")
+    $(this).toggleClass("icofont-simple-down")
+    $(".body-minutas-pagamento").slideToggle(500)
+});
+
+$(document).on('click', ".js-body-vales-colaborador-toggle", function() {
+    $(this).toggleClass("icofont-simple-up")
+    $(this).toggleClass("icofont-simple-down")
+    $(".body-vales-colaborador").slideToggle(500)
 });
