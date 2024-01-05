@@ -1,25 +1,34 @@
 {% load humanize %}
 <!-- Header -->
-<div class="card-header div-flex">
-	<i class="icofont-ui-add
-	input-group-addon
-    addon-my-color
-	i-button"
-	onclick="openMyModal(event); return false;"
- data-title="CADASTRA VALE"
- data-action="{% url 'adiciona_vale_colaborador' %}"
- data-button-save-label="SALVAR"
- title="Adiciona Vale"></i>
-    <span>VALES</span>
-	<i class="icofont-square-up
-	js-toggle-vales
-	i-button"></i>
+<div class="card-header">
+	<div class="input-group">
+		<div class="input-group-addon addon-my-color">
+			<i class="icofont-rounded-left-up"></i>
+		</div>
+		<div class="input-group-addon addon-my-color">
+			<i class="icofont-plus-circle i-button"
+	  onclick="openMyModal(event); return false;"
+   data-title="CADASTRA VALE"
+   data-action="{% url 'adiciona_vale_colaborador' %}"
+   data-button-save-label="SALVAR"
+   title="Adiciona Vale"></i>
+		</div>
+		<div class="div-form-control">
+				<span>VALES</span>
+		</div>
+		<div class="input-group-addon addon-my-color">
+			<i class="icofont-simple-down i-button js-body-vales-colaborador-toggle"></i>
+		</div>
+		<div class="input-group-addon addon-my-color">
+			<i class="icofont-rounded-right-up"></i>
+		</div>
+	</div>
 </div>
 <!-- Body -->
-<div class="card-body">
+<div class="card-body body-vales-colaborador">
 	{% for vale in vales %}
 	{% if not vale.checked %}
-	<div class="card-body-item js-mostra-vales">
+	<div class="card-body-item">
 		<div class="input-group">
 			<i class="icofont-coins
 			input-group-addon
@@ -71,17 +80,19 @@
 <!-- Footer -->
 <div class="card-footer">
 	<div class="input-group">
-		<i class="icofont-rounded-left-down input-group-addon
-		addon-my-color"></i>
-		<div class="div-flex div-form-control">
+		<div class="input-group-addon addon-my-color">
+			<i class="icofont-rounded-left-down"></i>
+		</div>
+		<div class="div-form-control div-flex">
 			<div class="tamanho-80 text-left">
-				<span>TOTAL DOS VALES</span>
+				<span class="font-menor">TOTAL DOS VALES</span>
 			</div>
 			<div class="tamanho-20 text-right">
-				<span>R$ {{ saldo_vales }}</span>
+				<span class="font-menor">R$ {{ saldo_vales }}</span>
 			</div>
 		</div>
-		<i class="icofont-rounded-right-down input-group-addon
-		addon-my-color"></i>
+		<div class="input-group-addon addon-my-color">
+			<i class="icofont-rounded-right-down"></i>
+		</div>
 	</div>
 </div>
