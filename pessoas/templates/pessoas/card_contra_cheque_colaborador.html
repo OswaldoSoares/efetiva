@@ -1,62 +1,54 @@
 {% load humanize %}
 <!-- Header -->
 <div class="card-header">
-	<span>
-		CONTRA CHEQUE: {{ contra_cheque.Descricao }}
-	</span>
-	<input type="hidden" data-idcontracheque="{{ contra_cheque.idContraCheque }}" id="idcontracheque"></>
+    <div class="input-group">
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-up"></i>
+        </div>
+        <div class="div-form-control">
+            <span>CONTRA CHEQUE: {{ contra_cheque.Descricao }}</span>
+			<input type="hidden" data-idcontracheque="{{ contra_cheque.idContraCheque }}" id="idcontracheque"></>
+        </div>
+        <div class="input-group-addon addon-my-color">
+			<i class="icofont-rounded-right-up"></i>
+        </div>
+    </div>
 </div>
 <!-- Body -->
 <div class="card-body">
 	{% for itens in contra_cheque_itens  %}
 	<div class="card-body-item">
 		<div class="input-group">
-			<i class="icofont-list
-			input-group-addon
-			addon-my-color
-			i-button-null"></i>
-			<div class="div-flex div-form-control">
+			<div class="input-group-addon addon-my-color">
+			    <i class="i-button-null">{{ forloop.counter|stringformat:"02d" }}</i>
+			</div>
+			<div class="div-form-control div-flex">
 				<div class="tamanho-50 text-left">
-					<span>
-						{{ itens.Descricao }}
-					</span>
+					<span>{{ itens.Descricao }}</span>
 				</div>
 				<div class="tamanho-10 text-center">
-					<span>
-						{{ itens.Referencia }}
-					</span>
+					<span>{{ itens.Referencia }}</span>
 				</div>
 				<div class="tamanho-20 text-right">
 					{% if itens.Registro == 'D' %}
-					<span>
-						----------
-					</span>
+					<span>----------</span>
 					{% else %}
-					<span>
-						R$ {{ itens.Valor|intcomma }}
-					</span>
+					<span>R$ {{ itens.Valor|intcomma }}</span>
 					{% endif %}
 				</div>
 				<div class="tamanho-20 text-right">
 					{% if itens.Registro == 'D' %}
-					<span>
-						R$ {{ itens.Valor|intcomma }}
-					</span>
+					<span>R$ {{ itens.Valor|intcomma }}</span>
 					{% else %}
-					<span>
-						----------
-					</span>
+					<span>----------</span>
 				{% endif %}
 				</div>
 			</div>
-			<div class="input-group-addon
-			addon-my-color">
+			<div class="input-group-addon addon-my-color">
 				{% if itens.Vales_id == 0 %}
 				<i class="icofont-check i-button-null"></i>
 				{% else %}
-				<i class="icofont-trash
-				i-button
-				js-pessoas-exclui-contra-cheque-item"
+				<i class="icofont-trash	i-button js-pessoas-exclui-contra-cheque-item"
    	   			   data-idcontracheque="{{ itens.idContraCheque_id }}"
 	   			   data-idcontrachequeitens="{{ itens.idContraChequeItens }}"></i>
 				{% endif %}
@@ -68,22 +60,20 @@
 <!-- Footer -->
 <div class="card-footer">
 	<div class="input-group">
-		<i class="icofont-rounded-left-down input-group-addon
-		addon-my-color"></i>
-		<div class="div-flex div-form-control">
+		<div class="input-group-addon addon-my-color">
+			<i class="icofont-rounded-left-down"></i>
+		</div>
+		<div class="div-form-control div-flex">
 			<div class="tamanho-30 text-left">
 				<span>Total R$ {{ saldo_contra_cheque|intcomma }}</span>
 			</div>
-			<div class="tamanho-30 text-center">
+			<div class="tamanho-15 text-center">
 				{% if saldo_contra_cheque > 0 %}
-				<a class="icofont-printer i-button"
-				target="_blank"
-				href="{% url 'imprime_contra_cheque' %}?idcontracheque={{ contra_cheque.idContraCheque }}&idpessoal={{ colaborador.idpes }}&tipo={{ tipo }}"></a>
-				{% comment %} <a class="bi bi-printer i-button" {% endcomment %}
-        {% comment %} href="{% url 'print_contra_cheque_pagamento' %}?idcc={{ contra_cheque.idContraCheque }}" {% endcomment %}
-        {% comment %} target="_blank"></a> {% endcomment %}
-				<i class="icofont-bill-alt
-				i-button"
+				<a class="icofont-printer i-button"	target="_blank"
+				href="{% url 'imprime_contra_cheque' %}?idcontracheque={{ contra_cheque.idContraCheque }}&idpessoal={{ idpessoal }}&tipo={{ tipo }}"></a>
+			</div>
+			<div class="tamanho-15 text-center">
+				<i class="icofont-bill-alt i-button"
 	   			   title="Informa Pagamento"></i>
 				{% endif %}
 			</div>
@@ -98,7 +88,8 @@
 				{% endif %}
 			</div>
 		</div>
-		<i class="icofont-rounded-right-down input-group-addon
-		addon-my-color"></i>
+		<div class="input-group-addon addon-my-color">
+			<i class="icofont-rounded-right-down"></i>
+		</div>
 	</div>
 </div>
