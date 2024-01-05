@@ -1965,6 +1965,7 @@ def create_contexto_contra_cheque(idpessoal, idselecionado, descricao):
         "parcelas_decimo_terceiro": parcelas_decimo_terceiro,
         "colaborador": colaborador,
         "tipo": descricao,
+        "idpessoal": idpessoal,
     }
     return contexto
 
