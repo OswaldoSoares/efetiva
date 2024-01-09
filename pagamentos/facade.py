@@ -3118,7 +3118,14 @@ def atualiza_itens_contra_cheque_pagamento(
         contra_cheque, salario, faltas, update_itens, create_itens
     )
     atualiza_item_desconto_dsr(
-        contra_cheque, salario, faltas, update_itens, create_itens, mes, ano
+        contra_cheque,
+        salario,
+        faltas,
+        update_itens,
+        create_itens,
+        mes,
+        ano,
+        colaborador,
     )
     atualiza_item_horas_extras(
         contra_cheque, salario, horas_extras, update_itens, create_itens
@@ -3226,7 +3233,14 @@ def atualiza_item_faltas(
 
 
 def atualiza_item_desconto_dsr(
-    contra_cheque, salario, faltas, update_itens, create_itens, mes, ano
+    contra_cheque,
+    salario,
+    faltas,
+    update_itens,
+    create_itens,
+    mes,
+    ano,
+    colaborador,
 ):
     contra_cheque_itens = busca_contrachequeitens(
         contra_cheque[0].idContraCheque, "DSR SOBRE FALTAS", "D"
