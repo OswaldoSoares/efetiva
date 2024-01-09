@@ -77,6 +77,7 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
             },
             success: function(xhr, ajaxOptions, thrownError) {
                 $(modal).find('.modal-body').html(xhr['html_form']);
+                $('.box-loader').hide()
                 if ($(xhr['html_form']).find('.errorlist').length > 0) {
                     formAjaxSubmit(modal, url, cbAfterLoad, cbAfterSuccess);
                 } else {
