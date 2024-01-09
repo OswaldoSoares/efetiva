@@ -2813,6 +2813,7 @@ def create_cartao_ponto_folha(colaboradores, mes, ano, salarios):
 def contra_cheques_folha_pagamento(folha, colaboradores, salarios):
     mes = meses.index(folha.MesReferencia) + 1
     ano = folha.AnoReferencia
+    primeiro_dia_mes, ultimo_dia_mes = extremos_mes(mes, ano)
     contra_cheques_adiantamento = list(
         get_contra_cheque_mes_ano_adiantamento(mes, ano).values(
             "idContraCheque", "idPessoal_id", "idPessoal__Nome"
@@ -2824,6 +2825,12 @@ def contra_cheques_folha_pagamento(folha, colaboradores, salarios):
         )
     )
     contra_cheques = []
+    colaboradores = list(
+        filter(
+            lambda item: item["DataAdmissao"] <= ultimo_dia_mes.date(),
+            colaboradores,
+        )
+    )
     for colaborador in colaboradores:
         filtro_adiantamento = list(
             filter(
