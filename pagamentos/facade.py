@@ -3254,14 +3254,16 @@ def atualiza_item_desconto_dsr(
     desconto_dsr = len(semanas_faltas)
     primeiro_dia_mes, ultimo_dia_mes = extremos_mes(mes, ano)
     if 1 <= primeiro_dia_mes.weekday() <= 4:
-        # verifica faltas mes anterior
-        pass
+        verifica_falta_ultima_semana_mes_amterior(
+            colaborador, primeiro_dia_mes, semanas_faltas
+        )
     semanas_feriados = []
+    ultimo_dia_mes_seguinte = ultimo_dia_mes + relativedelta(months=+1)
     lista_feriados = list(
         Parametros.objects.filter(
             Chave="FERIADO",
             Valor__gte=primeiro_dia_mes,
-            Valor__lte=ultimo_dia_mes,
+            Valor__lte=ultimo_dia_mes_seguinte,
         ).values()
     )
     if lista_feriados:
@@ -3301,6 +3303,27 @@ def atualiza_item_desconto_dsr(
     else:
         if contra_cheque_itens:
             contra_cheque_itens.delete()
+
+
+def verifica_falta_ultima_semana_mes_amterior(
+    colaborador, primeiro_dia_mes, semanas_faltas
+):
+    inicio = primeiro_dia_mes - datetime.timedelta(primeiro_dia_mes.weekday())
+    fim = primeiro_dia_mes - datetime.timedelta(1)
+    faltas_mes_anterior = list(
+        CartaoPonto.objects.filter(
+            idPessoal=colaborador,
+            Ausencia="FALTA",
+            Remunerado=False,
+            Dia__range=[inicio, fim],
+        ).values()
+    )
+    if faltas_mes_anterior:
+        semana_mes_anterior = datetime.datetime.strftime(
+            faltas_mes_anterior[0]["Dia"], "%V"
+        )
+        if semana_mes_anterior in semanas_faltas:
+            semanas_faltas.remove(int(semana_mes_anterior))
 
 
 def atualiza_item_horas_extras(
