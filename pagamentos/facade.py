@@ -2641,7 +2641,7 @@ def create_folha(mes, ano):
 
 def get_colaboradores_mensalistas_admitidos():
     colaboradores = Pessoal.objects.filter(
-        TipoPgto="MENSALISTA", DataDemissao__isnull=True
+        TipoPgto="MENSALISTA", DataDemissao__isnull=True, StatusPessoal=True
     )
     return colaboradores
 
