@@ -359,8 +359,9 @@ def consultaminuta(request, idmin):
     s_minuta = MinutaSelecionada(idmin).__dict__
     romaneios = s_minuta["romaneio"]
     # TODO Removido a multiplcação da taxa de expedição pelo numero de romaneios 15/05/2023
-    # if romaneios:
-    #     valortaxaexpedicao = valortaxaexpedicao * len(romaneios)
+    #  Adicionado novamente em 10/01/2024
+    if romaneios:
+        valortaxaexpedicao = valortaxaexpedicao * len(romaneios)
     porcentagemseguro = list(tabelacliente.values("Seguro")[0].values())[0]
     valorajudanterecebe = list(
         tabelacliente.values("AjudanteCobra")[0].values()
