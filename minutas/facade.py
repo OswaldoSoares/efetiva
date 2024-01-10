@@ -439,10 +439,13 @@ class MinutaSelecionada:
         ]
         phkesc = self.tabela[0]["phkescCobra"]
         # TODO Removido a multiplcação da taxa de expedição pelo numero de romaneios 15/05/2023
-        # if len(self.romaneio) > 1:
-        #     v_recebe["v_taxa"] = self.tabela[0]["TaxaExpedicao"] * len(self.romaneio)
-        # else:
-        v_recebe["v_taxa"] = self.tabela[0]["TaxaExpedicao"]
+        # Ativado novamente em 10/01/2024, colocar parametro para usurio selecionar se cobra ou não
+        if len(self.romaneio) > 1:
+            v_recebe["v_taxa"] = self.tabela[0]["TaxaExpedicao"] * len(
+                self.romaneio
+            )
+        else:
+            v_recebe["v_taxa"] = self.tabela[0]["TaxaExpedicao"]
         v_recebe["c_taxa"] = (
             True if self.tabela[0]["TaxaExpedicao"] > 0 else False
         )
