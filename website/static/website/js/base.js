@@ -7,6 +7,10 @@ function openMyModal(event) {
     var modal = initModalDialog(event, '#MyModal');
     var url = $(event.target).data('action');
     var idpessoal = localStorage.getItem("idpessoal");
+    var title = $(event.target).data("title")
+    // if (title == "EDITA CONTA BANCARIA") {
+    var idcontapessoal = $(event.target).data("idcontapessoal")
+    // }
     var mes_ano = localStorage.getItem("mes_ano");
     var confirma = $(event.target).data("confirma")
     var idconfirma = $(event.target).data("idconfirma")
@@ -16,6 +20,7 @@ function openMyModal(event) {
         url: url,
         data : {
             idpessoal: idpessoal,
+            idcontapessoal: idcontapessoal,
             mes_ano: mes_ano,
             confirma: confirma,
             idconfirma: idconfirma,
@@ -77,7 +82,6 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
             },
             success: function(xhr, ajaxOptions, thrownError) {
                 $(modal).find('.modal-body').html(xhr['html_form']);
-                $('.box-loader').hide()
                 if ($(xhr['html_form']).find('.errorlist').length > 0) {
                     formAjaxSubmit(modal, url, cbAfterLoad, cbAfterSuccess);
                 } else {
@@ -100,6 +104,7 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                         cbAfterSuccess(modal);
                     }
                 }
+                $('.box-loader').hide()
             },
             error: function(xhr, ajaxOptions, thrownError) {
                 // $(".mensagem-erro").text(thrownError);
