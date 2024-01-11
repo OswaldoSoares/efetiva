@@ -2,10 +2,23 @@
 {% load humanize %}
 <!-- Header -->
 <div class="card-header">
-    <span>DOCS - FONE - BANCO</span>
+	<div class="input-group">
+		<div class="input-group-addon addon-my-color">
+			<i class="icofont-rounded-left-up"></i>
+		</div>
+		<div class="div-form-control">
+            <span>DOCS - FONE - BANCO</span>
+		</div>
+		<div class="input-group-addon addon-my-color">
+			<i class="icofont-simple-down i-button js-body-dados-colaborador-toggle"></i>
+		</div>
+		<div class="input-group-addon addon-my-color">
+			<i class="icofont-rounded-right-up"></i>
+		</div>
+	</div>
 </div>
 <!-- Body -->
-<div class="card-body">
+<div class="card-body body-dados-colaborador">
     {% for x in colaborador.documentos %}
     <div class="card-body-item">
         <div class="input-group">
@@ -75,39 +88,16 @@
     {% endfor %}
     {% for x in colaborador.bancos %}
     <div class="card-body-item">
-        {% if x.pix %}
         <div class="input-group">
-            <i class="icofont-bank
-            i-button-null
-            input-group-addon
-            addon-my-color"
-               title="Chave PIX"></i>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-bank i-button-null"
+                   title="Chave PIX"></i>
+            </div>
+            {% if x.pix %}
             <span class="form-control input-fake font-menor linha-4">
                 CHAVE PIX: {{ x.pix }}
             </span>
-            <div class="input-group-addon
-            addon-my-color">
-                <i class="bi bi-pencil-square
-                i-button
-                js-altera-conta-colaborador"
-                   data-idcontapessoal="{{ x.idconta }}"
-                   data-idpessoal="{{ colaborador.idpes }}"></i>
-            </div>
-            <div class="input-group-addon
-            addon-my-color">
-                <i class="bi bi-trash
-                i-button
-                js-exclui-conta-colaborador"
-                   data-idcontapessoal="{{ x.idconta }}"></i>
-            </div>
-        </div>
-        {% else %}
-        <div class="input-group">
-            <i class="icofont-bank
-            i-button-null
-            input-group-addon
-            addon-my-color"
-               title="Dados Bancário"></i>
+            {% else %}
             <span class="form-control input-fake font-menor linha-4">
                 {{ x.banco }}: AG: {{ x.agencia }}
                 {% if x.tipo == "CORRENTE" %}
@@ -117,44 +107,56 @@
                 {% endif %}
                 {{ x.conta }}
             </span>
-            <div class="input-group-addon
-            addon-my-color">
-                <i class="bi bi-pencil-square
-                i-button
-                js-altera-conta-colaborador"
-                   data-idcontapessoal="{{ x.idconta }}"
-                   data-idpessoal="{{ colaborador.idpes }}"></i>
-            </div>
-            <div class="input-group-addon
-            addon-my-color">
-                <i class="bi bi-trash
-                i-button
-                js-exclui-conta-colaborador"
-                   data-idcontapessoal="{{ x.idconta }}"></i> 
-            </div>
-        </div>
-        {% endif %}
-    </div>
-    <div class="input-group">
-        {% if x.titular %}
-        <i class="bi bi-person-circle
-        i-button-null
-        input-group-addon
-        addon-my-color"
-           title="Titular da Conta"></i>
-        <span class="form-control input-fake font-menor-2 text-left linha-4">
-            {{ x.titular }}
-            {% if x.documento %}
-            - {{ x.documento }}
             {% endif %}
-        </span>
-        <div class="input-group-addon
-        addon-my-color">
-            <i class="bi bi-check"></i>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-pen-alt-1 i-button"
+                   onclick="openMyModal(event); return false;"
+                   data-title="EDITA CONTA BANCÁRIA"
+                   data-action="{% url 'altera_conta_colaborador' %}"
+                   data-idcontapessoal="{{ x.idconta }}"
+                   data-button-save-label="SALVAR"
+                   title="Edita conta bancária"></i>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-trash i-button js-exclui-conta-colaborador"
+                   data-idcontapessoal="{{ x.idconta }}"></i>
+            </div>
         </div>
-        {% endif %}
     </div>
+    {% if x.titular %}
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-waiter-alt i-button-null"
+                   title="Titular da Conta"></i>
+            </div>
+            <span class="form-control input-fake font-menor-2 text-left linha-4">
+                {{ x.titular }}
+                {% if x.documento %}
+                - {{ x.documento }}
+                {% endif %}
+            </span>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-check i-button-null"></i>
+            </div>
+        </div>
+    </div>
+    {% endif %}
     {% endfor %}
 </div>
 <!-- Card Footer -->
-<div class="card-footer"></div>
+<div class="card-footer">
+	<div class="input-group">
+		<div class="input-group-addon addon-my-color">
+			<i class="icofont-rounded-left-down"></i>
+		</div>
+		<div class="div-form-control div-flex">
+			<div class="tamanho-100 text-left">
+				<span class="font-menor"></span>
+			</div>
+		</div>
+		<div class="input-group-addon addon-my-color">
+			<i class="icofont-rounded-right-down"></i>
+		</div>
+	</div>
+</div>
