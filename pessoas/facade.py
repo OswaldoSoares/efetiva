@@ -30,6 +30,7 @@ from pessoas.forms import (
     CadastraVale,
     CadastraDemissao,
     FormVale,
+    FormContaPessoal,
 )
 from pessoas.models import (
     Aquisitivo,
@@ -2567,6 +2568,75 @@ def modal_vale_colaborador(request, idpessoal):
         contexto = {"form": FormVale, "idpessoal": idpessoal}
         data["html_modal"] = render_to_string(
             "pessoas/modal_vale_colaborador.html", contexto, request=request
+        )
+    return JsonResponse(data)
+
+
+def modal_conta_bancaria(request, idpessoal):
+    data = dict()
+    if request.method == "POST":
+        idcontapessoal = request.POST.get("idcontapessoal")
+        banco = request.POST.get("Banco")
+        agencia = request.POST.get("Agencia")
+        conta = request.POST.get("Conta")
+        tipo_conta = request.POST.get("TipoConta")
+        titular = request.POST.get("Titular")
+        cpf_titular = request.POST.get("Documento")
+        pix = request.POST.get("PIX")
+        registro_conta_bancaria = []
+        if idcontapessoal:
+            registro_conta_bancaria.append(
+                ContaPessoal(
+                    Banco=banco,
+                    Agencia=agencia,
+                    Conta=conta,
+                    TipoConta=tipo_conta,
+                    Titular=titular,
+                    Documento=cpf_titular,
+                    PIX=pix,
+                    idContaPessoal=idcontapessoal,
+                )
+            )
+            ContaPessoal.objects.bulk_update(
+                registro_conta_bancaria,
+                [
+                    "Banco",
+                    "Agencia",
+                    "Conta",
+                    "TipoConta",
+                    "Titular",
+                    "Documento",
+                    "PIX",
+                ],
+            )
+        else:
+            registro_conta_bancaria.append(
+                ContaPessoal(
+                    Banco=banco,
+                    Agencia=agencia,
+                    Conta=conta,
+                    TipoConta=tipo_conta,
+                    Titular=titular,
+                    Documento=cpf_titular,
+                    PIX=pix,
+                    idpessoal_id=idpessoal,
+                )
+            )
+            ContaPessoal.objects.bulk_create(registro_conta_bancaria)
+    else:
+        idcontapessoal = request.GET.get("idcontapessoal")
+        if idcontapessoal:
+            conta = ContaPessoal.objects.get(idPessoal=idpessoal)
+            form = FormContaPessoal(instance=conta)
+        else:
+            form = FormContaPessoal
+        contexto = {
+            "form": form,
+            "idpessoal": idpessoal,
+            "idcontapessoal": idcontapessoal,
+        }
+        data["html_modal"] = render_to_string(
+            "pessoas/modal_conta_colaborador.html", contexto, request=request
         )
     return JsonResponse(data)
 
