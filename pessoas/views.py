@@ -62,7 +62,7 @@ def edita_pessoa(request, idpessoa):
     c_idobj = idpessoa
     c_url = "/pessoas/editapessoa/{}/".format(c_idobj)
     c_view = "edita_pessoa"
-    idpessoal = "edita_pessoa"
+    idpessoal = idpessoa
     data = facade.form_pessoa(
         request, c_form, c_idobj, c_url, c_view, idpessoal
     )
@@ -686,6 +686,7 @@ def seleciona_aquisitivo(request):
         idaquisitivo,
         descricao,
     )
+    contexto.update({"idpessoal": idpessoal})
     data = facade.create_data_contra_cheque(request, contexto)
     return data
 
@@ -699,6 +700,7 @@ def seleciona_parcela(request):
         idparcela,
         descricao,
     )
+    contexto.update({"idpessoal": idpessoal})
     data = facade.create_data_contra_cheque(request, contexto)
     return data
 
@@ -711,6 +713,7 @@ def adiciona_vale_contra_cheque(request):
     facade.create_contra_cheque_itens_vale(idcontracheque, idvale)
     contexto = facade.contexto_contra_cheque_id(idcontracheque)
     contexto.update(facade.contexto_vales_colaborador(colaborador))
+    contexto.update({"idpessoal": idpessoal})
     data = facade.data_adiciona_vale_contra_cheque(request, contexto)
     return data
 
@@ -723,6 +726,7 @@ def exclui_contra_cheque_item(request):
     facade.delete_contra_cheque_itens(idcontrachequeitens)
     contexto = facade.contexto_contra_cheque_id(idcontracheque)
     contexto.update(facade.contexto_vales_colaborador(colaborador))
+    contexto.update({"idpessoal": idpessoal})
     data = facade.data_adiciona_vale_contra_cheque(request, contexto)
     return data
 
