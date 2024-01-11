@@ -661,6 +661,7 @@ def form_pessoa(request, c_form, c_idobj, c_url, c_view, idpessoal):
     if request.method == "POST":
         form = c_form(request.POST, instance=c_instance)
         if form.is_valid():
+            cadastro_colaborador(request)
             save_id = form.save()
             if c_view == "cria_pessoa" or c_view == "edita_pessoa":
                 data["save_id"] = save_id.idPessoal
