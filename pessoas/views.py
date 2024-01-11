@@ -430,18 +430,11 @@ def adiciona_conta_colaborador(request):
 
 
 def altera_conta_colaborador(request):
-    idcontapessoal = request.GET.get("idcontapessoal")
-    idpessoal = request.GET.get("idpessoal")
-    conta_form = facade.read_conta_database(idcontapessoal)
-    tipo_conta = dict_tipo_conta()
-    contexto = {
-        "conta_form": conta_form,
-        "idpessoal": idpessoal,
-        "tipo_conta": tipo_conta,
-    }
-    data = facade.create_data_form_adiciona_conta_colaborador(
-        request, contexto
-    )
+    if request.method == "POST":
+        idpessoal = int(request.POST.get("idpessoal"))
+    else:
+        idpessoal = int(request.GET.get("idpessoal"))
+    data = facade.modal_conta_bancaria(request, idpessoal)
     return data
 
 
