@@ -1,0 +1,40 @@
+<form class="row g-3" method="post" action="{{ altera_conta_colaborador }}">
+{% csrf_token %}
+    <div class="col-md-6">
+        <label for="id_banco" class="form-label">BANCO:</label>
+    	{{ form.Banco }}
+        {{ form.Banco.errors }}
+    </div>
+    <div class="col-md-6">
+        <label for="id_agencia" class="form-label">AGÊNCIA:</label>
+        {{ form.Agencia }}
+        {{ form.Agencia.errors }}
+    </div>
+    <div class="col-md-6">
+        <label for="id_conta" class="form-label">CONTA:</label>
+        {{ form.Conta }}
+        {{ form.Conta.errors }}
+    </div>
+    <div class="col-md-6">
+        <label for="id_tipo_conta" class="form-label">TIPO DE CONTA:</label>
+        {{ form.TipoConta }}
+        {{ form.TipoConta.errors }}
+    </div>
+    <div class="col-md-12">
+        <label for="id_titular" class="form-label">TITULAR: (somente se o colaborador não for o titular.)</label>
+    	{{ form.Titular }}
+        {{ form.Titlar.errors }}
+    </div>
+    <div class="col-md-6">
+        <label for="id_documento" class="form-label">CPF DO TITULAR:</label>
+        {{ form.Documento }}
+        {{ form.Documento.errors }}
+    </div>
+    <div class="col-md-6">
+        <label for="id_pix" class="form-label">CHAVE PIX:</label>
+        {{ form.PIX }}
+        {{ form.PIX.errors }}
+    </div>
+    <input type="hidden" name="idcontapessoal" value="{{ idcontapessoal }}">
+    <input type="hidden" name="idpessoal" value="{{ idpessoal }}">
+</form>
