@@ -2791,6 +2791,10 @@ def create_cartao_ponto_folha(colaboradores, mes, ano, salarios):
                 if valor_conducao > Decimal(0.00):
                     conducao = False
                     dias_conducao -= 1
+            if dia.date() < colaborador["DataAdmissao"]:
+                ausencia = "-------"
+                conducao = False
+                remunerado = False
             registros_cartao_ponto.append(
                 CartaoPonto(
                     Dia=dia,
