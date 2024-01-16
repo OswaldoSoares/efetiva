@@ -2614,6 +2614,7 @@ def busca_folha(mes, ano, colaboradores, salarios):
         folha = FolhaPagamento.objects.get(
             MesReferencia=mes_extenso, AnoReferencia=ano
         )
+        verifica_contra_cheque_colaboradores(colaboradores, mes, ano, salarios)
     except FolhaPagamento.DoesNotExist:
         create_folha(mes_extenso, ano)
         folha = FolhaPagamento.objects.get(
@@ -2623,10 +2624,32 @@ def busca_folha(mes, ano, colaboradores, salarios):
         dias_conducao = create_cartao_ponto_folha(
             colaboradores, mes, ano, salarios
         )
+        print(dias_conducao)
         create_contra_cheque_itens_folha(
             colaboradores, mes, ano, salarios, dias_conducao
         )
     return folha
+
+
+def verifica_contra_cheque_colaboradores(colaboradores, mes, ano, salarios):
+    for colaborador in colaboradores:
+        colaborador_lista = []
+        colaborador_lista.append(colaborador)
+        primeiro_dia_mes, ultimo_dia_mes = extremos_mes(mes, ano)
+        if colaborador["DataAdmissao"] <= ultimo_dia_mes.date():
+            contra_cheque = busca_contracheque(
+                meses[int(mes) - 1], ano, colaborador["idPessoal"]
+            )
+            contra_cheque = contra_cheque.filter(Descricao="PAGAMENTO")
+            dias_conducao = 0
+            if not contra_cheque:
+                create_contra_cheques_folha(colaborador_lista, mes, ano)
+                dias_conducao = create_cartao_ponto_folha(
+                    colaborador_lista, mes, ano, salarios
+                )
+                create_contra_cheque_itens_folha(
+                    colaborador_lista, mes, ano, salarios, dias_conducao
+                )
 
 
 def create_folha(mes, ano):
