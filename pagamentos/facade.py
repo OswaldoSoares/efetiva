@@ -2773,8 +2773,7 @@ def create_cartao_ponto_folha(colaboradores, mes, ano, salarios):
             None,
         )
         valor_conducao = filtro_salario["ValeTransporte"]
-        if valor_conducao > Decimal(0.00):
-            dias_conducao = 0
+        dias_conducao = 0
         while dia < ultimo_dia_mes + relativedelta(days=1):
             hora_entrada = "07:00"
             hora_saida = "17:00"
