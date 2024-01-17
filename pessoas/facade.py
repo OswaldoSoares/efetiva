@@ -1996,7 +1996,6 @@ def update_contas_bancaria_obs(contra_cheque, contas, chave):
     except:
         dict_obs = dict({"contas": ""})
     if dict_obs["contas"] != dict_contas:
-        print("ok")
         dict_obs["contas"] = dict_contas
         obj = contra_cheque
         obj.Obs = dict_obs

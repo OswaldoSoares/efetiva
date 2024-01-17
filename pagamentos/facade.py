@@ -2624,7 +2624,6 @@ def busca_folha(mes, ano, colaboradores, salarios):
         dias_conducao = create_cartao_ponto_folha(
             colaboradores, mes, ano, salarios
         )
-        print(dias_conducao)
         create_contra_cheque_itens_folha(
             colaboradores, mes, ano, salarios, dias_conducao
         )
