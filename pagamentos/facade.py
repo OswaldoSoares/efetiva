@@ -2620,7 +2620,7 @@ def busca_folha(mes, ano, colaboradores, salarios):
         folha = FolhaPagamento.objects.get(
             MesReferencia=mes_extenso, AnoReferencia=ano
         )
-        create_contra_cheques_folha(colaboradores, mes, ano)
+        create_contra_cheques_folha(colaboradores, mes, anoi, salarios)
         dias_conducao = create_cartao_ponto_folha(
             colaboradores, mes, ano, salarios
         )
@@ -2642,7 +2642,9 @@ def verifica_contra_cheque_colaboradores(colaboradores, mes, ano, salarios):
             contra_cheque = contra_cheque.filter(Descricao="PAGAMENTO")
             dias_conducao = 0
             if not contra_cheque:
-                create_contra_cheques_folha(colaborador_lista, mes, ano)
+                create_contra_cheques_folha(
+                    colaborador_lista, mes, ano, salarios
+                )
                 dias_conducao = create_cartao_ponto_folha(
                     colaborador_lista, mes, ano, salarios
                 )
@@ -2675,30 +2677,40 @@ def get_valores_salario_transporte_colaborador():
     return salarios
 
 
-def create_contra_cheques_folha(colaboradores, mes, ano):
+def create_contra_cheques_folha(colaboradores, mes, ano, salarios):
     mes_extenso = meses[int(mes) - 1]
     registros_contra_cheque = []
     for colaborador in colaboradores:
-        registros_contra_cheque.append(
-            ContraCheque(
-                MesReferencia=mes_extenso,
-                AnoReferencia=ano,
-                Valor=0.00,
-                Pago=False,
-                Descricao="PAGAMENTO",
-                idPessoal_id=colaborador["idPessoal"],
-            )
+        filtro_salario = next(
+            (
+                item
+                for item in salarios
+                if item["idPessoal_id"] == colaborador["idPessoal"]
+            ),
+            None,
         )
-        registros_contra_cheque.append(
-            ContraCheque(
-                MesReferencia=mes_extenso,
-                AnoReferencia=ano,
-                Valor=0.00,
-                Pago=False,
-                Descricao="ADIANTAMENTO",
-                idPessoal_id=colaborador["idPessoal"],
+        salario = filtro_salario["Salario"]
+        if salario > 0.00:
+            registros_contra_cheque.append(
+                ContraCheque(
+                    MesReferencia=mes_extenso,
+                    AnoReferencia=ano,
+                    Valor=0.00,
+                    Pago=False,
+                    Descricao="PAGAMENTO",
+                    idPessoal_id=colaborador["idPessoal"],
+                )
             )
-        )
+            registros_contra_cheque.append(
+                ContraCheque(
+                    MesReferencia=mes_extenso,
+                    AnoReferencia=ano,
+                    Valor=0.00,
+                    Pago=False,
+                    Descricao="ADIANTAMENTO",
+                    idPessoal_id=colaborador["idPessoal"],
+                )
+            )
     ContraCheque.objects.bulk_create(registros_contra_cheque)
 
 
@@ -2714,22 +2726,6 @@ def create_contra_cheque_itens_folha(
     )
     primeiro_dia_mes, ultimo_dia_mes = extremos_mes(mes, ano)
     for colaborador in colaboradores:
-        filtro_pagamento = next(
-            (
-                item
-                for item in contra_cheque_pagamento
-                if item["idPessoal_id"] == colaborador["idPessoal"]
-            ),
-            None,
-        )
-        filtro_adiantamento = next(
-            (
-                item
-                for item in contra_cheque_adiantamento
-                if item["idPessoal_id"] == colaborador["idPessoal"]
-            ),
-            None,
-        )
         filtro_salario = next(
             (
                 item
@@ -2740,58 +2736,77 @@ def create_contra_cheque_itens_folha(
         )
         salario = filtro_salario["Salario"]
         valor_conducao = filtro_salario["ValeTransporte"] * dias_conducao
-        adiantamento = salario / 100 * 40
-        dias = 30 - colaborador["DataAdmissao"].day + 1
-        if ultimo_dia_mes.day == 31:
-            dias += 1
-        if colaborador["DataAdmissao"] <= primeiro_dia_mes.date():
-            registro_contra_cheque_itens.append(
-                ContraChequeItens(
-                    Descricao="SALARIO",
-                    Valor=salario,
-                    Registro="C",
-                    Referencia="30d",
-                    idContraCheque_id=filtro_pagamento["idContraCheque"],
-                )
+        if salario > 0.00:
+            filtro_pagamento = next(
+                (
+                    item
+                    for item in contra_cheque_pagamento
+                    if item["idPessoal_id"] == colaborador["idPessoal"]
+                ),
+                None,
             )
-            registro_contra_cheque_itens.append(
-                ContraChequeItens(
-                    Descricao="ADIANTAMENTO",
-                    Valor=adiantamento,
-                    Registro="C",
-                    Referencia="40%",
-                    idContraCheque_id=filtro_adiantamento["idContraCheque"],
-                )
+            filtro_adiantamento = next(
+                (
+                    item
+                    for item in contra_cheque_adiantamento
+                    if item["idPessoal_id"] == colaborador["idPessoal"]
+                ),
+                None,
             )
-            registro_contra_cheque_itens.append(
-                ContraChequeItens(
-                    Descricao="ADIANTAMENTO",
-                    Valor=adiantamento,
-                    Registro="D",
-                    Referencia="40%",
-                    idContraCheque_id=filtro_pagamento["idContraCheque"],
+            adiantamento = salario / 100 * 40
+            dias = 30 - colaborador["DataAdmissao"].day + 1
+            if ultimo_dia_mes.day == 31:
+                dias += 1
+            if colaborador["DataAdmissao"] <= primeiro_dia_mes.date():
+                registro_contra_cheque_itens.append(
+                    ContraChequeItens(
+                        Descricao="SALARIO",
+                        Valor=salario,
+                        Registro="C",
+                        Referencia="30d",
+                        idContraCheque_id=filtro_pagamento["idContraCheque"],
+                    )
                 )
-            )
-        else:
-            registro_contra_cheque_itens.append(
-                ContraChequeItens(
-                    Descricao="SALARIO",
-                    Valor=salario / 30 * dias,
-                    Registro="C",
-                    Referencia=f"{dias}d",
-                    idContraCheque_id=filtro_pagamento["idContraCheque"],
+                registro_contra_cheque_itens.append(
+                    ContraChequeItens(
+                        Descricao="ADIANTAMENTO",
+                        Valor=adiantamento,
+                        Registro="C",
+                        Referencia="40%",
+                        idContraCheque_id=filtro_adiantamento[
+                            "idContraCheque"
+                        ],
+                    )
                 )
-            )
-        if valor_conducao > Decimal(0.00):
-            registro_contra_cheque_itens.append(
-                ContraChequeItens(
-                    Descricao="VALE TRANSPORTE",
-                    Valor=valor_conducao,
-                    Registro="C",
-                    Referencia=f"{dias_conducao}d",
-                    idContraCheque_id=filtro_pagamento["idContraCheque"],
+                registro_contra_cheque_itens.append(
+                    ContraChequeItens(
+                        Descricao="ADIANTAMENTO",
+                        Valor=adiantamento,
+                        Registro="D",
+                        Referencia="40%",
+                        idContraCheque_id=filtro_pagamento["idContraCheque"],
+                    )
                 )
-            )
+            else:
+                registro_contra_cheque_itens.append(
+                    ContraChequeItens(
+                        Descricao="SALARIO",
+                        Valor=salario / 30 * dias,
+                        Registro="C",
+                        Referencia=f"{dias}d",
+                        idContraCheque_id=filtro_pagamento["idContraCheque"],
+                    )
+                )
+            if valor_conducao > Decimal(0.00):
+                registro_contra_cheque_itens.append(
+                    ContraChequeItens(
+                        Descricao="VALE TRANSPORTE",
+                        Valor=valor_conducao,
+                        Registro="C",
+                        Referencia=f"{dias_conducao}d",
+                        idContraCheque_id=filtro_pagamento["idContraCheque"],
+                    )
+                )
     ContraChequeItens.objects.bulk_create(registro_contra_cheque_itens)
 
 
@@ -2872,26 +2887,38 @@ def contra_cheques_folha_pagamento(folha, colaboradores, salarios):
         )
     )
     for colaborador in colaboradores:
-        filtro_adiantamento = list(
-            filter(
-                lambda item: item["idPessoal_id"] == colaborador["idPessoal"],
-                contra_cheques_adiantamento,
+        filtro_salario = next(
+            (
+                item
+                for item in salarios
+                if item["idPessoal_id"] == colaborador["idPessoal"]
+            ),
+            None,
+        )
+        salario = filtro_salario["Salario"]
+        if salario > 0.00:
+            filtro_adiantamento = list(
+                filter(
+                    lambda item: item["idPessoal_id"]
+                    == colaborador["idPessoal"],
+                    contra_cheques_adiantamento,
+                )
             )
-        )
-        filtro_pagamento = list(
-            filter(
-                lambda item: item["idPessoal_id"] == colaborador["idPessoal"],
-                contra_cheques_pagamento,
+            filtro_pagamento = list(
+                filter(
+                    lambda item: item["idPessoal_id"]
+                    == colaborador["idPessoal"],
+                    contra_cheques_pagamento,
+                )
             )
-        )
-        contra_cheques.append(
-            {
-                "nome": nome_curto(colaborador["Nome"]),
-                "idpessoal": colaborador["idPessoal"],
-                "idadiantamento": filtro_adiantamento[0]["idContraCheque"],
-                "idpagamento": filtro_pagamento[0]["idContraCheque"],
-            }
-        )
+            contra_cheques.append(
+                {
+                    "nome": nome_curto(colaborador["Nome"]),
+                    "idpessoal": colaborador["idPessoal"],
+                    "idadiantamento": filtro_adiantamento[0]["idContraCheque"],
+                    "idpagamento": filtro_pagamento[0]["idContraCheque"],
+                }
+            )
     lista_contra_cheques = []
     for contra_cheque in contra_cheques:
         lista_contra_cheques.append(contra_cheque["idadiantamento"])
