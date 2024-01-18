@@ -51,7 +51,7 @@
 				</div>
 				<div class="tamanho-25 text-right">
 					<span title="Saldo do Adiantamento">
-						R$ {{ contra_cheque.saldo_adiantamento|intcomma }}
+						R$ {{ contra_cheque.saldo_adiantamento|floatformat:2|intcomma }}
 					</span>
 				</div>
 				<div class="tamanho-25 text-right">
