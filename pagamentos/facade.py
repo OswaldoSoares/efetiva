@@ -2824,43 +2824,45 @@ def create_cartao_ponto_folha(colaboradores, mes, ano, salarios):
             ),
             None,
         )
+        salario = filtro_salario["Salario"]
         valor_conducao = filtro_salario["ValeTransporte"]
         dias_conducao = 0
-        while dia < ultimo_dia_mes + relativedelta(days=1):
-            hora_entrada = "07:00"
-            hora_saida = "17:00"
-            remunerado = True
-            conducao = False
-            if dia.weekday() == 5 or dia.weekday() == 6:
-                ausencia = dias[dia.weekday()]
-            else:
-                ausencia = ""
-                if valor_conducao > Decimal(0.00):
-                    conducao = True
-                    dias_conducao += 1
-            if dia.date() in feriados:
-                ausencia = "FERIADO"
-                if valor_conducao > Decimal(0.00):
-                    conducao = False
-                    dias_conducao -= 1
-            if dia.date() < colaborador["DataAdmissao"]:
-                ausencia = "-------"
+        if salario > 0.00:
+            while dia < ultimo_dia_mes + relativedelta(days=1):
+                hora_entrada = "07:00"
+                hora_saida = "17:00"
+                remunerado = True
                 conducao = False
-                remunerado = False
-            registros_cartao_ponto.append(
-                CartaoPonto(
-                    Dia=dia,
-                    Entrada=hora_entrada,
-                    Saida=hora_saida,
-                    Ausencia=ausencia,
-                    Alteracao="ROBOT",
-                    Conducao=conducao,
-                    Remunerado=remunerado,
-                    CarroEmpresa=False,
-                    idPessoal_id=colaborador["idPessoal"],
+                if dia.weekday() == 5 or dia.weekday() == 6:
+                    ausencia = dias[dia.weekday()]
+                else:
+                    ausencia = ""
+                    if valor_conducao > Decimal(0.00):
+                        conducao = True
+                        dias_conducao += 1
+                if dia.date() in feriados:
+                    ausencia = "FERIADO"
+                    if valor_conducao > Decimal(0.00):
+                        conducao = False
+                        dias_conducao -= 1
+                if dia.date() < colaborador["DataAdmissao"]:
+                    ausencia = "-------"
+                    conducao = False
+                    remunerado = False
+                registros_cartao_ponto.append(
+                    CartaoPonto(
+                        Dia=dia,
+                        Entrada=hora_entrada,
+                        Saida=hora_saida,
+                        Ausencia=ausencia,
+                        Alteracao="ROBOT",
+                        Conducao=conducao,
+                        Remunerado=remunerado,
+                        CarroEmpresa=False,
+                        idPessoal_id=colaborador["idPessoal"],
+                    )
                 )
-            )
-            dia = dia + relativedelta(days=1)
+                dia = dia + relativedelta(days=1)
     CartaoPonto.objects.bulk_create(registros_cartao_ponto)
     return dias_conducao
 
