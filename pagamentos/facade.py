@@ -3428,7 +3428,7 @@ def atualiza_item_horas_extras(
             )
     else:
         if contra_cheque_itens:
-            ContraChequeItens.delete()
+            contra_cheque_itens.delete()
 
 
 def atualiza_item_vale_transporte(
@@ -3462,7 +3462,7 @@ def atualiza_item_vale_transporte(
             )
     else:
         if contra_cheque_itens:
-            ContraChequeItens.delete()
+            contra_cheque_itens.delete()
 
 
 def horas_extras_colaborador(cartao_ponto, minutas):
