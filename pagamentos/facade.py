@@ -3028,7 +3028,11 @@ def create_contexto_mensalista(idpessoal, mes_ano):
     minutas = get_minutas_periodo_contra_cheque(
         idpessoal, primeiro_dia_mes, ultimo_dia_mes
     )
+    atualiza_cartao_ponto_transporte(cartao_ponto, salario)
     atualiza_cartao_ponto_minutas(cartao_ponto, minutas)
+    cartao_ponto = get_cartao_ponto_colaborador(
+        idpessoal, primeiro_dia_mes, ultimo_dia_mes
+    )
     atualiza_itens_contra_cheque_pagamento(
         colaborador, cartao_ponto, minutas, salario, mes, ano
     )
@@ -3120,6 +3124,31 @@ def get_minutas_periodo_contra_cheque(
         )
     )
     return minutas
+
+
+def atualiza_cartao_ponto_transporte(cartao_ponto, salario):
+    registros_cartao_ponto = []
+    valor_conducao = salario["ValeTransporte"]
+    for dia in cartao_ponto:
+        if dia["Ausencia"] == "":
+            if valor_conducao > Decimal(0.00):
+                registros_cartao_ponto.append(
+                    CartaoPonto(
+                        idCartaoPonto=dia["idCartaoPonto"],
+                        Conducao=True,
+                        idPessoal_id=dia["idPessoal_id"],
+                    )
+                )
+            else:
+                registros_cartao_ponto.append(
+                    CartaoPonto(
+                        idCartaoPonto=dia["idCartaoPonto"],
+                        Conducao=False,
+                        idPessoal_id=dia["idPessoal_id"],
+                    )
+                )
+    CartaoPonto.objects.bulk_update(registros_cartao_ponto, ["Conducao"])
+    return cartao_ponto
 
 
 def atualiza_cartao_ponto_minutas(cartao_ponto, minutas):
