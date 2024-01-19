@@ -92,7 +92,7 @@ $(document).on("click", ".js-seleciona-funcionario", function(event) {
             $(".card-minutas-pagamento").html(data.html_minutas);
             $(".body-minutas-pagamento").hide()
             $(".card-vales-colaborador").html(data.html_vales);
-            $(".body-vales-colaborador").hide()
+            $(".body-vales-colaborador").show()
             // $(".js-lista-vales").html(data.html_vales_pagamento);
             // $(".js-files-pagamento").html(data.html_files_pagamento);
             // $(".js-agenda-pagamento").html(data.html_agenda_pagamento);
