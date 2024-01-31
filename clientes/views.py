@@ -26,6 +26,7 @@ from .forms import (
     CadastraFormaPgto,
 )
 from veiculos.models import CategoriaVeiculo
+from clientes.print import ficha_cadastral
 
 
 @has_permission_decorator("modulo_clientes")
@@ -329,3 +330,11 @@ def exclui_tabela_perimetro(request, idtabelaperimetro):
 #     context = {'form': form}
 #     data['html_form'] = render_to_string(template_name, context, request=request)
 #     return JsonResponse(data)
+
+
+def imprime_ficha_cadastral(request):
+    idcliente = request.GET.get("idcliente")
+    contexto = {"idcliente": idcliente}
+    #  contexto = facade.print_recibo(c_idrecibo)
+    response = ficha_cadastral(contexto)
+    return response
