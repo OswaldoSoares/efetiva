@@ -1,19 +1,10 @@
+"""
+    Módulo Views
+"""
 from django.shortcuts import render
-from django.shortcuts import redirect, get_object_or_404
-from django.http import JsonResponse
-from django.template.loader import render_to_string
 from rolepermissions.decorators import has_permission_decorator
 from clientes import facade
-from .models import (
-    Cliente,
-    FoneContatoCliente,
-    EMailContatoCliente,
-    Cobranca,
-    Tabela,
-    TabelaVeiculo,
-    TabelaCapacidade,
-    TabelaPerimetro,
-)
+from clientes.print import ficha_cadastral
 from .forms import (
     CadastraCliente,
     CadastraFoneContatoCliente,
@@ -25,8 +16,6 @@ from .forms import (
     CadastraTabelaPerimetro,
     CadastraFormaPgto,
 )
-from veiculos.models import CategoriaVeiculo
-from clientes.print import ficha_cadastral
 
 
 @has_permission_decorator("modulo_clientes")
