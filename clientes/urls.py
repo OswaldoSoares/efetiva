@@ -29,18 +29,36 @@ from .views import (
 )
 
 urlpatterns = [
-    path("", index_cliente, name="indexcliente"),
+    path(
+        "",
+        index_cliente,
+        name="indexcliente",
+    ),
     path(
         "consultacliente/<int:idcliente>/",
         consulta_cliente,
         name="consultacliente",
     ),
-    path("criacliente/", cria_cliente, name="criacliente"),
-    path("editacliente/<int:idcliente>/", edita_cliente, name="editacliente"),
     path(
-        "excluicliente/<int:idcliente>/", exclui_cliente, name="excluicliente"
+        "criacliente/",
+        cria_cliente,
+        name="criacliente",
     ),
-    path("criaemailcliente/", cria_email_cliente, name="criaemailcliente"),
+    path(
+        "editacliente/<int:idcliente>/",
+        edita_cliente,
+        name="editacliente",
+    ),
+    path(
+        "excluicliente/<int:idcliente>/",
+        exclui_cliente,
+        name="excluicliente",
+    ),
+    path(
+        "criaemailcliente/",
+        cria_email_cliente,
+        name="criaemailcliente",
+    ),
     path(
         "editaemailcliente/<int:idclienteemail>/",
         edita_email_cliente,
@@ -51,7 +69,11 @@ urlpatterns = [
         exclui_email_cliente,
         name="excluiemailcliente",
     ),
-    path("criafonecliente/", cria_fone_cliente, name="criafonecliente"),
+    path(
+        "criafonecliente/",
+        cria_fone_cliente,
+        name="criafonecliente",
+    ),
     path(
         "editafonecliente/<int:idclientefone>/",
         edita_fone_cliente,
@@ -77,16 +99,26 @@ urlpatterns = [
         exclui_cobranca_cliente,
         name="excluicobrancacliente",
     ),
-    path("criatabelacliente/", cria_tabela_cliente, name="criatabelacliente"),
+    path(
+        "criatabelacliente/",
+        cria_tabela_cliente,
+        name="criatabelacliente",
+    ),
     path(
         "editatabelacliente/<int:idclientetabela>/",
         edita_tabela_cliente,
         name="editatabelacliente",
     ),
     path(
-        "editaphkesc/<int:idclientetabela>/", edita_phkesc, name="editaphkesc"
+        "editaphkesc/<int:idclientetabela>/",
+        edita_phkesc,
+        name="editaphkesc",
     ),
-    path("criatabelaveiculo/", cria_tabela_veiculo, name="criatabelaveiculo"),
+    path(
+        "criatabelaveiculo/",
+        cria_tabela_veiculo,
+        name="criatabelaveiculo",
+    ),
     path(
         "editatabelaveiculo/<int:idtabelaveiculo>/",
         edita_tabela_veiculo,
@@ -122,5 +154,9 @@ urlpatterns = [
         exclui_tabela_perimetro,
         name="excluitabelaperimetro",
     ),
-    path("criaformapgto/", criaformapgto, name="criaformapgto"),
+    path(
+        "criaformapgto/",
+        criaformapgto,
+        name="criaformapgto",
+    ),
 ]
