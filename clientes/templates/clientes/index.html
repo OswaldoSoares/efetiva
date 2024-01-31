@@ -49,6 +49,10 @@
                                         onclick="window.location.href = '{% url 'consultacliente' itens.idCliente %}'">
                                 </button>
                             </td>
+                            <td class="seleciona_registo">
+                                <a class="icofont-printer i-button" target="_blank"
+                                   href="{% url 'imprime_ficha_cadastral' %}?idcliente={{ itens.idCliente }}"></a>
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>
