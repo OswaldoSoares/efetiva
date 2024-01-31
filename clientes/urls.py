@@ -26,6 +26,7 @@ from .views import (
     edita_tabela_perimetro,
     exclui_tabela_perimetro,
     criaformapgto,
+    imprime_ficha_cadastral,
 )
 
 urlpatterns = [
@@ -158,5 +159,10 @@ urlpatterns = [
         "criaformapgto/",
         criaformapgto,
         name="criaformapgto",
+    ),
+    path(
+        "imprime_ficha_cadastral",
+        imprime_ficha_cadastral,
+        name="imprime_ficha_cadastral",
     ),
 ]
