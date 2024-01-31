@@ -1,17 +1,18 @@
-# import email
+"""
+    Módulo Facade
+"""
 import datetime
 import time
 
-from clientes.facade import get_cliente
+from dateutil.relativedelta import relativedelta
+from django.db import connection, reset_queries
 from django.http import JsonResponse
 from django.template.loader import render_to_string
-from dateutil.relativedelta import relativedelta
+from clientes.facade import get_cliente
 
 from website.forms import CadastraFeriado
 
 from .models import Parametros
-
-from django.db import connection, reset_queries
 
 
 def nome_curto(nome):
