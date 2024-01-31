@@ -262,15 +262,3 @@ def form_exclui_parametro(request, c_idobj, c_url, c_view):
     data["c_view"] = c_view
     c_return = JsonResponse(data)
     return c_return
-
-
-# def conecta_imap():
-#     usuario = 'operacional.efetiva@terra.com.br'
-#     senha = 'xxxxx'
-
-#     meu_email = MailBox('imap.terra.com.br').login(usuario, senha)
-
-#     lista_emails = meu_email.fetch(AND(from_='faturamento@fulgor1923.com.br'))
-#     for x in lista_emails:
-#         print(x.text)
-#     return lista_emails
