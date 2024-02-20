@@ -3,7 +3,6 @@ $(".div-erro").hide()
 $(".box-loader").hide()
 
 function openMyModal(event) {
-    console.log("Aqui estou 2024")
     var modal = initModalDialog(event, '#MyModal');
     var url = $(event.target).data('action');
     var idpessoal = localStorage.getItem("idpessoal");
@@ -97,9 +96,7 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                     }
                     if (xhr["html_vales_colaborador"]) {
                         $(".card-vales-colaborador").html(xhr["html_vales_colaborador"])
-                        valesSelecionaveis()
                     }
-                    $(".box-loader").hide()
                     if (cbAfterSuccess) { 
                         cbAfterSuccess(modal);
                     }
