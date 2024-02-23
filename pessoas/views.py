@@ -791,3 +791,9 @@ def arquiva_contra_cheque(request):
     data = dict()
     data = JsonResponse(data)
     return data
+
+
+def exclui_arquivo_contra_cheque(request):
+    data = dict()
+    data = JsonResponse(data)
+    return data
