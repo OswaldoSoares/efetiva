@@ -48,6 +48,7 @@ from pessoas.models import (
     CartaoPonto,
 )
 from minutas.models import MinutaColaboradores
+from website.models import FileUpload
 from website.facade import (
     converter_mes_ano,
     nome_curto,
