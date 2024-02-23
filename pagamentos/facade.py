@@ -3606,4 +3606,6 @@ def create_contexto_contra_cheque_colaborador(idpessoal, mes_ano, descricao):
 def create_data_contra_cheque_colaborador(request, contexto):
     data = dict()
     html_contra_cheque(request, contexto, data)
+    if contexto["contra_cheque"].Pago:
+        html_files_contra_cheque(request, contexto, data)
     return JsonResponse(data)
