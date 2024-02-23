@@ -766,3 +766,17 @@ def exclui_vale_colaborador(request):
         idpessoal = request.GET.get("idpessoal")
         data = facade.modal_confirma(request, confirma, idconfirma, idpessoal)
     return data
+
+
+def pagamento_contra_cheque(request):
+    if request.method == "POST":
+        idcontracheque = request.POST.get("idcontracheque")
+        idpessoal = request.POST.get("idpessoal")
+        print(request.POST)
+        data = facade.paga_contra_cheque(request, idcontracheque)
+    else:
+        confirma = request.GET.get("confirma")
+        idconfirma = request.GET.get("idconfirma")
+        idpessoal = request.GET.get("idpessoal")
+        data = facade.modal_confirma(request, confirma, idconfirma, idpessoal)
+    return data
