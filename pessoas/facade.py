@@ -2648,16 +2648,16 @@ def get_contas_bancaria_colaborador(colaborador):
 
 
 def modal_confirma(request, confirma, idconfirma, idpessoal):
+    data = dict()
     if confirma == "confirma_vale":
         vale = get_vale_id(idconfirma)
-        data = dict()
         contexto = {"vale": vale, "idpessoal": idpessoal}
         data["html_modal"] = render_to_string(
             "pessoas/modal_exclui_vale_colaborador.html",
             contexto,
             request=request,
         )
-        return JsonResponse(data)
+    return JsonResponse(data)
 
 
 def exclui_vale_colaborador_id(request, idvale, idpessoal):
