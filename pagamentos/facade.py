@@ -2406,6 +2406,13 @@ def html_contra_cheque(request, contexto, data):
     return data
 
 
+def html_files_contra_cheque(request, contexto, data):
+    data["html_files_contra_cheque"] = render_to_string(
+        "pessoas/html_files_contra_cheque.html", contexto, request=request
+    )
+    return data
+
+
 def html_files_pagamento(request, contexto, data):
     data["html_files_pagamento"] = render_to_string(
         "pagamentos/html_files.html", contexto, request=request
