@@ -36,6 +36,7 @@ from website.facade import (
     extremos_mes,
     queries_inicio,
     queries_termino,
+    busca_arquivo_descricao,
 )
 from website.models import FileUpload, Parametros
 
