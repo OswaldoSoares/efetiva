@@ -780,3 +780,14 @@ def pagamento_contra_cheque(request):
         idpessoal = request.GET.get("idpessoal")
         data = facade.modal_confirma(request, confirma, idconfirma, idpessoal)
     return data
+
+
+def arquiva_contra_cheque(request):
+    print(request.POST)
+    print(request.FILES)
+    idcontracheque = request.POST.get("idcontracheque")
+    message = facade.salva_arquivo_contra_cheque(request, idcontracheque)
+    print(message["text"])
+    data = dict()
+    data = JsonResponse(data)
+    return data
