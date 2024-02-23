@@ -132,3 +132,11 @@ $(document).on('click', '#menu-dots', function() {
         $(".menu-nav-icons").css('display', 'block')
     };
 });
+$(document).on('change', '#filecontracheque', function() {
+    if ($('#filecontracheque').val()) {
+        $('.js-contra-cheque-txt').text($('#filecontracheque').val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]);
+    } else {
+        $('.js-contra-cheque-txt').text('Selecionar contra-cheque...');
+    }
+});
+
