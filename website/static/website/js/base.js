@@ -132,6 +132,38 @@ $(document).on('click', '#menu-dots', function() {
         $(".menu-nav-icons").css('display', 'block')
     };
 });
+
+// Função para salvar arquivo de contra-cheque (Módulo Pagamento e Modulo Pessoal)
+$(document).on('submit', '.js-file-contra-cheque', function(event) {
+    event.preventDefault();
+    var formData = new FormData();
+    var arquivo = $("#filecontracheque").get(0).files[0]
+    var csrf_token = $('input[name="csrfmiddlewaretoken"]').val()
+    var mes_ano = localStorage.getItem("mes_ano")
+    var idpessoal = localStorage.getItem("idpessoal")
+    var idcontracheque = $('input[name="idcontracheque"').val()
+    formData.append("arquivo", arquivo);
+    formData.append("csrfmiddlewaretoken", csrf_token);
+    formData.append("mes_ano", mes_ano);
+    formData.append("idpessoal", idpessoal);
+    formData.append("idcontracheque", idcontracheque);
+    $.ajax({
+        type: $(this).attr('method'),
+        url: '/pessoas/arquiva_contra_cheque',
+        data: formData,
+        cache: false,
+        processData: false,
+        contentType: false,
+        enctype: 'multipart/form-data',
+        beforeSend: function() {
+            $('.box-loader').show()
+        },
+        success: function(data) {
+            $('.box-loader').hide()
+        },
+    });
+});
+
 $(document).on('change', '#filecontracheque', function() {
     if ($('#filecontracheque').val()) {
         $('.js-contra-cheque-txt').text($('#filecontracheque').val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]);
