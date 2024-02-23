@@ -673,8 +673,8 @@ def salva_arquivo(_arquivo, _descricao):
         msg["type_mensagem"] = "ERROR"
 
 
-def exclui_arquivo(_id_file):
-    file = FileUpload.objects.filter(idFileUpload=_id_file)
+def exclui_arquivo(id):
+    file = FileUpload.objects.filter(idFileUpload=id)
     if file:
         file.delete()
 
