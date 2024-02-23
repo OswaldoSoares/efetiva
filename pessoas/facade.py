@@ -2706,6 +2706,32 @@ def paga_contra_cheque(request, idcontracheque):
     data = dict()
     data["pago"] = True
     return JsonResponse(data)
+
+
+def salva_arquivo_contra_cheque(request, idcontracheque):
+    message = {"text": None, "type": None}
+    if request.method == "POST":
+        if request.FILES:
+            descricao = f"Contra-Cheque_-_{str(idcontracheque).zfill(6)}"
+            ext_file = request.FILES["arquivo"].name.split(".")[-1]
+            name_file = f"{descricao}.{ext_file}"
+            request.FILES["arquivo"].name = name_file
+            obj = FileUpload()
+            obj.DescricaoUpload = descricao
+            obj.uploadFile = request.FILES["arquivo"]
+            try:
+                obj.save()
+                message["text"] = "Arquivo enviado ao servidor com sucesso"
+                message["type"] = "SUCESSO"
+            except:
+                message["text"] = "Falha ao salvar o arquivo, tente novamente"
+                message["type"] = "ERROR"
+        else:
+            message["text"] = "Arquivo não selecionado"
+            message["type"] = "ERROR"
+    return message
+
+
 def colaborador_info(idpessoal):
     colaborador = list(Pessoal.objects.filter(idPessoal=idpessoal).values())
     colaborador[0]["nome_curto"] == nome_curto(colaborador[0].Nome)
