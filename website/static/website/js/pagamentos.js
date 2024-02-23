@@ -3,6 +3,7 @@ $(document).ready(function() {
     $(".card-folha-pagamento").hide()
     $(".card-funcionario-pagamento").hide()
     $(".card-contra-cheque").hide()
+    $(".card-files-contra-cheque").hide()
     $(".card-minutas-pagamento").hide()
     $(".card-vales-colaborador").hide()
 });
@@ -32,6 +33,7 @@ $(document).on("click", ".js-seleciona-mes-ano", function(event) {
             $(".js-itens-agenda-pagamento").html('');
             $(".card-vales-colaborador").hide();
 
+            $(".card-files-contra-cheque").hide()
             $(".card-periodo-avulso").hide();
 
             $(".card-folha-pagamento").hide();
@@ -83,6 +85,7 @@ $(document).on("click", ".js-seleciona-funcionario", function(event) {
             $(".js-seleciona-funcionario").removeClass("icofont-checked")
             $(".js-seleciona-funcionario").addClass("icofont-square")
             $(".card-contra-cheque").hide()
+            $(".card-files-contra-cheque").hide()
             $('.box-loader').show();
         },
         success: function(data) {
@@ -797,11 +800,16 @@ $(document).on('click', '.js-contra-cheque-pagamento', function() {
         beforeSend: function() {
             $(".box-loader").show()
             $(".card-contra-cheque-colaborador").hide()
+            $(".card-files-contra-cheque").hide()
             localStorage.setItem("idcontracheque", "")
         },
         success: function(data) {
             $(".card-contra-cheque").html(data.html_contra_cheque)
             $(".card-contra-cheque").show()
+            if (data.html_files_contra_cheque) {
+                $(".card-files-contra-cheque").html(data.html_files_contra_cheque)
+                $(".card-files-contra-cheque").show()
+            }
             localStorage.setItem("idcontracheque", $("#idcontracheque").data("idcontracheque"))
             $(".box-loader").hide()
         },
