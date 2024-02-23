@@ -2689,6 +2689,23 @@ def exclui_vale_colaborador_id(request, idvale, idpessoal):
     return JsonResponse(data)
 
 
+def paga_contra_cheque(request, idcontracheque):
+    #  contra_cheque = get_contra_cheque_id(idcontracheque)
+    valor = request.POST.get("valor")
+    valor = valor.replace(".", "_").replace(",", ".").replace("_", ",")
+    valor = Decimal(valor)
+    registro_contra_cheque = []
+    registro_contra_cheque.append(
+        ContraCheque(
+            idContraCheque=idcontracheque,
+            Valor=valor,
+            Pago=True,
+        )
+    )
+    ContraCheque.objects.bulk_update(registro_contra_cheque, ["Valor", "Pago"])
+    data = dict()
+    data["pago"] = True
+    return JsonResponse(data)
 def colaborador_info(idpessoal):
     colaborador = list(Pessoal.objects.filter(idPessoal=idpessoal).values())
     colaborador[0]["nome_curto"] == nome_curto(colaborador[0].Nome)
