@@ -7,6 +7,7 @@ import time
 from dateutil.relativedelta import relativedelta
 from django.db import connection, reset_queries
 from django.http import JsonResponse
+from django.core.exceptions import ObjectDoesNotExist
 from django.template.loader import render_to_string
 from clientes.facade import get_cliente
 
