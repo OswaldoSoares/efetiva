@@ -1,0 +1,51 @@
+<!-- Header -->
+<div class="card-header">
+    <div class="input-group">
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-up"></i>
+        </div>
+        <div class="div-form-control">
+            <span>ARQUIVAR CONTRA-CHEQUE</span>
+        </div>
+        <div class="input-group-addon addon-my-color">
+			<i class="icofont-rounded-right-up"></i>
+	    </div>
+    </div>
+</div>
+<!-- Body -->
+<div class="card-body">
+    <div class="card-body-item">
+        <form class="js-file-contra-cheque" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="input-group">
+                <div class="input-group-addon addon-my-color">
+                    <input type="file" name="uploadFile"
+                           class="file" id="filecontracheque" value="">
+                    <label for="filecontracheque"
+                           class="icofont-folder i-button"></label>
+                </div>
+                <div class="div-form-control div-flex">
+                    <span class="js-contra-cheque-txt">Selecionar contra-cheque...</span>
+                    <input type="hidden" name="idcontracheque" value="{{ contra_cheque.idContraCheque }}">
+                </div>
+                <div class="input-group-addon addon-my-color">
+                    <i><button type="submit" class="icofont-cloud-download i-button"></button></i>
+        	    </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Footer -->
+<div class="card-footer">
+    <div class="input-group">
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-down"></i>
+        </div>
+        <div class="div-form-control">
+            <span></span>
+        </div>
+        <div class="input-group-addon addon-my-color">
+			<i class="icofont-rounded-right-down"></i>
+	    </div>
+    </div>
+</div>

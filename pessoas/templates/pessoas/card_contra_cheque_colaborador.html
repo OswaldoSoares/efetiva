@@ -67,15 +67,26 @@
 			<div class="tamanho-30 text-left">
 				<span>Total R$ {{ saldo_contra_cheque|intcomma }}</span>
 			</div>
-			<div class="tamanho-15 text-center">
+			<div class="tamanho-10 text-center">
 				{% if saldo_contra_cheque > 0 %}
 				<a class="icofont-printer i-button"	target="_blank"
-				href="{% url 'imprime_contra_cheque' %}?idcontracheque={{ contra_cheque.idContraCheque }}&idpessoal={{ idpessoal }}&tipo={{ tipo }}"></a>
+				href="{% url 'imprime_contra_cheque' %}?idcontracheque={{ contra_cheque.idContraCheque }}&idpessoal={{ idpessoal }}&tipo={{ tipo }}"
+				title="Imprime Contra-Cheque"></a>
 			</div>
-			<div class="tamanho-15 text-center">
+			<div class="tamanho-10 text-center">
 				<i class="icofont-bill-alt i-button"
-	   			   title="Informa Pagamento"></i>
+		onclick="openMyModal(event); return false;"
+		data-title="INFORMA PAGAMENTO"
+		data-action="{% url 'pagamento_contra_cheque' %}"
+		data-button-save-label="PAGAR"
+  		data-confirma="confirma_pagamento_contra_cheque"
+   		data-idconfirma="{{ contra_cheque.idContraCheque }}"
+		title="Informa Pagamento"></i>
 				{% endif %}
+			</div>
+			<div class="tamanho-10 text-center">
+				<i class="icofont-upload-alt i-button js-arquiva-contra-cheque"
+	   	title="Arquiva Documento"></i>
 			</div>
 			<div class="tamanho-20 text-right">
 				<span>R$ {{ credito|intcomma }}</span>
