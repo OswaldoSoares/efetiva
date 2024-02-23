@@ -67,13 +67,31 @@
 			<div class="tamanho-30 text-left">
 				<span>Total R$ {{ saldo_contra_cheque|intcomma }}</span>
 			</div>
-			<div class="tamanho-10 text-center">
-				{% if saldo_contra_cheque > 0 %}
+			{% if saldo_contra_cheque > 0 %}
+			<div class="tamanho-15 text-center">
 				<a class="icofont-printer i-button"	target="_blank"
 				href="{% url 'imprime_contra_cheque' %}?idcontracheque={{ contra_cheque.idContraCheque }}&idpessoal={{ idpessoal }}&tipo={{ tipo }}"
 				title="Imprime Contra-Cheque"></a>
 			</div>
-			<div class="tamanho-10 text-center">
+			<div class="tamanho-15 text-center">
+				{% if contra_cheque.Pago %}
+				{% if file %}
+				<i class="icofont-download i-button js-download-contra-cheque"
+	   	title="Baixa Documento"></i>
+					<i class="icofont-delete i-button js-exclui-arquivo-contra-cheque"
+		onclick="openMyModal(event); return false;"
+		data-title="CONDIFMA EXCLUSÃO DO ARQUIVO CONTRA-CHEQUE"
+		data-action="{% url 'exclui_arquivo_contra_cheque' %}"
+		data-button-save-label="EXCLUIR"
+  		data-confirma="confirma_exclui_arquivo_contra_cheque"
+   		data-idconfirma="{{ contra_cheque.idContraCheque }}"
+
+	   	title="Exclui Documento"></i>
+				{% else %}
+				<i class="icofont-upload-alt i-button js-arquiva-contra-cheque"
+	   	title="Arquiva Documento"></i>
+				{% endif %}
+				{% else %}
 				<i class="icofont-bill-alt i-button"
 		onclick="openMyModal(event); return false;"
 		data-title="INFORMA PAGAMENTO"
@@ -84,10 +102,7 @@
 		title="Informa Pagamento"></i>
 				{% endif %}
 			</div>
-			<div class="tamanho-10 text-center">
-				<i class="icofont-upload-alt i-button js-arquiva-contra-cheque"
-	   	title="Arquiva Documento"></i>
-			</div>
+			{% endif %}
 			<div class="tamanho-20 text-right">
 				<span>R$ {{ credito|intcomma }}</span>
 			</div>
