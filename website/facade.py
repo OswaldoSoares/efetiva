@@ -147,6 +147,11 @@ def queries_termino(start, start_queries, info):
     print(f"{info} - Queries {end_queries} - Tempo: {'%.2fs' % (end - start)}")
 
 
+def busca_arquivo_descricao(descricao):
+    file = FileUpload.objects.filter(DescricaoUpload=descricao)
+    return file
+
+
 class DiasFeriados:
     def __init__(self):
         self.feriados = self.get_dias_feriados()
