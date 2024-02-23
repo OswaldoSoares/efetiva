@@ -149,7 +149,10 @@ def queries_termino(start, start_queries, info):
 
 
 def busca_arquivo_descricao(descricao):
-    file = FileUpload.objects.filter(DescricaoUpload=descricao)
+    try:
+        file = FileUpload.objects.get(DescricaoUpload=descricao)
+    except ObjectDoesNotExist:
+        file = False
     return file
 
 
