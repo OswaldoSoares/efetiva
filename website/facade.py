@@ -12,6 +12,7 @@ from clientes.facade import get_cliente
 
 from website.forms import CadastraFeriado
 
+from website.models import FileUpload
 from .models import Parametros
 
 
