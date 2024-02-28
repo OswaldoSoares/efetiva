@@ -2671,9 +2671,31 @@ def modal_confirma(request, confirma, idconfirma, idpessoal, mes_ano):
             "contra_cheque": contra_cheque,
             "idpessoal": idpessoal,
             "saldo_contra_cheque": saldo_contra_cheque,
+            "mes_ano": mes_ano,
         }
         data["html_modal"] = render_to_string(
             "pessoas/modal_pagamento_contra_cheque.html",
+            contexto,
+            request=request,
+        )
+    elif confirma == "confirma_exclui_arquivo_contra_cheque":
+        contra_cheque = get_contra_cheque_id(idconfirma)
+        contra_cheque_itens = get_contra_cheque_itens(contra_cheque)
+        contra_cheque_itens = contra_cheque_itens.order_by(
+            "idContraChequeItens"
+        )
+
+        credito, debito, saldo_contra_cheque = get_saldo_contra_cheque(
+            contra_cheque_itens
+        )
+        contexto = {
+            "contra_cheque": contra_cheque,
+            "idpessoal": idpessoal,
+            "saldo_contra_cheque": saldo_contra_cheque,
+            "mes_ano": mes_ano,
+        }
+        data["html_modal"] = render_to_string(
+            "pessoas/modal_exclui_arquivo_contra_cheque.html",
             contexto,
             request=request,
         )
