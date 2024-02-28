@@ -3593,18 +3593,7 @@ def texste():
     pass
 
 
-def create_contexto_contra_cheque_colaborador(idpessoal, mes_ano, descricao):
-    mes, ano = converter_mes_ano(mes_ano)
-    contra_cheque = get_contra_cheque_mes_ano_descricao(
-        idpessoal, int(mes), ano, descricao
     )
-    contexto = create_contexto_contra_cheque(
-        idpessoal, contra_cheque, descricao
-    )
-    idcontracheque = contra_cheque.idContraCheque
-    file_descricao = f"CONTRA-CHEQUE_-_{str(idcontracheque).zfill(6)}"
-    file = busca_arquivo_descricao(file_descricao)
-    contexto.update({"file": file})
     return contexto
 
 
