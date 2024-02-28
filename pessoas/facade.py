@@ -2845,3 +2845,12 @@ def create_contexto_contra_cheque_colaborador(idpessoal, mes_ano, descricao):
     file = busca_arquivo_descricao(file_descricao)
     contexto.update({"file": file})
     return contexto
+
+
+def html_contra_cheque(request, contexto, data):
+    data["html_contra_cheque"] = render_to_string(
+        "pessoas/card_contra_cheque_colaborador.html",
+        contexto,
+        request=request,
+    )
+    return data
