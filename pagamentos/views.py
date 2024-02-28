@@ -335,7 +335,7 @@ def seleciona_contra_cheque(request):
     idpessoal = request.GET.get("idpessoal")
     mes_ano = request.GET.get("mes_ano")
     descricao = request.GET.get("descricao")
-    contexto = facade.create_contexto_contra_cheque_colaborador(
+    contexto = facade.create_contexto_contra_cheque(
         idpessoal, mes_ano, descricao
     )
     data = facade.create_data_contra_cheque_colaborador(request, contexto)
