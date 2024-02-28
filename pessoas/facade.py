@@ -2861,3 +2861,12 @@ def html_files_contra_cheque(request, contexto, data):
         "pessoas/html_files_contra_cheque.html", contexto, request=request
     )
     return data
+
+
+def create_data_contra_cheque_colaborador(request, contexto):
+    data = dict()
+    html_contra_cheque(request, contexto, data)
+    if contexto["contra_cheque"].Pago:
+        if not contexto["file"]:
+            html_files_contra_cheque(request, contexto, data)
+    return JsonResponse(data)
