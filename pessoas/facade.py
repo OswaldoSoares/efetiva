@@ -2854,3 +2854,10 @@ def html_contra_cheque(request, contexto, data):
         request=request,
     )
     return data
+
+
+def html_files_contra_cheque(request, contexto, data):
+    data["html_files_contra_cheque"] = render_to_string(
+        "pessoas/html_files_contra_cheque.html", contexto, request=request
+    )
+    return data
