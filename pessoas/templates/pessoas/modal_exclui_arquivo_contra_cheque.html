@@ -1,0 +1,30 @@
+{% load humanize %}
+<form method="post" action="">
+    {% csrf_token %}
+    <div>
+        <div class="text-center font-maior">
+            <span>
+                {{ contra_cheque.idPessoal }}
+            </span>
+        </div>
+        <div class="text-center">
+            <span>
+                MÊS REFÊRENCIA: {{ contra_cheque }}
+            </span>
+        </div>
+        <div class="text-center">
+            <span>
+            	{{ contra_cheque.Descricao }}
+            </span>
+        </div>
+        <div class="text-center">
+            <span>
+                VALOR: R$ {{ saldo_contra_cheque|intcomma }}
+            </span>
+        </div>
+        <input type="hidden" name="idcontracheque" value="{{ contra_cheque.idContraCheque }}">
+        <input type="hidden" name="idpessoal" value="{{ idpessoal  }}">
+        <input type="hidden" name="valor" value="{{ saldo_contra_cheque }}">
+        <input type="hidden" name="mes_ano" value="{{ mes_ano }}">
+    </div>
+</form>
