@@ -2702,6 +2702,22 @@ def modal_confirma(request, confirma, idconfirma, idpessoal, mes_ano):
     return JsonResponse(data)
 
 
+def exclui_arquivo_contra_cheque_servidor(request, idcontracheque):
+    file_descricao = f"CONTRA-CHEQUE_-_{str(idcontracheque).zfill(6)}"
+    file = busca_arquivo_descricao(file_descricao)
+    if file:
+        try:
+            os.remove(file.uploadFile.path)
+            file.delete()
+        except FileNotFoundError:
+            print("ARQUIVO NÃO ENCONTRADO")
+
+
+def get_descricao_contra_cheque_id(idcontracheque):
+    contra_cheque = get_contrachequeid(idcontracheque)
+    return contra_cheque[0].Descricao
+
+
 def exclui_vale_colaborador_id(request, idvale, idpessoal):
     vale = get_vale_id(idvale)
     idpessoal = vale.idPessoal
