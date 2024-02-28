@@ -3593,6 +3593,9 @@ def texste():
     pass
 
 
+def create_contexto_contra_cheque(idpessoal, mes_ano, descricao):
+    contexto = create_contexto_contra_cheque_colaborador(
+        idpessoal, mes_ano, descricao
     )
     return contexto
 
