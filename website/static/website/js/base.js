@@ -157,8 +157,12 @@ $(document).on('submit', '.js-file-contra-cheque', function(event) {
         enctype: 'multipart/form-data',
         beforeSend: function() {
             $('.box-loader').show()
+            $(".card-contra-cheque").hide()
+            $(".card-files-contra-cheque").hide()
         },
         success: function(data) {
+            $(".card-contra-cheque").html(data["html_contra_cheque"])
+            $(".card-contra-cheque").show()
             $('.box-loader').hide()
         },
     });
