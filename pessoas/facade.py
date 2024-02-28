@@ -2648,7 +2648,7 @@ def get_contas_bancaria_colaborador(colaborador):
     return contas
 
 
-def modal_confirma(request, confirma, idconfirma, idpessoal):
+def modal_confirma(request, confirma, idconfirma, idpessoal, mes_ano):
     data = dict()
     if confirma == "confirma_vale":
         vale = get_vale_id(idconfirma)
