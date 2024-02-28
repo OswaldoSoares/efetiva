@@ -54,6 +54,7 @@ from website.facade import (
     nome_curto,
     extremos_mes,
     nome_curto_underscore,
+    busca_arquivo_descricao,
 )
 
 from transefetiva.settings.settings import MEDIA_ROOT
