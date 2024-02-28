@@ -97,6 +97,14 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                     if (xhr["html_vales_colaborador"]) {
                         $(".card-vales-colaborador").html(xhr["html_vales_colaborador"])
                     }
+                    if (xhr["html_contra_cheque"]) {
+                        $(".card-contra-cheque").html(xhr["html_contra_cheque"])
+                        $(".card-contra-cheque").show()
+                    }
+                    if (xhr["html_files_contra_cheque"]) {
+                        $(".card-files-contra-cheque").html(xhr["html_files_contra_cheque"])
+                        $(".card-files-contra-cheque").show()
+                    }
                     if (cbAfterSuccess) { 
                         cbAfterSuccess(modal);
                     }
