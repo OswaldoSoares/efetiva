@@ -807,4 +807,24 @@ def arquiva_contra_cheque(request):
 
 
 def exclui_arquivo_contra_cheque(request):
+    if request.method == "POST":
+        print(request.POST)
+        idcontracheque = request.POST.get("idcontracheque")
+        idpessoal = request.POST.get("idpessoal")
+        mes_ano = request.POST.get("mes_ano")
+        facade.exclui_arquivo_contra_cheque_servidor(request, idcontracheque)
+        descricao = facade.get_descricao_contra_cheque_id(idcontracheque)
+        contexto = facade.create_contexto_contra_cheque_colaborador(
+            idpessoal, mes_ano, descricao
+        )
+        data = facade.create_data_contra_cheque_colaborador(request, contexto)
+    else:
+        print(request.GET)
+        confirma = request.GET.get("confirma")
+        idconfirma = request.GET.get("idconfirma")
+        idpessoal = request.GET.get("idpessoal")
+        mes_ano = request.GET.get("mes_ano")
+        data = facade.modal_confirma(
+            request, confirma, idconfirma, idpessoal, mes_ano
+        )
     return data
