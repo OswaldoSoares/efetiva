@@ -794,14 +794,17 @@ def arquiva_contra_cheque(request):
     print(request.POST)
     print(request.FILES)
     idcontracheque = request.POST.get("idcontracheque")
+    idpessoal = request.POST.get("idpessoal")
+    mes_ano = request.POST.get("mes_ano")
     message = facade.salva_arquivo_contra_cheque(request, idcontracheque)
-    print(message["text"])
-    data = dict()
-    data = JsonResponse(data)
+    descricao = facade.get_descricao_contra_cheque_id(idcontracheque)
+    contexto = facade.create_contexto_contra_cheque_colaborador(
+        idpessoal, mes_ano, descricao
+    )
+    contexto.update({"message": message})
+    data = facade.create_data_contra_cheque_colaborador(request, contexto)
     return data
 
 
 def exclui_arquivo_contra_cheque(request):
-    data = dict()
-    data = JsonResponse(data)
     return data
