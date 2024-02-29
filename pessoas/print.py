@@ -671,3 +671,39 @@ def contra_cheque_obs(pdf, contexto):
     para.wrapOn(pdf, cmp(105), cmp(297))
     linha -= para.height * 0.352777
     para.drawOn(pdf, cmp(8), cmp(linha - 117.7))
+
+
+def contra_cheque_cartao_ponto(pdf, contexto):
+    if contexto["cartao_ponto"]:
+        linha = 140
+        numerodias = len(contexto["cartao_ponto"])
+        pdf.setFont("Times-Roman", 9)
+        pdf.rect(cmp(5), cmp(linha), cmp(55), cmp(6), fill=0)
+        pdf.drawCentredString(cmp(32.5), cmp(linha + 2), "CARTÃO DE PONTO")
+        linha -= 4
+        pdf.setFont("Times-Roman", 9)
+        pdf.drawCentredString(cmp(15), cmp(linha + 0.5), "DATA")
+        pdf.drawCentredString(cmp(35), cmp(linha + 0.5), "ENTRADA")
+        pdf.drawCentredString(cmp(50), cmp(linha + 0.5), "SAÍDA")
+        pdf.line(cmp(5), cmp(linha - 1), cmp(60), cmp(linha - 1))
+        linha -= 4
+        for dia in contexto["cartao_ponto"]:
+            pdf.drawCentredString(
+                cmp(15), cmp(linha), f"{dia['Dia'].strftime('%d/%m/%Y')}"
+            )
+            if dia["Ausencia"] == "":
+                pdf.drawCentredString(cmp(35), cmp(linha), f"{dia['Entrada']}")
+                pdf.drawCentredString(cmp(50), cmp(linha), f"{dia['Saida']}")
+            else:
+                pdf.drawCentredString(
+                    cmp(42.5), cmp(linha), f"{dia['Ausencia']}"
+                )
+            linha -= 4
+        pdf.rect(
+            cmp(5),
+            cmp(linha + 3),
+            cmp(55),
+            cmp(numerodias * 4 + 5),
+            fill=0,
+        )
+    return pdf
