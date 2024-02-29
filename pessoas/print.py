@@ -707,3 +707,64 @@ def contra_cheque_cartao_ponto(pdf, contexto):
             fill=0,
         )
     return pdf
+
+
+def contra_cheque_minutas(pdf, contexto):
+    if contexto["minutas"]:
+        linha = 140
+        numerominutas = len(contexto["minutas"])
+        pdf.setFont("Times-Roman", 9)
+        pdf.rect(cmp(65), cmp(linha), cmp(140), cmp(6), fill=0)
+        pdf.drawCentredString(cmp(135), cmp(linha + 2), "AGENDA")
+        linha -= 4
+        pdf.setFont("Times-Roman", 9)
+        pdf.drawCentredString(cmp(75), cmp(linha + 0.5), "DATA")
+        pdf.drawCentredString(cmp(100), cmp(linha + 0.5), "MINUTA")
+        pdf.drawCentredString(cmp(130), cmp(linha + 0.5), "CLIENTE")
+        pdf.drawCentredString(cmp(165), cmp(linha + 0.5), "INICIO")
+        pdf.drawCentredString(cmp(180), cmp(linha + 0.5), "FIM")
+        pdf.drawCentredString(cmp(195), cmp(linha + 0.5), "EXTRA")
+        pdf.line(cmp(65), cmp(linha - 1), cmp(205), cmp(linha - 1))
+        linha -= 4
+        for minutas in contexto["minutas"]:
+            pdf.drawCentredString(
+                cmp(75),
+                cmp(linha),
+                f'{minutas["data_minuta"].strftime("%d/%m/%Y")}',
+            )
+            pdf.drawCentredString(
+                cmp(100),
+                cmp(linha),
+                f'{minutas["idminuta"]}',
+            )
+            pdf.drawCentredString(
+                cmp(130),
+                cmp(linha),
+                f'{minutas["fantasia"]}',
+            )
+            pdf.drawCentredString(
+                cmp(165),
+                cmp(linha),
+                f'{minutas["hora_inicial"]}',
+            )
+            pdf.drawCentredString(
+                cmp(180),
+                cmp(linha),
+                f'{minutas["hora_final"]}',
+            )
+            #  if minutas["Extra"] != "00:00":
+            #  pdf.drawCentredString(
+            #  cmp(195),
+            #  cmp(linha),
+            #  "{}".format(minutas["Extra"]),
+            #  )
+            linha -= 4
+        # linha += 3
+        pdf.rect(
+            cmp(65),
+            cmp(linha + 3),
+            cmp(140),
+            cmp(numerominutas * 4 + 5),
+            fill=0,
+        )
+    return pdf
