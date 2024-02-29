@@ -742,6 +742,14 @@ def imprime_contra_cheque(request):
         contexto["contra_cheque_itens"], tipo
     )
     contexto.update({"salario_base": salario_base})
+    contexto_minutas = facade.create_contexto_minutas_contra_cheque(
+        idpessoal, contexto["contra_cheque"]
+    )
+    contexto.update(contexto_minutas)
+    contexto_cartao_ponto = facade.create_contexto_cartao_ponto_contra_cheque(
+        idpessoal, contexto["contra_cheque"]
+    )
+    contexto.update(contexto_cartao_ponto)
     response = print_contra_cheque(contexto)
     return response
 
