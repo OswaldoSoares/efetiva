@@ -3647,3 +3647,13 @@ def modal_agenda_colaborador(request, idpessoal, mes_ano):
             "pagamentos/modal_adiciona_agenda.html", contexto, request=request
         )
     return JsonResponse(data)
+
+
+def contexto_agenda_colaborador(idpessoal, mes_ano):
+    mes, ano = converter_mes_ano(mes_ano)
+    primeiro_dia_mes, ultimo_dia_mes = extremos_mes(mes, ano)
+    agenda = get_agenda_periodo_contra_cheque(
+        idpessoal, primeiro_dia_mes, ultimo_dia_mes
+    )
+    contexto = {"agenda": agenda}
+    return contexto
