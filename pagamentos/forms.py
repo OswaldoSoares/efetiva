@@ -1,10 +1,17 @@
 from django import forms
 
 from pessoas.models import CartaoPonto, Agenda
+import datetime
+
+hoje = datetime.date.today()
 
 
 class MeuTimeInput(forms.TimeInput):
     input_type = "time"
+
+
+class MeuDateInput(forms.DateInput):
+    input_type = "date"
 
 
 class CadastraCartaoPonto(forms.ModelForm):
