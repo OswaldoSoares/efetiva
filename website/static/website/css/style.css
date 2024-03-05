@@ -6456,6 +6456,10 @@ label {
   min-width: 80%;
 }
 
+.tamanho-85 {
+  min-width: 85%;
+}
+
 .tamanho-100 {
   min-width: 100%;
 }
