@@ -534,7 +534,7 @@ def create_data_seleciona_funcionario(request, contexto):
     html_contra_cheque(request, contexto, data)
     html_minutas(request, contexto, data)
     html_vales_pagamento(request, contexto, data)
-    html_agenda_pagamento(request, contexto, data)
+    html_agenda(request, contexto, data)
     html_files_pagamento(request, contexto, data)
     html_vales(request, contexto, data)
     html_itens_agenda_pagamento(request, contexto, data)
@@ -625,7 +625,7 @@ def create_data_delete_file(request, contexto):
 
 def create_data_gera_agenda(request, contexto):
     data = dict()
-    html_agenda_pagamento(request, contexto, data)
+    html_agenda(request, contexto, data)
     html_itens_agenda_pagamento(request, contexto, data)
     return JsonResponse(data)
 
@@ -2384,8 +2384,8 @@ def create_contexto_minutas_avulso_receber(datainicial, datafinal, idpessoal):
     return context["pagar"]
 
 
-def html_agenda_pagamento(request, contexto, data):
-    data["html_agenda_pagamento"] = render_to_string(
+def html_agenda(request, contexto, data):
+    data["html_agenda"] = render_to_string(
         "pagamentos/html_agenda.html", contexto, request=request
     )
     return data
