@@ -3052,10 +3052,6 @@ def create_contexto_mensalista(idpessoal, mes_ano):
     total_dias_remunerado = dias_remunerado(cartao_ponto, ultimo_dia_mes)
     total_dias_trabalhado = dias_trabalhado(cartao_ponto)
     total_dias_transporte = dias_transporte(cartao_ponto)
-
-    #  files = FileUpload.objects.filter(
-    #  DescricaoUpload__startswith=f"{var['nome_curto_u']}_MES_{var['mes']}_{var['ano']}"
-    #  )
     #  agenda = Agenda.objects.filter(
     #  idPessoal=var["id_pessoal"],
     #  Dia__range=[var["primeiro_dia"], var["ultimo_dia"]],
@@ -3080,7 +3076,6 @@ def create_contexto_mensalista(idpessoal, mes_ano):
         "valor_hora": salario["Salario"] / 30 / 9,
         "valor_extra": salario["Salario"] / 30 / 9 * Decimal(1.5),
         #  "files": files,
-        #  "agenda": agenda,
     }
     return contexto
 
