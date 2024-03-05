@@ -340,3 +340,14 @@ def seleciona_contra_cheque(request):
     )
     data = facade.create_data_contra_cheque_colaborador(request, contexto)
     return data
+
+
+def adiciona_agenda_colaborador(request):
+    if request.method == "POST":
+        idpessoal = int(request.POST.get("idpessoal"))
+        mes_ano = request.POST.get("mes_ano")
+    else:
+        idpessoal = int(request.GET.get("idpessoal"))
+        mes_ano = request.GET.get("mes_ano")
+    data = facade.modal_agenda_colaborador(request, idpessoal, mes_ano)
+    return data
