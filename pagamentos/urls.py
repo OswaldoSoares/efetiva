@@ -30,6 +30,7 @@ from .views import (
     imprime_relatorio_saldo_avulso,
     form_paga_recibo,
     seleciona_contra_cheque,
+    adiciona_agenda_colaborador,
 )
 
 urlpatterns = [
@@ -165,5 +166,10 @@ urlpatterns = [
         "seleciona_contra_cheque",
         seleciona_contra_cheque,
         name="seleciona_contra_cheque",
+    ),
+    path(
+        "adiciona_agenda_colaborador",
+        adiciona_agenda_colaborador,
+        name="adiciona_agenda_colaborador",
     ),
 ]
