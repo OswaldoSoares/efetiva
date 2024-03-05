@@ -3618,3 +3618,32 @@ def create_data_contra_cheque_colaborador(request, contexto):
         if not contexto["file"]:
             html_files_contra_cheque(request, contexto, data)
     return JsonResponse(data)
+
+
+def modal_agenda_colaborador(request, idpessoal, mes_ano):
+    data = dict()
+    if request.method == "POST":
+        descricao = request.POST.get("Descricao").upper()
+        data_agenda = request.POST.get("Dia")
+        mes_ano = request.POST.get("mes_ano")
+        registro_agenda = []
+        registro_agenda.append(
+            Agenda(
+                Descricao=descricao,
+                Dia=data_agenda,
+                idPessoal_id=idpessoal,
+            )
+        )
+        Agenda.objects.bulk_create(registro_agenda)
+        contexto = contexto_agenda_colaborador(idpessoal, mes_ano)
+        html_agenda(request, contexto, data)
+    else:
+        contexto = {
+            "form": FormAgenda,
+            "idpessoal": idpessoal,
+            "mes_ano": mes_ano,
+        }
+        data["html_modal"] = render_to_string(
+            "pagamentos/modal_adiciona_agenda.html", contexto, request=request
+        )
+    return JsonResponse(data)
