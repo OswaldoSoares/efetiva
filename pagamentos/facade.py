@@ -3108,6 +3108,18 @@ def verifica_feriados(cartao_ponto, mes, ano):
     )
 
 
+def get_agenda_periodo_contra_cheque(
+    idpessoal, primeiro_dia_mes, ultimo_dia_mes
+):
+    agenda = list(
+        Agenda.objects.filter(
+            idPessoal=idpessoal,
+            Dia__range=(primeiro_dia_mes, ultimo_dia_mes),
+        ).values()
+    )
+    return agenda
+
+
 def get_minutas_periodo_contra_cheque(
     idpessoal, primeiro_dia_mes, ultimo_dia_mes
 ):
