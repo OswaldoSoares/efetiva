@@ -31,6 +31,7 @@ from .views import (
     form_paga_recibo,
     seleciona_contra_cheque,
     adiciona_agenda_colaborador,
+    exclui_agenda_colaborador,
 )
 
 urlpatterns = [
@@ -171,5 +172,10 @@ urlpatterns = [
         "adiciona_agenda_colaborador",
         adiciona_agenda_colaborador,
         name="adiciona_agenda_colaborador",
+    ),
+    path(
+        "exclui_agenda_colaborador",
+        exclui_agenda_colaborador,
+        name="exclui_agenda_colaborador",
     ),
 ]
