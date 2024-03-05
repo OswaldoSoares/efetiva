@@ -4,8 +4,9 @@ $(document).ready(function() {
     $(".card-funcionario-pagamento").hide()
     $(".card-contra-cheque").hide()
     $(".card-files-contra-cheque").hide()
-    $(".card-minutas-pagamento").hide()
     $(".card-vales-colaborador").hide()
+    $(".card-minutas-pagamento").hide()
+    $(".card-agenda").hide()
 });
 
 // Seleciona mês e ano para pagamento de colaboradores mensalistas
