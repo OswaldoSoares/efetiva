@@ -2628,7 +2628,7 @@ def busca_folha(mes, ano, colaboradores, salarios):
         folha = FolhaPagamento.objects.get(
             MesReferencia=mes_extenso, AnoReferencia=ano
         )
-        create_contra_cheques_folha(colaboradores, mes, anoi, salarios)
+        create_contra_cheques_folha(colaboradores, mes, ano, salarios)
         dias_conducao = create_cartao_ponto_folha(
             colaboradores, mes, ano, salarios
         )
