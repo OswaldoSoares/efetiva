@@ -3032,8 +3032,11 @@ def create_contexto_mensalista(idpessoal, mes_ano):
         idpessoal, primeiro_dia_mes, ultimo_dia_mes
     )
     verifica_feriados(cartao_ponto, mes, ano)
-    vales = get_vales_colaborador(colaborador)
     minutas = get_minutas_periodo_contra_cheque(
+        idpessoal, primeiro_dia_mes, ultimo_dia_mes
+    )
+    vales = get_vales_colaborador(colaborador)
+    agenda = get_agenda_periodo_contra_cheque(
         idpessoal, primeiro_dia_mes, ultimo_dia_mes
     )
     atualiza_cartao_ponto_transporte(cartao_ponto, salario)
@@ -3066,6 +3069,7 @@ def create_contexto_mensalista(idpessoal, mes_ano):
         "vales": vales,
         "tipo": "PAGAMENTO",
         "minutas": minutas,
+        "agenda": agenda,
         "hoje": hoje,
         "dias_admitido": total_dias_admitido,
         "dias_remunerado": total_dias_remunerado,
