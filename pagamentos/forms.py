@@ -27,3 +27,19 @@ class CadastraCartaoPonto(forms.ModelForm):
                 attrs={"class": "form-control", "pattern": "[0-9]{2}:[0-9]{2}"}
             ),
         }
+
+
+class FormAgenda(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(FormAgenda, self).__init__(*args, **kwargs)
+        self.fields["Dia"].initial = datetime.date.today()
+
+    class Meta:
+        model = Agenda
+        fields = ("Dia", "Descricao")
+        widgets = {
+            "Dia": MeuDateInput(
+                format="%Y-%m-%d", attrs={"class": "form-control"}
+            ),
+            "Descricao": forms.Textarea(attrs={"class": "form-control"}),
+        }
