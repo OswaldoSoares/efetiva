@@ -105,6 +105,9 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                         $(".card-files-contra-cheque").html(xhr["html_files_contra_cheque"])
                         $(".card-files-contra-cheque").show()
                     }
+                    if (xhr["html_agenda"]) {
+                        $(".card-agenda").html(xhr["html_agenda"])
+                    }
                     if (cbAfterSuccess) { 
                         cbAfterSuccess(modal);
                     }
