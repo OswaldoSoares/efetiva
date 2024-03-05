@@ -1,0 +1,15 @@
+<form class="row g-3" method="post" action="{{ adiciona_vale_colaborador }}">
+{% csrf_token %}
+    <div class="col-md-4">
+        <label for="id_dia" class="form-label">DATA:</label>
+        {{ form.Dia }}
+        {{ form.Dia.errors }}
+    </div>
+    <div class="col-md-12">
+        <label for="id_descricao" class="form-label">DESCRIÇÃO:</label>
+    	{{ form.Descricao }}
+        {{ form.Descricao.errors }}
+    </div>
+    <input type="hidden" name="idpessoal" value="{{ idpessoal }}">
+    <input type="hidden" name="mes_ano" value="{{ mes_ano }}">
+</form>
