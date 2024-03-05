@@ -99,14 +99,15 @@ $(document).on("click", ".js-seleciona-funcionario", function(event) {
             $(".body-vales-colaborador").show()
             // $(".js-lista-vales").html(data.html_vales_pagamento);
             // $(".js-files-pagamento").html(data.html_files_pagamento);
-            // $(".js-agenda-pagamento").html(data.html_agenda_pagamento);
+            $(".card-agenda").html(data.html_agenda);
+            $(".card-agenda").show();
             // $(".js-itens-agenda-pagamento").html(data.html_itens_agenda_pagamento);
             $(".card-cartao-ponto").show()
             $(".card-funcionario-pagamento").show()
             // $(".body-funcionario-pagamento").hide()
-            $(".card-minutas-pagamento").show();
             // $(".body-minutas-pagamento").hide()
             $(".card-vales-colaborador").show()
+            $(".card-minutas-pagamento").show();
             localStorage.setItem("idcontracheque", $("#idcontracheque").data("idcontracheque"))
             localStorage.setItem("idpessoal", v_idpessoal)
             $('.box-loader').hide();
