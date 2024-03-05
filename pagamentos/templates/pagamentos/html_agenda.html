@@ -1,50 +1,87 @@
-{% if nome %}
-<div class="article-card-titulo">
-    <span>ADICIONAR AGENDA</span>
+{% load humanize %}
+<!-- Header -->
+<div class="card-header">
+	<div class="input-group">
+		<div class="input-group-addon addon-my-color">
+			<i class="icofont-rounded-left-up"></i>
+		</div>
+		<div class="input-group-addon addon-my-color">
+			<i class="icofont-plus-circle i-button"
+	  onclick="openMyModal(event); return false;"
+   data-title="CADASTRA AGENDA"
+   data-action="{% url 'adiciona_agenda_colaborador' %}"
+   data-button-save-label="SALVAR"
+   title="Adiciona Agenda"></i>
+		</div>
+		<div class="div-form-control">
+				<span>AGENDA</span>
+		</div>
+		<div class="input-group-addon addon-my-color">
+			<i class="icofont-simple-up i-button js-body-vales-colaborador-toggle"></i>
+		</div>
+		<div class="input-group-addon addon-my-color">
+			<i class="icofont-rounded-right-up"></i>
+		</div>
+	</div>
 </div>
-<div class="article-card-body js-body-agenda-pagamento">
-    <form class="js-gera-agenda" method="post" action="{}">
-        {% csrf_token %}
-        <div class="item-agenda">
-            <div class="item-descricao">
-                {% if editar %}
-                {% for x in agenda %}
-                <textarea class="form-control" name="descricao" cols="40"
-                rows="5" id="id_descricao" placeholder="DESCRIÇÃO">{{ x.Descricao }}
-                </textarea>
-                {% endfor %}
-                {% else %}
-                <textarea class="form-control" name="descricao" cols="40"
-                rows="5" id="id_descricao" placeholder="DESCRIÇÃO"></textarea>
-                {% endif %}
-            </div>
-        </div>
-        <div class="item-agenda item-between">
-            <div class="item-data">
-                {% if editar %}
-                {% for x in agenda %}
-                <input type="date" class="form-control"
-                name="data" id="id_data" value={{ x.Dia|date:'Y-m-d' }}>
-                {% endfor %}
-                {% else %}
-                <input type="date" class="form-control"
-                name="data" id="id_data" value={{ hoje }}>
-                {% endif %}
-            </div>
-            <input type="hidden" name="mes_ano" value="{{ mes_ano }}"
-            id="mes_ano_agenda">
-            <input type="hidden" name="idPessoal"
-            value="{{ idpessoal }}" id="idPessoal">
-            {% if editar %}
-            {% for x in agenda %}
-            <input type="hidden" name="idAgenda" value="{{ x.idAgenda }}">
-            {% endfor %}
-            {% endif %}
-            <div class="button-save">
-                <button class="bi bi-save2 i-button"></button>
-            </div>
-        </div>
-    </form>
+<!-- Body -->
+<div class="card-body body-vales-colaborador">
+	{% for dia in agenda %}
+	<div class="card-body-item">
+		<div class="input-group">
+			<div class="input-group-addon addon-my-color">
+				<i class="icofont-coins i-button-null"></i>
+			</div>
+			<div class="div-flex div-form-control">
+				<div class="tamanho-20 text-left">
+					<span>
+						{{ dia.Dia }}
+					</span>
+				</div>
+				<div class="tamanho-80 text-left">
+					<span>
+						{{ dia.Descricao }}
+					</span>
+				</div>
+			</div>
+			<div class="input-group-addon
+			addon-my-color">
+				<i class="icofont-edit i-button"
+                    onclick="openMyModal(event); return false;"
+                    data-title="CONFIRMA EXCLUSÃO DO VALE?"
+                    data-action="{% url 'exclui_vale_colaborador' %}"
+                    data-button-save-label="CONFIRMAR"
+					data-confirma="confirma_vale"
+	 			    data-idconfirma="{{ vale.idvale }}"
+                    title="Exclui Vale"></i>
+			</div>
+			<div class="input-group-addon
+			addon-my-color">
+				<i class="icofont-trash i-button"
+                    onclick="openMyModal(event); return false;"
+                    data-title="CONFIRMA EXCLUSÃO DO VALE?"
+                    data-action="{% url 'exclui_vale_colaborador' %}"
+                    data-button-save-label="CONFIRMAR"
+					data-confirma="confirma_vale"
+	 			    data-idconfirma="{{ vale.idvale }}"
+                    title="Exclui Vale"></i>
+			</div>
+		</div>
+	</div>
+	{% endfor %}
 </div>
-<div class="article-card-footer"></div>
-{% endif %}
+<!-- Footer -->
+<div class="card-footer">
+	<div class="input-group">
+		<div class="input-group-addon addon-my-color">
+			<i class="icofont-rounded-left-down"></i>
+		</div>
+		<div class="div-form-control div-flex">
+			<div class="tamanho-100 text-left">
+			</div>
+		</div>
+		<div class="input-group-addon addon-my-color">
+			<i class="icofont-rounded-right-down"></i>
+		</div>
+	</div>
+</div>
