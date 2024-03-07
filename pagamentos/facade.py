@@ -3674,3 +3674,8 @@ def modal_confirma(request, confirma, idconfirma, idpessoal, mes_ano):
             request=request,
         )
     return JsonResponse(data)
+
+
+def get_agenda_id(idagenda):
+    agenda = Agenda.objects.get(idAgenda=idagenda)
+    return agenda
