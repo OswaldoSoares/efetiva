@@ -3679,3 +3679,17 @@ def modal_confirma(request, confirma, idconfirma, idpessoal, mes_ano):
 def get_agenda_id(idagenda):
     agenda = Agenda.objects.get(idAgenda=idagenda)
     return agenda
+
+
+def exclui_agenda_colaborador_id(request, idagenda, idpessoal, mes_ano):
+    agenda = get_agenda_id(idagenda)
+    agenda.delete()
+    mes, ano = converter_mes_ano(mes_ano)
+    primeiro_dia_mes, ultimo_dia_mes = extremos_mes(mes, ano)
+    agenda = get_agenda_periodo_contra_cheque(
+        idpessoal, primeiro_dia_mes, ultimo_dia_mes
+    )
+    contexto = contexto_agenda_colaborador(idpessoal, mes_ano)
+    data = dict()
+    data = html_agenda(request, contexto, data)
+    return JsonResponse(data)
