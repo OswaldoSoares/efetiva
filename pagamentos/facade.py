@@ -3657,3 +3657,20 @@ def contexto_agenda_colaborador(idpessoal, mes_ano):
     )
     contexto = {"agenda": agenda}
     return contexto
+
+
+def modal_confirma(request, confirma, idconfirma, idpessoal, mes_ano):
+    data = dict()
+    if confirma == "confirma_agenda":
+        agenda = get_agenda_id(idconfirma)
+        contexto = {
+            "agenda": agenda,
+            "idpessoal": idpessoal,
+            "mes_ano": mes_ano,
+        }
+        data["html_modal"] = render_to_string(
+            "pagamentos/modal_exclui_agenda.html",
+            contexto,
+            request=request,
+        )
+    return JsonResponse(data)
