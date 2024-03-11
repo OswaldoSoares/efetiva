@@ -6436,6 +6436,10 @@ label {
   min-width: 40%;
 }
 
+.tamanho-45 {
+  min-width: 45%;
+}
+
 .tamanho-50 {
   min-width: 50%;
 }
