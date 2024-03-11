@@ -93,21 +93,18 @@ $(document).on("click", ".js-seleciona-funcionario", function(event) {
             $(".card-cartao-ponto").html(data.html_cartao_ponto);
             $(".card-funcionario-pagamento").html(data.html_funcionario);
             $(".body-funcionario-pagamento").hide()
+            
             $(".card-minutas-pagamento").html(data.html_minutas);
             $(".body-minutas-pagamento").hide()
             $(".card-vales-colaborador").html(data.html_vales);
             $(".body-vales-colaborador").show()
-            // $(".js-lista-vales").html(data.html_vales_pagamento);
-            // $(".js-files-pagamento").html(data.html_files_pagamento);
             $(".card-agenda").html(data.html_agenda);
-            $(".card-agenda").show();
-            // $(".js-itens-agenda-pagamento").html(data.html_itens_agenda_pagamento);
+            $(".body-agenda-colaborador").hide()
             $(".card-cartao-ponto").show()
             $(".card-funcionario-pagamento").show()
-            // $(".body-funcionario-pagamento").hide()
-            // $(".body-minutas-pagamento").hide()
             $(".card-vales-colaborador").show()
             $(".card-minutas-pagamento").show();
+            $(".card-agenda").show();
             localStorage.setItem("idcontracheque", $("#idcontracheque").data("idcontracheque"))
             localStorage.setItem("idpessoal", v_idpessoal)
             $('.box-loader').hide();
