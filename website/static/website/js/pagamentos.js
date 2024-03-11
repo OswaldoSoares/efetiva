@@ -841,3 +841,9 @@ $(document).on('click', ".js-body-vales-colaborador-toggle", function() {
     $(this).toggleClass("icofont-simple-down")
     $(".body-vales-colaborador").slideToggle(500)
 });
+
+$(document).on('click', ".js-body-agenda-colaborador-toggle", function() {
+    $(this).toggleClass("icofont-simple-up")
+    $(this).toggleClass("icofont-simple-down")
+    $(".body-agenda-colaborador").slideToggle(500)
+});
