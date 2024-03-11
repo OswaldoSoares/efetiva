@@ -3176,7 +3176,7 @@ def atualiza_cartao_ponto_transporte(cartao_ponto, salario):
     valor_conducao = salario["ValeTransporte"]
     for dia in cartao_ponto:
         if dia["Ausencia"] == "":
-            if valor_conducao > Decimal(0.00):
+            if valor_conducao > Decimal(0.00) and dia["CarroEmpresa"] == False:
                 registros_cartao_ponto.append(
                     CartaoPonto(
                         idCartaoPonto=dia["idCartaoPonto"],
