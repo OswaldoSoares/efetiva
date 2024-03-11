@@ -772,7 +772,10 @@ def exclui_vale_colaborador(request):
         confirma = request.GET.get("confirma")
         idconfirma = request.GET.get("idconfirma")
         idpessoal = request.GET.get("idpessoal")
-        data = facade.modal_confirma(request, confirma, idconfirma, idpessoal)
+        mes_ano = request.GET.get("mes_ano")
+        data = facade.modal_confirma(
+            request, confirma, idconfirma, idpessoal, mes_ano
+        )
     return data
 
 
