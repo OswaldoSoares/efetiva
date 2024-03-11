@@ -3145,6 +3145,32 @@ def get_minutas_periodo_contra_cheque(
     return minutas
 
 
+def union_minutas_agenda_periodo_contra_cheque(
+    idpessoal, primeiro_dia_mes, ultimo_dia_mes
+):
+    minutas = get_minutas_periodo_contra_cheque(
+        idpessoal, primeiro_dia_mes, ultimo_dia_mes
+    )
+    agenda = get_agenda_periodo_contra_cheque(
+        idpessoal, primeiro_dia_mes, ultimo_dia_mes
+    )
+    for item in agenda:
+        minutas.append(
+            {
+                "idminuta": "",
+                "data_minuta": item["Dia"],
+                "minuta": "",
+                "fantasia": item["Descricao"],
+                "hora_inicial": datetime.time(0, 0),
+                "hora_final": datetime.time(0, 0),
+                "idPessoal": "",
+                "Extra": "00:00",
+            }
+        )
+    minutas_agenda = sorted(minutas, key=lambda d: d["data_minuta"])
+    return minutas_agenda
+
+
 def atualiza_cartao_ponto_transporte(cartao_ponto, salario):
     registros_cartao_ponto = []
     valor_conducao = salario["ValeTransporte"]
