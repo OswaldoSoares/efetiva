@@ -17,7 +17,7 @@
 				<span>AGENDA</span>
 		</div>
 		<div class="input-group-addon addon-my-color">
-			<i class="icofont-simple-up i-button js-body-vales-colaborador-toggle"></i>
+			<i class="icofont-simple-down i-button js-body-agenda-colaborador-toggle"></i>
 		</div>
 		<div class="input-group-addon addon-my-color">
 			<i class="icofont-rounded-right-up"></i>
@@ -25,12 +25,12 @@
 	</div>
 </div>
 <!-- Body -->
-<div class="card-body body-vales-colaborador">
+<div class="card-body body-agenda-colaborador">
 	{% for dia in agenda %}
 	<div class="card-body-item">
 		<div class="input-group">
 			<div class="input-group-addon addon-my-color">
-				<i class="icofont-coins i-button-null"></i>
+			    <i class="i-button-null">{{ forloop.counter|stringformat:"02d" }}</i>
 			</div>
 			<div class="div-flex div-form-control">
 				<div class="tamanho-20 text-left">
