@@ -546,8 +546,9 @@ def print_contra_cheque(contexto):
     contra_cheque_dados(pdf, contexto)
     contra_cheque_itens(pdf, contexto)
     contra_cheque_totais(pdf, contexto)
-    contra_cheque_cartao_ponto(pdf, contexto)
-    contra_cheque_minutas(pdf, contexto)
+    if contexto["contra_cheque"].Descricao == "PAGAMENTO":
+        contra_cheque_cartao_ponto(pdf, contexto)
+        contra_cheque_minutas(pdf, contexto)
     base_contra_cheque(pdf)
     pdf.setTitle("Contra Cheque")
     pdf.save()
