@@ -802,8 +802,6 @@ def pagamento_contra_cheque(request):
 
 
 def arquiva_contra_cheque(request):
-    print(request.POST)
-    print(request.FILES)
     idcontracheque = request.POST.get("idcontracheque")
     idpessoal = request.POST.get("idpessoal")
     mes_ano = request.POST.get("mes_ano")
