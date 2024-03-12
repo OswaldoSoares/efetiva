@@ -2334,8 +2334,10 @@ def aquisitivo_salario_ferias(salario, faltas):
 def update_contra_cheque_obs(contra_cheque, obs, chave):
     try:
         dict_obs = ast.literal_eval(contra_cheque.Obs)
+        if not dict_obs["aquisitivo"]:
+            dict_obs = {"aquisitivo": ""}
     except:
-        dict_obs = dict()
+        dict_obs = {"aquisitivo": ""}
     consulta_chave = dict_obs[chave]
     if consulta_chave != obs:
         dict_obs[chave] = obs
