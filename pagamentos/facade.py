@@ -3770,3 +3770,14 @@ def salva_arquivo_agenda(request, idagenda):
             message["text"] = "Arquivo não selecionado"
             message["type"] = "ERROR"
     return message
+
+
+def exclui_arquivo_agenda_servidor(request, idagenda):
+    file_descricao = f"AGENDA_-_{str(idagenda).zfill(6)}"
+    file = busca_arquivo_descricao(file_descricao)
+    if file:
+        try:
+            os.remove(file.uploadFile.path)
+            file.delete()
+        except FileNotFoundError:
+            print("ARQUIVO NÃO ENCONTRADO")
