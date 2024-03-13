@@ -127,9 +127,6 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
     });
 }
 
-
-
-
 if ($(window).width() <= 800) {
     $(".menu-nav-icons").css('display', 'none')
     $(".menu-dots").css('display', 'block')
