@@ -846,3 +846,37 @@ $(document).on('click', ".js-body-agenda-colaborador-toggle", function() {
     $(this).toggleClass("icofont-simple-down")
     $(".body-agenda-colaborador").slideToggle(500)
 });
+
+$(document).on('submit', '.js-file-agenda', function(event) {
+    event.preventDefault();
+    var formData = new FormData();
+    var idagenda = $(this).data("idagenda")
+    var idfile = "#"+idagenda
+    var arquivo = $(idfile).get(0).files[0]
+    var csrf_token = $('input[name="csrfmiddlewaretoken"]').val()
+    var mes_ano = localStorage.getItem("mes_ano")
+    var idpessoal = localStorage.getItem("idpessoal")
+    formData.append("arquivo", arquivo);
+    formData.append("csrfmiddlewaretoken", csrf_token);
+    formData.append("mes_ano", mes_ano);
+    formData.append("idpessoal", idpessoal);
+    formData.append("idagenda", idagenda);
+    $.ajax({
+        type: $(this).attr('method'),
+        url: '/pagamentos/arquiva_agenda',
+        data: formData,
+        cache: false,
+        processData: false,
+        contentType: false,
+        enctype: 'multipart/form-data',
+        beforeSend: function() {
+            $('.box-loader').show()
+        },
+        success: function(data) {
+            $(".card-agenda").html(data["html_agenda"])
+            $(".card-agenda").show()
+            $('.box-loader').hide()
+        },
+    });
+});
+
