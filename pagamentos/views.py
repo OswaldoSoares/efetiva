@@ -391,6 +391,17 @@ def exclui_agenda_colaborador(request):
             request, confirma, idconfirma, idpessoal, mes_ano
         )
     return data
+
+
+def arquiva_agenda(request):
+    idagenda = request.POST.get("idagenda")
+    idpessoal = request.POST.get("idpessoal")
+    mes_ano = request.POST.get("mes_ano")
+    message = facade.salva_arquivo_agenda(request, idagenda)
+    contexto = facade.contexto_agenda_colaborador(idpessoal, mes_ano)
+    contexto.update({"message": message})
+    data = facade.create_data_agenda_colaborador(request, contexto)
+    return data
     else:
         confirma = request.GET.get("confirma")
         idconfirma = request.GET.get("idconfirma")
