@@ -3746,3 +3746,27 @@ def create_data_agenda_colaborador(request, contexto):
     data = dict()
     data = html_agenda(request, contexto, data)
     return JsonResponse(data)
+
+
+def salva_arquivo_agenda(request, idagenda):
+    message = {"text": None, "type": None}
+    if request.method == "POST":
+        if request.FILES:
+            descricao = f"Agenda_-_{str(idagenda).zfill(6)}"
+            ext_file = request.FILES["arquivo"].name.split(".")[-1]
+            name_file = f"{descricao}.{ext_file}"
+            request.FILES["arquivo"].name = name_file
+            obj = FileUpload()
+            obj.DescricaoUpload = descricao
+            obj.uploadFile = request.FILES["arquivo"]
+            try:
+                obj.save()
+                message["text"] = "Arquivo enviado ao servidor com sucesso"
+                message["type"] = "SUCESSO"
+            except:
+                message["text"] = "Falha ao salvar o arquivo, tente novamente"
+                message["type"] = "ERROR"
+        else:
+            message["text"] = "Arquivo não selecionado"
+            message["type"] = "ERROR"
+    return message
