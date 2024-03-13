@@ -1,0 +1,18 @@
+{% load humanize %}
+<form method="post" action="">
+    {% csrf_token %}
+    <div>
+        <div class="text-center font-maior">
+            <span>{{ agenda.idPessoal }}</span>
+        </div>
+        <div class="text-center">
+            <span>Data: {{ agenda.Dia }}</span>
+        </div>
+        <div class="text-center">
+            <p><span>{{ agenda.Descricao }}</span></p>
+        </div>
+        <input type="hidden" name="idagenda" value="{{ agenda.idAgenda }}">
+        <input type="hidden" name="idpessoal" value="{{ idpessoal }}">
+        <input type="hidden" name="mes_ano" value="{{ mes_ano }}">
+    </div>
+</form>
