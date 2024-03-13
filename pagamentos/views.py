@@ -358,9 +358,20 @@ def exclui_agenda_colaborador(request):
         idagenda = request.POST.get("idagenda")
         idpessoal = request.POST.get("idpessoal")
         mes_ano = request.POST.get("mes_ano")
-        data = facade.exclui_agenda_colaborador_id(
+        facade.exclui_agenda_colaborador_id(
             request, idagenda, idpessoal, mes_ano
         )
+        contexto = facade.contexto_agenda_colaborador(idpessoal, mes_ano)
+        data = facade.create_data_agenda_colaborador(request, contexto)
+    else:
+        confirma = request.GET.get("confirma")
+        idconfirma = request.GET.get("idconfirma")
+        idpessoal = request.GET.get("idpessoal")
+        mes_ano = request.GET.get("mes_ano")
+        data = facade.modal_confirma(
+            request, confirma, idconfirma, idpessoal, mes_ano
+        )
+    return data
     else:
         confirma = request.GET.get("confirma")
         idconfirma = request.GET.get("idconfirma")
