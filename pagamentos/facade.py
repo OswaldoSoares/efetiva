@@ -3037,9 +3037,6 @@ def create_contexto_mensalista(idpessoal, mes_ano):
         idpessoal, primeiro_dia_mes, ultimo_dia_mes
     )
     vales = get_vales_colaborador(colaborador)
-    agenda = get_agenda_periodo_contra_cheque(
-        idpessoal, primeiro_dia_mes, ultimo_dia_mes
-    )
     atualiza_cartao_ponto_transporte(cartao_ponto, salario)
     atualiza_cartao_ponto_minutas(cartao_ponto, minutas)
     cartao_ponto = get_cartao_ponto_colaborador(
@@ -3056,10 +3053,6 @@ def create_contexto_mensalista(idpessoal, mes_ano):
     total_dias_remunerado = dias_remunerado(cartao_ponto, ultimo_dia_mes)
     total_dias_trabalhado = dias_trabalhado(cartao_ponto)
     total_dias_transporte = dias_transporte(cartao_ponto)
-    #  agenda = Agenda.objects.filter(
-    #  idPessoal=var["id_pessoal"],
-    #  Dia__range=[var["primeiro_dia"], var["ultimo_dia"]],
-    #  )
     contexto = {
         "colaborador": colaborador,
         "nome_curto": nome_curto(colaborador.Nome),
@@ -3070,7 +3063,6 @@ def create_contexto_mensalista(idpessoal, mes_ano):
         "vales": vales,
         "tipo": "PAGAMENTO",
         "minutas": minutas,
-        "agenda": agenda,
         "hoje": hoje,
         "dias_admitido": total_dias_admitido,
         "dias_remunerado": total_dias_remunerado,
@@ -3080,8 +3072,9 @@ def create_contexto_mensalista(idpessoal, mes_ano):
         "valor_dia": salario["Salario"] / 30,
         "valor_hora": salario["Salario"] / 30 / 9,
         "valor_extra": salario["Salario"] / 30 / 9 * Decimal(1.5),
-        #  "files": files,
     }
+    agenda = contexto_agenda_colaborador(idpessoal, mes_ano)
+    contexto.update(agenda)
     return contexto
 
 
