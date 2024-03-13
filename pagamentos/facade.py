@@ -3675,6 +3675,18 @@ def contexto_agenda_colaborador(idpessoal, mes_ano):
     agenda = get_agenda_periodo_contra_cheque(
         idpessoal, primeiro_dia_mes, ultimo_dia_mes
     )
+    files = FileUpload.objects.filter(DescricaoUpload__startswith="AGENDA")
+    for dia in agenda:
+        filtro = next(
+            (
+                item
+                for item in files
+                if int(item.DescricaoUpload[9:]) == dia["idAgenda"]
+            ),
+            None,
+        )
+        if filtro:
+            dia["file"] = filtro
     contexto = {"agenda": agenda}
     return contexto
 
