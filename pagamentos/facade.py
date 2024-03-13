@@ -3740,6 +3740,9 @@ def get_agenda_id(idagenda):
 def exclui_agenda_colaborador_id(request, idagenda, idpessoal, mes_ano):
     agenda = get_agenda_id(idagenda)
     agenda.delete()
+
+
+def create_data_agenda_colaborador(request, contexto):
     data = dict()
     data = html_agenda(request, contexto, data)
     return JsonResponse(data)
