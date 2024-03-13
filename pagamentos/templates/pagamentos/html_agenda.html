@@ -7,14 +7,14 @@
 		</div>
 		<div class="input-group-addon addon-my-color">
 			<i class="icofont-plus-circle i-button"
-	  onclick="openMyModal(event); return false;"
-   data-title="CADASTRA AGENDA"
-   data-action="{% url 'adiciona_agenda_colaborador' %}"
-   data-button-save-label="SALVAR"
-   title="Adiciona Agenda"></i>
+				onclick="openMyModal(event); return false;"
+				data-title="CADASTRA AGENDA"
+				data-action="{% url 'adiciona_agenda_colaborador' %}"
+				data-button-save-label="SALVAR"
+				title="Adiciona Agenda"></i>
 		</div>
 		<div class="div-form-control">
-				<span>AGENDA</span>
+			<span>AGENDA</span>
 		</div>
 		<div class="input-group-addon addon-my-color">
 			<i class="icofont-simple-down i-button js-body-agenda-colaborador-toggle"></i>
@@ -30,42 +30,69 @@
 	<div class="card-body-item">
 		<div class="input-group">
 			<div class="input-group-addon addon-my-color">
-			    <i class="i-button-null">{{ forloop.counter|stringformat:"02d" }}</i>
+				<i class="i-button-null">{{ forloop.counter|stringformat:"02d" }}</i>
 			</div>
 			<div class="div-flex div-form-control">
 				<div class="tamanho-20 text-left">
-					<span>
-						{{ dia.Dia }}
-					</span>
+					<span>{{ dia.Dia }}</span>
 				</div>
 				<div class="tamanho-80 text-left">
-					<span>
-						{{ dia.Descricao }}
-					</span>
+					<span>{{ dia.Descricao }}</span>
 				</div>
 			</div>
-			<div class="input-group-addon
-			addon-my-color">
+			{% if dia.file %}
+			<div class="input-group-addon addon-my-color">
+				<a class="icofont-download i-button" href="{{ dia.file.uploadFile.url }}"
+				target="_blank" title="Download do Aqquivo"></a>
+			</div>
+			{% else %}
+			<div class="input-group-addon addon-my-color">
+				<form class="js-file-agenda" method="post" enctype="multipart/form-data"
+					data-idagenda="{{ dia.idAgenda }}">
+					{% csrf_token %}
+					<input type="file" name="uploadFile" class="file file_agenda"
+						id="{{ dia.idAgenda }}" value="{{ idAgenda }}">
+					<i><label class="icofont-folder i-button label-{{ dia.idAgenda }}"
+						for="{{ dia.idAgenda }}" title="Seleciona Arquivo"></label></i>
+					<i><button type=submit" id="submit-{{ dia.idAgenda }}"
+						class="icofont-cloud-download i-button submit-agenda"
+						data-idagenda="{{ dia.idAgenda }}"></button></i>
+				</form>
+			</div>
+			{% endif %}
+			<div class="input-group-addon addon-my-color">
 				<i class="icofont-edit i-button"
-                    onclick="openMyModal(event); return false;"
-                    data-title="CONFIRMA EXCLUSÃO DO VALE?"
-                    data-action="{% url 'exclui_vale_colaborador' %}"
-                    data-button-save-label="CONFIRMAR"
-					data-confirma="confirma_vale"
-	 			    data-idconfirma="{{ vale.idvale }}"
-                    title="Exclui Vale"></i>
+					onclick="openMyModal(event); return false;"
+					data-title="EDITA ALTERAÇÕES DA AGENDA"
+					data-action="{% url 'edita_agenda_colaborador' %}"
+					data-button-save-label="CONFIRMAR"
+					data-confirma="confirma_edita_agenda"
+					data-idconfirma="{{ dia.idAgenda }}"
+					title="Edita Agenda"></i>
 			</div>
-			<div class="input-group-addon
-			addon-my-color">
+			{% if dia.file %}
+			<div class="input-group-addon addon-my-color">
+				<i class="icofont-file-excel trash i-button"
+					onclick="openMyModal(event); return false;"
+					data-title="CONFIRMA EXCLUSÃO DO ARQUIVO AGENDA?"
+					data-action="{% url 'exclui_arquivo_agenda' %}"
+					data-button-save-label="CONFIRMAR"
+					data-confirma="confirma_exclui_arquivo_agenda"
+					data-idconfirma="{{ dia.idAgenda }}"
+					title="Deleta Arquivo"></i>
+			</div>
+			{% else %}
+			<div class="input-group-addon addon-my-color">
 				<i class="icofont-trash i-button"
-                    onclick="openMyModal(event); return false;"
-                    data-title="CONFIRMA EXCLUSÃO DA AGENDA?"
-                    data-action="{% url 'exclui_agenda_colaborador' %}"
-                    data-button-save-label="CONFIRMAR"
+					onclick="openMyModal(event); return false;"
+					data-title="CONFIRMA EXCLUSÃO DA AGENDA?"
+					data-action="{% url 'exclui_agenda_colaborador' %}"
+					data-button-save-label="CONFIRMAR"
 					data-confirma="confirma_agenda"
-	 			    data-idconfirma="{{ dia.idAgenda }}"
-                    title="Exclui Vale"></i>
+					data-idconfirma="{{ dia.idAgenda }}"
+					title="Exclui Agenda"></i>
 			</div>
+			{% endif %}
 		</div>
 	</div>
 	{% endfor %}
@@ -77,8 +104,7 @@
 			<i class="icofont-rounded-left-down"></i>
 		</div>
 		<div class="div-form-control div-flex">
-			<div class="tamanho-100 text-left">
-			</div>
+			<div class="tamanho-100 text-left"></div>
 		</div>
 		<div class="input-group-addon addon-my-color">
 			<i class="icofont-rounded-right-down"></i>
