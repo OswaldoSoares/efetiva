@@ -353,6 +353,25 @@ def adiciona_agenda_colaborador(request):
     return data
 
 
+def edita_agenda_colaborador(request):
+    if request.method == "POST":
+        idpessoal = request.POST.get("idpessoal")
+        mes_ano = request.POST.get("mes_ano")
+        idagenda = request.POST.get("idagenda")
+        facade.update_agenda_colaborador(request, idagenda, idpessoal)
+        contexto = facade.contexto_agenda_colaborador(idpessoal, mes_ano)
+        data = facade.create_data_agenda_colaborador(request, contexto)
+    else:
+        confirma = request.GET.get("confirma")
+        idconfirma = request.GET.get("idconfirma")
+        idpessoal = request.GET.get("idpessoal")
+        mes_ano = request.GET.get("mes_ano")
+        data = facade.modal_confirma(
+            request, confirma, idconfirma, idpessoal, mes_ano
+        )
+    return data
+
+
 def exclui_agenda_colaborador(request):
     if request.method == "POST":
         idagenda = request.POST.get("idagenda")
