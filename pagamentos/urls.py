@@ -33,6 +33,7 @@ from .views import (
     adiciona_agenda_colaborador,
     edita_agenda_colaborador,
     exclui_agenda_colaborador,
+    arquiva_agenda,
 )
 
 urlpatterns = [
@@ -183,5 +184,10 @@ urlpatterns = [
         "exclui_agenda_colaborador",
         exclui_agenda_colaborador,
         name="exclui_agenda_colaborador",
+    ),
+    path(
+        "arquiva_agenda",
+        arquiva_agenda,
+        name="arquiva_agenda",
     ),
 ]
