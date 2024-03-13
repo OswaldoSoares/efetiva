@@ -107,6 +107,8 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                     }
                     if (xhr["html_agenda"]) {
                         $(".card-agenda").html(xhr["html_agenda"])
+                        $(".card-agenda").show()
+                        $(".submit-agenda").hide();
                     }
                     if (cbAfterSuccess) { 
                         cbAfterSuccess(modal);
