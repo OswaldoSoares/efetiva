@@ -3717,6 +3717,18 @@ def modal_confirma(request, confirma, idconfirma, idpessoal, mes_ano):
             contexto,
             request=request,
         )
+    elif confirma == "confirma_edita_agenda":
+        agenda = get_agenda_id(idconfirma)
+        form = FormAgenda(instance=agenda)
+        contexto = {
+            "form": form,
+            "idpessoal": idpessoal,
+            "mes_ano": mes_ano,
+            "idagenda": idconfirma,
+        }
+        data["html_modal"] = render_to_string(
+            "pagamentos/modal_adiciona_agenda.html", contexto, request=request
+        )
     return JsonResponse(data)
 
 
