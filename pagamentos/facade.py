@@ -3737,6 +3737,21 @@ def get_agenda_id(idagenda):
     return agenda
 
 
+def update_agenda_colaborador(request, idagenda, idpessoal):
+    dia = request.POST.get("Dia")
+    descricao = request.POST.get("Descricao")
+    registro_agenda = []
+    registro_agenda.append(
+        Agenda(
+            idAgenda=idagenda,
+            Descricao=descricao,
+            Dia=dia,
+            idPessoal_id=idpessoal,
+        )
+    )
+    Agenda.objects.bulk_update(registro_agenda, ["Dia", "Descricao"])
+
+
 def exclui_agenda_colaborador_id(request, idagenda, idpessoal, mes_ano):
     agenda = get_agenda_id(idagenda)
     agenda.delete()
