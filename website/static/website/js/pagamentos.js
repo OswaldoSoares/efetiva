@@ -105,6 +105,7 @@ $(document).on("click", ".js-seleciona-funcionario", function(event) {
             $(".card-vales-colaborador").show()
             $(".card-minutas-pagamento").show();
             $(".card-agenda").show();
+            $(".submit-agenda").hide();
             localStorage.setItem("idcontracheque", $("#idcontracheque").data("idcontracheque"))
             localStorage.setItem("idpessoal", v_idpessoal)
             $('.box-loader').hide();
@@ -307,6 +308,7 @@ $(document).on('click', '.js-exclui-agenda', function() {
         },
         success: function(data) {
             $(".js-itens-agenda-pagamento").html(data.html_itens_agenda_pagamento)
+            $(".submit-agenda").hide();
             $('.box-loader').hide()
         }
     })
