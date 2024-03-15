@@ -3,7 +3,6 @@ $(document).ready(function() {
     $(".card-folha-pagamento").hide()
     $(".card-funcionario-pagamento").hide()
     $(".card-contra-cheque").hide()
-    $(".card-files-contra-cheque").hide()
     $(".card-vales-colaborador").hide()
     $(".card-minutas-pagamento").hide()
     $(".card-agenda").hide()
@@ -33,8 +32,6 @@ $(document).on("click", ".js-seleciona-mes-ano", function(event) {
             $(".js-agenda-pagamento").html('')
             $(".js-itens-agenda-pagamento").html('');
             $(".card-vales-colaborador").hide();
-
-            $(".card-files-contra-cheque").hide()
             $(".card-periodo-avulso").hide();
 
             $(".card-folha-pagamento").hide();
@@ -86,14 +83,12 @@ $(document).on("click", ".js-seleciona-funcionario", function(event) {
             $(".js-seleciona-funcionario").removeClass("icofont-checked")
             $(".js-seleciona-funcionario").addClass("icofont-square")
             $(".card-contra-cheque").hide()
-            $(".card-files-contra-cheque").hide()
             $('.box-loader').show();
         },
         success: function(data) {
             $(".card-cartao-ponto").html(data.html_cartao_ponto);
             $(".card-funcionario-pagamento").html(data.html_funcionario);
             $(".body-funcionario-pagamento").hide()
-            
             $(".card-minutas-pagamento").html(data.html_minutas);
             $(".body-minutas-pagamento").hide()
             $(".card-vales-colaborador").html(data.html_vales);
@@ -801,16 +796,11 @@ $(document).on('click', '.js-contra-cheque-pagamento', function() {
         beforeSend: function() {
             $(".box-loader").show()
             $(".card-contra-cheque-colaborador").hide()
-            $(".card-files-contra-cheque").hide()
             localStorage.setItem("idcontracheque", "")
         },
         success: function(data) {
             $(".card-contra-cheque").html(data.html_contra_cheque)
             $(".card-contra-cheque").show()
-            if (data.html_files_contra_cheque) {
-                $(".card-files-contra-cheque").html(data.html_files_contra_cheque)
-                $(".card-files-contra-cheque").show()
-            }
             $("#submit-contracheque").hide()
             localStorage.setItem("idcontracheque", $("#idcontracheque").data("idcontracheque"))
             $(".box-loader").hide()
