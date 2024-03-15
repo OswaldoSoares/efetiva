@@ -875,7 +875,7 @@ $(document).on('change', '.file_agenda', function() {
     var idagenda = $(this).attr('id')
     var submit = "#submit-"+idagenda
     var label = ".label-"+idagenda
-    $(submit).attr('title', "Upload Arquivo:" + $(this).val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]);
+    $(submit).attr('title', "Upload Arquivo: " + $(this).val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]);
     $(label).hide()
     $(submit).show()
 });
