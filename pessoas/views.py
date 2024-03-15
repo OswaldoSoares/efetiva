@@ -801,6 +801,28 @@ def pagamento_contra_cheque(request):
     return data
 
 
+def estorna_contra_cheque(request):
+    if request.method == "POST":
+        idcontracheque = request.POST.get("idcontracheque")
+        idpessoal = request.POST.get("idpessoal")
+        mes_ano = request.POST.get("mes_ano")
+        facade.estorna_contra_cheque(request, idcontracheque)
+        descricao = facade.get_descricao_contra_cheque_id(idcontracheque)
+        contexto = facade.create_contexto_contra_cheque_colaborador(
+            idpessoal, mes_ano, descricao
+        )
+        data = facade.create_data_contra_cheque_colaborador(request, contexto)
+    else:
+        confirma = request.GET.get("confirma")
+        idconfirma = request.GET.get("idconfirma")
+        idpessoal = request.GET.get("idpessoal")
+        mes_ano = request.GET.get("mes_ano")
+        data = facade.modal_confirma(
+            request, confirma, idconfirma, idpessoal, mes_ano
+        )
+    return data
+
+
 def arquiva_contra_cheque(request):
     idcontracheque = request.POST.get("idcontracheque")
     idpessoal = request.POST.get("idpessoal")
