@@ -148,7 +148,7 @@ $(document).on('click', '#menu-dots', function() {
 $(document).on('submit', '.js-file-contra-cheque', function(event) {
     event.preventDefault();
     var formData = new FormData();
-    var arquivo = $("#filecontracheque").get(0).files[0]
+    var arquivo = $("#file-contracheque").get(0).files[0]
     var csrf_token = $('input[name="csrfmiddlewaretoken"]').val()
     var mes_ano = localStorage.getItem("mes_ano")
     var idpessoal = localStorage.getItem("idpessoal")
