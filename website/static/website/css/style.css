@@ -6497,6 +6497,11 @@ label {
   background-color: blue !important;
 }
 
+.button-group {
+  align-items: space-evenly;
+  padding: 0 40px;
+}
+
 .linha-add {
   background-color: var(--color2);
   height: 2.5rem;
