@@ -179,4 +179,8 @@ $(document).on('submit', '.js-file-contra-cheque', function(event) {
     });
 });
 
+$(document).on('change', '#file-contracheque', function() {
+    $("#submit-contracheque").attr('title', "Upload Arquivo: " + $(this).val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]);
+    $("#label-contracheque").hide()
+    $("#submit-contracheque").show()
 });
