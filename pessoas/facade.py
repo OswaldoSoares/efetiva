@@ -2771,6 +2771,20 @@ def paga_contra_cheque(request, idcontracheque):
     return JsonResponse(data)
 
 
+def estorna_contra_cheque(request, idcontracheque):
+    registro_contra_cheque = []
+    registro_contra_cheque.append(
+        ContraCheque(
+            idContraCheque=idcontracheque,
+            Pago=False,
+        )
+    )
+    ContraCheque.objects.bulk_update(registro_contra_cheque, ["Pago"])
+    data = dict()
+    data["pago"] = False
+    return JsonResponse(data)
+
+
 def salva_arquivo_contra_cheque(request, idcontracheque):
     message = {"text": None, "type": None}
     if request.method == "POST":
