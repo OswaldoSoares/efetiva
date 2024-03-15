@@ -179,11 +179,4 @@ $(document).on('submit', '.js-file-contra-cheque', function(event) {
     });
 });
 
-$(document).on('change', '#filecontracheque', function() {
-    if ($('#filecontracheque').val()) {
-        $('.js-contra-cheque-txt').text($('#filecontracheque').val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]);
-    } else {
-        $('.js-contra-cheque-txt').text('Selecionar contra-cheque...');
-    }
 });
-
