@@ -811,6 +811,7 @@ $(document).on('click', '.js-contra-cheque-pagamento', function() {
                 $(".card-files-contra-cheque").html(data.html_files_contra_cheque)
                 $(".card-files-contra-cheque").show()
             }
+            $("#submit-contracheque").hide()
             localStorage.setItem("idcontracheque", $("#idcontracheque").data("idcontracheque"))
             $(".box-loader").hide()
         },

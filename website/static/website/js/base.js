@@ -100,6 +100,7 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                     if (xhr["html_contra_cheque"]) {
                         $(".card-contra-cheque").html(xhr["html_contra_cheque"])
                         $(".card-contra-cheque").show()
+                        $("#submit-contracheque").hide()
                     }
                     if (xhr["html_files_contra_cheque"]) {
                         $(".card-files-contra-cheque").html(xhr["html_files_contra_cheque"])
