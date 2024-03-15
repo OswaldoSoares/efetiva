@@ -61,6 +61,7 @@ from .views import (
     adiciona_vale_colaborador,
     exclui_vale_colaborador,
     pagamento_contra_cheque,
+    estorna_contra_cheque,
     arquiva_contra_cheque,
     exclui_arquivo_contra_cheque,
 )
@@ -327,6 +328,11 @@ urlpatterns = [
         "pagamento_contra_cheque",
         pagamento_contra_cheque,
         name="pagamento_contra_cheque",
+    ),
+    path(
+        "estorna_contra_cheque",
+        estorna_contra_cheque,
+        name="estorna_contra_cheque",
     ),
     path(
         "arquiva_contra_cheque",
