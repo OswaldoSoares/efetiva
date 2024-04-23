@@ -63,7 +63,9 @@ class NotasOcorrencias(models.Model):
     TipoOcorrencia = models.CharField(max_length=25, default="PENDENTE")
     Ocorrencia = models.TextField(default="", blank=True, null=True)
     DataAgendada = models.DateField(default=0)
-    idNotasClientes = models.ForeignKey(NotasClientes, on_delete=models.CASCADE)
+    idNotasClientes = models.ForeignKey(
+        NotasClientes, on_delete=models.CASCADE
+    )
 
     class Meta:
         db_table = "notas_ocorrencia"
@@ -107,7 +109,9 @@ class Romaneios(models.Model):
 class RomaneioNotas(models.Model):
     idRomaneioNotas = models.AutoField(primary_key=True)
     idRomaneio = models.ForeignKey(Romaneios, on_delete=models.CASCADE)
-    idNotasClientes = models.ForeignKey(NotasClientes, on_delete=models.CASCADE)
+    idNotasClientes = models.ForeignKey(
+        NotasClientes, on_delete=models.CASCADE
+    )
 
     class Meta:
         db_table = "romaneio_notas"
