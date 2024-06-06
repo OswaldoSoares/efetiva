@@ -3091,16 +3091,17 @@ def verifica_feriados(cartao_ponto, mes, ano):
     for feriado in lista_feriados:
         dia = datetime.datetime.strptime(feriado["Valor"], "%Y-%m-%d").date()
         filtro = list(filter(lambda item: item["Dia"] == dia, cartao_ponto))
-        if filtro[0]["Ausencia"] != "FERIADO" and dia.weekday() != 6:
-            filtro[0]["Ausencia"] = "FERIADO"
-            filtro[0]["Conducao"] = False
-            registros_cartao_ponto.append(
-                CartaoPonto(
-                    idCartaoPonto=filtro[0]["idCartaoPonto"],
-                    Ausencia="FERIADO",
-                    Conducao=False,
+        if filtro[0]["Ausencia"] != "FÉRIAS":
+            if filtro[0]["Ausencia"] != "FERIADO" and dia.weekday() != 6:
+                filtro[0]["Ausencia"] = "FERIADO"
+                filtro[0]["Conducao"] = False
+                registros_cartao_ponto.append(
+                    CartaoPonto(
+                        idCartaoPonto=filtro[0]["idCartaoPonto"],
+                        Ausencia="FERIADO",
+                        Conducao=False,
+                    )
                 )
-            )
     CartaoPonto.objects.bulk_update(
         registros_cartao_ponto, ["Ausencia", "Conducao"]
     )
