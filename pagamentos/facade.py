@@ -3545,21 +3545,26 @@ def atualiza_item_salario_ferias(
         contra_cheque[0].idContraCheque, "SALARIO", "C"
     )
     valor_dia = salario["Salario"] / 30
-    not_ferias = list(
+    ferias = list(
         filter(
-            lambda item: item["Ausencia"] != "FÉRIAS",
+            lambda item: item["Ausencia"] == "FÉRIAS",
             cartao_ponto,
         )
     )
-    if len(cartao_ponto) != len(not_ferias):
+    if len(ferias) > 0:
+        dias_pagar = len(cartao_ponto) - len(ferias)
+        first_ferias = datetime.datetime.strftime(ferias[0]["Dia"], "%d/%m/%Y")
+        last_ferias = datetime.datetime.strftime(ferias[-1]["Dia"], "%d/%m/%Y")
+        obs = f"FÉRIAS: {first_ferias} - {last_ferias}"
+        update_contra_cheque_obs(contra_cheque[0], obs, "ferias")
         if contra_cheque_itens:
             update_itens.append(
                 ContraChequeItens(
                     idContraChequeItens=contra_cheque_itens[
                         0
                     ].idContraChequeItens,
-                    Valor=valor_dia * len(not_ferias),
-                    Referencia=f"{str(len(not_ferias)).zfill(2)}d",
+                    Valor=valor_dia * dias_pagar,
+                    Referencia=f"{str(dias_pagar).zfill(2)}d",
                 )
             )
 
