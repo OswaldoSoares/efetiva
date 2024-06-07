@@ -29,6 +29,7 @@ from pessoas.facade import (
     get_colaborador,
     create_contexto_contra_cheque_colaborador,
     get_vales_colaborador,
+    update_contra_cheque_obs,
 )
 from website.facade import (
     DiasFeriados,
