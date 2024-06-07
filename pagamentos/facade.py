@@ -3274,6 +3274,9 @@ def atualiza_itens_contra_cheque_pagamento(
     atualiza_item_atrazos(
         contra_cheque, salario, cartao_ponto, update_itens, create_itens
     )
+    atualiza_item_salario_ferias(
+        contra_cheque, salario, cartao_ponto, update_itens, create_itens
+    )
     ContraChequeItens.objects.bulk_update(
         update_itens, ["Valor", "Referencia"]
     )
@@ -3532,6 +3535,32 @@ def atualiza_item_vale_transporte(
     else:
         if contra_cheque_itens:
             contra_cheque_itens.delete()
+
+
+def atualiza_item_salario_ferias(
+    contra_cheque, salario, cartao_ponto, update_itens, create_itens
+):
+    contra_cheque_itens = busca_contrachequeitens(
+        contra_cheque[0].idContraCheque, "SALARIO", "C"
+    )
+    valor_dia = salario["Salario"] / 30
+    not_ferias = list(
+        filter(
+            lambda item: item["Ausencia"] != "FÉRIAS",
+            cartao_ponto,
+        )
+    )
+    if len(cartao_ponto) != len(not_ferias):
+        if contra_cheque_itens:
+            update_itens.append(
+                ContraChequeItens(
+                    idContraChequeItens=contra_cheque_itens[
+                        0
+                    ].idContraChequeItens,
+                    Valor=valor_dia * len(not_ferias),
+                    Referencia=f"{str(len(not_ferias)).zfill(2)}d",
+                )
+            )
 
 
 def horas_extras_colaborador(cartao_ponto, minutas):
