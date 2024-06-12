@@ -390,7 +390,9 @@ def create_contexto_cliente(idcliente):
     fone_cliente = list(get_cliente_telefone(idcliente).values())
     email_cliente = list(get_cliente_email(idcliente).values())
     cobranca_cliente = list(get_cliente_cobranca(idcliente).values())
-    tabela_cliente = list(get_cliente_tabela(idcliente).values())
+    query_tabela_cliente = get_cliente_tabela(idcliente)
+    forma_pagamento = f"{str(query_tabela_cliente[0])} Dias"
+    tabela_cliente = list(query_tabela_cliente.values())
     tabela_veiculo_cliente = list(
         get_cliente_tabela_veiculo(idcliente).values(
             "PorcentagemCobra",
@@ -423,5 +425,6 @@ def create_contexto_cliente(idcliente):
         "tabela_perimetro_cliente": tabela_perimetro_cliente,
         "tabela_capacidade_cliente": tabela_capacidade_cliente,
         "list_categoria_cliente": list_categoria_cliente,
+        "forma_pagamento": forma_pagamento,
     }
     return contexto
