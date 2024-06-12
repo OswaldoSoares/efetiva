@@ -113,7 +113,7 @@ def cobranca_cliente(pdf, cobranca):
 def tabela_cliente(pdf, tabela):
     global linha
     seguro = f'Seguro: {tabela["Seguro"]}%'
-    taxa = f'Taxa de Expedição: R$ {tabela["TaxaExpedicao"]}'
+    taxa = f'Taxa de Expedição/GR: R$ {tabela["TaxaExpedicao"]}'
     ajudante = f'Ajudante: R$ {tabela["AjudanteCobra"]}'
     extra = f'Hora Extra Ajudante: RS {tabela["AjudanteCobraHoraExtra"]}'
     pdf.rect(cmp(11), cmp(linha), cmp(41), cmp(4), fill=0, stroke=1)
