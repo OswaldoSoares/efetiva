@@ -13,6 +13,17 @@ from website.print import header
 from transefetiva.settings.settings import STATIC_ROOT
 
 
+class LinhaClasse:
+    def __init__(self):
+        self._linha = 297
+
+    @property
+    def valor(self):
+        return self._linha
+
+    @valor.setter
+    def valor(self, novo_valor):
+        self._linha = novo_valor
 
 
 def ficha_cadastral(contexto):
