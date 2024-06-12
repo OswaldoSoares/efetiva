@@ -94,3 +94,8 @@ def emails_cliente(pdf, emails):
     pdf.line(cmp(10), cmp(linha + 2), cmp(200), cmp(linha + 2))
     linha -= 3
     return pdf
+
+
+def cobranca_cliente(pdf, cobranca):
+    global linha
+    print(cobranca)
