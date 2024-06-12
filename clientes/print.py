@@ -17,6 +17,17 @@ linha = 297  # pylint: disable=C0103
 
 
 def ficha_cadastral(contexto):
+    """
+        Gera PDF com a ficha do cliente, Cria variáveis através do argumento
+        contexto. Registra a font DejaVuSans, para utilização correta de
+        simbolos. Faz a chamada das funções que imprime cada parte do PDF.
+    Args:
+        contexto: dict
+
+    Returns:
+        response: django.http.response.HttpResponse
+
+    """
     cliente = contexto["cliente"][0]
     telefones = contexto["fone_cliente"]
     emails = contexto["email_cliente"]
