@@ -150,31 +150,31 @@ def tipo_pagamento(pdf, tabela):
     if porcentagem:
         text_porcentagem = "PORCENTAGEM \u2714"
     else:
-        text_porcentagem = "PORCENTAGEM \u2716"
+        text_porcentagem = "PORCENTAGEM \u2718"
     if hora:
         text_hora = "HORA ATÉ 17:00hs \u2714"
     else:
-        text_hora = "HORA ATÉ 17:00hs \u2716"
+        text_hora = "HORA ATÉ 17:00hs \u2718"
     if kilometragem:
         text_kilometragem = "KILOMETRAGEM \u2714"
     else:
-        text_kilometragem = "KILOMETRAGEM \u2716"
+        text_kilometragem = "KILOMETRAGEM \u2718"
     if entrega:
         text_entrega = "ENTREGA \u2714"
     else:
-        text_entrega = "ENTREGA \u2716"
+        text_entrega = "ENTREGA \u2718"
     if entrega_kg:
         text_entrega_kg = "ENTREGA KG \u2714"
     else:
-        text_entrega_kg = "ENTREGA KG \u2716"
+        text_entrega_kg = "ENTREGA KG \u2718"
     if entrega_volume:
         text_entrega_volume = "ENTREGA VOLUME \u2714"
     else:
-        text_entrega_volume = "ENTREGA VOLUME \u2716"
+        text_entrega_volume = "ENTREGA VOLUME \u2718"
     if saida:
         text_saida = "SAÍDA \u2714"
     else:
-        text_saida = "SAÍDA \u2716"
+        text_saida = "SAÍDA \u2718"
     pdf.line(cmp(11), cmp(linha), cmp(199), cmp(linha))
     linha -= 3
     pdf.setFont("DejaVuSans", 6)
