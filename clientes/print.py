@@ -55,6 +55,18 @@ def ficha_cadastral(contexto):
 
 
 def dados_cliente(pdf, cliente):
+    """
+        Imrprime os dados do cliente.
+        Nome, CNPJ e Endereço
+    Args:
+        pdf: reportlab.pdfgen.canvas.Canvas
+        cliente: dict
+
+    Returns:
+        pdf: reportlab.pdfgen.canvas.Canvas
+
+    """
+    print(type(cliente))
     global linha
     nome = cliente["Nome"]
     cnpj = cliente["CNPJ"]
