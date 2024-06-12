@@ -32,6 +32,8 @@ def ficha_cadastral(contexto):
     ] = f'filename="FICHA CADASTRAL {fantasia}.pdf"'
     buffer = BytesIO()
     pdf = canvas.Canvas(buffer)
+    url = f"{STATIC_ROOT}/website/fonts/DejaVuSans.ttf"
+    pdfmetrics.registerFont(TTFont("DejaVuSans", url))
     header(pdf)
     dados_cliente(pdf, cliente)
     telefones_cliente(pdf, telefones)
