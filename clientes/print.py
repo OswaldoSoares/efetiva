@@ -13,7 +13,6 @@ from website.print import header
 from transefetiva.settings.settings import STATIC_ROOT
 
 
-linha = 297  # pylint: disable=C0103
 
 
 def ficha_cadastral(contexto):
