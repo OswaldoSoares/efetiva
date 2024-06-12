@@ -317,7 +317,7 @@ def capacidades_cliente(pdf, capacidades):
     linha_superior = linha
     linha -= 3
     pdf.setFont("DejaVuSans", 6)
-    pdf.drawCentredString(cmp(134), cmp(linha + 0.3), "KILOS")
+    pdf.drawCentredString(cmp(134), cmp(linha + 0.3), "QUILOS")
     pdf.drawCentredString(cmp(176.5), cmp(linha + 0.3), "VALOR")
     pdf.line(cmp(114), cmp(linha - 1), cmp(199), cmp(linha - 1))
     linha -= 4
