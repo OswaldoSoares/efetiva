@@ -256,3 +256,47 @@ def perimetro_cliente(pdf, perimetros):
     pdf.line(cmp(11), cmp(linha + 2), cmp(96), cmp(linha + 2))
     linha = linha_inicial
     return pdf
+
+
+def capacidades_cliente(pdf, capacidades):
+    global linha
+    pdf.setFillColor(HexColor("#B0C4DE"))
+    pdf.setStrokeColor(HexColor("#B0C4DE"))
+    pdf.rect(cmp(114), cmp(linha), cmp(85), cmp(4), fill=1, stroke=1)
+    pdf.setStrokeColor(HexColor("#000000"))
+    pdf.setFillColor(HexColor("#000000"))
+    pdf.line(cmp(114), cmp(linha + 4), cmp(199), cmp(linha + 4))
+    pdf.drawCentredString(
+        cmp(156.5), cmp(linha + 1), "TABELA CAPACIDADE (PESO)"
+    )
+    pdf.line(cmp(114), cmp(linha), cmp(199), cmp(linha))
+    linha_superior = linha
+    linha -= 3
+    pdf.setFont("Times-Roman", 7)
+    pdf.drawCentredString(cmp(134), cmp(linha + 0.3), "KILOS")
+    pdf.drawCentredString(cmp(176.5), cmp(linha + 0.3), "VALOR")
+    pdf.setFont("Times-Roman", 8)
+    pdf.line(cmp(114), cmp(linha - 1), cmp(199), cmp(linha - 1))
+    linha -= 4
+    if capacidades:
+        for capacidade in capacidades:
+            inicial = capacidade["CapacidadeInicial"]
+            final = capacidade["CapacidadeFinal"]
+            valor = capacidade["CapacidadeCobra"]
+            pdf.drawCentredString(cmp(124), cmp(linha), f"{inicial}")
+            pdf.drawCentredString(cmp(144), cmp(linha), f"{final}")
+            pdf.drawCentredString(cmp(176.5), cmp(linha), f"R$ {valor}")
+            linha -= 3
+        pdf.line(cmp(134), cmp(linha + 2), cmp(134), cmp(linha_superior - 4))
+        pdf.line(cmp(154), cmp(linha + 2), cmp(154), cmp(linha_superior))
+    else:
+        pdf.setFont("Times-Roman", 7)
+        pdf.drawCentredString(cmp(156.5), cmp(linha), "SEM CADASTRO")
+        pdf.setFont("Times-Roman", 8)
+        linha -= 3
+        pdf.line(cmp(154), cmp(linha + 6), cmp(154), cmp(linha_superior))
+    pdf.line(cmp(114), cmp(linha + 2), cmp(114), cmp(linha_superior + 4))
+    pdf.line(cmp(199), cmp(linha + 2), cmp(199), cmp(linha_superior + 4))
+    pdf.line(cmp(114), cmp(linha + 2), cmp(199), cmp(linha + 2))
+    linha -= 3
+    return pdf
