@@ -65,3 +65,19 @@ def dados_cliente(pdf, cliente):
     linha = 246.3
     pdf.line(cmp(10), cmp(linha), cmp(200), cmp(linha))
     return pdf
+
+
+def telefones_cliente(pdf, telefones):
+    global linha
+    linha = 242.8
+    pdf.drawCentredString(cmp(105), cmp(linha), "CONTATOS")
+    pdf.line(cmp(95), cmp(linha - 0.5), cmp(115), cmp(linha - 0.5))
+    linha -= 3
+    pdf.setFont("Times-Roman", 8)
+    for telefone in telefones:
+        contato = telefone["Contato"]
+        tipo = telefone["TipoFone"]
+        numero = telefone["Fone"]
+        pdf.drawString(cmp(12), cmp(linha), f"{contato} - {tipo} - {numero}")
+        linha -= 3
+    return pdf
