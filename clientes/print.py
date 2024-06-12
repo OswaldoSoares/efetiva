@@ -6,6 +6,8 @@ import datetime
 from django.http import HttpResponse
 from reportlab.lib.colors import HexColor
 from reportlab.pdfgen import canvas
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.pdfbase import pdfmetrics
 from website.facade import cmp
 from website.print import header
 
