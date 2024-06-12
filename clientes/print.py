@@ -14,6 +14,13 @@ from transefetiva.settings.settings import STATIC_ROOT
 
 
 class LinhaClasse:  # pylint: disable=too-few-public-methods
+    """
+        class para manter o número de linha atualizado em todo o módulo
+    Attributes:
+        _linha: int
+
+    """
+
     def __init__(self):
         self._linha = 297
 
