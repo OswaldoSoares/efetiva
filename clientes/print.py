@@ -19,6 +19,12 @@ class LinhaClasse:
 
     @property
     def valor(self):
+        """
+            Pega o valor da variavél linha
+        Returns:
+            self._linha: int
+
+        """
         return self._linha
 
     @valor.setter
