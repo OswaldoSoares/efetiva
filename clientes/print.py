@@ -4,6 +4,7 @@
 from io import BytesIO
 import datetime
 from django.http import HttpResponse
+from reportlab.lib.colors import HexColor
 from reportlab.pdfgen import canvas
 from website.print import header
 
