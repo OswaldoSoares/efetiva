@@ -341,6 +341,17 @@ def veiculos_cliente(pdf, veiculos, tabela):
 
 
 def perimetro_cliente(pdf, perimetros):
+    """
+        Imprime a tabela de perimetro do cliente
+        Perimetro Inicial, Perimetro Final e a porcentagem a ser adicionada.
+    Args:
+        pdf: reportlab.pdfgen.canvas.Canvas
+        perimetros: list
+
+    Returns:
+        pdf: reportlab.pdfgen.canvas.Canvas
+
+    """
     global linha
     linha_inicial = linha
     pdf.setFillColor(HexColor("#B0C4DE"))
