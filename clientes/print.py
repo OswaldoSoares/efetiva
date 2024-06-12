@@ -146,11 +146,6 @@ def emails_cliente(pdf, emails):
     return pdf
 
 
-def cobranca_cliente(pdf, cobranca):
-    global linha
-    print(cobranca)
-
-
 def tabela_cliente(pdf, tabela):
     """
         Imprime a tabela do cliente.
