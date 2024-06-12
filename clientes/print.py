@@ -66,7 +66,8 @@ def dados_cliente(pdf, cliente):
         f"{endereco} - {bairro} - CEP: {cep} - {cidade} - {estado}"
     )
     linha = 250.8
-    pdf.drawCentredString(cmp(105), cmp(255.8), "FICHA CLIENTE")
+    pdf.setFont("DejaVuSans", 12)
+    pdf.drawCentredString(cmp(105), cmp(255.5), "FICHA CLIENTE")
     pdf.line(cmp(10), cmp(254.1), cmp(200), cmp(254.1))
     pdf.setFont("Times-Roman", 10)
     pdf.setFillColor(HexColor("#483D8B"))
@@ -84,10 +85,11 @@ def dados_cliente(pdf, cliente):
 def telefones_cliente(pdf, telefones):
     global linha
     linha = 242.8
+    pdf.setFont("DejaVuSans", 9)
     pdf.drawCentredString(cmp(105), cmp(linha), "CONTATOS")
     pdf.line(cmp(95), cmp(linha - 0.5), cmp(115), cmp(linha - 0.5))
     linha -= 3
-    pdf.setFont("Times-Roman", 8)
+    pdf.setFont("DejaVuSans", 7)
     for telefone in telefones:
         contato = telefone["Contato"]
         tipo = telefone["TipoFone"]
@@ -99,7 +101,7 @@ def telefones_cliente(pdf, telefones):
 
 def emails_cliente(pdf, emails):
     global linha
-    pdf.setFont("Times-Roman", 8)
+    pdf.setFont("DejaVuSans", 7)
     for email in emails:
         contato = email["Contato"]
         email = email["EMail"]
@@ -125,7 +127,7 @@ def tabela_cliente(pdf, tabela):
     pdf.rect(cmp(60), cmp(linha), cmp(41), cmp(4), fill=0, stroke=1)
     pdf.rect(cmp(109), cmp(linha), cmp(41), cmp(4), fill=0, stroke=1)
     pdf.rect(cmp(158), cmp(linha), cmp(41), cmp(4), fill=0, stroke=1)
-    pdf.setFont("Times-Roman", 8)
+    pdf.setFont("DejaVuSans", 7)
     pdf.drawCentredString(cmp(31.5), cmp(linha + 1), seguro)
     pdf.drawCentredString(cmp(80.5), cmp(linha + 1), taxa)
     pdf.drawCentredString(cmp(129.5), cmp(linha + 1), ajudante)
@@ -175,7 +177,7 @@ def tipo_pagamento(pdf, tabela):
         text_saida = "SAÍDA \u2716"
     pdf.line(cmp(11), cmp(linha), cmp(199), cmp(linha))
     linha -= 3
-    pdf.setFont("Times-Roman", 7)
+    pdf.setFont("DejaVuSans", 6)
     pdf.drawCentredString(cmp(24.5), cmp(linha), text_porcentagem)
     pdf.drawCentredString(cmp(51.5), cmp(linha), text_hora)
     pdf.drawCentredString(cmp(78.5), cmp(linha), text_kilometragem)
@@ -183,7 +185,6 @@ def tipo_pagamento(pdf, tabela):
     pdf.drawCentredString(cmp(132.5), cmp(linha), text_entrega_kg)
     pdf.drawCentredString(cmp(159.5), cmp(linha), text_entrega_volume)
     pdf.drawCentredString(cmp(186.5), cmp(linha), text_saida)
-    pdf.setFont("Times-Roman", 8)
     linha -= 1
     pdf.line(cmp(11), cmp(linha), cmp(11), cmp(linha + 4))
     pdf.line(cmp(38), cmp(linha), cmp(38), cmp(linha + 4))
@@ -206,11 +207,12 @@ def veiculos_cliente(pdf, veiculos, tabela):
     pdf.setStrokeColor(HexColor("#000000"))
     pdf.setFillColor(HexColor("#000000"))
     pdf.line(cmp(11), cmp(linha + 4), cmp(199), cmp(linha + 4))
+    pdf.setFont("DejaVuSans", 8)
     pdf.drawCentredString(cmp(105), cmp(linha + 1), "TABELA VEICULO")
     pdf.line(cmp(11), cmp(linha), cmp(199), cmp(linha))
     linha -= 3
     linha_superior = linha + 3
-    pdf.setFont("Times-Roman", 7)
+    pdf.setFont("DejaVuSans", 6)
     pdf.drawCentredString(cmp(28), cmp(linha + 0.3), "TIPO VEÍCULO")
     pdf.drawCentredString(cmp(56), cmp(linha + 0.3), "PORCENTAGEM")
     pdf.drawCentredString(cmp(78), cmp(linha + 0.3), "(MÍNIMO) HORA")
@@ -219,9 +221,9 @@ def veiculos_cliente(pdf, veiculos, tabela):
     pdf.drawCentredString(cmp(144), cmp(linha + 0.3), "ENTREGA KG")
     pdf.drawCentredString(cmp(166), cmp(linha + 0.3), "ENTREGA VOLUME")
     pdf.drawCentredString(cmp(188), cmp(linha + 0.3), "SAÍDA")
-    pdf.setFont("Times-Roman", 8)
     pdf.line(cmp(11), cmp(linha - 1), cmp(199), cmp(linha - 1))
     linha -= 4
+    pdf.setFont("DejaVuSans", 7)
     for veiculo in veiculos:
         categoria = veiculo["idCategoriaVeiculo__Categoria"]
         valor_porcentagem = veiculo["PorcentagemCobra"]
@@ -266,16 +268,17 @@ def perimetro_cliente(pdf, perimetros):
     pdf.setStrokeColor(HexColor("#000000"))
     pdf.setFillColor(HexColor("#000000"))
     pdf.line(cmp(11), cmp(linha + 4), cmp(96), cmp(linha + 4))
+    pdf.setFont("DejaVuSans", 8)
     pdf.drawCentredString(cmp(54.5), cmp(linha + 1), "TABELA PERIMETRO")
     pdf.line(cmp(11), cmp(linha), cmp(96), cmp(linha))
     linha_superior = linha
     linha -= 3
-    pdf.setFont("Times-Roman", 7)
+    pdf.setFont("DejaVuSans", 6)
     pdf.drawCentredString(cmp(31), cmp(linha + 0.3), "KILOMETROS")
     pdf.drawCentredString(cmp(73.5), cmp(linha + 0.3), "PORCENTAGEM")
-    pdf.setFont("Times-Roman", 8)
     pdf.line(cmp(11), cmp(linha - 1), cmp(96), cmp(linha - 1))
     linha -= 4
+    pdf.setFont("DejaVuSans", 7)
     if perimetros:
         for perimetro in perimetros:
             inicial = perimetro["PerimetroInicial"]
@@ -288,9 +291,7 @@ def perimetro_cliente(pdf, perimetros):
         pdf.line(cmp(31), cmp(linha + 2), cmp(31), cmp(linha_superior - 4))
         pdf.line(cmp(51), cmp(linha + 2), cmp(51), cmp(linha_superior))
     else:
-        pdf.setFont("Times-Roman", 7)
         pdf.drawCentredString(cmp(54.5), cmp(linha), "SEM CADASTRO")
-        pdf.setFont("Times-Roman", 8)
         linha -= 3
         pdf.line(cmp(51), cmp(linha + 6), cmp(51), cmp(linha_superior))
     pdf.line(cmp(11), cmp(linha + 2), cmp(11), cmp(linha_superior + 4))
@@ -308,18 +309,19 @@ def capacidades_cliente(pdf, capacidades):
     pdf.setStrokeColor(HexColor("#000000"))
     pdf.setFillColor(HexColor("#000000"))
     pdf.line(cmp(114), cmp(linha + 4), cmp(199), cmp(linha + 4))
+    pdf.setFont("DejaVuSans", 8)
     pdf.drawCentredString(
         cmp(156.5), cmp(linha + 1), "TABELA CAPACIDADE (PESO)"
     )
     pdf.line(cmp(114), cmp(linha), cmp(199), cmp(linha))
     linha_superior = linha
     linha -= 3
-    pdf.setFont("Times-Roman", 7)
+    pdf.setFont("DejaVuSans", 6)
     pdf.drawCentredString(cmp(134), cmp(linha + 0.3), "KILOS")
     pdf.drawCentredString(cmp(176.5), cmp(linha + 0.3), "VALOR")
-    pdf.setFont("Times-Roman", 8)
     pdf.line(cmp(114), cmp(linha - 1), cmp(199), cmp(linha - 1))
     linha -= 4
+    pdf.setFont("DejaVuSans", 7)
     if capacidades:
         for capacidade in capacidades:
             inicial = capacidade["CapacidadeInicial"]
@@ -332,9 +334,7 @@ def capacidades_cliente(pdf, capacidades):
         pdf.line(cmp(134), cmp(linha + 2), cmp(134), cmp(linha_superior - 4))
         pdf.line(cmp(154), cmp(linha + 2), cmp(154), cmp(linha_superior))
     else:
-        pdf.setFont("Times-Roman", 7)
         pdf.drawCentredString(cmp(156.5), cmp(linha), "SEM CADASTRO")
-        pdf.setFont("Times-Roman", 8)
         linha -= 3
         pdf.line(cmp(154), cmp(linha + 6), cmp(154), cmp(linha_superior))
     pdf.line(cmp(114), cmp(linha + 2), cmp(114), cmp(linha_superior + 4))
