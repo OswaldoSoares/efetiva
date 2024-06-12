@@ -99,3 +99,23 @@ def emails_cliente(pdf, emails):
 def cobranca_cliente(pdf, cobranca):
     global linha
     print(cobranca)
+
+
+def tabela_cliente(pdf, tabela):
+    global linha
+    seguro = f'Seguro: {tabela["Seguro"]}%'
+    taxa = f'Taxa de Expedição: R$ {tabela["TaxaExpedicao"]}'
+    ajudante = f'Ajudante: R$ {tabela["AjudanteCobra"]}'
+    extra = f'Hora Extra Ajudante: RS {tabela["AjudanteCobraHoraExtra"]}'
+    pdf.rect(cmp(11), cmp(linha), cmp(41), cmp(4), fill=0, stroke=1)
+    pdf.rect(cmp(60), cmp(linha), cmp(41), cmp(4), fill=0, stroke=1)
+    pdf.rect(cmp(109), cmp(linha), cmp(41), cmp(4), fill=0, stroke=1)
+    pdf.rect(cmp(158), cmp(linha), cmp(41), cmp(4), fill=0, stroke=1)
+    pdf.setFont("Times-Roman", 8)
+    pdf.drawCentredString(cmp(31.5), cmp(linha + 1), seguro)
+    pdf.drawCentredString(cmp(80.5), cmp(linha + 1), taxa)
+    pdf.drawCentredString(cmp(129.5), cmp(linha + 1), ajudante)
+    pdf.drawCentredString(cmp(178.5), cmp(linha + 1), extra)
+    pdf.line(cmp(10), cmp(linha - 1), cmp(200), cmp(linha - 1))
+    linha -= 3
+    return pdf
