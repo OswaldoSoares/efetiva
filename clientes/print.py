@@ -394,6 +394,17 @@ def perimetro_cliente(pdf, perimetros):
 
 
 def capacidades_cliente(pdf, capacidades):
+    """
+        Imprime a tabela de capacidade(peso) do cliente
+        Peso Inicial, Peso Final e o Valor.
+    Args:
+        pdf: reportlab.pdfgen.canvas.Canvas
+        capacidades: list
+
+    Returns:
+        pdf: reportlab.pdfgen.canvas.Canvas
+
+    """
     global linha
     pdf.setFillColor(HexColor("#B0C4DE"))
     pdf.setStrokeColor(HexColor("#B0C4DE"))
