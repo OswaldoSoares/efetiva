@@ -10,7 +10,16 @@ from website.facade import cmp
 from website.print import header
 
 
-def ficha_cadastral(cliente):
+def ficha_cadastral(contexto):
+    cliente = contexto["cliente"][0]
+    telefones = contexto["fone_cliente"]
+    emails = contexto["email_cliente"]
+    cobranca = contexto["cobranca_cliente"]
+    tabela = contexto["tabela_cliente"][0]
+    veiculos = contexto["tabela_veiculo_cliente"]
+    perimetros = contexto["tabela_perimetro_cliente"]
+    capacidades = contexto["tabela_capacidade_cliente"]
+    fantasia = cliente["Fantasia"]
     response = HttpResponse(content_type="application/pdf")
     response[
         "Content-Disposition"
