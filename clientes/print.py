@@ -39,7 +39,6 @@ def ficha_cadastral(contexto):
     dados_cliente(pdf, cliente)
     telefones_cliente(pdf, telefones)
     emails_cliente(pdf, emails)
-    cobranca_cliente(pdf, cobranca)
     tabela_cliente(pdf, tabela)
     tipo_pagamento(pdf, tabela, forma_pgto)
     veiculos_cliente(pdf, veiculos, tabela)
