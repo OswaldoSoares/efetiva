@@ -381,3 +381,45 @@ def create_contexto_seleciona_cliente():
         {"idcliente": x.idCliente, "fantasia": x.Fantasia} for x in clientes
     ]
     return lista
+
+
+def create_contexto_cliente(idcliente):
+    cliente = list(get_cliente(idcliente).values())
+    fone_cliente = list(get_cliente_telefone(idcliente).values())
+    email_cliente = list(get_cliente_email(idcliente).values())
+    cobranca_cliente = list(get_cliente_cobranca(idcliente).values())
+    tabela_cliente = list(get_cliente_tabela(idcliente).values())
+    tabela_veiculo_cliente = list(
+        get_cliente_tabela_veiculo(idcliente).values(
+            "PorcentagemCobra",
+            "HoraCobra",
+            "HoraMinimo",
+            "KMCobra",
+            "KMMinimo",
+            "EntregaCobra",
+            "EntregaKGCobra",
+            "EntregaVolumeCobra",
+            "EntregaMinimo",
+            "SaidaCobra",
+            "idCategoriaVeiculo__Categoria",
+        )
+    )
+    tabela_perimetro_cliente = list(
+        get_cliente_tabela_perimetro(idcliente).values()
+    )
+    tabela_capacidade_cliente = list(
+        get_cliente_tabela_capacidade(idcliente).values()
+    )
+    list_categoria_cliente = list_categoria_tabela_veiculo_cliente(idcliente)
+    contexto = {
+        "cliente": cliente,
+        "fone_cliente": fone_cliente,
+        "email_cliente": email_cliente,
+        "cobranca_cliente": cobranca_cliente,
+        "tabela_cliente": tabela_cliente,
+        "tabela_veiculo_cliente": tabela_veiculo_cliente,
+        "tabela_perimetro_cliente": tabela_perimetro_cliente,
+        "tabela_capacidade_cliente": tabela_capacidade_cliente,
+        "list_categoria_cliente": list_categoria_cliente,
+    }
+    return contexto
