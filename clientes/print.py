@@ -10,6 +10,9 @@ from website.facade import cmp
 from website.print import header
 
 
+linha = 297  # pylint: disable=C0103
+
+
 def ficha_cadastral(contexto):
     cliente = contexto["cliente"][0]
     telefones = contexto["fone_cliente"]
