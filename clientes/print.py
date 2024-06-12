@@ -268,6 +268,19 @@ def tipo_pagamento(pdf, tabela, forma_pgto):
 
 
 def veiculos_cliente(pdf, veiculos, tabela):
+    """
+        Imprime a tabela de veiculos do cliente
+        Porcentagem - Hora - Kilometragem - Entrega - Entrega KG - Entrega
+        Volume - Saída para cada tipo de veiculo informando os valores.
+    Args:
+        pdf: reportlab.pdfgen.canvas.Canvas
+        veiculos: list
+        tabela: dict
+
+    Returns:
+        pdf: reportlab.pdfgen.canvas.Canvas
+
+    """
     global linha
     pdf.setFillColor(HexColor("#B0C4DE"))
     pdf.setStrokeColor(HexColor("#B0C4DE"))
