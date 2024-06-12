@@ -25,6 +25,7 @@ def ficha_cadastral(contexto):
     veiculos = contexto["tabela_veiculo_cliente"]
     perimetros = contexto["tabela_perimetro_cliente"]
     capacidades = contexto["tabela_capacidade_cliente"]
+    forma_pgto = contexto["forma_pagamento"]
     fantasia = cliente["Fantasia"]
     response = HttpResponse(content_type="application/pdf")
     response[
@@ -40,7 +41,7 @@ def ficha_cadastral(contexto):
     emails_cliente(pdf, emails)
     cobranca_cliente(pdf, cobranca)
     tabela_cliente(pdf, tabela)
-    tipo_pagamento(pdf, tabela)
+    tipo_pagamento(pdf, tabela, forma_pgto)
     veiculos_cliente(pdf, veiculos, tabela)
     perimetro_cliente(pdf, perimetros)
     capacidades_cliente(pdf, capacidades)
@@ -133,12 +134,17 @@ def tabela_cliente(pdf, tabela):
     pdf.drawCentredString(cmp(129.5), cmp(linha + 1), ajudante)
     pdf.drawCentredString(cmp(178.5), cmp(linha + 1), extra)
     pdf.line(cmp(10), cmp(linha - 1), cmp(200), cmp(linha - 1))
-    linha -= 3
+    linha -= 5
     return pdf
 
 
-def tipo_pagamento(pdf, tabela):
+def tipo_pagamento(pdf, tabela, forma_pgto):
     global linha
+    pdf.setFont("DejaVuSans", 9)
+    pdf.drawCentredString(
+        cmp(105), cmp(linha), f"FORMA DE PAGAMENTO: {forma_pgto}"
+    )
+    linha -= 2
     phkesc = tabela["phkescCobra"]
     porcentagem = int(phkesc[0])
     hora = int(phkesc[1])
