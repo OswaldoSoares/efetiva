@@ -37,3 +37,31 @@ def ficha_cadastral(contexto):
     buffer.close()
     response.write(pdf)
     return response
+
+
+def dados_cliente(pdf, cliente):
+    global linha
+    nome = cliente["Nome"]
+    cnpj = cliente["CNPJ"]
+    endereco = cliente["Endereco"]
+    bairro = cliente["Bairro"]
+    cidade = cliente["Cidade"]
+    estado = cliente["Estado"]
+    cep = cliente["CEP"]
+    endereco_completo = (
+        f"{endereco} - {bairro} - CEP: {cep} - {cidade} - {estado}"
+    )
+    linha = 250.8
+    pdf.drawCentredString(cmp(105), cmp(255.8), "FICHA CLIENTE")
+    pdf.line(cmp(10), cmp(254.1), cmp(200), cmp(254.1))
+    pdf.setFont("Times-Roman", 10)
+    pdf.setFillColor(HexColor("#483D8B"))
+    pdf.drawString(cmp(12), cmp(linha), f"{nome}")
+    if cnpj:
+        pdf.drawRightString(cmp(198), cmp(linha), f"CNPJ: {cnpj}")
+    linha = 247.3
+    pdf.drawString(cmp(12), cmp(linha), f"{endereco_completo}")
+    pdf.setFillColor(HexColor("#000000"))
+    linha = 246.3
+    pdf.line(cmp(10), cmp(linha), cmp(200), cmp(linha))
+    return pdf
