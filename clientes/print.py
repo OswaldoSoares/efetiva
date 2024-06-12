@@ -10,6 +10,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics
 from website.facade import cmp
 from website.print import header
+from transefetiva.settings.settings import STATIC_ROOT
 
 
 linha = 297  # pylint: disable=C0103
