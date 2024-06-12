@@ -13,7 +13,7 @@ from website.print import header
 from transefetiva.settings.settings import STATIC_ROOT
 
 
-class LinhaClasse:
+class LinhaClasse:  # pylint: disable=too-few-public-methods
     def __init__(self):
         self._linha = 297
 
