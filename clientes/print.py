@@ -120,7 +120,7 @@ def cobranca_cliente(pdf, cobranca):
 
 def tabela_cliente(pdf, tabela):
     global linha
-    seguro = f'Seguro: {tabela["Seguro"]}%'
+    seguro = f'Seguro: {tabela["Seguro"]}% \u002A'
     taxa = f'Taxa de Expedição/GR: R$ {tabela["TaxaExpedicao"]}'
     ajudante = f'Ajudante: R$ {tabela["AjudanteCobra"]}'
     extra = f'Hora Extra Ajudante: RS {tabela["AjudanteCobraHoraExtra"]}'
@@ -133,6 +133,10 @@ def tabela_cliente(pdf, tabela):
     pdf.drawCentredString(cmp(80.5), cmp(linha + 1), taxa)
     pdf.drawCentredString(cmp(129.5), cmp(linha + 1), ajudante)
     pdf.drawCentredString(cmp(178.5), cmp(linha + 1), extra)
+    linha -= 3
+    pdf.setFont("DejaVuSans", 5)
+    asteristico_1 = "Aqui você pode descrever sobre o que você quiser"
+    pdf.drawString(cmp(11), cmp(linha), asteristico_1)
     pdf.line(cmp(10), cmp(linha - 1), cmp(200), cmp(linha - 1))
     linha -= 5
     return pdf
