@@ -146,33 +146,33 @@ def tipo_pagamento(pdf, tabela):
     entrega_volume = int(phkesc[7])
     saida = int(phkesc[4])
     if porcentagem:
-        text_porcentagem = "PORCENTAGEM \u2713"
+        text_porcentagem = "PORCENTAGEM \u2714"
     else:
-        text_porcentagem = "PORCENTAGEM"
+        text_porcentagem = "PORCENTAGEM \u2716"
     if hora:
-        text_hora = "HORA ATÉ 17:00hs \u2713"
+        text_hora = "HORA ATÉ 17:00hs \u2714"
     else:
-        text_hora = "HORA ATÉ 17:00hs"
+        text_hora = "HORA ATÉ 17:00hs \u2716"
     if kilometragem:
-        text_kilometragem = "KILOMETRAGEM \u2713"
+        text_kilometragem = "KILOMETRAGEM \u2714"
     else:
-        text_kilometragem = "KILOMETRAGEM"
+        text_kilometragem = "KILOMETRAGEM \u2716"
     if entrega:
-        text_entrega = "ENTREGA \u2713"
+        text_entrega = "ENTREGA \u2714"
     else:
-        text_entrega = "ENTREGA"
+        text_entrega = "ENTREGA \u2716"
     if entrega_kg:
-        text_entrega_kg = "ENTREGA KG \u2713"
+        text_entrega_kg = "ENTREGA KG \u2714"
     else:
-        text_entrega_kg = "ENTREGA KG"
+        text_entrega_kg = "ENTREGA KG \u2716"
     if entrega_volume:
-        text_entrega_volume = "ENTREGA VOLUME \u2713"
+        text_entrega_volume = "ENTREGA VOLUME \u2714"
     else:
-        text_entrega_volume = "ENTREGA VOLUME"
+        text_entrega_volume = "ENTREGA VOLUME \u2716"
     if saida:
-        text_saida = "SAÍDA \u2713"
+        text_saida = "SAÍDA \u2714"
     else:
-        text_saida = "SAÍDA"
+        text_saida = "SAÍDA \u2716"
     pdf.line(cmp(11), cmp(linha), cmp(199), cmp(linha))
     linha -= 3
     pdf.setFont("Times-Roman", 7)
