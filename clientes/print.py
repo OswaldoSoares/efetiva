@@ -81,3 +81,16 @@ def telefones_cliente(pdf, telefones):
         pdf.drawString(cmp(12), cmp(linha), f"{contato} - {tipo} - {numero}")
         linha -= 3
     return pdf
+
+
+def emails_cliente(pdf, emails):
+    global linha
+    pdf.setFont("Times-Roman", 8)
+    for email in emails:
+        contato = email["Contato"]
+        email = email["EMail"]
+        pdf.drawString(cmp(12), cmp(linha), f"{contato} - {email}")
+        linha -= 3
+    pdf.line(cmp(10), cmp(linha + 2), cmp(200), cmp(linha + 2))
+    linha -= 3
+    return pdf
