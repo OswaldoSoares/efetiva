@@ -145,9 +145,9 @@ def tipo_pagamento(pdf, tabela):
     else:
         text_porcentagem = "PORCENTAGEM"
     if hora:
-        text_hora = "HORA \u2713"
+        text_hora = "HORA ATÉ 17:00hs \u2713"
     else:
-        text_hora = "HORA"
+        text_hora = "HORA ATÉ 17:00hs"
     if kilometragem:
         text_kilometragem = "KILOMETRAGEM \u2713"
     else:
