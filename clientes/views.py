@@ -323,7 +323,6 @@ def exclui_tabela_perimetro(request, idtabelaperimetro):
 
 def imprime_ficha_cadastral(request):
     idcliente = request.GET.get("idcliente")
-    contexto = {"idcliente": idcliente}
-    #  contexto = facade.print_recibo(c_idrecibo)
+    contexto = facade.create_contexto_cliente(idcliente)
     response = ficha_cadastral(contexto)
     return response
