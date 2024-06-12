@@ -152,6 +152,17 @@ def cobranca_cliente(pdf, cobranca):
 
 
 def tabela_cliente(pdf, tabela):
+    """
+        Imprime a tabela do cliente.
+        Seguro, Taxa de expedição, Ajudante e Hora Extra Ajudante
+    Args:
+        pdf: reportlab.pdfgen.canvas.Canvas
+        tabela:
+
+    Returns:
+        pdf: reportlab.pdfgen.canvas.Canvas
+
+    """
     global linha
     seguro = f'Seguro: {tabela["Seguro"]}% \u002A'
     taxa = f'Taxa de Expedição/GR: R$ {tabela["TaxaExpedicao"]}'
