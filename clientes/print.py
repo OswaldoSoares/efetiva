@@ -119,3 +119,38 @@ def tabela_cliente(pdf, tabela):
     pdf.line(cmp(10), cmp(linha - 1), cmp(200), cmp(linha - 1))
     linha -= 3
     return pdf
+
+
+def tipo_pagamento(pdf, tabela):
+    global linha
+    phkesc = tabela["phkescCobra"]
+    porcentagem = int(phkesc[0])
+    hora = int(phkesc[1])
+    kilometragem = int(phkesc[2])
+    entrega = int(phkesc[3])
+    entrega_kg = int(phkesc[6])
+    entrega_volume = int(phkesc[7])
+    saida = int(phkesc[4])
+    pdf.line(cmp(11), cmp(linha), cmp(199), cmp(linha))
+    linha -= 3
+    pdf.setFont("Times-Roman", 7)
+    pdf.drawCentredString(cmp(24.5), cmp(linha), "PERIMETRO")
+    pdf.drawCentredString(cmp(51.5), cmp(linha), "HORA")
+    pdf.drawCentredString(cmp(78.5), cmp(linha), "KILOMETRAGEM")
+    pdf.drawCentredString(cmp(105.5), cmp(linha), "ENTREGA")
+    pdf.drawCentredString(cmp(132.5), cmp(linha), "ENTREGA KG")
+    pdf.drawCentredString(cmp(159.5), cmp(linha), "ENTREGA VOLUME")
+    pdf.drawCentredString(cmp(186.5), cmp(linha), "SAÍDA")
+    pdf.setFont("Times-Roman", 8)
+    linha -= 1
+    pdf.line(cmp(11), cmp(linha), cmp(11), cmp(linha + 4))
+    pdf.line(cmp(38), cmp(linha), cmp(38), cmp(linha + 4))
+    pdf.line(cmp(65), cmp(linha), cmp(65), cmp(linha + 4))
+    pdf.line(cmp(92), cmp(linha), cmp(92), cmp(linha + 4))
+    pdf.line(cmp(119), cmp(linha), cmp(119), cmp(linha + 4))
+    pdf.line(cmp(146), cmp(linha), cmp(146), cmp(linha + 4))
+    pdf.line(cmp(173), cmp(linha), cmp(173), cmp(linha + 4))
+    pdf.line(cmp(199), cmp(linha), cmp(199), cmp(linha + 4))
+    pdf.line(cmp(11), cmp(linha), cmp(199), cmp(linha))
+    linha -= 6
+    return pdf
