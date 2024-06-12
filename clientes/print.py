@@ -140,16 +140,44 @@ def tipo_pagamento(pdf, tabela):
     entrega_kg = int(phkesc[6])
     entrega_volume = int(phkesc[7])
     saida = int(phkesc[4])
+    if porcentagem:
+        text_porcentagem = "PORCENTAGEM \u2713"
+    else:
+        text_porcentagem = "PORCENTAGEM"
+    if hora:
+        text_hora = "HORA \u2713"
+    else:
+        text_hora = "HORA"
+    if kilometragem:
+        text_kilometragem = "KILOMETRAGEM \u2713"
+    else:
+        text_kilometragem = "KILOMETRAGEM"
+    if entrega:
+        text_entrega = "ENTREGA \u2713"
+    else:
+        text_entrega = "ENTREGA"
+    if entrega_kg:
+        text_entrega_kg = "ENTREGA KG \u2713"
+    else:
+        text_entrega_kg = "ENTREGA KG"
+    if entrega_volume:
+        text_entrega_volume = "ENTREGA VOLUME \u2713"
+    else:
+        text_entrega_volume = "ENTREGA VOLUME"
+    if saida:
+        text_saida = "SAÍDA \u2713"
+    else:
+        text_saida = "SAÍDA"
     pdf.line(cmp(11), cmp(linha), cmp(199), cmp(linha))
     linha -= 3
     pdf.setFont("Times-Roman", 7)
-    pdf.drawCentredString(cmp(24.5), cmp(linha), "PERIMETRO")
-    pdf.drawCentredString(cmp(51.5), cmp(linha), "HORA")
-    pdf.drawCentredString(cmp(78.5), cmp(linha), "KILOMETRAGEM")
-    pdf.drawCentredString(cmp(105.5), cmp(linha), "ENTREGA")
-    pdf.drawCentredString(cmp(132.5), cmp(linha), "ENTREGA KG")
-    pdf.drawCentredString(cmp(159.5), cmp(linha), "ENTREGA VOLUME")
-    pdf.drawCentredString(cmp(186.5), cmp(linha), "SAÍDA")
+    pdf.drawCentredString(cmp(24.5), cmp(linha), text_porcentagem)
+    pdf.drawCentredString(cmp(51.5), cmp(linha), text_hora)
+    pdf.drawCentredString(cmp(78.5), cmp(linha), text_kilometragem)
+    pdf.drawCentredString(cmp(105.5), cmp(linha), text_entrega)
+    pdf.drawCentredString(cmp(132.5), cmp(linha), text_entrega_kg)
+    pdf.drawCentredString(cmp(159.5), cmp(linha), text_entrega_volume)
+    pdf.drawCentredString(cmp(186.5), cmp(linha), text_saida)
     pdf.setFont("Times-Roman", 8)
     linha -= 1
     pdf.line(cmp(11), cmp(linha), cmp(11), cmp(linha + 4))
