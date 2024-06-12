@@ -290,7 +290,8 @@ class MinutaSelecionada:
             itens["CapacidadePaga"]
             for itens in self.tabela_capacidade
             if itens["CapacidadeInicial"]
-            <= self.total_kms()
+            # Verificar peso total 12/06/2024
+            #  <= self.total_kms()
             <= itens["CapacidadeFinal"]
         ]
         perimetro = [
@@ -427,7 +428,8 @@ class MinutaSelecionada:
             itens["CapacidadeCobra"]
             for itens in self.tabela_capacidade
             if itens["CapacidadeInicial"]
-            <= self.total_kms()
+            # Verificar peso total 12/06/2024
+            #  <= self.total_kms()
             <= itens["CapacidadeFinal"]
         ]
         perimetro = [
