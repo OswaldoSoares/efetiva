@@ -123,6 +123,17 @@ def telefones_cliente(pdf, telefones):
 
 
 def emails_cliente(pdf, emails):
+    """
+        Imprime os emails de contato do cliente
+        Contato e email
+    Args:
+        pdf: reportlab.pdfgen.canvas.Canvas
+        emails: dict
+
+    Returns:
+        pdf: reportlab.pdfgen.canvas.Canvas
+
+    """
     global linha
     pdf.setFont("DejaVuSans", 7)
     for email in emails:
