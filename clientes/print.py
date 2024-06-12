@@ -95,6 +95,17 @@ def dados_cliente(pdf, cliente):
 
 
 def telefones_cliente(pdf, telefones):
+    """
+        Imprime os telefones de contato do cliente
+        Contato, Tipo e Número
+    Args:
+        pdf: reportlab.pdfgen.canvas.Canvas
+        telefones: dict
+
+    Returns:
+        pdf: reportlab.pdfgen.canvas.Canvas
+
+    """
     global linha
     linha = 242.8
     pdf.setFont("DejaVuSans", 9)
