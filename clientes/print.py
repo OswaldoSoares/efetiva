@@ -187,6 +187,20 @@ def tabela_cliente(pdf, tabela):
 
 
 def tipo_pagamento(pdf, tabela, forma_pgto):
+    """
+        Imprime a forma de pagamento e quais os tipos de cobrança estão
+        ativados.
+        Porcentagem - Hora - Kilometragem - Entrega - Entrega KG - Entrega
+        Volume - Saída
+    Args:
+        pdf: reportlab.pdfgen.canvas.Canvas
+        tabela: dict
+        forma_pgto: str
+
+    Returns:
+        pdf: reportlab.pdfgen.canvas.Canvas
+
+    """
     global linha
     pdf.setFont("DejaVuSans", 9)
     pdf.drawCentredString(
