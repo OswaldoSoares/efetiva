@@ -254,6 +254,8 @@ def form_cliente(request, c_form, c_idobj, c_url, c_view, idcliente):
             peso = TabelaCapacidade.objects.filter(
                 idCliente=idcliente
             ).aggregate(peso=Max("CapacidadeFinal"))
+            if not peso["peso"]:
+                peso["peso"] = 0
             form = c_form(
                 initial={
                     "CapacidadeInicial": peso["peso"] + 1,
