@@ -154,3 +154,62 @@ def tipo_pagamento(pdf, tabela):
     pdf.line(cmp(11), cmp(linha), cmp(199), cmp(linha))
     linha -= 6
     return pdf
+
+
+def veiculos_cliente(pdf, veiculos, tabela):
+    global linha
+    pdf.setFillColor(HexColor("#B0C4DE"))
+    pdf.setStrokeColor(HexColor("#B0C4DE"))
+    pdf.rect(cmp(11), cmp(linha), cmp(188), cmp(4), fill=1, stroke=1)
+    pdf.setStrokeColor(HexColor("#000000"))
+    pdf.setFillColor(HexColor("#000000"))
+    pdf.line(cmp(11), cmp(linha + 4), cmp(199), cmp(linha + 4))
+    pdf.drawCentredString(cmp(105), cmp(linha + 1), "TABELA VEICULO")
+    pdf.line(cmp(11), cmp(linha), cmp(199), cmp(linha))
+    linha -= 3
+    linha_superior = linha + 3
+    pdf.setFont("Times-Roman", 7)
+    pdf.drawCentredString(cmp(28), cmp(linha + 0.3), "TIPO VEÍCULO")
+    pdf.drawCentredString(cmp(56), cmp(linha + 0.3), "PORCENTAGEM")
+    pdf.drawCentredString(cmp(78), cmp(linha + 0.3), "(MÍNIMO) HORA")
+    pdf.drawCentredString(cmp(100), cmp(linha + 0.3), "KILOMETRAGEM")
+    pdf.drawCentredString(cmp(122), cmp(linha + 0.3), "ENTREGA")
+    pdf.drawCentredString(cmp(144), cmp(linha + 0.3), "ENTREGA KG")
+    pdf.drawCentredString(cmp(166), cmp(linha + 0.3), "ENTREGA VOLUME")
+    pdf.drawCentredString(cmp(188), cmp(linha + 0.3), "SAÍDA")
+    pdf.setFont("Times-Roman", 8)
+    pdf.line(cmp(11), cmp(linha - 1), cmp(199), cmp(linha - 1))
+    linha -= 4
+    for veiculo in veiculos:
+        categoria = veiculo["idCategoriaVeiculo__Categoria"]
+        valor_porcentagem = veiculo["PorcentagemCobra"]
+        valor_hora = veiculo["HoraCobra"]
+        minimo_hora = datetime.time.strftime(veiculo["HoraMinimo"], "%H")
+        valor_kilometragem = veiculo["KMCobra"]
+        valor_entrega = veiculo["EntregaCobra"]
+        valor_entrega_kg = veiculo["EntregaKGCobra"]
+        valor_entrega_volume = veiculo["EntregaVolumeCobra"]
+        valor_saida = veiculo["SaidaCobra"]
+        pdf.drawString(cmp(12), cmp(linha), f"{categoria}")
+        pdf.drawRightString(cmp(66), cmp(linha), f"R$ {valor_porcentagem}")
+        pdf.drawRightString(
+            cmp(88), cmp(linha), f"({minimo_hora}) R$ {valor_hora}"
+        )
+        pdf.drawRightString(cmp(110), cmp(linha), f"R$ {valor_kilometragem}")
+        pdf.drawRightString(cmp(132), cmp(linha), f"R$ {valor_entrega}")
+        pdf.drawRightString(cmp(154), cmp(linha), f"R$ {valor_entrega_kg}")
+        pdf.drawRightString(cmp(176), cmp(linha), f"R$ {valor_entrega_volume}")
+        pdf.drawRightString(cmp(198), cmp(linha), f"R$ {valor_saida}")
+        linha -= 3
+    pdf.line(cmp(11), cmp(linha + 2), cmp(11), cmp(linha_superior + 4))
+    pdf.line(cmp(45), cmp(linha + 2), cmp(45), cmp(linha_superior))
+    pdf.line(cmp(67), cmp(linha + 2), cmp(67), cmp(linha_superior))
+    pdf.line(cmp(89), cmp(linha + 2), cmp(89), cmp(linha_superior))
+    pdf.line(cmp(111), cmp(linha + 2), cmp(111), cmp(linha_superior))
+    pdf.line(cmp(133), cmp(linha + 2), cmp(133), cmp(linha_superior))
+    pdf.line(cmp(155), cmp(linha + 2), cmp(155), cmp(linha_superior))
+    pdf.line(cmp(177), cmp(linha + 2), cmp(177), cmp(linha_superior))
+    pdf.line(cmp(199), cmp(linha + 2), cmp(199), cmp(linha_superior + 4))
+    pdf.line(cmp(11), cmp(linha + 2), cmp(199), cmp(linha + 2))
+    linha -= 4
+    return pdf
