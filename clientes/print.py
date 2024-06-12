@@ -26,11 +26,11 @@ def ficha_cadastral(contexto):
     response = HttpResponse(content_type="application/pdf")
     response[
         "Content-Disposition"
-    ] = f'filename="Ficha Cadastral {cliente}.pdf'
+    ] = f'filename="FICHA CADASTRAL {fantasia}.pdf"'
     buffer = BytesIO()
     pdf = canvas.Canvas(buffer)
     header(pdf)
-    pdf.setTitle(f"FICHA CADASTRAL {cliente}.pdf")
+    pdf.setTitle(f"FICHA CADASTRAL {fantasia}.pdf")
     pdf.save()
     buffer.seek(0)
     pdf = buffer.getvalue()
