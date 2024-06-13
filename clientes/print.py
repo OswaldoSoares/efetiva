@@ -9,6 +9,7 @@ from reportlab.pdfgen import canvas
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics
 from reportlab.graphics.shapes import Drawing
+from reportlab.graphics.charts.barcharts import VerticalBarChart
 from website.facade import cmp
 from website.print import header
 from transefetiva.settings.settings import STATIC_ROOT
