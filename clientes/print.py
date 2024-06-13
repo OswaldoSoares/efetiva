@@ -28,6 +28,12 @@ class LinhaClasse:
 
     @classmethod
     def set_valor(cls, linha):
+        """
+            Armazena novo valor da linha
+        Args:
+            linha: int
+
+        """
         cls._valor = linha
 
 
