@@ -103,7 +103,6 @@ def dados_cliente(pdf, cliente):
         pdf: reportlab.pdfgen.canvas.Canvas
 
     """
-    global linha
     nome = cliente["Nome"]
     cnpj = cliente["CNPJ"]
     endereco = cliente["Endereco"]
