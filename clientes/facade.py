@@ -18,6 +18,7 @@ from clientes.models import (
     TabelaPerimetro,
     TabelaCapacidade,
 )
+from collections import Counter
 
 # TODO IMPORTAR FROM FACADE VEICULOS
 from veiculos.models import CategoriaVeiculo
