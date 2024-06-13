@@ -346,25 +346,29 @@ def veiculos_cliente(pdf, veiculos, tabela):
     linha -= 4
     pdf.setFont("DejaVuSans", 7)
     for veiculo in veiculos:
-        categoria = veiculo["idCategoriaVeiculo__Categoria"]
-        valor_porcentagem = veiculo["PorcentagemCobra"]
-        valor_hora = veiculo["HoraCobra"]
-        minimo_hora = datetime.time.strftime(veiculo["HoraMinimo"], "%H")
-        valor_kilometragem = veiculo["KMCobra"]
-        valor_entrega = veiculo["EntregaCobra"]
-        valor_entrega_kg = veiculo["EntregaKGCobra"]
-        valor_entrega_volume = veiculo["EntregaVolumeCobra"]
-        valor_saida = veiculo["SaidaCobra"]
-        pdf.drawString(cmp(12), cmp(linha), f"{categoria}")
-        pdf.drawRightString(cmp(66), cmp(linha), f"R$ {valor_porcentagem}")
-        pdf.drawRightString(
-            cmp(88), cmp(linha), f"({minimo_hora}) R$ {valor_hora}"
+        pdf.drawString(
+            cmp(12), cmp(linha), f"{veiculo['idCategoriaVeiculo__Categoria']}"
         )
-        pdf.drawRightString(cmp(110), cmp(linha), f"R$ {valor_kilometragem}")
-        pdf.drawRightString(cmp(132), cmp(linha), f"R$ {valor_entrega}")
-        pdf.drawRightString(cmp(154), cmp(linha), f"R$ {valor_entrega_kg}")
-        pdf.drawRightString(cmp(176), cmp(linha), f"R$ {valor_entrega_volume}")
-        pdf.drawRightString(cmp(198), cmp(linha), f"R$ {valor_saida}")
+        pdf.drawRightString(
+            cmp(66), cmp(linha), f"R$ {veiculo['PorcentagemCobra']}"
+        )
+        minimo_hora = f"{datetime.time.strftime(veiculo['HoraMinimo'], '%H')}"
+        pdf.drawRightString(
+            cmp(88), cmp(linha), f"{minimo_hora} R$ {veiculo['HoraCobra']}"
+        )
+        pdf.drawRightString(cmp(110), cmp(linha), f"R$ {veiculo['KMCobra']}")
+        pdf.drawRightString(
+            cmp(132), cmp(linha), f"R$ {veiculo['EntregaCobra']}"
+        )
+        pdf.drawRightString(
+            cmp(154), cmp(linha), f"R$ {veiculo['EntregaKGCobra']}"
+        )
+        pdf.drawRightString(
+            cmp(176), cmp(linha), f"R$ {veiculo['EntregaVolumeCobra']}"
+        )
+        pdf.drawRightString(
+            cmp(198), cmp(linha), f"R$ {veiculo['SaidaCobra']}"
+        )
         linha -= 3
     pdf.line(cmp(11), cmp(linha + 2), cmp(11), cmp(linha_superior + 4))
     pdf.line(cmp(45), cmp(linha + 2), cmp(45), cmp(linha_superior))
