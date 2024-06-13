@@ -431,3 +431,18 @@ def create_contexto_cliente(idcliente):
         "forma_pagamento": forma_pagamento,
     }
     return contexto
+def create_contexto_quantidade_minutas_dia(idcliente):
+    minutas = list(get_minutas_cliente(idcliente).values())
+    hoje = datetime.now().date()
+    data_inicio = hoje - relativedelta(months=2, day=1)
+    filtra_minutas = [
+        item["DataMinuta"]
+        for item in minutas
+        if item["DataMinuta"] >= data_inicio
+    ]
+    contagem = Counter(filtra_minutas)
+    contexto = [
+        {"data": data, "quantidade": quantidade}
+        for data, quantidade in contagem.items()
+    ]
+    return contexto
