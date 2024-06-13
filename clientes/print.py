@@ -240,52 +240,17 @@ def tipo_pagamento(pdf, tabela, forma_pgto):
         cmp(105), cmp(linha), f"FORMA DE PAGAMENTO: {forma_pgto}"
     )
     linha -= 2
-    phkesc = tabela["phkescCobra"]
-    porcentagem = int(phkesc[0])
-    hora = int(phkesc[1])
-    kilometragem = int(phkesc[2])
-    entrega = int(phkesc[3])
-    entrega_kg = int(phkesc[6])
-    entrega_volume = int(phkesc[7])
-    saida = int(phkesc[4])
-    if porcentagem:
-        text_porcentagem = "PORCENTAGEM \u2714"
-    else:
-        text_porcentagem = "PORCENTAGEM \u2718"
-    if hora:
-        text_hora = "HORA ATÉ 17:00hs \u2714"
-    else:
-        text_hora = "HORA ATÉ 17:00hs \u2718"
-    if kilometragem:
-        text_kilometragem = "KILOMETRAGEM \u2714"
-    else:
-        text_kilometragem = "KILOMETRAGEM \u2718"
-    if entrega:
-        text_entrega = "ENTREGA \u2714"
-    else:
-        text_entrega = "ENTREGA \u2718"
-    if entrega_kg:
-        text_entrega_kg = "ENTREGA KG \u2714"
-    else:
-        text_entrega_kg = "ENTREGA KG \u2718"
-    if entrega_volume:
-        text_entrega_volume = "ENTREGA VOLUME \u2714"
-    else:
-        text_entrega_volume = "ENTREGA VOLUME \u2718"
-    if saida:
-        text_saida = "SAÍDA \u2714"
-    else:
-        text_saida = "SAÍDA \u2718"
     pdf.line(cmp(11), cmp(linha), cmp(199), cmp(linha))
     linha -= 3
+    phkes = phkes_tabela(tabela)
     pdf.setFont("DejaVuSans", 6)
-    pdf.drawCentredString(cmp(24.5), cmp(linha), text_porcentagem)
-    pdf.drawCentredString(cmp(51.5), cmp(linha), text_hora)
-    pdf.drawCentredString(cmp(78.5), cmp(linha), text_kilometragem)
-    pdf.drawCentredString(cmp(105.5), cmp(linha), text_entrega)
-    pdf.drawCentredString(cmp(132.5), cmp(linha), text_entrega_kg)
-    pdf.drawCentredString(cmp(159.5), cmp(linha), text_entrega_volume)
-    pdf.drawCentredString(cmp(186.5), cmp(linha), text_saida)
+    pdf.drawCentredString(cmp(24.5), cmp(linha), phkes["porcentagem"])
+    pdf.drawCentredString(cmp(51.5), cmp(linha), phkes["hora"])
+    pdf.drawCentredString(cmp(78.5), cmp(linha), phkes["kilometragem"])
+    pdf.drawCentredString(cmp(105.5), cmp(linha), phkes["entrega"])
+    pdf.drawCentredString(cmp(132.5), cmp(linha), phkes["entrega_kg"])
+    pdf.drawCentredString(cmp(159.5), cmp(linha), phkes["entrega_volume"])
+    pdf.drawCentredString(cmp(186.5), cmp(linha), phkes["saida"])
     linha -= 1
     pdf.line(cmp(11), cmp(linha), cmp(11), cmp(linha + 4))
     pdf.line(cmp(38), cmp(linha), cmp(38), cmp(linha + 4))
