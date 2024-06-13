@@ -14,6 +14,13 @@ from transefetiva.settings.settings import STATIC_ROOT
 
 
 class LinhaClasse:
+    """
+        Pega e armazena valor da linha. Valor inivial 297
+    Attributes:
+        _valor: int
+
+    """
+
     _valor = 297
 
     @classmethod
