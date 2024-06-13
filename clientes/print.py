@@ -13,30 +13,16 @@ from website.print import header
 from transefetiva.settings.settings import STATIC_ROOT
 
 
-class LinhaClasse:  # pylint: disable=too-few-public-methods
-    """
-        class para manter o número de linha atualizado em todo o módulo
-    Attributes:
-        _linha: int
+class LinhaClasse:
+    _valor = 297
 
-    """
+    @classmethod
+    def get_valor(cls):
+        return cls._valor
 
-    def __init__(self):
-        self._linha = 297
-
-    @property
-    def valor(self):
-        """
-            Pega o valor da variavél linha
-        Returns:
-            self._linha: int
-
-        """
-        return self._linha
-
-    @valor.setter
-    def valor(self, novo_valor):
-        self._linha = novo_valor
+    @classmethod
+    def set_valor(cls, linha):
+        cls._valor = linha
 
 
 def ficha_cadastral(contexto):
