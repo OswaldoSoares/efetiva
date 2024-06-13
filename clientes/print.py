@@ -267,6 +267,16 @@ def tipo_pagamento(pdf, tabela, forma_pgto):
 
 
 def phkes_tabela(tabela):
+    """
+        Gera texto com simbolos dependendo se o tipo de cobrança está
+        ativo ou não.
+    Args:
+        tabela: dict
+
+    Returns:
+        contexto: dict
+
+    """
     phkesc = tabela["phkescCobra"]
     porcentagem = (
         "PORCENTAGEM \u2714" if int(phkesc[0]) else "PORCENTAGEM \u2718"
