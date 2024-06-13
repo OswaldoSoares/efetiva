@@ -79,7 +79,7 @@ def ficha_cadastral(contexto):
     emails_cliente(pdf, emails)
     tabela_cliente(pdf, tabela)
     tipo_pagamento(pdf, tabela, forma_pgto)
-    veiculos_cliente(pdf, veiculos, tabela)
+    veiculos_cliente(pdf, veiculos)
     perimetro_cliente(pdf, perimetros)
     capacidades_cliente(pdf, capacidades)
     pdf.setTitle(f"FICHA CADASTRAL {fantasia}.pdf")
@@ -307,7 +307,7 @@ def phkes_tabela(tabela):
     return contexto
 
 
-def veiculos_cliente(pdf, veiculos, tabela):
+def veiculos_cliente(pdf, veiculos):
     """
         Imprime a tabela de veiculos do cliente
         Porcentagem - Hora - Kilometragem - Entrega - Entrega KG - Entrega
