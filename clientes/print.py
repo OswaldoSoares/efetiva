@@ -124,7 +124,6 @@ def telefones_cliente(pdf, telefones):
         pdf: reportlab.pdfgen.canvas.Canvas
 
     """
-    global linha
     linha = 242.8
     pdf.setFont("DejaVuSans", 9)
     pdf.drawCentredString(cmp(105), cmp(linha), "CONTATOS")
@@ -137,6 +136,7 @@ def telefones_cliente(pdf, telefones):
         numero = telefone["Fone"]
         pdf.drawString(cmp(12), cmp(linha), f"{contato} - {tipo} - {numero}")
         linha -= 3
+    LinhaClasse().set_valor(linha)
     return pdf
 
 
@@ -152,7 +152,7 @@ def emails_cliente(pdf, emails):
         pdf: reportlab.pdfgen.canvas.Canvas
 
     """
-    global linha
+    linha = LinhaClasse().get_valor()
     pdf.setFont("DejaVuSans", 7)
     for email in emails:
         contato = email["Contato"]
@@ -161,6 +161,7 @@ def emails_cliente(pdf, emails):
         linha -= 3
     pdf.line(cmp(10), cmp(linha + 2), cmp(200), cmp(linha + 2))
     linha -= 3
+    LinhaClasse().set_valor(linha)
     return pdf
 
 
@@ -176,7 +177,7 @@ def tabela_cliente(pdf, tabela):
         pdf: reportlab.pdfgen.canvas.Canvas
 
     """
-    global linha
+    linha = LinhaClasse().get_valor()
     seguro = f'Seguro: {tabela["Seguro"]}% \u002A'
     taxa = f'Taxa de Expedição/GR: R$ {tabela["TaxaExpedicao"]}'
     ajudante = f'Ajudante: R$ {tabela["AjudanteCobra"]}'
@@ -196,6 +197,7 @@ def tabela_cliente(pdf, tabela):
     pdf.drawString(cmp(11), cmp(linha), asteristico_1)
     pdf.line(cmp(10), cmp(linha - 1), cmp(200), cmp(linha - 1))
     linha -= 5
+    LinhaClasse().set_valor(linha)
     return pdf
 
 
@@ -214,7 +216,7 @@ def tipo_pagamento(pdf, tabela, forma_pgto):
         pdf: reportlab.pdfgen.canvas.Canvas
 
     """
-    global linha
+    linha = LinhaClasse().get_valor()
     pdf.setFont("DejaVuSans", 9)
     pdf.drawCentredString(
         cmp(105), cmp(linha), f"FORMA DE PAGAMENTO: {forma_pgto}"
@@ -277,6 +279,7 @@ def tipo_pagamento(pdf, tabela, forma_pgto):
     pdf.line(cmp(199), cmp(linha), cmp(199), cmp(linha + 4))
     pdf.line(cmp(11), cmp(linha), cmp(199), cmp(linha))
     linha -= 6
+    LinhaClasse().set_valor(linha)
     return pdf
 
 
@@ -294,7 +297,7 @@ def veiculos_cliente(pdf, veiculos, tabela):
         pdf: reportlab.pdfgen.canvas.Canvas
 
     """
-    global linha
+    linha = LinhaClasse().get_valor()
     pdf.setFillColor(HexColor("#B0C4DE"))
     pdf.setStrokeColor(HexColor("#B0C4DE"))
     pdf.rect(cmp(11), cmp(linha), cmp(188), cmp(4), fill=1, stroke=1)
@@ -350,6 +353,7 @@ def veiculos_cliente(pdf, veiculos, tabela):
     pdf.line(cmp(199), cmp(linha + 2), cmp(199), cmp(linha_superior + 4))
     pdf.line(cmp(11), cmp(linha + 2), cmp(199), cmp(linha + 2))
     linha -= 4
+    LinhaClasse().set_valor(linha)
     return pdf
 
 
@@ -365,7 +369,7 @@ def perimetro_cliente(pdf, perimetros):
         pdf: reportlab.pdfgen.canvas.Canvas
 
     """
-    global linha
+    linha = LinhaClasse().get_valor()
     linha_inicial = linha
     pdf.setFillColor(HexColor("#B0C4DE"))
     pdf.setStrokeColor(HexColor("#B0C4DE"))
@@ -402,7 +406,7 @@ def perimetro_cliente(pdf, perimetros):
     pdf.line(cmp(11), cmp(linha + 2), cmp(11), cmp(linha_superior + 4))
     pdf.line(cmp(96), cmp(linha + 2), cmp(96), cmp(linha_superior + 4))
     pdf.line(cmp(11), cmp(linha + 2), cmp(96), cmp(linha + 2))
-    linha = linha_inicial
+    LinhaClasse().set_valor(linha_inicial)
     return pdf
 
 
@@ -418,7 +422,7 @@ def capacidades_cliente(pdf, capacidades):
         pdf: reportlab.pdfgen.canvas.Canvas
 
     """
-    global linha
+    linha = LinhaClasse().get_valor()
     pdf.setFillColor(HexColor("#B0C4DE"))
     pdf.setStrokeColor(HexColor("#B0C4DE"))
     pdf.rect(cmp(114), cmp(linha), cmp(85), cmp(4), fill=1, stroke=1)
@@ -457,4 +461,5 @@ def capacidades_cliente(pdf, capacidades):
     pdf.line(cmp(199), cmp(linha + 2), cmp(199), cmp(linha_superior + 4))
     pdf.line(cmp(114), cmp(linha + 2), cmp(199), cmp(linha + 2))
     linha -= 3
+    LinhaClasse().set_valor(linha)
     return pdf
