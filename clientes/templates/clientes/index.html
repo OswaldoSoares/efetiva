@@ -1,4 +1,5 @@
 {% extends 'clientes/baseclientes.html' %}
+{% load permission_tags %}
 
 {% block maincliente %}
     <div class="cliente-conteudo">
@@ -50,8 +51,10 @@
                                 </button>
                             </td>
                             <td class="seleciona_registo">
+                                {% if user|can:'estorna_minuta' %}
                                 <a class="icofont-printer" target="_blank"
                                    href="{% url 'imprime_ficha_cadastral' %}?idcliente={{ itens.idCliente }}"></a>
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}

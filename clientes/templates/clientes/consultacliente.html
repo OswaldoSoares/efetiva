@@ -1,4 +1,5 @@
 {% extends 'clientes/baseclientes.html' %}
+{% load permission_tags %}
 
 {% block title %}
     Módulo Clientes
@@ -232,6 +233,7 @@
             {% endif %}
         </main>
     </div>
+    {% if user|can:'estorna_minuta' %}
     <div class="consulta">
         <header class="consulta-header-tabelas">
             <span>TABELA CLIENTE</span>
@@ -728,6 +730,7 @@
             {% endif %}
         </main>
     </div>
+    {% endif %}
     {% endfor %}
     <!-- DIV MODAL -->
     <div class="modal fade bd-example-modal-lg" id="MyModal" tabindex="-1">
