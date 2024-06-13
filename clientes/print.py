@@ -18,6 +18,12 @@ class LinhaClasse:
 
     @classmethod
     def get_valor(cls):
+        """
+            Pega o valor armazenado.
+        Returns:
+            cls._valor: int
+
+        """
         return cls._valor
 
     @classmethod
