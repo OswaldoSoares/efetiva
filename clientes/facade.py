@@ -18,6 +18,7 @@ from clientes.models import (
     TabelaPerimetro,
     TabelaCapacidade,
 )
+from minutas.facade import get_minutas_cliente
 from datetime import datetime
 from collections import Counter
 
