@@ -301,6 +301,37 @@ def tipo_pagamento(pdf, tabela, forma_pgto):
     return pdf
 
 
+def phkes_tabela(tabela):
+    phkesc = tabela["phkescCobra"]
+    porcentagem = (
+        "PORCENTAGEM \u2714" if int(phkesc[0]) else "PORCENTAGEM \u2718"
+    )
+    hora = (
+        "HORA ATÉ 17:00hs \u2714"
+        if int(phkesc[1])
+        else "HORA ATÉ 17:00hs \u2718"
+    )
+    kilometragem = (
+        "KILOMETRAGEM \u2714" if int(phkesc[2]) else "KILOMETRAGEM \u2718"
+    )
+    entrega = "ENTREGA \u2714" if int(phkesc[3]) else "ENTREGA \u2718"
+    entrega_kg = "ENTREGA KG \u2714" if int(phkesc[6]) else "ENTREGA KG \u2718"
+    entrega_volume = (
+        "ENTREGA VOLUME \u2714" if int(phkesc[7]) else "ENTREGA VOLUME \u2718"
+    )
+    saida = "SAÍDA \u2714" if int(phkesc[4]) else "SAÍDA \u2718"
+    contexto = {
+        "porcentagem": porcentagem,
+        "hora": hora,
+        "kilometragem": kilometragem,
+        "entrega": entrega,
+        "entrega_kg": entrega_kg,
+        "entrega_volume": entrega_volume,
+        "saida": saida,
+    }
+    return contexto
+
+
 def veiculos_cliente(pdf, veiculos, tabela):
     """
         Imprime a tabela de veiculos do cliente
