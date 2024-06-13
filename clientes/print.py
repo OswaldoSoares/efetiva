@@ -34,14 +34,14 @@ class LinhaClasse:
         return cls._valor
 
     @classmethod
-    def set_valor(cls, linha):
+    def set_valor(cls, valor_linha):
         """
             Armazena novo valor da linha
         Args:
             linha: int
 
         """
-        cls._valor = linha
+        cls._valor = valor_linha
 
 
 def ficha_cadastral(contexto):
