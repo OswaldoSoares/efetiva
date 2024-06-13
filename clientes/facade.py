@@ -431,7 +431,29 @@ def create_contexto_cliente(idcliente):
         "forma_pagamento": forma_pagamento,
     }
     return contexto
+
+
+def create_contexto_faturas_pagas_cliente(idcliente):
+    minutas = get_minutas_cliente(idcliente)
+    print(f"[INFO] Minutas {len(minutas)}")
+    faturas = get_fatura_pagas(idcliente)
+    print(f"[INFO] Faturas {len(faturas)}")
+    contexto = {"minutas": minutas, "faturas": faturas}
+    return contexto
+
+
 def create_contexto_quantidade_minutas_dia(idcliente):
+    """
+        Gera um contexo com data e quantiade.
+        Quantidade de minutas por dia do cliente, tendo como o inicio
+        no primeiro dia de dois meses anterior e o final a data de hoje
+    Args:
+        idcliente: int
+
+    Returns:
+        contexto: dict
+
+    """
     minutas = list(get_minutas_cliente(idcliente).values())
     hoje = datetime.now().date()
     data_inicio = hoje - relativedelta(months=2, day=1)
