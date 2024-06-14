@@ -12,6 +12,7 @@ from reportlab.graphics.shapes import Drawing
 from reportlab.graphics.charts.barcharts import VerticalBarChart
 from reportlab.graphics.charts.textlabels import Label
 from reportlab.graphics import renderPDF
+from reportlab.lib import colors
 from website.facade import cmp
 from website.print import header
 from transefetiva.settings.settings import STATIC_ROOT
