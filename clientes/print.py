@@ -530,7 +530,7 @@ def grafico_minutas_dia(pdf, minutas_dia):
     #  Criar o gráfico de barras
     bc = VerticalBarChart()
     bc.x = (cmp(210) - cmp(150)) / 2
-    bc.y = cmp(50)
+    bc.y = cmp(55)
     bc.height = cmp(30)
     bc.width = cmp(150)
     bc.data = qtde_y
@@ -546,10 +546,10 @@ def grafico_minutas_dia(pdf, minutas_dia):
     drawing.add(bc)
     # Cria Título
     titulo2 = Label()
-    titulo2.setOrigin(cmp(105), cmp(85))  # Define a posição do título
-    titulo2.setText(f"MINUTAS/DIA - Mês: {lista_mes_ano[2]}")
-    titulo2.fontName = "Helvetica-Bold"
-    titulo2.fontSize = 14
+    titulo2.setOrigin(cmp(105), cmp(90))  # Define a posição do título
+    titulo2.setText(f"Estatistica do mês: {lista_mes_ano[2]}")
+    titulo2.fontName = "DejaVuSans"
+    titulo2.fontSize = 10
     titulo2.fillColor = colors.black
     drawing.add(titulo2)
 
@@ -585,9 +585,9 @@ def grafico_minutas_dia(pdf, minutas_dia):
     # Cria Título
     titulo = Label()
     titulo.setOrigin(cmp(105), cmp(45))  # Define a posição do título
-    titulo.setText(f"MINUTAS/DIA - Mês: {lista_mes_ano[1]}")
-    titulo.fontName = "Helvetica-Bold"
-    titulo.fontSize = 14
+    titulo.setText(f"Estatistica do mês: {lista_mes_ano[1]}")
+    titulo.fontName = "DejaVuSans"
+    titulo.fontSize = 10
     titulo.fillColor = colors.black
     drawing.add(titulo)
 
