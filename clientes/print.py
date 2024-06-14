@@ -528,7 +528,7 @@ def grafico_minutas_dia(pdf, minutas_dia):
 
     drawing = Drawing(cmp(18), cmp(12))
     #  Criar o gráfico de barras
-    bc = VerticalBarChart()
+    bc = HorizontalLineChart()
     bc.x = (cmp(210) - cmp(150)) / 2
     bc.y = cmp(10)
     bc.height = cmp(60)
