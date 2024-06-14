@@ -89,6 +89,7 @@ def ficha_cadastral(contexto):
     veiculos_cliente(pdf, veiculos)
     perimetro_cliente(pdf, perimetros)
     capacidades_cliente(pdf, capacidades)
+    grafico_minutas_dia(pdf, minutas_dia)
     pdf.setTitle(f"FICHA CADASTRAL {fantasia}.pdf")
     pdf.save()
     buffer.seek(0)
