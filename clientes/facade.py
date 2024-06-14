@@ -463,8 +463,9 @@ def create_contexto_quantidade_minutas_dia(idcliente):
         if item["DataMinuta"] >= data_inicio
     ]
     contagem = Counter(filtra_minutas)
-    contexto = [
+    minutas_dia = [
         {"data": data, "quantidade": quantidade}
         for data, quantidade in contagem.items()
     ]
+    contexto = {"minutas_dia": minutas_dia}
     return contexto
