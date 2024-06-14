@@ -498,3 +498,66 @@ def capacidades_cliente(pdf, capacidades):
     linha -= 3
     LinhaClasse().set_valor(linha)
     return pdf
+
+
+def grafico_minutas_dia(pdf, minutas_dia):
+    # Dicionário para armazenar listas de dados por mês
+    dados_por_mes = defaultdict(list)
+    # Iterar sobre cada item e separar pelo mês/ano
+    for item in minutas_dia:
+        mes = item["data"].month  # Extrair o mês da data
+        ano = item["data"].year  # Extrair o ano da data
+        dados_por_mes[f"{mes}/{ano}"].append(item)
+    # Converter defaultdict para dict para facilitar o acesso
+    dados_por_mes = dict(dados_por_mes)
+    # Cria uma lista das chaves do dict
+    lista_mes_ano = list(dados_por_mes.keys())
+
+    lista_qtde = [
+        item["quantidade"] for item in dados_por_mes[lista_mes_ano[1]]
+    ]
+    tupla_qtde = tuple(lista_qtde)
+    qtde_y = []
+    qtde_y.append(tupla_qtde)
+    dias_x = [
+        datetime.date.strftime(item["data"], "%d")
+        for item in dados_por_mes[lista_mes_ano[1]]
+    ]
+
+    drawing = Drawing(cmp(18), cmp(12))
+    #  Criar o gráfico de barras
+    bc = VerticalBarChart()
+    bc.x = (cmp(210) - cmp(150)) / 2
+    bc.y = cmp(10)
+    bc.height = cmp(60)
+    bc.width = cmp(150)
+    bc.data = qtde_y
+    bc.strokeColor = colors.black
+    #  Configurar os eixos
+    bc.valueAxis.valueMin = 0
+    bc.categoryAxis.labels.boxAnchor = "ne"
+    bc.categoryAxis.labels.dx = 4
+    bc.categoryAxis.labels.dy = -2
+    bc.categoryAxis.labels.angle = 0
+    bc.categoryAxis.categoryNames = dias_x
+
+    drawing.add(bc)
+    # Cria Título
+    titulo1 = Label()
+    titulo1.setOrigin(cmp(105), cmp(80))  # Define a posição do título
+    titulo1.setText("MINUTAS / DIA")
+    titulo1.fontName = "Helvetica-Bold"
+    titulo1.fontSize = 16
+    titulo1.fillColor = colors.black
+    drawing.add(titulo1)
+    # Cria o Sub-título
+    titulo2 = Label()
+    titulo2.setOrigin(cmp(105), cmp(75))  # Define a posição do título
+    titulo2.setText(f"Mês: {lista_mes_ano[1]}")
+    titulo2.fontName = "Helvetica-Bold"
+    titulo2.fontSize = 14
+    titulo2.fillColor = colors.black
+    drawing.add(titulo2)
+
+    renderPDF.draw(drawing, pdf, 0, 250 - 200)
+    return pdf
