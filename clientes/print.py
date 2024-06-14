@@ -16,6 +16,7 @@ from reportlab.lib import colors
 from website.facade import cmp
 from website.print import header
 from transefetiva.settings.settings import STATIC_ROOT
+from collections import defaultdict
 
 
 class LinhaClasse:
