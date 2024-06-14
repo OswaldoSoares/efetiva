@@ -218,8 +218,8 @@ def tabela_cliente(pdf, tabela):
     pdf.drawCentredString(cmp(80.5), cmp(linha + 1), taxa)
     pdf.drawCentredString(cmp(129.5), cmp(linha + 1), ajudante)
     pdf.drawCentredString(cmp(178.5), cmp(linha + 1), extra)
-    asteristico_1 = "No caso de não haver cobrança de seguro (não haver cobertura). o risco do transporte corre por conta do clienye. Notas Fiscais é obrigatório constar CNPJ d transportadora para averbação."
-    pdf.setFont("DejaVuSans", 5)
+    asteristico_1 = "No caso de não haver cobrança de seguro (não haverá cobertura). o risco do transporte corre por conta do cliente. Notas Fiscais é obrigatório constar CNPJ da transportadora para averbação."
+    pdf.setFont("DejaVuSans", 5.5)
     linha -= 2
     pdf.drawString(cmp(11), cmp(linha), asteristico_1)
     pdf.line(cmp(10), cmp(linha - 1), cmp(200), cmp(linha - 1))
