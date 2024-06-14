@@ -531,7 +531,7 @@ def grafico_minutas_dia(pdf, minutas_dia):
     bc = HorizontalLineChart()
     bc.x = (cmp(210) - cmp(150)) / 2
     bc.y = cmp(10)
-    bc.height = cmp(60)
+    bc.height = cmp(40)
     bc.width = cmp(150)
     bc.data = qtde_y
     bc.strokeColor = colors.black
@@ -546,7 +546,7 @@ def grafico_minutas_dia(pdf, minutas_dia):
     drawing.add(bc)
     # Cria Título
     titulo1 = Label()
-    titulo1.setOrigin(cmp(105), cmp(80))  # Define a posição do título
+    titulo1.setOrigin(cmp(105), cmp(60))  # Define a posição do título
     titulo1.setText("MINUTAS / DIA")
     titulo1.fontName = "Helvetica-Bold"
     titulo1.fontSize = 16
@@ -554,7 +554,7 @@ def grafico_minutas_dia(pdf, minutas_dia):
     drawing.add(titulo1)
     # Cria o Sub-título
     titulo2 = Label()
-    titulo2.setOrigin(cmp(105), cmp(75))  # Define a posição do título
+    titulo2.setOrigin(cmp(105), cmp(55))  # Define a posição do título
     titulo2.setText(f"Mês: {lista_mes_ano[1]}")
     titulo2.fontName = "Helvetica-Bold"
     titulo2.fontSize = 14
