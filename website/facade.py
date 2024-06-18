@@ -135,6 +135,16 @@ def valor_ponto_milhar(valor, digitos_decimal):
 
 
 def date_to_boleto(date):
+    """
+        Função para converter datetime para o formato númerico, com base na
+        data de 07/10/1997, utilizado nos boletos bancários brasileiros.
+    Args:
+        date: datetime
+
+    Returns:
+        int: dalta_days
+
+    """
     base_date = datetime.date(1997, 10, 7)
     delta = date - base_date
     return delta.days
