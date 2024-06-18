@@ -134,6 +134,12 @@ def valor_ponto_milhar(valor, digitos_decimal):
         return valor_return
 
 
+def date_to_boleto(date):
+    base_date = datetime.date(1997, 10, 7)
+    delta = date - base_date
+    return delta.days
+
+
 def queries_inicio():
     reset_queries()
     start = time.time()
