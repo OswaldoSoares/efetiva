@@ -460,7 +460,7 @@ def create_contexto_quantidade_minutas_dia(idcliente):
     """
     minutas = list(get_minutas_cliente(idcliente).values())
     hoje = datetime.now().date()
-    data_inicio = hoje - relativedelta(months=2, day=1)
+    data_inicio = hoje - relativedelta(days=40)
     filtra_minutas = [
         item["DataMinuta"]
         for item in minutas
