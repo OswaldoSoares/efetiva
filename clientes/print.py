@@ -13,6 +13,7 @@ from reportlab.graphics.charts.barcharts import VerticalBarChart
 from reportlab.graphics.charts.linecharts import HorizontalLineChart
 from reportlab.graphics.charts.lineplots import LinePlot, makeMarker
 from reportlab.graphics.charts.textlabels import Label
+from reportlab.graphics.charts.legends import Legend
 from reportlab.graphics import renderPDF
 from reportlab.lib import colors
 from website.facade import cmp, date_to_boleto
