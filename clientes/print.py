@@ -531,6 +531,10 @@ def grafico_minutas_dia(pdf, minutas_dia, notas_dia):
         for item in dados_por_mes[lista_mes_ano[0]]
     ]
 
+    drawing = Drawing(cmp(18), cmp(12))
+    gera_graphics_lineplot(drawing, minutas_dia, notas_dia)
+    renderPDF.draw(drawing, pdf, 0, 0)
+    return pdf
 
 
 def gera_graphics_lineplot(drawing, minutas_dia, notas_dia):
@@ -684,6 +688,3 @@ def teste():
     titulo.fontSize = 10
     titulo.fillColor = colors.black
     drawing.add(titulo)
-
-    renderPDF.draw(drawing, pdf, 0, 250 - 200)
-    return pdf
