@@ -21,6 +21,7 @@ from clientes.models import (
 from romaneios.models import Romaneios, RomaneioNotas
 from faturamentos.facade import get_fatura_pagas
 from minutas.facade import get_minutas_cliente
+from minutas.models import Minuta
 from datetime import datetime
 from collections import Counter, defaultdict
 
