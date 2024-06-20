@@ -589,7 +589,10 @@ def gera_graphics_lineplot(drawing, minutas_dia, notas_dia):
     # Adicionar marcadores aos pontos de dados
     glp.lines[0].symbol = makeMarker("FilledCircle")
     glp.lines[1].symbol = makeMarker("FilledCircle")
-    glp.lines[1].symbol = makeMarker("FilledCircle")
+    glp.lines[2].symbol = makeMarker("FilledCircle")
+    glp.lines[0].strokeColor = colors.red
+    glp.lines[1].strokeColor = colors.blue
+    glp.lines[2].strokeColor = colors.green
     drawing.add(glp)
     # Adicionar rótulos com os valores de y em cada junção (x, y)
     deslocamento_x = 2
