@@ -521,14 +521,14 @@ def grafico_minutas_dia(pdf, minutas_dia, notas_dia):
     lista_mes_ano = list(dados_por_mes.keys())
 
     lista_qtde = [
-        item["quantidade"] for item in dados_por_mes[lista_mes_ano[2]]
+        item["quantidade"] for item in dados_por_mes[lista_mes_ano[0]]
     ]
     tupla_qtde = tuple(lista_qtde)
     qtde_y = []
     qtde_y.append(tupla_qtde)
     dias_x = [
         datetime.date.strftime(item["data"], "%d")
-        for item in dados_por_mes[lista_mes_ano[2]]
+        for item in dados_por_mes[lista_mes_ano[0]]
     ]
 
     drawing = Drawing(cmp(18), cmp(12))
