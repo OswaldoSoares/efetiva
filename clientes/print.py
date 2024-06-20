@@ -578,11 +578,34 @@ def gera_graphics_lineplot(drawing, minutas_dia, notas_dia):
     ).strftime("%d/%m")
     glp.xValueAxis.valueSteps = dates
     glp.yValueAxis.valueMin = 0  # Definindo o valor mínimo do eixo y para 0
+    glp.yValueAxis.valueMax = max(max(y for x, y in linha) for linha in dados)
     glp.yValueAxis.visibleGrid = 1
     # Adicionar marcadores aos pontos de dados
-    glp.lines[0].symbol = makeMarker("Square")
-    glp.lines[1].symbol = makeMarker("Circle")
+    glp.lines[0].symbol = makeMarker("FilledCircle")
+    glp.lines[1].symbol = makeMarker("FilledCircle")
+    glp.lines[1].symbol = makeMarker("FilledCircle")
     drawing.add(glp)
+    # Adicionar rótulos com os valores de y em cada junção (x, y)
+    deslocamento_x = 2
+    deslocamento_y = 2
+    for linha in dados:
+        for x, y in linha:
+            label = String(
+                glp.x
+                + (x - glp.xValueAxis.valueMin)
+                * glp.width
+                / (glp.xValueAxis.valueMax - glp.xValueAxis.valueMin)
+                + deslocamento_x,
+                glp.y
+                + (y - glp.yValueAxis.valueMin)
+                * glp.height
+                / (glp.yValueAxis.valueMax - glp.yValueAxis.valueMin),
+                #  + deslocamento_y,
+                str(y),
+                fontSize=6,
+                fillColor=colors.black,
+            )
+            drawing.add(label)
     # Criar e adicionar o título do gráfico
     titulo = Label()
     titulo.setOrigin(cmp(105), cmp(55))  # Centralizar o título no desenho
