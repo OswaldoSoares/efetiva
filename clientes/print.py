@@ -531,6 +531,92 @@ def grafico_minutas_dia(pdf, minutas_dia, notas_dia):
         for item in dados_por_mes[lista_mes_ano[0]]
     ]
 
+
+
+def gera_graphics_lineplot(drawing, minutas_dia, notas_dia):
+    dados = []
+    dados_minuta = []
+    dados_nota = []
+    dates = []
+    for item in minutas_dia[-40:]:
+        dados_minuta.append((date_to_boleto(item["data"]), item["quantidade"]))
+        dates.append(date_to_boleto(item["data"]))
+    dados.append(dados_minuta)
+    for item in notas_dia:
+        dados_nota.append(
+            (date_to_boleto(item), notas_dia[item]["quantidade"])
+        )
+    dados.append(dados_nota)
+    print(dados)
+    glp = LinePlot()
+    glp.x = (cmp(210) - cmp(150)) / 2  # Centralizar o gráfico na página
+    glp.y = cmp(20)
+    glp.width = cmp(150)
+    glp.height = cmp(30)
+    glp.data = dados
+    glp.strokeColor = colors.black
+    # Definir a cor de fundo do gráfico e centralizar junto com o gráfico
+    fundo = Rect(
+        glp.x, glp.y, glp.width, glp.height, fillColor=colors.lightgrey
+    )
+    drawing.add(fundo)
+    # Configurar os eixos
+    glp.xValueAxis.valueMin = min(dates)
+    glp.xValueAxis.valueMax = max(dates)
+    glp.xValueAxis.labels.angle = 70
+    glp.xValueAxis.labels.dx = -7
+    glp.xValueAxis.labels.dy = -14
+    glp.xValueAxis.labels.fontSize = 6
+    # Configurar os rótulos no eixo x
+    glp.xValueAxis.labelTextFormat = lambda x: (
+        datetime.datetime(1997, 10, 7) + datetime.timedelta(days=x)
+    ).strftime("%d/%m")
+    glp.xValueAxis.valueSteps = dates
+    glp.yValueAxis.valueMin = 0  # Definindo o valor mínimo do eixo y para 0
+    glp.yValueAxis.visibleGrid = 1
+    # Adicionar marcadores aos pontos de dados
+    glp.lines[0].symbol = makeMarker("Square")
+    glp.lines[1].symbol = makeMarker("Circle")
+    drawing.add(glp)
+    # Criar e adicionar o título do gráfico
+    titulo = Label()
+    titulo.setOrigin(cmp(105), cmp(55))  # Centralizar o título no desenho
+    titulo.setText("Estatísticas últimos 40 dias.")
+    titulo.fontName = "DejaVuSans"
+    titulo.fontSize = 10
+    titulo.fillColor = colors.black
+    titulo.textAnchor = "middle"  # Ancorar o texto no meio
+    drawing.add(titulo)
+    # Adicionar a legenda
+    legenda = Legend()
+    legenda.x = 330
+    legenda.y = 150
+    legenda.dx = 8
+    legenda.dy = 8
+    legenda.boxAnchor = "nw"
+    legenda.columnMaximum = 10
+    legenda.fontName = "DejaVuSans"
+    legenda.fontSize = 6
+    legenda.strokeWidth = 1
+    legenda.strokeColor = colors.black
+    legenda.deltax = 75
+    legenda.deltay = 10
+    legenda.autoXPadding = 5
+    legenda.yGap = 0
+    legenda.dxTextSpace = 5
+    legenda.alignment = "right"
+    legenda.dividerLines = 1 | 2 | 4
+    legenda.dividerOffsY = 4.5
+    legenda.subCols.rpad = 30
+    # Definir os nomes das legendas e suas cores
+    color_linha_0 = glp.lines[0].strokeColor
+    color_linha_1 = glp.lines[1].strokeColor
+    legenda.colorNamePairs = [
+        (color_linha_0, "Veículos"),
+        (color_linha_1, "Notas"),
+    ]
+    drawing.add(legenda)
+    return drawing
     drawing = Drawing(cmp(18), cmp(12))
     #  Criar o gráfico de barras
     bc = VerticalBarChart()
