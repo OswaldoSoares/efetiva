@@ -11,12 +11,11 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.graphics.shapes import Drawing, Rect
 from reportlab.graphics.charts.barcharts import VerticalBarChart
 from reportlab.graphics.charts.linecharts import HorizontalLineChart
-from reportlab.graphics.charts.lineplots import LinePlot
 from reportlab.graphics.charts.lineplots import LinePlot, makeMarker
 from reportlab.graphics.charts.textlabels import Label
 from reportlab.graphics import renderPDF
 from reportlab.lib import colors
-from website.facade import cmp
+from website.facade import cmp, date_to_boleto
 from website.print import header
 from transefetiva.settings.settings import STATIC_ROOT
 from collections import defaultdict
