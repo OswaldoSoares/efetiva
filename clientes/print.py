@@ -617,6 +617,9 @@ def gera_graphics_lineplot(drawing, minutas_dia, notas_dia):
     ]
     drawing.add(legenda)
     return drawing
+
+
+def teste():
     drawing = Drawing(cmp(18), cmp(12))
     #  Criar o gráfico de barras
     bc = VerticalBarChart()
