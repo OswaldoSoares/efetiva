@@ -20,7 +20,7 @@ from clientes.models import (
 )
 from minutas.facade import get_minutas_cliente
 from datetime import datetime
-from collections import Counter
+from collections import Counter, defaultdict
 
 # TODO IMPORTAR FROM FACADE VEICULOS
 from veiculos.models import CategoriaVeiculo
