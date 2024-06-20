@@ -20,6 +20,7 @@ from website.facade import cmp, date_to_boleto
 from website.print import header
 from transefetiva.settings.settings import STATIC_ROOT
 from collections import defaultdict
+from time import mktime
 
 
 class LinhaClasse:
