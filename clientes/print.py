@@ -650,9 +650,11 @@ def gera_graphics_lineplot(drawing, minutas_dia, notas_dia):
     # Definir os nomes das legendas e suas cores
     color_linha_0 = glp.lines[0].strokeColor
     color_linha_1 = glp.lines[1].strokeColor
+    color_linha_2 = glp.lines[2].strokeColor
     legenda.colorNamePairs = [
         (color_linha_0, "Veículos"),
         (color_linha_1, "Notas"),
+        (color_linha_2, "Valor Total"),
     ]
     drawing.add(legenda)
     return drawing
