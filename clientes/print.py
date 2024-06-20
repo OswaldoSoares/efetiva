@@ -605,8 +605,8 @@ def gera_graphics_lineplot(drawing, minutas_dia, notas_dia):
                 glp.y
                 + (y - glp.yValueAxis.valueMin)
                 * glp.height
-                / (glp.yValueAxis.valueMax - glp.yValueAxis.valueMin),
-                #  + deslocamento_y,
+                / (glp.yValueAxis.valueMax - glp.yValueAxis.valueMin)
+                + deslocamento_y,
                 str(y),
                 fontSize=6,
                 fillColor=colors.black,
