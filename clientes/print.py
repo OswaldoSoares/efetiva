@@ -21,6 +21,7 @@ from website.print import header
 from transefetiva.settings.settings import STATIC_ROOT
 from collections import defaultdict
 from time import mktime
+from decimal import Decimal
 
 
 class LinhaClasse:
