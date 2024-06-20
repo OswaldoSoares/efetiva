@@ -95,7 +95,7 @@ def ficha_cadastral(contexto):
     perimetro_cliente(pdf, perimetros)
     capacidades_cliente(pdf, capacidades)
     if len(minutas_dia) > 0:
-        grafico_minutas_dia(pdf, minutas_dia)
+        grafico_minutas_dia(pdf, minutas_dia, notas_dia)
     pdf.setTitle(f"FICHA CADASTRAL {fantasia}.pdf")
     pdf.save()
     buffer.seek(0)
