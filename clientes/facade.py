@@ -473,3 +473,56 @@ def create_contexto_quantidade_minutas_dia(idcliente):
     ]
     contexto = {"minutas_dia": minutas_dia}
     return contexto
+
+
+def create_contexto_quantidade_notas_dia(idcliente):
+    hoje = datetime.now().date()
+    inicio = hoje - relativedelta(days=40)
+    minutas = list(
+        Minuta.objects.filter(idCliente=7, DataMinuta__gte=inicio).values(
+            "idMinuta", "DataMinuta"
+        )
+    )
+    minutas_id = [item["idMinuta"] for item in minutas]
+    romaneios = list(
+        Romaneios.objects.filter(idMinuta__in=minutas_id).values(
+            "idRomaneio", "idMinuta"
+        )
+    )
+    romaneios_id = [item["idRomaneio"] for item in romaneios]
+    notas = list(
+        RomaneioNotas.objects.filter(idRomaneio__in=romaneios_id).values(
+            "idRomaneio", "idNotasClientes__Valor"
+        )
+    )
+    a = RomaneioNotas.objects.filter(
+        idRomaneio__idMinuta__DataMinuta__gte=inicio
+    ).values(
+        "idRomaneio",
+        "idNotasClientes__Valor",
+        "idRomaneio__idMinuta",
+        "idRomaneio__idMinuta__DataMinuta",
+    )
+    romaneios_dict = {
+        item["idRomaneio"]: item["idMinuta"] for item in romaneios
+    }
+    for item in notas:
+        if item["idRomaneio"] in romaneios_dict:
+            item["idMinuta"] = romaneios_dict[item["idRomaneio"]]
+    minutas_dict = {item["idMinuta"]: item["DataMinuta"] for item in minutas}
+    for item in notas:
+        if item["idMinuta"] in minutas_dict:
+            item["DataMinuta"] = minutas_dict[item["idMinuta"]]
+    # Inicializar dicionário para armazenar resultados agrupados por data
+    resultados = defaultdict(
+        lambda: {"quantidade": 0, "total_valor": Decimal("0.00")}
+    )
+    # Iterar sobre a lista de dicionários e agrupar por DataMinuta
+    for item in notas:
+        data_minuta = item["DataMinuta"]
+        valor = item["idNotasClientes__Valor"]
+        resultados[data_minuta]["quantidade"] += 1
+        resultados[data_minuta]["total_valor"] += valor
+    # Converter o defaultdict para um dicionário normal e exibir os resultados
+    contexto = {"notas_dia": dict(resultados)}
+    return contexto
