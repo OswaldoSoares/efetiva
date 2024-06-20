@@ -23,6 +23,7 @@ from faturamentos.facade import get_fatura_pagas
 from minutas.facade import get_minutas_cliente
 from minutas.models import Minuta
 from datetime import datetime
+from decimal import Decimal
 from collections import Counter, defaultdict
 
 # TODO IMPORTAR FROM FACADE VEICULOS
