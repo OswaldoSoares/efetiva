@@ -507,7 +507,7 @@ def capacidades_cliente(pdf, capacidades):
     return pdf
 
 
-def grafico_minutas_dia(pdf, minutas_dia):
+def grafico_minutas_dia(pdf, minutas_dia, notas_dia):
     # Dicionário para armazenar listas de dados por mês
     dados_por_mes = defaultdict(list)
     # Iterar sobre cada item e separar pelo mês/ano
