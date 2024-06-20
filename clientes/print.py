@@ -557,7 +557,7 @@ def gera_graphics_lineplot(drawing, minutas_dia, notas_dia):
     glp.x = (cmp(210) - cmp(150)) / 2  # Centralizar o gráfico na página
     glp.y = cmp(20)
     glp.width = cmp(150)
-    glp.height = cmp(30)
+    glp.height = cmp(50)
     glp.data = dados
     glp.strokeColor = colors.black
     # Definir a cor de fundo do gráfico e centralizar junto com o gráfico
@@ -608,7 +608,7 @@ def gera_graphics_lineplot(drawing, minutas_dia, notas_dia):
             drawing.add(label)
     # Criar e adicionar o título do gráfico
     titulo = Label()
-    titulo.setOrigin(cmp(105), cmp(55))  # Centralizar o título no desenho
+    titulo.setOrigin(cmp(105), cmp(75))  # Centralizar o título no desenho
     titulo.setText("Estatísticas últimos 40 dias.")
     titulo.fontName = "DejaVuSans"
     titulo.fontSize = 10
