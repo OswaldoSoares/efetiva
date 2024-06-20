@@ -596,7 +596,10 @@ def gera_graphics_lineplot(drawing, minutas_dia, notas_dia):
     # Adicionar rótulos com os valores de y em cada junção (x, y)
     deslocamento_x = 2
     deslocamento_y = 2
-    for linha in dados:
+    for index, linha in enumerate(dados):
+        complemento = ""
+        if index == 2:
+            complemento = "0K"
         for x, y in linha:
             label = String(
                 glp.x
@@ -609,7 +612,7 @@ def gera_graphics_lineplot(drawing, minutas_dia, notas_dia):
                 * glp.height
                 / (glp.yValueAxis.valueMax - glp.yValueAxis.valueMin)
                 + deslocamento_y,
-                str(y),
+                f"{y}{complemento}",
                 fontSize=6,
                 fillColor=colors.black,
             )
