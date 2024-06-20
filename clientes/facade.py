@@ -18,6 +18,7 @@ from clientes.models import (
     TabelaPerimetro,
     TabelaCapacidade,
 )
+from romaneios.models import Romaneios, RomaneioNotas
 from minutas.facade import get_minutas_cliente
 from datetime import datetime
 from collections import Counter, defaultdict
