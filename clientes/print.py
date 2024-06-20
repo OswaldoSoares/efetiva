@@ -75,6 +75,7 @@ def ficha_cadastral(contexto):
     capacidades = contexto["tabela_capacidade_cliente"]
     forma_pgto = contexto["forma_pagamento"]
     minutas_dia = contexto["minutas_dia"]
+    notas_dia = contexto["notas_dia"]
     fantasia = cliente["Fantasia"]
     response = HttpResponse(content_type="application/pdf")
     response[
