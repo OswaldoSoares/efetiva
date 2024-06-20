@@ -628,8 +628,8 @@ def gera_graphics_lineplot(drawing, minutas_dia, notas_dia):
     drawing.add(titulo)
     # Adicionar a legenda
     legenda = Legend()
-    legenda.x = 330
-    legenda.y = 150
+    legenda.x = 400
+    legenda.y = cmp(75)
     legenda.dx = 8
     legenda.dy = 8
     legenda.boxAnchor = "nw"
