@@ -558,7 +558,6 @@ def gera_graphics_lineplot(drawing, minutas_dia, notas_dia):
         #  valor = notas_dia[item]["total_valor"] / Decimal(10000)
         dados_valor.append((date_to_boleto(item), valor))
     dados.append(dados_valor)
-    print(dados)
     glp = LinePlot()
     glp.x = (cmp(210) - cmp(150)) / 2  # Centralizar o gráfico na página
     glp.y = cmp(20)
