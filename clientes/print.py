@@ -543,21 +543,23 @@ def gera_graphics_lineplot(drawing, minutas_dia, notas_dia):
     dados_minuta = []
     dados_nota = []
     dados_valor = []
+    dados_peso = []
     dates = []
     for item in minutas_dia[-40:]:
         dados_minuta.append((date_to_boleto(item["data"]), item["quantidade"]))
         dates.append(date_to_boleto(item["data"]))
     dados.append(dados_minuta)
     for item in notas_dia:
-        dados_nota.append(
-            (date_to_boleto(item), notas_dia[item]["quantidade"])
-        )
-    dados.append(dados_nota)
-    for item in notas_dia:
+        data_numerica = date_to_boleto(item)
+        quantidade = notas_dia[item]["quantidade"]
         valor = round(notas_dia[item]["total_valor"] / Decimal(10000))
-        #  valor = notas_dia[item]["total_valor"] / Decimal(10000)
-        dados_valor.append((date_to_boleto(item), valor))
+        peso = round(notas_dia[item]["total_peso"] / Decimal(1000))
+        dados_nota.append((data_numerica, quantidade))
+        dados_valor.append((data_numerica, valor))
+        dados_peso.append((data_numerica, peso))
+    dados.append(dados_nota)
     dados.append(dados_valor)
+    dados.append(dados_peso)
     glp = LinePlot()
     glp.x = (cmp(210) - cmp(150)) / 2  # Centralizar o gráfico na página
     glp.y = cmp(20)
@@ -589,9 +591,11 @@ def gera_graphics_lineplot(drawing, minutas_dia, notas_dia):
     glp.lines[0].symbol = makeMarker("FilledCircle")
     glp.lines[1].symbol = makeMarker("FilledCircle")
     glp.lines[2].symbol = makeMarker("FilledCircle")
+    glp.lines[3].symbol = makeMarker("FilledCircle")
     glp.lines[0].strokeColor = colors.red
     glp.lines[1].strokeColor = colors.blue
     glp.lines[2].strokeColor = colors.green
+    glp.lines[3].strokeColor = colors.yellow
     drawing.add(glp)
     # Adicionar rótulos com os valores de y em cada junção (x, y)
     deslocamento_x = 2
@@ -651,10 +655,12 @@ def gera_graphics_lineplot(drawing, minutas_dia, notas_dia):
     color_linha_0 = glp.lines[0].strokeColor
     color_linha_1 = glp.lines[1].strokeColor
     color_linha_2 = glp.lines[2].strokeColor
+    color_linha_3 = glp.lines[3].strokeColor
     legenda.colorNamePairs = [
         (color_linha_0, "Veículos"),
         (color_linha_1, "Notas"),
         (color_linha_2, "Valor Total"),
+        (color_linha_3, "Peso Total"),
     ]
     drawing.add(legenda)
     return drawing
