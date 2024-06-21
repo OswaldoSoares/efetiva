@@ -492,7 +492,7 @@ def create_contexto_quantidade_notas_dia(idcliente):
     romaneios_id = [item["idRomaneio"] for item in romaneios]
     notas = list(
         RomaneioNotas.objects.filter(idRomaneio__in=romaneios_id).values(
-            "idRomaneio", "idNotasClientes__Valor"
+            "idRomaneio", "idNotasClientes__Valor", "idNotasClientes__Peso"
         )
     )
     a = RomaneioNotas.objects.filter(
@@ -500,6 +500,7 @@ def create_contexto_quantidade_notas_dia(idcliente):
     ).values(
         "idRomaneio",
         "idNotasClientes__Valor",
+        "idNotasClientes__Peso",
         "idRomaneio__idMinuta",
         "idRomaneio__idMinuta__DataMinuta",
     )
