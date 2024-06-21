@@ -1172,6 +1172,8 @@ def km_atual(idveiculo):
     km_final = Minuta.objects.filter(idVeiculo=idveiculo).aggregate(
         Max("KMFinal")
     )
+    if not km_final["KMFinal__max"]:
+        km_final["KMFinal__max"] = 0
     return km_final
 
 
