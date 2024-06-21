@@ -516,14 +516,20 @@ def create_contexto_quantidade_notas_dia(idcliente):
             item["DataMinuta"] = minutas_dict[item["idMinuta"]]
     # Inicializar dicionário para armazenar resultados agrupados por data
     resultados = defaultdict(
-        lambda: {"quantidade": 0, "total_valor": Decimal("0.00")}
+        lambda: {
+            "quantidade": 0,
+            "total_valor": Decimal("0.00"),
+            "total_peso": Decimal("0.00"),
+        }
     )
     # Iterar sobre a lista de dicionários e agrupar por DataMinuta
     for item in notas:
         data_minuta = item["DataMinuta"]
         valor = item["idNotasClientes__Valor"]
+        peso = item["idNotasClientes__Peso"]
         resultados[data_minuta]["quantidade"] += 1
         resultados[data_minuta]["total_valor"] += valor
+        resultados[data_minuta]["total_peso"] += peso
     # Converter o defaultdict para um dicionário normal e exibir os resultados
     contexto = {"notas_dia": dict(resultados)}
     return contexto
