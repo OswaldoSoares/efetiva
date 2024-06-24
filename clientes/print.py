@@ -661,7 +661,7 @@ def gera_graphics_lineplot(
     glp.xValueAxis.labelTextFormat = lambda x: (
         datetime.datetime(1997, 10, 7) + datetime.timedelta(days=x)
     ).strftime("%d/%m")
-    glp.xValueAxis.valueSteps = dates
+    glp.xValueAxis.valueSteps = rotulos_x
     glp.yValueAxis.valueMin = 0  # Definindo o valor mínimo do eixo y para 0
     glp.yValueAxis.valueMax = max(max(y for x, y in linha) for linha in dados)
     glp.yValueAxis.visibleGrid = 1
