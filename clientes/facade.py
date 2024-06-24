@@ -479,9 +479,9 @@ def create_contexto_quantidade_notas_dia(idcliente):
     hoje = datetime.now().date()
     inicio = hoje - relativedelta(days=40)
     minutas = list(
-        Minuta.objects.filter(idCliente=7, DataMinuta__gte=inicio).values(
-            "idMinuta", "DataMinuta"
-        )
+        Minuta.objects.filter(
+            idCliente=idcliente, DataMinuta__gte=inicio
+        ).values("idMinuta", "DataMinuta")
     )
     minutas_id = [item["idMinuta"] for item in minutas]
     romaneios = list(
