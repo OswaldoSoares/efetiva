@@ -592,6 +592,34 @@ def list_tuple_dados_notas_peso_periodo(notas_dia):
     return dados_peso
 
 
+def total_minutas_periodo(minutas_dia):
+    total_minutas = 0
+    for item in minutas_dia:
+        total_minutas += item["quantidade"]
+    return total_minutas
+
+
+def total_notas_periodo(notas_dia):
+    total_notas = 0
+    for item in notas_dia:
+        total_notas += notas_dia[item]["quantidade"]
+    return total_notas
+
+
+def total_geral_valor_periodo(notas_dia):
+    total_geral_valor = 0
+    for item in notas_dia:
+        total_geral_valor += notas_dia[item]["total_valor"]
+    return total_geral_valor
+
+
+def total_geral_peso_periodo(notas_dia):
+    total_geral_peso = 0
+    for item in notas_dia:
+        total_geral_peso += notas_dia[item]["total_peso"]
+    return total_geral_peso
+
+
     glp = LinePlot()
     glp.x = (cmp(210) - cmp(150)) / 2  # Centralizar o gráfico na página
     glp.y = cmp(20)
