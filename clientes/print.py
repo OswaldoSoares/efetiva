@@ -651,8 +651,8 @@ def gera_graphics_lineplot(
     )
     drawing.add(fundo)
     # Configurar os eixos
-    glp.xValueAxis.valueMin = min(dates)
-    glp.xValueAxis.valueMax = max(dates)
+    glp.xValueAxis.valueMin = min(rotulos_x)
+    glp.xValueAxis.valueMax = max(rotulos_x)
     glp.xValueAxis.labels.angle = 70
     glp.xValueAxis.labels.dx = -7
     glp.xValueAxis.labels.dy = -14
