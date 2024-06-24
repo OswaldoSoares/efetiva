@@ -496,7 +496,8 @@ def create_contexto_quantidade_notas_dia(idcliente):
         )
     )
     a = RomaneioNotas.objects.filter(
-        idRomaneio__idMinuta__DataMinuta__gte=inicio
+        idRomaneio__idMinuta__idCliente=idcliente,
+        idRomaneio__idMinuta__DataMinuta__gte=inicio,
     ).values(
         "idRomaneio",
         "idNotasClientes__Valor",
