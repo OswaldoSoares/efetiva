@@ -542,23 +542,12 @@ def grafico_minutas_dia(pdf, minutas_dia, notas_dia):
     valor_total = total_geral_valor_periodo(notas_dia)
     peso_total = total_geral_peso_periodo(notas_dia)
     drawing = Drawing(cmp(18), cmp(12))
-    gera_graphics_lineplot(drawing, minutas_dia, notas_dia)
     renderPDF.draw(drawing, pdf, 0, 0)
     return pdf
 
 
-def gera_graphics_lineplot(drawing, minutas_dia, notas_dia):
-    dados = []
-    dados_minuta = []
-    dados_nota = []
-    dados_valor = []
-    dados_peso = []
 def list_datas_rotulo_eixo_x(minutas_dia):
     dates = []
-    for item in minutas_dia[-40:]:
-        dados_minuta.append((date_to_boleto(item["data"]), item["quantidade"]))
-        dates.append(date_to_boleto(item["data"]))
-    dados.append(dados_minuta)
     for item in minutas_dia:
         data_numerica = date_to_boleto(item["data"])
         dates.append(data_numerica)
@@ -598,9 +587,6 @@ def list_tuple_dados_notas_peso_periodo(notas_dia):
         data_numerica = date_to_boleto(item)
         peso = round(notas_dia[item]["total_peso"])
         dados_peso.append((data_numerica, peso))
-    dados.append(dados_nota)
-    dados.append(dados_valor)
-    dados.append(dados_peso)
     return dados_peso
 
 
@@ -649,6 +635,9 @@ def legenda_grafico(glp, legenda_textos, quant_linhas):
     return legenda
 
 
+def gera_graphics_lineplot(
+    drawing, dados, rotulos_x, legenda_textos, meu_titulo, cores
+):
     glp = LinePlot()
     glp.x = (cmp(210) - cmp(150)) / 2  # Centralizar o gráfico na página
     glp.y = cmp(20)
