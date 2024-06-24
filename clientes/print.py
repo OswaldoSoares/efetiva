@@ -620,6 +620,14 @@ def total_geral_peso_periodo(notas_dia):
     return total_geral_peso
 
 
+def cores_linha_gráfico(glp, lista_cores, quant_linhas):
+    index = 0
+    while index < quant_linhas:
+        glp.lines[index].strokeColor = lista_cores[index]
+        index += 1
+    return glp
+
+
     glp = LinePlot()
     glp.x = (cmp(210) - cmp(150)) / 2  # Centralizar o gráfico na página
     glp.y = cmp(20)
@@ -652,10 +660,7 @@ def total_geral_peso_periodo(notas_dia):
     glp.lines[1].symbol = makeMarker("FilledCircle")
     glp.lines[2].symbol = makeMarker("FilledCircle")
     glp.lines[3].symbol = makeMarker("FilledCircle")
-    glp.lines[0].strokeColor = colors.red
-    glp.lines[1].strokeColor = colors.blue
-    glp.lines[2].strokeColor = colors.green
-    glp.lines[3].strokeColor = colors.yellow
+    cores_linha_gráfico(glp, cores, len(dados))
     drawing.add(glp)
     # Adicionar rótulos com os valores de y em cada junção (x, y)
     deslocamento_x = 2
