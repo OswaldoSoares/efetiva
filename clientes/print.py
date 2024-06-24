@@ -665,6 +665,12 @@ def gera_graphics_lineplot(
     glp.yValueAxis.valueMin = 0  # Definindo o valor mínimo do eixo y para 0
     glp.yValueAxis.valueMax = max(max(y for x, y in linha) for linha in dados)
     glp.yValueAxis.visibleGrid = 1
+
+    # Configurar os rótulos do eixo Y
+    def format_y_label(value):
+        return f"{value/1000:.0f}k" if value > 1000 else str(value)
+
+    glp.yValueAxis.labelTextFormat = format_y_label
     # Adicionar marcadores aos pontos de dados
     glp.lines[0].symbol = makeMarker("FilledCircle")
     glp.lines[1].symbol = makeMarker("FilledCircle")
