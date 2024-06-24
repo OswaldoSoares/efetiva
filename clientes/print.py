@@ -549,17 +549,45 @@ def gera_graphics_lineplot(drawing, minutas_dia, notas_dia):
         dados_minuta.append((date_to_boleto(item["data"]), item["quantidade"]))
         dates.append(date_to_boleto(item["data"]))
     dados.append(dados_minuta)
+def list_tuple_dados_minutas_quant_periodo(minutas_dia):
+    dados_minuta = []
+    for item in minutas_dia:
+        data_numerica = date_to_boleto(item["data"])
+        quantidade = item["quantidade"]
+        dados_minuta.append((data_numerica, quantidade))
+    return dados_minuta
+
+
+def list_tuple_dados_notas_quant_periodo(notas_dia):
+    dados_quantidade = []
     for item in notas_dia:
         data_numerica = date_to_boleto(item)
         quantidade = notas_dia[item]["quantidade"]
-        valor = round(notas_dia[item]["total_valor"] / Decimal(10000))
-        peso = round(notas_dia[item]["total_peso"] / Decimal(1000))
-        dados_nota.append((data_numerica, quantidade))
+        dados_quantidade.append((data_numerica, quantidade))
+    return dados_quantidade
+
+
+def list_tuple_dados_notas_valor_periodo(notas_dia):
+    dados_valor = []
+    for item in notas_dia:
+        data_numerica = date_to_boleto(item)
+        valor = round(notas_dia[item]["total_valor"])
         dados_valor.append((data_numerica, valor))
+    return dados_valor
+
+
+def list_tuple_dados_notas_peso_periodo(notas_dia):
+    dados_peso = []
+    for item in notas_dia:
+        data_numerica = date_to_boleto(item)
+        peso = round(notas_dia[item]["total_peso"])
         dados_peso.append((data_numerica, peso))
     dados.append(dados_nota)
     dados.append(dados_valor)
     dados.append(dados_peso)
+    return dados_peso
+
+
     glp = LinePlot()
     glp.x = (cmp(210) - cmp(150)) / 2  # Centralizar o gráfico na página
     glp.y = cmp(20)
