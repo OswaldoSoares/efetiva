@@ -639,10 +639,10 @@ def gera_graphics_lineplot(
     drawing, dados, rotulos_x, legenda_textos, meu_titulo, cores
 ):
     glp = LinePlot()
-    glp.x = (cmp(210) - cmp(150)) / 2  # Centralizar o gráfico na página
+    glp.x = cmp(20)
     glp.y = cmp(20)
-    glp.width = cmp(150)
-    glp.height = cmp(50)
+    glp.width = cmp(80)
+    glp.height = cmp(30)
     glp.data = dados
     glp.strokeColor = colors.black
     # Definir a cor de fundo do gráfico e centralizar junto com o gráfico
