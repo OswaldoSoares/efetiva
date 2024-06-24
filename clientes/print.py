@@ -697,11 +697,9 @@ def gera_graphics_lineplot(
             )
             drawing.add(label)
     # Criar e adicionar o título do gráfico
-    titulo = Label()
-    titulo.setOrigin(cmp(105), cmp(75))  # Centralizar o título no desenho
-    titulo.setText("Estatísticas últimos 40 dias.")
+    titulo = String(glp.x + (glp.width / 2), cmp(53), meu_titulo)
     titulo.fontName = "DejaVuSans"
-    titulo.fontSize = 10
+    titulo.fontSize = 9
     titulo.fillColor = colors.black
     titulo.textAnchor = "middle"  # Ancorar o texto no meio
     drawing.add(titulo)
