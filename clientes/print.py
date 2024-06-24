@@ -532,6 +532,10 @@ def grafico_minutas_dia(pdf, minutas_dia, notas_dia):
         for item in dados_por_mes[lista_mes_ano[0]]
     ]
 
+    quant_minutas = list_tuple_dados_minutas_quant_periodo(minutas_dia)
+    quant_notas = list_tuple_dados_notas_quant_periodo(notas_dia)
+    valor_notas = list_tuple_dados_notas_valor_periodo(notas_dia)
+    peso_notas = list_tuple_dados_notas_peso_periodo(notas_dia)
     drawing = Drawing(cmp(18), cmp(12))
     gera_graphics_lineplot(drawing, minutas_dia, notas_dia)
     renderPDF.draw(drawing, pdf, 0, 0)
