@@ -532,6 +532,7 @@ def grafico_minutas_dia(pdf, minutas_dia, notas_dia):
         for item in dados_por_mes[lista_mes_ano[0]]
     ]
 
+    rotulos_x = list_datas_rotulo_eixo_x(minutas_dia)
     quant_minutas = list_tuple_dados_minutas_quant_periodo(minutas_dia)
     quant_notas = list_tuple_dados_notas_quant_periodo(notas_dia)
     valor_notas = list_tuple_dados_notas_valor_periodo(notas_dia)
