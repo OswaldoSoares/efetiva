@@ -706,16 +706,16 @@ def gera_graphics_lineplot(
     # Adicionar a legenda
     legenda = Legend()
     legenda.x = 400
-    legenda.y = cmp(75)
+    legenda.y = cmp(65)
     legenda.dx = 8
     legenda.dy = 8
     legenda.boxAnchor = "nw"
-    legenda.columnMaximum = 10
+    legenda.columnMaximum = 1
     legenda.fontName = "DejaVuSans"
-    legenda.fontSize = 6
+    legenda.fontSize = 5
     legenda.strokeWidth = 1
     legenda.strokeColor = colors.black
-    legenda.deltax = 75
+    legenda.deltax = 70
     legenda.deltay = 10
     legenda.autoXPadding = 5
     legenda.yGap = 0
@@ -725,17 +725,8 @@ def gera_graphics_lineplot(
     legenda.dividerOffsY = 4.5
     legenda.subCols.rpad = 30
     # Definir os nomes das legendas e suas cores
-    color_linha_0 = glp.lines[0].strokeColor
-    color_linha_1 = glp.lines[1].strokeColor
-    color_linha_2 = glp.lines[2].strokeColor
-    color_linha_3 = glp.lines[3].strokeColor
-    legenda.colorNamePairs = [
-        (color_linha_0, "Veículos"),
-        (color_linha_1, "Notas"),
-        (color_linha_2, "Valor Total"),
-        (color_linha_3, "Peso Total"),
-    ]
-    drawing.add(legenda)
+    legenda.colorNamePairs = legenda_grafico(glp, legenda_textos, len(dados))
+    #  drawing.add(legenda)
     return drawing
 
 
