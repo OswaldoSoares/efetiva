@@ -727,26 +727,24 @@ def gera_graphics_lineplot(
     deslocamento_x = 2
     deslocamento_y = 2
     for index, linha in enumerate(dados):
-        complemento = ""
-        if index == 2:
-            complemento = "0K"
         for x, y in linha:
-            label = String(
-                glp.x
-                + (x - glp.xValueAxis.valueMin)
-                * glp.width
-                / (glp.xValueAxis.valueMax - glp.xValueAxis.valueMin)
-                + deslocamento_x,
-                glp.y
-                + (y - glp.yValueAxis.valueMin)
-                * glp.height
-                / (glp.yValueAxis.valueMax - glp.yValueAxis.valueMin)
-                + deslocamento_y,
-                f"{y}{complemento}",
-                fontSize=6,
-                fillColor=colors.black,
-            )
-            drawing.add(label)
+            if glp.xValueAxis.valueMax - glp.xValueAxis.valueMin > 0:
+                label = String(
+                    glp.x
+                    + (x - glp.xValueAxis.valueMin)
+                    * glp.width
+                    / (glp.xValueAxis.valueMax - glp.xValueAxis.valueMin)
+                    + deslocamento_x,
+                    glp.y
+                    + (y - glp.yValueAxis.valueMin)
+                    * glp.height
+                    / (glp.yValueAxis.valueMax - glp.yValueAxis.valueMin)
+                    + deslocamento_y,
+                    str(y),
+                    fontSize=6,
+                    fillColor=colors.black,
+                )
+                drawing.add(label)
     # Criar e adicionar o título do gráfico
     titulo = String(glp.x + (glp.width / 2), cmp(53), meu_titulo)
     titulo.fontName = "DejaVuSans"
