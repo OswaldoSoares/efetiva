@@ -16,7 +16,7 @@ from reportlab.graphics.charts.textlabels import Label
 from reportlab.graphics.charts.legends import Legend
 from reportlab.graphics import renderPDF
 from reportlab.lib import colors
-from website.facade import cmp, date_to_boleto
+from website.facade import cmp, date_to_boleto, valor_ponto_milhar
 from website.print import header
 from transefetiva.settings.settings import STATIC_ROOT
 from collections import defaultdict
