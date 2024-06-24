@@ -552,11 +552,18 @@ def gera_graphics_lineplot(drawing, minutas_dia, notas_dia):
     dados_nota = []
     dados_valor = []
     dados_peso = []
+def list_datas_rotulo_eixo_x(minutas_dia):
     dates = []
     for item in minutas_dia[-40:]:
         dados_minuta.append((date_to_boleto(item["data"]), item["quantidade"]))
         dates.append(date_to_boleto(item["data"]))
     dados.append(dados_minuta)
+    for item in minutas_dia:
+        data_numerica = date_to_boleto(item["data"])
+        dates.append(data_numerica)
+    return dates
+
+
 def list_tuple_dados_minutas_quant_periodo(minutas_dia):
     dados_minuta = []
     for item in minutas_dia:
