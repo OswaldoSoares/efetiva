@@ -640,6 +640,15 @@ def cores_linha_gráfico(glp, lista_cores, quant_linhas):
     return glp
 
 
+def legenda_grafico(glp, legenda_textos, quant_linhas):
+    legenda = []
+    index = 0
+    while index < quant_linhas:
+        legenda.append((glp.lines[index].strokeColor, legenda_textos[index]))
+        index += 1
+    return legenda
+
+
     glp = LinePlot()
     glp.x = (cmp(210) - cmp(150)) / 2  # Centralizar o gráfico na página
     glp.y = cmp(20)
