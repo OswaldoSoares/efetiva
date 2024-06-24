@@ -713,7 +713,7 @@ def gera_graphics_lineplot(
 
     # Configurar os rótulos do eixo Y
     def format_y_label(value):
-        return f"{value/1000:.0f}k" if value > 1000 else str(value)
+        return f"{int(value/1000)}k" if value > 1000 else str(int(value))
 
     glp.yValueAxis.labelTextFormat = format_y_label
     # Adicionar marcadores aos pontos de dados
