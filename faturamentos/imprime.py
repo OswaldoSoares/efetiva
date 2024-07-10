@@ -338,12 +338,12 @@ def imprime_fatura_pdf(fatura):
             para.wrapOn(pdf, convertemp(186), convertemp(297))
             linha -= para.height * 0.352777
             para.drawOn(pdf, convertemp(12), convertemp(linha))
-        obsercacao = None
+        observacao = None
         if minutas[index].Obs:
-            obsercacao = "OBSERVAÇÕES: {}".format(minutas[index].Obs)
-        if obsercacao:
+            observacao = "OBSERVAÇÕES: {}".format(minutas[index].Obs)
+        if observacao:
             linha -= 1
-            para = Paragraph(obsercacao, style=styles_claro)
+            para = Paragraph(observacao, style=styles_claro)
             para.wrapOn(pdf, convertemp(186), convertemp(297))
             linha -= para.height * 0.352777
             para.drawOn(pdf, convertemp(12), convertemp(linha))
