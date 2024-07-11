@@ -11,7 +11,7 @@
     {% endif %}
 </div>
 <div class="card-body">
-    {% for romaneio in s_minuta.romaneio %}
+    {% for romaneio in s_minuta.romaneio_pesos %}
     <div class="card-body-item">
         <div class="input-group">
             <div class="input-group-addon addon-my-color">
@@ -19,14 +19,18 @@
             </div>
             <div class="form-control input-fake">
                 <span>
-                    ROMANEIO: {{ romaneio|stringformat:".5d" }}
+                    {% if romaneio.peso %}
+                    ROMANEIO: {{ romaneio.romaneio|stringformat:".5d" }} - {{ romaneio.peso|stringformat:"3.f" }} kg
+                    {% else %}
+                    ROMANEIO: {{ romaneio.romaneio|stringformat:".5d" }} - 0 kg
+                    {% endif %}
                 </span>
             </div>
             <div class="input-group-addon addon-my-color">
                 {% if s_minuta.status_minuta == "ABERTA" %}
                 <i class="bi bi-x-lg i-button js-remove-romaneio-minuta"
                 data-idminuta="{{ s_minuta.idminuta }}"
-                data-romaneio="{{ romaneio }}"
+                data-romaneio="{{ romaneio.romaneio }}"
                 data-idcliente="{{ s_minuta.idcliente }}"
                 title="Remove Romaneio da Minuta"></i>
                 {% else %}
@@ -45,9 +49,7 @@
         <div class="input-group">
             <i class="input-group-addon
             addon-my-color
-            i-button-null">
-                {{ forloop.counter|stringformat:".2d" }}
-            </i>
+            i-button-null">{{ forloop.counter|stringformat:".2d" }}</i>
             <div class="input-fake div-flex font-menor">
                 <span>
                     <i class="bi bi-file-text
