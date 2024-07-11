@@ -594,36 +594,37 @@ def imprime_fatura_pdf(fatura):
                 convertemp(linha),
                 "TOTAL {} KMS".format(totalkm),
             )
+            linha -= 1
+            pdf.line(
+                convertemp(12),
+                convertemp(linha),
+                convertemp(198),
+                convertemp(linha),
+            )
         if minutas[index].Comentarios:
             para = Paragraph(minutas[index].Comentarios, style=styles_claro)
             para.wrapOn(pdf, convertemp(186), convertemp(297))
             linha -= para.height * 0.352777
             para.drawOn(pdf, convertemp(12), convertemp(linha))
-        linha -= 1
-        pdf.line(
-            convertemp(12),
-            convertemp(linha),
-            convertemp(198),
-            convertemp(linha),
-        )
-        linha -= 1
+            linha -= 1
         minuta_itens = MinutaItens.objects.values().filter(
             idMinuta=minutas[index].idMinuta, RecebePaga="R"
         )
         servicos = decricao_servico(
             minuta_itens, perimetro_inicial, perimetro_final, s_minuta
         )
-        para = Paragraph(servicos, style=styles_claro)
-        para.wrapOn(pdf, convertemp(186), convertemp(297))
-        linha -= para.height * 0.352777
-        para.drawOn(pdf, convertemp(12), convertemp(linha))
-        linha -= 1
-        pdf.line(
-            convertemp(10),
-            convertemp(linha),
-            convertemp(200),
-            convertemp(linha),
-        )
+        if servicos:
+            para = Paragraph(servicos, style=styles_claro)
+            para.wrapOn(pdf, convertemp(186), convertemp(297))
+            linha -= para.height * 0.352777
+            para.drawOn(pdf, convertemp(12), convertemp(linha))
+            linha -= 1
+            pdf.line(
+                convertemp(10),
+                convertemp(linha),
+                convertemp(200),
+                convertemp(linha),
+            )
         linha -= 3.5
         if linha < 50:
             tamanho_font_atual = tamanho_font
