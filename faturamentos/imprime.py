@@ -457,6 +457,7 @@ def imprime_fatura_pdf(fatura):
             ]
             idminuta = minutas[index].idMinuta
             notas = "NOTA(S): "
+            # Draw Notas Miinuta
             if notas_dados:
                 linha, pdf = print_notas_da_minuta_unidade(
                     notas_dados,
