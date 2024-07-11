@@ -431,8 +431,13 @@ def imprime_fatura_pdf(fatura):
                         f"{i.idNotasClientes.Endereco} - {i.idNotasClientes.Bairro}"
                     )
             entregas = list(set(enderecos))
+            romaneios_separados = list(
+                set([x.idRomaneio.Romaneio for x in notas_romaneio])
+            )
+            romaneios_separados.sort()
             notas_dados = [
                 {
+                    "Romaneio": x.idRomaneio.Romaneio,
                     "Nota": x.idNotasClientes.NumeroNota,
                     "ValorNota": x.idNotasClientes.Valor,
                     "Peso": x.idNotasClientes.Peso,
@@ -459,23 +464,54 @@ def imprime_fatura_pdf(fatura):
             notas = "NOTA(S): "
             # Draw Notas Miinuta
             if notas_dados:
-                linha, pdf = print_notas_da_minuta_unidade(
-                    notas_dados,
-                    idminuta,
-                    notas,
-                    pdf,
-                    styles_claro,
-                    linha,
-                    fatura_selecionada,
-                )
-            linha -= 2
-            pdf.line(
-                convertemp(12),
-                convertemp(linha),
-                convertemp(198),
-                convertemp(linha),
-            )
+                for romaneio in romaneios_pesos:
+                    pdf.setFillColor(HexColor("#FAF3CF"))
+                    pdf.setStrokeColor(HexColor("#FAF3CF"))
+                    pdf.rect(
+                        convertemp(12),
+                        convertemp(linha - 3),
+                        convertemp(186),
+                        convertemp(2),
+                        fill=1,
+                        stroke=1,
+                    )
+                    pdf.setStrokeColor(HexColor("#000000"))
+                    pdf.setFillColor(HexColor("#000000"))
+                    linha -= 3
+                    pdf.drawCentredString(
+                        convertemp(105),
+                        convertemp(linha),
+                        f"ROMANEIO: {romaneio['romaneio']} - PESO: {romaneio['peso']}",
+                    )
+                    filtro = [
+                        item
+                        for item in notas_dados
+                        if item["Romaneio"] == romaneio["romaneio"]
+                    ]
+                    linha, pdf = print_notas_da_minuta_unidade(
+                        filtro,
+                        idminuta,
+                        notas,
+                        pdf,
+                        styles_claro,
+                        linha,
+                        fatura_selecionada,
+                    )
+                    linha -= 1
+                    pdf.line(
+                        convertemp(12),
+                        convertemp(linha),
+                        convertemp(198),
+                        convertemp(linha),
+                    )
             linha -= 3
+            #  pdf.line(
+            #  convertemp(12),
+            #  convertemp(linha),
+            #  convertemp(198),
+            #  convertemp(linha),
+            #  )
+            #  linha -= 3
             pdf.setFillColor(HexColor("#FF0000"))
             pdf.drawCentredString(
                 convertemp(105),
