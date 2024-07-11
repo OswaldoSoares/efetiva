@@ -334,9 +334,7 @@ def imprime_fatura_pdf(fatura):
         )
         if romaneios:
             pdf.drawRightString(
-                convertemp(198),
-                convertemp(linha),
-                f"MINUTA: {minuta_numero} - ROMANEIO(S): {lista_romaneios}",
+                convertemp(198), convertemp(linha), f"MINUTA: {minuta_numero}"
             )
         else:
             pdf.drawCentredString(
