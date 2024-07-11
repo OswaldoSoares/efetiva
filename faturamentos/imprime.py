@@ -474,7 +474,6 @@ def imprime_fatura_pdf(fatura):
                         stroke=1,
                     )
                     pdf.setStrokeColor(HexColor("#000000"))
-                    pdf.setFillColor(HexColor("#000000"))
                     pdf.setFillColor(HexColor("#FF0000"))
                     linha -= 3
                     pdf.drawCentredString(
@@ -482,6 +481,7 @@ def imprime_fatura_pdf(fatura):
                         convertemp(linha),
                         f"ROMANEIO: {romaneio['romaneio']} - PESO: {romaneio['peso']}",
                     )
+                    pdf.setFillColor(HexColor("#000000"))
                     filtro = [
                         item
                         for item in notas_dados
