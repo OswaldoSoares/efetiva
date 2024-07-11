@@ -278,6 +278,7 @@ def imprime_fatura_pdf(fatura):
         convertemp(10), convertemp(linha), convertemp(200), convertemp(linha)
     )
     linha = 242.8
+    # Inicio da impressão de cada minuta
     for index, itens in enumerate(minutas):
         s_minuta = MinutaSelecionada(minutas[index].idMinuta).__dict__
         romaneios = s_minuta["romaneio"]
@@ -327,6 +328,7 @@ def imprime_fatura_pdf(fatura):
         tamanho_font = 8
         pdf.setFont("Times-Roman", tamanho_font)
         pdf.setFillColor(HexColor("#FF0000"))
+        # Draw Data e Minutas - Romaneio
         pdf.drawString(
             convertemp(12), convertemp(linha), "DATA: {}".format(minuta_data)
         )
@@ -346,6 +348,7 @@ def imprime_fatura_pdf(fatura):
         pdf.setFillColor(HexColor("#0000FF"))
         tamanho_font = 8
         pdf.setFont("Times-Roman", tamanho_font)
+        # Draw Motorista Veiculo Placa - Horario - Valor Minuta
         if minuta_motorista:
             if minuta_placa:
                 pdf.drawString(
@@ -389,6 +392,7 @@ def imprime_fatura_pdf(fatura):
             coleta_entrega = "COLETA: {}".format(minutas[index].Coleta)
         elif minutas[index].Entrega:
             coleta_entrega = "ENTREGA: {}".format(minutas[index].Entrega)
+        # Draw Coleta e Entrega
         if coleta_entrega:
             linha -= 1
             para = Paragraph(coleta_entrega, style=styles_claro)
@@ -398,6 +402,7 @@ def imprime_fatura_pdf(fatura):
         observacao = None
         if minutas[index].Obs:
             observacao = "OBSERVAÇÕES: {}".format(minutas[index].Obs)
+        # Draw Observações
         if observacao:
             linha -= 1
             para = Paragraph(observacao, style=styles_claro)
