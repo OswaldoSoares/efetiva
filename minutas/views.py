@@ -527,9 +527,10 @@ def consultaminuta(request, idmin):
     )
     peso = totalpesonotas["totalpeso"]
     obj_minuta = facade.MinutaSelecionada(idmin)
-    maior_peso = max(obj_minuta.romaneio_pesos, key=lambda x: x["peso"])
-    if maior_peso:
-        peso = maior_peso["peso"]
+    if obj_minuta.romaneio_pesos:
+        maior_peso = max(obj_minuta.romaneio_pesos, key=lambda x: x["peso"])
+        if maior_peso:
+            peso = maior_peso["peso"]
     totalvolumenotas = MinutaNotas.objects.filter(idMinuta=idmin).aggregate(
         totalvolume=Sum("Volume")
     )
