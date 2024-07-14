@@ -16,10 +16,8 @@
 <form method="post" id="js-gera-receitas">
     <div class="card-body">
         {% csrf_token %}
-        <input type="hidden"
-        id="id_idminuta"
-        name="idminuta"
-        value="{{ s_minuta.idminuta }}">
+        <input type="hidden" id="id_idminuta"
+               name="idminuta" value="{{ s_minuta.idminuta }}">
         <!-- Taxa de Expedição -->
         <div class="card-body-item">
             <div class="input-group">
