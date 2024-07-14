@@ -202,9 +202,9 @@
 </div>
 <div class="card-footer">
     {% if s_minuta.status_minuta == 'ABERTA' %}
-        <i class="bi bi-check2-square i-button conclui-minuta"
-        title="CONCLUI MINUTA"
-        idMinuta="{{ s_minuta.idminuta }}"></i>
+        <i class="icofont-check i-button conclui-minuta"
+           data-idminuta="{{ s_minuta.idminuta }}"
+           title="CONCLUI MINUTA"></i>
     {% elif not s_minuta.paga_realizada_motorista and s_minuta.status_minuta == 'CONCLUIDA'%}
         <i class="bi bi-reply i-button js-estorna-minuta-concluida"
         data-idminuta="{{ s_minuta.idminuta }}"
