@@ -744,6 +744,72 @@
                 readonly />
             </div>
         </div>
+        <!-- Horas Extras - Entrega KG  -->
+        <div class="card-body-item">
+            <div class="input-group">
+                <i class="bi bi-cash
+                input-group-addon
+                addon-my-color
+                i-button-null"></i>
+                <span class="form-control input-fake">
+                    HORAS EXTRAS - ENTREGA KG
+                </span>
+                <div class="input-group-addon addon-my-color">
+                    <input type="checkbox"
+                    class="js-checkbox-recebe"
+                    id="check-excedente-recebe"
+                    name="check-excedente-recebe"
+                    {% if s_minuta.recebe.c_exce %}
+                    checked="checked"
+                    {% endif %} />
+                </div>
+            </div>
+        </div>
+        <!-- Valores Horas Extras - Entrega KG -->
+        <div class="card-body-item" id="js-excedente-recebe">
+            <div class="input-group input-group-sm transparente">
+                <span class="input-group-addon addon-blue">
+                    &nbsp%&nbsp
+                </span>
+                <input type="text"
+                class="form-control
+                form-control-minuta
+                text-right
+                js-input-change
+                js-decimal"
+                id="tabela-excedente-recebe"
+                name="tabela-excedente-recebe"
+                value="{{ s_minuta.recebe.v_exce|stringformat:'.2f' }}" />
+                <span class="input-group-addon addon-blue">
+                    HS
+                </span>
+                <input type="time"
+                class="form-control
+                form-control-minuta
+                text-right
+                js-input-change"
+                id="minuta-excedente-recebe"
+                name="minuta-excedente-recebe"
+                value="{{ s_minuta.recebe.m_exce }}" />
+                <span class="input-group-addon addon-my-color">
+                    =
+                </span>
+                <span class="input-group-addon addon-blue">
+                    R$
+                </span>
+                <input type="text"
+                class="form-control
+                form-control-minuta
+                text-right
+                total-recebe
+                total-phkesc-recebe
+                js-decimal"
+                id="valor-excedente-recebe"
+                name="valor-excedente-recebe"
+                value="{{ s_minuta.recebe.t_exce|stringformat:'.2f' }}"
+                readonly />
+            </div>
+        </div>
         <!-- Entregas Volume -->
         <div class="card-body-item">
             <div class="input-group">
