@@ -241,16 +241,16 @@
                 <div class="input-group-addon addon-my-color">
                     <input type="checkbox"
                     class="js-checkbox-recebe"
-                    id="check-excedente-recebe"
-                    name="check-excedente-recebe"
-                    {% if s_minuta.recebe.c_exce %}
+                    id="check-extra-porcentagem-recebe"
+                    name="check-extra-porcentagem-recebe"
+                    {% if s_minuta.recebe.c_pohe %}
                     checked="checked"
                     {% endif %} />
                 </div>
             </div>
         </div>
         <!-- Valores Horas Extra Porcentagem da Nota -->
-        <div class="card-body-item" id="js-excedente-recebe">
+        <div class="card-body-item" id="js-extra-porcentagem-recebe">
             <div class="input-group input-group-sm transparente">
                 <div class="div-flex no-padding">
                     <div class="tamanho-7">
@@ -262,8 +262,9 @@
                         <input type="text"
                                class="form-control form-control-minuta text-right
                                js-input-change js-decimal" 
-                               id="tabela-porcentagem-recebe" name="tabela-porcentagem-recebe"
-                               value="{{ s_minuta.recebe.v_porc|stringformat:'.2f' }}" />
+                               id="tabela-extra-porcentagem-recebe"
+                               name="tabela-extra-porcentagem-recebe"
+                               value="{{ s_minuta.recebe.v_pohe|stringformat:'.2f' }}" />
                     </div>
                     <div class="tamanho-7">
                         <div class="input-group-addon addon-blue">
@@ -274,8 +275,8 @@
                         <input type="time"
                                class="form-control form-control-minuta text-right
                                js-input-change"
-                               id="minuta-excedente-recebe" name="minuta-excedente-recebe"
-                               value="{{ s_minuta.recebe.m_exce }}" />
+                               id="minuta-extra-porcentagem-recebe" name="minuta-extra-porcentagem-recebe"
+                               value="{{ s_minuta.recebe.m_pohe }}" />
                     </div>
                     <div class="tamanho-5">
                         <div class="input-group-addon addon-my-color">
@@ -291,8 +292,8 @@
                         <input type="text"
                                class="form-control form-control-minuta text-right
                                total-recebe total-phkesc-recebe js-decimal"
-                               id="valor-excedente-recebe" name="valor-excedente-recebe"
-                               value="{{ s_minuta.recebe.t_exce|stringformat:'.2f' }}" readonly />
+                               id="valor-extra-porcentagem-recebe" name="valor-extra-porcentagem-recebe"
+                               value="{{ s_minuta.recebe.t_pohe|stringformat:'.2f' }}" readonly />
                     </div>
                 </div>
             </div>
@@ -519,16 +520,16 @@
                 <div class="input-group-addon addon-my-color">
                     <input type="checkbox"
                     class="js-checkbox-recebe"
-                    id="check-excedente-recebe"
-                    name="check-excedente-recebe"
-                    {% if s_minuta.recebe.c_exce %}
+                    id="check-extra-kilometragem-recebe"
+                    name="check-extra-kilometragem-recebe"
+                    {% if s_minuta.recebe.c_kihe %}
                     checked="checked"
                     {% endif %} />
                 </div>
             </div>
         </div>
-        <!-- Valores Horas Extra Porcentagem da Nota -->
-        <div class="card-body-item" id="js-excedente-recebe">
+        <!-- Valores Horas Extra Kilometragem -->
+        <div class="card-body-item" id="js-extra-kilometragem-recebe">
             <div class="input-group input-group-sm transparente">
                 <div class="div-flex no-padding">
                     <div class="tamanho-7">
@@ -540,8 +541,9 @@
                         <input type="text"
                                class="form-control form-control-minuta text-right
                                js-input-change js-decimal"
-                               id="tabela-excedente-recebe" name="tabela-excedente-recebe"
-                               value="{{ s_minuta.recebe.v_exce|stringformat:'.2f' }}" />
+                               id="tabela-extra-kilometragem-recebe"
+                               name="tabela-extra-kilometragem-recebe"
+                               value="{{ s_minuta.recebe.v_kihe|stringformat:'.2f' }}" />
                     </div>
                     <div class="tamanho-7">
                         <div class="input-group-addon addon-blue">
@@ -552,8 +554,9 @@
                         <input type="time"
                                class="form-control form-control-minuta text-right
                                js-input-change"
-                               id="minuta-excedente-recebe" name="minuta-excedente-recebe"
-                               value="{{ s_minuta.recebe.m_exce }}" />
+                               id="minuta-extra-kilometragem-recebe"
+                               name="minuta-extra-kilometragem-recebe"
+                               value="{{ s_minuta.recebe.m_kihe }}" />
                     </div>
                     <div class="tamanho-5">
                         <div class="input-group-addon addon-my-color">
@@ -569,8 +572,9 @@
                         <input type="text"
                                class="form-control form-control-minuta text-right
                                total-recebe total-phkesc-recebe js-decimal"
-                               id="valor-excedente-recebe" name="valor-excedente-recebe"
-                               value="{{ s_minuta.recebe.t_exce|stringformat:'.2f' }}" readonly />
+                               id="valor-extra-kilometragem-recebe"
+                               name="valor-extra-kilometragem-recebe"
+                               value="{{ s_minuta.recebe.t_kihe|stringformat:'.2f' }}" readonly />
                     </div>
                 </div>
             </div>
@@ -657,16 +661,16 @@
                 <div class="input-group-addon addon-my-color">
                     <input type="checkbox"
                     class="js-checkbox-recebe"
-                    id="check-excedente-recebe"
-                    name="check-excedente-recebe"
-                    {% if s_minuta.recebe.c_exce %}
+                    id="check-extra-entrega-recebe"
+                    name="check-extra-entrega-recebe"
+                    {% if s_minuta.recebe.c_enhe %}
                     checked="checked"
                     {% endif %} />
                 </div>
             </div>
         </div>
-        <!-- Valores Horas Extra Porcentagem da Nota -->
-        <div class="card-body-item" id="js-excedente-recebe">
+        <!-- Valores Horas Extra Entrega -->
+        <div class="card-body-item" id="js-extra-entrega-recebe">
             <div class="input-group input-group-sm transparente">
                 <div class="div-flex no-padding">
                     <div class="tamanho-7">
@@ -678,8 +682,9 @@
                         <input type="text"
                                class="form-control form-control-minuta text-right
                                js-input-change js-decimal"
-                               id="tabela-excedente-recebe" name="tabela-excedente-recebe"
-                               value="{{ s_minuta.recebe.v_exce|stringformat:'.2f' }}" />
+                               id="tabela-extra-entrega-recebe"
+                               name="tabela-extra-entrega-recebe"
+                               value="{{ s_minuta.recebe.v_enhe|stringformat:'.2f' }}" />
                     </div>
                     <div class="tamanho-7">
                         <div class="input-group-addon addon-blue">
@@ -690,8 +695,9 @@
                         <input type="time"
                                class="form-control form-control-minuta text-right
                                js-input-change"
-                               id="minuta-excedente-recebe" name="minuta-excedente-recebe"
-                               value="{{ s_minuta.recebe.m_exce }}" />
+                               id="minuta-extra-entrega-recebe"
+                               name="minuta-extra-entrega-recebe"
+                               value="{{ s_minuta.recebe.m_enhe }}" />
                     </div>
                     <div class="tamanho-5">
                         <div class="input-group-addon addon-my-color">
@@ -707,8 +713,8 @@
                         <input type="text"
                                class="form-control form-control-minuta text-right
                                total-recebe total-phkesc-recebe js-decimal"
-                               id="valor-excedente-recebe" name="valor-excedente-recebe"
-                               value="{{ s_minuta.recebe.t_exce|stringformat:'.2f' }}" readonly />
+                               id="valor-extra-entrega-recebe" name="valor-extra-entrega-recebe"
+                               value="{{ s_minuta.recebe.t_enhe|stringformat:'.2f' }}" readonly />
                     </div>
                 </div>
             </div>
@@ -794,16 +800,16 @@
                 <div class="input-group-addon addon-my-color">
                     <input type="checkbox"
                     class="js-checkbox-recebe"
-                    id="check-excedente-recebe"
-                    name="check-excedente-recebe"
-                    {% if s_minuta.recebe.c_exce %}
+                    id="check-extra-entrega-kg-recebe"
+                    name="check-extra-entrega-kg-recebe"
+                    {% if s_minuta.recebe.c_ekhe %}
                     checked="checked"
                     {% endif %} />
                 </div>
             </div>
         </div>
         <!-- Valores Horas Extras - Entrega KG -->
-        <div class="card-body-item" id="js-excedente-recebe">
+        <div class="card-body-item" id="js-extra-entrega-kg-recebe">
             <div class="input-group input-group-sm transparente">
                 <div class="div-flex no-padding">
                     <div class="tamanho-7">
@@ -815,8 +821,9 @@
                         <input type="text"
                                class="form-control form-control-minuta text-right
                                js-input-change js-decimal"
-                               id="tabela-excedente-recebe" name="tabela-excedente-recebe"
-                               value="{{ s_minuta.recebe.v_exce|stringformat:'.2f' }}" />
+                               id="tabela-extra-entrega-kg-recebe"
+                               name="tabela-extra-entrega-kg-recebe"
+                               value="{{ s_minuta.recebe.v_ekhe|stringformat:'.2f' }}" />
                     </div>
                     <div class="tamanho-7">
                         <div class="input-group-addon addon-blue">
@@ -827,8 +834,9 @@
                         <input type="time"
                                class="form-control form-control-minuta text-right
                                js-input-change"
-                               id="minuta-excedente-recebe" name="minuta-excedente-recebe"
-                               value="{{ s_minuta.recebe.m_exce }}" />
+                               id="minuta-extra-entrega-kg-recebe"
+                               name="minuta-extra-entrega-kg-recebe"
+                               value="{{ s_minuta.recebe.m_ekhe }}" />
                     </div>
                     <div class="tamanho-5">
                         <div class="input-group-addon addon-my-color">
@@ -844,8 +852,9 @@
                         <input type="text"
                                class="form-control form-control-minuta text-right
                                total-recebe total-phkesc-recebe js-decimal"
-                               id="valor-excedente-recebe" name="valor-excedente-recebe"
-                               value="{{ s_minuta.recebe.t_exce|stringformat:'.2f' }}" readonly />
+                               id="valor-extra-entrega-kg-recebe"
+                               name="valor-extra-entrega-kg-recebe"
+                               value="{{ s_minuta.recebe.t_ekhe|stringformat:'.2f' }}" readonly />
                     </div>
                 </div>
             </div>
@@ -932,16 +941,16 @@
                 <div class="input-group-addon addon-my-color">
                     <input type="checkbox"
                     class="js-checkbox-recebe"
-                    id="check-excedente-recebe"
-                    name="check-excedente-recebe"
-                    {% if s_minuta.recebe.c_exce %}
+                    id="check-extra-entrega-volume-recebe"
+                    name="check-extra-entrega-volume-recebe"
+                    {% if s_minuta.recebe.c_evhe %}
                     checked="checked"
                     {% endif %} />
                 </div>
             </div>
         </div>
         <!-- Valores Horas Extras - Entrega Volume -->
-        <div class="card-body-item" id="js-excedente-recebe">
+        <div class="card-body-item" id="js-extra-entrega-volume-recebe">
             <div class="input-group input-group-sm transparente">
                 <div class="div-flex no-padding">
                     <div class="tamanho-7">
@@ -953,8 +962,9 @@
                         <input type="text"
                                class="form-control form-control-minuta text-right
                                js-input-change js-decimal"
-                               id="tabela-excedente-recebe" name="tabela-excedente-recebe"
-                               value="{{ s_minuta.recebe.v_exce|stringformat:'.2f' }}" />
+                               id="tabela-extra-entrega-volume-recebe"
+                               name="tabela-extra-entrega-volume-recebe"
+                               value="{{ s_minuta.recebe.v_evhe|stringformat:'.2f' }}" />
                     </div>
                     <div class="tamanho-7">
                         <div class="input-group-addon addon-blue">
@@ -965,8 +975,9 @@
                         <input type="time"
                                class="form-control form-control-minuta text-right
                                js-input-change"
-                               id="minuta-excedente-recebe" name="minuta-excedente-recebe"
-                               value="{{ s_minuta.recebe.m_exce }}" />
+                               id="minuta-extra-entrega-volume-recebe"
+                               name="minuta-extra-entrega-volume-recebe"
+                               value="{{ s_minuta.recebe.m_evhe }}" />
                     </div>
                     <div class="tamanho-5">
                         <div class="input-group-addon addon-my-color">
@@ -982,8 +993,9 @@
                         <input type="text"
                                class="form-control form-control-minuta text-right
                                total-recebe total-phkesc-recebe js-decimal"
-                               id="valor-excedente-recebe" name="valor-excedente-recebe"
-                               value="{{ s_minuta.recebe.t_exce|stringformat:'.2f' }}" readonly />
+                               id="valor-extra-entrega-volume-recebe"
+                               name="valor-extra-entrega-volume-recebe"
+                               value="{{ s_minuta.recebe.t_evhe|stringformat:'.2f' }}" readonly />
                     </div>
                 </div>
             </div>
@@ -1068,16 +1080,16 @@
                 <div class="input-group-addon addon-my-color">
                     <input type="checkbox"
                     class="js-checkbox-recebe"
-                    id="check-excedente-recebe"
-                    name="check-excedente-recebe"
-                    {% if s_minuta.recebe.c_exce %}
+                    id="check-extra-saida-recebe"
+                    name="check-extra-saida-recebe"
+                    {% if s_minuta.recebe.c_sahe %}
                     checked="checked"
                     {% endif %} />
                 </div>
             </div>
         </div>
         <!-- Valores Horas Extra - Saída -->
-        <div class="card-body-item" id="js-excedente-recebe">
+        <div class="card-body-item" id="js-extra-saida-recebe">
             <div class="input-group input-group-sm transparente">
                 <div class="div-flex no-padding">
                     <div class="tamanho-7">
@@ -1089,8 +1101,9 @@
                         <input type="text"
                                class="form-control form-control-minuta text-right
                                js-input-change js-decimal"
-                               id="tabela-excedente-recebe" name="tabela-excedente-recebe"
-                               value="{{ s_minuta.recebe.v_exce|stringformat:'.2f' }}" />
+                               id="tabela-extra-saida-recebe"
+                               name="tabela-extra-saida-recebe"
+                               value="{{ s_minuta.recebe.v_sahe|stringformat:'.2f' }}" />
                     </div>
                     <div class="tamanho-7">
                         <div class="input-group-addon addon-blue">
@@ -1101,8 +1114,9 @@
                         <input type="time"
                                class="form-control form-control-minuta text-right
                                js-input-change"
-                               id="minuta-excedente-recebe" name="minuta-excedente-recebe"
-                               value="{{ s_minuta.recebe.m_exce }}" />
+                               id="minuta-extra-saida-recebe"
+                               name="minuta-extra-saida-recebe"
+                               value="{{ s_minuta.recebe.m_sahe }}" />
                     </div>
                     <div class="tamanho-5">
                         <div class="input-group-addon addon-my-color">
@@ -1118,8 +1132,9 @@
                         <input type="text"
                                class="form-control form-control-minuta text-right
                                total-recebe total-phkesc-recebe js-decimal"
-                               id="valor-excedente-recebe" name="valor-excedente-recebe"
-                               value="{{ s_minuta.recebe.t_exce|stringformat:'.2f' }}" readonly />
+                               id="valor-extra-saida-recebe"
+                               name="valor-extra-saida-recebe"
+                               value="{{ s_minuta.recebe.t_sahe|stringformat:'.2f' }}" readonly />
                     </div>
                 </div>
             </div>
@@ -1204,16 +1219,16 @@
                 <div class="input-group-addon addon-my-color">
                     <input type="checkbox"
                     class="js-checkbox-recebe"
-                    id="check-excedente-recebe"
-                    name="check-excedente-recebe"
-                    {% if s_minuta.recebe.c_exce %}
+                    id="check-extra-capacidade-recebe"
+                    name="check-extra-capacidade-recebe"
+                    {% if s_minuta.recebe.c_cahe %}
                     checked="checked"
                     {% endif %} />
                 </div>
             </div>
         </div>
         <!-- Valores Horas Extras - Capacidade Peso -->
-        <div class="card-body-item" id="js-excedente-recebe">
+        <div class="card-body-item" id="js-extra-capacidade-recebe">
             <div class="input-group input-group-sm transparente">
                 <div class="div-flex no-padding">
                     <div class="tamanho-7">
@@ -1225,8 +1240,9 @@
                         <input type="text"
                                class="form-control form-control-minuta text-right
                                js-input-change js-decimal"
-                               id="tabela-excedente-recebe" name="tabela-excedente-recebe"
-                               value="{{ s_minuta.recebe.v_exce|stringformat:'.2f' }}" />
+                               id="tabela-extra-capacidade-recebe"
+                               name="tabela-extra-capacidade-recebe"
+                               value="{{ s_minuta.recebe.v_cahe|stringformat:'.2f' }}" />
                     </div>
                     <div class="tamanho-7">
                         <div class="input-group-addon addon-blue">
@@ -1237,8 +1253,9 @@
                         <input type="time"
                                class="form-control form-control-minuta text-right
                                js-input-change"
-                               id="minuta-excedente-recebe" name="minuta-excedente-recebe"
-                               value="{{ s_minuta.recebe.m_exce }}" />
+                               id="minuta-extra-capacidade-recebe"
+                               name="minuta-extra-capacidade-recebe"
+                               value="{{ s_minuta.recebe.m_cahe }}" />
                     </div>
                     <div class="tamanho-5">
                         <div class="input-group-addon addon-my-color">
@@ -1254,8 +1271,9 @@
                         <input type="text"
                                class="form-control form-control-minuta text-right
                                total-recebe total-phkesc-recebe js-decimal"
-                               id="valor-excedente-recebe" name="valor-excedente-recebe"
-                               value="{{ s_minuta.recebe.t_exce|stringformat:'.2f' }}" readonly />
+                               id="valor-extra-capacidade-recebe"
+                               name="valor-extra-capacidade-recebe"
+                               value="{{ s_minuta.recebe.t_cahe|stringformat:'.2f' }}" readonly />
                     </div>
                 </div>
             </div>
@@ -1347,16 +1365,16 @@
                 <div class="input-group-addon addon-my-color">
                     <input type="checkbox"
                     class="js-checkbox-recebe"
-                    id="check-excedente-recebe"
-                    name="check-excedente-recebe"
-                    {% if s_minuta.recebe.c_exce %}
+                    id="check-extra-perimetro-recebe"
+                    name="check-extra-perimetro-recebe"
+                    {% if s_minuta.recebe.c_pehe %}
                     checked="checked"
                     {% endif %} />
                 </div>
             </div>
         </div>
         <!-- Valores Horas Extras - Perimetro -->
-        <div class="card-body-item" id="js-excedente-recebe">
+        <div class="card-body-item" id="js-extra-perimetro-recebe">
             <div class="input-group input-group-sm transparente">
                 <div class="div-flex no-padding">
                     <div class="tamanho-7">
@@ -1368,8 +1386,9 @@
                         <input type="text"
                                class="form-control form-control-minuta text-right
                                js-input-change js-decimal"
-                               id="tabela-excedente-recebe" name="tabela-excedente-recebe"
-                               value="{{ s_minuta.recebe.v_exce|stringformat:'.2f' }}" />
+                               id="tabela-extra-perimetro-recebe"
+                               name="tabela-extra-perimetro-recebe"
+                               value="{{ s_minuta.recebe.v_pehe|stringformat:'.2f' }}" />
                     </div>
                     <div class="tamanho-7">
                         <div class="input-group-addon addon-blue">
@@ -1380,8 +1399,9 @@
                         <input type="time"
                                class="form-control form-control-minuta text-right
                                js-input-change"
-                               id="minuta-excedente-recebe" name="minuta-excedente-recebe"
-                               value="{{ s_minuta.recebe.m_exce }}" />
+                               id="minuta-extra-perimetro-recebe"
+                               name="minuta-extra-perimetro-recebe"
+                               value="{{ s_minuta.recebe.m_pehe }}" />
                     </div>
                     <div class="tamanho-5">
                         <div class="input-group-addon addon-my-color">
@@ -1397,8 +1417,9 @@
                         <input type="text"
                                class="form-control form-control-minuta text-right
                                total-recebe total-phkesc-recebe js-decimal"
-                               id="valor-excedente-recebe" name="valor-excedente-recebe"
-                               value="{{ s_minuta.recebe.t_exce|stringformat:'.2f' }}" readonly />
+                               id="valor-extra-perimetro-recebe"
+                               name="valor-extra-perimetro-recebe"
+                               value="{{ s_minuta.recebe.t_pehe|stringformat:'.3f' }}" readonly />
                     </div>
                 </div>
             </div>
