@@ -67,7 +67,9 @@ urlpatterns = [
     path("fecha_minuta/<int:idmin>/", fecha_minuta, name="fecha_minuta"),
     path("estorna_minuta/<int:idmin>/", estorna_minuta, name="estorna_minuta"),
     path("consultaminuta/<int:idmin>/", consultaminuta, name="consultaminuta"),
-    path("criaminutamotorista/", criaminutamotorista, name="criaminutamotorista"),
+    path(
+        "criaminutamotorista/", criaminutamotorista, name="criaminutamotorista"
+    ),
     path(
         "excluiminutamotorista/<int:idmincol>/",
         excluiminutamotorista,
@@ -80,7 +82,9 @@ urlpatterns = [
         name="excluiminutaajudante",
     ),
     path(
-        "editaminutaveiculo/<int:idmin>/", editaminutaveiculo, name="editaminutaveiculo"
+        "editaminutaveiculo/<int:idmin>/",
+        editaminutaveiculo,
+        name="editaminutaveiculo",
     ),
     path(
         "editaminutakminicial/<int:idmin>/",
@@ -88,7 +92,9 @@ urlpatterns = [
         name="editaminutakminicial",
     ),
     path(
-        "editaminutakmfinal/<int:idmin>/", editaminutakmfinal, name="editaminutakmfinal"
+        "editaminutakmfinal/<int:idmin>/",
+        editaminutakmfinal,
+        name="editaminutakmfinal",
     ),
     path(
         "editaminutahorafinal/<int:idmin>/",
@@ -118,8 +124,14 @@ urlpatterns = [
         name="excluiminutaentrega",
     ),
     path("buscaminutaentrega/", buscaminutaentrega, name="buscaminutaentrega"),
-    path("editacomentario/<int:idmin>/", edita_comentario, name="editacomentario"),
-    path("filtraminutaveiculo/", filtraminutaveiculo, name="filtraminutaveiculo"),
+    path(
+        "editacomentario/<int:idmin>/",
+        edita_comentario,
+        name="editacomentario",
+    ),
+    path(
+        "filtraminutaveiculo/", filtraminutaveiculo, name="filtraminutaveiculo"
+    ),
     path("excluiminuta/<int:idminuta>/", exclui_minuta, name="excluiminuta"),
     path(
         "editaminutasaidaextraajudante/<int:idminuta>",
@@ -150,7 +162,11 @@ urlpatterns = [
     path("editakminicial/", edita_minuta_km_inicial, name="editakminicial"),
     path("editakmfinal/", edita_minuta_km_final, name="editakmfinal"),
     path("insereajudante/", insere_ajudante, name="insereajudante"),
-    path("removecolaborador/", remove_minuta_colaborador, name="removecolaborador"),
+    path(
+        "removecolaborador/",
+        remove_minuta_colaborador,
+        name="removecolaborador",
+    ),
     path(
         "editacoletaentregaobs/",
         edita_minuta_coleta_entrega_obs,
