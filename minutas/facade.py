@@ -448,9 +448,7 @@ class MinutaSelecionada:
             )
         else:
             v_recebe["v_taxa"] = self.tabela[0]["TaxaExpedicao"]
-        v_recebe["c_taxa"] = (
-            True if self.tabela[0]["TaxaExpedicao"] > 0 else False
-        )
+        v_recebe["c_taxa"] = self.tabela[0]["TaxaExpedicao"] > 0
         if tabela_veiculo:
             if self.motorista:
                 v_recebe["v_segu"] = self.tabela[0]["Seguro"]
@@ -458,9 +456,7 @@ class MinutaSelecionada:
                 v_recebe["t_segu"] = (
                     float(v_recebe["v_segu"]) / 100 * float(v_recebe["m_segu"])
                 )
-                v_recebe["c_segu"] = (
-                    True if self.t_entregas["valor_entregas"] > 0 else False
-                )
+                v_recebe["c_segu"] = self.t_entregas["valor_entregas"] > 0
                 v_recebe["v_porc"] = tabela_veiculo["PorcentagemCobra"]
                 v_recebe["m_porc"] = self.t_entregas["valor_entregas"]
                 v_recebe["t_porc"] = (
@@ -468,26 +464,26 @@ class MinutaSelecionada:
                     / 100
                     * v_recebe["m_porc"]
                 )
-                v_recebe["c_porc"] = True if int(phkesc[0:1]) else False
+                v_recebe["c_porc"] = bool(int(phkesc[0:1]))
                 v_recebe["v_hora"] = self.filtro_tabela_veiculo()["HoraCobra"]
                 v_recebe["m_hora"] = self.filtro_tabela_veiculo()["HoraMinimo"]
                 v_recebe["t_hora"] = calcula_valor_hora(
                     100, v_recebe["m_hora"], v_recebe["v_hora"]
                 )
-                v_recebe["c_hora"] = True if int(phkesc[1:2]) else False
+                v_recebe["c_hora"] = bool(int(phkesc[1:2]))
                 v_recebe["v_exce"] = 100
                 v_recebe["m_exce"] = self.horas_excede().time()
                 v_recebe["t_exce"] = calcula_valor_hora(
                     100, v_recebe["m_exce"], v_recebe["v_hora"]
                 )
-                v_recebe["c_exce"] = True if int(phkesc[1:2]) else False
+                v_recebe["c_exce"] = bool(int(phkesc[1:2]))
                 v_recebe["v_kilm"] = self.filtro_tabela_veiculo()["KMCobra"]
                 v_recebe["m_kilm"] = self.get_total_kms()
                 v_recebe["t_kilm"] = (
                     self.filtro_tabela_veiculo()["KMCobra"]
                     * self.get_total_kms()
                 )
-                v_recebe["c_kilm"] = True if int(phkesc[2:3]) else False
+                v_recebe["c_kilm"] = bool(int(phkesc[2:3]))
                 v_recebe["v_entr"] = self.filtro_tabela_veiculo()[
                     "EntregaCobra"
                 ]
@@ -496,7 +492,7 @@ class MinutaSelecionada:
                     self.filtro_tabela_veiculo()["EntregaCobra"]
                     * v_recebe["m_entr"]
                 )
-                v_recebe["c_entr"] = True if int(phkesc[3:4]) else False
+                v_recebe["c_entr"] = bool(int(phkesc[3:4]))
                 v_recebe["v_enkg"] = self.filtro_tabela_veiculo()[
                     "EntregaKGCobra"
                 ]
@@ -505,7 +501,7 @@ class MinutaSelecionada:
                     self.filtro_tabela_veiculo()["EntregaKGCobra"]
                     * v_recebe["m_enkg"]
                 )
-                v_recebe["c_enkg"] = True if int(phkesc[4:5]) else False
+                v_recebe["c_enkg"] = bool(int(phkesc[4:5]))
                 v_recebe["v_evol"] = self.filtro_tabela_veiculo()[
                     "EntregaVolumeCobra"
                 ]
@@ -514,12 +510,12 @@ class MinutaSelecionada:
                     self.filtro_tabela_veiculo()["EntregaVolumeCobra"]
                     * v_recebe["m_evol"]
                 )
-                v_recebe["c_evol"] = True if int(phkesc[5:6]) else False
+                v_recebe["c_evol"] = bool(int(phkesc[5:6]))
                 v_recebe["v_said"] = self.filtro_tabela_veiculo()["SaidaCobra"]
-                v_recebe["c_said"] = True if int(phkesc[6:7]) else False
+                v_recebe["c_said"] = bool(int(phkesc[6:7]))
                 if capacidade:
                     v_recebe["v_capa"] = capacidade[0]
-                v_recebe["c_capa"] = True if int(phkesc[7:8]) else False
+                v_recebe["c_capa"] = bool(int(phkesc[7:8]))
                 if perimetro and recebe_perimetro:
                     v_recebe["v_peri"] = perimetro[0]
                     v_recebe["c_peri"] = True
