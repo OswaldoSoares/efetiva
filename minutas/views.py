@@ -2579,3 +2579,10 @@ def minutas_periodo(request):
     contexto.update({"inicial": inicial, "final": final})
     response = print_minutas_periodo(contexto)
     return response
+
+
+def minuta_cards(request):
+    idminuta = request.GET.get("idminuta")
+    contexto = facade.create_contexto_minuta(idminuta)
+    data = facade.create_data_minuta(request, contexto)
+    return data
