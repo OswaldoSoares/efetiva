@@ -2583,6 +2583,7 @@ def minutas_periodo(request):
 
 def minuta_cards(request):
     """
+        Criada: 15/07/2024
         Requisita o contexto da minuta selecionada e o data (html) que será
         retornado com JsonResponse. Mostrando os detalhes da minuta em cards
         separados.
