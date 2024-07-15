@@ -899,6 +899,17 @@ function calculosMudarInputRecebe(element_select, valor_digitado) {
                 $("#minuta-porcentagem-recebe").val()
             )
         )
+    } else if (element_select == "tabela-extra-porcentagem-recebe"
+     || element_select == "minuta-extra-porcentagem-recebe") {
+        // EXTRA PORCENTAGEM RECEBE
+        var valor = calculaHora(
+                $("#tabela-extra-porcentagem-recebe").val(),
+                $("#valor-porcentagem-recebe").val(),
+                $("#minuta-extra-porcentagem-recebe").val()
+            )
+        $("#valor-extra-porcentagem-recebe").val(
+            (valor / 10).toFixed(2)
+        )
     } else if (element_select == "tabela-hora-recebe"
      || element_select == "minuta-hora-recebe") {
         // HORA RECEBE
@@ -928,6 +939,17 @@ function calculosMudarInputRecebe(element_select, valor_digitado) {
                 $("#minuta-kilometragem-recebe").val()
             )
         )
+    } else if (element_select == "tabela-extra-kilometragem-recebe"
+     || element_select == "minuta-extra-kilometragem-recebe") {
+        // EXTRA KILOMETRAGEM RECEBE
+        var valor = calculaHora(
+                $("#tabela-extra-kilometragem-recebe").val(),
+                $("#valor-kilometragem-recebe").val(),
+                $("#minuta-extra-kilometragem-recebe").val()
+            )
+        $("#valor-extra-kilometragem-recebe").val(
+            (valor / 10).toFixed(2)
+        )
     } else if (element_select == "tabela-entrega-recebe"
      || element_select == "minuta-entrega-recebe") {
         // ENTREGA RECEBE
@@ -936,6 +958,17 @@ function calculosMudarInputRecebe(element_select, valor_digitado) {
                 $("#tabela-entrega-recebe").val(),
                 $("#minuta-entrega-recebe").val()
             )
+        )
+    } else if (element_select == "tabela-extra-entrega-recebe"
+     || element_select == "minuta-extra-entrega-recebe") {
+        // EXTRA ENTREGA RECEBE
+        var valor = calculaHora(
+                $("#tabela-extra-entrega-recebe").val(),
+                $("#valor-entrega-recebe").val(),
+                $("#minuta-extra-entrega-recebe").val()
+            )
+        $("#valor-extra-entrega-recebe").val(
+            (valor / 10).toFixed(2)
         )
     } else if (element_select == "tabela-entrega-kg-recebe"
      || element_select == "minuta-entrega-kg-recebe") {
@@ -946,6 +979,17 @@ function calculosMudarInputRecebe(element_select, valor_digitado) {
                 $("#minuta-entrega-kg-recebe").val()
             )
         )
+    } else if (element_select == "tabela-extra-entrega-kg-recebe"
+     || element_select == "minuta-extra-entrega-kg-recebe") {
+        // EXTRA ENTREGA KG RECEBE
+        var valor = calculaHora(
+                $("#tabela-extra-entrega-kg-recebe").val(),
+                $("#valor-entrega-kg-recebe").val(),
+                $("#minuta-extra-entrega-kg-recebe").val()
+            )
+        $("#valor-extra-entrega-kg-recebe").val(
+            (valor / 10).toFixed(2)
+        )
     } else if (element_select == "tabela-entrega-volume-recebe"
      || element_select == "minuta-entrega-volume-recebe") {
         // ENTREGA VOLUME RECEBE
@@ -955,15 +999,48 @@ function calculosMudarInputRecebe(element_select, valor_digitado) {
                 $("#minuta-entrega-volume-recebe").val()
             )
         )
+    } else if (element_select == "tabela-extra-entrega-volume-recebe"
+     || element_select == "minuta-extra-entrega-volume-recebe") {
+        // EXTRA ENTREGA VOLUME RECEBE
+        var valor = calculaHora(
+                $("#tabela-extra-entrega-volume-recebe").val(),
+                $("#valor-entrega-volume-recebe").val(),
+                $("#minuta-extra-entrega-volume-recebe").val()
+            )
+        $("#valor-extra-entrega-volume-recebe").val(
+            (valor / 10).toFixed(2)
+        )
     } else if (element_select == "tabela-saida-recebe") {
         // SAÍDA RECEBE
         $("#valor-saida-recebe").val(
             valor_digitado
         )
+    } else if (element_select == "tabela-extra-saida-recebe"
+     || element_select == "minuta-extra-saida-recebe") {
+        // EXTRA SAIDA RECEBE
+        var valor = calculaHora(
+                $("#tabela-extra-saida-recebe").val(),
+                $("#valor-saida-recebe").val(),
+                $("#minuta-extra-saida-recebe").val()
+            )
+        $("#valor-extra-saida-recebe").val(
+            (valor / 10).toFixed(2)
+        )
     } else if (element_select == "tabela-capacidade-recebe") {
         // CAPACIDADE RECEBE
         $("#valor-capacidade-recebe").val(
             valor_digitado
+        )
+    } else if (element_select == "tabela-extra-capacidade-recebe"
+     || element_select == "minuta-extra-capacidade-recebe") {
+        // EXTRA CAPACIDADE RECEBE
+        var valor = calculaHora(
+                $("#tabela-extra-capacidade-recebe").val(),
+                $("#valor-capacidade-recebe").val(),
+                $("#minuta-extra-capacidade-recebe").val()
+            )
+        $("#valor-extra-capacidade-recebe").val(
+            (valor / 10).toFixed(2)
         )
     } else if (element_select == "tabela-perimetro-recebe"
      || element_select == "minuta-perimetro-recebe") {
@@ -973,6 +1050,17 @@ function calculosMudarInputRecebe(element_select, valor_digitado) {
                 $("#tabela-perimetro-recebe").val(),
                 $("#minuta-perimetro-recebe").val()
             )
+        )
+    } else if (element_select == "tabela-extra-perimetro-recebe"
+     || element_select == "minuta-extra-perimetro-recebe") {
+        // EXTRA PERIMETRO RECEBE
+        var valor = calculaHora(
+                $("#tabela-extra-perimetro-recebe").val(),
+                $("#valor-perimetro-recebe").val(),
+                $("#minuta-extra-perimetro-recebe").val()
+            )
+        $("#valor-extra-perimetro-recebe").val(
+            (valor / 10).toFixed(2)
         )
     } else if (element_select == "tabela-pernoite-recebe" || element_select == "minuta-pernoite-recebe") {
         // PERNOITE RECEBE
