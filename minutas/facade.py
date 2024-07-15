@@ -465,6 +465,12 @@ class MinutaSelecionada:
                     * v_recebe["m_porc"]
                 )
                 v_recebe["c_porc"] = bool(int(phkesc[0:1]))
+                v_recebe["v_pohe"] = 100
+                v_recebe["m_pohe"] = self.horas_excede().time()
+                v_recebe["t_pohe"] = calcula_valor_hora(
+                    100, v_recebe["m_pohe"], v_recebe["t_porc"] / 10
+                )
+                v_recebe["c_pohe"] = bool(int(phkesc[0:1]))
                 v_recebe["v_hora"] = self.filtro_tabela_veiculo()["HoraCobra"]
                 v_recebe["m_hora"] = self.filtro_tabela_veiculo()["HoraMinimo"]
                 v_recebe["t_hora"] = calcula_valor_hora(
@@ -484,6 +490,12 @@ class MinutaSelecionada:
                     * self.get_total_kms()
                 )
                 v_recebe["c_kilm"] = bool(int(phkesc[2:3]))
+                v_recebe["v_kihe"] = 100
+                v_recebe["m_kihe"] = self.horas_excede().time()
+                v_recebe["t_kihe"] = calcula_valor_hora(
+                    100, v_recebe["m_kihe"], v_recebe["t_kilm"] / 10
+                )
+                v_recebe["c_kihe"] = bool(int(phkesc[2:3]))
                 v_recebe["v_entr"] = self.filtro_tabela_veiculo()[
                     "EntregaCobra"
                 ]
@@ -493,6 +505,12 @@ class MinutaSelecionada:
                     * v_recebe["m_entr"]
                 )
                 v_recebe["c_entr"] = bool(int(phkesc[3:4]))
+                v_recebe["v_enhe"] = 100
+                v_recebe["m_enhe"] = self.horas_excede().time()
+                v_recebe["t_enhe"] = calcula_valor_hora(
+                    100, v_recebe["m_enhe"], v_recebe["t_entr"] / 10
+                )
+                v_recebe["c_enhe"] = bool(int(phkesc[3:4]))
                 v_recebe["v_enkg"] = self.filtro_tabela_veiculo()[
                     "EntregaKGCobra"
                 ]
@@ -502,6 +520,12 @@ class MinutaSelecionada:
                     * v_recebe["m_enkg"]
                 )
                 v_recebe["c_enkg"] = bool(int(phkesc[4:5]))
+                v_recebe["v_ekhe"] = 100
+                v_recebe["m_ekhe"] = self.horas_excede().time()
+                v_recebe["t_ekhe"] = calcula_valor_hora(
+                    100, v_recebe["m_ekhe"], v_recebe["t_enkg"] / 10
+                )
+                v_recebe["c_ekhe"] = bool(int(phkesc[4:5]))
                 v_recebe["v_evol"] = self.filtro_tabela_veiculo()[
                     "EntregaVolumeCobra"
                 ]
@@ -511,17 +535,40 @@ class MinutaSelecionada:
                     * v_recebe["m_evol"]
                 )
                 v_recebe["c_evol"] = bool(int(phkesc[5:6]))
+                v_recebe["v_evhe"] = 100
+                v_recebe["m_evhe"] = self.horas_excede().time()
+                v_recebe["t_evhe"] = calcula_valor_hora(
+                    100, v_recebe["m_evhe"], v_recebe["t_evol"] / 10
+                )
+                v_recebe["c_evhe"] = bool(int(phkesc[5:6]))
                 v_recebe["v_said"] = self.filtro_tabela_veiculo()["SaidaCobra"]
                 v_recebe["c_said"] = bool(int(phkesc[6:7]))
+                v_recebe["v_sahe"] = 100
+                v_recebe["m_sahe"] = self.horas_excede().time()
+                v_recebe["t_sahe"] = calcula_valor_hora(
+                    100, v_recebe["m_sahe"], v_recebe["v_said"] / 10
+                )
+                v_recebe["c_sahe"] = bool(int(phkesc[6:7]))
                 if capacidade:
                     v_recebe["v_capa"] = capacidade[0]
                 v_recebe["c_capa"] = bool(int(phkesc[7:8]))
+                v_recebe["v_cahe"] = 100
+                v_recebe["m_cahe"] = self.horas_excede().time()
+                v_recebe["t_cahe"] = calcula_valor_hora(
+                    100, v_recebe["m_cahe"], v_recebe["v_capa"] / 10
+                )
+                v_recebe["c_cahe"] = bool(int(phkesc[7:8]))
                 if perimetro and recebe_perimetro:
                     v_recebe["v_peri"] = perimetro[0]
                     v_recebe["c_peri"] = True
                 v_recebe = self.base_valor_perimetro(v_recebe)
                 v_recebe["t_peri"] = (
                     float(v_recebe["v_peri"]) / 100 * float(v_recebe["m_peri"])
+                )
+                v_recebe["v_pehe"] = 100
+                v_recebe["m_pehe"] = self.horas_excede().time()
+                v_recebe["t_pehe"] = calcula_valor_hora(
+                    100, v_recebe["m_pehe"], v_recebe["t_peri"] / 10
                 )
                 v_recebe["m_pnoi"] = v_recebe["m_peri"]
         if self.total_ajudantes() > 0:
