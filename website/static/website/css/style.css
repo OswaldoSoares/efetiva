@@ -6270,8 +6270,8 @@ label {
   padding: 0.2rem 0.2rem;
 }
 
-.input-group > .form-control,
-.input-group > .input-group-addon {
+.input-group .form-control,
+.input-group .input-group-addon {
   height: calc(2rem + 2px);
   padding: 0.25rem 0.5rem;
   font-size: 1.1rem;
