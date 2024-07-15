@@ -6243,6 +6243,10 @@ label {
   max-width: 1.5rem;
 }
 
+.no-padding {
+  padding: 0 !important;
+}
+
 .div-flex {
   width: 100%;
   height: auto;
@@ -6408,6 +6412,10 @@ label {
   min-width: 5%;
 }
 
+.tamanho-7 {
+  min-width: 8%;
+}
+
 .tamanho-10 {
   min-width: 10%;
 }
@@ -6418,6 +6426,10 @@ label {
 
 .tamanho-20 {
   min-width: 20%;
+}
+
+.tamanho-23 {
+  min-width: 22%;
 }
 
 .tamanho-25 {
