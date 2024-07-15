@@ -1067,9 +1067,10 @@ def cria_dict_recebe():
     m_ = Dados recuperados da Minuta
     t_ = total
     c_ = usado para configurar os checkbox do html
-    porc = porcentagem, hora = hora minimo, exce = hora excedente, kilm = kilometragem, entr = entregas,
-    enkg = entregas kg, evol = entregas volume, said = saida, capa = capacidade(peso), peri = perimetro,
-    pnoi = pernoite, ajud = ajudante
+    porc = porcentagem, hora = hora minimo, exce = hora excedente,
+    kilm = kilometragem, entr = entregas, enkg = entregas kg,
+    evol = entregas volume, said = saida, capa = capacidade(peso),
+    peri = perimetro, pnoi = pernoite, ajud = ajudante
     :return: dicionario v_paga = valores pagamento
     """
     hora_zero_time = datetime.strptime("00:00", "%H:%M").time()
