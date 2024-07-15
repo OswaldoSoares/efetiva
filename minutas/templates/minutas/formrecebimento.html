@@ -43,41 +43,48 @@
         <!-- Valores Taxa de Expedição -->
         <div class="card-body-item" id="js-taxa-recebe">
             <div class="input-group input-group-sm transparente">
-                <span class="input-group-addon addon-blue">
-                    R$
-                </span>
-                <input type="text"
-                class="form-control
-                form-control-minuta
-                text-right
-                js-input-change
-                js-decimal"
-                id="tabela-taxa-recebe"
-                name="tabela-taxa-recebe"
-                value="{{ s_minuta.recebe.v_taxa|stringformat:'.2f' }}" />
-                <span class="input-group-addon addon-blue">
-                    UN
-                </span>
-                <input type="text"
-                class="form-control form-control-minuta text-right js-unidade"
-                value="1"
-                readonly />
-                <span class="input-group-addon addon-my-color">
-                    =
-                </span>
-                <span class="input-group-addon addon-blue">
-                    R$
-                </span>
-                <input type="text"
-                class="form-control
-                form-control-minuta
-                text-right
-                total-recebe
-                js-decimal"
-                id="valor-taxa-recebe"
-                name="valor-taxa-recebe"
-                value="{{ s_minuta.recebe.v_taxa|stringformat:'.2f' }}"
-                readonly />
+                <div class="div-flex no-padding">
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>R$</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="text"
+                               class="form-control form-control-minuta text-right
+                               js-input-change js-decimal" 
+                               id="tabela-taxa-recebe" name="tabela-taxa-recebe"
+                               value="{{ s_minuta.recebe.v_taxa|stringformat:'.2f' }}" />
+                    </div>
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>UN</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="text"
+                               class="form-control form-control-minuta text-right
+                               js-unidade"
+                               value="1" readonly />
+                    </div>
+                    <div class="tamanho-5">
+                        <div class="input-group-addon addon-my-color">
+                            <span>=</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>R$</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="text"
+                               class="form-control form-control-minuta text-right
+                               total-recebe js-decimal"
+                               id="valor-taxa-recebe" name="valor-taxa-recebe"
+                               value="{{ s_minuta.recebe.v_taxa|stringformat:'.2f' }}" readonly />
+                    </div>
+                </div>
             </div>
         </div>
         <!-- Seguro -->
@@ -105,46 +112,49 @@
         <!-- Valores Seguro -->
         <div class="card-body-item" id="js-seguro-recebe">
             <div class="input-group input-group-sm transparente">
-                <span class="input-group-addon addon-blue">
-                    &nbsp%&nbsp
-                </span>
-                <input type="text"
-                class="form-control
-                form-control-minuta
-                text-right
-                js-input-change
-                js-decimal"
-                id="tabela-seguro-recebe"
-                name="tabela-seguro-recebe"
-                value="{{ s_minuta.recebe.v_segu|stringformat:'.3f' }}" />
-                <span class="input-group-addon addon-blue">
-                    R$
-                </span>
-                <input type="text"
-                class="form-control
-                form-control-minuta
-                text-right
-                js-input-change
-                js-decimal"
-                id="minuta-seguro-recebe"
-                name="minuta-seguro-recebe"
-                value="{{ s_minuta.recebe.m_segu|stringformat:'.2f' }}" />
-                <span class="input-group-addon addon-my-color">
-                    =
-                </span>
-                <span class="input-group-addon addon-blue">
-                    R$
-                </span>
-                <input type="text"
-                class="form-control
-                form-control-minuta
-                text-right
-                total-recebe
-                js-decimal"
-                id="valor-seguro-recebe"
-                name="valor-seguro-recebe"
-                value="{{ s_minuta.recebe.t_segu|stringformat:'.2f' }}"
-                readonly />
+                <div class="div-flex no-padding">
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>&nbsp%&nbsp</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="text"
+                               class="form-control form-control-minuta text-right
+                               js-input-change js-decimal" 
+                               id="tabela-seguro-recebe" name="tabela-seguro-recebe"
+                               value="{{ s_minuta.recebe.v_segu|stringformat:'.3f' }}" />
+                    </div>
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>R$</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="text"
+                               class="form-control form-control-minuta text-right
+                               js-input-change js-decimal"
+                               id="minuta-seguro-recebe" name="minuta-seguro-recebe"
+                               value="{{ s_minuta.recebe.m_segu|stringformat:'.2f' }}" />
+                    </div>
+                    <div class="tamanho-5">
+                        <div class="input-group-addon addon-my-color">
+                            <span>=</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>R$</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="text"
+                               class="form-control form-control-minuta text-right
+                               total-recebe js-decimal"
+                               id="valor-seguro-recebe" name="valor-seguro-recebe"
+                               value="{{ s_minuta.recebe.t_segu|stringformat:'.2f' }}" readonly />
+                    </div>
+                </div>
             </div>
         </div>
         <!-- Porcentagem Nota -->
@@ -172,47 +182,49 @@
         <!-- Valores Porcentagem Nota -->
         <div class="card-body-item" id="js-porcentagem-recebe">
             <div class="input-group input-group-sm transparente">
-                <span class="input-group-addon addon-blue">
-                    &nbsp%&nbsp
-                </span>
-                <input type="text"
-                class="form-control
-                form-control-minuta
-                text-right
-                js-input-change
-                js-decimal"
-                id="tabela-porcentagem-recebe"
-                name="tabela-porcentagem-recebe"
-                value="{{ s_minuta.recebe.v_porc|stringformat:'.2f' }}" />
-                <span class="input-group-addon addon-blue">
-                    R$
-                </span>
-                <input type="text"
-                class="form-control
-                form-control-minuta
-                text-right
-                js-input-change
-                js-decimal"
-                id="minuta-porcentagem-recebe"
-                name="minuta-porcentagem-recebe"
-                value="{{ s_minuta.recebe.m_porc|stringformat:'.2f' }}" />
-                <span class="input-group-addon addon-my-color">
-                    =
-                </span>
-                <span class="input-group-addon addon-blue">
-                    R$
-                </span>
-                <input type="text"
-                class="form-control
-                form-control-minuta
-                text-right
-                total-recebe
-                total-phkesc-recebe
-                js-decimal"
-                id="valor-porcentagem-recebe"
-                name="valor-porcentagem-recebe"
-                value="{{ s_minuta.recebe.t_porc|stringformat:'.2f' }}"
-                readonly />
+                <div class="div-flex no-padding">
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>&nbsp%&nbsp</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="text"
+                               class="form-control form-control-minuta text-right
+                               js-input-change js-decimal" 
+                               id="tabela-porcentagem-recebe" name="tabela-porcentagem-recebe"
+                               value="{{ s_minuta.recebe.v_porc|stringformat:'.2f' }}" />
+                    </div>
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>R$</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="text"
+                               class="form-control form-control-minuta text-right
+                               js-input-change js-decimal"
+                               id="minuta-porcentagem-recebe" name="minuta-porcentagem-recebe"
+                               value="{{ s_minuta.recebe.m_porc|stringformat:'.2f' }}" />
+                    </div>
+                    <div class="tamanho-5">
+                        <div class="input-group-addon addon-my-color">
+                            <span>=</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>R$</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="text"
+                               class="form-control form-control-minuta text-right
+                               total-recebe total-phkesc-recebe js-decimal"
+                               id="valor-porcentagem-recebe" name="valor-porcentagem-recebe"
+                               value="{{ s_minuta.recebe.t_porc|stringformat:'.2f' }}" readonly />
+                    </div>
+                </div>
             </div>
         </div>
         <!-- Horas Extra Porcentagem Nota -->
@@ -240,46 +252,49 @@
         <!-- Valores Horas Extra Porcentagem da Nota -->
         <div class="card-body-item" id="js-excedente-recebe">
             <div class="input-group input-group-sm transparente">
-                <span class="input-group-addon addon-blue">
-                    &nbsp%&nbsp
-                </span>
-                <input type="text"
-                class="form-control
-                form-control-minuta
-                text-right
-                js-input-change
-                js-decimal"
-                id="tabela-excedente-recebe"
-                name="tabela-excedente-recebe"
-                value="{{ s_minuta.recebe.v_exce|stringformat:'.2f' }}" />
-                <span class="input-group-addon addon-blue">
-                    HS
-                </span>
-                <input type="time"
-                class="form-control
-                form-control-minuta
-                text-right
-                js-input-change"
-                id="minuta-excedente-recebe"
-                name="minuta-excedente-recebe"
-                value="{{ s_minuta.recebe.m_exce }}" />
-                <span class="input-group-addon addon-my-color">
-                    =
-                </span>
-                <span class="input-group-addon addon-blue">
-                    R$
-                </span>
-                <input type="text"
-                class="form-control
-                form-control-minuta
-                text-right
-                total-recebe
-                total-phkesc-recebe
-                js-decimal"
-                id="valor-excedente-recebe"
-                name="valor-excedente-recebe"
-                value="{{ s_minuta.recebe.t_exce|stringformat:'.2f' }}"
-                readonly />
+                <div class="div-flex no-padding">
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>&nbsp%&nbsp</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="text"
+                               class="form-control form-control-minuta text-right
+                               js-input-change js-decimal" 
+                               id="tabela-porcentagem-recebe" name="tabela-porcentagem-recebe"
+                               value="{{ s_minuta.recebe.v_porc|stringformat:'.2f' }}" />
+                    </div>
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>R$</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="time"
+                               class="form-control form-control-minuta text-right
+                               js-input-change"
+                               id="minuta-excedente-recebe" name="minuta-excedente-recebe"
+                               value="{{ s_minuta.recebe.m_exce }}" />
+                    </div>
+                    <div class="tamanho-5">
+                        <div class="input-group-addon addon-my-color">
+                            <span>=</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>R$</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="text"
+                               class="form-control form-control-minuta text-right
+                               total-recebe total-phkesc-recebe js-decimal"
+                               id="valor-excedente-recebe" name="valor-excedente-recebe"
+                               value="{{ s_minuta.recebe.t_exce|stringformat:'.2f' }}" readonly />
+                    </div>
+                </div>
             </div>
         </div>
         <!-- Horas -->
@@ -307,46 +322,49 @@
         <!-- Valores Horas -->
         <div class="card-body-item" id="js-hora-recebe">
             <div class="input-group input-group-sm transparente">
-                <span class="input-group-addon addon-blue">
-                    R$
-                </span>
-                <input type="text"
-                id="tabela-hora-recebe"
-                name="tabela-hora-recebe"
-                class="form-control
-                form-control-minuta
-                text-right
-                js-input-change
-                js-decimal"
-                value="{{ s_minuta.recebe.v_hora|stringformat:'.2f' }}" />
-                <span class="input-group-addon addon-blue">
-                    HS
-                </span>
-                <input type="time"
-                class="form-control
-                form-control-minuta
-                text-right
-                js-input-change"
-                id="minuta-hora-recebe"
-                name="minuta-hora-recebe"
-                value="{{ s_minuta.recebe.m_hora }}" />
-                <span class="input-group-addon addon-my-color">
-                    =
-                </span>
-                <span class="input-group-addon addon-blue">
-                    R$
-                </span>
-                <input type="text"
-                class="form-control
-                form-control-minuta
-                text-right
-                total-recebe
-                total-phkesc-recebe
-                js-decimal"
-                id="valor-hora-recebe"
-                name="valor-hora-recebe"
-                value="{{ s_minuta.recebe.t_hora|stringformat:'.2f' }}"
-                readonly />
+                <div class="div-flex no-padding">
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>R$</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="text"
+                               class="form-control form-control-minuta text-right
+                               js-input-change js-decimal" 
+                               id="tabela-hora-recebe" name="tabela-hora-recebe"
+                               value="{{ s_minuta.recebe.v_hora|stringformat:'.2f' }}" />
+                    </div>
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>HS</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="time"
+                               class="form-control form-control-minuta text-right
+                               js-input-change"
+                               id="minuta-hora-recebe" name="minuta-hora-recebe"
+                               value="{{ s_minuta.recebe.m_hora }}" />
+                    </div>
+                    <div class="tamanho-5">
+                        <div class="input-group-addon addon-my-color">
+                            <span>=</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>R$</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="text"
+                               class="form-control form-control-minuta text-right
+                               total-recebe total-phkesc-recebe js-decimal"
+                               id="valor-hora-recebe" name="valor-hora-recebe"
+                               value="{{ s_minuta.recebe.t_hora|stringformat:'.2f' }}" readonly />
+                    </div>
+                </div>
             </div>
         </div>
         <!-- Horas Excedente -->
@@ -374,46 +392,49 @@
         <!-- Valores Horas Excedente -->
         <div class="card-body-item" id="js-excedente-recebe">
             <div class="input-group input-group-sm transparente">
-                <span class="input-group-addon addon-blue">
-                    &nbsp%&nbsp
-                </span>
-                <input type="text"
-                class="form-control
-                form-control-minuta
-                text-right
-                js-input-change
-                js-decimal"
-                id="tabela-excedente-recebe"
-                name="tabela-excedente-recebe"
-                value="{{ s_minuta.recebe.v_exce|stringformat:'.2f' }}" />
-                <span class="input-group-addon addon-blue">
-                    HS
-                </span>
-                <input type="time"
-                class="form-control
-                form-control-minuta
-                text-right
-                js-input-change"
-                id="minuta-excedente-recebe"
-                name="minuta-excedente-recebe"
-                value="{{ s_minuta.recebe.m_exce }}" />
-                <span class="input-group-addon addon-my-color">
-                    =
-                </span>
-                <span class="input-group-addon addon-blue">
-                    R$
-                </span>
-                <input type="text"
-                class="form-control
-                form-control-minuta
-                text-right
-                total-recebe
-                total-phkesc-recebe
-                js-decimal"
-                id="valor-excedente-recebe"
-                name="valor-excedente-recebe"
-                value="{{ s_minuta.recebe.t_exce|stringformat:'.2f' }}"
-                readonly />
+                <div class="div-flex no-padding">
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>&nbsp%&nbsp</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="text"
+                               class="form-control form-control-minuta text-right
+                               js-input-change js-decimal"
+                               id="tabela-excedente-recebe" name="tabela-excedente-recebe"
+                               value="{{ s_minuta.recebe.v_exce|stringformat:'.2f' }}" />
+                    </div>
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>HS</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="time"
+                               class="form-control form-control-minuta text-right
+                               js-input-change"
+                               id="minuta-excedente-recebe" name="minuta-excedente-recebe"
+                               value="{{ s_minuta.recebe.m_exce }}" />
+                    </div>
+                    <div class="tamanho-5">
+                        <div class="input-group-addon addon-my-color">
+                            <span>=</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>R$</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="text"
+                               class="form-control form-control-minuta text-right
+                               total-recebe total-phkesc-recebe js-decimal"
+                               id="valor-excedente-recebe" name="valor-excedente-recebe"
+                               value="{{ s_minuta.recebe.t_exce|stringformat:'.2f' }}" readonly />
+                    </div>
+                </div>
             </div>
         </div>
         <!-- Kilometragem -->
@@ -509,46 +530,49 @@
         <!-- Valores Horas Extra Porcentagem da Nota -->
         <div class="card-body-item" id="js-excedente-recebe">
             <div class="input-group input-group-sm transparente">
-                <span class="input-group-addon addon-blue">
-                    &nbsp%&nbsp
-                </span>
-                <input type="text"
-                class="form-control
-                form-control-minuta
-                text-right
-                js-input-change
-                js-decimal"
-                id="tabela-excedente-recebe"
-                name="tabela-excedente-recebe"
-                value="{{ s_minuta.recebe.v_exce|stringformat:'.2f' }}" />
-                <span class="input-group-addon addon-blue">
-                    HS
-                </span>
-                <input type="time"
-                class="form-control
-                form-control-minuta
-                text-right
-                js-input-change"
-                id="minuta-excedente-recebe"
-                name="minuta-excedente-recebe"
-                value="{{ s_minuta.recebe.m_exce }}" />
-                <span class="input-group-addon addon-my-color">
-                    =
-                </span>
-                <span class="input-group-addon addon-blue">
-                    R$
-                </span>
-                <input type="text"
-                class="form-control
-                form-control-minuta
-                text-right
-                total-recebe
-                total-phkesc-recebe
-                js-decimal"
-                id="valor-excedente-recebe"
-                name="valor-excedente-recebe"
-                value="{{ s_minuta.recebe.t_exce|stringformat:'.2f' }}"
-                readonly />
+                <div class="div-flex no-padding">
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>&nbsp%&nbsp</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="text"
+                               class="form-control form-control-minuta text-right
+                               js-input-change js-decimal"
+                               id="tabela-excedente-recebe" name="tabela-excedente-recebe"
+                               value="{{ s_minuta.recebe.v_exce|stringformat:'.2f' }}" />
+                    </div>
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>HS</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="time"
+                               class="form-control form-control-minuta text-right
+                               js-input-change"
+                               id="minuta-excedente-recebe" name="minuta-excedente-recebe"
+                               value="{{ s_minuta.recebe.m_exce }}" />
+                    </div>
+                    <div class="tamanho-5">
+                        <div class="input-group-addon addon-my-color">
+                            <span>=</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>R$</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="text"
+                               class="form-control form-control-minuta text-right
+                               total-recebe total-phkesc-recebe js-decimal"
+                               id="valor-excedente-recebe" name="valor-excedente-recebe"
+                               value="{{ s_minuta.recebe.t_exce|stringformat:'.2f' }}" readonly />
+                    </div>
+                </div>
             </div>
         </div>
         <!-- Entregas -->
@@ -644,48 +668,51 @@
         <!-- Valores Horas Extra Porcentagem da Nota -->
         <div class="card-body-item" id="js-excedente-recebe">
             <div class="input-group input-group-sm transparente">
-                <span class="input-group-addon addon-blue">
-                    &nbsp%&nbsp
-                </span>
-                <input type="text"
-                class="form-control
-                form-control-minuta
-                text-right
-                js-input-change
-                js-decimal"
-                id="tabela-excedente-recebe"
-                name="tabela-excedente-recebe"
-                value="{{ s_minuta.recebe.v_exce|stringformat:'.2f' }}" />
-                <span class="input-group-addon addon-blue">
-                    HS
-                </span>
-                <input type="time"
-                class="form-control
-                form-control-minuta
-                text-right
-                js-input-change"
-                id="minuta-excedente-recebe"
-                name="minuta-excedente-recebe"
-                value="{{ s_minuta.recebe.m_exce }}" />
-                <span class="input-group-addon addon-my-color">
-                    =
-                </span>
-                <span class="input-group-addon addon-blue">
-                    R$
-                </span>
-                <input type="text"
-                class="form-control
-                form-control-minuta
-                text-right
-                total-recebe
-                total-phkesc-recebe
-                js-decimal"
-                id="valor-excedente-recebe"
-                name="valor-excedente-recebe"
-                value="{{ s_minuta.recebe.t_exce|stringformat:'.2f' }}"
-                readonly />
+                <div class="div-flex no-padding">
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>&nbsp%&nbsp</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="text"
+                               class="form-control form-control-minuta text-right
+                               js-input-change js-decimal"
+                               id="tabela-excedente-recebe" name="tabela-excedente-recebe"
+                               value="{{ s_minuta.recebe.v_exce|stringformat:'.2f' }}" />
+                    </div>
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>HS</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="time"
+                               class="form-control form-control-minuta text-right
+                               js-input-change"
+                               id="minuta-excedente-recebe" name="minuta-excedente-recebe"
+                               value="{{ s_minuta.recebe.m_exce }}" />
+                    </div>
+                    <div class="tamanho-5">
+                        <div class="input-group-addon addon-my-color">
+                            <span>=</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>R$</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="text"
+                               class="form-control form-control-minuta text-right
+                               total-recebe total-phkesc-recebe js-decimal"
+                               id="valor-excedente-recebe" name="valor-excedente-recebe"
+                               value="{{ s_minuta.recebe.t_exce|stringformat:'.2f' }}" readonly />
+                    </div>
+                </div>
             </div>
-        </div> 
+        </div>
         <!-- Entregas KG -->
         <div class="card-body-item">
             <div class="input-group">
@@ -778,46 +805,49 @@
         <!-- Valores Horas Extras - Entrega KG -->
         <div class="card-body-item" id="js-excedente-recebe">
             <div class="input-group input-group-sm transparente">
-                <span class="input-group-addon addon-blue">
-                    &nbsp%&nbsp
-                </span>
-                <input type="text"
-                class="form-control
-                form-control-minuta
-                text-right
-                js-input-change
-                js-decimal"
-                id="tabela-excedente-recebe"
-                name="tabela-excedente-recebe"
-                value="{{ s_minuta.recebe.v_exce|stringformat:'.2f' }}" />
-                <span class="input-group-addon addon-blue">
-                    HS
-                </span>
-                <input type="time"
-                class="form-control
-                form-control-minuta
-                text-right
-                js-input-change"
-                id="minuta-excedente-recebe"
-                name="minuta-excedente-recebe"
-                value="{{ s_minuta.recebe.m_exce }}" />
-                <span class="input-group-addon addon-my-color">
-                    =
-                </span>
-                <span class="input-group-addon addon-blue">
-                    R$
-                </span>
-                <input type="text"
-                class="form-control
-                form-control-minuta
-                text-right
-                total-recebe
-                total-phkesc-recebe
-                js-decimal"
-                id="valor-excedente-recebe"
-                name="valor-excedente-recebe"
-                value="{{ s_minuta.recebe.t_exce|stringformat:'.2f' }}"
-                readonly />
+                <div class="div-flex no-padding">
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>&nbsp%&nbsp</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="text"
+                               class="form-control form-control-minuta text-right
+                               js-input-change js-decimal"
+                               id="tabela-excedente-recebe" name="tabela-excedente-recebe"
+                               value="{{ s_minuta.recebe.v_exce|stringformat:'.2f' }}" />
+                    </div>
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>HS</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="time"
+                               class="form-control form-control-minuta text-right
+                               js-input-change"
+                               id="minuta-excedente-recebe" name="minuta-excedente-recebe"
+                               value="{{ s_minuta.recebe.m_exce }}" />
+                    </div>
+                    <div class="tamanho-5">
+                        <div class="input-group-addon addon-my-color">
+                            <span>=</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>R$</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="text"
+                               class="form-control form-control-minuta text-right
+                               total-recebe total-phkesc-recebe js-decimal"
+                               id="valor-excedente-recebe" name="valor-excedente-recebe"
+                               value="{{ s_minuta.recebe.t_exce|stringformat:'.2f' }}" readonly />
+                    </div>
+                </div>
             </div>
         </div>
         <!-- Entregas Volume -->
@@ -913,46 +943,49 @@
         <!-- Valores Horas Extras - Entrega Volume -->
         <div class="card-body-item" id="js-excedente-recebe">
             <div class="input-group input-group-sm transparente">
-                <span class="input-group-addon addon-blue">
-                    &nbsp%&nbsp
-                </span>
-                <input type="text"
-                class="form-control
-                form-control-minuta
-                text-right
-                js-input-change
-                js-decimal"
-                id="tabela-excedente-recebe"
-                name="tabela-excedente-recebe"
-                value="{{ s_minuta.recebe.v_exce|stringformat:'.2f' }}" />
-                <span class="input-group-addon addon-blue">
-                    HS
-                </span>
-                <input type="time"
-                class="form-control
-                form-control-minuta
-                text-right
-                js-input-change"
-                id="minuta-excedente-recebe"
-                name="minuta-excedente-recebe"
-                value="{{ s_minuta.recebe.m_exce }}" />
-                <span class="input-group-addon addon-my-color">
-                    =
-                </span>
-                <span class="input-group-addon addon-blue">
-                    R$
-                </span>
-                <input type="text"
-                class="form-control
-                form-control-minuta
-                text-right
-                total-recebe
-                total-phkesc-recebe
-                js-decimal"
-                id="valor-excedente-recebe"
-                name="valor-excedente-recebe"
-                value="{{ s_minuta.recebe.t_exce|stringformat:'.2f' }}"
-                readonly />
+                <div class="div-flex no-padding">
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>&nbsp%&nbsp</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="text"
+                               class="form-control form-control-minuta text-right
+                               js-input-change js-decimal"
+                               id="tabela-excedente-recebe" name="tabela-excedente-recebe"
+                               value="{{ s_minuta.recebe.v_exce|stringformat:'.2f' }}" />
+                    </div>
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>HS</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="time"
+                               class="form-control form-control-minuta text-right
+                               js-input-change"
+                               id="minuta-excedente-recebe" name="minuta-excedente-recebe"
+                               value="{{ s_minuta.recebe.m_exce }}" />
+                    </div>
+                    <div class="tamanho-5">
+                        <div class="input-group-addon addon-my-color">
+                            <span>=</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>R$</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="text"
+                               class="form-control form-control-minuta text-right
+                               total-recebe total-phkesc-recebe js-decimal"
+                               id="valor-excedente-recebe" name="valor-excedente-recebe"
+                               value="{{ s_minuta.recebe.t_exce|stringformat:'.2f' }}" readonly />
+                    </div>
+                </div>
             </div>
         </div>
         <!-- Saida -->
@@ -1046,46 +1079,49 @@
         <!-- Valores Horas Extra - Saída -->
         <div class="card-body-item" id="js-excedente-recebe">
             <div class="input-group input-group-sm transparente">
-                <span class="input-group-addon addon-blue">
-                    &nbsp%&nbsp
-                </span>
-                <input type="text"
-                class="form-control
-                form-control-minuta
-                text-right
-                js-input-change
-                js-decimal"
-                id="tabela-excedente-recebe"
-                name="tabela-excedente-recebe"
-                value="{{ s_minuta.recebe.v_exce|stringformat:'.2f' }}" />
-                <span class="input-group-addon addon-blue">
-                    HS
-                </span>
-                <input type="time"
-                class="form-control
-                form-control-minuta
-                text-right
-                js-input-change"
-                id="minuta-excedente-recebe"
-                name="minuta-excedente-recebe"
-                value="{{ s_minuta.recebe.m_exce }}" />
-                <span class="input-group-addon addon-my-color">
-                    =
-                </span>
-                <span class="input-group-addon addon-blue">
-                    R$
-                </span>
-                <input type="text"
-                class="form-control
-                form-control-minuta
-                text-right
-                total-recebe
-                total-phkesc-recebe
-                js-decimal"
-                id="valor-excedente-recebe"
-                name="valor-excedente-recebe"
-                value="{{ s_minuta.recebe.t_exce|stringformat:'.2f' }}"
-                readonly />
+                <div class="div-flex no-padding">
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>&nbsp%&nbsp</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="text"
+                               class="form-control form-control-minuta text-right
+                               js-input-change js-decimal"
+                               id="tabela-excedente-recebe" name="tabela-excedente-recebe"
+                               value="{{ s_minuta.recebe.v_exce|stringformat:'.2f' }}" />
+                    </div>
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>HS</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="time"
+                               class="form-control form-control-minuta text-right
+                               js-input-change"
+                               id="minuta-excedente-recebe" name="minuta-excedente-recebe"
+                               value="{{ s_minuta.recebe.m_exce }}" />
+                    </div>
+                    <div class="tamanho-5">
+                        <div class="input-group-addon addon-my-color">
+                            <span>=</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>R$</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="text"
+                               class="form-control form-control-minuta text-right
+                               total-recebe total-phkesc-recebe js-decimal"
+                               id="valor-excedente-recebe" name="valor-excedente-recebe"
+                               value="{{ s_minuta.recebe.t_exce|stringformat:'.2f' }}" readonly />
+                    </div>
+                </div>
             </div>
         </div>
         <!-- Capacidade Peso -->
@@ -1179,46 +1215,49 @@
         <!-- Valores Horas Extras - Capacidade Peso -->
         <div class="card-body-item" id="js-excedente-recebe">
             <div class="input-group input-group-sm transparente">
-                <span class="input-group-addon addon-blue">
-                    &nbsp%&nbsp
-                </span>
-                <input type="text"
-                class="form-control
-                form-control-minuta
-                text-right
-                js-input-change
-                js-decimal"
-                id="tabela-excedente-recebe"
-                name="tabela-excedente-recebe"
-                value="{{ s_minuta.recebe.v_exce|stringformat:'.2f' }}" />
-                <span class="input-group-addon addon-blue">
-                    HS
-                </span>
-                <input type="time"
-                class="form-control
-                form-control-minuta
-                text-right
-                js-input-change"
-                id="minuta-excedente-recebe"
-                name="minuta-excedente-recebe"
-                value="{{ s_minuta.recebe.m_exce }}" />
-                <span class="input-group-addon addon-my-color">
-                    =
-                </span>
-                <span class="input-group-addon addon-blue">
-                    R$
-                </span>
-                <input type="text"
-                class="form-control
-                form-control-minuta
-                text-right
-                total-recebe
-                total-phkesc-recebe
-                js-decimal"
-                id="valor-excedente-recebe"
-                name="valor-excedente-recebe"
-                value="{{ s_minuta.recebe.t_exce|stringformat:'.2f' }}"
-                readonly />
+                <div class="div-flex no-padding">
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>&nbsp%&nbsp</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="text"
+                               class="form-control form-control-minuta text-right
+                               js-input-change js-decimal"
+                               id="tabela-excedente-recebe" name="tabela-excedente-recebe"
+                               value="{{ s_minuta.recebe.v_exce|stringformat:'.2f' }}" />
+                    </div>
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>HS</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="time"
+                               class="form-control form-control-minuta text-right
+                               js-input-change"
+                               id="minuta-excedente-recebe" name="minuta-excedente-recebe"
+                               value="{{ s_minuta.recebe.m_exce }}" />
+                    </div>
+                    <div class="tamanho-5">
+                        <div class="input-group-addon addon-my-color">
+                            <span>=</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>R$</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="text"
+                               class="form-control form-control-minuta text-right
+                               total-recebe total-phkesc-recebe js-decimal"
+                               id="valor-excedente-recebe" name="valor-excedente-recebe"
+                               value="{{ s_minuta.recebe.t_exce|stringformat:'.2f' }}" readonly />
+                    </div>
+                </div>
             </div>
         </div>
         <!-- Perimetro -->
@@ -1319,46 +1358,49 @@
         <!-- Valores Horas Extras - Perimetro -->
         <div class="card-body-item" id="js-excedente-recebe">
             <div class="input-group input-group-sm transparente">
-                <span class="input-group-addon addon-blue">
-                    &nbsp%&nbsp
-                </span>
-                <input type="text"
-                class="form-control
-                form-control-minuta
-                text-right
-                js-input-change
-                js-decimal"
-                id="tabela-excedente-recebe"
-                name="tabela-excedente-recebe"
-                value="{{ s_minuta.recebe.v_exce|stringformat:'.2f' }}" />
-                <span class="input-group-addon addon-blue">
-                    HS
-                </span>
-                <input type="time"
-                class="form-control
-                form-control-minuta
-                text-right
-                js-input-change"
-                id="minuta-excedente-recebe"
-                name="minuta-excedente-recebe"
-                value="{{ s_minuta.recebe.m_exce }}" />
-                <span class="input-group-addon addon-my-color">
-                    =
-                </span>
-                <span class="input-group-addon addon-blue">
-                    R$
-                </span>
-                <input type="text"
-                class="form-control
-                form-control-minuta
-                text-right
-                total-recebe
-                total-phkesc-recebe
-                js-decimal"
-                id="valor-excedente-recebe"
-                name="valor-excedente-recebe"
-                value="{{ s_minuta.recebe.t_exce|stringformat:'.2f' }}"
-                readonly />
+                <div class="div-flex no-padding">
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>&nbsp%&nbsp</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="text"
+                               class="form-control form-control-minuta text-right
+                               js-input-change js-decimal"
+                               id="tabela-excedente-recebe" name="tabela-excedente-recebe"
+                               value="{{ s_minuta.recebe.v_exce|stringformat:'.2f' }}" />
+                    </div>
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>HS</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="time"
+                               class="form-control form-control-minuta text-right
+                               js-input-change"
+                               id="minuta-excedente-recebe" name="minuta-excedente-recebe"
+                               value="{{ s_minuta.recebe.m_exce }}" />
+                    </div>
+                    <div class="tamanho-5">
+                        <div class="input-group-addon addon-my-color">
+                            <span>=</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-7">
+                        <div class="input-group-addon addon-blue">
+                            <span>R$</span>
+                        </div>
+                    </div>
+                    <div class="tamanho-23">
+                        <input type="text"
+                               class="form-control form-control-minuta text-right
+                               total-recebe total-phkesc-recebe js-decimal"
+                               id="valor-excedente-recebe" name="valor-excedente-recebe"
+                               value="{{ s_minuta.recebe.t_exce|stringformat:'.2f' }}" readonly />
+                    </div>
+                </div>
             </div>
         </div>
         <!-- Pernoite -->
