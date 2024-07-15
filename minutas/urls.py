@@ -223,4 +223,9 @@ urlpatterns = [
         minutas_periodo,
         name="minutas_periodo",
     ),
+    path(
+        "minuta_cards",
+        views.minuta_cards,
+        name="minuta_cards",
+    ),
 ]
