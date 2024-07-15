@@ -239,18 +239,18 @@ class MinutaSelecionada:
         return True if perimetro else False
 
     def total_notas(self):
-        d_total_notas = dict()
-        d_total_notas["valor_entregas"] = sum(
+        totais = dict()
+        totais["valor_entregas"] = sum(
             [itens["ValorNota"] for itens in self.entregas]
         )
-        d_total_notas["volume_entregas"] = sum(
+        totais["volume_entregas"] = sum(
             [itens["Volume"] for itens in self.entregas]
         )
-        d_total_notas["peso_entregas"] = sum(
+        totais["peso_entregas"] = sum(
             [itens["Peso"] for itens in self.entregas]
         )
-        d_total_notas["total_entregas"] = len(self.entregas)
-        return d_total_notas
+        totais["total_entregas"] = len(self.entregas)
+        return totais
 
     def total_despesas(self):
         d_total_despesas = dict()
