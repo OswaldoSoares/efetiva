@@ -544,50 +544,53 @@ def grafico_minutas_dia(pdf, minutas_dia, notas_dia):
     # Gráfico 01
     drawing = Drawing(cmp(18), cmp(12))
     dados = []
-    dados.append(quant_minutas)
-    cores = [colors.red]
-    legenda_textos = ["Quant. Veículos"]
-    meu_titulo = f"Quant. Veículos - {minutas_total} (40 dias)"
-    gera_graphics_lineplot(
-        drawing, dados, rotulos_x, legenda_textos, meu_titulo, cores
-    )
-    renderPDF.draw(drawing, pdf, 0, 0)
+    if quant_minutas:
+        dados.append(quant_minutas)
+        cores = [colors.red]
+        legenda_textos = ["Quant. Veículos"]
+        meu_titulo = f"Quant. Veículos - {minutas_total} (40 dias)"
+        gera_graphics_lineplot(
+            drawing, dados, rotulos_x, legenda_textos, meu_titulo, cores
+        )
+        renderPDF.draw(drawing, pdf, 0, 0)
     # Gráfico 02
     drawing = Drawing(cmp(18), cmp(12))
     dados = []
-    dados.append(quant_notas)
-    cores = [colors.blue]
-    legenda_textos = ["Quant. Notas"]
-    meu_titulo = f"Quant. Notas - {notas_total} (40 dias)"
-    gera_graphics_lineplot(
-        drawing, dados, rotulos_x, legenda_textos, meu_titulo, cores
-    )
-    renderPDF.draw(drawing, pdf, cmp(95), 0)
+    if quant_notas:
+        dados.append(quant_notas)
+        cores = [colors.blue]
+        legenda_textos = ["Quant. Notas"]
+        meu_titulo = f"Quant. Notas - {notas_total} (40 dias)"
+        gera_graphics_lineplot(
+            drawing, dados, rotulos_x, legenda_textos, meu_titulo, cores
+        )
+        renderPDF.draw(drawing, pdf, cmp(95), 0)
     # Gráfico 03
     drawing = Drawing(cmp(18), cmp(12))
     dados = []
     dados.append(valor_notas)
-    cores = [colors.green]
-    legenda_textos = ["Valor Total"]
-    real_vpm = valor_ponto_milhar(valor_total, 2)
-    meu_titulo = f"Valor Total - R$ {real_vpm} (40 dias)"
-    gera_graphics_lineplot(
-        drawing, dados, rotulos_x, legenda_textos, meu_titulo, cores
-    )
-    renderPDF.draw(drawing, pdf, 0, cmp(50))
+    if valor_notas:
+        cores = [colors.green]
+        legenda_textos = ["Valor Total"]
+        real_vpm = valor_ponto_milhar(valor_total, 2)
+        meu_titulo = f"Valor Total - R$ {real_vpm} (40 dias)"
+        gera_graphics_lineplot(
+            drawing, dados, rotulos_x, legenda_textos, meu_titulo, cores
+        )
+        renderPDF.draw(drawing, pdf, 0, cmp(50))
     # Gráfico 04
     drawing = Drawing(cmp(18), cmp(12))
     dados = []
-    dados.append(peso_notas)
-    cores = [colors.yellow]
-    legenda_textos = ["Peso Total"]
-    peso_vpm = valor_ponto_milhar(peso_total, 3)
-    meu_titulo = f"Peso Total - {peso_vpm}kg (40 dias)"
-    gera_graphics_lineplot(
-        drawing, dados, rotulos_x, legenda_textos, meu_titulo, cores
-    )
-    renderPDF.draw(drawing, pdf, cmp(95), cmp(50))
-
+    if peso_notas:
+        dados.append(peso_notas)
+        cores = [colors.yellow]
+        legenda_textos = ["Peso Total"]
+        peso_vpm = valor_ponto_milhar(peso_total, 3)
+        meu_titulo = f"Peso Total - {peso_vpm}kg (40 dias)"
+        gera_graphics_lineplot(
+            drawing, dados, rotulos_x, legenda_textos, meu_titulo, cores
+        )
+        renderPDF.draw(drawing, pdf, cmp(95), cmp(50))
     return pdf
 
 
