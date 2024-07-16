@@ -27,7 +27,9 @@ class CadastraMinuta(forms.ModelForm):
         self.fields["HoraInicial"].initial = "06:00"
         # Personaliza opcão o do SELECT
         self.fields["idCliente"].empty_label = "Selecione um item da lista"
-        self.fields["idCategoriaVeiculo"].empty_label = "Selecione um item da lista"
+        self.fields[
+            "idCategoriaVeiculo"
+        ].empty_label = "Selecione um item da lista"
 
     class Meta:
         model = Minuta
@@ -55,7 +57,8 @@ class CadastraMinuta(forms.ModelForm):
             "Minuta": forms.HiddenInput(),
             "idCliente": forms.Select(attrs={"class": "formfields"}),
             "DataMinuta": MeuDateInput(
-                format="%Y-%m-%d", attrs={"class": "formfields", "value": "01/09/2020"}
+                format="%Y-%m-%d",
+                attrs={"class": "formfields", "value": "01/09/2020"},
             ),
             "HoraInicial": MeuTimeInput(attrs={"class": "formfields"}),
             "idCategoriaVeiculo": forms.Select(attrs={"class": "formfields"}),
@@ -124,7 +127,10 @@ class CadastraMinutaVeiculo(forms.Form):
                 ("2", "VEÍCULOS TRANSPORTADORA"),
                 ("3", "VEÍCULOS CADASTRADOS"),
             ),
-            attrs={"class": "formfields", "data-url": "/minutas/filtraminutaveiculo"},
+            attrs={
+                "class": "formfields",
+                "data-url": "/minutas/filtraminutaveiculo",
+            },
         ),
     )
     Veiculo = forms.CharField(
@@ -344,7 +350,9 @@ class CadastraComentarioMinuta(forms.ModelForm):
         model = Minuta
         fields = {"Comentarios"}
         widgets = {
-            "Comentarios": forms.Textarea(attrs={"rows": 5, "class": "comentarios"})
+            "Comentarios": forms.Textarea(
+                attrs={"rows": 5, "class": "comentarios"}
+            )
         }
 
 
@@ -356,7 +364,13 @@ class FormMinuta(forms.ModelForm):
 
     class Meta:
         model = Minuta
-        fields = {"idMinuta", "Minuta", "idCliente", "DataMinuta", "HoraInicial"}
+        fields = {
+            "idMinuta",
+            "Minuta",
+            "idCliente",
+            "DataMinuta",
+            "HoraInicial",
+        }
         widgets = {
             "Minuta": forms.HiddenInput(),
             "idCliente": forms.Select(attrs={"class": "form-control"}),
@@ -371,14 +385,18 @@ class FormEditaVeiculoSolicitado(forms.ModelForm):
     class Meta:
         model = Minuta
         fields = ("idMinuta", "idCategoriaVeiculo")
-        widgets = {"idCategoriaVeiculo": forms.Select(attrs={"class": "form-control"})}
+        widgets = {
+            "idCategoriaVeiculo": forms.Select(attrs={"class": "form-control"})
+        }
 
 
 class FormEditaVeiculoEscolhido(forms.ModelForm):
     class Meta:
         model = Minuta
         fields = ("idMinuta", "idCategoriaVeiculo")
-        widgets = {"idCategoriaVeiculo": forms.Select(attrs={"class": "form-control"})}
+        widgets = {
+            "idCategoriaVeiculo": forms.Select(attrs={"class": "form-control"})
+        }
 
 
 class FormInsereColaborador(forms.ModelForm):
@@ -393,9 +411,15 @@ class FormColetaEntregaObs(forms.ModelForm):
         model = Minuta
         fields = {"idMinuta", "Coleta", "Entrega", "Obs"}
         widgets = {
-            "Coleta": forms.Textarea(attrs={"class": "form-control", "rows": "3"}),
-            "Entrega": forms.Textarea(attrs={"class": "form-control", "rows": "3"}),
-            "Obs": forms.Textarea(attrs={"class": "form-control", "rows": "3"}),
+            "Coleta": forms.Textarea(
+                attrs={"class": "form-control", "rows": "3"}
+            ),
+            "Entrega": forms.Textarea(
+                attrs={"class": "form-control", "rows": "3"}
+            ),
+            "Obs": forms.Textarea(
+                attrs={"class": "form-control", "rows": "3"}
+            ),
         }
 
 
@@ -453,7 +477,9 @@ class FormInsereEntrega(forms.ModelForm):
             "idMinuta",
         }
         widgets = {
-            "Nota": forms.TextInput(attrs={"class": "form-control js-perimetro-hide"}),
+            "Nota": forms.TextInput(
+                attrs={"class": "form-control js-perimetro-hide"}
+            ),
             "ValorNota": forms.NumberInput(
                 attrs={"class": "form-control js-perimetro-hide"}
             ),
@@ -466,7 +492,9 @@ class FormInsereEntrega(forms.ModelForm):
             "NotaGuia": forms.TextInput(
                 attrs={"class": "form-control js-perimetro-hide"}
             ),
-            "Nome": forms.TextInput(attrs={"class": "form-control js-perimetro-hide"}),
+            "Nome": forms.TextInput(
+                attrs={"class": "form-control js-perimetro-hide"}
+            ),
             "Estado": forms.TextInput(attrs={"class": "form-control"}),
             "Cidade": forms.TextInput(attrs={"class": "form-control"}),
             "Bairro": forms.TextInput(attrs={"class": "form-control"}),
