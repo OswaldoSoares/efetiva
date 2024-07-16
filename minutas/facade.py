@@ -523,13 +523,13 @@ class MinutaSelecionada:
                     self.filtro_tabela_veiculo()["EntregaKGCobra"]
                     * v_recebe["m_enkg"]
                 )
-                v_recebe["c_enkg"] = bool(int(phkesc[4:5]))
+                v_recebe["c_enkg"] = bool(int(phkesc[6:7]))
                 v_recebe["v_ekhe"] = 100
                 v_recebe["m_ekhe"] = self.horas_excede().time()
                 v_recebe["t_ekhe"] = calcula_valor_hora(
                     100, v_recebe["m_ekhe"], v_recebe["t_enkg"] / 10
                 )
-                v_recebe["c_ekhe"] = bool(int(phkesc[4:5]))
+                v_recebe["c_ekhe"] = bool(int(phkesc[6:7]))
                 v_recebe["v_evol"] = self.filtro_tabela_veiculo()[
                     "EntregaVolumeCobra"
                 ]
@@ -538,30 +538,30 @@ class MinutaSelecionada:
                     self.filtro_tabela_veiculo()["EntregaVolumeCobra"]
                     * v_recebe["m_evol"]
                 )
-                v_recebe["c_evol"] = bool(int(phkesc[5:6]))
+                v_recebe["c_evol"] = bool(int(phkesc[7:8]))
                 v_recebe["v_evhe"] = 100
                 v_recebe["m_evhe"] = self.horas_excede().time()
                 v_recebe["t_evhe"] = calcula_valor_hora(
                     100, v_recebe["m_evhe"], v_recebe["t_evol"] / 10
                 )
-                v_recebe["c_evhe"] = bool(int(phkesc[5:6]))
+                v_recebe["c_evhe"] = bool(int(phkesc[7:8]))
                 v_recebe["v_said"] = self.filtro_tabela_veiculo()["SaidaCobra"]
-                v_recebe["c_said"] = bool(int(phkesc[6:7]))
+                v_recebe["c_said"] = bool(int(phkesc[4:5]))
                 v_recebe["v_sahe"] = 100
                 v_recebe["m_sahe"] = self.horas_excede().time()
                 v_recebe["t_sahe"] = calcula_valor_hora(
                     100, v_recebe["m_sahe"], v_recebe["v_said"] / 10
                 )
-                v_recebe["c_sahe"] = bool(int(phkesc[6:7]))
+                v_recebe["c_sahe"] = bool(int(phkesc[4:5]))
                 if capacidade:
                     v_recebe["v_capa"] = capacidade[0]
-                v_recebe["c_capa"] = bool(int(phkesc[7:8]))
+                v_recebe["c_capa"] = bool(int(phkesc[5:6]))
                 v_recebe["v_cahe"] = 100
                 v_recebe["m_cahe"] = self.horas_excede().time()
                 v_recebe["t_cahe"] = calcula_valor_hora(
                     100, v_recebe["m_cahe"], v_recebe["v_capa"] / 10
                 )
-                v_recebe["c_cahe"] = bool(int(phkesc[7:8]))
+                v_recebe["c_cahe"] = bool(int(phkesc[5:6]))
                 if perimetro and recebe_perimetro:
                     v_recebe["v_peri"] = perimetro[0]
                     v_recebe["c_peri"] = True
