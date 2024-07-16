@@ -139,9 +139,13 @@ class CadastraMinutaHoraFinal(forms.ModelForm):
         model = Minuta
         fields = {"HoraFinal"}
         widgets = {
-            "HoraFinal": MeuTimeInput(
-                attrs={"class": "form-control form-control-minuta text-center"}
-            )
+            "HoraFinal": forms.TimeInput(
+                format="%H:%M",
+                attrs={
+                    "class": "form-control form-control-minuta text-center",
+                    "type": "time",
+                },
+            ),
         }
 
 
