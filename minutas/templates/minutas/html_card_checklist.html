@@ -163,25 +163,9 @@
         </div>
     </div>
     {% endif %}
-    <!-- CONCLUIR MINUTA -->
-    <div class="card-body-item">
-        <div class="input-group">
-            <i class="bi bi-check-square
-            input-group-addon
-            addon-my-color
-            i-button-null"></i>
-            <span class="form-control input-fake">CONCLUIR MINUTA</span>
-            <div class="checkbox input-group-addon addon-my-color">
-                {% if s_minuta.status_minuta == 'CONCLUIDA' %}
-                <i class="bi bi-check-square chk-green"></i>
-                {%  else %}
-                <i class="bi bi-square chk-red-conclui"></i>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-    <!-- PAGAMENTO DE AJUDANTES -->
+    <!-- PAGAMENTO DE MOTORISTA -->
     {% if s_minuta.motorista %}
+    {% if s_minuta.motorista.0.obj.TipoPgto != "MENSALISTA" %}
     <div class="card-body-item">
         <div class="input-group">
             <i class="bi bi-check-square
@@ -199,10 +183,28 @@
         </div>
     </div>
     {% endif %}
+    {% endif %}
+    <!-- CONCLUIR MINUTA -->
+    <div class="card-body-item">
+        <div class="input-group">
+            <i class="bi bi-check-square
+            input-group-addon
+            addon-my-color
+            i-button-null"></i>
+            <span class="form-control input-fake">CONCLUIR MINUTA</span>
+            <div class="checkbox input-group-addon addon-my-color">
+                {% if s_minuta.status_minuta == 'CONCLUIDA' %}
+                <i class="bi bi-check-square chk-green"></i>
+                {%  else %}
+                <i class="bi bi-square chk-red-conclui"></i>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 </div>
 <div class="card-footer">
     {% if s_minuta.status_minuta == 'ABERTA' %}
-        <i class="icofont-check i-button conclui-minuta"
+        <i class="icofont-check i-button js-conclui-minuta"
            data-idminuta="{{ s_minuta.idminuta }}"
            title="CONCLUI MINUTA"></i>
     {% elif not s_minuta.paga_realizada_motorista and s_minuta.status_minuta == 'CONCLUIDA'%}
