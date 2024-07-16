@@ -424,13 +424,17 @@ class MinutaSelecionada:
         v_recebe = cria_dict_recebe()
         tabela_veiculo = self.filtro_tabela_veiculo()
         recebe_perimetro = self.perimetro
+        peso_recebe = self.t_entregas["peso_entregas"]
+        if self.romaneio_pesos:
+            maior = max(self.romaneio_pesos, key=lambda x: x["peso"])
+            if maior:
+                peso_recebe = maior["peso"]
         capacidade = [
             itens["CapacidadeCobra"]
             for itens in self.tabela_capacidade
             if itens["CapacidadeInicial"]
             # Verificar peso total 12/06/2024
-            #  <= self.total_kms()
-            <= itens["CapacidadeFinal"]
+            <= peso_recebe <= itens["CapacidadeFinal"]
         ]
         perimetro = [
             itens["PerimetroCobra"]
@@ -514,7 +518,7 @@ class MinutaSelecionada:
                 v_recebe["v_enkg"] = self.filtro_tabela_veiculo()[
                     "EntregaKGCobra"
                 ]
-                v_recebe["m_enkg"] = self.t_entregas["peso_entregas"]
+                v_recebe["m_enkg"] = peso_recebe
                 v_recebe["t_enkg"] = (
                     self.filtro_tabela_veiculo()["EntregaKGCobra"]
                     * v_recebe["m_enkg"]
