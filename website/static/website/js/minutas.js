@@ -165,8 +165,9 @@ $(document).ready(function() {
     });
 
     // Versão Nova //
-    $(document).on("click", ".conclui-minuta", function(event) {
-        var idminuta = $(this).attr("idMinuta")
+    $(document).on("click", ".js-conclui-minuta", function(event) {
+        var idminuta = $(this).data("idminuta")
+        alert(idminuta)
         $.ajax({
             type: "GET",
             url: "/minutas/concluirminuta",
@@ -1490,10 +1491,10 @@ $(document).on("click", ".lista-consulta", function(event) {
 function mostraChecklist() {
     $(".card-checklist").slideDown(500)
     $(".chk-red").each(function() {
-        $(".conclui-minuta").slideUp(500)
-    });
+        $(".js-conclui-minuta").slideUp(500)
+    })
     $(".chk-red-gera-paga").each(function() {
-        $(".conclui-minuta").slideUp(500)
+        $(".js-conclui-minuta").slideUp(500)
     });
 }
 
