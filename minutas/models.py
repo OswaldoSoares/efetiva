@@ -71,7 +71,7 @@ class MinutaColaboradores(models.Model):
 
 class MinutaItens(models.Model):
     idMinutaItens = models.AutoField(primary_key=True)
-    Descricao = models.CharField(max_length=25)
+    Descricao = models.CharField(max_length=30)
     TipoItens = models.CharField(max_length=9)
     RecebePaga = models.CharField(max_length=1)
     Valor = models.DecimalField(max_digits=8, decimal_places=2, default=0)
