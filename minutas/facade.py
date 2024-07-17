@@ -2392,3 +2392,63 @@ def create_contexto_minutas_periodo(inicial, final, idcliente):
 def get_minutas_cliente(idcliente):
     minutas = Minuta.objects.filter(idCliente=idcliente)
     return minutas
+def gera_itens_receitas(request):
+    itens = request.POST
+    list_registros = []
+    if "check-taxa-recebe" in itens:
+        list_registros = adiciona_item_taxa(request, list_registros)
+    if "check-seguro-recebe" in itens:
+        list_registros = adiciona_item_seguro(request, list_registros)
+    if "check-porcentagem-recebe" in itens:
+        list_registros = adiciona_item_porcentagem(request, list_registros)
+    if "check-extra-porcentagem-recebe" in itens:
+        list_registros = adiciona_item_porcentagem_extra(
+            request, list_registros
+        )
+    if "check-hora-recebe" in itens:
+        list_registros = adiciona_item_horas(request, list_registros)
+    if "check-excedente-recebe" in itens:
+        list_registros = adiciona_item_excedente(request, list_registros)
+    if "check-kilometragem-recebe" in itens:
+        list_registros = adiciona_item_kilometragem(request, list_registros)
+    if "check-extra-kilometragem-recebe" in itens:
+        list_registros = adiciona_item_kilometragem_extra(
+            request, list_registros
+        )
+    if "check-entrega-recebe" in itens:
+        list_registros = adiciona_item_entrega(request, list_registros)
+    if "check-extra-entrega-recebe" in itens:
+        list_registros = adiciona_item_entrega_extra(request, list_registros)
+    if "check-entrega-kg-recebe" in itens:
+        list_registros = adiciona_item_entrega_kg(request, list_registros)
+    if "check-extra-entrega-kg-recebe" in itens:
+        list_registros = adiciona_item_entrega_kg_extra(
+            request, list_registros
+        )
+    if "check-entrega-volume-recebe" in itens:
+        list_registros = adiciona_item_entrega_volume(request, list_registros)
+    if "check-extra-entrega-volume-recebe" in itens:
+        list_registros = adiciona_item_entrega_volume_extra(
+            request, list_registros
+        )
+    if "check-saida-recebe" in itens:
+        list_registros = adiciona_item_saida(request, list_registros)
+    if "check-extra-saida-recebe" in itens:
+        list_registros = adiciona_item_saida_extra(request, list_registros)
+    if "check-capacidade-recebe" in itens:
+        list_registros = adiciona_item_capacidade(request, list_registros)
+    if "check-extra-capacidade-recebe" in itens:
+        list_registros = adiciona_item_capacidade_extra(
+            request, list_registros
+        )
+    if "check-perimetro-recebe" in itens:
+        list_registros = adiciona_item_perimetro(request, list_registros)
+    if "check-extra-perimetro-recebe" in itens:
+        list_registros = adiciona_item_perimetro_extra(request, list_registros)
+    if "check-pernoite-recebe" in itens:
+        list_registros = adiciona_item_pernoite(request, list_registros)
+    if "check-ajudante-recebe" in itens:
+        list_registros = adiciona_item_ajudante(request, list_registros)
+    for x in list_registros:
+        print(x.__dict__)
+    print(list_registros)
