@@ -2543,3 +2543,26 @@ def adiciona_item_porcentagem_extra(request, list_registros):
             )
         )
     return list_registros
+
+
+def adiciona_item_horas(request, list_registros):
+    idminuta = request.POST.get("idminuta")
+    tabela = request.POST.get("tabela-hora-recebe")
+    minuta = request.POST.get("minuta-hora-recebe")
+    valor = request.POST.get("valor-hora-recebe")
+    if string_to_float(valor) > 0:
+        list_registros.append(
+            MinutaItens(
+                Descricao="HORAS",
+                TipoItens="RECEBE",
+                RecebePaga="R",
+                Valor=valor,
+                Quantidade=0,
+                Porcento=0,
+                Peso=0,
+                ValorBase=tabela,
+                Tempo=minuta,
+                idMinuta_id=idminuta,
+            )
+        )
+    return list_registros
