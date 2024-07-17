@@ -16,7 +16,9 @@ class Minuta(models.Model):
     Minuta = models.IntegerField()
     DataMinuta = models.DateField(default=0)
     HoraInicial = models.TimeField(default=datetime.time(0))
-    HoraFinal = models.TimeField(default=datetime.time(0), blank=True, null=True)
+    HoraFinal = models.TimeField(
+        default=datetime.time(0), blank=True, null=True
+    )
     Coleta = models.TextField(blank=True)
     Entrega = models.TextField(blank=True)
     KMInicial = models.IntegerField(default=0)
@@ -107,7 +109,9 @@ class MinutaNotas(models.Model):
     Estado = models.CharField(max_length=2, default="SP")
     Cidade = models.CharField(max_length=30, default="SÃO PAULO")
     Bairro = models.CharField(max_length=255, blank=True, null=True)
-    NotaGuia = models.CharField(max_length=10, blank=True, null=True, default="0")
+    NotaGuia = models.CharField(
+        max_length=10, blank=True, null=True, default="0"
+    )
     ExtraValorAjudante = models.IntegerField(default=0)
     idMinuta = models.ForeignKey(Minuta, on_delete=models.CASCADE)
 
