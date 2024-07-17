@@ -2452,3 +2452,25 @@ def gera_itens_receitas(request):
     for x in list_registros:
         print(x.__dict__)
     print(list_registros)
+
+
+def adiciona_item_taxa(request, list_registros):
+    idminuta = request.POST.get("idminuta")
+    tabela = request.POST.get("tabela-taxa-recebe")
+    valor = request.POST.get("valor-taxa-recebe")
+    if string_to_float(valor) > 0:
+        list_registros.append(
+            MinutaItens(
+                Descricao="TAXA DE EXPEDIÇÃO",
+                TipoItens="RECEBE",
+                RecebePaga="R",
+                Valor=valor,
+                Quantidade=0,
+                Porcento=0,
+                Peso=0,
+                ValorBase=tabela,
+                Tempo="00:00",
+                idMinuta_id=idminuta,
+            )
+        )
+    return list_registros
