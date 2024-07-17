@@ -2457,13 +2457,16 @@ def gera_itens_receitas(request):
         list_registros = adiciona_item_pernoite(request, list_registros)
     if "check-ajudante-recebe" in itens:
         list_registros = adiciona_item_ajudante(request, list_registros)
+    for x in list_registros:
+        print(x.__dict__)
+    MinutaItens.objects.bulk_create(list_registros)
 
 
 def adiciona_item_taxa(request, list_registros):
     idminuta = request.POST.get("idminuta")
-    tabela = request.POST.get("tabela-taxa-recebe")
-    valor = request.POST.get("valor-taxa-recebe")
-    if string_to_float(valor) > 0:
+    tabela = string_to_decimal(request.POST.get("tabela-taxa-recebe"))
+    valor = string_to_decimal(request.POST.get("valor-taxa-recebe"))
+    if valor > 0:
         list_registros.append(
             MinutaItens(
                 Descricao="TAXA DE EXPEDIÇÃO",
@@ -2474,7 +2477,7 @@ def adiciona_item_taxa(request, list_registros):
                 Porcento=0,
                 Peso=0,
                 ValorBase=tabela,
-                Tempo="00:00",
+                Tempo=string_to_timedelta("00:00"),
                 idMinuta_id=idminuta,
             )
         )
@@ -2483,10 +2486,10 @@ def adiciona_item_taxa(request, list_registros):
 
 def adiciona_item_seguro(request, list_registros):
     idminuta = request.POST.get("idminuta")
-    tabela = request.POST.get("tabela-seguro-recebe")
-    minuta = request.POST.get("minuta-seguro-recebe")
-    valor = request.POST.get("valor-seguro-recebe")
-    if string_to_float(valor) > 0:
+    tabela = string_to_decimal(request.POST.get("tabela-seguro-recebe"))
+    minuta = string_to_decimal(request.POST.get("minuta-seguro-recebe"))
+    valor = string_to_decimal(request.POST.get("valor-seguro-recebe"))
+    if valor > 0:
         list_registros.append(
             MinutaItens(
                 Descricao="SEGURO",
@@ -2497,7 +2500,7 @@ def adiciona_item_seguro(request, list_registros):
                 Porcento=tabela,
                 Peso=0,
                 ValorBase=minuta,
-                Tempo="00:00",
+                Tempo=string_to_timedelta("00:00"),
                 idMinuta_id=idminuta,
             )
         )
@@ -2506,10 +2509,10 @@ def adiciona_item_seguro(request, list_registros):
 
 def adiciona_item_porcentagem(request, list_registros):
     idminuta = request.POST.get("idminuta")
-    tabela = request.POST.get("tabela-porcentagem-recebe")
-    minuta = request.POST.get("minuta-porcentagem-recebe")
-    valor = request.POST.get("valor-porcentagem-recebe")
-    if string_to_float(valor) > 0:
+    tabela = string_to_decimal(request.POST.get("tabela-porcentagem-recebe"))
+    minuta = string_to_decimal(request.POST.get("minuta-porcentagem-recebe"))
+    valor = string_to_decimal(request.POST.get("valor-porcentagem-recebe"))
+    if valor > 0:
         list_registros.append(
             MinutaItens(
                 Descricao="PORCENTAGEM",
@@ -2520,7 +2523,7 @@ def adiciona_item_porcentagem(request, list_registros):
                 Porcento=tabela,
                 Peso=0,
                 ValorBase=minuta,
-                Tempo="00:00",
+                Tempo=string_to_timedelta("00:00"),
                 idMinuta_id=idminuta,
             )
         )
@@ -2529,10 +2532,16 @@ def adiciona_item_porcentagem(request, list_registros):
 
 def adiciona_item_porcentagem_extra(request, list_registros):
     idminuta = request.POST.get("idminuta")
-    tabela = request.POST.get("tabela-extra-porcentagem-recebe")
-    minuta = request.POST.get("minuta-extra-porcentagem-recebe")
-    valor = request.POST.get("valor-extra-porcentagem-recebe")
-    if string_to_float(valor) > 0:
+    tabela = string_to_decimal(
+        request.POST.get("tabela-extra-porcentagem-recebe")
+    )
+    minuta = string_to_timedelta(
+        request.POST.get("minuta-extra-porcentagem-recebe")
+    )
+    valor = string_to_decimal(
+        request.POST.get("valor-extra-porcentagem-recebe")
+    )
+    if valor > 0:
         list_registros.append(
             MinutaItens(
                 Descricao="PORCENTAGEM HORA EXTRA",
@@ -2552,10 +2561,10 @@ def adiciona_item_porcentagem_extra(request, list_registros):
 
 def adiciona_item_horas(request, list_registros):
     idminuta = request.POST.get("idminuta")
-    tabela = request.POST.get("tabela-hora-recebe")
-    minuta = request.POST.get("minuta-hora-recebe")
-    valor = request.POST.get("valor-hora-recebe")
-    if string_to_float(valor) > 0:
+    tabela = string_to_decimal(request.POST.get("tabela-hora-recebe"))
+    minuta = string_to_timedelta(request.POST.get("minuta-hora-recebe"))
+    valor = string_to_decimal(request.POST.get("valor-hora-recebe"))
+    if valor > 0:
         list_registros.append(
             MinutaItens(
                 Descricao="HORAS",
@@ -2575,10 +2584,10 @@ def adiciona_item_horas(request, list_registros):
 
 def adiciona_item_excedente(request, list_registros):
     idminuta = request.POST.get("idminuta")
-    tabela = request.POST.get("tabela-excedente-recebe")
-    minuta = request.POST.get("minuta-excedente-recebe")
-    valor = request.POST.get("valor-excedente-recebe")
-    if string_to_float(valor) > 0:
+    tabela = string_to_decimal(request.POST.get("tabela-excedente-recebe"))
+    minuta = string_to_timedelta(request.POST.get("minuta-excedente-recebe"))
+    valor = string_to_decimal(request.POST.get("valor-excedente-recebe"))
+    if valor > 0:
         list_registros.append(
             MinutaItens(
                 Descricao="HORAS EXCEDENTE",
@@ -2598,10 +2607,10 @@ def adiciona_item_excedente(request, list_registros):
 
 def adiciona_item_kilometragem(request, list_registros):
     idminuta = request.POST.get("idminuta")
-    tabela = request.POST.get("tabela-kilometragem-recebe")
-    minuta = request.POST.get("minuta-kilometragem-recebe")
-    valor = request.POST.get("valor-kilometragem-recebe")
-    if string_to_float(valor) > 0:
+    tabela = string_to_decimal(request.POST.get("tabela-kilometragem-recebe"))
+    minuta = int(request.POST.get("minuta-kilometragem-recebe"))
+    valor = string_to_decimal(request.POST.get("valor-kilometragem-recebe"))
+    if valor > 0:
         list_registros.append(
             MinutaItens(
                 Descricao="KILOMETRAGEM",
@@ -2612,7 +2621,7 @@ def adiciona_item_kilometragem(request, list_registros):
                 Porcento=0,
                 Peso=0,
                 ValorBase=tabela,
-                Tempo="00:00",
+                Tempo=string_to_timedelta("00:00"),
                 idMinuta_id=idminuta,
             )
         )
@@ -2621,10 +2630,16 @@ def adiciona_item_kilometragem(request, list_registros):
 
 def adiciona_item_kilometragem_extra(request, list_registros):
     idminuta = request.POST.get("idminuta")
-    tabela = request.POST.get("tabela-extra-kilometragem-recebe")
-    minuta = request.POST.get("minuta-extra-kilometragem-recebe")
-    valor = request.POST.get("valor-extra-kilometragem-recebe")
-    if string_to_float(valor) > 0:
+    tabela = string_to_decimal(
+        request.POST.get("tabela-extra-kilometragem-recebe")
+    )
+    minuta = string_to_timedelta(
+        request.POST.get("minuta-extra-kilometragem-recebe")
+    )
+    valor = string_to_decimal(
+        request.POST.get("valor-extra-kilometragem-recebe")
+    )
+    if valor > 0:
         list_registros.append(
             MinutaItens(
                 Descricao="KILOMETRAGEM HORA EXTRA",
@@ -2644,10 +2659,10 @@ def adiciona_item_kilometragem_extra(request, list_registros):
 
 def adiciona_item_entrega(request, list_registros):
     idminuta = request.POST.get("idminuta")
-    tabela = request.POST.get("tabela-entrega-recebe")
-    minuta = request.POST.get("minuta-entrega-recebe")
-    valor = request.POST.get("valor-entrega-recebe")
-    if string_to_float(valor) > 0:
+    tabela = string_to_decimal(request.POST.get("tabela-entrega-recebe"))
+    minuta = int(request.POST.get("minuta-entrega-recebe"))
+    valor = string_to_decimal(request.POST.get("valor-entrega-recebe"))
+    if valor > 0:
         list_registros.append(
             MinutaItens(
                 Descricao="ENTREGAS",
@@ -2658,7 +2673,7 @@ def adiciona_item_entrega(request, list_registros):
                 Porcento=0,
                 Peso=0,
                 ValorBase=tabela,
-                Tempo="00:00",
+                Tempo=string_to_timedelta("00:00"),
                 idMinuta_id=idminuta,
             )
         )
@@ -2667,10 +2682,12 @@ def adiciona_item_entrega(request, list_registros):
 
 def adiciona_item_entrega_extra(request, list_registros):
     idminuta = request.POST.get("idminuta")
-    tabela = request.POST.get("tabela-extra-entrega-recebe")
-    minuta = request.POST.get("minuta-extra-entrega-recebe")
-    valor = request.POST.get("valor-extra-entrega-recebe")
-    if string_to_float(valor) > 0:
+    tabela = string_to_decimal(request.POST.get("tabela-extra-entrega-recebe"))
+    minuta = string_to_timedelta(
+        request.POST.get("minuta-extra-entrega-recebe")
+    )
+    valor = string_to_decimal(request.POST.get("valor-extra-entrega-recebe"))
+    if valor > 0:
         list_registros.append(
             MinutaItens(
                 Descricao="ENTREGAS HORA EXTRA",
@@ -2690,10 +2707,10 @@ def adiciona_item_entrega_extra(request, list_registros):
 
 def adiciona_item_entrega_kg(request, list_registros):
     idminuta = request.POST.get("idminuta")
-    tabela = request.POST.get("tabela-entrega-kg-recebe")
-    minuta = request.POST.get("minuta-entrega-kg-recebe")
-    valor = request.POST.get("valor-entrega-kg-recebe")
-    if string_to_float(valor) > 0:
+    tabela = string_to_decimal(request.POST.get("tabela-entrega-kg-recebe"))
+    minuta = string_to_decimal(request.POST.get("minuta-entrega-kg-recebe"))
+    valor = string_to_decimal(request.POST.get("valor-entrega-kg-recebe"))
+    if valor > 0:
         list_registros.append(
             MinutaItens(
                 Descricao="ENTREGAS KG",
@@ -2704,7 +2721,7 @@ def adiciona_item_entrega_kg(request, list_registros):
                 Porcento=0,
                 Peso=minuta,
                 ValorBase=tabela,
-                Tempo="00:00",
+                Tempo=string_to_timedelta("00:00"),
                 idMinuta_id=idminuta,
             )
         )
@@ -2713,10 +2730,16 @@ def adiciona_item_entrega_kg(request, list_registros):
 
 def adiciona_item_entrega_kg_extra(request, list_registros):
     idminuta = request.POST.get("idminuta")
-    tabela = request.POST.get("tabela-extra-entrega-kg-recebe")
-    minuta = request.POST.get("minuta-extra-entrega-kg-recebe")
-    valor = request.POST.get("valor-extra-entrega-kg-recebe")
-    if string_to_float(valor) > 0:
+    tabela = string_to_decimal(
+        request.POST.get("tabela-extra-entrega-kg-recebe")
+    )
+    minuta = string_to_timedelta(
+        request.POST.get("minuta-extra-entrega-kg-recebe")
+    )
+    valor = string_to_decimal(
+        request.POST.get("valor-extra-entrega-kg-recebe")
+    )
+    if valor > 0:
         list_registros.append(
             MinutaItens(
                 Descricao="ENTREGAS KG HORA EXTRA",
@@ -2736,10 +2759,12 @@ def adiciona_item_entrega_kg_extra(request, list_registros):
 
 def adiciona_item_entrega_volume(request, list_registros):
     idminuta = request.POST.get("idminuta")
-    tabela = request.POST.get("tabela-entrega-volume-recebe")
-    minuta = request.POST.get("minuta-entrega-volume-recebe")
-    valor = request.POST.get("valor-entrega-volume-recebe")
-    if string_to_float(valor) > 0:
+    tabela = string_to_decimal(
+        request.POST.get("tabela-entrega-volume-recebe")
+    )
+    minuta = int(request.POST.get("minuta-entrega-volume-recebe"))
+    valor = string_to_decimal(request.POST.get("valor-entrega-volume-recebe"))
+    if valor > 0:
         list_registros.append(
             MinutaItens(
                 Descricao="ENTREGAS VOLUME",
@@ -2750,7 +2775,7 @@ def adiciona_item_entrega_volume(request, list_registros):
                 Porcento=0,
                 Peso=0,
                 ValorBase=tabela,
-                Tempo="00:00",
+                Tempo=string_to_timedelta("00:00"),
                 idMinuta_id=idminuta,
             )
         )
@@ -2759,10 +2784,16 @@ def adiciona_item_entrega_volume(request, list_registros):
 
 def adiciona_item_entrega_volume_extra(request, list_registros):
     idminuta = request.POST.get("idminuta")
-    tabela = request.POST.get("tabela-extra-entrega-volume-recebe")
-    minuta = request.POST.get("minuta-extra-entrega-volume-recebe")
-    valor = request.POST.get("valor-extra-entrega-volume-recebe")
-    if string_to_float(valor) > 0:
+    tabela = string_to_decimal(
+        request.POST.get("tabela-extra-entrega-volume-recebe")
+    )
+    minuta = string_to_timedelta(
+        request.POST.get("minuta-extra-entrega-volume-recebe")
+    )
+    valor = string_to_decimal(
+        request.POST.get("valor-extra-entrega-volume-recebe")
+    )
+    if valor > 0:
         list_registros.append(
             MinutaItens(
                 Descricao="ENTREGAS VOLUME HORA EXTRA",
@@ -2782,9 +2813,9 @@ def adiciona_item_entrega_volume_extra(request, list_registros):
 
 def adiciona_item_saida(request, list_registros):
     idminuta = request.POST.get("idminuta")
-    tabela = request.POST.get("tabela-saida-recebe")
-    valor = request.POST.get("valor-saida-recebe")
-    if string_to_float(valor) > 0:
+    tabela = string_to_decimal(request.POST.get("tabela-saida-recebe"))
+    valor = string_to_decimal(request.POST.get("valor-saida-recebe"))
+    if valor > 0:
         list_registros.append(
             MinutaItens(
                 Descricao="SAIDA",
@@ -2795,7 +2826,7 @@ def adiciona_item_saida(request, list_registros):
                 Porcento=0,
                 Peso=0,
                 ValorBase=tabela,
-                Tempo="00:00",
+                Tempo=string_to_timedelta("00:00"),
                 idMinuta_id=idminuta,
             )
         )
@@ -2804,10 +2835,10 @@ def adiciona_item_saida(request, list_registros):
 
 def adiciona_item_saida_extra(request, list_registros):
     idminuta = request.POST.get("idminuta")
-    tabela = request.POST.get("tabela-extra-saida-recebe")
-    minuta = request.POST.get("minuta-extra-saida-recebe")
-    valor = request.POST.get("valor-extra-saida-recebe")
-    if string_to_float(valor) > 0:
+    tabela = string_to_decimal(request.POST.get("tabela-extra-saida-recebe"))
+    minuta = string_to_timedelta(request.POST.get("minuta-extra-saida-recebe"))
+    valor = string_to_decimal(request.POST.get("valor-extra-saida-recebe"))
+    if valor > 0:
         list_registros.append(
             MinutaItens(
                 Descricao="SAIDA HORA EXTRA",
@@ -2827,9 +2858,9 @@ def adiciona_item_saida_extra(request, list_registros):
 
 def adiciona_item_capacidade(request, list_registros):
     idminuta = request.POST.get("idminuta")
-    tabela = request.POST.get("tabela-capacidade-recebe")
-    valor = request.POST.get("valor-capacidade-recebe")
-    if string_to_float(valor) > 0:
+    tabela = string_to_decimal(request.POST.get("tabela-capacidade-recebe"))
+    valor = string_to_decimal(request.POST.get("valor-capacidade-recebe"))
+    if valor > 0:
         list_registros.append(
             MinutaItens(
                 Descricao="CAPACIDADE PESO",
@@ -2840,7 +2871,7 @@ def adiciona_item_capacidade(request, list_registros):
                 Porcento=0,
                 Peso=0,
                 ValorBase=tabela,
-                Tempo="00:00",
+                Tempo=string_to_timedelta("00:00"),
                 idMinuta_id=idminuta,
             )
         )
@@ -2849,10 +2880,16 @@ def adiciona_item_capacidade(request, list_registros):
 
 def adiciona_item_capacidade_extra(request, list_registros):
     idminuta = request.POST.get("idminuta")
-    tabela = request.POST.get("tabela-extra-capacidade-recebe")
-    minuta = request.POST.get("minuta-extra-capacidade-recebe")
-    valor = request.POST.get("valor-extra-capacidade-recebe")
-    if string_to_float(valor) > 0:
+    tabela = string_to_decimal(
+        request.POST.get("tabela-extra-capacidade-recebe")
+    )
+    minuta = string_to_timedelta(
+        request.POST.get("minuta-extra-capacidade-recebe")
+    )
+    valor = string_to_decimal(
+        request.POST.get("valor-extra-capacidade-recebe")
+    )
+    if valor > 0:
         list_registros.append(
             MinutaItens(
                 Descricao="CAPACIDADE PESO HORA EXTRA",
@@ -2872,10 +2909,10 @@ def adiciona_item_capacidade_extra(request, list_registros):
 
 def adiciona_item_perimetro(request, list_registros):
     idminuta = request.POST.get("idminuta")
-    tabela = request.POST.get("tabela-perimetro-recebe")
-    minuta = request.POST.get("minuta-perimetro-recebe")
-    valor = request.POST.get("valor-perimetro-recebe")
-    if string_to_float(valor) > 0:
+    tabela = string_to_decimal(request.POST.get("tabela-perimetro-recebe"))
+    minuta = string_to_decimal(request.POST.get("minuta-perimetro-recebe"))
+    valor = string_to_decimal(request.POST.get("valor-perimetro-recebe"))
+    if valor > 0:
         list_registros.append(
             MinutaItens(
                 Descricao="PERIMETRO",
@@ -2886,7 +2923,7 @@ def adiciona_item_perimetro(request, list_registros):
                 Porcento=tabela,
                 Peso=0,
                 ValorBase=minuta,
-                Tempo="00:00",
+                Tempo=string_to_timedelta("00:00"),
                 idMinuta_id=idminuta,
             )
         )
@@ -2895,10 +2932,14 @@ def adiciona_item_perimetro(request, list_registros):
 
 def adiciona_item_perimetro_extra(request, list_registros):
     idminuta = request.POST.get("idminuta")
-    tabela = request.POST.get("tabela-extra-perimetro-recebe")
-    minuta = request.POST.get("minuta-extra-perimetro-recebe")
-    valor = request.POST.get("valor-extra-perimetro-recebe")
-    if string_to_float(valor) > 0:
+    tabela = string_to_decimal(
+        request.POST.get("tabela-extra-perimetro-recebe")
+    )
+    minuta = string_to_timedelta(
+        request.POST.get("minuta-extra-perimetro-recebe")
+    )
+    valor = string_to_decimal(request.POST.get("valor-extra-perimetro-recebe"))
+    if valor > 0:
         list_registros.append(
             MinutaItens(
                 Descricao="PERIMETRO HORA EXTRA",
@@ -2918,10 +2959,10 @@ def adiciona_item_perimetro_extra(request, list_registros):
 
 def adiciona_item_pernoite(request, list_registros):
     idminuta = request.POST.get("idminuta")
-    tabela = request.POST.get("tabela-pernoite-recebe")
-    minuta = request.POST.get("minuta-pernoite-recebe")
-    valor = request.POST.get("valor-pernoite-recebe")
-    if string_to_float(valor) > 0:
+    tabela = string_to_decimal(request.POST.get("tabela-pernoite-recebe"))
+    minuta = string_to_decimal(request.POST.get("minuta-pernoite-recebe"))
+    valor = string_to_decimal(request.POST.get("valor-pernoite-recebe"))
+    if valor > 0:
         list_registros.append(
             MinutaItens(
                 Descricao="PERNOITE",
@@ -2932,7 +2973,7 @@ def adiciona_item_pernoite(request, list_registros):
                 Porcento=tabela,
                 Peso=0,
                 ValorBase=minuta,
-                Tempo="00:00",
+                Tempo=string_to_timedelta("00:00"),
                 idMinuta_id=idminuta,
             )
         )
@@ -2941,10 +2982,10 @@ def adiciona_item_pernoite(request, list_registros):
 
 def adiciona_item_ajudante(request, list_registros):
     idminuta = request.POST.get("idminuta")
-    tabela = request.POST.get("tabela-ajudante-recebe")
-    minuta = request.POST.get("minuta-ajudante-recebe")
-    valor = request.POST.get("valor-ajudante-recebe")
-    if string_to_float(valor) > 0:
+    tabela = string_to_decimal(request.POST.get("tabela-ajudante-recebe"))
+    minuta = int(request.POST.get("minuta-ajudante-recebe"))
+    valor = string_to_decimal(request.POST.get("valor-ajudante-recebe"))
+    if valor > 0:
         list_registros.append(
             MinutaItens(
                 Descricao="AJUDANTE",
@@ -2955,7 +2996,7 @@ def adiciona_item_ajudante(request, list_registros):
                 Porcento=0,
                 Peso=0,
                 ValorBase=tabela,
-                Tempo="00:00",
+                Tempo=string_to_timedelta("00:00"),
                 idMinuta_id=idminuta,
             )
         )
