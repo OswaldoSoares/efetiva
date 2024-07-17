@@ -36,8 +36,8 @@ from minutas.models import (
 )
 
 
-def string_to_float(valor):
-    converte = float(valor.replace(".", "").replace(",", "."))
+def string_to_decimal(string):
+    converte = decimal.Decimal(string.replace(".", "").replace(",", "."))
     return converte
 
 
