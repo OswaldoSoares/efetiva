@@ -2474,3 +2474,26 @@ def adiciona_item_taxa(request, list_registros):
             )
         )
     return list_registros
+
+
+def adiciona_item_seguro(request, list_registros):
+    idminuta = request.POST.get("idminuta")
+    tabela = request.POST.get("tabela-seguro-recebe")
+    minuta = request.POST.get("minuta-seguro-recebe")
+    valor = request.POST.get("valor-seguro-recebe")
+    if string_to_float(valor) > 0:
+        list_registros.append(
+            MinutaItens(
+                Descricao="SEGURO",
+                TipoItens="RECEBE",
+                RecebePaga="R",
+                Valor=valor,
+                Quantidade=0,
+                Porcento=tabela,
+                Peso=0,
+                ValorBase=minuta,
+                Tempo="00:00",
+                idMinuta_id=idminuta,
+            )
+        )
+    return list_registros
