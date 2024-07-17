@@ -2449,9 +2449,6 @@ def gera_itens_receitas(request):
         list_registros = adiciona_item_pernoite(request, list_registros)
     if "check-ajudante-recebe" in itens:
         list_registros = adiciona_item_ajudante(request, list_registros)
-    for x in list_registros:
-        print(x.__dict__)
-    print(list_registros)
 
 
 def adiciona_item_taxa(request, list_registros):
