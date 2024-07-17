@@ -2818,3 +2818,25 @@ def adiciona_item_saida_extra(request, list_registros):
             )
         )
     return list_registros
+
+
+def adiciona_item_capacidade(request, list_registros):
+    idminuta = request.POST.get("idminuta")
+    tabela = request.POST.get("tabela-capacidade-recebe")
+    valor = request.POST.get("valor-capacidade-recebe")
+    if string_to_float(valor) > 0:
+        list_registros.append(
+            MinutaItens(
+                Descricao="CAPACIDADE PESO",
+                TipoItens="RECEBE",
+                RecebePaga="R",
+                Valor=valor,
+                Quantidade=0,
+                Porcento=0,
+                Peso=0,
+                ValorBase=tabela,
+                Tempo="00:00",
+                idMinuta_id=idminuta,
+            )
+        )
+    return list_registros
