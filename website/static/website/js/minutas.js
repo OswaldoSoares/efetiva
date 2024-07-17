@@ -165,9 +165,39 @@ $(document).ready(function() {
     });
 
     // Versão Nova //
+    $(document).on("click", ".js-estorna-faturamento", function(event) {
+        var idminuta = $(this).data("idminuta")
+        $.ajax({
+            type: "GET",
+            url: "/minutas/estorna_faturamento",
+            data: {
+                idminuta: idminuta,
+            },
+            beforeSend: function() {
+                $(".box-loader").show();
+            },
+            success: function(data) {
+                $(".card-minuta").html(data["html_card_minuta"]);
+                $(".card-checklist").html(data["html_card_checklist"]);
+                $(".html-form-paga").html(data["html_card_pagamentos"]);
+                verificaCheckboxPaga();
+                verificaCheckboxRecebe();
+                mostraChecklist();
+                formatMask();
+                somaReceitas();
+                somaPagamentos();
+                $("html, body").scrollTop(0);
+                $(".box-loader").hide();
+            },
+            error: function(error) {
+                console.log(error)
+            }
+        });
+    });
+
+    // Versão Nova //
     $(document).on("click", ".js-conclui-minuta", function(event) {
         var idminuta = $(this).data("idminuta")
-        alert(idminuta)
         $.ajax({
             type: "GET",
             url: "/minutas/concluirminuta",
@@ -1094,7 +1124,6 @@ function calculosMudarInputRecebe(element_select, valor_digitado) {
 
 // Utilizado no Card-Entrega (Formulário Modal)
 $(document).on("click", "#chk-perimetro", function(event) {
-    alert("OK")
     if ($("#chk-perimetro").is(":checked")) {
         $(".js-perimetro-hide").hide();
         $("#js-perimetro-div").removeClass("col-md-2");
