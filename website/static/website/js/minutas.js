@@ -18,7 +18,7 @@ $(document).ready(function() {
         $.ajax({
             type: "POST",
             url: "/minutas/gera_receitas",
-            data: $(this).serialize,
+            data: $(this).serialize(),
             beforeSend: function() {
                 $(".box-loader").show();
             },
