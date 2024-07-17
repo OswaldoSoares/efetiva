@@ -17,6 +17,14 @@ from website.models import FileUpload
 from .models import Parametros
 
 
+
+def string_to_float(valor):
+    converte = float(
+        valor.replace(",", " ").replace(".", "").replace(" ", ".")
+    )
+    return converte
+
+
 def nome_curto(nome):
     apelido = None
     if nome:
