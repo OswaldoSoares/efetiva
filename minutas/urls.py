@@ -228,4 +228,9 @@ urlpatterns = [
         views.minuta_cards,
         name="minuta_cards",
     ),
+    path(
+        "estorna_faturamento",
+        views.estorna_faturamento,
+        name="estorna_faturamento",
+    ),
 ]
