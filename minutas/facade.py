@@ -2999,3 +2999,4 @@ def estorna_minutaitens_recebe(idminuta):
         idMinuta_id=idminuta, TipoItens="RECEBE"
     )
     itens.delete()
+    minuta_status(idminuta, "ABERTA")
