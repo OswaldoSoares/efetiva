@@ -41,6 +41,14 @@ def string_to_decimal(string):
     return converte
 
 
+def string_to_timedelta(string):
+    hora_datetime = datetime.strptime(string, "%H:%M")
+    hora_timedelta = timedelta(
+        days=0, hours=hora_datetime.hour, minutes=hora_datetime.minute
+    )
+    return hora_timedelta
+
+
 def nome_curto(nome):
     apelido = nome
     if nome:
