@@ -2401,65 +2401,42 @@ def get_minutas_cliente(idcliente):
     minutas = Minuta.objects.filter(idCliente=idcliente)
     return minutas
 def gera_itens_receitas(request):
-    itens = request.POST
+    idminuta = request.POST.get("idminuta")
+    dados = request.POST
     list_registros = []
-    if "check-taxa-recebe" in itens:
-        list_registros = adiciona_item_taxa(request, list_registros)
-    if "check-seguro-recebe" in itens:
-        list_registros = adiciona_item_seguro(request, list_registros)
-    if "check-porcentagem-recebe" in itens:
-        list_registros = adiciona_item_porcentagem(request, list_registros)
-    if "check-extra-porcentagem-recebe" in itens:
-        list_registros = adiciona_item_porcentagem_extra(
-            request, list_registros
-        )
-    if "check-hora-recebe" in itens:
-        list_registros = adiciona_item_horas(request, list_registros)
-    if "check-excedente-recebe" in itens:
-        list_registros = adiciona_item_excedente(request, list_registros)
-    if "check-kilometragem-recebe" in itens:
-        list_registros = adiciona_item_kilometragem(request, list_registros)
-    if "check-extra-kilometragem-recebe" in itens:
-        list_registros = adiciona_item_kilometragem_extra(
-            request, list_registros
-        )
-    if "check-entrega-recebe" in itens:
-        list_registros = adiciona_item_entrega(request, list_registros)
-    if "check-extra-entrega-recebe" in itens:
-        list_registros = adiciona_item_entrega_extra(request, list_registros)
-    if "check-entrega-kg-recebe" in itens:
-        list_registros = adiciona_item_entrega_kg(request, list_registros)
-    if "check-extra-entrega-kg-recebe" in itens:
-        list_registros = adiciona_item_entrega_kg_extra(
-            request, list_registros
-        )
-    if "check-entrega-volume-recebe" in itens:
-        list_registros = adiciona_item_entrega_volume(request, list_registros)
-    if "check-extra-entrega-volume-recebe" in itens:
-        list_registros = adiciona_item_entrega_volume_extra(
-            request, list_registros
-        )
-    if "check-saida-recebe" in itens:
-        list_registros = adiciona_item_saida(request, list_registros)
-    if "check-extra-saida-recebe" in itens:
-        list_registros = adiciona_item_saida_extra(request, list_registros)
-    if "check-capacidade-recebe" in itens:
-        list_registros = adiciona_item_capacidade(request, list_registros)
-    if "check-extra-capacidade-recebe" in itens:
-        list_registros = adiciona_item_capacidade_extra(
-            request, list_registros
-        )
-    if "check-perimetro-recebe" in itens:
-        list_registros = adiciona_item_perimetro(request, list_registros)
-    if "check-extra-perimetro-recebe" in itens:
-        list_registros = adiciona_item_perimetro_extra(request, list_registros)
-    if "check-pernoite-recebe" in itens:
-        list_registros = adiciona_item_pernoite(request, list_registros)
-    if "check-ajudante-recebe" in itens:
-        list_registros = adiciona_item_ajudante(request, list_registros)
-    for x in list_registros:
-        print(x.__dict__)
+    item_functions = {
+        "check-taxa-recebe": adiciona_item_taxa,
+        "check-seguro-recebe": adiciona_item_seguro,
+        "check-porcentagem-recebe": adiciona_item_porcentagem,
+        "check-extra-porcentagem-recebe": adiciona_item_porcentagem_extra,
+        "check-hora-recebe": adiciona_item_horas,
+        "check-excedente-recebe": adiciona_item_excedente,
+        "check-kilometragem-recebe": adiciona_item_kilometragem,
+        "check-extra-kilometragem-recebe": adiciona_item_kilometragem_extra,
+        "check-entrega-recebe": adiciona_item_entrega,
+        "check-extra-entrega-recebe": adiciona_item_entrega_extra,
+        "check-entrega-kg-recebe": adiciona_item_entrega_kg,
+        "check-extra-entrega-kg-recebe": adiciona_item_entrega_kg_extra,
+        "check-entrega-volume-recebe": adiciona_item_entrega_volume,
+        "check-extra-entrega-volume-recebe": adiciona_item_entrega_volume_extra,
+        "check-saida-recebe": adiciona_item_saida,
+        "check-extra-saida-recebe": adiciona_item_saida_extra,
+        "check-capacidade-recebe": adiciona_item_capacidade,
+        "check-extra-capacidade-recebe": adiciona_item_capacidade_extra,
+        "check-perimetro-recebe": adiciona_item_perimetro,
+        "check-extra-perimetro-recebe": adiciona_item_perimetro_extra,
+        "check-pernoite-recebe": adiciona_item_pernoite,
+        "check-ajudante-recebe": adiciona_item_ajudante,
+    }
+    for key, func in item_functions.items():
+        if key in dados:
+            list_registros = func(request, list_registros)
     MinutaItens.objects.bulk_create(list_registros)
+    total = 0.00
+    for key, value in dados.items():
+        if key.startswith("valor"):
+            total += float(value.replace(".", "").replace(",", "."))
+    minuta_status_fechada(idminuta, total)
 
 
 def adiciona_item_taxa(request, list_registros):
