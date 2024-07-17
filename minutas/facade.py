@@ -2681,3 +2681,26 @@ def adiciona_item_entrega_extra(request, list_registros):
             )
         )
     return list_registros
+
+
+def adiciona_item_entrega_kg(request, list_registros):
+    idminuta = request.POST.get("idminuta")
+    tabela = request.POST.get("tabela-entrega-kg-recebe")
+    minuta = request.POST.get("minuta-entrega-kg-recebe")
+    valor = request.POST.get("valor-entrega-kg-recebe")
+    if string_to_float(valor) > 0:
+        list_registros.append(
+            MinutaItens(
+                Descricao="ENTREGAS KG",
+                TipoItens="RECEBE",
+                RecebePaga="R",
+                Valor=valor,
+                Quantidade=0,
+                Porcento=0,
+                Peso=minuta,
+                ValorBase=tabela,
+                Tempo="00:00",
+                idMinuta_id=idminuta,
+            )
+        )
+    return list_registros
