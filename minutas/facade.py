@@ -2978,3 +2978,11 @@ def adiciona_item_ajudante(request, list_registros):
             )
         )
     return list_registros
+
+
+def minuta_status_fechada(idminuta, total):
+    registro = []
+    registro.append(
+        Minuta(StatusMinuta="FECHADA", Valor=total, idMinuta=idminuta)
+    )
+    Minuta.objects.bulk_update(registro, ["StatusMinuta", "Valor"])
