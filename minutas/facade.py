@@ -2886,3 +2886,26 @@ def adiciona_item_perimetro(request, list_registros):
             )
         )
     return list_registros
+
+
+def adiciona_item_perimetro_extra(request, list_registros):
+    idminuta = request.POST.get("idminuta")
+    tabela = request.POST.get("tabela-extra-perimetro-recebe")
+    minuta = request.POST.get("minuta-extra-perimetro-recebe")
+    valor = request.POST.get("valor-extra-perimetro-recebe")
+    if string_to_float(valor) > 0:
+        list_registros.append(
+            MinutaItens(
+                Descricao="PERIMETRO HORA EXTRA",
+                TipoItens="RECEBE",
+                RecebePaga="R",
+                Valor=valor,
+                Quantidade=0,
+                Porcento=tabela,
+                Peso=0,
+                ValorBase=0,
+                Tempo=minuta,
+                idMinuta_id=idminuta,
+            )
+        )
+    return list_registros
