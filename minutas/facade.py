@@ -2909,3 +2909,26 @@ def adiciona_item_perimetro_extra(request, list_registros):
             )
         )
     return list_registros
+
+
+def adiciona_item_pernoite(request, list_registros):
+    idminuta = request.POST.get("idminuta")
+    tabela = request.POST.get("tabela-pernoite-recebe")
+    minuta = request.POST.get("minuta-pernoite-recebe")
+    valor = request.POST.get("valor-pernoite-recebe")
+    if string_to_float(valor) > 0:
+        list_registros.append(
+            MinutaItens(
+                Descricao="PERNOITE",
+                TipoItens="RECEBE",
+                RecebePaga="R",
+                Valor=valor,
+                Quantidade=0,
+                Porcento=tabela,
+                Peso=0,
+                ValorBase=minuta,
+                Tempo="00:00",
+                idMinuta_id=idminuta,
+            )
+        )
+    return list_registros
