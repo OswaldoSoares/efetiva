@@ -2980,6 +2980,12 @@ def adiciona_item_ajudante(request, list_registros):
     return list_registros
 
 
+def minuta_status(idminuta, status):
+    registro = []
+    registro.append(Minuta(StatusMinuta=status, Valor=0.00, idMinuta=idminuta))
+    Minuta.objects.bulk_update(registro, ["StatusMinuta", "Valor"])
+
+
 def minuta_status_fechada(idminuta, total):
     registro = []
     registro.append(
