@@ -36,6 +36,11 @@ from minutas.models import (
 )
 
 
+def string_to_float(valor):
+    converte = float(valor.replace(".", "").replace(",", "."))
+    return converte
+
+
 def nome_curto(nome):
     apelido = nome
     if nome:
