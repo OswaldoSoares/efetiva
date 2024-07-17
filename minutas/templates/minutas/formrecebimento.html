@@ -1640,8 +1640,8 @@
                 title="Finalizar Minuta"></i>
             </button>
             {% else %}
-            <i class="bi bi-reply-all i-button estorna-pagamentos"
-            idMinuta="{{ s_minuta.idminuta }}"
+            <i class="bi bi-reply-all i-button js-estorna-faturamento"
+            data-idminuta="{{ s_minuta.idminuta }}"
             title="Estorna Faturamento"></i>
             {% endif %}
             {% else %}
