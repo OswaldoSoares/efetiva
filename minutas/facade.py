@@ -2986,3 +2986,10 @@ def minuta_status_fechada(idminuta, total):
         Minuta(StatusMinuta="FECHADA", Valor=total, idMinuta=idminuta)
     )
     Minuta.objects.bulk_update(registro, ["StatusMinuta", "Valor"])
+
+
+def estorna_minutaitens_recebe(idminuta):
+    itens = MinutaItens.objects.filter(
+        idMinuta_id=idminuta, TipoItens="RECEBE"
+    )
+    itens.delete()
