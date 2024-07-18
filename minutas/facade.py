@@ -1586,7 +1586,7 @@ def html_entrega(request, data, idminuta):
 def html_recebimento(request, data, idminuta):
     contexto = cria_contexto(idminuta)
     data["html_recebimento"] = render_to_string(
-        "minutas/formrecebimento.html", contexto, request=request
+        "minutas/card_recebe.html", contexto, request=request
     )
     return data
 

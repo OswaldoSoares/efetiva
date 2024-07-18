@@ -13,6 +13,7 @@
     </div>
 </div>
 <!-- Card - Body -->
+{% if s_minuta.status_minuta != "FECHADA" %}
 <form method="post" id="js-gera-receitas">
     <div class="card-body">
         {% csrf_token %}
@@ -1628,36 +1629,59 @@
     </div>
     <!-- Card - Footer -->
     <div class="card-footer">
-        <div class="div-flex">
-            {% comment %} {% if s_minuta.paga_minuta|stringformat:'.2f' == '0.00' or s_minuta.paga_realizada %} {% endcomment %}
-            {% comment %} {% if s_minuta.recebe_minuta %} {% endcomment %}
-            {% comment %} {% if s_minuta.motorista or s_minuta.ajudantes %} {% endcomment %}
-            {% if s_minuta.status_minuta == 'CONCLUIDA' %}
-            {% if not s_minuta.recebe_realizada %}
-            <button type="submit"
-            class="i-button-form-rodape">
-                <i class="bi bi-credit-card i-button"
-                title="Finalizar Minuta"></i>
-            </button>
-            {% else %}
-            <i class="bi bi-reply-all i-button js-estorna-faturamento"
-            data-idminuta="{{ s_minuta.idminuta }}"
-            title="Estorna Faturamento"></i>
-            {% endif %}
-            {% else %}
-            <div></div>
-            {% endif %}
-            {% comment %} {% endif %} {% endcomment %}
-            {% comment %} {% endif %} {% endcomment %}
-            {% comment %} {% endif %} {% endcomment %}
-            {% if s_minuta.motorista or s_minuta.ajudantes %}
-            <span class="total"
-            id="total-receitas">
-                TOTAL: R$ {{ s_minuta.recebe_minuta|stringformat:'.2f' }}
-            </span>
-            {% else %}
-            <div></div>
-            {% endif %}
+        <div class="input-group">
+            <div class=" input-group-addon addon-my-color">
+                <i class="icofont-rounded-left-down"></i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-50 text-center">
+                    <span class="font-menor">
+                        <button type="submit" class="i-button-form-rodape">
+                            <i class="icofont-check-circled i-button"
+                               title="Finalizar Minuta"></i>
+                        </button>
+                    </span>
+                </div>
+                <div class="tamanho-50 text-center">
+                    {% if s_minuta.motorista or s_minuta.ajudantes %}
+                    <span class="total font-menor" id="total-receitas">
+                        R$ {{ s_minuta.recebe_minuta|stringformat:'.2f' }}
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class=" input-group-addon addon-my-color">
+                <i class="icofont-rounded-right-down"></i>
+            </div>
         </div>
     </div>
 </form>
+{% else %}
+<!-- Card - Footer -->
+<div class="card-footer">
+    <div class="input-group">
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-down"></i>
+        </div>
+        <div class="div-flex div-form-control">
+            <div class="tamanho-50 text-center">
+                <span class="font-menor">
+                    <i class="icofont-undo i-button js-estorna-faturamento"
+                       data-idminuta="{{ s_minuta.idminuta }}"
+                       title="Estorna Faturamento"></i>
+                </span>
+            </div>
+            <div class="tamanho-50 text-center">
+                {% if s_minuta.motorista or s_minuta.ajudantes %}
+                <span class="total font-menor" id="total-receitas">
+                    R$ {{ s_minuta.valor_minuta|stringformat:'.2f' }}
+                </span>
+                {% endif %}
+            </div>
+        </div>
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-down"></i>
+        </div>
+    </div>
+</div>
+{% endif %}
