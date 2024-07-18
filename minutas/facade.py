@@ -413,7 +413,7 @@ class MinutaSelecionada:
         total += float(v_paga["v_said"])
         total += float(v_paga["v_capa"])
         v_paga["m_peri"] = total
-        v_paga["m_pmoi"] = total
+        v_paga["m_pnoi"] = total
         return v_paga
 
     def valor_total_motorista(self):
