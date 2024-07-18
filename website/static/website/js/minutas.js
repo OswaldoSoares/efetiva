@@ -21,8 +21,11 @@ $(document).ready(function() {
             data: $(this).serialize(),
             beforeSend: function() {
                 $(".box-loader").show();
+                $(".card-recebe").html("")
             },
             success: function(data) {
+                console.log(data)
+                $(".card-recebe").html(data["html-card-recebe"])
                 $(".box-loader").hide();
             },
             error: function(error) {
@@ -180,6 +183,7 @@ $(document).ready(function() {
                 $(".card-minuta").html(data["html_card_minuta"]);
                 $(".card-checklist").html(data["html_card_checklist"]);
                 $(".html-form-paga").html(data["html_card_pagamentos"]);
+                $(".card-recebe").html(data["html-card-recebe"])
                 verificaCheckboxPaga();
                 verificaCheckboxRecebe();
                 mostraChecklist();
