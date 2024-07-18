@@ -2400,6 +2400,13 @@ def create_contexto_minutas_periodo(inicial, final, idcliente):
 def get_minutas_cliente(idcliente):
     minutas = Minuta.objects.filter(idCliente=idcliente)
     return minutas
+def create_html_card_recebe(data, contexto, request):
+    data["html-card-recebe"] = render_to_string(
+        "minutas/card_recebe.html", contexto, request=request
+    )
+    return data
+
+
 def gera_itens_receitas(request):
     idminuta = request.POST.get("idminuta")
     dados = request.POST
