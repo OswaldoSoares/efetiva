@@ -2525,7 +2525,12 @@ def remove_romaneio_minuta(request):
 
 
 def gera_receitas(request):
-    pass
+    idminuta = request.POST.get("idminuta")
+    facade.gera_itens_receitas(request)
+    contexto = facade.create_contexto_minuta(idminuta)
+    data = {}
+    data = facade.create_html_card_recebe(data, contexto, request)
+    return JsonResponse(data)
 
 
 def gera_pagamentos(request):
