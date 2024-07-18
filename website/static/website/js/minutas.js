@@ -1239,7 +1239,7 @@ $(document).on("submit", "#form-edita-hora", function(event) {
             $(".total-horas").text(data.html_total_horas);
             $(".card-checklist").html(data["html_checklist"]); 
             $(".html-form-paga").html(data["html_pagamento"]);
-            $(".html-form-recebe").html(data["html_recebimento"]);
+            $(".card-recebe").html(data["html_recebimento"]);
             verificaTotalHoras();
             mostraChecklist();
             formatUnmask();
@@ -1284,7 +1284,7 @@ $(document).on("submit", "#form-edita-km", function(event) {
             $(".box-loader").show()
             $(".card-checklist").hide()
             $(".html-form-paga").hide();
-            $(".html-form-recebe").hide();
+            $(".card-recebe").hide();
         },
         success: function(data) {
             if (data.html_tipo_mensagem == "ERROR") {
@@ -1298,10 +1298,10 @@ $(document).on("submit", "#form-edita-km", function(event) {
             $(".total-kms").text(data.html_total_kms);
             $(".card-checklist").html(data["html_checklist"]); 
             $(".html-form-paga").html(data["html_pagamento"]);
-            $(".html-form-recebe").html(data["html_recebimento"]);
+            $(".card-recebe").html(data["html_recebimento"]);
             $(".card-checklist").show();
             $(".html-form-paga").show();
-            $(".html-form-recebe").show();
+            $(".card-recebe").show();
             verificaTotalKms()
             mostraChecklist();
             formatUnmask();
@@ -1555,7 +1555,7 @@ function mostraMensagemSucesso() {
 // TODO VERIFICAR NECESSIDADE E APRIMORAR SE NECESSÁRIO
 function recarregaFinanceiro(html_paga, html_recebe) {
     $(".html-form-paga").html(html_paga);
-    $(".html-form-recebe").html(html_recebe);
+    $(".card-recebe").html(html_recebe);
     formatUnmask();
     formatMask();
     somaPhkescReceitas();
