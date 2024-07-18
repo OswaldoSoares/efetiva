@@ -1601,7 +1601,7 @@ function somaPagamentos() {
     $(text_total).unmask()
     $(text_total).mask("#.##0,00", { reverse: true })
     var text_total = $("#total-pagamentos").text();
-    var text_total = "TOTAL: R$ " + text_total
+    var text_total = "R$ " + text_total
     $("#total-pagamentos").text(text_total)
     somaMotorista();
 }
@@ -1695,7 +1695,7 @@ function somaReceitas() {
     $("#total-receitas").unmask()
     $("#total-receitas").mask("#.##0,00", { reverse: true })
     var text_total = $("#total-receitas").text();
-    var text_total = "TOTAL: R$ " + text_total
+    var text_total = "R$ " + text_total
     $("#total-receitas").text(text_total)
 }
 
