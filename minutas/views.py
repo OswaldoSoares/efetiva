@@ -2603,3 +2603,12 @@ def minuta_cards(request):
     contexto = facade.create_contexto_minuta(idminuta)
     data = facade.create_data_minuta(request, contexto)
     return data
+
+
+def estorna_faturamento(request):
+    idminuta = request.GET.get("idminuta")
+    facade.estorna_minutaitens_recebe(idminuta)
+    contexto = facade.create_contexto_minuta(idminuta)
+    data = {}
+    data = facade.create_html_card_recebe(data, contexto, request)
+    return JsonResponse(data)
