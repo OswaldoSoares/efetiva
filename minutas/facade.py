@@ -3007,3 +3007,68 @@ def estorna_minutaitens_recebe(idminuta):
     )
     itens.delete()
     minuta_status(idminuta, "ABERTA")
+
+
+def itens_card_checklist(minuta):
+    hora_inicial = minuta.get("hora_inicial")
+    hora_final = minuta.get("hora_final")
+    entregas = minuta.get("entregas")
+    veiculo_solicitado = minuta.get("veiculo_solicitado")
+    motorista = minuta.get("motorista")
+    print(motorista)
+    tipo_pgto = None
+    if motorista:
+        tipo_pgto = motorista[0]["obj"].TipoPgto
+    veiculo = minuta.get("veiculo")
+    km_inicial = minuta.get("km_inicial")
+    km_final = minuta.get("km_final")
+    ajudante_avulso = minuta.get("ajudante_avulso")
+    status_minuta = minuta.get("status_minuta")
+    itens = [
+        {
+            "condicao": bool(hora_inicial),
+            "descricao": "HORA FINAL",
+            "check": bool(hora_final > hora_inicial) if hora_final else False,
+        },
+        {
+            "condicao": bool(entregas),
+            "descricao": "VEÍCULO SOLICITADO",
+            "check": bool(veiculo_solicitado),
+        },
+        {
+            "condicao": bool(veiculo_solicitado),
+            "descricao": "MOTORISTA",
+            "check": bool(motorista),
+        },
+        {
+            "condicao": bool(motorista),
+            "descricao": "VEÍCULO",
+            "check": bool(veiculo),
+        },
+        {
+            "condicao": bool(veiculo),
+            "descricao": "KM INICIAL",
+            "check": bool(km_inicial),
+        },
+        {
+            "condicao": bool(veiculo),
+            "descricao": "KM FINAL",
+            "check": bool(km_final > km_inicial) if km_final else False,
+        },
+        {
+            "condicao": bool(ajudante_avulso),
+            "descricao": "PAGAMENTO AJUDANTE",
+            "check": bool(status_minuta != "ABERTA"),
+        },
+        {
+            "condicao": bool(motorista and tipo_pgto != "MENSALISTA"),
+            "descricao": "PAGAMENTO MOTORISTA",
+            "check": bool(minuta["status_minuta"] != "ABERTA"),
+        },
+        {
+            "condicao": True,
+            "descricao": "CONCLUIR MINUTA",
+            "check": bool(minuta["status_minuta"] != "ABERTA"),
+        },
+    ]
+    return itens
