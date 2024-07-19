@@ -1070,6 +1070,8 @@ def minuta(request, idminuta):
     }
     romaneios = facade.create_contexto_romaneios(s_minuta["idcliente"])
     contexto.update({"romaneios": romaneios})
+    checklist = facade.itens_card_checklist(s_minuta)
+    contexto.update({"checklist": checklist})
     return render(request, "minutas/minuta.html", contexto)
 
 
