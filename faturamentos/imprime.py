@@ -26,6 +26,13 @@ from website.models import FileUpload
 from .models import Fatura
 
 
+def format_timedelta(td):
+    total_seconds = int(td.total_seconds())
+    hours, remainder = divmod(total_seconds, 3600)
+    minutes, _ = divmod(remainder, 60)
+    return f"{hours:02}:{minutes:02}HS"
+
+
 def textos_tipo_recebe():
     """
         Cria uma lista com os tipo_recebe(MinutaItens Models Field) e gera
