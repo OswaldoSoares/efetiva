@@ -26,6 +26,14 @@ from .models import Fatura
 
 
 def textos_tipo_recebe():
+    """
+        Cria uma lista com os tipo_recebe(MinutaItens Models Field) e gera
+        os textos em forma f-string que serão mostrados na fatura com seu
+        respectivos valores após inseridos
+    Returns:
+        textos: list dict
+
+    """
     textos = [
         {
             "TAXA DE EXPEDIÇÃO": {
