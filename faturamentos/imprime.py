@@ -38,126 +38,148 @@ def textos_tipo_recebe():
         {
             "TAXA DE EXPEDIÇÃO": {
                 "texto": lambda item: "&#x2713 TAXA DE EXPEDICAO &#x27BA "
-                f"R$ {item[0]}."
-            }
+                f"R$ {item[0]}.",
+                "item": ["valor"],
+            },
         },
         {
             "SEGURO": {
                 "texto": lambda item: f"&#x2713 SEGURO {item[0]}% DO VALOR "
-                f"DA(S) NOTA(S) R$ {item[1]} &#x27BA R$ {item[2]}."
+                f"DA(S) NOTA(S) R$ {item[1]} &#x27BA R$ {item[2]}.",
+                "item": ["porcento", "base", "valor"],
             }
         },
         {
             "PORCENTAGEM DA NOTA": {
                 "texto": lambda item: f"&#x2713 {item[0]}% DO VALOR "
-                f"DA(S) NOTA(S) R$ {item[1]} &#x27BA R$ {item[2]}"
+                f"DA(S) NOTA(S) R$ {item[1]} &#x27BA R$ {item[2]}",
+                "item": ["porcento", "base", "valor"],
             }
         },
         {
             "HORAS": {
                 "texto": lambda item: f"&#x2713 {item[0]} HORAS "
-                f"MINIMAS &#x27BA R$ {item[1]}."
+                f"MINIMAS &#x27BA R$ {item[1]}.",
+                "item": ["tempo", "valor"],
             }
         },
         {
             "HORAS EXCEDENTE": {
                 "texto": lambda item: f"&#x2713 {item[0]} HORAS EXCEDENTE "
-                f"&#x27BA R$ {item[1]}."
+                f"&#x27BA R$ {item[1]}.",
+                "item": ["tempo", "valor"],
             }
         },
         {
             "KILOMETRAGEM": {
                 "texto": lambda item: f"&#x2713 {item[0]} KMS &#x27BA "
-                f"R$ {item[1]}."
+                f"R$ {item[1]}.",
+                "item": ["quantidade", "valor"],
             }
         },
         {
             "KILOMETRAGEM HORA EXTRA": {
-                "texto": lambda item: f"EXTRA {item[0]} &#x27BA R$ {item[1]}."
+                "texto": lambda item: f"EXTRA {item[0]} &#x27BA R$ {item[1]}.",
+                "item": ["tempo", "valor"],
             }
         },
         {
             "ENTREGAS": {
                 "texto": lambda item: f"&#x2713 {item[0]} ENTREGA(S) "
-                f"&#x27BA R$ {item[1]}."
+                f"&#x27BA R$ {item[1]}.",
+                "item": ["quantidade", "valor"],
             }
         },
         {
             "ENTREGAS HORA EXTRA": {
-                "texto": lambda item: f"EXTRA {item[0]} &#x27BA R$ {item[1]}."
+                "texto": lambda item: f"EXTRA {item[0]} &#x27BA R$ {item[1]}.",
+                "item": ["tempo", "valor"],
             }
         },
         {
             "ENTREGAS KG": {
                 "texto": lambda item: f"&#x2713 {item[0]} KGS "
-                f"&#x27BA R$ {item[1]}."
+                f"&#x27BA R$ {item[1]}.",
+                "item": ["peso", "valor"],
             }
         },
         {
             "ENTREGAS KG HORA EXTRA": {
-                "texto": lambda item: f"EXTRA {item[0]} &#x27BA R$ {item[1]}."
+                "texto": lambda item: f"EXTRA {item[0]} &#x27BA R$ {item[1]}.",
+                "item": ["tempo", "valor"],
             }
         },
         {
             "ENTREGAS VOLUME": {
                 "texto": lambda item: f"&#x2713 {item[0]} "
-                f"VOLUME &#x27BA R$ {item[1]}."
+                f"VOLUME &#x27BA R$ {item[1]}.",
+                "item": ["quantidade", "valor"],
             }
         },
         {
             "ENTREGAS VOLUME HORA EXTRA": {
-                "texto": lambda item: f"EXTRA {item[0]} &#x27BA R$ {item[1]}."
+                "texto": lambda item: f"EXTRA {item[0]} &#x27BA R$ {item[1]}.",
+                "item": ["tempo", "valor"],
             }
         },
         {
             "SAIDA": {
                 "texto": lambda item: f"&#x2713 SAÍDA &#x27BA "
-                f"R$ {item[0]}."
+                f"R$ {item[0]}.",
+                "item": ["valor"],
             }
         },
         {
             "SAIDA NORA EXTRA": {
-                "texto": lambda item: f"EXTRA {item[0]} &#x27BA R$ {item[1]}."
+                "texto": lambda item: f"EXTRA {item[0]} &#x27BA R$ {item[1]}.",
+                "item": ["tempo", "valor"],
             }
         },
         {
             "CAPACIDADE PESO": {
                 "texto": lambda item: f"&#x2713 CAPACIDADE "
-                f"PESO &#x27BA R$ {item[0]}."
+                f"PESO &#x27BA R$ {item[0]}.",
+                "item": ["valor"],
             }
         },
         {
             "CAPACIDADE PESO HORA EXTRA": {
-                "texto": lambda item: f"EXTRA {item[0]} &#x27BA R$ {item[1]}."
+                "texto": lambda item: f"EXTRA {item[0]} &#x27BA R$ {item[1]}.",
+                "item": ["tempo", "valor"],
             }
         },
         {
             "PERIMETRO": {
                 "texto": lambda item: f" &#x2713 PERIMETRO "
                 f"{item[0]}% (DE {item[1]} KMS ATÉ {item[2]} "
-                f"KMS) &#x27BA R$ {item[3]}."
+                f"KMS) &#x27BA R$ {item[3]}.",
+                "item": ["porcento", "inicial", "final", "valor"],
             }
         },
         {
             "PERIMETRO HORA EXTRA": {
-                "texto": lambda item: f"EXTRA {item[0]} &#x27BA R$ {item[1]}."
+                "texto": lambda item: f"EXTRA {item[0]} &#x27BA R$ {item[1]}.",
+                "item": ["tempo", "valor"],
             }
         },
         {
             "PERNOITE": {
                 "texto": lambda item: f"&#x2713 PERNOITE "
-                f"{item[0]}% &#x27BA R$ {item[1]}."
+                f"{item[0]}% &#x27BA R$ {item[1]}.",
+                "item": ["porcento", "valor"],
             }
         },
         {
-            "AJUDANTES": {
+            "AJUDANTE": {
                 "texto": lambda item: f"&#x2713 {item[0]} "
-                f"AJUDANTE(S) &#x27BA R$ {item[1]}."
+                f"AJUDANTE(S) &#x27BA R$ {item[1]}.",
+                "item": ["quantidade", "valor"],
             }
         },
         {
-            "AJUDANTES HORA EXTRA": {
-                "texto": lambda item: f"EXTRA {item[0]} &#x27BA R$ {item[1]}."
+            "AJUDANTE HORA EXTRA": {
+                "texto": lambda item: f"EXTRA {item[0]} &#x27BA R$ {item[1]}.",
+                "item": ["tempo", "valor"],
             }
         },
     ]
