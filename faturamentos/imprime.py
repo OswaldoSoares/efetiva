@@ -203,6 +203,45 @@ def textos_tipo_recebe():
     return textos
 
 
+def itens_cobrado(minuta):
+    textos = textos_tipo_recebe()
+    textos_dict = {
+        descricao: info for tipo in textos for descricao, info in tipo.items()
+    }
+    itens = MinutaItens.objects.filter(
+        idMinuta_id=minuta["idminuta"], RecebePaga="R"
+    )
+    cobrados = []
+    for item in itens:
+        descricao = item.Descricao
+        valores = {
+            "base": item.ValorBase,
+            "peso": item.Peso,
+            "porcento": item.Porcento,
+            "quantidade": item.Quantidade,
+            "tempo": format_timedelta(item.Tempo),
+            "valor": item.Valor,
+        }
+        if descricao in textos_dict:
+            texto_info = textos_dict[descricao]
+            if descricao == "AJUDANTE":
+                if minuta["recebe"]["t_exce"] > 0:
+                    descricao = "AJUDANTE HORA EXTRA"
+                    texto_info = textos_dict[descricao]
+                    valor_ajudantes = (
+                        Decimal(minuta["tabela"][0]["AjudanteCobra"])
+                        * item.Quantidade
+                    )
+                    valores = {
+                        "quantidade": item.Quantidade,
+                        "valor": valor_ajudantes,
+                        "extra": item.Valor - valor_ajudantes,
+                    }
+            texto_formatado = texto_info["texto"](
+                [valores.get(campo, 0) for campo in texto_info["item"]]
+            )
+            cobrados.append(texto_formatado)
+    return cobrados
 def decricao_servico(
     dict_servicos, perimetro_inicial, perimetro_final, s_minuta
 ):
