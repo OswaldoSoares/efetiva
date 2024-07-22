@@ -242,6 +242,22 @@ def itens_cobrado(minuta):
             )
             cobrados.append(texto_formatado)
     return cobrados
+
+
+def paragrafo_itens_cobrado(pdf, linha, estilo, minuta):
+    cobrados = itens_cobrado(minuta)
+    paragrafo = " ".join(cobrados)
+    para = Paragraph(paragrafo, style=estilo)
+    para.wrapOn(pdf, convertemp(186), convertemp(297))
+    linha -= para.height * 0.352777
+    para.drawOn(pdf, convertemp(12), convertemp(linha))
+    linha -= 1
+    pdf.line(
+        convertemp(10), convertemp(linha), convertemp(200), convertemp(linha)
+    )
+    return pdf, linha
+
+
 def decricao_servico(
     dict_servicos, perimetro_inicial, perimetro_final, s_minuta
 ):
