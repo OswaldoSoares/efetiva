@@ -176,6 +176,12 @@ def textos_tipo_recebe():
                 "item": ["quantidade", "valor"],
             }
         },
+        {
+            "AJUDANTE HORA EXTRA": {
+                "texto": lambda item: f"EXTRA {item[0]} &#x27BA R$ {item[1]}.",
+                "item": ["tempo", "valor"],
+            }
+        },
     ]
     return textos
 
