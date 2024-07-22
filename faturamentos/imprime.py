@@ -25,6 +25,137 @@ from website.models import FileUpload
 from .models import Fatura
 
 
+def textos_tipo_recebe():
+    textos = [
+        {
+            "TAXA DE EXPEDIÇÃO": {
+                "texto": lambda item: "&#x2713 TAXA DE EXPEDICAO &#x27BA "
+                f"R$ {item[0]}."
+            }
+        },
+        {
+            "SEGURO": {
+                "texto": lambda item: f"&#x2713 SEGURO {item[0]}% DO VALOR "
+                f"DA(S) NOTA(S) R$ {item[1]} &#x27BA R$ {item[2]}."
+            }
+        },
+        {
+            "PORCENTAGEM DA NOTA": {
+                "texto": lambda item: f"&#x2713 {item[0]}% DO VALOR "
+                f"DA(S) NOTA(S) R$ {item[1]} &#x27BA R$ {item[2]}"
+            }
+        },
+        {
+            "HORAS": {
+                "texto": lambda item: f"&#x2713 {item[0]} HORAS "
+                f"MINIMAS &#x27BA R$ {item[1]}."
+            }
+        },
+        {
+            "HORAS EXCEDENTE": {
+                "texto": lambda item: f"&#x2713 {item[0]} HORAS EXCEDENTE "
+                f"&#x27BA R$ {item[1]}."
+            }
+        },
+        {
+            "KILOMETRAGEM": {
+                "texto": lambda item: f"&#x2713 {item[0]} KMS &#x27BA "
+                f"R$ {item[1]}."
+            }
+        },
+        {
+            "KILOMETRAGEM HORA EXTRA": {
+                "texto": lambda item: f"EXTRA {item[0]} &#x27BA R$ {item[1]}."
+            }
+        },
+        {
+            "ENTREGAS": {
+                "texto": lambda item: f"&#x2713 {item[0]} ENTREGA(S) "
+                f"&#x27BA R$ {item[1]}."
+            }
+        },
+        {
+            "ENTREGAS HORA EXTRA": {
+                "texto": lambda item: f"EXTRA {item[0]} &#x27BA R$ {item[1]}."
+            }
+        },
+        {
+            "ENTREGAS KG": {
+                "texto": lambda item: f"&#x2713 {item[0]} KGS "
+                f"&#x27BA R$ {item[1]}."
+            }
+        },
+        {
+            "ENTREGAS KG HORA EXTRA": {
+                "texto": lambda item: f"EXTRA {item[0]} &#x27BA R$ {item[1]}."
+            }
+        },
+        {
+            "ENTREGAS VOLUME": {
+                "texto": lambda item: f"&#x2713 {item[0]} "
+                f"VOLUME &#x27BA R$ {item[1]}."
+            }
+        },
+        {
+            "ENTREGAS VOLUME HORA EXTRA": {
+                "texto": lambda item: f"EXTRA {item[0]} &#x27BA R$ {item[1]}."
+            }
+        },
+        {
+            "SAIDA": {
+                "texto": lambda item: f"&#x2713 SAÍDA &#x27BA "
+                f"R$ {item[0]}."
+            }
+        },
+        {
+            "SAIDA NORA EXTRA": {
+                "texto": lambda item: f"EXTRA {item[0]} &#x27BA R$ {item[1]}."
+            }
+        },
+        {
+            "CAPACIDADE PESO": {
+                "texto": lambda item: f"&#x2713 CAPACIDADE "
+                f"PESO &#x27BA R$ {item[0]}."
+            }
+        },
+        {
+            "CAPACIDADE PESO HORA EXTRA": {
+                "texto": lambda item: f"EXTRA {item[0]} &#x27BA R$ {item[1]}."
+            }
+        },
+        {
+            "PERIMETRO": {
+                "texto": lambda item: f" &#x2713 PERIMETRO "
+                f"{item[0]}% (DE {item[1]} KMS ATÉ {item[2]} "
+                f"KMS) &#x27BA R$ {item[3]}."
+            }
+        },
+        {
+            "PERIMETRO HORA EXTRA": {
+                "texto": lambda item: f"EXTRA {item[0]} &#x27BA R$ {item[1]}."
+            }
+        },
+        {
+            "PERNOITE": {
+                "texto": lambda item: f"&#x2713 PERNOITE "
+                f"{item[0]}% &#x27BA R$ {item[1]}."
+            }
+        },
+        {
+            "AJUDANTES": {
+                "texto": lambda item: f"&#x2713 {item[0]} "
+                f"AJUDANTE(S) &#x27BA R$ {item[1]}."
+            }
+        },
+        {
+            "AJUDANTES HORA EXTRA": {
+                "texto": lambda item: f"EXTRA {item[0]} &#x27BA R$ {item[1]}."
+            }
+        },
+    ]
+    return textos
+
+
 def decricao_servico(
     dict_servicos, perimetro_inicial, perimetro_final, s_minuta
 ):
