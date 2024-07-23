@@ -1,3 +1,6 @@
+"""
+    Módulo responsável pelas impressões do app faturamentos
+"""
 from decimal import Decimal
 from io import BytesIO
 
