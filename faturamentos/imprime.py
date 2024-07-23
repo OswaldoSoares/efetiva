@@ -216,6 +216,16 @@ def textos_tipo_recebe():
 
 
 def itens_cobrado(minuta):
+    """
+        Cria uma lista com os textos dos itens que foram cobrados para serem
+        impressos no paragrafo itens cobrado.
+    Args:
+        minuta: dict com dados da minuta - class MinutaSelecionada
+
+    Returns:
+        list: cobrados
+
+    """
     textos = textos_tipo_recebe()
     textos_dict = {
         descricao: info for tipo in textos for descricao, info in tipo.items()
