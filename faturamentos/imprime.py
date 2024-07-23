@@ -844,16 +844,17 @@ def imprime_fatura_pdf(fatura):
             pdf, linha, styles_claro, s_minuta
         )
         linha -= 3.5
-        if linha < 50:
-            tamanho_font_atual = tamanho_font
-            pagina = pdf.getPageNumber()
-            pdf.drawCentredString(
-                convertemp(105), convertemp(11), "PÁGINA {}".format(pagina)
-            )
-            pdf.showPage()
-            imprime_cabecalho(pdf, fatura_selecionada)
-            linha = 250.8
-            pdf.setFont("Times-Roman", tamanho_font_atual)
+        if not index == len(minutas) - 1:
+            if linha < 50:
+                tamanho_font_atual = tamanho_font
+                pagina = pdf.getPageNumber()
+                pdf.drawCentredString(
+                    convertemp(105), convertemp(11), "PÁGINA {}".format(pagina)
+                )
+                pdf.showPage()
+                imprime_cabecalho(pdf, fatura_selecionada)
+                linha = 250.8
+                pdf.setFont("Times-Roman", tamanho_font_atual)
     pagina = pdf.getPageNumber()
     pdf.drawCentredString(
         convertemp(105), convertemp(11), "PÁGINA {}".format(pagina)
