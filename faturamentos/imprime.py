@@ -840,24 +840,9 @@ def imprime_fatura_pdf(fatura):
             linha -= para.height * 0.352777
             para.drawOn(pdf, convertemp(12), convertemp(linha))
             linha -= 1
-        minuta_itens = MinutaItens.objects.values().filter(
-            idMinuta=minutas[index].idMinuta, RecebePaga="R"
+        pdf, linha = paragrafo_itens_cobrado(
+            pdf, linha, styles_claro, s_minuta
         )
-        servicos = decricao_servico(
-            minuta_itens, perimetro_inicial, perimetro_final, s_minuta
-        )
-        if servicos:
-            para = Paragraph(servicos, style=styles_claro)
-            para.wrapOn(pdf, convertemp(186), convertemp(297))
-            linha -= para.height * 0.352777
-            para.drawOn(pdf, convertemp(12), convertemp(linha))
-            linha -= 1
-            pdf.line(
-                convertemp(10),
-                convertemp(linha),
-                convertemp(200),
-                convertemp(linha),
-            )
         linha -= 3.5
         if linha < 50:
             tamanho_font_atual = tamanho_font
