@@ -272,8 +272,6 @@ def imprime_cabecalho(pdf, fatura_selecionada):
     url = f"{STATIC_ROOT}/website/img/transportadora.jpg"
     pdf.roundRect(cmp(10), cmp(10), cmp(190), cmp(277), 10)
     pdf.drawImage(url, cmp(12), cmp(265), cmp(40), cmp(20))
-    # pdf.drawImage('efetiva/site/public/static/website/img/transportadora.jpg', cmp(12), cmp(265),
-    #               cmp(40), cmp(20))
     tamanho_font = 18
     pdf.setFont("Times-Bold", tamanho_font)
     pdf.drawString(cmp(54), cmp(279), "TRANSEFETIVA TRANSPORTE - EIRELLI - ME")
@@ -492,7 +490,6 @@ def imprime_fatura_pdf(fatura):
                 custo = minuta_valor / soma_valor * 100
             else:
                 custo = None
-            # f"{i.idNotasClientes.Endereco} - {i.idNotasClientes.Bairro}"
             enderecos = []
             for i in notas_romaneio:
                 if i.idNotasClientes.LocalColeta == "DESTINATÁRIO":
@@ -574,13 +571,6 @@ def imprime_fatura_pdf(fatura):
                     linha -= 1
                     pdf.line(cmp(12), cmp(linha), cmp(198), cmp(linha))
             linha -= 3
-            #  pdf.line(
-            #  cmp(12),
-            #  cmp(linha),
-            #  cmp(198),
-            #  cmp(linha),
-            #  )
-            #  linha -= 3
             pdf.setFillColor(HexColor("#FF0000"))
             pdf.drawCentredString(
                 cmp(105),
@@ -624,35 +614,6 @@ def imprime_fatura_pdf(fatura):
                     linha,
                     fatura_selecionada,
                 )
-        # TODO Código abaixo removido a pedido de Mauricio em 11/10/2022 para não mostrar mais
-        #      Bairro e Cidade
-        # notas_perimetro = (
-        #     MinutaNotas.objects.values("Cidade")
-        #     .filter(idMinuta=minutas[index].idMinuta)
-        #     .exclude(Cidade="SÃO PAULO")
-        # )
-        # cidades = "CIDADE(S):"
-        # if notas_perimetro:
-        #     for itensperimetro in notas_perimetro:
-        #         cidades = "{} &#x2713 {} ".format(cidades, itensperimetro["Cidade"])
-        #     para = Paragraph(cidades, style=styles_claro)
-        #     para.wrapOn(pdf, cmp(186), cmp(297))
-        #     linha -= para.height * 0.352777
-        #     para.drawOn(pdf, cmp(12), cmp(linha))
-        # notas_bairro = (
-        #     MinutaNotas.objects.values("Bairro")
-        #     .filter(idMinuta=minutas[index].idMinuta)
-        #     .exclude(Bairro__isnull=True)
-        #     .exclude(Bairro__exact="")
-        # )
-        # bairros = "BAIRRO(S):"
-        # if notas_bairro:
-        #     for itensbairro in notas_bairro:
-        #         bairros = "{} &#x2713 {} ".format(bairros, itensbairro["Bairro"])
-        #     para = Paragraph(bairros, style=styles_claro)
-        #     para.wrapOn(pdf, cmp(186), cmp(297))
-        #     linha -= para.height * 0.352777
-        #     para.drawOn(pdf, cmp(12), cmp(linha))
         if totalkm > 0:
             linha -= 3
             tamanho_font = 8
