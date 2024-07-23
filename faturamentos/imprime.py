@@ -273,6 +273,28 @@ def itens_cobrado(minuta):
 
 
 def paragrafo_itens_cobrado(pdf, linha, estilo, minuta):
+    """
+    Desenha no contexto PDF o parágrafo com os itens cobrados.
+
+    Args:
+        pdf: reportlab.pdfgen.canvas.Canvas
+            O canvas do ReportLab onde o parágrafo será desenhado.
+        linha: float
+            A variável que contém o número da linha onde o parágrafo
+            será desenhado.
+        estilo: reportlab.lib.styles.ParagraphStyle
+            O estilo do parágrafo a ser aplicado.
+        minuta: dict
+            Um dicionário com os dados da minuta, instância da classe
+            MinutaSelecionada.
+
+    Returns:
+        pdf: reportlab.pdfgen.canvas.Canvas
+            O canvas do ReportLab com o parágrafo desenhado.
+        linha: float
+            O novo número da linha após o parágrafo ser desenhado.
+
+    """
     cobrados = itens_cobrado(minuta)
     paragrafo = " ".join(cobrados)
     para = Paragraph(paragrafo, style=estilo)
