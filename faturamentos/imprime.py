@@ -241,6 +241,12 @@ def itens_cobrado(minuta):
                 [valores.get(campo, 0) for campo in texto_info["item"]]
             )
             cobrados.append(texto_formatado)
+    for item in itens:
+        if item.TipoItens == "DESPESA":
+            cobrados.append(
+                f"&#x2713 {item.Descricao} &#x27BA R$ {item.Valor} "
+                f"- {item.Obs}"
+            )
     return cobrados
 
 
