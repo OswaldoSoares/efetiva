@@ -537,7 +537,8 @@ def imprime_fatura_pdf(fatura):
                     pdf.drawCentredString(
                         cmp(105),
                         cmp(linha),
-                        f"ROMANEIO: {romaneio['romaneio']} - PESO: {romaneio['peso']}",
+                        f"ROMANEIO: {romaneio['romaneio']} - "
+                        f"PESO: {romaneio['peso']}",
                     )
                     pdf.setFillColor(HexColor("#000000"))
                     filtro = [
@@ -561,7 +562,9 @@ def imprime_fatura_pdf(fatura):
             pdf.drawCentredString(
                 cmp(105),
                 cmp(linha),
-                f"{len(entregas):0>2} ENTREGAS - PESO: {valor_ponto_milhar(soma_peso, 3)} - VALOR: {valor_ponto_milhar(soma_valor, 2)}",
+                f"{len(entregas):0>2} ENTREGAS - PESO: "
+                f"{valor_ponto_milhar(soma_peso, 3)} - VALOR: "
+                f"{valor_ponto_milhar(soma_valor, 2)}",
             )
             if soma_valor > 0:
                 pdf.drawRightString(cmp(198), cmp(linha), f"{custo:,.3f}%")
