@@ -1,5 +1,4 @@
 from decimal import Decimal
-from datetime import timedelta
 from io import BytesIO
 
 from clientes.models import Cliente, TabelaPerimetro
