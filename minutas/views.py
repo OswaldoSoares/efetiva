@@ -79,7 +79,7 @@ from .forms import (
 from .models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas
 
 
-def convertemp(mm):
+def cmp(mm):
     """
     Converte milimetros em pontos - Criação de Relatórios
 
