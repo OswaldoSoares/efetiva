@@ -2141,6 +2141,7 @@ def create_data_contra_cheque(request, contexto):
 def busca_contra_cheque_aquisitivo(idpessoal, idaquisitivo, descricao):
     colaborador = get_colaborador(idpessoal)
     aquisitivo = get_aquisitivo_id(idaquisitivo)
+    faltas = aquisitivo_faltas(colaborador, aquisitivo)
     ano = aquisitivo.DataFinal.year
     mes = aquisitivo.DataFinal.month
     aquisitivo_inicial = datetime.datetime.strftime(
@@ -2173,20 +2174,16 @@ def busca_contra_cheque_aquisitivo(idpessoal, idaquisitivo, descricao):
         string_gozo = f"GOZO DE FÉRIAS - {index+1}"
         chave_gozo = f"gozo{index+1}"
         obs = f"{string_gozo}: {gozo_inicial} - {gozo_final}"
-        try:
-            contra_cheque = get_contra_cheque_mes_ano_descricao(
-                colaborador, mes, ano, descricao
-            )
-            update_contra_cheque_obs(contra_cheque, obs, chave_gozo)
-        except ContraCheque.DoesNotExist:  # pylint: disable=no-member
-            nova_obs = dict()
-            nova_obs["aquisitivo"] = obs
-            create_contra_cheque(
-                meses[mes - 1], ano, "FERIAS", colaborador, nova_obs
-            )
-            contra_cheque = get_contra_cheque_mes_ano_descricao(
-                colaborador, mes, ano, descricao
-            )
+        contra_cheque = get_contra_cheque_mes_ano_descricao(
+            colaborador, mes, ano, descricao
+        )
+        update_contra_cheque_obs(contra_cheque, obs, chave_gozo)
+    if faltas:
+        obs = f"FALTAS: {faltas}"
+        contra_cheque = get_contra_cheque_mes_ano_descricao(
+            colaborador, mes, ano, descricao
+        )
+        update_contra_cheque_obs(contra_cheque, obs, "faltas")
     return contra_cheque
 
 
