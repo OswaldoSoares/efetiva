@@ -2149,7 +2149,7 @@ def busca_contra_cheque_aquisitivo(idpessoal, idaquisitivo, descricao):
     aquisitivo_final = datetime.datetime.strftime(
         aquisitivo.DataFinal, "%d/%m/%Y"
     )
-    obs = f"AQUISITIVO {aquisitivo_inicial} - {aquisitivo_final}"
+    obs = f"AQUISITIVO: {aquisitivo_inicial} - {aquisitivo_final}"
     try:
         contra_cheque = get_contra_cheque_mes_ano_descricao(
             colaborador, mes, ano, descricao
@@ -2164,6 +2164,29 @@ def busca_contra_cheque_aquisitivo(idpessoal, idaquisitivo, descricao):
         contra_cheque = get_contra_cheque_mes_ano_descricao(
             colaborador, mes, ano, descricao
         )
+    ferias = Ferias.objects.filter(idAquisitivo=aquisitivo)
+    for index, feria in enumerate(ferias):
+        gozo_inicial = datetime.datetime.strftime(
+            feria.DataInicial, "%d/%m/%Y"
+        )
+        gozo_final = datetime.datetime.strftime(feria.DataFinal, "%d/%m/%Y")
+        string_gozo = f"GOZO DE FÉRIAS - {index+1}"
+        chave_gozo = f"gozo{index+1}"
+        obs = f"{string_gozo}: {gozo_inicial} - {gozo_final}"
+        try:
+            contra_cheque = get_contra_cheque_mes_ano_descricao(
+                colaborador, mes, ano, descricao
+            )
+            update_contra_cheque_obs(contra_cheque, obs, chave_gozo)
+        except ContraCheque.DoesNotExist:  # pylint: disable=no-member
+            nova_obs = dict()
+            nova_obs["aquisitivo"] = obs
+            create_contra_cheque(
+                meses[mes - 1], ano, "FERIAS", colaborador, nova_obs
+            )
+            contra_cheque = get_contra_cheque_mes_ano_descricao(
+                colaborador, mes, ano, descricao
+            )
     return contra_cheque
 
 
@@ -2335,15 +2358,16 @@ def aquisitivo_salario_ferias(salario, faltas):
 def update_contra_cheque_obs(contra_cheque, obs, chave):
     try:
         dict_obs = ast.literal_eval(contra_cheque.Obs)
-        if not dict_obs[chave]:
-            dict_obs = {chave: ""}
-    except:
-        dict_obs = {chave: ""}
-    consulta_chave = dict_obs[chave]
-    if consulta_chave != obs:
+    except (SyntaxError, ValueError) as e:
+        print(f"[ERROR] {e}")
+        dict_obs = {}
+    except Exception as e:
+        print(f"[ERROR] {e}")
+        dict_obs = {}
+    if dict_obs.get(chave) != obs:
         dict_obs[chave] = obs
         obj = contra_cheque
-        obj.Obs = dict_obs
+        obj.Obs = str(dict_obs)
         obj.save()
 
 
