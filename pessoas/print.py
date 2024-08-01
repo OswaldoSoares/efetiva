@@ -22,7 +22,7 @@ def print_pdf_ficha_colaborador(contexto):
     ] = f'filename="FICHA CADASTRAL {nome_curto}.pdf'
     buffer = BytesIO()
     pdf = canvas.Canvas(buffer)
-    header(pdf, contexto)
+    header(pdf)
     ficha_colaborador(pdf, contexto)
     pdf.setTitle(f"FICHA CADSTRAl {nome_curto}.pdf")
     pdf.save()
