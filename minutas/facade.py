@@ -3247,3 +3247,15 @@ def update_veiculo_solicitado(request):
         idCategoriaVeiculo_id=id_categoria_veiculo
     )
     return {"mensagem": "VEÍCULO SOLICITADO FOI ATUALIZADO"}
+
+
+def motoristas_disponiveis():
+    """
+    Retorna uma lista de motoristas disponíveis.
+
+    Returns:
+        QuerySet: QuerySet contendo os motoristas disponíveis.
+    """
+    return Pessoal.objects.filter(StatusPessoal=True).exclude(
+        Categoria="AJUDANTE"
+    )
