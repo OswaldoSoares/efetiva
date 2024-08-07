@@ -3462,3 +3462,21 @@ def excluir_colaborador(request):
         idMinutaColaboradores=request.GET.get("id_minuta_colaborador")
     ).delete()
     return {"mensagem": "MOTORISTA EXCLUIDO COM SUCESSO"}
+
+
+def excluir_veiculo_minuta(id_minuta):
+    """
+    Exclui o veículo associado a uma minuta, zerando a quilometragem
+    inicial e final.
+
+    Args:
+        id_minuta (int): ID da minuta.
+
+    Returns:
+        None
+    """
+    Minuta.objects.filter(idMinuta=id_minuta).update(
+        idVeiculo_id=None,
+        KMInicial=0,
+        KMFinal=0,
+    )
