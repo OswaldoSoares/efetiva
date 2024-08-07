@@ -3164,3 +3164,22 @@ def html_card_minuta(request, data, contexto):
         "minutas/card_minuta.html", contexto, request=request
     )
     return data
+
+
+def html_checklist(request, data, contexto):
+    """
+    Renderiza o template do checklist da minuta e o adiciona aos dados
+    fornecidos.
+
+    Args:
+        request (HttpRequest): Objeto de requisição HTTP.
+        data (dict): Dicionário contendo os dados atuais.
+        contexto (dict): Contexto atualizado da minuta.
+
+    Returns:
+        dict: Dicionário contendo os dados atualizados com o HTML do checklist.
+    """
+    data["html_checklist"] = render_to_string(
+        "minutas/card_checklist.html", contexto, request=request
+    )
+    return data
