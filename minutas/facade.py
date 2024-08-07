@@ -5,6 +5,7 @@ from django.db import connection, reset_queries
 
 from datetime import date, datetime, timedelta
 
+from core.tools import apos_meia_noite, calcular_diferenca, str_hora
 from clientes.models import (
     Cliente,
     Tabela,
