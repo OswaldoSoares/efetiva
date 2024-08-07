@@ -3383,3 +3383,32 @@ def modal_veiculo_minuta(id_minuta, request):
         request=request,
     )
     return JsonResponse({"modal_html": modal_html})
+
+
+def update_veiculo_minuta(request):
+    """
+    Atualiza o veículo da minuta especificada.
+
+    Args:
+        request (HttpRequest): Objeto de requisição HTTP contendo o id_minuta
+        e id_veiculo.
+
+    Returns:
+        dict: Dicionário contendo uma mensagem indicando o resultado da
+        operação.
+    """
+    id_minuta = request.POST.get("id_minuta")
+    id_veiculo = request.POST.get("id_veiculo")
+
+    try:
+        id_minuta = int(id_minuta)
+        id_veiculo = int(id_veiculo)
+    except (ValueError, TypeError):
+        return {"mensagem": "ID INVÁLIDO"}
+
+    veiculo = Veiculo.objects.filter(idVeiculo=id_veiculo).first()
+
+    if veiculo:
+        save_veiculo_minuta(id_minuta, veiculo)
+
+    return {"mensagem": "VEÍCULO ADICIONADO COM SUCESSO"}
