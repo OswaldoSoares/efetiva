@@ -3183,3 +3183,15 @@ def html_checklist(request, data, contexto):
         "minutas/card_checklist.html", contexto, request=request
     )
     return data
+
+
+def categorias_veiculo():
+    """
+    Retorna uma lista de categorias de veículos ordenadas por categoria.
+
+    Returns:
+        QuerySet: QuerySet contendo as categorias de veículos.
+    """
+    return CategoriaVeiculo.objects.values(
+        "idCategoria", "Categoria"
+    ).order_by("Categoria")
