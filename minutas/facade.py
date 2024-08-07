@@ -3215,3 +3215,35 @@ def modal_veiculo_solicitado(id_minuta, request):
         request=request,
     )
     return JsonResponse({"modal_html": modal_html})
+
+
+def update_veiculo_solicitado(request):
+    """
+    Atualiza a categoria do veículo solicitado para a minuta especificada.
+
+    Args:
+        request (HttpRequest): Objeto de requisição HTTP contendo o id_minuta
+        e id_categoria.
+
+    Returns:
+        dict: Dicionário contendo uma mensagem indicando o resultado da
+        operação.
+    """
+    id_minuta = request.POST.get("id_minuta")
+    id_categoria_veiculo = request.POST.get("id_categoria")
+    try:
+        id_minuta = int(id_minuta)
+    except (ValueError, TypeError):
+        return {"mensagem": "ID DA MINUTA INVÁLIDO"}
+
+    id_categoria_veiculo = (
+        int(id_categoria_veiculo) if id_categoria_veiculo else None
+    )
+
+    if not isinstance(id_categoria_veiculo, (int, type(None))):
+        return {"mensagem": "ID DA CATEGORIA DO VEÍCULO INVÁLIDO"}
+
+    Minuta.objects.filter(idMinuta=id_minuta).update(
+        idCategoriaVeiculo_id=id_categoria_veiculo
+    )
+    return {"mensagem": "VEÍCULO SOLICITADO FOI ATUALIZADO"}
