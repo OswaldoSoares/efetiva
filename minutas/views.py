@@ -2728,3 +2728,23 @@ def editar_informacoes_minuta(request):
         facade.modal_informacoes_minuta,
         facade.update_informacoes_minuta,
     )
+
+
+def handle_input_minuta(request, update_func):
+    """
+    Manipula a modificação de propriedades de uma minuta com base em uma
+    solicitação GET.
+
+    Args:
+        request: O objeto de solicitação HTTP GET.
+        update_func: Função para atualizar o item da minuta.
+
+    Returns:
+        JsonResponse: Dados atualizados da minuta.
+    """
+    id_minuta = request.GET.get("id_minuta")
+
+    contexto = update_func(request)
+    contexto.update(facade.contexto_minuta_alterada(id_minuta))
+
+    return facade.data_minuta_alterada(request, contexto)
