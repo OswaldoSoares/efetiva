@@ -3195,3 +3195,23 @@ def categorias_veiculo():
     return CategoriaVeiculo.objects.values(
         "idCategoria", "Categoria"
     ).order_by("Categoria")
+
+
+def modal_veiculo_solicitado(id_minuta, request):
+    """
+    Renderiza o modal para solicitar um veículo para a minuta especificada.
+
+    Args:
+        id_minuta (int): ID da minuta.
+        request (HttpRequest): Objeto de requisição HTTP.
+
+    Returns:
+        JsonResponse: Objeto JsonResponse contendo o HTML do modal.
+    """
+    categorias = categorias_veiculo()
+    modal_html = render_to_string(
+        "minutas/modal_veiculo_solicitado.html",
+        {"id_minuta": id_minuta, "categorias": categorias},
+        request=request,
+    )
+    return JsonResponse({"modal_html": modal_html})
