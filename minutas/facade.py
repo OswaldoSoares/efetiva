@@ -3412,3 +3412,35 @@ def update_veiculo_minuta(request):
         save_veiculo_minuta(id_minuta, veiculo)
 
     return {"mensagem": "VEÍCULO ADICIONADO COM SUCESSO"}
+
+
+def filtra_veiculo(idpessoal, opcao):
+    """
+    Filtra veículos com base na opção fornecida e no ID do pessoal.
+
+    Args:
+        idpessoal (int): ID do pessoal (motorista) para filtrar veículos
+        próprios.
+        opcao (str): Opção de filtro ('PROPRIO', 'TRANSPORTADORA',
+        'CADASTRADOS').
+
+    Returns:
+        list: Lista de dicionários contendo o ID e a descrição dos veículos
+        filtrados.
+    """
+    filtro_opcoes = {
+        "PROPRIO": {"Motorista": idpessoal},
+        "TRANSPORTADORA": {"Proprietario": 17},
+        "CADASTRADOS": {},
+    }
+    filtros = filtro_opcoes.get(opcao, {})
+    veiculos = Veiculo.objects.filter(**filtros).order_by(
+        "Marca", "Modelo", "Placa"
+    )
+    return [
+        {
+            "id_veiculo": veiculo.idVeiculo,
+            "descricao": f"{veiculo.Marca} {veiculo.Modelo} - {veiculo.Placa}",
+        }
+        for veiculo in veiculos
+    ]
