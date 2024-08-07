@@ -3593,3 +3593,24 @@ def modal_informacoes_minuta(id_minuta, request):
         request=request,
     )
     return JsonResponse({"modal_html": modal_html})
+
+
+def save_informacoes_minuta(id_minuta, coleta, entrega, observacao):
+    """
+    Salva as informações de coleta, entrega e observação na minuta
+    especificada.
+
+    Args:
+        id_minuta (int): ID da minuta.
+        coleta (str): Informações de coleta.
+        entrega (str): Informações de entrega.
+        observacao (str): Observações adicionais.
+
+    Returns:
+        None
+    """
+    Minuta.objects.filter(idMinuta=id_minuta).update(
+        Coleta=coleta,
+        Entrega=entrega,
+        Obs=observacao,
+    )
