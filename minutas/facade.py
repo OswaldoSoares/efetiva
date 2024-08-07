@@ -3527,3 +3527,23 @@ def editar_km_final(request):
     )
 
     return {"mensagem": "QUILOMETRAGEM FINAL ATUALIZADA"}
+
+
+def modal_ajudante_minuta(id_minuta, request):
+    """
+    Renderiza o modal para selecionar um ajudante para a minuta especificada.
+
+    Args:
+        id_minuta (int): ID da minuta.
+        request (HttpRequest): Objeto de requisição HTTP.
+
+    Returns:
+        JsonResponse: Objeto JsonResponse contendo o HTML do modal.
+    """
+    ajudantes = ajudantes_disponiveis(id_minuta)
+    modal_html = render_to_string(
+        "minutas/modal_ajudante_minuta.html",
+        {"id_minuta": id_minuta, "ajudantes": ajudantes},
+        request=request,
+    )
+    return JsonResponse({"modal_html": modal_html})
