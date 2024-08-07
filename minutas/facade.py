@@ -3547,3 +3547,28 @@ def modal_ajudante_minuta(id_minuta, request):
         request=request,
     )
     return JsonResponse({"modal_html": modal_html})
+
+
+def update_ajudante_minuta(request):
+    """
+    Atualiza o ajudante da minuta especificada.
+
+    Args:
+        request (HttpRequest): Objeto de requisição HTTP contendo o
+        id_minuta e id_ajudante.
+
+    Returns:
+        dict: Dicionário contendo uma mensagem indicando o resultado
+        da operação.
+    """
+    id_minuta = request.POST.get("id_minuta")
+    id_ajudante = request.POST.get("id_ajudante")
+
+    try:
+        id_minuta = int(id_minuta)
+        id_ajudante = int(id_ajudante)
+    except (ValueError, TypeError):
+        return {"mensagem": "ID INVÁLIDO"}
+
+    save_colaborador_minuta("AJUDANTE", id_minuta, id_ajudante)
+    return {"mensagem": "AJUDANTE ADICIONADO COM SUCESSO"}
