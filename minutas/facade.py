@@ -3314,3 +3314,22 @@ def get_kilometragem_atual(id_veiculo):
         Max("KMFinal")
     )
     return km_final.get("KMFinal__max", 0) or 0
+
+
+def save_veiculo_minuta(id_minuta, veiculo):
+    """
+    Salva um veículo na minuta especificada e atualiza a quilometragem
+    inicial.
+
+    Args:
+        id_minuta (int): ID da minuta.
+        veiculo (Veiculo): Objeto do veículo.
+
+    Returns:
+        None
+    """
+    km_inicial = get_kilometragem_atual(veiculo.idVeiculo)
+    Minuta.objects.filter(idMinuta=id_minuta).update(
+        idVeiculo_id=veiculo.idVeiculo,
+        KMInicial=km_inicial,
+    )
