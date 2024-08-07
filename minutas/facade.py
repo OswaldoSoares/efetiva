@@ -3572,3 +3572,24 @@ def update_ajudante_minuta(request):
 
     save_colaborador_minuta("AJUDANTE", id_minuta, id_ajudante)
     return {"mensagem": "AJUDANTE ADICIONADO COM SUCESSO"}
+
+
+def modal_informacoes_minuta(id_minuta, request):
+    """
+    Renderiza o modal para exibir informações detalhadas da minuta
+    especificada.
+
+    Args:
+        id_minuta (int): ID da minuta.
+        request (HttpRequest): Objeto de requisição HTTP.
+
+    Returns:
+        JsonResponse: Objeto JsonResponse contendo o HTML do modal.
+    """
+    minuta = Minuta.objects.get(idMinuta=id_minuta)
+    modal_html = render_to_string(
+        "minutas/modal_informacoes_minuta.html",
+        {"minuta": minuta},
+        request=request,
+    )
+    return JsonResponse({"modal_html": modal_html})
