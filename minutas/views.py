@@ -2775,3 +2775,17 @@ def editar_minuta_km_inicial(request):
         editada.
     """
     return handle_input_minuta(request, facade.editar_km_inicial)
+
+
+def editar_minuta_km_final(request):
+    """
+    Edita a quilometragem final de uma minuta.
+
+    Args:
+        request: O objeto de solicitação HTTP GET contendo o ID da minuta.
+
+    Returns:
+        JsonResponse: Dados atualizados da minuta com a quilometragem final
+        editada.
+    """
+    return handle_input_minuta(request, facade.editar_km_final)
