@@ -3614,3 +3614,31 @@ def save_informacoes_minuta(id_minuta, coleta, entrega, observacao):
         Entrega=entrega,
         Obs=observacao,
     )
+
+
+def update_informacoes_minuta(request):
+    """
+    Atualiza as informações de coleta, entrega e observação de uma minuta.
+
+    Args:
+        request (HttpRequest): Objeto de requisição HTTP contendo o
+        id_minuta, coleta, entrega e observacao.
+
+    Returns:
+        dict: Dicionário contendo uma mensagem indicando o resultado da
+        operação.
+    """
+    id_minuta = request.POST.get("id_minuta")
+
+    try:
+        id_minuta = int(id_minuta)
+    except (ValueError, TypeError):
+        return {"mensagem": "ID INVÁLIDO"}
+
+    save_informacoes_minuta(
+        id_minuta,
+        request.POST.get("coleta"),
+        request.POST.get("entrega"),
+        request.POST.get("observacao"),
+    )
+    return {"mensagem": "INFORMAÇÕES ATUALIZADAS"}
