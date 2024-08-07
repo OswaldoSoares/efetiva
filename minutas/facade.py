@@ -3107,3 +3107,22 @@ def edita_hora_final(request):
 
     Minuta.objects.filter(idMinuta=id_minuta).update(HoraFinal=final)
     return {"mensagem": mensagem}
+
+
+def contexto_minuta_alterada(idminuta):
+    """
+    Gera o contexto atualizado de uma minuta selecionada.
+
+    Args:
+        id_minuta (int): ID da minuta a ser atualizada.
+
+    Returns:
+        dict: Dicionário contendo o contexto atualizado da minuta.
+    """
+    minuta = vars(MinutaSelecionada(idminuta))
+    contexto = {
+        "s_minuta": minuta,
+        "itens_minuta": criar_itens_card_minuta(minuta),
+        "checklist": itens_card_checklist(minuta),
+    }
+    return contexto
