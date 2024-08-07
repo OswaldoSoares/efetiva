@@ -3074,3 +3074,36 @@ def itens_card_checklist(minuta):
         },
     ]
     return itens
+
+
+def edita_hora_final(request):
+    """
+    Edita a hora final de uma minuta, garantindo que a hora final seja válida
+    e maior que a hora inicial.
+
+    Args:
+        request (HttpRequest): Objeto de requisição HTTP contendo o id_minuta
+        e a hora_final.
+
+    Returns:
+        dict: Dicionário contendo uma mensagem indicando o resultado da
+        operação.
+    """
+    id_minuta = request.GET.get("id_minuta")
+    minuta = MinutaSelecionada(id_minuta)
+    data = minuta.data
+    inicial = minuta.hora_inicial
+    final = str_hora(request.GET.get("hora_final"))
+
+    if final == minuta.hora_final:
+        return {"mensagem": "VOCÊ ENTROU COM A MESMA HORA"}
+
+    periodo = calcular_diferenca(data, inicial, final)
+    if not apos_meia_noite(periodo):
+        final = str_hora("00:00")
+        mensagem = f"HORA REINICIDA ENTRE COM UMA DATA MAIOR QUE {inicial}HS."
+    else:
+        mensagem = "A HORA FINAL FOI ATUALIZADA."
+
+    Minuta.objects.filter(idMinuta=id_minuta).update(HoraFinal=final)
+    return {"mensagem": mensagem}
