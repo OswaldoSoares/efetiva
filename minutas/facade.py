@@ -3498,3 +3498,32 @@ def editar_km_inicial(request):
         KMInicial=int(request.GET.get("km_inicial")), KMFinal=0
     )
     return {"mensagem": "QUILOMETRAGEM INICIAL ATUALIZADA, FINAL ZERADA"}
+
+
+def editar_km_final(request):
+    """
+    Edita a quilometragem final de uma minuta, garantindo que seja maior que
+    a quilometragem inicial.
+
+    Args:
+        request (HttpRequest): Objeto de requisição HTTP contendo o
+        id_minuta, km_inicial e km_final.
+
+    Returns:
+        dict: Dicionário contendo uma mensagem indicando o resultado da
+        operação.
+    """
+
+    km_inicial = int(request.GET.get("km_inicial"))
+    km_final = int(request.GET.get("km_final"))
+
+    if km_final <= km_inicial:
+        return {
+            "mensagem": f"QUILOMETRAGEM TEM QUE SER MAIOR QUE {km_inicial}"
+        }
+
+    Minuta.objects.filter(idMinuta=request.GET.get("id_minuta")).update(
+        KMInicial=km_inicial, KMFinal=km_final
+    )
+
+    return {"mensagem": "QUILOMETRAGEM FINAL ATUALIZADA"}
