@@ -2748,3 +2748,16 @@ def handle_input_minuta(request, update_func):
     contexto.update(facade.contexto_minuta_alterada(id_minuta))
 
     return facade.data_minuta_alterada(request, contexto)
+
+
+def editar_minuta_hora_final(request):
+    """
+    Edita a hora final de uma minuta.
+
+    Args:
+        request: O objeto de solicitação HTTP GET contendo o ID da minuta.
+
+    Returns:
+        JsonResponse: Dados atualizados da minuta com a hora final editada.
+    """
+    return handle_input_minuta(request, facade.edita_hora_final)
