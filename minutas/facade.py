@@ -3364,3 +3364,22 @@ def update_motorista_minuta(request):
         save_veiculo_minuta(id_minuta, veiculo)
 
     return {"mensagem": "MOTORISTA ADICIONADO COM SUCESSO"}
+
+
+def modal_veiculo_minuta(id_minuta, request):
+    """
+    Renderiza o modal para selecionar um veículo para a minuta especificada.
+
+    Args:
+        id_minuta (int): ID da minuta.
+        request (HttpRequest): Objeto de requisição HTTP.
+
+    Returns:
+        JsonResponse: Objeto JsonResponse contendo o HTML do modal.
+    """
+    modal_html = render_to_string(
+        "minutas/modal_veiculo_minuta.html",
+        {"id_minuta": id_minuta},
+        request=request,
+    )
+    return JsonResponse({"modal_html": modal_html})
