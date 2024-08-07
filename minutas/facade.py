@@ -3145,3 +3145,22 @@ def data_minuta_alterada(request, contexto):
     for html_func in html_functions:
         data = html_func(request, data, contexto)
     return JsonResponse(data)
+
+
+def html_card_minuta(request, data, contexto):
+    """
+    Renderiza o template do card da minuta e o adiciona aos dados fornecidos.
+
+    Args:
+        request (HttpRequest): Objeto de requisição HTTP.
+        data (dict): Dicionário contendo os dados atuais.
+        contexto (dict): Contexto atualizado da minuta.
+
+    Returns:
+        dict: Dicionário contendo os dados atualizados com o HTML do card da
+        minuta.
+    """
+    data["html-card-minuta"] = render_to_string(
+        "minutas/card_minuta.html", contexto, request=request
+    )
+    return data
