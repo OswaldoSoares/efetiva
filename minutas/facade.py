@@ -1309,83 +1309,6 @@ def cria_contexto(idminuta):
     return contexto
 
 
-def edita_hora_final(request, idminuta, hora_final):
-    obj = get_minuta(idminuta)
-    hora_final = datetime.strptime(hora_final, "%H:%M").time()
-    if hora_final <= obj.HoraInicial:
-        obj.HoraFinal = "00:00"
-        mensagem = f"VOCÊ DIGITOU {hora_final}, MAS A HORA FINAL TEM QUE SER MAIOR QUE {obj.HoraInicial}."
-        tipo_mensagem = "ERROR"
-    else:
-        obj.HoraFinal = hora_final
-        mensagem = "A HORA FINAL FOI ATUALIZADA."
-        tipo_mensagem = "SUCESSO"
-    obj.save(update_fields=["HoraFinal"])
-    s_minuta = MinutaSelecionada(idminuta)
-    total_horas_str = s_minuta.total_horas_str
-    data = dict()
-    data["html_mensagem"] = mensagem
-    data["html_tipo_mensagem"] = tipo_mensagem
-    data["html_total_horas"] = f"{total_horas_str} Hs"
-    data = html_recebimento(request, data, idminuta)
-    data = html_pagamento(request, data, idminuta)
-    data = html_checklist(request, data, idminuta)
-    c_return = JsonResponse(data)
-    return c_return
-
-
-def edita_km_inicial(request, idminuta, km_inicial):
-    obj = get_minuta(idminuta)
-    km_inicial = int(km_inicial)
-    if km_inicial >= obj.KMFinal:
-        obj.KMInicial = km_inicial
-        obj.KMFinal = 0
-        mensagem = "A KILOMETRAGEM INICIAL FOi ATUALIZADA, A KILOMETRAGEM FINAL FOI ZERADA"
-        tipo_mensagem = "SUCESSO"
-        obj.save(update_fields=["KMInicial", "KMFinal"])
-    else:
-        obj.KMInicial = km_inicial
-        mensagem = "A KILOMETRAGEM INICIAL FOi ATUALIZADA."
-        tipo_mensagem = "SUCESSO"
-        obj.save(update_fields=["KMInicial"])
-    s_minuta = MinutaSelecionada(idminuta)
-    total_kms = s_minuta.total_kms
-    data = dict()
-    data["html_mensagem"] = mensagem
-    data["html_tipo_mensagem"] = tipo_mensagem
-    data["html_total_kms"] = f"{total_kms} KMs"
-    data = html_recebimento(request, data, idminuta)
-    data = html_pagamento(request, data, idminuta)
-    data = html_checklist(request, data, idminuta)
-    c_return = JsonResponse(data)
-    return c_return
-
-
-def edita_km_final(request, idminuta, km_final):
-    obj = get_minuta(idminuta)
-    km_final = int(km_final)
-    if km_final <= obj.KMInicial:
-        obj.KMFinal = 0
-        mensagem = f"VOCÊ DIGITOU {km_final}, MAS A KILOMETRAGEM FINAL TEM QUE SER MAIOR QUE {obj.KMInicial}."
-        tipo_mensagem = "ERROR"
-    else:
-        obj.KMFinal = km_final
-        mensagem = "A KILOMETRAGEM FINAL FOI ATUALIZADA."
-        tipo_mensagem = "SUCESSO"
-    obj.save(update_fields=["KMFinal"])
-    s_minuta = MinutaSelecionada(idminuta)
-    total_kms = s_minuta.total_kms
-    data = dict()
-    data["html_mensagem"] = mensagem
-    data["html_tipo_mensagem"] = tipo_mensagem
-    data["html_total_kms"] = f"{total_kms} KMs"
-    data = html_recebimento(request, data, idminuta)
-    data = html_pagamento(request, data, idminuta)
-    data = html_checklist(request, data, idminuta)
-    c_return = JsonResponse(data)
-    return c_return
-
-
 def ajudantes_disponiveis(idminuta):
     # EXCLUI O COLABORADOR TRANSEFETIVA (Coringa)
     ajudantes_minuta = (
@@ -1421,13 +1344,6 @@ def ajudantes_disponiveis(idminuta):
     return pessoas
 
 
-def motoristas_disponiveis():
-    pessoas = Pessoal.objects.filter(StatusPessoal=True).exclude(
-        Categoria="AJUDANTE"
-    )
-    return pessoas
-
-
 def veiculo_selecionado(idpessoal, idminuta):
     veiculo = Veiculo.objects.filter(Motorista=idpessoal)
     if len(veiculo) == 1:
@@ -1436,29 +1352,6 @@ def veiculo_selecionado(idpessoal, idminuta):
         obj.idVeiculo = veiculo[0]
         obj.KMInicial = km_inicial["KMFinal__max"]
         obj.save(update_fields=["idVeiculo", "KMInicial"])
-
-
-def filtra_veiculo(idpessoal, opcao):
-    veiculos = []
-    if opcao == "PROPRIO":
-        veiculos = Veiculo.objects.filter(Motorista=idpessoal).order_by(
-            "Marca", "Modelo", "Placa"
-        )
-    elif opcao == "TRANSPORTADORA":
-        veiculos = Veiculo.objects.filter(Proprietario=17).order_by(
-            "Marca", "Modelo", "Placa"
-        )
-    elif opcao == "CADASTRADOS":
-        veiculos = Veiculo.objects.all().order_by("Marca", "Modelo", "Placa")
-    lista_veiculos = []
-    for veiculo in veiculos:
-        descricao_veiculo = (
-            f"{veiculo.Marca} - {veiculo.Modelo} - {veiculo.Placa}"
-        )
-        lista_veiculos.append(
-            {"idVeiculo": veiculo.idVeiculo, "Veiculo": descricao_veiculo}
-        )
-    return lista_veiculos
 
 
 def remove_colaborador(request, idminutacolaborador, idminuta, cargo):
@@ -1597,14 +1490,6 @@ def html_pagamento(request, data, idminuta):
     contexto = cria_contexto(idminuta)
     data["html_pagamento"] = render_to_string(
         "minutas/html_card_pagamentos.html", contexto, request=request
-    )
-    return data
-
-
-def html_checklist(request, data, idminuta):
-    contexto = cria_contexto(idminuta)
-    data["html_checklist"] = render_to_string(
-        "minutas/card_checklist.html", contexto, request=request
     )
     return data
 
@@ -2329,13 +2214,6 @@ def create_data_gera_pagamentos_ajudantes(request, contexto):
     data = html_card_checklist(request, data, contexto)
     data = html_card_pagamentos(request, data, contexto)
     return JsonResponse(data)
-
-
-def html_card_minuta(request, data, contexto):
-    data["html_card_minuta"] = render_to_string(
-        "minutas/html_card_minuta.html", contexto, request=request
-    )
-    return data
 
 
 # TODO Duas funções fazendo a mesma coisa (html_checllist)
