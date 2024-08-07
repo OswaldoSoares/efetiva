@@ -2711,3 +2711,20 @@ def adicionar_ajudante_minuta(request):
         facade.modal_ajudante_minuta,
         facade.update_ajudante_minuta,
     )
+
+
+def editar_informacoes_minuta(request):
+    """
+    Edita as informações de uma minuta.
+
+    Args:
+        request: O objeto de solicitação HTTP.
+
+    Returns:
+        JsonResponse: Dados atualizados ou modal renderizado.
+    """
+    return handle_modal_minuta(
+        request,
+        facade.modal_informacoes_minuta,
+        facade.update_informacoes_minuta,
+    )
