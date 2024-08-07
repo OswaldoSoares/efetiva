@@ -2815,3 +2815,26 @@ def excluir_colaborador_minuta(request):
     contexto.update(facade.contexto_minuta_alterada(id_minuta))
 
     return facade.data_minuta_alterada(request, contexto)
+
+
+def filtra_minuta_veiculo_escolhido(request):
+    """
+    Filtra veículos com base em uma das opções fornecidas e retorna
+    os resultados filtrados.
+
+    Args:
+        request: O objeto de solicitação HTTP GET contendo os parâmetros
+                 de filtragem.
+                 - "idPessoal": O ID da pessoa.
+                 - "Filtro": O filtro a ser aplicado ("PRÓPRIO",
+                 "TRANSPORTADORA", ou "CADASTRADOS").
+
+    Returns:
+        JsonResponse: Dados dos veículos filtrados.
+    """
+    idpessoal = request.GET.get("idPessoal")
+    opcao = request.GET.get("Filtro")
+
+    veiculos = facade.filtra_veiculo(idpessoal, opcao)
+
+    return facade.html_filtro_veiculo(request, veiculos)
