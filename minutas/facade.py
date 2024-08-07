@@ -3259,3 +3259,23 @@ def motoristas_disponiveis():
     return Pessoal.objects.filter(StatusPessoal=True).exclude(
         Categoria="AJUDANTE"
     )
+
+
+def modal_motorista_minuta(id_minuta, request):
+    """
+    Renderiza o modal para selecionar um motorista para a minuta especificada.
+
+    Args:
+        id_minuta (int): ID da minuta.
+        request (HttpRequest): Objeto de requisição HTTP.
+
+    Returns:
+        JsonResponse: Objeto JsonResponse contendo o HTML do modal.
+    """
+    motoristas = motoristas_disponiveis()
+    modal_html = render_to_string(
+        "minutas/modal_motorista_minuta.html",
+        {"id_minuta": id_minuta, "motoristas": motoristas},
+        request=request,
+    )
+    return JsonResponse({"modal_html": modal_html})
