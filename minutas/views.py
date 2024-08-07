@@ -2660,3 +2660,20 @@ def adicionar_veiculo_solicitado(request):
         facade.modal_veiculo_solicitado,
         facade.update_veiculo_solicitado,
     )
+
+
+def adicionar_motorista_minuta(request):
+    """
+    Adiciona um motorista à minuta.
+
+    Args:
+        request: O objeto de solicitação HTTP.
+
+    Returns:
+        JsonResponse: Dados atualizados ou modal renderizado.
+    """
+    return handle_modal_minuta(
+        request,
+        facade.modal_motorista_minuta,
+        facade.update_motorista_minuta,
+    )
