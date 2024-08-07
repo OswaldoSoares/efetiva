@@ -52,6 +52,17 @@ from .views import (
     estorna_minuta_concluida,
     minutas_periodo,
 )
+from .views import (
+    editar_minuta_hora_final,
+    adicionar_veiculo_solicitado,
+    adicionar_motorista_minuta,
+    adicionar_veiculo_minuta,
+    editar_minuta_km_final,
+    editar_minuta_km_inicial,
+    adicionar_ajudante_minuta,
+    excluir_colaborador_minuta,
+    editar_informacoes_minuta,
+)
 
 urlpatterns = [
     path("", index_minuta, name="index_minuta"),
@@ -206,5 +217,51 @@ urlpatterns = [
         "estorna_faturamento",
         views.estorna_faturamento,
         name="estorna_faturamento",
+    ),
+    # paths validos a partir de 01/08/2024
+    path(
+        "editar_minuta_hora_final",
+        editar_minuta_hora_final,
+        name="editar_minuta_hora_final",
+    ),
+    path(
+        "adicionar_veiculo_solicitado",
+        adicionar_veiculo_solicitado,
+        name="adicionar_veiculo_solicitado",
+    ),
+    path(
+        "adicionar_motorista_minuta",
+        adicionar_motorista_minuta,
+        name="adicionar_motorista_minuta",
+    ),
+    path(
+        "adicionar_veiculo_minuta",
+        adicionar_veiculo_minuta,
+        name="adicionar_veiculo_minuta",
+    ),
+    path(
+        "editar_minuta_km_inicial",
+        editar_minuta_km_inicial,
+        name="editar_minuta_km_inicial",
+    ),
+    path(
+        "editar_minuta_km_final/",
+        editar_minuta_km_final,
+        name="editar_minuta_km_final",
+    ),
+    path(
+        "adicionar_ajudante_minuta",
+        adicionar_ajudante_minuta,
+        name="adicionar_ajudante_minuta",
+    ),
+    path(
+        "excluir_colaborador_minuta",
+        excluir_colaborador_minuta,
+        name="excluir_colaborador_minuta",
+    ),
+    path(
+        "editar_informacoes_minuta",
+        editar_informacoes_minuta,
+        name="editar_informacoes_minuta",
     ),
 ]
