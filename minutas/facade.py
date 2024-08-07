@@ -3444,3 +3444,21 @@ def filtra_veiculo(idpessoal, opcao):
         }
         for veiculo in veiculos
     ]
+
+
+def excluir_colaborador(request):
+    """
+    Exclui um colaborador (motorista ou ajudante) de uma minuta.
+
+    Args:
+        request (HttpRequest): Objeto de requisição HTTP contendo
+        o id_minuta_colaborador.
+
+    Returns:
+        dict: Dicionário contendo uma mensagem indicando o resultado
+        da operação.
+    """
+    MinutaColaboradores.objects.get(
+        idMinutaColaboradores=request.GET.get("id_minuta_colaborador")
+    ).delete()
+    return {"mensagem": "MOTORISTA EXCLUIDO COM SUCESSO"}
