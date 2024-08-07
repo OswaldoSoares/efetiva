@@ -3333,3 +3333,34 @@ def save_veiculo_minuta(id_minuta, veiculo):
         idVeiculo_id=veiculo.idVeiculo,
         KMInicial=km_inicial,
     )
+
+
+def update_motorista_minuta(request):
+    """
+    Atualiza o motorista da minuta especificada e salva o veículo associado,
+    se existir.
+
+    Args:
+        request (HttpRequest): Objeto de requisição HTTP contendo o id_minuta
+        e id_motorista.
+
+    Returns:
+        dict: Dicionário contendo uma mensagem indicando o resultado da
+        operação.
+    """
+    id_minuta = request.POST.get("id_minuta")
+    id_motorista = request.POST.get("id_motorista")
+
+    try:
+        id_minuta = int(id_minuta)
+        id_motorista = int(id_motorista)
+    except (ValueError, TypeError):
+        return {"mensagem": "ID INVÁLIDO"}
+
+    save_colaborador_minuta("MOTORISTA", id_minuta, id_motorista)
+    veiculo = Veiculo.objects.filter(Motorista=id_motorista).first()
+
+    if veiculo:
+        save_veiculo_minuta(id_minuta, veiculo)
+
+    return {"mensagem": "MOTORISTA ADICIONADO COM SUCESSO"}
