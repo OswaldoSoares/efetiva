@@ -2615,3 +2615,31 @@ def estorna_faturamento(request):
     data = {}
     data = facade.create_html_card_recebe(data, contexto, request)
     return JsonResponse(data)
+
+
+# Código verificado a partir de 31/07/2024
+def handle_modal_minuta(request, modal_func, update_func):
+    """
+    Manipula a adição ou modificação de informações em uma minuta com
+    base em uma solicitação GET ou POST.
+    Itens do card minuta que usam modal.
+
+    Args:
+        request: O objeto de solicitação HTTP.
+        modal_func: Função para renderizar o modal.
+        update_func: Função para atualizar o item.
+
+    Returns:
+        JsonResponse: Dados atualizados ou modal renderizado.
+    """
+    id_minuta = request.POST.get("id_minuta") or request.GET.get("idobj")
+
+    if request.method == "GET":
+        return modal_func(id_minuta, request)
+    if request.method == "POST":
+        contexto = update_func(request)
+        contexto.update(facade.contexto_minuta_alterada(id_minuta))
+
+        return facade.data_minuta_alterada(request, contexto)
+
+    return JsonResponse({"error": "Método não permitido"}, status=405)
