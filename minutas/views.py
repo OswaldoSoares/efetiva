@@ -2643,3 +2643,20 @@ def handle_modal_minuta(request, modal_func, update_func):
         return facade.data_minuta_alterada(request, contexto)
 
     return JsonResponse({"error": "Método não permitido"}, status=405)
+
+
+def adicionar_veiculo_solicitado(request):
+    """
+    Adiciona um veículo solicitado à minuta.
+
+    Args:
+        request: O objeto de solicitação HTTP.
+
+    Returns:
+        JsonResponse: Dados atualizados ou modal renderizado.
+    """
+    return handle_modal_minuta(
+        request,
+        facade.modal_veiculo_solicitado,
+        facade.update_veiculo_solicitado,
+    )
