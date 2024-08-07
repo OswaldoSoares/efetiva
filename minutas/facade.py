@@ -3480,3 +3480,21 @@ def excluir_veiculo_minuta(id_minuta):
         KMInicial=0,
         KMFinal=0,
     )
+
+
+def editar_km_inicial(request):
+    """
+    Edita a quilometragem inicial de uma minuta e zera a quilometragem final.
+
+    Args:
+        request (HttpRequest): Objeto de requisição HTTP contendo o
+        id_minuta e km_inicial.
+
+    Returns:
+        dict: Dicionário contendo uma mensagem indicando o resultado da
+        operação.
+    """
+    Minuta.objects.filter(idMinuta=request.GET.get("id_minuta")).update(
+        KMInicial=int(request.GET.get("km_inicial")), KMFinal=0
+    )
+    return {"mensagem": "QUILOMETRAGEM INICIAL ATUALIZADA, FINAL ZERADA"}
