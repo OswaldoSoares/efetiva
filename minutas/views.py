@@ -2358,17 +2358,6 @@ def edita_minuta_saida_extra_ajudante(request, idminuta):
     return redirect("consultaminuta", idminuta)
 
 
-def insere_motorista(request):
-    c_form = FormInsereColaborador
-    c_idobj = None
-    if request.method == "GET":
-        c_idobj = request.GET.get("idobj")
-    elif request.method == "POST":
-        c_idobj = request.POST.get("idMinuta")
-    c_url = "/minutas/inseremotorista/"
-    c_view = "insere_motorista"
-    data = forn_minuta(request, c_form, c_idobj, c_url, c_view)
-    return data
 
 
 def remove_minuta_colaborador(request):
@@ -2394,17 +2383,6 @@ def edita_minuta_km_final(request):
     return data
 
 
-def edita_minuta_coleta_entrega_obs(request):
-    c_form = FormColetaEntregaObs
-    c_idobj = None
-    if request.method == "GET":
-        c_idobj = request.GET.get("idobj")
-    elif request.method == "POST":
-        c_idobj = request.POST.get("idMinuta")
-    c_url = "/minutas/editacoletaentregaobs/"
-    c_view = "edita_minuta_coleta_entrega_obs"
-    data = forn_minuta(request, c_form, c_idobj, c_url, c_view)
-    return data
 
 
 def insere_minuta_despesa(request):
