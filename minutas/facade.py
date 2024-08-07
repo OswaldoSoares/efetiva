@@ -3298,3 +3298,19 @@ def save_colaborador_minuta(cargo, id_minuta, id_colaborador):
         idMinuta_id=id_minuta,
         idPessoal_id=id_colaborador,
     )
+
+
+def get_kilometragem_atual(id_veiculo):
+    """
+    Obtém a quilometragem atual do veículo especificado.
+
+    Args:
+        id_veiculo (int): ID do veículo.
+
+    Returns:
+        int: Quilometragem atual do veículo.
+    """
+    km_final = Minuta.objects.filter(idVeiculo=id_veiculo).aggregate(
+        Max("KMFinal")
+    )
+    return km_final.get("KMFinal__max", 0) or 0
