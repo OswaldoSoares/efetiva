@@ -2789,3 +2789,29 @@ def editar_minuta_km_final(request):
         editada.
     """
     return handle_input_minuta(request, facade.editar_km_final)
+
+
+def excluir_colaborador_minuta(request):
+    """
+    Exclui um colaborador (motorista ou ajudante) de uma minuta.
+
+    Args:
+        request: O objeto de solicitação HTTP GET contendo os parâmetros
+                 necessários.
+                 - "id_minuta": O ID da minuta.
+                 - "cargo": O cargo do colaborador ("MOTORISTA" ou outro).
+
+    Returns:
+        JsonResponse: Dados atualizados da minuta após a exclusão do
+                      colaborador.
+    """
+    id_minuta = request.GET.get("id_minuta")
+    cargo = request.GET.get("cargo")
+
+    if cargo == "MOTORISTA":
+        facade.excluir_veiculo_minuta(id_minuta)
+
+    contexto = facade.excluir_colaborador(request)
+    contexto.update(facade.contexto_minuta_alterada(id_minuta))
+
+    return facade.data_minuta_alterada(request, contexto)
