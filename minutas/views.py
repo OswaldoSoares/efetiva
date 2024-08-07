@@ -55,6 +55,7 @@ from .facade import (
     remove_entrega,
     retorna_json,
 )
+from minutas import facade
 from .forms import (
     CadastraComentarioMinuta,
     CadastraMinuta,
