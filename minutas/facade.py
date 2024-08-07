@@ -3126,3 +3126,22 @@ def contexto_minuta_alterada(idminuta):
         "checklist": itens_card_checklist(minuta),
     }
     return contexto
+
+
+def data_minuta_alterada(request, contexto):
+    """
+    Atualiza os dados da minuta com o contexto fornecido e retorna um
+    JsonResponse.
+
+    Args:
+        request (HttpRequest): Objeto de requisição HTTP.
+        contexto (dict): Contexto atualizado da minuta.
+
+    Returns:
+        JsonResponse: Objeto JsonResponse contendo os dados atualizados.
+    """
+    data = {"mensagem": contexto["mensagem"]}
+    html_functions = [html_card_minuta, html_checklist]
+    for html_func in html_functions:
+        data = html_func(request, data, contexto)
+    return JsonResponse(data)
