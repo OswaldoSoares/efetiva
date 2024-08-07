@@ -3279,3 +3279,22 @@ def modal_motorista_minuta(id_minuta, request):
         request=request,
     )
     return JsonResponse({"modal_html": modal_html})
+
+
+def save_colaborador_minuta(cargo, id_minuta, id_colaborador):
+    """
+    Salva um colaborador (motorista ou ajudante) na minuta especificada.
+
+    Args:
+        cargo (str): Cargo do colaborador (MOTORISTA ou AJUDANTE).
+        id_minuta (int): ID da minuta.
+        id_colaborador (int): ID do colaborador.
+
+    Returns:
+        None
+    """
+    MinutaColaboradores.objects.create(
+        Cargo=cargo,
+        idMinuta_id=id_minuta,
+        idPessoal_id=id_colaborador,
+    )
