@@ -3521,3 +3521,10 @@ def update_informacoes_minuta(request):
         request.POST.get("observacao"),
     )
     return {"mensagem": "INFORMAÇÕES ATUALIZADAS"}
+
+
+def clientes_disponiveis():
+    """
+    Retorna uma queryset com todos os clientes disponíveis.
+    """
+    return Cliente.objects.all()
