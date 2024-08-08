@@ -52,6 +52,7 @@ from .views import (
     minutas_periodo,
 )
 from .views import (
+    adicionar_minuta,
     editar_minuta_hora_final,
     adicionar_veiculo_solicitado,
     adicionar_motorista_minuta,
@@ -217,6 +218,11 @@ urlpatterns = [
         name="estorna_faturamento",
     ),
     # paths validos a partir de 01/08/2024
+    path(
+        "adicionar_minuta",
+        adicionar_minuta,
+        name="adicionar_minuta",
+    ),
     path(
         "editar_minuta_hora_final",
         editar_minuta_hora_final,
