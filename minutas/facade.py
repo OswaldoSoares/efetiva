@@ -3568,3 +3568,25 @@ def proxima_minuta():
     """
     numero_minuta = Minuta.objects.aggregate(Max("Minuta"))
     return (numero_minuta["Minuta__max"] or 0) + 1
+
+
+def salvar_minuta(request):
+    """
+    Cria e salva uma nova minuta com base nos dados do request.
+
+    Args:
+        request (HttpRequest): O objeto HttpRequest contendo os dados da
+        requisição.
+
+    Returns:
+        JsonResponse: Um JsonResponse contendo o link para a minuta criada.
+    """
+    minuta_numero = proxima_minuta()
+    minuta = Minuta.objects.create(
+        Minuta=minuta_numero,
+        DataMinuta=request.POST.get("data"),
+        HoraInicial=request.POST.get("hora"),
+        idCliente_id=request.POST.get("cliente"),
+    )
+    id_minuta = minuta.idMinuta
+    return JsonResponse({"link": f"/minutas/minuta/{id_minuta}"})
