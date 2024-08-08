@@ -2,7 +2,6 @@ from django.urls import path
 from . import views
 
 from .views import (
-    adiciona_minuta,
     adiciona_romaneio_minuta,
     atualiza_form_pg,
     buscaminutaentrega,
@@ -145,7 +144,6 @@ urlpatterns = [
         name="editaminutasaidaextraajudante",
     ),
     path("minuta/<int:idminuta>/", minuta, name="minuta"),
-    path("adicionaminuta/", adiciona_minuta, name="adicionaminuta"),
     path("filtraminuta", filtra_minuta, name="filtraminuta"),
     path("editaminuta/", edita_minuta, name="editaminuta"),
     path(
