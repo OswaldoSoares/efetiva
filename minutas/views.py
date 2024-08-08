@@ -2762,3 +2762,23 @@ def filtra_minuta_veiculo_escolhido(request):
     veiculos = facade.filtra_veiculo(idpessoal, opcao)
 
     return facade.html_filtro_veiculo(request, veiculos)
+
+
+def adicionar_minuta(request):
+    """
+    Processa a requisição para adicionar uma minuta.
+
+    Se o método da requisição for GET, renderiza o modal de minuta.
+    Se o método for diferente de GET (presumivelmente POST), salva a minuta.
+
+    Args:
+        request (HttpRequest): O objeto HttpRequest contendo os dados da
+        requisição.
+
+    Returns:
+        JsonResponse: O resultado da operação, dependendo do método da
+        requisição.
+    """
+    if request.method == "GET":
+        return facade.modal_minuta(request)
+    return facade.salvar_minuta(request)
