@@ -36,6 +36,7 @@ from minutas.models import (
     MinutaNotas,
 )
 from minutas.itens_card import criar_itens_card_minuta
+from core.tools import str_hoje
 
 
 def string_to_decimal(string):
