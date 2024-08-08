@@ -1259,9 +1259,6 @@ def get_cliente(idcliente):
     return Cliente.objects.get(idCliente=idcliente)
 
 
-def proxima_minuta():
-    numero_minuta = Minuta.objects.all().aggregate(Max("Minuta"))
-    return int(numero_minuta["Minuta__max"]) + 1
 
 
 def km_atual(idveiculo):
@@ -3560,3 +3557,14 @@ def modal_minuta(request):
         request=request,
     )
     return JsonResponse({"modal_html": modal_html})
+
+
+def proxima_minuta():
+    """
+    Calcula e retorna o próximo número de minuta disponível.
+
+    Returns:
+        int: O próximo número de minuta.
+    """
+    numero_minuta = Minuta.objects.aggregate(Max("Minuta"))
+    return (numero_minuta["Minuta__max"] or 0) + 1
