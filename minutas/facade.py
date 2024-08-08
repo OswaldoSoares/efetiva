@@ -3528,3 +3528,35 @@ def clientes_disponiveis():
     Retorna uma queryset com todos os clientes disponíveis.
     """
     return Cliente.objects.all()
+
+
+def modal_minuta(request):
+    """
+    Renderiza e retorna o HTML do modal de minuta.
+
+    Args:
+        request (HttpRequest): O objeto HttpRequest contendo os dados da
+        requisição.
+
+    Returns:
+        JsonResponse: Um JsonResponse contendo o HTML renderizado do modal.
+    """
+    id_minuta = request.GET.get("id_minuta")
+    minuta = MinutaSelecionada(id_minuta) if id_minuta else None
+
+    # Definindo valores padrão ou os valores da minuta selecionada
+    data_minuta = minuta.data if minuta else str_hoje()
+    hora_minuta = minuta.hora_inicial if minuta else "07:00"
+
+    clientes = clientes_disponiveis()
+    modal_html = render_to_string(
+        "minutas/modal_minuta.html",
+        {
+            "clientes": clientes,
+            "id_minuta": id_minuta,
+            "data_minuta": data_minuta,
+            "hora_minuta": hora_minuta,
+        },
+        request=request,
+    )
+    return JsonResponse({"modal_html": modal_html})
