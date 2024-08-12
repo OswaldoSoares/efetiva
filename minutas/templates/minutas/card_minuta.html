@@ -78,7 +78,7 @@
                 {% if s_minuta.status_minuta == "ABERTA" %}
                 <i class="icofont-edit i-button" onclick="openMyModal(event); return false;"
                 data-title="EDITAR MINUTA" data-action="{% url 'editar_minuta' %}"
-                data-button-save-label="EDITAR" data-idobj="{{ s_minuta.idminuta }}"
+                data-button-save-label="EDITAR" data-idminuta="{{ s_minuta.idminuta }}"
                 title="EDITAR MINUTA"></i>
                 {% endif %}
             </div>
