@@ -274,33 +274,32 @@ $(document).ready(function() {
     });
 
     // Versão Nova //
-    
-
 
     $("#MyModal").on("shown.bs.modal", function() {
         setTimeout(function() { // Delay para função loadCubagem, após janela estar carregada
-            $(".form-radio").click(function() {
-                $(".escolha-veiculo").fadeOut(500)
-                var filtro = $(this).val()
-                $.ajax({
-                    type: "GET",
-                    url: "/minutas/filtraveiculoescolhido",
-                    data: {
-                        idobj: $("#idminuta").attr("idminuta"),
-                        idPessoal: $("#idpessoal").attr("idpessoal"),
-                        Filtro: filtro,
-                    },
-                    success: function(data) {
-                        $(".html-escolhido").html(data["html_filtro"])
-                        $(".escolha-veiculo").fadeIn(500)
-                    },
-                    error: function(error) {
-                        console.log(error)
-                    }
-                });
-            });
             $("#id_Propriedade").focus(); // Configura o foco inicial
         }, 800);
+        $(".form-radio").click(function() {
+            var filtro = $(this).val()
+            $.ajax({
+                type: "GET",
+                url: "/minutas/filtraveiculoescolhido",
+                data: {
+                    idobj: $("#idminuta").attr("idminuta"),
+                    idPessoal: $("#idpessoal").attr("idpessoal"),
+                    Filtro: filtro,
+                },
+                beforeSend: function() {
+                    $("#id_veiculo").html("")
+                },
+                success: function(data) {
+                    $("#id_veiculo").html(data["html_filtro"])
+                },
+                error: function(error) {
+                    console.log(error)
+                }
+            });
+        });
     });
 
     
