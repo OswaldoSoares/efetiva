@@ -1079,6 +1079,8 @@ def minuta(request, idminuta):
         "form_km_inicial": form_km_inicial,
         "form_km_final": form_km_final,
     }
+    itens_minuta = criar_itens_card_minuta(s_minuta)
+    contexto.update({"itens_minuta": itens_minuta})
     romaneios = facade.create_contexto_romaneios(s_minuta["idcliente"])
     contexto.update({"romaneios": romaneios})
     checklist = facade.itens_card_checklist(s_minuta)
