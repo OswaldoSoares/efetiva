@@ -2322,15 +2322,6 @@ def estorna_pagamentos(request):
     return JsonResponse(data)
 
 
-def adiciona_minuta(request):
-    c_form = FormMinuta
-    c_idobj = None
-    c_url = "/minutas/adicionaminuta/"
-    c_view = "adiciona_minuta"
-    data = forn_minuta(request, c_form, c_idobj, c_url, c_view)
-    return data
-
-
 def filtra_minuta(request):
     c_filtro = request.GET.get("Filtro")
     c_filtro_consulta = request.GET.get("FiltroConsulta")
