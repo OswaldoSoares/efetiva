@@ -38,8 +38,10 @@ from minutas.models import (
 from minutas.itens_card import criar_itens_card_minuta
 from core.tools import str_hoje
 
+
 def edita_km_final(request):
     pass
+
 
 def string_to_decimal(string):
     converte = decimal.Decimal(string.replace(".", "").replace(",", "."))
