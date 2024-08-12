@@ -3592,3 +3592,12 @@ def salvar_minuta(request):
     )
     id_minuta = minuta.idMinuta
     return JsonResponse({"link": f"/minutas/minuta/{id_minuta}"})
+
+
+def update_minuta(request):
+    Minuta.objects.filter(idMinuta=request.POST.get("id_minuta")).update(
+        DataMinuta=request.POST.get("data"),
+        HoraInicial=request.POST.get("hora"),
+        idCliente_id=request.POST.get("cliente"),
+    )
+    return {"mensagem": "MINUTA ATUALIZADA"}
