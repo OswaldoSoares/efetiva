@@ -57,3 +57,16 @@ def data_str_br(data):
         str: A data formatada como string no formato dd/mm/yyyy.
     """
     return datetime.strftime(data, "%d/%m/%Y")
+
+
+def hora_str(hora):
+    """
+    Converte um objeto time para uma string no formato HH:MM.
+
+    Args:
+        hora (datetime.time): O objeto time a ser convertido.
+
+    Returns:
+        str: A hora formatada como string no formato HH:MM.
+    """
+    return time.strftime(hora, "%H:%M")
