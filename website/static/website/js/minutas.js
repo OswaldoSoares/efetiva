@@ -1749,3 +1749,22 @@ $(document).on("input", "#cliente", function(event) {
         $("#print-minutas-periodo").attr("href", url.toString());
     });
 });
+
+$(document).on("click", ".js-consulta-minuta", function() {
+    var idminuta = $(this).data("idminuta")
+    $.ajax({
+        type: "GET",
+        url: "/minutas/minuta_cards",
+        data: {
+            idminuta: idminuta,
+        },
+        beforeSend: function() {
+            $(".box-loader").show()
+        },
+        success: function(data) {
+            $(".card-entrega").html(data["html_entrega"])
+            $(".card-romaneio").html(data["html_romaneio"])
+            $(".box-loader").hide()
+        },
+    });
+});
