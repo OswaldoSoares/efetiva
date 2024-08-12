@@ -220,31 +220,26 @@ $(document).ready(function() {
         });
     });
 
-    // Versão Nova //
-    $(document).on("click", ".js-remove-colaborador", function(event) {
-        var idminutacolaboradores = $(this).data("idminutacolaboradores")
-        var idminuta = $(this).data("idminuta")
+    // Última atualização 06/08/2024
+    $(document).on("click", ".js-excluir-colaborador-minuta", function() {
+        var id_minuta = $(this).data("id_minuta")
+        var id_minuta_colaborador = $(this).data("id_minuta_colaborador")
         var cargo = $(this).data("cargo")
         $.ajax({
             type: "GET",
-            url: "/minutas/removecolaborador",
+            url: "/minutas/excluir_colaborador_minuta",
             data: {
-                idMinutaColaboradores: idminutacolaboradores,
-                idMinuta: idminuta,
-                Cargo: cargo
+                id_minuta: id_minuta,
+                id_minuta_colaborador: id_minuta_colaborador,
+                cargo: cargo,
+            },
+            beforeSend: function() {
+                $(".box-loader").show()
             },
             success: function(data) {
-                if (cargo == "AJUDANTE") {
-                    $(".html-ajudante").html(data["html_ajudante"]);
-                } else if (cargo == "MOTORISTA") {
-                    $(".html-veiculo").hide()
-                    $(".html-veiculo").html(data["html_veiculo"]);
-                    $(".html-veiculo").delay(1000).slideDown(500)
-                }
-                recarregaFinanceiro(data["html_pagamento"], data["html_recebimento"])
-                $(".card-checklist").hide()
+                $(".card-minuta").html(data["html-card-minuta"]);
                 $(".card-checklist").html(data["html_checklist"]);
-                mostraChecklist();
+                $(".box-loader").hide();
             },
             error: function(error) {
                 console.log(error)
