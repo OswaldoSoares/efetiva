@@ -1,7 +1,6 @@
 <form class="row g-3" method="post" action="{{ adicionar_minuta }}">
 {% csrf_token %}
     <div class="col-md-7">
-        {{ minuta }} {{ minuta.DataMinuta }}
         <label for="id_idCliente" class="form-label">CLIENTE:</label>
 		<select class="form-control" name="cliente">
             {% for cliente in clientes %}
