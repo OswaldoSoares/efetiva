@@ -4,17 +4,20 @@
         <label for="id_idCliente" class="form-label">CLIENTE:</label>
 		<select class="form-control" name="cliente">
             {% for cliente in clientes %}
-			<option value="{{ cliente.idCliente }}">{{ cliente.Fantasia }}</option>
+            <option value="{{ cliente.idCliente }}"
+                    {% if minuta and minuta.idCliente_id == cliente.idCliente %}selected{% endif %}>
+                    {{ cliente.Fantasia }}
+                </option>
             {% endfor %}
 		</select>
     </div>
 	<div class="col-md-3">
         <label for="id_DataMinuta" class="form-label">DATA:</label>
-        <input type="date" class="form-control" name="data" value="{{ data_minuta }}">
+        <input type="date" class="form-control" name="data" value="{{ minuta.DataMinuta|default_if_none:data_minuta|date:'Y-m-d' }}">
     </div>
 	<div class="col-md-2">
         <label for="id_HoraInicial" class="form-label">HORA INICIAL:</label>
-        <input type="time" class="form-control" name="hora" value="{{ hora_minuta }}">
+        <input type="time" class="form-control" name="hora" value="{{ minuta.HoraInicial|default_if_none:"07:00" }}">
     </div>
     <input type="hidden" name="id_minuta" value="{{ id_minuta }}">
 </form>
