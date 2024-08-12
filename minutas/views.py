@@ -2370,8 +2370,6 @@ def edita_minuta_saida_extra_ajudante(request, idminuta):
     return redirect("consultaminuta", idminuta)
 
 
-
-
 def remove_minuta_colaborador(request):
     c_idobj = request.GET.get("idMinutaColaboradores")
     c_idminuta = request.GET.get("idMinuta")
@@ -2393,8 +2391,6 @@ def edita_minuta_km_final(request):
     c_kmfinal = request.POST.get("KMFinal")
     data = edita_km_final(request, c_idminuta, c_kmfinal)
     return data
-
-
 
 
 def insere_minuta_despesa(request):
