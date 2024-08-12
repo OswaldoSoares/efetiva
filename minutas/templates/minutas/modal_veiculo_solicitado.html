@@ -7,17 +7,15 @@
         definida no parâmetro 'action'.
 -->
 <form class="row g-3" method="post" action="{% url 'adicionar_veiculo_solicitado' %}">
-{% csrf_token %}
-<div class="col-md-12">
-		<label for="id_categoria" class="form-label">CATEGORIA VEÍCULO SOLICITADO:</label>
-        <select name="id_categoria" class="form-control required" id="id_categoria"l>
-            <option value="">NENHUMA CATEGORIA</option>
+    {% csrf_token %}
+    <div class="col-md-12">
+        <label for="id_categoria" class="form-label">CATEGORIA VEÍCULO SOLICITADO:</label>
+        <select name="id_categoria" class="form-control required" id="id_categoria">
+            <option value="">NENHUM VEÍCULO SOLICITADO</option>
             {% for categoria in categorias %}
             <option value="{{ categoria.idCategoria }}">{{ categoria.Categoria }}</option>
-            {% empty %}
-            <option value="">NENHUMA CATEGORIA DISPONIVEL</option>
             {% endfor %}
         </select>
         <input type="hidden" name="id_minuta" value="{{ id_minuta }}">
-	</div>
+    </div>
 </form>
