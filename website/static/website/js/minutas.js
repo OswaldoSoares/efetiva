@@ -1247,45 +1247,29 @@ $(document).on("click", ".js-editar-minuta-km-inicial", function() {
 
 // Utilizada no Catd-Minuta
 // para atualizar km final da minuta
-$(document).on("submit", "#form-edita-km", function(event) {
-    event.preventDefault();
+$(document).on("click", ".js-editar-minuta-km-final", function() {
+    var id_minuta = localStorage.getItem("idminuta")
+    var km_inicial = $("#id_km_inicial").val()
+    var km_final = $("#id_km_final").val()
+
     $.ajax({
-        type: "POST",
-        url: "/minutas/editakmfinal/",
-        data: $(this).serialize(),
+        type: "GET",
+        url: "/minutas/editar_minuta_km_final",
+        data: {
+            id_minuta: id_minuta,
+            km_inicial: km_inicial,
+            km_final: km_final,
+        },
         beforeSend: function() {
             $(".box-loader").show()
-            $(".card-checklist").hide()
-            $(".html-form-paga").hide();
-            $(".card-recebe").hide();
         },
         success: function(data) {
-            if (data.html_tipo_mensagem == "ERROR") {
-                $(".mensagem-erro").text(data.html_mensagem);
-                mostraMensagemErro()
-            }
-            if (data.html_tipo_mensagem == "SUCESSO") {
-                $(".mensagem-sucesso").text(data.html_mensagem);
-                mostraMensagemSucesso()
-            }
-            $(".total-kms").text(data.html_total_kms);
-            $(".card-checklist").html(data["html_checklist"]); 
-            $(".html-form-paga").html(data["html_pagamento"]);
-            $(".card-recebe").html(data["html_recebimento"]);
-            $(".card-checklist").show();
-            $(".html-form-paga").show();
-            $(".card-recebe").show();
-            verificaTotalKms()
-            mostraChecklist();
-            formatUnmask();
-            formatMask();
-            somaPhkescReceitas();
-            somaReceitas();
-            somaPhkescPagamentos();
-            somaPagamentos();
-            verificaCheckboxPaga();
-            verificaCheckboxRecebe();
-            $('html, body').scrollTop(0);
+            $(".card-minuta").html(data["html-card-minuta"])
+            $(".card-checklist").html(data["html_checklist"])
+            $(".mensagem p").removeClass("mensagem-color")
+            $(".mensagem p").removeClass("mensagem-error-color")
+            $(".mensagem p").addClass("mensagem-success-color")
+            exibirMensagem(data["mensagem"])
             $(".box-loader").hide();
         },
         error: function(error) {
