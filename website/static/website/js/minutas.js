@@ -664,56 +664,20 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                     $(modal).modal("hide");
                     recarregaFinanceiro(xhr["html_pagamento"], xhr["html_recebimento"])
                     $(".card-checklist").hide()
-                    $(".card-checklist").html(xhr["html_checklist"]);
+                    $(".card-checklist").html(xhr["html_checklist"])
+                    $(".card-minuta").hide()
+                    $(".card-minuta").html(xhr["html-card-minuta"])
+                    $(".card-minuta").show()
+
                     mostraChecklist();
-                    if (xhr["c_view"] == "adiciona_minuta") {
-                        window.location.href = "/minutas/minuta/" + xhr["id_minuta_salva"] + "/"
+                    if (xhr["link"]) {
+                        window.location.href = xhr["link"]
                     } else if (xhr["c_view"] == "edita_minuta") {
                         $(".mensagem-sucesso").text(xhr["html_mensagem"]);
                         mostraMensagemSucesso()
                         $(".html-cliente-data").hide()
                         $(".html-cliente-data").html(xhr["html_cliente_data"]);
                         $(".html-cliente-data").delay(1000).slideDown(500)
-                    } else if (xhr["c_view"] == "insere_motorista") {
-                        $(".html-veiculo").hide()
-                        $(".html-veiculo").html(xhr["html_veiculo"]);
-                        $(".html-veiculo").delay(1000).slideDown(500)
-                        verificaTotalKms()
-                    } else if (xhr["c_view"] == "insere_ajudante") {
-                        $(".html-ajudante").html(xhr["html_ajudante"]);
-                    } else if (title == "VEÍCULO SOLICITADO") {
-                        if (xhr["html_tipo_mensagem"] == "ERROR") {
-                            $(".mensagem-erro").text(data.html_mensagem);
-                            mostraMensagemErro()
-                        }
-                        if (xhr["html_tipo_mensagem"] == "SUCESSO") {
-                            $(".mensagem-sucesso").text(xhr["html_mensagem"]);
-                            mostraMensagemSucesso()
-                            $(".html-categoria").hide()
-                            $(".html-categoria").html(xhr["html_categoria"]);
-                            $(".html-categoria").show()
-                            if (xhr["html_veiculo"] == "") {
-                                $(".html-veiculo").hide()
-                            } else {
-                                $(".html-veiculo").html(xhr["html_veiculo"]);
-                                $(".html-veiculo").show();
-                                verificaTotalKms()
-                            }
-                        }
-                    } else if (xhr["c_view"] == "edita_minuta_veiculo_escolhido") {
-                        $(".mensagem-sucesso").text(xhr["html_mensagem"]);
-                        mostraMensagemSucesso()
-                        $(".html-veiculo").hide()
-                        $(".html-veiculo").html(xhr["html_veiculo"]);
-                        $(".html-veiculo").delay(1000).slideDown(500)
-                        verificaTotalKms()
-                    } else if (xhr["c_view"] == "edita_minuta_coleta_entrega_obs") {
-                        $(".mensagem-sucesso").text(xhr["html_mensagem"]);
-                        mostraMensagemSucesso()
-                        $(".html-coleta-entrega-obs").hide()
-                        $(".html-coleta-entrega-obs").html(xhr["html_coleta_entrega_obs"]);
-                        $(".html-coleta-entrega-obs").delay(1000).slideDown(500)
-                        verificaTotalKms()
                     } else if (xhr["c_view"] == "insere_minuta_despesa") {
                         $(".mensagem-sucesso").text(xhr["html_mensagem"]);
                         mostraMensagemSucesso()
