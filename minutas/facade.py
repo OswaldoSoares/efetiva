@@ -3529,7 +3529,7 @@ def clientes_disponiveis():
     return Cliente.objects.all()
 
 
-def modal_minuta(request):
+def modal_minuta(id_minuta, request):
     """
     Renderiza e retorna o HTML do modal de minuta.
 
