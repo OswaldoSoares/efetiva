@@ -1187,47 +1187,57 @@ $(document).on("click", ".filtro-periodo", function(event) {
     })
 });
 
-// Utilizada no Catd-Minuta
-// para atualizar data de fechamento da minuta
-$(document).on("submit", "#form-edita-hora", function(event) {
-    event.preventDefault();
+// Utilizada no Card-Minuta - para atualizar data de fechamento da minuta
+$(document).on("click", ".js-editar-minuta-hora-final", function() {
+    var id_minuta = localStorage.getItem("idminuta")
+    var hora_final = $("#id_hora_final").val()
     $.ajax({
-        type: "POST",
-        url: "/minutas/editahorafinal/",
-        data: $(this).serialize(),
+        type: "GET",
+        url: "/minutas/editar_minuta_hora_final",
+        data: {
+            id_minuta: id_minuta,
+            hora_final: hora_final,           
+        },
         beforeSend: function() {
             $(".box-loader").show()
         },
         success: function(data) {
-            $(".total-horas").text(data.html_total_horas);
-            $(".card-checklist").html(data["html_checklist"]); 
-            $(".html-form-paga").html(data["html_pagamento"]);
-            $(".card-recebe").html(data["html_recebimento"]);
-            verificaTotalHoras();
-            mostraChecklist();
-            formatUnmask();
-            formatMask();
-            somaPhkescReceitas();
-            somaReceitas();
-            somaPhkescPagamentos();
-            somaPagamentos();
-            verificaCheckboxPaga();
-            verificaCheckboxRecebe();
+            $(".card-minuta").html(data["html-card-minuta"])
+            $(".card-checklist").html(data["html_checklist"])
+            $(".mensagem p").removeClass("mensagem-color")
+            $(".mensagem p").removeClass("mensagem-error-color")
+            $(".mensagem p").addClass("mensagem-success-color")
+            exibirMensagem(data["mensagem"])
             $(".box-loader").hide();
-            if (data.html_tipo_mensagem == "ERROR") {
-                $(".mensagem p").removeClass("mensagem-color")
-                $(".mensagem p").removeClass("mensagem-success-color")
-                $(".mensagem p").addClass("mensagem-error-color")
-                mensagem = data.html_mensagem
-                exibirMensagem(mensagem);
-            }
-            if (data.html_tipo_mensagem == "SUCESSO") {
-                $(".mensagem p").removeClass("mensagem-color")
-                $(".mensagem p").removeClass("mensagem-error-color")
-                $(".mensagem p").addClass("mensagem-success-color")
-                mensagem = data.html_mensagem
-                exibirMensagem(mensagem);
-            }
+        },
+        error: function(error) {
+            console.log(error)
+        }
+    });
+});
+
+// Utilizada no Card-Minuta - para atualizar km inicial da minuta
+$(document).on("click", ".js-editar-minuta-km-inicial", function() {
+    var id_minuta = localStorage.getItem("idminuta")
+    var km_inicial = $("#id_km_inicial").val()
+    $.ajax({
+        type: "GET",
+        url: "/minutas/editar_minuta_km_inicial",
+        data: {
+            id_minuta: id_minuta,
+            km_inicial: km_inicial,           
+        },
+        beforeSend: function() {
+            $(".box-loader").show()
+        },
+        success: function(data) {
+            $(".card-minuta").html(data["html-card-minuta"])
+            $(".card-checklist").html(data["html_checklist"])
+            $(".mensagem p").removeClass("mensagem-color")
+            $(".mensagem p").removeClass("mensagem-error-color")
+            $(".mensagem p").addClass("mensagem-success-color")
+            exibirMensagem(data["mensagem"])
+            $(".box-loader").hide();
         },
         error: function(error) {
             console.log(error)
