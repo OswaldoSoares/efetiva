@@ -46,9 +46,9 @@
     target="_blank"></a>
     <!-- Botão Consulta Minuta Antigo -->
     <!-- TODO será removido -->
-    <i class="bi bi-folder i-button"
-    onclick="window.location.href='{% url 'consultaminuta' minutas.idMinuta %}'"
-    title="Consulta Minuta Antigo"></i>
+    {% comment %} <i class="bi bi-folder i-button" {% endcomment %}
+    {% comment %} onclick="window.location.href='{% url 'consultaminuta' minutas.idMinuta %}'" {% endcomment %}
+    {% comment %} title="Consulta Minuta Antigo"></i> {% endcomment %}
     <!-- Botão Consulta Minuta -->
     <i class="bi bi-folder i-button"
     onclick="window.location.href = '{% url 'minuta' minutas.idMinuta %}'"
