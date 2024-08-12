@@ -1263,8 +1263,6 @@ def get_cliente(idcliente):
     return Cliente.objects.get(idCliente=idcliente)
 
 
-
-
 def km_atual(idveiculo):
     km_final = Minuta.objects.filter(idVeiculo=idveiculo).aggregate(
         Max("KMFinal")
