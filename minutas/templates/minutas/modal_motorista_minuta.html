@@ -1,0 +1,22 @@
+<!--
+    Formulário para adicionar um motorista à minuta.
+    Será inserido no corpo da janela modal
+    Este formulário permite selecionar um motorista de uma lista
+        e associá-lo a uma minuta específica.
+    O formulário utiliza o método POST para enviar os dados para
+        a URL definida no parâmetro 'action'.
+-->
+<form class="row g-3" method="post" action="{% url 'adicionar_motorista_minuta' %}">
+{% csrf_token %}
+    <div class="col-md-12">
+        <label for="id_motorista" class="form-label">COLABORADOR:</label>
+        <select name="id_motorista" class="form-control required" id="id_motorista"l>
+            {% for motorista in motoristas %}
+            <option value="{{ motorista.idPessoal }}">{{ motorista.Nome }}</option>
+            {% empty %}
+            <option value="">NENHUM MOTORISTA DISPONIVEL</option>
+            {% endfor %}
+        </select>
+        <input type="hidden" name="id_minuta" value="{{ id_minuta }}">
+    </div>
+</form>
