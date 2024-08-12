@@ -90,6 +90,16 @@ def cmp(mm):
     return mm / 0.352777
 
 
+def convertemp(mm):
+    """
+    Converte milimetros em pontos - Criação de Relatórios
+
+    :param mm: milimetros
+    :return: pontos
+    """
+    return mm / 0.352777
+
+
 def horascobra(horai, horaf, datam, horam):
     horainicial = horai
     horafinal = horaf
