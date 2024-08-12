@@ -74,3 +74,15 @@ def hora_str(hora):
 
 def str_hora(string):
     return datetime.strptime(string, "%H:%M").time()
+
+
+def str_hoje() -> str:
+    """
+    Data de Hoje
+
+    Returns:
+        str: Retorna a data de hoje no formato ano-mês-dia
+    """
+    hoje = datetime.today()
+    hoje = datetime.strftime(hoje, "%Y-%m-%d")
+    return hoje
