@@ -2790,5 +2790,11 @@ def adicionar_minuta(request):
         requisição.
     """
     if request.method == "GET":
-        return facade.modal_minuta(request)
+        return facade.modal_minuta(id_minuta=None, request=request)
     return facade.salvar_minuta(request)
+
+
+def editar_minuta(request):
+    return handle_modal_minuta(
+        request, facade.modal_minuta, facade.update_minuta
+    )
