@@ -1442,11 +1442,11 @@ def html_veiculo(request, data, idminuta):
     return data
 
 
-def html_filtro_veiculo(request, lista_veiculos):
+def html_filtro_veiculo(request, veiculos):
     data = dict()
-    contexto = {"lista_veiculos": lista_veiculos}
+    contexto = {"veiculos": veiculos}
     data["html_filtro"] = render_to_string(
-        "minutas/listaveiculosminuta.html", contexto, request=request
+        "minutas/modal_veiculo_minuta.html", contexto, request=request
     )
     c_return = JsonResponse(data)
     return c_return
