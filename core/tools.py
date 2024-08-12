@@ -43,3 +43,17 @@ def calcular_diferenca(data, inicial, final):
     horas = total_segundos // 3600
     minutos = (total_segundos % 3600) // 60
     return time(horas, minutos)
+
+
+def data_str_br(data):
+    """
+    Converte um objeto datetime para uma string no formato brasileiro de
+    data (dd/mm/yyyy).
+
+    Args:
+        data (datetime.datetime): O objeto datetime a ser convertido.
+
+    Returns:
+        str: A data formatada como string no formato dd/mm/yyyy.
+    """
+    return datetime.strftime(data, "%d/%m/%Y")
