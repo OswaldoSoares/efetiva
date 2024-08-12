@@ -1,0 +1,90 @@
+<div class="card-header">
+    <div class="input-group">
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-up"></i>
+        </div>
+        <div class="div-form-control">
+            <span id="id_minuta" data-id="{{ s_minuta.idminuta }}">
+                {{ s_minuta.numero }}
+            </span>
+        </div>
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-up"></i>
+        </div>
+    </div>
+</div>
+<div class="card-body">
+    {% for item in itens_minuta %}
+        <div class="card-body-item">
+            <div class="input-group">
+                <div class="input-group-addon addon-my-color">
+                    <i class="{{ item.icon_class }}"></i>
+                </div>
+                <div class="div-flex div-form-control">
+                    <div class="tamanho-100 text-center font-menor">
+                        {% if item.has_input  %}
+                        <input type="{{ item.input_type }}" name="{{ item.input_name }}"
+                               value="{{ item.input_value }}" id="{{ item.input_id }}"
+                               class="{{ item.input_class }}">
+                        {% else %}
+                        <span>{{ item.label|safe }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="input-group-addon addon-my-color">
+                    {% if item.has_modal %}
+                    <i class="{{ item.icon_button_class }}"
+                       onclick="openMyModal(event); return false;"
+                       data-title="{{ item.title_label }}"
+                       data-action="{% url item.action  %}"
+                       data-button-save-label="{{ item.save_label }}"
+                       data-idminuta="{{ item.idobj }}"></i>
+                    {% elif item.has_attr %}
+                    <i class="{{ item.icon_button_class }}"
+                       {% for key, value in item.data_atributos.items %}
+                       {{ key }}="{{ value }}" 
+                       {% endfor %}></i>
+                    {% else %}
+                    <i class="{{ item.icon_button_class }}"></i>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="card-body-item">
+            <div class="input-group">
+                <div class="input-group-addon addon-my-color">
+                    <i class="icofont-info"></i>
+                </div>
+                <div class="div-flex div-form-control">
+                    <div class="tamanho-100 text-center font-menor">
+                        <span>SEM INFORMAÇÃO</span>
+                    </div>
+                </div>
+                <div class="input-group-addon addon-my-color">
+                    <i class="icofont-info"></i>
+                </div>
+            </div>
+        </div>    
+    {% endfor %}
+</div>
+<div class="card-footer">
+    <div class="input-group">
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-down"></i>
+        </div>
+        <div class="div-flex div-form-control">
+            <div class="tamanho-100 text-center">
+                {% if s_minuta.status_minuta == "ABERTA" %}
+                <i class="icofont-edit i-button" onclick="openMyModal(event); return false;"
+                data-title="EDITAR MINUTA" data-action="{% url 'editar_minuta' %}"
+                data-button-save-label="EDITAR" data-idobj="{{ s_minuta.idminuta }}"
+                title="EDITAR MINUTA"></i>
+                {% endif %}
+            </div>
+        </div>
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-down"></i>
+        </div>
+    </div>
+</div>
