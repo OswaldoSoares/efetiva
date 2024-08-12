@@ -96,18 +96,18 @@
                         </option>
                         {% for veic in veiculos %}
                             {% if romaneio %}
-                                {% if romaneio.veiculo.idVeiculo == veic.idVeiculo %}
-                                    <option value="{{ veic.idVeiculo }}" selected>
-                                        {{ veic.Veiculo }}
+                                {% if romaneio.veiculo.idVeiculo == veic.id_veiculo %}
+                                    <option value="{{ veic.id_veiculo }}" selected>
+                                        {{ veic.descricao }}
                                     </option>
                                 {% else %}
-                                    <option value="{{ veic.idVeiculo }}">
-                                        {{ veic.Veiculo }}
+                                    <option value="{{ veic.id_veiculo }}">
+                                        {{ veic.descricao }}
                                     </option>       
                                 {% endif %}
                             {% else %}
-                                <option value="{{ veic.idVeiculo }}">
-                                    {{ veic.Veiculo }}
+                                <option value="{{ veic.id_veiculo }}">
+                                    {{ veic.descricao }}
                                 </option>
                             {% endif %}
                         {% endfor %}
