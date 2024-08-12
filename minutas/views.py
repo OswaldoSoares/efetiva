@@ -31,6 +31,7 @@ from transefetiva.settings.settings import STATIC_ROOT
 from veiculos.models import Veiculo
 
 from minutas import facade
+from minutas.itens_card import criar_itens_card_minuta
 from minutas.facade import MinutaDespesa, MinutaEntrega, MinutaSelecionada
 from minutas.print import print_minutas_periodo
 from website.facade import str_hoje
