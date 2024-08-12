@@ -648,6 +648,7 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
         event.preventDefault();
         header.addClass("loading");
         var url = $(this).attr("action") || action;
+        console.log($(this).serialize())
         $.ajax({
             type: $(this).attr("method"),
             url: url,
