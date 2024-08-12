@@ -602,7 +602,6 @@ function openMyModal(event) {
             idPessoal: $(event.target).data("idpessoal"),
         }
     }).done(function(data, textStatus, jqXHR) {
-        alert(data.modal_html)
         modal.find(".modal-body").html(data.modal_html);
         modal.modal("show");
         formAjaxSubmit(modal, url, null, null);
