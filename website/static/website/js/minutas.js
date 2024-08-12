@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    localStorage.setItem("idminuta", $("#id_minuta").data("id"))
     $(".box-loader").hide()
     $(".filtro-dados").hide()
     $(".card-minutas-consulta").hide();
