@@ -3540,12 +3540,11 @@ def modal_minuta(id_minuta, request):
     Returns:
         JsonResponse: Um JsonResponse contendo o HTML renderizado do modal.
     """
-    id_minuta = request.GET.get("id_minuta")
-    minuta = MinutaSelecionada(id_minuta) if id_minuta else None
+    minuta = Minuta.objects.get(idMinuta=id_minuta) if id_minuta else None
 
-    # Definindo valores padrão ou os valores da minuta selecionada
-    data_minuta = minuta.data if minuta else str_hoje()
-    hora_minuta = minuta.hora_inicial if minuta else "07:00"
+    # Definindo valores padrão para uma minuta nova
+    data_minuta = str_hoje()
+    hora_minuta = "07:00"
 
     clientes = clientes_disponiveis()
     modal_html = render_to_string(
@@ -3555,6 +3554,7 @@ def modal_minuta(id_minuta, request):
             "id_minuta": id_minuta,
             "data_minuta": data_minuta,
             "hora_minuta": hora_minuta,
+            "minuta": minuta,
         },
         request=request,
     )
