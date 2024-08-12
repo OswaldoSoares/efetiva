@@ -40,7 +40,6 @@ from .facade import (
     MinutasStatus,
     edita_hora_final,
     edita_km_final,
-    edita_km_inicial,
     estorna_paga,
     filtra_consulta,
     filtra_veiculo,
