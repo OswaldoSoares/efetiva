@@ -53,6 +53,7 @@ from .views import (
 )
 from .views import (
     adicionar_minuta,
+    editar_minuta,
     editar_minuta_hora_final,
     adicionar_veiculo_solicitado,
     adicionar_motorista_minuta,
@@ -222,6 +223,11 @@ urlpatterns = [
         "adicionar_minuta",
         adicionar_minuta,
         name="adicionar_minuta",
+    ),
+    path(
+        "editar_minuta",
+        editar_minuta,
+        name="editar_minuta",
     ),
     path(
         "editar_minuta_hora_final",
