@@ -70,3 +70,7 @@ def hora_str(hora):
         str: A hora formatada como string no formato HH:MM.
     """
     return time.strftime(hora, "%H:%M")
+
+
+def str_hora(string):
+    return datetime.strptime(string, "%H:%M").time()
