@@ -1,0 +1,16 @@
+<form class="row g-3" method="post" action="{% url 'editar_informacoes_minuta' %}">
+{% csrf_token %}
+    <div class="col-md-12">
+        <label for="coleta" class="form-label">LOCAL DE COLETA:</label>
+        <textarea class="form-control" name="coleta" rows="3">{{ minuta.Coleta }}</textarea>
+    </div>
+    <div class="col-md-12">
+		<label for="entrega" class="form-label">LOCAL DE ENTREGA:</label>
+        <textarea class="form-control" name="entrega" rows="3">{{ minuta.Entrega }}</textarea>
+    </div>
+    <div class="col-md-12">
+		<label for="observacao" class="form-label">OBSERVAÇÕES:</label>
+        <textarea class="form-control" name="observacao" rows="3">{{ minuta.Obs }}</textarea>
+    </div>
+    <input type="hidden" name="id_minuta" value="{{ minuta.idMinuta }}">
+</form>
