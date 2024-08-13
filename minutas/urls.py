@@ -3,7 +3,6 @@ from . import views
 
 from .views import (
     adiciona_romaneio_minuta,
-    atualiza_form_pg,
     buscaminutaentrega,
     criaminutaentrega,
     edita_comentario,
@@ -106,7 +105,6 @@ urlpatterns = [
         remove_minuta_entrega,
         name="remove_entrega",
     ),
-    path("atualizaformpg/", atualiza_form_pg, name="atualizaformpg"),
     path(
         "estorna_pagamentos_ajudantes",
         estorna_pagamentos_ajudantes,
