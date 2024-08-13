@@ -63,6 +63,7 @@ from .views import (
     adicionar_ajudante_minuta,
     excluir_colaborador_minuta,
     editar_informacoes_minuta,
+    adicionar_despesa,
 )
 
 urlpatterns = [
@@ -273,5 +274,10 @@ urlpatterns = [
         "editar_informacoes_minuta",
         editar_informacoes_minuta,
         name="editar_informacoes_minuta",
+    ),
+    path(
+        "adicionar_despesa",
+        adicionar_despesa,
+        name="adicionar_despesa",
     ),
 ]
