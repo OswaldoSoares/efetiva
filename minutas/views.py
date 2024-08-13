@@ -699,20 +699,6 @@ def editaminutaveiculo(request, idmin):
     return salva_form(request, form, "minutas/editaminutaveiculo.html", idmin)
 
 
-def excluiminutadespesa(request, idmindes):
-    despesaminuta = get_object_or_404(MinutaItens, idMinutaItens=idmindes)
-    data = dict()
-    if request.method == "POST":
-        despesaminuta.delete()
-        return redirect("consultaminuta", despesaminuta.idMinuta_id)
-    else:
-        context = {"despesaminuta": despesaminuta}
-        data["html_form"] = render_to_string(
-            "minutas/excluiminutadespesa.html", context, request=request
-        )
-    return JsonResponse(data)
-
-
 def criaminutaentrega(request):
     if request.method == "POST":
         idminuta = request.POST.get("idMinuta")
