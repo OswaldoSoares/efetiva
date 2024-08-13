@@ -2787,6 +2787,20 @@ def adicionar_minuta(request):
 
 
 def editar_minuta(request):
+    """
+    Gerencia a edição de uma minuta, utilizando um modal para exibir e
+    atualizar dados.
+
+    Args:
+        request (HttpRequest): Objeto de requisição HTTP com os dados
+        necessários para a edição.
+
+    Returns:
+        HttpResponse: Resposta HTTP gerada pela função handle_modal_minuta.
+    """
+    return handle_modal_minuta(
+        request, facade.modal_minuta, facade.atualizar_minuta
+    )
     return handle_modal_minuta(
         request, facade.modal_minuta, facade.update_minuta
     )
