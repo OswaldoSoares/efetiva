@@ -328,23 +328,6 @@ def minuta(request, idminuta):
     return render(request, "minutas/minuta.html", contexto)
 
 
-def criaminuta(request):
-    # Numero inicial da minuta no sistema
-    numerominuta = 2021
-    if request.method == "POST":
-        form = CadastraMinuta(request.POST)
-    else:
-        minuta = Minuta.objects.all()
-        if minuta:
-            numerominuta = Minuta.objects.values("Minuta")
-            a = []
-            for x in numerominuta:
-                a.append(x.get("Minuta"))
-            numerominuta = max(a) + 1
-        form = CadastraMinuta(initial={"Minuta": numerominuta})
-    return salva_form(request, form, "minutas/criaminuta.html", numerominuta)
-
-
 def editaminuta(request, idmin):
     minuta = get_object_or_404(Minuta, idMinuta=idmin)
     if request.method == "POST":
