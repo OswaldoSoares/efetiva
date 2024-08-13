@@ -2820,3 +2820,24 @@ def adicionar_despesa(request):
         facade.renderizar_modal_despesas_minuta,
         facade.salvar_ou_atualizar_despesa_minuta,
     )
+
+
+def excluir_despesa(request):
+    """
+    Gerencia a exclusão de uma despesa associada a uma minuta e atualiza
+    o contexto da minuta.
+
+    Args:
+        request (HttpRequest): Objeto de requisição HTTP com os dados
+        necessários para excluir a despesa.
+
+    Returns:
+        HttpResponse: Resposta HTTP gerada pela função data_minuta_alterada.
+    """
+    id_minuta = request.GET.get("id_minuta")
+    id_minuta_itens = request.GET.get("id_minuta_itens")
+
+    contexto = facade.deletar_despesa_minuta(id_minuta_itens)
+    contexto.update(facade.contexto_minuta_alterada(id_minuta))
+
+    return facade.data_minuta_alterada(request, contexto)
