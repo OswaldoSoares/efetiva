@@ -18,7 +18,7 @@ from veiculos.models import Veiculo
 from minutas import facade
 from minutas.itens_card import criar_itens_card_minuta
 from minutas.facade import MinutaSelecionada
-from minutas.print import print_minutas_periodo
+from minutas.print import print_minutas_periodo, imprime_minuta
 from website.facade import str_hoje
 
 from .facade import (
