@@ -2336,12 +2336,6 @@ def filtra_minuta(request):
     return data
 
 
-def concluir_minuta(request):
-    c_idminuta = request.GET.get("idMinuta")
-    data = novo_status_minuta(request, c_idminuta, "CONCLUIDA")
-    return data
-
-
 def edita_minuta(request):
     c_form = FormMinuta
     c_idobj = None
