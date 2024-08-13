@@ -6,3 +6,5 @@ Os filtros ajudam a manipular e exibir dados em templates de forma
 personalizada.
 """
 from django import template
+
+register = template.Library()
