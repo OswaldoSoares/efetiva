@@ -663,11 +663,14 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                 } else {
                     $(modal).modal("hide");
                     recarregaFinanceiro(xhr["html_pagamento"], xhr["html_recebimento"])
-                    $(".card-checklist").hide()
-                    $(".card-checklist").html(xhr["html_checklist"])
                     $(".card-minuta").hide()
                     $(".card-minuta").html(xhr["html-card-minuta"])
                     $(".card-minuta").show()
+                    $(".card-despesa").hide()
+                    $(".card-despesa").html(xhr["html_card_despesas"])
+                    $(".card-despesa").show()
+                    $(".card-checklist").hide()
+                    $(".card-checklist").html(xhr["html_checklist"])
 
                     mostraChecklist();
                     if (xhr["link"]) {
