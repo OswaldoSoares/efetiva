@@ -19,10 +19,9 @@ from minutas.models import (
     MinutaItens,
     MinutaNotas,
 )
-from minutas.views import cmp
 from romaneios.models import RomaneioNotas
 from transefetiva.settings.settings import STATIC_ROOT
-from website.facade import nome_curto, valor_ponto_milhar
+from website.facade import nome_curto, valor_ponto_milhar, cmp
 from website.models import FileUpload
 
 from .models import Fatura
