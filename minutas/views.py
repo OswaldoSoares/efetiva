@@ -2835,3 +2835,24 @@ def excluir_despesa(request):
     contexto.update(facade.contexto_minuta_alterada(id_minuta))
 
     return facade.data_minuta_alterada(request, contexto)
+
+
+def alterar_status_minuta(request):
+    """
+    Altera o status de uma minuta e atualiza o contexto com as novas
+    informações.
+
+    Args:
+        request (HttpRequest): Objeto de requisição HTTP contendo os
+        parâmetros da minuta e do próximo status.
+
+    Returns:
+        HttpResponse: Resposta HTTP gerada pela função data_minuta_alterada,
+        com o contexto atualizado.
+    """
+    id_minuta = request.GET.get("id_minuta")
+    proximo_status = request.GET.get("proximo_status")
+    contexto = novo_status_minuta(id_minuta, proximo_status)
+    contexto.update(facade.contexto_minuta_alterada(id_minuta))
+
+    return facade.data_minuta_alterada(request, contexto)
