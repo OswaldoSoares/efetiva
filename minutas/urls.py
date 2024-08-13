@@ -30,7 +30,6 @@ from .views import (
     excluiminutadespesa,
     excluiminutaentrega,
     excluiminutamotorista,
-    fecha_minuta,
     filtra_minuta,
     filtra_minuta_veiculo_escolhido,
     filtraminutaveiculo,
@@ -72,7 +71,6 @@ urlpatterns = [
     # path('editaminuta/<int:idmin>/', editaminuta, name='editaminuta'),
     path("imprimeminuta/<int:idmin>/", imprimeminuta, name="imprimeminuta"),
     path("concluiminuta/<int:idmin>/", conclui_minuta, name="concluiminuta"),
-    path("fecha_minuta/<int:idmin>/", fecha_minuta, name="fecha_minuta"),
     path("estorna_minuta/<int:idmin>/", estorna_minuta, name="estorna_minuta"),
     path(
         "criaminutamotorista/", criaminutamotorista, name="criaminutamotorista"
