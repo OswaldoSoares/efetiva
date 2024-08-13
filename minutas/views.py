@@ -1,17 +1,8 @@
-import json
-from datetime import datetime, time, timedelta
-from decimal import Decimal
 from io import BytesIO
 from textwrap import wrap
 from clientes.facade import create_contexto_seleciona_cliente
 
-from clientes.models import (
-    FoneContatoCliente,
-    Tabela,
-    TabelaCapacidade,
-    TabelaPerimetro,
-    TabelaVeiculo,
-)
+from clientes.models import FoneContatoCliente
 from django.db.models import F, Max, Sum, Value
 from django.db.models.functions import Concat
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -32,47 +23,35 @@ from veiculos.models import Veiculo
 
 from minutas import facade
 from minutas.itens_card import criar_itens_card_minuta
-from minutas.facade import MinutaDespesa, MinutaEntrega, MinutaSelecionada
+from minutas.facade import MinutaSelecionada
 from minutas.print import print_minutas_periodo
 from website.facade import str_hoje
 
 from .facade import (
     MinutasStatus,
-    edita_hora_final,
     edita_km_final,
     estorna_paga,
     filtra_consulta,
-    filtra_veiculo,
     filtro_cidades,
     filtro_clientes,
     filtro_colaboradores,
     filtro_veiculos,
     forn_minuta,
-    html_filtro_veiculo,
     novo_status_minuta,
     remove_colaborador,
     remove_despessa,
     remove_entrega,
     retorna_json,
 )
-from minutas import facade
 from .forms import (
     CadastraComentarioMinuta,
-    CadastraMinuta,
-    CadastraMinutaAjudante,
     CadastraMinutaDespesa,
     CadastraMinutaHoraFinal,
     CadastraMinutaKMFinal,
     CadastraMinutaKMInicial,
-    CadastraMinutaMotorista,
     CadastraMinutaNota,
-    CadastraMinutaParametroDespesa,
-    CadastraMinutaSaidaExraAjudante,
     CadastraMinutaVeiculo,
-    FormColetaEntregaObs,
-    FormEditaVeiculoEscolhido,
     FormEditaVeiculoSolicitado,
-    FormInsereColaborador,
     FormInsereDespesa,
     FormInsereEntrega,
     FormMinuta,
