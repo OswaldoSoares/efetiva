@@ -886,13 +886,6 @@ def remove_minuta_colaborador(request):
     return data
 
 
-def edita_minuta_km_final(request):
-    c_idminuta = request.POST.get("idMinuta")
-    c_kmfinal = request.POST.get("KMFinal")
-    data = edita_km_final(request, c_idminuta, c_kmfinal)
-    return data
-
-
 def insere_minuta_despesa(request):
     c_form = FormInsereDespesa
     c_idobj = None
