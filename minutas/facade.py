@@ -3631,3 +3631,44 @@ def atualizar_minuta(request):
         idCliente_id=request.POST.get("cliente"),
     )
     return {"mensagem": "MINUTA ATUALIZADA"}
+
+
+def renderizar_modal_despesas_minuta(id_minuta, request):
+    """
+    Gera o conteúdo HTML do modal de despesas para uma minuta específica.
+
+    Filtra as despesas já existentes e renderiza um template HTML com a lista
+    de despesas e uma despesa específica, caso fornecido o ID.
+
+    Args:
+        id_minuta (int): ID da minuta para a qual o modal é gerado.
+        request (HttpRequest): Objeto de requisição HTTP com os dados do GET.
+
+    Returns:
+        JsonResponse: Resposta JSON contendo o HTML renderizado do modal.
+    """
+    lista_despesas = (
+        MinutaItens.objects.filter(TipoItens="DESPESA")
+        .values_list("Descricao", flat=True)
+        .distinct()
+        .order_by("Descricao")
+    )
+
+    id_minuta_itens = request.GET.get("id_minuta_itens")
+    despesa = (
+        MinutaItens.objects.filter(idMinutaItens=id_minuta_itens).first()
+        if id_minuta_itens
+        else None
+    )
+
+    modal_html = render_to_string(
+        "minutas/modal_despesas_minuta.html",
+        {
+            "id_minuta": id_minuta,
+            "lista_despesas": lista_despesas,
+            "despesa": despesa,
+        },
+        request=request,
+    )
+
+    return JsonResponse({"modal_html": modal_html})
