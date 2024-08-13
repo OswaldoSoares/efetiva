@@ -689,20 +689,6 @@ def estorna_minuta(request, idmin):
     return redirect("consultaminuta", idmin)
 
 
-def criaminutaajudante(request):
-    if request.method == "POST":
-        idminuta = request.POST.get("idMinuta")
-        form = CadastraMinutaAjudante(request.POST)
-    else:
-        idminuta = request.GET.get("idminuta")
-        form = CadastraMinutaAjudante(
-            initial={"idMinuta": idminuta, "Cargo": "AJUDANTE"}
-        )
-    return salva_form(
-        request, form, "minutas/criaminutaajudante.html", idminuta
-    )
-
-
 def excluiminutaajudante(request, idmincol):
     ajudanteminuta = get_object_or_404(
         MinutaColaboradores, idMinutaColaboradores=idmincol
