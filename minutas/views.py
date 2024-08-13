@@ -49,16 +49,6 @@ from .forms import (
 from .models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas
 
 
-def cmp(mm):
-    """
-    Converte milimetros em pontos - Criação de Relatórios
-
-    :param mm: milimetros
-    :return: pontos
-    """
-    return mm / 0.352777
-
-
 def convertemp(mm):
     """
     Converte milimetros em pontos - Criação de Relatórios
