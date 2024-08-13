@@ -100,17 +100,6 @@ def convertemp(mm):
     return mm / 0.352777
 
 
-def parametrominutadespesa():
-    # arquivo_json = open('', 'r')
-    # dados_json = json.load(arquivo_json)
-    # arquivo_json.close()
-    # despesas = dados_json['Despesa']['Descricao']
-    # despesas.sort()
-    # return despesas
-    # TODO removido arquivo parametro, criado banco de dados, remover view
-    pass
-
-
 def salvaminutaitens(
     descricao,
     tipoitens,
