@@ -886,19 +886,6 @@ def remove_minuta_colaborador(request):
     return data
 
 
-def insere_minuta_despesa(request):
-    c_form = FormInsereDespesa
-    c_idobj = None
-    if request.method == "GET":
-        c_idobj = request.GET.get("idobj")
-    elif request.method == "POST":
-        c_idobj = request.POST.get("idMinuta")
-    c_url = "/minutas/inseredespesa/"
-    c_view = "insere_minuta_despesa"
-    data = forn_minuta(request, c_form, c_idobj, c_url, c_view)
-    return data
-
-
 def remove_minuta_despesa(request):
     c_idobj = request.GET.get("idMinutaItens")
     c_idminuta = request.GET.get("idMinuta")
