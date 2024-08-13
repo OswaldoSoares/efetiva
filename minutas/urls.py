@@ -6,7 +6,6 @@ from .views import (
     buscaminutaentrega,
     criaminutaentrega,
     edita_comentario,
-    edita_minuta,
     edita_minuta_saida_extra_ajudante,
     editaminutaentrega,
     editaminutaveiculo,
@@ -82,7 +81,6 @@ urlpatterns = [
     ),
     path("minuta/<int:idminuta>/", minuta, name="minuta"),
     path("filtraminuta", filtra_minuta, name="filtraminuta"),
-    path("editaminuta/", edita_minuta, name="editaminuta"),
     path(
         "filtraveiculoescolhido/",
         filtra_minuta_veiculo_escolhido,
