@@ -3002,6 +3002,7 @@ def contexto_minuta_alterada(idminuta):
         "s_minuta": minuta,
         "itens_minuta": criar_itens_card_minuta(minuta),
         "checklist": itens_card_checklist(minuta),
+        "despesas": minuta["despesas"],
         "minuta": minuta,
     }
     return contexto
