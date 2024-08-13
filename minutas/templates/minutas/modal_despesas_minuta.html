@@ -1,0 +1,25 @@
+<form class="row g-3" method="post" action="{% url 'adicionar_despesa' %}">
+{% csrf_token %}
+   <div class="col-md-6">
+        <label for="descricao" class="form-label">DESCRIÇÃO:</label>
+        <input type="text" class="form-control" list="lista_despesas" name="descricao"
+               id="descricao" value="{{ despesa.Descricao|default_if_none:'' }}">
+        <datalist id="lista_despesas">
+            {% for item in lista_despesas %}
+            <option value="{{ item.Descricao }}">
+            {% endfor %}
+        </datalist>
+    </div>
+    <div class="col-md-6">
+        <label for="valor">VALOR:</label>
+        <input type="number" class="form-control" name="valor"
+               id="valor" value="{{ despesa.Valor|default_if_none:'0,00' }}">
+    </div>
+    <div class="col-md-12">
+        <label for="obs">OBSERVAÇÃO:</label>
+        <textarea class="form-control campotexto" name="obs" id="obs">{{ despesa.Obs }}</textarea>
+    </div>
+    <input type="hidden" name="id_minuta" value="{{ id_minuta }}">
+    <input type="hidden" name="id_minuta_itens" value="{{ despesa.idMinutaItens }}">
+</form>
+
