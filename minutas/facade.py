@@ -3672,3 +3672,41 @@ def renderizar_modal_despesas_minuta(id_minuta, request):
     )
 
     return JsonResponse({"modal_html": modal_html})
+
+
+def salvar_ou_atualizar_despesa_minuta(request):
+    """
+    Salva ou atualiza uma despesa em uma minuta.
+
+    Se o campo "id_minuta_itens" estiver presente no POST, atualiza a despesa correspondente.
+    Caso contrário, cria uma nova despesa na minuta especificada.
+
+    Args:
+        request (HttpRequest): Objeto de requisição HTTP com os dados do POST.
+
+    Returns:
+        dict: Dicionário contendo uma mensagem de sucesso.
+    """
+    id_minuta_itens = request.POST.get("id_minuta_itens")
+    descricao = request.POST.get("descricao")
+    valor = request.POST.get("valor")
+    obs = request.POST.get("obs")
+
+    if id_minuta_itens:
+        MinutaItens.objects.filter(idMinutaItens=id_minuta_itens).update(
+            Descricao=descricao,
+            Valor=valor,
+            Obs=obs,
+        )
+        return {"mensagem": "DESPESA ATUALIZADA"}
+
+    MinutaItens.objects.create(
+        Descricao=descricao,
+        TipoItens="DESPESA",
+        RecebePaga="R",
+        Valor=valor,
+        Tempo=timedelta(hours=0, minutes=0),
+        idMinuta_id=request.POST.get("id_minuta"),
+        Obs=obs,
+    )
+    return {"mensagem": "DESPESA ADICIONADA"}
