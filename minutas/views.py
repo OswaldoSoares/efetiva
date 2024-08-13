@@ -100,27 +100,6 @@ def convertemp(mm):
     return mm / 0.352777
 
 
-def horascobra(horai, horaf, datam, horam):
-    horainicial = horai
-    horafinal = horaf
-    dataminuta = datam
-    minimohoras = timedelta(days=0, hours=horam.hour, minutes=horam.minute)
-    excedehoras = timedelta(days=0, hours=0, minutes=0)
-    totalhoras = timedelta(days=0, hours=0, minutes=0)
-    if horainicial != horafinal:
-        datainicial = datetime.combine(dataminuta, horainicial)
-        if horainicial < horafinal:
-            datafinal = datetime.combine(dataminuta, horafinal)
-            totalhoras = datafinal - datainicial
-        else:
-            dataminuta = dataminuta + timedelta(days=1)
-            datafinal = datetime.combine(dataminuta, horafinal)
-            totalhoras = datafinal - datainicial
-    if totalhoras > minimohoras:
-        excedehoras = totalhoras - minimohoras
-    return totalhoras, minimohoras, excedehoras
-
-
 def parametrominutadespesa():
     # arquivo_json = open('', 'r')
     # dados_json = json.load(arquivo_json)
