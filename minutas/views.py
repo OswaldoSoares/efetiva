@@ -689,47 +689,6 @@ def estorna_minuta(request, idmin):
     return redirect("consultaminuta", idmin)
 
 
-def criaminutamotorista(request):
-    if request.method == "POST":
-        idminuta = request.POST.get("idMinuta")
-        form = CadastraMinutaMotorista(request.POST)
-        # Altera field idVeiculo conforme motorista escolhido
-        veiculo = Veiculo.objects.filter(
-            Motorista=request.POST.get("idPessoal")
-        )
-        if veiculo.count() == 1:
-            idveiculo = ""
-            for x in veiculo:
-                idveiculo = x.idVeiculo
-            km_inicial = kmfinal_veiculo(idveiculo)
-            if km_inicial:
-                minuta = get_object_or_404(Minuta, idMinuta=idminuta)
-                obj = Minuta()
-                obj.idMinuta = minuta.idMinuta
-                obj.Minuta = minuta.Minuta
-                obj.DataMinuta = minuta.DataMinuta
-                obj.HoraInicial = minuta.HoraInicial
-                obj.HoraFinal = minuta.HoraFinal
-                obj.Coleta = minuta.Coleta
-                obj.Entrega = minuta.Entrega
-                obj.KMInicial = km_inicial
-                obj.KMFinal = minuta.KMFinal
-                obj.Obs = minuta.Obs
-                obj.StatusMinuta = minuta.StatusMinuta
-                obj.idCategoriaVeiculo = minuta.idCategoriaVeiculo
-                obj.idCliente = minuta.idCliente
-                obj.idVeiculo_id = idveiculo
-                obj.save()
-    else:
-        idminuta = request.GET.get("idminuta")
-        form = CadastraMinutaMotorista(
-            initial={"idMinuta": idminuta, "Cargo": "MOTORISTA"}
-        )
-    return salva_form(
-        request, form, "minutas/criaminutamotorista.html", idminuta
-    )
-
-
 def excluiminutamotorista(request, idmincol):
     motoristaminuta = get_object_or_404(
         MinutaColaboradores, idMinutaColaboradores=idmincol
