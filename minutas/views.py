@@ -271,15 +271,6 @@ def minuta(request, idminuta):
     return render(request, "minutas/minuta.html", contexto)
 
 
-def editaminuta(request, idmin):
-    minuta = get_object_or_404(Minuta, idMinuta=idmin)
-    if request.method == "POST":
-        form = CadastraMinuta(request.POST, instance=minuta)
-    else:
-        form = CadastraMinuta(instance=minuta)
-    return salva_form(request, form, "minutas/editaminuta.html", idmin)
-
-
 def imprimeminuta(request, idmin):
     if request.user.is_authenticated:
         minuta = Minuta.objects.get(idMinuta=idmin)
