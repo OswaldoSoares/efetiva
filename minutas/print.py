@@ -9,7 +9,13 @@ from django.http import HttpResponse
 from reportlab.lib.colors import HexColor
 from reportlab.lib.pagesizes import A4, landscape
 from reportlab.pdfgen import canvas
-from website.facade import cmp, valor_ponto_milhar
+from website.facade import valor_ponto_milhar
+
+from textwrap import wrap
+from minutas.models import Minuta, MinutaColaboradores
+from clientes.models import FoneContatoCliente
+from transefetiva.settings.settings import STATIC_ROOT
+from core.tools import convert_milimetro_pontos as cmp
 
 
 def print_minutas_periodo(contexto):
