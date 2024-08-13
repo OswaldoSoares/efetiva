@@ -1,0 +1,98 @@
+{% load custom_filters %}
+<div class="card-header">
+    <div class="input-group">
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-up"></i>
+        </div>
+        <div class="div-form-control">
+            <span>DESPESAS</span>
+        </div>
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-up"></i>
+        </div>
+    </div>
+</div>
+<div class="card-body">
+    {% for despesa in minuta.despesas %}
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="i-button-null">{{ forloop.counter|stringformat:".2d" }}</i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-60 text-left font-menor">
+                    <span>{{ despesa.Descricao }}</span>
+                </div>
+                <div class="tamanho-40 text-right font-menor">
+                    <span>R$ {{ despesa.Valor }}</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-edit i-button"
+                   onclick="openMyModal(event); return false;"
+                   data-title="EDITAR DESPESA"
+                   data-action="{% url 'adicionar_despesa' %}"
+                   data-button-save-label="EDITAR"
+                   data-idminuta="{{ s_minuta.idminuta }}"
+                   data-id_minuta_itens="{{ despesa.idMinutaItens }}"></i>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-trash i-button js-excluir-despesa-minuta"
+                   data-id_minuta_itens="{{ despesa.idMinutaItens }}"></i>
+            </div>
+        </div>
+    </div>
+    {% if despesa.Obs %}
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-file-text i-button-null"></i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-100 text-left font-menor">
+                    <span>{{ despesa.Obs }}</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-check i-button-null"></i>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-wallet i-button-null"></i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-100 text-center font-menor">
+                    <span>ADICIONAR NOVA DESPESA</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-plus-circle i-button"
+                   onclick="openMyModal(event); return false;"
+                   data-title="ADICIONAR DESPESA"
+                   data-action="{% url 'adicionar_despesa' %}"
+                   data-button-save-label="ADICIONAR"
+                   data-idminuta="{{ s_minuta.idminuta }}"></i>
+            </div>
+        </div>
+    </div>    
+</div>
+<div class="card-footer">
+    <div class="input-group">
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-down"></i>
+        </div>
+        <div class="div-flex div-form-control">
+            <div class="tamanho-100 text-center">
+            <span>TOTAL DESPESAS R$ {{ minuta.t_despesas.valor_despesas|default_if_zero:"0,00" }}</span>
+            </div>
+        </div>
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-down"></i>
+        </div>
+    </div>
+</div>
