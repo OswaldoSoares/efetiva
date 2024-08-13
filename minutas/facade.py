@@ -1230,17 +1230,6 @@ def cria_dict_recebe():
     return v_recebe
 
 
-def novo_status_minuta(request, idminuta, novo_status):
-    minuta = get_minuta(idminuta)
-    obj = minuta
-    obj.StatusMinuta = novo_status
-    obj.save(update_fields=["StatusMinuta"])
-    data = dict()
-    data = html_checklist(request, data, idminuta)
-    c_return = retorna_json(data)
-    return c_return
-
-
 def calcula_valor_hora(porcentagem, horas, valor):
     novo_valor = valor * porcentagem / 100
     valor_hora = float(round(novo_valor, 2))
@@ -3724,3 +3713,23 @@ def deletar_despesa_minuta(id_minuta_itens):
     """
     MinutaItens.objects.filter(idMinutaItens=id_minuta_itens).delete()
     return {"mensagem": "DESPESA EXCLUÍDA"}
+
+
+def novo_status_minuta(id_minuta, novo_status):
+    """
+    Atualiza o status de uma minuta e retorna uma mensagem indicativa
+    do novo estado.
+
+    Args:
+        id_minuta (int): ID da minuta a ser atualizada.
+        novo_status (str): Novo status a ser aplicado à minuta.
+
+    Returns:
+        dict: Dicionário contendo uma mensagem que indica se a minuta
+        foi concluída ou reaberta.
+    """
+    Minuta.objects.filter(idMinuta=id_minuta).update(StatusMinuta=novo_status)
+    mensagem = (
+        "MINUTA CONCLUÍDA" if novo_status == "CONCLUIDA" else "MINUTA REABERTA"
+    )
+    return {"mensagem": mensagem}
