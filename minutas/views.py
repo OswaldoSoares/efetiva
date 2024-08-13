@@ -836,12 +836,6 @@ def salva_form(request, form, template_name, idmin):
     return JsonResponse(data)
 
 
-def exclui_minuta(request, idminuta):
-    minuta = Minuta.objects.filter(idMinuta=idminuta)
-    minuta.delete()
-    return redirect("index_minuta")
-
-
 def atualiza_form_pg(request):
     pass
 
