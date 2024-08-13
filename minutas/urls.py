@@ -21,7 +21,6 @@ from .views import (
     insere_minuta_entrega,
     minuta,
     remove_minuta_colaborador,
-    remove_minuta_despesa,
     remove_minuta_entrega,
     remove_romaneio_minuta,
     gera_receitas,
@@ -94,7 +93,6 @@ urlpatterns = [
         remove_minuta_colaborador,
         name="removecolaborador",
     ),
-    path("removedespesa/", remove_minuta_despesa, name="removedespesa"),
     path("insereentrega/", insere_minuta_entrega, name="insereentrega"),
     path(
         "remove_entrega/",
