@@ -15,7 +15,6 @@ from .views import (
     edita_minuta_saida_extra_ajudante,
     editaminutaentrega,
     editaminutahorafinal,
-    editaminutakmfinal,
     editaminutaveiculo,
     estorna_minuta,
     estorna_pagamentos_ajudantes,
@@ -65,11 +64,6 @@ urlpatterns = [
         "editaminutaveiculo/<int:idmin>/",
         editaminutaveiculo,
         name="editaminutaveiculo",
-    ),
-    path(
-        "editaminutakmfinal/<int:idmin>/",
-        editaminutakmfinal,
-        name="editaminutakmfinal",
     ),
     path(
         "editaminutahorafinal/<int:idmin>/",
