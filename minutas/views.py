@@ -800,41 +800,6 @@ def filtraminutaveiculo(request):
     return JsonResponse(data)
 
 
-def criaminutaparametrodespesa(request):
-    # data = dict()
-    # if request.method == 'POST':
-    #     try:
-    #         arquivo_json = open('', 'r')
-    #         dados_json = json.load(arquivo_json)
-    #         arquivo_json.close()
-    #         despesas = dados_json['Despesa']['Descricao']
-    #         if request.POST.get('Despesa') in despesas:
-    #             pass
-    #         else:
-    #             despesas.append(request.POST.get('Despesa').upper())
-    #             try:
-    #                 arquivo_json = open('', 'w')
-    #                 dados_json['Despesa']['Descricao'] = despesas
-    #                 dados_json = json.dumps(dados_json, indent=4,
-    #                                         sort_keys=True)
-    #                 arquivo_json.write(dados_json)
-    #                 arquivo_json.close()
-    #             except Exception as erro:
-    #                 print(erro)
-    #     except Exception as erro:
-    #         print(erro)
-    #     return redirect('consultaminuta', request.POST.get('idMinuta'))
-    # else:
-    #     form = CadastraMinutaParametroDespesa(
-    #         initial={'idMinuta': request.GET.get('idminuta')})
-    # context = {'form': form}
-    # data['html_form'] = render_to_string(
-    #     'minutas/criaminutaparametrodespesa.html', context, request=request)
-    # return JsonResponse(data)
-    # TODO removido arquivo parametro, criado banco de dados, remover view
-    pass
-
-
 def edita_comentario(request, idmin):
     minuta = Minuta.objects.get(idMinuta=idmin)
     form = ""
