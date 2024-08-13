@@ -836,10 +836,6 @@ def salva_form(request, form, template_name, idmin):
     return JsonResponse(data)
 
 
-def atualiza_form_pg(request):
-    pass
-
-
 def estorna_pagamentos(request):
     c_idminuta = request.GET.get("idMinuta")
     estorna_paga(c_idminuta)
