@@ -105,30 +105,23 @@ $(document).ready(function() {
         });
     });
 
-    $(document).on("click", ".js-estorna-minuta-concluida", function(event) {
-        var idminuta = $(this).data("idminuta")
+    // Última atualização 13/08/2024
+    $(document).on("click", ".js-alterar-status-minuta", function(event) {
+        var id_minuta = $(this).data("id_minuta")
         var proximo_status = $(this).data("proximo-status")
         $.ajax({
             type: "GET",
-            url: "/minutas/estorna_minuta_concluida",
+            url: "/minutas/alterar_status_minuta",
             data: {
-                idminuta: idminuta,
+                id_minuta: id_minuta,
                 proximo_status: proximo_status,
             },
             beforeSend: function() {
                 $(".box-loader").show();
             },
             success: function(data) {
-                $(".card-minuta").html(data["html_card_minuta"]);
-                $(".card-checklist").html(data["html_card_checklist"]);
-                $(".html-form-paga").html(data["html_card_pagamentos"]);
-                verificaCheckboxPaga();
-                verificaCheckboxRecebe();
+                $(".card-checklist").html(data["html_checklist"]);
                 mostraChecklist();
-                formatMask();
-                somaReceitas();
-                somaPagamentos();
-                $("html, body").scrollTop(0);
                 $(".box-loader").hide();
             },
             error: function(error) {
