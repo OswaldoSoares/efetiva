@@ -248,24 +248,24 @@ $(document).ready(function() {
     });
 
     // Versão Nova //
-    $(document).on("click", ".remove-despesa", function(event) {
-        var idminutaitens = $(this).attr("idMinutaItens")
-        var idminuta = $(this).attr("idMinuta")
+    $(document).on("click", ".js-excluir-despesa-minuta", function(event) {
+        var id_minuta = localStorage.getItem("idminuta")
+        var id_minuta_itens = $(this).data("id_minuta_itens")
         $.ajax({
             type: "GET",
-            url: "/minutas/removedespesa",
+            url: "/minutas/excluir_despesa",
             data: {
-                idMinutaItens: idminutaitens,
-                idMinuta: idminuta,
+                id_minuta_itens: id_minuta_itens,
+                id_minuta: id_minuta,
+            },
+            beforeSend: function() {
+                $(".box-loader").show()
             },
             success: function(data) {
-                recarregaFinanceiro(data["html_pagamento"], data["html_recebimento"])
-                $(".card-checklist").hide()
-                $(".card-checklist").html(data["html_checklist"]);
-                mostraChecklist();
-                $(".html-despesa").hide()
-                $(".html-despesa").html(data["html_despesa"]);
-                $(".html-despesa").delay(1000).slideDown(500)
+                $(".card-despesa").hide()
+                $(".card-despesa").html(data["html_card_despesas"]);
+                $(".card-despesa").show()
+                $(".box-loader").hide()
             },
             error: function(error) {
                 console.log(error)
