@@ -699,30 +699,6 @@ def editaminutaveiculo(request, idmin):
     return salva_form(request, form, "minutas/editaminutaveiculo.html", idmin)
 
 
-def criaminutadespesa(request):
-    if float(request.POST.get("Valor")) > 0.00:
-        if request.method == "POST":
-            descricao = request.POST.get("Descricao")
-            idminuta = request.POST.get("idMinuta")
-            despesa = buscaminutadespesa(descricao, idminuta)
-            if despesa:
-                idminutaitem = list(
-                    despesa.values("idMinutaItens")[0].values()
-                )[0]
-                minutaitens = get_object_or_404(
-                    MinutaItens, idMinutaItens=idminutaitem
-                )
-                form = CadastraMinutaDespesa(
-                    request.POST, instance=minutaitens
-                )
-            else:
-                form = CadastraMinutaDespesa(request.POST)
-            return salva_form(
-                request, form, "minutas/colsultaminuta.html", idminuta
-            )
-    return redirect("consultaminuta", request.POST.get("idMinuta"))
-
-
 def buscaminutadespesa(descricao, idminuta):
     buscadespesa = MinutaItens.objects.filter(
         Descricao=descricao, idMinuta=idminuta
