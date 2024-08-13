@@ -1497,7 +1497,7 @@ function exibirMensagem(mensagem) {
     setTimeout(function() {
         $('.mensagem p').animate({bottom: '60px'}, 1000); 
         $('.mensagem p').animate({bottom: '-30px'}, 0);
-    }, 3000);
+    }, 5000);
 }
 
 // Mostra a div de mensagem com a mensagem de erro
