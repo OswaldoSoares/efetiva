@@ -100,63 +100,6 @@ def convertemp(mm):
     return mm / 0.352777
 
 
-def salvaminutaitens(
-    descricao,
-    tipoitens,
-    recebepaga,
-    valor,
-    quantidade,
-    porcento,
-    peso,
-    valorbase,
-    tempo,
-    idminuta,
-):
-    """
-    Função para inserir e atualizar um item da minuta
-
-    :param descricao:
-    :param tipoitens:
-    :param recebepaga:
-    :param valor:
-    :param quantidade:
-    :param porcento:
-    :param peso:
-    :param valorbase:
-    :param tempo:
-    :param idminuta:
-    :return:
-    """
-    minutaitens = MinutaItens.objects.filter(
-        idMinuta=idminuta,
-        Descricao=descricao,
-        RecebePaga=recebepaga,
-        TipoItens=tipoitens,
-    )
-    hora_datetime = datetime.strptime(tempo, "%H:%M")
-    hora_timedelta = timedelta(
-        days=0, hours=hora_datetime.hour, minutes=hora_datetime.minute
-    )
-    obj = MinutaItens()
-    if minutaitens:
-        obj.idMinutaItens = list(
-            minutaitens.values("idMinutaItens")[0].values()
-        )[0]
-    obj.Descricao = descricao
-    obj.TipoItens = tipoitens
-    obj.RecebePaga = recebepaga
-    obj.Valor = valor
-    obj.Quantidade = quantidade
-    obj.Porcento = porcento
-    obj.Peso = peso
-    obj.ValorBase = valorbase
-    obj.Tempo = hora_timedelta
-    obj.idMinuta_id = idminuta
-    obj.Obs = ""
-    obj.save()
-    return True
-
-
 def excluiminutaitens(idminutaitens):
     """
     Função para excluir um item da Minuta
