@@ -6,7 +6,6 @@ from .views import (
     atualiza_form_pg,
     buscaminutaentrega,
     conclui_minuta,
-    concluir_minuta,
     consultaminuta,
     criaminuta,
     criaminutaajudante,
@@ -174,7 +173,6 @@ urlpatterns = [
         estorna_pagamentos_ajudantes,
         name="estorna_pagamentos_ajudantes",
     ),
-    path("concluirminuta/", concluir_minuta, name="concluirminuta"),
     path(
         "adiciona_romaneio_minuta",
         adiciona_romaneio_minuta,
