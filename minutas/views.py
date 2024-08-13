@@ -2801,6 +2801,22 @@ def editar_minuta(request):
     return handle_modal_minuta(
         request, facade.modal_minuta, facade.atualizar_minuta
     )
+
+
+def adicionar_despesa(request):
+    """
+    Gerencia a adição de uma despesa a uma minuta, utilizando um modal
+    para exibir e salvar dados.
+
+    Args:
+        request (HttpRequest): Objeto de requisição HTTP com os dados
+        necessários para adicionar a despesa.
+
+    Returns:
+        HttpResponse: Resposta HTTP gerada pela função handle_modal_minuta.
+    """
     return handle_modal_minuta(
-        request, facade.modal_minuta, facade.update_minuta
+        request,
+        facade.renderizar_modal_despesas_minuta,
+        facade.salvar_ou_atualizar_despesa_minuta,
     )
