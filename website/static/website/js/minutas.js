@@ -600,6 +600,9 @@ function openMyModal(event) {
         data: {
             idobj: $(event.target).data("idminuta"),
             idPessoal: $(event.target).data("idpessoal"),
+
+            // Usado no módulo minuta - card_despesa
+            id_minuta_itens: $(event.target).data("id_minuta_itens"),
         }
     }).done(function(data, textStatus, jqXHR) {
         modal.find(".modal-body").html(data.modal_html);
