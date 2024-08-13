@@ -689,22 +689,6 @@ def estorna_minuta(request, idmin):
     return redirect("consultaminuta", idmin)
 
 
-def excluiminutaajudante(request, idmincol):
-    ajudanteminuta = get_object_or_404(
-        MinutaColaboradores, idMinutaColaboradores=idmincol
-    )
-    data = dict()
-    if request.method == "POST":
-        ajudanteminuta.delete()
-        return redirect("consultaminuta", ajudanteminuta.idMinuta_id)
-    else:
-        context = {"ajudanteminuta": ajudanteminuta}
-        data["html_form"] = render_to_string(
-            "minutas/excluiminutaajudante.html", context, request=request
-        )
-    return JsonResponse(data)
-
-
 def editaminutaveiculo(request, idmin):
     minuta = get_object_or_404(Minuta, idMinuta=idmin)
     if request.method == "POST":
