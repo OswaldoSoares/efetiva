@@ -1,8 +1,5 @@
-from io import BytesIO
-from textwrap import wrap
 from clientes.facade import create_contexto_seleciona_cliente
 
-from clientes.models import FoneContatoCliente
 from django.db.models import F, Max, Sum, Value
 from django.db.models.functions import Concat
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -15,10 +12,7 @@ from django.shortcuts import (
 from django.template.loader import render_to_string
 from django.templatetags.static import static
 from django.urls import reverse
-from reportlab.lib.colors import HexColor
-from reportlab.pdfgen import canvas
 from rolepermissions.decorators import has_permission_decorator
-from transefetiva.settings.settings import STATIC_ROOT
 from veiculos.models import Veiculo
 
 from minutas import facade
@@ -29,7 +23,6 @@ from website.facade import str_hoje
 
 from .facade import (
     MinutasStatus,
-    edita_km_final,
     estorna_paga,
     filtra_consulta,
     filtro_cidades,
@@ -39,7 +32,6 @@ from .facade import (
     forn_minuta,
     novo_status_minuta,
     remove_colaborador,
-    remove_despessa,
     remove_entrega,
     retorna_json,
 )
