@@ -689,43 +689,6 @@ def estorna_minuta(request, idmin):
     return redirect("consultaminuta", idmin)
 
 
-def excluiminutamotorista(request, idmincol):
-    motoristaminuta = get_object_or_404(
-        MinutaColaboradores, idMinutaColaboradores=idmincol
-    )
-    # cliente = Cliente.objects.get(Nome=tabelacapacidade.idCliente)
-    data = dict()
-    if request.method == "POST":
-        motoristaminuta.delete()
-        # Altera field idVeiculo para null
-        minuta = get_object_or_404(
-            Minuta, idMinuta=motoristaminuta.idMinuta_id
-        )
-        obj = Minuta()
-        obj.idMinuta = minuta.idMinuta
-        obj.Minuta = minuta.Minuta
-        obj.DataMinuta = minuta.DataMinuta
-        obj.HoraInicial = minuta.HoraInicial
-        obj.HoraFinal = minuta.HoraFinal
-        obj.Coleta = minuta.Coleta
-        obj.Entrega = minuta.Entrega
-        obj.KMInicial = minuta.KMInicial
-        obj.KMFinal = minuta.KMFinal
-        obj.Obs = minuta.Obs
-        obj.StatusMinuta = minuta.StatusMinuta
-        obj.idCategoriaVeiculo = minuta.idCategoriaVeiculo
-        obj.idCliente = minuta.idCliente
-        obj.idVeiculo_id = None
-        obj.save()
-        return redirect("consultaminuta", motoristaminuta.idMinuta_id)
-    else:
-        context = {"motoristaminuta": motoristaminuta}
-        data["html_form"] = render_to_string(
-            "minutas/excluiminutamotorista.html", context, request=request
-        )
-    return JsonResponse(data)
-
-
 def criaminutaajudante(request):
     if request.method == "POST":
         idminuta = request.POST.get("idMinuta")
