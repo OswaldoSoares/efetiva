@@ -435,19 +435,6 @@ def filtra_minuta(request):
     return data
 
 
-def edita_minuta(request):
-    c_form = FormMinuta
-    c_idobj = None
-    if request.method == "GET":
-        c_idobj = request.GET.get("idobj")
-    elif request.method == "POST":
-        c_idobj = request.POST.get("idMinuta")
-    c_url = "/minutas/editaminuta/"
-    c_view = "edita_minuta"
-    data = forn_minuta(request, c_form, c_idobj, c_url, c_view)
-    return data
-
-
 def edita_minuta_saida_extra_ajudante(request, idminuta):
     minutanotas = MinutaNotas.objects.filter(idMinuta=idminuta)
     for itens in minutanotas:
