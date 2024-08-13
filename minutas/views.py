@@ -772,12 +772,6 @@ def estorna_minuta(request, idmin):
     return redirect("consultaminuta", idmin)
 
 
-def conclui_minuta(request, idmin):
-    # if request.user.is_authenticated():
-    altera_status_minuta("CONCLUIDA", idmin)
-    return redirect("consultaminuta", idmin)
-
-
 def criaminutamotorista(request):
     if request.method == "POST":
         idminuta = request.POST.get("idMinuta")
