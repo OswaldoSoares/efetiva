@@ -5,7 +5,6 @@ from .views import (
     adiciona_romaneio_minuta,
     atualiza_form_pg,
     buscaminutaentrega,
-    criaminuta,
     criaminutaajudante,
     criaminutadespesa,
     criaminutaentrega,
@@ -66,7 +65,6 @@ from .views import (
 
 urlpatterns = [
     path("", index_minuta, name="index_minuta"),
-    path("criaminuta", criaminuta, name="criaminuta"),
     # path('editaminuta/<int:idmin>/', editaminuta, name='editaminuta'),
     path("imprimeminuta/<int:idmin>/", imprimeminuta, name="imprimeminuta"),
     path("estorna_minuta/<int:idmin>/", estorna_minuta, name="estorna_minuta"),
