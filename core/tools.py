@@ -86,3 +86,13 @@ def str_hoje() -> str:
     hoje = datetime.today()
     hoje = datetime.strftime(hoje, "%Y-%m-%d")
     return hoje
+
+
+def convert_milimetro_pontos(mm):
+    """
+    Converte milimetros em pontos - Criação de Relatórios
+
+    :param mm: milimetros
+    :return: pontos
+    """
+    return mm / 0.352777
