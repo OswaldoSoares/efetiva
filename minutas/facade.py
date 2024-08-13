@@ -3710,3 +3710,17 @@ def salvar_ou_atualizar_despesa_minuta(request):
         Obs=obs,
     )
     return {"mensagem": "DESPESA ADICIONADA"}
+
+
+def deletar_despesa_minuta(id_minuta_itens):
+    """
+    Exclui uma despesa específica associada a uma minuta.
+
+    Args:
+        id_minuta_itens (int): ID da despesa a ser excluída.
+
+    Returns:
+        dict: Dicionário contendo uma mensagem de sucesso.
+    """
+    MinutaItens.objects.filter(idMinutaItens=id_minuta_itens).delete()
+    return {"mensagem": "DESPESA EXCLUÍDA"}
