@@ -5,7 +5,6 @@ from .views import (
     adiciona_romaneio_minuta,
     atualiza_form_pg,
     buscaminutaentrega,
-    criaminutadespesa,
     criaminutaentrega,
     criaminutaparametrodespesa,
     edita_comentario,
@@ -64,7 +63,6 @@ urlpatterns = [
         editaminutaveiculo,
         name="editaminutaveiculo",
     ),
-    path("criaminutadespesa", criaminutadespesa, name="criaminutadespesa"),
     path(
         "excluiminutadespesa/<int:idmindes>/",
         excluiminutadespesa,
