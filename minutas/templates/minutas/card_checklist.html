@@ -48,14 +48,15 @@
         <div class="div-flex div-form-control">
             <div class="tamanho-100 text-center">
                 {% if s_minuta.status_minuta == 'ABERTA' %}
-                <i class="icofont-check-circled i-button js-conclui-minuta"
-                   data-idminuta="{{ s_minuta.idminuta }}"
-                   title="CONCLUI MINUTA"></i>
+                <i class="icofont-check-circled i-button js-alterar-status-minuta"
+                   data-id_minuta="{{ s_minuta.idminuta }}"
+                   data-proximo-status="CONCLUIDA"
+                   title="CONCLUIR MINUTA"></i>
                 {% elif not s_minuta.paga_realizada_motorista and s_minuta.status_minuta == 'CONCLUIDA'%}
-                <i class="icofont-undo i-button js-estorna-minuta-concluida"
-                   data-idminuta="{{ s_minuta.idminuta }}"
+                <i class="icofont-undo i-button js-alterar-status-minuta"
+                   data-id_minuta="{{ s_minuta.idminuta }}"
                    data-proximo-status="ABERTA"
-                   title="Estorna minuta concluída"></i>
+                   title="ESTORNAR MINUTA CONCLUÍDA"></i>
                 {% endif %}
             </div>
         </div>
