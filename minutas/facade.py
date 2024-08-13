@@ -1465,7 +1465,7 @@ def html_coleta_entrega_obs(request, data, idminuta):
 def html_despesa(request, data, idminuta):
     contexto = cria_contexto(idminuta)
     data["html_despesa"] = render_to_string(
-        "minutas/despesaminuta.html", contexto, request=request
+        "minutas/card_despesas.html", contexto, request=request
     )
     return data
 
