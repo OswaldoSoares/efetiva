@@ -11,10 +11,10 @@ from .views import (
     criaminutamotorista,
     criaminutaparametrodespesa,
     edita_comentario,
+    edita_minuta,
     edita_minuta_km_final,
     edita_minuta_km_inicial,
     edita_minuta_saida_extra_ajudante,
-    editaminuta,
     editaminutaentrega,
     editaminutahorafinal,
     editaminutakmfinal,
@@ -64,7 +64,6 @@ from .views import (
 
 urlpatterns = [
     path("", index_minuta, name="index_minuta"),
-    # path('editaminuta/<int:idmin>/', editaminuta, name='editaminuta'),
     path("imprimeminuta/<int:idmin>/", imprimeminuta, name="imprimeminuta"),
     path("estorna_minuta/<int:idmin>/", estorna_minuta, name="estorna_minuta"),
     path(
@@ -140,6 +139,7 @@ urlpatterns = [
     ),
     path("minuta/<int:idminuta>/", minuta, name="minuta"),
     path("filtraminuta", filtra_minuta, name="filtraminuta"),
+    path("editaminuta/", edita_minuta, name="editaminuta"),
     path(
         "filtraveiculoescolhido/",
         filtra_minuta_veiculo_escolhido,
