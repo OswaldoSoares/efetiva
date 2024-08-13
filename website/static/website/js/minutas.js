@@ -193,25 +193,6 @@ $(document).ready(function() {
         });
     });
 
-    // Versão Nova //
-    $(document).on("click", ".js-conclui-minuta", function(event) {
-        var idminuta = $(this).data("idminuta")
-        $.ajax({
-            type: "GET",
-            url: "/minutas/concluirminuta",
-            data: {
-                idMinuta: idminuta,
-            },
-            success: function(data) {
-                $(".card-checklist").hide()
-                $(".card-checklist").html(data["html_checklist"]);
-                mostraChecklist();
-            },
-            error: function(error) {
-                console.log(error)
-            }
-        });
-    });
 
     // Última atualização 06/08/2024
     $(document).on("click", ".js-excluir-colaborador-minuta", function() {
