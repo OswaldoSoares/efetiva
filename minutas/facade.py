@@ -3615,7 +3615,16 @@ def salvar_minuta(request):
     return JsonResponse({"link": f"/minutas/minuta/{id_minuta}"})
 
 
-def update_minuta(request):
+def atualizar_minuta(request):
+    """
+    Atualiza as informações de uma minuta existente com base nos dados do request POST.
+
+    Args:
+        request (HttpRequest): Objeto de requisição HTTP com os dados do POST.
+
+    Returns:
+        dict: Dicionário contendo uma mensagem de sucesso.
+    """
     Minuta.objects.filter(idMinuta=request.POST.get("id_minuta")).update(
         DataMinuta=request.POST.get("data"),
         HoraInicial=request.POST.get("hora"),
