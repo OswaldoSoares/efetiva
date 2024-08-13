@@ -720,15 +720,6 @@ def editaminutaveiculo(request, idmin):
     return salva_form(request, form, "minutas/editaminutaveiculo.html", idmin)
 
 
-def editaminutakminicial(request, idmin):
-    minuta = get_object_or_404(Minuta, idMinuta=idmin)
-    if request.method == "POST":
-        form = CadastraMinutaKMInicial(request.POST, instance=minuta)
-    else:
-        form = CadastraMinutaKMInicial(instance=minuta)
-    return salva_form(request, form, "minutas/consultaminuta.html", idmin)
-
-
 def editaminutakmfinal(request, idmin):
     minuta = get_object_or_404(Minuta, idMinuta=idmin)
     if request.method == "POST":
