@@ -699,13 +699,6 @@ def editaminutaveiculo(request, idmin):
     return salva_form(request, form, "minutas/editaminutaveiculo.html", idmin)
 
 
-def buscaminutadespesa(descricao, idminuta):
-    buscadespesa = MinutaItens.objects.filter(
-        Descricao=descricao, idMinuta=idminuta
-    )
-    return buscadespesa
-
-
 def excluiminutadespesa(request, idmindes):
     despesaminuta = get_object_or_404(MinutaItens, idMinutaItens=idmindes)
     data = dict()
