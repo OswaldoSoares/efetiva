@@ -886,13 +886,6 @@ def remove_minuta_colaborador(request):
     return data
 
 
-def edita_minuta_km_inicial(request):
-    c_idminuta = request.POST.get("idMinuta")
-    c_kminicial = request.POST.get("KMInicial")
-    data = edita_km_inicial(request, c_idminuta, c_kminicial)
-    return data
-
-
 def edita_minuta_km_final(request):
     c_idminuta = request.POST.get("idMinuta")
     c_kmfinal = request.POST.get("KMFinal")
