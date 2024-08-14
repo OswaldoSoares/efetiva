@@ -37,10 +37,8 @@ from .forms import (
     CadastraMinutaKMFinal,
     CadastraMinutaKMInicial,
     CadastraMinutaNota,
-    CadastraMinutaVeiculo,
     FormEditaVeiculoSolicitado,
     FormInsereEntrega,
-    FormMinuta,
 )
 from .models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas
 
