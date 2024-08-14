@@ -41,6 +41,7 @@ from .views import (
     editar_informacoes_minuta,
     adicionar_despesa,
     excluir_despesa,
+    adicionar_entrega,
     alterar_status_minuta,
 )
 
@@ -206,6 +207,11 @@ urlpatterns = [
         "excluir_despesa",
         excluir_despesa,
         name="excluir_despesa",
+    ),
+    path(
+        "adicionar_entrega",
+        adicionar_entrega,
+        name="adicionar_entrega",
     ),
     path(
         "alterar_status_minuta",
