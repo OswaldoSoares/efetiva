@@ -1,25 +1,21 @@
-from clientes.facade import create_contexto_seleciona_cliente
-
-from django.db.models import F, Max, Sum, Value
+from django.db.models import Max, Value
 from django.db.models.functions import Concat
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import JsonResponse
 from django.shortcuts import (
-    get_list_or_404,
     get_object_or_404,
     redirect,
     render,
 )
 from django.template.loader import render_to_string
-from django.templatetags.static import static
-from django.urls import reverse
 from rolepermissions.decorators import has_permission_decorator
-from veiculos.models import Veiculo
 
+from clientes.facade import create_contexto_seleciona_cliente
 from minutas import facade
 from minutas.itens_card import criar_itens_card_minuta
 from minutas.facade import MinutaSelecionada
 from minutas.print import print_minutas_periodo, imprime_minuta
 from website.facade import str_hoje
+from veiculos.models import Veiculo
 
 from .facade import (
     MinutasStatus,
