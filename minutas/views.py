@@ -835,6 +835,26 @@ def excluir_despesa(request):
     return facade.data_minuta_alterada(request, contexto)
 
 
+def adicionar_entrega(request):
+    """
+    Gerencia a adição de uma entrega a uma minuta, utilizando um modal
+    para exibir e salvar dados.
+
+    Args:
+        request (HttpRequest): Objeto de requisição HTTP com os dados
+        necessários para adicionar a despesa.
+
+    Returns:
+        HttpResponse: Resposta HTTP gerada pela função handle_modal_minuta.
+    """
+
+    return handle_modal_minuta(
+        request,
+        facade.renderizar_modal_entregas_minuta,
+        facade.salvar_ou_atualizar_entrega_minuta,
+    )
+
+
 def alterar_status_minuta(request):
     """
     Altera o status de uma minuta e atualiza o contexto com as novas
