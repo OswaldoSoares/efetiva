@@ -229,37 +229,6 @@ def estorna_minuta(request, idmin):
     return redirect("consultaminuta", idmin)
 
 
-def editaminutaveiculo(request, idmin):
-    minuta = get_object_or_404(Minuta, idMinuta=idmin)
-    if request.method == "POST":
-        form = CadastraMinutaVeiculo(request.POST)
-        if form.is_valid():
-            km_inicial = kmfinal_veiculo(form.cleaned_data["Veiculo"])
-            if not km_inicial:
-                km_inicial = 0
-            obj = Minuta()
-            obj.idMinuta = form.cleaned_data["idMinuta"]
-            obj.Minuta = minuta.Minuta
-            obj.DataMinuta = minuta.DataMinuta
-            obj.HoraInicial = minuta.HoraInicial
-            obj.HoraFinal = minuta.HoraFinal
-            obj.Coleta = minuta.Coleta
-            obj.Entrega = minuta.Entrega
-            obj.KMInicial = km_inicial
-            obj.KMFinal = minuta.KMFinal
-            obj.Obs = minuta.Obs
-            obj.StatusMinuta = minuta.StatusMinuta
-            obj.idCategoriaVeiculo = minuta.idCategoriaVeiculo
-            obj.idCliente = minuta.idCliente
-            obj.idVeiculo_id = form.cleaned_data["Veiculo"]
-            obj.save()
-    else:
-        form = CadastraMinutaVeiculo(
-            initial={"idMinuta": idmin, "Veiculo": minuta.idVeiculo_id}
-        )
-    return salva_form(request, form, "minutas/editaminutaveiculo.html", idmin)
-
-
 def criaminutaentrega(request):
     if request.method == "POST":
         idminuta = request.POST.get("idMinuta")
