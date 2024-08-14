@@ -45,21 +45,6 @@ from .forms import (
 from .models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas
 
 
-def excluiminutaitens(idminutaitens):
-    """
-    Função para excluir um item da Minuta
-
-    :param idminutaitens:
-    :return:
-    """
-    minutaitens = MinutaItens.objects.filter(idMinutaItens=idminutaitens)
-    if minutaitens:
-        obj = MinutaItens()
-        obj.idMinutaItens = idminutaitens
-        obj.delete()
-    return True
-
-
 def cria_minuta_fatura(valor, idminuta):
     """
     Função para inserir e atualizar fatura da minuta
