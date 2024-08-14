@@ -121,7 +121,6 @@ def index_minuta(request):
     :param request:
     :return:
     """
-    aberta = ""
     m_aberta = MinutasStatus("ABERTA").minutas
     t_aberta = len(m_aberta)
     m_concluida = MinutasStatus("CONCLUIDA").minutas
