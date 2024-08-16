@@ -1284,28 +1284,27 @@ function formatUnmask() {
 }
 
 // Card Entregas e Card Romaneio
-$(document).on("click", ".js-adiciona-romaneio-minuta", function() {
-    var idromaneio = $(this).data("idromaneio")
-    var idminuta = $(this).data("idminuta")
-    var idcliente = $(this).data("idcliente")
+// Última atualização 16/08/2024
+$(document).on("click", ".js-gerenciar-romaneio-minuta", function() {
+    var id_romaneio = $(this).data("id_romaneio")
+    var id_minuta = $(this).data("id_minuta")
+    var acao = $(this).data("acao")
     $.ajax({
         type: "GET",
-        url: "/minutas/adiciona_romaneio_minuta",
+        url: "/minutas/gerenciar_romaneio_minuta",
         data: {
-            idromaneio: idromaneio,
-            idminuta: idminuta,
-            idcliente: idcliente
+            id_romaneio: id_romaneio,
+            id_minuta: id_minuta,
+            acao: acao,
         },
         beforeSend: function() {
-            $(".card-entrega").hide()
-            $(".card-romaneio").hide()
             $(".box-loader").show()
         },
         success: function(data) {
-            $(".card-entrega").html(data["html_entrega"])
-            $(".card-entrega").show()
-            $(".card-romaneio").html(data["html_romaneio"])
+            $(".card-romaneio").html(data["html_card_romaneios"])
             $(".card-romaneio").show()
+            $(".card-entrega").html(data["html_card_entregas"])
+            $(".card-entrega").show()
             $(".box-loader").hide()
         },
     });
