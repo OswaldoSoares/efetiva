@@ -758,6 +758,7 @@ class MinutaEntrega:
                 "Bairro": itens.Bairro,
                 "Cidade": itens.Cidade,
                 "Estado": itens.Estado,
+                "id_romaneio": itens.id_romaneio,
             }
             for itens in entregas
         ]
