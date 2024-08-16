@@ -114,6 +114,7 @@ class MinutaNotas(models.Model):
     )
     ExtraValorAjudante = models.IntegerField(default=0)
     idMinuta = models.ForeignKey(Minuta, on_delete=models.CASCADE)
+    id_romaneio = models.IntegerField(blank=True, null=True)
 
     class Meta:
         db_table = "minutanotas"
