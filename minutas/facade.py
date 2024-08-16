@@ -3822,3 +3822,39 @@ def novo_status_minuta(id_minuta, novo_status):
         "MINUTA CONCLUÍDA" if novo_status == "CONCLUIDA" else "MINUTA REABERTA"
     )
     return {"mensagem": mensagem}
+
+
+def adicionar_romaneio_na_minuta(id_minuta, id_romaneio):
+    """
+    Adiciona todas as notas associadas a um romaneio em uma minuta específica.
+
+    Args:
+        id_minuta (int): O ID da minuta onde as notas serão adicionadas.
+        id_romaneio (int): O ID do romaneio cujas notas serão adicionadas à minuta.
+
+    Returns:
+        dict: Mensagem indicando que as notas do romaneio foram adicionadas na minuta.
+    """
+    notas = RomaneioNotas.objects.filter(idRomaneio=id_romaneio)
+    registro = [
+        MinutaNotas(
+            Nota=nota.idNotasClientes.NumeroNota,
+            ValorNota=nota.idNotasClientes.Valor,
+            Peso=nota.idNotasClientes.Peso,
+            Volume=nota.idNotasClientes.Volume,
+            Nome=nota.idNotasClientes.Destinatario,
+            Bairro=nota.idNotasClientes.Bairro,
+            Cidade=nota.idNotasClientes.Cidade,
+            Estado=nota.idNotasClientes.Estado,
+            NotaGuia=0,
+            ExtraValorAjudante=0,
+            idMinuta_id=id_minuta,
+            id_romaneio=id_romaneio,
+        )
+        for nota in notas
+    ]
+    MinutaNotas.objects.bulk_create(registro)
+    Romaneios.objects.filter(idRomaneio=id_romaneio).update(
+        idMinuta_id=id_minuta
+    )
+    return {"mensagem": "NOTAS DO ROMANEIO ADICIONADAS NA MINUTA"}
