@@ -864,6 +864,33 @@ def remover_entrega(request):
     return facade.data_minuta_alterada(request, contexto)
 
 
+def gerenciar_romaneio_minuta(request):
+    """
+    Gerencia a adição ou remoção de um romaneio em uma minuta, dependendo da
+    ação especificada.
+
+    Args:
+        request (HttpRequest): O objeto HttpRequest contendo os parâmetros da
+        requisição.
+
+    Returns:
+        JsonResponse: A resposta JSON com os dados da minuta alterada.
+    """
+    id_minuta = request.GET.get("id_minuta")
+    id_romaneio = request.GET.get("id_romaneio")
+    acao = request.GET.get("acao")
+
+    if acao == "adicionar":
+        contexto = facade.adicionar_romaneio_na_minuta(id_minuta, id_romaneio)
+    elif acao == "remover":
+        contexto = facade.remover_romaneio_da_minuta(id_minuta, id_romaneio)
+    else:
+        return JsonResponse({"erro": "Ação inválida fornecida"}, status=400)
+
+    contexto.update(facade.contexto_minuta_alterada(id_minuta))
+    return facade.data_minuta_alterada(request, contexto)
+
+
 def alterar_status_minuta(request):
     """
     Altera o status de uma minuta e atualiza o contexto com as novas
