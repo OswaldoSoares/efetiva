@@ -3762,6 +3762,20 @@ def deletar_despesa_minuta(id_minuta_itens):
     return {"mensagem": "DESPESA EXCLUÍDA"}
 
 
+def renderizar_modal_entregas_minuta(id_minuta, request):
+    id_minuta_nota = request.GET.get("id_minuta_nota")
+    minuta = MinutaSelecionada(id_minuta)
+    nota = (
+        MinutaNotas.objects.filter(idMinutaNotas=id_minuta_nota).first()
+        if id_minuta_nota
+        else None
+    )
+    modal_html = render_to_string(
+        "minutas/modal_entregas_minuta.html",
+        {"minuta": minuta, "nota": nota},
+        request,
+    )
+    return JsonResponse({"modal_html": modal_html})
 def novo_status_minuta(id_minuta, novo_status):
     """
     Atualiza o status de uma minuta e retorna uma mensagem indicativa
