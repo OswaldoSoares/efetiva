@@ -3776,6 +3776,34 @@ def renderizar_modal_entregas_minuta(id_minuta, request):
         request,
     )
     return JsonResponse({"modal_html": modal_html})
+
+
+def salvar_ou_atualizar_entrega_minuta(request):
+    print(request.POST)
+    id_minuta = request.POST.get("id_minuta")
+    nota = request.POST.get("nota")
+    valor_nota = request.POST.get("valor_nota")
+    peso = request.POST.get("peso")
+    volume = request.POST.get("volume")
+    nota_guia = request.POST.get("nota_guia")
+    nome = request.POST.get("nome")
+    bairro = request.POST.get("bairro")
+    cidade = request.POST.get("cidade")
+    estado = request.POST.get("estado")
+    MinutaNotas.objects.create(
+        Nota=nota,
+        ValorNota=valor_nota,
+        Peso=peso,
+        Volume=volume,
+        NotaGuia=nota_guia,
+        Nome=nome,
+        Bairro=bairro,
+        Cidade=cidade,
+        Estado=estado,
+        idMinuta_id=id_minuta,
+    )
+
+
 def novo_status_minuta(id_minuta, novo_status):
     """
     Atualiza o status de uma minuta e retorna uma mensagem indicativa
