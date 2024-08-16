@@ -3804,6 +3804,11 @@ def salvar_ou_atualizar_entrega_minuta(request):
     )
 
 
+def deletar_nota_de_entrega_da_minuta(id_minuta_notas):
+    MinutaNotas.objects.filter(idMinutaNotas=id_minuta_notas).delete()
+    return {"mensagem": "ENTREGA REMOVIDA"}
+
+
 def novo_status_minuta(id_minuta, novo_status):
     """
     Atualiza o status de uma minuta e retorna uma mensagem indicativa
