@@ -1,0 +1,64 @@
+<form class="row g-3" method="post" action="{% url 'adicionar_entrega' %}">
+    {% csrf_token %}
+	<div class="col-md-12" id="js-perimetro-div">
+        <input type="checkbox" id="chk-perimetro" value="proxima" class="chk-perimetro">
+        <label for="chk-perimetro">PERIMETRO</label>
+    </div>
+    <div class="js-perimetro-hide">
+    <div class="col-md-12">
+        <input type="checkbox" id="chk-saida" value="proxima">
+        <label for="chk-saida" id="label-chk-saida" class="form-label"
+               data-saida="{{ minuta.proxima_saida }}">
+            {{ minuta.proxima_saida }}
+        </label>
+    </div>
+    <div class="col-md-4">
+        <label for="nota" class="form-label">NOTA:</label>
+        <input type="text" class="form-control" name="nota" id="nota">
+        <datalist id="entregas_nota">
+            {% for entrega in entrega_notas %}
+            <option value="{{ entrega.Nota }}">
+            {% endfor %}
+        </datalist>
+    </div>
+    <div class="col-md-3">
+        <label for="valor_nota" class="form-label">VALOR NOTA:</label>
+        <input type="number" class="form-control" name="valor_nota"
+               id="valor_nota" value="0.00" min="0.00" step="0.01">
+    </div>
+    <div class="col-md-3">
+        <label for="peso" class="form-label">PESO:</label>
+        <input type="number" class="form-control" name="peso"
+               id="peso" value="0.000" min="0.000" step="0.001">
+    </div>
+    <div class="col-md-2">
+        <label for="volume" class="form-label">VOLUME:</label>
+        <input type="number" class="form-control" name="volume"
+               id="volume" value="0" min="0" step="1">
+    </div>
+    <div class="col-md-3">
+        <label for="nota_guia" class="form-label">NOTA GUIA:</label>
+        <input type="text" class="form-control" name="nota_guia"
+               id="nota_guia">
+    </div>
+        <div class="col-md-9">
+        <label for="nome" class="form-label">RAZÃO SOCIAL:</label>
+        <input type="text" class="form-control" name="nome" id="nome">
+    </div>
+    </div>
+    <div class="col-md-7">
+        <label for="bairro" class="form-label">BAIRRO:</label>
+        <input type="text" class="form-control" name="bairro" id="bairro">
+    </div>
+     <div class="col-md-4">
+        <label for="cidade" class="form-label">CIDADE:</label>
+        <input type="text" class="form-control" name="cidade"
+               id="cidade" value="SÃO PAULO">
+    </div>
+    <div class="col-md-1">
+        <label for="estado" class="form-label">UF:</label>
+        <input type="text" class="form-control" name="estado"
+               id="estado" value="SP">
+    </div>
+       <input type="hidden" name="id_minuta" value="{{ minuta.idminuta }}">
+</form>
