@@ -3013,7 +3013,13 @@ def data_minuta_alterada(request, contexto):
         JsonResponse: Objeto JsonResponse contendo os dados atualizados.
     """
     data = {"mensagem": contexto["mensagem"]}
-    html_functions = [html_card_minuta, html_checklist, html_card_despesas]
+    html_functions = [
+        html_card_minuta,
+        html_checklist,
+        html_card_despesas,
+        html_card_romaneios,
+        html_card_entregas,
+    ]
     for html_func in html_functions:
         data = html_func(request, data, contexto)
     return JsonResponse(data)
