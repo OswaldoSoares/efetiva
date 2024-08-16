@@ -1369,24 +1369,22 @@ $(document).on("change", ".js-input-change", function() {
 })
 
 // Card Entregas e Card Romaneio
-$(document).on("click", ".js-remove-entrega", function(event) {
-    var idminutanotas = $(this).attr("idMinutaNotas")
-    var idminuta = $(this).attr("idMinuta")
+// Atualizado 16/08/2024
+$(document).on("click", ".js-remover-entrega-minuta", function(event) {
+    var id_minuta = localStorage.getItem("idminuta")
+    var id_minuta_notas = $(this).data("id_minuta_notas")
     $.ajax({
         type: "GET",
-        url: "/minutas/remove_entrega",
+        url: "/minutas/remover_entrega",
         data: {
-            idMinutaNotas: idminutanotas,
-            idMinuta: idminuta,
+            id_minuta: id_minuta,
+            id_minuta_notas: id_minuta_notas,
         },
         beforeSend: function() {
             $(".box-loader").show();
         },
         success: function(data) {
-            recarregaFinanceiro(data["html_pagamento"], data["html_recebimento"])
-            $(".card-checklist").html(data["html_checklist"]);
-            mostraChecklist();
-            $(".card-entrega").html(data["html_entrega"]);
+            $(".card-entrega").html(data["html_card_entregas"]);
             $(".box-loader").hide();
         },
         error: function(error) {
