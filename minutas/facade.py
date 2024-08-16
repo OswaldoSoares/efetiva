@@ -3858,3 +3858,23 @@ def adicionar_romaneio_na_minuta(id_minuta, id_romaneio):
         idMinuta_id=id_minuta
     )
     return {"mensagem": "NOTAS DO ROMANEIO ADICIONADAS NA MINUTA"}
+
+
+def remover_romaneio_da_minuta(id_minuta, id_romaneio):
+    """
+    Remove todas as notas associadas a um romaneio de uma minuta específica.
+
+    Args:
+        id_minuta (int): O ID da minuta de onde as notas serão removidas.
+        id_romaneio (int): O ID do romaneio cujas notas serão removidas
+        da minuta.
+
+    Returns:
+        dict: Mensagem indicando que as notas do romaneio foram removidas
+        da minuta.
+    """
+    MinutaNotas.objects.filter(
+        idMinuta_id=id_minuta, id_romaneio=id_romaneio
+    ).delete()
+    Romaneios.objects.filter(idRomaneio=id_romaneio).update(idMinuta_id=None)
+    return {"mensagem": "NOTAS DO ROMANEIO REMOVIDAS DA MINUUTA"}
