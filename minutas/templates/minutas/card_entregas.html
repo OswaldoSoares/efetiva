@@ -1,0 +1,173 @@
+{% load humanize %}
+<div class="card-header">
+    <div class="input-group">
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-up"></i>
+        </div>
+        <div class="div-form-control">
+            <span>ENTREGAS</span>
+        </div>
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-up"></i>
+        </div>
+    </div>
+</div>
+<div class="card-body">
+    {% for romaneio in minuta.romaneio_pesos %}
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-check i-button-null"></i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-100 text-center font-menor">
+                    <span>
+                        {% if romaneio.peso %}
+                        ROMANEIO: {{ romaneio.romaneio|stringformat:".5d" }} - {{ romaneio.peso|stringformat:"3.f" }} kg
+                        {% else %}
+                        ROMANEIO: {{ romaneio.romaneio|stringformat:".5d" }} - 0 kg
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-minus-circle i-button js-gerenciar-romaneio-minuta"
+                data-id_minuta="{{ minuta.idminuta }}" data-id_romaneio="{{ romaneio.romaneio }}"
+                data-acao="remover" title="REMOVER ROMANEIO DA MINUTA"></i>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% if minuta.romaneio %}
+        <div class="linha-divisoria-nova"></div>
+    {% endif %}
+    {% for entrega in minuta.entregas %}
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="i-button-null">{{ forloop.counter|stringformat:".2d" }}</i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-25 text-left font-menor">
+                    {% if entrega.id_romaneio %}
+                    <i class="icofont-edit i-button-null"
+                       title="SOMENTE REMOVENDO ROMANEIO DA MINUTA"></i>
+                    {% else %}
+                    <i class="icofont-edit i-button"
+                       onclick="openMyModal(event); return false;"
+                       data-title="EDITAR NOTA"
+                       data-action="{% url 'adicionar_entrega' %}"
+                       data-button-save-label="EDITAR"
+                       data-idminuta="{{ minuta.idminuta }}"
+                       data-id_minuta_notas="{{ entrega.idMinutaNotas }}"></i>
+                    {% endif %}
+                    <span>{{ entrega.Nota|default_if_none:"S/ NUMERO"|stringformat:"s"|slice:":9" }}</span>
+                </div>
+                <div class="tamanho-35 text-center font-menor">
+                    <i class="icofont-money i-button-null" title="VALOR DA NOTA"></i>
+                    <span>R$ {{ entrega.ValorNota|intcomma }}</span>
+                </div>
+                <div class="tamanho-25 text-center font-menor">
+                    <i class="icofont-truck-loaded i-button-null" title="PESO DA NOTA"></i>
+                    <span>{{ entrega.Peso|intcomma }}</span>
+                </div>
+                <div class="tamanho-15 text-center font-menor" title="VOLUME DA NOTA">
+                    <i class="icofont-cube i-button-null"></i>
+                    <span>{{ entrega.Volume }}</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                {% if entrega.id_romaneio %}
+                <i class="icofont-trash i-button-null"
+                   title="SOMENTE REMOVENDO ROMANEIO DA MINUTA"></i>
+                {% else %}
+                <i class="icofont-trash i-button js-remover-entrega-minuta"
+                   data-id_minuta_notas="{{ entrega.idMinutaNotas }}"></i>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% if entrega.Nome %}
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-shopping-cart i-button-null"></i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-100 text-left font-menor">
+                    <span>{{ entrega.Nome }}</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-check i-button-null"></i>
+            </div>
+        </div>
+    </div>
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-google-map i-button-null"></i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-100 text-left font-menor">
+                    <span>{{ entrega.Bairro }} - {{ entrega.Cidade }} - {{ entrega.Estado }}</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-check i-button-null"></i>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-wallet i-button-null"></i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-100 text-center font-menor">
+                    <span>ADICIONAR NOVA ENTREGA</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-plus-circle i-button"
+                   onclick="openMyModal(event); return false;"
+                   data-title="ADICIONAR ENTREGA"
+                   data-action="{% url 'adicionar_entrega' %}"
+                   data-button-save-label="ADICIONAR"
+                   data-idminuta="{{ minuta.idminuta }}"></i>
+            </div>
+        </div>
+    </div>    
+</div>
+<div class="card-footer">
+    <div class="input-group">
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-down"></i>
+        </div>
+        <div class="div-flex div-form-control">
+            {% if minuta.entregas %}
+            <div class="tamanho-10 text-center font-menor">
+                <i class="icofont-file-document i-button-null"></i>
+                <span>{{ minuta.quantidade_entregas }}</span>
+            </div>
+            <div class="tamanho-40 text-center font-menor">
+                <i class="icofont-money i-button-null"></i>
+                <span>R$ {{ minuta.t_entregas.valor_entregas|intcomma }}</span>
+            </div>
+            <div class="tamanho-30 text-center font-menor">
+                <i class="icofont-truck-loaded i-button-null"></i>
+                <span>{{ minuta.t_entregas.peso_entregas|intcomma }}</span>
+            </div>
+            <div class="tamanho-20 text-center font-menor">
+                <i class="icofont-cube i-button-null"></i>
+                <span>{{ minuta.t_entregas.volume_entregas }}</span>
+            </div>
+            {% endif %}
+        </div>
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-down"></i>
+        </div>
+    </div>
+</div>
