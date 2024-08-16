@@ -2995,6 +2995,8 @@ def contexto_minuta_alterada(idminuta):
         "despesas": minuta["despesas"],
         "minuta": minuta,
     }
+    romaneios = create_contexto_romaneios(minuta["idcliente"])
+    contexto.update({"romaneios": romaneios})
     return contexto
 
 
