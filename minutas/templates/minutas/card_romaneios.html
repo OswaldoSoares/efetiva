@@ -1,0 +1,72 @@
+<div class="card-header">
+    <div class="input-group">
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-up"></i>
+        </div>
+        <div class="div-form-control">
+            <span>ROMANEIOS SEM MINUTA</span>
+        </div>
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-up"></i>
+        </div>
+    </div>
+</div>
+<div class="card-body">
+    {% for romaneio in romaneios  %}
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="i-button-null">{{ forloop.counter|stringformat:".2d" }}</i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-50 text-left font-menor">
+                    <span>
+                        {{ romaneio.romaneio|stringformat:'05d' }} - {{ romaneio.data_romaneio }}
+                    </span>
+                </div>
+                <div class="tamanho-50 text-right font-menor">
+                    <span title="VEÍCULO UTILIZADO - {{ romaneio.veiculo }}">
+                        {{ romaneio.motorista|slice:"0:20" }}
+                    </span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-plus-circle i-button js-gerenciar-romaneio-minuta"
+                   data-id_romaneio="{{ romaneio.idromaneio }}" data-id_minuta="{{ minuta.idminuta }}"
+                   data-acao="adicionar" title="ADICIONAR ROMANEIO NA MINUTA"></i>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% if not romaneios %}
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-info i-button-null"></i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-100 text-center font-menor">
+                    <span>NENHUM ROMANEIO DISPONÍVEL</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-check i-button-null"></i>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+<div class="card-footer">
+    <div class="input-group">
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-down"></i>
+        </div>
+        <div class="div-flex div-form-control">
+            <div class="tamanho-100 text-center">
+            </div>
+        </div>
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-down"></i>
+        </div>
+    </div>
+</div>
