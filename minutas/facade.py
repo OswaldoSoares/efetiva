@@ -3082,6 +3082,23 @@ def html_card_despesas(request, data, contexto):
     return data
 
 
+def html_card_romaneios(request, data, contexto):
+    """
+    Renderiza o template do card romaneios da minuta e o adiciona aos dados
+    fornecidos.
+
+    Args:
+        request (HttpRequest): Objeto de requisição HTTP.
+        data (dict): Dicionário contendo os dados atuais.
+        contexto (dict): Contexto atualizado da minuta.
+
+    Returns:
+        dict: Dicionário contendo os dados atualizados com o HTML do checklist.
+    """
+    data["html_card_romaneios"] = render_to_string(
+        "minutas/card_romaneios.html", contexto, request=request
+    )
+    return data
 def categorias_veiculo():
     """
     Retorna uma lista de categorias de veículos ordenadas por categoria.
