@@ -855,6 +855,15 @@ def adicionar_entrega(request):
     )
 
 
+def remover_entrega(request):
+    id_minuta = request.GET.get("id_minuta")
+    id_minuta_notas = request.GET.get("id_minuta_notas")
+    contexto = facade.deletar_nota_de_entrega_da_minuta(id_minuta_notas)
+    contexto.update(facade.contexto_minuta_alterada(id_minuta))
+
+    return facade.data_minuta_alterada(request, contexto)
+
+
 def alterar_status_minuta(request):
     """
     Altera o status de uma minuta e atualiza o contexto com as novas
