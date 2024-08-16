@@ -1069,27 +1069,23 @@ function calculosMudarInputRecebe(element_select, valor_digitado) {
 $(document).on("click", "#chk-perimetro", function(event) {
     if ($("#chk-perimetro").is(":checked")) {
         $(".js-perimetro-hide").hide();
-        $("#js-perimetro-div").removeClass("col-md-2");
-        $("#js-perimetro-div").addClass("col-md-12");
-        $("#id_Nota").val("PERIMETRO");
-        $("#id_Estado").focus();
+        $("#nota").val("PERIMETRO");
+        $("#bairro").focus();
     } else {
         $(".js-perimetro-hide").show();
-        $("#js-perimetro-div").removeClass("col-md-12");
-        $("#js-perimetro-div").addClass("col-md-2");
-        $("#id_Nota").val("");
-        $("#id_Nota").focus();
+        $("#nota").val("");
+        $("#nota").focus();
     }
 });
 
 // Utilizado no Card-Entrega (Formulário Modal)
 $(document).on("click", "#chk-saida", function(event) {
     if ($("#chk-saida").is(":checked")) {
-        $("#id_Nota").val($("#label-chk-saida").attr("saida"))
-        $("#id_ValorNota").focus();
+        $("#nota").val($("#label-chk-saida").data("saida"))
+        $("#valor_nota").focus();
     } else {
-        $("#id_Nota").val("")
-        $("#id_Nota").focus();
+        $("#nota").val("")
+        $("#nota").focus();
     }
 });
 
