@@ -21,20 +21,20 @@
             </div>
             <div class="div-flex div-form-control">
                 <div class="tamanho-60 text-left font-menor">
+                    <i class="icofont-edit i-button"
+                       onclick="openMyModal(event); return false;"
+                       data-title="EDITAR DESPESA"
+                       data-action="{% url 'adicionar_despesa' %}"
+                       data-button-save-label="EDITAR"
+                       data-idminuta="{{ s_minuta.idminuta }}"
+                       data-id_minuta_itens="{{ despesa.idMinutaItens }}"></i>
                     <span>{{ despesa.Descricao }}</span>
                 </div>
                 <div class="tamanho-40 text-right font-menor">
+                    <i class="icofont-money i-button-null"
+                       title="VALOR DA DESPESA"></i>
                     <span>R$ {{ despesa.Valor }}</span>
                 </div>
-            </div>
-            <div class="input-group-addon addon-my-color">
-                <i class="icofont-edit i-button"
-                   onclick="openMyModal(event); return false;"
-                   data-title="EDITAR DESPESA"
-                   data-action="{% url 'adicionar_despesa' %}"
-                   data-button-save-label="EDITAR"
-                   data-idminuta="{{ s_minuta.idminuta }}"
-                   data-id_minuta_itens="{{ despesa.idMinutaItens }}"></i>
             </div>
             <div class="input-group-addon addon-my-color">
                 <i class="icofont-trash i-button js-excluir-despesa-minuta"
