@@ -472,9 +472,17 @@ def notas_status_fim_pagina(pdf, contexto):
 
     """
     pdf.line(cmp(10), cmp(14), cmp(200), cmp(14))
+    total_peso = 0
+    total_volume = 0
+    for item_x in contexto["notas"]:
+        total_peso += item_x["peso"]
+        total_volume += item_x["volume"]
     notas = str(len(contexto["notas"])).zfill(3)
     pagina = str(pdf.getPageNumber()).zfill(2)
     pdf.drawString(cmp(20), cmp(11), f"{notas} NOTAS")
+    pdf.drawCentredString(
+        cmp(105), cmp(11), f"Peso: {total_peso} kg - Volume {total_volume}"
+    )
     pdf.drawRightString(cmp(190), cmp(11), f"PÁGINA {pagina}")
     pdf.showPage()
 
