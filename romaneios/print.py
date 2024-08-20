@@ -289,7 +289,10 @@ def notas_romaneio(pdf, contexto):
             cmp(linha),
             f"{local_endereco['coleta']}",
         )
-        pdf.setFillColor(HexColor("#FF0000"))
+        if status_nota == "ENTREGUE":
+            pdf.setFillColor(HexColor("#0000FF"))
+        else:
+            pdf.setFillColor(HexColor("#FF0000"))
         pdf.drawRightString(cmp(198), cmp(linha), f"{status_nota}")
         pdf.setFillColor(HexColor("#000000"))
         linha -= 2.5
