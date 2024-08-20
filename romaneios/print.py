@@ -402,6 +402,8 @@ def notas_status(pdf, contexto):
                 ".",
             )
         )
+        peso = item_x["peso"]
+        volume = item_x["volume"]
         if item_x["placa_motorista"]:
             placa = item_x["placa_motorista"][0]["placa"]
             motorista = item_x["placa_motorista"][0]["motorista"]
@@ -437,7 +439,7 @@ def notas_status(pdf, contexto):
             pdf.drawString(
                 cmp(12),
                 cmp(linha),
-                f"{data_nota} - {serie} - VALOR: R$ {valor} - CNPJ: {cnpj} - {motorista} - {placa}",
+                f"{data_nota} - {serie} - VALOR: R$ {valor} - PESO: {peso} - VOLUME: {volume} - CNPJ: {cnpj} - {motorista} - {placa}",
             )
         if item_x["ocorrencia"]:
             for item_y in item_x["ocorrencia"]:
