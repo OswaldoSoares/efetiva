@@ -16,6 +16,7 @@ from minutas.models import Minuta, MinutaColaboradores
 from clientes.models import FoneContatoCliente
 from transefetiva.settings.settings import STATIC_ROOT
 from core.tools import convert_milimetro_pontos as cmp
+from veiculos.models import Veiculo
 
 
 def print_minutas_periodo(contexto):
