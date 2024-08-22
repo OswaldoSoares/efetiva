@@ -36,3 +36,25 @@ def default_if_zero(valor, digitos_decimais=2):
         return f"{0:.{digitos_decimais}f}"
     else:
         return valor
+
+
+@register.filter
+def formatar_numero(valor, digitos_decimais=2):
+    """
+    Formata um número com separadores de milhar e casas decimais.
+
+    Esta função utiliza a função auxiliar `formatar_numero_com_separadores`
+    para formatar o valor com os separadores apropriados e o número
+    especificado de casas decimais.
+
+    Args:
+        valor (float or str): O valor a ser formatado. Deve ser um número ou
+                              uma string que representa um número.
+        digitos_decimais (int, opcional): Número de casas decimais a ser
+                                          exibido. O padrão é 2.
+
+    Returns:
+        str: O valor formatado com separadores de milhar e o número especificado
+        de casas decimais.
+    """
+    return formatar_numero_com_separadores(valor, digitos_decimais)
