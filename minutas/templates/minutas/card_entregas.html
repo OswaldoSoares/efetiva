@@ -59,7 +59,7 @@
                        data-action="{% url 'adicionar_entrega' %}"
                        data-button-save-label="EDITAR"
                        data-idminuta="{{ minuta.idminuta }}"
-                       data-id_minuta_notas="{{ entrega.idMinutaNotas }}"></i>
+                       data-id_minuta_nota="{{ entrega.idMinutaNotas }}"></i>
                     {% endif %}
                     <span>{{ entrega.Nota|default_if_none:"S/ NUMERO"|stringformat:"s"|slice:":9" }}</span>
                 </div>
@@ -120,6 +120,9 @@
     </div>
     {% endif %}
     {% endfor %}
+    {% if minuta.entregas %}
+        <div class="linha-divisoria-nova"></div>
+    {% endif %}
     <div class="card-body-item">
         <div class="input-group">
             <div class="input-group-addon addon-my-color">
