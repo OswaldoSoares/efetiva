@@ -33,7 +33,7 @@
                 <div class="tamanho-40 text-right font-menor">
                     <i class="icofont-money i-button-null"
                        title="VALOR DA DESPESA"></i>
-                    <span>R$ {{ despesa.Valor }}</span>
+                    <span>R$ {{ despesa.Valor|formatar_numero:2 }}</span>
                 </div>
             </div>
             <div class="input-group-addon addon-my-color">
@@ -60,6 +60,9 @@
     </div>
     {% endif %}
     {% endfor %}
+    {% if minuta.despesas %}
+        <div class="linha-divisoria-nova"></div>
+    {% endif %}
     <div class="card-body-item">
         <div class="input-group">
             <div class="input-group-addon addon-my-color">
@@ -88,7 +91,9 @@
         </div>
         <div class="div-flex div-form-control">
             <div class="tamanho-100 text-center">
-            <span>TOTAL DESPESAS R$ {{ minuta.t_despesas.valor_despesas|default_if_zero:"0,00" }}</span>
+                <span>
+                    TOTAL DESPESAS R$ {{ minuta.t_despesas.valor_despesas|default_if_zero:2|formatar_numero:2 }}
+                </span>
             </div>
         </div>
         <div class=" input-group-addon addon-my-color">
