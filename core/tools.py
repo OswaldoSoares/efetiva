@@ -96,3 +96,24 @@ def convert_milimetro_pontos(mm):
     :return: pontos
     """
     return mm / 0.352777
+
+
+def get_request_data(request, key):
+    """
+    Recupera um valor da requisição HTTP, priorizando os dados do POST.
+
+    Esta função tenta recuperar o valor associado à chave fornecida
+    a partir dos dados do POST da requisição. Se a chave não for encontrada
+    no POST, ela verifica os dados do GET.
+
+    Args:
+        request (HttpRequest): O objeto de requisição HTTP contendo os dados
+        de POST e GET.
+        key (str): A chave do dado a ser recuperado da requisição.
+
+    Returns:
+        str ou None: O valor associado à chave, se encontrado nos dados de
+        POST ou GET, ou None se a chave não estiver presente em nenhum dos
+        dois.
+    """
+    return request.POST.get(key) or request.GET.get(key)
