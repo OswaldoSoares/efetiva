@@ -117,3 +117,38 @@ def get_request_data(request, key):
         dois.
     """
     return request.POST.get(key) or request.GET.get(key)
+
+
+def formatar_numero_com_separadores(valor, digitos_decimais):
+    """
+    Formata um número para uma string com separadores de milhar e um
+    formato decimal específico.
+
+    A função assume que o separador decimal deve ser uma vírgula e o
+    separador de milhar deve ser um ponto.
+    Se o valor for None ou uma string vazia, retorna "0" com o formato
+    decimal especificado.
+
+    Exemplo:
+        Para o valor 1234.567 e digitos_decimais = 2, a função
+        retornará "1.234,57".
+
+    :param valor: O número a ser formatado. Pode ser um float ou uma
+                  string representando um número.
+    :param digitos_decimais: O número de casas decimais desejadas na
+                             formatação.
+    :return: O número formatado como uma string.
+    """
+    if valor:
+        # Converte o valor para float e formata com o número de casas
+        # decimais especificado
+        valor_formatado = f"{float(valor):,.{digitos_decimais}f}"
+        # Substitui os separadores conforme o formato local
+        return (
+            valor_formatado.replace(",", "_")
+            .replace(".", ",")
+            .replace("_", ".")
+        )
+    else:
+        # Retorna 0 com o número de casas decimais especificado
+        return f"0,{''.join(['0' for _ in range(digitos_decimais)])}"
