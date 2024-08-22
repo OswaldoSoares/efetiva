@@ -3724,10 +3724,9 @@ def salvar_ou_atualizar_despesa_minuta(request):
         dict: Dicionário contendo uma mensagem de sucesso.
     """
     id_minuta_itens = request.POST.get("id_minuta_itens")
-    descricao = request.POST.get("descricao")
+    descricao = (request.POST.get("descricao") or "").upper()
     valor = request.POST.get("valor")
-    obs = request.POST.get("obs")
-
+    obs = (request.POST.get("obs") or "").upper()
     if id_minuta_itens:
         MinutaItens.objects.filter(idMinutaItens=id_minuta_itens).update(
             Descricao=descricao,
