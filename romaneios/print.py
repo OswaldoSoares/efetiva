@@ -503,9 +503,9 @@ def notas_romaneio_fim_pagina(pdf, contexto, total_romaneio, peso_romaneio):
 
     """
     peso_restante = 0
-    for item_x in contexto["notas"]:
-        if item_x["statusnota"] != "ENTREGUE":
-            peso_restante += item_x["peso"]
+    for item in contexto["notas"]:
+        if item.idNotasClientes.StatusNota != "ENTREGUE":
+            peso_restante += item.idNotasClientes.Peso
     pdf.line(
         cmp(10),
         cmp(14),
@@ -525,7 +525,7 @@ def notas_romaneio_fim_pagina(pdf, contexto, total_romaneio, peso_romaneio):
     pdf.drawCentredString(
         cmp(105),
         cmp(11),
-        f"{total_romaneio_str} - {peso_romaneio_str} - RESTANDO {peso_restante} Kg",
+        f"{total_romaneio_str} - {peso_romaneio_str} RESTANDO {peso_restante} Kg",
     )
     pdf.drawRightString(
         cmp(190),
