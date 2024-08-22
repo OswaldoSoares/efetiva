@@ -11,19 +11,27 @@ register = template.Library()
 
 
 @register.filter(name="default_if_zero")
-def default_if_zero(value, arg):
+def default_if_zero(valor, digitos_decimais=2):
     """
-    Retorna um valor padrão se o valor fornecido for zero.
+    Formata um valor numérico, retornando um número formatado com um
+    número específico de casas decimais.
 
-    Este filtro é utilizado em templates para exibir um valor alternativo
-    quando o valor original é zero.
+    Se o valor for None ou uma string vazia, retorna '0' formatado com
+    o número de casas decimais especificado.
+    Caso contrário, retorna o valor original, que deve ser um número ou
+    uma string que representa um número.
 
     Args:
-        value (int or float): O valor a ser verificado.
-        arg (any): O valor a ser retornado se o valor for zero.
+        valor (float or str): O valor a ser formatado. Pode ser um número
+                              ou uma string.
+        digitos_decimais (int, opcional): Número de casas decimais a ser
+                                          exibido. O padrão é 2.
 
     Returns:
-        any: O valor original se não for zero, caso contrário, o valor
-        padrão fornecido.
+        str: O valor formatado com o número especificado de casas decimais,
+        ou o valor original se não for None ou vazio.
     """
-    return arg if value == 0 else value
+    if valor in (None, ""):
+        return f"{0:.{digitos_decimais}f}"
+    else:
+        return valor
