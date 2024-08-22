@@ -34,8 +34,7 @@ def default_if_zero(valor, digitos_decimais=2):
     """
     if valor in (None, ""):
         return f"{0:.{digitos_decimais}f}"
-    else:
-        return valor
+    return valor
 
 
 @register.filter
