@@ -577,10 +577,18 @@ function openMyModal(event) {
 
             // Usado no módulo minuta - card_despesa
             id_minuta_itens: $(event.target).data("id_minuta_itens"),
+            // Usado no módulo minuta - card entrega
+            id_minuta_nota: $(event.target).data("id_minuta_nota"),
         }
     }).done(function(data, textStatus, jqXHR) {
         modal.find(".modal-body").html(data.modal_html);
         modal.modal("show");
+        // Usado no módulo minuta - Modal Entrega
+        if ($(event.target).action="{% url 'adicionar_entrega' %}") {
+            if ($("#chk-perimetro").is(":checked")) {
+                $(".js-perimetro-hide").hide();
+            }
+        }
         formAjaxSubmit(modal, url, null, null);
     }).fail(function(jqXHR, textStatus, errorThrown) {
         $(".mensagem-erro").text(errorThrown);
