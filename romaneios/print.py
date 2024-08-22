@@ -484,7 +484,9 @@ def notas_status_fim_pagina(pdf, contexto):
     pagina = str(pdf.getPageNumber()).zfill(2)
     pdf.drawString(cmp(20), cmp(11), f"{notas} NOTAS")
     pdf.drawCentredString(
-        cmp(105), cmp(11), f"Peso: {total_peso} kg - Volume {total_volume}"
+        cmp(105),
+        cmp(11),
+        f"Peso: {total_peso} kg - Volume {total_volume}",
     )
     pdf.drawRightString(cmp(190), cmp(11), f"PÁGINA {pagina}")
     pdf.showPage()
@@ -500,6 +502,10 @@ def notas_romaneio_fim_pagina(pdf, contexto, total_romaneio, peso_romaneio):
         peso_romaneio:
 
     """
+    peso_restante = 0
+    for item_x in contexto["notas"]:
+        if item_x["statusnota"] != "ENTREGUE":
+            peso_restante += item_x["peso"]
     pdf.line(
         cmp(10),
         cmp(14),
@@ -508,8 +514,8 @@ def notas_romaneio_fim_pagina(pdf, contexto, total_romaneio, peso_romaneio):
     )
     notas = str(len(contexto["notas"])).zfill(2)
     entregas = str(int(contexto["quantidade_entregas"])).zfill(2)
-    total_romaneio_str = f"{valor_ponto_milhar(total_romaneio, 2)}"
-    peso_romaneio_str = f"{valor_ponto_milhar(peso_romaneio, 3)}"
+    total_romaneio_str = f"R$ {valor_ponto_milhar(total_romaneio, 2)}"
+    peso_romaneio_str = f"PESO {valor_ponto_milhar(peso_romaneio, 3)} Kg"
     pagina = str(pdf.getPageNumber()).zfill(2)
     pdf.drawString(
         cmp(20),
@@ -519,7 +525,7 @@ def notas_romaneio_fim_pagina(pdf, contexto, total_romaneio, peso_romaneio):
     pdf.drawCentredString(
         cmp(105),
         cmp(11),
-        f"R$ {total_romaneio_str} - PESO {peso_romaneio_str}",
+        f"{total_romaneio_str} - {peso_romaneio_str} - RESTANDO {peso_restante} Kg",
     )
     pdf.drawRightString(
         cmp(190),
