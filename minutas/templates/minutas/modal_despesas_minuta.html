@@ -1,3 +1,4 @@
+{% load custom_filters %}
 <form class="row g-3" method="post" action="{% url 'adicionar_despesa' %}">
 {% csrf_token %}
    <div class="col-md-6">
@@ -13,7 +14,7 @@
     <div class="col-md-6">
         <label for="valor">VALOR:</label>
         <input type="number" class="form-control" name="valor"
-               id="valor" value="{{ despesa.Valor|default_if_none:'0,00' }}">
+               id="valor" value="{{ despesa.Valor|default_if_zero:2 }}">
     </div>
     <div class="col-md-12">
         <label for="obs">OBSERVAÇÃO:</label>
