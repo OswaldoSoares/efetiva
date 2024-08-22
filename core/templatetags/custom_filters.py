@@ -53,7 +53,7 @@ def formatar_numero(valor, digitos_decimais=2):
                                           exibido. O padrão é 2.
 
     Returns:
-        str: O valor formatado com separadores de milhar e o número especificado
-        de casas decimais.
+        str: O valor formatado com separadores de milhar e o número
+        especificado de casas decimais.
     """
     return formatar_numero_com_separadores(valor, digitos_decimais)
