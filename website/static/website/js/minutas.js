@@ -646,6 +646,9 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                     $(".card-despesa").hide()
                     $(".card-despesa").html(xhr["html_card_despesas"])
                     $(".card-despesa").show()
+                    $(".card-entrega").hide()
+                    $(".card-entrega").html(xhr["html_card_entregas"])
+                    $(".card-entrega").show()
                     $(".card-checklist").hide()
                     $(".card-checklist").html(xhr["html_checklist"])
 
