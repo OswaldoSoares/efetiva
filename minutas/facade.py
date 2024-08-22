@@ -3821,8 +3821,23 @@ def salvar_ou_atualizar_entrega_minuta(request):
         idMinuta_id=id_minuta,
     )
 
+    return {"mensagem": "NOTA DE ENTREGA ADICIONADA"}
+
 
 def deletar_nota_de_entrega_da_minuta(id_minuta_notas):
+    """
+    Deleta uma nota de entrega associada a uma minuta.
+
+    Esta função remove o registro de uma nota de entrega específica da
+    tabela `MinutaNotas`, com base no ID fornecido.
+
+    Args:
+        id_minuta_notas (int): O ID da nota de entrega a ser removida.
+
+    Returns:
+        dict: Um dicionário com uma mensagem indicando que a entrega foi
+        removida.
+    """
     MinutaNotas.objects.filter(idMinutaNotas=id_minuta_notas).delete()
     return {"mensagem": "ENTREGA REMOVIDA"}
 
