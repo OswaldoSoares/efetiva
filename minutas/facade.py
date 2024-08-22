@@ -3797,17 +3797,50 @@ def renderizar_modal_entregas_minuta(id_minuta, request):
 
 
 def salvar_ou_atualizar_entrega_minuta(request):
-    print(request.POST)
+    """
+    Salva ou atualiza uma nota de entrega associada a uma minuta.
+
+    Esta função verifica se uma nota de entrega já existe, com base no
+    ID da nota (`id_minuta_nota`). Se o ID estiver presente, a função
+    atualiza o registro existente. Caso contrário, ela cria um novo registro
+    de nota de entrega para a minuta.
+    Os campos de texto são convertidos para maiúsculas antes de serem salvos.
+
+    Args:
+        request (HttpRequest): O objeto de requisição HTTP contendo os dados
+        do POST.
+
+    Returns:
+        dict: Um dicionário com uma mensagem indicando se a nota de entrega
+        foi adicionada ou atualizada.
+    """
     id_minuta = request.POST.get("id_minuta")
-    nota = request.POST.get("nota")
+    nota = (request.POST.get("nota") or "").upper()
     valor_nota = request.POST.get("valor_nota")
     peso = request.POST.get("peso")
     volume = request.POST.get("volume")
-    nota_guia = request.POST.get("nota_guia")
-    nome = request.POST.get("nome")
-    bairro = request.POST.get("bairro")
-    cidade = request.POST.get("cidade")
-    estado = request.POST.get("estado")
+    nota_guia = (request.POST.get("nota_guia") or "").upper()
+    nome = (request.POST.get("nome") or "").upper()
+    bairro = (request.POST.get("bairro") or "").upper()
+    cidade = (request.POST.get("cidade") or "").upper()
+    estado = (request.POST.get("estado") or "").upper()
+    id_minuta_nota = request.POST.get("id_minuta_nota")
+
+    if id_minuta_nota:
+        MinutaNotas.objects.filter(idMinutaNotas=id_minuta_nota).update(
+            Nota=nota,
+            ValorNota=valor_nota,
+            Peso=peso,
+            Volume=volume,
+            NotaGuia=nota_guia,
+            Nome=nome,
+            Bairro=bairro,
+            Cidade=cidade,
+            Estado=estado,
+            idMinuta_id=id_minuta,
+        )
+        return {"mensagem": "NOTA DE ENTREGA ATUALIZADA"}
+
     MinutaNotas.objects.create(
         Nota=nota,
         ValorNota=valor_nota,
