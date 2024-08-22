@@ -3762,18 +3762,37 @@ def deletar_despesa_minuta(id_minuta_itens):
 
 
 def renderizar_modal_entregas_minuta(id_minuta, request):
+    """
+    Renderiza o modal de entregas para uma minuta específica.
+
+    Esta função gera o conteúdo HTML do modal de entregas de uma minuta,
+    baseado no ID da minuta e, opcionalmente, no ID de uma nota específica
+    passada no request GET.
+
+    Args:
+        id_minuta (int): O ID da minuta para a qual o modal será gerado.
+        request (HttpRequest): O objeto de requisição HTTP contendo os
+        dados do GET.
+
+    Returns:
+        JsonResponse: Um dicionário JSON contendo o HTML renderizado do
+        modal.
+    """
     id_minuta_nota = request.GET.get("id_minuta_nota")
     minuta = MinutaSelecionada(id_minuta)
+
     nota = (
         MinutaNotas.objects.filter(idMinutaNotas=id_minuta_nota).first()
         if id_minuta_nota
         else None
     )
+
     modal_html = render_to_string(
         "minutas/modal_entregas_minuta.html",
         {"minuta": minuta, "nota": nota},
         request,
     )
+
     return JsonResponse({"modal_html": modal_html})
 
 
