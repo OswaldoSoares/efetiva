@@ -154,20 +154,10 @@ def index_minuta(request):
 
 def minuta(request, idminuta):
     s_minuta = MinutaSelecionada(idminuta).__dict__
-    minuta = Minuta.objects.filter(idMinuta=idminuta)
-    minutaform = get_object_or_404(minuta, idMinuta=idminuta)
-    form_veiculo_solicitado = FormEditaVeiculoSolicitado(instance=minutaform)
-    form_hora_final = CadastraMinutaHoraFinal(instance=minutaform)
-    form_km_inicial = CadastraMinutaKMInicial(instance=minutaform)
-    form_km_final = CadastraMinutaKMFinal(instance=minutaform)
     # contexto 12/08/2024
     minuta = MinutaSelecionada(idminuta)
     contexto = {
         "s_minuta": s_minuta,
-        "form_veiculo_solicitado": form_veiculo_solicitado,
-        "form_hora_final": form_hora_final,
-        "form_km_inicial": form_km_inicial,
-        "form_km_final": form_km_final,
         "minuta": minuta,
     }
     itens_minuta = criar_itens_card_minuta(s_minuta)
