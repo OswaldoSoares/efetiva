@@ -218,14 +218,6 @@ def estorna_minuta(request, idmin):
     return redirect("consultaminuta", idmin)
 
 
-def edita_comentario(request, idmin):
-    minuta = Minuta.objects.get(idMinuta=idmin)
-    form = ""
-    if request.method == "POST":
-        form = CadastraComentarioMinuta(request.POST, instance=minuta)
-    return salva_form(request, form, "minutas/consultaminuta.html", idmin)
-
-
 def salva_form(request, form, template_name, idmin):
     data = dict()
     numerominuta = 0
