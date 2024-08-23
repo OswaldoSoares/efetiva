@@ -1,12 +1,9 @@
-from django.db.models import Max, Value
-from django.db.models.functions import Concat
 from django.http import JsonResponse
 from django.shortcuts import (
     get_object_or_404,
     redirect,
     render,
 )
-from django.template.loader import render_to_string
 from rolepermissions.decorators import has_permission_decorator
 
 from clientes.facade import create_contexto_seleciona_cliente
@@ -15,7 +12,6 @@ from minutas.itens_card import criar_itens_card_minuta
 from minutas.facade import MinutaSelecionada
 from minutas.print import print_minutas_periodo, imprime_minuta
 from website.facade import str_hoje
-from veiculos.models import Veiculo
 
 from .facade import (
     MinutasStatus,
@@ -25,20 +21,13 @@ from .facade import (
     filtro_clientes,
     filtro_colaboradores,
     filtro_veiculos,
-    forn_minuta,
     novo_status_minuta,
-    remove_colaborador,
-    remove_entrega,
-    retorna_json,
 )
 from .forms import (
-    CadastraComentarioMinuta,
     CadastraMinutaHoraFinal,
     CadastraMinutaKMFinal,
     CadastraMinutaKMInicial,
-    CadastraMinutaNota,
     FormEditaVeiculoSolicitado,
-    FormInsereEntrega,
 )
 from .models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas
 
