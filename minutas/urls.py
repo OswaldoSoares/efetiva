@@ -12,7 +12,6 @@ from .views import (
     imprimeminuta,
     index_minuta,
     minuta,
-    remove_minuta_entrega,
     remove_romaneio_minuta,
     gera_receitas,
     gera_pagamentos,
@@ -60,11 +59,6 @@ urlpatterns = [
         "filtraveiculoescolhido/",
         filtra_minuta_veiculo_escolhido,
         name="filtraveiculoescolhido",
-    ),
-    path(
-        "remove_entrega/",
-        remove_minuta_entrega,
-        name="remove_entrega",
     ),
     path(
         "estorna_pagamentos_ajudantes",
