@@ -218,34 +218,6 @@ def estorna_minuta(request, idmin):
     return redirect("consultaminuta", idmin)
 
 
-def salva_form(request, form, template_name, idmin):
-    data = dict()
-    numerominuta = 0
-    numeroidminuta = idmin
-    if template_name != "minutas/editaminutaveiculo.html":
-        numeroidminuta = form.instance
-    if request.method == "POST":
-        if form.is_valid():
-            data["form_is_valid"] = True
-            if template_name != "minutas/editaminutaveiculo.html":
-                form.save()
-            if template_name == "minutas/criaminuta.html":
-                return redirect("consultaminuta", numeroidminuta.idMinuta)
-            else:
-                return redirect("consultaminuta", idmin)
-        else:
-            return redirect("consultaminuta", idmin)
-    context = {
-        "form": form,
-        "numerominuta": numerominuta,
-        "numeroidminuta": numeroidminuta,
-    }
-    data["html_form"] = render_to_string(
-        template_name, context, request=request
-    )
-    return JsonResponse(data)
-
-
 def estorna_pagamentos(request):
     c_idminuta = request.GET.get("idMinuta")
     estorna_paga(c_idminuta)
