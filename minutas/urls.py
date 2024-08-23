@@ -115,11 +115,6 @@ urlpatterns = [
         name="minutas_periodo",
     ),
     path(
-        "minuta_cards",
-        views.minuta_cards,
-        name="minuta_cards",
-    ),
-    path(
         "estorna_faturamento",
         views.estorna_faturamento,
         name="estorna_faturamento",
