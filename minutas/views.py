@@ -176,27 +176,6 @@ def imprimeminuta(request, idmin):
         return redirect("consultaminuta", idmin)
 
 
-def estorna_minuta(request, idmin):
-    minuta = get_object_or_404(Minuta, idMinuta=idmin)
-    if minuta.StatusMinuta == "ABERTA":
-        pass
-    elif minuta.StatusMinuta == "CONCLUIDA":
-        altera_status_minuta("ABERTA", idmin)
-    elif minuta.StatusMinuta == "FECHADA":
-        altera_status_minuta("ABERTA", idmin)
-        itens_minuta_recebe_excluir = MinutaItens.objects.filter(
-            idMinuta=idmin
-        ).filter(TipoItens="RECEBE")
-        for itens in itens_minuta_recebe_excluir:
-            excluiminutaitens(itens.idMinutaItens)
-        itens_minuta_paga_excluir = MinutaItens.objects.filter(
-            idMinuta=idmin
-        ).filter(RecebePaga="P")
-        for itens in itens_minuta_paga_excluir:
-            excluiminutaitens(itens.idMinutaItens)
-    return redirect("consultaminuta", idmin)
-
-
 def estorna_pagamentos(request):
     c_idminuta = request.GET.get("idMinuta")
     estorna_paga(c_idminuta)
