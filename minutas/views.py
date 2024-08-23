@@ -282,19 +282,6 @@ def edita_minuta_saida_extra_ajudante(request, idminuta):
     return redirect("consultaminuta", idminuta)
 
 
-def insere_minuta_entrega(request):
-    c_form = FormInsereEntrega
-    c_idobj = None
-    if request.method == "GET":
-        c_idobj = request.GET.get("idobj")
-    elif request.method == "POST":
-        c_idobj = request.POST.get("idMinuta")
-    c_url = "/minutas/insereentrega/"
-    c_view = "insere_minuta_entrega"
-    data = forn_minuta(request, c_form, c_idobj, c_url, c_view)
-    return data
-
-
 def remove_minuta_entrega(request):
     c_idobj = request.GET.get("idMinutaNotas")
     c_idminuta = request.GET.get("idMinuta")
