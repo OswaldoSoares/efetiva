@@ -2,7 +2,6 @@ from django.urls import path
 from . import views
 
 from .views import (
-    adiciona_romaneio_minuta,
     edita_comentario,
     edita_minuta_saida_extra_ajudante,
     estorna_minuta,
@@ -64,11 +63,6 @@ urlpatterns = [
         "estorna_pagamentos_ajudantes",
         estorna_pagamentos_ajudantes,
         name="estorna_pagamentos_ajudantes",
-    ),
-    path(
-        "adiciona_romaneio_minuta",
-        adiciona_romaneio_minuta,
-        name="adiciona_romaneio_minuta",
     ),
     path(
         "remove_romaneio_minuta",
