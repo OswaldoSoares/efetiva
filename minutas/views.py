@@ -282,15 +282,6 @@ def edita_minuta_saida_extra_ajudante(request, idminuta):
     return redirect("consultaminuta", idminuta)
 
 
-def remove_minuta_colaborador(request):
-    c_idobj = request.GET.get("idMinutaColaboradores")
-    c_idminuta = request.GET.get("idMinuta")
-    c_cargo = request.GET.get("Cargo")
-    data = remove_colaborador(request, c_idobj, c_idminuta, c_cargo)
-    data = retorna_json(data)
-    return data
-
-
 def insere_minuta_entrega(request):
     c_form = FormInsereEntrega
     c_idobj = None
