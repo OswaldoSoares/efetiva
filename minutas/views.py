@@ -218,29 +218,6 @@ def estorna_minuta(request, idmin):
     return redirect("consultaminuta", idmin)
 
 
-def editaminutaentrega(request, idminent):
-    notaminuta = get_object_or_404(MinutaNotas, idMinutaNotas=idminent)
-    data = dict()
-    if request.method == "POST":
-        form = CadastraMinutaNota(
-            notaminuta.idMinuta_id, request.POST, instance=notaminuta
-        )
-        if form.is_valid():
-            form.save()
-        return redirect("consultaminuta", notaminuta.idMinuta_id)
-    else:
-        form = CadastraMinutaNota(notaminuta.idMinuta_id, instance=notaminuta)
-        context = {
-            "form": form,
-            "numerominuta": request.GET.get("idminuta"),
-            "idminent": idminent,
-        }
-        data["html_form"] = render_to_string(
-            "minutas/editaminutaentrega.html", context, request=request
-        )
-    return JsonResponse(data)
-
-
 def excluiminutaentrega(request, idminent):
     notaminuta = get_object_or_404(MinutaNotas, idMinutaNotas=idminent)
     data = dict()
