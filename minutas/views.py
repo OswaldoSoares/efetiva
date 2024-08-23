@@ -282,14 +282,6 @@ def edita_minuta_saida_extra_ajudante(request, idminuta):
     return redirect("consultaminuta", idminuta)
 
 
-def remove_minuta_entrega(request):
-    c_idobj = request.GET.get("idMinutaNotas")
-    c_idminuta = request.GET.get("idMinuta")
-    data = remove_entrega(request, c_idobj, c_idminuta)
-    data = retorna_json(data)
-    return data
-
-
 def adiciona_romaneio_minuta(request):
     idromaneio = request.GET.get("idromaneio")
     idminuta = request.GET.get("idminuta")
