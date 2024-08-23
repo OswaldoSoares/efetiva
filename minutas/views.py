@@ -23,13 +23,7 @@ from .facade import (
     filtro_veiculos,
     novo_status_minuta,
 )
-from .forms import (
-    CadastraMinutaHoraFinal,
-    CadastraMinutaKMFinal,
-    CadastraMinutaKMInicial,
-    FormEditaVeiculoSolicitado,
-)
-from .models import Minuta, MinutaColaboradores, MinutaItens, MinutaNotas
+from .models import Minuta, MinutaColaboradores, MinutaNotas
 
 
 def cria_minuta_fatura(valor, idminuta):
