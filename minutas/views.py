@@ -218,22 +218,6 @@ def estorna_minuta(request, idmin):
     return redirect("consultaminuta", idmin)
 
 
-def buscaminutaentrega(request):
-    nota_guia = MinutaNotas.objects.filter(
-        idMinuta_id=request.GET.get("id_minuta"),
-        Nota=request.GET.get("nota_guia"),
-    )
-    nota_guia_nome = list(nota_guia.values("Nome")[0].values())[0]
-    nota_guia_cidade = list(nota_guia.values("Cidade")[0].values())[0]
-    nota_guia_estado = list(nota_guia.values("Estado")[0].values())[0]
-    data = {
-        "nota_guia_nome": nota_guia_nome,
-        "nota_guia_cidade": nota_guia_cidade,
-        "nota_guia_estado": nota_guia_estado,
-    }
-    return JsonResponse(data)
-
-
 def filtraminutaveiculo(request):
     data = dict()
     propriedade = request.GET.get("propriedade")
