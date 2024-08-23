@@ -218,42 +218,6 @@ def estorna_minuta(request, idmin):
     return redirect("consultaminuta", idmin)
 
 
-def filtraminutaveiculo(request):
-    data = dict()
-    propriedade = request.GET.get("propriedade")
-    idminutamotoristacolaboradores = MinutaColaboradores.objects.filter(
-        idMinutaColaboradores=request.GET.get("idminutacolaboradores")
-    )
-    idmotorista = idminutamotoristacolaboradores.values_list("idPessoal_id")[0]
-    veiculo = ""
-    if propriedade == "1":
-        veiculo = Veiculo.objects.annotate(
-            Veiculo=Concat(
-                "Marca", Value(" - "), "Modelo", Value(" - "), "Placa"
-            )
-        ).filter(Motorista=idmotorista)
-    elif propriedade == "2":
-        veiculo = Veiculo.objects.annotate(
-            Veiculo=Concat(
-                "Marca", Value(" - "), "Modelo", Value(" - "), "Placa"
-            )
-        ).filter(Motorista=17)
-    elif propriedade == "3":
-        veiculo = Veiculo.objects.annotate(
-            Veiculo=Concat(
-                "Marca", Value(" - "), "Modelo", Value(" - "), "Placa"
-            )
-        ).all()
-    listaveiculo = []
-    for x in veiculo:
-        listaveiculo.append(x)
-    context = {"listaveiculo": listaveiculo}
-    data["html_form"] = render_to_string(
-        "minutas/editaminutaveiculolista.html", context, request=request
-    )
-    return JsonResponse(data)
-
-
 def edita_comentario(request, idmin):
     minuta = Minuta.objects.get(idMinuta=idmin)
     form = ""
