@@ -11,7 +11,6 @@ from .views import (
     imprimeminuta,
     index_minuta,
     minuta,
-    remove_romaneio_minuta,
     gera_receitas,
     gera_pagamentos,
     estorna_pagamentos_motorista,
@@ -63,11 +62,6 @@ urlpatterns = [
         "estorna_pagamentos_ajudantes",
         estorna_pagamentos_ajudantes,
         name="estorna_pagamentos_ajudantes",
-    ),
-    path(
-        "remove_romaneio_minuta",
-        remove_romaneio_minuta,
-        name="remove_romaneio_minuta",
     ),
     path(
         "gera_receitas",
