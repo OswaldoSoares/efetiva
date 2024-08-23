@@ -398,25 +398,6 @@ def minutas_periodo(request):
     return response
 
 
-def minuta_cards(request):
-    """
-        Criada: 15/07/2024
-        Requisita o contexto da minuta selecionada e o data (html) que será
-        retornado com JsonResponse. Mostrando os detalhes da minuta em cards
-        separados.
-    Args:
-        request: GET - idminuta
-
-    Returns:
-        data JsonResponse
-
-    """
-    idminuta = request.GET.get("idminuta")
-    contexto = facade.create_contexto_minuta(idminuta)
-    data = facade.create_data_minuta(request, contexto)
-    return data
-
-
 def estorna_faturamento(request):
     idminuta = request.GET.get("idminuta")
     facade.estorna_minutaitens_recebe(idminuta)
