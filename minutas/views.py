@@ -218,20 +218,6 @@ def estorna_minuta(request, idmin):
     return redirect("consultaminuta", idmin)
 
 
-def excluiminutaentrega(request, idminent):
-    notaminuta = get_object_or_404(MinutaNotas, idMinutaNotas=idminent)
-    data = dict()
-    if request.method == "POST":
-        notaminuta.delete()
-        return redirect("consultaminuta", notaminuta.idMinuta_id)
-    else:
-        context = {"notaminuta": notaminuta}
-        data["html_form"] = render_to_string(
-            "minutas/excluiminutaentrega.html", context, request=request
-        )
-    return JsonResponse(data)
-
-
 def buscaminutaentrega(request):
     nota_guia = MinutaNotas.objects.filter(
         idMinuta_id=request.GET.get("id_minuta"),
