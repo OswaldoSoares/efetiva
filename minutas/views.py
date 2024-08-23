@@ -282,18 +282,6 @@ def edita_minuta_saida_extra_ajudante(request, idminuta):
     return redirect("consultaminuta", idminuta)
 
 
-def remove_romaneio_minuta(request):
-    numero_romaneio = request.GET.get("romaneio")
-    idminuta = request.GET.get("idminuta")
-    idcliente = request.GET.get("idcliente")
-    facade.remove_numero_romaneio_minuta(numero_romaneio, idminuta)
-    contexto = facade.create_contexto_minuta_selecionada(idminuta)
-    romaneios = facade.create_contexto_romaneios(idcliente)
-    contexto.update({"romaneios": romaneios, "idminuta": idminuta})
-    data = facade.create_data_entrega_romaneio_minuta(request, contexto)
-    return data
-
-
 def gera_receitas(request):
     idminuta = request.POST.get("idminuta")
     facade.gera_itens_receitas(request)
