@@ -4,7 +4,6 @@ from . import views
 from .views import (
     adiciona_romaneio_minuta,
     buscaminutaentrega,
-    criaminutaentrega,
     edita_comentario,
     edita_minuta_saida_extra_ajudante,
     editaminutaentrega,
@@ -51,7 +50,6 @@ urlpatterns = [
     path("", index_minuta, name="index_minuta"),
     path("imprimeminuta/<int:idmin>/", imprimeminuta, name="imprimeminuta"),
     path("estorna_minuta/<int:idmin>/", estorna_minuta, name="estorna_minuta"),
-    path("criaminutaentrega", criaminutaentrega, name="criaminutaentrega"),
     path(
         "editaminutaentrega/<int:idminent>/",
         editaminutaentrega,
