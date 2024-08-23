@@ -11,7 +11,6 @@ from .views import (
     filtra_minuta_veiculo_escolhido,
     imprimeminuta,
     index_minuta,
-    insere_minuta_entrega,
     minuta,
     remove_minuta_entrega,
     remove_romaneio_minuta,
@@ -62,7 +61,6 @@ urlpatterns = [
         filtra_minuta_veiculo_escolhido,
         name="filtraveiculoescolhido",
     ),
-    path("insereentrega/", insere_minuta_entrega, name="insereentrega"),
     path(
         "remove_entrega/",
         remove_minuta_entrega,
