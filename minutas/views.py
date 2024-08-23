@@ -100,14 +100,6 @@ def altera_status_minuta(novo_status, idminuta):
     return True
 
 
-def kmfinal_veiculo(idveiculo):
-    veiculo = Minuta.objects.filter(idVeiculo=idveiculo).aggregate(
-        Max("KMFinal")
-    )
-    kmfinal = [item for item in veiculo.values()]
-    return kmfinal[0]
-
-
 @has_permission_decorator("modulo_minutas")
 def index_minuta(request):
     """
