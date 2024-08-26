@@ -1317,6 +1317,7 @@ $(document).on("click", ".js-gerenciar-romaneio-minuta", function() {
             $(".card-entrega").html(data["html_card_entregas"])
             $(".card-entrega").show()
             $(".box-loader").hide()
+            exibirMensagem(data["mensagem"])
         },
     });
 });
