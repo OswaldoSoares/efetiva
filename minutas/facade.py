@@ -3653,7 +3653,8 @@ def salvar_minuta(request):
 
 def atualizar_minuta(request):
     """
-    Atualiza as informações de uma minuta existente com base nos dados do request POST.
+    Atualiza as informações de uma minuta existente com base nos dados do
+    request POST.
 
     Args:
         request (HttpRequest): Objeto de requisição HTTP com os dados do POST.
@@ -3714,7 +3715,8 @@ def salvar_ou_atualizar_despesa_minuta(request):
     """
     Salva ou atualiza uma despesa em uma minuta.
 
-    Se o campo "id_minuta_itens" estiver presente no POST, atualiza a despesa correspondente.
+    Se o campo "id_minuta_itens" estiver presente no POST, atualiza a despesa
+    correspondente.
     Caso contrário, cria uma nova despesa na minuta especificada.
 
     Args:
