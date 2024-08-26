@@ -3903,12 +3903,19 @@ def adicionar_romaneio_na_minuta(id_minuta, id_romaneio):
 
     Args:
         id_minuta (int): O ID da minuta onde as notas serão adicionadas.
-        id_romaneio (int): O ID do romaneio cujas notas serão adicionadas à minuta.
+        id_romaneio (int): O ID do romaneio cujas notas serão adicionadas
+        à minuta.
 
     Returns:
-        dict: Mensagem indicando que as notas do romaneio foram adicionadas na minuta.
+        dict: Mensagem indicando o status da operação.
     """
-    notas = RomaneioNotas.objects.filter(idRomaneio=id_romaneio)
+    notas = list(RomaneioNotas.objects.filter(idRomaneio=id_romaneio))
+
+    if not notas:
+        return {
+            "mensagem": "ROMANEIO NÃO POSSUI NOTAS, IMPOSSÍVEL ADICIONÁ-LO"
+        }
+
     registro = [
         MinutaNotas(
             Nota=nota.idNotasClientes.NumeroNota,
@@ -3926,10 +3933,12 @@ def adicionar_romaneio_na_minuta(id_minuta, id_romaneio):
         )
         for nota in notas
     ]
+
     MinutaNotas.objects.bulk_create(registro)
     Romaneios.objects.filter(idRomaneio=id_romaneio).update(
         idMinuta_id=id_minuta
     )
+
     return {"mensagem": "NOTAS DO ROMANEIO ADICIONADAS NA MINUTA"}
 
 
