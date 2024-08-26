@@ -1469,7 +1469,7 @@ function mostraChecklist() {
     });
 }
 
-// Mostra a div de mensagem com a mensagem de erro
+// Mostra a div de mensagem com a mensagem
 function exibirMensagem(mensagem) {
     $('.mensagem p').text(mensagem);
     $('.mensagem p').animate({bottom: '0'}, 1000);
