@@ -1638,7 +1638,9 @@ def create_contexto_romaneios(id_cli):
         {
             "idromaneio": x.idRomaneio,
             "romaneio": x.Romaneio,
-            "motorista": nome_curto(x.idMotorista.Nome),
+            "motorista": nome_curto(x.idMotorista.Nome)
+            if x.idMotorista
+            else "",
             "veiculo": x.idVeiculo,
             "data_romaneio": x.DataRomaneio,
             "idminuta": x.idMinuta_id,
