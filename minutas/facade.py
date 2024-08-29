@@ -1650,56 +1650,6 @@ def create_contexto_romaneios(id_cli):
     return lista
 
 
-def save_notas_romaneio_minuta(id_rom, id_min):
-    rom_notas = RomaneioNotas.objects.filter(idRomaneio=id_rom)
-    lista = []
-    for x in rom_notas:
-        nota_cliente = NotasClientes.objects.get(
-            idNotasClientes=x.idNotasClientes_id
-        )
-        nota = dict()
-        nota["numero"] = nota_cliente.NumeroNota
-        nota["valor"] = nota_cliente.Valor
-        nota["peso"] = nota_cliente.Peso
-        nota["volume"] = nota_cliente.Volume
-        if nota_cliente.LocalColeta == "DESTINATÁRIO":
-            nota["nome"] = nota_cliente.Emitente
-            nota["endereco"] = nota_cliente.Endereco_emi
-            nota["bairro"] = nota_cliente.Bairro_emi
-            nota["cidade"] = nota_cliente.Cidade_emi
-            nota["estado"] = nota_cliente.Estado_emi
-        else:
-            nota["nome"] = nota_cliente.Destinatario
-            nota["endereco"] = nota_cliente.Endereco
-            nota["bairro"] = nota_cliente.Bairro
-            nota["cidade"] = nota_cliente.Cidade
-            nota["estado"] = nota_cliente.Estado
-        nota["notaguia"] = 0
-        nota["idminuta"] = id_min
-        lista.append(nota)
-    nova_lista = sorted(lista, key=lambda d: d["endereco"])
-    atual = -1
-    for itens in nova_lista:
-        proximo = next(
-            (
-                i
-                for i, x in enumerate(nova_lista)
-                if x["endereco"] == itens["endereco"]
-            ),
-            None,
-        )
-        if atual == proximo:
-            itens["notaguia"] = nota
-        else:
-            nota = itens["numero"]
-        atual = proximo
-    save_nota_entrega(nova_lista)
-    romaneio = Romaneios.objects.get(idRomaneio=id_rom)
-    obj = romaneio
-    obj.idMinuta_id = id_min
-    obj.save(update_fields=["idMinuta_id"])
-
-
 def save_nota_entrega(nota_lista):
     for nota in nota_lista:
         obj = MinutaNotas()
