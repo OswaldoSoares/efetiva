@@ -3910,11 +3910,27 @@ def adicionar_romaneio_na_minuta(id_minuta, id_romaneio):
 
     notas_ordenadas = sorted(notas_lista, key=lambda nota: nota["endereco"])
 
-    for i, nota in enumerate(notas_ordenadas):
-        if i > 0 and nota["endereco"] == notas_ordenadas[i - 1]["endereco"]:
-            nota["notaguia"] = notas_ordenadas[i - 1]["numero"]
+    atual = -1
+    for itens in notas_ordenadas:
+        proximo = next(
+            (
+                i
+                for i, x in enumerate(notas_ordenadas)
+                if x["endereco"] == itens["endereco"]
+            ),
+            None,
+        )
+        if atual == proximo:
+            itens["notaguia"] = nota
         else:
-            nota["notaguia"] = nota["numero"]
+            nota = itens["numero"]
+        atual = proximo
+
+    #  for i, nota in enumerate(notas_ordenadas):
+    #  if i > 0 and nota["endereco"] == notas_ordenadas[i - 1]["endereco"]:
+    #  nota["notaguia"] = notas_ordenadas[i - 1]["numero"]
+    #  else:
+    #  nota["notaguia"] = nota["numero"]
 
     registros_minuta = [
         MinutaNotas(
