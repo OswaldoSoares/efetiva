@@ -3851,42 +3851,90 @@ def novo_status_minuta(id_minuta, novo_status):
 
 def adicionar_romaneio_na_minuta(id_minuta, id_romaneio):
     """
-    Adiciona todas as notas associadas a um romaneio em uma minuta específica.
+    Adiciona as notas associadas a um romaneio a uma minuta.
 
-    Args:
-        id_minuta (int): O ID da minuta onde as notas serão adicionadas.
-        id_romaneio (int): O ID do romaneio cujas notas serão adicionadas
-        à minuta.
+    Esta função recupera todas as notas associadas ao romaneio especificado,
+    organiza-as de acordo com o endereço de destino e as insere na minuta.
+    Se o romaneio não possuir notas, uma mensagem de erro é retornada.
 
-    Returns:
-        dict: Mensagem indicando o status da operação.
+    Parâmetros:
+    - id_romaneio (int): ID do romaneio cujas notas serão adicionadas.
+    - id_minuta (int): ID da minuta onde as notas serão adicionadas.
+
+    Retorno:
+    - dict: Um dicionário contendo uma mensagem indicando o sucesso ou falha
+            da operação.
     """
-    notas = list(RomaneioNotas.objects.filter(idRomaneio=id_romaneio))
+    romaneio_notas = list(
+        RomaneioNotas.objects.filter(idRomaneio=id_romaneio).select_related(
+            "idNotasClientes"
+        )
+    )
 
-    if not notas:
+    if not romaneio_notas:
         return {
             "mensagem": "ROMANEIO NÃO POSSUI NOTAS, IMPOSSÍVEL ADICIONÁ-LO"
         }
 
-    registro = [
+    notas_lista = []
+    for romaneio_nota in romaneio_notas:
+        nota_cliente = romaneio_nota.idNotasClientes
+        nota = {
+            "numero": nota_cliente.NumeroNota,
+            "valor": nota_cliente.Valor,
+            "peso": nota_cliente.Peso,
+            "volume": nota_cliente.Volume,
+        }
+        if nota_cliente.LocalColeta == "DESTINATÁRIO":
+            nota.update(
+                {
+                    "nome": nota_cliente.Emitente,
+                    "endereco": nota_cliente.Endereco_emi,
+                    "bairro": nota_cliente.Bairro_emi,
+                    "cidade": nota_cliente.Cidade_emi,
+                    "estado": nota_cliente.Estado_emi,
+                }
+            )
+        else:
+            nota.update(
+                {
+                    "nome": nota_cliente.Destinatario,
+                    "endereco": nota_cliente.Endereco,
+                    "bairro": nota_cliente.Bairro,
+                    "cidade": nota_cliente.Cidade,
+                    "estado": nota_cliente.Estado,
+                    "notaguia": 0,
+                }
+            )
+        notas_lista.append(nota)
+
+    notas_ordenadas = sorted(notas_lista, key=lambda nota: nota["endereco"])
+
+    for i, nota in enumerate(notas_ordenadas):
+        if i > 0 and nota["endereco"] == notas_ordenadas[i - 1]["endereco"]:
+            nota["notaguia"] = notas_ordenadas[i - 1]["numero"]
+        else:
+            nota["notaguia"] = nota["numero"]
+
+    registros_minuta = [
         MinutaNotas(
-            Nota=nota.idNotasClientes.NumeroNota,
-            ValorNota=nota.idNotasClientes.Valor,
-            Peso=nota.idNotasClientes.Peso,
-            Volume=nota.idNotasClientes.Volume,
-            Nome=nota.idNotasClientes.Destinatario,
-            Bairro=nota.idNotasClientes.Bairro,
-            Cidade=nota.idNotasClientes.Cidade,
-            Estado=nota.idNotasClientes.Estado,
-            NotaGuia=0,
+            Nota=nota["numero"],
+            ValorNota=nota["valor"],
+            Peso=nota["peso"],
+            Volume=nota["volume"],
+            Nome=nota["nome"],
+            Bairro=nota["bairro"],
+            Cidade=nota["cidade"],
+            Estado=nota["estado"],
+            NotaGuia=nota["notaguia"],
             ExtraValorAjudante=0,
             idMinuta_id=id_minuta,
             id_romaneio=id_romaneio,
         )
-        for nota in notas
+        for nota in notas_ordenadas
     ]
 
-    MinutaNotas.objects.bulk_create(registro)
+    MinutaNotas.objects.bulk_create(registros_minuta)
     Romaneios.objects.filter(idRomaneio=id_romaneio).update(
         idMinuta_id=id_minuta
     )
