@@ -898,45 +898,6 @@ function somaPagamentos() {
 }
 
 // Utilizada no Card-Receitas
-// Soma total phkesc pagamentos
-function somaPhkescPagamentos() {
-    var valor_phkesc = 0.00;
-    $(".total-phkesc-paga").each(function() {
-        valor_phkesc += parseFloat($(this).val().replace(".", "").replace(",", "."))
-    });
-    $("#minuta-perimetro-paga").val(valor_phkesc.toFixed(2))
-    $("#minuta-perimetro-paga").unmask()
-    $("#minuta-perimetro-paga").mask("#.##0,00", { reverse: true })
-    if ($("#check-perimetro-paga").is(":checked")) {
-        $("#valor-perimetro-paga").val(
-            calculaPorcentagem(
-                $("#tabela-perimetro-paga").val(),
-                $("#minuta-perimetro-paga").val()
-            )
-        )
-    } else {
-        $("#valor-perimetro-paga").val("0.00")
-    }
-    $("#valor-perimetro-paga").unmask()
-    $("#valor-perimetro-paga").mask("#.##0,00", { reverse: true })
-    $("#minuta-pernoite-paga").val(valor_phkesc.toFixed(2))
-    $("#minuta-pernoite-paga").unmask()
-    $("#minuta-pernoite-paga").mask("#.##0,00", { reverse: true })
-    if ($("#check-perimetro-paga").is(":checked")) {
-        $("#valor-pernoite-paga").val(
-            calculaPorcentagem(
-                $("#tabela-pernoite-paga").val(),
-                $("#minuta-pernoite-paga").val()
-            )
-        )
-    } else {
-        $("#valor-perimetro-paga").val("0.00")
-    }
-    $("#valor-pernoite-paga").unmask()
-    $("#valor-pernoite-paga").mask("#.##0,00", { reverse: true })
-}
-
-// Utilizada no Card-Receitas
 // Soma total phkesc receitas
 function somaPhkescReceitas() {
     var valor_phkesc = 0.00;
