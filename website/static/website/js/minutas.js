@@ -3,14 +3,7 @@ $(document).ready(function() {
     $(".box-loader").hide()
     $(".filtro-dados").hide()
     $(".card-minutas-consulta").hide();
-    verificaTotalKms()
-    verificaTotalHoras()
-    verificaCheckboxPaga();
-    verificaCheckboxRecebe();
     mostraChecklist();
-    formatMask();
-    somaReceitas();
-    somaPagamentos();
 
     /* Versão Nova - Função que envia formulário com os itens de
     recebimento para serem processados pelo servidor */
@@ -59,12 +52,7 @@ $(document).ready(function() {
                 $(".card-minuta").html(data["html_card_minuta"]);
                 $(".card-checklist").html(data["html_card_checklist"]);
                 $(".html-form-paga").html(data["html_card_pagamentos"]);
-                verificaCheckboxPaga();
-                verificaCheckboxRecebe();
                 mostraChecklist();
-                formatMask();
-                somaReceitas();
-                somaPagamentos();
                 $("html, body").scrollTop(0);
                 $(".box-loader").hide();
             },
@@ -90,12 +78,7 @@ $(document).ready(function() {
                 $(".card-minuta").html(data["html_card_minuta"]);
                 $(".card-checklist").html(data["html_card_checklist"]);
                 $(".html-form-paga").html(data["html_card_pagamentos"]);
-                verificaCheckboxPaga();
-                verificaCheckboxRecebe();
                 mostraChecklist();
-                formatMask();
-                somaReceitas();
-                somaPagamentos();
                 $("html, body").scrollTop(0);
                 $(".box-loader").hide();
             },
@@ -146,12 +129,7 @@ $(document).ready(function() {
                 $(".card-minuta").html(data["html_card_minuta"]);
                 $(".card-checklist").html(data["html_card_checklist"]);
                 $(".html-form-paga").html(data["html_card_pagamentos"]);
-                verificaCheckboxPaga();
-                verificaCheckboxRecebe();
                 mostraChecklist();
-                formatMask();
-                somaReceitas();
-                somaPagamentos();
                 $("html, body").scrollTop(0);
                 $(".box-loader").hide();
             },
@@ -178,12 +156,7 @@ $(document).ready(function() {
                 $(".card-checklist").html(data["html_card_checklist"]);
                 $(".html-form-paga").html(data["html_card_pagamentos"]);
                 $(".card-recebe").html(data["html-card-recebe"])
-                verificaCheckboxPaga();
-                verificaCheckboxRecebe();
                 mostraChecklist();
-                formatMask();
-                somaReceitas();
-                somaPagamentos();
                 $("html, body").scrollTop(0);
                 $(".box-loader").hide();
             },
@@ -719,8 +692,6 @@ $(document).on("change", ".js-checkbox-paga", function() {
         calculosMudarInputPaga(input_tabela.replace("#", ""), valor_digitado)
         $(input_tabela).select()
     }
-    somaPhkescPagamentos();
-    somaPagamentos();
 })
 
 // Utilizado no Card-Receitas
@@ -738,8 +709,6 @@ $(document).on("change", ".js-checkbox-recebe", function() {
         calculosMudarInputRecebe(input_tabela.replace("#", ""), valor_digitado)
         $(input_tabela).select()
     }
-    somaPhkescReceitas();
-    somaReceitas();
 })
 
 // Card Entregas e Card Romaneio
