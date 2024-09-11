@@ -1049,6 +1049,10 @@ $(document).on("change", ".js-decimal, .js-inteiro", function() {
     formatarInput($(this));
 });
 
+function calcularPorcentagem({tabela, minuta}) {
+    return (parseFloat(tabela) * parseFloat(minuta)) / 100;
+}
+
 function calcularHora({tabela, minuta}) {
     const [horas, minutos] = minuta.split(":").map(num => parseInt(num, 10));
 
