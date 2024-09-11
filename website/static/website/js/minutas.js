@@ -1105,23 +1105,23 @@ function calcularTotais(padrao) {
 }
 
 function atualizaAposMinutaAlterada(data) {
-    $(".card-minuta").html(data["html-card-minuta"]);
-    $(".card-checklist").html(data["html_checklist"]);
-    $(".card-receitas").html(data["html-card-receitas"])
-    exibirMensagem(data["mensagem"])
-    verificaCheckboxClasse("total-recebe")
-    calcularTotais("recebe")
+    $(".card-minuta").html(data["html-card-minuta"])
+    $(".card-checklist").html(data["html_checklist"])
+    atualizaAposComum(data)
 }
 
 function atualizaAposEntregaAlterada(data) {
     $(".card-romaneio").html(data["html_card_romaneios"])
     $(".card-entrega").html(data["html_card_entregas"])
+    atualizaAposComum(data)
+}
 
 function atualizaAposDespesaAlterada(data) {
     $(".card-despesa").html(data["html_card_despesas"])
     atualizaAposComum(data)
 }
 
+function atualizaAposComum(data) {
     $(".card-receitas").html(data["html-card-receitas"])
     exibirMensagem(data["mensagem"])
     verificaCheckboxClasse("total-recebe")
