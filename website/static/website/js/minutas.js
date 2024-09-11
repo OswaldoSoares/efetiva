@@ -900,22 +900,6 @@ function somaPagamentos() {
 
 // Utilizado no Card-Pagamentos
 // Mostra inputs dos itens de acordo com o estado do checkbox
-function verificaCheckboxPaga() {
-    $(".total-paga").each(function() {
-        check_altera = $(this).attr("name").replace("valor", "#check");
-        div_mostra = $(this).attr("name").replace("valor", "#js");
-        if (parseFloat($(this).val()) > parseFloat(0.00)) {
-            $(check_altera).prop("checked", true)
-            $(div_mostra).slideDown(500)
-        } else {
-            $(check_altera).prop("checked", false)
-            $(div_mostra).slideUp(500)
-        }
-    });
-};
-
-// Utilizado no Card-Pagamentos
-// Mostra inputs dos itens de acordo com o estado do checkbox
 function verificaCheckboxRecebe() {
     $(".total-recebe").each(function() {
         check_altera = $(this).attr("name").replace("valor", "#check");
