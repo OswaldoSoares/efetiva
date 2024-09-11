@@ -276,35 +276,6 @@ $(document).ready(function() {
         });
     });
 
-    // Versão Antiga //
-    var loadForm = function() {
-        var obj = $(this);
-        var idminuta = $(this).attr("idminuta");
-        var urlok = obj.attr("data-url")
-        console.log(urlok)
-
-        $.ajax({
-            url: obj.attr("data-url"),
-            type: "get",
-            dataType: "json",
-            data: {
-                idminuta: idminuta,
-            },
-            beforeSend: function() {
-                $("#modal-formulario .modal-content").html("");
-                $("#modal-formulario").modal("show");
-            },
-            success: function(data) {
-                $("#modal-formulario .modal-content").html(data.html_form);
-                if ($("#id_NotaGuia").val() != 0) {
-                    $("#id_Nome").attr("readonly", "readonly")
-                    $("#id_Estado").attr("readonly", "readonly")
-                    $("#id_Cidade").attr("readonly", "readonly")
-                }
-            }
-        });
-
-    };
 
     $(".switch").each(function() {
         mostravalores($(this));
