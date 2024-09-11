@@ -9,8 +9,6 @@ $(document).ready(function() {
     formatarInicial()
     calcularTotais("recebe")
 
-    /* Versão Nova - Função que envia formulário com os itens de
-    recebimento para serem processados pelo servidor */
     $(document).on("submit", "#js-gera-receitas", function(event) {
         event.preventDefault();
         $.ajax({
@@ -39,7 +37,6 @@ $(document).ready(function() {
         });
     });
     
-    /* Versão Nova */
     $(document).on("submit", "#js-gera-pagamentos", function(event) {
         event.preventDefault();
         $.ajax({
@@ -66,7 +63,6 @@ $(document).ready(function() {
         });
     });
 
-    // Versão Nova //
     $(document).on("click", ".estorna-pagamentos-ajudantes", function(event) {
         var idminuta = $(this).attr("idMinuta")
         $.ajax({
@@ -92,7 +88,6 @@ $(document).ready(function() {
         });
     });
 
-    // Última atualização 13/08/2024
     $(document).on("click", ".js-alterar-status-minuta", function(event) {
         var id_minuta = $(this).data("id_minuta")
         var proximo_status = $(this).data("proximo-status")
@@ -143,7 +138,6 @@ $(document).ready(function() {
         });
     });
 
-    // Versão Nova //
     $(document).on("click", ".js-estorna-faturamento", function(event) {
         var idminuta = $(this).data("idminuta")
         $.ajax({
@@ -171,7 +165,6 @@ $(document).ready(function() {
     });
 
 
-    // Última atualização 06/08/2024
     $(document).on("click", ".js-excluir-colaborador-minuta", function() {
         var id_minuta = $(this).data("id_minuta")
         var id_minuta_colaborador = $(this).data("id_minuta_colaborador")
@@ -197,7 +190,6 @@ $(document).ready(function() {
         });
     });
 
-    // Versão Nova //
     $(document).on("click", ".js-excluir-despesa-minuta", function(event) {
         var id_minuta = localStorage.getItem("idminuta")
         var id_minuta_itens = $(this).data("id_minuta_itens")
@@ -360,10 +352,6 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
     });
 }
 
-// DAQUI PARA BAIXO
-// ESTÁ EM ORDEM ALFABETICA E CATALOGADA 19/04/2023
-
-// Utilizado no Card-Entrega (Formulário Modal)
 $(document).on("click", "#chk-perimetro", function(event) {
     if ($("#chk-perimetro").is(":checked")) {
         $(".js-perimetro-hide").hide();
@@ -376,7 +364,6 @@ $(document).on("click", "#chk-perimetro", function(event) {
     }
 });
 
-// Utilizado no Card-Entrega (Formulário Modal)
 $(document).on("click", "#chk-saida", function(event) {
     if ($("#chk-saida").is(":checked")) {
         $("#nota").val($("#label-chk-saida").data("saida"))
@@ -387,7 +374,6 @@ $(document).on("click", "#chk-saida", function(event) {
     }
 });
 
-// Utilizado no card-consulta
 $(document).on("click", ".filtro-consulta", function(event) {
     var filtro = $(this).attr("data-filtro")
     var filtro_consula = $(this).data("filtro-consulta")
@@ -425,7 +411,6 @@ $(document).on("click", ".filtro-consulta", function(event) {
     });
 });
 
-// Utilizado no card-minutas-consulta
 $(document).on("click", ".filtro-periodo", function(event) {
     var filtro = $(this).data("filtro")
     var filtro_consula = $(this).data("filtro-consulta")
@@ -461,7 +446,6 @@ $(document).on("click", ".filtro-periodo", function(event) {
     })
 });
 
-// Utilizada no Card-Minuta - para atualizar data de fechamento da minuta
 $(document).on("click", ".js-editar-minuta-hora-final", function() {
     var id_minuta = localStorage.getItem("idminuta")
     var hora_final = $("#id_hora_final").val()
@@ -485,7 +469,6 @@ $(document).on("click", ".js-editar-minuta-hora-final", function() {
     });
 });
 
-// Utilizada no Card-Minuta - para atualizar km inicial da minuta
 $(document).on("click", ".js-editar-minuta-km-inicial", function() {
     var id_minuta = localStorage.getItem("idminuta")
     var km_inicial = $("#id_km_inicial").val()
@@ -509,8 +492,6 @@ $(document).on("click", ".js-editar-minuta-km-inicial", function() {
     });
 });
 
-// Utilizada no Catd-Minuta
-// para atualizar km final da minuta
 $(document).on("click", ".js-editar-minuta-km-final", function() {
     var id_minuta = localStorage.getItem("idminuta")
     var km_inicial = $("#id_km_inicial").val()
@@ -537,8 +518,6 @@ $(document).on("click", ".js-editar-minuta-km-final", function() {
     });
 });
 
-// Utilizado no Card-Receitas e no Card-Pagamentos
-// aplica , e . de milhar pt-BR
 function formatMask() {
     $(".js-decimal").each(function() {
         $(this).mask("#.##0,00", { reverse: true })
@@ -553,8 +532,6 @@ function formatMask() {
     $(".total-paga").mask("#.##0,00", { reverse: true })
 }
 
-// Utilizado no Card-Receitas e no Card-Pagamentos
-// remove , e . de milhar pt-BR
 function formatUnmask() {
     $(".js-decimal").each(function() {
         $(this).unmask()
@@ -566,8 +543,6 @@ function formatUnmask() {
     $(".total-pagamentos").unmask()
 }
 
-// Card Entregas e Card Romaneio
-// Última atualização 16/08/2024
 $(document).on("click", ".js-gerenciar-romaneio-minuta", function() {
     var id_romaneio = $(this).data("id_romaneio")
     var id_minuta = $(this).data("id_minuta")
@@ -590,8 +565,6 @@ $(document).on("click", ".js-gerenciar-romaneio-minuta", function() {
     });
 });
 
-// Utilizado no Card-Pagamentos
-// Mudança de estado do checkbox
 $(document).on("change", ".js-checkbox-paga", function() {
     var div_mostra = $(this).attr("id").replace("check", "#js");
     var visible = $(div_mostra).is(":visible")
@@ -607,8 +580,6 @@ $(document).on("change", ".js-checkbox-paga", function() {
     }
 })
 
-// Utilizado no Card-Receitas
-// Mudança de estado do checkbox
 $(document).on("change", ".js-checkbox-recebe", function() {
     var div_mostra = $(this).attr("id").replace("chk", "#row");
     var visible = $(div_mostra).is(":visible")
@@ -625,8 +596,6 @@ $(document).on("change", ".js-checkbox-recebe", function() {
     }
 })
 
-// Card Entregas e Card Romaneio
-// Atualizado 16/08/2024
 $(document).on("click", ".js-remover-entrega-minuta", function(event) {
     var id_minuta = localStorage.getItem("idminuta")
     var id_minuta_notas = $(this).data("id_minuta_notas")
@@ -650,7 +619,6 @@ $(document).on("click", ".js-remover-entrega-minuta", function(event) {
     });
 });
 
-// Card Entregas e Card Romaneio
 $(document).on("click", ".js-remove-romaneio-minuta", function() {
     var romaneio = $(this).data("romaneio")
     var idminuta = $(this).data("idminuta")
@@ -673,8 +641,6 @@ $(document).on("click", ".js-remove-romaneio-minuta", function() {
     });
 });
 
-// Utilizado no card-consulta
-// Mostra lista de filtro
 $(document).on("click", ".lista-consulta", function(event) {
     $(".lista-consulta").each(function() {
         $(this).removeClass("bi-caret-down").addClass("bi-caret-right");
@@ -701,8 +667,6 @@ $(document).on("click", ".lista-consulta", function(event) {
     }
 });
 
-// Utilizado no card-checklist
-// Mostra os itens necessários no checklist
 function mostraChecklist() {
     $(".card-checklist").slideDown(500)
     $(".chk-red").each(function() {
@@ -713,7 +677,6 @@ function mostraChecklist() {
     });
 }
 
-// Mostra a div de mensagem com a mensagem
 function exibirMensagem(mensagem) {
     $('.mensagem p').text(mensagem);
     $('.mensagem p').animate({bottom: '0'}, 1000);
@@ -723,7 +686,6 @@ function exibirMensagem(mensagem) {
     }, 5000);
 }
 
-// Mostra a div de mensagem com a mensagem de erro
 function mostraMensagemErro() {
     $('.mensagem p').animate({bottom: '0'}, 500); /* duração da animação */
     setTimeout(function() {
@@ -732,15 +694,12 @@ function mostraMensagemErro() {
     }, 5000); /* tempo em que a mensagem fica na tela */
 }
 
-// Mostra a div de mensagem com a mensagem de sucesso
 function mostraMensagemSucesso() {
     $(".div-sucesso").slideDown(500)
     $(".div-sucesso").delay(5000).slideUp(500)
 }
 
 
-// Utilizada no Card-Pagamentps
-// Soma valor do motorista
 function somaMotorista() {
     var valor_paga = 0.00;
     $(".total-paga").each(function() {
@@ -760,7 +719,6 @@ function somaMotorista() {
     var text_total = "R$ " + text_total
     $("#total-motorista").text(text_total)
 }
-
 
 /**
  * Verifica e atualiza o status dos checkboxes e elementos relacionados
@@ -812,8 +770,6 @@ function verificaCheckboxClasse(classe) {
     });
 };
 
-// Utilizada no Card-Relatorio
-// Atualiza parametro href ao alterar data inicial
 $(document).on("input", "#periodo-inicial", function(event) {
     $("#print-minutas-periodo").prop('href', function() {
         var href = $("#print-minutas-periodo").prop('href');
@@ -823,8 +779,6 @@ $(document).on("input", "#periodo-inicial", function(event) {
     });
 });
 
-// Utilizada no Card-Relatorio
-// Atualiza parametro href ao alterar data final
 $(document).on("input", "#periodo-final", function(event) {
     $("#print-minutas-periodo").prop('href', function() {
         var href = $("#print-minutas-periodo").prop('href');
@@ -834,8 +788,6 @@ $(document).on("input", "#periodo-final", function(event) {
     });
 });
 
-// Utilizada no Card-Relatorio
-// Atualiza parametro href ao alterar o cliente
 $(document).on("input", "#cliente", function(event) {
     $("#print-minutas-periodo").prop('href', function() {
         var href = $("#print-minutas-periodo").prop('href');
