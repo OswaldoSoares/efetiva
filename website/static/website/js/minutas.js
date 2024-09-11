@@ -931,17 +931,6 @@ function verificaCheckboxClasse(classe) {
 };
 
 // Utilizada no Card-Minuta
-// Mostrra o calculo de horas
-function verificaTotalHoras() {
-    if ($(".total-horas").text() == "00:00 Hs") {
-        $(".calcula-horas").hide()
-        $("#id_HoraFinal").val("00:00")
-    } else {
-        $(".calcula-horas").show()
-    }
-}
-
-// Utilizada no Card-Minuta
 // Mostrra o calculo de Kms
 function verificaTotalKms() {
     if ($(".total-kms").text() == "0 KMs") {
