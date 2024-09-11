@@ -1030,6 +1030,12 @@ function formatarNumero(valor, casasDecimais) {
     });
     return valorFormatado
 }
+
+function formatarInicial() {
+    $(".js-decimal, .js-inteiro, .total-recebe, .total-paga").each(function() {
+        formatarInput($(this));
+    });
+}
 $(document).on("change", ".js-input-change", function() {
     const stringPartes = $(this).attr("name").split("-");
     const tipoCalculo = stringPartes[1];
