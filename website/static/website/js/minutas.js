@@ -276,39 +276,6 @@ $(document).ready(function() {
         });
     });
 
-    
-
-
-    // Versão Antiga //
-    var somaPerimetro = function() {
-        var soma_recebe = 0.00
-        soma_recebe += $("#hi-porcentagem-recebe").val() * 1
-        soma_recebe += $("#hi-horas-recebe").val() * 1
-        soma_recebe += $("#hi-horasexcede-recebe").val() * 1
-        soma_recebe += $("#hi-kilometragem-recebe").val() * 1
-        soma_recebe += $("#hi-entregas-recebe").val() * 1
-        soma_recebe += $("#hi-entregaskg-recebe").val() * 1
-        soma_recebe += $("#hi-entregasvolume-recebe").val() * 1
-        soma_recebe += $("#hi-saida-recebe").val() * 1
-        soma_recebe += $("#hi-capacidade-recebe").val() * 1
-        soma_recebe = (soma_recebe * 1).toFixed(2)
-        $("#mi-perimetro-recebe").val(soma_recebe)
-        $("#mi-pernoite-recebe").val(soma_recebe)
-        var soma_paga = 0.00
-        soma_paga += $("#hi-porcentagem-paga").val() * 1
-        soma_paga += $("#hi-horas-paga").val() * 1
-        soma_paga += $("#hi-horasexcede-paga").val() * 1
-        soma_paga += $("#hi-kilometragem-paga").val() * 1
-        soma_paga += $("#hi-entregas-paga").val() * 1
-        soma_paga += $("#hi-entregaskg-paga").val() * 1
-        soma_paga += $("#hi-entregasvolume-paga").val() * 1
-        soma_paga += $("#hi-saida-paga").val() * 1
-        soma_paga += $("#hi-capacidade-paga").val() * 1
-        soma_paga = (soma_paga * 1).toFixed(2)
-        $("#mi-perimetro-paga").val(soma_paga)
-        $("#mi-pernoite-paga").val(soma_paga)
-    }
-
     // Versão Antiga //
     var loadForm = function() {
         var obj = $(this);
