@@ -6,6 +6,7 @@ $(document).ready(function() {
     mostraChecklist();
 
     verificaCheckboxClasse("total-recebe")
+    formatarInicial()
     /* Versão Nova - Função que envia formulário com os itens de
     recebimento para serem processados pelo servidor */
     $(document).on("submit", "#js-gera-receitas", function(event) {
