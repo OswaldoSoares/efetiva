@@ -184,8 +184,7 @@ $(document).ready(function() {
                 $(".box-loader").show()
             },
             success: function(data) {
-                $(".card-minuta").html(data["html-card-minuta"]);
-                $(".card-checklist").html(data["html_checklist"]);
+                atualizaAposMinutaAlterada(data)
                 $(".box-loader").hide();
             },
             error: function(error) {
@@ -501,12 +500,7 @@ $(document).on("click", ".js-editar-minuta-hora-final", function() {
             $(".box-loader").show()
         },
         success: function(data) {
-            $(".card-minuta").html(data["html-card-minuta"])
-            $(".card-checklist").html(data["html_checklist"])
-            $(".mensagem p").removeClass("mensagem-color")
-            $(".mensagem p").removeClass("mensagem-error-color")
-            $(".mensagem p").addClass("mensagem-success-color")
-            exibirMensagem(data["mensagem"])
+            atualizaAposMinutaAlterada(data)
             $(".box-loader").hide();
         },
         error: function(error) {
@@ -530,12 +524,7 @@ $(document).on("click", ".js-editar-minuta-km-inicial", function() {
             $(".box-loader").show()
         },
         success: function(data) {
-            $(".card-minuta").html(data["html-card-minuta"])
-            $(".card-checklist").html(data["html_checklist"])
-            $(".mensagem p").removeClass("mensagem-color")
-            $(".mensagem p").removeClass("mensagem-error-color")
-            $(".mensagem p").addClass("mensagem-success-color")
-            exibirMensagem(data["mensagem"])
+            atualizaAposMinutaAlterada(data)
             $(".box-loader").hide();
         },
         error: function(error) {
@@ -563,12 +552,7 @@ $(document).on("click", ".js-editar-minuta-km-final", function() {
             $(".box-loader").show()
         },
         success: function(data) {
-            $(".card-minuta").html(data["html-card-minuta"])
-            $(".card-checklist").html(data["html_checklist"])
-            $(".mensagem p").removeClass("mensagem-color")
-            $(".mensagem p").removeClass("mensagem-error-color")
-            $(".mensagem p").addClass("mensagem-success-color")
-            exibirMensagem(data["mensagem"])
+            atualizaAposMinutaAlterada(data)
             $(".box-loader").hide();
         },
         error: function(error) {
