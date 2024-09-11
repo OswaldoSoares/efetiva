@@ -1120,3 +1120,11 @@ function calcularTotais(padrao) {
    
 }
 
+function atualizaAposMinutaAlterada(data) {
+    $(".card-minuta").html(data["html-card-minuta"]);
+    $(".card-checklist").html(data["html_checklist"]);
+    $(".card-receitas").html(data["html-card-receitas"])
+    exibirMensagem(data["mensagem"])
+    verificaCheckboxClasse("total-recebe")
+    calcularTotais("recebe")
+}
