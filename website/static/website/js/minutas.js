@@ -459,18 +459,6 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
 // ESTÁ EM ORDEM ALFABETICA E CATALOGADA 19/04/2023
 
 // Utilizado no Card-Receitas e no Card-Pagamentos
-// Calcular inputs de Numeros
-function calculaMultiplo(v_valor1, v_valor2) {
-    var valor1 = parseFloat(
-        v_valor1.replace(".", "").replace(",", ".")
-    )
-    var valor2 = parseFloat(
-        v_valor2.replace(".", "").replace(",", ".")
-    )
-    return (valor1 * valor2).toFixed(2)
-}
-
-// Utilizado no Card-Receitas e no Card-Pagamentos
 // Calcular inputs de Porcentagem
 function calculaPorcentagem(v_porcentagem, v_valor) {
     var valor1 = parseFloat(
@@ -1503,4 +1491,7 @@ function calcularHora({tabela, minuta}) {
     const valorMinuto = valorHora / 60
 
     return (valorHora * horas) + (valorMinuto * minutos)
+}
+function calcularMultiplo({tabela, minuta}) {
+    return parseFloat(tabela) * parseFloat(minuta)
 }
