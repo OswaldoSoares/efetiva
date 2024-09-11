@@ -614,14 +614,8 @@ $(document).on("click", ".js-gerenciar-romaneio-minuta", function() {
             $(".box-loader").show()
         },
         success: function(data) {
-            $(".card-romaneio").html(data["html_card_romaneios"])
-            $(".card-romaneio").show()
-            $(".card-entrega").html(data["html_card_entregas"])
-            $(".card-entrega").show()
+            atualizaAposEntregaAlterada(data)
             $(".box-loader").hide()
-            exibirMensagem(data["mensagem"])
-            verificaCheckboxClasse("total-recebe")
-            calcularTotais("recebe")
         },
     });
 });
@@ -677,9 +671,7 @@ $(document).on("click", ".js-remover-entrega-minuta", function(event) {
             $(".box-loader").show();
         },
         success: function(data) {
-            $(".card-entrega").html(data["html_card_entregas"]);
-            verificaCheckboxClasse("total-recebe")
-            calcularTotais("recebe")
+            atualizaAposEntregaAlterada(data)
             $(".box-loader").hide();
         },
         error: function(error) {
@@ -705,8 +697,7 @@ $(document).on("click", ".js-remove-romaneio-minuta", function() {
             $(".box-loader").show()
         },
         success: function(data) {
-            $(".card-entrega").html(data["html_entrega"])
-            $(".card-romaneio").html(data["html_romaneio"])
+            atualizaAposEntregaAlterada(data)
             $(".box-loader").hide()
         },
     });
