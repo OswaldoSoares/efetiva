@@ -638,14 +638,15 @@ $(document).on("change", ".js-checkbox-paga", function() {
 // Utilizado no Card-Receitas
 // Mudança de estado do checkbox
 $(document).on("change", ".js-checkbox-recebe", function() {
-    var div_mostra = $(this).attr("id").replace("check", "#js");
+    var div_mostra = $(this).attr("id").replace("chk", "#row");
     var visible = $(div_mostra).is(":visible")
-    var input_tabela = $(this).attr("id").replace("check", "#tabela");
-    var input_valor = $(this).attr("id").replace("check", "#valor");
-    $(div_mostra).slideToggle(500)
+    var input_tabela = $(this).attr("id").replace("chk", "#tabela");
+    var input_valor = $(this).attr("id").replace("chk", "#valor");
     if (visible) {
+        $(div_mostra).addClass("hidden")
         $(input_valor).val("0,00")
     } else {
+        $(div_mostra).removeClass("hidden")
         var valor_digitado = $(input_tabela).val()
         calculosMudarInputRecebe(input_tabela.replace("#", ""), valor_digitado)
         $(input_tabela).select()
