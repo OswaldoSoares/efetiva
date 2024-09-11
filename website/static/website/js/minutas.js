@@ -1036,6 +1036,23 @@ function formatarInicial() {
         formatarInput($(this));
     });
 }
+
+function formatarInput(input) {
+    var casasDecimais = 2;
+
+    if (input.hasClass("js-decimal")) {
+        if (input.attr("name") === "tabela-seguro-recebe" || 
+            input.attr("name") === "minuta-entregas_quilos-recebe" || 
+            input.attr("name") === "minutas-entregas_quilos-paga") {
+            casasDecimais = 3;
+        }
+    } else if (input.hasClass("js-inteiro")) {
+        casasDecimais = 0;
+    }
+
+    input.val(formatarNumero(input.val(), casasDecimais));   
+}
+
 $(document).on("change", ".js-input-change", function() {
     const stringPartes = $(this).attr("name").split("-");
     const tipoCalculo = stringPartes[1];
