@@ -1042,7 +1042,7 @@ $(document).on("change", ".js-input-change", function() {
             })
         );
     }
-    calculaTotais(padrao)
+    calcularTotais(padrao)
 });
 
 $(document).on("change", ".js-decimal, .js-inteiro", function() {
