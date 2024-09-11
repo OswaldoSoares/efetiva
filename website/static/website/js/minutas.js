@@ -8,211 +8,208 @@ $(document).ready(function() {
     verificaCheckboxClasse("total-recebe")
     formatarInicial()
     calcularTotais("recebe")
+});
 
-    $(document).on("submit", "#js-gera-receitas", function(event) {
-        event.preventDefault();
-        $.ajax({
-            type: "POST",
-            url: "/minutas/gera_receitas",
-            data: $(this).serialize(),
-            beforeSend: function() {
-                $(".box-loader").show();
-                $(".card-recebe").html("")
-            },
-            success: function(data) {
-                console.log(data)
-                $(".card-recebe").html(data["html-card-recebe"])
-                $(".box-loader").hide();
-            },
-            error: function(error) {
-                $(".mensagem-erro").text(
-                    error.status + " " + error.message + " "
-                    + "- entre em contato com o administrador do aplicativo."
-                );
-                $("html, body").scrollTop(0);
-                $(".box-loader").hide();
-                mostraMensagemErro()
-                console.log(error)
-            },
-        });
+$(document).on("submit", "#js-gera-receitas", function(event) {
+    event.preventDefault();
+    $.ajax({
+        type: "POST",
+        url: "/minutas/gera_receitas",
+        data: $(this).serialize(),
+        beforeSend: function() {
+            $(".box-loader").show();
+            $(".card-recebe").html("")
+        },
+        success: function(data) {
+            console.log(data)
+            $(".card-recebe").html(data["html-card-recebe"])
+            $(".box-loader").hide();
+        },
+        error: function(error) {
+            $(".mensagem-erro").text(
+                error.status + " " + error.message + " "
+                + "- entre em contato com o administrador do aplicativo."
+            );
+        $("html, body").scrollTop(0);
+            $(".box-loader").hide();
+            mostraMensagemErro()
+            console.log(error)
+        },
     });
+});
     
-    $(document).on("submit", "#js-gera-pagamentos", function(event) {
-        event.preventDefault();
-        $.ajax({
-            type: "POST",
-            url: "/minutas/gera_pagamentos",
-            data: $(this).serialize(),
-            beforeSend: function() {
-                $(".box-loader").show();
-                $(".card-minuta").html("");
-                $(".card-checklist").html("");
-                $(".html-form-paga").html("");
-            },
-            success: function(data) {
-                $(".card-minuta").html(data["html_card_minuta"]);
-                $(".card-checklist").html(data["html_card_checklist"]);
-                $(".html-form-paga").html(data["html_card_pagamentos"]);
-                mostraChecklist();
-                $("html, body").scrollTop(0);
-                $(".box-loader").hide();
-            },
-            error: function(error) {
-                console.log(error)
-            }
-        });
+$(document).on("submit", "#js-gera-pagamentos", function(event) {
+    event.preventDefault();
+    $.ajax({
+        type: "POST",
+        url: "/minutas/gera_pagamentos",
+        data: $(this).serialize(),
+        beforeSend: function() {
+            $(".box-loader").show();
+            $(".card-minuta").html("");
+            $(".card-checklist").html("");
+            $(".html-form-paga").html("");
+        },
+        success: function(data) {
+            $(".card-minuta").html(data["html_card_minuta"]);
+            $(".card-checklist").html(data["html_card_checklist"]);
+            $(".html-form-paga").html(data["html_card_pagamentos"]);
+            mostraChecklist();
+            $("html, body").scrollTop(0);
+            $(".box-loader").hide();
+        },
+        error: function(error) {
+            console.log(error)
+        }
     });
-
-    $(document).on("click", ".estorna-pagamentos-ajudantes", function(event) {
-        var idminuta = $(this).attr("idMinuta")
-        $.ajax({
-            type: "GET",
-            url: "/minutas/estorna_pagamentos_ajudantes",
-            data: {
-                idminuta: idminuta,
-            },
-            beforeSend: function() {
-                $(".box-loader").show();
-            },
-            success: function(data) {
-                $(".card-minuta").html(data["html_card_minuta"]);
-                $(".card-checklist").html(data["html_card_checklist"]);
-                $(".html-form-paga").html(data["html_card_pagamentos"]);
-                mostraChecklist();
-                $("html, body").scrollTop(0);
-                $(".box-loader").hide();
-            },
-            error: function(error) {
-                console.log(error)
-            }
-        });
+});
+    
+$(document).on("click", ".estorna-pagamentos-ajudantes", function(event) {
+    var idminuta = $(this).attr("idMinuta")
+    $.ajax({
+        type: "GET",
+        url: "/minutas/estorna_pagamentos_ajudantes",
+        data: {
+            idminuta: idminuta,
+        },
+        beforeSend: function() {
+            $(".box-loader").show();
+        },
+        success: function(data) {
+            $(".card-minuta").html(data["html_card_minuta"]);
+            $(".card-checklist").html(data["html_card_checklist"]);
+            $(".html-form-paga").html(data["html_card_pagamentos"]);
+            mostraChecklist();
+            $("html, body").scrollTop(0);
+            $(".box-loader").hide();
+        },
+        error: function(error) {
+            console.log(error)
+        }
     });
+});
 
-    $(document).on("click", ".js-alterar-status-minuta", function(event) {
-        var id_minuta = $(this).data("id_minuta")
-        var proximo_status = $(this).data("proximo-status")
-        $.ajax({
-            type: "GET",
-            url: "/minutas/alterar_status_minuta",
-            data: {
-                id_minuta: id_minuta,
-                proximo_status: proximo_status,
-            },
-            beforeSend: function() {
-                $(".box-loader").show();
-            },
-            success: function(data) {
-                $(".card-checklist").html(data["html_checklist"]);
-                mostraChecklist();
-                $(".box-loader").hide();
-            },
-            error: function(error) {
-                console.log(error)
-            }
-        });
+$(document).on("click", ".js-alterar-status-minuta", function(event) {
+    var id_minuta = $(this).data("id_minuta")
+    var proximo_status = $(this).data("proximo-status")
+    $.ajax({
+        type: "GET",
+        url: "/minutas/alterar_status_minuta",
+        data: {
+            id_minuta: id_minuta,
+            proximo_status: proximo_status,
+        },
+        beforeSend: function() {
+            $(".box-loader").show();
+        },
+        success: function(data) {
+            $(".card-checklist").html(data["html_checklist"]);
+            mostraChecklist();
+            $(".box-loader").hide();
+        },
+        error: function(error) {
+            console.log(error)
+        }
     });
+});
 
-    // Versão Nova //
-    $(document).on("click", ".estorna-pagamentos-motorista", function(event) {
-        var idminuta = $(this).attr("idMinuta")
-        $.ajax({
-            type: "GET",
-            url: "/minutas/estorna_pagamentos_motorista",
-            data: {
-                idminuta: idminuta,
-            },
-            beforeSend: function() {
-                $(".box-loader").show();
-            },
-            success: function(data) {
-                $(".card-minuta").html(data["html_card_minuta"]);
-                $(".card-checklist").html(data["html_card_checklist"]);
-                $(".html-form-paga").html(data["html_card_pagamentos"]);
-                mostraChecklist();
-                $("html, body").scrollTop(0);
-                $(".box-loader").hide();
-            },
-            error: function(error) {
-                console.log(error)
-            }
-        });
+$(document).on("click", ".estorna-pagamentos-motorista", function(event) {
+    var idminuta = $(this).attr("idMinuta")
+    $.ajax({
+        type: "GET",
+        url: "/minutas/estorna_pagamentos_motorista",
+        data: {
+            idminuta: idminuta,
+        },
+        beforeSend: function() {
+            $(".box-loader").show();
+        },
+        success: function(data) {
+            $(".card-minuta").html(data["html_card_minuta"]);
+            $(".card-checklist").html(data["html_card_checklist"]);
+            $(".html-form-paga").html(data["html_card_pagamentos"]);
+            mostraChecklist();
+            $("html, body").scrollTop(0);
+            $(".box-loader").hide();
+        },
+        error: function(error) {
+            console.log(error)
+        }
     });
+});
 
-    $(document).on("click", ".js-estorna-faturamento", function(event) {
-        var idminuta = $(this).data("idminuta")
-        $.ajax({
-            type: "GET",
-            url: "/minutas/estorna_faturamento",
-            data: {
-                idminuta: idminuta,
-            },
-            beforeSend: function() {
-                $(".box-loader").show();
-            },
-            success: function(data) {
-                $(".card-minuta").html(data["html_card_minuta"]);
-                $(".card-checklist").html(data["html_card_checklist"]);
-                $(".html-form-paga").html(data["html_card_pagamentos"]);
-                $(".card-recebe").html(data["html-card-recebe"])
-                mostraChecklist();
-                $("html, body").scrollTop(0);
-                $(".box-loader").hide();
-            },
-            error: function(error) {
-                console.log(error)
-            }
-        });
+$(document).on("click", ".js-estorna-faturamento", function(event) {
+    var idminuta = $(this).data("idminuta")
+    $.ajax({
+        type: "GET",
+        url: "/minutas/estorna_faturamento",
+        data: {
+            idminuta: idminuta,
+        },
+        beforeSend: function() {
+            $(".box-loader").show();
+        },
+        success: function(data) {
+            $(".card-minuta").html(data["html_card_minuta"]);
+            $(".card-checklist").html(data["html_card_checklist"]);
+            $(".html-form-paga").html(data["html_card_pagamentos"]);
+            $(".card-recebe").html(data["html-card-recebe"])
+            mostraChecklist();
+            $("html, body").scrollTop(0);
+            $(".box-loader").hide();
+        },
+        error: function(error) {
+            console.log(error)
+        }
     });
+});
 
-
-    $(document).on("click", ".js-excluir-colaborador-minuta", function() {
-        var id_minuta = $(this).data("id_minuta")
-        var id_minuta_colaborador = $(this).data("id_minuta_colaborador")
-        var cargo = $(this).data("cargo")
-        $.ajax({
-            type: "GET",
-            url: "/minutas/excluir_colaborador_minuta",
-            data: {
-                id_minuta: id_minuta,
-                id_minuta_colaborador: id_minuta_colaborador,
-                cargo: cargo,
-            },
-            beforeSend: function() {
-                $(".box-loader").show()
-            },
-            success: function(data) {
-                atualizaAposMinutaAlterada(data)
-                $(".box-loader").hide();
-            },
-            error: function(error) {
-                console.log(error)
-            }
-        });
+$(document).on("click", ".js-excluir-colaborador-minuta", function() {
+    var id_minuta = $(this).data("id_minuta")
+    var id_minuta_colaborador = $(this).data("id_minuta_colaborador")
+    var cargo = $(this).data("cargo")
+    $.ajax({
+        type: "GET",
+        url: "/minutas/excluir_colaborador_minuta",
+        data: {
+            id_minuta: id_minuta,
+            id_minuta_colaborador: id_minuta_colaborador,
+            cargo: cargo,
+        },
+        beforeSend: function() {
+            $(".box-loader").show()
+        },
+        success: function(data) {
+            atualizaAposMinutaAlterada(data)
+            $(".box-loader").hide();
+        },
+        error: function(error) {
+            console.log(error)
+        }
     });
+});
 
-    $(document).on("click", ".js-excluir-despesa-minuta", function(event) {
-        var id_minuta = localStorage.getItem("idminuta")
-        var id_minuta_itens = $(this).data("id_minuta_itens")
-        $.ajax({
-            type: "GET",
-            url: "/minutas/excluir_despesa",
-            data: {
-                id_minuta_itens: id_minuta_itens,
-                id_minuta: id_minuta,
-            },
-            beforeSend: function() {
-                $(".box-loader").show()
-            },
-            success: function(data) {
-                atualizaAposDespesaAlterada(data)
-                $(".box-loader").hide()
-            },
-            error: function(error) {
-                console.log(error)
-            }
-        });
+$(document).on("click", ".js-excluir-despesa-minuta", function(event) {
+    var id_minuta = localStorage.getItem("idminuta")
+    var id_minuta_itens = $(this).data("id_minuta_itens")
+    $.ajax({
+        type: "GET",
+        url: "/minutas/excluir_despesa",
+        data: {
+            id_minuta_itens: id_minuta_itens,
+            id_minuta: id_minuta,
+        },
+        beforeSend: function() {
+            $(".box-loader").show()
+        },
+        success: function(data) {
+            atualizaAposDespesaAlterada(data)
+            $(".box-loader").hide()
+        },
+        error: function(error) {
+            console.log(error)
+        }
     });
-
 });
 
 function openMyModal(event) {
