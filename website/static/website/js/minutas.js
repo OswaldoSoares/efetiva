@@ -897,26 +897,52 @@ function somaPagamentos() {
     somaMotorista();
 }
 
+/**
+ * Verifica e atualiza o status dos checkboxes e elementos relacionados
+ * com base no valor de inputs associados.
+ *
+ * Para cada elemento com da classe fornecida, a função faz o seguinte:
+ * 1. Obtém o ID do checkbox e da linha da tabela correspondente, com base
+ *    no nome do input.
+ * 2. Verifica o estado do checkbox (se está marcado ou não).
+ * 3. Se o checkbox estiver marcado e o valor do input for maior que 0,
+ *    mantém o checkbox marcado e exibe a linha correspondente.
+ * 4. Se o valor for 0 ou menor, desmarca o checkbox, oculta a linha e
+ *    realiza uma animação de recolhimento para elementos com a classe
+ *    `.body-row`.
+ * 5. Se o checkbox não estiver marcado, define o valor do input como 0,
+ *    desmarca o checkbox, oculta a linha correspondente e recolhe a linha
+ *    com animação.
+ *
+ * A função é flexível para funcionar com qualquer classe, bastando passar
+ * o nome da classe como parâmetro.
+ *
+ * @param {string} classe - O nome da classe dos elementos a serem verificados
+ * (por exemplo, 'total-recebe' ou 'total-paga').
+ *
+ * A animação de recolhimento das linhas `.body-row` é realizada com um efeito de slide.
+ */
+function verificaCheckboxClasse(classe) {
+    $("." + classe).each(function() {
+        var checkbox_id = $(this).attr("name").replace("total", "#chk");
+        var div_row_id = $(this).attr("name").replace("total", "#row");
+        var body_item_class = $(this).attr("name").replace("total", ".body-row");
+        var checkbox_status = $(checkbox_id).attr("checked");
 
-// Utilizado no Card-Pagamentos
-// Mostra inputs dos itens de acordo com o estado do checkbox
-function verificaCheckboxRecebe() {
-    $(".total-recebe").each(function() {
-        check_altera = $(this).attr("name").replace("valor", "#check");
-        div_mostra = $(this).attr("name").replace("valor", "#js");
-        check_true = $(check_altera).attr("checked");
-        if (check_true == "checked") {
-            if (parseFloat($(this).val()) > parseFloat(0.00)) {
-                $(check_altera).prop("checked", true)
-                $(div_mostra).slideDown(500)
+        if (checkbox_status == "checked") {
+            if (parseFloat($(this).val()) > 0) {
+                $(checkbox_id).prop("checked", true)
+                $(div_row_id).removeClass("hidden")
             } else {
-                $(check_altera).prop("checked", false)
-                $(div_mostra).slideUp(500)
+                $(checkbox_id).prop("checked", false)
+                $(div_row_id).addClass("hidden")
+                $(body_item_class).slideUp(500)
             }
         } else {
             $(this).val(0.00)
-            $(check_altera).prop("checked", false)
-            $(div_mostra).slideUp(500)
+            $(checkbox_id).prop("checked", false)
+            $(div_row_id).addClass("hidden")
+            $(body_item_class).slideUp(500)
         }
     });
 };
