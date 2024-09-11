@@ -742,26 +742,6 @@ $(document).on("change", ".js-checkbox-recebe", function() {
     somaReceitas();
 })
 
-// Utilizado no Card-Receitas e no Card-Pagamentos
-// ao mudar qualquer input com a class js-input-change
-$(document).on("change", ".js-input-change", function() {
-    // Cria as variaveis como o nome do atributo e com valor 0
-    var element_select = $(this).attr("name")
-    var valor_digitado = "0,00"
-        // Verifica se o valor do elemento e inteiro se for acrescenta o ",00" ao final - Bug do plugin mask e altera a
-        // variavel valor_digitado
-    if ($(this).val() % 1 === 0) {
-        if ($(this).hasClass("js-decimal")) {
-            valor_digitado = $(this).val() + ",00"
-            $(this).val(valor_digitado)
-        }
-    } else {
-        valor_digitado = $(this).val()
-    }
-    calculosMudarInputRecebe(element_select, valor_digitado)
-    calculosMudarInputPaga(element_select, valor_digitado)
-})
-
 // Card Entregas e Card Romaneio
 // Atualizado 16/08/2024
 $(document).on("click", ".js-remover-entrega-minuta", function(event) {
@@ -1121,6 +1101,40 @@ $(document).on("click", ".js-consulta-minuta", function() {
             $(".box-loader").hide()
         },
     });
+});
+$(document).on("change", ".js-input-change", function() {
+    const stringPartes = $(this).attr("name").split("-");
+    const tipoCalculo = stringPartes[1];
+    const padrao = stringPartes[2];
+    const calculo = calculosMinuta[tipoCalculo];
+
+    if (calculo && typeof window[calculo.funcao] === "function") {
+
+        let tabela = $(`#tabela-${tipoCalculo}-${padrao}`).val();
+        tabela = tabela.replace(/\./g, '').replace(',', '.');
+        let minuta = $(`#minuta-${tipoCalculo}-${padrao}`).val();
+        if ($(this).attr("type") == "text") {
+            minuta = minuta.replace(/\./g, '').replace(',', '.');
+        }
+        let base = null;
+
+        if (tipoCalculo.includes("_extra")) {
+            const elementoBase = tipoCalculo.replace("_extra", "")
+            base = $(`#total-${elementoBase}-${padrao}`).val()
+            base = base.replace(/\./g, '').replace(',', '.');
+            
+        }
+
+        const resultado = window[calculo.funcao]({tabela, minuta, base});
+        
+        $(`#total-${tipoCalculo}-${padrao}`).val(
+            resultado.toLocaleString("pt-BR", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits:2
+            })
+        );
+    }
+    calculaTotais(padrao)
 });
 function calcularHora({tabela, minuta}) {
     const [horas, minutos] = minuta.split(":").map(num => parseInt(num, 10));
