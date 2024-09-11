@@ -1020,6 +1020,16 @@ const calculosMinuta = {
         funcao: "calcularMultiplo"
     },
 }
+
+function formatarNumero(valor, casasDecimais) {
+    valor = valor.replace(/\./g, '').replace(',', '.');
+    valor = parseFloat(valor)
+    valorFormatado = valor.toLocaleString("pt-BR", {
+        minimumFractionDigits: casasDecimais,
+        maximumFractionDigits: casasDecimais
+    });
+    return valorFormatado
+}
 $(document).on("change", ".js-input-change", function() {
     const stringPartes = $(this).attr("name").split("-");
     const tipoCalculo = stringPartes[1];
