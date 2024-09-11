@@ -879,23 +879,6 @@ function somaMotorista() {
     $("#total-motorista").text(text_total)
 }
 
-// Utilizada no Card-Pagamentos
-// Soma total dos pagamentos
-function somaPagamentos() {
-    var valor_paga = 0.00;
-    $(".total-paga").each(function() {
-        valor_paga += parseFloat($(this).val().replace(".", "").replace(",", "."))
-    });
-    $("#total-pagamentos").text(valor_paga.toFixed(2))
-    $("#total-pagamentos").unmask()
-    $("#total-pagamentos").mask("#.##0,00", { reverse: true })
-    $(text_total).unmask()
-    $(text_total).mask("#.##0,00", { reverse: true })
-    var text_total = $("#total-pagamentos").text();
-    var text_total = "R$ " + text_total
-    $("#total-pagamentos").text(text_total)
-    somaMotorista();
-}
 
 /**
  * Verifica e atualiza o status dos checkboxes e elementos relacionados
