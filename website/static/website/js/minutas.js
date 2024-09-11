@@ -1020,6 +1020,76 @@ $(document).on("click", ".js-consulta-minuta", function() {
         },
     });
 });
+
+
+const calculosMinuta = {
+    "taxa_expedicao": {
+        funcao: "calcularMultiplo",
+    },
+    "seguro": {
+        funcao: "calcularPorcentagem"
+    },
+    "porcentagem_nota": {
+        funcao: "calcularPorcentagem"
+    },
+    "porcentagem_nota_extra": {
+        funcao: "calcularPorcentagemHora"
+    },
+    "hora": {
+        funcao: "calcularHora"
+    },
+    "hora_extra": {
+        funcao: "calcularPorcentagemHora"
+    },
+    "quilometragem": {
+        funcao: "calcularMultiplo"
+    },
+    "quilometragem_extra": {
+        funcao: "calcularPorcentagemHora"
+    },
+    "entregas": {
+        funcao: "calcularMultiplo"
+    },
+    "entregas_extra": {
+        funcao: "calcularPorcentagemHora"
+    },
+    "saida": {
+        funcao: "calcularMultiplo"
+    },
+    "saida_extra": {
+        funcao: "calcularPorcentagemHora"
+    },
+    "capacidade_peso": {
+        funcao: "calcularMultiplo"
+    },
+    "capacidade_peso_extra": {
+        funcao: "calcularPorcentagemHora"
+    },
+    "entregas_quilos": {
+        funcao: "calcularMultiplo"
+    },
+    "entregas_quilos_extra": {
+        funcao: "calcularPorcentagemHora"
+    },
+    "entregas_volume": {
+        funcao: "calcularMultiplo"
+    },
+    "entregas_volume_extra": {
+        funcao: "calcularPorcentagemHora"
+    },
+    "perimetro": {
+        funcao: "calcularPorcentagem"
+    },
+    "perimetro_extra": {
+        funcao: "calcularPorcentagemHora"
+    },
+    "pernoite": {
+        funcao: "calcularPorcentagem"
+    },
+    "ajudante": {
+        funcao: "calcularMultiplo"
+    },
+}
 $(document).on("change", ".js-input-change", function() {
     const stringPartes = $(this).attr("name").split("-");
     const tipoCalculo = stringPartes[1];
