@@ -459,22 +459,6 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
 // ESTÁ EM ORDEM ALFABETICA E CATALOGADA 19/04/2023
 
 // Utilizado no Card-Receitas e no Card-Pagamentos
-// Calcular inputs de Time
-function calculaHora(v_porcentagem, v_valor1, v_hora) {
-    var horas = v_hora.substring(0, 2)
-    var minutos = v_hora.substring(3, 5)
-    var valor_hora = (
-        parseFloat
-            (v_porcentagem.replace(".", "").replace(",", ".")
-        ) / 100 * parseFloat(
-                v_valor1.replace(".", "").replace(",", ".")
-            )
-    )
-    var valor_minuto = (valor_hora / 60)
-    return ((valor_hora * horas) + (valor_minuto * minutos)).toFixed(2)
-}
-
-// Utilizado no Card-Receitas e no Card-Pagamentos
 // Calcular inputs de Numeros
 function calculaMultiplo(v_valor1, v_valor2) {
     var valor1 = parseFloat(
@@ -1508,3 +1492,15 @@ $(document).on("click", ".js-consulta-minuta", function() {
         },
     });
 });
+function calcularHora({tabela, minuta}) {
+    const [horas, minutos] = minuta.split(":").map(num => parseInt(num, 10));
+
+    if (isNaN(horas) || isNaN(minutos)) {
+        return 0;
+    }
+
+    const valorHora = parseFloat(tabela) / 10
+    const valorMinuto = valorHora / 60
+
+    return (valorHora * horas) + (valorMinuto * minutos)
+}
