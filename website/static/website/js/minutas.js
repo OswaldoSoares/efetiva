@@ -896,22 +896,7 @@ function somaPagamentos() {
     $("#total-pagamentos").text(text_total)
     somaMotorista();
 }
-    });
 
-// Utilizada no Card-Receitas
-// Soma total das receitas
-function somaReceitas() {
-    var valor_recebe = 0.00;
-    $(".total-recebe").each(function() {
-        valor_recebe += parseFloat($(this).val().replace(".", "").replace(",", "."))
-    });
-    $("#total-receitas").text(valor_recebe.toFixed(2))
-    $("#total-receitas").unmask()
-    $("#total-receitas").mask("#.##0,00", { reverse: true })
-    var text_total = $("#total-receitas").text();
-    var text_total = "R$ " + text_total
-    $("#total-receitas").text(text_total)
-}
 
 // Utilizado no Card-Pagamentos
 // Mostra inputs dos itens de acordo com o estado do checkbox
@@ -1088,3 +1073,41 @@ function calcularPorcentagemHora({tabela, minuta, base}) {
 function calcularMultiplo({tabela, minuta}) {
     return parseFloat(tabela) * parseFloat(minuta)
 }
+
+function calcularTotais(padrao) {
+    let valorTotal = 0.00;
+    let basePerimetroPernoite = 0.00;
+
+
+    $(`.total-${padrao}`).each(function() {
+        const checkboxId = $(this).attr("name").replace("total", "#chk");
+        const checkboxStatus = $(checkboxId).prop("checked");
+
+        if (checkboxStatus) {
+            const valorItem = $(this).val().replace(/\./g, '').replace(',', '.');
+
+            valorTotal += parseFloat(valorItem);
+
+            if ($(this).hasClass(`total-phkesc-${padrao}`)) {
+                basePerimetroPernoite += parseFloat(valorItem);
+            }
+            
+        }
+    });
+
+    const valorTotalFormatado = valorTotal.toLocaleString("pt-BR", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+
+    const valorBaseFormatado = basePerimetroPernoite.toLocaleString("pt-BR", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+
+    $(`#minuta-perimetro-${padrao}`).val(valorBaseFormatado)
+    $(`#minuta-pernoite-${padrao}`).val(valorBaseFormatado)
+    $(`#saldo-${padrao}`).text("R$ " + valorTotalFormatado)
+   
+}
+
