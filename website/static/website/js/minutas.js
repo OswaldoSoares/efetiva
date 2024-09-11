@@ -930,17 +930,6 @@ function verificaCheckboxClasse(classe) {
     });
 };
 
-// Utilizada no Card-Minuta
-// Mostrra o calculo de Kms
-function verificaTotalKms() {
-    if ($(".total-kms").text() == "0 KMs") {
-        $(".calcula-kms").hide()
-        $("#id_KMFinal").val(0)
-    } else {
-        $(".calcula-kms").show()
-    }
-}
-
 // Utilizada no Card-Relatorio
 // Atualiza parametro href ao alterar data inicial
 $(document).on("input", "#periodo-inicial", function(event) {
