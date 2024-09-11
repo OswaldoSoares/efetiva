@@ -278,20 +278,6 @@ $(document).ready(function() {
 
     
 
-    // Versão Antiga //
-    var totais = function() {
-        valor_recebe = 0.00;
-        valor_paga = 0.00;
-        $(".valor-recebe").each(function() {
-            valor_recebe += parseFloat($(this).val())
-        });
-        $(".valor-paga").each(function() {
-            valor_paga += parseFloat($(this).val())
-        });
-        $("#totalrecebe").text("R$ " + valor_recebe.toFixed(2).replace(".", ","))
-        $("#totalpaga").text("R$ " + valor_paga.toFixed(2).replace(".", ","))
-        $(".saldo-minuta").text("Saldo da Minuta R$ " + (valor_recebe - valor_paga).toFixed(2).replace(".", ","))
-    }
 
     // Versão Antiga //
     var somaPerimetro = function() {
