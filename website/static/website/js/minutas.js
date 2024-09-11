@@ -1118,6 +1118,12 @@ function atualizaAposMinutaAlterada(data) {
 function atualizaAposEntregaAlterada(data) {
     $(".card-romaneio").html(data["html_card_romaneios"])
     $(".card-entrega").html(data["html_card_entregas"])
+
+function atualizaAposDespesaAlterada(data) {
+    $(".card-despesa").html(data["html_card_despesas"])
+    atualizaAposComum(data)
+}
+
     $(".card-receitas").html(data["html-card-receitas"])
     exibirMensagem(data["mensagem"])
     verificaCheckboxClasse("total-recebe")
