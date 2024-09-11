@@ -876,19 +876,6 @@ function mostraMensagemSucesso() {
     $(".div-sucesso").delay(5000).slideUp(500)
 }
 
-// TODO VERIFICAR NECESSIDADE E APRIMORAR SE NECESSÁRIO
-function recarregaFinanceiro(html_paga, html_recebe) {
-    $(".html-form-paga").html(html_paga);
-    $(".card-recebe").html(html_recebe);
-    formatUnmask();
-    formatMask();
-    somaPhkescReceitas();
-    somaReceitas();
-    somaPhkescPagamentos();
-    somaPagamentos();
-    verificaCheckboxPaga();
-    verificaCheckboxRecebe();
-}
 
 // Utilizada no Card-Pagamentps
 // Soma valor do motorista
