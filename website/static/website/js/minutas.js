@@ -248,49 +248,6 @@ $(document).ready(function() {
             });
         });
     });
-
-
-    $(".switch").each(function() {
-        mostravalores($(this));
-    });
-
-    $(".switch").change(function() {
-        mostravalores($(this));
-    });
-
-    
-    $(".demonstrativo-input").change(function() {
-        if ($(this).attr("type") != "time") {
-            if ($(this).attr("id") == "ta-seguro-recebe") {
-                $(this).val(parseFloat($(this).val()).toFixed(3))
-            } else {
-                $(this).val(parseFloat($(this).val()).toFixed(2))
-            }
-        };
-    });
-
-    $(".demonstrativo-input").change(function() {
-        var elemento_alterado = "#sw" + $(this).attr("id").substring(2, 50)
-        var obj = $("input").filter(elemento_alterado)
-        mostravalores(obj);
-    });
-
-    // Versão Antiga //
-    $("#mi-ajudante-paga").attr("readonly", "readonly");
-    $(".js-criaminuta").click(loadForm);
-    $(".js-editaminuta").click(loadForm);
-    $(".js-imprimeminuta").click(loadForm);
-    $(".js-fechaminuta").click(loadForm);
-    $(".js-criaminutamotorista").click(loadForm);
-    $(".js-excluiminutamotorista").click(loadForm);
-    $(".js-criaminutaajudante").click(loadForm);
-    $(".js-excluiminutaajudante").click(loadForm);
-    $(".js-editaminutaveiculo").click(loadForm);
-    $(".js-criaminutaparametrodespesa").click(loadForm);
-    $(".js-excluiminutadespesa").click(loadForm);
-    $(".js-criaminutaentrega").click(loadForm);
-    $(".js-editaminutaentrega").click(loadForm);
-    $(".js-excluiminutaentrega").click(loadForm);
 });
 
 function openMyModal(event) {
