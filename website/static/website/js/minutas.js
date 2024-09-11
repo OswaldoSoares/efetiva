@@ -1044,6 +1044,11 @@ $(document).on("change", ".js-input-change", function() {
     }
     calculaTotais(padrao)
 });
+
+$(document).on("change", ".js-decimal, .js-inteiro", function() {
+    formatarInput($(this));
+});
+
 function calcularHora({tabela, minuta}) {
     const [horas, minutos] = minuta.split(":").map(num => parseInt(num, 10));
 
