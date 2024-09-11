@@ -1123,3 +1123,12 @@ function atualizaAposMinutaAlterada(data) {
     verificaCheckboxClasse("total-recebe")
     calcularTotais("recebe")
 }
+
+function atualizaAposEntregaAlterada(data) {
+    $(".card-romaneio").html(data["html_card_romaneios"])
+    $(".card-entrega").html(data["html_card_entregas"])
+    $(".card-receitas").html(data["html-card-receitas"])
+    exibirMensagem(data["mensagem"])
+    verificaCheckboxClasse("total-recebe")
+    calcularTotais("recebe")
+}
