@@ -212,9 +212,7 @@ $(document).ready(function() {
                 $(".box-loader").show()
             },
             success: function(data) {
-                $(".card-despesa").hide()
-                $(".card-despesa").html(data["html_card_despesas"]);
-                $(".card-despesa").show()
+                atualizaAposDespesaAlterada(data)
                 $(".box-loader").hide()
             },
             error: function(error) {
