@@ -7,6 +7,8 @@ $(document).ready(function() {
 
     verificaCheckboxClasse("total-recebe")
     formatarInicial()
+    calcularTotais("recebe")
+
     /* Versão Nova - Função que envia formulário com os itens de
     recebimento para serem processados pelo servidor */
     $(document).on("submit", "#js-gera-receitas", function(event) {
@@ -346,6 +348,7 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                     $(".card-checklist").hide()
                     $(".card-checklist").html(xhr["html_checklist"])
                     verificaCheckboxClasse("total-recebe")
+                    calcularTotais("recebe")
 
                     mostraChecklist();
                     if (xhr["link"]) {
@@ -618,6 +621,7 @@ $(document).on("click", ".js-gerenciar-romaneio-minuta", function() {
             $(".box-loader").hide()
             exibirMensagem(data["mensagem"])
             verificaCheckboxClasse("total-recebe")
+            calcularTotais("recebe")
         },
     });
 });
@@ -675,6 +679,7 @@ $(document).on("click", ".js-remover-entrega-minuta", function(event) {
         success: function(data) {
             $(".card-entrega").html(data["html_card_entregas"]);
             verificaCheckboxClasse("total-recebe")
+            calcularTotais("recebe")
             $(".box-loader").hide();
         },
         error: function(error) {
