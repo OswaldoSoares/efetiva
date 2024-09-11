@@ -221,34 +221,6 @@ $(document).ready(function() {
         });
     });
 
-    // Versão Nova //
-
-    $("#MyModal").on("shown.bs.modal", function() {
-        setTimeout(function() { // Delay para função loadCubagem, após janela estar carregada
-            $("#id_Propriedade").focus(); // Configura o foco inicial
-        }, 800);
-        $(".form-radio").click(function() {
-            var filtro = $(this).val()
-            $.ajax({
-                type: "GET",
-                url: "/minutas/filtraveiculoescolhido",
-                data: {
-                    idobj: $("#idminuta").attr("idminuta"),
-                    idPessoal: $("#idpessoal").attr("idpessoal"),
-                    Filtro: filtro,
-                },
-                beforeSend: function() {
-                    $("#id_veiculo").html("")
-                },
-                success: function(data) {
-                    $("#id_veiculo").html(data["html_filtro"])
-                },
-                error: function(error) {
-                    console.log(error)
-                }
-            });
-        });
-    });
 });
 
 function openMyModal(event) {
