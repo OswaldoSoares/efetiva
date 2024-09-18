@@ -192,23 +192,12 @@ $(document).on("click", ".js-excluir-colaborador-minuta", function() {
 $(document).on("click", ".js-excluir-despesa-minuta", function(event) {
     var id_minuta = localStorage.getItem("idminuta")
     var id_minuta_itens = $(this).data("id_minuta_itens")
-    $.ajax({
-        type: "GET",
-        url: "/minutas/excluir_despesa",
-        data: {
-            id_minuta_itens: id_minuta_itens,
-            id_minuta: id_minuta,
-        },
-        beforeSend: function() {
-            $(".box-loader").show()
-        },
-        success: function(data) {
-            atualizaAposDespesaAlterada(data)
-            $(".box-loader").hide()
-        },
-        error: function(error) {
-            console.log(error)
-        }
+
+    executarAjax("/minutas/excluir_despesa", "GET", {
+        id_minuta_itens: id_minuta_itens,
+        id_minuta: id_minuta,
+    }, function(data) {
+        atualizaAposDespesaAlterada(data)
     });
 });
 
