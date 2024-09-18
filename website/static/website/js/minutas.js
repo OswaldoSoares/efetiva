@@ -472,24 +472,12 @@ $(document).on("click", ".js-editar-minuta-km-final", function() {
     var km_inicial = $("#id_km_inicial").val()
     var km_final = $("#id_km_final").val()
 
-    $.ajax({
-        type: "GET",
-        url: "/minutas/editar_minuta_km_final",
-        data: {
-            id_minuta: id_minuta,
-            km_inicial: km_inicial,
-            km_final: km_final,
-        },
-        beforeSend: function() {
-            $(".box-loader").show()
-        },
-        success: function(data) {
-            atualizaAposMinutaAlterada(data)
-            $(".box-loader").hide();
-        },
-        error: function(error) {
-            console.log(error)
-        }
+    executarAjax("/minutas/editar_minuta_km_final", "GET", {
+        id_minuta: id_minuta,
+        km_inicial: km_inicial,
+        km_final: km_final,
+    }, function(data) {
+        atualizaAposMinutaAlterada(data)
     });
 });
 
