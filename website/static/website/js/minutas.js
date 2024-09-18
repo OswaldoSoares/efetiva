@@ -40,27 +40,13 @@ $(document).on("submit", "#js-gera-receitas", function(event) {
     
 $(document).on("submit", "#js-gera-pagamentos", function(event) {
     event.preventDefault();
-    $.ajax({
-        type: "POST",
-        url: "/minutas/gera_pagamentos",
-        data: $(this).serialize(),
-        beforeSend: function() {
-            $(".box-loader").show();
-            $(".card-minuta").html("");
-            $(".card-checklist").html("");
-            $(".html-form-paga").html("");
-        },
-        success: function(data) {
-            $(".card-minuta").html(data["html_card_minuta"]);
-            $(".card-checklist").html(data["html_card_checklist"]);
-            $(".html-form-paga").html(data["html_card_pagamentos"]);
-            mostraChecklist();
-            $("html, body").scrollTop(0);
-            $(".box-loader").hide();
-        },
-        error: function(error) {
-            console.log(error)
-        }
+    var data = $(this).serialize();
+
+    executarAjax("/minutas/gera_pagamentos", "POST", data, function(data) {
+        $(".card-minuta").html(data["html_card_minuta"]);
+        $(".card-checklist").html(data["html_card_checklist"]);
+        $(".html-form-paga").html(data["html_card_pagamentos"]);
+        mostraChecklist();
     });
 });
     
