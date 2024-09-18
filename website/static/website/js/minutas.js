@@ -371,40 +371,29 @@ $(document).on("click", "#chk-saida", function(event) {
     }
 });
 
-$(document).on("click", ".filtro-consulta", function(event) {
+$(document).on("click", ".filtro-consulta", function() {
     var filtro = $(this).attr("data-filtro")
     var filtro_consula = $(this).data("filtro-consulta")
     var meses = $(this).data("meses")
     var anos = $(this).data("anos")
-    $.ajax({
-        type: "GET",
-        url: "/minutas/filtraminuta",
-        data: {
-            Filtro: filtro,
-            FiltroConsulta: filtro_consula,
-            Meses: meses,
-            Anos: anos,
-        },
-        beforeSend: function() {
-            $(".box-loader").show()
-            $(".filtro-lista").each(function() {
-                $(this).addClass("i-button")
-            });
-            $(this).removeClass("filtro-consulta")
-            $(this).removeClass("i-button")
-            $(this).addClass("i-button-null")
-            $(".card-minutas-abertas").hide();
-            $(".card-minutas-concluidas").hide();
-            $(".card-minutas-fechadas").hide();
-        },                
-        success: function(data) {
-            $(".card-minutas-consulta").html(data["html_filtra_minuta"])
-            $(".card-minutas-consulta").show()
-            $(".box-loader").hide()
-        },
-        error: function(error) {
-            console.log(error)
-        }
+
+    executarAjax("/minutas/filtraminuta", "GET", {
+        Filtro: filtro,
+        FiltroConsulta: filtro_consula,
+        Meses: meses,
+        Anos: anos,
+    }, function(data) {
+        $(".card-minutas-consulta").html(data["html_filtra_minuta"])
+        $(".card-minutas-consulta").show()
+        // $(".filtro-lista").each(function() {
+            // $(this).addClass("i-button")
+        // });
+        // $(this).removeClass("filtro-consulta")
+        // $(this).removeClass("i-button")
+        // $(this).addClass("i-button-null")
+        $(".card-minutas-abertas").hide();
+        $(".card-minutas-concluidas").hide();
+        $(".card-minutas-fechadas").hide();
     });
 });
 
