@@ -458,23 +458,12 @@ $(document).on("click", ".js-editar-minuta-hora-final", function() {
 $(document).on("click", ".js-editar-minuta-km-inicial", function() {
     var id_minuta = localStorage.getItem("idminuta")
     var km_inicial = $("#id_km_inicial").val()
-    $.ajax({
-        type: "GET",
-        url: "/minutas/editar_minuta_km_inicial",
-        data: {
-            id_minuta: id_minuta,
-            km_inicial: km_inicial,           
-        },
-        beforeSend: function() {
-            $(".box-loader").show()
-        },
-        success: function(data) {
-            atualizaAposMinutaAlterada(data)
-            $(".box-loader").hide();
-        },
-        error: function(error) {
-            console.log(error)
-        }
+
+    executarAjax("/minutas/editar_minuta_km_inicial", "GET", {
+        id_minuta: id_minuta,
+        km_inicial: km_inicial,
+    }, function(data) {
+        atualizaAposMinutaAlterada(data)
     });
 });
 
