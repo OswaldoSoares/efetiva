@@ -408,39 +408,28 @@ $(document).on("click", ".filtro-consulta", function(event) {
     });
 });
 
-$(document).on("click", ".filtro-periodo", function(event) {
+$(document).on("click", ".filtro-periodo", function() {
     var filtro = $(this).data("filtro")
     var filtro_consula = $(this).data("filtro-consulta")
     var meses = $(this).data("meses")
     var anos = $(this).data("anos")
     var menu_selecionado = $(this)
-    $.ajax({
-        type: "GET",
-        url: "/minutas/filtraminuta",
-        data: {
-            Filtro: filtro,
-            FiltroConsulta: filtro_consula,
-            Meses: meses,
-            Anos: anos,
-        },
-        beforeSend: function() {
-            $(".box-loader").show()
-            $(".filtro-periodo").each(function() {
-                if ($(this).text() == menu_selecionado.text()) {
-                    $(this).removeClass("i-button")
-                } else {
-                    $(this).addClass("i-button")
-                }
-            });
-        },
-        success: function(data) {
-            $(".card-minutas-consulta").html(data["html_filtra_minuta"])
-            $(".box-loader").hide()
-        },
-        error: function(error) {
-            console.log(error)
-        }
-    })
+
+    executarAjax("/minutas/filtraminuta", "GET", {
+        Filtro: filtro,
+        FiltroConsulta: filtro_consula,
+        Meses: meses,
+        Anos: anos,
+    }, function(data) {
+        $(".card-minutas-consulta").html(data["html_filtra_minuta"])
+        $(".filtro-periodo").each(function() {
+            if ($(this).text() == menu_selecionado.text()) {
+                $(this).removeClass("i-button")
+            } else {
+                $(this).addClass("i-button")
+            }
+        });
+    });
 });
 
 $(document).on("click", ".js-editar-minuta-hora-final", function() {
