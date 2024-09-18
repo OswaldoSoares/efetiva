@@ -554,23 +554,12 @@ $(document).on("change", ".js-checkbox-recebe", function() {
 $(document).on("click", ".js-remover-entrega-minuta", function(event) {
     var id_minuta = localStorage.getItem("idminuta")
     var id_minuta_notas = $(this).data("id_minuta_notas")
-    $.ajax({
-        type: "GET",
-        url: "/minutas/remover_entrega",
-        data: {
-            id_minuta: id_minuta,
-            id_minuta_notas: id_minuta_notas,
-        },
-        beforeSend: function() {
-            $(".box-loader").show();
-        },
-        success: function(data) {
-            atualizaAposEntregaAlterada(data)
-            $(".box-loader").hide();
-        },
-        error: function(error) {
-            console.log(error)
-        }
+
+    executarAjax("/minutas/remover_entrega", "GET", {
+        id_minuta: id_minuta,
+        id_minuta_notas: id_minuta_notas,
+    }, function(data) {
+        atualizaAposEntregaAlterada(data)
     });
 });
 
