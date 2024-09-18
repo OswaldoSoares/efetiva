@@ -563,28 +563,6 @@ $(document).on("click", ".js-remover-entrega-minuta", function(event) {
     });
 });
 
-$(document).on("click", ".js-remove-romaneio-minuta", function() {
-    var romaneio = $(this).data("romaneio")
-    var idminuta = $(this).data("idminuta")
-    var idcliente = $(this).data("idcliente")
-    $.ajax({
-        type: "GET",
-        url: "/minutas/remove_romaneio_minuta",
-        data: {
-            romaneio: romaneio,
-            idminuta: idminuta,
-            idcliente: idcliente,
-        },
-        beforeSend: function() {
-            $(".box-loader").show()
-        },
-        success: function(data) {
-            atualizaAposEntregaAlterada(data)
-            $(".box-loader").hide()
-        },
-    });
-});
-
 $(document).on("click", ".lista-consulta", function(event) {
     $(".lista-consulta").each(function() {
         $(this).removeClass("bi-caret-down").addClass("bi-caret-right");
