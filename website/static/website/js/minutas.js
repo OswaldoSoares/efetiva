@@ -446,23 +446,12 @@ $(document).on("click", ".filtro-periodo", function(event) {
 $(document).on("click", ".js-editar-minuta-hora-final", function() {
     var id_minuta = localStorage.getItem("idminuta")
     var hora_final = $("#id_hora_final").val()
-    $.ajax({
-        type: "GET",
-        url: "/minutas/editar_minuta_hora_final",
-        data: {
-            id_minuta: id_minuta,
-            hora_final: hora_final,           
-        },
-        beforeSend: function() {
-            $(".box-loader").show()
-        },
-        success: function(data) {
-            atualizaAposMinutaAlterada(data)
-            $(".box-loader").hide();
-        },
-        error: function(error) {
-            console.log(error)
-        }
+
+    executarAjax("/minutas/editar_minuta_hora_final", "GET", {
+        id_minuta: id_minuta,
+        hora_final: hora_final,           
+    }, function(data) {
+        atualizaAposMinutaAlterada(data)
     });
 });
 
