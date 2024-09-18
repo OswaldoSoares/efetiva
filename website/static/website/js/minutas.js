@@ -510,21 +510,13 @@ $(document).on("click", ".js-gerenciar-romaneio-minuta", function() {
     var id_romaneio = $(this).data("id_romaneio")
     var id_minuta = $(this).data("id_minuta")
     var acao = $(this).data("acao")
-    $.ajax({
-        type: "GET",
-        url: "/minutas/gerenciar_romaneio_minuta",
-        data: {
-            id_romaneio: id_romaneio,
-            id_minuta: id_minuta,
-            acao: acao,
-        },
-        beforeSend: function() {
-            $(".box-loader").show()
-        },
-        success: function(data) {
-            atualizaAposEntregaAlterada(data)
-            $(".box-loader").hide()
-        },
+
+    executarAjax("/minutas/gerenciar_romaneio_minuta", "GET", {
+        id_romaneio: id_romaneio,
+        id_minuta: id_minuta,
+        acao: acao,
+    }, function(data) {
+        atualizaAposEntregaAlterada(data)
     });
 });
 
