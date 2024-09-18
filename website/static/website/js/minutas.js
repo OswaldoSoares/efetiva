@@ -168,24 +168,13 @@ $(document).on("click", ".js-excluir-colaborador-minuta", function() {
     var id_minuta = $(this).data("id_minuta")
     var id_minuta_colaborador = $(this).data("id_minuta_colaborador")
     var cargo = $(this).data("cargo")
-    $.ajax({
-        type: "GET",
-        url: "/minutas/excluir_colaborador_minuta",
-        data: {
-            id_minuta: id_minuta,
-            id_minuta_colaborador: id_minuta_colaborador,
-            cargo: cargo,
-        },
-        beforeSend: function() {
-            $(".box-loader").show()
-        },
-        success: function(data) {
-            atualizaAposMinutaAlterada(data)
-            $(".box-loader").hide();
-        },
-        error: function(error) {
-            console.log(error)
-        }
+
+    executarAjax("/minutas/excluir_colaborador_minuta", "GET", {
+        id_minuta: id_minuta,
+        id_minuta_colaborador: id_minuta_colaborador,
+        cargo: cargo,
+    }, function(data) {
+        atualizaAposMinutaAlterada(data)
     });
 });
 
