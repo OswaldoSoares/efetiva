@@ -89,27 +89,17 @@ $(document).on("click", ".estorna-pagamentos-ajudantes", function(event) {
     });
 });
 
-$(document).on("click", ".js-alterar-status-minuta", function(event) {
+$(document).on("click", ".js-alterar-status-minuta", function() {
     var id_minuta = $(this).data("id_minuta")
     var proximo_status = $(this).data("proximo-status")
-    $.ajax({
-        type: "GET",
-        url: "/minutas/alterar_status_minuta",
-        data: {
-            id_minuta: id_minuta,
-            proximo_status: proximo_status,
-        },
-        beforeSend: function() {
-            $(".box-loader").show();
-        },
-        success: function(data) {
-            $(".card-checklist").html(data["html_checklist"]);
-            mostraChecklist();
-            $(".box-loader").hide();
-        },
-        error: function(error) {
-            console.log(error)
-        }
+
+    executarAjax("/minutas/alterar_status_minuta", "GET", {
+        id_minuta: id_minuta,
+        proximo_status: proximo_status,
+    }, function(data) {
+        $(".card-checklist").html(data["html_checklist"]);
+        mostraChecklist();
+        $(".box-loader").hide();
     });
 });
 
