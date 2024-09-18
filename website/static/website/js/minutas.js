@@ -12,29 +12,10 @@ $(document).ready(function() {
 
 $(document).on("submit", "#js-gera-receitas", function(event) {
     event.preventDefault();
-    $.ajax({
-        type: "POST",
-        url: "/minutas/gera_receitas",
-        data: $(this).serialize(),
-        beforeSend: function() {
-            $(".box-loader").show();
-            $(".card-recebe").html("")
-        },
-        success: function(data) {
-            console.log(data)
-            $(".card-recebe").html(data["html-card-recebe"])
-            $(".box-loader").hide();
-        },
-        error: function(error) {
-            $(".mensagem-erro").text(
-                error.status + " " + error.message + " "
-                + "- entre em contato com o administrador do aplicativo."
-            );
-        $("html, body").scrollTop(0);
-            $(".box-loader").hide();
-            mostraMensagemErro()
-            console.log(error)
-        },
+    var data = $(this).serialize();
+
+    executarAjax("/minutas/gera_receitas", "POST", data, function(data) {
+        $(".card-recebe").html(data["html-card-recebe"])
     });
 });
     
