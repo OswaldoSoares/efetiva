@@ -449,7 +449,7 @@ $(document).on("click", ".js-editar-minuta-hora-final", function() {
 
     executarAjax("/minutas/editar_minuta_hora_final", "GET", {
         id_minuta: id_minuta,
-        hora_final: hora_final,           
+        hora_final: hora_final,
     }, function(data) {
         atualizaAposMinutaAlterada(data)
     });
