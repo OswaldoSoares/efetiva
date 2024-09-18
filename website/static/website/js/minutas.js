@@ -66,26 +66,14 @@ $(document).on("submit", "#js-gera-pagamentos", function(event) {
     
 $(document).on("click", ".estorna-pagamentos-ajudantes", function(event) {
     var idminuta = $(this).attr("idMinuta")
-    $.ajax({
-        type: "GET",
-        url: "/minutas/estorna_pagamentos_ajudantes",
-        data: {
-            idminuta: idminuta,
-        },
-        beforeSend: function() {
-            $(".box-loader").show();
-        },
-        success: function(data) {
-            $(".card-minuta").html(data["html_card_minuta"]);
-            $(".card-checklist").html(data["html_card_checklist"]);
-            $(".html-form-paga").html(data["html_card_pagamentos"]);
-            mostraChecklist();
-            $("html, body").scrollTop(0);
-            $(".box-loader").hide();
-        },
-        error: function(error) {
-            console.log(error)
-        }
+
+    executarAjax("/minutas/estorna_pagamentos_ajudantes", "GET", {
+        idminuta: idminuta,
+    }, function(data) {
+        $(".card-minuta").html(data["html_card_minuta"]);
+        $(".card-checklist").html(data["html_card_checklist"]);
+        $(".html-form-paga").html(data["html_card_pagamentos"]);
+        mostraChecklist();
     });
 });
 
