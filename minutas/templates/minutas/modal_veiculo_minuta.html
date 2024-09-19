@@ -10,15 +10,18 @@
 <form class="row g-3" method="post" action="{% url 'adicionar_veiculo_minuta' %}">
 {% csrf_token %}
     <div class="col-md-4">
-        <input type="radio" value="PROPRIO" id="proprio" class="form-radio" name="veiculo">
+        <input type="radio" value="PROPRIO" id="proprio"
+               class="js-filtra-veiculo-categoria" name="veiculo">
         <label for="proprio">PRÓPRIO</label>
     </div>
     <div class="col-md-4">
-        <input type="radio" value="TRANSPORTADORA" id="transportadora" class="form-radio" name="veiculo">
+        <input type="radio" value="TRANSPORTADORA" id="transportadora"
+               class="js-filtra-veiculo-categoria" name="veiculo">
         <label for="transportadora">TRANSPORTADORA</label>
     </div>
     <div class="col-md-4">
-        <input type="radio" value="CADASTRADOS" id="cadastrado" class="form-radio" name="veiculo">
+        <input type="radio" value="CADASTRADOS" id="cadastrado"
+               class="js-filtra-veiculo-categoria" name="veiculo">
         <label for="cadastrado">CADASTRADOS</label>
     </div>
     <div class="col-md-12">
