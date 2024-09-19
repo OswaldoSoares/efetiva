@@ -1,4 +1,4 @@
-{% extends 'minutas/baseminutas.html' %}
+{% extends "minutas/baseminutas.html" %}
 {% load permission_tags %}
 
 {% block title %}
@@ -9,20 +9,20 @@
 <main class="section-grid grid-minuta">
     <section class="grid-column">
         <div class="card card-minuta">
-            {% include 'minutas/card_minuta.html' %}
+            {% include "minutas/card_minuta.html" %}
         </div>
         {% if s_minuta.status_minuta != 'FATURADA' %}
         <div class="card card-checklist">
-            {% include 'minutas/card_checklist.html' %}
+            {% include "minutas/card_checklist.html" %}
         </div>
         {% endif %}
     </section>
     <section class="grid-column">
         <div class="card card-despesa">
-            {% include 'minutas/card_despesas.html' %}
+            {% include "minutas/card_despesas.html" %}
         </div>
         <div class="card card-romaneio">
-            {% include 'minutas/card_romaneios.html' %}
+            {% include "minutas/card_romaneios.html" %}
         </div>
         <div class="card card-entrega">
             {% include 'minutas/card_entregas.html' %}
@@ -36,7 +36,7 @@
     <section class="grid-column">
         {% if user|can:'demonstrativo_minuta' %}
         <div class="card-recebe">
-            {% include 'minutas/card_recebe.html' %}
+            {% include "minutas/card_receitas.html" %}
         </div>
         {% endif %}
     </section>
