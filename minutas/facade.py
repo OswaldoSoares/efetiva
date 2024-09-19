@@ -4227,3 +4227,51 @@ def dict_dados_tabela(minuta):
         "pernoite": Decimal(50.00),
         "ajudante": tabela["AjudanteCobra"],
     }
+
+
+def atualizar_dados_tabela_cobranca(minuta):
+    """
+    Atualiza os dados da tabela de cobrança com base na minuta fornecida,
+    incluindo cálculos adicionais para horas extras.
+
+    Args:
+        minuta (Minuta): Objeto da minuta contendo as informações
+                         necessárias.
+
+    Returns:
+        dict: Dicionário com os dados atualizados da tabela de cobrança.
+    """
+    dados_a_cobrar = dict_dados_tabela(minuta)
+
+    dados_a_cobrar["capacidade_peso"] = filtra_tabela_capacidade_cobra(minuta)
+    dados_a_cobrar["perimetro"] = (
+        filtra_tabela_perimetro_cobra(minuta)
+        if minuta.perimetro
+        else Decimal(0.00)
+    )
+    if minuta.veiculo:
+        veiculo = filtra_tabela_veiculo(minuta)
+        dados_a_cobrar.update(
+            {
+                "porcentagem_nota": veiculo["PorcentagemCobra"],
+                "hora": veiculo["HoraCobra"],
+                "quilometragem": veiculo["KMCobra"],
+                "entregas": veiculo["EntregaCobra"],
+                "saida": veiculo["SaidaCobra"],
+                "entregas_quilos": veiculo["EntregaKGCobra"],
+                "entregas_volume": veiculo["EntregaVolumeCobra"],
+            }
+        )
+
+    horas_extras = calcula_horas_extras(
+        minuta.data, minuta.hora_final, time(18, 0)
+    )
+    if horas_extras:
+        valor_hora_extra = minuta.tabela[0]["AjudanteCobraHoraExtra"]
+        cobrar_por_horas_extras = calcula_cobranca(
+            horas_extras, valor_hora_extra
+        )
+        dados_a_cobrar["ajudante"] = (
+            minuta.tabela[0]["AjudanteCobra"] + cobrar_por_horas_extras
+        )
+    return dados_a_cobrar
