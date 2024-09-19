@@ -1359,31 +1359,43 @@ def remove_colaborador(request, idminutacolaborador, idminuta, cargo):
         obj.KMFinal = 0
         obj.save(update_fields=["idVeiculo", "KMInicial", "KMFinal"])
         data = html_motorista(request, data, idminuta)
+    minuta = vars(MinutaSelecionada(idminuta))
+    contexto = {"s-minuta": minuta}
+    checklist = itens_card_checklist(minuta)
+    contexto.update({"checklist": checklist})
     data = html_recebimento(request, data, idminuta)
     data = html_pagamento(request, data, idminuta)
-    data = html_checklist(request, data, idminuta)
+    data = html_checklist(request, data, contexto)
     return data
 
 
 def remove_despessa(request, idminutaitens, idminuta):
     despesa = MinutaItens.objects.get(idMinutaItens=idminutaitens)
     despesa.delete()
+    minuta = vars(MinutaSelecionada(idminuta))
+    contexto = {"s-minuta": minuta}
+    checklist = itens_card_checklist(minuta)
+    contexto.update({"checklist": checklist})
     data = dict()
     data = html_despesa(request, data, idminuta)
     data = html_recebimento(request, data, idminuta)
     data = html_pagamento(request, data, idminuta)
-    data = html_checklist(request, data, idminuta)
+    data = html_checklist(request, data, contexto)
     return data
 
 
 def remove_entrega(request, idminutanota, idminuta):
     entrega = MinutaNotas.objects.get(idMinutaNotas=idminutanota)
     entrega.delete()
+    minuta = vars(MinutaSelecionada(idminuta))
+    contexto = {"s-minuta": minuta}
+    checklist = itens_card_checklist(minuta)
+    contexto.update({"checklist": checklist})
     data = dict()
     data = html_entrega(request, data, idminuta)
     data = html_recebimento(request, data, idminuta)
     data = html_pagamento(request, data, idminuta)
-    data = html_checklist(request, data, idminuta)
+    data = html_checklist(request, data, contexto)
     return data
 
 
