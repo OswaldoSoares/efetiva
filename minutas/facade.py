@@ -4275,3 +4275,52 @@ def atualizar_dados_tabela_cobranca(minuta):
             minuta.tabela[0]["AjudanteCobra"] + cobrar_por_horas_extras
         )
     return dados_a_cobrar
+
+
+def atualizar_dados_tabela_pagamento(minuta):
+    """
+    Atualiza os dados da tabela de pagamento com base na minuta fornecida,
+    incluindo cálculos adicionais para horas extras.
+
+    Args:
+        minuta (Minuta): Objeto da minuta contendo as informações
+                         necessárias.
+
+    Returns:
+        dict: Dicionário com os dados atualizados da tabela de pagamento.
+    """
+    dados_a_pagar = dict_dados_tabela(minuta)
+
+    dados_a_pagar["capacidade_peso"] = filtra_tabela_capacidade_paga(minuta)
+    dados_a_pagar["perimetro"] = (
+        filtra_tabela_perimetro_paga(minuta)
+        if minuta.perimetro
+        else Decimal(0.00)
+    )
+    if minuta.veiculo:
+        veiculo = filtra_tabela_veiculo(minuta)
+        dados_a_pagar.update(
+            {
+                "porcentagem_nota": veiculo["PorcentagemPaga"],
+                "hora": veiculo["HoraPaga"],
+                "quilometragem": veiculo["KMPaga"],
+                "entregas": veiculo["EntregaPaga"],
+                "saida": veiculo["SaidaPaga"],
+                "entregas_quilos": veiculo["EntregaKGPaga"],
+                "entregas_volume": veiculo["EntregaVolumePaga"],
+            }
+        )
+
+    horas_extras = calcula_horas_extras(
+        minuta.data, minuta.hora_final, time(18, 0)
+    )
+    if horas_extras:
+        # TODO Criar campo AjudantePagaHoraExtra no db
+        valor_hora_extra = minuta.tabela[0]["AjudanteCobraHoraExtra"]
+        cobrar_por_horas_extras = calcula_cobranca(
+            horas_extras, valor_hora_extra
+        )
+        dados_a_pagar["ajudante"] = (
+            minuta.tabela[0]["AjudantePaga"] + cobrar_por_horas_extras
+        )
+    return dados_a_pagar
