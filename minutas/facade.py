@@ -3995,3 +3995,28 @@ def remover_romaneio_da_minuta(id_minuta, id_romaneio):
     ).delete()
     Romaneios.objects.filter(idRomaneio=id_romaneio).update(idMinuta_id=None)
     return {"mensagem": "NOTAS DO ROMANEIO REMOVIDAS DA MINUUTA"}
+
+
+def filtra_tabela_veiculo(minuta):
+    """
+    Filtra a tabela de veículos para encontrar o veículo solicitado com
+    base no idCategoriaVeiculo.
+
+    Args:
+        minuta (Minuta): Objeto da minuta que contém a tabela de veículos
+                         e o veículo solicitado.
+
+    Returns:
+        dict: Dicionário do veículo solicitado ou None se não encontrado.
+    """
+    tabela_veiculos = minuta.tabela_veiculo
+    solicitado = minuta.veiculo_solicitado
+
+    return next(
+        (
+            veiculo
+            for veiculo in tabela_veiculos
+            if veiculo["idCategoriaVeiculo"] == solicitado
+        ),
+        None,
+    )
