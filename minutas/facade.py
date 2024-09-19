@@ -8,7 +8,6 @@ from datetime import date, datetime, timedelta, time
 
 from core.constants import (
     SETUP_CALCULO_MINUTA,
-    ITENS_OPERACAO_MINUTA,
     TIPOS_CALCULO,
     FUNCOES_CALCULO,
 )
