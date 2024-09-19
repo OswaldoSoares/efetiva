@@ -4475,3 +4475,10 @@ def calcular_percentual_horas(**kwargs):
     valor_minutos = (valor_hora_percentual / 60) * minutos
     total = valor_horas + valor_minutos
     return total.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+
+
+def calcular_valor_por_quilos(**kwargs):
+    valor_por_quilo = Decimal(kwargs.get("tabela", 0))
+    quilos = Decimal(kwargs.get("minuta", 0))
+    total = quilos * valor_por_quilo
+    return total.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
