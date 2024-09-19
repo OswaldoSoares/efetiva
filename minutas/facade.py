@@ -4451,3 +4451,14 @@ def calcular_percentual_valor(**kwargs):
     valor_base = Decimal(kwargs.get("minuta", 0))
     total = valor_base * (percentual / 100)
     return total.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+
+
+def calcular_valor_por_tempo(**kwargs):
+    valor_hora = Decimal(kwargs.get("tabela", 0))
+    tempo = kwargs.get("minuta")
+    horas = tempo.hour
+    minutos = tempo.minute
+    valor_horas = valor_hora * horas
+    valor_minutos = (valor_hora / 60) * minutos
+    total = valor_horas + valor_minutos
+    return total.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
