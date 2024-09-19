@@ -4497,3 +4497,113 @@ def executar_funcao_calculo(
             return funcao(**parametros_comuns, **parametros_extras)
         return funcao(**parametros_comuns)
     raise ValueError(f"Função {nome_funcao} não encontrada.")
+
+
+def criar_lista_dados_formulario(tabela_cliente, dados_minuta, valor_base):
+    def calcular_total(tipo, forma_calculo):
+        funcao_info = FUNCOES_CALCULO[forma_calculo]
+        nome_funcao = funcao_info["funcao"]
+
+        parametros_comuns = {
+            "tabela": tabela_cliente.get(tipo, Decimal("0.00")),
+            "minuta": dados_minuta.get(tipo, Decimal("0.00")),
+        }
+
+        parametros_extras = {
+            extra: valor_base.get(tipo, Decimal("0.00"))
+            for extra in funcao_info.get("parametros_extras", [])
+        }
+
+        return executar_funcao_calculo(
+            nome_funcao, parametros_comuns, parametros_extras
+        )
+
+    lista_dados = []
+
+    for tipo, valores in SETUP_CALCULO_MINUTA.items():
+        if tipo in TIPOS_CALCULO:
+            total = calcular_total(tipo, valores["forma_calculo"])
+            forma_calculo_a, forma_calculo_b = valores["forma_calculo"].split(
+                "_", maxsplit=1
+            )
+            lista_dados.append(
+                {
+                    "tipo": tipo,
+                    "rotulo": tipo.replace("_", " ").upper(),
+                    "forma_calculo_a": forma_calculo_a,
+                    "forma_calculo_b": forma_calculo_b,
+                    "tabela": tabela_cliente.get(tipo, Decimal("0.00")),
+                    "minuta": dados_minuta.get(tipo, Decimal("0.00")),
+                    "total": total,
+                    "ativo": valores["ativo"],
+                    "input_type": valores["input_type"],
+                    "indice": valores["indice"],
+                }
+            )
+            valor_base[f"{tipo}_extra"] = total
+
+    for tipo, valores in SETUP_CALCULO_MINUTA.items():
+        tipo_sem_extra = tipo.replace("_extra", "")
+        if "_extra" in tipo and tipo_sem_extra in TIPOS_CALCULO:
+            total = calcular_total(tipo, valores["forma_calculo"])
+            forma_calculo_a, forma_calculo_b = valores["forma_calculo"].split(
+                "_", maxsplit=1
+            )
+            lista_dados.append(
+                {
+                    "tipo": tipo,
+                    "rotulo": tipo.replace("_", " ").upper(),
+                    "forma_calculo_a": forma_calculo_a,
+                    "forma_calculo_b": forma_calculo_b,
+                    "tabela": tabela_cliente.get(tipo, Decimal("0.00")),
+                    "minuta": dados_minuta.get(tipo, Decimal("0.00")),
+                    "total": total,
+                    "ativo": valores["ativo"],
+                    "input_type": valores["input_type"],
+                    "indice": valores["indice"],
+                }
+            )
+
+    for tipo, valores in SETUP_CALCULO_MINUTA.items():
+        if tipo in ["taxa_expedicao", "seguro", "ajudante"]:
+            total = calcular_total(tipo, valores["forma_calculo"])
+            forma_calculo_a, forma_calculo_b = valores["forma_calculo"].split(
+                "_", maxsplit=1
+            )
+            lista_dados.append(
+                {
+                    "tipo": tipo,
+                    "rotulo": tipo.replace("_", " ").upper(),
+                    "forma_calculo_a": forma_calculo_a,
+                    "forma_calculo_b": forma_calculo_b,
+                    "tabela": tabela_cliente.get(tipo, Decimal("0.00")),
+                    "minuta": dados_minuta.get(tipo, Decimal("0.00")),
+                    "total": total,
+                    "ativo": valores["ativo"],
+                    "input_type": valores["input_type"],
+                    "indice": valores["indice"],
+                }
+            )
+
+    for tipo, valores in SETUP_CALCULO_MINUTA.items():
+        if tipo in ["perimetro", "perimetro_extra", "pernoite"]:
+            forma_calculo_a, forma_calculo_b = valores["forma_calculo"].split(
+                "_", maxsplit=1
+            )
+            lista_dados.append(
+                {
+                    "tipo": tipo,
+                    "rotulo": tipo.replace("_", " ").upper(),
+                    "forma_calculo_a": forma_calculo_a,
+                    "forma_calculo_b": forma_calculo_b,
+                    "tabela": tabela_cliente.get(tipo, Decimal("0.00")),
+                    "minuta": dados_minuta.get(tipo, Decimal("0.00")),
+                    "total": Decimal(0.00),
+                    "ativo": valores["ativo"],
+                    "input_type": valores["input_type"],
+                    "indice": valores["indice"],
+                }
+            )
+
+    lista_dados = sorted(lista_dados, key=lambda x: x["indice"])
+    return lista_dados
