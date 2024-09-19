@@ -1,4 +1,5 @@
 import decimal
+from decimal import Decimal, ROUND_HALF_UP
 import time
 from django.db import connection, reset_queries
 
