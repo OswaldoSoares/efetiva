@@ -4133,3 +4133,21 @@ def filtra_tabela_perimetro_paga(minuta):
     return filtra_tabela_generico(
         minuta, minuta.tabela_perimetro, "PerimetroPaga"
     )
+
+
+def calcula_horas_extras(data, hora_final, hora_limite):
+    """
+    Calcula a quantidade de horas extras trabalhadas além da hora limite.
+
+    Args:
+        data: Data da minuta.
+        hora_final: Hora final do trabalho.
+        hora_limite: Hora limite para o cálculo das horas extras.
+
+    Returns:
+        timedelta: Tempo total de horas extras.
+    """
+    datetime_final = datetime.combine(data, hora_final)
+    datetime_limite = datetime.combine(data, hora_limite)
+    diferenca = datetime_final - datetime_limite
+    return diferenca if diferenca > timedelta(0) else timedelta(0)
