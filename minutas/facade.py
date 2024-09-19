@@ -4066,3 +4066,19 @@ def filtra_tabela_generico(minuta, tabela, valor_chave):
             ),
             Decimal(0.00),
         )
+
+
+def filtra_tabela_capacidade_cobra(minuta):
+    """
+    Filtra a tabela de capacidades para encontrar a capacidade de cobrança
+    com base no peso recebido.
+
+    Args:
+        minuta: Objeto da minuta que contém a tabela de capacidades e os peso
+
+    Returns:
+        Decimal: O valor da capacidade de cobrança.
+    """
+    return filtra_tabela_generico(
+        minuta, minuta.tabela_capacidade, "CapacidadeCobra"
+    )
