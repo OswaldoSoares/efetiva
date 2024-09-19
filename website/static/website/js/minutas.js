@@ -149,6 +149,18 @@ $(document).on("click", ".js-excluir-despesa-minuta", function(event) {
     });
 });
 
+$(document).on("click", ".js-filtra-veiculo-categoria", function() {
+    var filtro = $(this).val()
+
+    executarAjax("/minutas/filtraveiculoescolhido", "GET", {
+        idobj: $("#idminuta").attr("idminuta"),
+        idPessoal: $("#idpessoal").attr("idpessoal"),
+        Filtro: filtro,
+    }, function(data) {
+        $("#id_veiculo").html(data["html_filtro"])
+    });
+});
+
 function manipularModalEntrega() {
     if ($("#chk-perimetro").is(":checked")) {
         $(".js-perimetro-hide").hide();
