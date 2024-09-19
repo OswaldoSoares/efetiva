@@ -4667,3 +4667,23 @@ def obter_lista_calculos_ativo(phkesc):
         if digito == "1":
             calculos_ativos.append(TIPOS_CALCULO[i])
     return calculos_ativos
+
+
+def ativa_dados_cobranca(minuta, dados_cobranca):
+    tabela = minuta.tabela[0]
+    phkesc = tabela["phkescCobra"]
+    calculos_ativos = obter_lista_calculos_ativo(phkesc)
+    for itens in dados_cobranca:
+        tipo = itens["tipo"]
+        tipo_sem_extra = tipo.replace("_extra", "")
+        if tipo_sem_extra in calculos_ativos:
+            itens["ativo"] = True
+        if tipo_sem_extra == "taxa_expedicao":
+            itens["ativo"] = True
+        if tabela["Seguro"] and tipo_sem_extra == "seguro":
+            itens["ativo"] = True
+        if minuta.perimetro and tipo_sem_extra == "perimetro":
+            itens["ativo"] = True
+        if minuta.ajudantes and tipo_sem_extra == "ajudante":
+            itens["ativo"] = True
+    return dados_cobranca
