@@ -20,6 +20,7 @@ Exemplo de uso:
 
 SETUP_CALCULO_MINUTA = {
     "taxa_expedicao": {
+        "descricao": "TAXA DE EXPEDIÇÃO",
         "forma_calculo": "R$_UN",
         "tabela": 0.00,
         "minuta": 0,
@@ -28,6 +29,7 @@ SETUP_CALCULO_MINUTA = {
         "indice": 1,
     },
     "seguro": {
+        "descricao": "SEGURO",
         "forma_calculo": "%_R$",
         "tabela": 0.00,
         "minuta": 0,
@@ -36,6 +38,7 @@ SETUP_CALCULO_MINUTA = {
         "indice": 2,
     },
     "porcentagem_nota": {
+        "descricao": "PORCENTAGEM NOTA",
         "forma_calculo": "%_R$",
         "tabela": 0.00,
         "minuta": 0,
@@ -44,6 +47,7 @@ SETUP_CALCULO_MINUTA = {
         "indice": 3,
     },
     "porcentagem_nota_extra": {
+        "descricao": "PORCENTAGEM NOTA HORA EXTRA",
         "forma_calculo": "%_HS",
         "tabela": 0.00,
         "minuta": 0,
@@ -52,6 +56,7 @@ SETUP_CALCULO_MINUTA = {
         "indice": 4,
     },
     "hora": {
+        "descricao": "HORAS",
         "forma_calculo": "R$_HS",
         "tabela": 0.00,
         "minuta": 0,
@@ -60,6 +65,7 @@ SETUP_CALCULO_MINUTA = {
         "indice": 5,
     },
     "hora_extra": {
+        "descricao": "HORAS EXCEDENTE",
         "forma_calculo": "%_HS",
         "tabela": 0.00,
         "minuta": 0,
@@ -68,6 +74,7 @@ SETUP_CALCULO_MINUTA = {
         "indice": 6,
     },
     "quilometragem": {
+        "descricao": "QUILOMETRAGEM",
         "forma_calculo": "R$_UN",
         "tabela": 0.00,
         "minuta": 0,
@@ -76,6 +83,7 @@ SETUP_CALCULO_MINUTA = {
         "indice": 7,
     },
     "quilometragem_extra": {
+        "descricao": "QUILOMETRAGEM HORA EXTRA",
         "forma_calculo": "%_HS",
         "tabela": 0.00,
         "minuta": 0,
@@ -84,6 +92,7 @@ SETUP_CALCULO_MINUTA = {
         "indice": 8,
     },
     "entregas": {
+        "descricao": "ENTREGAS",
         "forma_calculo": "R$_UN",
         "tabela": 0.00,
         "minuta": 0,
@@ -92,6 +101,7 @@ SETUP_CALCULO_MINUTA = {
         "indice": 9,
     },
     "entregas_extra": {
+        "descricao": "ENTREGAS HORA EXTRA",
         "forma_calculo": "%_HS",
         "tabela": 0.00,
         "minuta": 0,
@@ -100,6 +110,7 @@ SETUP_CALCULO_MINUTA = {
         "indice": 10,
     },
     "saida": {
+        "descricao": "SAIDA",
         "forma_calculo": "R$_UN",
         "tabela": 0.00,
         "minuta": 0,
@@ -108,6 +119,7 @@ SETUP_CALCULO_MINUTA = {
         "indice": 15,
     },
     "saida_extra": {
+        "descricao": "SAIDA HORA EXTRA",
         "forma_calculo": "%_HS",
         "tabela": 0.00,
         "minuta": 0,
@@ -116,6 +128,7 @@ SETUP_CALCULO_MINUTA = {
         "indice": 16,
     },
     "capacidade_peso": {
+        "descricao": "CAPACIDADE PESO",
         "forma_calculo": "R$_UN",
         "tabela": 0.00,
         "minuta": 0,
@@ -124,6 +137,7 @@ SETUP_CALCULO_MINUTA = {
         "indice": 17,
     },
     "capacidade_peso_extra": {
+        "descricao": "CAPACIDADE PESO HORA EXTRA",
         "forma_calculo": "%_HS",
         "tabela": 0.00,
         "minuta": 0,
@@ -132,6 +146,7 @@ SETUP_CALCULO_MINUTA = {
         "indice": 18,
     },
     "entregas_quilos": {
+        "descricao": "ENTREGAS QUILOS",
         "forma_calculo": "R$_KG",
         "tabela": 0.00,
         "minuta": 0,
@@ -140,6 +155,7 @@ SETUP_CALCULO_MINUTA = {
         "indice": 11,
     },
     "entregas_quilos_extra": {
+        "descricao": "ENTREGAS QUILOS HORA EXTRA",
         "forma_calculo": "%_HS",
         "tabela": 0.00,
         "minuta": 0,
@@ -148,6 +164,7 @@ SETUP_CALCULO_MINUTA = {
         "indice": 12,
     },
     "entregas_volume": {
+        "descricao": "ENTREGAS VOLUME",
         "forma_calculo": "R$_UN",
         "tabela": 0.00,
         "minuta": 0,
@@ -156,6 +173,7 @@ SETUP_CALCULO_MINUTA = {
         "indice": 13,
     },
     "entregas_volume_extra": {
+        "descricao": "ENTREGAS VOLUME HORA EXTRA",
         "forma_calculo": "%_HS",
         "tabela": 0.00,
         "minuta": 0,
@@ -164,6 +182,7 @@ SETUP_CALCULO_MINUTA = {
         "indice": 14,
     },
     "perimetro": {
+        "descricao": "PERIMETRO",
         "forma_calculo": "%_R$",
         "tabela": 0.00,
         "minuta": 0,
@@ -172,6 +191,7 @@ SETUP_CALCULO_MINUTA = {
         "indice": 19,
     },
     "perimetro_extra": {
+        "descricao": "PERIMETRO HORA EXTRA",
         "forma_calculo": "%_HS",
         "tabela": 0.00,
         "minuta": 0,
@@ -180,6 +200,7 @@ SETUP_CALCULO_MINUTA = {
         "indice": 20,
     },
     "pernoite": {
+        "descricao": "PERNOITE",
         "forma_calculo": "%_R$",
         "tabela": 0.00,
         "minuta": 0,
@@ -188,6 +209,7 @@ SETUP_CALCULO_MINUTA = {
         "indice": 21,
     },
     "ajudante": {
+        "descricao": "AJUDANTE",
         "forma_calculo": "R$_UN",
         "tabela": 0.00,
         "minuta": 0,
