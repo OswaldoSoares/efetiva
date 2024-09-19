@@ -4151,3 +4151,41 @@ def calcula_horas_extras(data, hora_final, hora_limite):
     datetime_limite = datetime.combine(data, hora_limite)
     diferenca = datetime_final - datetime_limite
     return diferenca if diferenca > timedelta(0) else timedelta(0)
+
+
+def calcula_cobranca(total_timedelta, valor_por_hora):
+    """
+    Calcula o valor total a ser cobrado com base nas horas e minutos extras.
+
+    Args:
+        total_timedelta (timedelta): Tempo total de horas e minutos extras.
+        valor_por_hora (Decimal): Valor cobrado por hora.
+
+    Returns:
+        Decimal: O valor total de cobrança.
+    """
+    total_horas = total_timedelta.total_seconds() / 3600
+    horas = int(total_horas)
+    minutos = (total_horas - horas) * 60
+
+    cobranca_horas = Decimal(horas) * valor_por_hora
+
+    intervalos = [
+        (0, 15, Decimal("0.25")),
+        (15, 30, Decimal("0.50")),
+        (30, 45, Decimal("0.75")),
+        (45, 60, Decimal("1.00")),
+    ]
+
+    porcentagem_minutos = next(
+        (
+            valor
+            for inicio, fim, valor in intervalos
+            if inicio <= minutos < fim
+        ),
+        Decimal(0),
+    )
+
+    cobranca_minutos = porcentagem_minutos * valor_por_hora
+
+    return cobranca_horas + cobranca_minutos
