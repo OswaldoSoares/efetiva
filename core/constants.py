@@ -1,3 +1,23 @@
+"""
+constants.py
+
+Este módulo contém todas as constantes e variáveis imutáveis usadas em
+todo o projeto.
+
+As constantes definidas aqui incluem:
+- Configurações de cálculos, como tipos de formas de cálculo e itens de
+operação.
+
+Estas constantes são utilizadas em várias partes do código para garantir
+consistência e facilitar a manutenção.
+Modificações nesses valores devem ser feitas com cuidado, garantindo que
+a integridade das operações do projeto seja mantida.
+
+Exemplo de uso:
+    from .constants import TIPOS_FORMAS_CALCULO
+"""
+
+
 SETUP_CALCULO_MINUTA = {
     "taxa_expedicao": {
         "forma_calculo": "R$_UN",
