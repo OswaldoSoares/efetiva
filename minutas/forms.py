@@ -399,13 +399,6 @@ class FormEditaVeiculoEscolhido(forms.ModelForm):
         }
 
 
-class FormInsereColaborador(forms.ModelForm):
-    class Meta:
-        model = MinutaColaboradores
-        fields = {"idMinuta", "idPessoal", "Cargo"}
-        widgets = {"idPessoal": forms.Select(attrs={"class": "form-control"})}
-
-
 class FormColetaEntregaObs(forms.ModelForm):
     class Meta:
         model = Minuta
