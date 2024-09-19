@@ -132,9 +132,6 @@ class MinutaSelecionada:
         self.CategoriaDespesa = MinutaCategoriaDespesas().Categoria
         self.proxima_saida = self.entrega_saida()
         self.status_minuta = minuta.StatusMinuta
-        self.paga = self.carrega_valores_paga()
-        self.paga_motorista = self.valor_total_motorista()
-        self.paga_minuta = self.valor_total_minuta()
         self.paga_realizada_motorista = self.verifica_pagamento_motorista()
         self.paga_realizada_ajudantes = self.verifica_pagamento_ajudantes()
         self.recebe = self.carrega_valores_recebe()
@@ -309,110 +306,6 @@ class MinutaSelecionada:
         proxima_saida = f"{numero_saidas + 1}ª SAIDA"
         return proxima_saida
 
-    def carrega_valores_paga(self):
-        v_paga = cria_dict_paga()
-        tabela_veiculo = self.filtro_tabela_veiculo()
-        capacidade = [
-            itens["CapacidadePaga"]
-            for itens in self.tabela_capacidade
-            if itens["CapacidadeInicial"]
-            # Verificar peso total 12/06/2024
-            #  <= self.total_kms()
-            <= itens["CapacidadeFinal"]
-        ]
-        perimetro = [
-            itens["PerimetroPaga"]
-            for itens in self.tabela_perimetro
-            if itens["PerimetroInicial"]
-            <= self.get_total_kms()
-            <= itens["PerimetroFinal"]
-        ]
-        phkesc = self.tabela[0]["phkescPaga"]
-        if tabela_veiculo:
-            if self.motorista:
-                if self.motorista[0]["obj"].TipoPgto != "MENSALISTA":
-                    v_paga["v_porc"] = tabela_veiculo["PorcentagemPaga"]
-                    v_paga["m_porc"] = self.t_entregas["valor_entregas"]
-                    v_paga["t_porc"] = (
-                        tabela_veiculo["PorcentagemPaga"]
-                        / 100
-                        * v_paga["m_porc"]
-                    )
-                    v_paga["c_porc"] = True if int(phkesc[0:1]) else False
-                    v_paga["v_hora"] = self.filtro_tabela_veiculo()["HoraPaga"]
-                    v_paga["m_hora"] = self.filtro_tabela_veiculo()[
-                        "HoraMinimo"
-                    ]
-                    v_paga["t_hora"] = calcula_valor_hora(
-                        100, v_paga["m_hora"], v_paga["v_hora"]
-                    )
-                    v_paga["c_hora"] = True if int(phkesc[1:2]) else False
-                    v_paga["v_exce"] = 100
-                    v_paga["m_exce"] = self.horas_excede().time()
-                    v_paga["t_exce"] = calcula_valor_hora(
-                        100, v_paga["m_exce"], v_paga["v_hora"]
-                    )
-                    v_paga["c_exce"] = True if int(phkesc[1:2]) else False
-                    v_paga["v_kilm"] = self.filtro_tabela_veiculo()["KMPaga"]
-                    v_paga["m_kilm"] = self.get_total_kms()
-                    v_paga["t_kilm"] = (
-                        self.filtro_tabela_veiculo()["KMPaga"]
-                        * self.get_total_kms()
-                    )
-                    v_paga["c_kilm"] = True if int(phkesc[2:3]) else False
-                    v_paga["v_entr"] = self.filtro_tabela_veiculo()[
-                        "EntregaPaga"
-                    ]
-                    v_paga["m_entr"] = self.quantidade_entregas
-                    v_paga["t_entr"] = (
-                        self.filtro_tabela_veiculo()["EntregaPaga"]
-                        * v_paga["m_entr"]
-                    )
-                    v_paga["c_entr"] = True if int(phkesc[3:4]) else False
-                    v_paga["v_enkg"] = self.filtro_tabela_veiculo()[
-                        "EntregaKGPaga"
-                    ]
-                    v_paga["m_enkg"] = self.t_entregas["peso_entregas"]
-                    v_paga["t_enkg"] = (
-                        self.filtro_tabela_veiculo()["EntregaKGPaga"]
-                        * v_paga["m_enkg"]
-                    )
-                    v_paga["c_enkg"] = True if int(phkesc[4:5]) else False
-                    v_paga["v_evol"] = self.filtro_tabela_veiculo()[
-                        "EntregaVolumePaga"
-                    ]
-                    v_paga["m_evol"] = self.t_entregas["volume_entregas"]
-                    v_paga["t_evol"] = (
-                        self.filtro_tabela_veiculo()["EntregaVolumePaga"]
-                        * v_paga["m_evol"]
-                    )
-                    v_paga["c_evol"] = True if int(phkesc[5:6]) else False
-                    v_paga["v_said"] = self.filtro_tabela_veiculo()[
-                        "SaidaPaga"
-                    ]
-                    v_paga["c_said"] = True if int(phkesc[6:7]) else False
-                    if capacidade:
-                        v_paga["v_capa"] = capacidade[0]
-                    v_paga["c_capa"] = True if int(phkesc[7:8]) else False
-                    if perimetro:
-                        v_paga["v_peri"] = perimetro[0]
-                        v_paga["c_peri"] = True
-                    v_paga = self.base_valor_perimetro(v_paga)
-                    v_paga["t_peri"] = (
-                        float(v_paga["v_peri"]) / 100 * float(v_paga["m_peri"])
-                    )
-                    v_paga["m_pnoi"] = v_paga["m_peri"]
-        if self.total_ajudantes_avulso() > 0:
-            v_paga["v_ajud"] = float(self.tabela[0]["AjudantePaga"])
-            if int(self.entrega_saida()[0:1]) > 2:
-                v_paga["v_ajud"] = (
-                    float(self.tabela[0]["AjudantePaga"]) + 10.00
-                )
-            v_paga["m_ajud"] = self.total_ajudantes_avulso()
-            v_paga["t_ajud"] = v_paga["v_ajud"] * self.total_ajudantes_avulso()
-            v_paga["c_ajud"] = True
-        return v_paga
-
     @staticmethod
     def base_valor_perimetro(v_paga):
         total = 0
@@ -428,23 +321,6 @@ class MinutaSelecionada:
         v_paga["m_peri"] = total
         v_paga["m_pnoi"] = total
         return v_paga
-
-    def valor_total_motorista(self):
-        v_paga = self.paga
-        total = 0
-        total += float(v_paga["m_peri"])
-        total += float(v_paga["t_peri"])
-        total += float(v_paga["t_pnoi"])
-        return total
-
-    def valor_total_minuta(self):
-        v_paga = self.paga
-        total = 0
-        total += float(v_paga["m_peri"])
-        total += float(v_paga["t_peri"])
-        total += float(v_paga["t_pnoi"])
-        total += float(v_paga["t_ajud"])
-        return total
 
     def carrega_valores_recebe(self):
         v_recebe = cria_dict_recebe()
