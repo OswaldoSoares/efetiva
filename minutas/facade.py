@@ -4189,3 +4189,41 @@ def calcula_cobranca(total_timedelta, valor_por_hora):
     cobranca_minutos = porcentagem_minutos * valor_por_hora
 
     return cobranca_horas + cobranca_minutos
+
+
+def dict_dados_tabela(minuta):
+    """
+    Cria um dicionário com os dados da tebale com base na minuta fornecida.
+
+    Args:
+        minuta (Minuta): Objeto da minuta com os dados da tabela.
+
+    Returns:
+        dict: Dicionário contendo os dados da tabela atualizados.
+    """
+    tabela = minuta.tabela[0]
+
+    return {
+        "taxa_expedicao": tabela["TaxaExpedicao"],
+        "seguro": tabela["Seguro"],
+        "porcentagem_nota": Decimal(0.00),
+        "porcentagem_nota_extra": Decimal(100.00),
+        "hora": Decimal(0.00),
+        "hora_extra": Decimal(100.00),
+        "quilometragem": Decimal(0.00),
+        "quilometragem_extra": Decimal(100.00),
+        "entregas": Decimal(0.00),
+        "entregas_extra": Decimal(100.00),
+        "saida": Decimal(0.00),
+        "saida_extra": Decimal(100.00),
+        "capacidade_peso": Decimal(0.00),
+        "capacidade_peso_extra": Decimal(100.00),
+        "entregas_quilos": Decimal(0.00),
+        "entregas_quilos_extra": Decimal(100.00),
+        "entregas_volume": Decimal(0.00),
+        "entregas_volume_extra": decimal.Decimal(100.00),
+        "perimetro": Decimal(0.00),
+        "perimetro_extra": Decimal(100.00),
+        "pernoite": Decimal(50.00),
+        "ajudante": tabela["AjudanteCobra"],
+    }
