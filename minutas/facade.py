@@ -4081,7 +4081,7 @@ def filtra_tabela_generico(minuta, tabela, valor_chave):
             Decimal(0.00),
         )
 
-    elif "Perimetro" in valor_chave:
+    if "Perimetro" in valor_chave:
         return next(
             (
                 itens[valor_chave]
