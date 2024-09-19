@@ -2222,6 +2222,8 @@ def create_contexto_minutas_periodo(inicial, final, idcliente):
 def get_minutas_cliente(idcliente):
     minutas = Minuta.objects.filter(idCliente=idcliente)
     return minutas
+
+
 def create_html_card_recebe(data, contexto, request):
     data["html-card-recebe"] = render_to_string(
         "minutas/card_recebe.html", contexto, request=request
@@ -2837,7 +2839,6 @@ def itens_card_checklist(minuta):
     entregas = minuta.get("entregas")
     veiculo_solicitado = minuta.get("veiculo_solicitado")
     motorista = minuta.get("motorista")
-    print(motorista)
     tipo_pgto = None
     if motorista:
         tipo_pgto = motorista[0]["obj"].TipoPgto
