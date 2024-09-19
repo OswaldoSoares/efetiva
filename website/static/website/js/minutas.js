@@ -10,6 +10,44 @@ $(document).ready(function() {
     calcularTotais("recebe")
 });
 
+$(document).on("click", ".js-editar-minuta-hora-final", function() {
+    var id_minuta = localStorage.getItem("idminuta")
+    var hora_final = $("#id_hora_final").val()
+
+    executarAjax("/minutas/editar_minuta_hora_final", "GET", {
+        id_minuta: id_minuta,
+        hora_final: hora_final,
+    }, function(data) {
+        atualizaAposMinutaAlterada(data)
+    });
+});
+
+$(document).on("click", ".js-editar-minuta-km-inicial", function() {
+    var id_minuta = localStorage.getItem("idminuta")
+    var km_inicial = $("#id_km_inicial").val()
+
+    executarAjax("/minutas/editar_minuta_km_inicial", "GET", {
+        id_minuta: id_minuta,
+        km_inicial: km_inicial,
+    }, function(data) {
+        atualizaAposMinutaAlterada(data)
+    });
+});
+
+$(document).on("click", ".js-editar-minuta-km-final", function() {
+    var id_minuta = localStorage.getItem("idminuta")
+    var km_inicial = $("#id_km_inicial").val()
+    var km_final = $("#id_km_final").val()
+
+    executarAjax("/minutas/editar_minuta_km_final", "GET", {
+        id_minuta: id_minuta,
+        km_inicial: km_inicial,
+        km_final: km_final,
+    }, function(data) {
+        atualizaAposMinutaAlterada(data)
+    });
+});
+
 $(document).on("submit", "#js-gera-receitas", function(event) {
     event.preventDefault();
     var data = $(this).serialize();
@@ -294,43 +332,6 @@ $(document).on("click", ".filtro-periodo", function() {
     });
 });
 
-$(document).on("click", ".js-editar-minuta-hora-final", function() {
-    var id_minuta = localStorage.getItem("idminuta")
-    var hora_final = $("#id_hora_final").val()
-
-    executarAjax("/minutas/editar_minuta_hora_final", "GET", {
-        id_minuta: id_minuta,
-        hora_final: hora_final,
-    }, function(data) {
-        atualizaAposMinutaAlterada(data)
-    });
-});
-
-$(document).on("click", ".js-editar-minuta-km-inicial", function() {
-    var id_minuta = localStorage.getItem("idminuta")
-    var km_inicial = $("#id_km_inicial").val()
-
-    executarAjax("/minutas/editar_minuta_km_inicial", "GET", {
-        id_minuta: id_minuta,
-        km_inicial: km_inicial,
-    }, function(data) {
-        atualizaAposMinutaAlterada(data)
-    });
-});
-
-$(document).on("click", ".js-editar-minuta-km-final", function() {
-    var id_minuta = localStorage.getItem("idminuta")
-    var km_inicial = $("#id_km_inicial").val()
-    var km_final = $("#id_km_final").val()
-
-    executarAjax("/minutas/editar_minuta_km_final", "GET", {
-        id_minuta: id_minuta,
-        km_inicial: km_inicial,
-        km_final: km_final,
-    }, function(data) {
-        atualizaAposMinutaAlterada(data)
-    });
-});
 
 function formatMask() {
     $(".js-decimal").each(function() {
