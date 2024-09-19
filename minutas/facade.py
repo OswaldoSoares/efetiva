@@ -4437,3 +4437,10 @@ def dict_dados_base_calculo(minuta):
         "pernoite": None,
         "ajudante": None,
     }
+
+
+def calcular_valor_por_unidade(**kwargs):
+    valor_por_unidade = Decimal(kwargs.get("tabela", 0))
+    quantidade = int(kwargs.get("minuta", 0))
+    total = quantidade * valor_por_unidade
+    return total.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
