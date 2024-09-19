@@ -4324,3 +4324,40 @@ def atualizar_dados_tabela_pagamento(minuta):
             minuta.tabela[0]["AjudantePaga"] + cobrar_por_horas_extras
         )
     return dados_a_pagar
+
+
+def dict_dados_minuta(minuta):
+    """
+    Cria um dicionário com os dados da minuta atualizados com base nas
+    informações fornecidas.
+
+    Args:
+        minuta (Minuta): Objeto da minuta contendo os dados necessários.
+
+    Returns:
+        dict: Dicionário contendo os dados da minuta atualizados.
+    """
+    return {
+        "taxa_expedicao": 1,
+        "seguro": minuta.t_entregas["valor_entregas"],
+        "porcentagem_nota": minuta.t_entregas["valor_entregas"],
+        "porcentagem_nota_extra": time(0, 0),
+        "hora": time(0, 0),
+        "hora_extra": time(0, 0),
+        "quilometragem": 0,
+        "quilometragem_extra": time(0, 0),
+        "entregas": minuta.t_entregas["total_entregas"],
+        "entregas_extra": time(0, 0),
+        "saida": 1,
+        "saida_extra": time(0, 0),
+        "capacidade_peso": 1,
+        "capacidade_peso_extra": time(0, 0),
+        "entregas_quilos": minuta.t_entregas["peso_entregas"],
+        "entregas_quilos_extra": time(0, 0),
+        "entregas_volume": minuta.t_entregas["volume_entregas"],
+        "entregas_volume_extra": time(0, 0),
+        "perimetro": Decimal(0.00),
+        "perimetro_extra": time(0, 0),
+        "pernoite": Decimal(0.00),
+        "ajudante": 0,
+    }
