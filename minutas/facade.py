@@ -4607,3 +4607,55 @@ def criar_lista_dados_formulario(tabela_cliente, dados_minuta, valor_base):
 
     lista_dados = sorted(lista_dados, key=lambda x: x["indice"])
     return lista_dados
+
+
+def atualizar_perimetro_pernoite(dados):
+    def processar_item(itens, total_phkesk=None, total_perimetro=None):
+        tipo_funcao_map = {
+            "perimetro": {"minuta": total_phkesk, "parametros_extras": None},
+            "perimetro_extra": {
+                "minuta": itens["minuta"],
+                "parametros_extras": {"valor_base": total_perimetro},
+            },
+            "pernoite": {"minuta": total_phkesk, "parametros_extras": None},
+        }
+
+        if itens["tipo"] in tipo_funcao_map:
+            forma_calculo = (
+                f'{itens["forma_calculo_a"]}_{itens["forma_calculo_b"]}'
+            )
+            funcao_info = FUNCOES_CALCULO[forma_calculo]
+            nome_funcao = funcao_info["funcao"]
+
+            parametros_comuns = {
+                "tabela": itens["tabela"],
+                "minuta": tipo_funcao_map[itens["tipo"]]["minuta"],
+            }
+            parametros_extras = tipo_funcao_map[itens["tipo"]][
+                "parametros_extras"
+            ]
+
+            total = executar_funcao_calculo(
+                nome_funcao, parametros_comuns, parametros_extras
+            )
+
+        itens["total"] = total
+
+    total_phkesk = sum(
+        itens["total"]
+        for itens in dados
+        if itens["tipo"].replace("_extra", "") in TIPOS_CALCULO
+        and itens["ativo"]
+    )
+    total_perimetro = Decimal(0.00)
+
+    for itens in dados:
+        if itens["tipo"] in {"perimetro", "pernoite"}:
+            itens["minuta"] = total_phkesk
+            processar_item(itens, total_phkesk=total_phkesk)
+            total_perimetro = itens["total"]
+
+        elif itens["tipo"] == "perimetro_extra":
+            processar_item(itens, total_perimetro=total_perimetro)
+
+    return dados
