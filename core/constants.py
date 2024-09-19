@@ -188,3 +188,28 @@ TIPOS_CALCULO = [
     "entregas_quilos",
     "entregas_volume",
 ]
+
+
+FUNCOES_CALCULO = {
+    "R$_UN": {
+        "funcao": "calcular_valor_por_unidade",
+        "parametros_comuns": ["tabela", "minuta"],
+    },
+    "%_R$": {
+        "funcao": "calcular_percentual_valor",
+        "parametros_comuns": ["tabela", "minuta"],
+    },
+    "R$_HS": {
+        "funcao": "calcular_valor_por_tempo",
+        "parametros_comuns": ["tabela", "minuta"],
+    },
+    "%_HS": {
+        "funcao": "calcular_percentual_horas",
+        "parametros_comuns": ["tabela", "minuta"],
+        "parametros_extras": ["valor_base"],
+    },
+    "R$_KG": {
+        "funcao": "calcular_valor_por_quilos",
+        "parametros_comuns": ["tabela", "minuta"],
+    },
+}
