@@ -4703,3 +4703,41 @@ def ativa_dados_pagamento(minuta, dados_pagamento):
         if minuta.ajudantes and tipo_sem_extra == "ajudante":
             itens["ativo"] = True
     return dados_pagamento
+
+
+def adicionar_item_class(minuta, dados, transacao):
+    tabela = minuta.tabela[0]
+    phkesc = tabela["phkescPaga"]
+    calculos_ativos = obter_lista_calculos_ativo(phkesc)
+    for itens in dados:
+        tipo = itens["tipo"]
+        tipo_sem_extra = tipo.replace("_extra", "")
+        itens["class_total"] = (
+            f"total-{transacao} total-phkesc-{transacao}"
+            if tipo_sem_extra in calculos_ativos
+            else f"total-{transacao}"
+        )
+        itens["transacao"] = transacao
+
+    mapa_class_tabela = {
+        "R$": "js-decimal",
+        "%": "js-decimal",
+        "UN": "js-inteiro",
+    }
+
+    mapa_class_minuta = {
+        "R$": "js-decimal",
+        "%": "js-decimal",
+        "UN": "js-inteiro",
+        "KG": "js-decimal",
+    }
+    for itens in dados:
+        # Atribui a classe para forma_calculo_a se houver correspondência
+        if itens["forma_calculo_a"] in mapa_class_tabela:
+            itens["class_tabela"] = mapa_class_tabela[itens["forma_calculo_a"]]
+
+        # Atribui a classe para forma_calculo_b se houver correspondência
+        if itens["forma_calculo_b"] in mapa_class_minuta:
+            itens["class_minuta"] = mapa_class_minuta[itens["forma_calculo_b"]]
+
+    return dados
