@@ -4361,3 +4361,52 @@ def dict_dados_minuta(minuta):
         "pernoite": Decimal(0.00),
         "ajudante": 0,
     }
+
+
+def atualizar_dados_minuta(minuta):
+    dados_minuta = dict_dados_minuta(minuta)
+
+    if minuta.romaneio:
+        dados_minuta["taxa_expedicao"] = len(minuta.romaneio)
+
+        if minuta.romaneio_pesos:
+            maior_peso = max(minuta.romaneio_pesos, key=lambda x: x["peso"])
+            dados_minuta["entregas_quilos"] = maior_peso["peso"]
+
+    veiculo = filtra_tabela_veiculo(minuta)
+
+    if minuta.veiculo:
+        dados_minuta["hora"] = veiculo["HoraMinimo"]
+        dados_minuta["quilometragem"] = (
+            minuta.total_kms
+            if minuta.total_kms > veiculo["KMMinimo"]
+            else veiculo["KMMinimo"]
+        )
+
+    if minuta.entregas:
+        dados_minuta["entregas"] = (
+            minuta.quantidade_entregas
+            if minuta.quantidade_entregas > veiculo["EntregaMinimo"]
+            else veiculo["EntregaMinimo"]
+        )
+
+    dados_minuta["ajudante"] = len(minuta.ajudantes) if minuta.ajudantes else 0
+
+    horas_extras = calcula_horas_extras(
+        minuta.data, minuta.hora_final, time(18, 0)
+    )
+    if horas_extras:
+        total_segundos = int(horas_extras.total_seconds())
+        horas = total_segundos // 3600
+        minutos = (total_segundos % 3600) // 60
+        tempo_extra = time(horas, minutos)
+        dados_minuta["porcentagem_nota_extra"] = tempo_extra
+        dados_minuta["hora_extra"] = tempo_extra
+        dados_minuta["quilometragem_extra"] = tempo_extra
+        dados_minuta["entregas_extra"] = tempo_extra
+        dados_minuta["saida_extra"] = tempo_extra
+        dados_minuta["capacidade_peso_extra"] = tempo_extra
+        dados_minuta["entregas_quilos_extra"] = tempo_extra
+        dados_minuta["entregas_volume_extra"] = tempo_extra
+        dados_minuta["perimetro_extra"] = tempo_extra
+    return dados_minuta
