@@ -25,17 +25,13 @@
             {% include "minutas/card_romaneios.html" %}
         </div>
         <div class="card card-entrega">
-            {% include 'minutas/card_entregas.html' %}
+            {% include "minutas/card_entregas.html" %}
         </div>
     </section>
-    <section class="grid-column">
-        <div class="html-form-paga">
-            {% include 'minutas/html_card_pagamentos.html' %}
-        </div>
-    </section>
-    <section class="grid-column">
+
+    <section class="grid-column duas_colunas">
         {% if user|can:'demonstrativo_minuta' %}
-        <div class="card-recebe">
+        <div class="card card-receitas">
             {% include "minutas/card_receitas.html" %}
         </div>
         {% endif %}
