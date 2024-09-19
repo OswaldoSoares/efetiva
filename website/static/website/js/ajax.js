@@ -8,6 +8,7 @@ function executarAjax(url, type, data, sucessoCallback) {
         },
         success: function(response) {
             sucessoCallback(response);
+            $("html, body").scrollTop(0);
             $(".box-loader").hide();
         },
         error: function(error) {
