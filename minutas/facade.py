@@ -4659,3 +4659,11 @@ def atualizar_perimetro_pernoite(dados):
             processar_item(itens, total_perimetro=total_perimetro)
 
     return dados
+
+
+def obter_lista_calculos_ativo(phkesc):
+    calculos_ativos = []
+    for i, digito in enumerate(phkesc):
+        if digito == "1":
+            calculos_ativos.append(TIPOS_CALCULO[i])
+    return calculos_ativos
