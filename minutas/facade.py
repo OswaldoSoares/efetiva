@@ -304,21 +304,6 @@ class MinutaSelecionada:
         proxima_saida = f"{numero_saidas + 1}ª SAIDA"
         return proxima_saida
 
-    @staticmethod
-    def base_valor_perimetro(v_paga):
-        total = 0
-        total += float(v_paga["t_porc"])
-        total += float(v_paga["t_hora"])
-        total += float(v_paga["t_exce"])
-        total += float(v_paga["t_kilm"])
-        total += float(v_paga["t_entr"])
-        total += float(v_paga["t_enkg"])
-        total += float(v_paga["t_evol"])
-        total += float(v_paga["v_said"])
-        total += float(v_paga["v_capa"])
-        v_paga["m_peri"] = total
-        v_paga["m_pnoi"] = total
-        return v_paga
 
     def verifica_pagamento_motorista(self):
         pagamentos = MinutaItens.objects.filter(
