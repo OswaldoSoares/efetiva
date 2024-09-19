@@ -4754,3 +4754,16 @@ def contexto_dados_cobranca(minuta):
     dados_cobranca = atualizar_perimetro_pernoite(dados_cobranca)
     dados_cobranca = adicionar_item_class(minuta, dados_cobranca, "recebe")
     return {"dados_cobranca": dados_cobranca}
+
+
+def contexto_dados_pagamento(minuta):
+    dados_tabela = atualizar_dados_tabela_pagamento(minuta)
+    dados_minuta = atualizar_dados_minuta(minuta)
+    dados_base = dict_dados_base_calculo(minuta)
+    dados_pagamento = criar_lista_dados_formulario(
+        dados_tabela, dados_minuta, dados_base
+    )
+    dados_pagamento = ativa_dados_pagamento(minuta, dados_pagamento)
+    dados_pagamento = atualizar_perimetro_pernoite(dados_pagamento)
+    dados_pagamento = adicionar_item_class(minuta, dados_pagamento, "paga")
+    return {"dados_pagamento": dados_pagamento}
