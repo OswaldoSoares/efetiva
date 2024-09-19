@@ -11,7 +11,7 @@ function executarAjax(url, type, data, sucessoCallback) {
             $(".box-loader").hide();
         },
         error: function(error) {
-            console.log(error);
+            console.log("ERROR: ", error);
             $(".box-loader").hide();
         }
     });
