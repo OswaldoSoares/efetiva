@@ -4135,17 +4135,18 @@ def atualizar_dados_tabela_cobranca(minuta):
     )
     if minuta.veiculo:
         veiculo = filtra_tabela_veiculo(minuta)
-        dados_a_cobrar.update(
-            {
-                "porcentagem_nota": veiculo["PorcentagemCobra"],
-                "hora": veiculo["HoraCobra"],
-                "quilometragem": veiculo["KMCobra"],
-                "entregas": veiculo["EntregaCobra"],
-                "saida": veiculo["SaidaCobra"],
-                "entregas_quilos": veiculo["EntregaKGCobra"],
-                "entregas_volume": veiculo["EntregaVolumeCobra"],
-            }
-        )
+        if veiculo:
+            dados_a_cobrar.update(
+                {
+                    "porcentagem_nota": veiculo["PorcentagemCobra"],
+                    "hora": veiculo["HoraCobra"],
+                    "quilometragem": veiculo["KMCobra"],
+                    "entregas": veiculo["EntregaCobra"],
+                    "saida": veiculo["SaidaCobra"],
+                    "entregas_quilos": veiculo["EntregaKGCobra"],
+                    "entregas_volume": veiculo["EntregaVolumeCobra"],
+                }
+            )
 
     horas_extras = calcula_horas_extras(
         minuta.data, minuta.hora_final, time(18, 0)
@@ -4183,17 +4184,18 @@ def atualizar_dados_tabela_pagamento(minuta):
     )
     if minuta.veiculo:
         veiculo = filtra_tabela_veiculo(minuta)
-        dados_a_pagar.update(
-            {
-                "porcentagem_nota": veiculo["PorcentagemPaga"],
-                "hora": veiculo["HoraPaga"],
-                "quilometragem": veiculo["KMPaga"],
-                "entregas": veiculo["EntregaPaga"],
-                "saida": veiculo["SaidaPaga"],
-                "entregas_quilos": veiculo["EntregaKGPaga"],
-                "entregas_volume": veiculo["EntregaVolumePaga"],
-            }
-        )
+        if veiculo:
+            dados_a_pagar.update(
+                {
+                    "porcentagem_nota": veiculo["PorcentagemPaga"],
+                    "hora": veiculo["HoraPaga"],
+                    "quilometragem": veiculo["KMPaga"],
+                    "entregas": veiculo["EntregaPaga"],
+                    "saida": veiculo["SaidaPaga"],
+                    "entregas_quilos": veiculo["EntregaKGPaga"],
+                    "entregas_volume": veiculo["EntregaVolumePaga"],
+                }
+            )
 
     horas_extras = calcula_horas_extras(
         minuta.data, minuta.hora_final, time(18, 0)
@@ -4259,7 +4261,7 @@ def atualizar_dados_minuta(minuta):
 
     veiculo = filtra_tabela_veiculo(minuta)
 
-    if minuta.veiculo:
+    if minuta.veiculo and veiculo:
         dados_minuta["hora"] = veiculo["HoraMinimo"]
         dados_minuta["quilometragem"] = (
             minuta.total_kms
@@ -4267,7 +4269,7 @@ def atualizar_dados_minuta(minuta):
             else veiculo["KMMinimo"]
         )
 
-    if minuta.entregas:
+    if minuta.entregas and veiculo:
         dados_minuta["entregas"] = (
             minuta.quantidade_entregas
             if minuta.quantidade_entregas > veiculo["EntregaMinimo"]
