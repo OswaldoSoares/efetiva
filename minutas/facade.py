@@ -4687,3 +4687,19 @@ def ativa_dados_cobranca(minuta, dados_cobranca):
         if minuta.ajudantes and tipo_sem_extra == "ajudante":
             itens["ativo"] = True
     return dados_cobranca
+
+
+def ativa_dados_pagamento(minuta, dados_pagamento):
+    tabela = minuta.tabela[0]
+    phkesc = tabela["phkescPaga"]
+    calculos_ativos = obter_lista_calculos_ativo(phkesc)
+    for itens in dados_pagamento:
+        tipo = itens["tipo"]
+        tipo_sem_extra = tipo.replace("_extra", "")
+        if tipo_sem_extra in calculos_ativos:
+            itens["ativo"] = True
+        if minuta.perimetro and tipo_sem_extra == "perimetro":
+            itens["ativo"] = True
+        if minuta.ajudantes and tipo_sem_extra == "ajudante":
+            itens["ativo"] = True
+    return dados_pagamento
