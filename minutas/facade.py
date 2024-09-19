@@ -4444,3 +4444,10 @@ def calcular_valor_por_unidade(**kwargs):
     quantidade = int(kwargs.get("minuta", 0))
     total = quantidade * valor_por_unidade
     return total.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+
+
+def calcular_percentual_valor(**kwargs):
+    percentual = Decimal(kwargs.get("tabela", 0))
+    valor_base = Decimal(kwargs.get("minuta", 0))
+    total = valor_base * (percentual / 100)
+    return total.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
