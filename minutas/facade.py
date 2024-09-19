@@ -4099,3 +4099,20 @@ def filtra_tabela_perimetro_cobra(minuta):
     return filtra_tabela_generico(
         minuta, minuta.tabela_perimetro, "PerimetroCobra"
     )
+
+
+def filtra_tabela_capacidade_paga(minuta):
+    """
+    Filtra a tabela de capacidades para encontrar a capacidade paga
+    com base no peso recebido.
+
+    Args:
+        minuta: Objeto da minuta que contém a tabela de capacidades e os
+                peso
+
+    Returns:
+        Decimal: O valor da capacidade paga.
+    """
+    return filtra_tabela_generico(
+        minuta, minuta.tabela_capacidade, "CapacidadePaga"
+    )
