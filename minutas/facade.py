@@ -4410,3 +4410,30 @@ def atualizar_dados_minuta(minuta):
         dados_minuta["entregas_volume_extra"] = tempo_extra
         dados_minuta["perimetro_extra"] = tempo_extra
     return dados_minuta
+
+
+def dict_dados_base_calculo(minuta):
+    return {
+        "taxa_expedicao": None,
+        "seguro": None,
+        "porcentagem_nota": None,
+        "porcentagem_nota_extra": Decimal(0.00),
+        "hora": None,
+        "hora_extra": Decimal(0.00),
+        "quilometragem": None,
+        "quilometragem_extra": Decimal(0.00),
+        "entregas": None,
+        "entregas_extra": Decimal(0.00),
+        "saida": None,
+        "saida_extra": Decimal(0.00),
+        "capacidade_peso": None,
+        "capacidade_peso_extra": Decimal(0.00),
+        "entregas_quilos": None,
+        "entregas_quilos_extra": Decimal(0.00),
+        "entregas_volume": None,
+        "entregas_volume_extra": Decimal(0.00),
+        "perimetro": None,
+        "perimetro_extra": Decimal(0.00),
+        "pernoite": None,
+        "ajudante": None,
+    }
