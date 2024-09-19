@@ -4020,3 +4020,49 @@ def filtra_tabela_veiculo(minuta):
         ),
         None,
     )
+
+
+def filtra_tabela_generico(minuta, tabela, valor_chave):
+    """
+    Filtra uma tabela específica para encontrar o valor baseado em uma chave
+    fornecida.
+
+    Args:
+        minuta (Minuta): Objeto da minuta que contém as tabelas e os valores.
+        tabela (list): A tabela que será filtrada (pode ser de capacidade ou
+                       perímetro).
+        valor_chave (str): A chave específica do valor que se deseja obter
+                           (exemplo, "CapacidadeCobra" ou "CapacidadePaga").
+
+    Returns:
+        Decimal: O valor filtrado com base na chave fornecida.
+    """
+    if "Capacidade" in valor_chave:
+        peso_recebe = (
+            max(minuta.romaneio_pesos, key=lambda x: x["peso"])["peso"]
+            if minuta.romaneio_pesos
+            else minuta.t_entregas["peso_entregas"]
+        )
+
+        return next(
+            (
+                itens[valor_chave]
+                for itens in tabela
+                if itens["CapacidadeInicial"]
+                <= peso_recebe
+                <= itens["CapacidadeFinal"]
+            ),
+            Decimal(0.00),
+        )
+
+    elif "Perimetro" in valor_chave:
+        return next(
+            (
+                itens[valor_chave]
+                for itens in tabela
+                if itens["PerimetroInicial"]
+                <= minuta.get_total_kms()
+                <= itens["PerimetroFinal"]
+            ),
+            Decimal(0.00),
+        )
