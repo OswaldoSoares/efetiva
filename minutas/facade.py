@@ -4116,3 +4116,20 @@ def filtra_tabela_capacidade_paga(minuta):
     return filtra_tabela_generico(
         minuta, minuta.tabela_capacidade, "CapacidadePaga"
     )
+
+
+def filtra_tabela_perimetro_paga(minuta):
+    """
+    Filtra a tabela de perímetros para encontrar o valor pago baseado
+    na quilometragem total.
+
+    Args:
+        minuta (Minuta): Objeto da minuta que contém a tabela de perímetros
+                         e a quilometragem total.
+
+    Returns:
+        Decimal: O valor do perímetro pago.
+    """
+    return filtra_tabela_generico(
+        minuta, minuta.tabela_perimetro, "PerimetroPaga"
+    )
