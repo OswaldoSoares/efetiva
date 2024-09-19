@@ -3912,6 +3912,7 @@ def adicionar_romaneio_na_minuta(id_minuta, id_romaneio):
                     "bairro": nota_cliente.Bairro_emi,
                     "cidade": nota_cliente.Cidade_emi,
                     "estado": nota_cliente.Estado_emi,
+                    "notaguia": 0,
                 }
             )
         else:
