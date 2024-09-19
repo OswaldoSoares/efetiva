@@ -111,141 +111,115 @@ $(document).on("click", ".js-excluir-despesa-minuta", function(event) {
     });
 });
 
+function manipularModalEntrega() {
+    if ($("#chk-perimetro").is(":checked")) {
+        $(".js-perimetro-hide").hide();
+    }
+}
+
 function openMyModal(event) {
     var modal = initModalDialog(event, "#MyModal");
     var url = $(event.target).data("action");
-    $.ajax({
-        type: "GET",
-        url: url,
-        data: {
-            idobj: $(event.target).data("idminuta"),
-            idPessoal: $(event.target).data("idpessoal"),
+    var requestData = {
+        idobj: $(event.target).data("idminuta"),
+        idPessoal: $(event.target).data("idpessoal"),
+        id_minuta_itens: $(event.target).data("id_minuta_itens"),
+        id_minuta_nota: $(event.target).data("id_minuta_nota"),
+    }
 
-            // Usado no módulo minuta - card_despesa
-            id_minuta_itens: $(event.target).data("id_minuta_itens"),
-            // Usado no módulo minuta - card entrega
-            id_minuta_nota: $(event.target).data("id_minuta_nota"),
-        }
-    }).done(function(data, textStatus, jqXHR) {
+    executarAjax(url, "GET", requestData, function(data) {
         modal.find(".modal-body").html(data.modal_html);
         modal.modal("show");
-        // Usado no módulo minuta - Modal Entrega
-        if ($(event.target).action="{% url 'adicionar_entrega' %}") {
-            if ($("#chk-perimetro").is(":checked")) {
-                $(".js-perimetro-hide").hide();
-            }
+
+        if ($(event.target).data("action") === '/minutas/adicionar_entrega') {
+            manipularModalEntrega()
         }
-        formAjaxSubmit(modal, url, null, null);
-    }).fail(function(jqXHR, textStatus, errorThrown) {
-        $(".mensagem-erro").text(errorThrown);
-        mostraMensagemErro()
+
+        formAjaxSubmit(modal, url);
+    }, function(errorThrown) {
+        console.log(errorThrown)
     });
 }
 
 function initModalDialog(event, modal_element) {
     var modal = $(modal_element);
     var target = $(event.target);
+
+    // Configura Titulo
     var title = target.data("title") || "";
     var subtitle = target.data("subtitle") || "";
-    var dialog_class = (target.data("dialog-class") || "") + " modal-dialog";
-    var icon_class = (target.data("icon") || "fa-laptop") + " fa modal-icon";
-    var button_save_label = target.data("button-save-label") || "Save changes";
-    modal.find(".modal-dialog").attr("class", dialog_class);
     modal.find(".modal-title").text(title);
     modal.find(".modal-subtitle").text(subtitle);
+
+    // Configura Estilo
+    var dialog_class = (target.data("dialog-class") || "") + " modal-dialog";
+    var icon_class = (target.data("icon") || "fa-laptop") + " fa modal-icon";
+    modal.find(".modal-dialog").attr("class", dialog_class);
     modal.find(".modal-header .title-wrapper i").attr("class", icon_class);
+
+    // Configura Botões
+    var button_save_label = target.data("button-save-label") || "OK";
     modal.find(".modal-footer .btn-save").text(button_save_label);
+
+    // Limpa o corpo do Modal e armazena alvo que disparou o evento
     modal.find(".modal-body").html("");
     modal.data("target", target);
+
     return modal;
 }
 
-function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
+function formAjaxSubmit(modal, action) {
     var form = modal.find(".modal-body form");
     var header = $(modal).find(".modal-header");
     var btn_save = modal.find(".modal-footer .btn-save");
+
     if (btn_save) {
         modal.find(".modal-body form .form-submit-row").hide();
-        btn_save.off().on("click", function(event) {
+        btn_save.off().on("click", function() {
             modal.find(".modal-body form").submit();
         });
     }
-    if (cbAfterLoad) {
-        cbAfterLoad(modal);
-    }
-    modal.find("form input:visible").first().focus();
+
+    form.find("input:visible").first().focus();
     title = modal.find(".modal-title").text();
+
     $(form).on("submit", function(event) {
         event.preventDefault();
         header.addClass("loading");
         var url = $(this).attr("action") || action;
-        $.ajax({
-            type: $(this).attr("method"),
-            url: url,
-            idobj: $(this).attr("idobj"),
-            data: $(this).serialize(),
-            beforeSend: function() {
-                $(".box-loader").show();
-            },
-            success: function(xhr, ajaxOptions, thrownError) {
-                $(modal).find(".modal-body").html(xhr["html_form"]);
-                if ($(xhr["html_form"]).find(".errorlist").length > 0) {
-                    formAjaxSubmit(modal, url, cbAfterLoad, cbAfterSuccess);
-                } else {
-                    $(modal).modal("hide");
-                    recarregaFinanceiro(xhr["html_pagamento"], xhr["html_recebimento"])
-                    $(".card-minuta").hide()
-                    $(".card-minuta").html(xhr["html-card-minuta"])
-                    $(".card-minuta").show()
-                    $(".card-despesa").hide()
-                    $(".card-despesa").html(xhr["html_card_despesas"])
-                    $(".card-despesa").show()
-                    $(".card-entrega").hide()
-                    $(".card-entrega").html(xhr["html_card_entregas"])
-                    $(".card-entrega").show()
-                    $(".card-checklist").hide()
-                    $(".card-checklist").html(xhr["html_checklist"])
-                    verificaCheckboxClasse("total-recebe")
-                    calcularTotais("recebe")
 
-                    mostraChecklist();
-                    if (xhr["link"]) {
-                        window.location.href = xhr["link"]
-                    } else if (xhr["c_view"] == "edita_minuta") {
-                        $(".mensagem-sucesso").text(xhr["html_mensagem"]);
-                        mostraMensagemSucesso()
-                        $(".html-cliente-data").hide()
-                        $(".html-cliente-data").html(xhr["html_cliente_data"]);
-                        $(".html-cliente-data").delay(1000).slideDown(500)
-                    } else if (xhr["c_view"] == "insere_minuta_despesa") {
-                        $(".mensagem-sucesso").text(xhr["html_mensagem"]);
-                        mostraMensagemSucesso()
-                        $(".html-despesa").hide()
-                        $(".html-despesa").html(xhr["html_despesa"]);
-                        $(".html-despesa").delay(1000).slideDown(500)
-                        verificaTotalKms()
-                    } else if (xhr["c_view"] == "insere_minuta_entrega") {
-                        $(".mensagem-sucesso").text(xhr["html_mensagem"]);
-                        mostraMensagemSucesso()
-                        $(".card-entrega").hide()
-                        $(".card-entrega").html(xhr["html_entrega"]);
-                        $(".card-entrega").delay(1000).slideDown(500)
-                        verificaTotalKms()
-                    }
-                    if (cbAfterSuccess) { cbAfterSuccess(modal); }
-                    $(".box-loader").hide();
-                }
-            },
-            error: function(xhr, ajaxOptions, thrownError) {
-                $(".box-loader").hide();
-                $(".mensagem-erro").text(thrownError);
-                mostraMensagemErro()
-            },
-            complete: function() {
-                header.removeClass("loading");
-            }
+        enviarRequisicaoAjax(url, form, function(xhr) {
+            processarRespostaAjax(xhr, modal, url)
         });
     });
+}
+
+function processarRespostaAjax(xhr, modal, url) {
+    modalBody = modal.find(".modal-body");
+    modalBody.html(xhr["html_form"]);
+
+    if (modalBody.find(".errorlist").length > 0) {
+        formAjaxSubmit(modal, url);
+    } else {
+        $(modal).modal("hide");
+        atualizarInterfaceComDados(xhr);
+        exibirMensagem(xhr["mensagem"]);
+
+        if (xhr["link"]) {
+            window.location.href = xhr["link"];
+        }
+    }
+}
+
+function atualizarInterfaceComDados(xhr) {
+    $(".card-minuta").html(xhr["html-card-minuta"])
+    $(".card-despesa").html(xhr["html_card_despesas"])
+    $(".card-entrega").html(xhr["html_card_entregas"])
+    $(".card-checklist").html(xhr["html_checklist"])
+    $(".card-receitas").html(xhr["html-card-receitas"])
+    verificaCheckboxClasse("total-recebe")
+    calcularTotais("recebe")
+    mostraChecklist();
 }
 
 $(document).on("click", "#chk-perimetro", function(event) {
