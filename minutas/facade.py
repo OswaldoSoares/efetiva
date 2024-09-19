@@ -2971,6 +2971,7 @@ def data_minuta_alterada(request, contexto):
         html_card_despesas,
         html_card_romaneios,
         html_card_entregas,
+        html_card_receitas,
     ]
     for html_func in html_functions:
         data = html_func(request, data, contexto)
