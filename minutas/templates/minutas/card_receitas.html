@@ -1,0 +1,127 @@
+<div class="card-header">
+    <div class="input-group">
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-up"></i>
+        </div>
+        <div class="div-form-control">
+            <span>RECEITAS</span>
+        </div>
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-up"></i>
+        </div>
+    </div>
+</div>
+{% if s_minuta.status_minuta != "FECHADA" %}
+<form method="post" id="js-gera-receitas">
+    {% csrf_token %}
+    <div class="card-body">
+    {% for item in dados_cobranca  %}
+        <div class="card-body-item-row body-row-{{ item.tipo }}-{{ item.transacao }}">
+            <div class="input-group tamanho-40">
+                <div class="input-group-addon addon-my-color">
+                    <i class="i-button-null">{{ forloop.counter|stringformat:".2d" }}</i>
+                </div>
+                <div class="div-flex div-form-control">
+                    <div class="tamanho-50 text-left font-menor">
+                        <span>{{ item.rotulo }}</span>
+                    </div>
+                </div>
+                <div class="input-group-addon addon-my-color">
+                    <input type="checkbox" {% if item.ativo %} checked="checked" {% endif %}
+                           class="js-checkbox-recebe"
+                           name="chk-{{ item.tipo }}-{{ item.transacao }}"
+                           id="chk-{{ item.tipo }}-{{ item.transacao }}">
+                </div>
+            </div>
+            <div class="input-group tamanho-60" id="row-{{ item.tipo }}-{{ item.transacao }}">
+                <div class="div-flex div-form-control">
+                <div class="input-group-addon addon-blue tamanho-8">
+                    <span>{{ item.forma_calculo_a }}</span>
+                </div>
+                <input type="text"
+                       class="form-control form-control-minuta js-input-change {{ item.class_tabela }} text-right tamanho-22"
+                       name="tabela-{{ item.tipo }}-{{ item.transacao }}"
+                       id="tabela-{{ item.tipo }}-{{ item.transacao }}"
+                       value="{{ item.tabela }}">
+                <div class="input-group-addon addon-blue tamanho-8">
+                    <span>{{ item.forma_calculo_b }}</span>
+                </div>
+                <input type="{{ item.input_type }}"
+                       class="form-control form-control-minuta js-input-change {{ item.class_minuta }} text-right tamanho-22"
+                       name="minuta-{{ item.tipo }}-{{ item.transacao }}"
+                       id="minuta-{{ item.tipo }}-{{ item.transacao }}"
+                       value="{{ item.minuta }}">
+                <div class="input-group-addon addon-my-color tamanho-8">
+                    <span>=</span>
+                </div>
+                <div class="input-group-addon addon-blue tamanho-8">
+                    <span>R$</span>
+                </div>
+                <input type="text" readonly
+                       class="form-control form-control-minuta text-right tamanho-24 {{ item.class_total }}"
+                       name="total-{{ item.tipo }}-{{ item.transacao }}"
+                       id="total-{{ item.tipo }}-{{ item.transacao }}"
+                       value="{{ item.total }}">
+            </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <!-- Card Footer -->
+    <div class="card-footer">
+        <div class="input-group">
+            <div class=" input-group-addon addon-my-color">
+                <i class="icofont-rounded-left-down"></i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-50 text-center">
+                    <span class="font-menor">
+                        <button type="submit" class="i-button-form-rodape">
+                            <i class="icofont-check-circled i-button"
+                               title="Finalizar Minuta"></i>
+                        </button>
+                    </span>
+                </div>
+                <div class="tamanho-50 text-center">
+                    {% if s_minuta.motorista or s_minuta.ajudantes %}
+                    <span class="total font-menor" id="saldo-recebe">
+                        R$ {{ s_minuta.recebe_minuta|stringformat:'.2f' }}
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class=" input-group-addon addon-my-color">
+                <i class="icofont-rounded-right-down"></i>
+            </div>
+        </div>
+    </div>
+</form>
+{% else %}
+<!-- Card Footer -->
+<div class="card-footer">
+    <div class="input-group">
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-down"></i>
+        </div>
+        <div class="div-flex div-form-control">
+            <div class="tamanho-50 text-center">
+                <span class="font-menor">
+                    <i class="icofont-undo i-button js-estorna-faturamento"
+                       data-idminuta="{{ s_minuta.idminuta }}"
+                       title="Estorna Faturamento"></i>
+                </span>
+            </div>
+            <div class="tamanho-50 text-center">
+                {% if s_minuta.motorista or s_minuta.ajudantes %}
+                <span class="total font-menor" id="saldo-recebe">
+                    R$ {{ s_minuta.valor_minuta|stringformat:'.2f' }}
+                </span>
+                {% endif %}
+            </div>
+        </div>
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-down"></i>
+        </div>
+    </div>
+</div>
+{% endif %}
