@@ -4482,3 +4482,18 @@ def calcular_valor_por_quilos(**kwargs):
     quilos = Decimal(kwargs.get("minuta", 0))
     total = quilos * valor_por_quilo
     return total.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+
+
+def executar_funcao_calculo(
+    nome_funcao, parametros_comuns, parametros_extras=None
+):
+    """
+    Executa a função correspondente ao nome fornecido com parâmetros comuns e
+    extras.
+    """
+    funcao = globals().get(nome_funcao)
+    if funcao:
+        if parametros_extras:
+            return funcao(**parametros_comuns, **parametros_extras)
+        return funcao(**parametros_comuns)
+    raise ValueError(f"Função {nome_funcao} não encontrada.")
