@@ -6,6 +6,12 @@ from django.db import connection, reset_queries
 
 from datetime import date, datetime, timedelta, time
 
+from core.constants import (
+    SETUP_CALCULO_MINUTA,
+    ITENS_OPERACAO_MINUTA,
+    TIPOS_CALCULO,
+    FUNCOES_CALCULO,
+)
 from core.tools import apos_meia_noite, calcular_diferenca, str_hora
 from clientes.models import (
     Cliente,
