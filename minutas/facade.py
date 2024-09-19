@@ -2939,6 +2939,7 @@ def contexto_minuta_alterada(idminuta):
     Returns:
         dict: Dicionário contendo o contexto atualizado da minuta.
     """
+    s_minuta = MinutaSelecionada(idminuta)
     minuta = vars(MinutaSelecionada(idminuta))
     contexto = {
         "s_minuta": minuta,
@@ -2946,9 +2947,12 @@ def contexto_minuta_alterada(idminuta):
         "checklist": itens_card_checklist(minuta),
         "despesas": minuta["despesas"],
         "minuta": minuta,
+        "teste": s_minuta,
     }
     romaneios = create_contexto_romaneios(minuta["idcliente"])
     contexto.update({"romaneios": romaneios})
+    contexto.update(contexto_dados_pagamento(s_minuta))
+    contexto.update(contexto_dados_cobranca(s_minuta))
     return contexto
 
 
