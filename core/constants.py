@@ -26,6 +26,9 @@ SETUP_CALCULO_MINUTA = {
         "minuta": 0,
         "ativo": False,
         "input_type": "text",
+        "field_tabela": "base",
+        "field_minuta": "quantidade",
+        "field_total": "valor",
         "indice": 1,
     },
     "seguro": {
@@ -35,6 +38,9 @@ SETUP_CALCULO_MINUTA = {
         "minuta": 0,
         "ativo": False,
         "input_type": "text",
+        "field_tabela": "porcento",
+        "field_minuta": "base",
+        "field_total": "valor",
         "indice": 2,
     },
     "porcentagem_nota": {
@@ -44,6 +50,9 @@ SETUP_CALCULO_MINUTA = {
         "minuta": 0,
         "ativo": False,
         "input_type": "text",
+        "field_tabela": "porcento",
+        "field_minuta": "base",
+        "field_total": "valor",
         "indice": 3,
     },
     "porcentagem_nota_extra": {
@@ -53,6 +62,9 @@ SETUP_CALCULO_MINUTA = {
         "minuta": 0,
         "ativo": False,
         "input_type": "time",
+        "field_tabela": "porcento",
+        "field_minuta": "tempo",
+        "field_total": "valor",
         "indice": 4,
     },
     "hora": {
@@ -62,6 +74,9 @@ SETUP_CALCULO_MINUTA = {
         "minuta": 0,
         "ativo": False,
         "input_type": "time",
+        "field_tabela": "base",
+        "field_minuta": "tempo",
+        "field_total": "valor",
         "indice": 5,
     },
     "hora_extra": {
@@ -71,6 +86,9 @@ SETUP_CALCULO_MINUTA = {
         "minuta": 0,
         "ativo": False,
         "input_type": "time",
+        "field_tabela": "porcento",
+        "field_minuta": "tempo",
+        "field_total": "valor",
         "indice": 6,
     },
     "quilometragem": {
@@ -80,6 +98,9 @@ SETUP_CALCULO_MINUTA = {
         "minuta": 0,
         "ativo": False,
         "input_type": "text",
+        "field_tabela": "base",
+        "field_minuta": "quantidade",
+        "field_total": "valor",
         "indice": 7,
     },
     "quilometragem_extra": {
@@ -89,6 +110,9 @@ SETUP_CALCULO_MINUTA = {
         "minuta": 0,
         "ativo": False,
         "input_type": "time",
+        "field_tabela": "porcento",
+        "field_minuta": "tempo",
+        "field_total": "valor",
         "indice": 8,
     },
     "entregas": {
@@ -98,6 +122,9 @@ SETUP_CALCULO_MINUTA = {
         "minuta": 0,
         "ativo": False,
         "input_type": "text",
+        "field_tabela": "base",
+        "field_minuta": "quantidade",
+        "field_total": "valor",
         "indice": 9,
     },
     "entregas_extra": {
@@ -107,6 +134,9 @@ SETUP_CALCULO_MINUTA = {
         "minuta": 0,
         "ativo": False,
         "input_type": "time",
+        "field_tabela": "porcento",
+        "field_minuta": "tempo",
+        "field_total": "valor",
         "indice": 10,
     },
     "saida": {
@@ -116,6 +146,9 @@ SETUP_CALCULO_MINUTA = {
         "minuta": 0,
         "ativo": False,
         "input_type": "text",
+        "field_tabela": "base",
+        "field_minuta": "quantidade",
+        "field_total": "valor",
         "indice": 15,
     },
     "saida_extra": {
@@ -125,6 +158,9 @@ SETUP_CALCULO_MINUTA = {
         "minuta": 0,
         "ativo": False,
         "input_type": "time",
+        "field_tabela": "porcento",
+        "field_minuta": "tempo",
+        "field_total": "valor",
         "indice": 16,
     },
     "capacidade_peso": {
@@ -134,6 +170,9 @@ SETUP_CALCULO_MINUTA = {
         "minuta": 0,
         "ativo": False,
         "input_type": "text",
+        "field_tabela": "base",
+        "field_minuta": "quantidade",
+        "field_total": "valor",
         "indice": 17,
     },
     "capacidade_peso_extra": {
@@ -143,6 +182,9 @@ SETUP_CALCULO_MINUTA = {
         "minuta": 0,
         "ativo": False,
         "input_type": "time",
+        "field_tabela": "porcento",
+        "field_minuta": "tempo",
+        "field_total": "valor",
         "indice": 18,
     },
     "entregas_quilos": {
@@ -152,6 +194,9 @@ SETUP_CALCULO_MINUTA = {
         "minuta": 0,
         "ativo": False,
         "input_type": "text",
+        "field_tabela": "base",
+        "field_minuta": "peso",
+        "field_total": "valor",
         "indice": 11,
     },
     "entregas_quilos_extra": {
@@ -161,6 +206,9 @@ SETUP_CALCULO_MINUTA = {
         "minuta": 0,
         "ativo": False,
         "input_type": "time",
+        "field_tabela": "porcento",
+        "field_minuta": "tempo",
+        "field_total": "valor",
         "indice": 12,
     },
     "entregas_volume": {
@@ -170,6 +218,9 @@ SETUP_CALCULO_MINUTA = {
         "minuta": 0,
         "ativo": False,
         "input_type": "text",
+        "field_tabela": "base",
+        "field_minuta": "quantidade",
+        "field_total": "valor",
         "indice": 13,
     },
     "entregas_volume_extra": {
@@ -179,6 +230,9 @@ SETUP_CALCULO_MINUTA = {
         "minuta": 0,
         "ativo": False,
         "input_type": "time",
+        "field_tabela": "porcento",
+        "field_minuta": "tempo",
+        "field_total": "valor",
         "indice": 14,
     },
     "perimetro": {
@@ -188,6 +242,9 @@ SETUP_CALCULO_MINUTA = {
         "minuta": 0,
         "ativo": False,
         "input_type": "text",
+        "field_tabela": "porcento",
+        "field_minuta": "base",
+        "field_total": "valor",
         "indice": 19,
     },
     "perimetro_extra": {
@@ -197,6 +254,9 @@ SETUP_CALCULO_MINUTA = {
         "minuta": 0,
         "ativo": False,
         "input_type": "time",
+        "field_tabela": "porcento",
+        "field_minuta": "tempo",
+        "field_total": "valor",
         "indice": 20,
     },
     "pernoite": {
@@ -206,6 +266,9 @@ SETUP_CALCULO_MINUTA = {
         "minuta": 0,
         "ativo": True,
         "input_type": "text",
+        "field_tabela": "porcento",
+        "field_minuta": "base",
+        "field_total": "valor",
         "indice": 21,
     },
     "ajudante": {
@@ -215,6 +278,9 @@ SETUP_CALCULO_MINUTA = {
         "minuta": 0,
         "ativo": False,
         "input_type": "text",
+        "field_tabela": "base",
+        "field_minuta": "quantidade",
+        "field_total": "valor",
         "indice": 22,
     },
 }
