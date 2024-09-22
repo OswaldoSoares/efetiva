@@ -1626,7 +1626,28 @@ def registro_padrao_minuta_itens():
     }
 
 
+def converter_valores_request(valor, tipo):
+    CONVERSAO_FUNCOES = {
+        "valor": string_to_decimal,
+        "quantidade": int,
+        "porcento": string_to_decimal,
+        "peso": string_to_decimal,
+        "base": string_to_decimal,
+        "tempo": string_to_timedelta,
     }
+    funcao_conversao = CONVERSAO_FUNCOES.get(tipo)
+
+    if funcao_conversao:
+        try:
+            return funcao_conversao(valor)
+        except (ValueError, TypeError):
+            # Retorne um valor padrão ou lance um erro específico
+            # conforme necessário
+            return None
+
+    return None
+
+
 def gerar_minuta_itens(request):
     id_minuta = request.POST.get("idminuta")
     registros_para_salvar_db = []
