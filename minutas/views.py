@@ -201,12 +201,10 @@ def edita_minuta_saida_extra_ajudante(request, idminuta):
 
 
 def gera_receitas(request):
-    idminuta = request.POST.get("idminuta")
-    facade.gera_itens_receitas(request)
-    contexto = facade.create_contexto_minuta(idminuta)
-    data = {}
-    data = facade.create_html_card_recebe(data, contexto, request)
-    return JsonResponse(data)
+    id_minuta = request.POST.get("idminuta")
+    contexto = facade.gerar_minuta_itens(request)
+    contexto.update(facade.contexto_minuta_alterada(id_minuta))
+    return facade.data_minuta_alterada(request, contexto)
 
 
 def gera_pagamentos(request):
