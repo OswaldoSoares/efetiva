@@ -53,7 +53,7 @@ $(document).on("submit", "#js-gera-receitas", function(event) {
     var data = $(this).serialize();
 
     executarAjax("/minutas/gera_receitas", "POST", data, function(data) {
-        $(".card-recebe").html(data["html-card-recebe"])
+        atualizaAposMinutaAlterada(data)
     });
 });
     
