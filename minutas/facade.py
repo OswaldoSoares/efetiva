@@ -304,7 +304,6 @@ class MinutaSelecionada:
         proxima_saida = f"{numero_saidas + 1}ª SAIDA"
         return proxima_saida
 
-
     def verifica_pagamento_motorista(self):
         pagamentos = MinutaItens.objects.filter(
             TipoItens="PAGA",
