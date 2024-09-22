@@ -1611,6 +1611,21 @@ def create_html_card_recebe(data, contexto, request):
     return data
 
 
+def registro_padrao_minuta_itens():
+    return {
+        "descricao": "",
+        "tipo_itens": "",
+        "recebe_paga": "",
+        "valor": Decimal(0),
+        "quantidade": 0,
+        "porcento": Decimal(0),
+        "peso": Decimal(0),
+        "base": Decimal(0),
+        "tempo": string_to_timedelta("00:00"),
+        "idMinuta_id": None,
+    }
+
+
     }
 def gerar_minuta_itens(request):
     id_minuta = request.POST.get("idminuta")
