@@ -14,6 +14,7 @@
 {% if s_minuta.status_minuta != "FECHADA" %}
 <form method="post" id="js-gera-receitas">
     {% csrf_token %}
+    <input type="hidden" name="idminuta" value="{{ s_minuta.idminuta }}">
     <div class="card-body">
     {% for item in dados_cobranca  %}
         <div class="card-body-item-row body-row-{{ item.tipo }}-{{ item.transacao }}">
