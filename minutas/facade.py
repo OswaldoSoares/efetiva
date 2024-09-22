@@ -1611,43 +1611,56 @@ def create_html_card_recebe(data, contexto, request):
     return data
 
 
-def gera_itens_receitas(request):
-    idminuta = request.POST.get("idminuta")
-    dados = request.POST
-    list_registros = []
-    item_functions = {
-        "check-taxa-recebe": adiciona_item_taxa,
-        "check-seguro-recebe": adiciona_item_seguro,
-        "check-porcentagem-recebe": adiciona_item_porcentagem,
-        "check-extra-porcentagem-recebe": adiciona_item_porcentagem_extra,
-        "check-hora-recebe": adiciona_item_horas,
-        "check-excedente-recebe": adiciona_item_excedente,
-        "check-kilometragem-recebe": adiciona_item_kilometragem,
-        "check-extra-kilometragem-recebe": adiciona_item_kilometragem_extra,
-        "check-entrega-recebe": adiciona_item_entrega,
-        "check-extra-entrega-recebe": adiciona_item_entrega_extra,
-        "check-entrega-kg-recebe": adiciona_item_entrega_kg,
-        "check-extra-entrega-kg-recebe": adiciona_item_entrega_kg_extra,
-        "check-entrega-volume-recebe": adiciona_item_entrega_volume,
-        "check-extra-entrega-volume-recebe": adiciona_item_entrega_volume_extra,
-        "check-saida-recebe": adiciona_item_saida,
-        "check-extra-saida-recebe": adiciona_item_saida_extra,
-        "check-capacidade-recebe": adiciona_item_capacidade,
-        "check-extra-capacidade-recebe": adiciona_item_capacidade_extra,
-        "check-perimetro-recebe": adiciona_item_perimetro,
-        "check-extra-perimetro-recebe": adiciona_item_perimetro_extra,
-        "check-pernoite-recebe": adiciona_item_pernoite,
-        "check-ajudante-recebe": adiciona_item_ajudante,
     }
-    for key, func in item_functions.items():
-        if key in dados:
-            list_registros = func(request, list_registros)
-    MinutaItens.objects.bulk_create(list_registros)
-    total = 0.00
-    for key, value in dados.items():
-        if key.startswith("valor"):
-            total += float(value.replace(".", "").replace(",", "."))
-    minuta_status_fechada(idminuta, total)
+def gerar_minuta_itens(request):
+    id_minuta = request.POST.get("idminuta")
+    registros_para_salvar_db = []
+
+    for tipo, item in SETUP_CALCULO_MINUTA.items():
+        checkbox_name = f"chk-{tipo}-recebe"
+
+        if request.POST.get(checkbox_name):
+            tabela = request.POST.get(f"tabela-{tipo}-recebe")
+            tabela = converter_valores_request(tabela, item["field_tabela"])
+
+            minuta = request.POST.get(f"minuta-{tipo}-recebe")
+            minuta = converter_valores_request(minuta, item["field_minuta"])
+
+            total = request.POST.get(f"total-{tipo}-recebe")
+            total = converter_valores_request(total, item["field_total"])
+
+            registro = registro_padrao_minuta_itens()
+
+            dict_itens = {
+                "descricao": item["descricao"],
+                "tipo_itens": "RECEBE",
+                "recebe_paga": "R",
+                item["field_tabela"]: tabela,
+                item["field_minuta"]: minuta,
+                item["field_total"]: total,
+            }
+
+            registro.update(dict_itens)
+
+            registros_para_salvar_db.append(
+                MinutaItens(
+                    Descricao=registro["descricao"],
+                    TipoItens=registro["tipo_itens"],
+                    RecebePaga=registro["recebe_paga"],
+                    Valor=registro["valor"],
+                    Quantidade=registro["quantidade"],
+                    Porcento=registro["porcento"],
+                    Peso=registro["peso"],
+                    ValorBase=registro["base"],
+                    Tempo=registro["tempo"],
+                    idMinuta_id=id_minuta,
+                )
+            )
+
+    MinutaItens.objects.bulk_create(registros_para_salvar_db)
+    novo_status_minuta(id_minuta, "FECHADA")
+
+    return {"mensagem": "MINUTA FECHADA"}
 
 
 def adiciona_item_taxa(request, list_registros):
