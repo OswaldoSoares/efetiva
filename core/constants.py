@@ -264,7 +264,7 @@ SETUP_CALCULO_MINUTA = {
         "forma_calculo": "%_R$",
         "tabela": 0.00,
         "minuta": 0,
-        "ativo": True,
+        "ativo": False,
         "input_type": "text",
         "field_tabela": "porcento",
         "field_minuta": "base",
