@@ -161,6 +161,31 @@ $(document).on("click", ".js-filtra-veiculo-categoria", function() {
     });
 });
 
+$(document).on("click", ".js-card-receitas-toggle", function() {
+    // Verifica se o botão já tem a classe 'icofont-rounded-up'
+    if ($(this).hasClass("icofont-rounded-up")) {
+        // Oculta as linhas onde o checkbox NÃO está marcado
+        $(".card-body-item-row").each(function() {
+            let checkbox = $(this).find("input[type='checkbox']");
+            if (!checkbox.is(":checked")) {
+                $(this).slideUp(500);
+            }
+        });
+        // Remove a classe para alternar o estado
+        $(this).removeClass("icofont-rounded-up");
+    } else {
+        // Mostra as linhas onde o checkbox NÃO está marcado
+        $(".card-body-item-row").each(function() {
+            let checkbox = $(this).find("input[type='checkbox']");
+            if (!checkbox.is(":checked")) {
+                $(this).slideDown(500)
+            }
+        });
+        // Adiciona a classe para alternar o estado
+        $(this).addClass("icofont-rounded-up")
+    }
+});
+
 function manipularModalEntrega() {
     if ($("#chk-perimetro").is(":checked")) {
         $(".js-perimetro-hide").hide();
