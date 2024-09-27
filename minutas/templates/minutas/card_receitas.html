@@ -67,6 +67,46 @@
             </div>
         </div>
         {% endfor %}
+        {% if minuta.despesas %}
+        <div class="linha-divisoria-nova"></div>
+        {% endif %}
+
+        {% for despesa in minuta.despesas %}
+        <div class="card-body-item-row">
+            <div class="input-group tamanho-40">
+                <div class="input-group-addon addon-my-color">
+                    <i class="i-button-null">{{ forloop.counter|stringformat:".2d" }}</i>
+                </div>
+                <div class="div-flex div-form-control">
+                    <div class="tamanho-50 text-left font-menor">
+                        <span>{{ despesa.Descricao }}</span>
+                    </div>
+                </div>
+                <div class="input-group-addon addon-my-color">
+                    <i class="icofont-checked" checked="checked"
+                       name="chk-despesa_{{ despesa.idMinutaItens }}-recebe"
+                       id="chk-despesa_{{ despesa.idMinutaItens }}-recebe"></i>
+                </div>
+            </div>
+            <div class="input-group tamanho-60">
+                <div class="div-flex div-form-control">
+                <div class="input-group-addon addon-my-color tamanho-60">
+                </div>
+                <div class="input-group-addon addon-my-color tamanho-8">
+                    <span></span>
+                </div>
+                <div class="input-group-addon addon-blue tamanho-8">
+                    <span>R$</span>
+                </div>
+                <input type="text" readonly
+                       class="form-control form-control-minuta text-right tamanho-24 total-recebe"
+                       name="total-despesa_{{ despesa.idMinutaItens }}-recebe"
+                       id="total-despesa_{{ despesa.idMinutaItens }}-recebe"
+                       value="{{ despesa.Valor }}">
+            </div>
+            </div>
+        </div>
+        {% endfor %}
     </div>
     <!-- Card Footer -->
     <div class="card-footer">
