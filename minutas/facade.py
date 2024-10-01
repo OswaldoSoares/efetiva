@@ -1893,6 +1893,7 @@ def data_minuta_alterada(request, contexto):
         html_card_romaneios,
         html_card_entregas,
         html_card_receitas,
+        html_card_perimetro,
     ]
     for html_func in html_functions:
         data = html_func(request, data, contexto)
@@ -2009,6 +2010,13 @@ def html_card_receitas(request, data, contexto):
     """
     data["html-card-receitas"] = render_to_string(
         "minutas/card_receitas.html", contexto, request=request
+    )
+    return data
+
+
+def html_card_perimetro(request, data, contexto):
+    data["html_card_perimetro"] = render_to_string(
+        "minutas/card_perimetro.html", contexto, request=request
     )
     return data
 
