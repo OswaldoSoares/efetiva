@@ -128,6 +128,7 @@ class MinutaSelecionada:
             minuta.idCliente
         ).tabela
         self.peso_acima_tabela = self.get_peso_acima_tabela()
+        self.destaque_tabela_capacidade = self.get_destaque_tabela_capacidade()
         self.total_horas = self.get_total_horas()
         self.total_horas_str = self.get_total_horas_str()
         self.total_kms = self.get_total_kms()
@@ -179,6 +180,13 @@ class MinutaSelecionada:
             ):
                 return self.peso_capacidade - (peso["CapacidadeInicial"] - 1)
         return None
+
+    def get_destaque_tabela_capacidade(self):
+        destaque = None
+        for tabela in self.tabela_capacidade:
+            if tabela["CapacidadeFinal"] < self.peso_capacidade:
+                destaque = tabela
+        return destaque
 
     def total_ajudantes(self):
         self.total_ajudantes_avulso()
