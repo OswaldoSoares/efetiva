@@ -1,0 +1,66 @@
+{% load custom_filters %}
+<div class="card-header">
+    <div class="input-group">
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-up"></i>
+        </div>
+        <div class="div-form-control">
+            <span>
+                {{ minuta.peso_acima_tabela|formatar_numero:3 }} kg
+            </span>
+        </div>
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-up"></i>
+        </div>
+    </div>
+</div>
+{% if minuta.tabela_capacidade %}
+<div class="card-body">
+    {% for item in minuta.tabela_capacidade %}
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="i-button-null">{{ forloop.counter|stringformat:".2d" }}</i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-25 text-center font-menor">
+                    <span {% if item.idTabelaCapacidade == minuta.destaque_tabela_capacidade.idTabelaCapacidade %}class="i-button-null"{% endif %}>{{ item.CapacidadeInicial|formatar_numero:0 }} kg</span>
+                </div>
+                <div class="input-group-addon addon-my-color tamanho-10">
+                    <i class="icofont-arrow-right"></i>
+                </div>
+                <div class="tamanho-25 text-center font-menor">
+                    <span {% if item.idTabelaCapacidade == minuta.destaque_tabela_capacidade.idTabelaCapacidade %}class="i-button-null"{% endif %}>{{ item.CapacidadeFinal|formatar_numero:0 }} kg</span>
+                </div>
+                <div class="input-group-addon addon-my-color tamanho-10">
+                    <span>=</span>
+                </div>
+                <div class="tamanho-30 text-right font-menor">
+                    <span {% if item.idTabelaCapacidade == minuta.destaque_tabela_capacidade.idTabelaCapacidade %}class="i-button-null"{% endif %}>R$ {{ item.CapacidadeCobra|formatar_numero:2 }}</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-check-circled i-button js-alterar-capacidade"
+                   data-valor="{{ item.CapacidadeCobra }}"></i>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+<!-- Card Footer -->
+<div class="card-footer">
+    <div class="input-group">
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-down"></i>
+        </div>
+        <div class="div-flex div-form-control">
+            <div class="tamanho-100 text-center">
+                <span>TABELA CAPACIDADE</span>
+            </div>
+        </div>
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-down"></i>
+        </div>
+    </div>
+</div>
