@@ -296,7 +296,7 @@ class MinutaSelecionada:
         )
         totais["peso_entregas"] = sum(
             [itens["Peso"] for itens in self.entregas]
-        )
+        ).quantize(Decimal("0.001"))
         totais["total_entregas"] = len(self.entregas)
         return totais
 
@@ -453,7 +453,9 @@ class MinutaEntrega:
                 "idMinutaNotas": itens.idMinutaNotas,
                 "Nota": itens.Nota,
                 "ValorNota": itens.ValorNota,
-                "Peso": itens.Peso,
+                "Peso": itens.Peso.quantize(
+                    Decimal("0.001"), rounding=ROUND_HALF_UP
+                ),
                 "Volume": itens.Volume,
                 "Nome": itens.Nome,
                 "NotaGuia": itens.NotaGuia,
