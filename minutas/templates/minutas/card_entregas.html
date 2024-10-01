@@ -1,3 +1,4 @@
+{% load custom_filters %}
 {% load humanize %}
 <div class="card-header">
     <div class="input-group">
@@ -23,7 +24,7 @@
                 <div class="tamanho-100 text-center font-menor">
                     <span>
                         {% if romaneio.peso %}
-                        ROMANEIO: {{ romaneio.romaneio|stringformat:".5d" }} - {{ romaneio.peso|stringformat:"3.f" }} kg
+                        ROMANEIO: {{ romaneio.romaneio|stringformat:".5d" }} - {{ romaneio.peso|formatar_numero:"3" }} kg
                         {% else %}
                         ROMANEIO: {{ romaneio.romaneio|stringformat:".5d" }} - 0 kg
                         {% endif %}
@@ -161,7 +162,7 @@
             </div>
             <div class="tamanho-30 text-center font-menor">
                 <i class="icofont-truck-loaded i-button-null"></i>
-                <span>{{ minuta.t_entregas.peso_entregas|intcomma }}</span>
+                <span>{{ minuta.t_entregas.peso_entregas|formatar_numero:"3" }}</span>
             </div>
             <div class="tamanho-20 text-center font-menor">
                 <i class="icofont-cube i-button-null"></i>
