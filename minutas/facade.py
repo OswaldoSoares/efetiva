@@ -120,6 +120,7 @@ class MinutaSelecionada:
         self.perimetro = self.get_perimetro()
         self.romaneio = self.get_romaneio()
         self.romaneio_pesos = self.get_romaneio_pesos()
+        self.peso_capacidade = self.get_peso_capacidade()
         self.tabela = ClienteTabela(minuta.idCliente).tabela
         self.tabela_veiculo = ClienteTabelaVeiculo(minuta.idCliente).tabela
         self.tabela_perimetro = ClienteTabelaPerimetro(minuta.idCliente).tabela
@@ -160,6 +161,13 @@ class MinutaSelecionada:
             )
             lista_romaneio_peso.append({"romaneio": i, "peso": peso["peso"]})
         return lista_romaneio_peso
+
+    def get_peso_capacidade(self):
+        return (
+            max(self.romaneio_pesos, key=lambda x: x["peso"])["peso"]
+            if self.romaneio_pesos
+            else self.t_entregas["peso_entregas"]
+        )
 
     def total_ajudantes(self):
         self.total_ajudantes_avulso()
