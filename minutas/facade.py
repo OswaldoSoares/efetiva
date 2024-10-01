@@ -127,6 +127,7 @@ class MinutaSelecionada:
         self.tabela_capacidade = ClienteTabelaCapacidade(
             minuta.idCliente
         ).tabela
+        self.peso_acima_tabela = self.get_peso_acima_tabela()
         self.total_horas = self.get_total_horas()
         self.total_horas_str = self.get_total_horas_str()
         self.total_kms = self.get_total_kms()
@@ -168,6 +169,16 @@ class MinutaSelecionada:
             if self.romaneio_pesos
             else self.t_entregas["peso_entregas"]
         )
+
+    def get_peso_acima_tabela(self):
+        for peso in self.tabela_capacidade:
+            if (
+                peso["CapacidadeInicial"]
+                <= self.peso_capacidade
+                <= peso["CapacidadeFinal"]
+            ):
+                return self.peso_capacidade - (peso["CapacidadeInicial"] - 1)
+        return None
 
     def total_ajudantes(self):
         self.total_ajudantes_avulso()
