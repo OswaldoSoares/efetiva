@@ -27,7 +27,11 @@
                                value="{{ item.input_value }}" id="{{ item.input_id }}"
                                class="{{ item.input_class }}">
                         {% else %}
+                        {% if "layers" in item.icon_class %}
+                        <span class="status-minuta">{{ item.label|safe }}</span>
+                        {% else %}
                         <span>{{ item.label|safe }}</span>
+                        {% endif %}
                         {% endif %}
                     </div>
                 </div>
