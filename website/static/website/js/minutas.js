@@ -868,3 +868,15 @@ function atualizaAposComum(data) {
 }
 
 
+function toggleButton() {
+    if ($(".status-minuta").text() != "ABERTA") {
+        $(".i-button").each(function() {
+            $(this).addClass("disabled")
+            $("#btn-estornar-concluir").removeClass("disabled")
+            $("#btn-finalizar-minuta").removeClass("disabled")
+            $("#btn-estornar-finalizar").removeClass("disabled")
+        });
+    } else {
+        $(".disabled").removeClass("disabled");
+    }
+}
