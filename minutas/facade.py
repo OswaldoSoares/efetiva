@@ -1766,6 +1766,7 @@ def estorna_minutaitens_recebe(idminuta):
     )
     itens.delete()
     minuta_status(idminuta, "ABERTA")
+    return {"mensagem": "MINUTA ESTORNADA"}
 
 
 def itens_card_checklist(minuta):
