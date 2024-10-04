@@ -262,12 +262,10 @@ def minutas_periodo(request):
 
 
 def estorna_faturamento(request):
-    idminuta = request.GET.get("idminuta")
-    facade.estorna_minutaitens_recebe(idminuta)
-    contexto = facade.create_contexto_minuta(idminuta)
-    data = {}
-    data = facade.create_html_card_recebe(data, contexto, request)
-    return JsonResponse(data)
+    id_minuta = request.GET.get("idminuta")
+    contexto = facade.estorna_minutaitens_recebe(id_minuta)
+    contexto.update(facade.contexto_minuta_alterada(id_minuta))
+    return facade.data_minuta_alterada(request, contexto)
 
 
 # Código verificado a partir de 31/07/2024
