@@ -192,6 +192,12 @@ $(document).on("click", ".js-alterar-capacidade", function () {
     calcularTotais("recebe");
 });
 
+$(document).on("click", ".js-alterar-perimetro", function () {
+    $("#tabela-perimetro-recebe").val($(this).data("valor"));
+    $("#tabela-perimetro-recebe").trigger("change");
+    calcularTotais("recebe");
+});
+
 function manipularModalEntrega() {
     if ($("#chk-perimetro").is(":checked")) {
         $(".js-perimetro-hide").hide();
