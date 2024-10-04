@@ -1741,7 +1741,7 @@ def gerar_minuta_itens(request):
             )
 
     MinutaItens.objects.bulk_create(registros_para_salvar_db)
-    novo_status_minuta(id_minuta, "FECHADA")
+    minuta_status_fechada(id_minuta, total_minuta)
 
     return {"mensagem": "MINUTA FECHADA"}
 
