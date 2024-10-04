@@ -3667,7 +3667,11 @@ def ativa_dados_pagamento(minuta, dados_pagamento):
 
 def adicionar_item_class(minuta, dados, transacao):
     tabela = minuta.tabela[0]
-    phkesc = tabela["phkescPaga"]
+    phkesc = (
+        tabela["phkescCobra"]
+        if transacao == "recebe"
+        else tabela["phkescPaga"]
+    )
     calculos_ativos = obter_lista_calculos_ativo(phkesc)
     for itens in dados:
         tipo = itens["tipo"]
