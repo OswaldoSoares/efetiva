@@ -886,6 +886,15 @@ function atualizaAposComum(data) {
     }
 }
 
+function verificaChecklist() {
+    if ($(".chk-red").length == 0) {
+        $("#btn-concluir-minuta").show()
+        $("#btn-finalizar-minuta").show()
+    } else {
+        $("#btn-concluir-minuta").hide()
+        $("#btn-finalizar-minuta").hide()
+    }
+}
 
 function toggleButton() {
     if ($(".status-minuta").text() != "ABERTA") {
