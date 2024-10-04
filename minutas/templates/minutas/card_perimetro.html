@@ -1,0 +1,68 @@
+{% load custom_filters %}
+<div class="card-header">
+    <div class="input-group">
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-up"></i>
+        </div>
+        <div class="div-form-control">
+            <span>
+                {{ minuta.km_acima_tabela|formatar_numero:"0" }} kms
+            </span>
+        </div>
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-up"></i>
+        </div>
+    </div>
+</div>
+{% if minuta.perimetro %}
+{% if minuta.tabela_perimetro %}
+<div class="card-body">
+    {% for item in minuta.tabela_perimetro %}
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="i-button-null">{{ forloop.counter|stringformat:".2d" }}</i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-25 text-center font-menor">
+                    <span {% if item.idTabelaPerimetro == minuta.destaque_tabela_perimetro.idTabelaPerimetro %}class="i-button-null"{% endif %}>{{ item.PerimetroInicial|formatar_numero:0 }} kg</span>
+                </div>
+                <div class="input-group-addon addon-my-color tamanho-10">
+                    <i class="icofont-arrow-right"></i>
+                </div>
+                <div class="tamanho-25 text-center font-menor">
+                    <span {% if item.idTabelaPerimetro == minuta.destaque_tabela_perimetro.idTabelaPerimetro %}class="i-button-null"{% endif %}>{{ item.PerimetroFinal|formatar_numero:0 }} kg</span>
+                </div>
+                <div class="input-group-addon addon-my-color tamanho-10">
+                    <span>=</span>
+                </div>
+                <div class="tamanho-30 text-right font-menor">
+                    <span {% if item.idTabelaPerimetro == minuta.destaque_tabela_perimetro.idTabelaPerimetro %}class="i-button-null"{% endif %}>{{ item.PerimetroCobra|formatar_numero:2 }} %</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-check-circled i-button js-alterar-perimetro"
+                   data-valor="{{ item.PerimetroCobra }}"></i>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endif %}
+<!-- Card Footer -->
+<div class="card-footer">
+    <div class="input-group">
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-down"></i>
+        </div>
+        <div class="div-flex div-form-control">
+            <div class="tamanho-100 text-center">
+                <span>TABELA PERIMETRO</span>
+            </div>
+        </div>
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-down"></i>
+        </div>
+    </div>
+</div>
