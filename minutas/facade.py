@@ -1697,6 +1697,7 @@ def converter_valores_request(valor, tipo):
 
 def gerar_minuta_itens(request):
     id_minuta = request.POST.get("idminuta")
+    total_minuta = request.POST.get("total-minuta")
     registros_para_salvar_db = []
 
     for tipo, item in SETUP_CALCULO_MINUTA.items():
