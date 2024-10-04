@@ -144,26 +144,25 @@
 <!-- Card Footer -->
 <div class="card-footer">
     <div class="input-group">
-        <div class=" input-group-addon addon-my-color">
+        <div class="input-group-addon addon-my-color">
             <i class="icofont-rounded-left-down"></i>
         </div>
         <div class="div-flex div-form-control">
             <div class="tamanho-50 text-center">
                 <span class="font-menor">
                     <i class="icofont-undo i-button js-estorna-faturamento"
+                       id="btn-estornar-finalizar"
                        data-idminuta="{{ s_minuta.idminuta }}"
                        title="Estorna Faturamento"></i>
                 </span>
             </div>
             <div class="tamanho-50 text-center">
-                {% if s_minuta.motorista or s_minuta.ajudantes %}
                 <span class="total font-menor" id="saldo-recebe">
-                    R$ {{ s_minuta.valor_minuta|stringformat:'.2f' }}
+                    R$ {{ s_minuta.valor_minuta|formatar_numero:"2" }}
                 </span>
-                {% endif %}
             </div>
         </div>
-        <div class=" input-group-addon addon-my-color">
+        <div class="input-group-addon addon-my-color">
             <i class="icofont-rounded-right-down"></i>
         </div>
     </div>
