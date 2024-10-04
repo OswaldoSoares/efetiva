@@ -2381,15 +2381,19 @@ def editar_km_final(request):
     km_final = int(request.GET.get("km_final"))
 
     if km_final <= km_inicial:
-        return {
-            "mensagem": f"QUILOMETRAGEM TEM QUE SER MAIOR QUE {km_inicial}"
-        }
+        km_final = 0
 
     Minuta.objects.filter(idMinuta=request.GET.get("id_minuta")).update(
         KMInicial=km_inicial, KMFinal=km_final
     )
 
-    return {"mensagem": "QUILOMETRAGEM FINAL ATUALIZADA"}
+    mensagem = (
+        f"QUILOMETRAGEM TEM QUE SER MAIOR QUE {km_inicial}"
+        if km_final == 0
+        else "QUILOMETRAGEM FINAL ATUALIZADA"
+    )
+
+    return {"mensagem": mensagem}
 
 
 def modal_ajudante_minuta(id_minuta, request):
