@@ -1,13 +1,17 @@
 $(document).ready(function() {
     localStorage.setItem("idminuta", $("#id_minuta").data("id"))
-    $(".box-loader").hide()
-    $(".filtro-dados").hide()
+    $(".filtro-dados").hide();
     $(".card-minutas-consulta").hide();
-    mostraChecklist();
 
-    verificaCheckboxClasse("total-recebe")
-    formatarInicial()
-    calcularTotais("recebe")
+    toggleButton();
+    verificaChecklist();
+    mostraChecklist();
+    verificaCheckboxClasse("total-recebe");
+    formatarInicial();
+    if ($(".status-minuta").text() != "FECHADA") {
+        calcularTotais("recebe");
+    }
+    $(".box-loader").hide()
 });
 
 $(document).on("click", ".js-editar-minuta-hora-final", function() {
