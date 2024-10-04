@@ -6332,6 +6332,14 @@ label {
   border-bottom: 2px solid var(--color7);
 }
 
+.card-body-item-row {
+  border: 1px solid #999999;
+  border-top: none;
+  border-bottom: 2px solid var(--color7);
+  display: flex;
+  flex-direction: row;
+}
+
 .hidden {
   opacity: 0;
   transform: scaleX(0); /* Reduz a largura para 0 */
