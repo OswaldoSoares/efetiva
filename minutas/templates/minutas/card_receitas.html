@@ -16,6 +16,7 @@
 <form method="post" id="js-gera-receitas">
     {% csrf_token %}
     <input type="hidden" name="idminuta" value="{{ s_minuta.idminuta }}">
+    <!-- Card Body -->
     <div class="card-body">
     {% for item in dados_cobranca  %}
         <div class="card-body-item-row body-row-{{ item.tipo }}-{{ item.transacao }}">
@@ -141,6 +142,7 @@
     </div>
 </form>
 {% else %}
+<!-- Card Body Alternativo -->
 <div class="card-body">
     {% for item in itens_cobrado %}
     <div class="card-body-item">
@@ -163,7 +165,7 @@
     </div>
     {% endfor %}
 </div>
-<!-- Card Footer -->
+<!-- Card Footer Alternativo -->
 <div class="card-footer">
     <div class="input-group">
         <div class="input-group-addon addon-my-color">
