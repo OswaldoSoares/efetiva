@@ -6332,6 +6332,12 @@ label {
   border-bottom: 2px solid var(--color7);
 }
 
+.hidden {
+  opacity: 0;
+  transform: scaleX(0); /* Reduz a largura para 0 */
+  width: 0;
+}
+
 .card-body span {
   color: var(--color6);
 }
