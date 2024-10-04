@@ -162,6 +162,7 @@ def minuta(request, idminuta):
     contexto.update(facade.contexto_dados_cobranca(minuta))
     checklist = facade.itens_card_checklist(s_minuta)
     contexto.update({"checklist": checklist})
+    contexto.update(facade.contexto_dados_cobrado(minuta))
     return render(request, "minutas/minuta.html", contexto)
 
 
