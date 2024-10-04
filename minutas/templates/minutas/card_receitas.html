@@ -141,6 +141,28 @@
     </div>
 </form>
 {% else %}
+<div class="card-body">
+    {% for item in itens_cobrado %}
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="i-button-null">{{ forloop.counter|stringformat:".2d" }}</i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-50 text-left font-menor">
+                    <span>{{ item.Descricao }}</span>
+                </div>
+                <div class="tamanho-50 text-right font-menor">
+                    <span>R$ {{ item.Valor|formatar_numero:"2" }}</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-check i-button-null"></i>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
 <!-- Card Footer -->
 <div class="card-footer">
     <div class="input-group">
