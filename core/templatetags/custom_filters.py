@@ -57,3 +57,9 @@ def formatar_numero(valor, digitos_decimais=2):
         especificado de casas decimais.
     """
     return formatar_numero_com_separadores(valor, digitos_decimais)
+
+
+@register.filter
+def subtract(value, arg):
+    """Subtracts the arg from the value."""
+    return value - arg
