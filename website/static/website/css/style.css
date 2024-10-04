@@ -6284,6 +6284,18 @@ label {
   -webkit-column-break-inside: avoid;
 }
 
+.duas_colunas {
+    grid-column: span 2; /* Ocupa duas colunas */
+}
+
+.sub-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Subgrid com 2 colunas, lado a lado */
+    padding-top: 5px;
+    padding-bottom: 5px;
+    gap: 5px; /* Espaçamento entre as colunas */
+}
+
 .card-header {
     background-color: var(--color1);
     color: var(--color6);
