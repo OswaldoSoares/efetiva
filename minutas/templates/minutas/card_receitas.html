@@ -117,19 +117,21 @@
             </div>
             <div class="div-flex div-form-control">
                 <div class="tamanho-50 text-center">
+                    {% if s_minuta.motorista or s_minuta.ajudantes %}
                     <span class="font-menor">
                         <button type="submit" class="i-button-form-rodape">
                             <i class="icofont-check-circled i-button"
+                               id="btn-finalizar-minuta"
                                title="Finalizar Minuta"></i>
                         </button>
                     </span>
+                    {% endif %}
                 </div>
                 <div class="tamanho-50 text-center">
-                    {% if s_minuta.motorista or s_minuta.ajudantes %}
+                    <input type="hidden" id="total-minuta" name="total-minuta">
                     <span class="total font-menor" id="saldo-recebe">
                         R$ {{ s_minuta.recebe_minuta|stringformat:'.2f' }}
                     </span>
-                    {% endif %}
                 </div>
             </div>
             <div class=" input-group-addon addon-my-color">
