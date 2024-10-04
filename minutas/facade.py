@@ -1952,7 +1952,7 @@ def html_checklist(request, data, contexto):
     Returns:
         dict: Dicionário contendo os dados atualizados com o HTML do checklist.
     """
-    data["html_checklist"] = render_to_string(
+    data["html-card-checklist"] = render_to_string(
         "minutas/card_checklist.html", contexto, request=request
     )
     return data
@@ -1971,7 +1971,7 @@ def html_card_despesas(request, data, contexto):
     Returns:
         dict: Dicionário contendo os dados atualizados com o HTML do checklist.
     """
-    data["html_card_despesas"] = render_to_string(
+    data["html-card-despesas"] = render_to_string(
         "minutas/card_despesas.html", contexto, request=request
     )
     return data
@@ -1990,7 +1990,7 @@ def html_card_romaneios(request, data, contexto):
     Returns:
         dict: Dicionário contendo os dados atualizados com o HTML do checklist.
     """
-    data["html_card_romaneios"] = render_to_string(
+    data["html-card-romaneios"] = render_to_string(
         "minutas/card_romaneios.html", contexto, request=request
     )
     return data
@@ -2009,7 +2009,7 @@ def html_card_entregas(request, data, contexto):
     Returns:
         dict: Dicionário contendo os dados atualizados com o HTML do checklist.
     """
-    data["html_card_entregas"] = render_to_string(
+    data["html-card-entregas"] = render_to_string(
         "minutas/card_entregas.html", contexto, request=request
     )
     return data
@@ -2035,14 +2035,14 @@ def html_card_receitas(request, data, contexto):
 
 
 def html_card_perimetro(request, data, contexto):
-    data["html_card_perimetro"] = render_to_string(
+    data["html-card-perimetro"] = render_to_string(
         "minutas/card_perimetro.html", contexto, request=request
     )
     return data
 
 
 def html_card_capacidade(request, data, contexto):
-    data["html_card_capacidade"] = render_to_string(
+    data["html-card-capacidade"] = render_to_string(
         "minutas/card_capacidade.html", contexto, request=request
     )
     return data
