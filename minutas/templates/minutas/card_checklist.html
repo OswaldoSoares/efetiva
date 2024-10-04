@@ -49,11 +49,13 @@
             <div class="tamanho-100 text-center">
                 {% if s_minuta.status_minuta == 'ABERTA' %}
                 <i class="icofont-check-circled i-button js-alterar-status-minuta"
+                   id="btn-concluir-minuta"
                    data-id_minuta="{{ s_minuta.idminuta }}"
                    data-proximo-status="CONCLUIDA"
                    title="CONCLUIR MINUTA"></i>
                 {% elif not s_minuta.paga_realizada_motorista and s_minuta.status_minuta == 'CONCLUIDA'%}
                 <i class="icofont-undo i-button js-alterar-status-minuta"
+                   id="btn-estornar-concluir"
                    data-id_minuta="{{ s_minuta.idminuta }}"
                    data-proximo-status="ABERTA"
                    title="ESTORNAR MINUTA CONCLUÍDA"></i>
