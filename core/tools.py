@@ -152,4 +152,7 @@ def formatar_numero_com_separadores(valor, digitos_decimais):
         )
     else:
         # Retorna 0 com o número de casas decimais especificado
-        return f"0,{''.join(['0' for _ in range(digitos_decimais)])}"
+        if digitos_decimais == 0:
+            return "0"
+        else:
+            return f"0,{''.join(['0' for _ in range(digitos_decimais)])}"
