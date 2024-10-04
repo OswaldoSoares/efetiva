@@ -6628,8 +6628,7 @@ label {
 }
 
 .i-button-null {
-  color: var(--color11);
-  color: #fff7ba;
+  color: #fff7ba !important;
 }
 
 /* DIV para mostrar mensagens */
