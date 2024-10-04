@@ -851,31 +851,39 @@ function calcularTotais(padrao) {
     $(`#minuta-perimetro-${padrao}`).val(valorBaseFormatado)
     $(`#minuta-pernoite-${padrao}`).val(valorBaseFormatado)
     $(`#saldo-${padrao}`).text("R$ " + valorTotalFormatado)
-   
+
+    if (padrao == "recebe") {
+        $("#total-minuta").val(valorTotal)   
+    }
 }
 
 function atualizaAposMinutaAlterada(data) {
     $(".card-minuta").html(data["html-card-minuta"])
-    $(".card-checklist").html(data["html_checklist"])
+    $(".card-checklist").html(data["html-card-checklist"])
     atualizaAposComum(data)
 }
 
 function atualizaAposEntregaAlterada(data) {
-    $(".card-romaneio").html(data["html_card_romaneios"])
-    $(".card-entrega").html(data["html_card_entregas"])
+    $(".card-romaneio").html(data["html-card-romaneios"])
+    $(".card-entrega").html(data["html-card-entregas"])
     atualizaAposComum(data)
 }
 
 function atualizaAposDespesaAlterada(data) {
-    $(".card-despesa").html(data["html_card_despesas"])
+    $(".card-despesa").html(data["html-card-despesas"])
     atualizaAposComum(data)
 }
 
 function atualizaAposComum(data) {
     $(".card-receitas").html(data["html-card-receitas"])
+    $(".card-capacidade").html(data["html-card-capacidade"])
+    $(".card-perimetro").html(data["html-card-perimetro"])
     exibirMensagem(data["mensagem"])
+    verificaChecklist()
     verificaCheckboxClasse("total-recebe")
-    calcularTotais("recebe")
+    if ($(".status-minuta").text() != "FECHADA") {
+        calcularTotais("recebe");
+    }
 }
 
 
