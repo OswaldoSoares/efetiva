@@ -6261,6 +6261,7 @@ label {
 .div-form-control {
   width: 100%;
   line-height: 2.3rem;
+  flex-direction: row;
 }
 
 /* Altera Bootstrap CSS */
