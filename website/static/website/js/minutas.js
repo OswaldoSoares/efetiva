@@ -186,6 +186,12 @@ $(document).on("click", ".js-card-receitas-toggle", function() {
     }
 });
 
+$(document).on("click", ".js-alterar-capacidade", function () {
+    $("#tabela-capacidade_peso-recebe").val($(this).data("valor"));
+    $("#tabela-capacidade_peso-recebe").trigger("change");
+    calcularTotais("recebe");
+});
+
 function manipularModalEntrega() {
     if ($("#chk-perimetro").is(":checked")) {
         $(".js-perimetro-hide").hide();
