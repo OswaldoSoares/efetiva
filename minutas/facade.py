@@ -1889,6 +1889,7 @@ def contexto_minuta_alterada(idminuta):
     contexto.update({"romaneios": romaneios})
     contexto.update(contexto_dados_pagamento(s_minuta))
     contexto.update(contexto_dados_cobranca(s_minuta))
+    contexto.update(contexto_dados_cobrado(s_minuta))
     return contexto
 
 
