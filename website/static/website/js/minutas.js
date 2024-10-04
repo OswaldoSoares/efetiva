@@ -58,6 +58,7 @@ $(document).on("submit", "#js-gera-receitas", function(event) {
 
     executarAjax("/minutas/gera_receitas", "POST", data, function(data) {
         atualizaAposMinutaAlterada(data)
+        toggleButton()
     });
 });
     
@@ -95,6 +96,8 @@ $(document).on("click", ".js-alterar-status-minuta", function() {
         proximo_status: proximo_status,
     }, function(data) {
         atualizaAposMinutaAlterada(data);
+        toggleButton();
+        verificaChecklist();
         mostraChecklist();
         $(".box-loader").hide();
     });
@@ -120,6 +123,7 @@ $(document).on("click", ".js-estorna-faturamento", function(event) {
         idminuta: idminuta,
     }, function(data) {
         atualizaAposMinutaAlterada(data)
+        toggleButton()
     });
 });
 
