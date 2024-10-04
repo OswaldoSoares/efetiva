@@ -1813,16 +1813,16 @@ def itens_card_checklist(minuta):
             "descricao": "KM FINAL",
             "check": bool(km_final > km_inicial) if km_final else False,
         },
-        {
-            "condicao": bool(ajudante_avulso),
-            "descricao": "PAGAMENTO AJUDANTE",
-            "check": bool(status_minuta != "ABERTA"),
-        },
-        {
-            "condicao": bool(motorista and tipo_pgto != "MENSALISTA"),
-            "descricao": "PAGAMENTO MOTORISTA",
-            "check": bool(minuta["status_minuta"] != "ABERTA"),
-        },
+        #  {
+        #  "condicao": bool(ajudante_avulso),
+        #  "descricao": "PAGAMENTO AJUDANTE",
+        #  "check": bool(status_minuta != "ABERTA"),
+        #  },
+        #  {
+        #  "condicao": bool(motorista and tipo_pgto != "MENSALISTA"),
+        #  "descricao": "PAGAMENTO MOTORISTA",
+        #  "check": bool(minuta["status_minuta"] != "ABERTA"),
+        #  },
         {
             "condicao": True,
             "descricao": "CONCLUIR MINUTA",
