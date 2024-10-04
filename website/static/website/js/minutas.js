@@ -66,9 +66,9 @@ $(document).on("submit", "#js-gera-pagamentos", function(event) {
     var data = $(this).serialize();
 
     executarAjax("/minutas/gera_pagamentos", "POST", data, function(data) {
-        $(".card-minuta").html(data["html_card_minuta"]);
-        $(".card-checklist").html(data["html_card_checklist"]);
-        $(".html-form-paga").html(data["html_card_pagamentos"]);
+        $(".card-minuta").html(data["html-card-minuta"]);
+        $(".card-checklist").html(data["html-card-checklist"]);
+        $(".html-form-paga").html(data["html-card-pagamentos"]);
         mostraChecklist();
     });
 });
@@ -79,9 +79,9 @@ $(document).on("click", ".estorna-pagamentos-ajudantes", function(event) {
     executarAjax("/minutas/estorna_pagamentos_ajudantes", "GET", {
         idminuta: idminuta,
     }, function(data) {
-        $(".card-minuta").html(data["html_card_minuta"]);
-        $(".card-checklist").html(data["html_card_checklist"]);
-        $(".html-form-paga").html(data["html_card_pagamentos"]);
+        $(".card-minuta").html(data["html-card-minuta"]);
+        $(".card-checklist").html(data["html-card-checklist"]);
+        $(".html-form-paga").html(data["html-card-pagamentos"]);
         mostraChecklist();
     });
 });
@@ -94,7 +94,7 @@ $(document).on("click", ".js-alterar-status-minuta", function() {
         id_minuta: id_minuta,
         proximo_status: proximo_status,
     }, function(data) {
-        $(".card-checklist").html(data["html_checklist"]);
+        atualizaAposMinutaAlterada(data);
         mostraChecklist();
         $(".box-loader").hide();
     });
@@ -106,9 +106,9 @@ $(document).on("click", ".estorna-pagamentos-motorista", function(event) {
     executarAjax("/minutas/estorna_pagamentos_motorista", "GET", {
         idminuta: idminuta,
     }, function(data) {
-        $(".card-minuta").html(data["html_card_minuta"]);
-        $(".card-checklist").html(data["html_card_checklist"]);
-        $(".html-form-paga").html(data["html_card_pagamentos"]);
+        $(".card-minuta").html(data["html-card-minuta"]);
+        $(".card-checklist").html(data["html-card-checklist"]);
+        $(".html-form-paga").html(data["html-card-pagamentos"]);
         mostraChecklist();
     });
 });
@@ -119,11 +119,7 @@ $(document).on("click", ".js-estorna-faturamento", function(event) {
     executarAjax("/minutas/estorna_faturamento", "GET", {
         idminuta: idminuta,
     }, function(data) {
-        $(".card-minuta").html(data["html_card_minuta"]);
-        $(".card-checklist").html(data["html_card_checklist"]);
-        $(".html-form-paga").html(data["html_card_pagamentos"]);
-        $(".card-recebe").html(data["html-card-recebe"])
-        mostraChecklist();
+        atualizaAposMinutaAlterada(data)
     });
 });
 
@@ -291,13 +287,16 @@ function processarRespostaAjax(xhr, modal, url) {
 }
 
 function atualizarInterfaceComDados(xhr) {
-    $(".card-minuta").html(xhr["html-card-minuta"])
-    $(".card-despesa").html(xhr["html_card_despesas"])
-    $(".card-entrega").html(xhr["html_card_entregas"])
-    $(".card-checklist").html(xhr["html_checklist"])
-    $(".card-receitas").html(xhr["html-card-receitas"])
-    verificaCheckboxClasse("total-recebe")
-    calcularTotais("recebe")
+    $(".card-minuta").html(xhr["html-card-minuta"]);
+    $(".card-despesa").html(xhr["html-card-despesas"]);
+    $(".card-entrega").html(xhr["html-card-entregas"]);
+    $(".card-checklist").html(xhr["html-card-checklist"]);
+    $(".card-receitas").html(xhr["html-card-receitas"]);
+    $(".card-capacidade").html(xhr["html-card-capacidade"]);
+    $(".card-perimetro").html(xhr["html-card-perimetro"]);
+    verificaChecklist();
+    verificaCheckboxClasse("total-recebe");
+    calcularTotais("recebe");
     mostraChecklist();
 }
 
