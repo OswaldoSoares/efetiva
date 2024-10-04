@@ -139,6 +139,7 @@ def formatar_numero_com_separadores(valor, digitos_decimais):
                              formatação.
     :return: O número formatado como uma string.
     """
+    digitos_decimais = int(digitos_decimais)
     if valor:
         # Converte o valor para float e formata com o número de casas
         # decimais especificado
