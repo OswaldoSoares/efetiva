@@ -123,7 +123,10 @@ class MinutaSelecionada:
         self.peso_capacidade = self.get_peso_capacidade()
         self.tabela = ClienteTabela(minuta.idCliente).tabela
         self.tabela_veiculo = ClienteTabelaVeiculo(minuta.idCliente).tabela
+        self.total_kms = self.get_total_kms()
         self.tabela_perimetro = ClienteTabelaPerimetro(minuta.idCliente).tabela
+        self.km_acima_tabela = self.get_km_acima_tabela()
+        self.destaque_tabela_perimetro = self.get_destaque_tabela_perimetro()
         self.tabela_capacidade = ClienteTabelaCapacidade(
             minuta.idCliente
         ).tabela
@@ -131,7 +134,6 @@ class MinutaSelecionada:
         self.destaque_tabela_capacidade = self.get_destaque_tabela_capacidade()
         self.total_horas = self.get_total_horas()
         self.total_horas_str = self.get_total_horas_str()
-        self.total_kms = self.get_total_kms()
         self.CategoriaDespesa = MinutaCategoriaDespesas().Categoria
         self.proxima_saida = self.entrega_saida()
         self.status_minuta = minuta.StatusMinuta
@@ -185,6 +187,23 @@ class MinutaSelecionada:
         destaque = None
         for tabela in self.tabela_capacidade:
             if tabela["CapacidadeFinal"] < self.peso_capacidade:
+                destaque = tabela
+        return destaque
+
+    def get_km_acima_tabela(self):
+        for km in self.tabela_perimetro:
+            if (
+                km["PerimetroInicial"]
+                <= self.total_kms
+                <= km["PerimetroFinal"]
+            ):
+                return self.total_kms - (km["PerimetroInicial"] - 1)
+        return None
+
+    def get_destaque_tabela_perimetro(self):
+        destaque = None
+        for tabela in self.tabela_perimetro:
+            if tabela["PerimetroFinal"] < self.total_kms:
                 destaque = tabela
         return destaque
 
