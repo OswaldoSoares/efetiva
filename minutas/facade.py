@@ -3727,3 +3727,10 @@ def contexto_dados_pagamento(minuta):
     dados_pagamento = atualizar_perimetro_pernoite(dados_pagamento)
     dados_pagamento = adicionar_item_class(minuta, dados_pagamento, "paga")
     return {"dados_pagamento": dados_pagamento}
+
+
+def contexto_dados_cobrado(minuta):
+    itens_cobrado = MinutaItens.objects.filter(
+        idMinuta=minuta.idminuta, RecebePaga="R"
+    ).order_by("-TipoItens")
+    return {"itens_cobrado": itens_cobrado}
