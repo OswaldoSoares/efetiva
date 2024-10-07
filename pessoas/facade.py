@@ -923,7 +923,9 @@ def create_contexto_verbas_rescisoria(idpessoal):
     variavel = dict()
     variavel["admissao"] = colaborador["data_admissao"]
     variavel["demissao"] = colaborador["data_demissao"]
-    dias_admitido_colaborador = facade_pagamentos.dias_admitido(variavel)
+    dias_admitido_colaborador = facade_pagamentos.dias_admitido(
+        variavel["admissao"], variavel["demissao"]
+    )
     if dias_admitido_colaborador > 16:
         meses_ferias = rescisao_ferias_meses(
             aquisitivo.DataInicial, aquisitivo.DataFinal
@@ -942,7 +944,10 @@ def create_contexto_verbas_rescisoria(idpessoal):
     _mes_ano = datetime.datetime.strftime(
         colaborador["data_demissao"], "%B/%Y"
     )
-    folha = facade_pagamentos.create_contexto_funcionario(_mes_ano, idpessoal)
+    #  folha = facade_pagamentos.create_contexto_funcionario(_mes_ano, idpessoal)
+    folha = create_contexto_contra_cheque_colaborador(
+        idpessoal, _mes_ano, "PAGAMENTO"
+    )
     rescisao = [
         {
             "salario": round(rescisao_salario, 2),
@@ -954,6 +959,7 @@ def create_contexto_verbas_rescisoria(idpessoal):
             "folha_contra_cheque_itens": folha["contra_cheque_itens"],
         }
     ]
+    print(folha["contra_cheque_itens"])
     return {"rescisao": rescisao, "colaborador": colaborador}
 
 
@@ -987,6 +993,8 @@ def rescisao_ferias_meses(data_inicial, data_final):
 
 def rescisao_descimo_terceiro_meses(data_inicial, data_final):
     dia_inicial = data_inicial.day
+    ano_inicial = data_inicial.year
+    ano_final = data_final.year
     if dia_inicial < 16:
         mes_inicial = data_inicial.month
     else:
@@ -996,6 +1004,8 @@ def rescisao_descimo_terceiro_meses(data_inicial, data_final):
         mes_final = data_final.month
     else:
         mes_final = data_final.month - 1
+    if ano_inicial != ano_final:
+        mes_inicial = 1
     meses = mes_final - mes_inicial + 1
     return meses
 
@@ -1911,6 +1921,7 @@ def html_card_contra_cheque_colaborador(request, contexto, data):
         contexto,
         request=request,
     )
+    data["mes_ano"] = contexto["mes_ano"]
     return data
 
 
@@ -1919,31 +1930,13 @@ def create_contexto_contra_cheque(idpessoal, idselecionado, descricao):
     colaborador_futuro = get_colaborador(idpessoal)
     contas = get_contas_bancaria_colaborador(colaborador_futuro)
     if descricao == "FERIAS":
-        idaquisitivo = idselecionado
-        contra_cheque = busca_contra_cheque_aquisitivo(
-            idpessoal, idaquisitivo, descricao
+        contra_cheque = create_contexto_contra_cheque_ferias(
+            idpessoal, idselecionado, descricao
         )
-        contra_cheque_itens = get_contra_cheque_itens(contra_cheque)
-        if not contra_cheque_itens:
-            create_contra_cheque_itens(
-                descricao, 0.00, "C", "30d", contra_cheque
-            )
-            if not busca_um_terco_ferias(contra_cheque_itens):
-                create_contra_cheque_itens(
-                    "1/3 FERIAS", 0.00, "C", "30d", contra_cheque
-                )
-        atualiza_salario_ferias_dias_referencia(idpessoal, idaquisitivo)
     elif descricao[:15] == "DECIMO TERCEIRO":
-        idparcela = idselecionado
-        contra_cheque = busca_contra_cheque_parcela(
-            idpessoal, idparcela, descricao[:15]
+        contra_cheque = create_contexto_contra_cheque_13(
+            idpessoal, idselecionado, descricao
         )
-        contra_cheque_itens = get_contra_cheque_itens(contra_cheque)
-        if not contra_cheque_itens:
-            create_contra_cheque_itens(
-                descricao, 0.00, "C", "12da", contra_cheque
-            )
-        atualiza_dozeavos_decimo_terceiro(idpessoal, idparcela, descricao)
     elif descricao == "ADIANTAMENTO":
         # TODO Corrigir
         contra_cheque = idselecionado
@@ -1952,6 +1945,7 @@ def create_contexto_contra_cheque(idpessoal, idselecionado, descricao):
         contra_cheque = idselecionado
     if contas:
         update_contas_bancaria_obs(contra_cheque, contas, "contas")
+    mes_ano = f"{contra_cheque.MesReferencia}/{contra_cheque.AnoReferencia}"
     contra_cheque_itens = get_contra_cheque_itens(contra_cheque)
     contra_cheque_itens = contra_cheque_itens.order_by("idContraChequeItens")
     credito, debito, saldo_contra_cheque = get_saldo_contra_cheque(
@@ -1963,6 +1957,7 @@ def create_contexto_contra_cheque(idpessoal, idselecionado, descricao):
     contexto = {
         "contra_cheque": contra_cheque,
         "contra_cheque_itens": contra_cheque_itens,
+        "mes_ano": mes_ano,
         "credito": credito,
         "debito": debito,
         "saldo_contra_cheque": saldo_contra_cheque,
@@ -1972,7 +1967,39 @@ def create_contexto_contra_cheque(idpessoal, idselecionado, descricao):
         "tipo": descricao,
         "idpessoal": idpessoal,
     }
+    idcontracheque = contra_cheque.idContraCheque
+    file = get_file_contra_cheque(idcontracheque)
+    contexto.update({"file": file})
     return contexto
+
+
+def create_contexto_contra_cheque_ferias(idpessoal, idselecionado, descricao):
+    idaquisitivo = idselecionado
+    contra_cheque = busca_contra_cheque_aquisitivo(
+        idpessoal, idaquisitivo, descricao
+    )
+    contra_cheque_itens = get_contra_cheque_itens(contra_cheque)
+    if not contra_cheque_itens:
+        create_contra_cheque_itens(descricao, 0.00, "C", "30d", contra_cheque)
+        if not busca_um_terco_ferias(contra_cheque_itens):
+            create_contra_cheque_itens(
+                "1/3 FERIAS", 0.00, "C", "30d", contra_cheque
+            )
+    atualiza_salario_ferias_dias_referencia(idpessoal, idaquisitivo)
+    return contra_cheque
+
+
+def create_contexto_contra_cheque_13(idpessoal, idselecionado, descricao):
+    idparcela = idselecionado
+    print(f"[INFO - 1] {idselecionado}")
+    contra_cheque = busca_contra_cheque_parcela(
+        idpessoal, idparcela, descricao[:15]
+    )
+    contra_cheque_itens = get_contra_cheque_itens(contra_cheque)
+    if not contra_cheque_itens:
+        create_contra_cheque_itens(descricao, 0.00, "C", "12da", contra_cheque)
+    atualiza_dozeavos_decimo_terceiro(idpessoal, idparcela, descricao)
+    return contra_cheque
 
 
 def update_contas_bancaria_obs(contra_cheque, contas, chave):
@@ -2252,6 +2279,10 @@ def get_contra_cheque_mes_ano_adiantamento(mes, ano):
 
 
 def get_contra_cheque_mes_ano_descricao(colaborador, mes, ano, descricao):
+    print(colaborador)
+    print(mes)
+    print(ano)
+    print(descricao)
     contra_cheque = ContraCheque.objects.get(
         idPessoal=colaborador,
         MesReferencia=meses[mes - 1],
@@ -2354,6 +2385,7 @@ def aquisitivo_salario_ferias(salario, faltas):
 
 
 def update_contra_cheque_obs(contra_cheque, obs, chave):
+    print(obs)
     try:
         dict_obs = ast.literal_eval(contra_cheque.Obs)
     except (SyntaxError, ValueError) as e:
@@ -2362,7 +2394,10 @@ def update_contra_cheque_obs(contra_cheque, obs, chave):
     except Exception as e:
         print(f"[ERROR] {e}")
         dict_obs = {}
+    print(dict_obs.get(chave))
+
     if dict_obs.get(chave) != obs:
+        print("aqui")
         dict_obs[chave] = obs
         obj = contra_cheque
         obj.Obs = str(dict_obs)
@@ -2902,10 +2937,15 @@ def create_contexto_contra_cheque_colaborador(idpessoal, mes_ano, descricao):
         idpessoal, contra_cheque, descricao
     )
     idcontracheque = contra_cheque.idContraCheque
-    file_descricao = f"CONTRA-CHEQUE_-_{str(idcontracheque).zfill(6)}"
-    file = busca_arquivo_descricao(file_descricao)
+    file = get_file_contra_cheque(idcontracheque)
     contexto.update({"file": file})
     return contexto
+
+
+def get_file_contra_cheque(idcontracheque):
+    file_descricao = f"CONTRA-CHEQUE_-_{str(idcontracheque).zfill(6)}"
+    file = busca_arquivo_descricao(file_descricao)
+    return file
 
 
 def html_contra_cheque(request, contexto, data):
@@ -2951,3 +2991,7 @@ def create_contexto_cartao_ponto_contra_cheque(idpessoal, contra_cheque):
         idpessoal, primeiro_dia_mes, ultimo_dia_mes
     )
     return {"cartao_ponto": cartao_ponto}
+
+
+def faltas_periodo_aquisitivo():
+    pass

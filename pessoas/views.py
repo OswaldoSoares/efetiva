@@ -547,6 +547,7 @@ def demissao_colaborador(request):
 
 
 def salva_demissao_colaborador(request):
+    print("demitido")
     error, msg = facade.valida_demissao_colaborador(request)
     demissao_form = facade.read_demissao_post(request)
     data_demissao = request.POST.get("demissao")
@@ -784,6 +785,7 @@ def pagamento_contra_cheque(request):
         idcontracheque = request.POST.get("idcontracheque")
         idpessoal = request.POST.get("idpessoal")
         mes_ano = request.POST.get("mes_ano")
+        print(f"[INFO] {idcontracheque} - {idpessoal} - {mes_ano}")
         facade.paga_contra_cheque(request, idcontracheque)
         descricao = facade.get_descricao_contra_cheque_id(idcontracheque)
         contexto = facade.create_contexto_contra_cheque_colaborador(
