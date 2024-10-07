@@ -92,6 +92,13 @@
            title="Altera Valor do Salário e do Vale Transporte"
            data-idpessoal="{{ colaborador.idpes }}"></i>
         {% endif %}
+        <i class="bi bi-person-x i-button"
+           onclick="openMyModal(event); return false;"
+           data-title="INFORMAR DATA DE DEMISSÂO"
+           data-action="{% url 'demissao_colaborador' %}"
+           data-button-save-label="SALVAR"
+           data-id_pessoa="{{ colaborador.idpes }}"
+           title="Adicionar data de Demissão"></i>
         {% if colaborador.data_demissao %}
         <i class="icofont-calculator
         i-button
@@ -105,5 +112,4 @@
            href="{% url 'print_ficha_colaborador' %}?idpes={{ colaborador.idpes }}"
            title="Imprime Ficha do Colaborador"></a>
     </div>
-
 </div>
