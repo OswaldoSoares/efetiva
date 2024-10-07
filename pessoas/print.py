@@ -249,18 +249,16 @@ def dados_rescisao_trabalho(pdf, contexto):
     linha -= 4
     col = 11
     for x in contexto["rescisao"][0]["folha_contra_cheque_itens"]:
-        if x["registro"] == "C":
-            if x["descricao"].startswith("SALARIO"):
-                descricao = x["descricao"].replace(
-                    "SALARIO", "SALDO DE SALARIO"
-                )
+        if x.Registro == "C":
+            if x.Descricao.startswith("SALARIO"):
+                descricao = x.Descricao.replace("SALARIO", "SALDO DE SALARIO")
             else:
-                descricao = x["descricao"]
+                descricao = x.Descricao
             pdf.drawString(
-                cmp(col), cmp(linha), f"{descricao} - {x['referencia']}"
+                cmp(col), cmp(linha), f"{descricao} - {x.Referencia}"
             )
-            pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {x['valor']}")
-            bruto += x["valor"]
+            pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {x.Valor}")
+            bruto += x.Valor
             if col == 11:
                 col = 106
             else:
@@ -294,10 +292,10 @@ def dados_rescisao_trabalho(pdf, contexto):
     deducoes = Decimal(0.00)
     col = 11
     for x in contexto["rescisao"][0]["folha_contra_cheque_itens"]:
-        if x["registro"] == "D":
-            pdf.drawString(cmp(col), cmp(linha), f"{x['descricao']}")
-            pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {x['valor']}")
-            deducoes += x["valor"]
+        if x.Registro == "D":
+            pdf.drawString(cmp(col), cmp(linha), f"{x.Descricao}")
+            pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {x.Valor}")
+            deducoes += x.Valor
             if col == 11:
                 col = 106
             else:
