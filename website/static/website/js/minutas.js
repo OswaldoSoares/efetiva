@@ -3,7 +3,10 @@ $(document).ready(function() {
     $(".filtro-dados").hide();
     $(".card-minutas-consulta").hide();
 
-    toggleButton();
+    const id_minuta = localStorage.getItem("idminuta")
+    if (id_minuta  !== 'undefined') {
+        toggleButton();
+    }
     verificaChecklist();
     mostraChecklist();
     verificaCheckboxClasse("total-recebe");
