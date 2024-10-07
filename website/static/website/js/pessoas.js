@@ -128,27 +128,17 @@ $(document).on('click', '.js-atualiza-decimo-terceiro', function() {
     });
 });
 
-$(document).on('click', '.js-demissao', function() {
-    var idpessoal = $("#idpessoal").val();
-    $.ajax({
-        type: "GET",
-        url: "/pessoas/demissao_colaborador",
-        data: {
-            idpessoal: idpessoal,
-        },
-        beforeSend: function() {
-            $(".box-loader").show()
-        },
-        success: function(data) {
-            $(".card-form-colaborador").html(data.html_form_demissao_colaborador)
-            $(".card-form-colaborador").show()
-            $(".box-loader").hide()
-        },
-        error: function(errorThrown) {
-            console.log("error: " + errorThrown)
-        }
-    });
-});
+// $(document).on('click', '.js-adicionar-demissao', function() {
+    // var idpessoal = $("#idpessoal").val();
+
+    // executarAjax("/pessoas/demissao_colaborador", "GET", {
+        // idpessoal: idpessoal,
+    // }, function(data) {
+            // $(".card-form-colaborador").html(data.html_form_demissao_colaborador)
+            // $(".card-form-colaborador").show()
+            // $(".box-loader").hide()
+    // });
+// });
 
 $(document).on('click', '.js-periodo-ferias', function() {
     var idpessoal = $("#idpessoal").val();
@@ -844,6 +834,7 @@ $(document).on('click', '.js-seleciona-aquisitivo', function() {
             $(".card-contra-cheque-colaborador").html(data.html_card_contra_cheque_colaborador)
             $(".card-contra-cheque-colaborador").show()
             localStorage.setItem("idcontracheque", $("#idcontracheque").data("idcontracheque"))
+            localStorage.setItem("mes_ano", data["mes_ano"])
             valesSelecionaveis()
             $(".box-loader").hide()
         },
@@ -873,7 +864,9 @@ $(document).on('click', '.js-seleciona-parcela', function() {
             $(".card-contra-cheque-colaborador").show()
             $(".card-decimo-terceiro").html(data.html_decimo_terceiro)
             $(".card-decimo-terceiro").show()
+            $("#submit-contracheque").hide()
             localStorage.setItem("idcontracheque", $("#idcontracheque").data("idcontracheque"))
+            localStorage.setItem("mes_ano", data["mes_ano"])
             valesSelecionaveis()
             $(".box-loader").hide()
         },
