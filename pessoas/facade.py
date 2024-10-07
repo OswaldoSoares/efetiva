@@ -1613,11 +1613,12 @@ def create_data_form_altera_demissao(request, contexto):
 
 
 def html_form_altera_demissao(request, contexto, data):
-    data["html_form_demissao_colaborador"] = render_to_string(
-        "pessoas/html_form_demissao_colaborador.html",
+    data["html_modal"] = render_to_string(
+        "pessoas/modal_data_demissao.html",
         contexto,
         request=request,
     )
+    print(data)
     return data
 
 
