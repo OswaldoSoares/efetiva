@@ -58,6 +58,7 @@ from website.facade import (
 )
 
 from transefetiva.settings.settings import MEDIA_ROOT
+from pessoas import classes
 
 meses = [
     "JANEIRO",
