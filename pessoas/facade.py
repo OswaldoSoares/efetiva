@@ -56,7 +56,7 @@ from website.facade import (
     nome_curto_underscore,
     busca_arquivo_descricao,
 )
-
+from .itens_card import categorias_colaborador
 from transefetiva.settings.settings import MEDIA_ROOT
 from pessoas import classes
 
