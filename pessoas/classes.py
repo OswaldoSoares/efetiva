@@ -21,8 +21,8 @@ from .models import (
 )
 
 
-# pylint: disable=too-many-instance-attributes
 class Colaborador:
+    # pylint: disable=too-many-instance-attributes
     """
     Classe que representa um colaborador e suas informações.
 
