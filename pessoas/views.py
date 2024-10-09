@@ -45,6 +45,13 @@ def indexpessoal(request):
     return render(request, "pessoas/index.html", contexto)
 
 
+def selecionar_categoria(request):
+    tipo = request.GET.get("tipo")
+    status = True if tipo else False
+    contexto = facade.create_contexto_colaboradores(tipo, status)
+    return facade.data_colaboradores(contexto, request)
+
+
 def cria_pessoa(request):
     c_form = CadastraPessoal
     c_idobj = None
