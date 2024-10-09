@@ -40,8 +40,8 @@ def removeduplicadas(lista):
 
 @has_permission_decorator("modulo_colaboradores")
 def indexpessoal(request):
-    colaboradores = facade.create_contexto_colaboradores_ativo(True)
-    contexto = {"colaboradores": colaboradores}
+    contexto = facade.create_contexto_categoria()
+    contexto.update(facade.create_contexto_colaboradores("MENSALISTA", True))
     return render(request, "pessoas/index.html", contexto)
 
 
