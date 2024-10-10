@@ -264,77 +264,49 @@ class Colaborador:
         return Decimal(0)
 
 
-class ColaboradorDocumentos:
+@dataclass
+class Documentos:
     """
-    Classe para gerenciar documentos pessoais de um colaborador.
+    Classe para gerenciar os documentos de um colaborador.
+
+    Esta classe busca e armazena informações sobre os documentos de um
+    colaborador com base no ID do colaborador fornecido.
 
     Attributes:
-        id_pessoal (int): ID do colaborador.
-        documentos (list): Lista de documentos do colaborador.
+        id_pessoal (int): O ID do colaborador cujos documentos
+                          serão gerenciados.
+        docs (QuerySet): QuerySet contendo os registros de documentos
+                         do colaborador.
     """
 
-    def __init__(self, id_pessoal):
+    id_pessoal: int
+    docs: QuerySet = field(init=False)
+
+    def __post_init__(self):
         """
-        Inicializa a classe ColaboradorDocumentos.
+        Método chamado automaticamente após a inicialização da classe.
+
+        Este método busca os documentos do colaborador correspondente
+        ao ID fornecido e armazena essas informações na variável 'docs'.
+        """
+        self.docs = self._get_documentos(self.id_pessoal)
+
+    def _get_documentos(self, id_pessoal: int) -> QuerySet:
+        """
+        Obtém os documentos do colaborador a partir do banco de dados.
 
         Args:
-            id_pessoal (int): O ID do colaborador para buscar documentos.
-        """
-        self.docs = self._get_docpessoal(id_pessoal)
-
-    def _get_docpessoal(self, id_pessoal):
-        """
-        Obtém os documentos pessoais do colaborador.
-
-        Args:
-            id_pessoal (int): O ID do colaborador para buscar documentos.
+            id_pessoal (int): O ID do colaborador para buscar os documentos.
 
         Returns:
-            list: Lista de dicionários com informações sobre os documentos,
-                  onde cada dicionário contém:
-                  - "iddoc": ID do documento pessoal.
-                  - "tipo": Tipo do documento.
-                  - "documento": Número do documento.
-                  - "data_doc": Data de emissão do documento.
+            QuerySet: QuerySet contendo os registros de documentos, onde cada
+                      registro possui os seguintes atributos:
+                       - idDocPessoal: ID do documento.
+                       - TipoDocumento: Tipo do documento (ex: CPF, RG, etc.).
+                       - Documento: Número do documento.
+                       - Data: Data de emissão do documento ou validade.
         """
-        documentos = DocPessoal.objects.filter(idPessoal=id_pessoal)
-        return [
-            {
-                "iddoc": item.idDocPessoal,
-                "tipo": item.TipoDocumento,
-                "documento": item.Documento,
-                "data_doc": item.Data,
-            }
-            for item in documentos
-        ]
-
-    def count_documentos(self) -> int:
-        """
-        Conta o número de documentos pessoais do colaborador.
-
-        Returns:
-            int: Número total de documentos pessoais.
-        """
-        return len(self.docs)
-
-    def display_documentos_info(self) -> list:
-        """
-        Gera uma lista formatada com as informações dos documentos.
-
-        Returns:
-            list: Lista de dicionários formatados com informações sobre cada
-                  documento, contendo uma string com o formato:
-                  "Documento: [tipo] - Número: [documento] -
-                   Data Documento: [data_doc]".
-        """
-        return [
-            {
-                "display": f"Documento: {doc['tipo']} - "
-                f"Número: {doc['documento']} - "
-                f"Data Documento: {doc['data_doc'].strftime('%d/%m/%Y')}"
-            }
-            for doc in self.docs
-        ]
+        return DocPessoal.objects.filter(idPessoal=id_pessoal)
 
 
 @dataclass
