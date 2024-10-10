@@ -74,6 +74,11 @@ urlpatterns = [
         selecionar_categoria,
         name="selecionar_categoria",
     ),
+    path(
+        "consultar_colaborador",
+        consultar_colaborador,
+        name="consultar_colaborador",
+    ),
     path("criapessoa/", cria_pessoa, name="criapessoa"),
     path("editapessoa/<int:idpessoa>/", edita_pessoa, name="editapessoa"),
     path("excluipessoa/<int:idpessoa>/", excluipessoa, name="excluipessoa"),
