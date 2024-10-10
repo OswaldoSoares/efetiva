@@ -52,6 +52,13 @@ def selecionar_categoria(request):
     return facade.data_colaboradores(contexto, request)
 
 
+def consultar_colaborador(request):
+    id_pesssoal = request.GET.get("id_pessoal")
+    contexto = facade.create_contexto_consulta_colaborador(id_pesssoal)
+    data = facade.create_data_consulta_colaborador(request, contexto)
+    return data
+
+
 def cria_pessoa(request):
     c_form = CadastraPessoal
     c_idobj = None
@@ -241,13 +248,6 @@ def cria_contrachequeitens(request):
         c_descricao, c_valor, c_registro, c_idcontracheque
     )
     data = facade.seleciona_contracheque(request, c_mes, c_ano, c_idpessoal)
-    return data
-
-
-def consultar_colaborador(request):
-    id_pesssoal = request.GET.get("id_pessoal")
-    contexto = facade.create_contexto_consulta_colaborador(id_pesssoal)
-    data = facade.create_data_consulta_colaborador(request, contexto)
     return data
 
 
