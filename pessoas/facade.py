@@ -114,7 +114,7 @@ def create_contexto_colaboradores(categoria, status_colaborador):
 def data_colaboradores(contexto, request):
     data = {"mensagem": ""}
     html_functions = [
-        html_data.html_card_listia_colaboradores,
+        html_data.html_card_lista_colaboradores,
     ]
     for html_func in html_functions:
         data = html_func(request, data, contexto)
