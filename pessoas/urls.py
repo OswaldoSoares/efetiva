@@ -64,6 +64,8 @@ from .views import (
     exclui_arquivo_contra_cheque,
 )
 
+from .views import selecionar_categoria, consultar_colaborador
+
 
 urlpatterns = [
     path("", indexpessoal, name="indexpessoal"),
