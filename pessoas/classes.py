@@ -5,6 +5,7 @@ documentos, telefones, contas bancárias e dados salariais.
 
 import datetime
 from decimal import Decimal
+from dataclasses import dataclass, field
 from dateutil.relativedelta import relativedelta
 from core.tools import nome_curto
 from .models import (
