@@ -49,7 +49,7 @@ def selecionar_categoria(request):
     tipo = request.GET.get("tipo")
     status = True if tipo else False
     contexto = facade.create_contexto_colaboradores(tipo, status)
-    return facade.data_colaboradores(contexto, request)
+    return facade.selecionar_categoria_html_data(contexto, request)
 
 
 def consultar_colaborador(request):
