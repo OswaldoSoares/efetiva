@@ -325,7 +325,7 @@ class Telefones:
     """
 
     id_pessoal: int
-    fones: List[Dict[str, str]] = field(init=False)
+    fones: QuerySet = field(init=False)
 
     def __post_init__(self):
         """
@@ -336,7 +336,7 @@ class Telefones:
         """
         self.fones = self._get_telefones(self.id_pessoal)
 
-    def _get_telefones(self, id_pessoal: int) -> List[Dict[str, str]]:
+    def _get_telefones(self, id_pessoal: int) -> QuerySet:
         """
         Obtém os telefones do colaborador a partir do banco de dados.
 
