@@ -1,67 +1,83 @@
 {% load humanize %}
-<!-- Header -->
-<div class="card-header titulo-icone">
-    <div><span>COLABORADORES</span></div>
-    <div>
-        {% for it in colaboradores %}
-        {% if forloop.first %}
-        {% if it.status_pessoal %}
-        <i class="icofont-thumbs-up i-button js-altera-lista"
-        data-lista="" title="Altera para lista de colaboradores bloqueados"></i>
-        {% else %}
-        <i class="icofont-thumbs-down i-button js-altera-lista"
-        data-lista="True" title="Altera para lista de colaboradores ativos"></i>
-        {% endif %}
-        {% endif %}
-        {% endfor %}
+<!-- Card Header -->
+<div class="card-header">
+    <div class="input-group">
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-up"></i>
+        </div>
+        <div class="div-form-control">
+            <span>COLABORADORES</span>
+        </div>
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-up"></i>
+        </div>
     </div>
 </div>
-<!-- Body -->
+<!-- Card Body -->
 <div class="card-body">
-    {% for it in colaboradores %}
+    {% for colaborador in colaboradores %}
     <div class="card-body-item">
         <div class="input-group">
-            <i class="bi bi-person-square
-            input-group-addon
-            addon-my-color
-            i-button-null"></i>
-            {% if it.tipo_pgto == "MENSALISTA" %}
-            <span class="form-control
-            input-fake
-            tipo-mensalista"
-                  title="{{ it.nome }}">{{ it.nome_curto }}</span>
-            {% else %}
-            <span class="form-control
-            input-fake"
-                  title="{{ it.nome }}">{{ it.nome_curto }}</span>
-            {% endif %}
-            <div class="input-group-addon
-            addon-my-color">
-                <i class="bi bi-folder-symlink
-                i-button
-                js-seleciona-colaborador"
-                   data-idpessoal="{{ it.idpessoal }}"></i>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-ui-user i-button-null"></i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-100 text-center font-menor">
+                    <span title="{{ colaborador.nome }}">{{ colaborador.nome_curto }}</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-square i-button js-selecionar-colaborador"
+                   data-id_pessoal="{{ colaborador.idpessoal }}"></i>
             </div>
         </div>
     </div>
     {% endfor %}
-</div>
-<div class="card-footer">
-    <div class="div-flex">
-        <div>
-            {% for it in colaboradores %}
-            {% if forloop.last %}
-            {{ forloop.counter|stringformat:"02d" }}
-            COLABORADOR{{ forloop.counter|pluralize:"es"|upper }}
-            {% endif %}
-            {% endfor %}
+    {% if colaboradores %}
+        <div class="linha-divisoria-nova"></div>
+    {% endif %}
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-wallet i-button-null"></i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-100 text-center font-menor">
+                    <span>ADICIONAR NOVO COLABORADOR</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-plus-circle i-button"
+                   onclick="openMyModal(event); return false;"
+                   data-title="ADICIONAR COLABORADOR"
+                   data-action="{% url 'criapessoa' %}"
+                   data-button-save-label="ADICIONAR"
+                   data-idminuta="{{ s_minuta.idminuta }}"
+                   title="ACICIONAR COLABORADOR"></i>
+            </div>
         </div>
-        <div></div>
-        <i class="bi bi-plus-circle i-button"
-        onclick="openMyModal(event); return false;"
-        data-title="CADASTRO DE COLABORADOR"
-        data-action="{% url 'criapessoa' %}"
-        data-button-save-label="SALVAR"
-        title="Adiciona Colaborador"></i>
+    </div>
+</div>
+<!-- Card Footer -->
+<div class="card-footer">
+    <div class="input-group">
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-down"></i>
+        </div>
+        <div class="div-flex div-form-control">
+            <div class="tamanho-100 text-center">
+                <span>
+                    {% for colaborador in colaboradores %}
+                    {% if forloop.last %}
+                    {{ forloop.counter|stringformat:"02d" }}
+                    COLABORADOR{{ forloop.counter|pluralize:"es"|upper }}
+                    {% endif %}
+                    {% endfor %}
+                </span>
+            </div>
+        </div>
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-down"></i>
+        </div>
     </div>
 </div>
