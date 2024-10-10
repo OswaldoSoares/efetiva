@@ -70,6 +70,9 @@ from .views import selecionar_categoria, consultar_colaborador
 urlpatterns = [
     path("", indexpessoal, name="indexpessoal"),
     path(
+        "selecionar_categoria",
+        selecionar_categoria,
+        name="selecionar_categoria",
     ),
     path("criapessoa/", cria_pessoa, name="criapessoa"),
     path("editapessoa/<int:idpessoa>/", edita_pessoa, name="editapessoa"),
