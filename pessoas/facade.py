@@ -122,34 +122,6 @@ def data_colaboradores(contexto, request):
     return JsonResponse(data)
 
 
-def create_pessoal_context(idpessoa: int):
-    colaborador = get_pessoal(idpessoa)
-    docpessoa = get_docpessoal(idpessoa)
-    fonepessoa = get_fonepessoal(idpessoa)
-    contapessoa = get_contapessoal(idpessoa)
-    contracheque = get_contracheque(idpessoa)
-    salario = get_salario(idpessoa)
-    instance_colaborador = get_pessoal(idpessoa).first()
-    instance_salario = get_salario(idpessoa).first()
-    formsalario = CadastraSalario(instance=instance_salario)
-    formvale = CadastraVale()
-    form_demissao = CadastraDemissao(instance=instance_colaborador)
-    minutas = MinutaColaboradores.objects.filter(idPessoal=idpessoa)
-    context = {
-        "colaborador": colaborador,
-        "docpessoa": docpessoa,
-        "fonepessoa": fonepessoa,
-        "contapessoa": contapessoa,
-        "contracheque": contracheque,
-        "salario": salario,
-        "formsalario": formsalario,
-        "formvale": formvale,
-        "form_demissao": form_demissao,
-        "minutas": minutas,
-    }
-    return context
-
-
 def list_pessoal_all():
     return list(Pessoal.objects.all())
 
