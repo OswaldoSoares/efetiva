@@ -59,6 +59,7 @@ from website.facade import (
 from .itens_card import categorias_colaborador
 from transefetiva.settings.settings import MEDIA_ROOT
 from pessoas import classes
+from pessoas import html_data
 
 meses = [
     "JANEIRO",
