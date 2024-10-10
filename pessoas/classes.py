@@ -566,4 +566,4 @@ class ColaboradorSalario:
             Decimal: Valor do salário por hora, arredondado para duas
                      casas decimais.
         """
-        return round((self.salario[0]["salario"] / 30) / 8, 2)
+        return round((self.salario[0]["salario"] / 30) / 9, 2)
