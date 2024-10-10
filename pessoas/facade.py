@@ -126,6 +126,31 @@ def selecionar_categoria_html_data(contexto, request):
     return gerar_data_html(html_functions, data, contexto, request)
 
 
+def create_contexto_consulta_colaborador(id_pessoal):
+    colaborador = classes.Colaborador(id_pessoal)
+    colaborador_ant = get_colaborador(id_pessoal)
+    aquisitivo = get_aquisitivo(colaborador_ant)
+    multas = facade_multa.multas_pagar("MOTORISTA", id_pessoal)
+    vales = get_vales_colaborador(colaborador_ant)
+    saldo_vales = get_saldo_vales_colaborador(vales)
+    verifica_decimo_terceiro((colaborador_ant))
+    decimo_terceiro = get_decimo_terceiro_colaborador(colaborador_ant)
+    decimo_terceiro = decimo_terceiro.order_by("-Ano")
+    verifica_parcelas_decimo_terceiro(colaborador_ant)
+    parcelas_decimo_terceiro = get_parcelas_decimo_terceiro(colaborador_ant)
+    hoje = datetime.datetime.today().date()
+    return {
+        "colaborador": colaborador,
+        "vales": vales,
+        "saldo_vales": saldo_vales,
+        "multas": multas,
+        "decimo_terceiro": decimo_terceiro,
+        "parcelas_decimo_terceiro": parcelas_decimo_terceiro,
+        "hoje": hoje,
+        "aquisitivo": aquisitivo,
+    }
+
+
 def list_pessoal_all():
     return list(Pessoal.objects.all())
 
@@ -485,31 +510,6 @@ def html_recibos_colaborador(request, contexto, data):
         "pagamentos/reciboavulso.html", contexto, request=request
     )
     return data
-
-
-def create_contexto_consulta_colaborador(idpessoal):
-    colaborador = Colaborador(idpessoal).__dict__
-    colaborador_futuro = get_colaborador(idpessoal)
-    aquisitivo = get_aquisitivo(colaborador_futuro)
-    multas = facade_multa.multas_pagar("MOTORISTA", idpessoal)
-    vales = get_vales_colaborador(colaborador_futuro)
-    saldo_vales = get_saldo_vales_colaborador(vales)
-    verifica_decimo_terceiro((colaborador_futuro))
-    decimo_terceiro = get_decimo_terceiro_colaborador(colaborador_futuro)
-    decimo_terceiro = decimo_terceiro.order_by("-Ano")
-    verifica_parcelas_decimo_terceiro(colaborador_futuro)
-    parcelas_decimo_terceiro = get_parcelas_decimo_terceiro(colaborador_futuro)
-    hoje = datetime.datetime.today().date()
-    return {
-        "colaborador": colaborador,
-        "vales": vales,
-        "saldo_vales": saldo_vales,
-        "multas": multas,
-        "decimo_terceiro": decimo_terceiro,
-        "parcelas_decimo_terceiro": parcelas_decimo_terceiro,
-        "hoje": hoje,
-        "aquisitivo": aquisitivo,
-    }
 
 
 def create_data_consulta_colaborador(request, contexto):
