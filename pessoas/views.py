@@ -249,9 +249,9 @@ def cria_contrachequeitens(request):
     return data
 
 
-def consulta_pessoa(request):
-    idpes = request.GET.get("id_pessoal")
-    contexto = facade.create_contexto_consulta_colaborador(idpes)
+def consultar_colaborador(request):
+    id_pesssoal = request.GET.get("id_pessoal")
+    contexto = facade.create_contexto_consulta_colaborador(id_pesssoal)
     data = facade.create_data_consulta_colaborador(request, contexto)
     return data
 
