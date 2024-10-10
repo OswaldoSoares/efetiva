@@ -494,19 +494,6 @@ def create_contexto_colaboradores_ativo(status_colaborador):
     return lista
 
 
-def create_data_lista_colaboradores_ativo(request, contexto):
-    data = dict()
-    html_lista_colaboradores_ativo(request, contexto, data)
-    return JsonResponse(data)
-
-
-def html_lista_colaboradores_ativo(request, contexto, data):
-    data["html_lista_colaboradores_ativo"] = render_to_string(
-        "pessoas/html_lista_colaboradores.html", contexto, request=request
-    )
-    return data
-
-
 def create_recibos_colaborador(idpessoal):
     recibos = Recibo.objects.filter(idPessoal_id=idpessoal).order_by(
         "-DataRecibo", "-Recibo"
