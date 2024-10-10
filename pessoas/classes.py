@@ -336,75 +336,49 @@ class ColaboradorDocumentos:
         ]
 
 
-class ColaboradorTelefones:
+@dataclass
+class Telefones:
     """
     Classe para gerenciar os telefones de um colaborador.
 
+    Esta classe busca e armazena informações sobre os telefones de um
+    colaborador com base no ID do colaborador fornecido.
+
     Attributes:
-        id_pessoal (int): ID do colaborador.
-        telefones (list): Lista de telefones do colaborador.
+        id_pessoal (int): O ID do colaborador cujos telefones
+                          serão gerenciados.
+        fones (QuerySet): QuerySet contendo os registros de telefone
+                          do colaborador.
     """
 
-    def __init__(self, id_pessoal):
+    id_pessoal: int
+    fones: List[Dict[str, str]] = field(init=False)
+
+    def __post_init__(self):
         """
-        Inicializa a classe ColaboradorTelefones.
+        Método chamado automaticamente após a inicialização da classe.
+
+        Este método busca os telefones do colaborador correspondente ao
+        ID fornecido e armazena essas informações na variável 'fones'.
+        """
+        self.fones = self._get_telefones(self.id_pessoal)
+
+    def _get_telefones(self, id_pessoal: int) -> List[Dict[str, str]]:
+        """
+        Obtém os telefones do colaborador a partir do banco de dados.
 
         Args:
-            id_pessoal (int): O ID do colaborador para buscar telefones.
-        """
-        self.fones = self._get_telefones(id_pessoal)
-
-    def _get_telefones(self, id_pessoal):
-        """
-        Obtém os telefones do colaborador.
-
-        Args:
-            id_pessoal (int): O ID do colaborador para buscar telefones.
+            id_pessoal (int): O ID do colaborador para buscar os telefones.
 
         Returns:
-            list: Lista de dicionários com informações sobre os telefones,
-                  onde cada dicionário contém:
-                  - "idfone": ID do telefone.
-                  - "tipo": Tipo do telefone.
-                  - "fone": Número do telefone.
-                  - "contato": Nome do contato associado ao telefone.
+            QuerySet: QuerySet contendo os registros de telefone, onde cada
+                      registro possui os seguintes atributos:
+                       - idFonePessoal: ID do telefone.
+                       - TipoFone: Tipo do telefone (ex: celular, fixo).
+                       - Fone: Número do telefone.
+                       - Contato: Nome do contato associado ao telefone.
         """
-        telefones = FonePessoal.objects.filter(idPessoal=id_pessoal)
-        return [
-            {
-                "idfone": item.idFonePessoal,
-                "tipo": item.TipoFone,
-                "fone": item.Fone,
-                "contato": item.Contato,
-            }
-            for item in telefones
-        ]
-
-    def count_telefones(self) -> int:
-        """
-        Conta o número de telefones do colaborador.
-
-        Returns:
-            int: Número total de telefones.
-        """
-        return len(self.fones)
-
-    def display_telefones_info(self) -> list:
-        """
-        Gera uma lista formatada com as informações dos telefones.
-
-        Returns:
-            list: Lista de dicionários formatados com informações sobre cada
-                  telefone, contendo uma string com o formato:
-                  "Telefone: [tipo] - Número: [fone] - Contato: [contato]".
-        """
-        return [
-            {
-                f"Telefone: {fone['tipo']} - Número: {fone['fone']} - "
-                f"Contato: {fone['contato']}"
-            }
-            for fone in self.fones
-        ]
+        return FonePessoal.objects.filter(idPessoal=id_pessoal)
 
 
 class ColaboradorBancos:
