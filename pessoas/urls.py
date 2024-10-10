@@ -2,7 +2,6 @@ from django.urls import path
 from .views import (
     indexpessoal,
     cria_pessoa,
-    consulta_pessoa,
     criadocpessoa,
     criafonepessoa,
     edita_pessoa,
@@ -18,7 +17,6 @@ from .views import (
     seleciona_contracheque,
     cria_contrachequeitens,
     edita_demissao,
-    consulta_pessoa,
     salva_foto,
     atualiza_decimo_terceiro,
     print_decimo_terceiro,
@@ -70,9 +68,6 @@ from .views import (
 urlpatterns = [
     path("", indexpessoal, name="indexpessoal"),
     path(
-        "consultapessoa/<int:idpessoa>/",
-        consulta_pessoa,
-        name="consultapessoa",
     ),
     path("criapessoa/", cria_pessoa, name="criapessoa"),
     path("editapessoa/<int:idpessoa>/", edita_pessoa, name="editapessoa"),
@@ -113,11 +108,6 @@ urlpatterns = [
         "criacontrachequeitensmudei/",
         cria_contrachequeitens,
         name="criacontrachequeitensmudei",
-    ),
-    path(
-        "consulta_pessoa",
-        consulta_pessoa,
-        name="consulta_pessoa",
     ),
     path(
         "salva_foto",
