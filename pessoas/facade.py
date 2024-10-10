@@ -90,6 +90,25 @@ def create_contexto_categoria():
     return {"categorias": categorias_colaborador}
 
 
+def create_contexto_colaboradores(categoria, status_colaborador):
+    colaboradores = (
+        Pessoal.objects.filter(
+            TipoPgto="MENSALISTA", StatusPessoal=status_colaborador
+        )
+        if categoria == "MENSALISTA"
+        else Pessoal.objects.filter(StatusPessoal=status_colaborador).exclude(
+            TipoPgto="MENSALISTA"
+        )
+    )
+    lista_colaboradores = [
+        {
+            "idpessoal": item.idPessoal,
+            "nome": item.Nome,
+            "nome_curto": nome_curto(item.Nome),
+        }
+        for item in colaboradores
+    ]
+    return {"colaboradores": lista_colaboradores}
 
 
 def create_pessoal_context(idpessoa: int):
