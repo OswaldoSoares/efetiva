@@ -86,6 +86,10 @@ dias = [
 ]
 
 
+def create_contexto_categoria():
+    return {"categorias": categorias_colaborador}
+
+
 
 
 def create_pessoal_context(idpessoa: int):
