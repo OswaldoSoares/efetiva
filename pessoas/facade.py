@@ -111,6 +111,17 @@ def create_contexto_colaboradores(categoria, status_colaborador):
     return {"colaboradores": lista_colaboradores}
 
 
+def data_colaboradores(contexto, request):
+    data = {"mensagem": ""}
+    html_functions = [
+        html_data.html_card_listia_colaboradores,
+    ]
+    for html_func in html_functions:
+        data = html_func(request, data, contexto)
+
+    return JsonResponse(data)
+
+
 def create_pessoal_context(idpessoa: int):
     colaborador = get_pessoal(idpessoa)
     docpessoa = get_docpessoal(idpessoa)
