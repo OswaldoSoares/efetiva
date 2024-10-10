@@ -354,101 +354,54 @@ class Telefones:
         return FonePessoal.objects.filter(idPessoal=id_pessoal)
 
 
-class ColaboradorBancos:
+@dataclass
+class Bancos:
     """
     Classe para gerenciar as contas bancárias de um colaborador.
 
+    Esta classe busca e armazena informações sobre as contas bancárias
+    de um colaborador com base no ID do colaborador fornecido.
+
     Attributes:
-        id_pessoal (int): ID do colaborador.
-        bancos (list): Lista de contas bancárias do colaborador.
+        id_pessoal (int): O ID do colaborador cujas contas bancárias
+                          serão gerenciadas.
+        contas (QuerySet): QuerySet contendo os registros de contas
+                           bancárias do colaborador.
     """
 
-    def __init__(self, id_pessoal):
+    id_pessoal: int
+    contas: QuerySet = field(init=False)
+
+    def __post_init__(self):
         """
-        Inicializa a classe ColaboradorBancos.
+        Método chamado automaticamente após a inicialização da classe.
+
+        Este método busca as contas bancárias do colaborador correspondente
+        ao ID fornecido e armazena essas informações na variável 'contas'.
+        """
+        self.contas = self._get_bancos(self.id_pessoal)
+
+    def _get_bancos(self, id_pessoal: int) -> QuerySet:
+        """
+        Obtém as contas bancárias do colaborador a partir do banco de dados.
 
         Args:
-            id_pessoal (int): O ID do colaborador para buscar contas
-                              bancárias.
-        """
-        self.contas = self._get_bancos(id_pessoal)
-
-    def _get_bancos(self, id_pessoal):
-        """
-        Obtém as contas bancárias do colaborador.
-
-        Args:
-            id_pessoal (int): O ID do colaborador para buscar contas
+            id_pessoal (int): O ID do colaborador para buscar as contas
                               bancárias.
 
         Returns:
-            list: Lista de dicionários com informações sobre as contas
-                  bancárias, onde cada dicionário contém:
-                  - "idconta": ID da conta bancária.
-                  - "banco": Nome do banco.
-                  - "agencia": Número da agência.
-                  - "conta": Número da conta.
-                  - "tipo": Tipo da conta (corrente, poupança, etc.).
-                  - "titular": Nome do titular da conta.
-                  - "documento": Documento do titular.
-                  - "pix": Chave PIX associada à conta.
+            QuerySet: QuerySet contendo os registros de contas bancárias,
+                      onde cada registro possui os seguintes atributos:
+                       - idContaPessoal: ID da conta bancária.
+                       - Banco: Nome do banco onde a conta está registrada.
+                       - Agencia: Número da agência bancária.
+                       - Conta: Número da conta bancária.
+                       - TipoConta: Tipo da conta (ex: corrente, poupança).
+                       - Titular: Nome do titular da conta.
+                       - Documento: Documento do titular da conta (ex: CPF).
+                       - PIX: Chave PIX associada à conta, se aplicável.
         """
-        bancos = ContaPessoal.objects.filter(idPessoal=id_pessoal)
-        return [
-            {
-                "idconta": item.idContaPessoal,
-                "banco": item.Banco,
-                "agencia": item.Agencia,
-                "conta": item.Conta,
-                "tipo": item.TipoConta,
-                "titular": item.Titular,
-                "documento": item.Documento,
-                "pix": item.PIX,
-            }
-            for item in bancos
-        ]
-
-    def count_contas(self) -> int:
-        """
-        Conta o número de contas bancárias do colaborador.
-
-        Returns:
-            int: Número total de contas bancárias.
-        """
-        return len(self.contas)
-
-    def display_contas_info(self) -> list:
-        """
-        Gera uma lista formatada com as informações das contas bancárias.
-
-        Returns:
-            list: Lista de dicionários formatados com informações sobre cada
-                  conta bancária, contendo uma string com o formato:
-                  "Banco: [banco] - Agência: [agencia] - Conta: [conta] -
-                   Tipo: [tipo]".
-        """
-        return [
-            {
-                f"Banco: {conta['banco']} - Agência: {conta['agencia']} - "
-                f"Conta: {conta['conta']} - Tipo: {conta['tipo']}"
-            }
-            for conta in self.contas
-        ]
-
-    def display_titular_contas_info(self) -> list:
-        """
-        Gera uma lista formatada com informações sobre os titulares das
-        contas bancárias.
-
-        Returns:
-            list: Lista de dicionários formatados com informações sobre cada
-                  titular, contendo uma string com o formato:
-                  "Nome: [titular] - Documento: [documento]".
-        """
-        return [
-            {f"Nome: {conta['titular']} -  Documento: {conta['documento']}"}
-            for conta in self.contas
-        ]
+        return ContaPessoal.objects.filter(idPessoal=id_pessoal)
 
 
 class ColaboradorSalario:
