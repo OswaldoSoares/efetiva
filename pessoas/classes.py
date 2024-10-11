@@ -508,6 +508,60 @@ class Bancos:
         return ContaPessoal.objects.filter(idPessoal=id_pessoal)
 
 
+@dataclass
+class DadosProfissionais:
+    """
+    Classe que armazena e gerencia os dados profissionais de um colaborador.
+
+    Attributes:
+        categoria (str): Categoria profissional do colaborador.
+        tipo_pgto (str): Tipo de pagamento associado ao colaborador.
+        status_pessoal (str): Status atual do colaborador (ativo,
+                              inativo, etc.).
+        data_admissao (datetime): Data de admissão do colaborador.
+        data_demissao (Optional[datetime]): Data de demissão do colaborador,
+                                            se aplicável.
+        data_completa_ano (datetime): Data em que o colaborador completa um
+                                      ano na empresa.
+
+    Methods:
+        from_queryset(queryset: QuerySet) -> DadosProfissionais:
+            Cria uma instância de DadosProfissionais a partir de um queryset
+            fornecido.
+    """
+
+    categoria: str
+    tipo_pgto: str
+    status_pessoal: str
+    data_admissao: datetime
+    data_demissao: Optional[datetime]
+    data_completa_ano: datetime
+
+    @classmethod
+    def from_queryset(cls, queryset: QuerySet) -> "DadosProfissionais":
+        """
+        Cria uma instância de DadosProfissionais a partir de um queryset.
+
+        Args:
+            queryset (QuerySet): Um queryset que contém os dados
+                                 profissionais do colaborador.
+
+        Returns:
+            DadosProfissionais: Uma instância da classe com os dados
+                                preenchidos.
+        """
+        return cls(
+            categoria=queryset.Categoria,
+            tipo_pgto=queryset.TipoPgto,
+            status_pessoal=queryset.StatusPessoal,
+            data_admissao=queryset.DataAdmissao,
+            data_demissao=queryset.DataDemissao,
+            data_completa_ano=(
+                queryset.DataAdmissao + relativedelta(years=+1, days=-1)
+            ),
+        )
+
+
 class ColaboradorSalario:
     """
     Classe para gerenciar as informações salariais de um colaborador.
