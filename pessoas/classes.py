@@ -334,6 +334,41 @@ class Residencia:
 
 
 @dataclass
+class Filiacao:
+    """
+    Classe que representa a filiação de um colaborador.
+
+    Attributes:
+        data_nascimento (str): Data de nascimento do colaborador.
+        mae (str): Nome da mãe do colaborador.
+        pai (str): Nome do pai do colaborador.
+    """
+
+    data_nascimento: str = field(default="")
+    mae: str = field(default="")
+    pai: str = field(default="")
+
+    @classmethod
+    def from_queryset(cls, queryset: QuerySet) -> "Filiacao":
+        """
+        Cria uma instância de Filiacao a partir de um QuerySet.
+
+        Args:
+            cls: A classe que está sendo chamada.
+            queryset (QuerySet): O QuerySet contendo os dados da filiação.
+
+        Returns:
+            Filiacao: Uma instância da classe Filiacao preenchida com
+            os dados do QuerySet.
+        """
+        return cls(
+            data_nascimento=queryset.DataNascimento,
+            mae=queryset.Mae,
+            pai=queryset.Pai,
+        )
+
+
+@dataclass
 class Documentos:
     """
     Classe para gerenciar os documentos de um colaborador.
