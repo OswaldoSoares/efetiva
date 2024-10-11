@@ -562,52 +562,52 @@ class DadosProfissionais:
         )
 
 
-class ColaboradorSalario:
+@dataclass
+class Salarios:
     """
-    Classe para gerenciar as informações salariais de um colaborador.
+    Classe que gerencia as informações salariais de um colaborador.
 
     Attributes:
-        salario (list): Lista de dicionários contendo informações salariais
-                        e de vale transporte do colaborador.
+        id_pessoal (int): ID do colaborador para buscar os registros
+                          salariais.
+        salarios (QuerySet): QuerySet com os dados salariais do colaborador.
+
+    Methods:
+        __post_init__(): Método executado após a inicialização da classe,
+                         que chama o método para buscar os dados salariais.
+        _get_salarios(id_pessoal: int) -> QuerySet: Busca o registro salarial
+                                                    do colaborador com base
+                                                    no ID fornecido.
     """
 
-    def __init__(self, id_pessoal):
+    id_pessoal: int
+    salarios: QuerySet = field(init=False)
+
+    def __post_init__(self):
         """
-        Inicializa a classe ColaboradorSalario.
+        Inicializa o campo 'salarios' após a criação da instância.
+        """
+        self.salarios = self._get_salarios(self.id_pessoal)
+
+    def _get_salarios(self, id_pessoal: int) -> QuerySet:
+        """
+        Obtém o registro salarial do colaborador.
 
         Args:
-            id_pessoal (int): O ID do colaborador para buscar informações
-                              salariais.
-        """
-        self.salario = self._get_salario(id_pessoal)
-
-    def _get_salario(self, id_pessoal):
-        """
-        Obtém o salário e valor do vale transporte do colaborador.
-
-        Args:
-            id_pessoal (int): O ID do colaborador para buscar informações
-                              salariais.
+            id_pessoal (int): O ID do colaborador para buscar o salário.
 
         Returns:
-            list: Lista de dicionários com informações sobre salário e vale
-                  transporte, onde cada dicionário contém:
-                  - "idsalario": ID do registro salarial.
-                  - "salario": Salário mensal do colaborador.
-                  - "transporte": Valor do vale transporte do colaborador.
+            QuerySet: Um QuerySet contendo o registro salarial do colaborador.
+                      Contém os seguintes atributos:
+                        - "idsalario": ID do registro salarial.
+                        - "salario": Salário mensal do colaborador.
+                        - "transporte": Valor do vale transporte do
+                                        colaborador.
         """
+        return Salario.objects.filter(idPessoal=id_pessoal).first()
 
-        valores = Salario.objects.filter(idPessoal=id_pessoal)
-        return [
-            {
-                "idsalario": item.idSalario,
-                "salario": item.Salario,
-                "transporte": item.ValeTransporte,
-            }
-            for item in valores
-        ]
-
-    def valor_salario_dia(self) -> Decimal:
+    @property
+    def salario_dia(self) -> Decimal:
         """
         Calcula o valor do salário diário do colaborador.
 
@@ -615,9 +615,10 @@ class ColaboradorSalario:
             Decimal: Valor do salário diário, arredondado para duas
                      casas decimais.
         """
-        return round(self.salario[0]["salario"] / 30, 2)
+        return round(self.salarios.Salario / 30, 2)
 
-    def valor_salario_hora(self) -> Decimal:
+    @property
+    def salario_hora(self) -> Decimal:
         """
         Calcula o valor do salário por hora do colaborador.
 
@@ -625,4 +626,4 @@ class ColaboradorSalario:
             Decimal: Valor do salário por hora, arredondado para duas
                      casas decimais.
         """
-        return round((self.salario[0]["salario"] / 30) / 9, 2)
+        return round((self.salarios.Salario / 30) / 9, 2)
