@@ -265,6 +265,75 @@ class Colaborador:
 
 
 @dataclass
+class Residencia:
+    """
+    Classe que representa a residência de um colaborador.
+
+    Attributes:
+        endereco (str): Endereço do colaborador.
+        bairro (str): Bairro do colaborador.
+        cep (str): CEP do colaborador.
+        cidade (str): Cidade do colaborador.
+        estado (str): Estado do colaborador.
+    """
+
+    endereco: str = field(default="")
+    bairro: str = field(default="")
+    cep: str = field(default="")
+    cidade: str = field(default="")
+    estado: str = field(default="")
+
+    @classmethod
+    def from_queryset(cls, queryset: QuerySet) -> "Residencia":
+        """
+        Cria uma instância de Residencia a partir de um QuerySet.
+
+        Args:
+            cls: A classe que está sendo chamada.
+            queryset (QuerySet): O QuerySet contendo os dados da residência.
+
+        Returns:
+            Residencia: Uma instância da classe Residencia preenchida com
+            os dados do QuerySet.
+        """
+        return cls(
+            endereco=queryset.Endereco,
+            bairro=queryset.Bairro,
+            cep=queryset.CEP,
+            cidade=queryset.Cidade,
+            estado=queryset.Estado,
+        )
+
+    @property
+    def endereco_completo(self) -> str:
+        """
+        Retorna o endereço completo do colaborador.
+
+        Returns:
+            str: O endereço completo, incluindo o bairro.
+        """
+        parts = [self.endereco, self.bairro]
+        return " - ".join([p for p in parts if p])
+
+    @property
+    def cidade_estado(self) -> str:
+        """
+        Retorna a cidade e estado do colaborador, incluindo o CEP.
+
+        Returns:
+            str: A cidade e estado do colaborador, incluindo o CEP se
+            disponível.
+        """
+        parts = [self.cidade, self.estado]
+        cidade_estado = " - ".join([p for p in parts if p])
+        if self.cep:
+            cidade_estado += (
+                f" - CEP: {self.cep}" if cidade_estado else f"CEP: {self.cep}"
+            )
+        return cidade_estado
+
+
+@dataclass
 class Documentos:
     """
     Classe para gerenciar os documentos de um colaborador.
