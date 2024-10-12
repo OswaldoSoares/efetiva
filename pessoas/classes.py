@@ -6,8 +6,10 @@ documentos, telefones, contas bancárias e dados salariais.
 import datetime
 from decimal import Decimal
 from dataclasses import dataclass, field
+from datetime import datetime
 from django.db.models import QuerySet
 from dateutil.relativedelta import relativedelta
+from typing import Optional
 from core.tools import nome_curto
 from .models import (
     Pessoal,
