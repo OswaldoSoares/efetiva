@@ -246,7 +246,7 @@ def itens_cobrado(minuta):
         if descricao in textos_dict:
             texto_info = textos_dict[descricao]
             if descricao == "AJUDANTE":
-                if minuta["recebe"]["t_exce"] > 0:
+                if minuta["horas_extras"] > timedelta(0):
                     descricao = "AJUDANTE HORA EXTRA"
                     texto_info = textos_dict[descricao]
                     valor_ajudantes = (
