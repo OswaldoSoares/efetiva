@@ -156,3 +156,18 @@ def formatar_numero_com_separadores(valor, digitos_decimais):
             return "0"
         else:
             return f"0,{''.join(['0' for _ in range(digitos_decimais)])}"
+
+
+def nome_curto(nome):
+    apelido = None
+    if nome:
+        apelido = nome.split()
+        if len(apelido) > 2:
+            if len(apelido[1]) > 2:
+                del apelido[2:]
+            else:
+                del apelido[3:]
+            apelido = " ".join(apelido)
+        else:
+            apelido = nome
+    return apelido
