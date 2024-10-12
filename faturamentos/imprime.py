@@ -614,12 +614,7 @@ def imprime_fatura_pdf(fatura):
                 pdf.drawRightString(cmp(198), cmp(linha), f"{custo:,.3f}%")
             pdf.setFillColor(HexColor("#000000"))
             linha -= 1
-            pdf.line(
-                cmp(12),
-                cmp(linha),
-                cmp(198),
-                cmp(linha),
-            )
+            pdf.line(cmp(12), cmp(linha), cmp(198), cmp(linha))
         else:
             notas_dados = (
                 MinutaNotas.objects.values(
