@@ -171,3 +171,18 @@ def nome_curto(nome):
         else:
             apelido = nome
     return apelido
+
+
+def nome_curto_underscore(nome):
+    apelido = None
+    if nome:
+        apelido = nome.split()
+        if len(apelido) > 2:
+            if len(apelido[1]) > 2:
+                del apelido[2:]
+            else:
+                del apelido[3:]
+            apelido = "_".join(apelido)
+        else:
+            apelido = "_".join(apelido)
+    return apelido
