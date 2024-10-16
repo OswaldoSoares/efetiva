@@ -25,7 +25,47 @@ from .models import (
 )
 
 
+@dataclass
 class Colaborador:
+    # pylint: disable=too-many-instance-attributes
+    id_pessoal: int
+    nome: str = field(init=False)
+    nome_curto: str = field(init=False)
+
+    residencia: object = field(init=False)
+    filiacao: object = field(init=False)
+    documentos: object = field(init=False)
+    telefones: object = field(init=False)
+    bancos: object = field(init=False)
+    dados_profissionais: object = field(init=False)
+    salarios: object = field(init=False)
+
+    def __post_init__(self):
+        colaborador_queryset = self._get_colaborador(self.id_pessoal)
+        if colaborador_queryset:
+            self._from_queryset(colaborador_queryset)
+            self.residencia = Residencia.from_queryset(colaborador_queryset)
+            self.filiacao = Filiacao.from_queryset(colaborador_queryset)
+            self.dados_profissionais = DadosProfissionais.from_queryset(
+                colaborador_queryset
+            )
+        else:
+            raise ValueError(
+                f"Colaborador com id {self.id_pessoal} não encontrado."
+            )
+
+        self.documentos = Documentos(self.id_pessoal)
+        self.telefones = Telefones(self.id_pessoal)
+        self.bancos = Bancos(self.id_pessoal)
+        self.salarios = Salarios(self.id_pessoal)
+
+    def _get_colaborador(self, id_pessoal: int) -> QuerySet:
+        return Pessoal.objects.filter(idPessoal=id_pessoal).first()
+
+    def _from_queryset(self, colaborador_queryset) -> None:
+        colaborador = colaborador_queryset
+        self.nome = colaborador.Nome
+        self.nome_curto = nome_curto(colaborador.Nome)
     # pylint: disable=too-many-instance-attributes
     """
     Classe que representa um colaborador e suas informações.
