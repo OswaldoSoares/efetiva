@@ -66,6 +66,9 @@ class Colaborador:
         colaborador = colaborador_queryset
         self.nome = colaborador.Nome
         self.nome_curto = nome_curto(colaborador.Nome)
+
+
+class ColaboradorAntigo:
     # pylint: disable=too-many-instance-attributes
     """
     Classe que representa um colaborador e suas informações.
