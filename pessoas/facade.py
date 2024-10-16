@@ -1640,7 +1640,7 @@ def html_card_contra_cheque_colaborador(request, contexto, data):
 
 
 def create_contexto_contra_cheque(idpessoal, idselecionado, descricao):
-    colaborador = Colaborador(idpessoal).__dict__
+    colaborador = classes.Colaborador(idpessoal).__dict__
     colaborador_futuro = get_colaborador(idpessoal)
     contas = get_contas_bancaria_colaborador(colaborador_futuro)
     if descricao == "FERIAS":
