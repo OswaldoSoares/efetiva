@@ -4,6 +4,7 @@ import os
 import ast
 from django.db import connection
 
+from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from django.db.models import (
     Sum,
@@ -138,7 +139,7 @@ def create_contexto_consulta_colaborador(id_pessoal):
     decimo_terceiro = decimo_terceiro.order_by("-Ano")
     verifica_parcelas_decimo_terceiro(colaborador_ant)
     parcelas_decimo_terceiro = get_parcelas_decimo_terceiro(colaborador_ant)
-    hoje = datetime.datetime.today().date()
+    hoje = datetime.today().date()
     return {
         "colaborador": colaborador,
         "vales": vales,
@@ -2240,7 +2241,7 @@ def get_decimo_terceiro_colaborador(colaborador):
 
 def verifica_decimo_terceiro(colaborador):
     decimo_terceiro = get_decimo_terceiro_colaborador(colaborador)
-    hoje = datetime.datetime.today()
+    hoje = datetime.today().date()
     ano_inicio = colaborador.DataAdmissao.year
     ano_final = hoje.year
     ano = ano_inicio
