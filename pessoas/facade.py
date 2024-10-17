@@ -129,10 +129,14 @@ def selecionar_categoria_html_data(request, contexto):
 
 
 def modal_colaborador(id_pessoal, request):
+    colaborador = classes.Colaborador(id_pessoal) if id_pessoal else False
     hoje = datetime.today().date()
     anos_18 = hoje - relativedelta(years=18)
-    contexto = {"hoje": hoje.strftime("%Y-%m-%d")}
-    contexto.update({"anos_18": anos_18.strftime("%Y-%m-%d")})
+    contexto = {
+        "colaborador": colaborador,
+        "hoje": hoje.strftime("%Y-%m-%d"),
+        "anos_18": anos_18.strftime("%Y-%m-%d"),
+    }
     contexto.update({"categorias": CATEGORIAS})
     contexto.update({"tipos_pgto": TIPOPGTO})
     modal_html = html_data.html_modal_colaborador(request, contexto)
