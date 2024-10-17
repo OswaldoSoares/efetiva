@@ -59,6 +59,24 @@ def consultar_colaborador(request):
     return data
 
 
+def handle_modal_colaborador(request, modal_func, update_func):
+    id_pessoal = request.POST.get("id_pessoal") or request.GET.get(
+        "id_pessoal"
+    )
+
+    if request.method == "GET":
+        return modal_func(id_pessoal, request)
+    if request.method == "POST":
+        contexto = update_func(request)
+        print(f"[INFO] : {contexto}")
+        contexto.update(
+            facade.create_contexto_colaboradores("MENSALISTA", True)
+        )
+        return facade.selecionar_categoria_html_data(request, contexto)
+
+    return JsonResponse({"error": "Método não permitido"}, status=405)
+
+
 def cria_pessoa(request):
     c_form = CadastraPessoal
     c_idobj = None
