@@ -4,20 +4,13 @@
         <label for="id_nome" class="form-label">NOME:</label>
         <input type="text" class="form-control" id="id_nome" name="nome"
                maxlength="50" required="" placeholder="Digite o Nome"
-               value="{% if form.Nome.value %}{{ form.Nome.value }}{% endif %}">
-        {% if form.Nome.errors %}
-            <ul class="errorlist">
-                {% for error in form.Nome.errors %}
-                <li><strong>{{ error|escape }}</strong></li>
-                {% endfor %}
-            </ul>
-        {% endif %}
+               value="{{ colaborador.nome }}">
     </div>
 
     <div class="col-md-6">
         <label for="id_endereco" class="form-label">ENDEREÇO:</label>
         <input type="text" class="form-control" name="endereco"
-         id="id_endereco" placeholder="Digite o Endereço"
+               id="id_endereco" placeholder="Digite o Endereço"
          value="{{ colaborador.residencia.endereco }}">
     </div>
 
@@ -63,8 +56,8 @@
 
     <div class="col-md-3">
         <label for="id_nascimento" class="form-label">DATA NASCIMENTO:</label>
-        <input type="date" class="form-control" name="nascimento"
-               id="id_nascimento" value="{% if colaborador %}{{ colaborador.filiacao.data_nascimento }}{% else %}{{ anos_18 }}{% endif %}">
+        <input type="date" class="form-control" name="nascimento" id="id_nascimento"
+               value="{% if colaborador %}{{ colaborador.filiacao.data_nascimento|date:"Y-m-d" }}{% else %}{{ anos_18 }}{% endif %}">
     </div>
 
     <div class="col-md-3">
@@ -72,7 +65,10 @@
         <select class="form-control" name="categoria" id="id_categoria">
             <option value="" disabled selected>Escolha uma Opção</option>
             {% for categoria in categorias %}
-            <option value="{{ categoria }}">{{ categoria }}</option>
+            <option value="{{ categoria }}"
+                    {% if categoria == colaborador.dados_profissionais.categoria %}
+                    selected
+                    {% endif %}>{{ categoria }}</option>
             {% endfor %}
         </select>
     </div>
@@ -80,19 +76,26 @@
     <div class="col-md-3">
         <label for="id_admissao" class="form-label">DATA ADMISSÃO:</label>
         <input type="date" class="form-control" name="admissao" id="id_admissao"
-               value="{% if colaborador %}{{ colaborador.dados_profissionais.data_admissao }}{% else %}{{ hoje }}{% endif %}">
+               value="{% if colaborador %}{{ colaborador.dados_profissionais.data_admissao|date:"Y-m-d" }}{% else %}{{ hoje }}{% endif %}">
     </div>
 
     <div class="col-md-3">
         <label for="id_tipo_pgto" class="form-label">TIPO DE PAGAMENTO:</label>
         <select class="form-control" name="tipo_pgto" id="id_tipo_pgto">
+            {% if colaborador.dados_profissionais.tipo_pgto == 'MENSALISTA' and colaborador.dados_profissionais.demissao is None %}
+            <option value="{{ colaborador.dados_profissionais.tipo_pgto }}" selected>
+            {{ colaborador.dados_profissionais.tipo_pgto }}
+            </option>
+            {% else %}
             <option value="" disabled selected>Escolha uma Opção</option>
             {% for tipo_pgto in tipos_pgto %}
-            <option value="{{ tipo_pgto }}">{{ tipo_pgto }}</option>
+            <option value="{{ tipo_pgto }}"
+                    {% if tipo_pgto == colaborador.dados_profissionais.tipo_pgto %}
+                    selected
+                    {% endif %}>{{ tipo_pgto }}</option>
             {% endfor %}
+            {% endif %}
         </select>
-        {{ form.TipoPgto }}
-        {{ form.TipoPgto.error }}
     </div>
     <input type="hidden" name="id_pessoal" value="{{ colaborador.id_pessoal }}">
 </form>
