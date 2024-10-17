@@ -135,7 +135,7 @@ def modal_colaborador(id_pessoal, request):
     contexto.update({"anos_18": anos_18.strftime("%Y-%m-%d")})
     contexto.update({"categorias": CATEGORIAS})
     contexto.update({"tipos_pgto": TIPOPGTO})
-    modal_html = html_data.modal_colaborador(request, contexto)
+    modal_html = html_data.html_modal_colaborador(request, contexto)
     return JsonResponse({"modal_html": modal_html})
 
 
