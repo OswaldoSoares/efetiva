@@ -1,7 +1,6 @@
 from django.urls import path
 from .views import (
     indexpessoal,
-    cria_pessoa,
     criadocpessoa,
     criafonepessoa,
     edita_pessoa,
@@ -89,7 +88,6 @@ urlpatterns = [
         name="adicionar_ou_atualizar_colaborador",
     ),
     # Antigos
-    path("criapessoa/", cria_pessoa, name="criapessoa"),
     path("editapessoa/<int:idpessoa>/", edita_pessoa, name="editapessoa"),
     path("excluipessoa/<int:idpessoa>/", excluipessoa, name="excluipessoa"),
     path(
