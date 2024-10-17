@@ -3,7 +3,6 @@ from .views import (
     indexpessoal,
     criadocpessoa,
     criafonepessoa,
-    excluipessoa,
     bloqueia_pessoa,
     excluidocpessoa,
     excluifonepessoa,
@@ -87,7 +86,6 @@ urlpatterns = [
         name="adicionar_ou_atualizar_colaborador",
     ),
     # Antigos
-    path("excluipessoa/<int:idpessoa>/", excluipessoa, name="excluipessoa"),
     path(
         "bloqueiapessoa/<int:idpessoa>/",
         bloqueia_pessoa,
