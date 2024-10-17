@@ -1,18 +1,18 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 
 {% block title %}
     Módulo Pessoas
-{% endblock %}
+{% endblock title %}
 
 {% block main %}
     <div class="conteudo-base">
         {% block mainpessoal %}
-        {% endblock %}
+        {% endblock mainpessoal %}
     </div>
-{% endblock %}
+{% endblock main %}
 
 {% block script %}
-    <script type="text/javascript" src="{% static 'website/js/pessoas.js' %}">
-    </script>
-{% endblock %}
+i   <script src="{% static 'website/js/ajax.js' %}"></script>
+    <script src="{% static 'website/js/pessoas.js' %}"></script>
+{% endblock script %}
