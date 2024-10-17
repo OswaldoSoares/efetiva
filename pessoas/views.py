@@ -77,10 +77,9 @@ def handle_modal_colaborador(request, modal_func, update_func):
     return JsonResponse({"error": "Método não permitido"}, status=405)
 
 
-def adicionar_colaborador(request):
+def adicionar_ou_atualizar_colaborador(request):
     return handle_modal_colaborador(
         request, facade.modal_colaborador, facade.save_colaborador
-    )
     )
 
 

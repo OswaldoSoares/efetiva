@@ -1,4 +1,4 @@
-<form class="row g-3" method="post" action="{% url 'adicionar_colaborador' %}">
+<form class="row g-3" method="post" action="{% url 'adicionar_ou_atualizar_colaborador' %}">
     {% csrf_token %}
     <div class="col-md-6">
         <label for="id_nome" class="form-label">NOME:</label>
@@ -20,6 +20,7 @@
          id="id_endereco" placeholder="Digite o Endereço"
          value="{{ colaborador.residencia.endereco }}">
     </div>
+
     <div class="col-md-4">
         <label for="id_bairro" class="form-label">BAIRRO:</label>
         <input type="text" class="form-control" name="bairro"

@@ -67,7 +67,7 @@ from .views import (
 from .views import (
     selecionar_categoria,
     consultar_colaborador,
-    adicionar_colaborador,
+    adicionar_ou_atualizar_colaborador,
 )
 
 
@@ -84,9 +84,9 @@ urlpatterns = [
         name="consultar_colaborador",
     ),
     path(
-        "adicionar_colaborador",
-        adicionar_colaborador,
-        name="adicionar_colaborador",
+        "adicionar_ou_atualizar_colaborador",
+        adicionar_ou_atualizar_colaborador,
+        name="adicionar_ou_atualizar_colaborador",
     ),
     # Antigos
     path("criapessoa/", cria_pessoa, name="criapessoa"),
