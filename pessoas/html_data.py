@@ -8,3 +8,12 @@ def html_card_lista_colaboradores(request, contexto, data):
         request=request,
     )
     return data
+
+
+def html_card_foto_colaborador(request, contexto, data):
+    data["html-card-foto-colaborador"] = render_to_string(
+        "pessoas/card_foto_colaborador.html", contexto, request=request
+    )
+    return data
+
+
