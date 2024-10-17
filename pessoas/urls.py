@@ -83,6 +83,12 @@ urlpatterns = [
         consultar_colaborador,
         name="consultar_colaborador",
     ),
+    path(
+        "adicionar_colaborador",
+        adicionar_colaborador,
+        name="adicionar_colaborador",
+    ),
+    # Antigos
     path("criapessoa/", cria_pessoa, name="criapessoa"),
     path("editapessoa/<int:idpessoa>/", edita_pessoa, name="editapessoa"),
     path("excluipessoa/<int:idpessoa>/", excluipessoa, name="excluipessoa"),
