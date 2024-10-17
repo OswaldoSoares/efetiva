@@ -113,19 +113,19 @@ def create_contexto_colaboradores(categoria, status_colaborador):
     return {"colaboradores": lista_colaboradores}
 
 
-def gerar_data_html(html_functions, data, contexto, request):
+def gerar_data_html(html_functions, request, contexto, data):
     for html_func in html_functions:
-        data = html_func(request, data, contexto)
+        data = html_func(request, contexto, data)
 
     return JsonResponse(data)
 
 
-def selecionar_categoria_html_data(contexto, request):
+def selecionar_categoria_html_data(request, contexto):
     data = {}
     html_functions = [
         html_data.html_card_lista_colaboradores,
     ]
-    return gerar_data_html(html_functions, data, contexto, request)
+    return gerar_data_html(html_functions, request, contexto, data)
 
 
 def create_contexto_consulta_colaborador(id_pessoal):
