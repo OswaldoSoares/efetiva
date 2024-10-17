@@ -128,6 +128,17 @@ def selecionar_categoria_html_data(request, contexto):
     return gerar_data_html(html_functions, request, contexto, data)
 
 
+def modal_colaborador(id_pessoal, request):
+    hoje = datetime.today().date()
+    anos_18 = hoje - relativedelta(years=18)
+    contexto = {"hoje": hoje.strftime("%Y-%m-%d")}
+    contexto.update({"anos_18": anos_18.strftime("%Y-%m-%d")})
+    contexto.update({"categorias": CATEGORIAS})
+    contexto.update({"tipos_pgto": TIPOPGTO})
+    modal_html = html_data.modal_colaborador(request, contexto)
+    return JsonResponse({"modal_html": modal_html})
+
+
 def create_contexto_consulta_colaborador(id_pessoal):
     colaborador = classes.Colaborador(id_pessoal)
     colaborador_ant = get_colaborador(id_pessoal)
