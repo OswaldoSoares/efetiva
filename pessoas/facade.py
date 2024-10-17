@@ -139,6 +139,29 @@ def modal_colaborador(id_pessoal, request):
     return JsonResponse({"modal_html": modal_html})
 
 
+def save_colaborador(request):
+    Pessoal.objects.create(
+        Nome=request.POST.get("nome").upper(),
+        Endereco=request.POST.get("endereco").upper(),
+        Bairro=request.POST.get("bairro").upper(),
+        CEP=request.POST.get("cep"),
+        Cidade=request.POST.get("cidade").upper(),
+        Estado=request.POST.get("estado").upper(),
+        DataNascimento=datetime.strptime(
+            request.POST.get("nascimento"), "%Y-%m-%d"
+        ),
+        Categoria=request.POST.get("categoria"),
+        TipoPgto=request.POST.get("tipo_pgto"),
+        Mae=request.POST.get("mae").upper(),
+        Pai=request.POST.get("pai").upper(),
+        StatusPessoal=1,
+        DataAdmissao=datetime.strptime(
+            request.POST.get("admissao"), "%Y-%m-%d"
+        ),
+    )
+    return {"mensagem": "Colaborador cadastrado com sucesso"}
+
+
 def create_contexto_consulta_colaborador(id_pessoal):
     colaborador = classes.Colaborador(id_pessoal)
     colaborador_ant = get_colaborador(id_pessoal)
