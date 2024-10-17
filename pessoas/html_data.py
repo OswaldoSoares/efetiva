@@ -17,3 +17,8 @@ def html_card_foto_colaborador(request, contexto, data):
     return data
 
 
+def modal_colaborador(request, contexto):
+    modal_html = render_to_string(
+        "pessoas/modal_colaborador.html", contexto, request=request
+    )
+    return modal_html
