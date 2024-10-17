@@ -78,11 +78,9 @@ def handle_modal_colaborador(request, modal_func, update_func):
 
 
 def adicionar_colaborador(request):
-    print(request.POST)
     return handle_modal_colaborador(
-        request,
-        facade.modal_colaborador,
-        facade.save_colaborador,
+        request, facade.modal_colaborador, facade.save_colaborador
+    )
     )
 
 
