@@ -1,0 +1,97 @@
+<form class="row g-3" method="post" action="{% url 'adicionar_colaborador' %}">
+    {% csrf_token %}
+    <div class="col-md-6">
+        <label for="id_nome" class="form-label">NOME:</label>
+        <input type="text" class="form-control" id="id_nome" name="nome"
+               maxlength="50" required="" placeholder="Digite o Nome"
+               value="{% if form.Nome.value %}{{ form.Nome.value }}{% endif %}">
+        {% if form.Nome.errors %}
+            <ul class="errorlist">
+                {% for error in form.Nome.errors %}
+                <li><strong>{{ error|escape }}</strong></li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+    <div class="col-md-6">
+        <label for="id_endereco" class="form-label">ENDEREÇO:</label>
+        <input type="text" class="form-control" name="endereco"
+         id="id_endereco" placeholder="Digite o Endereço"
+         value="{{ colaborador.residencia.endereco }}">
+    </div>
+    <div class="col-md-4">
+        <label for="id_bairro" class="form-label">BAIRRO:</label>
+        <input type="text" class="form-control" name="bairro"
+               id="id_bairro" placeholder="Digite o Bairro"
+               value="{{ colaborador.residencia.bairro }}">
+    </div>
+
+    <div class="col-md-2">
+        <label for="id_cep" class="form-label">CEP:</label>
+        <input type="text" class="form-control" name="cep"
+               pattern="\d{8}" maxlength="8" placeholder="Digite o CEP"
+               id="id_cep" value="{{ colaborador.residencia.cep }}">
+    </div>
+
+    <div class="col-md-4">
+        <label for="id_cidade" class="form-label">CIDADE:</label>
+        <input type="text" class="form-control" name="cidade" id="id_cidade"
+               value="{% if colaborador %}{{ colaborador.residencia.cidade }}{% else %}SÂO PAULO{% endif %}">
+    </div>
+
+    <div class="col-md-2">
+        <label for="id_estado" class="form-label">ESTADO:</label>
+        <input type="text" class="form-control" name="estado" id="id_estado"
+               value="{% if colaborador %}{{ colaborador.residencia.estado }}{% else %}SP{% endif %}">
+    </div>
+
+    <div class="col-md-6">
+        <label for="id_mae" class="form-label">NOME DA MÃE:</label>
+        <input type="text"class="form-control"name="mae"
+               id="id_mae" placeholder="Digite o Nome da Mãe"
+               value="{{ colaborador.filiacao.mae }}">
+    </div>
+
+    <div class="col-md-6">
+        <label for="id_pai" class="form-label">NOME DO PAI:</label>
+        <input type="text" class="form-control" name="pai"
+               id="id_pai" placeholder="Digite o Nome do Pai"
+               value="{{ colaborador.filiacao.pai }}">
+    </div>
+
+    <div class="col-md-3">
+        <label for="id_nascimento" class="form-label">DATA NASCIMENTO:</label>
+        <input type="date" class="form-control" name="nascimento"
+               id="id_nascimento" value="{% if colaborador %}{{ colaborador.filiacao.data_nascimento }}{% else %}{{ anos_18 }}{% endif %}">
+    </div>
+
+    <div class="col-md-3">
+        <label for="id_categoria" class="form-label">CATEGORIA:</label>
+        <select class="form-control" name="categoria" id="id_categoria">
+            <option value="" disabled selected>Escolha uma Opção</option>
+            {% for categoria in categorias %}
+            <option value="{{ categoria }}">{{ categoria }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <label for="id_admissao" class="form-label">DATA ADMISSÃO:</label>
+        <input type="date" class="form-control" name="admissao" id="id_admissao"
+               value="{% if colaborador %}{{ colaborador.dados_profissionais.data_admissao }}{% else %}{{ hoje }}{% endif %}">
+    </div>
+
+    <div class="col-md-3">
+        <label for="id_tipo_pgto" class="form-label">TIPO DE PAGAMENTO:</label>
+        <select class="form-control" name="tipo_pgto" id="id_tipo_pgto">
+            <option value="" disabled selected>Escolha uma Opção</option>
+            {% for tipo_pgto in tipos_pgto %}
+            <option value="{{ tipo_pgto }}">{{ tipo_pgto }}</option>
+            {% endfor %}
+        </select>
+        {{ form.TipoPgto }}
+        {{ form.TipoPgto.error }}
+    </div>
+    <input type="hidden" name="id_pessoal" value="{{ colaborador.id_pessoal }}">
+</form>
