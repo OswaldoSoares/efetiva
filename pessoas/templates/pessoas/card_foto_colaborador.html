@@ -60,7 +60,8 @@
             <div class="input-group-addon addon-my-color">
                 <i class="icofont-edit i-button" title="EDITAR COLABORADOR"
                    onclick="openMyModal(event); return false;"data-title="EDITA CADASTRO DE COLABORADOR"
-                   {% comment %} data-action="{% url 'editapessoa' colaborador.idpes %}" {% endcomment %}
+                   data-action="{% url 'adicionar_ou_atualizar_colaborador' %}"
+                   data-id_pessoal={{ colaborador.id_pessoal }}
                    data-button-save-label="ALTERAR"></i>
             </div>
         </div>
