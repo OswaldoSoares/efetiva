@@ -64,7 +64,11 @@ from .views import (
     exclui_arquivo_contra_cheque,
 )
 
-from .views import selecionar_categoria, consultar_colaborador
+from .views import (
+    selecionar_categoria,
+    consultar_colaborador,
+    adicionar_colaborador,
+)
 
 
 urlpatterns = [
