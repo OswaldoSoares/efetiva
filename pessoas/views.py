@@ -83,17 +83,6 @@ def adicionar_ou_atualizar_colaborador(request):
     )
 
 
-def excluipessoa(request, idpessoa):
-    c_idobj = idpessoa
-    c_url = "/pessoas/excluipessoa/{}/".format(c_idobj)
-    c_view = "exclui_pessoa"
-    idpessoal = idpessoa
-    data = facade.form_exclui_pessoal(
-        request, c_idobj, c_url, c_view, idpessoal
-    )
-    return data
-
-
 def criadocpessoa(request):
     if request.method == "POST":
         idpessoal = request.POST.get("idPessoal")
