@@ -86,18 +86,6 @@ def adicionar_colaborador(request):
     )
 
 
-def cria_pessoa(request):
-    c_form = CadastraPessoal
-    c_idobj = None
-    c_url = "/pessoas/criapessoa/"
-    c_view = "cria_pessoa"
-    idpessoal = None
-    data = facade.form_pessoa(
-        request, c_form, c_idobj, c_url, c_view, idpessoal
-    )
-    return data
-
-
 def edita_pessoa(request, idpessoa):
     c_form = CadastraPessoal
     c_idobj = idpessoa
