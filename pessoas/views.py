@@ -77,6 +77,15 @@ def handle_modal_colaborador(request, modal_func, update_func):
     return JsonResponse({"error": "Método não permitido"}, status=405)
 
 
+def adicionar_colaborador(request):
+    print(request.POST)
+    return handle_modal_colaborador(
+        request,
+        facade.modal_colaborador,
+        facade.save_colaborador,
+    )
+
+
 def cria_pessoa(request):
     c_form = CadastraPessoal
     c_idobj = None
