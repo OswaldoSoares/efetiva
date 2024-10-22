@@ -247,6 +247,14 @@ def create_contexto_doc_colaborador(request):
     }
 
 
+def documento_html_data(request, contexto):
+    data = {}
+    html_functions = [
+        html_data.html_card_docs_colaborador,
+    ]
+    return gerar_data_html(html_functions, request, contexto, data)
+
+
 def create_contexto_consulta_colaborador(id_pessoal):
     colaborador = classes.Colaborador(id_pessoal)
     colaborador_ant = get_colaborador(id_pessoal)
