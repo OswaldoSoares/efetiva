@@ -33,7 +33,13 @@ from pessoas.forms import (
     FormVale,
     FormContaPessoal,
 )
-from core.constants import CATEGORIAS, TIPOPGTO
+from core.constants import (
+    CATEGORIAS,
+    TIPOPGTO,
+    TIPOS_DOCS,
+    TIPOS_FONES,
+    TIPOS_CONTAS,
+)
 from pessoas.models import (
     Aquisitivo,
     DecimoTerceiro,
