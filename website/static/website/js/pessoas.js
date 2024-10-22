@@ -3,68 +3,7 @@ $(document).ready(function() {
 });
 
 
-$(document).on('click', ".js-seleciona-colaborador", function() {
-    var id_pessoal = $(this).data("idpessoal");
-    $.ajax({
-        type: "GET",
-        url: "/pessoas/consulta_pessoa",
-        data: {
-            id_pessoal: id_pessoal,
-        },
-        beforeSend: function() {
-            $(".card-foto-colaborador").hide()
-            $(".card-info-colaborador").hide()
-            $(".card-dados-colaborador").hide()
-            $(".card-contra-cheque-colaborador").hide()
-            $(".card-ferias-colaborador").hide()
-            $(".card-vales-colaborador").hide()
-            $(".card-multas-colaborador").hide()
-            $(".card-decimo-terceiro").hide()
-            $(".card-form-colaborador").hide()
-            $(".card-recibos-colaborador").hide()
-            $(".card-verbas-rescisoria").hide()
-            localStorage.setItem("idcontracheque", "")
-            $(".box-loader").show()
-        },
-        success: function(data) {
-            $(".card-foto-colaborador").html(data.html_card_foto_colaborador)
-            $(".card-info-colaborador").html(data.html_card_info_colaborador)
-            $(".card-dados-colaborador").html(data.html_dados_colaborador)
-            $(".card-foto-colaborador").show()
-            $(".card-info-colaborador").show()
-            $(".card-dados-colaborador").show()
-            var url = $(".foto").attr("src");
-            // Força o recarregamento da foto sem utilizar o cache
-            $(".foto").attr("src", url + `?v=${new Date().getTime()}`);
-            $(".card-ferias-colaborador").html(data.html_ferias_colaborador)
-            $(".card-decimo-terceiro").html(data.html_decimo_terceiro)
-            $(".card-recibos-colaborador").html(data.html_recibos_colaborador)
-            if (data.tipo_pgto == "MENSALISTA") {
-                $(".button-demissao").show()
-                $(".card-decimo-terceiro").show()
-                $(".card-ferias-colaborador").show()
-            } else {
-                $(".card-recibos-colaborador").show()
-                $(".button-demissao").hide()
-            }
-            $(".card-vales-colaborador").html(data.html_vales_colaborador)
-            if (data.categoria == "MOTORISTA") {
-                $(".card-multas-colaborador").html(data.html_multas_colaborador)
-                $(".card-multas-colaborador").show()
-                $(".js-mostra-dados-multa").hide()
-            }
-            $(".js-mostra-vales").show()
-            $(".js-mostra-ferias").hide()
-            $(".js-mostra-decimo-terceiro").hide()
-            $(".card-vales-colaborador").show()
-            valesSelecionaveis()
-            $(window).scrollTop(0)
-            localStorage.setItem("idpessoal", data.colaborador)
-            console.log(data.categoria)
             $(".box-loader").hide()
-        },
-        error: function(errorThrown) {
-            console.log("error: " + errorThrown)
         }
     });
 });
