@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect, get_object_or_404
 from django.http import JsonResponse
 from django.template.loader import render_to_string
+from functools import partial
 from rolepermissions.decorators import has_permission_decorator
 from pessoas import facade
 from pessoas.print import (
