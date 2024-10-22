@@ -6800,3 +6800,8 @@ label {
   margin: 0;
   padding: 0;
 }
+
+.blocked-option {
+    pointer-events: none; /* Bloqueia a interação */
+    background-color: #e9ecef; /* Aplica um estilo visual de "desabilitado" */
+}
