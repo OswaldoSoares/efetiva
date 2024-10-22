@@ -60,7 +60,9 @@ def consultar_colaborador(request):
     return data
 
 
-def handle_modal_colaborador(request, modal_func, update_func):
+def handle_modal_colaborador(
+    request, modal_func, update_func, context_func, data_func
+):
     id_pessoal = request.POST.get("id_pessoal") or request.GET.get(
         "id_pessoal"
     )
