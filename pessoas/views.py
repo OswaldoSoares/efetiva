@@ -97,16 +97,6 @@ def adicionar_ou_atualizar_doc_colaborador(request):
     )
 
 
-def criadocpessoa(request):
-    if request.method == "POST":
-        idpessoal = request.POST.get("idPessoal")
-        form = CadastraDocPessoal(request.POST or None)
-    else:
-        idpessoal = request.GET.get("idpessoal")
-        form = CadastraDocPessoal(initial={"idPessoal": idpessoal})
-    return salva_form(request, form, "pessoas/criadocpessoa.html", idpessoal)
-
-
 def excluidocpessoa(request, idpesdoc):
     docpessoa = get_object_or_404(DocPessoal, idDocPessoal=idpesdoc)
     data = dict()
