@@ -3,7 +3,6 @@ from .views import (
     indexpessoal,
     criafonepessoa,
     bloqueia_pessoa,
-    excluidocpessoa,
     excluifonepessoa,
     criacontapessoa,
     excluicontapessoa,
@@ -95,11 +94,6 @@ urlpatterns = [
         "bloqueiapessoa/<int:idpessoa>/",
         bloqueia_pessoa,
         name="bloqueiapessoa",
-    ),
-    path(
-        "excluidocpessoa/<int:idpesdoc>/",
-        excluidocpessoa,
-        name="excluidocpessoa",
     ),
     path("criafonepessoa/", criafonepessoa, name="criafonepessoa"),
     path(
