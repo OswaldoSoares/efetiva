@@ -71,11 +71,8 @@ def handle_modal_colaborador(
         return modal_func(id_pessoal, request)
     if request.method == "POST":
         contexto = update_func(request)
-        print(f"[INFO] : {contexto}")
-        contexto.update(
-            facade.create_contexto_colaboradores("MENSALISTA", True)
-        )
-        return facade.selecionar_categoria_html_data(request, contexto)
+        contexto.update(context_func())
+        return data_func(request, contexto)
 
     return JsonResponse({"error": "Método não permitido"}, status=405)
 
