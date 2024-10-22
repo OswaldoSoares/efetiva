@@ -180,6 +180,30 @@ def save_colaborador(request):
     return {"mensagem": "Colaborador cadastrado com sucesso"}
 
 
+def modal_doc_colaborador(id_doc_pessoal, request):
+    id_pessoal = (
+        request.POST.get("id_pessoal")
+        if request.method == "POST"
+        else request.GET.get("id_pessoal")
+    )
+    id_documento = (
+        request.POST.get("id_documento")
+        if request.method == "POST"
+        else request.GET.get("id_documento")
+    )
+    colaborador = classes.Colaborador(id_pessoal) if id_pessoal else False
+    documento = DocPessoal.objects.filter(idDocPessoal=id_documento).first()
+    hoje = datetime.today().date()
+    contexto = {
+        "colaborador": colaborador,
+        "documento": documento,
+        "hoje": hoje.strftime("%Y-%m-%d"),
+    }
+    contexto.update({"tipos_docs": TIPOS_DOCS})
+    modal_html = html_data.html_modal_doc_colaborador(request, contexto)
+    return JsonResponse({"modal_html": modal_html})
+
+
 def create_contexto_consulta_colaborador(id_pessoal):
     colaborador = classes.Colaborador(id_pessoal)
     colaborador_ant = get_colaborador(id_pessoal)
