@@ -37,3 +37,12 @@ function enviarRequisicaoAjax(url, form, sucessoCallback) {
         },
     });
 }
+function exibirMensagem(mensagem) {
+    console.log(mensagem)
+    $('.mensagem p').text(mensagem);
+    $('.mensagem p').animate({bottom: '0'}, 1000);
+    setTimeout(function() {
+        $('.mensagem p').animate({bottom: '60px'}, 1000); 
+        $('.mensagem p').animate({bottom: '-30px'}, 0);
+    }, 5000);
+}

@@ -510,29 +510,6 @@ function mostraChecklist() {
     });
 }
 
-function exibirMensagem(mensagem) {
-    $('.mensagem p').text(mensagem);
-    $('.mensagem p').animate({bottom: '0'}, 1000);
-    setTimeout(function() {
-        $('.mensagem p').animate({bottom: '60px'}, 1000); 
-        $('.mensagem p').animate({bottom: '-30px'}, 0);
-    }, 5000);
-}
-
-function mostraMensagemErro() {
-    $('.mensagem p').animate({bottom: '0'}, 500); /* duração da animação */
-    setTimeout(function() {
-        $('.mensagem p').animate({bottom: '60px'}, 500); /* duração da animação */
-        $('.mensagem p').animate({bottom: '-30px'}, 0); /* duração da animação */
-    }, 5000); /* tempo em que a mensagem fica na tela */
-}
-
-function mostraMensagemSucesso() {
-    $(".div-sucesso").slideDown(500)
-    $(".div-sucesso").delay(5000).slideUp(500)
-}
-
-
 function somaMotorista() {
     var valor_paga = 0.00;
     $(".total-paga").each(function() {

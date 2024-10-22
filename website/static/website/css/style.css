@@ -6660,6 +6660,7 @@ label {
 
 .mensagem p {
   position: absolute;
+  color: var(--color3);
   bottom: -30px;
   left: 0;
   margin: 0;
@@ -6667,18 +6668,6 @@ label {
   width: 100%;
   font-size: 1.2rem;
   text-align: center;
-}
-
-.mensagem-color {
-  color: var(--color4);
-}
-
-.mensagem-error-color {
-  color: var(--color11);
-}
-
-.mensagem-success-color {
-  color: var(--color12);
 }
 
 .card-login {
