@@ -6412,6 +6412,10 @@ label {
   .grid-minuta {
     grid-template-columns: 0.9fr 1.3fr 0.9fr 0.9fr;
   }
+  .grid-minuta {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+
 }
 
 .input-fake {
