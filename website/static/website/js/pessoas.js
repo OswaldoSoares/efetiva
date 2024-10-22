@@ -2,8 +2,28 @@ $(document).ready(function() {
     $(".button-demissao").hide();
 });
 
+$(document).on("click", ".js-alterar-categoria", function() {
+    const selecionado = $(this)
+    const tipo = $(this).data("tipo")
 
+    $(".js-alterar-categoria").each(function() {
+        $(this).removeClass("icofont-checked");
+        $(this).removeClass("disabled");
+        $(this).addClass("icofont-square");
+    });
+
+    executarAjax("/pessoas/selecionar_categoria", "GET", {
+        tipo: tipo,
+    }, function(data) {
+            $(".card-colaboradores").html(data["html-card-colaboradores"])
             $(".box-loader").hide()
+    });
+
+    $(selecionado).removeClass("icofont-square")
+    $(selecionado).addClass("icofont-checked")
+    $(selecionado).addClass("disabled")
+});
+
         }
     });
 });
