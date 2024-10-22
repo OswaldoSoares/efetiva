@@ -65,6 +65,7 @@ from .views import (
     selecionar_categoria,
     consultar_colaborador,
     adicionar_ou_atualizar_colaborador,
+    adicionar_ou_atualizar_doc_colaborador,
 )
 
 
