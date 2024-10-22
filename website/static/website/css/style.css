@@ -6795,3 +6795,8 @@ label {
     pointer-events: none;  /* Impede a interação com o elemento */
     opacity: 0.2;          /* Visualmente desabilitado */
 }
+
+.reset-padding {
+  margin: 0;
+  padding: 0;
+}
