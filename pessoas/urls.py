@@ -15,7 +15,6 @@ from .views import (
     salva_foto,
     atualiza_decimo_terceiro,
     print_decimo_terceiro,
-    adiciona_documento_colaborador,
     altera_documento_colaborador,
     exclui_documento_colaborador,
     salva_documento_colaborador,
@@ -135,11 +134,6 @@ urlpatterns = [
         "print_decimo_terceiro",
         print_decimo_terceiro,
         name="print_decimo_terceiro",
-    ),
-    path(
-        "adiciona_documento_colaborador",
-        adiciona_documento_colaborador,
-        name="adiciona_documento_colaborador",
     ),
     path(
         "altera_documento_colaborador",
