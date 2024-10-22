@@ -48,7 +48,7 @@ def indexpessoal(request):
 
 def selecionar_categoria(request):
     tipo = request.GET.get("tipo")
-    status = True if tipo else False
+    status = bool(tipo)
     contexto = facade.create_contexto_colaboradores(tipo, status)
     return facade.selecionar_categoria_html_data(request, contexto)
 
