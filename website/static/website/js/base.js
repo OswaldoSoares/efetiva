@@ -3,35 +3,30 @@ $(".div-erro").hide()
 $(".box-loader").hide()
 
 function openMyModal(event) {
-    var modal = initModalDialog(event, '#MyModal');
-    var url = $(event.target).data('action');
-    var idpessoal = localStorage.getItem("idpessoal");
-    var title = $(event.target).data("title")
-    // if (title == "EDITA CONTA BANCARIA") {
-    var idcontapessoal = $(event.target).data("idcontapessoal")
-    // }
-    var mes_ano = localStorage.getItem("mes_ano");
-    var confirma = $(event.target).data("confirma")
-    var idconfirma = $(event.target).data("idconfirma")
-    var idcartaoponto = $(event.target).data("idcartaoponto")
-    $.ajax({
-        type: "GET",
-        url: url,
-        data : {
-            idpessoal: idpessoal,
-            idcontapessoal: idcontapessoal,
-            mes_ano: mes_ano,
-            confirma: confirma,
-            idconfirma: idconfirma,
-            idcartaoponto: idcartaoponto,
-        }
-    }).done(function(data, textStatus, jqXHR) {
-        $('.box-loader').hide()
-        modal.find('.modal-body').html(data.html_modal);
-        modal.modal('show');
-        formAjaxSubmit(modal, url, null, null);
-    }).fail(function(jqXHR, textStatus, errorThrown) {
+    const modal = initModalDialog(event, '#MyModal');
+    const url = $(event.target).data('action');
+    let requestData = {
+        title: $(event.target).data("title"),
+        id_pessoal: $(event.target).data("id_pessoal"),
 
+        // idcontapessoal: $(event.target).data("idcontapessoal"),
+        // mes_ano: localStorage.getItem("mes_ano"),
+        // confirma: $(event.target).data("confirma"),
+        // idconfirma: $(event.target).data("idconfirma"),
+        // idcartaoponto: $(event.target).data("idcartaoponto"),
+    }
+    // Verifica se o id_documento está presente
+    const idDocumento = $(event.target).data("id_documento");
+    if (typeof idDocumento !== "undefined") {
+        requestData.id_documento = idDocumento;
+    }
+    executarAjax(url, "GET", requestData, function(data) {
+        modal.find(".modal-body").html(data.modal_html);
+        modal.modal("show");
+
+        formAjaxSubmit(modal, url);
+    }, function(errorThrown) {
+        console.log(errorThrown)
     });
 }
 
