@@ -17,7 +17,24 @@ Exemplo de uso:
     from .constants import TIPOS_FORMAS_CALCULO
 """
 
+# Constants Módulo Pessoal
+CATEGORIAS = [
+    "AGREGADO",
+    "AJUDANTE",
+    "FUNCIONÁRIO",
+    "MOTORISTA",
+    "PROPRIETÁRIO",
+]
 
+TIPOPGTO = ["MENSALISTA", "MINUTA", "NENHUM", "SAIDA"]
+
+TIPOS_DOCS = ["RG", "CPF", "HABILITAÇÃO", "RESERVISTA", "PASSAPORTE"]
+
+TIPOS_FONES = ["WHATSAPP", "VIVO", "TIM", "OI", "CLARO", "FIXO", "RECADO"]
+
+TIPOS_CONTAS = ["CORRENTE", "POUPANÇA"]
+
+# Constants Módulo Minutas
 SETUP_CALCULO_MINUTA = {
     "taxa_expedicao": {
         "descricao": "TAXA DE EXPEDIÇÃO",
