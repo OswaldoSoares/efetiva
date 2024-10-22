@@ -85,6 +85,15 @@ def adicionar_ou_atualizar_colaborador(request):
         partial(facade.create_contexto_colaboradores, "MENSALISTA", True),
         facade.selecionar_categoria_html_data,
     )
+
+
+def adicionar_ou_atualizar_doc_colaborador(request):
+    return handle_modal_colaborador(
+        request,
+        facade.modal_doc_colaborador,
+        facade.save_doc_colaborador,
+        partial(facade.create_contexto_doc_colaborador, request),
+        facade.documento_html_data,
     )
 
 
