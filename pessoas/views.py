@@ -97,20 +97,6 @@ def adicionar_ou_atualizar_doc_colaborador(request):
     )
 
 
-def excluidocpessoa(request, idpesdoc):
-    docpessoa = get_object_or_404(DocPessoal, idDocPessoal=idpesdoc)
-    data = dict()
-    if request.method == "POST":
-        docpessoa.delete()
-        return redirect("consultapessoa", docpessoa.idPessoal_id)
-    else:
-        context = {"docpessoa": docpessoa}
-        data["html_form"] = render_to_string(
-            "pessoas/excluidocpessoa.html", context, request=request
-        )
-    return JsonResponse(data)
-
-
 def criafonepessoa(request):
     if request.method == "POST":
         idpessoal = request.POST.get("idPessoal")
