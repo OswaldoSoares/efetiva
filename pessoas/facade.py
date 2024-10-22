@@ -234,6 +234,19 @@ def save_doc_colaborador(request):
     return {"mensagem": "Documento cadastrado com sucesso"}
 
 
+def create_contexto_doc_colaborador(request):
+    id_pessoal = (
+        request.POST.get("id_pessoal")
+        if request.method == "POST"
+        else request.GET.get("id_pessoal")
+    )
+    colaborador = classes.Colaborador(id_pessoal)
+    return {
+        "colaborador": colaborador,
+        #  "documentos": colaborador.documentos.docs
+    }
+
+
 def create_contexto_consulta_colaborador(id_pessoal):
     colaborador = classes.Colaborador(id_pessoal)
     colaborador_ant = get_colaborador(id_pessoal)
