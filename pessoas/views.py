@@ -255,22 +255,6 @@ def print_decimo_terceiro(request):
     return response
 
 
-def altera_documento_colaborador(request):
-    iddocpessoal = request.GET.get("iddocpessoal")
-    idpessoal = request.GET.get("idpessoal")
-    documento_form = facade.read_documento_database(iddocpessoal)
-    tipo_doc = dict_tipo_doc()
-    contexto = {
-        "documento_form": documento_form,
-        "idpessoal": idpessoal,
-        "tipo_doc": tipo_doc,
-    }
-    data = facade.create_data_form_adiciona_documento_colaborador(
-        request, contexto
-    )
-    return data
-
-
 def salva_documento_colaborador(request):
     error, msg = facade.valida_documento_colaborador(request)
     documento_form = facade.read_documento_post(request)
