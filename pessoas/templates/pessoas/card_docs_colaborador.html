@@ -1,0 +1,82 @@
+<!-- Card Header -->
+<div class="card-header">
+    <div class="input-group">
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-up"></i>
+        </div>
+        <div class="div-form-control">
+            <span>DOCUMENTOS</span>
+        </div>
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-up"></i>
+        </div>
+    </div>
+</div>
+<!-- Card Body -->
+<div class="card-body">
+    {% for doc  in colaborador.documentos.docs %}
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-check i-button-null"></i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-100 text-center font-menor">
+                    <span>
+                        {{ doc.TipoDocumento }}: {{ doc.Documento }} - {{ doc.Data }}
+                    </span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-edit i-button" title="EDITAR DOCUMENTO"
+                   onclick="openMyModal(event); return false;"data-title="EDITA CADASTRO DE DOCUMENTO DO COLABORADOR"
+                   data-action="{% url 'adicionar_ou_atualizar_doc_colaborador' %}"
+                   data-id_documento="{{ doc.idDocPessoal }}"
+                   data-id_pessoal={{ colaborador.id_pessoal }}
+                   data-button-save-label="ALTERAR"></i>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% if colaborador.documentos.docs %}
+        <div class="linha-divisoria-nova"></div>
+    {% endif %}
+    {% if colaborador %}
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-wallet i-button-null"></i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-100 text-center font-menor">
+                    <span>ADICIONAR NOVO DOCUMENTO</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-plus-circle i-button"
+                   onclick="openMyModal(event); return false;"
+                   data-title="DOCUMENTO COLABORADOR"
+                   data-action="{% url 'adicionar_ou_atualizar_doc_colaborador' %}"
+                   data-id_pessoal="{{ colaborador.id_pessoal }}"
+                   data-button-save-label="ADICIONAR"
+                   title="ADICIONAR DOCUMENTO COLABORADOR"></i>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+<!-- Card Footer -->
+<div class="card-footer">
+    <div class="input-group">
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-down"></i>
+        </div>
+        <div class="div-flex div-form-control">
+            <div class="tamanho-100 text-center">
+            </div>
+        </div>
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-down"></i>
+        </div>
+    </div>
+</div>
