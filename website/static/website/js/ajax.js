@@ -64,6 +64,23 @@ function formAjaxSubmit(modal, action) {
     });
 }
 
+function processarRespostaAjax(xhr, modal, url) {
+    modalBody = modal.find(".modal-body");
+    modalBody.html(xhr["html_form"]);
+
+    if (modalBody.find(".errorlist").length > 0) {
+        formAjaxSubmit(modal, url);
+    } else {
+        $(modal).modal("hide");
+        atualizarInterfaceComDados(xhr);
+        exibirMensagem(xhr["mensagem"]);
+
+        if (xhr["link"]) {
+            window.location.href = xhr["link"];
+        }
+    }
+}
+
 function exibirMensagem(mensagem) {
     console.log(mensagem)
     $('.mensagem p').text(mensagem);
