@@ -79,7 +79,12 @@ def handle_modal_colaborador(
 
 def adicionar_ou_atualizar_colaborador(request):
     return handle_modal_colaborador(
-        request, facade.modal_colaborador, facade.save_colaborador
+        request,
+        facade.modal_colaborador,
+        facade.save_colaborador,
+        partial(facade.create_contexto_colaboradores, "MENSALISTA", True),
+        facade.selecionar_categoria_html_data,
+    )
     )
 
 
