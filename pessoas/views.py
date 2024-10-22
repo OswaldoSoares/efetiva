@@ -255,17 +255,6 @@ def print_decimo_terceiro(request):
     return response
 
 
-def exclui_documento_colaborador(request):
-    iddocpessoal = request.GET.get("iddocpessoal")
-    contexto = facade.create_contexto_exclui_documento_colaborador(
-        iddocpessoal
-    )
-    data = facade.create_data_form_exclui_documento_colaborador(
-        request, contexto
-    )
-    return data
-
-
 def apaga_documento_colaborador(request):
     iddocpessoal = request.POST.get("idobj")
     idpessoal = request.POST.get("idpessoal")
