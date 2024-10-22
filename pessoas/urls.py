@@ -86,6 +86,11 @@ urlpatterns = [
         adicionar_ou_atualizar_colaborador,
         name="adicionar_ou_atualizar_colaborador",
     ),
+    path(
+        "adicionar_ou_atualizar_doc_colaborador",
+        adicionar_ou_atualizar_doc_colaborador,
+        name="adicionar_ou_atualizar_doc_colaborador",
+    ),
     # Antigos
     path(
         "bloqueiapessoa/<int:idpessoa>/",
