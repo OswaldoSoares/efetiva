@@ -48,6 +48,11 @@ function initModalDialog(event, modal_element) {
     return modal;
 }
 
+function atualizarInterfaceComDados(xhr) {
+    $(".card-colaboradores").html(xhr["html-card-colaboradores"]);
+    $(".card-docs-colaborador").html(xhr["html-card-docs-colaborador"]);
+}
+
 function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
     var form = modal.find('.modal-body form');
     var header = $(modal).find('.modal-header');
