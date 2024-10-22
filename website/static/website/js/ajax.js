@@ -37,6 +37,33 @@ function enviarRequisicaoAjax(url, form, sucessoCallback) {
         },
     });
 }
+
+function formAjaxSubmit(modal, action) {
+    var form = modal.find(".modal-body form");
+    var header = $(modal).find(".modal-header");
+    var btn_save = modal.find(".modal-footer .btn-save");
+
+    if (btn_save) {
+        modal.find(".modal-body form .form-submit-row").hide();
+        btn_save.off().on("click", function() {
+            modal.find(".modal-body form").submit();
+        });
+    }
+
+    form.find("input:visible").first().focus();
+    title = modal.find(".modal-title").text();
+
+    $(form).on("submit", function(event) {
+        event.preventDefault();
+        header.addClass("loading");
+        var url = $(this).attr("action") || action;
+
+        enviarRequisicaoAjax(url, form, function(xhr) {
+            processarRespostaAjax(xhr, modal, url)
+        });
+    });
+}
+
 function exibirMensagem(mensagem) {
     console.log(mensagem)
     $('.mensagem p').text(mensagem);
