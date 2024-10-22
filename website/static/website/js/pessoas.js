@@ -26,8 +26,59 @@ $(document).on("click", ".js-alterar-categoria", function() {
     $(selecionado).addClass("disabled")
 });
 
-        }
+$(document).on('click', ".js-selecionar-colaborador", function() {
+    const selecionado = $(this)
+    const id_pessoal = $(this).data("id_pessoal");
+
+    $(".js-selecionar-colaborador").each(function() {
+        $(this).removeClass("icofont-checked");
+        $(this).removeClass("disabled");
+        $(this).addClass("icofont-square");
     });
+
+    executarAjax("/pessoas/consultar_colaborador", "GET", {
+        id_pessoal: id_pessoal,
+    }, function(data) {
+        localStorage.setItem("id_pessoal", id_pessoal);
+        $(".card-foto-colaborador").html(data["html-card-foto-colaborador"]);
+        $(".card-foto-colaborador").show();
+        $(".card-docs-colaborador").html(data["html-card-docs-colaborador"]);
+        $(".card-docs-colaborador").show();
+        var url = $(".foto").attr("src");
+        // Força o recarregamento da foto sem utilizar o cache
+        $(".foto").attr("src", url + `?v=${new Date().getTime()}`);
+
+        $(".card-info-colaborador").html(data.html_card_info_colaborador)
+        $(".card-dados-colaborador").html(data.html_dados_colaborador)
+        $(".card-ferias-colaborador").html(data.html_ferias_colaborador)
+        $(".card-decimo-terceiro").html(data.html_decimo_terceiro)
+        $(".card-recibos-colaborador").html(data.html_recibos_colaborador)
+        if (data.tipo_pgto == "MENSALISTA") {
+            $(".button-demissao").show()
+            $(".card-decimo-terceiro").show()
+            $(".card-ferias-colaborador").show()
+        } else {
+            $(".card-recibos-colaborador").show()
+            $(".button-demissao").hide()
+        }
+        $(".card-vales-colaborador").html(data.html_vales_colaborador)
+        if (data.categoria == "MOTORISTA") {
+            $(".card-multas-colaborador").html(data.html_multas_colaborador)
+            $(".card-multas-colaborador").show()
+            $(".js-mostra-dados-multa").hide()
+        }
+        $(".js-mostra-vales").show()
+        $(".js-mostra-ferias").hide()
+        $(".js-mostra-decimo-terceiro").hide()
+        $(".card-vales-colaborador").show()
+        valesSelecionaveis()
+        $(window).scrollTop(0)
+        $(".box-loader").hide()
+    });
+
+    $(selecionado).removeClass("icofont-square")
+    $(selecionado).addClass("icofont-checked")
+    $(selecionado).addClass("disabled")
 });
 
 $(document).on('submit', ".js-salva-foto", function(event) {
