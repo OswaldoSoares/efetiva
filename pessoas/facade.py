@@ -204,6 +204,36 @@ def modal_doc_colaborador(id_doc_pessoal, request):
     return JsonResponse({"modal_html": modal_html})
 
 
+def save_doc_colaborador(request):
+    id_documento = request.POST.get("id_documento")
+    tipo_documento = request.POST.get("categoria")
+    documento = request.POST.get("documento").upper()
+    data = (request.POST.get("data"),)
+    id_pessoal = request.POST.get("id_pessoal")
+
+    documento = DocPessoal.objects.filter(
+        idPessoal_id=id_pessoal, TipoDocumento=tipo_documento
+    )
+    if documento:
+        return {
+            "mensagem": f"Colaborador já possui {tipo_documento} cadastrado"
+        }
+
+    registro = {
+        "TipoDocumento": tipo_documento,
+        "Documento": documento,
+        "Data": data,
+        "idPessoal_id": id_pessoal,
+    }
+
+    if id_documento:
+        DocPessoal.objects.filter(idDocPessoal=id_documento).update(**registro)
+        return {"mensagem": "Documento atualizado com sucesso"}
+
+    DocPessoal.objects.create(**registro)
+    return {"mensagem": "Documento cadastrado com sucesso"}
+
+
 def create_contexto_consulta_colaborador(id_pessoal):
     colaborador = classes.Colaborador(id_pessoal)
     colaborador_ant = get_colaborador(id_pessoal)
