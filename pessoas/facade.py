@@ -279,6 +279,30 @@ def modal_fone_colaborador(id_doc_pessoal, request):
     return JsonResponse({"modal_html": modal_html})
 
 
+def save_fone_colaborador(request):
+    id_telefone = request.POST.get("id_telefone")
+    tipo_telefone = request.POST.get("categoria")
+    telefone = request.POST.get("telefone")
+    contato = request.POST.get("contato").upper()
+    id_pessoal = request.POST.get("id_pessoal")
+
+    registro = {
+        "TipoFone": tipo_telefone,
+        "Fone": telefone,
+        "Contato": contato,
+        "idPessoal_id": id_pessoal,
+    }
+
+    if id_telefone:
+        FonePessoal.objects.filter(idFonePessoal=id_telefone).update(
+            **registro
+        )
+        return {"mensagem": "Telefone atualizado com sucesso"}
+
+    FonePessoal.objects.create(**registro)
+    return {"mensagem": "Telefone cadastrado com sucesso"}
+
+
 def create_contexto_consulta_colaborador(id_pessoal):
     colaborador = classes.Colaborador(id_pessoal)
     colaborador_ant = get_colaborador(id_pessoal)
