@@ -41,3 +41,10 @@ def html_modal_doc_colaborador(request, contexto):
         "pessoas/modal_doc_colaborador.html", contexto, request=request
     )
     return modal_html
+
+
+def html_modal_fone_colaborador(request, contexto):
+    modal_html = render_to_string(
+        "pessoas/modal_fone_colaborador.html", contexto, request=request
+    )
+    return modal_html
