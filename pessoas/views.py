@@ -78,7 +78,7 @@ def adicionar_ou_atualizar_doc_colaborador(request):
         request,
         facade.modal_doc_colaborador,
         facade.save_doc_colaborador,
-        partial(facade.create_contexto_doc_colaborador, request),
+        partial(facade.create_contexto_class_colaborador, request),
         facade.documento_html_data,
     )
 
@@ -88,7 +88,7 @@ def adicionar_ou_atualizar_fone_colaborador(request):
         request,
         facade.modal_fone_colaborador,
         facade.save_fone_colaborador,
-        partial(facade.create_contexto_fone_colaborador, request),
+        partial(facade.create_contexto_class_colaborador, request),
         facade.telefone_html_data,
     )
 

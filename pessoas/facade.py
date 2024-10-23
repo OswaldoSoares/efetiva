@@ -225,11 +225,19 @@ def save_doc_colaborador(request):
         DocPessoal.objects.filter(idDocPessoal=id_documento).update(**registro)
         return {"mensagem": "Documento atualizado com sucesso"}
 
+    documento = DocPessoal.objects.filter(
+        idPessoal_id=id_pessoal, TipoDocumento=tipo_documento
+    )
+    if documento:
+        return {
+            "mensagem": f"Colaborador já possui {tipo_documento} cadastrado"
+        }
+
     DocPessoal.objects.create(**registro)
     return {"mensagem": "Documento cadastrado com sucesso"}
 
 
-def create_contexto_doc_colaborador(request):
+def create_contexto_class_colaborador(request):
     id_pessoal = (
         request.POST.get("id_pessoal")
         if request.method == "POST"
