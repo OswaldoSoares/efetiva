@@ -83,6 +83,16 @@ def adicionar_ou_atualizar_doc_colaborador(request):
     )
 
 
+def adicionar_ou_atualizar_fone_colaborador(request):
+    return handle_modal_colaborador(
+        request,
+        facade.modal_fone_colaborador,
+        facade.save_fone_colaborador,
+        partial(facade.create_contexto_fone_colaborador, request),
+        facade.telefone_html_data,
+    )
+
+
 def criafonepessoa(request):
     if request.method == "POST":
         idpessoal = request.POST.get("idPessoal")
