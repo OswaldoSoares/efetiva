@@ -25,7 +25,6 @@ from .models import (
 )
 from .forms import (
     CadastraPessoal,
-    CadastraDocPessoal,
     CadastraFonePessoal,
     CadastraContaPessoal,
 )
