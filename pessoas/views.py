@@ -100,16 +100,6 @@ def excluir_fone_colaborador(request):
     )
 
 
-def criafonepessoa(request):
-    if request.method == "POST":
-        idpessoal = request.POST.get("idPessoal")
-        form = CadastraFonePessoal(request.POST or None)
-    else:
-        idpessoal = request.GET.get("idpessoal")
-        form = CadastraFonePessoal(initial={"idPessoal": idpessoal})
-    return salva_form(request, form, "pessoas/criafonepessoa.html", idpessoal)
-
-
 def excluifonepessoa(request, idpesfon):
     fonepessoa = get_object_or_404(FonePessoal, idFonePessoal=idpesfon)
     data = dict()
