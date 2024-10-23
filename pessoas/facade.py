@@ -8,7 +8,6 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from django.db.models import (
     Sum,
-    Max,
     F,
     ExpressionWrapper,
     IntegerField,
@@ -27,9 +26,6 @@ from pagamentos.models import Recibo
 
 
 from pessoas.forms import (
-    CadastraSalario,
-    CadastraVale,
-    CadastraDemissao,
     FormVale,
     FormContaPessoal,
 )
@@ -55,7 +51,6 @@ from pessoas.models import (
     ContraChequeItens,
     CartaoPonto,
 )
-from minutas.models import MinutaColaboradores
 from website.models import FileUpload
 from website.facade import (
     converter_mes_ano,
