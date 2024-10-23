@@ -140,25 +140,6 @@ class CadastraPessoal(forms.ModelForm):
         }
 
 
-class CadastraFonePessoal(forms.ModelForm):
-    class Meta:
-        model = FonePessoal
-        fields = ("TipoFone", "Fone", "Contato", "idPessoal")
-        labels = {
-            "TipoFone": "OPERADORA",
-            "Fone": "TELEFONE",
-            "Contato": "CONTATO",
-        }
-        widgets = {
-            "TipoFone": forms.Select(
-                attrs={"class": "formfields"}, choices=TIPOFONE
-            ),
-            "Fone": forms.TextInput(attrs={"class": "formfields"}),
-            "Contato": forms.TextInput(attrs={"class": "formfields"}),
-            "idPessoal": forms.HiddenInput(),
-        }
-
-
 class CadastraContaPessoal(forms.ModelForm):
     class Meta:
         model = ContaPessoal
