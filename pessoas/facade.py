@@ -203,7 +203,7 @@ def save_doc_colaborador(request):
     id_documento = request.POST.get("id_documento")
     tipo_documento = request.POST.get("categoria")
     documento = request.POST.get("documento").upper()
-    data = (request.POST.get("data"),)
+    data = datetime.strptime(request.POST.get("data"), "%Y-%m-%d")
     id_pessoal = request.POST.get("id_pessoal")
 
     documento = DocPessoal.objects.filter(
