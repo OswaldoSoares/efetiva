@@ -19,10 +19,7 @@ from .models import (
     FonePessoal,
     ContaPessoal,
 )
-from .forms import (
-    CadastraFonePessoal,
-    CadastraContaPessoal,
-)
+from .forms import CadastraContaPessoal
 
 
 @has_permission_decorator("modulo_colaboradores")
