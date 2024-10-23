@@ -334,6 +334,16 @@ def modal_confirma_excluir_fone_colaborador(id_doc_pessoal, request):
     return JsonResponse({"modal_html": modal_html})
 
 
+def delete_fone_colaborador(request):
+    if request.method == "POST":
+        id_telefone = request.POST.get("id_telefone")
+        telefone = FonePessoal.objects.filter(idFonePessoal=id_telefone)
+        telefone.delete()
+        return {"mensagem": "Telefone do colaborador excluido com sucesso"}
+
+    return {"mensagem": "Não foi possível excluir telefone do colaborador"}
+
+
 def create_contexto_consulta_colaborador(id_pessoal):
     colaborador = classes.Colaborador(id_pessoal)
     colaborador_ant = get_colaborador(id_pessoal)
