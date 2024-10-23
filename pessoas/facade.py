@@ -246,7 +246,6 @@ def create_contexto_class_colaborador(request):
     colaborador = classes.Colaborador(id_pessoal)
     return {
         "colaborador": colaborador,
-        #  "documentos": colaborador.documentos.docs
     }
 
 
