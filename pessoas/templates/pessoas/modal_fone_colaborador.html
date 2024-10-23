@@ -1,0 +1,32 @@
+<form class="row g-3" method="post" action="{% url 'adicionar_ou_atualizar_fone_colaborador' %}">
+    {% csrf_token %}
+    <div class="col-md-3">
+        <label for="id_tipo_fone" class="form-label">TIPO DE TELEFONE:</label>
+        <select class="form-control" name="categoria" id="id_tipo_fone">
+            <option value="" disabled selected>Escolha uma Opção</option>
+            {% for tipo in tipos_fones %}
+            <option value="{{ tipo }}"
+                    {% if tipo == telefone.TipoFone %}
+                    selected
+                    {% endif %}>{{ tipo }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="col-md-4">
+        <label for="id_telefone" class="form-label">NÚMERO DO TELEFONE:</label>
+        <input type="text" class="form-control" name="telefone" id="id_telefone"
+               required="" placeholder="Digite o número"
+               value="{{ telefone.Fone }}">
+    </div>
+
+    <div class="col-md-5">
+        <label for="id_contato" class="form-label">CONTATO:</label>
+        <input type="text" class="form-control" name="contato" id="id_contato"
+               maxlength="50" placeholder="Digite o contato caso não seja o colaborador"
+               value="{{ telefone.Contato }}">
+    </div>
+
+    <input type="hidden" name="id_pessoal" value="{{ colaborador.id_pessoal }}">
+    <input type="hidden" name="id_telefone" value="{{ telefone.idFonePessoal }}">
+</form>
