@@ -248,14 +248,6 @@ def print_decimo_terceiro(request):
     return response
 
 
-def adiciona_telefone_colaborador(request):
-    idpessoal = request.GET.get("idpessoal")
-    tipo_fone = dict_tipo_fone()
-    contexto = {"idpessoal": idpessoal, "tipo_fone": tipo_fone}
-    data = facade.create_data_form_adiciona_fone_colaborador(request, contexto)
-    return data
-
-
 def altera_telefone_colaborador(request):
     idfonepessoal = request.GET.get("idfonepessoal")
     idpessoal = request.GET.get("idpessoal")
