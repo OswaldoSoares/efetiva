@@ -30,14 +30,6 @@ from .forms import (
 )
 
 
-def removeduplicadas(lista):
-    novalista = list()
-    for i in range(len(lista)):
-        if lista[i] not in lista[i + 1 :]:
-            novalista.append(lista[i])
-    return novalista
-
-
 @has_permission_decorator("modulo_colaboradores")
 def indexpessoal(request):
     contexto = facade.create_contexto_categoria()
