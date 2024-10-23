@@ -1,0 +1,92 @@
+<!-- Card Header -->
+<div class="card-header">
+    <div class="input-group">
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-up"></i>
+        </div>
+        <div class="div-form-control">
+            <span>TELEFONES</span>
+        </div>
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-up"></i>
+        </div>
+    </div>
+</div>
+<!-- Card Body -->
+<div class="card-body">
+    {% for fone  in colaborador.telefones.fones %}
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-check i-button-null"></i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-100 text-center font-menor">
+                    <span>
+                        {{ fone.TipoFone }}: {{ fone.Fone }}{% if fone.Contato %} - {{ fone.Contato }}{% endif %}
+                    </span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-trash i-button" title="EXCLUIR TELEFONE"
+                   onclick="openMyModal(event); return false;"
+                   data-title="EXCLUIR TELEFONE DO COLABORADOR"
+                   data-action="{% url 'excluir_fone_colaborador' %}"
+                   data-id_telefone="{{ fone.idFonePessoal }}"
+                   data-id_pessoal={{ colaborador.id_pessoal }}
+                   data-button-save-label="CONFIRMAR"></i>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-edit i-button" title="EDITAR TELEFONE"
+                   onclick="openMyModal(event); return false;"
+                   data-title="EDITA CADASTRO DE TELEFONE DO COLABORADOR"
+                   data-action="{% url 'adicionar_ou_atualizar_fone_colaborador' %}"
+                   data-id_telefone="{{ fone.idFonePessoal }}"
+                   data-id_pessoal={{ colaborador.id_pessoal }}
+                   data-button-save-label="ALTERAR"></i>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% if colaborador.telefones.fones %}
+        <div class="linha-divisoria-nova"></div>
+    {% endif %}
+    {% if colaborador %}
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-wallet i-button-null"></i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-100 text-center font-menor">
+                    <span>ADICIONAR NOVO TELEFONE</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-plus-circle i-button"
+                   onclick="openMyModal(event); return false;"
+                   data-title="TELEFONE COLABORADOR"
+                   data-action="{% url 'adicionar_ou_atualizar_fone_colaborador' %}"
+                   data-id_pessoal="{{ colaborador.id_pessoal }}"
+                   data-button-save-label="ADICIONAR"
+                   title="ADICIONAR TELEFONE COLABORADOR"></i>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+<!-- Card Footer -->
+<div class="card-footer">
+    <div class="input-group">
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-down"></i>
+        </div>
+        <div class="div-flex div-form-control">
+            <div class="tamanho-100 text-center">
+            </div>
+        </div>
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-down"></i>
+        </div>
+    </div>
+</div>
