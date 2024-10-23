@@ -859,15 +859,6 @@ def create_data_form_exclui_documento_colaborador(request, contexto):
     return JsonResponse(data)
 
 
-def html_form_adiciona_documento_colaborador(request, contexto, data):
-    data["html_form_documento_colaborador"] = render_to_string(
-        "pessoas/html_form_documento_colaborador.html",
-        contexto,
-        request=request,
-    )
-    return data
-
-
 def html_form_confirma_exclusao(request, contexto, data):
     data["html_form_confirma_exclusao"] = render_to_string(
         "pessoas/html_form_confirma_exclusao.html", contexto, request=request
