@@ -12,19 +12,14 @@ from pessoas.print import (
 )
 from website.facade import (
     dict_tipo_conta,
-    dict_tipo_doc,
     dict_tipo_fone,
     str_hoje,
 )
 from .models import (
-    Pessoal,
-    DocPessoal,
     FonePessoal,
     ContaPessoal,
-    ContraChequeItens,
 )
 from .forms import (
-    CadastraPessoal,
     CadastraFonePessoal,
     CadastraContaPessoal,
 )
