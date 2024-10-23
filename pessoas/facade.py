@@ -866,21 +866,6 @@ def html_form_confirma_exclusao(request, contexto, data):
     return data
 
 
-def create_contexto_exclui_documento_colaborador(iddocpessoal):
-    documento = DocPessoal.objects.get(idDocPessoal=iddocpessoal)
-    tipo = documento.TipoDocumento
-    doc = documento.Documento
-    idpessoal = documento.idPessoal_id
-    mensagem = f"Confirma a exclusão do documento: {tipo} de número {doc}?"
-    js_class = "js-apaga-documento"
-    return {
-        "mensagem": mensagem,
-        "idobj": iddocpessoal,
-        "idpessoal": idpessoal,
-        "js_class": js_class,
-    }
-
-
 def apaga_documento(iddocpessoal):
     documento = DocPessoal.objects.get(idDocPessoal=iddocpessoal)
     documento.delete()
