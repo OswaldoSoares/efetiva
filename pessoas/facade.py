@@ -875,17 +875,6 @@ def salva_documento(documento):
     obj.save()
 
 
-def altera_documento(documento, iddocpessoal):
-    doc = DocPessoal.objects.get(idDocPessoal=iddocpessoal)
-    obj = DocPessoal(doc)
-    obj.idDocPessoal = doc.idDocPessoal
-    obj.TipoDocumento = documento["tipo_doc"]
-    obj.Documento = documento["numero_doc"]
-    obj.Data = documento["data_doc"]
-    obj.idPessoal_id = documento["idpessoal"]
-    obj.save()
-
-
 def create_contexto_exclui_documento_colaborador(iddocpessoal):
     documento = DocPessoal.objects.get(idDocPessoal=iddocpessoal)
     tipo = documento.TipoDocumento
