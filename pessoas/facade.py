@@ -866,15 +866,6 @@ def html_form_confirma_exclusao(request, contexto, data):
     return data
 
 
-def read_documento_post(request):
-    documento_post = dict()
-    documento_post["tipo_doc"] = request.POST.get("tipo_doc")
-    documento_post["numero_doc"] = request.POST.get("numero_doc")
-    documento_post["data_doc"] = request.POST.get("data_doc")
-    documento_post["idpessoal"] = request.POST.get("idpessoal")
-    return documento_post
-
-
 def salva_documento(documento):
     obj = DocPessoal()
     obj.TipoDocumento = documento["tipo_doc"]
