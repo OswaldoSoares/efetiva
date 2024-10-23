@@ -866,15 +866,6 @@ def html_form_confirma_exclusao(request, contexto, data):
     return data
 
 
-def salva_documento(documento):
-    obj = DocPessoal()
-    obj.TipoDocumento = documento["tipo_doc"]
-    obj.Documento = documento["numero_doc"]
-    obj.Data = documento["data_doc"]
-    obj.idPessoal_id = documento["idpessoal"]
-    obj.save()
-
-
 def create_contexto_exclui_documento_colaborador(iddocpessoal):
     documento = DocPessoal.objects.get(idDocPessoal=iddocpessoal)
     tipo = documento.TipoDocumento
