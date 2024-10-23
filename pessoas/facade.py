@@ -303,6 +303,14 @@ def save_fone_colaborador(request):
     return {"mensagem": "Telefone cadastrado com sucesso"}
 
 
+def telefone_html_data(request, contexto):
+    data = {}
+    html_functions = [
+        html_data.html_card_fones_colaborador,
+    ]
+    return gerar_data_html(html_functions, request, contexto, data)
+
+
 def create_contexto_consulta_colaborador(id_pessoal):
     colaborador = classes.Colaborador(id_pessoal)
     colaborador_ant = get_colaborador(id_pessoal)
