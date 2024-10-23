@@ -311,6 +311,29 @@ def telefone_html_data(request, contexto):
     return gerar_data_html(html_functions, request, contexto, data)
 
 
+def modal_confirma_excluir_fone_colaborador(id_doc_pessoal, request):
+    id_pessoal = (
+        request.POST.get("id_pessoal")
+        if request.method == "POST"
+        else request.GET.get("id_pessoal")
+    )
+    id_telefone = (
+        request.POST.get("id_telefone")
+        if request.method == "POST"
+        else request.GET.get("id_telefone")
+    )
+    colaborador = classes.Colaborador(id_pessoal) if id_pessoal else False
+    telefone = FonePessoal.objects.filter(idFonePessoal=id_telefone).first()
+    contexto = {
+        "colaborador": colaborador,
+        "telefone": telefone,
+    }
+    modal_html = html_data.html_modal_confirma_excluir_fone_colaborador(
+        request, contexto
+    )
+    return JsonResponse({"modal_html": modal_html})
+
+
 def create_contexto_consulta_colaborador(id_pessoal):
     colaborador = classes.Colaborador(id_pessoal)
     colaborador_ant = get_colaborador(id_pessoal)
