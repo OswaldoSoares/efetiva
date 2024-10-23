@@ -1,0 +1,16 @@
+<form class="row g-3" method="post" action="{% url 'excluir_fone_colaborador' %}">
+    {% csrf_token %}
+    <div class="confirma_excluir text-center">
+        <span>CONFIRMA EXCLUSÃO DO TELEFONE</span>
+    </div>
+    <div class="text-center">
+        <span>{{ colaborador.nome }}</span>
+    </div>
+    <div class="text-center">
+        <span>
+            {{ telefone.TipoFone}}: {{ telefone.Fone }} {% if telefone.Contato %} - {{ telefone.Contato }}{% endif %}
+        </span>
+    </div>
+    <input type="hidden" name="id_pessoal" value="{{ colaborador.id_pessoal }}">
+    <input type="hidden" name="id_telefone" value="{{ telefone.idFonePessoal }}">
+</form>
