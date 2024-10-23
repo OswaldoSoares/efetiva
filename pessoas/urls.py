@@ -59,6 +59,7 @@ from .views import (
     consultar_colaborador,
     adicionar_ou_atualizar_colaborador,
     adicionar_ou_atualizar_doc_colaborador,
+    adicionar_ou_atualizar_fone_colaborador,
 )
 
 
