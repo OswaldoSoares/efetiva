@@ -140,27 +140,6 @@ class CadastraPessoal(forms.ModelForm):
         }
 
 
-class CadastraDocPessoal(forms.ModelForm):
-    class Meta:
-        model = DocPessoal
-        fields = ("TipoDocumento", "Documento", "Data", "idPessoal")
-        labels = {
-            "TipoDocumento": "TIPO DE DOCUMENTO",
-            "Documento": "DOCUMENTO",
-            "Data": "DATA EMISSÃO OU VENCIMENTO",
-        }
-        widgets = {
-            "TipoDocumento": forms.Select(
-                attrs={"class": "formfields"}, choices=TIPODOC
-            ),
-            "Documento": forms.TextInput(attrs={"class": "formfields"}),
-            "Data": MeuDateInput(
-                format="%Y-%m-%d", attrs={"class": "formfields"}
-            ),
-            "idPessoal": forms.HiddenInput(),
-        }
-
-
 class CadastraFonePessoal(forms.ModelForm):
     class Meta:
         model = FonePessoal
