@@ -91,6 +91,11 @@ urlpatterns = [
         adicionar_ou_atualizar_fone_colaborador,
         name="adicionar_ou_atualizar_fone_colaborador",
     ),
+    path(
+        "excluir_fone_colaborador",
+        excluir_fone_colaborador,
+        name="excluir_fone_colaborador",
+    ),
     # Antigos
     path(
         "bloqueiapessoa/<int:idpessoa>/",
