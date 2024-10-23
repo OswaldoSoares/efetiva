@@ -48,3 +48,12 @@ def html_modal_fone_colaborador(request, contexto):
         "pessoas/modal_fone_colaborador.html", contexto, request=request
     )
     return modal_html
+
+
+def html_modal_confirma_excluir_fone_colaborador(request, contexto):
+    modal_html = render_to_string(
+        "pessoas/modal_confirma_excluir_fone_colaborador.html",
+        contexto,
+        request=request,
+    )
+    return modal_html
