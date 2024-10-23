@@ -206,14 +206,6 @@ def save_doc_colaborador(request):
     data = datetime.strptime(request.POST.get("data"), "%Y-%m-%d")
     id_pessoal = request.POST.get("id_pessoal")
 
-    documento = DocPessoal.objects.filter(
-        idPessoal_id=id_pessoal, TipoDocumento=tipo_documento
-    )
-    if documento:
-        return {
-            "mensagem": f"Colaborador já possui {tipo_documento} cadastrado"
-        }
-
     registro = {
         "TipoDocumento": tipo_documento,
         "Documento": documento,
