@@ -33,7 +33,8 @@
                 </div>
             </div>
             <div class="input-group-addon addon-my-color">
-                <form class="file-body js-salva-foto" method="post" enctype="multipart/form-data">
+                <form class="file-body js-salva-foto" method="post"
+                      enctype="multipart/form-data">
                     {% csrf_token %}
                     <input type="file" id="file_foto"
                            class="file js-carrega-foto">
@@ -59,7 +60,8 @@
             </div>
             <div class="input-group-addon addon-my-color">
                 <i class="icofont-edit i-button" title="EDITAR COLABORADOR"
-                   onclick="openMyModal(event); return false;"data-title="EDITA CADASTRO DE COLABORADOR"
+                   onclick="openMyModal(event); return false;"
+                   data-title="EDITA CADASTRO DE COLABORADOR"
                    data-action="{% url 'adicionar_ou_atualizar_colaborador' %}"
                    data-id_pessoal={{ colaborador.id_pessoal }}
                    data-button-save-label="ALTERAR"></i>
@@ -78,7 +80,8 @@
                 <i class="icofont-ui-block i-button js-alterar-status"
                    data-id_pessoal="{{ colaborador.id_pessoal }}"
                    title="BLOQUEAR COLABORADOR"></i>
-                <input type="hidden" value="{{ colaborador.status_pessoal }}" name="status_pessoal">
+                <input type="hidden" value="{{ colaborador.status_pessoal }}"
+                       name="status_pessoal">
             </div>
             <div class="tamanho-34 text-center">
                 <a class="icofont-printer i-button" target="_blank"
@@ -86,9 +89,12 @@
                    title="IMPRIMIR FICHA CADASTRAL"></a>
             </div>
             <div class="tamanho-33 text-center">
-                <i class="icofont-worried i-button" onclick="openMyModal(event); return false;"
-                   data-title="INFORMAR DATA DE DEMISSÂO" data-action="{% url 'demissao_colaborador' %}"
-                   data-button-save-label="SALVAR" data-id_pessoa="{{ colaborador.id_pessoal }}"
+                <i class="icofont-worried i-button"
+                   onclick="openMyModal(event); return false;"
+                   data-title="INFORMAR DATA DE DEMISSÂO"
+                   data-action="{% url 'demissao_colaborador' %}"
+                   data-button-save-label="SALVAR"
+                   data-id_pessoa="{{ colaborador.id_pessoal }}"
                    title="DEMITIR COLABORADOR"></i>
             </div>
         </div>
