@@ -176,28 +176,6 @@ $(document).on('click', '.js-periodo-ferias', function() {
     });
 });
 
-$(document).on('click', '.js-exclui-documento-colaborador', function() {
-    var iddocpessoal = $(this).data('iddocpessoal')
-    $.ajax({
-        type: "GET",
-        url: "/pessoas/exclui_documento_colaborador",
-        data: {
-            iddocpessoal: iddocpessoal,
-        },
-        beforeSend: function() {
-            $(".box-loader").show()
-        },
-        success: function(data) {
-            $(".card-form-colaborador").html(data.html_form_confirma_exclusao)
-            $(".card-form-colaborador").show()
-            $(".box-loader").hide()
-        },
-        error: function(errorThrown) {
-            console.log("error: " + errorThrown)
-        }
-    });
-});
-
 $(document).on('submit', '.js-gera-documento', function(event) {
     event.preventDefault();
     $.ajax({
