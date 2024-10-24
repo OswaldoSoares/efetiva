@@ -1058,11 +1058,6 @@ def exclui_periodo_ferias_base_dados(idferias):
     ferias.delete()
 
 
-def apaga_conta(idcontapessoal):
-    conta = ContaPessoal.objects.get(idContaPessoal=idcontapessoal)
-    conta.delete()
-
-
 def create_data_form_paga_decimo_terceiro(request, contexto):
     data = dict()
     html_form_paga_decimo_terceiro(request, contexto, data)
