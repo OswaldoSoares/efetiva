@@ -120,16 +120,6 @@ def excluir_conta_colaborador(request):
     )
 
 
-def criacontapessoa(request):
-    if request.method == "POST":
-        idpessoal = request.POST.get("idPessoal")
-        form = CadastraContaPessoal(request.POST or None)
-    else:
-        idpessoal = request.GET.get("idpessoal")
-        form = CadastraContaPessoal(initial={"idPessoal": idpessoal})
-    return salva_form(request, form, "pessoas/criacontapessoa.html", idpessoal)
-
-
 def excluicontapessoa(request, idpescon):
     contapessoa = get_object_or_404(ContaPessoal, idContaPessoal=idpescon)
     data = dict()
