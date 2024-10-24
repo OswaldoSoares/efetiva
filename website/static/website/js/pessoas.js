@@ -226,28 +226,6 @@ $(document).on('submit', '.js-gera-periodo-ferias', function(event) {
     });
 });
 
-$(document).on('click', '.js-adiciona-telefone-colaborador', function() {
-    var idpessoal = $(this).data('idpessoal')
-    $.ajax({
-        type: "GET",
-        url: "/pessoas/adiciona_telefone_colaborador",
-        data: {
-            idpessoal: idpessoal,
-        },
-        beforeSend: function() {
-            $(".box-loader").show()
-        },
-        success: function(data) {
-            $(".card-form-colaborador").html(data.html_form_fone_colaborador)
-            $(".card-form-colaborador").show()
-            $(".box-loader").hide()
-        },
-        error: function(errorThrown) {
-            console.log("error: " + errorThrown)
-        }
-    });
-});
-
 $(document).on('click', '.js-altera-telefone-colaborador', function() {
     var idfonepessoal = $(this).data('idfonepessoal')
     var idpessoal = $(this).data('idpessoal')
