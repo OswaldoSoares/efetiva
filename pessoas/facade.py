@@ -948,21 +948,6 @@ def create_data_form_exclui_fone_colaborador(request, contexto):
     return JsonResponse(data)
 
 
-def create_contexto_exclui_fone_colaborador(idfonepessoal):
-    fone = FonePessoal.objects.get(idFonePessoal=idfonepessoal)
-    tipo = fone.TipoFone
-    telefone = fone.Fone
-    idpessoal = fone.idPessoal_id
-    mensagem = f"Confirma a exclusão do telefone: {tipo} de número {telefone}?"
-    js_class = "js-apaga-telefone"
-    return {
-        "mensagem": mensagem,
-        "idobj": idfonepessoal,
-        "idpessoal": idpessoal,
-        "js_class": js_class,
-    }
-
-
 def apaga_fone(idfonepessoal):
     fone = FonePessoal.objects.get(idFonePessoal=idfonepessoal)
     fone.delete()
