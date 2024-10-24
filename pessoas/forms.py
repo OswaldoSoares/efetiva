@@ -191,28 +191,3 @@ class FormVale(forms.ModelForm):
             "Valor": forms.NumberInput(attrs={"class": "form-control"}),
             "idPessoal": forms.Select(attrs={"class": "form-control"}),
         }
-
-
-class FormContaPessoal(forms.ModelForm):
-    class Meta:
-        model = ContaPessoal
-        fields = (
-            "Banco",
-            "Agencia",
-            "Conta",
-            "TipoConta",
-            "Titular",
-            "Documento",
-            "PIX",
-        )
-        widgets = {
-            "Banco": forms.TextInput(attrs={"class": "form-control"}),
-            "Agencia": forms.TextInput(attrs={"class": "form-control"}),
-            "Conta": forms.TextInput(attrs={"class": "form-control"}),
-            "TipoConta": forms.Select(
-                attrs={"class": "form-control"}, choices=TIPOCONTA
-            ),
-            "PIX": forms.TextInput(attrs={"class": "form-control"}),
-            "Titular": forms.TextInput(attrs={"class": "form-control"}),
-            "Documento": forms.TextInput(attrs={"class": "form-control"}),
-        }
