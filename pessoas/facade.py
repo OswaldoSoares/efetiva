@@ -336,6 +336,28 @@ def delete_fone_colaborador(request):
     return {"mensagem": "Não foi possível excluir telefone do colaborador"}
 
 
+def modal_conta_colaborador(id_doc_pessoal, request):
+    id_pessoal = (
+        request.POST.get("id_pessoal")
+        if request.method == "POST"
+        else request.GET.get("id_pessoal")
+    )
+    id_conta = (
+        request.POST.get("id_conta")
+        if request.method == "POST"
+        else request.GET.get("id_conta")
+    )
+    colaborador = classes.Colaborador(id_pessoal) if id_pessoal else False
+    conta = ContaPessoal.objects.filter(idContaPessoal=id_conta).first()
+    contexto = {
+        "colaborador": colaborador,
+        "conta": conta,
+    }
+    contexto.update({"tipos_contas": TIPOS_CONTAS})
+    modal_html = html_data.html_modal_conta_colaborador(request, contexto)
+    return JsonResponse({"modal_html": modal_html})
+
+
 def create_contexto_consulta_colaborador(id_pessoal):
     colaborador = classes.Colaborador(id_pessoal)
     colaborador_ant = get_colaborador(id_pessoal)
