@@ -1043,42 +1043,6 @@ def create_data_form_exclui_periodo_ferias(request, contexto):
     return JsonResponse(data)
 
 
-def valida_conta_colaborador(request):
-    msg = dict()
-    error = False
-    banco = request.POST.get("banco")
-    pix = request.POST.get("pix")
-    if banco == "" and pix == "":
-        msg["erro_banco"] = "Obrigatório digitar o nome do banco."
-        msg["erro_pix"] = "Obrigatório digitar a chave PIX."
-        error = True
-    if banco != "" and len(banco) < 2:
-        msg["erro_banco"] = "Nome do banco inválido."
-        error = True
-    if pix != "" and len(pix) < 6:
-        msg["erro_pix"] = "Chave PIX inválida."
-        error = True
-    agencia = request.POST.get("agencia")
-    if banco != "" and agencia == "":
-        msg["erro_agencia"] = "Obrigatório digitar o número da agência."
-        error = True
-    if agencia != "" and len(agencia) < 3:
-        msg["erro_agencia"] = "Número da agência inválida."
-        error = True
-    conta = request.POST.get("conta")
-    if banco != "" and conta == "":
-        msg["erro_numero_conta"] = "Obrigatório digitar o número da conta."
-        error = True
-    if conta != "" and len(conta) < 4:
-        msg["erro_numero_conta"] = "Número da conta inválida."
-        error = True
-    seleciona = request.POST.get("tipo_conta")
-    if banco != "" and seleciona == "0":
-        msg["erro_tipo_conta"] = "Obrigatório selecionar o tipo de conta."
-        error = True
-    return error, msg
-
-
 def read_conta_post(request):
     conta_post = dict()
     conta_post["banco"] = request.POST.get("banco")
