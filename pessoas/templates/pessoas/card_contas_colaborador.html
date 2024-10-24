@@ -1,0 +1,177 @@
+<!-- Card Header -->
+<div class="card-header">
+    <div class="input-group">
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-up"></i>
+        </div>
+        <div class="div-form-control">
+            <span>CONTAS</span>
+        </div>
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-up"></i>
+        </div>
+    </div>
+</div>
+<!-- Card Body -->
+<div class="card-body">
+    {% for conta in colaborador.bancos.contas %}
+    <div class="card-body-item">
+        {% if conta.Banco and conta.Agencia %}
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-bank i-button-null"></i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-100 text-center font-menor">
+                    <span>{{ conta.Banco }}: AG {{ conta.Agencia }}</span>
+                </div>
+            </div>
+             <div class="input-group-addon addon-my-color">
+                <i class="icofont-trash i-button" title="EXCLUIR CONTA"
+                   onclick="openMyModal(event); return false;"
+                   data-title="EXCLUI CONTA DO COLABORADOR"
+                   data-action="{% url 'excluir_conta_colaborador' %}"
+                   data-id_conta="{{ conta.idContaPessoal }}"
+                   data-id_pessoal={{ colaborador.id_pessoal }}
+                   data-button-save-label="EXCLUIR"></i>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-edit i-button" title="EDITAR CONTA"
+                   onclick="openMyModal(event); return false;"
+                   data-title="EDITA CONTA DO COLABORADOR"
+                   data-action="{% url 'adicionar_ou_atualizar_conta_colaborador' %}"
+                   data-id_conta="{{ conta.idContaPessoal }}"
+                   data-id_pessoal={{ colaborador.id_pessoal }}
+                   data-button-save-label="ALTERAR"></i>
+            </div>
+        </div>
+        {% if conta.Conta %}
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-check i-button-null"></i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-100 text-center font-menor">
+                    <span>CONTA {{ conta.TipoConta }}: {{ conta.Conta }}</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-check i-button-null"></i>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-check i-button-null"></i>
+            </div>
+        </div>
+        {% endif %}
+        {% if conta.Titular %}
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-check i-button-null"></i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-100 text-center font-menor">
+                    <span>TITULAR: {{ conta.Titular }}: {{ conta.Documento }}</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-check i-button-null"></i>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-check i-button-null"></i>
+            </div>
+        </div>
+        {% endif %}
+        {% if conta.PIX %}
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-check i-button-null"></i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-100 text-center font-menor">
+                    <span>PIX: {{ conta.PIX }}</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-check i-button-null"></i>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-check i-button-null"></i>
+            </div>
+        </div>
+        {% endif %}
+        {% else %}
+        {% if conta.PIX %}
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-bank i-button-null"></i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-100 text-center font-menor">
+                    <span>PIX: {{ conta.PIX }}</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-trash i-button" title="EXCLUIR CONTA"
+                   onclick="openMyModal(event); return false;"
+                   data-title="EXCLUI CONTA DO COLABORADOR"
+                   data-action="{% url 'excluir_conta_colaborador' %}"
+                   data-id_conta="{{ conta.idContaPessoal }}"
+                   data-id_pessoal={{ colaborador.id_pessoal }}
+                   data-button-save-label="EXCLUIR"></i>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-edit i-button" title="EDITAR CONTA"
+                   onclick="openMyModal(event); return false;"
+                   data-title="EDITA CONTA DO COLABORADOR"
+                   data-action="{% url 'adicionar_ou_atualizar_conta_colaborador' %}"
+                   data-id_conta="{{ conta.idContaPessoal }}"
+                   data-id_pessoal={{ colaborador.id_pessoal }}
+                   data-button-save-label="ALTERAR"></i>
+            </div>
+        </div>
+        {% endif %}
+        {% endif %}
+    </div>
+    {% endfor %}
+    {% if colaborador.bancos.contas %}
+        <div class="linha-divisoria-nova"></div>
+    {% endif %}
+    {% if colaborador %}
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-wallet i-button-null"></i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-100 text-center font-menor">
+                    <span>ADICIONAR NOVA CONTA</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-plus-circle i-button"
+                   onclick="openMyModal(event); return false;"
+                   data-title="CONTA BANCÁRIA DO COLABORADOR"
+                   data-action="{% url 'adicionar_ou_atualizar_conta_colaborador' %}"
+                   data-id_pessoal="{{ colaborador.id_pessoal }}"
+                   data-button-save-label="ADICIONAR"
+                   title="ADICIONAR CONTA COLABORADOR"></i>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+<!-- Card Footer -->
+<div class="card-footer">
+    <div class="input-group">
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-down"></i>
+        </div>
+        <div class="div-flex div-form-control">
+            <div class="tamanho-100 text-center">
+            </div>
+        </div>
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-down"></i>
+        </div>
+    </div>
+</div>
