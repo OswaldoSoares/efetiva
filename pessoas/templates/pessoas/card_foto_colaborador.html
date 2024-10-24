@@ -25,9 +25,9 @@
                 <div class="tamanho-100 text-center font-menor">
                     <figure class="containerimg">
                         {% if colaborador.foto %}
-                        <img src="/media/{{ colaborador.foto }}" alt="" class="foto">
+                        <img src="/media/{{ colaborador.foto }}" alt="{{ colaborador.nome_curto }}" class="foto">
                         {% else %}
-                        <img src="{% static 'website/img/usuario.png' %}" alt="" class="foto">
+                        <img src="{% static 'website/img/usuario.png' %}" alt="Icone Colaborador" class="foto">
                         {% endif %}
                     </figure>
                 </div>
