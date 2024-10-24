@@ -412,6 +412,17 @@ def modal_confirma_excluir_conta_colaborador(id_doc_pessoal, request):
     return JsonResponse({"modal_html": modal_html})
 
 
+def delete_conta_colaborador(request):
+    print(request.POST)
+    if request.method == "POST":
+        id_conta = request.POST.get("id_conta")
+        conta = ContaPessoal.objects.filter(idContaPessoal=id_conta)
+        conta.delete()
+        return {"mensagem": "Conta do colaborador excluida com sucesso"}
+
+    return {"mensagem": "Não foi possível excluir conta do colaborador"}
+
+
 def create_contexto_consulta_colaborador(id_pessoal):
     colaborador = classes.Colaborador(id_pessoal)
     colaborador_ant = get_colaborador(id_pessoal)
