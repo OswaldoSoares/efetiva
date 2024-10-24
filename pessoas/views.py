@@ -110,6 +110,16 @@ def adicionar_ou_atualizar_conta_colaborador(request):
     )
 
 
+def excluir_conta_colaborador(request):
+    return handle_modal_colaborador(
+        request,
+        facade.modal_confirma_excluir_conta_colaborador,
+        facade.delete_conta_colaborador,
+        partial(facade.create_contexto_class_colaborador, request),
+        facade.conta_html_data,
+    )
+
+
 def criacontapessoa(request):
     if request.method == "POST":
         idpessoal = request.POST.get("idPessoal")
