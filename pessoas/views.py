@@ -210,15 +210,6 @@ def print_decimo_terceiro(request):
     return response
 
 
-def altera_conta_colaborador(request):
-    if request.method == "POST":
-        idpessoal = int(request.POST.get("idpessoal"))
-    else:
-        idpessoal = int(request.GET.get("idpessoal"))
-    data = facade.modal_conta_bancaria(request, idpessoal)
-    return data
-
-
 def salva_conta_colaborador(request):
     error, msg = facade.valida_conta_colaborador(request)
     conta_form = facade.read_conta_post(request)
