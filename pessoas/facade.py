@@ -124,6 +124,7 @@ def gerar_data_html(html_functions, request, contexto, data):
 
 def selecionar_categoria_html_data(request, contexto):
     data = {}
+    contexto["mensagem"] = "Categoria selecionada"
     html_functions = [
         html_data.html_card_lista_colaboradores,
     ]
