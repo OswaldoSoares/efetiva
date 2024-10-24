@@ -19,7 +19,6 @@ from .models import (
     FonePessoal,
     ContaPessoal,
 )
-from .forms import CadastraContaPessoal
 
 
 @has_permission_decorator("modulo_colaboradores")

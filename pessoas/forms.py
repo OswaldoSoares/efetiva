@@ -140,42 +140,6 @@ class CadastraPessoal(forms.ModelForm):
         }
 
 
-class CadastraContaPessoal(forms.ModelForm):
-    class Meta:
-        model = ContaPessoal
-        fields = (
-            "Banco",
-            "Agencia",
-            "Conta",
-            "TipoConta",
-            "Titular",
-            "Documento",
-            "PIX",
-            "idPessoal",
-        )
-        labels = {
-            "Banco": "BANCO",
-            "Agencia": "AGÊNCIA",
-            "Conta": "CONTA",
-            "TipoConta": "TIPO DA CONTA",
-            "PIX": "CHAVE PIX",
-            "Titular": "TITULAR DA CONTA",
-            "Documento": "CPF DO TITULAR",
-        }
-        widgets = {
-            "Banco": forms.TextInput(attrs={"class": "formfields"}),
-            "Agencia": forms.TextInput(attrs={"class": "formfields"}),
-            "Conta": forms.TextInput(attrs={"class": "formfields"}),
-            "TipoConta": forms.Select(
-                attrs={"class": "formfields"}, choices=TIPOCONTA
-            ),
-            "PIX": forms.TextInput(attrs={"class": "formfields"}),
-            "Titular": forms.TextInput(attrs={"class": "formfields"}),
-            "Documento": forms.TextInput(attrs={"class": "formfields"}),
-            "idPessoal": forms.HiddenInput(),
-        }
-
-
 class CadastraSalario(forms.ModelForm):
     class Meta:
         model = Salario
