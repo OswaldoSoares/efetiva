@@ -2,7 +2,6 @@ from django.urls import path
 from .views import (
     indexpessoal,
     bloqueia_pessoa,
-    criacontapessoa,
     excluicontapessoa,
     edita_salario,
     cria_vale,
@@ -107,7 +106,6 @@ urlpatterns = [
         bloqueia_pessoa,
         name="bloqueiapessoa",
     ),
-    path("criacontapessoa/", criacontapessoa, name="criacontapessoa"),
     path(
         "excluicontapessoa/<int:idpescon>/",
         excluicontapessoa,
