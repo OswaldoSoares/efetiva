@@ -1030,13 +1030,6 @@ def html_form_confirma_exclusao(request, contexto, data):
 
 
 # TODO renomear função já existe fazendo a mesma função.
-def create_data_form_exclui_conta_colaborador(request, contexto):
-    data = dict()
-    html_form_confirma_exclusao(request, contexto, data)
-    return JsonResponse(data)
-
-
-# TODO renomear função já existe fazendo a mesma função.
 def create_data_form_exclui_periodo_ferias(request, contexto):
     data = dict()
     html_form_confirma_exclusao(request, contexto, data)
