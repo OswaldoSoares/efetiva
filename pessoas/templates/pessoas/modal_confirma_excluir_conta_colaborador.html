@@ -1,0 +1,31 @@
+<form class="row g-3" method="post" action="{% url 'excluir_conta_colaborador' %}">
+    {% csrf_token %}
+    <div class="confirma_excluir text-center">
+        <span>CONFIRMA EXCLUSÃO DA CONTA</span>
+    </div>
+    <div class="text-center">
+        <span>{{ colaborador.nome }}</span>
+    </div>
+    {% if conta.Banco and conta.Agencia %}
+    <div class="text-center">
+        <span>{{ conta.Banco }}: {{ conta.Agencia }}</span>
+    </div>
+    {% endif %}
+    {% if conta.Conta %}
+    <div class="text-center">
+        <span>CONTA {{ conta.TipoConta }}: {{ conta.Conta }}</span>
+    </div>
+    {% endif %}
+    {% if conta.Titular %}
+    <div class="text-center">
+        <span>{{ conta.Titular }} - CPF: {{ conta.Documento }}</span>
+    </div>
+    {% endif %}
+    {% if conta.PIX %}
+    <div class="text-center">
+        <span>CHAVE PIX: {{ conta.PIX }}</span>
+    </div>
+    {% endif %}
+    <input type="hidden" name="id_pessoal" value="{{ colaborador.id_pessoal }}">
+    <input type="hidden" name="id_conta" value="{{ conta.idContaPessoal }}">
+</form>
