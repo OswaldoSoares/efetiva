@@ -252,29 +252,6 @@ $(document).on('click', '.js-verbas-rescisoria', function() {
     });
 });
 
-
-$(document).on('click', '.js-exclui-telefone-colaborador', function() {
-    var idfonepessoal = $(this).data('idfonepessoal')
-    $.ajax({
-        type: "GET",
-        url: "/pessoas/exclui_telefone_colaborador",
-        data: {
-            idfonepessoal: idfonepessoal,
-        },
-        beforeSend: function() {
-            $(".box-loader").show()
-        },
-        success: function(data) {
-            $(".card-form-colaborador").html(data.html_form_confirma_exclusao)
-            $(".card-form-colaborador").show()
-            $(".box-loader").hide()
-        },
-        error: function(errorThrown) {
-            console.log("error: " + errorThrown)
-        }
-    });
-});
-
 $(document).on('click', '.js-confirma-exclusao-periodo-ferias', function() {
     var idferias = $(this).data('idferias')
     $.ajax({
