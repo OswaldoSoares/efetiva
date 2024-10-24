@@ -274,32 +274,6 @@ $(document).on('click', '.js-confirma-exclusao-periodo-ferias', function() {
     });
 });
 
-$(document).on('submit', '.js-gera-telefone', function(event) {
-    event.preventDefault();
-    $.ajax({
-        type: $(this).attr('method'),
-        url: "/pessoas/salva_telefone_colaborador",
-        data: $(this).serialize(),
-        beforeSend: function() {
-            $('.card-dados-colaborador').hide()
-            $('.card-form-colaborador').hide()
-            $('.box-loader').show()
-        },
-        success: function(data) {
-            $(".card-dados-colaborador").html(data.html_dados_colaborador)
-            $(".card-dados-colaborador").show()
-            var url = $(".foto").attr("src");
-            // Força o recarregamento da foto sem utilizar o cache
-            $(".foto").attr("src", url + `?v=${new Date().getTime()}`);
-            if (data.html_form_fone_colaborador) {
-                $('.card-form-colaborador').html(data.html_form_fone_colaborador)
-                $('.card-form-colaborador').show()
-            }
-            $('.box-loader').hide()
-        },
-    });
-});
-
 $(document).on('submit', '.js-apaga-telefone', function(event) {
     event.preventDefault();
     $.ajax({
