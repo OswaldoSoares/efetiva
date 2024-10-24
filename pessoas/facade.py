@@ -948,15 +948,6 @@ def create_data_form_exclui_fone_colaborador(request, contexto):
     return JsonResponse(data)
 
 
-def read_fone_post(request):
-    fone_post = dict()
-    fone_post["tipo_fone"] = request.POST.get("tipo_fone")
-    fone_post["numero_fone"] = request.POST.get("numero_fone")
-    fone_post["contato"] = request.POST.get("contato")
-    fone_post["idpessoal"] = request.POST.get("idpessoal")
-    return fone_post
-
-
 def read_fone_database(idfonepessoal):
     fone = FonePessoal.objects.get(idFonePessoal=idfonepessoal)
     fone_database = dict()
