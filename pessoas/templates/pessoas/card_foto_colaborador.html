@@ -103,13 +103,7 @@
         </div>
     </div>
 </div>
-<i class="icofont-bank-alt i-button js-adiciona-conta-colaborador"
-    title="Adiciona Conta Bancária" data-idpessoal="{{ colaborador.idpes }}"></i>
-{% if colaborador.dados_profissionais.tipo_pgto == "MENSALISTA" %}
 <i class="bi bi-currency-dollar i-button js-altera-salario-colaborador"
     title="Altera Valor do Salário e do Vale Transporte" data-idpessoal="{{ colaborador.idpes }}"></i>
-{% endif %}
-{% if colaborador.dados_profissionais.data_demissao %}
 <i class="icofont-calculator i-button js-verbas-rescisoria"
     title="Verbas Rescisoria" data-idpessoal="{{ colaborador.idpes }}"></i>
-{% endif %}
