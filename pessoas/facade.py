@@ -1043,19 +1043,6 @@ def create_data_form_exclui_periodo_ferias(request, contexto):
     return JsonResponse(data)
 
 
-def salva_conta(conta):
-    obj = ContaPessoal()
-    obj.Banco = conta["banco"]
-    obj.Agencia = conta["agencia"]
-    obj.Conta = conta["conta"]
-    obj.TipoConta = conta["tipo_conta"]
-    obj.Titular = conta["titular"]
-    obj.Documento = conta["documento"]
-    obj.PIX = conta["pix"]
-    obj.idPessoal_id = conta["idpessoal"]
-    obj.save()
-
-
 def create_contexto_exclui_conta_colaborador(idcontapessoal):
     conta = ContaPessoal.objects.get(idContaPessoal=idcontapessoal)
     banco = conta.Banco
