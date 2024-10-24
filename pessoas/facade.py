@@ -1043,26 +1043,6 @@ def create_data_form_exclui_periodo_ferias(request, contexto):
     return JsonResponse(data)
 
 
-def create_contexto_exclui_conta_colaborador(idcontapessoal):
-    conta = ContaPessoal.objects.get(idContaPessoal=idcontapessoal)
-    banco = conta.Banco
-    agencia = conta.Agencia
-    conta_banco = conta.Conta
-    pix = conta.PIX
-    idpessoal = conta.idPessoal_id
-    if conta_banco:
-        mensagem = f"Confirma a exclusão da conta: {banco} - AG: {agencia} Conta: {conta_banco}?"
-    else:
-        mensagem = f"Confirma a exclusão da conta: Chave PIX: {pix}?"
-    js_class = "js-apaga-conta"
-    return {
-        "mensagem": mensagem,
-        "idobj": idcontapessoal,
-        "idpessoal": idpessoal,
-        "js_class": js_class,
-    }
-
-
 def create_contexto_exclui_ferias(idferias):
     ferias = Ferias.objects.get(idFerias=idferias)
     inicio = datetime.datetime.strftime(ferias.DataInicial, "%d/%m/%Y")
