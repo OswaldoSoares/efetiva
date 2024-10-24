@@ -472,11 +472,6 @@ def get_pessoal(idpessoa: int):
     return colaborador
 
 
-def get_fonepessoal(idpessoa: int):
-    fonepessoal = FonePessoal.objects.filter(idPessoal=idpessoa)
-    return fonepessoal
-
-
 def get_contapessoal(idpessoa: int):
     contapessoal = ContaPessoal.objects.filter(idPessoal=idpessoa)
     return contapessoal
