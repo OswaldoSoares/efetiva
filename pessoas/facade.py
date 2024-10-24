@@ -472,11 +472,6 @@ def get_pessoal(idpessoa: int):
     return colaborador
 
 
-def get_docpessoal(idpessoa: int):
-    docpessoal = DocPessoal.objects.filter(idPessoal=idpessoa)
-    return docpessoal
-
-
 def get_fonepessoal(idpessoa: int):
     fonepessoal = FonePessoal.objects.filter(idPessoal=idpessoa)
     return fonepessoal
