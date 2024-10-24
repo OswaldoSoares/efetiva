@@ -29,7 +29,8 @@
             </div>
             <div class="input-group-addon addon-my-color">
                 <i class="icofont-edit i-button" title="EDITAR DOCUMENTO"
-                   onclick="openMyModal(event); return false;"data-title="EDITA CADASTRO DE DOCUMENTO DO COLABORADOR"
+                   onclick="openMyModal(event); return false;"
+                   data-title="EDITA CADASTRO DE DOCUMENTO DO COLABORADOR"
                    data-action="{% url 'adicionar_ou_atualizar_doc_colaborador' %}"
                    data-id_documento="{{ doc.idDocPessoal }}"
                    data-id_pessoal={{ colaborador.id_pessoal }}
