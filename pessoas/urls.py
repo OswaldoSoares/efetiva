@@ -11,7 +11,6 @@ from .views import (
     salva_foto,
     atualiza_decimo_terceiro,
     print_decimo_terceiro,
-    exclui_conta_colaborador,
     apaga_conta_colaborador,
     form_paga_decimo_terceiro,
     paga_decimo_terceiro,
@@ -130,11 +129,6 @@ urlpatterns = [
         "print_decimo_terceiro",
         print_decimo_terceiro,
         name="print_decimo_terceiro",
-    ),
-    path(
-        "exclui_conta_colaborador",
-        exclui_conta_colaborador,
-        name="exclui_conta_colaborador",
     ),
     path(
         "apaga_conta_colaborador",
