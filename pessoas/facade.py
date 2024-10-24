@@ -1043,21 +1043,6 @@ def create_data_form_exclui_periodo_ferias(request, contexto):
     return JsonResponse(data)
 
 
-def read_conta_database(idcontapessoal):
-    conta = ContaPessoal.objects.get(idContaPessoal=idcontapessoal)
-    conta_database = dict()
-    conta_database["banco"] = conta.Banco
-    conta_database["agencia"] = conta.Agencia
-    conta_database["conta"] = conta.Conta
-    conta_database["tipo_conta"] = conta.TipoConta
-    conta_database["titular"] = conta.Titular
-    conta_database["documento"] = conta.Documento
-    conta_database["pix"] = conta.PIX
-    conta_database["idpessoal"] = conta.idPessoal_id
-    conta_database["idcontapessoal"] = conta.idContaPessoal
-    return conta_database
-
-
 def salva_conta(conta):
     obj = ContaPessoal()
     obj.Banco = conta["banco"]
