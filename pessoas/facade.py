@@ -358,6 +358,29 @@ def modal_conta_colaborador(id_doc_pessoal, request):
     return JsonResponse({"modal_html": modal_html})
 
 
+def save_conta_colaborador(request):
+    print(request.POST)
+    id_conta = request.POST.get("id_conta")
+
+    registro = {
+        "Banco": request.POST.get("banco").upper(),
+        "Agencia": request.POST.get("agencia").upper(),
+        "Conta": request.POST.get("conta").upper(),
+        "TipoConta": request.POST.get("categoria"),
+        "Titular": request.POST.get("titular").upper(),
+        "Documento": request.POST.get("documento"),
+        "PIX": request.POST.get("pix"),
+        "idPessoal_id": request.POST.get("id_pessoal"),
+    }
+
+    if id_conta:
+        ContaPessoal.objects.filter(idContaPessoal=id_conta).update(**registro)
+        return {"mensagem": "Conta atualizado com sucesso"}
+
+    ContaPessoal.objects.create(**registro)
+    return {"mensagem": "Conta cadastrado com sucesso"}
+
+
 def create_contexto_consulta_colaborador(id_pessoal):
     colaborador = classes.Colaborador(id_pessoal)
     colaborador_ant = get_colaborador(id_pessoal)
