@@ -100,20 +100,6 @@ def excluir_fone_colaborador(request):
     )
 
 
-def excluifonepessoa(request, idpesfon):
-    fonepessoa = get_object_or_404(FonePessoal, idFonePessoal=idpesfon)
-    data = dict()
-    if request.method == "POST":
-        fonepessoa.delete()
-        return redirect("consultapessoa", fonepessoa.idPessoal_id)
-    else:
-        context = {"fonepessoa": fonepessoa}
-        data["html_form"] = render_to_string(
-            "pessoas/excluifonepessoa.html", context, request=request
-        )
-    return JsonResponse(data)
-
-
 def criacontapessoa(request):
     if request.method == "POST":
         idpessoal = request.POST.get("idPessoal")
