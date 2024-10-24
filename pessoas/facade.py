@@ -25,10 +25,7 @@ from pagamentos import facade as facade_pagamentos
 from pagamentos.models import Recibo
 
 
-from pessoas.forms import (
-    FormVale,
-    FormContaPessoal,
-)
+from pessoas.forms import FormVale
 from core.constants import (
     CATEGORIAS,
     TIPOPGTO,
