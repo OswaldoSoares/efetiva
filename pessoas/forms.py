@@ -12,48 +12,6 @@ from .models import (
     ContraChequeItens,
 )
 
-
-CATEGORIAS = [
-    ("", ""),
-    ("AGREGADO", "AGREGADO"),
-    ("AJUDANTE", "AJUDANTE"),
-    ("FUNCIONÁRIO", "FUNCIONÁRIO"),
-    ("MOTORISTA", "MOTORISTA"),
-    ("PROPRIETÁRIO", "PROPRIETÁRIO"),
-]
-
-TIPOPGTO = [
-    ("", ""),
-    ("MENSALISTA", "MENSALISTA"),
-    ("MINUTA", "MINUTA"),
-    ("NENHUM", "NENHUM"),
-    ("SAIDA", "SAIDA"),
-]
-
-TIPODOC = [
-    ("", ""),
-    ("RG", "RG"),
-    ("CPF", "CPF"),
-    ("HABILITAÇÃO", "HABILITAÇÃO"),
-    ("RESERVISTA", "RESERVISTA"),
-    ("PASSAPORTE", "PASSAPORTE"),
-    ("PIS/PASEP", "PISPASEP"),
-]
-
-TIPOFONE = [
-    ("", ""),
-    ("WHATSAPP", "WHATSAPP"),
-    ("VIVO", "VIVO"),
-    ("TIM", "TIM"),
-    ("OI", "OI"),
-    ("NEXTEL", "NEXTEL"),
-    ("CLARO", "CLARO"),
-    ("FIXO", "FIXO"),
-    ("RECADO", "RECADO"),
-]
-
-TIPOCONTA = [("", ""), ("CORRENTE", "CORRENTE"), ("POUPANÇA", "POUPANÇA")]
-
 MESREFERENCIA = [
     ("1", "JANEIRO"),
     ("2", "FEVEREIRO"),
