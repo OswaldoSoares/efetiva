@@ -210,15 +210,6 @@ def print_decimo_terceiro(request):
     return response
 
 
-def apaga_conta_colaborador(request):
-    idcontapessoal = request.POST.get("idobj")
-    idpessoal = request.POST.get("idpessoal")
-    facade.apaga_conta(idcontapessoal)
-    contexto = facade.create_contexto_consulta_colaborador(idpessoal)
-    data = facade.create_data_consulta_colaborador(request, contexto)
-    return data
-
-
 def altera_salario_colaborador(request):
     idpessoal = request.GET.get("idpessoal")
     salario_form = facade.read_salario_database(idpessoal)
