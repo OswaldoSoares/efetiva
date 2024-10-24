@@ -81,65 +81,6 @@ class MeuDateInput(forms.DateInput):
     input_type = "date"
 
 
-class CadastraPessoal(forms.ModelForm):
-    class Meta:
-        model = Pessoal
-        fields = (
-            "Nome",
-            "Endereco",
-            "Bairro",
-            "CEP",
-            "Cidade",
-            "Estado",
-            "DataNascimento",
-            "Mae",
-            "Pai",
-            "DataAdmissao",
-            "Categoria",
-            "TipoPgto",
-            "Foto",
-        )
-        labels = {
-            "Nome": "NOME",
-            "Endereco": "ENDEREÇO",
-            "Bairro": "BAIRRO",
-            "CEP": "CEP",
-            "Cidade": "CIDADE",
-            "Estado": "ESTADO",
-            "DataNascimento": "DATA DE NASCIMENTO",
-            "Mae": "NOME DA MÃE",
-            "Pai": "NOME DO PAI",
-            "DataAdmissao": "DATA DE ADMISSÃO",
-            "Categoria": "CATEGORIA",
-            "TipoPgto": "TIPO DE PAGAMENTO",
-            "Foto": "FOTO DO COLABORADOR",
-        }
-        widgets = {
-            "Nome": forms.TextInput(attrs={"class": "form-control"}),
-            "Endereco": forms.TextInput(attrs={"class": "form-control"}),
-            "Bairro": forms.TextInput(attrs={"class": "form-control"}),
-            "CEP": forms.TextInput(attrs={"class": "form-control"}),
-            "Cidade": forms.TextInput(attrs={"class": "form-control"}),
-            "Estado": forms.TextInput(attrs={"class": "form-control"}),
-            "DataNascimento": MeuDateInput(
-                format="%Y-%m-%d",
-                attrs={"class": "form-control", "max": "2020/01/29"},
-            ),
-            "Mae": forms.TextInput(attrs={"class": "form-control"}),
-            "Pai": forms.TextInput(attrs={"class": "form-control"}),
-            "DataAdmissao": MeuDateInput(
-                format="%Y-%m-%d",
-                attrs={"class": "form-control", "max": "2020/01/29"},
-            ),
-            "Categoria": forms.Select(
-                attrs={"class": "form-control"}, choices=CATEGORIAS
-            ),
-            "TipoPgto": forms.Select(
-                attrs={"class": "form-control"}, choices=TIPOPGTO
-            ),
-        }
-
-
 class CadastraSalario(forms.ModelForm):
     class Meta:
         model = Salario
