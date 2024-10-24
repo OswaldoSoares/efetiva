@@ -1049,13 +1049,6 @@ def create_data_form_exclui_periodo_ferias(request, contexto):
     return JsonResponse(data)
 
 
-def html_form_adiciona_conta_colaborador(request, contexto, data):
-    data["html_form_conta_colaborador"] = render_to_string(
-        "pessoas/html_form_conta_colaborador.html", contexto, request=request
-    )
-    return data
-
-
 def valida_conta_colaborador(request):
     msg = dict()
     error = False
