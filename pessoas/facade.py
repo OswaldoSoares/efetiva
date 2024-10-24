@@ -941,13 +941,6 @@ def html_form_confirma_exclusao(request, contexto, data):
     return data
 
 
-# TODO renomear função já existe fazendo a mesma função.
-def create_data_form_exclui_fone_colaborador(request, contexto):
-    data = dict()
-    html_form_confirma_exclusao(request, contexto, data)
-    return JsonResponse(data)
-
-
 def create_data_form_adiciona_conta_colaborador(request, contexto):
     data = dict()
     html_form_adiciona_conta_colaborador(request, contexto, data)
