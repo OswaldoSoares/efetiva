@@ -948,15 +948,6 @@ def create_data_form_exclui_fone_colaborador(request, contexto):
     return JsonResponse(data)
 
 
-def salva_fone(fone):
-    obj = FonePessoal()
-    obj.TipoFone = fone["tipo_fone"]
-    obj.Fone = fone["numero_fone"]
-    obj.Contato = fone["contato"]
-    obj.idPessoal_id = fone["idpessoal"]
-    obj.save()
-
-
 def altera_fone(fone, idfonepessoal):
     telefone = FonePessoal.objects.get(idFonePessoal=idfonepessoal)
     obj = FonePessoal(telefone)
