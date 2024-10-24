@@ -1,40 +1,53 @@
-<form class="row g-3" method="post" action="{{ altera_conta_colaborador }}">
+<form class="row g-3" method="post" action="{{ adicionar_alterar_conta_colaborador }}">
 {% csrf_token %}
     <div class="col-md-6">
         <label for="id_banco" class="form-label">BANCO:</label>
-    	{{ form.Banco }}
-        {{ form.Banco.errors }}
+        <input type="text"class="form-control"name="banco"id="id_banco"
+               placeholder="Digite o mome do banco" maxlength="20"
+               value="{{ conta.Banco }}">
     </div>
     <div class="col-md-6">
         <label for="id_agencia" class="form-label">AGÊNCIA:</label>
-        {{ form.Agencia }}
-        {{ form.Agencia.errors }}
+        <input type="text"class="form-control"name="agencia"id="id_agencia"
+               placeholder="Digite o número da agência" maxlength="6"
+               value="{{ conta.Agencia }}">
     </div>
     <div class="col-md-6">
         <label for="id_conta" class="form-label">CONTA:</label>
-        {{ form.Conta }}
-        {{ form.Conta.errors }}
+        <input type="text"class="form-control"name="conta"id="id_conta"
+               placeholder="Digite o núero da conta" maxlength="10"
+               value="{{ conta.Conta }}">
     </div>
     <div class="col-md-6">
-        <label for="id_tipo_conta" class="form-label">TIPO DE CONTA:</label>
-        {{ form.TipoConta }}
-        {{ form.TipoConta.errors }}
+        <label for="id_categoria" class="form-label">TIPO DE CONTA:</label>
+        <select class="form-control" name="categoria" id="id_categoria">
+            <option value="" disabled selected>Escolha uma Opção</option>
+            {% for tipo in tipos_contas %}
+            <option value="{{ tipo }}"
+                    {% if tipo == conta.TipoConta %}
+                    selected
+                    {% endif %}>{{ tipo }}</option>
+            {% endfor %}
+        </select>
     </div>
     <div class="col-md-12">
-        <label for="id_titular" class="form-label">TITULAR: (somente se o colaborador não for o titular.)</label>
-    	{{ form.Titular }}
-        {{ form.Titlar.errors }}
+        <label for="id_titular" class="form-label">TITULAR:</label>
+        <input type="text"class="form-control"name="titular"id="id_titular"
+               placeholder="Digite o nome do titular, somente se não for o colaborador"
+               maxlength="50" value="{{ conta.Titular }}">
     </div>
     <div class="col-md-6">
         <label for="id_documento" class="form-label">CPF DO TITULAR:</label>
-        {{ form.Documento }}
-        {{ form.Documento.errors }}
+        <input type="text"class="form-control"name="documento"id="id_documento"
+               placeholder="Digite o cpf do titular" maxlength="14"
+               value="{{ conta.Documento }}">
     </div>
     <div class="col-md-6">
         <label for="id_pix" class="form-label">CHAVE PIX:</label>
-        {{ form.PIX }}
-        {{ form.PIX.errors }}
+        <input type="text"class="form-control"name="pix"id="id_pix"
+               placeholder="Digite a chave PIX" maxlength="50"
+               value="{{ conta.PIX }}">
     </div>
-    <input type="hidden" name="idcontapessoal" value="{{ idcontapessoal }}">
-    <input type="hidden" name="idpessoal" value="{{ idpessoal }}">
+    <input type="hidden" name="id_conta" value="{{ conta.idContaPessoal }}">
+    <input type="hidden" name="id_pessoal" value="{{ colaborador.id_pessoal }}">
 </form>
