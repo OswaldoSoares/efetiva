@@ -119,20 +119,6 @@ def excluir_conta_colaborador(request):
     )
 
 
-def excluicontapessoa(request, idpescon):
-    contapessoa = get_object_or_404(ContaPessoal, idContaPessoal=idpescon)
-    data = dict()
-    if request.method == "POST":
-        contapessoa.delete()
-        return redirect("consultapessoa", contapessoa.idPessoal_id)
-    else:
-        context = {"contapessoa": contapessoa}
-        data["html_form"] = render_to_string(
-            "pessoas/excluicontapessoa.html", context, request=request
-        )
-    return JsonResponse(data)
-
-
 def salva_form(request, form, template_name, idpes):
     data = dict()
     if request.method == "POST":
