@@ -248,15 +248,6 @@ def print_decimo_terceiro(request):
     return response
 
 
-def apaga_telefone_colaborador(request):
-    idfonepessoal = request.POST.get("idobj")
-    idpessoal = request.POST.get("idpessoal")
-    facade.apaga_fone(idfonepessoal)
-    contexto = facade.create_contexto_consulta_colaborador(idpessoal)
-    data = facade.create_data_consulta_colaborador(request, contexto)
-    return data
-
-
 def adiciona_conta_colaborador(request):
     idpessoal = request.GET.get("idpessoal")
     tipo_conta = dict_tipo_conta()
