@@ -948,23 +948,6 @@ def create_data_form_exclui_fone_colaborador(request, contexto):
     return JsonResponse(data)
 
 
-def valida_fone_colaborador(request):
-    msg = dict()
-    error = False
-    seleciona = request.POST.get("tipo_fone")
-    if seleciona == "0":
-        msg["erro_tipo_fone"] = "Obrigatório selecionar o tipo de telefone."
-        error = True
-    telefone = request.POST.get("numero_fone")
-    if telefone == "":
-        msg["erro_telefone"] = "Obrigatório digitar o número do telefone."
-        error = True
-    elif len(telefone) < 8:
-        msg["erro_telefone"] = "Número de telefone inválido."
-        error = True
-    return error, msg
-
-
 def read_fone_post(request):
     fone_post = dict()
     fone_post["tipo_fone"] = request.POST.get("tipo_fone")
