@@ -119,25 +119,6 @@ def excluir_conta_colaborador(request):
     )
 
 
-def salva_form(request, form, template_name, idpes):
-    data = dict()
-    if request.method == "POST":
-        if form.is_valid():
-            form.save()
-            data["form_is_valid"] = True
-            if template_name == "pessoas/criapessoa.html":
-                return redirect("indexpessoal")
-            else:
-                return redirect("consultapessoa", idpes)
-        else:
-            data["form_is_valid"] = False
-    context = {"form": form}
-    data["html_form"] = render_to_string(
-        template_name, context, request=request
-    )
-    return JsonResponse(data)
-
-
 def bloqueia_pessoa(request, idpessoa):
     facade.altera_status(idpessoa)
     return redirect("indexpessoal")
