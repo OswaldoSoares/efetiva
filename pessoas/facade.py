@@ -948,11 +948,6 @@ def create_data_form_exclui_fone_colaborador(request, contexto):
     return JsonResponse(data)
 
 
-def apaga_fone(idfonepessoal):
-    fone = FonePessoal.objects.get(idFonePessoal=idfonepessoal)
-    fone.delete()
-
-
 def create_data_form_adiciona_conta_colaborador(request, contexto):
     data = dict()
     html_form_adiciona_conta_colaborador(request, contexto, data)
