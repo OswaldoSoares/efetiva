@@ -7,9 +7,7 @@
         <span>{{ colaborador.nome }}</span>
     </div>
     <div class="text-center">
-        <span>
-            {{ telefone.TipoFone}}: {{ telefone.Fone }} {% if telefone.Contato %} - {{ telefone.Contato }}{% endif %}
-        </span>
+        <span>{{ telefone.TipoFone }}: {{ telefone.Fone }}{% if telefone.Contato %} - {{ telefone.Contato }}{% endif %}</span>
     </div>
     <input type="hidden" name="id_pessoal" value="{{ colaborador.id_pessoal }}">
     <input type="hidden" name="id_telefone" value="{{ telefone.idFonePessoal }}">
