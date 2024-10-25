@@ -134,7 +134,13 @@ def extremos_mes(_mes, _ano):
 
 
 def converter_mes_ano(_mes_ano):
-    _date = datetime.datetime.strptime(_mes_ano, "%B/%Y")
+    mes = _mes_ano[0:-5]
+    ano = _mes_ano[-4:]
+    if mes in meses:
+        _mes_ano = f"{meses.index(mes) + 1}/{ano}"
+        _date = datetime.datetime.strptime(_mes_ano, "%m/%Y")
+    else:
+        _date = datetime.datetime.strptime(_mes_ano, "%B/%Y")
     _mes = datetime.datetime.strftime(_date, "%m")
     _ano = datetime.datetime.strftime(_date, "%Y")
     return _mes, _ano
