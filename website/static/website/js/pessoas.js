@@ -3,6 +3,7 @@ $(document).ready(function() {
     $(".card-foto-colaborador").hide();
     $(".card-docs-colaborador").hide();
     $(".card-fones-colaborador").hide();
+    $(".card-contas-colaborador").hide();
 });
 
 $(document).on("click", ".js-alterar-categoria", function() {
