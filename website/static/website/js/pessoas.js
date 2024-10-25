@@ -660,7 +660,7 @@ $(document).on('click', '.js-seleciona-parcela', function() {
 
 $(document).on('click', '.js-pessoas-seleciona-vale', function() {
     var idvale = $(this).data("idvale")
-    var idpessoal = localStorage.getItem("idpessoal")
+    var id_pessoal = localStorage.getItem("id_pessoal")
     var idcontracheque = localStorage.getItem("idcontracheque")
     if (idcontracheque != "") {
         $.ajax({
@@ -694,7 +694,7 @@ var valesSelecionaveis = function() {
 }
 
 $(document).on('click', '.js-pessoas-exclui-contra-cheque-item', function () {
-    var idpessoal = localStorage.getItem("idpessoal")
+    var id_pessoal = localStorage.getItem("id_pessoal")
     var idcontracheque = $(this).data("idcontracheque")
     var idcontrachequeitens = $(this).data("idcontrachequeitens")
     $.ajax({
