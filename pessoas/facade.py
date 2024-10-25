@@ -25,10 +25,7 @@ from pagamentos import facade as facade_pagamentos
 from pagamentos.models import Recibo
 
 
-from pessoas.forms import (
-    FormVale,
-    FormContaPessoal,
-)
+from pessoas.forms import FormVale
 from core.constants import (
     CATEGORIAS,
     TIPOPGTO,
@@ -470,21 +467,6 @@ def get_pessoal_nao_mensalista_ativo():
 def get_pessoal(idpessoa: int):
     colaborador = Pessoal.objects.filter(idPessoal=idpessoa)
     return colaborador
-
-
-def get_docpessoal(idpessoa: int):
-    docpessoal = DocPessoal.objects.filter(idPessoal=idpessoa)
-    return docpessoal
-
-
-def get_fonepessoal(idpessoa: int):
-    fonepessoal = FonePessoal.objects.filter(idPessoal=idpessoa)
-    return fonepessoal
-
-
-def get_contapessoal(idpessoa: int):
-    contapessoal = ContaPessoal.objects.filter(idPessoal=idpessoa)
-    return contapessoal
 
 
 def get_salario(idpessoal: int):
@@ -1029,143 +1011,11 @@ def html_form_confirma_exclusao(request, contexto, data):
     return data
 
 
-def create_data_form_adiciona_conta_colaborador(request, contexto):
-    data = dict()
-    html_form_adiciona_conta_colaborador(request, contexto, data)
-    return JsonResponse(data)
-
-
-# TODO renomear função já existe fazendo a mesma função.
-def create_data_form_exclui_conta_colaborador(request, contexto):
-    data = dict()
-    html_form_confirma_exclusao(request, contexto, data)
-    return JsonResponse(data)
-
-
 # TODO renomear função já existe fazendo a mesma função.
 def create_data_form_exclui_periodo_ferias(request, contexto):
     data = dict()
     html_form_confirma_exclusao(request, contexto, data)
     return JsonResponse(data)
-
-
-def html_form_adiciona_conta_colaborador(request, contexto, data):
-    data["html_form_conta_colaborador"] = render_to_string(
-        "pessoas/html_form_conta_colaborador.html", contexto, request=request
-    )
-    return data
-
-
-def valida_conta_colaborador(request):
-    msg = dict()
-    error = False
-    banco = request.POST.get("banco")
-    pix = request.POST.get("pix")
-    if banco == "" and pix == "":
-        msg["erro_banco"] = "Obrigatório digitar o nome do banco."
-        msg["erro_pix"] = "Obrigatório digitar a chave PIX."
-        error = True
-    if banco != "" and len(banco) < 2:
-        msg["erro_banco"] = "Nome do banco inválido."
-        error = True
-    if pix != "" and len(pix) < 6:
-        msg["erro_pix"] = "Chave PIX inválida."
-        error = True
-    agencia = request.POST.get("agencia")
-    if banco != "" and agencia == "":
-        msg["erro_agencia"] = "Obrigatório digitar o número da agência."
-        error = True
-    if agencia != "" and len(agencia) < 3:
-        msg["erro_agencia"] = "Número da agência inválida."
-        error = True
-    conta = request.POST.get("conta")
-    if banco != "" and conta == "":
-        msg["erro_numero_conta"] = "Obrigatório digitar o número da conta."
-        error = True
-    if conta != "" and len(conta) < 4:
-        msg["erro_numero_conta"] = "Número da conta inválida."
-        error = True
-    seleciona = request.POST.get("tipo_conta")
-    if banco != "" and seleciona == "0":
-        msg["erro_tipo_conta"] = "Obrigatório selecionar o tipo de conta."
-        error = True
-    return error, msg
-
-
-def read_conta_post(request):
-    conta_post = dict()
-    conta_post["banco"] = request.POST.get("banco")
-    conta_post["agencia"] = request.POST.get("agencia")
-    conta_post["conta"] = request.POST.get("conta")
-    conta_post["tipo_conta"] = request.POST.get("tipo_conta")
-    conta_post["titular"] = request.POST.get("titular")
-    conta_post["documento"] = request.POST.get("documento")
-    conta_post["pix"] = request.POST.get("pix")
-    conta_post["idpessoal"] = request.POST.get("idpessoal")
-    return conta_post
-
-
-def read_conta_database(idcontapessoal):
-    conta = ContaPessoal.objects.get(idContaPessoal=idcontapessoal)
-    conta_database = dict()
-    conta_database["banco"] = conta.Banco
-    conta_database["agencia"] = conta.Agencia
-    conta_database["conta"] = conta.Conta
-    conta_database["tipo_conta"] = conta.TipoConta
-    conta_database["titular"] = conta.Titular
-    conta_database["documento"] = conta.Documento
-    conta_database["pix"] = conta.PIX
-    conta_database["idpessoal"] = conta.idPessoal_id
-    conta_database["idcontapessoal"] = conta.idContaPessoal
-    return conta_database
-
-
-def salva_conta(conta):
-    obj = ContaPessoal()
-    obj.Banco = conta["banco"]
-    obj.Agencia = conta["agencia"]
-    obj.Conta = conta["conta"]
-    obj.TipoConta = conta["tipo_conta"]
-    obj.Titular = conta["titular"]
-    obj.Documento = conta["documento"]
-    obj.PIX = conta["pix"]
-    obj.idPessoal_id = conta["idpessoal"]
-    obj.save()
-
-
-def altera_conta(conta, idcontapessoal):
-    conta_banco = ContaPessoal.objects.get(idContaPessoal=idcontapessoal)
-    obj = ContaPessoal(conta_banco)
-    obj.idContaPessoal = conta_banco.idContaPessoal
-    obj.Banco = conta["banco"]
-    obj.Agencia = conta["agencia"]
-    obj.Conta = conta["conta"]
-    obj.TipoConta = conta["tipo_conta"]
-    obj.Titular = conta["titular"]
-    obj.Documento = conta["documento"]
-    obj.PIX = conta["pix"]
-    obj.idPessoal_id = conta["idpessoal"]
-    obj.save()
-
-
-def create_contexto_exclui_conta_colaborador(idcontapessoal):
-    conta = ContaPessoal.objects.get(idContaPessoal=idcontapessoal)
-    banco = conta.Banco
-    agencia = conta.Agencia
-    conta_banco = conta.Conta
-    pix = conta.PIX
-    idpessoal = conta.idPessoal_id
-    if conta_banco:
-        mensagem = f"Confirma a exclusão da conta: {banco} - AG: {agencia} Conta: {conta_banco}?"
-    else:
-        mensagem = f"Confirma a exclusão da conta: Chave PIX: {pix}?"
-    js_class = "js-apaga-conta"
-    return {
-        "mensagem": mensagem,
-        "idobj": idcontapessoal,
-        "idpessoal": idpessoal,
-        "js_class": js_class,
-    }
 
 
 def create_contexto_exclui_ferias(idferias):
@@ -1188,11 +1038,6 @@ def create_contexto_exclui_ferias(idferias):
 def exclui_periodo_ferias_base_dados(idferias):
     ferias = Ferias.objects.get(idFerias=idferias)
     ferias.delete()
-
-
-def apaga_conta(idcontapessoal):
-    conta = ContaPessoal.objects.get(idContaPessoal=idcontapessoal)
-    conta.delete()
 
 
 def create_data_form_paga_decimo_terceiro(request, contexto):
@@ -2442,75 +2287,6 @@ def modal_vale_colaborador(request, idpessoal):
         contexto = {"form": FormVale, "idpessoal": idpessoal}
         data["html_modal"] = render_to_string(
             "pessoas/modal_vale_colaborador.html", contexto, request=request
-        )
-    return JsonResponse(data)
-
-
-def modal_conta_bancaria(request, idpessoal):
-    data = dict()
-    if request.method == "POST":
-        idcontapessoal = request.POST.get("idcontapessoal")
-        banco = request.POST.get("Banco")
-        agencia = request.POST.get("Agencia")
-        conta = request.POST.get("Conta")
-        tipo_conta = request.POST.get("TipoConta")
-        titular = request.POST.get("Titular")
-        cpf_titular = request.POST.get("Documento")
-        pix = request.POST.get("PIX")
-        registro_conta_bancaria = []
-        if idcontapessoal:
-            registro_conta_bancaria.append(
-                ContaPessoal(
-                    Banco=banco,
-                    Agencia=agencia,
-                    Conta=conta,
-                    TipoConta=tipo_conta,
-                    Titular=titular,
-                    Documento=cpf_titular,
-                    PIX=pix,
-                    idContaPessoal=idcontapessoal,
-                )
-            )
-            ContaPessoal.objects.bulk_update(
-                registro_conta_bancaria,
-                [
-                    "Banco",
-                    "Agencia",
-                    "Conta",
-                    "TipoConta",
-                    "Titular",
-                    "Documento",
-                    "PIX",
-                ],
-            )
-        else:
-            registro_conta_bancaria.append(
-                ContaPessoal(
-                    Banco=banco,
-                    Agencia=agencia,
-                    Conta=conta,
-                    TipoConta=tipo_conta,
-                    Titular=titular,
-                    Documento=cpf_titular,
-                    PIX=pix,
-                    idpessoal_id=idpessoal,
-                )
-            )
-            ContaPessoal.objects.bulk_create(registro_conta_bancaria)
-    else:
-        idcontapessoal = request.GET.get("idcontapessoal")
-        if idcontapessoal:
-            conta = ContaPessoal.objects.get(idPessoal=idpessoal)
-            form = FormContaPessoal(instance=conta)
-        else:
-            form = FormContaPessoal
-        contexto = {
-            "form": form,
-            "idpessoal": idpessoal,
-            "idcontapessoal": idcontapessoal,
-        }
-        data["html_modal"] = render_to_string(
-            "pessoas/modal_conta_colaborador.html", contexto, request=request
         )
     return JsonResponse(data)
 

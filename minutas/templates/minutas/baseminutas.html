@@ -1,14 +1,14 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 
-{% block title %} Módulo Minutas {% endblock %}
+{% block title %} Módulo Minutas {% endblock title %}
 
 {% block main %}
     {% block mainminuta %}
-    {% endblock %}
-{% endblock %}
+    {% endblock mainminuta %}
+{% endblock main %}
 
 {% block script %}
     <script src="{% static 'website/js/ajax.js' %}"></script>
     <script src="{% static 'website/js/minutas.js' %}"></script>
-{% endblock %}
+{% endblock script %}

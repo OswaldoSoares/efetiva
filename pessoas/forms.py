@@ -3,56 +3,11 @@ import datetime
 from django import forms
 from .models import (
     Pessoal,
-    DocPessoal,
-    FonePessoal,
-    ContaPessoal,
     Salario,
     Vales,
     ContraCheque,
     ContraChequeItens,
 )
-
-
-CATEGORIAS = [
-    ("", ""),
-    ("AGREGADO", "AGREGADO"),
-    ("AJUDANTE", "AJUDANTE"),
-    ("FUNCIONÁRIO", "FUNCIONÁRIO"),
-    ("MOTORISTA", "MOTORISTA"),
-    ("PROPRIETÁRIO", "PROPRIETÁRIO"),
-]
-
-TIPOPGTO = [
-    ("", ""),
-    ("MENSALISTA", "MENSALISTA"),
-    ("MINUTA", "MINUTA"),
-    ("NENHUM", "NENHUM"),
-    ("SAIDA", "SAIDA"),
-]
-
-TIPODOC = [
-    ("", ""),
-    ("RG", "RG"),
-    ("CPF", "CPF"),
-    ("HABILITAÇÃO", "HABILITAÇÃO"),
-    ("RESERVISTA", "RESERVISTA"),
-    ("PASSAPORTE", "PASSAPORTE"),
-    ("PIS/PASEP", "PISPASEP"),
-]
-
-TIPOFONE = [
-    ("", ""),
-    ("WHATSAPP", "WHATSAPP"),
-    ("VIVO", "VIVO"),
-    ("TIM", "TIM"),
-    ("OI", "OI"),
-    ("NEXTEL", "NEXTEL"),
-    ("CLARO", "CLARO"),
-    ("FIXO", "FIXO"),
-    ("RECADO", "RECADO"),
-]
-
-TIPOCONTA = [("", ""), ("CORRENTE", "CORRENTE"), ("POUPANÇA", "POUPANÇA")]
 
 MESREFERENCIA = [
     ("1", "JANEIRO"),
@@ -79,65 +34,6 @@ ANOREFERENCIA = [
 
 class MeuDateInput(forms.DateInput):
     input_type = "date"
-
-
-class CadastraPessoal(forms.ModelForm):
-    class Meta:
-        model = Pessoal
-        fields = (
-            "Nome",
-            "Endereco",
-            "Bairro",
-            "CEP",
-            "Cidade",
-            "Estado",
-            "DataNascimento",
-            "Mae",
-            "Pai",
-            "DataAdmissao",
-            "Categoria",
-            "TipoPgto",
-            "Foto",
-        )
-        labels = {
-            "Nome": "NOME",
-            "Endereco": "ENDEREÇO",
-            "Bairro": "BAIRRO",
-            "CEP": "CEP",
-            "Cidade": "CIDADE",
-            "Estado": "ESTADO",
-            "DataNascimento": "DATA DE NASCIMENTO",
-            "Mae": "NOME DA MÃE",
-            "Pai": "NOME DO PAI",
-            "DataAdmissao": "DATA DE ADMISSÃO",
-            "Categoria": "CATEGORIA",
-            "TipoPgto": "TIPO DE PAGAMENTO",
-            "Foto": "FOTO DO COLABORADOR",
-        }
-        widgets = {
-            "Nome": forms.TextInput(attrs={"class": "form-control"}),
-            "Endereco": forms.TextInput(attrs={"class": "form-control"}),
-            "Bairro": forms.TextInput(attrs={"class": "form-control"}),
-            "CEP": forms.TextInput(attrs={"class": "form-control"}),
-            "Cidade": forms.TextInput(attrs={"class": "form-control"}),
-            "Estado": forms.TextInput(attrs={"class": "form-control"}),
-            "DataNascimento": MeuDateInput(
-                format="%Y-%m-%d",
-                attrs={"class": "form-control", "max": "2020/01/29"},
-            ),
-            "Mae": forms.TextInput(attrs={"class": "form-control"}),
-            "Pai": forms.TextInput(attrs={"class": "form-control"}),
-            "DataAdmissao": MeuDateInput(
-                format="%Y-%m-%d",
-                attrs={"class": "form-control", "max": "2020/01/29"},
-            ),
-            "Categoria": forms.Select(
-                attrs={"class": "form-control"}, choices=CATEGORIAS
-            ),
-            "TipoPgto": forms.Select(
-                attrs={"class": "form-control"}, choices=TIPOPGTO
-            ),
-        }
 
 
 class CadastraSalario(forms.ModelForm):
@@ -249,29 +145,4 @@ class FormVale(forms.ModelForm):
             "Descricao": forms.TextInput(attrs={"class": "form-control"}),
             "Valor": forms.NumberInput(attrs={"class": "form-control"}),
             "idPessoal": forms.Select(attrs={"class": "form-control"}),
-        }
-
-
-class FormContaPessoal(forms.ModelForm):
-    class Meta:
-        model = ContaPessoal
-        fields = (
-            "Banco",
-            "Agencia",
-            "Conta",
-            "TipoConta",
-            "Titular",
-            "Documento",
-            "PIX",
-        )
-        widgets = {
-            "Banco": forms.TextInput(attrs={"class": "form-control"}),
-            "Agencia": forms.TextInput(attrs={"class": "form-control"}),
-            "Conta": forms.TextInput(attrs={"class": "form-control"}),
-            "TipoConta": forms.Select(
-                attrs={"class": "form-control"}, choices=TIPOCONTA
-            ),
-            "PIX": forms.TextInput(attrs={"class": "form-control"}),
-            "Titular": forms.TextInput(attrs={"class": "form-control"}),
-            "Documento": forms.TextInput(attrs={"class": "form-control"}),
         }

@@ -1,8 +1,7 @@
 from functools import partial
 from django.shortcuts import render
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import redirect
 from django.http import JsonResponse
-from django.template.loader import render_to_string
 from rolepermissions.decorators import has_permission_decorator
 from pessoas import facade
 from pessoas.print import (
@@ -10,15 +9,7 @@ from pessoas.print import (
     print_pdf_rescisao_trabalho,
     print_contra_cheque,
 )
-from website.facade import (
-    dict_tipo_conta,
-    dict_tipo_fone,
-    str_hoje,
-)
-from .models import (
-    FonePessoal,
-    ContaPessoal,
-)
+from website.facade import str_hoje
 
 
 @has_permission_decorator("modulo_colaboradores")
