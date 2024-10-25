@@ -147,6 +147,7 @@ class Tabela(models.Model):
     AjudanteCobraHoraExtra = models.DecimalField(
         max_digits=8, decimal_places=2, default=0
     )
+    HoraInicialExtras = models.TimeField(default=datetime.time(17, 0))
     AjudantePaga = models.DecimalField(
         max_digits=8, decimal_places=2, default=0
     )
