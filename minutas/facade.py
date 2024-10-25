@@ -142,8 +142,9 @@ class MinutaSelecionada:
         self.recebe_realizada = self.verifica_recebimentos()
         self.fatura = minuta.idFatura
         self.valor_minuta = minuta.Valor
+        self.hora_inicio_extras = self.tabela[0]["HoraInicialExtras"]
         self.horas_extras = calcula_horas_extras(
-            self.data, self.hora_final, time(18, 0)
+            self.data, self.hora_final, self.hora_inicio_extras
         )
 
     def get_total_kms(self):
@@ -506,6 +507,7 @@ class ClienteTabela:
                 "TaxaExpedicao": itens.TaxaExpedicao,
                 "AjudanteCobra": itens.AjudanteCobra,
                 "AjudanteCobraHoraExtra": itens.AjudanteCobraHoraExtra,
+                "HoraInicialExtras": itens.HoraInicialExtras,
                 "AjudantePaga": itens.AjudantePaga,
                 "phkescCobra": itens.phkescCobra,
                 "phkescPaga": itens.phkescPaga,
@@ -3139,10 +3141,10 @@ def calcula_cobranca(total_timedelta, valor_por_hora):
     cobranca_horas = Decimal(horas) * valor_por_hora
 
     intervalos = [
-        (0, 15, Decimal("0.25")),
-        (15, 30, Decimal("0.50")),
-        (30, 45, Decimal("0.75")),
-        (45, 60, Decimal("1.00")),
+        (1, 15, Decimal("0.25")),
+        (16, 30, Decimal("0.50")),
+        (31, 45, Decimal("0.75")),
+        (46, 60, Decimal("1.00")),
     ]
 
     porcentagem_minutos = next(
@@ -3233,7 +3235,7 @@ def atualizar_dados_tabela_cobranca(minuta):
             )
 
     horas_extras = calcula_horas_extras(
-        minuta.data, minuta.hora_final, time(18, 0)
+        minuta.data, minuta.hora_final, minuta.hora_inicio_extras
     )
     if horas_extras:
         valor_hora_extra = minuta.tabela[0]["AjudanteCobraHoraExtra"]
@@ -3280,9 +3282,8 @@ def atualizar_dados_tabela_pagamento(minuta):
                     "entregas_volume": veiculo["EntregaVolumePaga"],
                 }
             )
-
     horas_extras = calcula_horas_extras(
-        minuta.data, minuta.hora_final, time(18, 0)
+        minuta.data, minuta.hora_final, minuta.hora_inicio_extras
     )
     if horas_extras:
         # TODO Criar campo AjudantePagaHoraExtra no db
@@ -3363,7 +3364,7 @@ def atualizar_dados_minuta(minuta):
     dados_minuta["ajudante"] = len(minuta.ajudantes) if minuta.ajudantes else 0
 
     horas_extras = calcula_horas_extras(
-        minuta.data, minuta.hora_final, time(18, 0)
+        minuta.data, minuta.hora_final, minuta.hora_inicio_extras
     )
     if horas_extras:
         total_segundos = int(horas_extras.total_seconds())
