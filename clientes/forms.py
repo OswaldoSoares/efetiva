@@ -153,6 +153,7 @@ class CadastraTabela(forms.ModelForm):
             "TaxaExpedicao",
             "AjudanteCobra",
             "AjudanteCobraHoraExtra",
+            "HoraInicialExtras",
             "AjudantePaga",
             "idFormaPagamento",
             "idCliente",
@@ -179,6 +180,9 @@ class CadastraTabela(forms.ModelForm):
             ),
             "AjudanteCobraHoraExtra": forms.NumberInput(
                 attrs={"class": "form-control"}
+            ),
+            "HoraInicialExtras": MeuTimeInput(
+                attrs={"class": "form-control", "pattern": "[0-9]{2}:[0-9]{2}"}
             ),
             "AjudantePaga": forms.NumberInput(attrs={"class": "form-control"}),
             "idFormaPagamento": forms.Select(attrs={"class": "form-control"}),
