@@ -2,6 +2,7 @@ $(document).ready(function() {
     $(".button-demissao").hide();
     $(".card-foto-colaborador").hide();
     $(".card-docs-colaborador").hide();
+    $(".card-fones-colaborador").hide();
 });
 
 $(document).on("click", ".js-alterar-categoria", function() {
