@@ -70,7 +70,11 @@ class CadastraFoneContatoCliente(forms.ModelForm):
     class Meta:
         model = FoneContatoCliente
         fields = ("Contato", "TipoFone", "Fone", "idCliente")
-        labels = {"Contato": "CONTATO", "TipoFone": "OPERADORA", "Fone": "TELEFONE"}
+        labels = {
+            "Contato": "CONTATO",
+            "TipoFone": "OPERADORA",
+            "Fone": "TELEFONE",
+        }
         widgets = {
             "Contato": forms.TextInput(),
             "TipoFone": forms.Select(),
@@ -137,7 +141,9 @@ class CadastraTabela(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CadastraTabela, self).__init__(*args, **kwargs)
         # Personaliza opcão o do SELECT
-        self.fields["idFormaPagamento"].empty_label = "SELECIONE UM ITEM DA LISTA"
+        self.fields[
+            "idFormaPagamento"
+        ].empty_label = "SELECIONE UM ITEM DA LISTA"
 
     class Meta:
         model = Tabela
@@ -147,6 +153,7 @@ class CadastraTabela(forms.ModelForm):
             "TaxaExpedicao",
             "AjudanteCobra",
             "AjudanteCobraHoraExtra",
+            "HoraInicialExtras",
             "AjudantePaga",
             "idFormaPagamento",
             "idCliente",
@@ -165,10 +172,17 @@ class CadastraTabela(forms.ModelForm):
             "Seguro": forms.NumberInput(
                 attrs={"class": "form-control", "step": "0.001"}
             ),
-            "TaxaExpedicao": forms.NumberInput(attrs={"class": "form-control"}),
-            "AjudanteCobra": forms.NumberInput(attrs={"class": "form-control"}),
+            "TaxaExpedicao": forms.NumberInput(
+                attrs={"class": "form-control"}
+            ),
+            "AjudanteCobra": forms.NumberInput(
+                attrs={"class": "form-control"}
+            ),
             "AjudanteCobraHoraExtra": forms.NumberInput(
                 attrs={"class": "form-control"}
+            ),
+            "HoraInicialExtras": MeuTimeInput(
+                attrs={"class": "form-control", "pattern": "[0-9]{2}:[0-9]{2}"}
             ),
             "AjudantePaga": forms.NumberInput(attrs={"class": "form-control"}),
             "idFormaPagamento": forms.Select(attrs={"class": "form-control"}),
@@ -224,8 +238,12 @@ class CadastraTabelaVeiculo(forms.ModelForm):
             "SaidaPaga": "VALOR DA SAÍDA À PAGAR",
         }
         widgets = {
-            "PorcentagemCobra": forms.NumberInput(attrs={"class": "form-control"}),
-            "PorcentagemPaga": forms.NumberInput(attrs={"class": "form-control"}),
+            "PorcentagemCobra": forms.NumberInput(
+                attrs={"class": "form-control"}
+            ),
+            "PorcentagemPaga": forms.NumberInput(
+                attrs={"class": "form-control"}
+            ),
             "HoraCobra": forms.NumberInput(attrs={"class": "form-control"}),
             "HoraPaga": forms.NumberInput(attrs={"class": "form-control"}),
             "HoraMinimo": MeuTimeInput(
@@ -236,11 +254,21 @@ class CadastraTabelaVeiculo(forms.ModelForm):
             "KMMinimo": forms.NumberInput(attrs={"class": "form-control"}),
             "EntregaCobra": forms.NumberInput(attrs={"class": "form-control"}),
             "EntregaPaga": forms.NumberInput(attrs={"class": "form-control"}),
-            "EntregaMinimo": forms.NumberInput(attrs={"class": "form-control"}),
-            "EntregaKGCobra": forms.NumberInput(attrs={"class": "form-control"}),
-            "EntregaKGPaga": forms.NumberInput(attrs={"class": "form-control"}),
-            "EntregaVolumeCobra": forms.NumberInput(attrs={"class": "form-control"}),
-            "EntregaVolumePaga": forms.NumberInput(attrs={"class": "form-control"}),
+            "EntregaMinimo": forms.NumberInput(
+                attrs={"class": "form-control"}
+            ),
+            "EntregaKGCobra": forms.NumberInput(
+                attrs={"class": "form-control"}
+            ),
+            "EntregaKGPaga": forms.NumberInput(
+                attrs={"class": "form-control"}
+            ),
+            "EntregaVolumeCobra": forms.NumberInput(
+                attrs={"class": "form-control"}
+            ),
+            "EntregaVolumePaga": forms.NumberInput(
+                attrs={"class": "form-control"}
+            ),
             "SaidaCobra": forms.NumberInput(attrs={"class": "form-control"}),
             "SaidaPaga": forms.NumberInput(attrs={"class": "form-control"}),
             "idCliente": forms.HiddenInput(attrs={}),
@@ -268,9 +296,15 @@ class CadastraTabelaCapacidade(forms.ModelForm):
             "CapacidadeInicial": forms.NumberInput(
                 attrs={"class": "form-control", "readonly": True}
             ),
-            "CapacidadeFinal": forms.NumberInput(attrs={"class": "form-control"}),
-            "CapacidadeCobra": forms.NumberInput(attrs={"class": "form-control"}),
-            "CapacidadePaga": forms.NumberInput(attrs={"class": "form-control"}),
+            "CapacidadeFinal": forms.NumberInput(
+                attrs={"class": "form-control"}
+            ),
+            "CapacidadeCobra": forms.NumberInput(
+                attrs={"class": "form-control"}
+            ),
+            "CapacidadePaga": forms.NumberInput(
+                attrs={"class": "form-control"}
+            ),
             "idCliente": forms.HiddenInput(),
         }
 
@@ -295,9 +329,15 @@ class CadastraTabelaPerimetro(forms.ModelForm):
             "PerimetroInicial": forms.NumberInput(
                 attrs={"class": "form-control", "readonly": True}
             ),
-            "PerimetroFinal": forms.NumberInput(attrs={"class": "form-control"}),
-            "PerimetroCobra": forms.NumberInput(attrs={"class": "form-control"}),
-            "PerimetroPaga": forms.NumberInput(attrs={"class": "form-control"}),
+            "PerimetroFinal": forms.NumberInput(
+                attrs={"class": "form-control"}
+            ),
+            "PerimetroCobra": forms.NumberInput(
+                attrs={"class": "form-control"}
+            ),
+            "PerimetroPaga": forms.NumberInput(
+                attrs={"class": "form-control"}
+            ),
             "idCliente": forms.HiddenInput(),
         }
 
