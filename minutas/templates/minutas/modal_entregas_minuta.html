@@ -1,7 +1,7 @@
 {% load custom_filters %}
 <form class="row g-3" method="post" action="{% url 'adicionar_entrega' %}">
     {% csrf_token %}
-	<div class="col-md-12" id="js-perimetro-div">
+    <div class="col-md-12" id="js-perimetro-div">
         <input type="checkbox" id="chk-perimetro" value="proxima" class="chk-perimetro"
                {% if nota.Nota == "PERIMETRO" %} checked {% endif %}>
         <label for="chk-perimetro">PERIMETRO</label>
