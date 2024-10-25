@@ -65,6 +65,7 @@ function initModalDialog(event, modal_element) {
 function atualizarInterfaceComDados(xhr) {
     $(".card-colaboradores").html(xhr["html-card-colaboradores"]);
     $(".card-docs-colaborador").html(xhr["html-card-docs-colaborador"]);
+    $(".card-fones-colaborador").html(xhr["html-card-fones-colaborador"]);
 }
 
 function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
