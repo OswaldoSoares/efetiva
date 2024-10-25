@@ -793,21 +793,23 @@ def html_recibos_colaborador(request, contexto, data):
 
 
 def create_data_consulta_colaborador(request, contexto):
-    tipo_pgto = contexto["colaborador"]["tipo_pgto"]
+    tipo_pgto = contexto["colaborador"].dados_profissionais.tipo_pgto
     data = dict()
-    html_lista_colaboradores_ativo(request, contexto, data)
-    html_card_foto_colaborador(request, contexto, data)
-    html_card_info_colaborador(request, contexto, data)
-    html_dados_colaborador(request, contexto, data)
-    if tipo_pgto == "MENSALISTA":
-        html_ferias_colaborador(request, contexto, data)
-        html_decimo_terceiro(request, contexto, data)
-    else:
-        html_recibos_colaborador(request, contexto, data)
-    html_vales_colaborador(request, contexto, data)
-    html_multas_colaborador(request, contexto, data)
-    data["colaborador"] = contexto["colaborador"]["idpes"]
-    data["categoria"] = contexto["colaborador"]["categoria"]
+    html_data.html_card_foto_colaborador(request, contexto, data)
+    html_data.html_card_docs_colaborador(request, contexto, data)
+    html_data.html_card_fones_colaborador(request, contexto, data)
+    html_data.html_card_contas_colaborador(request, contexto, data)
+    #  html_card_info_colaborador(request, contexto, data)
+    #  html_dados_colaborador(request, contexto, data)
+    #  if tipo_pgto == "MENSALISTA":
+    #  html_ferias_colaborador(request, contexto, data)
+    #  html_decimo_terceiro(request, contexto, data)
+    #  else:
+    #  html_recibos_colaborador(request, contexto, data)
+    #  html_vales_colaborador(request, contexto, data)
+    #  html_multas_colaborador(request, contexto, data)
+    #  data["colaborador"] = contexto["colaborador"].id_pessoal
+    #  data["categoria"] = contexto["colaborador"].categoria
     return JsonResponse(data)
 
 
