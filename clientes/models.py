@@ -138,16 +138,24 @@ class Tabela(models.Model):
     idTabela = models.AutoField(primary_key=True)
     Seguro = models.DecimalField(max_digits=6, decimal_places=3, default=0)
     Comissao = models.DecimalField(max_digits=5, decimal_places=2, default=0)
-    TaxaExpedicao = models.DecimalField(max_digits=8, decimal_places=2, default=0)
-    AjudanteCobra = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    TaxaExpedicao = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0
+    )
+    AjudanteCobra = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0
+    )
     AjudanteCobraHoraExtra = models.DecimalField(
         max_digits=8, decimal_places=2, default=0
     )
-    AjudantePaga = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    AjudantePaga = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0
+    )
     phkescCobra = models.CharField(max_length=8, default="00000000")
     phkescPaga = models.CharField(max_length=8, default="00000000")
     idFormaPagamento = models.ForeignKey(
-        FormaPagamento, on_delete=models.PROTECT, verbose_name="FORMA DE PAGAMENTO"
+        FormaPagamento,
+        on_delete=models.PROTECT,
+        verbose_name="FORMA DE PAGAMENTO",
     )
     idCliente = models.OneToOneField(Cliente, on_delete=models.CASCADE)
 
@@ -162,21 +170,39 @@ class Tabela(models.Model):
 
 class TabelaVeiculo(models.Model):
     idTabelaVeiculo = models.AutoField(primary_key=True)
-    idCategoriaVeiculo = models.ForeignKey(CategoriaVeiculo, on_delete=models.PROTECT)
-    PorcentagemCobra = models.DecimalField(max_digits=8, decimal_places=2, default=0)
-    PorcentagemPaga = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    idCategoriaVeiculo = models.ForeignKey(
+        CategoriaVeiculo, on_delete=models.PROTECT
+    )
+    PorcentagemCobra = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0
+    )
+    PorcentagemPaga = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0
+    )
     HoraCobra = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     HoraPaga = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     HoraMinimo = models.TimeField(default=0)
     KMCobra = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     KMPaga = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     KMMinimo = models.IntegerField(default=0)
-    EntregaCobra = models.DecimalField(max_digits=8, decimal_places=2, default=0)
-    EntregaPaga = models.DecimalField(max_digits=8, decimal_places=2, default=0)
-    EntregaKGCobra = models.DecimalField(max_digits=8, decimal_places=2, default=0)
-    EntregaKGPaga = models.DecimalField(max_digits=8, decimal_places=2, default=0)
-    EntregaVolumeCobra = models.DecimalField(max_digits=8, decimal_places=2, default=0)
-    EntregaVolumePaga = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    EntregaCobra = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0
+    )
+    EntregaPaga = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0
+    )
+    EntregaKGCobra = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0
+    )
+    EntregaKGPaga = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0
+    )
+    EntregaVolumeCobra = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0
+    )
+    EntregaVolumePaga = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0
+    )
     EntregaMinimo = models.IntegerField(default=0)
     SaidaCobra = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     SaidaPaga = models.DecimalField(max_digits=8, decimal_places=2, default=0)
@@ -196,8 +222,12 @@ class TabelaCapacidade(models.Model):
     idTabelaCapacidade = models.AutoField(primary_key=True)
     CapacidadeInicial = models.IntegerField(default=0)
     CapacidadeFinal = models.IntegerField(default=1)
-    CapacidadeCobra = models.DecimalField(max_digits=8, decimal_places=2, default=0)
-    CapacidadePaga = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    CapacidadeCobra = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0
+    )
+    CapacidadePaga = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0
+    )
     idCliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
 
     class Meta:
@@ -211,8 +241,12 @@ class TabelaPerimetro(models.Model):
     idTabelaPerimetro = models.AutoField(primary_key=True)
     PerimetroInicial = models.IntegerField(default=0)
     PerimetroFinal = models.IntegerField(default=1)
-    PerimetroCobra = models.DecimalField(max_digits=8, decimal_places=2, default=0)
-    PerimetroPaga = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    PerimetroCobra = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0
+    )
+    PerimetroPaga = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0
+    )
     idCliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
 
     class Meta:
