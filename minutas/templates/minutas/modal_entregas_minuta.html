@@ -70,7 +70,7 @@
     <div class="col-md-1">
         <label for="estado" class="form-label">UF:</label>
         <input type="text"class="form-control"name="estado"id="estado"
-               value="{% if nota  %}{{ nota.Estado }}{% else %}SP{% endif %}">
+               value="{% if nota %}{{ nota.Estado }}{% else %}SP{% endif %}">
     </div>
     <input type="hidden" name="id_minuta" value="{{ minuta.idminuta }}">
     <input type="hidden" name="id_minuta_nota" value="{{ nota.idMinutaNotas }}">
