@@ -110,6 +110,16 @@ def excluir_conta_colaborador(request):
     )
 
 
+def adicionar_ou_alterar_vale_colaborador(request):
+    return handle_modal_colaborador(
+        request,
+        facade.modal_vale_colaborador,
+        facade.save_vale_colaborador,
+        partial(facade.create_contexto_class_colaborador, request),
+        facade.conta_html_data,
+    )
+
+
 def bloqueia_pessoa(request, idpessoa):
     facade.altera_status(idpessoa)
     return redirect("indexpessoal")
