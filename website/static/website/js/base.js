@@ -15,10 +15,17 @@ function openMyModal(event) {
         // idconfirma: $(event.target).data("idconfirma"),
         // idcartaoponto: $(event.target).data("idcartaoponto"),
     }
+
     // Verifica se o id_documento está presente
     const idDocumento = $(event.target).data("id_documento");
     if (typeof idDocumento !== "undefined") {
         requestData.id_documento = idDocumento;
+    }
+
+    // Verifica se o id_telefone está presente
+    const idTelefone = $(event.target).data("id_telefone");
+    if (typeof idTelefone !== "undefined") {
+        requestData.id_telefone = idTelefone;
     }
     executarAjax(url, "GET", requestData, function(data) {
         modal.find(".modal-body").html(data.modal_html);
