@@ -1809,7 +1809,6 @@ def html_form_paga_recibo_colaborador(request, contexto, data):
 
 
 def paga_recibo_colabotador(idrecibo, datapgto):
-    print(f"[AQUI ESTOU] - {idrecibo} - {datapgto}")
     recibo = Recibo.objects.get(idRecibo=idrecibo)
     obj = recibo
     obj.StatusRecibo = "PAGO"
