@@ -21,6 +21,7 @@ from pessoas.models import (
     Salario,
     Vales,
 )
+
 from pessoas.facade import (
     get_contra_cheque_mes_ano_descricao,
     get_contra_cheque_mes_ano_pagamento,
