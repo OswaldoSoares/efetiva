@@ -27,7 +27,7 @@
                value="{{ nota.Nota|default_if_none:'' }}">
         <datalist id="entregas_nota">
             {% for entrega in entrega_notas %}
-            <option value="{{ entrega.Nota }}">
+            <option value="{{ entrega.Nota }}"></option>
             {% endfor %}
         </datalist>
     </div>
