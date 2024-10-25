@@ -287,13 +287,18 @@
     </div>
 
     <div class="col-md-4">
+        <label for="id_AjudantePaga" class="form-label">AJUDANTE PAGA:</label>
+        {{ form.AjudantePaga }}
+    </div>
+
+    <div class="col-md-6">
         <label for="id_AjudanteCobraHoraExtra" class="form-label">AJUDANTE RECEBE HORA EXTRA:</label>
         {{ form.AjudanteCobraHoraExtra }}
     </div>
 
-    <div class="col-md-4">
-        <label for="id_AjudantePaga" class="form-label">AJUDANTE PAGA:</label>
-        {{ form.AjudantePaga }}
+    <div class="col-md-6">
+        <label for="id_HoraInicialExtra" class="form-label">HORA INICAIL DAS HORAS EXTRAS:</label>
+        {{ form.HoraInicialExtras }}
     </div>
 
     <input type="hidden" name="idCliente" value="{{ idcliente }}" id="id_idCliente">
