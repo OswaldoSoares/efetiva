@@ -46,6 +46,8 @@ $(document).on('click', ".js-selecionar-colaborador", function() {
         $(".card-foto-colaborador").show();
         $(".card-docs-colaborador").html(data["html-card-docs-colaborador"]);
         $(".card-docs-colaborador").show();
+        $(".card-fones-colaborador").html(data["html-card-fones-colaborador"]);
+        $(".card-fones-colaborador").show();
         var url = $(".foto").attr("src");
         // Força o recarregamento da foto sem utilizar o cache
         $(".foto").attr("src", url + `?v=${new Date().getTime()}`);
