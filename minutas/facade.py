@@ -3141,10 +3141,10 @@ def calcula_cobranca(total_timedelta, valor_por_hora):
     cobranca_horas = Decimal(horas) * valor_por_hora
 
     intervalos = [
-        (0, 15, Decimal("0.25")),
-        (15, 30, Decimal("0.50")),
-        (30, 45, Decimal("0.75")),
-        (45, 60, Decimal("1.00")),
+        (1, 15, Decimal("0.25")),
+        (16, 30, Decimal("0.50")),
+        (31, 45, Decimal("0.75")),
+        (46, 60, Decimal("1.00")),
     ]
 
     porcentagem_minutos = next(
