@@ -1,3 +1,4 @@
+import datetime
 from django.db import models
 from veiculos.models import CategoriaVeiculo
 
