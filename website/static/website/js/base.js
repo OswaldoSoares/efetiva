@@ -27,6 +27,13 @@ function openMyModal(event) {
     if (typeof idTelefone !== "undefined") {
         requestData.id_telefone = idTelefone;
     }
+
+    // Verifica se o id_conta está presente
+    const idConta = $(event.target).data("id_conta");
+    if (typeof idConta !== "undefined") {
+        requestData.id_conta = idConta;
+    }
+
     executarAjax(url, "GET", requestData, function(data) {
         modal.find(".modal-body").html(data.modal_html);
         modal.modal("show");
