@@ -16,6 +16,20 @@ from website.forms import CadastraFeriado
 from website.models import FileUpload
 from .models import Parametros
 
+meses = [
+    "JANEIRO",
+    "FEVEREIRO",
+    "MARÇO",
+    "ABRIL",
+    "MAIO",
+    "JUNHO",
+    "JULHO",
+    "AGOSTO",
+    "SETEMBRO",
+    "OUTUBRO",
+    "NOVEMBRO",
+    "DEZEMBRO",
+]
 
 
 def string_to_float(valor):
