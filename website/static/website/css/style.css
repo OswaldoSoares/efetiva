@@ -6805,3 +6805,9 @@ label {
     pointer-events: none; /* Bloqueia a interação */
     background-color: #e9ecef; /* Aplica um estilo visual de "desabilitado" */
 }
+
+.confirma_excluir {
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 10px 0;
+}
