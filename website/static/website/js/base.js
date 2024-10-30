@@ -34,6 +34,12 @@ function openMyModal(event) {
         requestData.id_conta = idConta;
     }
 
+    // Verifica se o id_vale está presente
+    const idVale = $(event.target).data("id_vale");
+    if (typeof idVale !== "undefined") {
+        requestData.id_vale = idVale;
+    }
+
     executarAjax(url, "GET", requestData, function(data) {
         modal.find(".modal-body").html(data.modal_html);
         modal.modal("show");
