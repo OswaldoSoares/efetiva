@@ -472,6 +472,20 @@ def save_vale_colaborador(request):
     return {"mensagem": mensagem}
 
 
+def create_contexto_vales_colaborador(request):
+    id_pessoal = (
+        request.POST.get("id_pessoal")
+        if request.method == "POST"
+        else request.GET.get("id_pessoal")
+    )
+    colaborador = classes.Colaborador(id_pessoal)
+    vales = get_vales_colaborador(id_pessoal)
+    return {
+        "colaborador": colaborador,
+        "vales": vales,
+    }
+
+
 
 
 def create_contexto_consulta_colaborador(id_pessoal):
