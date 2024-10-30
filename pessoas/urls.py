@@ -95,6 +95,11 @@ urlpatterns = [
         excluir_conta_colaborador,
         name="excluir_conta_colaborador",
     ),
+    path(
+        "adicionar_vale_colaborador",
+        adicionar_vale_colaborador,
+        name="adicionar_vale_colaborador",
+    ),
     # Antigos
     path(
         "bloqueiapessoa/<int:idpessoa>/",
