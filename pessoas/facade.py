@@ -517,6 +517,14 @@ def modal_confirma_excluir_vale_colaborador(id_doc_pessoal, request):
     return JsonResponse({"modal_html": modal_html})
 
 
+def delete_vale_colaborador(request):
+    if request.method == "POST":
+        id_vale = request.POST.get("id_vale")
+        vale = Vales.objects.filter(idVales=id_vale)
+        vale.delete()
+        return {"mensagem": "Vale do colaborador excluida com sucesso"}
+
+    return {"mensagem": "Não foi possível excluir vale do colaborador"}
 
 
 def create_contexto_consulta_colaborador(id_pessoal):
