@@ -486,6 +486,14 @@ def create_contexto_vales_colaborador(request):
     }
 
 
+def vale_html_data(request, contexto):
+    data = {}
+    html_functions = [
+        html_data.html_card_vales_colaborador,
+    ]
+    return gerar_data_html(html_functions, request, contexto, data)
+
+
 
 
 def create_contexto_consulta_colaborador(id_pessoal):
