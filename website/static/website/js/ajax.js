@@ -33,7 +33,9 @@ function enviarRequisicaoAjax(url, form, sucessoCallback) {
         },
         error: function(errorThrown) {
             $(".box-loader").hide();
-            console.log("Thrwon", errorThrown)
+            console.log(errorThrown)
+            $(".thrown-error").text(errorThrown.responseJSON["error"])
+            $(".thrown-error").removeClass("invisivel")
         },
     });
 }
@@ -82,7 +84,6 @@ function processarRespostaAjax(xhr, modal, url) {
 }
 
 function exibirMensagem(mensagem) {
-    console.log(mensagem)
     $('.mensagem p').text(mensagem);
     $('.mensagem p').animate({bottom: '0'}, 1000);
     setTimeout(function() {
