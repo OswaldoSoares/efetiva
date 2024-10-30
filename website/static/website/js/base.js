@@ -70,6 +70,7 @@ function initModalDialog(event, modal_element) {
 
 function atualizarInterfaceComDados(xhr) {
     $(".card-colaboradores").html(xhr["html-card-colaboradores"]);
+    $(".card-vales-colaborador").html(xhr["html-card-vales-colaborador"]);
     $(".card-docs-colaborador").html(xhr["html-card-docs-colaborador"]);
     $(".card-fones-colaborador").html(xhr["html-card-fones-colaborador"]);
     $(".card-contas-colaborador").html(xhr["html-card-contas-colaborador"]);
