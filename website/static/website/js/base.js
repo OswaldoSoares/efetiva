@@ -1,3 +1,23 @@
+$(document).on('keydown', 'input.js-decimal, input.js-inteiro', function(e) {
+    // Permitir: backspace, delete, setas (esquerda e direita), tab
+    if ($.inArray(e.keyCode, [8, 9, 37, 39, 46]) !== -1) {
+        return;
+    }
+
+    // Se o input possui a classe js-decimal, permitir a vírgula
+    if ($(this).hasClass('js-decimal') && e.keyCode == 188) {
+        return;
+    }
+
+    // Permitir números de 0 a 9
+    if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105)) {
+        return;
+    }
+
+    // Impedir qualquer outro caractere
+    e.preventDefault();
+});
+
 $(".div-sucesso").hide()
 $(".div-erro").hide()
 $(".box-loader").hide()
