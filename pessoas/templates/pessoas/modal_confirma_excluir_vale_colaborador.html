@@ -1,0 +1,14 @@
+<form class="row g-3" method="post" action="{% url 'excluir_vale_colaborador' %}">
+    {% csrf_token %}
+    <div class="confirma_excluir text-center">
+        <span>CONFIRMA EXCLUSÃO DO VALE</span>
+    </div>
+    <div class="text-center">
+        <span>{{ colaborador.nome }}</span>
+    </div>
+    <div class="text-center">
+        <span>{{ vale.Descricao }}: {{ vale.Data }} - {{ vale.Valor }}</span>
+    </div>
+    <input type="hidden" name="id_pessoal" value="{{ colaborador.id_pessoal }}">
+    <input type="hidden" name="id_vale" value="{{ vale.idVales }}">
+</form>
