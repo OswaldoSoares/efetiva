@@ -453,7 +453,7 @@ def validar_modal_vale_colaborador(request):
 
 
 def save_vale_colaborador(request):
-    valor = float(request.POST.get("valor"))
+    valor = float(request.POST.get("valor").replace(",", "."))
     parcelas = int(request.POST.get("parcelas"))
 
     for parcela in range(parcelas):
