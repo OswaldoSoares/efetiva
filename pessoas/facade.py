@@ -532,7 +532,7 @@ def create_contexto_consulta_colaborador(id_pessoal):
     colaborador_ant = get_colaborador(id_pessoal)
     aquisitivo = get_aquisitivo(colaborador_ant)
     multas = facade_multa.multas_pagar("MOTORISTA", id_pessoal)
-    vales = get_vales_colaborador(colaborador_ant)
+    vales = get_vales_colaborador(id_pessoal)
     saldo_vales = get_saldo_vales_colaborador(vales)
     verifica_decimo_terceiro((colaborador_ant))
     decimo_terceiro = get_decimo_terceiro_colaborador(colaborador_ant)
