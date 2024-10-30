@@ -494,6 +494,29 @@ def vale_html_data(request, contexto):
     return gerar_data_html(html_functions, request, contexto, data)
 
 
+def modal_confirma_excluir_vale_colaborador(id_doc_pessoal, request):
+    id_pessoal = (
+        request.POST.get("id_pessoal")
+        if request.method == "POST"
+        else request.GET.get("id_pessoal")
+    )
+    id_vale = (
+        request.POST.get("id_vale")
+        if request.method == "POST"
+        else request.GET.get("id_vale")
+    )
+    colaborador = classes.Colaborador(id_pessoal) if id_pessoal else False
+    vale = Vales.objects.filter(idVales=id_vale).first()
+    contexto = {
+        "colaborador": colaborador,
+        "vale": vale,
+    }
+    modal_html = html_data.html_modal_confirma_excluir_vale_colaborador(
+        request, contexto
+    )
+    return JsonResponse({"modal_html": modal_html})
+
+
 
 
 def create_contexto_consulta_colaborador(id_pessoal):
