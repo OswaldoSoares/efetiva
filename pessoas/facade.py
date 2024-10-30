@@ -443,13 +443,17 @@ def modal_vale_colaborador(id_vale, request):
 
 
 def validar_modal_vale_colaborador(request):
-    descricao = request.POST.get("descricao")
-    valor = request.POST.get("valor")
-    parcelas = request.POST.get("parcelas")
+    if request.method == "POST":
+        descricao = request.POST.get("descricao")
+        valor = request.POST.get("valor")
+        parcelas = request.POST.get("parcelas")
 
-    if any(value is None for value in [descricao, valor, parcelas]):
-        response_data = {"error": "Todos os campos são obrigatórios."}
-        return JsonResponse(response_data, status=400)
+        if any(
+            value is None or value == ""
+            for value in [descricao, valor, parcelas]
+        ):
+            response_data = {"error": "Todos os campos são obrigatórios."}
+            return JsonResponse(response_data, status=400)
 
 
 def save_vale_colaborador(request):
