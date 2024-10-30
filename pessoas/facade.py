@@ -445,15 +445,34 @@ def modal_vale_colaborador(id_vale, request):
 def validar_modal_vale_colaborador(request):
     if request.method == "POST":
         descricao = request.POST.get("descricao")
-        valor = request.POST.get("valor")
-        parcelas = request.POST.get("parcelas")
+        valor_str = request.POST.get("valor")
+        parcelas_str = request.POST.get("parcelas")
 
         if any(
             value is None or value == ""
-            for value in [descricao, valor, parcelas]
+            for value in [descricao, valor_str, parcelas_str]
         ):
-            response_data = {"error": "Todos os campos são obrigatórios."}
-            return JsonResponse(response_data, status=400)
+            return JsonResponse(
+                {"error": "Todos os campos são obrigatórios."}, status=400
+            )
+
+        try:
+            valor = float(valor_str.replace(",", "."))
+            parcelas = int(parcelas_str)
+        except (ValueError, TypeError):
+            return JsonResponse({"error": "Valores inválidos."}, status=400)
+
+        if valor <= 0:
+            return JsonResponse(
+                {"error": "O Valor do vale tem que ser maior que R$ 0,00."},
+                status=400,
+            )
+
+        if parcelas <= 0:
+            return JsonResponse(
+                {"error": "A parcela do vale tem que ser maior que 0."},
+                status=400,
+            )
 
 
 def save_vale_colaborador(request):
