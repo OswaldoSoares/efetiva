@@ -32,15 +32,24 @@
 				</div>
 			</div>
 			<div class="input-group-addon addon-my-color">
-				<i class="icofont-trash i-button"onclick="openMyModal(event); return false;" data-title="CONFIRMA EXCLUSÃO DO VALE?"data-action="{% url 'exclui_vale_colaborador' %}"data-button-save-label="CONFIRMAR"data-confirma="confirma_vale"data-idconfirma="{{ vale.idvale }}"title="EXCLUIR VALE"></i>
+				<i class="icofont-trash i-button"
+onclick="openMyModal(event); return false;"
+data-title="CONFIRMA EXCLUSÃO DO VALE?"
+data-action="{% url 'excluir_vale_colaborador' %}"
+data-id_vale="{{ vale.id_vale }}"
+data-id_pessoal="{{ colaborador.id_pessoal }}"
+data-button-save-label="CONFIRMAR"
+title="EXCLUIR VALE"></i>
 			</div>
-			<div class="input-group-addon addon-my-color">
-				<i class="icofont-square i-button js-pessoas-seleciona-vale js-pessoas-toggle-vales-selecionaveis" title="Adicionar vale ao contra cheque" data-idvale="{{ vale.idvale }}" data-idpessoal="{{ colaborador.idpes }}"></i>
+			<div class="input-group-addon addon-my-color invisivel">
+				<i class="icofont-square i-button js-pessoas-seleciona-vale
+				js-pessoas-toggle-vales-selecionaveis"
+title="Adicionar vale ao contra cheque"
+data-id_vale="{{ vale.id_vale }}"
+data-id_pessoal="{{ colaborador.id_pessoal }}"></i>
 			</div>
 		</div>
-	</div>
-	{% if vale.descricao %}
-	<div class="card-body-item">
+		{% if vale.descricao %}
 		<div class="input-group">
 			<div class="input-group-addon addon-my-color">
 				<i class="icofont-check i-button-null"></i>
@@ -53,12 +62,9 @@
 			<div class="input-group-addon addon-my-color">
 				<i class="icofont-check i-button-null"></i>
 			</div>
-			<div class="input-group-addon addon-my-color">
-				<i class="icofont-check i-button-null"></i>
-			</div>
 		</div>
+		{% endif %}
 	</div>
-	{% endif %}
 	{% endif %}
 	{% endfor %}
 	<div class="card-body-item">
@@ -71,7 +77,13 @@
 				</div>
 			</div>
 			<div class="input-group-addon addon-my-color">
-				<i class="icofont-plus-circle i-button" onclick="openMyModal(event); return false;" data-title="CADASTRA VALE" data-action="{% url 'adiciona_vale_colaborador' %}"data-button-save-label="SALVAR" title="Adiciona Vale"></i>
+				<i class="icofont-plus-circle i-button"
+onclick="openMyModal(event); return false;"
+data-title="VALE DO COLABORADOR"
+data-action="{% url 'adicionar_vale_colaborador' %}"
+data-id_pessoal="{{ colaborador.id_pessoal }}"
+data-button-save-label="SALVAR"
+title="Adiciona Vale"></i>
 			</div>
 		</div>
 	</div>
