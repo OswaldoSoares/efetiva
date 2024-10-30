@@ -84,7 +84,6 @@ function processarRespostaAjax(xhr, modal, url) {
 }
 
 function exibirMensagem(mensagem) {
-    console.log(mensagem)
     $('.mensagem p').text(mensagem);
     $('.mensagem p').animate({bottom: '0'}, 1000);
     setTimeout(function() {
