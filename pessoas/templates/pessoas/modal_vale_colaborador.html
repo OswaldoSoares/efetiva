@@ -2,8 +2,8 @@
 {% csrf_token %}
     <div class="col-md-12">
         <label for="id_descricao" class="form-label">DESCRIÇÃO:</label>
-        <input type="text"class="form-control"name="descricao" id="id_descricao"
-               placeholder="Digite a descrição do vale" maxlength="100">
+        <input type="text" class="form-control" name="descricao" id="id_descricao"
+               placeholder="Digite a descrição do vale" maxlength="100" required>
     </div>
     <div class="col-md-4">
         <label for="id_data" class="form-label">DATA:</label>
@@ -12,12 +12,13 @@
     </div>
     <div class="col-md-4">
         <label for="id_valor" class="form-label">VALOR:</label>
-        <input type="text"class="form-control"name="valor" id="id_valor"
-               value="0.00">
+        <input type="text" class="form-control js-decimal" name="valor"
+               id="id_valor" value="0.00" required>
     </div>
     <div class=" col-md-4">
         <label for="id_parcelas" class="form-label">PARCELAS</label>
-        <input class="form-control" name="parcelas" id="id_parcelas" type="number" value="1", step="0">
+        <input class="form-control js-inteiro" name="parcelas" required
+               id="id_parcelas" type="number" value="1", step="0">
     </div>
     <input type="hidden" name="id_pessoal" value="{{ colaborador.id_pessoal }}">
 </form>
