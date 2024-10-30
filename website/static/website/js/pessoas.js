@@ -45,6 +45,8 @@ $(document).on('click', ".js-selecionar-colaborador", function() {
         localStorage.setItem("id_pessoal", id_pessoal);
         $(".card-foto-colaborador").html(data["html-card-foto-colaborador"]);
         $(".card-foto-colaborador").show();
+        $(".card-vales-colaborador").html(data["html-card-vales-colaborador"]);
+        $(".card-vales-colaborador").show();
         $(".card-docs-colaborador").html(data["html-card-docs-colaborador"]);
         $(".card-docs-colaborador").show();
         $(".card-fones-colaborador").html(data["html-card-fones-colaborador"]);
