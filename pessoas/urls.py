@@ -50,6 +50,7 @@ from .views import (
     adicionar_ou_atualizar_conta_colaborador,
     excluir_conta_colaborador,
     adicionar_vale_colaborador,
+    excluir_vale_colaborador,
 )
 
 
