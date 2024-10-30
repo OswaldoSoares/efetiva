@@ -63,13 +63,10 @@
     <div class="card-body-item">
         <div class="input-group">
             <div class="input-group-addon addon-my-color">
-                <i class="
-                {% if nota.statusnota == "NOTA CADASTRADA" %}
-                i-button js-nota-pendente
-                {% else %}
-                i-button-null
-                {% endif %}
-                ">{{ forloop.counter|stringformat:".2d" }}</i>
+                <i class="{% if nota.statusnota == "NOTA CADASTRADA" %}
+                i-button js-nota-pendente{% else %}i-button-null{% endif %}"
+                data-idnotaclientes="{{ nota.id_nota_clientes }}"
+                >{{ forloop.counter|stringformat:".2d" }}</i>
             </div>
             <div class="div-flex div-form-control">
                 <div class="tamanho-20 text-left">
