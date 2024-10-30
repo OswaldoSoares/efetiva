@@ -111,6 +111,10 @@ def excluir_conta_colaborador(request):
 
 
 def adicionar_vale_colaborador(request):
+    error = facade.validar_modal_vale_colaborador(request)
+    if error:
+        return error
+
     return handle_modal_colaborador(
         request,
         facade.modal_vale_colaborador,
