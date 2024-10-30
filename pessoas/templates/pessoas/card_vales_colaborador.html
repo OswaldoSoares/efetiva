@@ -1,4 +1,5 @@
 {% load humanize %}
+{% load custom_filters %}
 <!-- Card Header -->
 <div class="card-header">
 	<div class="input-group">
@@ -83,7 +84,7 @@
 		</div>
 		<div class="div-form-control div-flex">
 			<div class="tamanho-100 text-righti font-menor">
-				<span>R$ {{ saldo_vales }}</span>
+				<span>R$ {{ saldo_vales|formatar_numero:"2" }}</span>
 			</div>
 		</div>
 		<div class="input-group-addon addon-my-color">
