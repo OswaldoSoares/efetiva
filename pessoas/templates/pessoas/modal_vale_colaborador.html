@@ -1,23 +1,23 @@
-<form class="row g-3" method="post" action="{{ adiciona_vale_colaborador }}">
+<form class="row g-3" method="post" action="{{ adicionar_vale_colaborador }}">
 {% csrf_token %}
     <div class="col-md-12">
         <label for="id_descricao" class="form-label">DESCRIÇÃO:</label>
-    	{{ form.Descricao }}
-        {{ form.Descricao.errors }}
+        <input type="text"class="form-control"name="descricao" id="id_descricao"
+               placeholder="Digite a descrição do vale" maxlength="100">
     </div>
     <div class="col-md-4">
         <label for="id_data" class="form-label">DATA:</label>
-        {{ form.Data }}
-        {{ form.Data.errors }}
+        <input type="date" class="form-control" name="data" id="id_data"
+               value="{{ hoje }}">
     </div>
     <div class="col-md-4">
         <label for="id_valor" class="form-label">VALOR:</label>
-        {{ form.Valor }}
-        {{ form.Valor.errors }}
+        <input type="text"class="form-control"name="valor" id="id_valor"
+               value="0.00">
     </div>
     <div class=" col-md-4">
-        <label for="id_parcela" class="form-label">PARCELAS</label>
-        <input class="form-control" name="Parcela" id="id_parcela" type="number" value="1", step="0">
+        <label for="id_parcelas" class="form-label">PARCELAS</label>
+        <input class="form-control" name="parcelas" id="id_parcelas" type="number" value="1", step="0">
     </div>
-    <input type="hidden" name="idpessoal" value="{{ idpessoal }}">
+    <input type="hidden" name="id_pessoal" value="{{ colaborador.id_pessoal }}">
 </form>
