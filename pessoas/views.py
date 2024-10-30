@@ -118,6 +118,15 @@ def adicionar_vale_colaborador(request):
         partial(facade.create_contexto_vales_colaborador, request),
         facade.vale_html_data,
     )
+
+
+def excluir_vale_colaborador(request):
+    return handle_modal_colaborador(
+        request,
+        facade.modal_confirma_excluir_vale_colaborador,
+        facade.delete_vale_colaborador,
+        partial(facade.create_contexto_vales_colaborador, request),
+        facade.vale_html_data,
     )
 
 
