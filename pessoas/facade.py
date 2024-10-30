@@ -444,8 +444,34 @@ def modal_vale_colaborador(id_vale, request):
     return JsonResponse({"modal_html": modal_html})
 
 
+def save_vale_colaborador(request):
+    valor = float(request.POST.get("valor"))
+    parcelas = int(request.POST.get("parcelas"))
+
+    for parcela in range(parcelas):
+        descricao = (
+            request.POST.get("descricao")
+            if parcelas == 1
+            else f'{request.POST.get("descricao")} P-{parcela+1}/{parcelas}'
         )
-    return JsonResponse(data)
+
+        registro = {
+            "Descricao": descricao.upper(),
+            "Data": request.POST.get("data"),
+            "Valor": valor / parcelas,
+            "idPessoal_id": request.POST.get("id_pessoal"),
+        }
+
+        Vales.objects.create(**registro)
+
+    mensagem = (
+        "Vale cadastrado com sucesso"
+        if parcelas == 1
+        else "Vales cadastrados com sucesso"
+    )
+    return {"mensagem": mensagem}
+
+
 
 
 def create_contexto_consulta_colaborador(id_pessoal):
