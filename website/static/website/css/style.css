@@ -6811,3 +6811,11 @@ label {
   font-weight: bold;
   padding: 10px 0;
 }
+
+.menu-icones {
+  padding: 0 10px;
+}
+
+.invisivel {
+  display: none;
+}

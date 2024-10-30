@@ -34,6 +34,12 @@ function openMyModal(event) {
         requestData.id_conta = idConta;
     }
 
+    // Verifica se o id_vale está presente
+    const idVale = $(event.target).data("id_vale");
+    if (typeof idVale !== "undefined") {
+        requestData.id_vale = idVale;
+    }
+
     executarAjax(url, "GET", requestData, function(data) {
         modal.find(".modal-body").html(data.modal_html);
         modal.modal("show");
@@ -64,6 +70,7 @@ function initModalDialog(event, modal_element) {
 
 function atualizarInterfaceComDados(xhr) {
     $(".card-colaboradores").html(xhr["html-card-colaboradores"]);
+    $(".card-vales-colaborador").html(xhr["html-card-vales-colaborador"]);
     $(".card-docs-colaborador").html(xhr["html-card-docs-colaborador"]);
     $(".card-fones-colaborador").html(xhr["html-card-fones-colaborador"]);
     $(".card-contas-colaborador").html(xhr["html-card-contas-colaborador"]);

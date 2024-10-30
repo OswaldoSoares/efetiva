@@ -1,23 +1,13 @@
 {% load humanize %}
-<!-- Header -->
+{% load custom_filters %}
+<!-- Card Header -->
 <div class="card-header">
 	<div class="input-group">
 		<div class="input-group-addon addon-my-color">
 			<i class="icofont-rounded-left-up"></i>
 		</div>
-		<div class="input-group-addon addon-my-color">
-			<i class="icofont-plus-circle i-button"
-	  onclick="openMyModal(event); return false;"
-   data-title="CADASTRA VALE"
-   data-action="{% url 'adiciona_vale_colaborador' %}"
-   data-button-save-label="SALVAR"
-   title="Adiciona Vale"></i>
-		</div>
 		<div class="div-form-control">
-				<span>VALES</span>
-		</div>
-		<div class="input-group-addon addon-my-color">
-			<i class="icofont-simple-up i-button js-body-vales-colaborador-toggle"></i>
+			<span>VALES</span>
 		</div>
 		<div class="input-group-addon addon-my-color">
 			<i class="icofont-rounded-right-up"></i>
@@ -30,65 +20,83 @@
 	{% if not vale.checked %}
 	<div class="card-body-item">
 		<div class="input-group">
-			<i class="icofont-coins
-			input-group-addon
-			addon-my-color
-			i-button-null"></i>
+			<div class="input-group-addon addon-my-color">
+				<i class="icofont-coins i-button-null"></i>
+			</div>
 			<div class="div-flex div-form-control">
-				<div class="tamanho-15 text-left">
-					<span>
-						{{ vale.data }}
-					</span>
+				<div class="tamanho-50 text-left">
+					<span>{{ vale.data }}</span>
 				</div>
-				<div class="tamanho-65 text-left">
-					<span>
-						{{ vale.descricao }}
-					</span>
-				</div>
-				<div class="tamanho-20 text-right">
-					<span>
-						R$ {{ vale.valor|intcomma }}
-					</span>
+				<div class="tamanho-50 text-right">
+					<span>R$ {{ vale.valor|intcomma }}</span>
 				</div>
 			</div>
-			<div class="input-group-addon
-			addon-my-color">
+			<div class="input-group-addon addon-my-color">
 				<i class="icofont-trash i-button"
-                    onclick="openMyModal(event); return false;"
-                    data-title="CONFIRMA EXCLUSÃO DO VALE?"
-                    data-action="{% url 'exclui_vale_colaborador' %}"
-                    data-button-save-label="CONFIRMAR"
-					data-confirma="confirma_vale"
-	 			    data-idconfirma="{{ vale.idvale }}"
-                    title="Exclui Vale"></i>
+onclick="openMyModal(event); return false;"
+data-title="CONFIRMA EXCLUSÃO DO VALE?"
+data-action="{% url 'excluir_vale_colaborador' %}"
+data-id_vale="{{ vale.id_vale }}"
+data-id_pessoal="{{ colaborador.id_pessoal }}"
+data-button-save-label="CONFIRMAR"
+title="EXCLUIR VALE"></i>
 			</div>
-			<div class="input-group-addon
-			addon-my-color">
-				<i class="icofont-square
-				i-button
-				js-pessoas-seleciona-vale
+			<div class="input-group-addon addon-my-color invisivel">
+				<i class="icofont-square i-button js-pessoas-seleciona-vale
 				js-pessoas-toggle-vales-selecionaveis"
-	   			   title="Adicionar vale ao contra cheque"
-				   data-idvale="{{ vale.idvale }}"
-				   data-idpessoal="{{ colaborador.idpes }}"></i>
+title="Adicionar vale ao contra cheque"
+data-id_vale="{{ vale.id_vale }}"
+data-id_pessoal="{{ colaborador.id_pessoal }}"></i>
 			</div>
 		</div>
+		{% if vale.descricao %}
+		<div class="input-group">
+			<div class="input-group-addon addon-my-color">
+				<i class="icofont-check i-button-null"></i>
+			</div>
+			<div class="div-flex div-form-control">
+				<div class="tamanho-65 text-left">
+					<span>{{ vale.descricao }}</span>
+				</div>
+			</div>
+			<div class="input-group-addon addon-my-color">
+				<i class="icofont-check i-button-null"></i>
+			</div>
+		</div>
+		{% endif %}
 	</div>
 	{% endif %}
 	{% endfor %}
+	<div class="card-body-item">
+		<div class="input-group">
+			<div class="input-group-addon addon-my-color">
+				<i class="icofont-wallet"></i>
+			</div>
+			<div class="div-flex div-form-control">
+				<div class="tamanho-100 text-center font-menor">
+				</div>
+			</div>
+			<div class="input-group-addon addon-my-color">
+				<i class="icofont-plus-circle i-button"
+onclick="openMyModal(event); return false;"
+data-title="VALE DO COLABORADOR"
+data-action="{% url 'adicionar_vale_colaborador' %}"
+data-id_pessoal="{{ colaborador.id_pessoal }}"
+data-button-save-label="SALVAR"
+title="Adiciona Vale"></i>
+			</div>
+		</div>
+	</div>
 </div>
-<!-- Footer -->
+<!-- Card Footer -->
 <div class="card-footer">
 	<div class="input-group">
 		<div class="input-group-addon addon-my-color">
 			<i class="icofont-rounded-left-down"></i>
 		</div>
 		<div class="div-form-control div-flex">
-			<div class="tamanho-80 text-left">
-				<span class="font-menor">TOTAL DOS VALES</span>
-			</div>
-			<div class="tamanho-20 text-right">
-				<span class="font-menor">R$ {{ saldo_vales }}</span>
+			<div class="tamanho-100 text-righti font-menor">
+				<span>R$ {{ saldo_vales|formatar_numero:"2" }}</span>
 			</div>
 		</div>
 		<div class="input-group-addon addon-my-color">

@@ -49,6 +49,8 @@ from .views import (
     excluir_fone_colaborador,
     adicionar_ou_atualizar_conta_colaborador,
     excluir_conta_colaborador,
+    adicionar_vale_colaborador,
+    excluir_vale_colaborador,
 )
 
 
@@ -93,6 +95,16 @@ urlpatterns = [
         "excluir_conta_colaborador",
         excluir_conta_colaborador,
         name="excluir_conta_colaborador",
+    ),
+    path(
+        "adicionar_vale_colaborador",
+        adicionar_vale_colaborador,
+        name="adicionar_vale_colaborador",
+    ),
+    path(
+        "excluir_vale_colaborador",
+        excluir_vale_colaborador,
+        name="excluir_vale_colaborador",
     ),
     # Antigos
     path(

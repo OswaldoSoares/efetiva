@@ -357,7 +357,6 @@ def modal_conta_colaborador(id_doc_pessoal, request):
 
 
 def save_conta_colaborador(request):
-    print(request.POST)
     id_conta = request.POST.get("id_conta")
 
     registro = {
@@ -411,7 +410,6 @@ def modal_confirma_excluir_conta_colaborador(id_doc_pessoal, request):
 
 
 def delete_conta_colaborador(request):
-    print(request.POST)
     if request.method == "POST":
         id_conta = request.POST.get("id_conta")
         conta = ContaPessoal.objects.filter(idContaPessoal=id_conta)
@@ -421,12 +419,118 @@ def delete_conta_colaborador(request):
     return {"mensagem": "Não foi possível excluir conta do colaborador"}
 
 
+def modal_vale_colaborador(id_vale, request):
+    id_pessoal = (
+        request.POST.get("id_pessoal")
+        if request.method == "POST"
+        else request.GET.get("id_pessoal")
+    )
+    id_vale = (
+        request.POST.get("id_conta")
+        if request.method == "POST"
+        else request.GET.get("id_conta")
+    )
+    colaborador = classes.Colaborador(id_pessoal) if id_pessoal else False
+    vale = Vales.objects.filter(idVales=id_vale).first()
+    hoje = datetime.today().date()
+    contexto = {
+        "colaborador": colaborador,
+        "vale": vale,
+        "hoje": hoje.strftime("%Y-%m-%d"),
+    }
+    modal_html = html_data.html_modal_vale_colaborador(request, contexto)
+    return JsonResponse({"modal_html": modal_html})
+
+
+def save_vale_colaborador(request):
+    valor = float(request.POST.get("valor"))
+    parcelas = int(request.POST.get("parcelas"))
+
+    for parcela in range(parcelas):
+        descricao = (
+            request.POST.get("descricao")
+            if parcelas == 1
+            else f'{request.POST.get("descricao")} P-{parcela+1}/{parcelas}'
+        )
+
+        registro = {
+            "Descricao": descricao.upper(),
+            "Data": request.POST.get("data"),
+            "Valor": valor / parcelas,
+            "idPessoal_id": request.POST.get("id_pessoal"),
+        }
+
+        Vales.objects.create(**registro)
+
+    mensagem = (
+        "Vale cadastrado com sucesso"
+        if parcelas == 1
+        else "Vales cadastrados com sucesso"
+    )
+    return {"mensagem": mensagem}
+
+
+def create_contexto_vales_colaborador(request):
+    id_pessoal = (
+        request.POST.get("id_pessoal")
+        if request.method == "POST"
+        else request.GET.get("id_pessoal")
+    )
+    colaborador = classes.Colaborador(id_pessoal)
+    vales = get_vales_colaborador(id_pessoal)
+    return {
+        "colaborador": colaborador,
+        "vales": vales,
+    }
+
+
+def vale_html_data(request, contexto):
+    data = {}
+    html_functions = [
+        html_data.html_card_vales_colaborador,
+    ]
+    return gerar_data_html(html_functions, request, contexto, data)
+
+
+def modal_confirma_excluir_vale_colaborador(id_doc_pessoal, request):
+    id_pessoal = (
+        request.POST.get("id_pessoal")
+        if request.method == "POST"
+        else request.GET.get("id_pessoal")
+    )
+    id_vale = (
+        request.POST.get("id_vale")
+        if request.method == "POST"
+        else request.GET.get("id_vale")
+    )
+    colaborador = classes.Colaborador(id_pessoal) if id_pessoal else False
+    vale = Vales.objects.filter(idVales=id_vale).first()
+    contexto = {
+        "colaborador": colaborador,
+        "vale": vale,
+    }
+    modal_html = html_data.html_modal_confirma_excluir_vale_colaborador(
+        request, contexto
+    )
+    return JsonResponse({"modal_html": modal_html})
+
+
+def delete_vale_colaborador(request):
+    if request.method == "POST":
+        id_vale = request.POST.get("id_vale")
+        vale = Vales.objects.filter(idVales=id_vale)
+        vale.delete()
+        return {"mensagem": "Vale do colaborador excluida com sucesso"}
+
+    return {"mensagem": "Não foi possível excluir vale do colaborador"}
+
+
 def create_contexto_consulta_colaborador(id_pessoal):
     colaborador = classes.Colaborador(id_pessoal)
     colaborador_ant = get_colaborador(id_pessoal)
     aquisitivo = get_aquisitivo(colaborador_ant)
     multas = facade_multa.multas_pagar("MOTORISTA", id_pessoal)
-    vales = get_vales_colaborador(colaborador_ant)
+    vales = get_vales_colaborador(id_pessoal)
     saldo_vales = get_saldo_vales_colaborador(vales)
     verifica_decimo_terceiro((colaborador_ant))
     decimo_terceiro = get_decimo_terceiro_colaborador(colaborador_ant)
@@ -796,6 +900,7 @@ def create_data_consulta_colaborador(request, contexto):
     tipo_pgto = contexto["colaborador"].dados_profissionais.tipo_pgto
     data = dict()
     html_data.html_card_foto_colaborador(request, contexto, data)
+    html_data.html_card_vales_colaborador(request, contexto, data)
     html_data.html_card_docs_colaborador(request, contexto, data)
     html_data.html_card_fones_colaborador(request, contexto, data)
     html_data.html_card_contas_colaborador(request, contexto, data)
@@ -2076,22 +2181,32 @@ def update_contra_cheque_item_referencia(contra_cheque_item, referencia):
     obj.save()
 
 
-def get_vales_colaborador(colaborador):
-    vales = Vales.objects.filter(idPessoal=colaborador).order_by("Data")
-    lista = []
-    for item in vales:
-        checked = False
-        if ContraChequeItens.objects.filter(Vales_id=item.idVales):
-            checked = True
-        lista.append(
-            {
-                "idvale": item.idVales,
-                "data": item.Data,
-                "descricao": item.Descricao,
-                "valor": item.Valor,
-                "checked": checked,
-            }
-        )
+def get_vales_colaborador(id_pessoal):
+    vales = Vales.objects.filter(idPessoal=id_pessoal).order_by(
+        "Data", "Descricao"
+    )
+
+    # Obtém todos os IDs de vales associados a ContraChequeItens em uma única
+    # consulta
+    vales_com_contracheque = set(
+        ContraChequeItens.objects.filter(
+            Vales_id__in=vales.values_list("idVales", flat=True)
+        ).values_list("Vales_id", flat=True)
+    )
+
+    # Constrói a lista de dicionários com a verificação de 'checked' baseada
+    # no set criado
+    lista = [
+        {
+            "id_vale": item.idVales,
+            "data": item.Data,
+            "descricao": item.Descricao,
+            "valor": item.Valor,
+            "checked": item.idVales in vales_com_contracheque,
+        }
+        for item in vales
+    ]
+
     return lista
 
 
@@ -2252,45 +2367,6 @@ def get_salario_base_contra_cheque_itens(contra_cheque_itens, tipo):
     elif tipo == "PAGAMENTO":
         salario = round(filtro["Valor"] / int(filtro["Referencia"][:-1]) * 30)
     return salario
-
-
-def modal_vale_colaborador(request, idpessoal):
-    data = dict()
-    if request.method == "POST":
-        descricao = request.POST.get("Descricao").upper()
-        data_vale = request.POST.get("Data")
-        valor = float(request.POST.get("Valor"))
-        parcela = int(request.POST.get("Parcela"))
-        registro_vales = []
-        if parcela == 1:
-            registro_vales.append(
-                Vales(
-                    Descricao=descricao,
-                    Data=data_vale,
-                    Valor=valor,
-                    idPessoal_id=idpessoal,
-                )
-            )
-        else:
-            valor_parcela = valor / parcela
-            for item in range(parcela):
-                registro_vales.append(
-                    Vales(
-                        Descricao=f"{descricao} P-{item+1}/{parcela}",
-                        Data=data_vale,
-                        Valor=round(valor_parcela, 2),
-                        idPessoal_id=idpessoal,
-                    )
-                )
-        Vales.objects.bulk_create(registro_vales)
-        contexto = contexto_vales_colaborador(idpessoal)
-        html_vales_colaborador(request, contexto, data)
-    else:
-        contexto = {"form": FormVale, "idpessoal": idpessoal}
-        data["html_modal"] = render_to_string(
-            "pessoas/modal_vale_colaborador.html", contexto, request=request
-        )
-    return JsonResponse(data)
 
 
 def get_contas_bancaria_colaborador(colaborador):
