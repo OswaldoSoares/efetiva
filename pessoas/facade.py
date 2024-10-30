@@ -2182,22 +2182,32 @@ def update_contra_cheque_item_referencia(contra_cheque_item, referencia):
     obj.save()
 
 
-def get_vales_colaborador(colaborador):
-    vales = Vales.objects.filter(idPessoal=colaborador).order_by("Data")
-    lista = []
-    for item in vales:
-        checked = False
-        if ContraChequeItens.objects.filter(Vales_id=item.idVales):
-            checked = True
-        lista.append(
-            {
-                "idvale": item.idVales,
-                "data": item.Data,
-                "descricao": item.Descricao,
-                "valor": item.Valor,
-                "checked": checked,
-            }
-        )
+def get_vales_colaborador(id_pessoal):
+    vales = Vales.objects.filter(idPessoal=id_pessoal).order_by(
+        "Data", "Descricao"
+    )
+
+    # Obtém todos os IDs de vales associados a ContraChequeItens em uma única
+    # consulta
+    vales_com_contracheque = set(
+        ContraChequeItens.objects.filter(
+            Vales_id__in=vales.values_list("idVales", flat=True)
+        ).values_list("Vales_id", flat=True)
+    )
+
+    # Constrói a lista de dicionários com a verificação de 'checked' baseada
+    # no set criado
+    lista = [
+        {
+            "id_vale": item.idVales,
+            "data": item.Data,
+            "descricao": item.Descricao,
+            "valor": item.Valor,
+            "checked": item.idVales in vales_com_contracheque,
+        }
+        for item in vales
+    ]
+
     return lista
 
 
