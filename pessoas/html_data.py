@@ -87,3 +87,10 @@ def html_modal_confirma_excluir_conta_colaborador(request, contexto):
         request=request,
     )
     return modal_html
+
+
+def html_modal_vale_colaborador(request, contexto):
+    modal_html = render_to_string(
+        "pessoas/modal_vale_colaborador.html", contexto, request=request
+    )
+    return modal_html
