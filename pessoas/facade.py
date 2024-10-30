@@ -421,41 +421,29 @@ def delete_conta_colaborador(request):
     return {"mensagem": "Não foi possível excluir conta do colaborador"}
 
 
-def modal_vale_colaborador(request, idpessoal):
-    data = dict()
-    if request.method == "POST":
-        descricao = request.POST.get("Descricao").upper()
-        data_vale = request.POST.get("Data")
-        valor = float(request.POST.get("Valor"))
-        parcela = int(request.POST.get("Parcela"))
-        registro_vales = []
-        if parcela == 1:
-            registro_vales.append(
-                Vales(
-                    Descricao=descricao,
-                    Data=data_vale,
-                    Valor=valor,
-                    idPessoal_id=idpessoal,
-                )
-            )
-        else:
-            valor_parcela = valor / parcela
-            for item in range(parcela):
-                registro_vales.append(
-                    Vales(
-                        Descricao=f"{descricao} P-{item+1}/{parcela}",
-                        Data=data_vale,
-                        Valor=round(valor_parcela, 2),
-                        idPessoal_id=idpessoal,
-                    )
-                )
-        Vales.objects.bulk_create(registro_vales)
-        contexto = contexto_vales_colaborador(idpessoal)
-        html_vales_colaborador(request, contexto, data)
-    else:
-        contexto = {"form": FormVale, "idpessoal": idpessoal}
-        data["html_modal"] = render_to_string(
-            "pessoas/modal_vale_colaborador.html", contexto, request=request
+def modal_vale_colaborador(id_vale, request):
+    id_pessoal = (
+        request.POST.get("id_pessoal")
+        if request.method == "POST"
+        else request.GET.get("id_pessoal")
+    )
+    id_vale = (
+        request.POST.get("id_conta")
+        if request.method == "POST"
+        else request.GET.get("id_conta")
+    )
+    colaborador = classes.Colaborador(id_pessoal) if id_pessoal else False
+    vale = Vales.objects.filter(idVales=id_vale).first()
+    hoje = datetime.today().date()
+    contexto = {
+        "colaborador": colaborador,
+        "vale": vale,
+        "hoje": hoje.strftime("%Y-%m-%d"),
+    }
+    modal_html = html_data.html_modal_vale_colaborador(request, contexto)
+    return JsonResponse({"modal_html": modal_html})
+
+
         )
     return JsonResponse(data)
 
