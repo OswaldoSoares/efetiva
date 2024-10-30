@@ -357,7 +357,6 @@ def modal_conta_colaborador(id_doc_pessoal, request):
 
 
 def save_conta_colaborador(request):
-    print(request.POST)
     id_conta = request.POST.get("id_conta")
 
     registro = {
@@ -411,7 +410,6 @@ def modal_confirma_excluir_conta_colaborador(id_doc_pessoal, request):
 
 
 def delete_conta_colaborador(request):
-    print(request.POST)
     if request.method == "POST":
         id_conta = request.POST.get("id_conta")
         conta = ContaPessoal.objects.filter(idContaPessoal=id_conta)
