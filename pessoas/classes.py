@@ -31,6 +31,7 @@ class Colaborador:
     id_pessoal: int
     nome: str = field(init=False)
     nome_curto: str = field(init=False)
+    foto: str = field(init=False)
 
     residencia: object = field(init=False)
     filiacao: object = field(init=False)
@@ -66,6 +67,7 @@ class Colaborador:
         colaborador = colaborador_queryset
         self.nome = colaborador.Nome
         self.nome_curto = nome_curto(colaborador.Nome)
+        self.foto = colaborador.Foto
 
 
 class ColaboradorAntigo:
