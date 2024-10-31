@@ -511,9 +511,11 @@ def create_contexto_vales_colaborador(request):
     )
     colaborador = classes.Colaborador(id_pessoal)
     vales = get_vales_colaborador(id_pessoal)
+    saldo_vales = get_saldo_vales_colaborador(vales)
     return {
         "colaborador": colaborador,
         "vales": vales,
+        "saldo_vales": saldo_vales,
     }
 
 
