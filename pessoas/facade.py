@@ -503,6 +503,41 @@ def save_vale_colaborador(request):
     return {"mensagem": mensagem}
 
 
+def get_vales_colaborador(id_pessoal):
+    vales = Vales.objects.filter(idPessoal=id_pessoal).order_by(
+        "Data", "Descricao"
+    )
+
+    # Obtém todos os IDs de vales associados a ContraChequeItens em uma única
+    # consulta
+    vales_com_contracheque = set(
+        ContraChequeItens.objects.filter(
+            Vales_id__in=vales.values_list("idVales", flat=True)
+        ).values_list("Vales_id", flat=True)
+    )
+
+    # Constrói a lista de dicionários com a verificação de 'checked' baseada
+    # no set criado
+    lista = [
+        {
+            "id_vale": item.idVales,
+            "data": item.Data,
+            "descricao": item.Descricao,
+            "valor": item.Valor,
+            "checked": item.idVales in vales_com_contracheque,
+        }
+        for item in vales
+    ]
+
+    return lista
+
+
+def get_saldo_vales_colaborador(vales):
+    pagar = [d for d in vales if not d["checked"]]
+    total = sum(item["valor"] for item in pagar)
+    return total
+
+
 def create_contexto_vales_colaborador(request):
     id_pessoal = (
         request.POST.get("id_pessoal")
@@ -2214,41 +2249,6 @@ def update_contra_cheque_item_referencia(contra_cheque_item, referencia):
     obj = contra_cheque_item[0]
     obj.Referencia = referencia
     obj.save()
-
-
-def get_vales_colaborador(id_pessoal):
-    vales = Vales.objects.filter(idPessoal=id_pessoal).order_by(
-        "Data", "Descricao"
-    )
-
-    # Obtém todos os IDs de vales associados a ContraChequeItens em uma única
-    # consulta
-    vales_com_contracheque = set(
-        ContraChequeItens.objects.filter(
-            Vales_id__in=vales.values_list("idVales", flat=True)
-        ).values_list("Vales_id", flat=True)
-    )
-
-    # Constrói a lista de dicionários com a verificação de 'checked' baseada
-    # no set criado
-    lista = [
-        {
-            "id_vale": item.idVales,
-            "data": item.Data,
-            "descricao": item.Descricao,
-            "valor": item.Valor,
-            "checked": item.idVales in vales_com_contracheque,
-        }
-        for item in vales
-    ]
-
-    return lista
-
-
-def get_saldo_vales_colaborador(vales):
-    pagar = [d for d in vales if not d["checked"]]
-    total = sum(item["valor"] for item in pagar)
-    return total
 
 
 def get_saldo_contra_cheque(contra_cheque_itens):
