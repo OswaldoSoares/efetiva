@@ -887,6 +887,8 @@ function toggleButton() {
             $("#btn-estornar-concluir").removeClass("disabled")
             $("#btn-finalizar-minuta").removeClass("disabled")
             $("#btn-estornar-finalizar").removeClass("disabled")
+            $(".js-alterar-capacidade").removeClass("disabled")
+            $(".js-alterar-perimetro").removeClass("disabled")
         });
     } else {
         $(".disabled").removeClass("disabled");

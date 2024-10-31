@@ -32,6 +32,10 @@
                 </div>
             </div>
             <div class="input-group-addon addon-my-color">
+                <a class="icofont-printer i-button" title="IMPRIMIR ROMANEIO"
+                   href="{% url 'imprime_romaneio' %}?idRomaneio={{ romaneio.romaneio }}&idCliente={{ minuta.idcliente }}" target="_blank"></a>
+            </div>
+            <div class="input-group-addon addon-my-color">
                 <i class="icofont-minus-circle i-button js-gerenciar-romaneio-minuta"
                 data-id_minuta="{{ minuta.idminuta }}" data-id_romaneio="{{ romaneio.romaneio }}"
                 data-acao="remover" title="REMOVER ROMANEIO DA MINUTA"></i>
