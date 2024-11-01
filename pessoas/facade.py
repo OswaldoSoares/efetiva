@@ -2268,7 +2268,7 @@ def get_contra_cheque_itens(contra_cheque):
 def create_contra_cheque_itens(
     descricao, valor, registro, referencia, contra_cheque
 ):
-    ContraChequeItens.objects.create(
+    return ContraChequeItens.objects.create(
         Descricao=descricao,
         Valor=valor,
         Registro=registro,
