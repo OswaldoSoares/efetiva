@@ -2234,15 +2234,15 @@ def get_contra_cheque_mes_ano_descricao(colaborador, mes, ano, descricao):
     return contra_cheque
 
 
-def create_contra_cheque(mes, ano, descricao, colaborador, obs):
-    ContraCheque.objects.create(
+def create_contra_cheque(mes, ano, descricao, id_pessoal, obs):
+    return ContraCheque.objects.create(
         MesReferencia=mes,
         AnoReferencia=ano,
         Valor=0.00,
         Pago=False,
         Descricao=descricao,
         Obs=obs,
-        idPessoal=colaborador,
+        idPessoal_id=id_pessoal,
     )
 
 
