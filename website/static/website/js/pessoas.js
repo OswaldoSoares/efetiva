@@ -2,6 +2,7 @@ $(document).ready(function() {
     $(".button-demissao").hide();
     $(".card-foto-colaborador").hide();
     $(".card-vales-colaborador").hide();
+    $(".card-decimo-terceiro-colaborador").hide();
     $(".card-docs-colaborador").hide();
     $(".card-fones-colaborador").hide();
     $(".card-contas-colaborador").hide();
