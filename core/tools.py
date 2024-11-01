@@ -187,3 +187,7 @@ def nome_curto_underscore(nome):
         else:
             apelido = "_".join(apelido)
     return apelido
+
+
+def obter_mes_por_numero(numero):
+    return MESES.get(numero, "Mês inválido")
