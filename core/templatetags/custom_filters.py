@@ -64,3 +64,10 @@ def formatar_numero(valor, digitos_decimais=2):
 def subtract(value, arg):
     """Subtracts the arg from the value."""
     return value - arg
+
+
+@register.filter
+def esta_no_periodo(hoje):
+    data_inicio = date(2024, 11, 16)
+    data_fim = date(2024, 12, 31)
+    return data_inicio <= hoje <= data_fim
