@@ -32,6 +32,7 @@ from core.constants import (
     TIPOS_FONES,
     TIPOS_CONTAS,
 )
+from core.tools import obter_mes_por_numero
 from pessoas.models import (
     Aquisitivo,
     DecimoTerceiro,
