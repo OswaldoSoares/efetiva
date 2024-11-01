@@ -5,6 +5,7 @@ templates do Django.
 Os filtros ajudam a manipular e exibir dados em templates de forma
 personalizada.
 """
+from datetime import date
 from django import template
 from core.tools import formatar_numero_com_separadores
 
