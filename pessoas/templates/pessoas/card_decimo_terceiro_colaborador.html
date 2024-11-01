@@ -58,7 +58,15 @@
                 </div>
             </div>
             <div class="input-group-addon addon-my-color">
-                <i class="icofont-square i-button js-selecionar-parcela"></i>
+                {% if hoje|esta_no_periodo or item.ano != ano_atual %}
+                <i class="icofont-square i-button js-selecionar-parcela"
+                   data-id_pessoal="{{ colaborador.id_pessoal }}"
+                   data-ano="{{ item.ano }}" data-mes="1{{ forloop.counter }}"
+                   data-dozeavos="{{ item.dozeavos }}"
+                   data-valor="{{ parcela.Valor }}"></i>
+                {% else %}
+                <i class="icofont-square disabled"></i>
+                {% endif %}
             </div>
         </div>
         {% endfor %}
