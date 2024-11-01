@@ -537,6 +537,42 @@ def get_saldo_vales_colaborador(vales):
     return total
 
 
+def get_decimo_terceiro_colaborador(id_pessoal):
+    decimo_terceiro = DecimoTerceiro.objects.filter(
+        idPessoal=id_pessoal
+    ).order_by("-Ano")
+
+    ids_decimo_terceiro = {item.idDecimoTerceiro for item in decimo_terceiro}
+
+    parcelas = ParcelasDecimoTerceiro.objects.filter(
+        idDecimoTerceiro_id__in=ids_decimo_terceiro
+    ).values(
+        "idDecimoTerceiro_id",
+        "idParcelasDecimoTerceiro",
+        "Valor",
+        "DataPgto",
+    )
+
+    parcelas_por_decimo = {}
+    for parcela in parcelas:
+        parcelas_por_decimo.setdefault(
+            parcela["idDecimoTerceiro_id"], []
+        ).append(parcela)
+
+    lista = [
+        {
+            "id_decimo_terceiro": item.idDecimoTerceiro,
+            "ano": item.Ano,
+            "dozeavos": item.Dozeavos,
+            "valor": item.Valor,
+            "parcelas": parcelas_por_decimo.get(item.idDecimoTerceiro, []),
+        }
+        for item in decimo_terceiro
+    ]
+
+    return lista
+
+
 def create_contexto_vales_colaborador(request):
     id_pessoal = (
         request.POST.get("id_pessoal")
@@ -2326,43 +2362,6 @@ def busca_um_terco_ferias(contra_cheque_itens):
     if not um_terco:
         return False
     return True
-
-
-# TODO renomear para get_decimo_terceiro após exclusão da get_decimo_terceiro atual
-def get_decimo_terceiro_colaborador(id_pessoal):
-    decimo_terceiro = DecimoTerceiro.objects.filter(
-        idPessoal=id_pessoal
-    ).order_by("-Ano")
-
-    ids_decimo_terceiro = {item.idDecimoTerceiro for item in decimo_terceiro}
-
-    parcelas = ParcelasDecimoTerceiro.objects.filter(
-        idDecimoTerceiro_id__in=ids_decimo_terceiro
-    ).values(
-        "idDecimoTerceiro_id",
-        "idParcelasDecimoTerceiro",
-        "Valor",
-        "DataPgto",
-    )
-
-    parcelas_por_decimo = {}
-    for parcela in parcelas:
-        parcelas_por_decimo.setdefault(
-            parcela["idDecimoTerceiro_id"], []
-        ).append(parcela)
-
-    lista = [
-        {
-            "id_decimo_terceiro": item.idDecimoTerceiro,
-            "ano": item.Ano,
-            "dozeavos": item.Dozeavos,
-            "valor": item.Valor,
-            "parcelas": parcelas_por_decimo.get(item.idDecimoTerceiro, []),
-        }
-        for item in decimo_terceiro
-    ]
-
-    return lista
 
 
 def verifica_decimo_terceiro(colaborador):
