@@ -573,6 +573,38 @@ def get_decimo_terceiro_colaborador(id_pessoal):
     return lista
 
 
+def atualiza_dozeavos_e_parcelas_decimo_terceiro(colaborador):
+    decimo_terceiro = get_decimo_terceiro_colaborador(colaborador.id_pessoal)
+    admissao = colaborador.dados_profissionais.data_admissao
+    salario = colaborador.salarios.salarios.Salario
+    hoje = datetime.today().date()
+    ultimo_ano = decimo_terceiro[0]["ano"]
+
+    if ultimo_ano == hoje.year and hoje.month < 12:
+        dozeavos = hoje.month if hoje.day > 15 else max(hoje.month - 1, 0)
+
+        if admissao.year == ultimo_ano:
+            dozeavos -= (
+                admissao.month - 1 if admissao.day < 16 else admissao.month
+            )
+        if hoje.month == 11 and hoje.day > 15:
+            dozeavos += 1
+
+        valor_atualizado = round(Decimal(salario / 12 * dozeavos), 2)
+        valor_parcela = round((valor_atualizado / 2), 2)
+
+        DecimoTerceiro.objects.filter(
+            idDecimoTerceiro=decimo_terceiro[0]["id_decimo_terceiro"]
+        ).update(Dozeavos=dozeavos, Valor=valor_atualizado)
+
+        ParcelasDecimoTerceiro.objects.filter(
+            idParcelasDecimoTerceiro__in=[
+                parcela["idParcelasDecimoTerceiro"]
+                for parcela in decimo_terceiro[0]["parcelas"]
+            ]
+        ).update(Valor=valor_parcela)
+
+
 def create_contexto_vales_colaborador(request):
     id_pessoal = (
         request.POST.get("id_pessoal")
