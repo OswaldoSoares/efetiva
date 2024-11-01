@@ -2364,27 +2364,6 @@ def busca_um_terco_ferias(contra_cheque_itens):
     return True
 
 
-def verifica_parcelas_decimo_terceiro(colaborador):
-    decimo_terceiro = get_decimo_terceiro_colaborador(colaborador)
-    for itens in decimo_terceiro:
-        parcelas = ParcelasDecimoTerceiro.objects.filter(
-            idDecimoTerceiro=itens
-        )
-        if not parcelas:
-            ParcelasDecimoTerceiro.objects.create(
-                Parcela=1,
-                Valor=0,
-                Pago=False,
-                idDecimoTerceiro=itens,
-            )
-            ParcelasDecimoTerceiro.objects.create(
-                Parcela=2,
-                Valor=0,
-                Pago=False,
-                idDecimoTerceiro=itens,
-            )
-
-
 def get_salario_base_contra_cheque_itens(contra_cheque_itens, tipo):
     if tipo == "PAGAMENTO":
         tipo = "SALARIO"
