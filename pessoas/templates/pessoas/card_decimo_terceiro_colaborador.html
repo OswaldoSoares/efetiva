@@ -1,0 +1,91 @@
+{% load custom_filters %}
+<!-- Card Header -->
+<div class="card-header">
+    <div class="input-group">
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-up"></i>
+        </div>
+        <div class="div-form-control">
+            <span>13º SALÁRIO</span>
+        </div>
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-up"></i>
+        </div>
+    </div>
+</div>
+<!-- Card Body -->
+<div class="card-body">
+    {% for item in decimo_terceiro %}
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-calendar i-button-null"></i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-33 text-left font-menor">
+                    <span>ANO {{ item.ano }}</span>
+                </div>
+                <div class="tamanho-34 text-center font-menor">
+                    <span>{{ item.dozeavos|stringformat:".2d" }} - DOZEAVOS</span>
+                </div>
+                <div class="tamanho-33 text-right font-menor">
+                    <span>R$  {{ item.valor|formatar_numero:"2" }}</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-square i-button js-selecionar-decimo-terceiro"
+                   id="ano-{{ item.ano }}"></i>
+            </div>
+        </div>
+        {% if item.parcelas %}
+        {% for parcela in item.parcelas %}
+        <div class="input-group parcelas-13 ano-{{ item.ano }}">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-check"></i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-50 text-left font-menor">
+                    <span>
+                        {% if parcela.DataPgto %}
+                        PAGO EM {{ parcela.DataPgto }}
+                        {% else %}
+                        {{ forloop.counter }}ª PARCELA
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="tamanho-50 text-right font-menor">
+                    <span>R$  {{ parcela.Valor|formatar_numero:"2" }}</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                {% if hoje|esta_no_periodo or item.ano != ano_atual %}
+                <i class="icofont-square i-button js-selecionar-parcela"
+                   data-id_pessoal="{{ colaborador.id_pessoal }}"
+                   data-ano="{{ item.ano }}" data-mes="1{{ forloop.counter }}"
+                   data-dozeavos="{{ item.dozeavos }}"
+                   data-valor="{{ parcela.Valor }}"></i>
+                {% else %}
+                <i class="icofont-square disabled"></i>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+<!-- Card Footer -->
+<div class="card-footer">
+    <div class="input-group">
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-down"></i>
+        </div>
+        <div class="div-flex div-form-control">
+            <div class="tamanho-100 text-center">
+            </div>
+        </div>
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-down"></i>
+        </div>
+    </div>
+</div>

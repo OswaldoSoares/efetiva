@@ -5,6 +5,7 @@ templates do Django.
 Os filtros ajudam a manipular e exibir dados em templates de forma
 personalizada.
 """
+from datetime import date
 from django import template
 from core.tools import formatar_numero_com_separadores
 
@@ -63,3 +64,10 @@ def formatar_numero(valor, digitos_decimais=2):
 def subtract(value, arg):
     """Subtracts the arg from the value."""
     return value - arg
+
+
+@register.filter
+def esta_no_periodo(hoje):
+    data_inicio = date(2024, 11, 16)
+    data_fim = date(2024, 12, 31)
+    return data_inicio <= hoje <= data_fim

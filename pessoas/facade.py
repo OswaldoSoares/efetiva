@@ -25,7 +25,6 @@ from pagamentos import facade as facade_pagamentos
 from pagamentos.models import Recibo
 
 
-from pessoas.forms import FormVale
 from core.constants import (
     CATEGORIAS,
     TIPOPGTO,
@@ -33,6 +32,7 @@ from core.constants import (
     TIPOS_FONES,
     TIPOS_CONTAS,
 )
+from core.tools import obter_mes_por_numero
 from pessoas.models import (
     Aquisitivo,
     DecimoTerceiro,
@@ -503,6 +503,158 @@ def save_vale_colaborador(request):
     return {"mensagem": mensagem}
 
 
+def get_vales_colaborador(id_pessoal):
+    vales = Vales.objects.filter(idPessoal=id_pessoal).order_by(
+        "Data", "Descricao"
+    )
+
+    # Obtém todos os IDs de vales associados a ContraChequeItens em uma única
+    # consulta
+    vales_com_contracheque = set(
+        ContraChequeItens.objects.filter(
+            Vales_id__in=vales.values_list("idVales", flat=True)
+        ).values_list("Vales_id", flat=True)
+    )
+
+    # Constrói a lista de dicionários com a verificação de 'checked' baseada
+    # no set criado
+    lista = [
+        {
+            "id_vale": item.idVales,
+            "data": item.Data,
+            "descricao": item.Descricao,
+            "valor": item.Valor,
+            "checked": item.idVales in vales_com_contracheque,
+        }
+        for item in vales
+    ]
+
+    return lista
+
+
+def get_saldo_vales_colaborador(vales):
+    pagar = [d for d in vales if not d["checked"]]
+    total = sum(item["valor"] for item in pagar)
+    return total
+
+
+def get_decimo_terceiro_colaborador(id_pessoal):
+    decimo_terceiro = DecimoTerceiro.objects.filter(
+        idPessoal=id_pessoal
+    ).order_by("-Ano")
+
+    ids_decimo_terceiro = {item.idDecimoTerceiro for item in decimo_terceiro}
+
+    parcelas = ParcelasDecimoTerceiro.objects.filter(
+        idDecimoTerceiro_id__in=ids_decimo_terceiro
+    ).values(
+        "idDecimoTerceiro_id",
+        "idParcelasDecimoTerceiro",
+        "Valor",
+        "DataPgto",
+    )
+
+    parcelas_por_decimo = {}
+    for parcela in parcelas:
+        parcelas_por_decimo.setdefault(
+            parcela["idDecimoTerceiro_id"], []
+        ).append(parcela)
+
+    lista = [
+        {
+            "id_decimo_terceiro": item.idDecimoTerceiro,
+            "ano": item.Ano,
+            "dozeavos": item.Dozeavos,
+            "valor": item.Valor,
+            "parcelas": parcelas_por_decimo.get(item.idDecimoTerceiro, []),
+        }
+        for item in decimo_terceiro
+    ]
+
+    return lista
+
+
+def atualiza_dozeavos_e_parcelas_decimo_terceiro(colaborador):
+    decimo_terceiro = get_decimo_terceiro_colaborador(colaborador.id_pessoal)
+    admissao = colaborador.dados_profissionais.data_admissao
+    salario = colaborador.salarios.salarios.Salario
+    hoje = datetime.today().date()
+    ultimo_ano = decimo_terceiro[0]["ano"]
+
+    if ultimo_ano == hoje.year and hoje.month < 12:
+        dozeavos = hoje.month if hoje.day > 15 else max(hoje.month - 1, 0)
+
+        if admissao.year == ultimo_ano:
+            dozeavos -= (
+                admissao.month - 1 if admissao.day < 16 else admissao.month
+            )
+        if hoje.month == 11 and hoje.day > 15:
+            dozeavos += 1
+
+        valor_atualizado = round(Decimal(salario / 12 * dozeavos), 2)
+        valor_parcela = round((valor_atualizado / 2), 2)
+
+        DecimoTerceiro.objects.filter(
+            idDecimoTerceiro=decimo_terceiro[0]["id_decimo_terceiro"]
+        ).update(Dozeavos=dozeavos, Valor=valor_atualizado)
+
+        ParcelasDecimoTerceiro.objects.filter(
+            idParcelasDecimoTerceiro__in=[
+                parcela["idParcelasDecimoTerceiro"]
+                for parcela in decimo_terceiro[0]["parcelas"]
+            ]
+        ).update(Valor=valor_parcela)
+
+
+def create_contexto_contra_cheque_decimo_terceiro(request):
+    id_pessoal = request.GET.get("id_pessoal")
+    ano = request.GET.get("ano")
+    mes = obter_mes_por_numero(int(request.GET.get("mes")))
+    dozeavos = int(request.GET.get("dozeavos"))
+    valor = Decimal(request.GET.get("valor").replace(",", "."))
+    descricao = "DECIMO TERCEIRO"
+    parcela = 1 if mes == "NOVEMBRO" else 2
+
+    contra_cheque = ContraCheque.objects.filter(
+        Descricao=descricao,
+        AnoReferencia=ano,
+        MesReferencia=mes,
+        idPessoal=id_pessoal,
+    ).first()
+
+    if not contra_cheque:
+        obs = ""
+        contra_cheque = create_contra_cheque(
+            mes, ano, descricao, id_pessoal, obs
+        )
+
+    descricao = f"{descricao} ({parcela}ª PARCELA)"
+
+    contra_cheque_itens = ContraChequeItens.objects.filter(
+        idContraCheque=contra_cheque, Descricao=descricao
+    )
+
+    if not contra_cheque_itens:
+        referencia = f"{dozeavos}a"
+        contra_cheque_itens = create_contra_cheque_itens(
+            descricao, valor, "C", referencia, contra_cheque
+        )
+
+    return {
+        "contra_cheque": contra_cheque,
+        "contra_cheque_itens": contra_cheque_itens,
+    }
+
+
+def contra_cheque_html_data(request, contexto):
+    data = {}
+    contexto["mensagem"] = "Contra cheque selecionado"
+    html_functions = [
+        html_data.html_card_contra_cheque_colaborador,
+    ]
+    return gerar_data_html(html_functions, request, contexto, data)
+
+
 def create_contexto_vales_colaborador(request):
     id_pessoal = (
         request.POST.get("id_pessoal")
@@ -567,20 +719,18 @@ def create_contexto_consulta_colaborador(id_pessoal):
     multas = facade_multa.multas_pagar("MOTORISTA", id_pessoal)
     vales = get_vales_colaborador(id_pessoal)
     saldo_vales = get_saldo_vales_colaborador(vales)
-    verifica_decimo_terceiro((colaborador_ant))
-    decimo_terceiro = get_decimo_terceiro_colaborador(colaborador_ant)
-    decimo_terceiro = decimo_terceiro.order_by("-Ano")
-    verifica_parcelas_decimo_terceiro(colaborador_ant)
-    parcelas_decimo_terceiro = get_parcelas_decimo_terceiro(colaborador_ant)
+    atualiza_dozeavos_e_parcelas_decimo_terceiro(colaborador)
+    decimo_terceiro = get_decimo_terceiro_colaborador(id_pessoal)
     hoje = datetime.today().date()
+    ano_atual = hoje.year
     return {
         "colaborador": colaborador,
         "vales": vales,
         "saldo_vales": saldo_vales,
         "multas": multas,
         "decimo_terceiro": decimo_terceiro,
-        "parcelas_decimo_terceiro": parcelas_decimo_terceiro,
         "hoje": hoje,
+        "ano_atual": ano_atual,
         "aquisitivo": aquisitivo,
     }
 
@@ -936,6 +1086,7 @@ def create_data_consulta_colaborador(request, contexto):
     data = dict()
     html_data.html_card_foto_colaborador(request, contexto, data)
     html_data.html_card_vales_colaborador(request, contexto, data)
+    html_data.html_card_decimo_terceiro_colaborador(request, contexto, data)
     html_data.html_card_docs_colaborador(request, contexto, data)
     html_data.html_card_fones_colaborador(request, contexto, data)
     html_data.html_card_contas_colaborador(request, contexto, data)
@@ -2092,15 +2243,15 @@ def get_contra_cheque_mes_ano_descricao(colaborador, mes, ano, descricao):
     return contra_cheque
 
 
-def create_contra_cheque(mes, ano, descricao, colaborador, obs):
-    ContraCheque.objects.create(
+def create_contra_cheque(mes, ano, descricao, id_pessoal, obs):
+    return ContraCheque.objects.create(
         MesReferencia=mes,
         AnoReferencia=ano,
         Valor=0.00,
         Pago=False,
         Descricao=descricao,
         Obs=obs,
-        idPessoal=colaborador,
+        idPessoal_id=id_pessoal,
     )
 
 
@@ -2126,7 +2277,7 @@ def get_contra_cheque_itens(contra_cheque):
 def create_contra_cheque_itens(
     descricao, valor, registro, referencia, contra_cheque
 ):
-    ContraChequeItens.objects.create(
+    return ContraChequeItens.objects.create(
         Descricao=descricao,
         Valor=valor,
         Registro=registro,
@@ -2216,41 +2367,6 @@ def update_contra_cheque_item_referencia(contra_cheque_item, referencia):
     obj.save()
 
 
-def get_vales_colaborador(id_pessoal):
-    vales = Vales.objects.filter(idPessoal=id_pessoal).order_by(
-        "Data", "Descricao"
-    )
-
-    # Obtém todos os IDs de vales associados a ContraChequeItens em uma única
-    # consulta
-    vales_com_contracheque = set(
-        ContraChequeItens.objects.filter(
-            Vales_id__in=vales.values_list("idVales", flat=True)
-        ).values_list("Vales_id", flat=True)
-    )
-
-    # Constrói a lista de dicionários com a verificação de 'checked' baseada
-    # no set criado
-    lista = [
-        {
-            "id_vale": item.idVales,
-            "data": item.Data,
-            "descricao": item.Descricao,
-            "valor": item.Valor,
-            "checked": item.idVales in vales_com_contracheque,
-        }
-        for item in vales
-    ]
-
-    return lista
-
-
-def get_saldo_vales_colaborador(vales):
-    pagar = [d for d in vales if not d["checked"]]
-    total = sum(item["valor"] for item in pagar)
-    return total
-
-
 def get_saldo_contra_cheque(contra_cheque_itens):
     itens_credito = contra_cheque_itens.filter(Registro="C")
     creditos = itens_credito.aggregate(Total=Sum("Valor"))
@@ -2326,60 +2442,6 @@ def busca_um_terco_ferias(contra_cheque_itens):
     if not um_terco:
         return False
     return True
-
-
-# TODO renomear para get_decimo_terceiro após exclusão da get_decimo_terceiro atual
-def get_decimo_terceiro_colaborador(colaborador):
-    decimo_terceiro = DecimoTerceiro.objects.filter(idPessoal=colaborador)
-    return decimo_terceiro
-
-
-def verifica_decimo_terceiro(colaborador):
-    decimo_terceiro = get_decimo_terceiro_colaborador(colaborador)
-    hoje = datetime.today().date()
-    ano_inicio = colaborador.DataAdmissao.year
-    ano_final = hoje.year
-    ano = ano_inicio
-    while ano <= ano_final:
-        decimo_terceiro_ano = decimo_terceiro.filter(Ano=ano)
-        if not decimo_terceiro_ano:
-            DecimoTerceiro.objects.create(
-                Ano=ano,
-                Dozeavos=0,
-                ValorBase=0.00,
-                Valor=0.00,
-                Pago=False,
-                idPessoal=colaborador,
-            )
-        ano = ano + 1
-
-
-def get_parcelas_decimo_terceiro(colaborador):
-    parcelas = ParcelasDecimoTerceiro.objects.filter(
-        idDecimoTerceiro__idPessoal=colaborador
-    )
-    return parcelas
-
-
-def verifica_parcelas_decimo_terceiro(colaborador):
-    decimo_terceiro = get_decimo_terceiro_colaborador(colaborador)
-    for itens in decimo_terceiro:
-        parcelas = ParcelasDecimoTerceiro.objects.filter(
-            idDecimoTerceiro=itens
-        )
-        if not parcelas:
-            ParcelasDecimoTerceiro.objects.create(
-                Parcela=1,
-                Valor=0,
-                Pago=False,
-                idDecimoTerceiro=itens,
-            )
-            ParcelasDecimoTerceiro.objects.create(
-                Parcela=2,
-                Valor=0,
-                Pago=False,
-                idDecimoTerceiro=itens,
-            )
 
 
 def get_salario_base_contra_cheque_itens(contra_cheque_itens, tipo):

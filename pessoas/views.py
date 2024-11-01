@@ -134,6 +134,11 @@ def excluir_vale_colaborador(request):
     )
 
 
+def selecionar_contra_cheque_decimo_terceiro(request):
+    contexto = facade.create_contexto_contra_cheque_decimo_terceiro(request)
+    return facade.contra_cheque_html_data(request, contexto)
+
+
 def bloqueia_pessoa(request, idpessoa):
     facade.altera_status(idpessoa)
     return redirect("indexpessoal")
@@ -155,15 +160,6 @@ def edita_demissao(request):
     c_data_demissao = request.POST.get("DataDemissao")
     facade.edita_data_demissao(c_pessoal, c_data_demissao)
     return redirect("consultapessoa", c_pessoal)
-
-
-def cria_vale(request):
-    c_data = request.POST.get("Data")
-    c_descricao = request.POST.get("Descricao")
-    c_valor = request.POST.get("Valor")
-    c_pessoal = request.POST.get("idPessoal")
-    facade.create_vale(c_data, c_descricao, c_valor, c_pessoal)
-    return render(request, "pessoas/consultapessoa.html")
 
 
 def cria_contracheque(request):

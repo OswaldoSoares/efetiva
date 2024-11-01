@@ -2,6 +2,8 @@ $(document).ready(function() {
     $(".button-demissao").hide();
     $(".card-foto-colaborador").hide();
     $(".card-vales-colaborador").hide();
+    $(".card-contra-cheque-colaborador").hide();
+    $(".card-decimo-terceiro-colaborador").hide();
     $(".card-docs-colaborador").hide();
     $(".card-fones-colaborador").hide();
     $(".card-contas-colaborador").hide();
@@ -45,8 +47,15 @@ $(document).on('click', ".js-selecionar-colaborador", function() {
         localStorage.setItem("id_pessoal", id_pessoal);
         $(".card-foto-colaborador").html(data["html-card-foto-colaborador"]);
         $(".card-foto-colaborador").show();
+        $(".card-contra-cheque-colaborador").hide();
+        $(".sub-grid").css("padding-top", "0");
         $(".card-vales-colaborador").html(data["html-card-vales-colaborador"]);
         $(".card-vales-colaborador").show();
+        $(".card-decimo-terceiro-colaborador").html(
+            data["html-card-decimo-terceiro-colaborador"]
+        );
+        $(".parcelas-13").hide();
+        $(".card-decimo-terceiro-colaborador").show();
         $(".card-docs-colaborador").html(data["html-card-docs-colaborador"]);
         $(".card-docs-colaborador").show();
         $(".card-fones-colaborador").html(data["html-card-fones-colaborador"]);
@@ -127,6 +136,48 @@ $(document).on('submit', ".js-salva-foto", function(event) {
 
 $(document).on('change', '.js-carrega-foto', function() {
     $(".js-salva-foto").click()
+});
+
+$(document).on("click", ".js-selecionar-decimo-terceiro", function() {
+    const id = $(this).attr("id");
+
+    $(".js-selecionar-decimo-terceiro").each(function() {
+        $(this).removeClass("icofont-checked");
+        $(this).removeClass("disabled");
+        $(this).addClass("icofont-square");
+    });
+
+    $(this).addClass("icofont-checked");
+    $(this).addClass("disabled")
+    $(this).removeClass("icofont-square");
+
+    $(".parcelas-13").each(function() {
+        $(this).hide();
+    });
+
+    $("." + id).toggle();
+});
+
+$(document).on("click", ".js-selecionar-parcela", function () {
+    const idPessoal = $(this).data("id_pessoal");
+    const ano = $(this).data("ano");
+    const mes = $(this).data("mes");
+    const dozeavos = $(this).data("dozeavos");
+    const valor = $(this).data("valor");
+
+    executarAjax("/pessoas/selecionar_contra_cheque_decimo_terceiro", "GET", {
+        id_pessoal: idPessoal,
+        ano: ano,
+        mes: mes,
+        dozeavos: dozeavos,
+        valor: valor,
+    }, function(data) {
+            $(".card-contra-cheque-colaborador").html(
+                data["html-card-contra-cheque-colaborador"]
+            )
+            $(".card-contra-cheque-colaborador").show()
+            $(".box-loader").hide()
+    });
 });
 
 $(document).on('click', '.js-atualiza-decimo-terceiro', function() {

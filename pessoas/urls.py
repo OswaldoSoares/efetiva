@@ -3,7 +3,6 @@ from .views import (
     indexpessoal,
     bloqueia_pessoa,
     edita_salario,
-    cria_vale,
     cria_contracheque,
     seleciona_contracheque,
     cria_contrachequeitens,
@@ -51,6 +50,7 @@ from .views import (
     excluir_conta_colaborador,
     adicionar_vale_colaborador,
     excluir_vale_colaborador,
+    selecionar_contra_cheque_decimo_terceiro,
 )
 
 
@@ -106,6 +106,11 @@ urlpatterns = [
         excluir_vale_colaborador,
         name="excluir_vale_colaborador",
     ),
+    path(
+        "selecionar_contra_cheque_decimo_terceiro",
+        selecionar_contra_cheque_decimo_terceiro,
+        name="selecionar_contra_cheque_decimo_terceiro",
+    ),
     # Antigos
     path(
         "bloqueiapessoa/<int:idpessoa>/",
@@ -114,7 +119,6 @@ urlpatterns = [
     ),
     path("editasalario/", edita_salario, name="editasalario"),
     path("editademissao", edita_demissao, name="editademissao"),
-    path("criavale/", cria_vale, name="criavale"),
     path("criacontracheque/", cria_contracheque, name="criacontracheque"),
     path(
         "selecionacontrachequemudei/",
