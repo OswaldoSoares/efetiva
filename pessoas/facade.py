@@ -713,6 +713,7 @@ def create_contexto_consulta_colaborador(id_pessoal):
     atualiza_dozeavos_e_parcelas_decimo_terceiro(colaborador)
     decimo_terceiro = get_decimo_terceiro_colaborador(id_pessoal)
     hoje = datetime.today().date()
+    ano_atual = hoje.year
     return {
         "colaborador": colaborador,
         "vales": vales,
@@ -720,6 +721,7 @@ def create_contexto_consulta_colaborador(id_pessoal):
         "multas": multas,
         "decimo_terceiro": decimo_terceiro,
         "hoje": hoje,
+        "ano_atual": ano_atual,
         "aquisitivo": aquisitivo,
     }
 
