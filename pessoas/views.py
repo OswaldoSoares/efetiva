@@ -157,15 +157,6 @@ def edita_demissao(request):
     return redirect("consultapessoa", c_pessoal)
 
 
-def cria_vale(request):
-    c_data = request.POST.get("Data")
-    c_descricao = request.POST.get("Descricao")
-    c_valor = request.POST.get("Valor")
-    c_pessoal = request.POST.get("idPessoal")
-    facade.create_vale(c_data, c_descricao, c_valor, c_pessoal)
-    return render(request, "pessoas/consultapessoa.html")
-
-
 def cria_contracheque(request):
     c_mesreferencia = request.POST.get("MesReferencia")
     c_anoreferencia = request.POST.get("AnoReferencia")
