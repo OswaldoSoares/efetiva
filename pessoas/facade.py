@@ -669,11 +669,8 @@ def create_contexto_consulta_colaborador(id_pessoal):
     multas = facade_multa.multas_pagar("MOTORISTA", id_pessoal)
     vales = get_vales_colaborador(id_pessoal)
     saldo_vales = get_saldo_vales_colaborador(vales)
-    verifica_decimo_terceiro((colaborador_ant))
-    decimo_terceiro = get_decimo_terceiro_colaborador(colaborador_ant)
-    decimo_terceiro = decimo_terceiro.order_by("-Ano")
-    verifica_parcelas_decimo_terceiro(colaborador_ant)
-    parcelas_decimo_terceiro = get_parcelas_decimo_terceiro(colaborador_ant)
+    atualiza_dozeavos_e_parcelas_decimo_terceiro(colaborador)
+    decimo_terceiro = get_decimo_terceiro_colaborador(id_pessoal)
     hoje = datetime.today().date()
     return {
         "colaborador": colaborador,
@@ -681,7 +678,6 @@ def create_contexto_consulta_colaborador(id_pessoal):
         "saldo_vales": saldo_vales,
         "multas": multas,
         "decimo_terceiro": decimo_terceiro,
-        "parcelas_decimo_terceiro": parcelas_decimo_terceiro,
         "hoje": hoje,
         "aquisitivo": aquisitivo,
     }
