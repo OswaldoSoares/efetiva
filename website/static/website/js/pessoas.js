@@ -135,6 +135,26 @@ $(document).on('change', '.js-carrega-foto', function() {
     $(".js-salva-foto").click()
 });
 
+$(document).on("click", ".js-selecionar-decimo-terceiro", function() {
+    const id = $(this).attr("id");
+
+    $(".js-selecionar-decimo-terceiro").each(function() {
+        $(this).removeClass("icofont-checked");
+        $(this).removeClass("disabled");
+        $(this).addClass("icofont-square");
+    });
+
+    $(this).addClass("icofont-checked");
+    $(this).addClass("disabled")
+    $(this).removeClass("icofont-square");
+
+    $(".parcelas-13").each(function() {
+        $(this).hide();
+    });
+
+    $("." + id).toggle();
+});
+
 $(document).on('click', '.js-atualiza-decimo-terceiro', function() {
     $.ajax({
         type: "GET",
