@@ -43,6 +43,15 @@ def html_card_vales_colaborador(request, contexto, data):
     return data
 
 
+def html_card_decimo_terceiro_colaborador(request, contexto, data):
+    data["html-card-decimo-terceiro-colaborador"] = render_to_string(
+        "pessoas/card_decimo_terceiro_colaborador.html",
+        contexto,
+        request=request,
+    )
+    return data
+
+
 def html_modal_colaborador(request, contexto):
     modal_html = render_to_string(
         "pessoas/modal_colaborador.html", contexto, request=request
