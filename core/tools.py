@@ -1,5 +1,6 @@
 """ MÓDULO COM FUNÇÕES QUE SERÃO USADAS EM TODO O PROJETO """
 from datetime import datetime, time, timedelta
+from core.constants import MESES
 
 
 def apos_meia_noite(hora):
