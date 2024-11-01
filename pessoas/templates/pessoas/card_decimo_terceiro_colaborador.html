@@ -49,7 +49,7 @@
                         {% if parcela.DataPgto %}
                         PAGO EM {{ parcela.DataPgto }}
                         {% else %}
-                        PARCELA {{ forloop.counter|stringformat:".2d" }}
+                        {{ forloop.counter }}ª PARCELA
                         {% endif %}
                     </span>
                 </div>
