@@ -106,6 +106,11 @@ urlpatterns = [
         excluir_vale_colaborador,
         name="excluir_vale_colaborador",
     ),
+    path(
+        "selecionar_contra_cheque_decimo_terceiro",
+        selecionar_contra_cheque_decimo_terceiro,
+        name="selecionar_contra_cheque_decimo_terceiro",
+    ),
     # Antigos
     path(
         "bloqueiapessoa/<int:idpessoa>/",
