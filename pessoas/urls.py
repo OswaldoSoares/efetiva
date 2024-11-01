@@ -50,6 +50,7 @@ from .views import (
     excluir_conta_colaborador,
     adicionar_vale_colaborador,
     excluir_vale_colaborador,
+    selecionar_contra_cheque_decimo_terceiro,
 )
 
 
