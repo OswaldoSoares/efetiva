@@ -646,6 +646,15 @@ def create_contexto_contra_cheque_decimo_terceiro(request):
     }
 
 
+def contra_cheque_html_data(request, contexto):
+    data = {}
+    contexto["mensagem"] = "Contra cheque selecionado"
+    html_functions = [
+        html_data.html_card_contra_cheque_colaborador,
+    ]
+    return gerar_data_html(html_functions, request, contexto, data)
+
+
 def create_contexto_vales_colaborador(request):
     id_pessoal = (
         request.POST.get("id_pessoal")
