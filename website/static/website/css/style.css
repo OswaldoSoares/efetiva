@@ -6415,6 +6415,9 @@ label {
   .grid-minuta {
     grid-template-columns: 1fr 1fr 1fr 1fr;
   }
+  .grid-colaborador {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
 
 }
 
