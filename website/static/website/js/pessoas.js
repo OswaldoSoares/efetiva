@@ -48,6 +48,11 @@ $(document).on('click', ".js-selecionar-colaborador", function() {
         $(".card-foto-colaborador").show();
         $(".card-vales-colaborador").html(data["html-card-vales-colaborador"]);
         $(".card-vales-colaborador").show();
+        $(".card-decimo-terceiro-colaborador").html(
+            data["html-card-decimo-terceiro-colaborador"]
+        );
+        $(".parcelas-13").hide();
+        $(".card-decimo-terceiro-colaborador").show();
         $(".card-docs-colaborador").html(data["html-card-docs-colaborador"]);
         $(".card-docs-colaborador").show();
         $(".card-fones-colaborador").html(data["html-card-fones-colaborador"]);
