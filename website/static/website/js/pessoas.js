@@ -47,6 +47,8 @@ $(document).on('click', ".js-selecionar-colaborador", function() {
         localStorage.setItem("id_pessoal", id_pessoal);
         $(".card-foto-colaborador").html(data["html-card-foto-colaborador"]);
         $(".card-foto-colaborador").show();
+        $(".card-contra-cheque-colaborador").hide();
+        $(".sub-grid").css("padding-top", "0");
         $(".card-vales-colaborador").html(data["html-card-vales-colaborador"]);
         $(".card-vales-colaborador").show();
         $(".card-decimo-terceiro-colaborador").html(
