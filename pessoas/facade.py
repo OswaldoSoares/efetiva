@@ -970,6 +970,7 @@ def create_data_consulta_colaborador(request, contexto):
     data = dict()
     html_data.html_card_foto_colaborador(request, contexto, data)
     html_data.html_card_vales_colaborador(request, contexto, data)
+    html_data.html_card_decimo_terceiro_colaborador(request, contexto, data)
     html_data.html_card_docs_colaborador(request, contexto, data)
     html_data.html_card_fones_colaborador(request, contexto, data)
     html_data.html_card_contas_colaborador(request, contexto, data)
