@@ -606,6 +606,46 @@ def atualiza_dozeavos_e_parcelas_decimo_terceiro(colaborador):
         ).update(Valor=valor_parcela)
 
 
+def create_contexto_contra_cheque_decimo_terceiro(request):
+    id_pessoal = request.GET.get("id_pessoal")
+    ano = request.GET.get("ano")
+    mes = obter_mes_por_numero(int(request.GET.get("mes")))
+    dozeavos = int(request.GET.get("dozeavos"))
+    valor = Decimal(request.GET.get("valor").replace(",", "."))
+    descricao = "DECIMO TERCEIRO"
+    parcela = 1 if mes == "NOVEMBRO" else 2
+
+    contra_cheque = ContraCheque.objects.filter(
+        Descricao=descricao,
+        AnoReferencia=ano,
+        MesReferencia=mes,
+        idPessoal=id_pessoal,
+    ).first()
+
+    if not contra_cheque:
+        obs = ""
+        contra_cheque = create_contra_cheque(
+            mes, ano, descricao, id_pessoal, obs
+        )
+
+    descricao = f"{descricao} ({parcela}ª PARCELA)"
+
+    contra_cheque_itens = ContraChequeItens.objects.filter(
+        idContraCheque=contra_cheque, Descricao=descricao
+    )
+
+    if not contra_cheque_itens:
+        referencia = f"{dozeavos}a"
+        contra_cheque_itens = create_contra_cheque_itens(
+            descricao, valor, "C", referencia, contra_cheque
+        )
+
+    return {
+        "contra_cheque": contra_cheque,
+        "contra_cheque_itens": contra_cheque_itens,
+    }
+
+
 def create_contexto_vales_colaborador(request):
     id_pessoal = (
         request.POST.get("id_pessoal")
