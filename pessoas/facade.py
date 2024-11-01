@@ -2364,26 +2364,6 @@ def busca_um_terco_ferias(contra_cheque_itens):
     return True
 
 
-def verifica_decimo_terceiro(colaborador):
-    decimo_terceiro = get_decimo_terceiro_colaborador(colaborador)
-    hoje = datetime.today().date()
-    ano_inicio = colaborador.DataAdmissao.year
-    ano_final = hoje.year
-    ano = ano_inicio
-    while ano <= ano_final:
-        decimo_terceiro_ano = decimo_terceiro.filter(Ano=ano)
-        if not decimo_terceiro_ano:
-            DecimoTerceiro.objects.create(
-                Ano=ano,
-                Dozeavos=0,
-                ValorBase=0.00,
-                Valor=0.00,
-                Pago=False,
-                idPessoal=colaborador,
-            )
-        ano = ano + 1
-
-
 def get_parcelas_decimo_terceiro(colaborador):
     parcelas = ParcelasDecimoTerceiro.objects.filter(
         idDecimoTerceiro__idPessoal=colaborador
