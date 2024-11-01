@@ -134,6 +134,11 @@ def excluir_vale_colaborador(request):
     )
 
 
+def selecionar_contra_cheque_decimo_terceiro(request):
+    contexto = facade.create_contexto_contra_cheque_decimo_terceiro(request)
+    return facade.contra_cheque_html_data(request, contexto)
+
+
 def bloqueia_pessoa(request, idpessoa):
     facade.altera_status(idpessoa)
     return redirect("indexpessoal")
