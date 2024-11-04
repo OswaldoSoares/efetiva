@@ -663,6 +663,18 @@ def delete_vale_colaborador(request):
     return {"mensagem": "Não foi possível excluir vale do colaborador"}
 
 
+def create_contra_cheque(mes, ano, descricao, id_pessoal, obs):
+    return ContraCheque.objects.create(
+        MesReferencia=mes,
+        AnoReferencia=ano,
+        Valor=0.00,
+        Pago=False,
+        Descricao=descricao,
+        Obs=obs,
+        idPessoal_id=id_pessoal,
+    )
+
+
 def create_contexto_contra_cheque_decimo_terceiro(request):
     id_pessoal = request.GET.get("id_pessoal")
     ano = request.GET.get("ano")
@@ -2241,18 +2253,6 @@ def get_contra_cheque_mes_ano_descricao(colaborador, mes, ano, descricao):
         Descricao=descricao,
     )
     return contra_cheque
-
-
-def create_contra_cheque(mes, ano, descricao, id_pessoal, obs):
-    return ContraCheque.objects.create(
-        MesReferencia=mes,
-        AnoReferencia=ano,
-        Valor=0.00,
-        Pago=False,
-        Descricao=descricao,
-        Obs=obs,
-        idPessoal_id=id_pessoal,
-    )
 
 
 def get_aquisitivo_id(idaquisitivo):
