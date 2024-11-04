@@ -28,7 +28,6 @@ from .views import (
     print_rescisao_trabalho,
     seleciona_aquisitivo,
     seleciona_parcela,
-    adiciona_vale_contra_cheque,
     exclui_contra_cheque_item,
     imprime_contra_cheque,
     adiciona_vale_colaborador,
@@ -240,11 +239,6 @@ urlpatterns = [
         "seleciona_parcela",
         seleciona_parcela,
         name="seleciona_parcela",
-    ),
-    path(
-        "adiciona_vale_contra_cheque",
-        adiciona_vale_contra_cheque,
-        name="adiciona_vale_contra_cheque",
     ),
     path(
         "exclui_contra_cheque_item",
