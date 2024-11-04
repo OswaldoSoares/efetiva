@@ -2295,15 +2295,15 @@ def get_contra_cheque_itens(contra_cheque):
     return contra_cheque_itens
 
 
-def create_contra_cheque_itens_vale(idcontracheque, idvale):
-    vale = get_vale_id(idvale)
-    dia = datetime.datetime.strftime(vale.Data, "%d/%m/%Y")
+def create_contra_cheque_itens_vale(request):
+    vale = Vales.objects.get(idVales=request.GET.get("id_vale"))
+    dia = datetime.strftime(vale.Data, "%d/%m/%Y")
     ContraChequeItens.objects.create(
         Descricao=f"{vale.Descricao} - {dia}",
         Valor=vale.Valor,
         Registro="D",
-        idContraCheque_id=idcontracheque,
-        Vales_id=idvale,
+        idContraCheque_id=request.GET.get("id_contra_cheque"),
+        Vales_id=request.GET.get("id_vale"),
     )
 
 
