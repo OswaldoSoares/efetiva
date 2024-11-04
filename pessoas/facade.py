@@ -731,9 +731,21 @@ def create_contexto_contra_cheque_decimo_terceiro(request):
     return contexto
 
 
+def create_contexto_contra_cheque(request):
+    contra_cheque = ContraCheque.objects.filter(
+        idContraCheque=request.GET.get("id_contra_cheque")
+    )
+    contra_cheque_itens = ContraChequeItens.objects.filter(
+        idContraCheque_id=request.GET.get("id_contra_cheque")
+    )
+
+    contexto = {
         "contra_cheque": contra_cheque,
         "contra_cheque_itens": contra_cheque_itens,
     }
+    contexto.update(get_saldo_contra_cheque(contra_cheque_itens))
+
+    return contexto
 
 
 def create_contra_cheque_itens_vale(request):
