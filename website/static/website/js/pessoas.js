@@ -64,7 +64,6 @@ $(document).on('click', ".js-selecionar-colaborador", function() {
     executarAjax("/pessoas/consultar_colaborador", "GET", {
         id_pessoal: id_pessoal,
     }, function(data) {
-        localStorage.setItem("id_pessoal", id_pessoal);
         $(".card-foto-colaborador").html(data["html-card-foto-colaborador"]);
         $(".card-foto-colaborador").show();
         $(".card-contra-cheque-colaborador").hide();
