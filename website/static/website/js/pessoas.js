@@ -223,6 +223,27 @@ $(document).on('click', '.js-adicionar_vale_no_contra_cheque', function() {
         });
     }
 });
+
+$(document).on('click', '.js-excluir-vale-do-contra-cheque', function() {
+    const idContraChequeItem = $(this).data("id_contra_cheque_item")
+
+    if (idContraCheque) {
+        executarAjax("/pessoas/excluir_vale_do_contra_cheque", "GET", {
+            id_contra_cheque_item: idContraChequeItem,
+            //  Variáveis globais
+            id_pessoal: idPessoal,
+            id_contra_cheque: idContraCheque,
+        }, function(data) {
+            $(".card-contra-cheque-colaborador").html(
+                data["html-card-contra-cheque-colaborador"]
+            )
+            $(".card-vales-colaborador").html(data["html-card-vales-colaborador"]);
+            SelecionarValesToggle()
+            $(".box-loader").hide()
+            exibirMensagem(data["mensagem"])
+        });
+    }
+});
 });
 
 $(document).on('click', '.js-atualiza-decimo-terceiro', function() {
