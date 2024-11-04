@@ -735,6 +735,18 @@ def create_contexto_contra_cheque_decimo_terceiro(request):
     }
 
 
+def create_contra_cheque_itens_vale(request):
+    vale = Vales.objects.get(idVales=request.GET.get("id_vale"))
+    dia = datetime.strftime(vale.Data, "%d/%m/%Y")
+    ContraChequeItens.objects.create(
+        Descricao=f"{vale.Descricao} - {dia}",
+        Valor=vale.Valor,
+        Registro="D",
+        idContraCheque_id=request.GET.get("id_contra_cheque"),
+        Vales_id=request.GET.get("id_vale"),
+    )
+
+
 def contra_cheque_html_data(request, contexto):
     data = {}
     contexto["mensagem"] = "Contra cheque selecionado"
@@ -2293,18 +2305,6 @@ def get_contra_cheque_itens(contra_cheque):
         idContraCheque=contra_cheque
     )
     return contra_cheque_itens
-
-
-def create_contra_cheque_itens_vale(request):
-    vale = Vales.objects.get(idVales=request.GET.get("id_vale"))
-    dia = datetime.strftime(vale.Data, "%d/%m/%Y")
-    ContraChequeItens.objects.create(
-        Descricao=f"{vale.Descricao} - {dia}",
-        Valor=vale.Valor,
-        Registro="D",
-        idContraCheque_id=request.GET.get("id_contra_cheque"),
-        Vales_id=request.GET.get("id_vale"),
-    )
 
 
 def get_vale_id(idvale):
