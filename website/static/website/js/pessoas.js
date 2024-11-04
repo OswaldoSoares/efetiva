@@ -25,6 +25,10 @@ $(document).on("click", ".js-alterar-categoria", function() {
     const selecionado = $(this)
     const tipo = $(this).data("tipo")
 
+    // Alterando variável global
+    idPessoal = null;
+    idContraCheque = null;
+
     $(".js-alterar-categoria").each(function() {
         $(this).removeClass("icofont-checked");
         $(this).removeClass("disabled");
@@ -46,6 +50,10 @@ $(document).on("click", ".js-alterar-categoria", function() {
 $(document).on('click', ".js-selecionar-colaborador", function() {
     const selecionado = $(this)
     const id_pessoal = $(this).data("id_pessoal");
+
+    // Alterando variáveis global
+    idPessoal = $(this).data("id_pessoal");
+    idContraCheque = null;
 
     $(".js-selecionar-colaborador").each(function() {
         $(this).removeClass("icofont-checked");
