@@ -244,6 +244,11 @@ $(document).on('click', '.js-excluir-vale-do-contra-cheque', function() {
         });
     }
 });
+
+$(document).on("click", ".js-fechar-card-contra-cheque", function() {
+    idContraCheque = null
+    SelecionarValesToggle()
+    $(".card-contra-cheque-colaborador").hide()
 });
 
 $(document).on('click', '.js-atualiza-decimo-terceiro', function() {
