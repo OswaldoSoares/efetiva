@@ -709,11 +709,11 @@ def create_contexto_contra_cheque_decimo_terceiro(request):
             mes, ano, descricao, id_pessoal, obs
         )
 
-    descricao = f"{descricao} ({parcela}ª PARCELA)"
-
     contra_cheque_itens = ContraChequeItens.objects.filter(
-        idContraCheque=contra_cheque, Descricao=descricao
+        idContraCheque=contra_cheque
     )
+
+    descricao = f"{descricao} ({parcela}ª PARCELA)"
 
     if not contra_cheque_itens:
         referencia = f"{dozeavos}a"
@@ -721,7 +721,15 @@ def create_contexto_contra_cheque_decimo_terceiro(request):
             descricao, valor, "C", referencia, contra_cheque
         )
 
-    return {
+    contexto = {
+        "contra_cheque": contra_cheque,
+        "contra_cheque_itens": contra_cheque_itens,
+    }
+    contexto.update(get_saldo_contra_cheque(contra_cheque_itens))
+
+    return contexto
+
+
         "contra_cheque": contra_cheque,
         "contra_cheque_itens": contra_cheque_itens,
     }
