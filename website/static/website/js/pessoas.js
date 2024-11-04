@@ -50,7 +50,6 @@ $(document).on("click", ".js-alterar-categoria", function() {
 
 $(document).on('click', ".js-selecionar-colaborador", function() {
     const selecionado = $(this)
-    const id_pessoal = $(this).data("id_pessoal");
 
     // Alterando variáveis global
     idPessoal = $(this).data("id_pessoal");
@@ -63,7 +62,7 @@ $(document).on('click', ".js-selecionar-colaborador", function() {
     });
 
     executarAjax("/pessoas/consultar_colaborador", "GET", {
-        id_pessoal: id_pessoal,
+        id_pessoal: idPessoal,
     }, function(data) {
         $(".card-foto-colaborador").html(data["html-card-foto-colaborador"]);
         $(".card-foto-colaborador").show();
