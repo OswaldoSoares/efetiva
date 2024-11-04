@@ -112,6 +112,11 @@ urlpatterns = [
         selecionar_contra_cheque_decimo_terceiro,
         name="selecionar_contra_cheque_decimo_terceiro",
     ),
+    path(
+        "adicionar_vale_no_contra_cheque",
+        adicionar_vale_no_contra_cheque,
+        name="adicionar_vale_no_contra_cheque",
+    ),
     # Antigos
     path(
         "bloqueiapessoa/<int:idpessoa>/",
