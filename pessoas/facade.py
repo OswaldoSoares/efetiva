@@ -773,7 +773,6 @@ def excluir_contra_cheque_item(request):
 
 def contra_cheque_html_data(request, contexto):
     data = {}
-    contexto["mensagem"] = "Contra cheque selecionado"
     html_functions = [
         html_data.html_card_contra_cheque_colaborador,
         html_data.html_card_vales_colaborador,
