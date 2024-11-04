@@ -139,6 +139,20 @@ def selecionar_contra_cheque_decimo_terceiro(request):
     return facade.contra_cheque_html_data(request, contexto)
 
 
+def adicionar_vale_no_contra_cheque(request):
+    contexto = facade.create_contra_cheque_itens_vale(request)
+    contexto.update(facade.create_contexto_contra_cheque(request))
+    contexto.update(facade.create_contexto_vales_colaborador(request))
+    return facade.contra_cheque_html_data(request, contexto)
+
+
+def excluir_vale_do_contra_cheque(request):
+    contexto = facade.excluir_contra_cheque_item(request)
+    contexto.update(facade.create_contexto_contra_cheque(request))
+    contexto.update(facade.create_contexto_vales_colaborador(request))
+    return facade.contra_cheque_html_data(request, contexto)
+
+
 def bloqueia_pessoa(request, idpessoa):
     facade.altera_status(idpessoa)
     return redirect("indexpessoal")
@@ -441,19 +455,6 @@ def seleciona_parcela(request):
     )
     contexto.update({"idpessoal": idpessoal})
     data = facade.create_data_contra_cheque(request, contexto)
-    return data
-
-
-def adiciona_vale_contra_cheque(request):
-    idvale = request.GET.get("idvale")
-    idcontracheque = request.GET.get("idcontracheque")
-    idpessoal = request.GET.get("idpessoal")
-    colaborador = facade.get_colaborador(idpessoal)
-    facade.create_contra_cheque_itens_vale(idcontracheque, idvale)
-    contexto = facade.contexto_contra_cheque_id(idcontracheque)
-    contexto.update(facade.contexto_vales_colaborador(colaborador))
-    contexto.update({"idpessoal": idpessoal})
-    data = facade.data_adiciona_vale_contra_cheque(request, contexto)
     return data
 
 

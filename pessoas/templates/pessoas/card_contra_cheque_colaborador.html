@@ -1,5 +1,5 @@
 {% load humanize %}
-<!-- Header -->
+<!-- Card Header -->
 <div class="card-header">
 	<div class="input-group">
 		<div class="input-group-addon addon-my-color">
@@ -7,16 +7,18 @@
 		</div>
 		<div class="div-form-control">
 			<span>CONTRA CHEQUE: {{ contra_cheque.Descricao }}</span>
-			<input type="hidden" data-idcontracheque="{{ contra_cheque.idContraCheque }}" id="idcontracheque"></>
+			<input type="hidden" id="id_contra_cheque"
+				data-id_contra_cheque="{{ contra_cheque.idContraCheque }}"></>
 		</div>
 		<div class="input-group-addon addon-my-color">
-			<i class="icofont-rounded-right-up"></i>
+			<i class="icofont-close i-button js-fechar-card-contra-cheque"
+title="FECHAR"></i>
 		</div>
 	</div>
 </div>
-<!-- Body -->
+<!-- Card Body -->
 <div class="card-body">
-	{% for itens in contra_cheque_itens  %}
+	{% for itens in contra_cheque_itens %}
 	<div class="card-body-item">
 		<div class="input-group">
 			<div class="input-group-addon addon-my-color">
@@ -48,16 +50,15 @@
 				{% if itens.Vales_id == 0 %}
 				<i class="icofont-check i-button-null"></i>
 				{% else %}
-				<i class="icofont-trash	i-button js-pessoas-exclui-contra-cheque-item"
-					data-idcontracheque="{{ itens.idContraCheque_id }}"
-					data-idcontrachequeitens="{{ itens.idContraChequeItens }}"></i>
+				<i class="icofont-trash	i-button js-excluir-vale-do-contra-cheque"
+					data-id_contra_cheque_item="{{ itens.idContraChequeItens }}"></i>
 				{% endif %}
 			</div>
 		</div>
 	</div>
 	{% endfor %}
 </div>
-<!-- Footer -->
+<!-- Card Footer -->
 <div class="card-footer">
 	<div class="input-group">
 		<div class="input-group-addon addon-my-color">
@@ -65,9 +66,9 @@
 		</div>
 		<div class="div-form-control div-flex">
 			<div class="tamanho-30 text-left">
-				<span>Total R$ {{ saldo_contra_cheque|intcomma }}</span>
+				<span>Total R$ {{ saldo|intcomma }}</span>
 			</div>
-			{% if saldo_contra_cheque > 0 %}
+			{% if saldo > 0 %}
 			<div class="tamanho-30 text-center button-group div-flex">
 				{% if not contra_cheque.Pago %}
 				<a class="icofont-printer i-button"	target="_blank"

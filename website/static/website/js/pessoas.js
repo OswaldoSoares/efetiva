@@ -1,5 +1,7 @@
-$(document).ready(function() {
-    $(".button-demissao").hide();
+let idContraCheque = null;
+let idPessoal = null;
+
+var ocultarCardsColaborador =  function() {
     $(".card-foto-colaborador").hide();
     $(".card-vales-colaborador").hide();
     $(".card-contra-cheque-colaborador").hide();
@@ -7,11 +9,25 @@ $(document).ready(function() {
     $(".card-docs-colaborador").hide();
     $(".card-fones-colaborador").hide();
     $(".card-contas-colaborador").hide();
+};
+
+var SelecionarValesToggle = function() {
+    $(".js-vales-toggle-selecionar").toggleClass("invisivel")
+    $(".js-vales-toggle-excluir").toggleClass("invisivel")
+}
+
+$(document).ready(function() {
+    $(".button-demissao").hide();
+    ocultarCardsColaborador();
 });
 
 $(document).on("click", ".js-alterar-categoria", function() {
     const selecionado = $(this)
     const tipo = $(this).data("tipo")
+
+    // Alterando variável global
+    idPessoal = null;
+    idContraCheque = null;
 
     $(".js-alterar-categoria").each(function() {
         $(this).removeClass("icofont-checked");
@@ -22,8 +38,9 @@ $(document).on("click", ".js-alterar-categoria", function() {
     executarAjax("/pessoas/selecionar_categoria", "GET", {
         tipo: tipo,
     }, function(data) {
-            $(".card-colaboradores").html(data["html-card-colaboradores"])
-            $(".box-loader").hide()
+        ocultarCardsColaborador();
+        $(".card-colaboradores").html(data["html-card-colaboradores"])
+        $(".box-loader").hide()
     });
 
     $(selecionado).removeClass("icofont-square")
@@ -33,7 +50,10 @@ $(document).on("click", ".js-alterar-categoria", function() {
 
 $(document).on('click', ".js-selecionar-colaborador", function() {
     const selecionado = $(this)
-    const id_pessoal = $(this).data("id_pessoal");
+
+    // Alterando variáveis global
+    idPessoal = $(this).data("id_pessoal");
+    idContraCheque = null;
 
     $(".js-selecionar-colaborador").each(function() {
         $(this).removeClass("icofont-checked");
@@ -42,9 +62,8 @@ $(document).on('click', ".js-selecionar-colaborador", function() {
     });
 
     executarAjax("/pessoas/consultar_colaborador", "GET", {
-        id_pessoal: id_pessoal,
+        id_pessoal: idPessoal,
     }, function(data) {
-        localStorage.setItem("id_pessoal", id_pessoal);
         $(".card-foto-colaborador").html(data["html-card-foto-colaborador"]);
         $(".card-foto-colaborador").show();
         $(".card-contra-cheque-colaborador").hide();
@@ -158,26 +177,77 @@ $(document).on("click", ".js-selecionar-decimo-terceiro", function() {
     $("." + id).toggle();
 });
 
-$(document).on("click", ".js-selecionar-parcela", function () {
-    const idPessoal = $(this).data("id_pessoal");
+$(document).on("click", ".js-selecionar-parcela", function ()  {
     const ano = $(this).data("ano");
     const mes = $(this).data("mes");
     const dozeavos = $(this).data("dozeavos");
     const valor = $(this).data("valor");
 
     executarAjax("/pessoas/selecionar_contra_cheque_decimo_terceiro", "GET", {
-        id_pessoal: idPessoal,
         ano: ano,
         mes: mes,
         dozeavos: dozeavos,
         valor: valor,
+        //  Variável global
+        id_pessoal: idPessoal,
     }, function(data) {
+        $(".card-contra-cheque-colaborador").html(
+            data["html-card-contra-cheque-colaborador"]
+        )
+        $(".card-contra-cheque-colaborador").show()
+        idContraCheque = $("#id_contra_cheque").data("id_contra_cheque")
+        SelecionarValesToggle()
+        $(window).scrollTop(0)
+        $(".box-loader").hide()
+    });
+});
+
+$(document).on('click', '.js-adicionar_vale_no_contra_cheque', function() {
+    const idVale = $(this).data("id_vale")
+
+    if (idContraCheque) {
+        executarAjax("/pessoas/adicionar_vale_no_contra_cheque", "GET", {
+            id_vale: idVale,
+            //  Variáveis globais
+            id_pessoal: idPessoal,
+            id_contra_cheque: idContraCheque,
+        }, function(data) {
             $(".card-contra-cheque-colaborador").html(
                 data["html-card-contra-cheque-colaborador"]
             )
-            $(".card-contra-cheque-colaborador").show()
+            $(".card-vales-colaborador").html(data["html-card-vales-colaborador"]);
+            SelecionarValesToggle()
             $(".box-loader").hide()
-    });
+            exibirMensagem(data["mensagem"])
+        });
+    }
+});
+
+$(document).on('click', '.js-excluir-vale-do-contra-cheque', function() {
+    const idContraChequeItem = $(this).data("id_contra_cheque_item")
+
+    if (idContraCheque) {
+        executarAjax("/pessoas/excluir_vale_do_contra_cheque", "GET", {
+            id_contra_cheque_item: idContraChequeItem,
+            //  Variáveis globais
+            id_pessoal: idPessoal,
+            id_contra_cheque: idContraCheque,
+        }, function(data) {
+            $(".card-contra-cheque-colaborador").html(
+                data["html-card-contra-cheque-colaborador"]
+            )
+            $(".card-vales-colaborador").html(data["html-card-vales-colaborador"]);
+            SelecionarValesToggle()
+            $(".box-loader").hide()
+            exibirMensagem(data["mensagem"])
+        });
+    }
+});
+
+$(document).on("click", ".js-fechar-card-contra-cheque", function() {
+    idContraCheque = null
+    SelecionarValesToggle()
+    $(".card-contra-cheque-colaborador").hide()
 });
 
 $(document).on('click', '.js-atualiza-decimo-terceiro', function() {
@@ -710,35 +780,6 @@ $(document).on('click', '.js-seleciona-parcela', function() {
             $(".box-loader").hide()
         },
     });
-});
-
-$(document).on('click', '.js-pessoas-seleciona-vale', function() {
-    var idvale = $(this).data("idvale")
-    var id_pessoal = localStorage.getItem("id_pessoal")
-    var idcontracheque = localStorage.getItem("idcontracheque")
-    if (idcontracheque != "") {
-        $.ajax({
-            type: "GET",
-            url: "/pessoas/adiciona_vale_contra_cheque",
-            data: {
-                idvale: idvale,
-                idpessoal: idpessoal,
-                idcontracheque: idcontracheque,
-            },
-            beforeSend: function() {
-                $(".box-loader").show()
-                $(".card-contra-chqeue-colaborador").hide()
-                $(".card-vales-colaborador").hide()
-            },
-            success: function(data) {
-                $(".card-contra-cheque-colaborador").html(data.html_card_contra_cheque_colaborador)
-                $(".card-vales-colaborador").html(data.html_vales_colaborador)
-                $(".card-contra-cheque-colaborador").show()
-                $(".card-vales-colaborador").show()
-                $(".box-loader").hide()
-            },
-        });
-    }
 });
 
 var valesSelecionaveis = function() {

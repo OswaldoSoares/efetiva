@@ -538,6 +538,63 @@ def get_saldo_vales_colaborador(vales):
     return total
 
 
+def create_contexto_vales_colaborador(request):
+    id_pessoal = (
+        request.POST.get("id_pessoal")
+        if request.method == "POST"
+        else request.GET.get("id_pessoal")
+    )
+    colaborador = classes.Colaborador(id_pessoal)
+    vales = get_vales_colaborador(id_pessoal)
+    saldo_vales = get_saldo_vales_colaborador(vales)
+    return {
+        "colaborador": colaborador,
+        "vales": vales,
+        "saldo_vales": saldo_vales,
+    }
+
+
+def vale_html_data(request, contexto):
+    data = {}
+    html_functions = [
+        html_data.html_card_vales_colaborador,
+    ]
+    return gerar_data_html(html_functions, request, contexto, data)
+
+
+def modal_confirma_excluir_vale_colaborador(id_doc_pessoal, request):
+    id_pessoal = (
+        request.POST.get("id_pessoal")
+        if request.method == "POST"
+        else request.GET.get("id_pessoal")
+    )
+    id_vale = (
+        request.POST.get("id_vale")
+        if request.method == "POST"
+        else request.GET.get("id_vale")
+    )
+    colaborador = classes.Colaborador(id_pessoal) if id_pessoal else False
+    vale = Vales.objects.filter(idVales=id_vale).first()
+    contexto = {
+        "colaborador": colaborador,
+        "vale": vale,
+    }
+    modal_html = html_data.html_modal_confirma_excluir_vale_colaborador(
+        request, contexto
+    )
+    return JsonResponse({"modal_html": modal_html})
+
+
+def delete_vale_colaborador(request):
+    if request.method == "POST":
+        id_vale = request.POST.get("id_vale")
+        vale = Vales.objects.filter(idVales=id_vale)
+        vale.delete()
+        return {"mensagem": "Vale do colaborador excluida com sucesso"}
+
+    return {"mensagem": "Não foi possível excluir vale do colaborador"}
+
+
 def get_decimo_terceiro_colaborador(id_pessoal):
     decimo_terceiro = DecimoTerceiro.objects.filter(
         idPessoal=id_pessoal
@@ -606,6 +663,30 @@ def atualiza_dozeavos_e_parcelas_decimo_terceiro(colaborador):
         ).update(Valor=valor_parcela)
 
 
+def create_contra_cheque(mes, ano, descricao, id_pessoal, obs):
+    return ContraCheque.objects.create(
+        MesReferencia=mes,
+        AnoReferencia=ano,
+        Valor=0.00,
+        Pago=False,
+        Descricao=descricao,
+        Obs=obs,
+        idPessoal_id=id_pessoal,
+    )
+
+
+def create_contra_cheque_itens(
+    descricao, valor, registro, referencia, contra_cheque
+):
+    return ContraChequeItens.objects.create(
+        Descricao=descricao,
+        Valor=valor,
+        Registro=registro,
+        Referencia=referencia,
+        idContraCheque=contra_cheque,
+    )
+
+
 def create_contexto_contra_cheque_decimo_terceiro(request):
     id_pessoal = request.GET.get("id_pessoal")
     ano = request.GET.get("ano")
@@ -628,11 +709,11 @@ def create_contexto_contra_cheque_decimo_terceiro(request):
             mes, ano, descricao, id_pessoal, obs
         )
 
-    descricao = f"{descricao} ({parcela}ª PARCELA)"
-
     contra_cheque_itens = ContraChequeItens.objects.filter(
-        idContraCheque=contra_cheque, Descricao=descricao
+        idContraCheque=contra_cheque
     )
+
+    descricao = f"{descricao} ({parcela}ª PARCELA)"
 
     if not contra_cheque_itens:
         referencia = f"{dozeavos}a"
@@ -640,76 +721,63 @@ def create_contexto_contra_cheque_decimo_terceiro(request):
             descricao, valor, "C", referencia, contra_cheque
         )
 
-    return {
+    contexto = {
+        "mensagem": f"Parcela selecionada: {mes}/{ano}",
         "contra_cheque": contra_cheque,
         "contra_cheque_itens": contra_cheque_itens,
     }
+    contexto.update(get_saldo_contra_cheque(contra_cheque_itens))
+
+    return contexto
+
+
+def create_contexto_contra_cheque(request):
+    contra_cheque = ContraCheque.objects.filter(
+        idContraCheque=request.GET.get("id_contra_cheque")
+    )
+    contra_cheque_itens = ContraChequeItens.objects.filter(
+        idContraCheque_id=request.GET.get("id_contra_cheque")
+    )
+
+    contexto = {
+        "contra_cheque": contra_cheque,
+        "contra_cheque_itens": contra_cheque_itens,
+    }
+    contexto.update(get_saldo_contra_cheque(contra_cheque_itens))
+
+    return contexto
+
+
+def create_contra_cheque_itens_vale(request):
+    vale = Vales.objects.get(idVales=request.GET.get("id_vale"))
+    dia = datetime.strftime(vale.Data, "%d/%m/%Y")
+    if ContraChequeItens.objects.create(
+        Descricao=f"{vale.Descricao} - {dia}",
+        Valor=vale.Valor,
+        Registro="D",
+        idContraCheque_id=request.GET.get("id_contra_cheque"),
+        Vales_id=request.GET.get("id_vale"),
+    ):
+        return {"mensagem": "Vale adicionado no contra-cheque com sucesso"}
+
+    return {"Mensagem": "O vale não foi adicionado no contra-cheque"}
+
+
+def excluir_contra_cheque_item(request):
+    contra_cheque_item = ContraChequeItens.objects.filter(
+        idContraChequeItens=request.GET.get("id_contra_cheque_item")
+    )
+    if contra_cheque_item.delete():
+        return {"mensagem": "Vale removido do contra-cheque com sucesso"}
 
 
 def contra_cheque_html_data(request, contexto):
     data = {}
-    contexto["mensagem"] = "Contra cheque selecionado"
     html_functions = [
         html_data.html_card_contra_cheque_colaborador,
-    ]
-    return gerar_data_html(html_functions, request, contexto, data)
-
-
-def create_contexto_vales_colaborador(request):
-    id_pessoal = (
-        request.POST.get("id_pessoal")
-        if request.method == "POST"
-        else request.GET.get("id_pessoal")
-    )
-    colaborador = classes.Colaborador(id_pessoal)
-    vales = get_vales_colaborador(id_pessoal)
-    saldo_vales = get_saldo_vales_colaborador(vales)
-    return {
-        "colaborador": colaborador,
-        "vales": vales,
-        "saldo_vales": saldo_vales,
-    }
-
-
-def vale_html_data(request, contexto):
-    data = {}
-    html_functions = [
         html_data.html_card_vales_colaborador,
     ]
     return gerar_data_html(html_functions, request, contexto, data)
-
-
-def modal_confirma_excluir_vale_colaborador(id_doc_pessoal, request):
-    id_pessoal = (
-        request.POST.get("id_pessoal")
-        if request.method == "POST"
-        else request.GET.get("id_pessoal")
-    )
-    id_vale = (
-        request.POST.get("id_vale")
-        if request.method == "POST"
-        else request.GET.get("id_vale")
-    )
-    colaborador = classes.Colaborador(id_pessoal) if id_pessoal else False
-    vale = Vales.objects.filter(idVales=id_vale).first()
-    contexto = {
-        "colaborador": colaborador,
-        "vale": vale,
-    }
-    modal_html = html_data.html_modal_confirma_excluir_vale_colaborador(
-        request, contexto
-    )
-    return JsonResponse({"modal_html": modal_html})
-
-
-def delete_vale_colaborador(request):
-    if request.method == "POST":
-        id_vale = request.POST.get("id_vale")
-        vale = Vales.objects.filter(idVales=id_vale)
-        vale.delete()
-        return {"mensagem": "Vale do colaborador excluida com sucesso"}
-
-    return {"mensagem": "Não foi possível excluir vale do colaborador"}
 
 
 def create_contexto_consulta_colaborador(id_pessoal):
@@ -1876,7 +1944,7 @@ def html_card_contra_cheque_colaborador(request, contexto, data):
     return data
 
 
-def create_contexto_contra_cheque(idpessoal, idselecionado, descricao):
+def create_contexto_contra_cheque_apaga(idpessoal, idselecionado, descricao):
     colaborador = classes.Colaborador(idpessoal).__dict__
     colaborador_futuro = get_colaborador(idpessoal)
     contas = get_contas_bancaria_colaborador(colaborador_futuro)
@@ -2243,18 +2311,6 @@ def get_contra_cheque_mes_ano_descricao(colaborador, mes, ano, descricao):
     return contra_cheque
 
 
-def create_contra_cheque(mes, ano, descricao, id_pessoal, obs):
-    return ContraCheque.objects.create(
-        MesReferencia=mes,
-        AnoReferencia=ano,
-        Valor=0.00,
-        Pago=False,
-        Descricao=descricao,
-        Obs=obs,
-        idPessoal_id=id_pessoal,
-    )
-
-
 def get_aquisitivo_id(idaquisitivo):
     aquisitivo = Aquisitivo.objects.get(idAquisitivo=idaquisitivo)
     return aquisitivo
@@ -2272,30 +2328,6 @@ def get_contra_cheque_itens(contra_cheque):
         idContraCheque=contra_cheque
     )
     return contra_cheque_itens
-
-
-def create_contra_cheque_itens(
-    descricao, valor, registro, referencia, contra_cheque
-):
-    return ContraChequeItens.objects.create(
-        Descricao=descricao,
-        Valor=valor,
-        Registro=registro,
-        Referencia=referencia,
-        idContraCheque=contra_cheque,
-    )
-
-
-def create_contra_cheque_itens_vale(idcontracheque, idvale):
-    vale = get_vale_id(idvale)
-    dia = datetime.datetime.strftime(vale.Data, "%d/%m/%Y")
-    ContraChequeItens.objects.create(
-        Descricao=f"{vale.Descricao} - {dia}",
-        Valor=vale.Valor,
-        Registro="D",
-        idContraCheque_id=idcontracheque,
-        Vales_id=idvale,
-    )
 
 
 def get_vale_id(idvale):
@@ -2368,16 +2400,14 @@ def update_contra_cheque_item_referencia(contra_cheque_item, referencia):
 
 
 def get_saldo_contra_cheque(contra_cheque_itens):
-    itens_credito = contra_cheque_itens.filter(Registro="C")
-    creditos = itens_credito.aggregate(Total=Sum("Valor"))
-    itens_debito = contra_cheque_itens.filter(Registro="D")
-    debitos = itens_debito.aggregate(Total=Sum("Valor"))
-    if creditos["Total"] is None:
-        creditos["Total"] = Decimal(0.00)
-    if debitos["Total"] is None:
-        debitos["Total"] = Decimal(0.00)
-    total = creditos["Total"] - debitos["Total"]
-    return creditos["Total"], debitos["Total"], total
+    creditos = contra_cheque_itens.filter(Registro="C").aggregate(
+        total=Sum("Valor")
+    )["total"] or Decimal(0)
+    debitos = contra_cheque_itens.filter(Registro="D").aggregate(
+        total=Sum("Valor")
+    )["total"] or Decimal(0)
+    saldo = creditos - debitos
+    return {"credito": creditos, "debitos": debitos, "saldo": saldo}
 
 
 def contexto_vales_colaborador(colaborador):
