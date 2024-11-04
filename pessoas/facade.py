@@ -763,7 +763,12 @@ def create_contra_cheque_itens_vale(request):
     return {"Mensagem": "O vale não foi adicionado no contra-cheque"}
 
 
+def excluir_contra_cheque_item(request):
+    contra_cheque_item = ContraChequeItens.objects.filter(
+        idContraChequeItens=request.GET.get("id_contra_cheque_item")
     )
+    if contra_cheque_item.delete():
+        return {"mensagem": "Vale removido do contra-cheque com sucesso"}
 
 
 def contra_cheque_html_data(request, contexto):
