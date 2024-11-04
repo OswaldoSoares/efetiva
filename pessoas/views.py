@@ -146,6 +146,13 @@ def adicionar_vale_no_contra_cheque(request):
     return facade.contra_cheque_html_data(request, contexto)
 
 
+def excluir_vale_do_contra_cheque(request):
+    contexto = facade.excluir_contra_cheque_item(request)
+    contexto.update(facade.create_contexto_contra_cheque(request))
+    contexto.update(facade.create_contexto_vales_colaborador(request))
+    return facade.contra_cheque_html_data(request, contexto)
+
+
 def bloqueia_pessoa(request, idpessoa):
     facade.altera_status(idpessoa)
     return redirect("indexpessoal")
