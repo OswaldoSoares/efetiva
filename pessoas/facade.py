@@ -675,6 +675,18 @@ def create_contra_cheque(mes, ano, descricao, id_pessoal, obs):
     )
 
 
+def create_contra_cheque_itens(
+    descricao, valor, registro, referencia, contra_cheque
+):
+    return ContraChequeItens.objects.create(
+        Descricao=descricao,
+        Valor=valor,
+        Registro=registro,
+        Referencia=referencia,
+        idContraCheque=contra_cheque,
+    )
+
+
 def create_contexto_contra_cheque_decimo_terceiro(request):
     id_pessoal = request.GET.get("id_pessoal")
     ano = request.GET.get("ano")
@@ -2272,18 +2284,6 @@ def get_contra_cheque_itens(contra_cheque):
         idContraCheque=contra_cheque
     )
     return contra_cheque_itens
-
-
-def create_contra_cheque_itens(
-    descricao, valor, registro, referencia, contra_cheque
-):
-    return ContraChequeItens.objects.create(
-        Descricao=descricao,
-        Valor=valor,
-        Registro=registro,
-        Referencia=referencia,
-        idContraCheque=contra_cheque,
-    )
 
 
 def create_contra_cheque_itens_vale(idcontracheque, idvale):
