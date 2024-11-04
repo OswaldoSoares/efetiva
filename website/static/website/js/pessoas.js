@@ -1,5 +1,4 @@
-$(document).ready(function() {
-    $(".button-demissao").hide();
+var ocultarCardsColaborador =  function() {
     $(".card-foto-colaborador").hide();
     $(".card-vales-colaborador").hide();
     $(".card-contra-cheque-colaborador").hide();
@@ -7,6 +6,11 @@ $(document).ready(function() {
     $(".card-docs-colaborador").hide();
     $(".card-fones-colaborador").hide();
     $(".card-contas-colaborador").hide();
+};
+
+$(document).ready(function() {
+    $(".button-demissao").hide();
+    ocultarCardsColaborador();
 });
 
 $(document).on("click", ".js-alterar-categoria", function() {
