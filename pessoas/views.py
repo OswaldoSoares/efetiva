@@ -139,6 +139,13 @@ def selecionar_contra_cheque_decimo_terceiro(request):
     return facade.contra_cheque_html_data(request, contexto)
 
 
+def adicionar_vale_no_contra_cheque(request):
+    facade.create_contra_cheque_itens_vale(request)
+    contexto = facade.create_contexto_contra_cheque(request)
+    contexto.update(facade.create_contexto_vales_colaborador(request))
+    return facade.contra_cheque_html_data(request, contexto)
+
+
 def bloqueia_pessoa(request, idpessoa):
     facade.altera_status(idpessoa)
     return redirect("indexpessoal")
