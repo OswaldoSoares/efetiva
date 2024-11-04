@@ -178,20 +178,30 @@ $(document).on("click", ".js-selecionar-decimo-terceiro", function() {
     $("." + id).toggle();
 });
 
-$(document).on("click", ".js-selecionar-parcela", function () {
-    const idPessoal = $(this).data("id_pessoal");
+$(document).on("click", ".js-selecionar-parcela", function ()  {
     const ano = $(this).data("ano");
     const mes = $(this).data("mes");
     const dozeavos = $(this).data("dozeavos");
     const valor = $(this).data("valor");
 
     executarAjax("/pessoas/selecionar_contra_cheque_decimo_terceiro", "GET", {
-        id_pessoal: idPessoal,
         ano: ano,
         mes: mes,
         dozeavos: dozeavos,
         valor: valor,
+        //  Variável global
+        id_pessoal: idPessoal,
     }, function(data) {
+        $(".card-contra-cheque-colaborador").html(
+            data["html-card-contra-cheque-colaborador"]
+        )
+        $(".card-contra-cheque-colaborador").show()
+        idContraCheque = $("#id_contra_cheque").data("id_contra_cheque")
+        SelecionarValesToggle()
+        $(window).scrollTop(0)
+        $(".box-loader").hide()
+    });
+});
             $(".card-contra-cheque-colaborador").html(
                 data["html-card-contra-cheque-colaborador"]
             )
