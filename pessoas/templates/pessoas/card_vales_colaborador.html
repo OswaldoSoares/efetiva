@@ -31,20 +31,21 @@
 					<span>R$ {{ vale.valor|intcomma }}</span>
 				</div>
 			</div>
-			<div class="input-group-addon addon-my-color">
+			<div class="input-group-addon addon-my-color js-vales-toggle-excluir">
 				<i class="icofont-trash i-button"
 onclick="openMyModal(event); return false;"
-data-title="CONFIRMA EXCLUSÃO DO VALE?"
+data-title="CONFIRMAR EXCLUSÃO DO VALE?"
 data-action="{% url 'excluir_vale_colaborador' %}"
 data-id_vale="{{ vale.id_vale }}"
 data-id_pessoal="{{ colaborador.id_pessoal }}"
 data-button-save-label="CONFIRMAR"
 title="EXCLUIR VALE"></i>
 			</div>
-			<div class="input-group-addon addon-my-color invisivel">
-				<i class="icofont-square i-button js-pessoas-seleciona-vale
-				js-pessoas-toggle-vales-selecionaveis"
-title="Adicionar vale ao contra cheque"
+			<div class="input-group-addon addon-my-color
+			js-vales-toggle-selecionar invisivel">
+				<i class="icofont-square i-button
+				js-adicionar_vale_no_contra_cheque"
+title="ADICIONAR VALE NO CONTRA-CHEQUE"
 data-id_vale="{{ vale.id_vale }}"
 data-id_pessoal="{{ colaborador.id_pessoal }}"></i>
 			</div>
