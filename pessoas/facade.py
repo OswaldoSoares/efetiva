@@ -740,6 +740,7 @@ def contra_cheque_html_data(request, contexto):
     contexto["mensagem"] = "Contra cheque selecionado"
     html_functions = [
         html_data.html_card_contra_cheque_colaborador,
+        html_data.html_card_vales_colaborador,
     ]
     return gerar_data_html(html_functions, request, contexto, data)
 
