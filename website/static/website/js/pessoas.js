@@ -38,8 +38,9 @@ $(document).on("click", ".js-alterar-categoria", function() {
     executarAjax("/pessoas/selecionar_categoria", "GET", {
         tipo: tipo,
     }, function(data) {
-            $(".card-colaboradores").html(data["html-card-colaboradores"])
-            $(".box-loader").hide()
+        ocultarCardsColaborador();
+        $(".card-colaboradores").html(data["html-card-colaboradores"])
+        $(".box-loader").hide()
     });
 
     $(selecionado).removeClass("icofont-square")
