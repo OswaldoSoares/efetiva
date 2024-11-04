@@ -739,12 +739,18 @@ def create_contexto_contra_cheque_decimo_terceiro(request):
 def create_contra_cheque_itens_vale(request):
     vale = Vales.objects.get(idVales=request.GET.get("id_vale"))
     dia = datetime.strftime(vale.Data, "%d/%m/%Y")
-    ContraChequeItens.objects.create(
+    if ContraChequeItens.objects.create(
         Descricao=f"{vale.Descricao} - {dia}",
         Valor=vale.Valor,
         Registro="D",
         idContraCheque_id=request.GET.get("id_contra_cheque"),
         Vales_id=request.GET.get("id_vale"),
+    ):
+        return {"mensagem": "Vale adicionado no contra-cheque com sucesso"}
+
+    return {"Mensagem": "O vale não foi adicionado no contra-cheque"}
+
+
     )
 
 
