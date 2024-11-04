@@ -1944,7 +1944,7 @@ def html_card_contra_cheque_colaborador(request, contexto, data):
     return data
 
 
-def create_contexto_contra_cheque(idpessoal, idselecionado, descricao):
+def create_contexto_contra_cheque_apaga(idpessoal, idselecionado, descricao):
     colaborador = classes.Colaborador(idpessoal).__dict__
     colaborador_futuro = get_colaborador(idpessoal)
     contas = get_contas_bancaria_colaborador(colaborador_futuro)
