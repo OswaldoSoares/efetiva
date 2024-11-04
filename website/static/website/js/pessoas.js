@@ -11,6 +11,11 @@ var ocultarCardsColaborador =  function() {
     $(".card-contas-colaborador").hide();
 };
 
+var SelecionarValesToggle = function() {
+    $(".js-vales-toggle-selecionar").toggleClass("invisivel")
+    $(".js-vales-toggle-excluir").toggleClass("invisivel")
+}
+
 $(document).ready(function() {
     $(".button-demissao").hide();
     ocultarCardsColaborador();
