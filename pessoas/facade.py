@@ -722,6 +722,7 @@ def create_contexto_contra_cheque_decimo_terceiro(request):
         )
 
     contexto = {
+        "mensagem": f"Parcela selecionada: {mes}/{ano}",
         "contra_cheque": contra_cheque,
         "contra_cheque_itens": contra_cheque_itens,
     }
