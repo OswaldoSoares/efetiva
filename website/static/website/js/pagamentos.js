@@ -1,3 +1,7 @@
+let mesAno = null
+let idPessoal = null
+let idContraCheque = null
+
 $(document).ready(function() {
     $(".card-cartao-ponto").hide()
     $(".card-folha-pagamento").hide()
