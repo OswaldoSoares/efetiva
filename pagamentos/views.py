@@ -1,3 +1,7 @@
+"""
+    Módulo Pagamentos:
+    Gerencia o pagamento dos colaboradores mensalista e avulsos.
+"""
 from django.shortcuts import render
 from rolepermissions.decorators import has_permission_decorator
 from website.facade import str_hoje
