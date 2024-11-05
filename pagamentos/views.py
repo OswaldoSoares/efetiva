@@ -1,14 +1,9 @@
-from django.db.models import DecimalField, ExpressionWrapper, F
-from django.http import JsonResponse
 from django.shortcuts import render
-from django.template.loader import render_to_string
-from minutas.models import MinutaColaboradores, MinutaItens
 from rolepermissions.decorators import has_permission_decorator
 from website.facade import str_hoje
 
 from pagamentos import facade
 
-from .forms import CadastraCartaoPonto
 from .print import (
     print_contracheque,
     print_recibo,
