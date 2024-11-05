@@ -14,6 +14,15 @@ var ocultarCardsColaborador =  function() {
 var SelecionarValesToggle = function() {
     $(".js-vales-toggle-selecionar").toggleClass("invisivel")
     $(".js-vales-toggle-excluir").toggleClass("invisivel")
+    $(".js-adicionar-vale-no-contra-cheque").each(function() {
+        const valor = parseFloat($(this).data("valor").replace(",", "."));
+        const saldo = parseFloat($("#saldo").data("saldo").replace(",", "."));
+        if (valor > saldo) {
+            $(this).addClass("disabled")
+        } else {
+            $(this).removeClass("disabled")
+        }
+    });
 }
 
 $(document).ready(function() {
@@ -202,7 +211,7 @@ $(document).on("click", ".js-selecionar-parcela", function ()  {
     });
 });
 
-$(document).on('click', '.js-adicionar_vale_no_contra_cheque', function() {
+$(document).on('click', '.js-adicionar-vale-no-contra-cheque', function() {
     const idVale = $(this).data("id_vale")
 
     if (idContraCheque) {

@@ -66,7 +66,9 @@ title="FECHAR"></i>
 		</div>
 		<div class="div-form-control div-flex">
 			<div class="tamanho-30 text-left">
-				<span>Total R$ {{ saldo|intcomma }}</span>
+				<span id="saldo" data-saldo="{{ saldo }}">
+					Total R$ {{ saldo|intcomma }}
+				</span>
 			</div>
 			{% if saldo > 0 %}
 			<div class="tamanho-30 text-center button-group div-flex">
