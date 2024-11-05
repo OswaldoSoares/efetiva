@@ -3,14 +3,14 @@ import os
 from decimal import Decimal
 
 from dateutil.relativedelta import relativedelta
-from despesas.models import Multas
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import DecimalField, ExpressionWrapper, F, Max, Min, Sum
 from django.http import JsonResponse
 from django.template.loader import render_to_string
+from despesas.models import Multas
 from minutas.facade import nome_curto, nome_curto_underscore
 from minutas.models import MinutaColaboradores, MinutaItens
-from pessoas.forms import CadastraContraCheque, CadastraContraChequeItens
+from pessoas.forms import CadastraContraChequeItens
 from pessoas.models import (
     Agenda,
     CartaoPonto,
@@ -23,10 +23,8 @@ from pessoas.models import (
 )
 
 from pessoas.facade import (
-    get_contra_cheque_mes_ano_descricao,
     get_contra_cheque_mes_ano_pagamento,
     get_contra_cheque_mes_ano_adiantamento,
-    get_contra_cheque_mes_ano_descricao,
     get_colaborador,
     create_contexto_contra_cheque_colaborador,
     get_vales_colaborador,
@@ -37,8 +35,6 @@ from website.facade import (
     Feriados,
     converter_mes_ano,
     extremos_mes,
-    queries_inicio,
-    queries_termino,
     busca_arquivo_descricao,
 )
 from website.models import FileUpload, Parametros
