@@ -11,7 +11,7 @@ var ocultarCardsColaborador =  function() {
     $(".card-contas-colaborador").hide();
 };
 
-var SelecionarValesToggle = function() {
+var selecionarValesToggle = function() {
     $(".js-vales-toggle-selecionar").toggleClass("invisivel")
     $(".js-vales-toggle-excluir").toggleClass("invisivel")
     $(".js-adicionar-vale-no-contra-cheque").each(function() {
@@ -205,7 +205,7 @@ $(document).on("click", ".js-selecionar-parcela", function ()  {
         )
         $(".card-contra-cheque-colaborador").show()
         idContraCheque = $("#id_contra_cheque").data("id_contra_cheque")
-        SelecionarValesToggle()
+        selecionarValesToggle()
         $(window).scrollTop(0)
         $(".box-loader").hide()
     });
@@ -225,7 +225,7 @@ $(document).on('click', '.js-adicionar-vale-no-contra-cheque', function() {
                 data["html-card-contra-cheque-colaborador"]
             )
             $(".card-vales-colaborador").html(data["html-card-vales-colaborador"]);
-            SelecionarValesToggle()
+            selecionarValesToggle()
             $(".box-loader").hide()
             exibirMensagem(data["mensagem"])
         });
@@ -246,7 +246,7 @@ $(document).on('click', '.js-excluir-vale-do-contra-cheque', function() {
                 data["html-card-contra-cheque-colaborador"]
             )
             $(".card-vales-colaborador").html(data["html-card-vales-colaborador"]);
-            SelecionarValesToggle()
+            selecionarValesToggle()
             $(".box-loader").hide()
             exibirMensagem(data["mensagem"])
         });
@@ -255,7 +255,7 @@ $(document).on('click', '.js-excluir-vale-do-contra-cheque', function() {
 
 $(document).on("click", ".js-fechar-card-contra-cheque", function() {
     idContraCheque = null
-    SelecionarValesToggle()
+    selecionarValesToggle()
     $(".card-contra-cheque-colaborador").hide()
 });
 
