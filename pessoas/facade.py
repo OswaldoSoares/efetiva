@@ -689,7 +689,6 @@ def create_contra_cheque_itens(
 
 
 def create_contexto_contra_cheque_pagamento(request):
-    print(f"[INFO GET] - {request.GET}")
     id_pessoal = request.GET.get("id_pessoal")
     ano = request.GET.get("ano")
     mes = obter_mes_por_numero(int(request.GET.get("mes")))
