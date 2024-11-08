@@ -2604,7 +2604,7 @@ def create_contexto_folha_pagamento(mes_ano):
     colaboradores = list(get_colaboradores_mensalistas_admitidos().values())
     salarios = list(get_valores_salario_transporte_colaborador().values())
     folha = busca_folha(mes, ano, colaboradores, salarios)
-    contexto = {"folha": folha}
+    contexto = {"folha": folha, "mes": mes, "ano": ano}
     contexto.update(
         contra_cheques_folha_pagamento(folha, colaboradores, salarios)
     )
