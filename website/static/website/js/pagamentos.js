@@ -75,6 +75,7 @@ $(".select-mes-ano").change(function() {
 // Seleciona funcionário mensalista
 $(document).on("click", ".js-seleciona-funcionario", function(event) {
     v_mes_ano = $(".select-mes-ano option:selected").text();
+    idPessoal = $(this).data("idpessoal");
     v_idpessoal = $(this).data("idpessoal");
     $.ajax({
         type: "GET",
