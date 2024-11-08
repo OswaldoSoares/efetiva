@@ -2810,7 +2810,8 @@ def create_data_contra_cheque_colaborador(request, contexto):
 
 
 def create_contexto_minutas_contra_cheque(idpessoal, contra_cheque):
-    mes = meses.index(contra_cheque.MesReferencia) + 1
+    MESES_INVERTIDO = {v: k for k, v in MESES.items()}
+    mes = MESES_INVERTIDO.get(contra_cheque.MesReferencia)
     ano = contra_cheque.AnoReferencia
     primeiro_dia_mes, ultimo_dia_mes = extremos_mes(mes, ano)
     minutas = facade_pagamentos.union_minutas_agenda_periodo_contra_cheque(
@@ -2820,7 +2821,8 @@ def create_contexto_minutas_contra_cheque(idpessoal, contra_cheque):
 
 
 def create_contexto_cartao_ponto_contra_cheque(idpessoal, contra_cheque):
-    mes = meses.index(contra_cheque.MesReferencia) + 1
+    MESES_INVERTIDO = {v: k for k, v in MESES.items()}
+    mes = MESES_INVERTIDO.get(contra_cheque.MesReferencia)
     ano = contra_cheque.AnoReferencia
     primeiro_dia_mes, ultimo_dia_mes = extremos_mes(mes, ano)
     cartao_ponto = facade_pagamentos.get_cartao_ponto_colaborador(
