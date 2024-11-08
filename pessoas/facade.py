@@ -31,6 +31,7 @@ from core.constants import (
     TIPOS_DOCS,
     TIPOS_FONES,
     TIPOS_CONTAS,
+    MESES,
 )
 from core.tools import obter_mes_por_numero
 from pessoas.models import (
@@ -687,6 +688,46 @@ def create_contra_cheque_itens(
     )
 
 
+def create_contexto_contra_cheque_pagamento(request):
+    id_pessoal = request.GET.get("id_pessoal")
+    ano = request.GET.get("ano")
+    mes = obter_mes_por_numero(int(request.GET.get("mes")))
+    descricao = "PAGAMENTO"
+
+    contra_cheque = ContraCheque.objects.filter(
+        Descricao=descricao,
+        AnoReferencia=ano,
+        MesReferencia=mes,
+        idPessoal=id_pessoal,
+    ).first()
+
+    if not contra_cheque:
+        obs = ""
+        contra_cheque = create_contra_cheque(
+            mes, ano, descricao, id_pessoal, obs
+        )
+
+    contra_cheque_itens = ContraChequeItens.objects.filter(
+        idContraCheque=contra_cheque
+    ).order_by("Registro")
+
+    if not contra_cheque_itens:
+        contra_cheque_itens = create_contra_cheque_itens(
+            descricao, Decimal(0.00), "C", "0d", contra_cheque
+        )
+
+    contexto = {
+        "mensagem": f"Pagamento selecionada: {mes}/{ano}",
+        "contra_cheque": contra_cheque,
+        "contra_cheque_itens": contra_cheque_itens,
+        "id_pessoal": id_pessoal,
+    }
+
+    contexto.update(get_saldo_contra_cheque(contra_cheque_itens))
+
+    return contexto
+
+
 def create_contexto_contra_cheque_decimo_terceiro(request):
     id_pessoal = request.GET.get("id_pessoal")
     ano = request.GET.get("ano")
@@ -711,7 +752,7 @@ def create_contexto_contra_cheque_decimo_terceiro(request):
 
     contra_cheque_itens = ContraChequeItens.objects.filter(
         idContraCheque=contra_cheque
-    )
+    ).order_by("Registro")
 
     descricao = f"{descricao} ({parcela}ª PARCELA)"
 
@@ -725,6 +766,7 @@ def create_contexto_contra_cheque_decimo_terceiro(request):
         "mensagem": f"Parcela selecionada: {mes}/{ano}",
         "contra_cheque": contra_cheque,
         "contra_cheque_itens": contra_cheque_itens,
+        "id_pessoal": id_pessoal,
     }
     contexto.update(get_saldo_contra_cheque(contra_cheque_itens))
 
@@ -734,7 +776,7 @@ def create_contexto_contra_cheque_decimo_terceiro(request):
 def create_contexto_contra_cheque(request):
     contra_cheque = ContraCheque.objects.filter(
         idContraCheque=request.GET.get("id_contra_cheque")
-    )
+    ).first()
     contra_cheque_itens = ContraChequeItens.objects.filter(
         idContraCheque_id=request.GET.get("id_contra_cheque")
     )
@@ -2768,7 +2810,8 @@ def create_data_contra_cheque_colaborador(request, contexto):
 
 
 def create_contexto_minutas_contra_cheque(idpessoal, contra_cheque):
-    mes = meses.index(contra_cheque.MesReferencia) + 1
+    MESES_INVERTIDO = {v: k for k, v in MESES.items()}
+    mes = MESES_INVERTIDO.get(contra_cheque.MesReferencia)
     ano = contra_cheque.AnoReferencia
     primeiro_dia_mes, ultimo_dia_mes = extremos_mes(mes, ano)
     minutas = facade_pagamentos.union_minutas_agenda_periodo_contra_cheque(
@@ -2778,7 +2821,8 @@ def create_contexto_minutas_contra_cheque(idpessoal, contra_cheque):
 
 
 def create_contexto_cartao_ponto_contra_cheque(idpessoal, contra_cheque):
-    mes = meses.index(contra_cheque.MesReferencia) + 1
+    MESES_INVERTIDO = {v: k for k, v in MESES.items()}
+    mes = MESES_INVERTIDO.get(contra_cheque.MesReferencia)
     ano = contra_cheque.AnoReferencia
     primeiro_dia_mes, ultimo_dia_mes = extremos_mes(mes, ano)
     cartao_ponto = facade_pagamentos.get_cartao_ponto_colaborador(

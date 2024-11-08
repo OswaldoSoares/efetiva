@@ -1,8 +1,13 @@
+let mes = null
+let ano = null
+let idPessoal = null
+let idContraCheque = null
+
 $(document).ready(function() {
     $(".card-cartao-ponto").hide()
     $(".card-folha-pagamento").hide()
     $(".card-funcionario-pagamento").hide()
-    $(".card-contra-cheque").hide()
+    $(".card-contra-cheque-colaborador").hide()
     $(".card-vales-colaborador").hide()
     $(".card-minutas-pagamento").hide()
     $(".card-agenda").hide()
@@ -70,6 +75,7 @@ $(".select-mes-ano").change(function() {
 // Seleciona funcionário mensalista
 $(document).on("click", ".js-seleciona-funcionario", function(event) {
     v_mes_ano = $(".select-mes-ano option:selected").text();
+    idPessoal = $(this).data("idpessoal");
     v_idpessoal = $(this).data("idpessoal");
     $.ajax({
         type: "GET",
@@ -86,6 +92,9 @@ $(document).on("click", ".js-seleciona-funcionario", function(event) {
             $('.box-loader').show();
         },
         success: function(data) {
+            mes = $("#mes_referencia").data("mes")
+            ano = $("#ano_referencia").data("ano")
+
             $(".card-cartao-ponto").html(data.html_cartao_ponto);
             $(".card-funcionario-pagamento").html(data.html_funcionario);
             $(".body-funcionario-pagamento").hide()
@@ -781,30 +790,21 @@ $(document).on('click', '.js-pessoas-exclui-contra-cheque-item', function () {
 });
 
 
-$(document).on('click', '.js-contra-cheque-pagamento', function() {
-    var idpessoal = localStorage.getItem("idpessoal")
-    var mes_ano = localStorage.getItem("mes_ano")
-    var descricao = $(this).data("descricao")
-    $.ajax({
-        type: "GET",
-        url: "/pagamentos/seleciona_contra_cheque",
-        data: {
-            idpessoal: idpessoal,
-            mes_ano: mes_ano,
-            descricao:  descricao,
-        },
-        beforeSend: function() {
-            $(".box-loader").show()
-            $(".card-contra-cheque-colaborador").hide()
-            localStorage.setItem("idcontracheque", "")
-        },
-        success: function(data) {
-            $(".card-contra-cheque").html(data.html_contra_cheque)
-            $(".card-contra-cheque").show()
-            $("#submit-contracheque").hide()
-            localStorage.setItem("idcontracheque", $("#idcontracheque").data("idcontracheque"))
-            $(".box-loader").hide()
-        },
+$(document).on('click', '.js-selecionar-contra-cheque-pagamento', function() {
+     executarAjax("/pagamentos/selecionar_contra_cheque_pagamento", "GET", {
+        id_pessoal: idPessoal,
+        ano: ano,
+        mes: mes,
+    }, function(data) {
+        console.log(data)
+        $(".card-contra-cheque-colaborador").html(
+            data["html-card-contra-cheque-colaborador"]
+        )
+        $(".card-contra-cheque-colaborador").show()
+        idContraCheque = $("#id_contra_cheque").data("id_contra_cheque")
+        selecionarValesToggle()
+        $(window).scrollTop(0)
+        $(".box-loader").hide()
     });
 });
 

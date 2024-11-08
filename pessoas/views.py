@@ -494,6 +494,24 @@ def imprime_contra_cheque(request):
     return response
 
 
+def imprimir_contra_cheque(request):
+    id_pessoal = request.GET.get("id_pessoal")
+    contexto = facade.create_contexto_contra_cheque(request)
+    contexto.update(facade.create_contexto_class_colaborador(request))
+    contexto.update(
+        facade.create_contexto_minutas_contra_cheque(
+            id_pessoal, contexto["contra_cheque"]
+        )
+    )
+    contexto.update(
+        facade.create_contexto_cartao_ponto_contra_cheque(
+            id_pessoal, contexto["contra_cheque"]
+        )
+    )
+    response = print_contra_cheque(contexto)
+    return response
+
+
 def adiciona_vale_colaborador(request):
     if request.method == "POST":
         idpessoal = int(request.POST.get("idpessoal"))

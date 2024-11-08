@@ -66,14 +66,16 @@ title="FECHAR"></i>
 		</div>
 		<div class="div-form-control div-flex">
 			<div class="tamanho-30 text-left">
-				<span>Total R$ {{ saldo|intcomma }}</span>
+				<span id="saldo" data-saldo="{{ saldo }}">
+					Total R$ {{ saldo|intcomma }}
+				</span>
 			</div>
 			{% if saldo > 0 %}
 			<div class="tamanho-30 text-center button-group div-flex">
 				{% if not contra_cheque.Pago %}
-				<a class="icofont-printer i-button"	target="_blank"
-					href="{% url 'imprime_contra_cheque' %}?idcontracheque={{ contra_cheque.idContraCheque }}&idpessoal={{ idpessoal }}&tipo={{ tipo }}"
-					title="Imprime Contra-Cheque"></a>
+				<a class="icofont-printer i-button" target="_blank"
+href="{% url 'imprimir_contra_cheque' %}?id_contra_cheque={{ contra_cheque.idContraCheque }}&id_pessoal={{ id_pessoal }}"
+					title="IMPRIMIR CONTRA-CHEQUE"></a>
 				{% endif %}
 				{% if contra_cheque.Pago %}
 				{% if file %}

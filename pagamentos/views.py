@@ -1,14 +1,14 @@
-from django.db.models import DecimalField, ExpressionWrapper, F
-from django.http import JsonResponse
+"""
+    Módulo Pagamentos:
+    Gerencia o pagamento dos colaboradores mensalista e avulsos.
+"""
 from django.shortcuts import render
-from django.template.loader import render_to_string
-from minutas.models import MinutaColaboradores, MinutaItens
 from rolepermissions.decorators import has_permission_decorator
 from website.facade import str_hoje
 
 from pagamentos import facade
+from pessoas import facade as facade_pessoas
 
-from .forms import CadastraCartaoPonto
 from .print import (
     print_contracheque,
     print_recibo,
@@ -24,6 +24,11 @@ def index_pagamento(request):
     contextoavulso = facade.create_context_avulso()
     contexto.update(contextoavulso)
     return render(request, "pagamentos/index.html", contexto)
+
+
+def selecionar_contra_cheque_pagamento(request):
+    contexto = facade_pessoas.create_contexto_contra_cheque_pagamento(request)
+    return facade_pessoas.contra_cheque_html_data(request, contexto)
 
 
 def adiciona_agenda(request):

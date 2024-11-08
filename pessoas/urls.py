@@ -52,6 +52,7 @@ from .views import (
     selecionar_contra_cheque_decimo_terceiro,
     adicionar_vale_no_contra_cheque,
     excluir_vale_do_contra_cheque,
+    imprimir_contra_cheque,
 )
 
 
@@ -121,6 +122,11 @@ urlpatterns = [
         "excluir_vale_do_contra_cheque",
         excluir_vale_do_contra_cheque,
         name="excluir_vale_do_contra_cheque",
+    ),
+    path(
+        "imprimir_contra_cheque",
+        imprimir_contra_cheque,
+        name="imprimir_contra_cheque",
     ),
     # Antigos
     path(

@@ -17,9 +17,9 @@ from website.facade import cmp, valor_ponto_milhar
 def print_pdf_ficha_colaborador(contexto):
     nome_curto = contexto["colaborador"]["nome_curto"]
     response = HttpResponse(content_type="application/pdf")
-    response[
-        "Content-Disposition"
-    ] = f'filename="FICHA CADASTRAL {nome_curto}.pdf'
+    response["Content-Disposition"] = (
+        f'filename="FICHA CADASTRAL {nome_curto}.pdf'
+    )
     buffer = BytesIO()
     pdf = canvas.Canvas(buffer)
     header(pdf)
@@ -591,19 +591,21 @@ def contra_cheque_dados(pdf, contexto):
     pdf.drawString(
         cmp(5.8),
         cmp(linha - 27.2),
-        f'{contexto["colaborador"].idPessoal}'.zfill(4),
+        f'{contexto["colaborador"].id_pessoal}'.zfill(4),
     )
     pdf.drawString(
         cmp(20.2),
         cmp(linha - 27.4),
-        f'{contexto["colaborador"].Nome}',
+        f'{contexto["colaborador"].nome}',
     )
     pdf.drawString(
         cmp(102.6),
         cmp(linha - 27.2),
-        f'{contexto["colaborador"].Categoria}',
+        f'{contexto["colaborador"].dados_profissionais.categoria}',
     )
-    salario_base = valor_ponto_milhar(contexto["salario_base"], 2)
+    salario_base = valor_ponto_milhar(
+        contexto["colaborador"].salarios.salarios.Salario, 2
+    )
     pdf.drawString(
         cmp(10),
         cmp(linha - 144),
@@ -642,8 +644,8 @@ def contra_cheque_itens(pdf, contexto):
 
 def contra_cheque_totais(pdf, contexto):
     credito = f'R$ {valor_ponto_milhar(contexto["credito"], 2)}'
-    debito = f'R$ {valor_ponto_milhar(contexto["debito"], 2)}'
-    saldo = f'R$ {valor_ponto_milhar(contexto["saldo_contra_cheque"], 2)}'
+    debito = f'R$ {valor_ponto_milhar(contexto["debitos"], 2)}'
+    saldo = f'R$ {valor_ponto_milhar(contexto["saldo"], 2)}'
     linha = 297
     pdf.setFont("Times-Roman", 11)
     pdf.drawRightString(cmp(142.6), cmp(linha - 124), credito)
