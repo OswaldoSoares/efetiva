@@ -92,6 +92,9 @@ $(document).on("click", ".js-seleciona-funcionario", function(event) {
             $('.box-loader').show();
         },
         success: function(data) {
+            mes = $("#mes_referencia").data("mes")
+            ano = $("#ano_referencia").data("ano")
+
             $(".card-cartao-ponto").html(data.html_cartao_ponto);
             $(".card-funcionario-pagamento").html(data.html_funcionario);
             $(".body-funcionario-pagamento").hide()
