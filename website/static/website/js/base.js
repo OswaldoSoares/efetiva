@@ -227,3 +227,65 @@ $(document).on('change', '#file-contracheque', function() {
     $("#label-contracheque").hide()
     $("#submit-contracheque").show()
 });
+
+var selecionarValesToggle = function() {
+    $(".js-vales-toggle-selecionar").toggleClass("invisivel")
+    $(".js-vales-toggle-excluir").toggleClass("invisivel")
+    $(".js-adicionar-vale-no-contra-cheque").each(function() {
+        const valor = parseFloat($(this).data("valor").replace(",", "."));
+        const saldo = parseFloat($("#saldo").data("saldo").replace(",", "."));
+        if (valor > saldo) {
+            $(this).addClass("disabled")
+        } else {
+            $(this).removeClass("disabled")
+        }
+    });
+}
+
+$(document).on('click', '.js-adicionar-vale-no-contra-cheque', function() {
+    const idVale = $(this).data("id_vale")
+
+    if (idContraCheque) {
+        executarAjax("/pessoas/adicionar_vale_no_contra_cheque", "GET", {
+            id_vale: idVale,
+            //  Variáveis globais
+            id_pessoal: idPessoal,
+            id_contra_cheque: idContraCheque,
+        }, function(data) {
+            $(".card-contra-cheque-colaborador").html(
+                data["html-card-contra-cheque-colaborador"]
+            )
+            $(".card-vales-colaborador").html(data["html-card-vales-colaborador"]);
+            selecionarValesToggle()
+            $(".box-loader").hide()
+            exibirMensagem(data["mensagem"])
+        });
+    }
+});
+
+$(document).on('click', '.js-excluir-vale-do-contra-cheque', function() {
+    const idContraChequeItem = $(this).data("id_contra_cheque_item")
+
+    if (idContraCheque) {
+        executarAjax("/pessoas/excluir_vale_do_contra_cheque", "GET", {
+            id_contra_cheque_item: idContraChequeItem,
+            //  Variáveis globais
+            id_pessoal: idPessoal,
+            id_contra_cheque: idContraCheque,
+        }, function(data) {
+            $(".card-contra-cheque-colaborador").html(
+                data["html-card-contra-cheque-colaborador"]
+            )
+            $(".card-vales-colaborador").html(data["html-card-vales-colaborador"]);
+            selecionarValesToggle()
+            $(".box-loader").hide()
+            exibirMensagem(data["mensagem"])
+        });
+    }
+});
+
+$(document).on("click", ".js-fechar-card-contra-cheque", function() {
+    idContraCheque = null
+    selecionarValesToggle()
+    $(".card-contra-cheque-colaborador").hide()
+});
