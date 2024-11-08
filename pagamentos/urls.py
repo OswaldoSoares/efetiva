@@ -42,6 +42,12 @@ from .views import (
 )
 
 urlpatterns = [
+    path(
+        "selecionar_contra_cheque_pagamento",
+        selecionar_contra_cheque_pagamento,
+        name="selecionar_contra_cheque_pagamento",
+    ),
+    ## Antigos
     path("", index_pagamento, name="index_pagamento"),
     path(
         "seleciona_periodo_avulso",
