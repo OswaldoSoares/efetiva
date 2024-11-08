@@ -17,9 +17,9 @@ from website.facade import cmp, valor_ponto_milhar
 def print_pdf_ficha_colaborador(contexto):
     nome_curto = contexto["colaborador"]["nome_curto"]
     response = HttpResponse(content_type="application/pdf")
-    response[
-        "Content-Disposition"
-    ] = f'filename="FICHA CADASTRAL {nome_curto}.pdf'
+    response["Content-Disposition"] = (
+        f'filename="FICHA CADASTRAL {nome_curto}.pdf'
+    )
     buffer = BytesIO()
     pdf = canvas.Canvas(buffer)
     header(pdf)
