@@ -7,7 +7,7 @@ $(document).ready(function() {
     $(".card-cartao-ponto").hide()
     $(".card-folha-pagamento").hide()
     $(".card-funcionario-pagamento").hide()
-    $(".card-contra-cheque").hide()
+    $(".card-contra-cheque-colaborador").hide()
     $(".card-vales-colaborador").hide()
     $(".card-minutas-pagamento").hide()
     $(".card-agenda").hide()
