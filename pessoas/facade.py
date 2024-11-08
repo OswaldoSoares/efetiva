@@ -687,6 +687,46 @@ def create_contra_cheque_itens(
     )
 
 
+def create_contexto_contra_cheque_pagamento(request):
+    print(f"[INFO GET] - {request.GET}")
+    id_pessoal = request.GET.get("id_pessoal")
+    ano = request.GET.get("ano")
+    mes = obter_mes_por_numero(int(request.GET.get("mes")))
+    descricao = "PAGAMENTO"
+
+    contra_cheque = ContraCheque.objects.filter(
+        Descricao=descricao,
+        AnoReferencia=ano,
+        MesReferencia=mes,
+        idPessoal=id_pessoal,
+    ).first()
+
+    if not contra_cheque:
+        obs = ""
+        contra_cheque = create_contra_cheque(
+            mes, ano, descricao, id_pessoal, obs
+        )
+
+    contra_cheque_itens = ContraChequeItens.objects.filter(
+        idContraCheque=contra_cheque
+    ).order_by("Registro")
+
+    if not contra_cheque_itens:
+        contra_cheque_itens = create_contra_cheque_itens(
+            descricao, Decimal(0.00), "C", "0d", contra_cheque
+        )
+
+    contexto = {
+        "mensagem": f"Pagamento selecionada: {mes}/{ano}",
+        "contra_cheque": contra_cheque,
+        "contra_cheque_itens": contra_cheque_itens,
+    }
+
+    contexto.update(get_saldo_contra_cheque(contra_cheque_itens))
+
+    return contexto
+
+
 def create_contexto_contra_cheque_decimo_terceiro(request):
     id_pessoal = request.GET.get("id_pessoal")
     ano = request.GET.get("ano")
