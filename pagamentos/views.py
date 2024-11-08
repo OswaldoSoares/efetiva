@@ -26,6 +26,11 @@ def index_pagamento(request):
     return render(request, "pagamentos/index.html", contexto)
 
 
+def selecionar_contra_cheque_pagamento(request):
+    contexto = facade_pessoas.create_contexto_contra_cheque_pagamento(request)
+    return facade_pessoas.contra_cheque_html_data(request, contexto)
+
+
 def adiciona_agenda(request):
     _descricao = request.POST.get("descricao")
     _data = request.POST.get("data")
