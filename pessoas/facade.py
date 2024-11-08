@@ -774,12 +774,18 @@ def create_contexto_contra_cheque_decimo_terceiro(request):
 
 
 def create_contexto_contra_cheque(request):
+    id_pessoal = request.GET.get("id_pessoal")
+    contas = ContaPessoal.objects.filter(idPessoal=id_pessoal)
+    contas = list(contas.values())
     contra_cheque = ContraCheque.objects.filter(
         idContraCheque=request.GET.get("id_contra_cheque")
     ).first()
     contra_cheque_itens = ContraChequeItens.objects.filter(
         idContraCheque_id=request.GET.get("id_contra_cheque")
     )
+    print(contas)
+    if contas:
+        update_contas_bancaria_obs(contra_cheque, contas, "contas")
 
     contexto = {
         "contra_cheque": contra_cheque,
