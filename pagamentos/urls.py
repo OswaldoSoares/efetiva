@@ -37,6 +37,10 @@ from .views import (
     exclui_arquivo_agenda,
 )
 
+from .views import (
+    selecionar_contra_cheque_pagamento,
+)
+
 urlpatterns = [
     path("", index_pagamento, name="index_pagamento"),
     path(
