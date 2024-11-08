@@ -123,6 +123,11 @@ urlpatterns = [
         excluir_vale_do_contra_cheque,
         name="excluir_vale_do_contra_cheque",
     ),
+    path(
+        "imprimir_contra_cheque",
+        imprimir_contra_cheque,
+        name="imprimir_contra_cheque",
+    ),
     # Antigos
     path(
         "bloqueiapessoa/<int:idpessoa>/",
