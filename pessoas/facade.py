@@ -782,7 +782,7 @@ def create_contexto_contra_cheque(request):
     ).first()
     contra_cheque_itens = ContraChequeItens.objects.filter(
         idContraCheque_id=request.GET.get("id_contra_cheque")
-    )
+    ).order_by("Registro")
     print(contas)
     if contas:
         update_contas_bancaria_obs(contra_cheque, contas, "contas")
