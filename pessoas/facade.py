@@ -720,6 +720,7 @@ def create_contexto_contra_cheque_pagamento(request):
         "mensagem": f"Pagamento selecionada: {mes}/{ano}",
         "contra_cheque": contra_cheque,
         "contra_cheque_itens": contra_cheque_itens,
+        "id_pessoal": id_pessoal,
     }
 
     contexto.update(get_saldo_contra_cheque(contra_cheque_itens))
@@ -765,6 +766,7 @@ def create_contexto_contra_cheque_decimo_terceiro(request):
         "mensagem": f"Parcela selecionada: {mes}/{ano}",
         "contra_cheque": contra_cheque,
         "contra_cheque_itens": contra_cheque_itens,
+        "id_pessoal": id_pessoal,
     }
     contexto.update(get_saldo_contra_cheque(contra_cheque_itens))
 
