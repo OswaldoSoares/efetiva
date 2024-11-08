@@ -751,7 +751,7 @@ def create_contexto_contra_cheque_decimo_terceiro(request):
 
     contra_cheque_itens = ContraChequeItens.objects.filter(
         idContraCheque=contra_cheque
-    )
+    ).order_by("Registro")
 
     descricao = f"{descricao} ({parcela}ª PARCELA)"
 
