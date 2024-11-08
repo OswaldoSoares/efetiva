@@ -7,6 +7,7 @@ from rolepermissions.decorators import has_permission_decorator
 from website.facade import str_hoje
 
 from pagamentos import facade
+from pessoas import facade as facade_pessoas
 
 from .print import (
     print_contracheque,
