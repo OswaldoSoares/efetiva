@@ -790,30 +790,21 @@ $(document).on('click', '.js-pessoas-exclui-contra-cheque-item', function () {
 });
 
 
-$(document).on('click', '.js-contra-cheque-pagamento', function() {
-    var idpessoal = localStorage.getItem("idpessoal")
-    var mes_ano = localStorage.getItem("mes_ano")
-    var descricao = $(this).data("descricao")
-    $.ajax({
-        type: "GET",
-        url: "/pagamentos/seleciona_contra_cheque",
-        data: {
-            idpessoal: idpessoal,
-            mes_ano: mes_ano,
-            descricao:  descricao,
-        },
-        beforeSend: function() {
-            $(".box-loader").show()
-            $(".card-contra-cheque-colaborador").hide()
-            localStorage.setItem("idcontracheque", "")
-        },
-        success: function(data) {
-            $(".card-contra-cheque").html(data.html_contra_cheque)
-            $(".card-contra-cheque").show()
-            $("#submit-contracheque").hide()
-            localStorage.setItem("idcontracheque", $("#idcontracheque").data("idcontracheque"))
-            $(".box-loader").hide()
-        },
+$(document).on('click', '.js-selecionar-contra-cheque-pagamento', function() {
+     executarAjax("/pagamentos/selecionar_contra_cheque_pagamento", "GET", {
+        id_pessoal: idPessoal,
+        ano: ano,
+        mes: mes,
+    }, function(data) {
+        console.log(data)
+        $(".card-contra-cheque-colaborador").html(
+            data["html-card-contra-cheque-colaborador"]
+        )
+        $(".card-contra-cheque-colaborador").show()
+        idContraCheque = $("#id_contra_cheque").data("id_contra_cheque")
+        selecionarValesToggle()
+        $(window).scrollTop(0)
+        $(".box-loader").hide()
     });
 });
 
