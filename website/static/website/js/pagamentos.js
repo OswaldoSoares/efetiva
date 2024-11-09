@@ -11,6 +11,10 @@ var ocultarCardsPagamento = function() {
     $(".card-vales-colaborador").hide()
     $(".card-minutas-pagamento").hide()
     $(".card-agenda").hide()
+}
+
+$(document).ready(function() {
+    ocultarCardsPagamento()
 });
 
 // Seleciona mês e ano para pagamento de colaboradores mensalistas
