@@ -78,6 +78,22 @@ def create_contexto_meses_pagamento() -> dict:
     return {"meses": meses}
 
 
+def create_contexto_folha_pagamento(mes_ano):
+    #  start, start_queries = queries_inicio()
+    mes, ano = converter_mes_ano(mes_ano)
+    colaboradores = list(get_colaboradores_mensalistas_admitidos().values())
+    salarios = list(get_valores_salario_transporte_colaborador().values())
+    folha = busca_folha(mes, ano, colaboradores, salarios)
+    contexto = {"folha": folha, "mes": mes, "ano": ano}
+    contexto.update(
+        contra_cheques_folha_pagamento(folha, colaboradores, salarios)
+    )
+    #  queries_termino(
+    #  start, start_queries, "[INFO] Create contexto folha pagamento"
+    #  )
+    return contexto
+
+
 class FolhaContraCheque:
     def __init__(self, _mes, _ano):
         self.ano = _ano
@@ -2584,22 +2600,6 @@ def html_vales_pagamento(request, contexto, data):
         "pagamentos/html_vales.html", contexto, request=request
     )
     return data
-
-
-def create_contexto_folha_pagamento(mes_ano):
-    #  start, start_queries = queries_inicio()
-    mes, ano = converter_mes_ano(mes_ano)
-    colaboradores = list(get_colaboradores_mensalistas_admitidos().values())
-    salarios = list(get_valores_salario_transporte_colaborador().values())
-    folha = busca_folha(mes, ano, colaboradores, salarios)
-    contexto = {"folha": folha, "mes": mes, "ano": ano}
-    contexto.update(
-        contra_cheques_folha_pagamento(folha, colaboradores, salarios)
-    )
-    #  queries_termino(
-    #  start, start_queries, "[INFO] Create contexto folha pagamento"
-    #  )
-    return contexto
 
 
 def busca_folha(mes, ano, colaboradores, salarios):
