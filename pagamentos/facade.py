@@ -69,6 +69,14 @@ dias = [
 ]
 
 
+def seleciona_mes_ano_folha() -> list:
+    locale.setlocale(locale.LC_TIME, "pt_BR.UTF-8")
+    hoje = datetime.datetime.today()
+    meses = [
+        (hoje - relativedelta(months=i)).strftime("%B/%Y") for i in range(3)
+    ]
+    return meses
+
 class FolhaContraCheque:
     def __init__(self, _mes, _ano):
         self.ano = _ano
@@ -407,15 +415,6 @@ class FolhaVale:
         self.descricao = "VALE"
         self.nome = nome
         self.valor = Decimal(1.00)
-
-
-def seleciona_mes_ano_folha() -> list:
-    locale.setlocale(locale.LC_TIME, "pt_BR.UTF-8")
-    hoje = datetime.datetime.today()
-    meses = [
-        (hoje - relativedelta(months=i)).strftime("%B/%Y") for i in range(3)
-    ]
-    return meses
 
 
 def create_contexto_folha(mes_ano: str) -> JsonResponse:
