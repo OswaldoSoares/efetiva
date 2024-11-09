@@ -24,7 +24,6 @@ from .views import (
     salva_file,
     seleciona_colaborador_avulso,
     seleciona_funcionario,
-    seleciona_mes_ano,
     seleciona_periodo_avulso,
     seleciona_vales,
     imprime_relatorio_saldo_avulso,
@@ -66,11 +65,6 @@ urlpatterns = [
     ),
     path("excluirecibo", exclui_recibo, name="excluirecibo"),
     path("imprimerecibo", imprime_recibo, name="imprimerecibo"),
-    path(
-        "seleciona_mes_ano",
-        seleciona_mes_ano,
-        name="seleciona_mes_ano",
-    ),
     path(
         "seleciona_funcionario",
         seleciona_funcionario,
