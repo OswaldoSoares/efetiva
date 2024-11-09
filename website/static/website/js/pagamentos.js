@@ -14,40 +14,18 @@ $(document).ready(function() {
 });
 
 // Seleciona mês e ano para pagamento de colaboradores mensalistas
-$(document).on("click", ".js-seleciona-mes-ano", function(event) {
-    mes_ano = $(".select-mes-ano option:selected").text();
-    $.ajax({
-        type: "GET",
-        dataType: "json",
-        url: "/pagamentos/seleciona_mes_ano",
-        data: {
-            mes_ano: mes_ano,
-        },
-        beforeSend: function() {
-            localStorage.setItem("mes_ano", mes_ano)
-            $(".js-saldo").html('');
-            $(".js-funcionario-pagamento").html('');
-            $(".js-cartao-ponto").html('');
-            $(".js-itens-contra-cheque").html('');
-            $(".js-contra-cheque").html('');
-            $(".js-cria-vales").html('')
-            $(".js-minutas-pagamento").html('')
-            $(".js-lista-vales").html('')
-            $(".js-files-pagamento").html('')
-            $(".js-agenda-pagamento").html('')
-            $(".js-itens-agenda-pagamento").html('');
-            $(".card-vales-colaborador").hide();
-            $(".card-periodo-avulso").hide();
+$(document).on("click", ".js-selecionar-mes-ano", function(event) {
+    const mesAno = $(".select-mes-ano option:selected").text();
 
-            $(".card-folha-pagamento").hide();
-            $('.box-loader').show();
-        },
-        success: function(data) {
-            $(".card-folha-pagamento").html(data.html_card_folha_pagamento);
-            $(".card-folha-pagamento").show();
-            // $(".s-saldo").html(data.html_saldo);
-            $('.box-loader').hide()
-        },
+    executarAjax("/pagamentos/seleciona_mes_ano", "GET", {
+        mes_ano: mesAno,
+    }, function(data) {
+        $(".card-folha-pagamento").html(data.html_card_folha_pagamento);
+        $(".card-folha-pagamento").show();
+        $(".js-selecionar-mes-ano").removeClass("icofont-square");
+        $(".js-selecionar-mes-ano").addClass("icofont-checked");
+        $(".js-selecionar-mes-ano").addClass("disabled");
+        $('.box-loader').hide()
     });
 });
 
