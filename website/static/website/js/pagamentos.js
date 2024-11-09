@@ -35,23 +35,10 @@ $(document).on("click", ".js-selecionar-mes-ano", function(event) {
 
 // Seleciona mês e ano para pagamento de colaboradores mensalistas
 $(".select-mes-ano").change(function() {
-    $(".js-saldo").html('');
-    $(".js-funcionario-pagamento").html('');
-    $(".js-cartao-ponto").html('');
-    $(".js-itens-contra-cheque").html('');
-    $(".js-contra-cheque").html('');
-    $(".js-cria-vales").html('')
-    $(".js-minutas-pagamento").html('')
-    $(".js-lista-vales").html('')
-    $(".js-files-pagamento").html('')
-    $(".js-agenda-pagamento").html('')
-    $(".js-itens-agenda-pagamento").html('');
-    $(".card-vales-colaborador").hide();
-    $(".js-seleciona-mes-ano").removeClass("icofont-checked")
-    $(".js-seleciona-mes-ano").addClass("icofont-square")
-    $(".js-seleciona-funcionario").removeClass("icofont-checked")
-    $(".js-seleciona-funcionario").addClass("icofont-square")
-    $(".card-folha-pagamento").hide()
+    ocultarCardsPagamento()
+    $(".js-selecionar-mes-ano").addClass("icofont-square")
+    $(".js-selecionar-mes-ano").removeClass("icofont-checked")
+    $(".js-selecionar-mes-ano").removeClass("disabled")
 });
 
 // Seleciona funcionário mensalista
