@@ -18,11 +18,8 @@ from .print import (
 
 @has_permission_decorator("modulo_pagamentos")
 def index_pagamento(request):
-    contexto = {}
-    contexto_mes_ano = facade.cria_contexto_pagamentos()
-    contexto.update(contexto_mes_ano)
-    contextoavulso = facade.create_context_avulso()
-    contexto.update(contextoavulso)
+    contexto = facade.create_contexto_meses_pagamento()
+    contexto.update(facade.create_context_avulso())
     return render(request, "pagamentos/index.html", contexto)
 
 
