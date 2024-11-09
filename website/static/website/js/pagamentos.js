@@ -3,9 +3,9 @@ let ano = null
 let idPessoal = null
 let idContraCheque = null
 
-$(document).ready(function() {
-    $(".card-cartao-ponto").hide()
+var ocultarCardsPagamento = function() {
     $(".card-folha-pagamento").hide()
+    $(".card-cartao-ponto").hide()
     $(".card-funcionario-pagamento").hide()
     $(".card-contra-cheque-colaborador").hide()
     $(".card-vales-colaborador").hide()
