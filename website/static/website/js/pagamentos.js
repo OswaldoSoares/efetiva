@@ -63,7 +63,7 @@ $(document).on("click", ".js-seleciona-funcionario", function(event) {
         success: function(data) {
             mes = $("#mes_referencia").data("mes")
             ano = $("#ano_referencia").data("ano")
-        $(".js-fechar-card-contra-cheque").click();
+            $(".js-fechar-card-contra-cheque").click();
 
             $(".card-cartao-ponto").html(data.html_cartao_ponto);
             $(".card-funcionario-pagamento").html(data.html_funcionario);
