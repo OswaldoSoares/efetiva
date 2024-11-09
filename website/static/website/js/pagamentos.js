@@ -778,12 +778,6 @@ $(document).on('click', '.js-selecionar-contra-cheque-pagamento', function() {
     });
 });
 
-$(document).on('click', '.js-toggle-checked', function() {
-    $(this).removeClass("icofont-square")
-    $(this).addClass("icofont-checked")
-});
-
-
 $(document).on('click', ".js-body-funcionario-pagamento-toggle", function() {
     $(this).toggleClass("icofont-simple-up")
     $(this).toggleClass("icofont-simple-down")
