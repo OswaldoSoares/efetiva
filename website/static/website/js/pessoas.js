@@ -62,6 +62,7 @@ $(document).on('click', ".js-selecionar-colaborador", function() {
         $(".card-foto-colaborador").html(data["html-card-foto-colaborador"]);
         $(".card-foto-colaborador").show();
         $(".card-contra-cheque-colaborador").hide();
+        $(".js-fechar-card-contra-cheque").click();
         $(".sub-grid").css("padding-top", "0");
         $(".card-vales-colaborador").html(data["html-card-vales-colaborador"]);
         $(".card-vales-colaborador").show();
