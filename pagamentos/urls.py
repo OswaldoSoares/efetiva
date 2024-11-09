@@ -43,6 +43,11 @@ from .views import (
 
 urlpatterns = [
     path(
+        "selecionar_mes_pagamento",
+        selecionar_mes_pagamento,
+        name="selecionar_mes_pagamento",
+    ),
+    path(
         "selecionar_contra_cheque_pagamento",
         selecionar_contra_cheque_pagamento,
         name="selecionar_contra_cheque_pagamento",
