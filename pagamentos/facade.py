@@ -410,25 +410,12 @@ class FolhaVale:
 
 
 def seleciona_mes_ano_folha() -> list:
-    """Cria uma lista com os Meses/Anos, para selecionar o mês da
-    folha de pagamento. O Mês/Ano máximo será o próximo mês da data
-    atual e o Mês/Ano minimo será Janeiro/2021.
-
-    Returns:
-        list: Lista com valores dos Meses e Anos
-    """
-    v_data_primeira_folha = datetime.datetime.strptime(
-        "31-12-2020", "%d-%m-%Y"
-    )
+    locale.setlocale(locale.LC_TIME, "pt_BR.UTF-8")
     hoje = datetime.datetime.today()
-    primeiro_dia_mes = hoje + relativedelta(day=1)
-    lista_mes_ano = []
-    while primeiro_dia_mes > v_data_primeira_folha:
-        lista_mes_ano.append(
-            datetime.datetime.strftime(primeiro_dia_mes, "%B/%Y")
-        )
-        primeiro_dia_mes = primeiro_dia_mes - relativedelta(months=1)
-    return lista_mes_ano
+    meses = [
+        (hoje - relativedelta(months=i)).strftime("%B/%Y") for i in range(3)
+    ]
+    return meses
 
 
 def create_contexto_folha(mes_ano: str) -> JsonResponse:
