@@ -24,8 +24,7 @@ def index_pagamento(request):
 
 
 def selecionar_mes_pagamento(request):
-    _mes_ano = request.GET.get("mes_ano")
-    contexto = facade.create_contexto_folha_pagamento(_mes_ano)
+    contexto = facade.create_contexto_folha_pagamento(request)
     data = facade.create_data_seleciona_mes_ano(request, contexto)
     return data
 
