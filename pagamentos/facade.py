@@ -124,6 +124,13 @@ def create_contexto_folha_pagamento(request):
     return contexto
 
 
+def primeiro_e_ultimo_dia_do_mes(mes: int, ano: int) -> tuple:
+    primeiro = datetime.datetime(ano, mes, 1)
+    ultimo = calendar.monthrange(ano, mes)
+    ultimo = datetime.datetime(ano, mes, ultimo[1])
+    return [primeiro, ultimo]
+
+
 class FolhaContraCheque:
     def __init__(self, _mes, _ano):
         self.ano = _ano
