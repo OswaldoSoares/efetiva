@@ -21,7 +21,7 @@ $(document).ready(function() {
 $(document).on("click", ".js-selecionar-mes-pagamento", function() {
     const mesAno = $(".select-mes-ano option:selected").text();
 
-    executarAjax("/pagamentos/seleciona_mes_pagamento", "GET", {
+    executarAjax("/pagamentos/selecionar_mes_pagamento", "GET", {
         mes_ano: mesAno,
     }, function(data) {
         $(".card-folha-pagamento").html(data.html_card_folha_pagamento);
