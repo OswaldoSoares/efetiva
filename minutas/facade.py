@@ -3151,7 +3151,7 @@ def calcula_cobranca(total_timedelta, valor_por_hora):
         (
             valor
             for inicio, fim, valor in intervalos
-            if inicio <= minutos < fim
+            if inicio <= minutos <= fim
         ),
         Decimal(0),
     )
