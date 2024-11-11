@@ -3379,7 +3379,8 @@ def atualizar_dados_minuta(minuta):
         dados_minuta["capacidade_peso_extra"] = tempo_extra
         dados_minuta["entregas_quilos_extra"] = tempo_extra
         dados_minuta["entregas_volume_extra"] = tempo_extra
-        dados_minuta["perimetro_extra"] = tempo_extra
+        # [INFO] Desabilitada cobrnaça do perimetro extra
+        #  dados_minuta["perimetro_extra"] = tempo_extra
     return dados_minuta
 
 
