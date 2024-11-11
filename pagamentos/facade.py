@@ -80,19 +80,47 @@ def create_contexto_meses_pagamento() -> dict:
     return {"meses": meses}
 
 
-def create_contexto_folha_pagamento(mes_ano):
-    #  start, start_queries = queries_inicio()
-    mes, ano = converter_mes_ano(mes_ano)
-    colaboradores = list(get_colaboradores_mensalistas_admitidos().values())
+def create_contexto_folha_pagamento(request):
+    MESES_INVERTIDO = {v: k for k, v in MESES.items()}
+    mes, ano = request.GET.get("mes_ano").split("/")
+    mes = MESES_INVERTIDO.get(mes)
+    primeiro_e_ultimo = primeiro_e_ultimo_dia_do_mes(int(mes), int(ano))
+
+    colaboradores = Pessoal.objects.filter(
+        TipoPgto="MENSALISTA", DataAdmissao__lte=primeiro_e_ultimo[1]
+    ).exclude(DataDemissao__lte=primeiro_e_ultimo[0])
+
+    colaboradores = list(colaboradores.values())
+
+    id_colaboradores_list = [item["idPessoal"] for item in colaboradores]
+
+    contra_cheque_pagamento = set(
+        ContraCheque.objects.filter(
+            idPessoal_id__in=id_colaboradores_list,
+            MesReferencia=MESES.get(mes),
+            AnoReferencia=ano,
+            Descricao="PAGAMENTO",
+        )
+    )
+    contra_cheque_adiantamento = set(
+        ContraCheque.objects.filter(
+            idPessoal_id__in=id_colaboradores_list,
+            MesReferencia=MESES.get(mes),
+            AnoReferencia=ano,
+            Descricao="ADIANTAMENTO",
+        )
+    )
+
+    salarios = set(
+        Salarios.objects.filter(idPessoal_id__in=id_colaboradores_list)
+    )
+
     salarios = list(get_valores_salario_transporte_colaborador().values())
     folha = busca_folha(mes, ano, colaboradores, salarios)
     contexto = {"folha": folha, "mes": mes, "ano": ano}
     contexto.update(
         contra_cheques_folha_pagamento(folha, colaboradores, salarios)
     )
-    #  queries_termino(
-    #  start, start_queries, "[INFO] Create contexto folha pagamento"
-    #  )
     return contexto
 
 
