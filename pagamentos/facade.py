@@ -199,6 +199,15 @@ def adicionar_info_folha(folha, salarios) -> dict:
     return folha
 
 
+def get_totais_folha(folha: dict) -> dict:
+    soma = {}
+    soma["adiantamento"] = sum(info["adiantamento"] for info in folha.values())
+    soma["pagamento"] = sum(info["pagamento"] for info in folha.values())
+    soma["saldo"] = soma["adiantamento"] + soma["pagamento"]
+
+    return soma
+
+
 def create_contexto_folha_pagamento(request):
     meses_invertido = {v: k for k, v in MESES.items()}
     mes, ano = request.GET.get("mes_ano").split("/")
