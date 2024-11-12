@@ -14,16 +14,9 @@ from despesas.models import Multas
 from minutas.facade import nome_curto, nome_curto_underscore
 from minutas.models import MinutaColaboradores, MinutaItens
 from pessoas.forms import CadastraContraChequeItens
-from pessoas.models import (
-    Agenda,
-    CartaoPonto,
-    ContaPessoal,
-    ContraCheque,
-    ContraChequeItens,
-    Pessoal,
-    Salario,
-    Vales,
-)
+from pessoas.models import Agenda, CartaoPonto, ContaPessoal, ContraCheque
+from pessoas.models import ContraChequeItens, Pessoal, Salario, Vales
+
 
 from pessoas.facade import (
     get_contra_cheque_mes_ano_pagamento,
