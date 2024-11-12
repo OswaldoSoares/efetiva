@@ -145,6 +145,38 @@ def saldo_contra_cheques_de_colaboradores(colaboradores, descricao, mes, ano):
     )
 
 
+def unir_saldo_contra_cheque_pagamento_e_adiantamento(
+    colaboradores, dict_pagamento, dict_adiantamento
+):
+    result = {}
+    for colaborador, valores_pagamento in dict_pagamento.items():
+        if colaborador in dict_adiantamento:
+            result[colaborador] = {
+                "nome": valores_pagamento["nome"],
+                "nome_curto": valores_pagamento["nome_curto"],
+                "pagamento": valores_pagamento["PAGAMENTO"],
+                "adiantamento": dict_adiantamento[colaborador]["ADIANTAMENTO"],
+            }
+        else:
+            result[colaborador] = {
+                "nome": valores_pagamento["nome"],
+                "nome_curto": valores_pagamento["nome_curto"],
+                "pagamento": valores_pagamento["PAGAMENTO"],
+                "adiantamento": Decimal("0"),
+            }
+
+    for colaborador, valores_adiantamento in dict_adiantamento.items():
+        if colaborador not in result:
+            result[colaborador] = {
+                "nome": valores_pagamento["nome"],
+                "nome_curto": valores_pagamento["nome_curto"],
+                "pagamento": Decimal("0"),
+                "adiantamento": valores_adiantamento["ADIANTAMENTO"],
+            }
+
+    return result
+
+
 def create_contexto_folha_pagamento(request):
     meses_invertido = {v: k for k, v in MESES.items()}
     mes, ano = request.GET.get("mes_ano").split("/")
