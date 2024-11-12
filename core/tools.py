@@ -193,3 +193,11 @@ def nome_curto_underscore(nome):
 
 def obter_mes_por_numero(numero):
     return MESES.get(numero, "Mês inválido")
+
+
+def gerar_data_html(html_functions, request, contexto, data):
+    data["mensagem"] = contexto["mensagem"]
+    for html_func in html_functions:
+        data = html_func(request, contexto, data)
+
+    return JsonResponse(data)
