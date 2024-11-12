@@ -122,14 +122,28 @@ def processar_folha_pagamento(
     return saldo_por_colaborador
 
 
+def saldo_contra_cheques_de_colaboradores(colaboradores, descricao, mes, ano):
+    id_colaboradores_list = [item.idPessoal for item in colaboradores]
+    contra_cheques = set(
         ContraCheque.objects.filter(
             idPessoal_id__in=id_colaboradores_list,
             MesReferencia=MESES.get(mes),
             AnoReferencia=ano,
+            Descricao=descricao,
         )
     )
+
+    id_contra_cheques_list = [item.idContraCheque for item in contra_cheques]
+    contra_cheques_itens = set(
+        ContraChequeItens.objects.filter(
+            idContraCheque_id__in=id_contra_cheques_list
         )
     )
+
+    return processar_folha_pagamento(
+        colaboradores, contra_cheques, contra_cheques_itens, descricao
+    )
+
 
 def create_contexto_folha_pagamento(request):
     meses_invertido = {v: k for k, v in MESES.items()}
