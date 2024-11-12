@@ -242,6 +242,14 @@ def create_contexto_folha_pagamento(request):
     }
 
 
+def folha_pagamento_html_data(request, contexto):
+    data = {}
+    html_functions = [
+        html_data.html_card_colaboradores,
+    ]
+    return gerar_data_html(html_functions, request, contexto, data)
+
+
 class FolhaContraCheque:
     def __init__(self, _mes, _ano):
         self.ano = _ano
