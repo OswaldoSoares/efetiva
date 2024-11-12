@@ -83,6 +83,13 @@ def obter_itens_contra_cheque(contra_cheques_itens, id_contra_cheque):
     }
 
 
+def calcular_saldo_contra_cheque(contra_cheque_itens):
+    return sum(
+        item.Valor if item.Registro == "C" else -item.Valor
+        for item in contra_cheque_itens
+    )
+
+
 
 
         ContraCheque.objects.filter(
