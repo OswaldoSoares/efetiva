@@ -597,12 +597,6 @@ def create_contexto_folha(mes_ano: str) -> JsonResponse:
     return contexto
 
 
-def create_data_seleciona_mes_ano(request, contexto):
-    data = dict()
-    html_card_folha_pagamento(request, contexto, data)
-    return JsonResponse(data)
-
-
 def create_contexto_agenda(minutas, agenda):
     for x in agenda:
         minutas.append(
