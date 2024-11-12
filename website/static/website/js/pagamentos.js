@@ -24,11 +24,12 @@ $(document).on("click", ".js-selecionar-mes-pagamento", function() {
     executarAjax("/pagamentos/selecionar_mes_pagamento", "GET", {
         mes_ano: mesAno,
     }, function(data) {
-        $(".card-folha-pagamento").html(data.html_card_folha_pagamento);
+        $(".card-folha-pagamento").html(data["html-card-colaboradores"]);
         $(".card-folha-pagamento").show();
-        $(".js-selecionar-mes-ano").removeClass("icofont-square");
-        $(".js-selecionar-mes-ano").addClass("icofont-checked");
-        $(".js-selecionar-mes-ano").addClass("disabled");
+        $(".js-selecionar-mes-pagamento").removeClass("icofont-square");
+        $(".js-selecionar-mes-pagamento").addClass("icofont-checked");
+        $(".js-selecionar-mes-pagamento").addClass("disabled");
+        exibirMensagem(data["mensagem"])
         $('.box-loader').hide()
     });
 });
@@ -36,9 +37,9 @@ $(document).on("click", ".js-selecionar-mes-pagamento", function() {
 // Seleciona mês e ano para pagamento de colaboradores mensalistas
 $(".select-mes-ano").change(function() {
     ocultarCardsPagamento()
-    $(".js-selecionar-mes-ano").addClass("icofont-square")
-    $(".js-selecionar-mes-ano").removeClass("icofont-checked")
-    $(".js-selecionar-mes-ano").removeClass("disabled")
+    $(".js-selecionar-mes-pagamento").addClass("icofont-square")
+    $(".js-selecionar-mes-pagamento").removeClass("icofont-checked")
+    $(".js-selecionar-mes-pagamento").removeClass("disabled")
 });
 
 // Seleciona funcionário mensalista
