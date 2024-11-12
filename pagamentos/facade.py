@@ -75,6 +75,12 @@ def create_contexto_meses_pagamento() -> dict:
     return {"meses": meses}
 
 
+def obter_itens_contra_cheque(contra_cheques_itens, id_contra_cheque):
+    return {
+        item
+        for item in contra_cheques_itens
+        if item.idContraCheque_id == id_contra_cheque
+    }
 
 
 
