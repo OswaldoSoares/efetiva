@@ -90,6 +90,36 @@ def calcular_saldo_contra_cheque(contra_cheque_itens):
     )
 
 
+def processar_folha_pagamento(
+    colaboradores, contra_cheques, contra_cheques_itens, descricao
+):
+    saldo_por_colaborador = {}
+    for colaborador in colaboradores:
+        contra_cheque_colaborador = {
+            item
+            for item in contra_cheques
+            if item.idPessoal_id == colaborador.idPessoal
+        }
+        if contra_cheque_colaborador:
+            cheque = next(iter(contra_cheque_colaborador))
+
+            contra_cheque_itens = obter_itens_contra_cheque(
+                contra_cheques_itens, cheque.idContraCheque
+            )
+
+            saldo = calcular_saldo_contra_cheque(contra_cheque_itens)
+            saldo_por_colaborador[colaborador.idPessoal] = {
+                "nome": colaborador.Nome,
+                "nome_curto": nome_curto(colaborador.Nome),
+                descricao: saldo,
+            }
+        else:
+            saldo_por_colaborador[colaborador.idPessoal] = {
+                "nome": colaborador.Nome,
+                "nome_curto": nome_curto(colaborador.Nome),
+                descricao: Decimal(0.00),
+            }
+    return saldo_por_colaborador
 
 
         ContraCheque.objects.filter(
