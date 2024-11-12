@@ -177,6 +177,11 @@ def unir_saldo_contra_cheque_pagamento_e_adiantamento(
     return result
 
 
+def get_salarios_grupo_colaboradores(colaboradores):
+    id_colaboradores_list = [item.idPessoal for item in colaboradores]
+    return set(Salario.objects.filter(idPessoal_id__in=id_colaboradores_list))
+
+
 def create_contexto_folha_pagamento(request):
     meses_invertido = {v: k for k, v in MESES.items()}
     mes, ano = request.GET.get("mes_ano").split("/")
