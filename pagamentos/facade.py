@@ -75,55 +75,56 @@ def create_contexto_meses_pagamento() -> dict:
     return {"meses": meses}
 
 
+
+
+
+
+        ContraCheque.objects.filter(
+            idPessoal_id__in=id_colaboradores_list,
+            MesReferencia=MESES.get(mes),
+            AnoReferencia=ano,
+        )
+    )
+        )
+    )
+
 def create_contexto_folha_pagamento(request):
-    MESES_INVERTIDO = {v: k for k, v in MESES.items()}
+    meses_invertido = {v: k for k, v in MESES.items()}
     mes, ano = request.GET.get("mes_ano").split("/")
-    mes = MESES_INVERTIDO.get(mes)
+    mes = meses_invertido.get(mes)
     primeiro_e_ultimo = primeiro_e_ultimo_dia_do_mes(int(mes), int(ano))
 
     colaboradores = Pessoal.objects.filter(
         TipoPgto="MENSALISTA", DataAdmissao__lte=primeiro_e_ultimo[1]
     ).exclude(DataDemissao__lte=primeiro_e_ultimo[0])
-
-    colaboradores = list(colaboradores.values())
-
-    id_colaboradores_list = [item["idPessoal"] for item in colaboradores]
-
-    contra_cheque_pagamento = set(
-        ContraCheque.objects.filter(
-            idPessoal_id__in=id_colaboradores_list,
-            MesReferencia=MESES.get(mes),
-            AnoReferencia=ano,
-            Descricao="PAGAMENTO",
-        )
+    pagamento = saldo_contra_cheques_de_colaboradores(
+        colaboradores, "PAGAMENTO", mes, ano
     )
-    contra_cheque_adiantamento = set(
-        ContraCheque.objects.filter(
-            idPessoal_id__in=id_colaboradores_list,
-            MesReferencia=MESES.get(mes),
-            AnoReferencia=ano,
-            Descricao="ADIANTAMENTO",
-        )
+    adiantamento = saldo_contra_cheques_de_colaboradores(
+        colaboradores, "ADIANTAMENTO", mes, ano
     )
 
-    salarios = set(
-        Salarios.objects.filter(idPessoal_id__in=id_colaboradores_list)
+    folha_sem_salarios = unir_saldo_contra_cheque_pagamento_e_adiantamento(
+        colaboradores, pagamento, adiantamento
     )
+    salarios = get_salarios_grupo_colaboradores(colaboradores)
+    folha = adicionar_info_folha(folha_sem_salarios, salarios)
+    totais = get_totais_folha(folha)
 
-    salarios = list(get_valores_salario_transporte_colaborador().values())
-    folha = busca_folha(mes, ano, colaboradores, salarios)
-    contexto = {"folha": folha, "mes": mes, "ano": ano}
-    contexto.update(
-        contra_cheques_folha_pagamento(folha, colaboradores, salarios)
-    )
-    return contexto
-
+    mensagem = f"O mês {mes}/{ano} foi selecionado"
 
 def primeiro_e_ultimo_dia_do_mes(mes: int, ano: int) -> tuple:
     primeiro = datetime.datetime(ano, mes, 1)
     ultimo = calendar.monthrange(ano, mes)
     ultimo = datetime.datetime(ano, mes, ultimo[1])
     return [primeiro, ultimo]
+    return {
+        "folha": folha,
+        "mes": mes,
+        "ano": ano,
+        "totais": totais,
+        "mensagem": mensagem,
+    }
 
 
 class FolhaContraCheque:
