@@ -25,8 +25,7 @@ def index_pagamento(request):
 
 def selecionar_mes_pagamento(request):
     contexto = facade.create_contexto_folha_pagamento(request)
-    data = facade.create_data_seleciona_mes_ano(request, contexto)
-    return data
+    return facade.folha_pagamento_html_data(request, contexto)
 
 
 def selecionar_contra_cheque_pagamento(request):
