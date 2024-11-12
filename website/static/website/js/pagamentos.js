@@ -43,9 +43,9 @@ $(".select-mes-ano").change(function() {
 });
 
 // Seleciona funcionário mensalista
-$(document).on("click", ".js-seleciona-funcionario", function() {
+$(document).on("click", ".js-selecionar-colaborador", function() {
     const mesAno = $(".select-mes-ano option:selected").text();
-    idPessoal = $(this).data("idpessoal");
+    idPessoal = $(this).data("id_pessoal");
 
     executarAjax("/pagamentos/seleciona_funcionario", "GET", {
         mes_ano: mesAno,
