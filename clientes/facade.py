@@ -461,10 +461,12 @@ def create_contexto_quantidade_minutas_dia(idcliente):
     minutas = list(get_minutas_cliente(idcliente).values())
     hoje = datetime.now().date()
     data_inicio = hoje - relativedelta(days=40)
+    data_inicio = datetime(2024, 9, 1).date()
+    data_fim = datetime(2024, 9, 30).date()
     filtra_minutas = [
         item["DataMinuta"]
         for item in minutas
-        if item["DataMinuta"] >= data_inicio
+        if item["DataMinuta"] >= data_inicio and item["DataMinuta"] <= data_fim
     ]
     contagem = Counter(filtra_minutas)
     minutas_dia = [
@@ -478,9 +480,11 @@ def create_contexto_quantidade_minutas_dia(idcliente):
 def create_contexto_quantidade_notas_dia(idcliente):
     hoje = datetime.now().date()
     inicio = hoje - relativedelta(days=40)
+    data_inicio = datetime(2024, 9, 1)
+    data_fim = datetime(2024, 9, 30)
     minutas = list(
         Minuta.objects.filter(
-            idCliente=idcliente, DataMinuta__gte=inicio
+            idCliente=idcliente, DataMinuta__range=(data_inicio, data_fim)
         ).values("idMinuta", "DataMinuta")
     )
     minutas_id = [item["idMinuta"] for item in minutas]

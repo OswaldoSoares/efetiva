@@ -548,7 +548,7 @@ def grafico_minutas_dia(pdf, minutas_dia, notas_dia):
         dados.append(quant_minutas)
         cores = [colors.red]
         legenda_textos = ["Quant. Veículos"]
-        meu_titulo = f"Quant. Veículos - {minutas_total} (40 dias)"
+        meu_titulo = f"Quant. Veículos - {minutas_total} (Setembro)"
         gera_graphics_lineplot(
             drawing, dados, rotulos_x, legenda_textos, meu_titulo, cores
         )
@@ -560,7 +560,7 @@ def grafico_minutas_dia(pdf, minutas_dia, notas_dia):
         dados.append(quant_notas)
         cores = [colors.blue]
         legenda_textos = ["Quant. Notas"]
-        meu_titulo = f"Quant. Notas - {notas_total} (40 dias)"
+        meu_titulo = f"Quant. Notas - {notas_total} (Setembro)"
         gera_graphics_lineplot(
             drawing, dados, rotulos_x, legenda_textos, meu_titulo, cores
         )
@@ -573,7 +573,7 @@ def grafico_minutas_dia(pdf, minutas_dia, notas_dia):
         cores = [colors.green]
         legenda_textos = ["Valor Total"]
         real_vpm = valor_ponto_milhar(valor_total, 2)
-        meu_titulo = f"Valor Total - R$ {real_vpm} (40 dias)"
+        meu_titulo = f"Valor Total - R$ {real_vpm} (Setembro)"
         gera_graphics_lineplot(
             drawing, dados, rotulos_x, legenda_textos, meu_titulo, cores
         )
@@ -586,7 +586,7 @@ def grafico_minutas_dia(pdf, minutas_dia, notas_dia):
         cores = [colors.yellow]
         legenda_textos = ["Peso Total"]
         peso_vpm = valor_ponto_milhar(peso_total, 3)
-        meu_titulo = f"Peso Total - {peso_vpm}kg (40 dias)"
+        meu_titulo = f"Peso Total - {peso_vpm}kg (Setembro)"
         gera_graphics_lineplot(
             drawing, dados, rotulos_x, legenda_textos, meu_titulo, cores
         )
