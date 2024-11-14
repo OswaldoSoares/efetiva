@@ -250,6 +250,62 @@ def folha_pagamento_html_data(request, contexto):
     return gerar_data_html(html_functions, request, contexto, data)
 
 
+def create_contexto_mensalista(idpessoal, mes_ano):
+    colaborador = get_colaborador(idpessoal)
+    salario = list(
+        get_salario(colaborador).values("Salario", "ValeTransporte")
+    )[0]
+    mes, ano = converter_mes_ano(mes_ano)
+    primeiro_dia_mes, ultimo_dia_mes = extremos_mes(mes, ano)
+    cartao_ponto = get_cartao_ponto_colaborador(
+        idpessoal, primeiro_dia_mes, ultimo_dia_mes
+    )
+    verifica_feriados(cartao_ponto, mes, ano)
+    minutas = get_minutas_periodo_contra_cheque(
+        idpessoal, primeiro_dia_mes, ultimo_dia_mes
+    )
+    vales = get_vales_colaborador(colaborador)
+    atualiza_cartao_ponto_transporte(cartao_ponto, salario)
+    atualiza_cartao_ponto_minutas(cartao_ponto, minutas)
+    cartao_ponto = get_cartao_ponto_colaborador(
+        idpessoal, primeiro_dia_mes, ultimo_dia_mes
+    )
+    atualiza_itens_contra_cheque_pagamento(
+        colaborador, cartao_ponto, minutas, salario, mes, ano
+    )
+    hoje = datetime.datetime.today()
+    hoje = datetime.datetime.strftime(hoje, "%Y-%m-%d")
+    total_dias_admitido = dias_admitido(
+        colaborador.DataAdmissao, colaborador.DataDemissao
+    )
+    total_dias_remunerado = dias_remunerado(cartao_ponto, ultimo_dia_mes)
+    total_dias_trabalhado = dias_trabalhado(cartao_ponto)
+    total_dias_transporte = dias_transporte(cartao_ponto)
+    contexto = {
+        "colaborador": colaborador,
+        "nome_curto": nome_curto(colaborador.Nome),
+        "nome_underscore": nome_curto_underscore(colaborador.Nome),
+        "idpessoal": idpessoal,
+        "cartao_ponto": cartao_ponto,
+        "mes_ano": mes_ano,
+        "vales": vales,
+        "tipo": "PAGAMENTO",
+        "minutas": minutas,
+        "hoje": hoje,
+        "dias_admitido": total_dias_admitido,
+        "dias_remunerado": total_dias_remunerado,
+        "dias_trabalhado": total_dias_trabalhado,
+        "dias_transporte": total_dias_transporte,
+        "salario": salario["Salario"],
+        "valor_dia": salario["Salario"] / 30,
+        "valor_hora": salario["Salario"] / 30 / 9,
+        "valor_extra": salario["Salario"] / 30 / 9 * Decimal(1.5),
+    }
+    agenda = contexto_agenda_colaborador(idpessoal, mes_ano)
+    contexto.update(agenda)
+    return contexto
+
+
 class FolhaContraCheque:
     def __init__(self, _mes, _ano):
         self.ano = _ano
@@ -3155,62 +3211,6 @@ def get_cartao_ponto_colaborador(idpessoal, primeiro_dia_mes, ultimo_dia_mes):
         ).values()
     )
     return cartao_ponto
-
-
-def create_contexto_mensalista(idpessoal, mes_ano):
-    colaborador = get_colaborador(idpessoal)
-    salario = list(
-        get_salario(colaborador).values("Salario", "ValeTransporte")
-    )[0]
-    mes, ano = converter_mes_ano(mes_ano)
-    primeiro_dia_mes, ultimo_dia_mes = extremos_mes(mes, ano)
-    cartao_ponto = get_cartao_ponto_colaborador(
-        idpessoal, primeiro_dia_mes, ultimo_dia_mes
-    )
-    verifica_feriados(cartao_ponto, mes, ano)
-    minutas = get_minutas_periodo_contra_cheque(
-        idpessoal, primeiro_dia_mes, ultimo_dia_mes
-    )
-    vales = get_vales_colaborador(colaborador)
-    atualiza_cartao_ponto_transporte(cartao_ponto, salario)
-    atualiza_cartao_ponto_minutas(cartao_ponto, minutas)
-    cartao_ponto = get_cartao_ponto_colaborador(
-        idpessoal, primeiro_dia_mes, ultimo_dia_mes
-    )
-    atualiza_itens_contra_cheque_pagamento(
-        colaborador, cartao_ponto, minutas, salario, mes, ano
-    )
-    hoje = datetime.datetime.today()
-    hoje = datetime.datetime.strftime(hoje, "%Y-%m-%d")
-    total_dias_admitido = dias_admitido(
-        colaborador.DataAdmissao, colaborador.DataDemissao
-    )
-    total_dias_remunerado = dias_remunerado(cartao_ponto, ultimo_dia_mes)
-    total_dias_trabalhado = dias_trabalhado(cartao_ponto)
-    total_dias_transporte = dias_transporte(cartao_ponto)
-    contexto = {
-        "colaborador": colaborador,
-        "nome_curto": nome_curto(colaborador.Nome),
-        "nome_underscore": nome_curto_underscore(colaborador.Nome),
-        "idpessoal": idpessoal,
-        "cartao_ponto": cartao_ponto,
-        "mes_ano": mes_ano,
-        "vales": vales,
-        "tipo": "PAGAMENTO",
-        "minutas": minutas,
-        "hoje": hoje,
-        "dias_admitido": total_dias_admitido,
-        "dias_remunerado": total_dias_remunerado,
-        "dias_trabalhado": total_dias_trabalhado,
-        "dias_transporte": total_dias_transporte,
-        "salario": salario["Salario"],
-        "valor_dia": salario["Salario"] / 30,
-        "valor_hora": salario["Salario"] / 30 / 9,
-        "valor_extra": salario["Salario"] / 30 / 9 * Decimal(1.5),
-    }
-    agenda = contexto_agenda_colaborador(idpessoal, mes_ano)
-    contexto.update(agenda)
-    return contexto
 
 
 def verifica_feriados(cartao_ponto, mes, ano):
