@@ -23,7 +23,6 @@ from .views import (
     remove_vales,
     salva_file,
     seleciona_colaborador_avulso,
-    seleciona_funcionario,
     seleciona_periodo_avulso,
     seleciona_vales,
     imprime_relatorio_saldo_avulso,
@@ -71,11 +70,6 @@ urlpatterns = [
     ),
     path("excluirecibo", exclui_recibo, name="excluirecibo"),
     path("imprimerecibo", imprime_recibo, name="imprimerecibo"),
-    path(
-        "seleciona_funcionario",
-        seleciona_funcionario,
-        name="seleciona_funcionario",
-    ),
     path(
         "ausencia_falta",
         ausencia_falta,
