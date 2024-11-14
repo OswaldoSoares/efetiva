@@ -37,6 +37,7 @@ from .views import (
 
 from .views import (
     selecionar_mes_pagamento,
+    selecionar_colaborador,
     selecionar_contra_cheque_pagamento,
 )
 
