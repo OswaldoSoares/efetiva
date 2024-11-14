@@ -250,7 +250,7 @@ def folha_pagamento_html_data(request, contexto):
     return gerar_data_html(html_functions, request, contexto, data)
 
 
-def create_contexto_mensalista(idpessoal, mes_ano):
+def create_contexto_colaborador(idpessoal, mes_ano):
     colaborador = get_colaborador(idpessoal)
     salario = list(
         get_salario(colaborador).values("Salario", "ValeTransporte")
