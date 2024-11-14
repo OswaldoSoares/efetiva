@@ -29,9 +29,7 @@ def selecionar_mes_pagamento(request):
 
 
 def selecionar_colaborador(request):
-    idpessoal = request.GET.get("idpessoal")
-    mes_ano = request.GET.get("mes_ano")
-    contexto = facade.create_contexto_colaborador(idpessoal, mes_ano)
+    contexto = facade.create_contexto_colaborador(request)
     data = facade.create_data_seleciona_funcionario(request, contexto)
     return data
 
