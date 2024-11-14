@@ -28,6 +28,14 @@ def selecionar_mes_pagamento(request):
     return facade.folha_pagamento_html_data(request, contexto)
 
 
+def seleciona_funcionario(request):
+    idpessoal = request.GET.get("idpessoal")
+    mes_ano = request.GET.get("mes_ano")
+    contexto = facade.create_contexto_mensalista(idpessoal, mes_ano)
+    data = facade.create_data_seleciona_funcionario(request, contexto)
+    return data
+
+
 def selecionar_contra_cheque_pagamento(request):
     contexto = facade_pessoas.create_contexto_contra_cheque_pagamento(request)
     return facade_pessoas.contra_cheque_html_data(request, contexto)
@@ -247,14 +255,6 @@ def seleciona_colaborador_avulso(request):
     data = facade.seleciona_minutasavulso(
         c_datainicial, c_datafinal, c_idpesssoal
     )
-    return data
-
-
-def seleciona_funcionario(request):
-    idpessoal = request.GET.get("idpessoal")
-    mes_ano = request.GET.get("mes_ano")
-    contexto = facade.create_contexto_mensalista(idpessoal, mes_ano)
-    data = facade.create_data_seleciona_funcionario(request, contexto)
     return data
 
 
