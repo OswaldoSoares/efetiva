@@ -47,7 +47,7 @@ $(document).on("click", ".js-selecionar-colaborador", function() {
     const mesAno = $(".select-mes-ano option:selected").text();
     idPessoal = $(this).data("id_pessoal");
 
-    executarAjax("/pagamentos/seleciona_funcionario", "GET", {
+    executarAjax("/pagamentos/selecionar_coolaborador", "GET", {
         mes_ano: mesAno,
         idi_pessoal: idPessoal,
     }, function(data) {
