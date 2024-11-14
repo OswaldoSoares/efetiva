@@ -14,6 +14,7 @@ from core.tools import gerar_data_html, primeiro_e_ultimo_dia_do_mes
 from despesas.models import Multas
 from minutas.facade import nome_curto, nome_curto_underscore
 from minutas.models import MinutaColaboradores, MinutaItens
+from pessoas.classes import Colaborador
 from pessoas.forms import CadastraContraChequeItens
 from pessoas.models import Agenda, CartaoPonto, ContaPessoal, ContraCheque
 from pessoas.models import ContraChequeItens, Pessoal, Salario, Vales
