@@ -48,6 +48,11 @@ urlpatterns = [
         name="selecionar_mes_pagamento",
     ),
     path(
+        "selecionar_colaborador",
+        selecionar_colaborador,
+        name="selecionar_colaborador",
+    ),
+    path(
         "selecionar_contra_cheque_pagamento",
         selecionar_contra_cheque_pagamento,
         name="selecionar_contra_cheque_pagamento",
