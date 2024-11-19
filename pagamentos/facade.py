@@ -295,7 +295,16 @@ def gerar_cartao_de_ponto_do_colaborador(colaborador, mes, ano):
     return CartaoPonto.objects.bulk_create(registros)
 
 
+def obter_cartao_de_ponto_do_colaborador(colaborador, mes, ano):
+    id_pessoal = colaborador.id_pessoal
+    primeiro_dia, ultimo_dia = primeiro_e_ultimo_dia_do_mes(mes, ano)
+
+    cartao_ponto = CartaoPonto.objects.filter(
+        Dia__range=[primeiro_dia, ultimo_dia], idPessoal=id_pessoal
     )
+
+    return cartao_ponto or gerar_cartao_de_ponto_do_colaborador(
+        colaborador, mes, ano
     )
 
 
