@@ -301,6 +301,14 @@ def gerar_cartao_de_ponto_do_colaborador(colaborador, mes, ano):
     )[0]
     mes, ano = converter_mes_ano(mes_ano)
     primeiro_dia_mes, ultimo_dia_mes = extremos_mes(mes, ano)
+
+def get_cartao_ponto_colaborador(id_pessoal, primeiro_dia_mes, ultimo_dia_mes):
+    cartao_ponto = list(
+        CartaoPonto.objects.filter(
+            Dia__range=[primeiro_dia_mes, ultimo_dia_mes], idPessoal=id_pessoal
+        ).values()
+    )
+    return cartao_ponto
     cartao_ponto = get_cartao_ponto_colaborador(
         idpessoal, primeiro_dia_mes, ultimo_dia_mes
     )
@@ -3204,15 +3212,6 @@ def totais_contra_cheques(contra_cheques, contra_cheque_itens):
         "total_folha": total_folha,
     }
     return contexto
-
-
-def get_cartao_ponto_colaborador(idpessoal, primeiro_dia_mes, ultimo_dia_mes):
-    cartao_ponto = list(
-        CartaoPonto.objects.filter(
-            Dia__range=[primeiro_dia_mes, ultimo_dia_mes], idPessoal=idpessoal
-        ).values()
-    )
-    return cartao_ponto
 
 
 def verifica_feriados(cartao_ponto, mes, ano):
