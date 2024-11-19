@@ -253,6 +253,48 @@ def folha_pagamento_html_data(request, contexto):
 
 def create_contexto_colaborador(idpessoal, mes_ano):
     colaborador = get_colaborador(idpessoal)
+def create_cartao_ponto(
+    v_idpessoal,
+    v_primeiro_dia_mes,
+    v_ultimo_dia_mes,
+    v_admissao,
+    v_demissao,
+    _var,
+):
+    feriados = DiasFeriados().__dict__["feriados"]
+    dia = v_primeiro_dia_mes
+    while dia < v_ultimo_dia_mes + relativedelta(days=1):
+        obj = CartaoPonto()
+        obj.Dia = dia
+        obj.Entrada = "07:00"
+        obj.Saida = "17:00"
+        obj.Remunerado = True
+        if dia.weekday() == 5 or dia.weekday() == 6:
+            obj.Ausencia = dias[dia.weekday()]
+            obj.Conducao = False
+        else:
+            obj.Ausencia = ""
+            if _var["conducao"] == Decimal(0.00):
+                obj.Conducao = False
+            else:
+                obj.Conducao = True
+        if dia.date() in feriados:
+            obj.Ausencia = "FERIADO"
+            obj.Conducao = False
+        if dia.date() < v_admissao:
+            obj.Ausencia = "-------"
+            obj.Conducao = False
+            obj.Remunerado = False
+        if not v_demissao is None:
+            if dia.date() > v_demissao:
+                obj.Ausencia = "-------"
+                obj.Conducao = False
+                obj.Remunerado = False
+        obj.idPessoal_id = v_idpessoal
+        dia = dia + relativedelta(days=1)
+        obj.save()
+
+
     salario = list(
         get_salario(colaborador).values("Salario", "ValeTransporte")
     )[0]
@@ -1136,48 +1178,6 @@ def cria_contexto_pagamentos():
         "mes_ano": v_mes_ano,
     }
     return contexto
-
-
-def create_cartao_ponto(
-    v_idpessoal,
-    v_primeiro_dia_mes,
-    v_ultimo_dia_mes,
-    v_admissao,
-    v_demissao,
-    _var,
-):
-    feriados = DiasFeriados().__dict__["feriados"]
-    dia = v_primeiro_dia_mes
-    while dia < v_ultimo_dia_mes + relativedelta(days=1):
-        obj = CartaoPonto()
-        obj.Dia = dia
-        obj.Entrada = "07:00"
-        obj.Saida = "17:00"
-        obj.Remunerado = True
-        if dia.weekday() == 5 or dia.weekday() == 6:
-            obj.Ausencia = dias[dia.weekday()]
-            obj.Conducao = False
-        else:
-            obj.Ausencia = ""
-            if _var["conducao"] == Decimal(0.00):
-                obj.Conducao = False
-            else:
-                obj.Conducao = True
-        if dia.date() in feriados:
-            obj.Ausencia = "FERIADO"
-            obj.Conducao = False
-        if dia.date() < v_admissao:
-            obj.Ausencia = "-------"
-            obj.Conducao = False
-            obj.Remunerado = False
-        if not v_demissao is None:
-            if dia.date() > v_demissao:
-                obj.Ausencia = "-------"
-                obj.Conducao = False
-                obj.Remunerado = False
-        obj.idPessoal_id = v_idpessoal
-        dia = dia + relativedelta(days=1)
-        obj.save()
 
 
 def update_cartao_ponto(_var):
