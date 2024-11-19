@@ -30,6 +30,8 @@ $(document).on("click", ".js-selecionar-mes-pagamento", function() {
         $(".js-selecionar-mes-pagamento").addClass("icofont-checked");
         $(".js-selecionar-mes-pagamento").addClass("disabled");
         exibirMensagem(data["mensagem"])
+        mes = $("#mes_referencia").data("mes")
+        ano = $("#ano_referencia").data("ano")
         $('.box-loader').hide()
     });
 });
