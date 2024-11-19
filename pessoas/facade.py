@@ -635,7 +635,9 @@ def get_decimo_terceiro_colaborador(id_pessoal):
 def atualiza_dozeavos_e_parcelas_decimo_terceiro(colaborador):
     decimo_terceiro = get_decimo_terceiro_colaborador(colaborador.id_pessoal)
     admissao = colaborador.dados_profissionais.data_admissao
-    salario = colaborador.salarios.salarios.Salario
+    salarios_obj = getattr(colaborador, "salarios", None)
+    salarios_sub = getattr(salarios_obj, "salarios", None)
+    salario = getattr(salarios_sub, "Salario", None) or Decimal("0.00")
     hoje = datetime.today().date()
     ultimo_ano = decimo_terceiro[0]["ano"]
 
