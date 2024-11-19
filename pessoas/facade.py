@@ -2868,13 +2868,13 @@ def create_contexto_minutas_contra_cheque(idpessoal, contra_cheque):
     return {"minutas": minutas}
 
 
-def create_contexto_cartao_ponto_contra_cheque(idpessoal, contra_cheque):
+def create_contexto_cartao_ponto_contra_cheque(id_pessoal, contra_cheque):
     MESES_INVERTIDO = {v: k for k, v in MESES.items()}
     mes = MESES_INVERTIDO.get(contra_cheque.MesReferencia)
     ano = contra_cheque.AnoReferencia
-    primeiro_dia_mes, ultimo_dia_mes = extremos_mes(mes, ano)
-    cartao_ponto = facade_pagamentos.get_cartao_ponto_colaborador(
-        idpessoal, primeiro_dia_mes, ultimo_dia_mes
+    colaborador = classes.Colaborador(id_pessoal)
+    cartao_ponto = facade_pagamentos.obter_cartao_de_ponto_do_colaborador(
+        colaborador, mes, ano
     )
     return {"cartao_ponto": cartao_ponto}
 
