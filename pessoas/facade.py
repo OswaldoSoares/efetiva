@@ -728,6 +728,49 @@ def create_contexto_contra_cheque_pagamento(request):
     return contexto
 
 
+def create_contexto_contra_cheque_adiantamento(request):
+    id_pessoal = request.GET.get("id_pessoal")
+    mes = obter_mes_por_numero(int(request.GET.get("mes")))
+    ano = request.GET.get("ano")
+    colaborador = classes.Colaborador(id_pessoal)
+    salario = colaborador.salarios.salarios.Salario
+    quarenta_por_cento = (salario / 100) * 40
+    descricao = "ADIANTAMENTO"
+
+    contra_cheque = ContraCheque.objects.filter(
+        Descricao=descricao,
+        AnoReferencia=ano,
+        MesReferencia=mes,
+        idPessoal=id_pessoal,
+    ).first()
+
+    if not contra_cheque:
+        obs = ""
+        contra_cheque = create_contra_cheque(
+            mes, ano, descricao, id_pessoal, obs
+        )
+
+    contra_cheque_itens = ContraChequeItens.objects.filter(
+        idContraCheque=contra_cheque
+    ).order_by("Registro")
+
+    if not contra_cheque_itens:
+        contra_cheque_itens = create_contra_cheque_itens(
+            descricao, quarenta_por_cento, "C", "40%", contra_cheque
+        )
+
+    contexto = {
+        "mensagem": f"Adiantamento selecionada: {mes}/{ano}",
+        "contra_cheque": contra_cheque,
+        "contra_cheque_itens": contra_cheque_itens,
+        "id_pessoal": id_pessoal,
+    }
+
+    contexto.update(get_saldo_contra_cheque(contra_cheque_itens))
+
+    return contexto
+
+
 def create_contexto_contra_cheque_decimo_terceiro(request):
     id_pessoal = request.GET.get("id_pessoal")
     ano = request.GET.get("ano")
