@@ -50,8 +50,9 @@ $(document).on("click", ".js-selecionar-colaborador", function() {
     idPessoal = $(this).data("id_pessoal");
 
     executarAjax("/pagamentos/selecionar_colaborador", "GET", {
-        mes_ano: mesAno,
-        idi_pessoal: idPessoal,
+        mes: mes,
+        ano: ano,
+        id_pessoal: idPessoal,
     }, function(data) {
         mes = $("#mes_referencia").data("mes")
         ano = $("#ano_referencia").data("ano")
