@@ -276,7 +276,7 @@ def gerar_cartao_de_ponto_do_colaborador(colaborador, mes, ano):
             "idPessoal_id": id_pessoal,
         }
 
-        if dia < admissao or (demissao and dia > demissao):
+        if dia.date() < admissao or (demissao and dia.date() > demissao):
             obj["Ausencia"] = "-------"
             obj["Remunerado"] = False
             obj["Conducao"] = False
