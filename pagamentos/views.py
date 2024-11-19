@@ -39,6 +39,13 @@ def selecionar_contra_cheque_pagamento(request):
     return facade_pessoas.contra_cheque_html_data(request, contexto)
 
 
+def selecionar_contra_cheque_adiantamento(request):
+    contexto = facade_pessoas.create_contexto_contra_cheque_adiantamento(
+        request
+    )
+    return facade_pessoas.contra_cheque_html_data(request, contexto)
+
+
 def adiciona_agenda(request):
     _descricao = request.POST.get("descricao")
     _data = request.POST.get("data")
