@@ -766,6 +766,24 @@ $(document).on('click', '.js-selecionar-contra-cheque-pagamento', function() {
     });
 });
 
+$(document).on('click', '.js-selecionar-contra-cheque-adiantamento', function() {
+     executarAjax("/pagamentos/selecionar_contra_cheque_adiantamento", "GET", {
+        id_pessoal: idPessoal,
+        ano: ano,
+        mes: mes,
+    }, function(data) {
+        console.log(data)
+        $(".card-contra-cheque-colaborador").html(
+            data["html-card-contra-cheque-colaborador"]
+        )
+        $(".card-contra-cheque-colaborador").show()
+        idContraCheque = $("#id_contra_cheque").data("id_contra_cheque")
+        selecionarValesToggle()
+        $(window).scrollTop(0)
+        $(".box-loader").hide()
+    });
+});
+
 $(document).on('click', ".js-body-funcionario-pagamento-toggle", function() {
     $(this).toggleClass("icofont-simple-up")
     $(this).toggleClass("icofont-simple-down")
