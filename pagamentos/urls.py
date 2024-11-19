@@ -58,6 +58,11 @@ urlpatterns = [
         selecionar_contra_cheque_pagamento,
         name="selecionar_contra_cheque_pagamento",
     ),
+    path(
+        "selecionar_contra_cheque_adiantamento",
+        selecionar_contra_cheque_adiantamento,
+        name="selecionar_contra_cheque_adiantamento",
+    ),
     ## Antigos
     path("", index_pagamento, name="index_pagamento"),
     path(
