@@ -23,8 +23,6 @@ from .views import (
     remove_vales,
     salva_file,
     seleciona_colaborador_avulso,
-    seleciona_funcionario,
-    seleciona_mes_ano,
     seleciona_periodo_avulso,
     seleciona_vales,
     imprime_relatorio_saldo_avulso,
@@ -38,14 +36,32 @@ from .views import (
 )
 
 from .views import (
+    selecionar_mes_pagamento,
+    selecionar_colaborador,
     selecionar_contra_cheque_pagamento,
+    selecionar_contra_cheque_adiantamento,
 )
 
 urlpatterns = [
     path(
+        "selecionar_mes_pagamento",
+        selecionar_mes_pagamento,
+        name="selecionar_mes_pagamento",
+    ),
+    path(
+        "selecionar_colaborador",
+        selecionar_colaborador,
+        name="selecionar_colaborador",
+    ),
+    path(
         "selecionar_contra_cheque_pagamento",
         selecionar_contra_cheque_pagamento,
         name="selecionar_contra_cheque_pagamento",
+    ),
+    path(
+        "selecionar_contra_cheque_adiantamento",
+        selecionar_contra_cheque_adiantamento,
+        name="selecionar_contra_cheque_adiantamento",
     ),
     ## Antigos
     path("", index_pagamento, name="index_pagamento"),
@@ -66,16 +82,6 @@ urlpatterns = [
     ),
     path("excluirecibo", exclui_recibo, name="excluirecibo"),
     path("imprimerecibo", imprime_recibo, name="imprimerecibo"),
-    path(
-        "seleciona_mes_ano",
-        seleciona_mes_ano,
-        name="seleciona_mes_ano",
-    ),
-    path(
-        "seleciona_funcionario",
-        seleciona_funcionario,
-        name="seleciona_funcionario",
-    ),
     path(
         "ausencia_falta",
         ausencia_falta,

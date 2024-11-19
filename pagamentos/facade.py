@@ -1,26 +1,24 @@
+import calendar
 import datetime
+import locale
 import os
-from decimal import Decimal
 
 from dateutil.relativedelta import relativedelta
+from decimal import Decimal
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import DecimalField, ExpressionWrapper, F, Max, Min, Sum
 from django.http import JsonResponse
 from django.template.loader import render_to_string
+from core.constants import MESES
+from core.tools import gerar_data_html, primeiro_e_ultimo_dia_do_mes
 from despesas.models import Multas
 from minutas.facade import nome_curto, nome_curto_underscore
 from minutas.models import MinutaColaboradores, MinutaItens
+from pessoas.classes import Colaborador
 from pessoas.forms import CadastraContraChequeItens
-from pessoas.models import (
-    Agenda,
-    CartaoPonto,
-    ContaPessoal,
-    ContraCheque,
-    ContraChequeItens,
-    Pessoal,
-    Salario,
-    Vales,
-)
+from pessoas.models import Agenda, CartaoPonto, ContaPessoal, ContraCheque
+from pessoas.models import ContraChequeItens, Pessoal, Salario, Vales
+
 
 from pessoas.facade import (
     get_contra_cheque_mes_ano_pagamento,
@@ -41,6 +39,7 @@ from website.models import FileUpload, Parametros
 
 from pagamentos.forms import CadastraCartaoPonto, FormAgenda
 from pagamentos.models import FolhaPagamento, Recibo, ReciboItens
+from pagamentos import html_data
 
 meses = [
     "JANEIRO",
@@ -66,6 +65,307 @@ dias = [
     "SÁBADO",
     "DOMINGO",
 ]
+
+
+def create_contexto_meses_pagamento() -> dict:
+    locale.setlocale(locale.LC_TIME, "pt_BR.UTF-8")
+    hoje = datetime.datetime.today()
+    meses = [
+        (hoje - relativedelta(months=i)).strftime("%B/%Y") for i in range(3)
+    ]
+    return {"meses": meses}
+
+
+def obter_itens_contra_cheque(contra_cheques_itens, id_contra_cheque):
+    return {
+        item
+        for item in contra_cheques_itens
+        if item.idContraCheque_id == id_contra_cheque
+    }
+
+
+def calcular_saldo_contra_cheque(contra_cheque_itens):
+    return sum(
+        item.Valor if item.Registro == "C" else -item.Valor
+        for item in contra_cheque_itens
+    )
+
+
+def processar_folha_pagamento(
+    colaboradores, contra_cheques, contra_cheques_itens, descricao
+):
+    saldo_por_colaborador = {}
+    for colaborador in colaboradores:
+        contra_cheque_colaborador = {
+            item
+            for item in contra_cheques
+            if item.idPessoal_id == colaborador.idPessoal
+        }
+        if contra_cheque_colaborador:
+            cheque = next(iter(contra_cheque_colaborador))
+
+            contra_cheque_itens = obter_itens_contra_cheque(
+                contra_cheques_itens, cheque.idContraCheque
+            )
+
+            saldo = calcular_saldo_contra_cheque(contra_cheque_itens)
+            saldo_por_colaborador[colaborador.idPessoal] = {
+                "nome": colaborador.Nome,
+                "nome_curto": nome_curto(colaborador.Nome),
+                descricao: saldo,
+            }
+        else:
+            saldo_por_colaborador[colaborador.idPessoal] = {
+                "nome": colaborador.Nome,
+                "nome_curto": nome_curto(colaborador.Nome),
+                descricao: Decimal(0.00),
+            }
+    return saldo_por_colaborador
+
+
+def saldo_contra_cheques_de_colaboradores(colaboradores, descricao, mes, ano):
+    id_colaboradores_list = [item.idPessoal for item in colaboradores]
+    contra_cheques = set(
+        ContraCheque.objects.filter(
+            idPessoal_id__in=id_colaboradores_list,
+            MesReferencia=MESES.get(mes),
+            AnoReferencia=ano,
+            Descricao=descricao,
+        )
+    )
+
+    id_contra_cheques_list = [item.idContraCheque for item in contra_cheques]
+    contra_cheques_itens = set(
+        ContraChequeItens.objects.filter(
+            idContraCheque_id__in=id_contra_cheques_list
+        )
+    )
+
+    return processar_folha_pagamento(
+        colaboradores, contra_cheques, contra_cheques_itens, descricao
+    )
+
+
+def unir_saldo_contra_cheque_pagamento_e_adiantamento(
+    colaboradores, dict_pagamento, dict_adiantamento
+):
+    result = {}
+    for colaborador, valores_pagamento in dict_pagamento.items():
+        if colaborador in dict_adiantamento:
+            result[colaborador] = {
+                "nome": valores_pagamento["nome"],
+                "nome_curto": valores_pagamento["nome_curto"],
+                "pagamento": valores_pagamento["PAGAMENTO"],
+                "adiantamento": dict_adiantamento[colaborador]["ADIANTAMENTO"],
+            }
+        else:
+            result[colaborador] = {
+                "nome": valores_pagamento["nome"],
+                "nome_curto": valores_pagamento["nome_curto"],
+                "pagamento": valores_pagamento["PAGAMENTO"],
+                "adiantamento": Decimal("0"),
+            }
+
+    for colaborador, valores_adiantamento in dict_adiantamento.items():
+        if colaborador not in result:
+            result[colaborador] = {
+                "nome": valores_pagamento["nome"],
+                "nome_curto": valores_pagamento["nome_curto"],
+                "pagamento": Decimal("0"),
+                "adiantamento": valores_adiantamento["ADIANTAMENTO"],
+            }
+
+    return result
+
+
+def get_salarios_grupo_colaboradores(colaboradores):
+    id_colaboradores_list = [item.idPessoal for item in colaboradores]
+    return set(Salario.objects.filter(idPessoal_id__in=id_colaboradores_list))
+
+
+def adicionar_info_folha(folha, salarios) -> dict:
+    for id_pessoal in folha:
+        salario = {
+            item for item in salarios if item.idPessoal_id == id_pessoal
+        }
+        valor = next(iter(salario)).Salario if salario else Decimal(0.00)
+        folha[id_pessoal]["adiantamento"] = folha[id_pessoal][
+            "adiantamento"
+        ] or (valor / 100 * 40)
+        folha[id_pessoal]["pagamento"] = (
+            folha[id_pessoal]["pagamento"] or valor
+        )
+        folha[id_pessoal]["salario"] = valor
+
+    return folha
+
+
+def get_totais_folha(folha: dict) -> dict:
+    soma = {}
+    soma["adiantamento"] = sum(info["adiantamento"] for info in folha.values())
+    soma["pagamento"] = sum(info["pagamento"] for info in folha.values())
+    soma["saldo"] = soma["adiantamento"] + soma["pagamento"]
+
+    return soma
+
+
+def create_contexto_folha_pagamento(request):
+    meses_invertido = {v: k for k, v in MESES.items()}
+    mes, ano = request.GET.get("mes_ano").split("/")
+    mes = meses_invertido.get(mes)
+    primeiro_e_ultimo = primeiro_e_ultimo_dia_do_mes(int(mes), int(ano))
+
+    colaboradores = Pessoal.objects.filter(
+        TipoPgto="MENSALISTA", DataAdmissao__lte=primeiro_e_ultimo[1]
+    ).exclude(DataDemissao__lte=primeiro_e_ultimo[0])
+    pagamento = saldo_contra_cheques_de_colaboradores(
+        colaboradores, "PAGAMENTO", mes, ano
+    )
+    adiantamento = saldo_contra_cheques_de_colaboradores(
+        colaboradores, "ADIANTAMENTO", mes, ano
+    )
+
+    folha_sem_salarios = unir_saldo_contra_cheque_pagamento_e_adiantamento(
+        colaboradores, pagamento, adiantamento
+    )
+    salarios = get_salarios_grupo_colaboradores(colaboradores)
+    folha = adicionar_info_folha(folha_sem_salarios, salarios)
+    totais = get_totais_folha(folha)
+
+    mensagem = f"O mês {mes}/{ano} foi selecionado"
+
+    return {
+        "folha": folha,
+        "mes": mes,
+        "ano": ano,
+        "totais": totais,
+        "mensagem": mensagem,
+    }
+
+
+def folha_pagamento_html_data(request, contexto):
+    data = {}
+    html_functions = [
+        html_data.html_card_colaboradores,
+    ]
+    return gerar_data_html(html_functions, request, contexto, data)
+
+
+def gerar_cartao_de_ponto_do_colaborador(colaborador, mes, ano):
+    id_pessoal = colaborador.id_pessoal
+    admissao = colaborador.dados_profissionais.data_admissao
+    demissao = colaborador.dados_profissionais.data_demissao
+    vale_transporte = colaborador.salarios.salarios.ValeTransporte
+    feriados = DiasFeriados().feriados
+    primeiro_dia, ultimo_dia = primeiro_e_ultimo_dia_do_mes(mes, ano)
+
+    def is_weekend(day):
+        return day.weekday() in {5, 6}
+
+    registros = []
+
+    for dia in (
+        primeiro_dia + relativedelta(days=i)
+        for i in range((ultimo_dia - primeiro_dia).days + 1)
+    ):
+        obj = {
+            "Dia": dia,
+            "Entrada": "07:00",
+            "Saida": "17:00",
+            "Remunerado": True,
+            "idPessoal_id": id_pessoal,
+        }
+
+        if dia.date() < admissao or (demissao and dia.date() > demissao):
+            obj["Ausencia"] = "-------"
+            obj["Remunerado"] = False
+            obj["Conducao"] = False
+        elif dia in feriados:
+            obj["Ausencia"] = "FERIADO"
+            obj["Conducao"] = False
+        elif is_weekend(dia):
+            obj["Ausencia"] = "SABADO" if dia.weekday() == 5 else "DOMINGO"
+            obj["Conducao"] = False
+        else:
+            obj["Ausencia"] = ""
+            obj["Conducao"] = vale_transporte > Decimal(0.00)
+
+        registros.append(CartaoPonto(**obj))
+
+    return CartaoPonto.objects.bulk_create(registros)
+
+
+def obter_cartao_de_ponto_do_colaborador(colaborador, mes, ano):
+    id_pessoal = colaborador.id_pessoal
+    primeiro_dia, ultimo_dia = primeiro_e_ultimo_dia_do_mes(mes, ano)
+
+    cartao_ponto = CartaoPonto.objects.filter(
+        Dia__range=[primeiro_dia, ultimo_dia], idPessoal=id_pessoal
+    )
+
+    return cartao_ponto or gerar_cartao_de_ponto_do_colaborador(
+        colaborador, mes, ano
+    )
+
+
+def create_contexto_colaborador(request):
+    id_pessoal = request.GET.get("id_pessoal")
+    mes = int(request.GET.get("mes"))
+    ano = int(request.GET.get("ano"))
+    colaborador = Colaborador(id_pessoal)
+    salario = colaborador.salarios.salarios.Salario
+    vale_transporte = colaborador.salarios.salarios.ValeTransporte
+    primeiro_dia, ultimo_dia = primeiro_e_ultimo_dia_do_mes(mes, ano)
+
+    cartao_ponto = obter_cartao_de_ponto_do_colaborador(colaborador, mes, ano)
+
+    #  for x in cartao_ponto:
+    #  print(type(x))
+
+    #  verifica_feriados(cartao_ponto, mes, ano)
+    #  minutas = get_minutas_periodo_contra_cheque(
+    #  id_pessoal, primeiro_e_ultimo[0], primeiro_e_ultimo[1]
+    #  )
+    vales = get_vales_colaborador(id_pessoal)
+    #  atualiza_cartao_ponto_transporte(cartao_ponto, salario)
+    #  atualiza_cartao_ponto_minutas(cartao_ponto, minutas)
+    #  cartao_ponto = get_cartao_ponto_colaborador(
+    #  id_pessoal, primeiro_e_ultimo[0], primeiro_e_ultimo[1]
+    #  )
+    #  atualiza_itens_contra_cheque_pagamento(
+    #  colaborador, cartao_ponto, minutas, salario, mes, ano
+    #  )
+    #  hoje = datetime.datetime.today()
+    #  hoje = datetime.datetime.strftime(hoje, "%Y-%m-%d")
+    #  total_dias_admitido = dias_admitido(
+    #  colaborador.DataAdmissao, colaborador.DataDemissao
+    #  )
+    #  total_dias_remunerado = dias_remunerado(cartao_ponto, primeiro_e_ultimo[1])
+    #  total_dias_trabalhado = dias_trabalhado(cartao_ponto)
+    #  total_dias_transporte = dias_transporte(cartao_ponto)
+    contexto = {
+        "colaborador": colaborador,
+        "nome_curto": nome_curto(colaborador.nome),
+        "nome_underscore": nome_curto_underscore(colaborador.nome),
+        "idpessoal": id_pessoal,
+        "cartao_ponto": cartao_ponto,
+        #  "mes_ano": mes_ano,
+        "vales": vales,
+        #  "tipo": "PAGAMENTO",
+        #  "minutas": minutas,
+        #  "hoje": hoje,
+        #  "dias_admitido": total_dias_admitido,
+        #  "dias_remunerado": total_dias_remunerado,
+        #  "dias_trabalhado": total_dias_trabalhado,
+        #  "dias_transporte": total_dias_transporte,
+        #  "salario": salario["Salario"],
+        #  "valor_dia": salario["Salario"] / 30,
+        #  "valor_hora": salario["Salario"] / 30 / 9,
+        #  "valor_extra": salario["Salario"] / 30 / 9 * Decimal(1.5),
+    }
+    #  agenda = contexto_agenda_colaborador(idpessoal, mes_ano)
+    #  contexto.update(agenda)
+    return contexto
 
 
 class FolhaContraCheque:
@@ -408,39 +708,11 @@ class FolhaVale:
         self.valor = Decimal(1.00)
 
 
-def seleciona_mes_ano_folha() -> list:
-    """Cria uma lista com os Meses/Anos, para selecionar o mês da
-    folha de pagamento. O Mês/Ano máximo será o próximo mês da data
-    atual e o Mês/Ano minimo será Janeiro/2021.
-
-    Returns:
-        list: Lista com valores dos Meses e Anos
-    """
-    v_data_primeira_folha = datetime.datetime.strptime(
-        "31-12-2020", "%d-%m-%Y"
-    )
-    hoje = datetime.datetime.today()
-    primeiro_dia_mes = hoje + relativedelta(day=1)
-    lista_mes_ano = []
-    while primeiro_dia_mes > v_data_primeira_folha:
-        lista_mes_ano.append(
-            datetime.datetime.strftime(primeiro_dia_mes, "%B/%Y")
-        )
-        primeiro_dia_mes = primeiro_dia_mes - relativedelta(months=1)
-    return lista_mes_ano
-
-
 def create_contexto_folha(mes_ano: str) -> JsonResponse:
     mes, ano = converter_mes_ano(mes_ano)
     folha = FolhaContraCheque(mes, ano).__dict__
     contexto = {"v_folha": folha}
     return contexto
-
-
-def create_data_seleciona_mes_ano(request, contexto):
-    data = dict()
-    html_card_folha_pagamento(request, contexto, data)
-    return JsonResponse(data)
 
 
 def create_contexto_agenda(minutas, agenda):
@@ -925,48 +1197,6 @@ def cria_contexto_pagamentos():
         "mes_ano": v_mes_ano,
     }
     return contexto
-
-
-def create_cartao_ponto(
-    v_idpessoal,
-    v_primeiro_dia_mes,
-    v_ultimo_dia_mes,
-    v_admissao,
-    v_demissao,
-    _var,
-):
-    feriados = DiasFeriados().__dict__["feriados"]
-    dia = v_primeiro_dia_mes
-    while dia < v_ultimo_dia_mes + relativedelta(days=1):
-        obj = CartaoPonto()
-        obj.Dia = dia
-        obj.Entrada = "07:00"
-        obj.Saida = "17:00"
-        obj.Remunerado = True
-        if dia.weekday() == 5 or dia.weekday() == 6:
-            obj.Ausencia = dias[dia.weekday()]
-            obj.Conducao = False
-        else:
-            obj.Ausencia = ""
-            if _var["conducao"] == Decimal(0.00):
-                obj.Conducao = False
-            else:
-                obj.Conducao = True
-        if dia.date() in feriados:
-            obj.Ausencia = "FERIADO"
-            obj.Conducao = False
-        if dia.date() < v_admissao:
-            obj.Ausencia = "-------"
-            obj.Conducao = False
-            obj.Remunerado = False
-        if not v_demissao is None:
-            if dia.date() > v_demissao:
-                obj.Ausencia = "-------"
-                obj.Conducao = False
-                obj.Remunerado = False
-        obj.idPessoal_id = v_idpessoal
-        dia = dia + relativedelta(days=1)
-        obj.save()
 
 
 def update_cartao_ponto(_var):
@@ -2598,22 +2828,6 @@ def html_vales_pagamento(request, contexto, data):
     return data
 
 
-def create_contexto_folha_pagamento(mes_ano):
-    #  start, start_queries = queries_inicio()
-    mes, ano = converter_mes_ano(mes_ano)
-    colaboradores = list(get_colaboradores_mensalistas_admitidos().values())
-    salarios = list(get_valores_salario_transporte_colaborador().values())
-    folha = busca_folha(mes, ano, colaboradores, salarios)
-    contexto = {"folha": folha, "mes": mes, "ano": ano}
-    contexto.update(
-        contra_cheques_folha_pagamento(folha, colaboradores, salarios)
-    )
-    #  queries_termino(
-    #  start, start_queries, "[INFO] Create contexto folha pagamento"
-    #  )
-    return contexto
-
-
 def busca_folha(mes, ano, colaboradores, salarios):
     mes_extenso = meses[int(mes) - 1]
     try:
@@ -3007,71 +3221,6 @@ def totais_contra_cheques(contra_cheques, contra_cheque_itens):
         "total_saldo_pagamento": total_saldo_pagamento,
         "total_folha": total_folha,
     }
-    return contexto
-
-
-def get_cartao_ponto_colaborador(idpessoal, primeiro_dia_mes, ultimo_dia_mes):
-    cartao_ponto = list(
-        CartaoPonto.objects.filter(
-            Dia__range=[primeiro_dia_mes, ultimo_dia_mes], idPessoal=idpessoal
-        ).values()
-    )
-    return cartao_ponto
-
-
-def create_contexto_mensalista(idpessoal, mes_ano):
-    colaborador = get_colaborador(idpessoal)
-    salario = list(
-        get_salario(colaborador).values("Salario", "ValeTransporte")
-    )[0]
-    mes, ano = converter_mes_ano(mes_ano)
-    primeiro_dia_mes, ultimo_dia_mes = extremos_mes(mes, ano)
-    cartao_ponto = get_cartao_ponto_colaborador(
-        idpessoal, primeiro_dia_mes, ultimo_dia_mes
-    )
-    verifica_feriados(cartao_ponto, mes, ano)
-    minutas = get_minutas_periodo_contra_cheque(
-        idpessoal, primeiro_dia_mes, ultimo_dia_mes
-    )
-    vales = get_vales_colaborador(colaborador)
-    atualiza_cartao_ponto_transporte(cartao_ponto, salario)
-    atualiza_cartao_ponto_minutas(cartao_ponto, minutas)
-    cartao_ponto = get_cartao_ponto_colaborador(
-        idpessoal, primeiro_dia_mes, ultimo_dia_mes
-    )
-    atualiza_itens_contra_cheque_pagamento(
-        colaborador, cartao_ponto, minutas, salario, mes, ano
-    )
-    hoje = datetime.datetime.today()
-    hoje = datetime.datetime.strftime(hoje, "%Y-%m-%d")
-    total_dias_admitido = dias_admitido(
-        colaborador.DataAdmissao, colaborador.DataDemissao
-    )
-    total_dias_remunerado = dias_remunerado(cartao_ponto, ultimo_dia_mes)
-    total_dias_trabalhado = dias_trabalhado(cartao_ponto)
-    total_dias_transporte = dias_transporte(cartao_ponto)
-    contexto = {
-        "colaborador": colaborador,
-        "nome_curto": nome_curto(colaborador.Nome),
-        "nome_underscore": nome_curto_underscore(colaborador.Nome),
-        "idpessoal": idpessoal,
-        "cartao_ponto": cartao_ponto,
-        "mes_ano": mes_ano,
-        "vales": vales,
-        "tipo": "PAGAMENTO",
-        "minutas": minutas,
-        "hoje": hoje,
-        "dias_admitido": total_dias_admitido,
-        "dias_remunerado": total_dias_remunerado,
-        "dias_trabalhado": total_dias_trabalhado,
-        "dias_transporte": total_dias_transporte,
-        "salario": salario["Salario"],
-        "valor_dia": salario["Salario"] / 30,
-        "valor_hora": salario["Salario"] / 30 / 9,
-        "valor_extra": salario["Salario"] / 30 / 9 * Decimal(1.5),
-    }
-    agenda = contexto_agenda_colaborador(idpessoal, mes_ano)
-    contexto.update(agenda)
     return contexto
 
 

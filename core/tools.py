@@ -1,5 +1,7 @@
 """ MÓDULO COM FUNÇÕES QUE SERÃO USADAS EM TODO O PROJETO """
+import calendar
 from datetime import datetime, time, timedelta
+from django.http import JsonResponse
 from core.constants import MESES
 
 
@@ -191,3 +193,18 @@ def nome_curto_underscore(nome):
 
 def obter_mes_por_numero(numero):
     return MESES.get(numero, "Mês inválido")
+
+
+def gerar_data_html(html_functions, request, contexto, data):
+    data["mensagem"] = contexto["mensagem"]
+    for html_func in html_functions:
+        data = html_func(request, contexto, data)
+
+    return JsonResponse(data)
+
+
+def primeiro_e_ultimo_dia_do_mes(mes: int, ano: int) -> tuple:
+    primeiro = datetime(ano, mes, 1)
+    ultimo = calendar.monthrange(ano, mes)
+    ultimo = datetime(ano, mes, ultimo[1])
+    return [primeiro, ultimo]

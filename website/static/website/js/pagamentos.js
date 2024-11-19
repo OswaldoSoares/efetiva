@@ -3,118 +3,75 @@ let ano = null
 let idPessoal = null
 let idContraCheque = null
 
-$(document).ready(function() {
-    $(".card-cartao-ponto").hide()
+var ocultarCardsPagamento = function() {
     $(".card-folha-pagamento").hide()
+    $(".card-cartao-ponto").hide()
     $(".card-funcionario-pagamento").hide()
     $(".card-contra-cheque-colaborador").hide()
     $(".card-vales-colaborador").hide()
     $(".card-minutas-pagamento").hide()
     $(".card-agenda").hide()
+}
+
+$(document).ready(function() {
+    ocultarCardsPagamento()
 });
 
 // Seleciona mês e ano para pagamento de colaboradores mensalistas
-$(document).on("click", ".js-seleciona-mes-ano", function(event) {
-    mes_ano = $(".select-mes-ano option:selected").text();
-    $.ajax({
-        type: "GET",
-        dataType: "json",
-        url: "/pagamentos/seleciona_mes_ano",
-        data: {
-            mes_ano: mes_ano,
-        },
-        beforeSend: function() {
-            localStorage.setItem("mes_ano", mes_ano)
-            $(".js-saldo").html('');
-            $(".js-funcionario-pagamento").html('');
-            $(".js-cartao-ponto").html('');
-            $(".js-itens-contra-cheque").html('');
-            $(".js-contra-cheque").html('');
-            $(".js-cria-vales").html('')
-            $(".js-minutas-pagamento").html('')
-            $(".js-lista-vales").html('')
-            $(".js-files-pagamento").html('')
-            $(".js-agenda-pagamento").html('')
-            $(".js-itens-agenda-pagamento").html('');
-            $(".card-vales-colaborador").hide();
-            $(".card-periodo-avulso").hide();
+$(document).on("click", ".js-selecionar-mes-pagamento", function() {
+    const mesAno = $(".select-mes-ano option:selected").text();
 
-            $(".card-folha-pagamento").hide();
-            $('.box-loader').show();
-        },
-        success: function(data) {
-            $(".card-folha-pagamento").html(data.html_card_folha_pagamento);
-            $(".card-folha-pagamento").show();
-            // $(".s-saldo").html(data.html_saldo);
-            $('.box-loader').hide()
-        },
+    executarAjax("/pagamentos/selecionar_mes_pagamento", "GET", {
+        mes_ano: mesAno,
+    }, function(data) {
+        $(".card-folha-pagamento").html(data["html-card-colaboradores"]);
+        $(".card-folha-pagamento").show();
+        $(".js-selecionar-mes-pagamento").removeClass("icofont-square");
+        $(".js-selecionar-mes-pagamento").addClass("icofont-checked");
+        $(".js-selecionar-mes-pagamento").addClass("disabled");
+        exibirMensagem(data["mensagem"])
+        mes = $("#mes_referencia").data("mes")
+        ano = $("#ano_referencia").data("ano")
+        $('.box-loader').hide()
     });
 });
 
 // Seleciona mês e ano para pagamento de colaboradores mensalistas
 $(".select-mes-ano").change(function() {
-    $(".js-saldo").html('');
-    $(".js-funcionario-pagamento").html('');
-    $(".js-cartao-ponto").html('');
-    $(".js-itens-contra-cheque").html('');
-    $(".js-contra-cheque").html('');
-    $(".js-cria-vales").html('')
-    $(".js-minutas-pagamento").html('')
-    $(".js-lista-vales").html('')
-    $(".js-files-pagamento").html('')
-    $(".js-agenda-pagamento").html('')
-    $(".js-itens-agenda-pagamento").html('');
-    $(".card-vales-colaborador").hide();
-    $(".js-seleciona-mes-ano").removeClass("icofont-checked")
-    $(".js-seleciona-mes-ano").addClass("icofont-square")
-    $(".js-seleciona-funcionario").removeClass("icofont-checked")
-    $(".js-seleciona-funcionario").addClass("icofont-square")
-    $(".card-folha-pagamento").hide()
+    ocultarCardsPagamento()
+    $(".js-selecionar-mes-pagamento").addClass("icofont-square")
+    $(".js-selecionar-mes-pagamento").removeClass("icofont-checked")
+    $(".js-selecionar-mes-pagamento").removeClass("disabled")
 });
 
 // Seleciona funcionário mensalista
-$(document).on("click", ".js-seleciona-funcionario", function(event) {
-    v_mes_ano = $(".select-mes-ano option:selected").text();
-    idPessoal = $(this).data("idpessoal");
-    v_idpessoal = $(this).data("idpessoal");
-    $.ajax({
-        type: "GET",
-        dataType: "json",
-        url: "/pagamentos/seleciona_funcionario",
-        data: {
-            mes_ano: v_mes_ano,
-            idpessoal: v_idpessoal,
-        },
-        beforeSend: function() {
-            $(".js-seleciona-funcionario").removeClass("icofont-checked")
-            $(".js-seleciona-funcionario").addClass("icofont-square")
-            $(".card-contra-cheque").hide()
-            $('.box-loader').show();
-        },
-        success: function(data) {
-            mes = $("#mes_referencia").data("mes")
-            ano = $("#ano_referencia").data("ano")
-        $(".js-fechar-card-contra-cheque").click();
+$(document).on("click", ".js-selecionar-colaborador", function() {
+    const mesAno = $(".select-mes-ano option:selected").text();
+    idPessoal = $(this).data("id_pessoal");
 
-            $(".card-cartao-ponto").html(data.html_cartao_ponto);
-            $(".card-funcionario-pagamento").html(data.html_funcionario);
-            $(".body-funcionario-pagamento").hide()
-            $(".card-minutas-pagamento").html(data.html_minutas);
-            $(".body-minutas-pagamento").hide()
-            $(".card-vales-colaborador").html(data.html_vales);
-            $(".body-vales-colaborador").show()
-            $(".card-agenda").html(data.html_agenda);
-            $(".body-agenda-colaborador").hide()
-            $(".card-cartao-ponto").show()
-            $(".card-funcionario-pagamento").show()
-            $(".card-vales-colaborador").show()
-            $(".card-minutas-pagamento").show();
-            $(".card-agenda").show();
-            $(".submit-agenda").hide();
-            localStorage.setItem("idcontracheque", $("#idcontracheque").data("idcontracheque"))
-            localStorage.setItem("idpessoal", v_idpessoal)
-            $('.box-loader').hide();
-        },
+    executarAjax("/pagamentos/selecionar_colaborador", "GET", {
+        mes: mes,
+        ano: ano,
+        id_pessoal: idPessoal,
+    }, function(data) {
+        mes = $("#mes_referencia").data("mes")
+        ano = $("#ano_referencia").data("ano")
+        $(".js-fechar-card-contra-cheque").click();
+        $(".card-cartao-ponto").html(data.html_cartao_ponto);
+        $(".card-cartao-ponto").show()
+        $(".card-funcionario-pagamento").html(data.html_funcionario);
+        $(".body-funcionario-pagamento").hide()
+        $(".card-funcionario-pagamento").show()
+        $(".card-minutas-pagamento").html(data.html_minutas);
+        $(".body-minutas-pagamento").hide()
+        $(".card-minutas-pagamento").show();
+        $(".card-vales-colaborador").html(data.html_vales);
+        $(".card-vales-colaborador").show()
+        $(".card-agenda").html(data.html_agenda);
+        $(".body-agenda-colaborador").hide()
+        $(".card-agenda").show();
+        $(".submit-agenda").hide();
+        $('.box-loader').hide();
     });
 });
 
@@ -809,11 +766,23 @@ $(document).on('click', '.js-selecionar-contra-cheque-pagamento', function() {
     });
 });
 
-$(document).on('click', '.js-toggle-checked', function() {
-    $(this).removeClass("icofont-square")
-    $(this).addClass("icofont-checked")
+$(document).on('click', '.js-selecionar-contra-cheque-adiantamento', function() {
+     executarAjax("/pagamentos/selecionar_contra_cheque_adiantamento", "GET", {
+        id_pessoal: idPessoal,
+        ano: ano,
+        mes: mes,
+    }, function(data) {
+        console.log(data)
+        $(".card-contra-cheque-colaborador").html(
+            data["html-card-contra-cheque-colaborador"]
+        )
+        $(".card-contra-cheque-colaborador").show()
+        idContraCheque = $("#id_contra_cheque").data("id_contra_cheque")
+        selecionarValesToggle()
+        $(window).scrollTop(0)
+        $(".box-loader").hide()
+    });
 });
-
 
 $(document).on('click', ".js-body-funcionario-pagamento-toggle", function() {
     $(this).toggleClass("icofont-simple-up")

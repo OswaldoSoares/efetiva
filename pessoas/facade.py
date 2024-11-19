@@ -728,6 +728,49 @@ def create_contexto_contra_cheque_pagamento(request):
     return contexto
 
 
+def create_contexto_contra_cheque_adiantamento(request):
+    id_pessoal = request.GET.get("id_pessoal")
+    mes = obter_mes_por_numero(int(request.GET.get("mes")))
+    ano = request.GET.get("ano")
+    colaborador = classes.Colaborador(id_pessoal)
+    salario = colaborador.salarios.salarios.Salario
+    quarenta_por_cento = (salario / 100) * 40
+    descricao = "ADIANTAMENTO"
+
+    contra_cheque = ContraCheque.objects.filter(
+        Descricao=descricao,
+        AnoReferencia=ano,
+        MesReferencia=mes,
+        idPessoal=id_pessoal,
+    ).first()
+
+    if not contra_cheque:
+        obs = ""
+        contra_cheque = create_contra_cheque(
+            mes, ano, descricao, id_pessoal, obs
+        )
+
+    contra_cheque_itens = ContraChequeItens.objects.filter(
+        idContraCheque=contra_cheque
+    ).order_by("Registro")
+
+    if not contra_cheque_itens:
+        contra_cheque_itens = create_contra_cheque_itens(
+            descricao, quarenta_por_cento, "C", "40%", contra_cheque
+        )
+
+    contexto = {
+        "mensagem": f"Adiantamento selecionada: {mes}/{ano}",
+        "contra_cheque": contra_cheque,
+        "contra_cheque_itens": contra_cheque_itens,
+        "id_pessoal": id_pessoal,
+    }
+
+    contexto.update(get_saldo_contra_cheque(contra_cheque_itens))
+
+    return contexto
+
+
 def create_contexto_contra_cheque_decimo_terceiro(request):
     id_pessoal = request.GET.get("id_pessoal")
     ano = request.GET.get("ano")
@@ -783,7 +826,6 @@ def create_contexto_contra_cheque(request):
     contra_cheque_itens = ContraChequeItens.objects.filter(
         idContraCheque_id=request.GET.get("id_contra_cheque")
     ).order_by("Registro")
-    print(contas)
     if contas:
         update_contas_bancaria_obs(contra_cheque, contas, "contas")
 
@@ -2826,13 +2868,13 @@ def create_contexto_minutas_contra_cheque(idpessoal, contra_cheque):
     return {"minutas": minutas}
 
 
-def create_contexto_cartao_ponto_contra_cheque(idpessoal, contra_cheque):
+def create_contexto_cartao_ponto_contra_cheque(id_pessoal, contra_cheque):
     MESES_INVERTIDO = {v: k for k, v in MESES.items()}
     mes = MESES_INVERTIDO.get(contra_cheque.MesReferencia)
     ano = contra_cheque.AnoReferencia
-    primeiro_dia_mes, ultimo_dia_mes = extremos_mes(mes, ano)
-    cartao_ponto = facade_pagamentos.get_cartao_ponto_colaborador(
-        idpessoal, primeiro_dia_mes, ultimo_dia_mes
+    colaborador = classes.Colaborador(id_pessoal)
+    cartao_ponto = facade_pagamentos.obter_cartao_de_ponto_do_colaborador(
+        colaborador, mes, ano
     )
     return {"cartao_ponto": cartao_ponto}
 
