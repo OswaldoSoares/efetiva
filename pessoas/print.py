@@ -656,15 +656,15 @@ def contra_cheque_totais(pdf, contexto):
 
 def contra_cheque_obs(pdf, contexto):
     #  dict_obs = ast.literal_eval(contexto["contra_cheque"].Obs)
-    dict_obs = contexto["contra_cheque"].Obs
-    obs = ""
-    for item_x in dict_obs:
-        if isinstance(dict_obs[item_x], str):
-            obs = obs + f"* {dict_obs[item_x]} "
-        elif isinstance(dict_obs[item_x], dict):
-            for item_y in dict_obs[item_x]:
-                if isinstance(dict_obs[item_x][item_y], dict):
-                    obs = obs + f"* {dict_obs[item_x][item_y]} "
+    obs = str(contexto["contra_cheque"].Obs)
+    #  obs = ""
+    #  for item_x in dict_obs:
+    #  if isinstance(dict_obs[item_x], str):
+    #  obs = obs + f"* {dict_obs[item_x]} "
+    #  elif isinstance(dict_obs[item_x], dict):
+    #  for item_y in dict_obs[item_x]:
+    #  if isinstance(dict_obs[item_x][item_y], dict):
+    #  obs = obs + f"* {dict_obs[item_x][item_y]} "
     obs = obs.replace("{", "").replace("}", "").replace("'", "")
     obs = obs[:-1]
     styles_claro = ParagraphStyle(
