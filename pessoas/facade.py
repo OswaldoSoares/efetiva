@@ -830,6 +830,7 @@ def create_contexto_contra_cheque(request):
         update_contas_bancaria_obs(contra_cheque, contas, "contas")
 
     contexto = {
+        "id_pessoal": id_pessoal,
         "contra_cheque": contra_cheque,
         "contra_cheque_itens": contra_cheque_itens,
     }
