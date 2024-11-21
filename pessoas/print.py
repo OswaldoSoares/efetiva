@@ -17,9 +17,9 @@ from website.facade import cmp, valor_ponto_milhar
 def print_pdf_ficha_colaborador(contexto):
     nome_curto = contexto["colaborador"]["nome_curto"]
     response = HttpResponse(content_type="application/pdf")
-    response["Content-Disposition"] = (
-        f'filename="FICHA CADASTRAL {nome_curto}.pdf'
-    )
+    response[
+        "Content-Disposition"
+    ] = f'filename="FICHA CADASTRAL {nome_curto}.pdf'
     buffer = BytesIO()
     pdf = canvas.Canvas(buffer)
     header(pdf)
@@ -655,7 +655,8 @@ def contra_cheque_totais(pdf, contexto):
 
 
 def contra_cheque_obs(pdf, contexto):
-    dict_obs = ast.literal_eval(contexto["contra_cheque"].Obs)
+    #  dict_obs = ast.literal_eval(contexto["contra_cheque"].Obs)
+    dict_obs = contexto["contra_cheque"].Obs
     obs = ""
     for item_x in dict_obs:
         if isinstance(dict_obs[item_x], str):
