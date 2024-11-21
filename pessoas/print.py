@@ -655,7 +655,8 @@ def contra_cheque_totais(pdf, contexto):
 
 
 def contra_cheque_obs(pdf, contexto):
-    dict_obs = ast.literal_eval(contexto["contra_cheque"].Obs)
+    #  dict_obs = ast.literal_eval(contexto["contra_cheque"].Obs)
+    dict_obs = contexto["contra_cheque"].Obs
     obs = ""
     for item_x in dict_obs:
         if isinstance(dict_obs[item_x], str):
