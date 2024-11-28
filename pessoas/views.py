@@ -153,6 +153,20 @@ def excluir_vale_do_contra_cheque(request):
     return facade.contra_cheque_html_data(request, contexto)
 
 
+def adicionar_data_demissao_colaborador(request):
+    error = facade.validar_modal_data_demissao_colaborador(request)
+    if error:
+        return error
+
+    return handle_modal_colaborador(
+        request,
+        facade.modal_data_demissao_colaborador,
+        facade.save_data_demissao_colaborador,
+        partial(facade.create_contexto_class_colaborador, request),
+        facade.data_demissao_html_data,
+    )
+
+
 def bloqueia_pessoa(request, idpessoa):
     facade.altera_status(idpessoa)
     return redirect("indexpessoal")
