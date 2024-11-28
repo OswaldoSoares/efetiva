@@ -52,6 +52,7 @@ from .views import (
     selecionar_contra_cheque_decimo_terceiro,
     adicionar_vale_no_contra_cheque,
     excluir_vale_do_contra_cheque,
+    adicionar_data_demissao_colaborador,
     imprimir_contra_cheque,
 )
 
