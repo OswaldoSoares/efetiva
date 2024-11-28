@@ -125,6 +125,11 @@ urlpatterns = [
         name="excluir_vale_do_contra_cheque",
     ),
     path(
+        "adicionar_data_demissao_colaborador",
+        adicionar_data_demissao_colaborador,
+        name="adicionar_data_demissao_colaborador",
+    ),
+    path(
         "imprimir_contra_cheque",
         imprimir_contra_cheque,
         name="imprimir_contra_cheque",
