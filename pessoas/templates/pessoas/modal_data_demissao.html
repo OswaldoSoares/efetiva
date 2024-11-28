@@ -1,0 +1,8 @@
+<form class="row g-3" method="post" action="{% url 'salva_demissao_colaborador' %}">
+{% csrf_token %}
+    <div class="col-md-3">
+		<label for="demissao" class="form-label">DATA DEMISSÃO:</label>
+        <input type="date" class="form-control" name="demissao" value="{{ hoje }}">
+    </div>
+    <input type="hidden" name="idpessoal" value="{{ idpessoal }}">
+</form>
