@@ -49,6 +49,14 @@ TIPOS_FONES = ["WHATSAPP", "VIVO", "TIM", "OI", "CLARO", "FIXO", "RECADO"]
 
 TIPOS_CONTAS = ["CORRENTE", "POUPANÇA"]
 
+EVENTOS_RESCISAO = [
+    "SALDO_SALARIO",
+    "FÉRIAS VENCIDAS",
+    "FÉRIAS_PROPORCIONAIS",
+    "13º PROPORCIONAL",
+    "AVISO PRÉVIO",
+]
+
 # Constants Módulo Minutas
 SETUP_CALCULO_MINUTA = {
     "taxa_expedicao": {
