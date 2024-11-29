@@ -649,6 +649,24 @@ def validar_modal_data_demissao_colaborador(request: Any) -> JsonResponse:
     return False
 
 
+def registrar_contra_cheque(id_pessoal, data_base, descricao):
+    mes_por_extenso = obter_mes_por_numero(data_base.month)
+    ano = data_base.year
+
+    if not ContraCheque.objects.filter(
+        Descricao=descricao,
+        MesReferencia=mes_por_extenso,
+        AnoReferencia=ano,
+        idPessoal_id=id_pessoal,
+    ).exists():
+        ContraCheque.objects.create(
+            Descricao=descricao,
+            MesReferencia=mes_por_extenso,
+            AnoReferencia=ano,
+            idPessoal_id=id_pessoal,
+        )
+
+
 def get_decimo_terceiro_colaborador(id_pessoal):
     decimo_terceiro = DecimoTerceiro.objects.filter(
         idPessoal=id_pessoal
