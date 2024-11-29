@@ -131,6 +131,11 @@ urlpatterns = [
         name="adicionar_data_demissao_colaborador",
     ),
     path(
+        "mostrar_eventos_rescisorios_colaborador",
+        mostrar_eventos_rescisorios_colaborador,
+        name="mostrar_eventos_rescisorios_colaborador",
+    ),
+    path(
         "imprimir_contra_cheque",
         imprimir_contra_cheque,
         name="imprimir_contra_cheque",
