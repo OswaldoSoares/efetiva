@@ -165,6 +165,17 @@ $(document).on("click", ".js-mostrar-eventos-rescisorios", function() {
     });
 });
 
+$(document).on("click", ".js-selecionar-evento-rescisorio", function() {
+    const eventoId = "#" + $(this).data("evento")
+    const currentValue = $(eventoId).val() === "true";
+    const newValue = !currentValue
+
+    $(eventoId).val(newValue.toString());
+
+    $(this).toggleClass("icofont-checked")
+    $(this).toggleClass("icofont-square")
+});
+
 $(document).on("click", ".js-selecionar-decimo-terceiro", function() {
     const id = $(this).attr("id");
 
