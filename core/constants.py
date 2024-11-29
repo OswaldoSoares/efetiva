@@ -65,6 +65,12 @@ AVISO_PREVIO = [
     ("nao_comprido", "NÃO COMPRIDO PELO COLABORADOR"),
     ("dispensado", "DISPENSADO"),
 ]
+
+EVENTOS_RESCISORIOS = [
+    ("saldo_salario", "SALDO SALARIO"),
+    ("ferias_vencidas", "FÉRIAS VENCIDAS"),
+    ("ferias_proporcionais", "FÉRIAS PROPORCIONAIS"),
+    ("decimo_terceiro_proporcional", "13º PROPORCIONAL"),
 ]
 
 # Constants Módulo Minutas
