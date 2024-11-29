@@ -58,6 +58,13 @@ MOTIVOS_DEMISSAO = [
     ("experiencia_fora_prazo", "ENCERRAMENTO EXPERIÊNCIA ANTES DO PRAZO"),
     ("aposentadoria", "APOSENTADORIA DO COLABORADOR"),
 ]
+
+AVISO_PREVIO = [
+    ("trabalhado", "TRABALHADO"),
+    ("indenizado", "INDENIZADO PELO EMPREGADOR"),
+    ("nao_comprido", "NÃO COMPRIDO PELO COLABORADOR"),
+    ("dispensado", "DISPENSADO"),
+]
 ]
 
 # Constants Módulo Minutas
