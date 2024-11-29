@@ -34,7 +34,7 @@ from core.constants import (
     TIPOS_CONTAS,
     MESES,
 )
-from core.tools import obter_mes_por_numero
+from core.tools import obter_mes_por_numero, primeiro_e_ultimo_dia_do_mes
 from pessoas.models import (
     Aquisitivo,
     DecimoTerceiro,
