@@ -730,6 +730,18 @@ def data_demissao_html_data(request, contexto):
     return gerar_data_html(html_functions, request, contexto, data)
 
 
+def create_contexto_eventos_rescisorios_colaborador():
+    eventos = EVENTOS_RESCISORIOS
+    motivos = MOTIVOS_DEMISSAO
+    aviso_previo = AVISO_PREVIO
+    return {
+        "eventos": eventos,
+        "motivos": motivos,
+        "aviso_previo": aviso_previo,
+        "mensagem": "SELECIONAR EVENTOS",
+    }
+
+
 def get_decimo_terceiro_colaborador(id_pessoal):
     decimo_terceiro = DecimoTerceiro.objects.filter(
         idPessoal=id_pessoal
