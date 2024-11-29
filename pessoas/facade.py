@@ -33,6 +33,9 @@ from core.constants import (
     TIPOS_FONES,
     TIPOS_CONTAS,
     MESES,
+    EVENTOS_RESCISORIOS,
+    MOTIVOS_DEMISSAO,
+    AVISO_PREVIO,
 )
 from core.tools import obter_mes_por_numero, primeiro_e_ultimo_dia_do_mes
 from pessoas.models import (
