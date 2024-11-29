@@ -49,12 +49,15 @@ TIPOS_FONES = ["WHATSAPP", "VIVO", "TIM", "OI", "CLARO", "FIXO", "RECADO"]
 
 TIPOS_CONTAS = ["CORRENTE", "POUPANÇA"]
 
-EVENTOS_RESCISAO = [
-    "SALDO_SALARIO",
-    "FÉRIAS VENCIDAS",
-    "FÉRIAS_PROPORCIONAIS",
-    "13º PROPORCIONAL",
-    "AVISO PRÉVIO",
+MOTIVOS_DEMISSAO = [
+    ("comum_acordo", "DEMISSAO DE COMUM ACORDO"),
+    ("sem_justa_causa", "DISPENSA SEM JUSTA CAUSA"),
+    ("com_justa_causa", "DISPENSA COM JUSTA CAUSA"),
+    ("pedido_demissao", "PEDIDO DE DEMISSÃO"),
+    ("experiencia_no_prazo", "ENCERRAMENTO EXPERIÊNCIA NO PRAZO"),
+    ("experiencia_fora_prazo", "ENCERRAMENTO EXPERIÊNCIA ANTES DO PRAZO"),
+    ("aposentadoria", "APOSENTADORIA DO COLABORADOR"),
+]
 ]
 
 # Constants Módulo Minutas
