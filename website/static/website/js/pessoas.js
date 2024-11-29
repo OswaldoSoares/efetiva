@@ -176,6 +176,17 @@ $(document).on("click", ".js-selecionar-evento-rescisorio", function() {
     $(this).toggleClass("icofont-square")
 });
 
+$(document).on("click", "js-calcular-verba_rescisorias", function() {
+    executarAjax("/pessoas/calcular_verbas_rescisorias", "GET", {
+        id_pessoal: idPessoal,
+    }, function(data) {
+        console.log(data)
+        $(".card-eventos-rescisorios-colaborador").html(data["html-card-eventos-rescisorios-colaborador"]);
+        $(".card-eventos-rescisorios-colaborador").show();
+        $(".box-loader").hide();
+    });
+});
+
 $(document).on("click", ".js-selecionar-decimo-terceiro", function() {
     const id = $(this).attr("id");
 
