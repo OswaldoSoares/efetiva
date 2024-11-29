@@ -76,6 +76,13 @@
                     <span>ADMITIDO EM {{ colaborador.dados_profissionais.data_admissao }}</span>
                 </div>
             </div>
+            {% if colaborador.dados_profissionais.data_demissao %}
+            <div class="div-flex div-form-control">
+                <div class="tamanho-100 text-center font-menor">
+                    <span>DEMITIDO EM {{ colaborador.dados_profissionais.data_demissao }}</span>
+                </div>
+            </div>
+            {% endif %}
             <div class="input-group-addon addon-my-color">
                 <i class="icofont-check i-button-null"></i>
             </div>
