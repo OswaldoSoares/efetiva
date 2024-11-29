@@ -3,6 +3,7 @@ let idPessoal = null;
 
 var ocultarCardsColaborador =  function() {
     $(".card-foto-colaborador").hide();
+    $(".card-eventos-rescisorios-colaborador").hide();
     $(".card-vales-colaborador").hide();
     $(".card-contra-cheque-colaborador").hide();
     $(".card-decimo-terceiro-colaborador").hide();
