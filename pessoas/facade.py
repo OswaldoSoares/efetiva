@@ -20,6 +20,7 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 from decimal import Decimal
 from PIL import Image, ImageDraw
+from typing import Any
 from despesas import facade as facade_multa
 from pagamentos import facade as facade_pagamentos
 from pagamentos.models import Recibo
