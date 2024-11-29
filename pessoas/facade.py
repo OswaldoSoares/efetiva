@@ -667,6 +667,24 @@ def registrar_contra_cheque(id_pessoal, data_base, descricao):
         )
 
 
+def atualizar_cartao_ponto_rescisao(id_pessoal, demissao):
+    _, ultimo_dia_mes = primeiro_e_ultimo_dia_do_mes(
+        demissao.month, demissao.year
+    )
+    cartao_ponto = CartaoPonto.objects.filter(
+        idPessoal=id_pessoal,
+        Dia__range=[demissao, ultimo_dia_mes],
+    )
+
+    if cartao_ponto.exists():
+        cartao_ponto.update(
+            Ausencia="-------",
+            Conducao=0,
+            Remunerado=0,
+            CarroEmpresa=0,
+        )
+
+
 def get_decimo_terceiro_colaborador(id_pessoal):
     decimo_terceiro = DecimoTerceiro.objects.filter(
         idPessoal=id_pessoal
