@@ -103,13 +103,18 @@
                    title="IMPRIMIR FICHA CADASTRAL"></a>
             </div>
             <div class="tamanho-33 text-center">
+                {% if colaborador.dados_profissionais.data_demissao %}
+                <i class="icofont-calculator i-button js-calcular-verbas-rescisorias"
+                   title="Verbas Rescisoria" data-id/_pessoal="{{ colaborador.idpes }}"></i>
+                {% else %}
                 <i class="icofont-worried i-button"
                    onclick="openMyModal(event); return false;"
                    data-title="INFORMAR DATA DE DEMISSÂO"
-                   data-action="{% url 'demissao_colaborador' %}"
+                   data-action="{% url 'adicionar_data_demissao_colaborador' %}"
                    data-button-save-label="SALVAR"
-                   data-id_pessoa="{{ colaborador.id_pessoal }}"
+                   data-id_pessoal="{{ colaborador.id_pessoal }}"
                    title="DEMITIR COLABORADOR"></i>
+                {% endif %}
             </div>
         </div>
         <div class=" input-group-addon addon-my-color">
