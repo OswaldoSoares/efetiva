@@ -154,6 +154,17 @@ $(document).on('change', '.js-carrega-foto', function() {
     $(".js-salva-foto").click()
 });
 
+
+$(document).on("click", ".js-mostrar-eventos-rescisorios", function() {
+    executarAjax("/pessoas/mostrar_eventos_rescisorios_colaborador", "GET", {
+        id_pessoal: idPessoal,
+    }, function(data) {
+        $(".card-eventos-rescisorios-colaborador").html(data["html-card-eventos-rescisorios-colaborador"]);
+        $(".card-eventos-rescisorios-colaborador").show();
+        $(".box-loader").hide();
+    });
+});
+
 $(document).on("click", ".js-selecionar-decimo-terceiro", function() {
     const id = $(this).attr("id");
 
