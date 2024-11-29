@@ -111,8 +111,8 @@
             </div>
             <div class="tamanho-33 text-center">
                 {% if colaborador.dados_profissionais.data_demissao %}
-                <i class="icofont-calculator i-button js-calcular-verbas-rescisorias"
-                   title="Verbas Rescisoria" data-id/_pessoal="{{ colaborador.idpes }}"></i>
+                <i class="icofont-calculator i-button js-mostrar-eventos-rescisorios"
+                   title="Verbas Rescisoria" data-id_pessoal="{{ colaborador.idpes }}"></i>
                 {% else %}
                 <i class="icofont-worried i-button"
                    onclick="openMyModal(event); return false;"
