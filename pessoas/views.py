@@ -167,6 +167,11 @@ def adicionar_data_demissao_colaborador(request):
     )
 
 
+def mostrar_eventos_rescisorios_colaborador(request):
+    contexto = facade.create_contexto_eventos_rescisorios_colaborador()
+    return facade.data_eventos_html_data(request, contexto)
+
+
 def bloqueia_pessoa(request, idpessoa):
     facade.altera_status(idpessoa)
     return redirect("indexpessoal")
