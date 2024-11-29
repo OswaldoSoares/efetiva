@@ -719,6 +719,14 @@ def save_data_demissao_colaborador(request):
     return {"mensagem": "Data de demissão inserida com sucesso"}
 
 
+def data_demissao_html_data(request, contexto):
+    data = {}
+    html_functions = [
+        html_data.html_card_foto_colaborador,
+    ]
+    return gerar_data_html(html_functions, request, contexto, data)
+
+
 def get_decimo_terceiro_colaborador(id_pessoal):
     decimo_terceiro = DecimoTerceiro.objects.filter(
         idPessoal=id_pessoal
