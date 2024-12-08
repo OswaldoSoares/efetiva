@@ -137,6 +137,11 @@ urlpatterns = [
         name="mostrar_eventos_rescisorios_colaborador",
     ),
     path(
+        "calcular_verbas_rescisorias_colaborador",
+        calcular_verbas_rescisorias_colaborador,
+        name="calcular_verbas_rescisorias_colaborador",
+    ),
+    path(
         "imprimir_contra_cheque",
         imprimir_contra_cheque,
         name="imprimir_contra_cheque",
