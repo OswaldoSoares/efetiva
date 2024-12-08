@@ -1541,9 +1541,7 @@ def create_contexto_verbas_rescisoria(idpessoal):
     rescisao_ferias = rescisao_salario / 12 * meses_ferias
     rescisao_terco_ferias = rescisao_ferias / 3
     rescisao_descimo_terceiro = rescisao_salario / 12 * meses_decimo_terceiro
-    _mes_ano = datetime.datetime.strftime(
-        colaborador["data_demissao"], "%B/%Y"
-    )
+    _mes_ano = datetime.strftime(colaborador["data_demissao"], "%B/%Y")
     #  folha = facade_pagamentos.create_contexto_funcionario(_mes_ano, idpessoal)
     folha = create_contexto_contra_cheque_colaborador(
         idpessoal, _mes_ano, "PAGAMENTO"
