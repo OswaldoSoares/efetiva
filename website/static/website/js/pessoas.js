@@ -58,12 +58,13 @@ $(document).on('click', ".js-selecionar-colaborador", function() {
         $(this).addClass("icofont-square");
     });
 
+    ocultarCardsColaborador();
+
     executarAjax("/pessoas/consultar_colaborador", "GET", {
         id_pessoal: idPessoal,
     }, function(data) {
         $(".card-foto-colaborador").html(data["html-card-foto-colaborador"]);
         $(".card-foto-colaborador").show();
-        $(".card-contra-cheque-colaborador").hide();
         $(".js-fechar-card-contra-cheque").click();
         $(".sub-grid").css("padding-top", "0");
         $(".card-vales-colaborador").html(data["html-card-vales-colaborador"]);
