@@ -172,6 +172,11 @@ def mostrar_eventos_rescisorios_colaborador(request):
     return facade.data_eventos_html_data(request, contexto)
 
 
+def calcular_verbas_rescisorias_colaborador(request):
+    contexto = facade.verbas_rescisorias(request)
+    return facade.rescisao_html_data(request, contexto)
+
+
 def bloqueia_pessoa(request, idpessoa):
     facade.altera_status(idpessoa)
     return redirect("indexpessoal")
