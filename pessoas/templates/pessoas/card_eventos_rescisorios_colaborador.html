@@ -12,9 +12,10 @@
         </div>
     </div>
 </div>
-<!-- Card Body -->
-<form method="post", action="{% url 'calcular_verbas_rescisorias_colaborador' %}">
+<form method="post" class="js-calcular-verbas-rescisorias-colaborador">
 {% csrf_token %}
+<!-- Card Body -->
+<input type="hidden" name="id_pessoal" value="{{ id_pessoal }}">
 <div class="card-body">
     <div class="card-body-item">
         <div class="input-group">
