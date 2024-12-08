@@ -3,9 +3,10 @@ let idPessoal = null;
 
 var ocultarCardsColaborador =  function() {
     $(".card-foto-colaborador").hide();
+    $(".card-contra-cheque-colaborador").hide();
+    $(".card-rescisao-colaborador").hide();
     $(".card-eventos-rescisorios-colaborador").hide();
     $(".card-vales-colaborador").hide();
-    $(".card-contra-cheque-colaborador").hide();
     $(".card-decimo-terceiro-colaborador").hide();
     $(".card-docs-colaborador").hide();
     $(".card-fones-colaborador").hide();
