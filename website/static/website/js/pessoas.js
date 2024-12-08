@@ -163,6 +163,7 @@ $(document).on("click", ".js-mostrar-eventos-rescisorios", function() {
     }, function(data) {
         $(".card-eventos-rescisorios-colaborador").html(data["html-card-eventos-rescisorios-colaborador"]);
         $(".card-eventos-rescisorios-colaborador").show();
+        $(".card-rescisao-colaborador").hide();
         $(".box-loader").hide();
     });
 });
