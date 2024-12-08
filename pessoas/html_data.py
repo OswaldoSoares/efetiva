@@ -52,6 +52,15 @@ def html_card_eventos_rescisorios_colaborador(request, contexto, data):
     return data
 
 
+def html_card_rescisao_colaborador(request, contexto, data):
+    data["html-card-rescisao-colaborador"] = render_to_string(
+        "pessoas/card_rescisao_colaborador.html",
+        contexto,
+        request=request,
+    )
+    return data
+
+
 def html_card_decimo_terceiro_colaborador(request, contexto, data):
     data["html-card-decimo-terceiro-colaborador"] = render_to_string(
         "pessoas/card_decimo_terceiro_colaborador.html",
