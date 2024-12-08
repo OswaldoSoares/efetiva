@@ -188,7 +188,7 @@ class ColaboradorAntigo:
                   salário.
         """
         if self.tipo_pgto == "MENSALISTA":
-            hoje = datetime.datetime.today()
+            hoje = datetime.today()
             decimos = DecimoTerceiro.objects.filter(
                 idPessoal=self.id_pessoal, Ano=hoje.year
             )
