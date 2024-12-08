@@ -54,6 +54,7 @@ from .views import (
     excluir_vale_do_contra_cheque,
     adicionar_data_demissao_colaborador,
     mostrar_eventos_rescisorios_colaborador,
+    calcular_verbas_rescisorias_colaborador,
     imprimir_contra_cheque,
 )
 
