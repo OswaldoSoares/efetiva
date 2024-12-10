@@ -49,6 +49,30 @@ TIPOS_FONES = ["WHATSAPP", "VIVO", "TIM", "OI", "CLARO", "FIXO", "RECADO"]
 
 TIPOS_CONTAS = ["CORRENTE", "POUPANÇA"]
 
+MOTIVOS_DEMISSAO = [
+    ("comum_acordo", "DEMISSAO DE COMUM ACORDO"),
+    ("sem_justa_causa", "DISPENSA SEM JUSTA CAUSA"),
+    ("com_justa_causa", "DISPENSA COM JUSTA CAUSA"),
+    ("pedido_demissao", "PEDIDO DE DEMISSÃO"),
+    ("experiencia_no_prazo", "ENCERRAMENTO EXPERIÊNCIA NO PRAZO"),
+    ("experiencia_fora_prazo", "ENCERRAMENTO EXPERIÊNCIA ANTES DO PRAZO"),
+    ("aposentadoria", "APOSENTADORIA DO COLABORADOR"),
+]
+
+AVISO_PREVIO = [
+    ("trabalhado", "TRABALHADO"),
+    ("indenizado", "INDENIZADO PELO EMPREGADOR"),
+    ("nao_comprido", "NÃO COMPRIDO PELO COLABORADOR"),
+    ("dispensado", "DISPENSADO"),
+]
+
+EVENTOS_RESCISORIOS = [
+    ("saldo_salario", "SALDO SALARIO"),
+    ("ferias_vencidas", "FÉRIAS VENCIDAS"),
+    ("ferias_proporcionais", "FÉRIAS PROPORCIONAIS"),
+    ("decimo_terceiro_proporcional", "13º PROPORCIONAL"),
+]
+
 # Constants Módulo Minutas
 SETUP_CALCULO_MINUTA = {
     "taxa_expedicao": {

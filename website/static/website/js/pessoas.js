@@ -3,8 +3,10 @@ let idPessoal = null;
 
 var ocultarCardsColaborador =  function() {
     $(".card-foto-colaborador").hide();
-    $(".card-vales-colaborador").hide();
     $(".card-contra-cheque-colaborador").hide();
+    $(".card-rescisao-colaborador").hide();
+    $(".card-eventos-rescisorios-colaborador").hide();
+    $(".card-vales-colaborador").hide();
     $(".card-decimo-terceiro-colaborador").hide();
     $(".card-docs-colaborador").hide();
     $(".card-fones-colaborador").hide();
@@ -56,12 +58,13 @@ $(document).on('click', ".js-selecionar-colaborador", function() {
         $(this).addClass("icofont-square");
     });
 
+    ocultarCardsColaborador();
+
     executarAjax("/pessoas/consultar_colaborador", "GET", {
         id_pessoal: idPessoal,
     }, function(data) {
         $(".card-foto-colaborador").html(data["html-card-foto-colaborador"]);
         $(".card-foto-colaborador").show();
-        $(".card-contra-cheque-colaborador").hide();
         $(".js-fechar-card-contra-cheque").click();
         $(".sub-grid").css("padding-top", "0");
         $(".card-vales-colaborador").html(data["html-card-vales-colaborador"]);
@@ -151,6 +154,40 @@ $(document).on('submit', ".js-salva-foto", function(event) {
 
 $(document).on('change', '.js-carrega-foto', function() {
     $(".js-salva-foto").click()
+});
+
+
+$(document).on("click", ".js-mostrar-eventos-rescisorios", function() {
+    executarAjax("/pessoas/mostrar_eventos_rescisorios_colaborador", "GET", {
+        id_pessoal: idPessoal,
+    }, function(data) {
+        $(".card-eventos-rescisorios-colaborador").html(data["html-card-eventos-rescisorios-colaborador"]);
+        $(".card-eventos-rescisorios-colaborador").show();
+        $(".card-rescisao-colaborador").hide();
+        $(".box-loader").hide();
+    });
+});
+
+$(document).on("click", ".js-selecionar-evento-rescisorio", function() {
+    const eventoId = "#" + $(this).data("evento")
+    const currentValue = $(eventoId).val() === "true";
+    const newValue = !currentValue
+
+    $(eventoId).val(newValue.toString());
+
+    $(this).toggleClass("icofont-checked")
+    $(this).toggleClass("icofont-square")
+});
+
+$(document).on("submit", ".js-calcular-verbas-rescisorias-colaborador", function(event) {
+    event.preventDefault();
+    var data = $(this).serialize();
+
+    executarAjax("/pessoas/calcular_verbas_rescisorias_colaborador", "POST", data, function(data) {
+        $(".card-rescisao-colaborador").html(data["html-card-rescisao-colaborador"]);
+        $(".card-rescisao-colaborador").show();
+        $(".box-loader").hide();
+    });
 });
 
 $(document).on("click", ".js-selecionar-decimo-terceiro", function() {

@@ -1,0 +1,98 @@
+<!-- Card Header -->
+<div class="card-header">
+    <div class="input-group">
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-up"></i>
+        </div>
+        <div class="div-form-control">
+            <span>RESCISÃO</span>
+        </div>
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-up"></i>
+        </div>
+    </div>
+</div>
+<!-- Card Body -->
+<div class="card-body">
+    {% for item in contra_cheque_itens  %}
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-check"></i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-100 text-left font-menor">
+                    <span>{{ item }}{% if  item.Referencia %} ({{ item.Referencia }}){% endif %}</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-square"></i>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% if ferias_valor %}
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-check"></i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-100 text-left font-menor">
+                    <span>FÉRIAS PROPORCIONAIS</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-square"></i>
+            </div>
+        </div>
+    </div>
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-check"></i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-100 text-left font-menor">
+                    <span>1/3 FÉRIAS PROPORCIONAIS</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-square"></i>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% if decimo_terceiro_valor %}
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-check"></i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-100 text-left font-menor">
+                    <span>13º PROPORCIONAL</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-square"></i>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+<!-- Card Footer -->
+<div class="card-footer">
+    <div class="input-group">
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-down"></i>
+        </div>
+        <div class="div-flex div-form-control">
+            <div class="tamanho-100 text-center">
+            </div>
+        </div>
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-down"></i>
+        </div>
+    </div>
+</div>

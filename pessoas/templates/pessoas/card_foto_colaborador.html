@@ -73,9 +73,16 @@
             </div>
             <div class="div-flex div-form-control">
                 <div class="tamanho-100 text-center font-menor">
-                    <span>ADIMITIDO EM {{ colaborador.dados_profissionais.data_admissao }}</span>
+                    <span>ADMITIDO EM {{ colaborador.dados_profissionais.data_admissao }}</span>
                 </div>
             </div>
+            {% if colaborador.dados_profissionais.data_demissao %}
+            <div class="div-flex div-form-control">
+                <div class="tamanho-100 text-center font-menor">
+                    <span>DEMITIDO EM {{ colaborador.dados_profissionais.data_demissao }}</span>
+                </div>
+            </div>
+            {% endif %}
             <div class="input-group-addon addon-my-color">
                 <i class="icofont-check i-button-null"></i>
             </div>
@@ -103,13 +110,18 @@
                    title="IMPRIMIR FICHA CADASTRAL"></a>
             </div>
             <div class="tamanho-33 text-center">
+                {% if colaborador.dados_profissionais.data_demissao %}
+                <i class="icofont-calculator i-button js-mostrar-eventos-rescisorios"
+                   title="Verbas Rescisoria" data-id_pessoal="{{ colaborador.idpes }}"></i>
+                {% else %}
                 <i class="icofont-worried i-button"
                    onclick="openMyModal(event); return false;"
                    data-title="INFORMAR DATA DE DEMISSÂO"
-                   data-action="{% url 'demissao_colaborador' %}"
+                   data-action="{% url 'adicionar_data_demissao_colaborador' %}"
                    data-button-save-label="SALVAR"
-                   data-id_pessoa="{{ colaborador.id_pessoal }}"
+                   data-id_pessoal="{{ colaborador.id_pessoal }}"
                    title="DEMITIR COLABORADOR"></i>
+                {% endif %}
             </div>
         </div>
         <div class=" input-group-addon addon-my-color">
@@ -117,7 +129,11 @@
         </div>
     </div>
 </div>
-<i class="bi bi-currency-dollar i-button js-altera-salario-colaborador"
-    title="Altera Valor do Salário e do Vale Transporte" data-idpessoal="{{ colaborador.idpes }}"></i>
-<i class="icofont-calculator i-button js-verbas-rescisoria"
-    title="Verbas Rescisoria" data-idpessoal="{{ colaborador.idpes }}"></i>
+{% comment %} <i class="bi bi-currency-dollar i-button js-altera-salario-colaborador" {% endcomment %}
+    {% comment %} title="Altera Valor do Salário e do Vale Transporte" data-idpessoal="{{ colaborador.idpes }}"></i> {% endcomment %}
+{% comment %} <a class="bi bi-printer i-button"target="_blank"id="print-rescisao-trabalho" {% endcomment %}
+   {% comment %} href="{% url 'print_rescisao_trabalho' %}?idpessoal={{ colaborador.id_pessoal }}&causa=" {% endcomment %}
+   {% comment %} title="Imprime Rescisão de Trabalho"></a> {% endcomment %}
+{% comment %} <i class="icofont-calculator i-button js-verbas-rescisoria" {% endcomment %}
+   {% comment %} title="Verbas Rescisoria" data-idpessoal="{{ colaborador.id_pessoal }}"></i> {% endcomment %}
+

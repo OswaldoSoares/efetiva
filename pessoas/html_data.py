@@ -43,6 +43,24 @@ def html_card_vales_colaborador(request, contexto, data):
     return data
 
 
+def html_card_eventos_rescisorios_colaborador(request, contexto, data):
+    data["html-card-eventos-rescisorios-colaborador"] = render_to_string(
+        "pessoas/card_eventos_rescisorios_colaborador.html",
+        contexto,
+        request=request,
+    )
+    return data
+
+
+def html_card_rescisao_colaborador(request, contexto, data):
+    data["html-card-rescisao-colaborador"] = render_to_string(
+        "pessoas/card_rescisao_colaborador.html",
+        contexto,
+        request=request,
+    )
+    return data
+
+
 def html_card_decimo_terceiro_colaborador(request, contexto, data):
     data["html-card-decimo-terceiro-colaborador"] = render_to_string(
         "pessoas/card_decimo_terceiro_colaborador.html",
@@ -119,5 +137,12 @@ def html_modal_confirma_excluir_vale_colaborador(request, contexto):
         "pessoas/modal_confirma_excluir_vale_colaborador.html",
         contexto,
         request=request,
+    )
+    return modal_html
+
+
+def html_modal_data_demissao_colaborador(request, contexto):
+    modal_html = render_to_string(
+        "pessoas/modal_demissao_colaborador.html", contexto, request=request
     )
     return modal_html

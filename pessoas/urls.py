@@ -52,6 +52,9 @@ from .views import (
     selecionar_contra_cheque_decimo_terceiro,
     adicionar_vale_no_contra_cheque,
     excluir_vale_do_contra_cheque,
+    adicionar_data_demissao_colaborador,
+    mostrar_eventos_rescisorios_colaborador,
+    calcular_verbas_rescisorias_colaborador,
     imprimir_contra_cheque,
 )
 
@@ -122,6 +125,21 @@ urlpatterns = [
         "excluir_vale_do_contra_cheque",
         excluir_vale_do_contra_cheque,
         name="excluir_vale_do_contra_cheque",
+    ),
+    path(
+        "adicionar_data_demissao_colaborador",
+        adicionar_data_demissao_colaborador,
+        name="adicionar_data_demissao_colaborador",
+    ),
+    path(
+        "mostrar_eventos_rescisorios_colaborador",
+        mostrar_eventos_rescisorios_colaborador,
+        name="mostrar_eventos_rescisorios_colaborador",
+    ),
+    path(
+        "calcular_verbas_rescisorias_colaborador",
+        calcular_verbas_rescisorias_colaborador,
+        name="calcular_verbas_rescisorias_colaborador",
     ),
     path(
         "imprimir_contra_cheque",

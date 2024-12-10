@@ -264,11 +264,11 @@ def dados_rescisao_trabalho(pdf, contexto):
             else:
                 col = 11
                 linha -= 7.7
-    meses_ferias = "0"
+    #  meses_ferias = "0"
     pdf.drawString(
         cmp(col), cmp(linha), f"FÉRIAS PROPORCIONAIS - {meses_ferias}/12"
     )
-    ferias = "0,00"
+    #  ferias = "0,00"
     pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {ferias}")
     if col == 11:
         col = 106
@@ -276,7 +276,7 @@ def dados_rescisao_trabalho(pdf, contexto):
         col = 11
         linha -= 7.7
     pdf.drawString(cmp(col), cmp(linha), f"1/3 FÉRIAS PROPORCIONAIS")
-    terco_ferias = "0,00"
+    #  terco_ferias = "0,00"
     pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {terco_ferias}")
     if col == 11:
         col = 106
@@ -288,7 +288,7 @@ def dados_rescisao_trabalho(pdf, contexto):
     )
     pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {decimo_terceiro}")
     linha = 116.7
-    bruto = "261,87"
+    #  bruto = "261,87"
     pdf.drawRightString(cmp(199), cmp(linha + 1), f"R$ {bruto}")
     linha -= 7.7
     linha -= 4
@@ -308,7 +308,7 @@ def dados_rescisao_trabalho(pdf, contexto):
     linha = 44.4
     pdf.drawRightString(cmp(199), cmp(linha), f"R$ {deducoes}")
     linha -= 7.7
-    pdf.drawRightString(cmp(199), cmp(linha), f"R$ {bruto}")
+    pdf.drawRightString(cmp(199), cmp(linha), f"R$ {bruto - deducoes}")
     pdf.drawCentredString(cmp(105), cmp(15), f"{nome_trabalhador}")
     return pdf
 
@@ -656,7 +656,6 @@ def contra_cheque_totais(pdf, contexto):
 
 def contra_cheque_obs(pdf, contexto):
     #  dict_obs = ast.literal_eval(contexto["contra_cheque"].Obs)
-    obs = str(contexto["contra_cheque"].Obs)
     #  obs = ""
     #  for item_x in dict_obs:
     #  if isinstance(dict_obs[item_x], str):
@@ -665,6 +664,7 @@ def contra_cheque_obs(pdf, contexto):
     #  for item_y in dict_obs[item_x]:
     #  if isinstance(dict_obs[item_x][item_y], dict):
     #  obs = obs + f"* {dict_obs[item_x][item_y]} "
+    obs = str(contexto["contra_cheque"].Obs)
     obs = obs.replace("{", "").replace("}", "").replace("'", "")
     obs = obs[:-1]
     styles_claro = ParagraphStyle(

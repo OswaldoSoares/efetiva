@@ -4,7 +4,7 @@ import os
 import ast
 from django.db import connection
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from django.db.models import (
     Sum,
@@ -18,8 +18,9 @@ from django.db.models import (
 )
 from django.http import JsonResponse
 from django.template.loader import render_to_string
-from decimal import Decimal
+from decimal import Decimal, ROUND_HALF_UP
 from PIL import Image, ImageDraw
+from typing import Any
 from despesas import facade as facade_multa
 from pagamentos import facade as facade_pagamentos
 from pagamentos.models import Recibo
@@ -32,8 +33,11 @@ from core.constants import (
     TIPOS_FONES,
     TIPOS_CONTAS,
     MESES,
+    EVENTOS_RESCISORIOS,
+    MOTIVOS_DEMISSAO,
+    AVISO_PREVIO,
 )
-from core.tools import obter_mes_por_numero
+from core.tools import obter_mes_por_numero, primeiro_e_ultimo_dia_do_mes
 from pessoas.models import (
     Aquisitivo,
     DecimoTerceiro,
@@ -596,6 +600,343 @@ def delete_vale_colaborador(request):
     return {"mensagem": "Não foi possível excluir vale do colaborador"}
 
 
+def modal_data_demissao_colaborador(id_pessoal, request):
+    id_pessoal = (
+        request.POST.get("id_pessoal")
+        if request.method == "POST"
+        else request.GET.get("id_pessoal")
+    )
+    colaborador = classes.Colaborador(id_pessoal) if id_pessoal else False
+    hoje = datetime.today().date()
+    contexto = {
+        "colaborador": colaborador,
+        "hoje": hoje.strftime("%Y-%m-%d"),
+    }
+    modal_html = html_data.html_modal_data_demissao_colaborador(
+        request, contexto
+    )
+    return JsonResponse({"modal_html": modal_html})
+
+
+def validar_modal_data_demissao_colaborador(request: Any) -> JsonResponse:
+    if request.method != "POST":
+        return False
+
+    id_pessoal = request.POST.get("id_pessoal")
+    demissao_str = request.POST.get("demissao")
+
+    demissao = datetime.strptime(demissao_str, "%Y-%m-%d").date()
+    hoje = datetime.today().date()
+
+    colaborador = classes.Colaborador(id_pessoal)
+    admissao = colaborador.dados_profissionais.data_admissao
+
+    if demissao > hoje:
+        return JsonResponse(
+            {
+                "error": "A data de demissão não pode ser posterior ao dia de hoje."
+            },
+            status=400,
+        )
+
+    if demissao <= admissao:
+        return JsonResponse(
+            {
+                "error": "A data de demissão deve ser posterior à data de admissão."
+                if demissao == admissao
+                else "A data de demissão não pode ser anterior à data de admissão."
+            },
+            status=400,
+        )
+
+    return False
+
+
+def registrar_contra_cheque(id_pessoal, data_base, descricao):
+    mes_por_extenso = obter_mes_por_numero(data_base.month)
+    ano = data_base.year
+
+    contra_cheque = ContraCheque.objects.create(
+        Descricao=descricao,
+        MesReferencia=mes_por_extenso,
+        AnoReferencia=ano,
+        idPessoal_id=id_pessoal,
+    )
+    return contra_cheque  # Retorna o registro existente
+
+
+def obter_contra_cheque(id_pessoal, data_base, descricao):
+    mes_por_extenso = obter_mes_por_numero(data_base.month)
+    ano = data_base.year
+
+    contra_cheque = ContraCheque.objects.filter(
+        Descricao=descricao,
+        MesReferencia=mes_por_extenso,
+        AnoReferencia=ano,
+        idPessoal_id=id_pessoal,
+    ).first()
+    return contra_cheque
+
+
+def verificar_contra_cheque_mes_rescisao(id_pessoal, demissao):
+    contra_cheque_pagamento = obter_contra_cheque(
+        id_pessoal, demissao, "PAGAMENTO"
+    )
+
+    if not contra_cheque_pagamento:
+        contra_cheque_pagamento = registrar_contra_cheque(
+            id_pessoal, demissao, "PAGAMENTO"
+        )
+
+        ContraChequeItens.objects.create(
+            Descricao="SALARIO",
+            Registro="C",
+            idContraCheque_id=contra_cheque_pagamento.idContraCheque,
+        )
+
+        contra_cheque_adiantamento = obter_contra_cheque(
+            id_pessoal, demissao, "ADIANTAMENTO"
+        )
+
+        if contra_cheque_adiantamento:
+            contra_cheque_item = ContraChequeItens.objects.filter(
+                idContraCheque_id=contra_cheque_adiantamento.idContraCheque,
+                Descricao="ADIANTAMENTO",
+            ).first()
+
+            ContraChequeItens.objects.create(
+                Descricao=contra_cheque_item.Descricao,
+                Valor=contra_cheque_item.Valor,
+                Registro="D",
+                Referencia=contra_cheque_item.Referencia,
+                idContraCheque_id=contra_cheque_pagamento.idContraCheque,
+            )
+
+
+def excluir_contra_cheque_mes_seguinte_rescisao(id_pessoal, demissao):
+    mes = demissao.month
+    ano = demissao.year
+
+    mes = 1 if mes == 12 else mes + 1
+    ano = ano + 1 if mes == 12 else ano
+
+    data_base = datetime.strptime(f"{ano}-{mes}-1", "%Y-%m-%d")
+
+    contra_cheque = obter_contra_cheque(id_pessoal, data_base, "ADIANTAMENTO")
+    if contra_cheque:
+        contra_cheque.delete()
+
+    contra_cheque = obter_contra_cheque(id_pessoal, data_base, "PAGAMENTO")
+    if contra_cheque:
+        contra_cheque.delete()
+
+
+def atualizar_cartao_ponto_rescisao(id_pessoal, demissao):
+    _, ultimo_dia_mes = primeiro_e_ultimo_dia_do_mes(
+        demissao.month, demissao.year
+    )
+    cartao_ponto = CartaoPonto.objects.filter(
+        idPessoal=id_pessoal,
+        Dia__range=[demissao, ultimo_dia_mes],
+    )
+
+    if cartao_ponto.exists():
+        cartao_ponto.update(
+            Ausencia="-------",
+            Conducao=0,
+            Remunerado=0,
+            CarroEmpresa=0,
+        )
+
+
+def excluir_cartao_ponto_mes_seguinte_rescisao(id_pessoal, demissao):
+    mes_posterior = demissao.month + 1 if demissao.month < 12 else 1
+    ano_posterior = demissao.year if demissao.month < 12 else demissao.year + 1
+
+    primeiro_dia_mes, ultimo_dia_mes = primeiro_e_ultimo_dia_do_mes(
+        mes_posterior, ano_posterior
+    )
+    CartaoPonto.objects.filter(
+        idPessoal=id_pessoal,
+        Dia__range=[primeiro_dia_mes, ultimo_dia_mes],
+    ).delete()
+
+
+def save_data_demissao_colaborador(request):
+    id_pessoal = request.POST.get("id_pessoal")
+    demissao_str = request.POST.get("demissao")
+
+    if not id_pessoal or not demissao_str:
+        return {"mensagem": "Parâmetros inválidos"}
+
+    try:
+        demissao = datetime.strptime(demissao_str, "%Y-%m-%d")
+    except ValueError:
+        return {"mensagem": "Formato de data inválido"}
+
+    registrar_contra_cheque(id_pessoal, demissao, "RESCISÃO")
+
+    atualizar_cartao_ponto_rescisao(id_pessoal, demissao)
+    excluir_cartao_ponto_mes_seguinte_rescisao(id_pessoal, demissao)
+    excluir_contra_cheque_mes_seguinte_rescisao(id_pessoal, demissao)
+
+    Pessoal.objects.filter(idPessoal=id_pessoal).update(DataDemissao=demissao)
+
+    return {"mensagem": "Data de demissão inserida com sucesso"}
+
+
+def data_demissao_html_data(request, contexto):
+    data = {}
+    html_functions = [
+        html_data.html_card_foto_colaborador,
+    ]
+    return gerar_data_html(html_functions, request, contexto, data)
+
+
+def create_contexto_eventos_rescisorios_colaborador(request):
+    id_pessoal = request.GET.get("id_pessoal")
+    eventos = EVENTOS_RESCISORIOS
+    motivos = MOTIVOS_DEMISSAO
+    aviso_previo = AVISO_PREVIO
+    return {
+        "id_pessoal": id_pessoal,
+        "eventos": eventos,
+        "motivos": motivos,
+        "aviso_previo": aviso_previo,
+        "mensagem": "SELECIONAR EVENTOS",
+    }
+
+
+def data_eventos_html_data(request, contexto):
+    data = {}
+    html_functions = [
+        html_data.html_card_eventos_rescisorios_colaborador,
+    ]
+    return gerar_data_html(html_functions, request, contexto, data)
+
+
+def atualiza_contra_cheque_item_salario(id_pessoal, demissao, contra_cheque):
+    _, ultimo_dia_mes = primeiro_e_ultimo_dia_do_mes(
+        demissao.month, demissao.year
+    )
+
+    colaborador = classes.Colaborador(id_pessoal)
+
+    cartao_ponto = CartaoPonto.objects.filter(
+        idPessoal=id_pessoal,
+        Dia__range=[demissao, ultimo_dia_mes],
+    )
+
+
+def calcular_rescisao_saldo_salario(colaborador):
+    id_pessoal = colaborador.id_pessoal
+    demissao = colaborador.dados_profissionais.data_demissao
+
+    verificar_contra_cheque_mes_rescisao(id_pessoal, demissao)
+    contra_cheque = obter_contra_cheque(id_pessoal, demissao, "PAGAMENTO")
+    atualiza_contra_cheque_item_salario(id_pessoal, demissao, contra_cheque)
+    contra_cheque_itens = ContraChequeItens.objects.filter(
+        idContraCheque_id=contra_cheque.idContraCheque
+    ).order_by("Registro")
+
+    return {"contra_cheque_itens": contra_cheque_itens}
+
+
+def meses_proporcionais(data_inicial, data_final):
+    mes_inicial = data_inicial.month + (1 if data_inicial.day >= 16 else 0)
+    mes_final = data_final.month - (1 if data_final.day <= 14 else 0)
+    return mes_final - mes_inicial + 1
+
+
+def calcular_ferias_proporcionais(colaborador):
+    aquisitivo = (
+        Aquisitivo.objects.filter(idPessoal=colaborador.id_pessoal)
+        .order_by("-DataInicial")
+        .first()
+    )
+
+    if not aquisitivo:
+        aquisitivo = Aquisitivo.objects.create(
+            DataInicial=colaborador.dados_profissionais.data_admissao,
+            DataFinal=colaborador.dados_profissionais.data_demissao,
+            idPessoal_id=colaborador.id_pessoas,
+        )
+    else:
+        aquisitivo.DataFinal = colaborador.dados_profissionais.data_demissao
+        aquisitivo.save()
+
+    meses_proporcinais = meses_proporcionais(
+        aquisitivo.DataInicial, aquisitivo.DataFinal
+    )
+
+    valor = (
+        colaborador.salarios.salarios.Salario / 12 * meses_proporcinais
+    ).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+    um_terco = (valor / 3).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+
+    return {"ferias_valor": valor, "ferias_um_terco": um_terco}
+
+
+def calcular_decimo_terceiro_proporcional(colaborador):
+    data_admissao = colaborador.dados_profissionais.data_admissao
+    hoje = datetime.today().date()
+    inicio_ano = datetime.strptime(f"{hoje.year}-01-01", "%Y-%m-%d").date()
+
+    data_inicial = data_admissao if data_admissao > inicio_ano else inicio_ano
+    data_final = colaborador.dados_profissionais.data_demissao
+
+    meses_proporcinais = meses_proporcionais(data_inicial, data_final)
+
+    valor = (
+        colaborador.salarios.salarios.Salario / 12 * meses_proporcinais
+    ).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+
+    return {"decimo_terceiro_valor": valor}
+
+
+def verbas_rescisorias(request):
+    id_pessoal = request.POST.get("id_pessoal")
+    saldo_salario = request.POST.get("saldo_salario")
+    ferias_vencidas = request.POST.get("ferias_vencidas")
+    ferias_proporcionais = request.POST.get("ferias_proporcionais")
+    decimo_terceiro_proporcional = request.POST.get(
+        "decimo_terceiro_proporcional"
+    )
+
+    colaborador = classes.Colaborador(id_pessoal)
+
+    contexto = {}
+
+    contexto.update(
+        calcular_rescisao_saldo_salario(colaborador)
+        if saldo_salario.lower() == "true"
+        else {"saldo_salario": None}
+    )
+
+    contexto.update(
+        calcular_ferias_proporcionais(colaborador)
+        if ferias_proporcionais.lower() == "true"
+        else {"ferias_valor": None}
+    )
+
+    contexto.update(
+        calcular_decimo_terceiro_proporcional(colaborador)
+        if decimo_terceiro_proporcional.lower() == "true"
+        else {"ferias_valor": None}
+    )
+
+    contexto.update({"mensagem": "Rescião Calculada"})
+    return contexto
+
+
+def rescisao_html_data(request, contexto):
+    data = {}
+    html_functions = [
+        html_data.html_card_rescisao_colaborador,
+    ]
+    return gerar_data_html(html_functions, request, contexto, data)
+
+
 def get_decimo_terceiro_colaborador(id_pessoal):
     decimo_terceiro = DecimoTerceiro.objects.filter(
         idPessoal=id_pessoal
@@ -713,7 +1054,7 @@ def create_contexto_contra_cheque_pagamento(request):
 
     if not contra_cheque_itens:
         contra_cheque_itens = create_contra_cheque_itens(
-            descricao, Decimal(0.00), "C", "0d", contra_cheque
+            "SALARIO", Decimal(0.00), "C", "0d", contra_cheque
         )
 
     contexto = {
@@ -1387,9 +1728,7 @@ def create_contexto_verbas_rescisoria(idpessoal):
     rescisao_ferias = rescisao_salario / 12 * meses_ferias
     rescisao_terco_ferias = rescisao_ferias / 3
     rescisao_descimo_terceiro = rescisao_salario / 12 * meses_decimo_terceiro
-    _mes_ano = datetime.datetime.strftime(
-        colaborador["data_demissao"], "%B/%Y"
-    )
+    _mes_ano = datetime.strftime(colaborador["data_demissao"], "%B/%Y")
     #  folha = facade_pagamentos.create_contexto_funcionario(_mes_ano, idpessoal)
     folha = create_contexto_contra_cheque_colaborador(
         idpessoal, _mes_ano, "PAGAMENTO"
@@ -2036,7 +2375,8 @@ def html_card_contra_cheque_colaborador(request, contexto, data):
 
 
 def create_contexto_contra_cheque_apaga(idpessoal, idselecionado, descricao):
-    colaborador = classes.Colaborador(idpessoal).__dict__
+    print(idpessoal)
+    colaborador = classes.ColaboradorAntigo(idpessoal).__dict__
     colaborador_futuro = get_colaborador(idpessoal)
     contas = get_contas_bancaria_colaborador(colaborador_futuro)
     if descricao == "FERIAS":
@@ -2052,7 +2392,9 @@ def create_contexto_contra_cheque_apaga(idpessoal, idselecionado, descricao):
         contra_cheque = idselecionado
     elif descricao == "PAGAMENTO":
         # TODO Corrigir
-        contra_cheque = idselecionado
+        contra_cheque = ContraCheque.objects.filter(
+            idContraCheque=idselecionado
+        ).first()
     if contas:
         update_contas_bancaria_obs(contra_cheque, contas, "contas")
     mes_ano = f"{contra_cheque.MesReferencia}/{contra_cheque.AnoReferencia}"
@@ -2061,9 +2403,9 @@ def create_contexto_contra_cheque_apaga(idpessoal, idselecionado, descricao):
     credito, debito, saldo_contra_cheque = get_saldo_contra_cheque(
         contra_cheque_itens
     )
-    decimo_terceiro = get_decimo_terceiro_colaborador(colaborador_futuro)
-    decimo_terceiro = decimo_terceiro.order_by("-Ano")
-    parcelas_decimo_terceiro = get_parcelas_decimo_terceiro(colaborador_futuro)
+    #  decimo_terceiro = get_decimo_terceiro_colaborador(colaborador_futuro)
+    #  decimo_terceiro = decimo_terceiro.order_by("-Ano")
+    #  parcelas_decimo_terceiro = get_parcelas_decimo_terceiro(colaborador_futuro)
     contexto = {
         "contra_cheque": contra_cheque,
         "contra_cheque_itens": contra_cheque_itens,
@@ -2071,11 +2413,12 @@ def create_contexto_contra_cheque_apaga(idpessoal, idselecionado, descricao):
         "credito": credito,
         "debito": debito,
         "saldo_contra_cheque": saldo_contra_cheque,
-        "decimo_terceiro": decimo_terceiro,
-        "parcelas_decimo_terceiro": parcelas_decimo_terceiro,
+        #  "decimo_terceiro": decimo_terceiro,
+        #  "parcelas_decimo_terceiro": parcelas_decimo_terceiro,
         "colaborador": colaborador,
         "tipo": descricao,
         "idpessoal": idpessoal,
+        "mensagem": "",
     }
     idcontracheque = contra_cheque.idContraCheque
     file = get_file_contra_cheque(idcontracheque)

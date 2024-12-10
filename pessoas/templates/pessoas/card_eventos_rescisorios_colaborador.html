@@ -1,0 +1,98 @@
+<!-- Card Header -->
+<div class="card-header">
+    <div class="input-group">
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-up"></i>
+        </div>
+        <div class="div-form-control">
+            <span>EVENTOS RESCISÃO</span>
+        </div>
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-up"></i>
+        </div>
+    </div>
+</div>
+<form method="post" class="js-calcular-verbas-rescisorias-colaborador">
+{% csrf_token %}
+<!-- Card Body -->
+<input type="hidden" name="id_pessoal" value="{{ id_pessoal }}">
+<div class="card-body">
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-check i-button-null"></i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-100 text-left font-menor">
+                    <select class="form-control" name="motivo" id="motivo">
+                        <option value="" disabled selected>MOTIVO</option>
+                        {% for key, motivo in motivos %}
+                        <option value="{{ key }}">{{ motivo }}</option>
+                        {% endfor %}
+                     </select>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-square i-button disabled"></i>
+            </div>
+        </div>
+    </div>
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-check i-button-null"></i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-100 text-left font-menor">
+                    <select class="form-control" name="aviso_previo" id="aviso_previo">
+                        <option value="" disabled selected>AVISO PRÉVIO</option>
+                        {% for key, aviso in aviso_previo %}
+                        <option value="{{ key }}">{{ aviso }}</option>
+                        {% endfor %}
+                     </select>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-square i-button disabled"></i>
+            </div>
+        </div>
+    </div>
+    {% for key, evento in eventos %}
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-check i-button-null"></i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-100 text-left font-menor">
+                    <span>{{ evento }}</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-checked i-button js-selecionar-evento-rescisorio"
+                   data-evento="{{ key }}"></i>
+                <input type="hidden" name="{{ key }}" id="{{ key }}" value="true">
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<!-- Card Footer -->
+<div class="card-footer">
+    <div class="input-group">
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-down"></i>
+        </div>
+        <div class="div-flex div-form-control">
+            <div class="tamanho-100 text-center">
+                <button class="i-button" type="submit">
+                    <i class="icofont-calculator"></i>
+                </button>
+            </div>
+        </div>
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-down"></i>
+        </div>
+    </div>
+</div>
+</form>
