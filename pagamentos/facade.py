@@ -3429,6 +3429,25 @@ def atualiza_itens_contra_cheque_pagamento(
     #  )
 
 
+def atualiza_item_salario(
+    contra_cheque, salario, dias_pagar_mes, update_itens
+):
+    contra_cheque_itens = busca_contrachequeitens(
+        contra_cheque[0], "SALARIO", "C"
+    )
+    salario_mes = (salario / 30 * dias_pagar_mes).quantize(
+        Decimal("0.01"), rounding=ROUND_HALF_UP
+    )
+    if contra_cheque_itens:
+        update_itens.append(
+            ContraChequeItens(
+                idContraChequeItens=contra_cheque_itens[0].idContraChequeItens,
+                Valor=salario_mes,
+                Referencia=f"{dias_pagar_mes}d",
+            )
+        )
+
+
 def atualiza_item_atrazos(
     contra_cheque, salario, cartao_ponto, update_itens, create_itens
 ):
