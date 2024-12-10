@@ -697,15 +697,13 @@ def contra_cheque_cartao_ponto(pdf, contexto):
         linha -= 4
         for dia in contexto["cartao_ponto"]:
             pdf.drawCentredString(
-                cmp(15), cmp(linha), f"{dia['Dia'].strftime('%d/%m/%Y')}"
+                cmp(15), cmp(linha), f"{dia.Dia.strftime('%d/%m/%Y')}"
             )
-            if dia["Ausencia"] == "":
-                pdf.drawCentredString(cmp(35), cmp(linha), f"{dia['Entrada']}")
-                pdf.drawCentredString(cmp(50), cmp(linha), f"{dia['Saida']}")
+            if dia.Ausencia == "":
+                pdf.drawCentredString(cmp(35), cmp(linha), f"{dia.Entrada}")
+                pdf.drawCentredString(cmp(50), cmp(linha), f"{dia.Saida}")
             else:
-                pdf.drawCentredString(
-                    cmp(42.5), cmp(linha), f"{dia['Ausencia']}"
-                )
+                pdf.drawCentredString(cmp(42.5), cmp(linha), f"{dia.Ausencia}")
             linha -= 4
         pdf.rect(
             cmp(5),
