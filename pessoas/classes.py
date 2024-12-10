@@ -254,7 +254,7 @@ class ColaboradorAntigo:
                 Aquisitivo.objects.create(
                     DataInicial=aquisitivo_inicial,
                     DataFinal=aquisitivo_final,
-                    idPessoal=self.id_pessoal,
+                    idPessoal_id=self.id_pessoal,
                 )
             aquisitivos = Aquisitivo.objects.filter(
                 idPessoal=self.id_pessoal
