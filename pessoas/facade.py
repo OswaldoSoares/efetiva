@@ -867,7 +867,7 @@ def create_contexto_contra_cheque_pagamento(request):
 
     if not contra_cheque_itens:
         contra_cheque_itens = create_contra_cheque_itens(
-            descricao, Decimal(0.00), "C", "0d", contra_cheque
+            "SALARIO", Decimal(0.00), "C", "0d", contra_cheque
         )
 
     contexto = {
