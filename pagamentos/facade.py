@@ -3380,10 +3380,12 @@ def atualiza_cartao_ponto_minutas(cartao_ponto, minutas):
 
 
 def atualiza_itens_contra_cheque_pagamento(
-    colaborador, cartao_ponto, minutas, salario, mes, ano
+    colaborador, cartao_ponto, minutas, salario, vale_transporte, mes, ano
 ):
     #  start, start_queries = queries_inicio()
-    contra_cheque = busca_contracheque(meses[int(mes) - 1], ano, colaborador)
+    contra_cheque = busca_contracheque(
+        meses[int(mes) - 1], ano, colaborador.id_pessoal
+    )
     contra_cheque = contra_cheque.filter(Descricao="PAGAMENTO")
     horas_extras = horas_extras_colaborador(cartao_ponto, minutas)
     faltas = list(
@@ -3395,6 +3397,24 @@ def atualiza_itens_contra_cheque_pagamento(
     )
     update_itens = []
     create_itens = []
+    _, ultimo_dia = primeiro_e_ultimo_dia_do_mes(mes, ano)
+    dias_pagar_mes = dias_remunerado(cartao_ponto, ultimo_dia)
+
+    atualiza_item_salario(contra_cheque, salario, dias_pagar_mes, update_itens)
+    atualiza_item_vale_transporte(
+        contra_cheque,
+        vale_transporte,
+        cartao_ponto,
+        update_itens,
+        create_itens,
+    )
+    atualiza_item_horas_extras(
+        contra_cheque, salario, horas_extras, update_itens, create_itens
+    )
+    atualiza_item_adiantamento(colaborador, mes, ano, create_itens)
+    atualiza_item_atrazos(
+        contra_cheque, salario, cartao_ponto, update_itens, create_itens
+    )
     atualiza_item_faltas(
         contra_cheque, salario, faltas, update_itens, create_itens
     )
@@ -3407,15 +3427,6 @@ def atualiza_itens_contra_cheque_pagamento(
         mes,
         ano,
         colaborador,
-    )
-    atualiza_item_horas_extras(
-        contra_cheque, salario, horas_extras, update_itens, create_itens
-    )
-    atualiza_item_vale_transporte(
-        contra_cheque, salario, cartao_ponto, update_itens, create_itens
-    )
-    atualiza_item_atrazos(
-        contra_cheque, salario, cartao_ponto, update_itens, create_itens
     )
     atualiza_item_salario_ferias(
         contra_cheque, salario, cartao_ponto, update_itens, create_itens
