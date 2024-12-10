@@ -665,6 +665,19 @@ def registrar_contra_cheque(id_pessoal, data_base, descricao):
     return contra_cheque  # Retorna o registro existente
 
 
+def obter_contra_cheque(id_pessoal, data_base, descricao):
+    mes_por_extenso = obter_mes_por_numero(data_base.month)
+    ano = data_base.year
+
+    contra_cheque = ContraCheque.objects.filter(
+        Descricao=descricao,
+        MesReferencia=mes_por_extenso,
+        AnoReferencia=ano,
+        idPessoal_id=id_pessoal,
+    ).first()
+    return contra_cheque
+
+
         )
 
 
