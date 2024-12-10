@@ -750,6 +750,19 @@ def data_eventos_html_data(request, contexto):
     return gerar_data_html(html_functions, request, contexto, data)
 
 
+def atualiza_contra_cheque_item_salario(id_pessoal, demissao, contra_cheque):
+    _, ultimo_dia_mes = primeiro_e_ultimo_dia_do_mes(
+        demissao.month, demissao.year
+    )
+
+    colaborador = classes.Colaborador(id_pessoal)
+
+    cartao_ponto = CartaoPonto.objects.filter(
+        idPessoal=id_pessoal,
+        Dia__range=[demissao, ultimo_dia_mes],
+    )
+
+
 def get_decimo_terceiro_colaborador(id_pessoal):
     decimo_terceiro = DecimoTerceiro.objects.filter(
         idPessoal=id_pessoal
