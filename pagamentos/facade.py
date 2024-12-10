@@ -3312,27 +3312,17 @@ def union_minutas_agenda_periodo_contra_cheque(
     return minutas_agenda
 
 
-def atualiza_cartao_ponto_transporte(cartao_ponto, salario):
-    registros_cartao_ponto = []
-    valor_conducao = salario["ValeTransporte"]
-    for dia in cartao_ponto:
-        if dia["Ausencia"] == "":
-            if valor_conducao > Decimal(0.00) and dia["CarroEmpresa"] == False:
-                registros_cartao_ponto.append(
-                    CartaoPonto(
-                        idCartaoPonto=dia["idCartaoPonto"],
-                        Conducao=True,
-                        idPessoal_id=dia["idPessoal_id"],
-                    )
-                )
-            else:
-                registros_cartao_ponto.append(
-                    CartaoPonto(
-                        idCartaoPonto=dia["idCartaoPonto"],
-                        Conducao=False,
-                        idPessoal_id=dia["idPessoal_id"],
-                    )
-                )
+def atualiza_cartao_ponto_transporte(cartao_ponto, vale_transporte):
+    registros_cartao_ponto = [
+        CartaoPonto(
+            idCartaoPonto=dia.idCartaoPonto,
+            Conducao=vale_transporte > Decimal(0.00) and not dia.CarroEmpresa,
+            idPessoal_id=dia.idPessoal_id,
+        )
+        for dia in cartao_ponto
+        if dia.Ausencia == ""
+    ]
+
     CartaoPonto.objects.bulk_update(registros_cartao_ponto, ["Conducao"])
     return cartao_ponto
 
