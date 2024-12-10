@@ -864,6 +864,14 @@ def verbas_rescisorias(request):
     return contexto
 
 
+def rescisao_html_data(request, contexto):
+    data = {}
+    html_functions = [
+        html_data.html_card_rescisao_colaborador,
+    ]
+    return gerar_data_html(html_functions, request, contexto, data)
+
+
 def get_decimo_terceiro_colaborador(id_pessoal):
     decimo_terceiro = DecimoTerceiro.objects.filter(
         idPessoal=id_pessoal
