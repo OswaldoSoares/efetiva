@@ -460,7 +460,7 @@ def dias_falta(cartao_ponto):
 def dias_remunerado(cartao_ponto, ultimo_dia):
     total_dias = 0
     for dia in cartao_ponto:
-        if dia["Remunerado"]:
+        if dia.Remunerado:
             total_dias += 1
     if ultimo_dia.day == 31:
         total_dias -= 1
@@ -474,7 +474,7 @@ def dias_remunerado(cartao_ponto, ultimo_dia):
 def dias_transporte(cartao_ponto):
     total_dias = 0
     for dia in cartao_ponto:
-        if dia["Conducao"]:
+        if dia.Conducao:
             total_dias += 1
     return total_dias
 
@@ -482,7 +482,7 @@ def dias_transporte(cartao_ponto):
 def dias_carro_empresa(cartao_ponto):
     total_dias = 0
     for dia in cartao_ponto:
-        if dia["CarroEmpresa"]:
+        if dia.CarroEmpresa:
             total_dias += 1
     return total_dias
 
@@ -490,7 +490,7 @@ def dias_carro_empresa(cartao_ponto):
 def dias_trabalhado(cartao_ponto):
     total_dias = 0
     for dia in cartao_ponto:
-        if dia["Ausencia"] == "":
+        if dia.Ausencia == "":
             total_dias += 1
     return total_dias
 
@@ -3345,34 +3345,31 @@ def atualiza_cartao_ponto_minutas(cartao_ponto, minutas):
             (
                 item
                 for item in cartao_ponto
-                if item["Dia"] == minuta["data_minuta"]
+                if item.Dia == minuta["data_minuta"]
             ),
             None,
         )
         if (
-            minuta["hora_inicial"] < dia["Entrada"]
+            minuta["hora_inicial"] < dia.Entrada
             and dia["Alteracao"] != "MANUAL"
         ):
-            dia["Entrada"] = minuta["hora_inicial"]
+            dia.Entrada = minuta["hora_inicial"]
             registros_cartao_ponto.append(
                 CartaoPonto(
-                    idCartaoPonto=dia["idCartaoPonto"],
+                    idCartaoPonto=dia.idCartaoPonto,
                     Entrada=minuta["hora_inicial"],
-                    Saida=dia["Saida"],
-                    idPessoal_id=dia["idPessoal_id"],
+                    Saida=dia.Saida,
+                    idPessoal_id=dia.idPessoal_id,
                 )
             )
-        if (
-            minuta["hora_final"] > dia["Saida"]
-            and dia["Alteracao"] != "MANUAL"
-        ):
-            dia["Saida"] = minuta["hora_final"]
+        if minuta["hora_final"] > dia.Saida and dia.Alteracao != "MANUAL":
+            dia.Saida = minuta["hora_final"]
             registros_cartao_ponto.append(
                 CartaoPonto(
-                    idCartaoPonto=dia["idCartaoPonto"],
-                    Entrada=dia["Entrada"],
+                    idCartaoPonto=dia.idCartaoPonto,
+                    Entrada=dia.Entrada,
                     Saida=minuta["hora_final"],
-                    idPessoal_id=dia["idPessoal_id"],
+                    idPessoal_id=dia.idPessoal_id,
                 )
             )
     CartaoPonto.objects.bulk_update(
@@ -3448,16 +3445,14 @@ def atualiza_item_atrazos(
             hours=hora_entrada_padrao.hour, minutes=hora_entrada_padrao.minute
         )
         hora_entrada_dia = datetime.timedelta(
-            hours=dia["Entrada"].hour, minutes=dia["Entrada"].minute
+            hours=dia.Entrada.hour, minutes=dia.Entrada.minute
         )
         atrazos += (
             hora_entrada_dia - hora_entrada_timedelta
             if hora_entrada_dia > hora_entrada_timedelta
             else hora_zerada
         )
-    valor_desconto_atrazos = (
-        salario["Salario"] / 30 / 9 / 60 / 60 * atrazos.seconds
-    )
+    valor_desconto_atrazos = salario / 30 / 9 / 60 / 60 * atrazos.seconds
     if atrazos > hora_zerada:
         if contra_cheque_itens:
             if str(atrazos) != contra_cheque_itens[0].Referencia:
@@ -3491,7 +3486,7 @@ def atualiza_item_faltas(
     contra_cheque_itens = busca_contrachequeitens(
         contra_cheque[0].idContraCheque, "FALTAS", "D"
     )
-    valor_dia = salario["Salario"] / 30
+    valor_dia = salario / 30
     if faltas:
         if contra_cheque_itens:
             if len(faltas) != int(contra_cheque_itens[0].Referencia):
@@ -3532,10 +3527,10 @@ def atualiza_item_desconto_dsr(
     contra_cheque_itens = busca_contrachequeitens(
         contra_cheque[0].idContraCheque, "DSR SOBRE FALTAS", "D"
     )
-    valor_dia = salario["Salario"] / 30
+    valor_dia = salario / 30
     semanas_faltas = []
     for falta in faltas:
-        semanas_faltas.append(datetime.datetime.strftime(falta["Dia"], "%V"))
+        semanas_faltas.append(datetime.datetime.strftime(falta.Dia, "%V"))
     semanas_faltas = list(map(int, semanas_faltas))
     semanas_faltas = set(semanas_faltas)
     desconto_dsr = len(semanas_faltas)
@@ -3599,7 +3594,7 @@ def verifica_falta_ultima_semana_mes_amterior(
     fim = primeiro_dia_mes - datetime.timedelta(1)
     faltas_mes_anterior = list(
         CartaoPonto.objects.filter(
-            idPessoal=colaborador,
+            idPessoal=colaborador.id_pessoal,
             Ausencia="FALTA",
             Remunerado=False,
             Dia__range=[inicio, fim],
@@ -3622,7 +3617,7 @@ def atualiza_item_horas_extras(
     hora_zerada = datetime.datetime.strptime("00:00:00", "%H:%M:%S").time()
     if horas_extras > hora_zerada:
         valor_horas_extras = calcula_horas_extras_colaborador(
-            salario["Salario"], horas_extras
+            salario, horas_extras
         )
         if contra_cheque_itens:
             update_itens.append(
@@ -3656,7 +3651,7 @@ def atualiza_item_vale_transporte(
         contra_cheque[0].idContraCheque, "VALE TRANSPORTE", "C"
     )
     dias = dias_transporte(cartao_ponto)
-    valor_transporte = salario["ValeTransporte"]
+    valor_transporte = salario
     if valor_transporte > Decimal(0.00):
         if contra_cheque_itens:
             update_itens.append(
@@ -3689,10 +3684,10 @@ def atualiza_item_salario_ferias(
     contra_cheque_itens = busca_contrachequeitens(
         contra_cheque[0].idContraCheque, "SALARIO", "C"
     )
-    valor_dia = salario["Salario"] / 30
+    valor_dia = salario / 30
     ferias = list(
         filter(
-            lambda item: item["Ausencia"] == "FÉRIAS",
+            lambda item: item.Ausencia == "FÉRIAS",
             cartao_ponto,
         )
     )
@@ -3722,11 +3717,11 @@ def horas_extras_colaborador(cartao_ponto, minutas):
         horas_extras_entrada = datetime.timedelta(hours=0, minutes=0)
         horas_extras_saida = datetime.timedelta(hours=0, minutes=0)
         hora_entrada_cartao_ponto = datetime.timedelta(
-            hours=itens["Entrada"].hour,
-            minutes=itens["Entrada"].minute,
+            hours=itens.Entrada.hour,
+            minutes=itens.Entrada.minute,
         )
         hora_saida_cartao_ponto = datetime.timedelta(
-            hours=itens["Saida"].hour, minutes=itens["Saida"].minute
+            hours=itens.Saida.hour, minutes=itens.Saida.minute
         )
         if hora_entrada_cartao_ponto < hora_entrada_padrao:
             horas_extras_entrada += (
@@ -3737,7 +3732,7 @@ def horas_extras_colaborador(cartao_ponto, minutas):
             ).time()
             minuta = list(
                 filter(
-                    lambda minutas: minutas["data_minuta"] == itens["Dia"]
+                    lambda minutas: minutas["data_minuta"] == itens.Dia
                     and minutas["hora_final"] == hora,
                     minutas,
                 )
@@ -3765,7 +3760,7 @@ def horas_extras_colaborador(cartao_ponto, minutas):
             ).time()
             minuta = list(
                 filter(
-                    lambda minutas: minutas["data_minuta"] == itens["Dia"]
+                    lambda minutas: minutas["data_minuta"] == itens.Dia
                     and minutas["hora_final"] == hora,
                     minutas,
                 )
