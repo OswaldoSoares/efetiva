@@ -829,6 +829,41 @@ def calcular_decimo_terceiro_proporcional(colaborador):
     return {"decimo_terceiro_valor": valor}
 
 
+def verbas_rescisorias(request):
+    id_pessoal = request.POST.get("id_pessoal")
+    saldo_salario = request.POST.get("saldo_salario")
+    ferias_vencidas = request.POST.get("ferias_vencidas")
+    ferias_proporcionais = request.POST.get("ferias_proporcionais")
+    decimo_terceiro_proporcional = request.POST.get(
+        "decimo_terceiro_proporcional"
+    )
+
+    colaborador = classes.Colaborador(id_pessoal)
+
+    contexto = {}
+
+    contexto.update(
+        calcular_rescisao_saldo_salario(colaborador)
+        if saldo_salario.lower() == "true"
+        else {"saldo_salario": None}
+    )
+
+    contexto.update(
+        calcular_ferias_proporcionais(colaborador)
+        if ferias_proporcionais.lower() == "true"
+        else {"ferias_valor": None}
+    )
+
+    contexto.update(
+        calcular_decimo_terceiro_proporcional(colaborador)
+        if decimo_terceiro_proporcional.lower() == "true"
+        else {"ferias_valor": None}
+    )
+
+    contexto.update({"mensagem": "Rescião Calculada"})
+    return contexto
+
+
 def get_decimo_terceiro_colaborador(id_pessoal):
     decimo_terceiro = DecimoTerceiro.objects.filter(
         idPessoal=id_pessoal
