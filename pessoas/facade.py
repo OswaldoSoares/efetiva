@@ -2223,11 +2223,12 @@ def create_contexto_contra_cheque_apaga(idpessoal, idselecionado, descricao):
         "credito": credito,
         "debito": debito,
         "saldo_contra_cheque": saldo_contra_cheque,
-        "decimo_terceiro": decimo_terceiro,
-        "parcelas_decimo_terceiro": parcelas_decimo_terceiro,
+        #  "decimo_terceiro": decimo_terceiro,
+        #  "parcelas_decimo_terceiro": parcelas_decimo_terceiro,
         "colaborador": colaborador,
         "tipo": descricao,
         "idpessoal": idpessoal,
+        "mensagem": "",
     }
     idcontracheque = contra_cheque.idContraCheque
     file = get_file_contra_cheque(idcontracheque)
