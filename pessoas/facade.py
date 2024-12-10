@@ -714,8 +714,10 @@ def save_data_demissao_colaborador(request):
         return {"mensagem": "Formato de data inválido"}
 
     registrar_contra_cheque(id_pessoal, demissao, "RESCISÃO")
+
     atualizar_cartao_ponto_rescisao(id_pessoal, demissao)
     excluir_cartao_ponto_mes_seguinte_rescisao(id_pessoal, demissao)
+    excluir_contra_cheque_mes_seguinte_rescisao(id_pessoal, demissao)
 
     Pessoal.objects.filter(idPessoal=id_pessoal).update(DataDemissao=demissao)
 
