@@ -783,6 +783,35 @@ def meses_proporcionais(data_inicial, data_final):
     return mes_final - mes_inicial + 1
 
 
+def calcular_ferias_proporcionais(colaborador):
+    aquisitivo = (
+        Aquisitivo.objects.filter(idPessoal=colaborador.id_pessoal)
+        .order_by("-DataInicial")
+        .first()
+    )
+
+    if not aquisitivo:
+        aquisitivo = Aquisitivo.objects.create(
+            DataInicial=colaborador.dados_profissionais.data_admissao,
+            DataFinal=colaborador.dados_profissionais.data_demissao,
+            idPessoal_id=colaborador.id_pessoas,
+        )
+    else:
+        aquisitivo.DataFinal = colaborador.dados_profissionais.data_demissao
+        aquisitivo.save()
+
+    meses_proporcinais = meses_proporcionais(
+        aquisitivo.DataInicial, aquisitivo.DataFinal
+    )
+
+    valor = (
+        colaborador.salarios.salarios.Salario / 12 * meses_proporcinais
+    ).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+    um_terco = (valor / 3).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+
+    return {"ferias_valor": valor, "ferias_um_terco": um_terco}
+
+
 def get_decimo_terceiro_colaborador(id_pessoal):
     decimo_terceiro = DecimoTerceiro.objects.filter(
         idPessoal=id_pessoal
