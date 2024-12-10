@@ -812,6 +812,23 @@ def calcular_ferias_proporcionais(colaborador):
     return {"ferias_valor": valor, "ferias_um_terco": um_terco}
 
 
+def calcular_decimo_terceiro_proporcional(colaborador):
+    data_admissao = colaborador.dados_profissionais.data_admissao
+    hoje = datetime.today().date()
+    inicio_ano = datetime.strptime(f"{hoje.year}-01-01", "%Y-%m-%d").date()
+
+    data_inicial = data_admissao if data_admissao > inicio_ano else inicio_ano
+    data_final = colaborador.dados_profissionais.data_demissao
+
+    meses_proporcinais = meses_proporcionais(data_inicial, data_final)
+
+    valor = (
+        colaborador.salarios.salarios.Salario / 12 * meses_proporcinais
+    ).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+
+    return {"decimo_terceiro_valor": valor}
+
+
 def get_decimo_terceiro_colaborador(id_pessoal):
     decimo_terceiro = DecimoTerceiro.objects.filter(
         idPessoal=id_pessoal
