@@ -678,7 +678,40 @@ def obter_contra_cheque(id_pessoal, data_base, descricao):
     return contra_cheque
 
 
+def verificar_contra_cheque_mes_rescisao(id_pessoal, demissao):
+    contra_cheque_pagamento = obter_contra_cheque(
+        id_pessoal, demissao, "PAGAMENTO"
+    )
+
+    if not contra_cheque_pagamento:
+        contra_cheque_pagamento = registrar_contra_cheque(
+            id_pessoal, demissao, "PAGAMENTO"
         )
+
+        ContraChequeItens.objects.create(
+            Descricao="SALARIO",
+            Registro="C",
+            idContraCheque_id=contra_cheque_pagamento.idContraCheque,
+        )
+
+        contra_cheque_adiantamento = obter_contra_cheque(
+            id_pessoal, demissao, "ADIANTAMENTO"
+        )
+
+        if contra_cheque_adiantamento:
+            contra_cheque_item = ContraChequeItens.objects.filter(
+                idContraCheque_id=contra_cheque_adiantamento.idContraCheque,
+                Descricao="ADIANTAMENTO",
+            ).first()
+
+            ContraChequeItens.objects.create(
+                Descricao=contra_cheque_item.Descricao,
+                Valor=contra_cheque_item.Valor,
+                Registro="D",
+                Referencia=contra_cheque_item.Referencia,
+                idContraCheque_id=contra_cheque_pagamento.idContraCheque,
+            )
+
 
 def excluir_contra_cheque_mes_seguinte_rescisao(id_pessoal, demissao):
     mes = demissao.month
@@ -799,7 +832,7 @@ def calcular_rescisao_saldo_salario(colaborador):
     id_pessoal = colaborador.id_pessoal
     demissao = colaborador.dados_profissionais.data_demissao
 
-    verificar_contra_cheque_mes_resciso(id_pessoal, demissao)
+    verificar_contra_cheque_mes_rescisao(id_pessoal, demissao)
     contra_cheque = obter_contra_cheque(id_pessoal, demissao, "PAGAMENTO")
     atualiza_contra_cheque_item_salario(id_pessoal, demissao, contra_cheque)
     contra_cheque_itens = ContraChequeItens.objects.filter(
