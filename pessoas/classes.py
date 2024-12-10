@@ -243,7 +243,7 @@ class ColaboradorAntigo:
         if self.tipo_pgto == "MENSALISTA" and not self.data_demissao:
             if (
                 not aquisitivos
-                or aquisitivos[0].DataFinal < datetime.datetime.today().date()
+                or aquisitivos[0].DataFinal < datetime.today().date()
             ):
                 aquisitivo_inicial = self.data_admissao + relativedelta(
                     years=len(aquisitivos)
