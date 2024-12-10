@@ -683,6 +683,7 @@ class ColaboradorDocumentos:
         id_pessoal (int): ID do colaborador.
         documentos (list): Lista de documentos do colaborador.
     """
+
     def __init__(self, id_pessoal):
         """
         Inicializa a classe ColaboradorDocumentos.
@@ -690,6 +691,7 @@ class ColaboradorDocumentos:
             id_pessoal (int): O ID do colaborador para buscar documentos.
         """
         self.docs = self._get_docpessoal(id_pessoal)
+
     def _get_docpessoal(self, id_pessoal):
         """
         Obtém os documentos pessoais do colaborador.
@@ -713,6 +715,7 @@ class ColaboradorDocumentos:
             }
             for item in documentos
         ]
+
     def count_documentos(self) -> int:
         """
         Conta o número de documentos pessoais do colaborador.
@@ -720,6 +723,7 @@ class ColaboradorDocumentos:
             int: Número total de documentos pessoais.
         """
         return len(self.docs)
+
     def display_documentos_info(self) -> list:
         """
         Gera uma lista formatada com as informações dos documentos.
@@ -737,6 +741,8 @@ class ColaboradorDocumentos:
             }
             for doc in self.docs
         ]
+
+
 class ColaboradorTelefones:
     """
     Classe para gerenciar os telefones de um colaborador.
@@ -744,6 +750,7 @@ class ColaboradorTelefones:
         id_pessoal (int): ID do colaborador.
         telefones (list): Lista de telefones do colaborador.
     """
+
     def __init__(self, id_pessoal):
         """
         Inicializa a classe ColaboradorTelefones.
@@ -751,6 +758,7 @@ class ColaboradorTelefones:
             id_pessoal (int): O ID do colaborador para buscar telefones.
         """
         self.fones = self._get_telefones(id_pessoal)
+
     def _get_telefones(self, id_pessoal):
         """
         Obtém os telefones do colaborador.
@@ -774,6 +782,7 @@ class ColaboradorTelefones:
             }
             for item in telefones
         ]
+
     def count_telefones(self) -> int:
         """
         Conta o número de telefones do colaborador.
@@ -781,6 +790,7 @@ class ColaboradorTelefones:
             int: Número total de telefones.
         """
         return len(self.fones)
+
     def display_telefones_info(self) -> list:
         """
         Gera uma lista formatada com as informações dos telefones.
@@ -796,6 +806,8 @@ class ColaboradorTelefones:
             }
             for fone in self.fones
         ]
+
+
 class ColaboradorBancos:
     """
     Classe para gerenciar as contas bancárias de um colaborador.
@@ -803,6 +815,7 @@ class ColaboradorBancos:
         id_pessoal (int): ID do colaborador.
         bancos (list): Lista de contas bancárias do colaborador.
     """
+
     def __init__(self, id_pessoal):
         """
         Inicializa a classe ColaboradorBancos.
@@ -811,6 +824,7 @@ class ColaboradorBancos:
                               bancárias.
         """
         self.contas = self._get_bancos(id_pessoal)
+
     def _get_bancos(self, id_pessoal):
         """
         Obtém as contas bancárias do colaborador.
@@ -843,6 +857,7 @@ class ColaboradorBancos:
             }
             for item in bancos
         ]
+
     def count_contas(self) -> int:
         """
         Conta o número de contas bancárias do colaborador.
@@ -850,6 +865,7 @@ class ColaboradorBancos:
             int: Número total de contas bancárias.
         """
         return len(self.contas)
+
     def display_contas_info(self) -> list:
         """
         Gera uma lista formatada com as informações das contas bancárias.
@@ -866,6 +882,7 @@ class ColaboradorBancos:
             }
             for conta in self.contas
         ]
+
     def display_titular_contas_info(self) -> list:
         """
         Gera uma lista formatada com informações sobre os titulares das
@@ -879,6 +896,8 @@ class ColaboradorBancos:
             {f"Nome: {conta['titular']} -  Documento: {conta['documento']}"}
             for conta in self.contas
         ]
+
+
 class ColaboradorSalario:
     """
     Classe para gerenciar as informações salariais de um colaborador.
@@ -886,6 +905,7 @@ class ColaboradorSalario:
         salario (list): Lista de dicionários contendo informações salariais
                         e de vale transporte do colaborador.
     """
+
     def __init__(self, id_pessoal):
         """
         Inicializa a classe ColaboradorSalario.
@@ -894,6 +914,7 @@ class ColaboradorSalario:
                               salariais.
         """
         self.salario = self._get_salario(id_pessoal)
+
     def _get_salario(self, id_pessoal):
         """
         Obtém o salário e valor do vale transporte do colaborador.
@@ -916,6 +937,7 @@ class ColaboradorSalario:
             }
             for item in valores
         ]
+
     def valor_salario_dia(self) -> Decimal:
         """
         Calcula o valor do salário diário do colaborador.
@@ -924,6 +946,7 @@ class ColaboradorSalario:
                      casas decimais.
         """
         return round(self.salario[0]["salario"] / 30, 2)
+
     def valor_salario_hora(self) -> Decimal:
         """
         Calcula o valor do salário por hora do colaborador.
