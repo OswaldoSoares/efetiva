@@ -2188,7 +2188,8 @@ def html_card_contra_cheque_colaborador(request, contexto, data):
 
 
 def create_contexto_contra_cheque_apaga(idpessoal, idselecionado, descricao):
-    colaborador = classes.Colaborador(idpessoal).__dict__
+    print(idpessoal)
+    colaborador = classes.ColaboradorAntigo(idpessoal).__dict__
     colaborador_futuro = get_colaborador(idpessoal)
     contas = get_contas_bancaria_colaborador(colaborador_futuro)
     if descricao == "FERIAS":
@@ -2204,7 +2205,9 @@ def create_contexto_contra_cheque_apaga(idpessoal, idselecionado, descricao):
         contra_cheque = idselecionado
     elif descricao == "PAGAMENTO":
         # TODO Corrigir
-        contra_cheque = idselecionado
+        contra_cheque = ContraCheque.objects.filter(
+            idContraCheque=idselecionado
+        ).first()
     if contas:
         update_contas_bancaria_obs(contra_cheque, contas, "contas")
     mes_ano = f"{contra_cheque.MesReferencia}/{contra_cheque.AnoReferencia}"
@@ -2213,9 +2216,9 @@ def create_contexto_contra_cheque_apaga(idpessoal, idselecionado, descricao):
     credito, debito, saldo_contra_cheque = get_saldo_contra_cheque(
         contra_cheque_itens
     )
-    decimo_terceiro = get_decimo_terceiro_colaborador(colaborador_futuro)
-    decimo_terceiro = decimo_terceiro.order_by("-Ano")
-    parcelas_decimo_terceiro = get_parcelas_decimo_terceiro(colaborador_futuro)
+    #  decimo_terceiro = get_decimo_terceiro_colaborador(colaborador_futuro)
+    #  decimo_terceiro = decimo_terceiro.order_by("-Ano")
+    #  parcelas_decimo_terceiro = get_parcelas_decimo_terceiro(colaborador_futuro)
     contexto = {
         "contra_cheque": contra_cheque,
         "contra_cheque_itens": contra_cheque_itens,
