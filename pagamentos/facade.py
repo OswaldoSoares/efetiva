@@ -3390,8 +3390,7 @@ def atualiza_itens_contra_cheque_pagamento(
     horas_extras = horas_extras_colaborador(cartao_ponto, minutas)
     faltas = list(
         filter(
-            lambda item: item["Ausencia"] == "FALTA"
-            and item["Remunerado"] == False,
+            lambda item: item.Ausencia == "FALTA" and item.Remunerado == False,
             cartao_ponto,
         )
     )
