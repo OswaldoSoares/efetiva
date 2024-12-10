@@ -3448,6 +3448,45 @@ def atualiza_item_salario(
         )
 
 
+def atualiza_item_adiantamento(colaborador, mes, ano, create_itens):
+    contra_cheque = busca_contracheque(
+        meses[int(mes) - 1], ano, colaborador.id_pessoal
+    )
+    contra_cheque_pagamento = contra_cheque.filter(
+        Descricao="PAGAMENTO"
+    ).first()
+
+    contra_cheque_item_adiantamento = ContraChequeItens.objects.filter(
+        idContraCheque=contra_cheque_pagamento.idContraCheque,
+        Descricao="ADIANTAMENTO",
+    ).first()
+
+    if contra_cheque_item_adiantamento:
+        return
+
+    contra_cheque_adiantamento = contra_cheque.filter(
+        Descricao="ADIANTAMENTO"
+    ).first()
+
+    if contra_cheque_adiantamento:
+        contra_cheque_item = ContraChequeItens.objects.filter(
+            idContraCheque_id=contra_cheque_adiantamento.idContraCheque,
+            Descricao="ADIANTAMENTO",
+        ).first()
+
+        create_itens.append(
+            ContraChequeItens(
+                Descricao=contra_cheque_item.Descricao,
+                Valor=contra_cheque_item.Valor,
+                Registro="D",
+                Referencia=contra_cheque_item.Referencia,
+                idContraCheque_id=contra_cheque_pagamento.idContraCheque,
+            )
+        )
+
+    return
+
+
 def atualiza_item_atrazos(
     contra_cheque, salario, cartao_ponto, update_itens, create_itens
 ):
