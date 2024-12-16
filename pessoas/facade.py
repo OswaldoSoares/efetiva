@@ -975,6 +975,10 @@ def get_decimo_terceiro_colaborador(id_pessoal):
 
 def atualiza_dozeavos_e_parcelas_decimo_terceiro(colaborador):
     decimo_terceiro = get_decimo_terceiro_colaborador(colaborador.id_pessoal)
+
+    if not decimo_terceiro:
+        return
+
     admissao = colaborador.dados_profissionais.data_admissao
     salario = colaborador.salarios.salarios.Salario
     hoje = datetime.today().date()
