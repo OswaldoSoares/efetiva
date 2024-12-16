@@ -980,7 +980,11 @@ def atualiza_dozeavos_e_parcelas_decimo_terceiro(colaborador):
         return
 
     admissao = colaborador.dados_profissionais.data_admissao
-    salario = colaborador.salarios.salarios.Salario
+    salario = (
+        colaborador.salarios.salarios.Salario
+        if colaborador.salarios.salarios
+        else Decimal(0.00)
+    )
     hoje = datetime.today().date()
     ultimo_ano = decimo_terceiro[0]["ano"]
 
