@@ -15,7 +15,7 @@ from website.facade import cmp, valor_ponto_milhar
 
 
 def print_pdf_ficha_colaborador(contexto):
-    nome_curto = contexto["colaborador"]["nome_curto"]
+    nome_curto = contexto["colaborador"].nome_curto
     response = HttpResponse(content_type="application/pdf")
     response[
         "Content-Disposition"
@@ -34,27 +34,27 @@ def print_pdf_ficha_colaborador(contexto):
 
 
 def ficha_colaborador(pdf, contexto):
-    if contexto["colaborador"]["foto"]:
-        foto = contexto["colaborador"]["foto"].path
+    if contexto["colaborador"].foto:
+        foto = contexto["colaborador"].foto.path
         foto = do_crop(foto)
         if foto == False:
             foto = f"{STATIC_ROOT}/website/img/usuario.png"
     else:
         foto = f"{STATIC_ROOT}/website/img/usuario.png"
-    nome = contexto["colaborador"]["nome"]
-    categoria = contexto["colaborador"]["categoria"]
+    nome = contexto["colaborador"].nome
+    categoria = contexto["colaborador"].dados_profissionais.categoria
     data_nascimento = datetime.datetime.strftime(
-        contexto["colaborador"]["data_nascimento"], "%d/%m/%Y"
+        contexto["colaborador"].filiacao.data_nascimento, "%d/%m/%Y"
     )
-    mae = contexto["colaborador"]["mae"]
-    pai = contexto["colaborador"]["pai"]
-    endereco = contexto["colaborador"]["endereco"]
-    bairro = contexto["colaborador"]["bairro"]
-    cep = contexto["colaborador"]["cep"]
-    cidade_estado = contexto["colaborador"]["cidade_estado"]
-    doc = contexto["colaborador"]["documentos"]
-    fone = contexto["colaborador"]["telefones"]
-    banco = contexto["colaborador"]["bancos"]
+    mae = contexto["colaborador"].filiacao.mae
+    pai = contexto["colaborador"].filiacao.pai
+    endereco = contexto["colaborador"].residencia.endereco
+    bairro = contexto["colaborador"].residencia.bairro
+    cep = contexto["colaborador"].residencia.cep
+    cidade_estado = contexto["colaborador"].residencia.cidade_estado
+    doc = contexto["colaborador"].documentos.docs
+    fone = contexto["colaborador"].telefones.fones
+    banco = contexto["colaborador"].bancos.contas
     pdf.setFont("Times-Roman", 12)
     pdf.drawCentredString(cmp(105), cmp(255.8), "FICHA CADASTRAL")
     pdf.line(cmp(10), cmp(254.1), cmp(200), cmp(254.1))
@@ -65,7 +65,7 @@ def ficha_colaborador(pdf, contexto):
     pdf.setFont("Helvetica", 12)
     pdf.drawCentredString(cmp(105), cmp(198), categoria)
     pdf.line(cmp(10), cmp(196), cmp(200), cmp(196))
-    if contexto["colaborador"]["foto"]:
+    if contexto["colaborador"].foto:
         pdf.circle(cmp(105), cmp(230), 57, stroke=1, fill=0)
     linha = 192
     pdf.setFont("Times-Roman", 10)
