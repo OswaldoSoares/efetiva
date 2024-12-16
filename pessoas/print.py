@@ -52,9 +52,9 @@ def ficha_colaborador(pdf, contexto):
     bairro = contexto["colaborador"].residencia.bairro
     cep = contexto["colaborador"].residencia.cep
     cidade_estado = contexto["colaborador"].residencia.cidade_estado
-    doc = contexto["colaborador"].documentos.docs
-    fone = contexto["colaborador"].telefones.fones
-    banco = contexto["colaborador"].bancos.contas
+    docs = contexto["colaborador"].documentos.docs
+    fones = contexto["colaborador"].telefones.fones
+    contas = contexto["colaborador"].bancos.contas
     pdf.setFont("Times-Roman", 12)
     pdf.drawCentredString(cmp(105), cmp(255.8), "FICHA CADASTRAL")
     pdf.line(cmp(10), cmp(254.1), cmp(200), cmp(254.1))
@@ -85,7 +85,7 @@ def ficha_colaborador(pdf, contexto):
         pdf.drawString(cmp(12), cmp(linha), f"NOME DO PAI: {pai}")
     linha -= 1.5
     pdf.line(cmp(10), cmp(linha), cmp(200), cmp(linha))
-    if doc:
+    if docs:
         linha -= 6
         pdf.setFont("Times-Roman", 12)
         pdf.setFillColor(HexColor("#B0C4DE"))
@@ -98,22 +98,22 @@ def ficha_colaborador(pdf, contexto):
         linha -= 1
         pdf.line(cmp(10), cmp(linha), cmp(200), cmp(linha))
         linha += 1
-        for i in doc:
+        for doc in docs:
             linha -= 5
-            if i["tipo"] == "HABILITAÇÃO":
-                data = datetime.datetime.strftime(i["data_doc"], "%d/%m/%Y")
+            tipo = doc.TipoDocumento
+            documento = doc.Documento
+            data = datetime.datetime.strftime(doc.Data, "%d/%m/%Y")
+            if tipo == "HABILITAÇÃO":
                 pdf.drawString(
                     cmp(12),
                     cmp(linha),
-                    f'{i["tipo"]}: {i["documento"]} - VENCIMENTO: {data}',
+                    f"{tipo}: {documento} - VENCIMENTO: {data}",
                 )
             else:
-                pdf.drawString(
-                    cmp(12), cmp(linha), f'{i["tipo"]}: {i["documento"]}'
-                )
+                pdf.drawString(cmp(12), cmp(linha), f"{tipo}: {documento}")
         linha -= 1.5
         pdf.line(cmp(10), cmp(linha), cmp(200), cmp(linha))
-    if fone:
+    if fones:
         linha -= 6
         pdf.setFont("Times-Roman", 12)
         pdf.setFillColor(HexColor("#B0C4DE"))
@@ -126,12 +126,14 @@ def ficha_colaborador(pdf, contexto):
         linha -= 1
         pdf.line(cmp(10), cmp(linha), cmp(200), cmp(linha))
         linha += 1
-        for i in fone:
+        for fone in fones:
             linha -= 5
-            pdf.drawString(cmp(12), cmp(linha), f'{i["tipo"]}: {i["fone"]}')
+            pdf.drawString(
+                cmp(12), cmp(linha), f"{fone.TipoFone}: {fone.Fone}"
+            )
         linha -= 1.5
         pdf.line(cmp(10), cmp(linha), cmp(200), cmp(linha))
-    if banco:
+    if contas:
         linha -= 6
         pdf.setFont("Times-Roman", 12)
         pdf.setFillColor(HexColor("#B0C4DE"))
@@ -146,13 +148,14 @@ def ficha_colaborador(pdf, contexto):
         linha -= 1
         pdf.line(cmp(10), cmp(linha), cmp(200), cmp(linha))
         linha += 1
-        for i in banco:
+        for conta in contas:
             linha -= 5
             pdf.drawString(
                 cmp(12),
                 cmp(linha),
-                f'{i["banco"]} - AGÊNCIA: {i["agencia"]} CONTA {i["tipo"]}:'
-                f' {i["conta"]} - CHAVE PIX: {i["pix"]}',
+                f"BANCO {conta.Banco} - AGÊNCIA: {conta.Agencia}"
+                f" CONTA {conta.TipoConta}:"
+                f" {conta.Conta} - CHAVE PIX: {conta.PIX}",
             )
 
 
