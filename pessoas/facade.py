@@ -1012,6 +1012,23 @@ def atualiza_dozeavos_e_parcelas_decimo_terceiro(colaborador):
             ]
         ).update(Valor=valor_parcela)
 
+    if ultimo_ano == hoje.year and admissao.month == 12:
+        dozeavos = 1
+
+        valor_atualizado = round(Decimal(salario / 12 * dozeavos), 2)
+        valor_parcela = round(valor_atualizado, 2)
+
+        DecimoTerceiro.objects.filter(
+            idDecimoTerceiro=decimo_terceiro[0]["id_decimo_terceiro"]
+        ).update(Dozeavos=dozeavos, Valor=valor_atualizado)
+
+        ParcelasDecimoTerceiro.objects.filter(
+            idParcelasDecimoTerceiro__in=[
+                parcela["idParcelasDecimoTerceiro"]
+                for parcela in decimo_terceiro[0]["parcelas"]
+            ]
+        ).update(Valor=valor_parcela)
+
 
 def create_contra_cheque(mes, ano, descricao, id_pessoal, obs):
     return ContraCheque.objects.create(
