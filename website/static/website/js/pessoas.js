@@ -87,6 +87,7 @@ $(document).on('click', ".js-selecionar-colaborador", function() {
         $(".card-info-colaborador").html(data.html_card_info_colaborador)
         $(".card-dados-colaborador").html(data.html_dados_colaborador)
         $(".card-ferias-colaborador").html(data.html_ferias_colaborador)
+        $(".card-ferias-colaborador").show();
         $(".card-decimo-terceiro").html(data.html_decimo_terceiro)
         $(".card-recibos-colaborador").html(data.html_recibos_colaborador)
         if (data.tipo_pgto == "MENSALISTA") {
@@ -268,7 +269,8 @@ $(document).on('click', '.js-atualiza-decimo-terceiro', function() {
 // });
 
 $(document).on('click', '.js-periodo-ferias', function() {
-    var idpessoal = $("#idpessoal").val();
+    // var idpessoal = $("#idpessoal").val();
+    var idpessoal = idPessoal
     var idaquisitivo = $(this).data("idaquisitivo");
     $.ajax({
         type: "GET",
@@ -708,7 +710,8 @@ $(document).on('click', '.js-toggle-decimo-terceiro', function() {
 });
 
 $(document).on('click', '.js-seleciona-aquisitivo', function() {
-    var idpessoal = $(this).data("idpessoal")
+    // var idpessoal = $(this).data("idpessoal")
+    var idpessoal = idPessoal
     var idaquisitivo = $(this).data("idaquisitivo")
     var descricao = $(this).data("descricao")
     $.ajax({

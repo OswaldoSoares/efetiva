@@ -9,7 +9,7 @@
 </div>
 <!-- Body -->
 <div class="card-body">
-    {% for i in colaborador.aquisitivo %}
+    {% for i in colaborador_ant.aquisitivo %}
     <div class="card-body-item js-mostra-ferias">
         <div class="input-group">
             <i class="bi bi-check
@@ -26,29 +26,29 @@
                 js-periodo-ferias"
                    title="Inserir Período de Férias"
                    data-idaquisitivo="{{ i.idaquisitivo }}"
-                   data-idpessoal="{{ colaborador.idpes }}"></i>
+                   data-idpessoal="{{ colaborador_ant.id_pessoal }}"></i>
             </div>
-            {% if i.aquisitivo_final <  hoje %}
+            {% comment %} {% if i.aquisitivo_final <  hoje %} {% endcomment %}
             <div class="input-group-addon
             addon-my-color">
                 <i class="icofont-square
                    i-button
                    js-seleciona-aquisitivo"
                    title="Pagar Férias"
-                   data-idpessoal="{{ colaborador.idpes }}"
+                   data-idpessoal="{{ colaborador_ant.id_pessoal }}"
                    data-idaquisitivo="{{ i.idaquisitivo }}"
                    data-descricao="FERIAS"></i>
             </div>
-            {% else %}
-            <div class="input-group-addon
-            addon-my-color">
-                <i class="icofont-square
-                   i-button-null"
-                   title="Pagar Férias"
-                   data-idaquisitivo="{{ i.idaquisitivo }}"
-                   data-descricao="FERIAS"></i>
-            </div>
-            {% endif %}
+            {% comment %} {% else %} {% endcomment %}
+            {% comment %} <div class="input-group-addon {% endcomment %}
+            {% comment %} addon-my-color"> {% endcomment %}
+                {% comment %} <i class="icofont-square {% endcomment %}
+                   {% comment %} i-button-null" {% endcomment %}
+                   {% comment %} title="Pagar Férias" {% endcomment %}
+                   {% comment %} data-idaquisitivo="{{ i.idaquisitivo }}" {% endcomment %}
+                   {% comment %} data-descricao="FERIAS"></i> {% endcomment %}
+            {% comment %} </div> {% endcomment %}
+            {% comment %} {% endif %} {% endcomment %}
 
             {% comment %} <div class="input-group-addon {% endcomment %}
             {% comment %} addon-my-color"> {% endcomment %}
@@ -60,7 +60,7 @@
             {% comment %} </div> {% endcomment %}
         </div>
     </div>
-    {% for ferias in colaborador.ferias %}
+    {% for ferias in colaborador_ant.ferias %}
     {% if i.idaquisitivo == ferias.idaquisitivo %}
     <div class="card-body-item js-mostra-ferias">
         <div class="input-group">

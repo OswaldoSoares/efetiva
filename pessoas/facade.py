@@ -1239,6 +1239,7 @@ def contra_cheque_html_data(request, contexto):
 
 def create_contexto_consulta_colaborador(id_pessoal):
     colaborador = classes.Colaborador(id_pessoal)
+    colaborador_antigo = classes.ColaboradorAntigo(id_pessoal).__dict__
     colaborador_ant = get_colaborador(id_pessoal)
     aquisitivo = get_aquisitivo(colaborador_ant)
     multas = facade_multa.multas_pagar("MOTORISTA", id_pessoal)
@@ -1248,8 +1249,10 @@ def create_contexto_consulta_colaborador(id_pessoal):
     decimo_terceiro = get_decimo_terceiro_colaborador(id_pessoal)
     hoje = datetime.today().date()
     ano_atual = hoje.year
+    print(colaborador_antigo)
     return {
         "colaborador": colaborador,
+        "colaborador_ant": colaborador_antigo,
         "vales": vales,
         "saldo_vales": saldo_vales,
         "multas": multas,
@@ -1615,10 +1618,11 @@ def create_data_consulta_colaborador(request, contexto):
     html_data.html_card_docs_colaborador(request, contexto, data)
     html_data.html_card_fones_colaborador(request, contexto, data)
     html_data.html_card_contas_colaborador(request, contexto, data)
+    html_data.html_card_salario_colaborador(request, contexto, data)
     #  html_card_info_colaborador(request, contexto, data)
     #  html_dados_colaborador(request, contexto, data)
     #  if tipo_pgto == "MENSALISTA":
-    #  html_ferias_colaborador(request, contexto, data)
+    html_ferias_colaborador(request, contexto, data)
     #  html_decimo_terceiro(request, contexto, data)
     #  else:
     #  html_recibos_colaborador(request, contexto, data)
@@ -1983,13 +1987,9 @@ def html_form_periodo_ferias(request, contexto, data):
 def valida_periodo_ferias(request):
     msg = dict()
     error = False
-    hoje = datetime.datetime.today()
-    data_inicio = datetime.datetime.strptime(
-        request.POST.get("inicio"), "%Y-%m-%d"
-    )
-    data_termino = datetime.datetime.strptime(
-        request.POST.get("termino"), "%Y-%m-%d"
-    )
+    hoje = datetime.today()
+    data_inicio = datetime.strptime(request.POST.get("inicio"), "%Y-%m-%d")
+    data_termino = datetime.strptime(request.POST.get("termino"), "%Y-%m-%d")
     dias = (data_termino - data_inicio).days + 1
     if dias < 5:
         msg["erro_termino"] = "O Período não pode ser menor que 5 dias."
@@ -2010,8 +2010,8 @@ def read_periodo_ferias_post(request):
 
 def salva_periodo_ferias_colaborador(idpessoal, inicio, termino, idaquisitivo):
     print(len(connection.queries))
-    inicio = datetime.datetime.strptime(inicio, "%Y-%m-%d")
-    termino = datetime.datetime.strptime(termino, "%Y-%m-%d")
+    inicio = datetime.strptime(inicio, "%Y-%m-%d")
+    termino = datetime.strptime(termino, "%Y-%m-%d")
     colaborador = Pessoal.objects.get(idPessoal=idpessoal)
     admissao = colaborador.DataAdmissao
     demissao = colaborador.DataDemissao
@@ -2022,7 +2022,7 @@ def salva_periodo_ferias_colaborador(idpessoal, inicio, termino, idaquisitivo):
     mes_termino = termino.month
     if mes_inicio == 12:
         mes_termino += 12
-    mes_ano = datetime.datetime.strftime(inicio, "%B/%Y")
+    mes_ano = datetime.strftime(inicio, "%B/%Y")
     mes, ano = converter_mes_ano(mes_ano)
     pdm, udm = extremos_mes(mes, ano)
     cp = CartaoPonto.objects.filter(Dia__range=[pdm, udm], idPessoal=idpessoal)
@@ -2032,7 +2032,7 @@ def salva_periodo_ferias_colaborador(idpessoal, inicio, termino, idaquisitivo):
         )
     if mes_termino > mes_inicio:
         nova_data = inicio + relativedelta(months=+1)
-        mes_ano = datetime.datetime.strftime(nova_data, "%B/%Y")
+        mes_ano = datetime.strftime(nova_data, "%B/%Y")
         mes, ano = converter_mes_ano(mes_ano)
         pdm, udm = extremos_mes(mes, ano)
         cp = CartaoPonto.objects.filter(
@@ -2044,7 +2044,7 @@ def salva_periodo_ferias_colaborador(idpessoal, inicio, termino, idaquisitivo):
             )
         if mes_termino == mes_inicio + 2:
             nova_data = nova_data + relativedelta(months=+1)
-            mes_ano = datetime.datetime.strftime(nova_data, "%B/%Y")
+            mes_ano = datetime.strftime(nova_data, "%B/%Y")
             mes, ano = converter_mes_ano(mes_ano)
             pdm, udm = extremos_mes(mes, ano)
             cp = CartaoPonto.objects.filter(
@@ -2070,7 +2070,7 @@ def salva_periodo_ferias_colaborador(idpessoal, inicio, termino, idaquisitivo):
 
 
 def create_contexto_print_ferias(idpes, idaquisitivo, idparcela):
-    colaborador = Colaborador(idpes).__dict__
+    colaborador = classes.ColaboradorAntigo(idpes).__dict__
     colaborador_model = get_colaborador(idpes)
     aquisitivo = Aquisitivo.objects.filter(idAquisitivo=idaquisitivo)[0]
     contra_cheque = ContraCheque.objects.filter(idPessoal=colaborador_model)
@@ -2435,16 +2435,18 @@ def create_contexto_contra_cheque_apaga(idpessoal, idselecionado, descricao):
         "contra_cheque": contra_cheque,
         "contra_cheque_itens": contra_cheque_itens,
         "mes_ano": mes_ano,
-        "credito": credito,
-        "debito": debito,
-        "saldo_contra_cheque": saldo_contra_cheque,
+        #  "credito": credito,
+        #  "debito": debito,
+        #  "saldo_contra_cheque": saldo_contra_cheque,
         #  "decimo_terceiro": decimo_terceiro,
         #  "parcelas_decimo_terceiro": parcelas_decimo_terceiro,
         "colaborador": colaborador,
         "tipo": descricao,
         "idpessoal": idpessoal,
+        "id_pessoal": idpessoal,
         "mensagem": "",
     }
+    contexto.update(get_saldo_contra_cheque(contra_cheque_itens))
     idcontracheque = contra_cheque.idContraCheque
     file = get_file_contra_cheque(idcontracheque)
     contexto.update({"file": file})
@@ -2538,12 +2540,12 @@ def atualiza_salario_ferias_dias_referencia(idpessoal, idaquisitivo):
     )
     contra_cheque_itens = get_contra_cheque_itens(contra_cheque_ferias)
     contra_cheque_item = contra_cheque_itens.filter(Descricao="FERIAS")
-    update_contra_cheque_item_valor(contra_cheque_item, salario_ferias)
+    #  update_contra_cheque_item_valor(contra_cheque_item, salario_ferias)
     referencia = tabela_faltas_aquisitivo(faltas)
-    update_contra_cheque_item_referencia(contra_cheque_item, referencia)
+    #  update_contra_cheque_item_referencia(contra_cheque_item, referencia)
     contra_cheque_item = contra_cheque_itens.filter(Descricao="1/3 FERIAS")
-    update_contra_cheque_item_valor(contra_cheque_item, salario_ferias / 3)
-    update_contra_cheque_item_referencia(contra_cheque_item, referencia)
+    #  update_contra_cheque_item_valor(contra_cheque_item, salario_ferias / 3)
+    #  update_contra_cheque_item_referencia(contra_cheque_item, referencia)
     return (
         colaborador,
         aquisitivo,
@@ -2650,12 +2652,8 @@ def busca_contra_cheque_aquisitivo(idpessoal, idaquisitivo, descricao):
     faltas = aquisitivo_faltas(colaborador, aquisitivo)
     ano = aquisitivo.DataFinal.year
     mes = aquisitivo.DataFinal.month
-    aquisitivo_inicial = datetime.datetime.strftime(
-        aquisitivo.DataInicial, "%d/%m/%Y"
-    )
-    aquisitivo_final = datetime.datetime.strftime(
-        aquisitivo.DataFinal, "%d/%m/%Y"
-    )
+    aquisitivo_inicial = datetime.strftime(aquisitivo.DataInicial, "%d/%m/%Y")
+    aquisitivo_final = datetime.strftime(aquisitivo.DataFinal, "%d/%m/%Y")
     obs = f"AQUISITIVO: {aquisitivo_inicial} - {aquisitivo_final}"
     try:
         contra_cheque = get_contra_cheque_mes_ano_descricao(
@@ -2666,17 +2664,15 @@ def busca_contra_cheque_aquisitivo(idpessoal, idaquisitivo, descricao):
         nova_obs = dict()
         nova_obs["aquisitivo"] = obs
         create_contra_cheque(
-            meses[mes - 1], ano, "FERIAS", colaborador, nova_obs
+            meses[mes - 1], ano, "FERIAS", idpessoal, nova_obs
         )
         contra_cheque = get_contra_cheque_mes_ano_descricao(
             colaborador, mes, ano, descricao
         )
     ferias = Ferias.objects.filter(idAquisitivo=aquisitivo)
     for index, feria in enumerate(ferias):
-        gozo_inicial = datetime.datetime.strftime(
-            feria.DataInicial, "%d/%m/%Y"
-        )
-        gozo_final = datetime.datetime.strftime(feria.DataFinal, "%d/%m/%Y")
+        gozo_inicial = datetime.strftime(feria.DataInicial, "%d/%m/%Y")
+        gozo_final = datetime.strftime(feria.DataFinal, "%d/%m/%Y")
         string_gozo = f"GOZO DE FÉRIAS - {index+1}"
         chave_gozo = f"gozo{index+1}"
         obs = f"{string_gozo}: {gozo_inicial} - {gozo_final}"
@@ -2803,9 +2799,7 @@ def aquisitivo_faltas(colaborador, aquisitivo):
         Ausencia="FALTA",
         Remunerado=False,
     )
-    lista = [
-        datetime.datetime.strftime(i.Dia, "%d/%m/%Y") for i in cartao_ponto
-    ]
+    lista = [datetime.strftime(i.Dia, "%d/%m/%Y") for i in cartao_ponto]
     return lista
 
 
