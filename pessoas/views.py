@@ -458,7 +458,7 @@ def seleciona_aquisitivo(request):
     idpessoal = request.GET.get("idpessoal")
     idaquisitivo = request.GET.get("idaquisitivo")
     descricao = request.GET.get("descricao")
-    contexto = facade.create_contexto_contra_cheque(
+    contexto = facade.create_contexto_contra_cheque_apaga(
         idpessoal,
         idaquisitivo,
         descricao,
