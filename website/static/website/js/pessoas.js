@@ -11,6 +11,7 @@ var ocultarCardsColaborador =  function() {
     $(".card-docs-colaborador").hide();
     $(".card-fones-colaborador").hide();
     $(".card-contas-colaborador").hide();
+    $(".card-salario-colaborador").hide();
 };
 
 $(document).ready(function() {
@@ -80,6 +81,8 @@ $(document).on('click', ".js-selecionar-colaborador", function() {
         $(".card-fones-colaborador").show();
         $(".card-contas-colaborador").html(data["html-card-contas-colaborador"]);
         $(".card-contas-colaborador").show();
+        $(".card-salario-colaborador").html(data["html-card-salario-colaborador"]);
+        $(".card-salario-colaborador").show();
         var url = $(".foto").attr("src");
         // Força o recarregamento da foto sem utilizar o cache
         $(".foto").attr("src", url + `?v=${new Date().getTime()}`);

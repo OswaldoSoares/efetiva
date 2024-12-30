@@ -187,6 +187,23 @@ class Salario(models.Model):
     objects = models.Manager()
 
 
+class AlteracaoSalarial(models.Model):
+    idAlteracaoSalarial = models.AutoField(primary_key=True)
+    Data = models.DateField()
+    Valor = models.DecimalField(decimal_places=2, max_digits=9, default=0.00)
+    Obs = models.TextField(blank=True)
+    idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = "salario_alteracao"
+        ordering = ["idPessoal", "Data"]
+
+    def __str__(self):
+        return str(self.Valor)
+
+    objects = models.Manager()
+
+
 class ContraCheque(models.Model):
     idContraCheque = models.AutoField(primary_key=True)
     MesReferencia = models.CharField(max_length=9)
