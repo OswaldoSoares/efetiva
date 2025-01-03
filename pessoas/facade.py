@@ -2406,7 +2406,6 @@ def html_card_contra_cheque_colaborador(request, contexto, data):
 
 
 def create_contexto_contra_cheque_apaga(idpessoal, idselecionado, descricao):
-    print(idpessoal)
     colaborador = classes.ColaboradorAntigo(idpessoal).__dict__
     colaborador_futuro = get_colaborador(idpessoal)
     contas = get_contas_bancaria_colaborador(colaborador_futuro)
