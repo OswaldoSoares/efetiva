@@ -3211,14 +3211,14 @@ def verifica_feriados(cartao_ponto, mes, ano):
     registros_cartao_ponto = []
     for feriado in lista_feriados:
         dia = datetime.datetime.strptime(feriado["Valor"], "%Y-%m-%d").date()
-        filtro = list(filter(lambda item: item["Dia"] == dia, cartao_ponto))
-        if filtro[0]["Ausencia"] != "FÉRIAS":
-            if filtro[0]["Ausencia"] != "FERIADO" and dia.weekday() != 6:
-                filtro[0]["Ausencia"] = "FERIADO"
-                filtro[0]["Conducao"] = False
+        filtro = list(filter(lambda item: item.Dia == dia, cartao_ponto))
+        if filtro[0].Ausencia != "FÉRIAS":
+            if filtro[0].Ausencia != "FERIADO" and dia.weekday() != 6:
+                filtro[0].Ausencia = "FERIADO"
+                filtro[0].Conducao = False
                 registros_cartao_ponto.append(
                     CartaoPonto(
-                        idCartaoPonto=filtro[0]["idCartaoPonto"],
+                        idCartaoPonto=filtro[0].idCartaoPonto,
                         Ausencia="FERIADO",
                         Conducao=False,
                     )
@@ -3726,8 +3726,8 @@ def atualiza_item_salario_ferias(
     )
     if len(ferias) > 0:
         dias_pagar = len(cartao_ponto) - len(ferias)
-        first_ferias = datetime.datetime.strftime(ferias[0]["Dia"], "%d/%m/%Y")
-        last_ferias = datetime.datetime.strftime(ferias[-1]["Dia"], "%d/%m/%Y")
+        first_ferias = datetime.datetime.strftime(ferias[0].Dia, "%d/%m/%Y")
+        last_ferias = datetime.datetime.strftime(ferias[-1].Dia, "%d/%m/%Y")
         obs = f"FÉRIAS: {first_ferias} - {last_ferias}"
         update_contra_cheque_obs(contra_cheque[0], obs, "ferias")
         if contra_cheque_itens:
