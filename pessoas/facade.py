@@ -923,7 +923,11 @@ def calcular_decimo_terceiro_proporcional(colaborador):
 
 def verbas_rescisorias(request):
     id_pessoal = request.POST.get("id_pessoal")
-    motivo = request.POST.get("motivo")
+
+    motivos_dict = dict(MOTIVOS_DEMISSAO)
+    motivo_selecionado = request.POST.get("motivo")
+    motivo = motivos_dict.get(motivo_selecionado)
+
     saldo_salario = request.POST.get("saldo_salario")
     ferias_vencidas = request.POST.get("ferias_vencidas")
     ferias_proporcionais = request.POST.get("ferias_proporcionais")
