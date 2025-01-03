@@ -928,7 +928,7 @@ def verbas_rescisorias(request):
     contexto.update(
         calcular_decimo_terceiro_proporcional(colaborador)
         if decimo_terceiro_proporcional.lower() == "true"
-        else {"ferias_valor": None}
+        else {"decimo_terceiro_valor": None}
     )
 
     contexto.update({"mensagem": "Rescião Calculada"})
