@@ -21,12 +21,15 @@
                 <i class="icofont-check"></i>
             </div>
             <div class="div-flex div-form-control">
-                <div class="tamanho-100 text-left font-menor">
-                    <span>{{ item }}{% if  item.Referencia %} ({{ item.Referencia }}){% endif %}</span>
+                <div class="tamanho-50 text-left font-menor">
+                    <span>{{ item }}{% if item.Referencia %} ({{ item.Referencia }}){% endif %}</span>
+                </div>
+                <div class="tamanho=50 text-right font-menor">
+                    <span>{% if item.Registro == 'D' %}-{% endif %} R$ {{ item.Valor }}</span>
                 </div>
             </div>
             <div class="input-group-addon addon-my-color">
-                <i class="icofont-square"></i>
+                <i class="icofont-checked i-button"></i>
             </div>
         </div>
     </div>
@@ -38,12 +41,15 @@
                 <i class="icofont-check"></i>
             </div>
             <div class="div-flex div-form-control">
-                <div class="tamanho-100 text-left font-menor">
+                <div class="tamanho-50 text-left font-menor">
                     <span>FÉRIAS PROPORCIONAIS</span>
+                </div>
+                <div class="tamanho-50 text-right font-menor">
+                    <span>R$ {{ ferias_valor }}</span>
                 </div>
             </div>
             <div class="input-group-addon addon-my-color">
-                <i class="icofont-square"></i>
+                <i class="icofont-checked i-button"></i>
             </div>
         </div>
     </div>
@@ -53,12 +59,15 @@
                 <i class="icofont-check"></i>
             </div>
             <div class="div-flex div-form-control">
-                <div class="tamanho-100 text-left font-menor">
+                <div class="tamanho-50 text-left font-menor">
                     <span>1/3 FÉRIAS PROPORCIONAIS</span>
+                </div>
+                <div class="tamanho-50 text-right font-menor">
+                    <span>R$ {{ ferias_um_terco }}</span>
                 </div>
             </div>
             <div class="input-group-addon addon-my-color">
-                <i class="icofont-square"></i>
+                <i class="icofont-checked i-button"></i>
             </div>
         </div>
     </div>
@@ -70,12 +79,15 @@
                 <i class="icofont-check"></i>
             </div>
             <div class="div-flex div-form-control">
-                <div class="tamanho-100 text-left font-menor">
+                <div class="tamanho-50 text-left font-menor">
                     <span>13º PROPORCIONAL</span>
+                </div>
+                <div class="tamanho-50 text-right font-menor">
+                    <span>R$ {{ decimo_terceiro_valor }}</span>
                 </div>
             </div>
             <div class="input-group-addon addon-my-color">
-                <i class="icofont-square"></i>
+                <i class="icofont-checked i-button"></i>
             </div>
         </div>
     </div>
