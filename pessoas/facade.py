@@ -911,7 +911,7 @@ def verbas_rescisorias(request):
 
     colaborador = classes.Colaborador(id_pessoal)
 
-    contexto = {}
+    contexto = {"colaborador": colaborador, "motivo": motivo}
 
     contexto.update(
         calcular_rescisao_saldo_salario(colaborador)
