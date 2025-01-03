@@ -101,6 +101,9 @@
         </div>
         <div class="div-flex div-form-control">
             <div class="tamanho-100 text-center">
+                <a class="bi bi-printer i-button"
+                   target="_blank"id="print-rescisao-trabalho"
+                   href="{% url 'print_rescisao_trabalho' %}?idpessoal={{ colaborador.id_pessoal }}&causa=" title="Imprime Rescisão de Trabalho"></a>
             </div>
         </div>
         <div class=" input-group-addon addon-my-color">
