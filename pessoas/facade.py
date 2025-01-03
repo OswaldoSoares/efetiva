@@ -879,11 +879,17 @@ def calcular_ferias_proporcionais(colaborador):
 
 def calcular_decimo_terceiro_proporcional(colaborador):
     data_admissao = colaborador.dados_profissionais.data_admissao
+    data_demissao = colaborador.dados_profissionais.data_demissao
     hoje = datetime.today().date()
     inicio_ano = datetime.strptime(f"{hoje.year}-01-01", "%Y-%m-%d").date()
 
+    if hoje.year > data_demissao.year:
+        inicio_ano = datetime.strptime(
+            f"{hoje.year - 1}-01-01", "%Y-%m-%d"
+        ).date()
+
     data_inicial = data_admissao if data_admissao > inicio_ano else inicio_ano
-    data_final = colaborador.dados_profissionais.data_demissao
+    data_final = data_demissao
 
     meses_proporcinais = meses_proporcionais(data_inicial, data_final)
 
@@ -922,7 +928,7 @@ def verbas_rescisorias(request):
     contexto.update(
         calcular_decimo_terceiro_proporcional(colaborador)
         if decimo_terceiro_proporcional.lower() == "true"
-        else {"ferias_valor": None}
+        else {"decimo_terceiro_valor": None}
     )
 
     contexto.update({"mensagem": "Rescião Calculada"})
@@ -2400,7 +2406,6 @@ def html_card_contra_cheque_colaborador(request, contexto, data):
 
 
 def create_contexto_contra_cheque_apaga(idpessoal, idselecionado, descricao):
-    print(idpessoal)
     colaborador = classes.ColaboradorAntigo(idpessoal).__dict__
     colaborador_futuro = get_colaborador(idpessoal)
     contas = get_contas_bancaria_colaborador(colaborador_futuro)

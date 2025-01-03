@@ -234,7 +234,7 @@ var selecionarValesToggle = function() {
     $(".js-vales-toggle-excluir").toggleClass("invisivel")
     $(".js-adicionar-vale-no-contra-cheque").each(function() {
         const valor = parseFloat($(this).data("valor").replace(",", "."));
-        const saldo = parseFloat($("#saldo").data("saldo").replace(",", "."));
+        const saldo = parseFloat(String($("#saldo").data("saldo")).replace(",", "."));
         if (valor > saldo) {
             $(this).addClass("disabled")
         } else {
