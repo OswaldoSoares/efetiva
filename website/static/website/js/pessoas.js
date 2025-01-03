@@ -187,10 +187,28 @@ $(document).on("submit", ".js-calcular-verbas-rescisorias-colaborador", function
     event.preventDefault();
     var data = $(this).serialize();
 
-    executarAjax("/pessoas/calcular_verbas_rescisorias_colaborador", "POST", data, function(data) {
-        $(".card-rescisao-colaborador").html(data["html-card-rescisao-colaborador"]);
-        $(".card-rescisao-colaborador").show();
-        $(".box-loader").hide();
+    $.ajax({
+        url: "/pessoas/calcular_verbas_rescisorias_colaborador",
+        type: "POST",
+        data: data,
+        xhrFields: {
+            responseType: "blob" // Espera uma resposta em binário (PDF)
+        },
+        success: function(response) {
+            // Cria uma URL para o blob recebido
+            var pdfUrl = URL.createObjectURL(response);
+
+            // Abre o PDF em uma nova guia
+            window.open(pdfUrl, '_blank');
+
+            // Opcional: Exibir mensagem ou atualizar UI
+            $(".card-rescisao-colaborador").hide();
+            $(".box-loader").hide();
+        },
+        error: function(xhr) {
+            alert("Erro ao gerar o PDF.");
+            $(".box-loader").hide();
+        }
     });
 });
 

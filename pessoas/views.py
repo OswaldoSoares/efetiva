@@ -174,7 +174,8 @@ def mostrar_eventos_rescisorios_colaborador(request):
 
 def calcular_verbas_rescisorias_colaborador(request):
     contexto = facade.verbas_rescisorias(request)
-    return facade.rescisao_html_data(request, contexto)
+    response = print_pdf_rescisao_trabalho(request, contexto)
+    return response
 
 
 def bloqueia_pessoa(request, idpessoa):

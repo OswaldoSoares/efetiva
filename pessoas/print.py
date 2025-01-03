@@ -165,14 +165,170 @@ def print_pdf_rescisao_trabalho(pdf, contexto):
     buffer = BytesIO()
     pdf = canvas.Canvas(buffer)
     pdf = formulario_rescisao_trabalho(pdf, contexto)
-    pdf = dados_rescisao_trabalho(pdf, contexto)
-    pdf.setTitle(f"RESCISÃO DE TRABALHO - .pdf")
+    #  pdf = dados_rescisao_trabalho(pdf, contexto)
+    pdf = dados_rescisao_trabalho_nova(pdf, contexto)
+    pdf.setTitle("RESCISÃO DE TRABALHO - .pdf")
     pdf.save()
     buffer.seek(0)
     pdf = buffer.getvalue()
     buffer.close()
     response.write(pdf)
     return response
+
+
+def dados_rescisao_trabalho_nova(pdf, contexto):
+    print(contexto)
+    print("Teste")
+    cnpj = "21.602.117/0001-15"
+    razao_social = "TRANSEFETIVA TRANSPORTE - EIRELLI - ME"
+    endereco_empregador = "RUA OLIMPIO PORTUGAL, 245"
+    bairro_empregador = "MOOCA"
+    cidade_empregador = "SÃO PAULO"
+    estado_empregador = "SP"
+    cep_empregador = "03112-010"
+    for doc in contexto["colaborador"].documentos.docs:
+        if doc.TipoDocumento == "CPF":
+            cpf = doc.Documento
+    nome_trabalhador = contexto["colaborador"].nome
+    endereco_trabalhador = contexto["colaborador"].residencia.endereco
+    bairro_trabalhador = contexto["colaborador"].residencia.bairro
+    cidade_trabalhador = contexto["colaborador"].residencia.cidade
+    estado_trabalhador = contexto["colaborador"].residencia.estado
+    cep_trabalhador = contexto["colaborador"].residencia.cep
+    nascimento = datetime.datetime.strftime(
+        contexto["colaborador"].filiacao.data_nascimento, "%d/%m/%Y"
+    )
+    mae_trabalhador = contexto["colaborador"].filiacao.mae
+    categoria = contexto["colaborador"].dados_profissionais.categoria
+    causa = contexto["motivo"]
+    salario = contexto["colaborador"].salarios.salarios.Salario
+    admissao = datetime.datetime.strftime(
+        contexto["colaborador"].dados_profissionais.data_admissao, "%d/%m/%Y"
+    )
+    demissao = datetime.datetime.strftime(
+        contexto["colaborador"].dados_profissionais.data_demissao, "%d/%m/%Y"
+    )
+    bruto = Decimal(0.00)
+    meses_ferias = contexto["ferias_meses"]
+    ferias = contexto["ferias_valor"]
+    bruto += ferias
+    terco_ferias = contexto["ferias_um_terco"]
+    bruto += terco_ferias
+    meses_decimo_terceiro = contexto["decimo_terceiro_meses"]
+    decimo_terceiro = contexto["decimo_terceiro_valor"]
+    decimo_terceiro_pago = contexto["decimo_terceiro_total_pago"]
+    bruto += decimo_terceiro
+    linha = 267.3
+    pdf.setFont("Times-Roman", 10)
+    pdf.drawString(cmp(15), cmp(linha), f"{cnpj}")
+    pdf.drawString(cmp(60), cmp(linha), f"{razao_social}")
+    linha -= 7.7
+    pdf.drawString(cmp(15), cmp(linha), f"{endereco_empregador}")
+    pdf.drawString(cmp(131), cmp(linha), f"{bairro_empregador}")
+    linha -= 7.7
+    pdf.drawString(cmp(15), cmp(linha), f"{cidade_empregador}")
+    pdf.drawString(cmp(73), cmp(linha), f"{estado_empregador}")
+    pdf.drawString(cmp(85), cmp(linha), f"{cep_empregador}")
+    linha -= 7.7
+    linha -= 4
+    pdf.drawString(cmp(15), cmp(linha), f"{cpf}")
+    pdf.drawString(cmp(60), cmp(linha), f"{nome_trabalhador}")
+    linha -= 7.7
+    pdf.drawString(cmp(15), cmp(linha), f"{endereco_trabalhador}")
+    pdf.drawString(cmp(131), cmp(linha), f"{bairro_trabalhador}")
+    linha -= 7.7
+    pdf.drawString(cmp(15), cmp(linha), f"{cidade_trabalhador}")
+    pdf.drawString(cmp(73), cmp(linha), f"{estado_trabalhador}")
+    pdf.drawString(cmp(85), cmp(linha), f"{cep_trabalhador}")
+    linha -= 7.7
+    pdf.drawString(cmp(15), cmp(linha), f"{nascimento}")
+    pdf.drawString(cmp(60), cmp(linha), f"{mae_trabalhador}")
+    linha -= 7.7
+    linha -= 4
+    pdf.drawString(cmp(15), cmp(linha), f"{categoria}")
+    linha -= 7.7
+    pdf.drawString(cmp(15), cmp(linha), f"{causa}")
+    linha -= 7.7
+    pdf.drawString(cmp(15), cmp(linha), f"R$ {salario}")
+    pdf.drawString(cmp(49), cmp(linha), f"{admissao}")
+    pdf.drawString(cmp(123), cmp(linha), f"{demissao}")
+    linha -= 7.7
+    linha -= 4
+    col = 11
+    for x in contexto["contra_cheque_itens"]:
+        if x.Registro == "C":
+            if x.Descricao.startswith("SALARIO"):
+                descricao = x.Descricao.replace("SALARIO", "SALDO DE SALARIO")
+            else:
+                descricao = x.Descricao
+            pdf.drawString(
+                cmp(col), cmp(linha), f"{descricao} - {x.Referencia}"
+            )
+            pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {x.Valor}")
+            bruto += x.Valor
+            if col == 11:
+                col = 106
+            else:
+                col = 11
+                linha -= 7.7
+    #  meses_ferias = "0"
+    pdf.drawString(
+        cmp(col), cmp(linha), f"FÉRIAS PROPORCIONAIS - {meses_ferias}/12"
+    )
+    #  ferias = "0,00"
+    pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {ferias}")
+    if col == 11:
+        col = 106
+    else:
+        col = 11
+        linha -= 7.7
+    pdf.drawString(cmp(col), cmp(linha), "1/3 FÉRIAS PROPORCIONAIS")
+    #  terco_ferias = "0,00"
+    pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {terco_ferias}")
+    if col == 11:
+        col = 106
+    else:
+        col = 11
+        linha -= 7.7
+    pdf.drawString(
+        cmp(col), cmp(linha), f"13º PROPORCIONAL - {meses_decimo_terceiro}/12"
+    )
+    pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {decimo_terceiro}")
+    linha = 116.7
+    #  bruto = "261,87"
+    pdf.drawRightString(cmp(199), cmp(linha + 1), f"R$ {bruto}")
+    linha -= 7.7
+    linha -= 4
+    linha += 1
+    deducoes = Decimal(0.00)
+    col = 11
+    if contexto["decimo_terceiro_parcelas_pagas"]:
+        pdf.drawString(cmp(col), cmp(linha), "13º PARCELAS PAGAS")
+        pdf.drawRightString(
+            cmp(col + 93), cmp(linha), f"R$ {decimo_terceiro_pago}"
+        )
+        deducoes += decimo_terceiro_pago
+        if col == 11:
+            col = 106
+        else:
+            col = 11
+            linha -= 7.7
+    for item in contexto["contra_cheque_itens"]:
+        if item.Registro == "D":
+            pdf.drawString(cmp(col), cmp(linha), f"{item.Descricao}")
+            pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {item.Valor}")
+            deducoes += item.Valor
+            if col == 11:
+                col = 106
+            else:
+                col = 11
+                linha -= 7.7
+    linha = 44.4
+    pdf.drawRightString(cmp(199), cmp(linha), f"R$ {deducoes}")
+    linha -= 7.7
+    pdf.drawRightString(cmp(199), cmp(linha), f"R$ {bruto - deducoes}")
+    pdf.drawCentredString(cmp(105), cmp(15), f"{nome_trabalhador}")
+    return pdf
 
 
 def dados_rescisao_trabalho(pdf, contexto):

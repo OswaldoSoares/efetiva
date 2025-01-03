@@ -874,7 +874,11 @@ def calcular_ferias_proporcionais(colaborador):
     ).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
     um_terco = (valor / 3).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
 
-    return {"ferias_valor": valor, "ferias_um_terco": um_terco}
+    return {
+        "ferias_valor": valor,
+        "ferias_meses": meses_proporcinais,
+        "ferias_um_terco": um_terco,
+    }
 
 
 def calcular_decimo_terceiro_proporcional(colaborador):
@@ -888,6 +892,18 @@ def calcular_decimo_terceiro_proporcional(colaborador):
             f"{hoje.year - 1}-01-01", "%Y-%m-%d"
         ).date()
 
+    parcelas_pagas = ContraCheque.objects.filter(
+        idPessoal=colaborador.id_pessoal,
+        Descricao="DECIMO TERCEIRO",
+        AnoReferencia=data_demissao.year,
+        Pago=True,
+    )
+
+    total_valor = (
+        parcelas_pagas.aggregate(soma_valor=Sum("Valor"))["soma_valor"] or 0
+    )
+
+
     data_inicial = data_admissao if data_admissao > inicio_ano else inicio_ano
     data_final = data_demissao
 
@@ -897,11 +913,17 @@ def calcular_decimo_terceiro_proporcional(colaborador):
         colaborador.salarios.salarios.Salario / 12 * meses_proporcinais
     ).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
 
-    return {"decimo_terceiro_valor": valor}
+    return {
+        "decimo_terceiro_valor": valor,
+        "decimo_terceiro_meses": meses_proporcinais,
+        "decimo_terceiro_parcelas_pagas": parcelas_pagas,
+        "decimo_terceiro_total_pago": total_valor,
+    }
 
 
 def verbas_rescisorias(request):
     id_pessoal = request.POST.get("id_pessoal")
+    motivo = request.POST.get("motivo")
     saldo_salario = request.POST.get("saldo_salario")
     ferias_vencidas = request.POST.get("ferias_vencidas")
     ferias_proporcionais = request.POST.get("ferias_proporcionais")
@@ -911,7 +933,7 @@ def verbas_rescisorias(request):
 
     colaborador = classes.Colaborador(id_pessoal)
 
-    contexto = {}
+    contexto = {"colaborador": colaborador, "motivo": motivo}
 
     contexto.update(
         calcular_rescisao_saldo_salario(colaborador)
