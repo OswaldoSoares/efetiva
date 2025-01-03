@@ -903,7 +903,6 @@ def calcular_decimo_terceiro_proporcional(colaborador):
         parcelas_pagas.aggregate(soma_valor=Sum("Valor"))["soma_valor"] or 0
     )
 
-
     data_inicial = data_admissao if data_admissao > inicio_ano else inicio_ano
     data_final = data_demissao
 
