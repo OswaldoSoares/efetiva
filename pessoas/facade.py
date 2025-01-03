@@ -874,7 +874,11 @@ def calcular_ferias_proporcionais(colaborador):
     ).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
     um_terco = (valor / 3).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
 
-    return {"ferias_valor": valor, "ferias_um_terco": um_terco}
+    return {
+        "ferias_valor": valor,
+        "ferias_meses": meses_proporcinais,
+        "ferias_um_terco": um_terco,
+    }
 
 
 def calcular_decimo_terceiro_proporcional(colaborador):
