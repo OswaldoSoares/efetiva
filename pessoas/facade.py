@@ -897,11 +897,17 @@ def calcular_decimo_terceiro_proporcional(colaborador):
         colaborador.salarios.salarios.Salario / 12 * meses_proporcinais
     ).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
 
-    return {"decimo_terceiro_valor": valor}
+    return {
+        "decimo_terceiro_valor": valor,
+        "decimo_terceiro_meses": meses_proporcinais,
+        "decimo_terceiro_parcelas_pagas": parcelas_pagas,
+        "decimo_terceiro_total_pago": total_valor,
+    }
 
 
 def verbas_rescisorias(request):
     id_pessoal = request.POST.get("id_pessoal")
+    motivo = request.POST.get("motivo")
     saldo_salario = request.POST.get("saldo_salario")
     ferias_vencidas = request.POST.get("ferias_vencidas")
     ferias_proporcionais = request.POST.get("ferias_proporcionais")
