@@ -879,11 +879,17 @@ def calcular_ferias_proporcionais(colaborador):
 
 def calcular_decimo_terceiro_proporcional(colaborador):
     data_admissao = colaborador.dados_profissionais.data_admissao
+    data_demissao = colaborador.dados_profissionais.data_demissao
     hoje = datetime.today().date()
     inicio_ano = datetime.strptime(f"{hoje.year}-01-01", "%Y-%m-%d").date()
 
+    if hoje.year > data_demissao.year:
+        inicio_ano = datetime.strptime(
+            f"{hoje.year - 1}-01-01", "%Y-%m-%d"
+        ).date()
+
     data_inicial = data_admissao if data_admissao > inicio_ano else inicio_ano
-    data_final = colaborador.dados_profissionais.data_demissao
+    data_final = data_demissao
 
     meses_proporcinais = meses_proporcionais(data_inicial, data_final)
 
