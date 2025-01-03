@@ -888,6 +888,18 @@ def calcular_decimo_terceiro_proporcional(colaborador):
             f"{hoje.year - 1}-01-01", "%Y-%m-%d"
         ).date()
 
+    parcelas_pagas = ContraCheque.objects.filter(
+        idPessoal=colaborador.id_pessoal,
+        Descricao="DECIMO TERCEIRO",
+        AnoReferencia=data_demissao.year,
+        Pago=True,
+    )
+
+    total_valor = (
+        parcelas_pagas.aggregate(soma_valor=Sum("Valor"))["soma_valor"] or 0
+    )
+
+
     data_inicial = data_admissao if data_admissao > inicio_ano else inicio_ano
     data_final = data_demissao
 
