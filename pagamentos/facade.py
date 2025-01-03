@@ -327,9 +327,9 @@ def create_contexto_colaborador(request):
     atualiza_cartao_ponto_transporte(cartao_ponto, vale_transporte)
     atualiza_cartao_ponto_minutas(cartao_ponto, minutas)
     cartao_ponto = obter_cartao_de_ponto_do_colaborador(colaborador, mes, ano)
-    #  atualiza_itens_contra_cheque_pagamento(
-    #  colaborador, cartao_ponto, minutas, salario, vale_transporte, mes, ano
-    #  )
+    atualiza_itens_contra_cheque_pagamento(
+        colaborador, cartao_ponto, minutas, salario, vale_transporte, mes, ano
+    )
     contexto = {
         "colaborador": colaborador,
         "nome_curto": nome_curto(colaborador.nome),
