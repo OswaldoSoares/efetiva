@@ -1304,6 +1304,16 @@ def alterar_cartao_ponto_falta(request):
     }
 
 
+def create_contexto_cartao_ponto(id_pessoal, mes, ano):
+    primeiro_dia_mes = datetime(ano, mes, 1).date()
+    dias_no_mes = calendar.monthrange(ano, mes)[1]
+    ultimo_dia_mes = datetime(ano, mes, dias_no_mes).date()
+
+    return CartaoPonto.objects.filter(
+        idPessoal=id_pessoal, Dia__range=[primeiro_dia_mes, ultimo_dia_mes]
+    )
+
+
 def create_contexto_consulta_colaborador(id_pessoal):
     colaborador = classes.Colaborador(id_pessoal)
     colaborador_antigo = classes.ColaboradorAntigo(id_pessoal).__dict__
