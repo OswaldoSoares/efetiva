@@ -1,5 +1,4 @@
 let idContraCheque = null;
-let idPessoal = null;
 
 var ocultarCardsColaborador =  function() {
     $(".card-foto-colaborador").hide();

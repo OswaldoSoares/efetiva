@@ -1,3 +1,7 @@
+let idPessoal = null;
+let mes = null
+let ano = null
+
 $(document).on('keydown', 'input.js-decimal, input.js-inteiro', function(e) {
     // Permitir: backspace, delete, setas (esquerda e direita), tab
     if ($.inArray(e.keyCode, [8, 9, 37, 39, 46]) !== -1) {
