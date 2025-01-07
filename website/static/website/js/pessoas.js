@@ -2,6 +2,7 @@ let idContraCheque = null;
 
 var ocultarCardsColaborador =  function() {
     $(".card-foto-colaborador").hide();
+    $(".card-cartao-ponto-colaborador").hide();
     $(".card-contra-cheque-colaborador").hide();
     $(".card-rescisao-colaborador").hide();
     $(".card-eventos-rescisorios-colaborador").hide();
