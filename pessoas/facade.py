@@ -1656,30 +1656,6 @@ def colaborador_html_data(request, contexto):
     return gerar_data_html(html_functions, request, contexto, data)
 
 
-def create_data_consulta_colaborador(request, contexto):
-    tipo_pgto = contexto["colaborador"].dados_profissionais.tipo_pgto
-    data = dict()
-    html_data.html_card_foto_colaborador(request, contexto, data)
-    html_data.html_card_vales_colaborador(request, contexto, data)
-    html_data.html_card_decimo_terceiro_colaborador(request, contexto, data)
-    html_data.html_card_docs_colaborador(request, contexto, data)
-    html_data.html_card_fones_colaborador(request, contexto, data)
-    html_data.html_card_contas_colaborador(request, contexto, data)
-    html_data.html_card_salario_colaborador(request, contexto, data)
-    #  html_card_info_colaborador(request, contexto, data)
-    #  html_dados_colaborador(request, contexto, data)
-    #  if tipo_pgto == "MENSALISTA":
-    html_ferias_colaborador(request, contexto, data)
-    #  html_decimo_terceiro(request, contexto, data)
-    #  else:
-    #  html_recibos_colaborador(request, contexto, data)
-    #  html_vales_colaborador(request, contexto, data)
-    #  html_multas_colaborador(request, contexto, data)
-    #  data["colaborador"] = contexto["colaborador"].id_pessoal
-    #  data["categoria"] = contexto["colaborador"].categoria
-    return JsonResponse(data)
-
-
 def html_ferias_colaborador(request, contexto, data):
     data["html_ferias_colaborador"] = render_to_string(
         "pessoas/html_ferias_colaborador.html", contexto, request=request
