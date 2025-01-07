@@ -29,8 +29,7 @@ def selecionar_categoria(request):
 def consultar_colaborador(request):
     id_pesssoal = request.GET.get("id_pessoal")
     contexto = facade.create_contexto_consulta_colaborador(id_pesssoal)
-    data = facade.create_data_consulta_colaborador(request, contexto)
-    return data
+    return facade.colaborador_html_data(request, contexto)
 
 
 def handle_modal_colaborador(
