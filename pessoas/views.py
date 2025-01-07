@@ -178,7 +178,6 @@ def calcular_verbas_rescisorias_colaborador(request):
 
 
 def alterar_falta_colaborador(request):
-    print(request.GET)
     contexto = facade.alterar_cartao_ponto_falta(request)
     return facade.cartao_ponto_html_data(request, contexto)
 
