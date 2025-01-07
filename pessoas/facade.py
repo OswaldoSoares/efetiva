@@ -1640,6 +1640,22 @@ def html_recibos_colaborador(request, contexto, data):
     return data
 
 
+def colaborador_html_data(request, contexto):
+    data = {}
+    html_functions = [
+        html_data.html_card_foto_colaborador,
+        html_data.html_card_cartao_ponto_colaborador,
+        html_data.html_card_vales_colaborador,
+        html_data.html_card_decimo_terceiro_colaborador,
+        html_data.html_card_docs_colaborador,
+        html_data.html_card_fones_colaborador,
+        html_data.html_card_contas_colaborador,
+        html_data.html_card_salario_colaborador,
+    ]
+
+    return gerar_data_html(html_functions, request, contexto, data)
+
+
 def create_data_consulta_colaborador(request, contexto):
     tipo_pgto = contexto["colaborador"].dados_profissionais.tipo_pgto
     data = dict()
