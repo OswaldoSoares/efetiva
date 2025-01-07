@@ -38,15 +38,13 @@
                     <i class="icofont-check i-button-null"></i>
                 {% else %}
                     {% if dias.Remunerado %}
-                    <i class="icofont-dollar i-button js-atestada"
-                       data-idpessoal="{{ dias.idPessoal_id }}"
-                       data-idcartaoponto="{{ dias.idCartaoPonto }}"
-                       data-remunerado="{{ dias.Remunerado }}"></i>
+                    <i class="icofont-dollar i-button js-abonar-falta"
+                       data-id_cartao_ponto="{{ dias.idCartaoPonto }}"
+                       title="DESCONTAR FALTA"></i>
                     {% else %}
-                    <i class="icofont-close i-button js-atestada"
-                       data-idpessoal="{{ dias.idPessoal_id }}"
-                       data-idcartaoponto="{{ dias.idCartaoPonto }}"
-                       data-remunerado="{{ dias.Remunerado }}"></i>
+                    <i class="icofont-close i-button js-abonar-falta"
+                       data-id_cartao_ponto="{{ dias.idCartaoPonto }}"
+                       title="ABONAR FALTA"></i>
                     {% endif %}
                 {% endif %}
             </div>
@@ -76,16 +74,14 @@
             </div>
             <div class="input-group-addon addon-my-color">
                 {% if dias.CarroEmpresa %}
-                    <i class="icofont-truck-alt i-button js-altera-carro-empresa"
-                       data-idpessoal="{{ dias.idPessoal_id }}"
-                       data-idcartaoponto="{{ dias.idCartaoPonto }}"
-                       data-carro_empresa="{{ dias.CarroEmpresa }}"></i>
+                    <i class="icofont-truck-alt i-button js-alterar-conducao"
+                       data-id_cartao_ponto="{{ dias.idCartaoPonto }}"
+                       title="PAGAR CONDUÇÃO" ></i>
                 {% else %}
                     {% if dias.Conducao %}
-                        <i class="icofont-bus-alt-2 i-button js-altera-carro-empresa"
-                           data-idpessoal="{{ dias.idPessoal_id }}"
-                           data-idcartaoponto="{{ dias.idCartaoPonto }}"
-                           data-carro_empresa="{{ dias.CarroEmpresa }}"></i>
+                        <i class="icofont-bus-alt-2 i-button js-alterar-conducao"
+                           data-id_cartao_ponto="{{ dias.idCartaoPonto }}"
+                           title="NÃO PAGAR CONDUÇÃO"></i>
                     {% else %}
                         <i class="icofont-bicycle-alt-1"></i>
                     {% endif %}  
