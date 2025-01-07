@@ -1280,6 +1280,9 @@ def create_contexto_consulta_colaborador(id_pessoal):
     decimo_terceiro = get_decimo_terceiro_colaborador(id_pessoal)
     hoje = datetime.today().date()
     ano_atual = hoje.year
+    cartao_ponto = create_contexto_cartao_ponto(
+        id_pessoal, hoje.month, hoje.year
+    )
     return {
         "colaborador": colaborador,
         "colaborador_ant": colaborador_antigo,
