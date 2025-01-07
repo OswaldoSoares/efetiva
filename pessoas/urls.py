@@ -159,6 +159,11 @@ urlpatterns = [
         abonar_falta_colaborador,
         name="abonar_falta_colaborador",
     ),
+    path(
+        "alterar_conducao_colaborador",
+        alterar_conducao_colaborador,
+        name="alterar_conducao_colaborador",
+    ),
     # Antigos
     path(
         "bloqueiapessoa/<int:idpessoa>/",
