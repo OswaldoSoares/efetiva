@@ -1291,6 +1291,10 @@ def create_contexto_consulta_colaborador(id_pessoal):
         "hoje": hoje,
         "ano_atual": ano_atual,
         "aquisitivo": aquisitivo,
+        "cartao_ponto": cartao_ponto,
+        "mes": hoje.month,
+        "ano": hoje.year,
+        "mensagem": f"COLABORADOR(A) {colaborador.nome_curto} SELECIONADO",
     }
 
 
