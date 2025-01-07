@@ -1268,6 +1268,14 @@ def contra_cheque_html_data(request, contexto):
     return gerar_data_html(html_functions, request, contexto, data)
 
 
+def cartao_ponto_html_data(request, contexto):
+    data = {}
+    html_functions = [
+        html_data.html_card_cartao_ponto_colaborador,
+    ]
+    return gerar_data_html(html_functions, request, contexto, data)
+
+
 def create_contexto_consulta_colaborador(id_pessoal):
     colaborador = classes.Colaborador(id_pessoal)
     colaborador_antigo = classes.ColaboradorAntigo(id_pessoal).__dict__
