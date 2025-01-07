@@ -1276,6 +1276,34 @@ def cartao_ponto_html_data(request, contexto):
     return gerar_data_html(html_functions, request, contexto, data)
 
 
+def alterar_cartao_ponto_falta(request):
+    id_pessoal = int(request.GET.get("id_pessoal"))
+    id_cartao_ponto = int(request.GET.get("id_cartao_ponto"))
+    mes = int(request.GET.get("mes"))
+    ano = int(request.GET.get("ano"))
+
+    dia_ponto = CartaoPonto.objects.filter(
+        idCartaoPonto=id_cartao_ponto
+    ).first()
+    nova_ausencia = "" if dia_ponto.Ausencia == "FALTA" else "FALTA"
+    novo_remunerado = dia_ponto.Ausencia == "FALTA"
+    nova_conducao = dia_ponto.Ausencia == "FALTA"
+
+    CartaoPonto.objects.filter(idCartaoPonto=id_cartao_ponto).update(
+        Ausencia=nova_ausencia,
+        Alteracao="MANUAL",
+        Remunerado=novo_remunerado,
+        Conducao=nova_conducao,
+    )
+
+    return {
+        "cartao_ponto": create_contexto_cartao_ponto(id_pessoal, mes, ano),
+        #  "mes": mes,
+        #  "ano": ano,
+        "mensagem": "CARTÃO DE PONTO ALTERADO",
+    }
+
+
 def create_contexto_consulta_colaborador(id_pessoal):
     colaborador = classes.Colaborador(id_pessoal)
     colaborador_antigo = classes.ColaboradorAntigo(id_pessoal).__dict__
