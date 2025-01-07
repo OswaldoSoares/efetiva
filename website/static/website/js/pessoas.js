@@ -111,6 +111,9 @@ $(document).on('click', ".js-selecionar-colaborador", function() {
         $(".js-mostra-decimo-terceiro").hide()
         $(".card-vales-colaborador").show()
         valesSelecionaveis()
+
+        mes = data["mes"]
+        ano = data["ano"]
         $(window).scrollTop(0)
         $(".box-loader").hide()
     });
