@@ -53,7 +53,8 @@
             <div class="input-group-addon addon-my-color">
                 {% if dias.Ausencia == 'FALTA' %}
                     <i class="icofont-home i-button js-alterar-falta"
-                       data-id_cartao_ponto="{{ dias.idCartaoPonto }}"></i>
+                       data-id_cartao_ponto="{{ dias.idCartaoPonto }}"
+                       title="REMOVER FALTA DO COLABORAOR"></i>
                 {% else %}
                     <i class="icofont-home i-button-null"></i>
                 {% endif %}
@@ -122,7 +123,8 @@
             </div>
             <div class="input-group-addon addon-my-color">
                 <i class="icofont-calendar i-button js-alterar-falta"
-                   data-id_cartao_ponto="{{ dias.idCartaoPonto }}"></i>
+                   data-id_cartao_ponto="{{ dias.idCartaoPonto }}"
+                   title="ADICIONAR FALTA DO COLABORAOR"></i>
             </div>
         </div>
     </div>
