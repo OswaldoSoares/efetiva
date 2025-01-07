@@ -57,6 +57,7 @@ from .views import (
     calcular_verbas_rescisorias_colaborador,
     imprimir_contra_cheque,
     alterar_falta_colaborador,
+    abonar_falta_colaborador,
 )
 
 
