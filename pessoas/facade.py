@@ -1300,8 +1300,6 @@ def alterar_cartao_ponto_falta(request):
 
     return {
         "cartao_ponto": create_contexto_cartao_ponto(id_pessoal, mes, ano),
-        #  "mes": mes,
-        #  "ano": ano,
         "mensagem": "CARTÃO DE PONTO ALTERADO",
     }
 
