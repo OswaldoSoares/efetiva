@@ -1304,6 +1304,26 @@ def alterar_cartao_ponto_falta(request):
     }
 
 
+def alterar_cartao_ponto_abono_falta(request):
+    id_pessoal = int(request.GET.get("id_pessoal"))
+    id_cartao_ponto = int(request.GET.get("id_cartao_ponto"))
+    mes = int(request.GET.get("mes"))
+    ano = int(request.GET.get("ano"))
+
+    CartaoPonto.objects.filter(idCartaoPonto=id_cartao_ponto).update(
+        Alteracao="MANUAL",
+        Remunerado=Case(
+            When(Remunerado=1, then=Value(0)),
+            When(Remunerado=0, then=Value(1)),
+        ),
+    )
+
+    return {
+        "cartao_ponto": create_contexto_cartao_ponto(id_pessoal, mes, ano),
+        "mensagem": "CARTÃO DE PONTO ALTERADO",
+    }
+
+
 def create_contexto_cartao_ponto(id_pessoal, mes, ano):
     primeiro_dia_mes = datetime(ano, mes, 1).date()
     dias_no_mes = calendar.monthrange(ano, mes)[1]
