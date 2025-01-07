@@ -182,6 +182,11 @@ def alterar_falta_colaborador(request):
     return facade.cartao_ponto_html_data(request, contexto)
 
 
+def abonar_falta_colaborador(request):
+    contexto = facade.alterar_cartao_ponto_abono_falta(request)
+    return facade.cartao_ponto_html_data(request, contexto)
+
+
 def bloqueia_pessoa(request, idpessoa):
     facade.altera_status(idpessoa)
     return redirect("indexpessoal")
