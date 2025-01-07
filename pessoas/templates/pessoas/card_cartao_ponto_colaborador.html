@@ -1,0 +1,164 @@
+<!-- Header -->
+<div class="card-header">
+    <div class="input-group">
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-up"></i>
+        </div>
+        <div class="div-form-control">
+            <span>PONTO</span>
+        </div>
+        <div class="input-group-addon addon-my-color">
+			<i class="icofont-rounded-right-up"></i>
+        </div>
+    </div>
+</div>
+<!-- Body -->
+<div class="card-body">
+{% if cartao_ponto %}
+    {% for dias in cartao_ponto %}
+    {% if dias.Ausencia %}
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-home i-button-null"></i>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-home i-button-null"></i>
+            </div>
+            <div class="div-flex div-form-control font-menor">
+                <div class="tamanho-50 text-center">
+                    <span>{{ dias.Dia }}</span>
+                </div>
+                <div class="tamanho-50 text-center">
+                    <span>{{ dias.Ausencia }}</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                {% if dias.Ausencia == "SABADO" or dias.Ausencia == "DOMINGO" or dias.Ausencia == "FERIADO" %}
+                    <i class="icofont-check i-button-null"></i>
+                {% else %}
+                    {% if dias.Remunerado %}
+                    <i class="icofont-dollar i-button js-atestada"
+                       data-idpessoal="{{ dias.idPessoal_id }}"
+                       data-idcartaoponto="{{ dias.idCartaoPonto }}"
+                       data-remunerado="{{ dias.Remunerado }}"></i>
+                    {% else %}
+                    <i class="icofont-close i-button js-atestada"
+                       data-idpessoal="{{ dias.idPessoal_id }}"
+                       data-idcartaoponto="{{ dias.idCartaoPonto }}"
+                       data-remunerado="{{ dias.Remunerado }}"></i>
+                    {% endif %}
+                {% endif %}
+            </div>
+            <div class="input-group-addon addon-my-color">
+                {% if dias.Ausencia == 'FALTA' %}
+                    <i class="icofont-home i-button js-alterar-falta"
+                       data-id_cartao_ponto="{{ dias.idCartaoPonto }}"></i>
+                {% else %}
+                    <i class="icofont-home i-button-null"></i>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-stopwatch i-button"
+                   onclick="openMyModal(event); return false"
+                   data-action="{% url 'altera_horario_cartao_ponto' %}"
+                   data-title="EDITA CARTÃO DE PONTO"
+                   data-button-save-label="ALTERAR"
+                   data-idcartaoponto="{{ dias.idCartaoPonto }}"
+                   data-idpessoal="{{ dias.idPessoal_id }}"
+                   title="Altera Horário de Entrada e Saída"></i>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                {% if dias.CarroEmpresa %}
+                    <i class="icofont-truck-alt i-button js-altera-carro-empresa"
+                       data-idpessoal="{{ dias.idPessoal_id }}"
+                       data-idcartaoponto="{{ dias.idCartaoPonto }}"
+                       data-carro_empresa="{{ dias.CarroEmpresa }}"></i>
+                {% else %}
+                    {% if dias.Conducao %}
+                        <i class="icofont-bus-alt-2 i-button js-altera-carro-empresa"
+                           data-idpessoal="{{ dias.idPessoal_id }}"
+                           data-idcartaoponto="{{ dias.idCartaoPonto }}"
+                           data-carro_empresa="{{ dias.CarroEmpresa }}"></i>
+                    {% else %}
+                        <i class="icofont-bicycle-alt-1"></i>
+                    {% endif %}  
+                {% endif %}
+            </div>
+            <div class="div-flex div-form-control font-menor">
+                <div class="tamanho-50 text-center">
+                    <span>{{ dias.Dia }}</span>
+                </div>
+                <div class="tamanho-25 text-center">
+                    {% if dias.Entrada|time:"H:i" > '07:00' %}
+                        <span class="item-atrazo">{{ dias.Entrada }}</span>
+                    {% elif dias.Entrada|time:"H:i" == '07:00' %}
+                        <span class="item-padrao">{{ dias.Entrada }}</span>
+                    {% elif dias.Entrada|time:"H:i" < '07:00' %}
+                        <span class="item-extra">{{ dias.Entrada }}</span>
+                    {% endif %}
+                </div>
+                <div class="tamanho-25 text-center">
+                    {% if dias.Saida|time:"H:i" > '17:00' %}
+                        <span class="item-extra">{{ dias.Saida }}</span>
+                    {% else %}
+                        <span class="item-padrao">{{ dias.Saida }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                {% if dias.Remunerado %}
+                    <i class="icofont-dollar i-button-null"></i>
+                {% else %}
+                    <i class="icofont-close i-button js-atestada"
+                       data-idpessoal="{{ dias.idPessoal_id }}"
+                       data-idcartaoponto="{{ dias.idCartaoPonto }}"></i>
+                {% endif %}
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-calendar i-button js-alterar-falta"
+                   data-id_cartao_ponto="{{ dias.idCartaoPonto }}"></i>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+{% else %}
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+            <i class="icofont-check i-button-null"></i>
+            </div>
+            <div class="div-flex div-form-control font-menor">
+                <div class="tamanho-100 text-center">
+                    <span>PONTO INEXISTENTE PARA ESTE MÊS</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-check i-button-null"></i>
+            </div>
+        </div>
+    </div>
+{% endif %}
+</div>
+<!-- Footer -->
+<div class="card-footer">
+    <div class="input-group">
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-down"></i>
+        </div>
+		<div class="div-flex div-form-control">
+			<div class="tamanho-100 text-left">
+				<span></span>
+			</div>
+		</div>
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-down"></i>
+        </div>
+    </div>
+</div>
