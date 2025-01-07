@@ -26,6 +26,22 @@ $(".div-sucesso").hide()
 $(".div-erro").hide()
 $(".box-loader").hide()
 
+// Adiciona ou remove falta do cartão de ponto do colaborador
+$(document).on("click", ".js-alterar-falta", function() {
+    idCartaoPonto = $(this).data("id_cartao_ponto")
+
+    executarAjax("/pessoas/alterar_falta_colaborador", "GET", {
+        id_pessoal: idPessoal,
+        id_cartao_ponto: idCartaoPonto,
+        mes: mes,
+        ano: ano,
+    }, function(data) {
+        $(".card-cartao-ponto-colaborador").html(data["html-card-cartao-ponto-colaborador"]);
+        exibirMensagem(data["mensagem"])
+        $('.box-loader').hide()
+    });
+});
+
 function openMyModal(event) {
     const modal = initModalDialog(event, '#MyModal');
     const url = $(event.target).data('action');
