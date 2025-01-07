@@ -147,6 +147,11 @@ urlpatterns = [
         imprimir_contra_cheque,
         name="imprimir_contra_cheque",
     ),
+    path(
+        "alterar_falta_colaborador",
+        alterar_falta_colaborador,
+        name="alterar_falta_colaborador",
+    ),
     # Antigos
     path(
         "bloqueiapessoa/<int:idpessoa>/",
