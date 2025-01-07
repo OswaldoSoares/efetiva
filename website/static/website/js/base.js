@@ -42,7 +42,7 @@ $(document).on("click", ".js-alterar-falta", function() {
     });
 });
 
-// Abona ou desabona falta do cartão de ponto do colaborador
+// Adiciona ou remove condução do cartão de ponto do colaborador
 $(document).on("click", ".js-alterar-conducao", function() {
     idCartaoPonto = $(this).data("id_cartao_ponto")
 
@@ -58,7 +58,7 @@ $(document).on("click", ".js-alterar-conducao", function() {
     });
 });
 
-// Adiciona ou remove condução do cartão de ponto do colaborador
+// Abona ou desabona falta do cartão de ponto do colaborador
 $(document).on("click", ".js-abonar-falta", function() {
     idCartaoPonto = $(this).data("id_cartao_ponto")
 
