@@ -1298,10 +1298,10 @@ def alterar_cartao_ponto_falta(request):
         Conducao=nova_conducao,
     )
 
-    return {
-        "cartao_ponto": create_contexto_cartao_ponto(id_pessoal, mes, ano),
-        "mensagem": "CARTÃO DE PONTO ALTERADO",
-    }
+    contexto = create_contexto_cartao_ponto(id_pessoal, mes, ano)
+    contexto.update({"mensagem": "CARTÃO DE PONTO ALTERADO"})
+
+    return contexto
 
 
 def alterar_cartao_ponto_abono_falta(request):
@@ -1318,10 +1318,10 @@ def alterar_cartao_ponto_abono_falta(request):
         ),
     )
 
-    return {
-        "cartao_ponto": create_contexto_cartao_ponto(id_pessoal, mes, ano),
-        "mensagem": "CARTÃO DE PONTO ALTERADO",
-    }
+    contexto = create_contexto_cartao_ponto(id_pessoal, mes, ano)
+    contexto.update({"mensagem": "CARTÃO DE PONTO ALTERADO"})
+
+    return contexto
 
 
 def alterar_cartao_ponto_conducao(request):
@@ -1338,9 +1338,12 @@ def alterar_cartao_ponto_conducao(request):
         ),
     )
 
-    return {
-        "cartao_ponto": create_contexto_cartao_ponto(id_pessoal, mes, ano),
-        "mensagem": "CARTÃO DE PONTO ALTERADO",
+    contexto = create_contexto_cartao_ponto(id_pessoal, mes, ano)
+    contexto.update({"mensagem": "CARTÃO DE PONTO ALTERADO"})
+
+    return contexto
+
+
     }
 
 
@@ -1349,9 +1352,11 @@ def create_contexto_cartao_ponto(id_pessoal, mes, ano):
     dias_no_mes = calendar.monthrange(ano, mes)[1]
     ultimo_dia_mes = datetime(ano, mes, dias_no_mes).date()
 
-    return CartaoPonto.objects.filter(
+    cartao_ponto = CartaoPonto.objects.filter(
         idPessoal=id_pessoal, Dia__range=[primeiro_dia_mes, ultimo_dia_mes]
     )
+
+    return {"cartao_ponto": cartao_ponto}
 
 
 def create_contexto_consulta_colaborador(id_pessoal):
