@@ -1,0 +1,13 @@
+<form class="row g-3" method="post" action="{% url 'alterar_entrada_colaborador' %}">
+    {% csrf_token %}
+    <div class="col-md-3">
+        <label for="id_entrada" class="form-label">HORA DA ENTRADA:</label>
+        <input type="time" class="form-control" name="entrada" id="id_entrada"
+               value="{{ cartao_ponto.Entrada }}">
+    </div>
+
+    <input type="hidden" name="id_pessoal" value="{{ id_pessoal }}">
+    <input type="hidden" name="id_cartao_ponto" value="{{ id_cartao_ponto }}">
+    <input type="hidden" name="mes" value="{{ mes }}">
+    <input type="hidden" name="ano" value="{{ ano }}">
+</form>
