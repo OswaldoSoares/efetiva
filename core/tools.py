@@ -205,6 +205,6 @@ def gerar_data_html(html_functions, request, contexto, data):
 
 def primeiro_e_ultimo_dia_do_mes(mes: int, ano: int) -> tuple:
     primeiro = datetime(ano, mes, 1)
-    ultimo = calendar.monthrange(ano, mes)
-    ultimo = datetime(ano, mes, ultimo[1])
+    dias_mes = calendar.monthrange(ano, mes)[1]
+    ultimo = datetime(ano, mes, dias_mes)
     return [primeiro, ultimo]
