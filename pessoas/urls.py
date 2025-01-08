@@ -165,6 +165,11 @@ urlpatterns = [
         alterar_conducao_colaborador,
         name="alterar_conducao_colaborador",
     ),
+    path(
+        "alterar_entrada_colaborador",
+        alterar_entrada_colaborador,
+        name="alterar_entrada_colaborador",
+    ),
     # Antigos
     path(
         "bloqueiapessoa/<int:idpessoa>/",
