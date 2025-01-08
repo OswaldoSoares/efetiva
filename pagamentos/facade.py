@@ -2596,7 +2596,7 @@ def html_agenda(request, contexto, data):
 
 def html_cartao_ponto(request, contexto, data):
     data["html_cartao_ponto"] = render_to_string(
-        "pagamentos/html_cartao_ponto.html", contexto, request=request
+        "pessoas/card_cartao_ponto_colaborador.html", contexto, request=request
     )
     return data
 
