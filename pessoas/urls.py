@@ -59,6 +59,7 @@ from .views import (
     alterar_falta_colaborador,
     abonar_falta_colaborador,
     alterar_conducao_colaborador,
+    alterar_entrada_colaborador,
 )
 
 
