@@ -29,8 +29,7 @@ def selecionar_categoria(request):
 def consultar_colaborador(request):
     id_pesssoal = request.GET.get("id_pessoal")
     contexto = facade.create_contexto_consulta_colaborador(id_pesssoal)
-    data = facade.create_data_consulta_colaborador(request, contexto)
-    return data
+    return facade.colaborador_html_data(request, contexto)
 
 
 def handle_modal_colaborador(
@@ -176,6 +175,37 @@ def calcular_verbas_rescisorias_colaborador(request):
     contexto = facade.verbas_rescisorias(request)
     response = print_pdf_rescisao_trabalho(request, contexto)
     return response
+
+
+def alterar_falta_colaborador(request):
+    contexto = facade.alterar_cartao_ponto_falta(request)
+    return facade.cartao_ponto_html_data(request, contexto)
+
+
+def abonar_falta_colaborador(request):
+    contexto = facade.alterar_cartao_ponto_abono_falta(request)
+    return facade.cartao_ponto_html_data(request, contexto)
+
+
+def alterar_conducao_colaborador(request):
+    contexto = facade.alterar_cartao_ponto_conducao(request)
+    return facade.cartao_ponto_html_data(request, contexto)
+
+
+def alterar_entrada_colaborador(request):
+    id_pessoal = request.POST.get("id_pessoal") or request.GET.get(
+        "id_pessoal", 0
+    )
+    mes = int(request.POST.get("mes") or request.GET.get("mes", 0))
+    ano = int(request.POST.get("ano") or request.GET.get("ano", 0))
+
+    return handle_modal_colaborador(
+        request,
+        facade.modal_entrada_colaborador,
+        facade.save_entrada_colaborador,
+        partial(facade.create_contexto_cartao_ponto, id_pessoal, mes, ano),
+        facade.cartao_ponto_html_data,
+    )
 
 
 def bloqueia_pessoa(request, idpessoa):

@@ -118,6 +118,8 @@ def create_contexto_colaboradores(categoria, status_colaborador):
 
 def gerar_data_html(html_functions, request, contexto, data):
     data["mensagem"] = contexto["mensagem"]
+    data["mes"] = contexto.get("mes", None)
+    data["ano"] = contexto.get("ano", None)
     for html_func in html_functions:
         data = html_func(request, contexto, data)
 
@@ -1268,6 +1270,126 @@ def contra_cheque_html_data(request, contexto):
     return gerar_data_html(html_functions, request, contexto, data)
 
 
+def cartao_ponto_html_data(request, contexto):
+    data = {}
+    html_functions = [
+        html_data.html_card_cartao_ponto_colaborador,
+    ]
+    return gerar_data_html(html_functions, request, contexto, data)
+
+
+def alterar_cartao_ponto_falta(request):
+    id_pessoal = int(request.GET.get("id_pessoal"))
+    id_cartao_ponto = int(request.GET.get("id_cartao_ponto"))
+    mes = int(request.GET.get("mes"))
+    ano = int(request.GET.get("ano"))
+
+    dia_ponto = CartaoPonto.objects.filter(
+        idCartaoPonto=id_cartao_ponto
+    ).first()
+    nova_ausencia = "" if dia_ponto.Ausencia == "FALTA" else "FALTA"
+    novo_remunerado = dia_ponto.Ausencia == "FALTA"
+    nova_conducao = dia_ponto.Ausencia == "FALTA"
+
+    CartaoPonto.objects.filter(idCartaoPonto=id_cartao_ponto).update(
+        Ausencia=nova_ausencia,
+        Alteracao="MANUAL",
+        Remunerado=novo_remunerado,
+        Conducao=nova_conducao,
+    )
+
+    contexto = create_contexto_cartao_ponto(id_pessoal, mes, ano)
+    contexto.update({"mensagem": "CARTÃO DE PONTO ALTERADO"})
+
+    return contexto
+
+
+def alterar_cartao_ponto_abono_falta(request):
+    id_pessoal = int(request.GET.get("id_pessoal"))
+    id_cartao_ponto = int(request.GET.get("id_cartao_ponto"))
+    mes = int(request.GET.get("mes"))
+    ano = int(request.GET.get("ano"))
+
+    CartaoPonto.objects.filter(idCartaoPonto=id_cartao_ponto).update(
+        Alteracao="MANUAL",
+        Remunerado=Case(
+            When(Remunerado=1, then=Value(0)),
+            When(Remunerado=0, then=Value(1)),
+        ),
+    )
+
+    contexto = create_contexto_cartao_ponto(id_pessoal, mes, ano)
+    contexto.update({"mensagem": "CARTÃO DE PONTO ALTERADO"})
+
+    return contexto
+
+
+def alterar_cartao_ponto_conducao(request):
+    id_pessoal = int(request.GET.get("id_pessoal"))
+    id_cartao_ponto = int(request.GET.get("id_cartao_ponto"))
+    mes = int(request.GET.get("mes"))
+    ano = int(request.GET.get("ano"))
+
+    CartaoPonto.objects.filter(idCartaoPonto=id_cartao_ponto).update(
+        Alteracao="MANUAL",
+        CarroEmpresa=Case(
+            When(CarroEmpresa=1, then=Value(0)),
+            When(CarroEmpresa=0, then=Value(1)),
+        ),
+    )
+
+    contexto = create_contexto_cartao_ponto(id_pessoal, mes, ano)
+    contexto.update({"mensagem": "CARTÃO DE PONTO ALTERADO"})
+
+    return contexto
+
+
+def modal_entrada_colaborador(id_pessoal, request):
+    id_pessoal = request.GET.get("id_pessoal")
+    id_cartao_ponto = request.GET.get("id_cartao_ponto")
+    mes = request.GET.get("mes")
+    ano = request.GET.get("ano")
+
+    cartao_ponto = CartaoPonto.objects.filter(
+        idCartaoPonto=id_cartao_ponto
+    ).first()
+
+    contexto = {
+        "id_pessoal": id_pessoal,
+        "id_cartao_ponto": id_cartao_ponto,
+        "mes": mes,
+        "ano": ano,
+        "cartao_ponto": cartao_ponto,
+    }
+
+    modal_html = html_data.html_modal_entrada_colaborador(request, contexto)
+
+    return JsonResponse({"modal_html": modal_html})
+
+
+def save_entrada_colaborador(request):
+    id_cartao_ponto = int(request.POST.get("id_cartao_ponto"))
+
+    hora = datetime.strptime(request.POST.get("entrada"), "%H:%M").time()
+
+    if CartaoPonto.objects.filter(idCartaoPonto=id_cartao_ponto).update(
+        Entrada=hora
+    ):
+        return {"mensagem": "Entrada do colaborador alterada com sucesso"}
+
+
+def create_contexto_cartao_ponto(id_pessoal, mes, ano):
+    primeiro_dia_mes = datetime(ano, mes, 1).date()
+    dias_no_mes = calendar.monthrange(ano, mes)[1]
+    ultimo_dia_mes = datetime(ano, mes, dias_no_mes).date()
+
+    cartao_ponto = CartaoPonto.objects.filter(
+        idPessoal=id_pessoal, Dia__range=[primeiro_dia_mes, ultimo_dia_mes]
+    )
+
+    return {"cartao_ponto": cartao_ponto}
+
+
 def create_contexto_consulta_colaborador(id_pessoal):
     colaborador = classes.Colaborador(id_pessoal)
     colaborador_antigo = classes.ColaboradorAntigo(id_pessoal).__dict__
@@ -1280,8 +1402,10 @@ def create_contexto_consulta_colaborador(id_pessoal):
     decimo_terceiro = get_decimo_terceiro_colaborador(id_pessoal)
     hoje = datetime.today().date()
     ano_atual = hoje.year
-    print(colaborador_antigo)
-    return {
+    cartao_ponto = create_contexto_cartao_ponto(
+        id_pessoal, hoje.month, hoje.year
+    )
+    contexto = {
         "colaborador": colaborador,
         "colaborador_ant": colaborador_antigo,
         "vales": vales,
@@ -1291,7 +1415,14 @@ def create_contexto_consulta_colaborador(id_pessoal):
         "hoje": hoje,
         "ano_atual": ano_atual,
         "aquisitivo": aquisitivo,
+        "cartao_ponto": cartao_ponto,
+        "mes": hoje.month,
+        "ano": hoje.year,
+        "mensagem": f"COLABORADOR(A) {colaborador.nome_curto} SELECIONADO",
     }
+    contexto.update(cartao_ponto)
+
+    return contexto
 
 
 def list_pessoal_all():
@@ -1640,28 +1771,20 @@ def html_recibos_colaborador(request, contexto, data):
     return data
 
 
-def create_data_consulta_colaborador(request, contexto):
-    tipo_pgto = contexto["colaborador"].dados_profissionais.tipo_pgto
-    data = dict()
-    html_data.html_card_foto_colaborador(request, contexto, data)
-    html_data.html_card_vales_colaborador(request, contexto, data)
-    html_data.html_card_decimo_terceiro_colaborador(request, contexto, data)
-    html_data.html_card_docs_colaborador(request, contexto, data)
-    html_data.html_card_fones_colaborador(request, contexto, data)
-    html_data.html_card_contas_colaborador(request, contexto, data)
-    html_data.html_card_salario_colaborador(request, contexto, data)
-    #  html_card_info_colaborador(request, contexto, data)
-    #  html_dados_colaborador(request, contexto, data)
-    #  if tipo_pgto == "MENSALISTA":
-    html_ferias_colaborador(request, contexto, data)
-    #  html_decimo_terceiro(request, contexto, data)
-    #  else:
-    #  html_recibos_colaborador(request, contexto, data)
-    #  html_vales_colaborador(request, contexto, data)
-    #  html_multas_colaborador(request, contexto, data)
-    #  data["colaborador"] = contexto["colaborador"].id_pessoal
-    #  data["categoria"] = contexto["colaborador"].categoria
-    return JsonResponse(data)
+def colaborador_html_data(request, contexto):
+    data = {}
+    html_functions = [
+        html_data.html_card_foto_colaborador,
+        html_data.html_card_cartao_ponto_colaborador,
+        html_data.html_card_vales_colaborador,
+        html_data.html_card_decimo_terceiro_colaborador,
+        html_data.html_card_docs_colaborador,
+        html_data.html_card_fones_colaborador,
+        html_data.html_card_contas_colaborador,
+        html_data.html_card_salario_colaborador,
+    ]
+
+    return gerar_data_html(html_functions, request, contexto, data)
 
 
 def html_ferias_colaborador(request, contexto, data):

@@ -50,6 +50,13 @@ def html_card_vales_colaborador(request, contexto, data):
     return data
 
 
+def html_card_cartao_ponto_colaborador(request, contexto, data):
+    data["html-card-cartao-ponto-colaborador"] = render_to_string(
+        "pessoas/card_cartao_ponto_colaborador.html", contexto, request=request
+    )
+    return data
+
+
 def html_card_eventos_rescisorios_colaborador(request, contexto, data):
     data["html-card-eventos-rescisorios-colaborador"] = render_to_string(
         "pessoas/card_eventos_rescisorios_colaborador.html",
@@ -151,5 +158,12 @@ def html_modal_confirma_excluir_vale_colaborador(request, contexto):
 def html_modal_data_demissao_colaborador(request, contexto):
     modal_html = render_to_string(
         "pessoas/modal_demissao_colaborador.html", contexto, request=request
+    )
+    return modal_html
+
+
+def html_modal_entrada_colaborador(request, contexto):
+    modal_html = render_to_string(
+        "pessoas/modal_entrada_colaborador.html", contexto, request=request
     )
     return modal_html

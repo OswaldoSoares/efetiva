@@ -56,6 +56,10 @@ from .views import (
     mostrar_eventos_rescisorios_colaborador,
     calcular_verbas_rescisorias_colaborador,
     imprimir_contra_cheque,
+    alterar_falta_colaborador,
+    abonar_falta_colaborador,
+    alterar_conducao_colaborador,
+    alterar_entrada_colaborador,
 )
 
 
@@ -145,6 +149,26 @@ urlpatterns = [
         "imprimir_contra_cheque",
         imprimir_contra_cheque,
         name="imprimir_contra_cheque",
+    ),
+    path(
+        "alterar_falta_colaborador",
+        alterar_falta_colaborador,
+        name="alterar_falta_colaborador",
+    ),
+    path(
+        "abonar_falta_colaborador",
+        abonar_falta_colaborador,
+        name="abonar_falta_colaborador",
+    ),
+    path(
+        "alterar_conducao_colaborador",
+        alterar_conducao_colaborador,
+        name="alterar_conducao_colaborador",
+    ),
+    path(
+        "alterar_entrada_colaborador",
+        alterar_entrada_colaborador,
+        name="alterar_entrada_colaborador",
     ),
     # Antigos
     path(

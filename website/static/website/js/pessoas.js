@@ -1,8 +1,8 @@
 let idContraCheque = null;
-let idPessoal = null;
 
 var ocultarCardsColaborador =  function() {
     $(".card-foto-colaborador").hide();
+    $(".card-cartao-ponto-colaborador").hide();
     $(".card-contra-cheque-colaborador").hide();
     $(".card-rescisao-colaborador").hide();
     $(".card-eventos-rescisorios-colaborador").hide();
@@ -66,6 +66,8 @@ $(document).on('click', ".js-selecionar-colaborador", function() {
     }, function(data) {
         $(".card-foto-colaborador").html(data["html-card-foto-colaborador"]);
         $(".card-foto-colaborador").show();
+        $(".card-cartao-ponto-colaborador").html(data["html-card-cartao-ponto-colaborador"]);
+        $(".card-cartao-ponto-colaborador").show();
         $(".js-fechar-card-contra-cheque").click();
         $(".sub-grid").css("padding-top", "0");
         $(".card-vales-colaborador").html(data["html-card-vales-colaborador"]);
@@ -112,6 +114,9 @@ $(document).on('click', ".js-selecionar-colaborador", function() {
         $(".js-mostra-decimo-terceiro").hide()
         $(".card-vales-colaborador").show()
         valesSelecionaveis()
+
+        mes = data["mes"]
+        ano = data["ano"]
         $(window).scrollTop(0)
         $(".box-loader").hide()
     });

@@ -1,3 +1,21 @@
+if (typeof idPessoal !== "undefined") {
+    idPessoal = null; // Redefine para null se já existir
+} else {
+    let idPessoal = null; // Declara como null na primeira carga
+}
+
+if (typeof mes !== "undefined") {
+    mes = null; // Redefine para null se já existir
+} else {
+    let mes = null; // Declara como null na primeira carga
+}
+
+if (typeof ano !== "undefined") {
+    ano = null; // Redefine para null se já existir
+} else {
+    let ano = null; // Declara como null na primeira carga
+}
+
 $(document).on('keydown', 'input.js-decimal, input.js-inteiro', function(e) {
     // Permitir: backspace, delete, setas (esquerda e direita), tab
     if ($.inArray(e.keyCode, [8, 9, 37, 39, 46]) !== -1) {
@@ -21,6 +39,55 @@ $(document).on('keydown', 'input.js-decimal, input.js-inteiro', function(e) {
 $(".div-sucesso").hide()
 $(".div-erro").hide()
 $(".box-loader").hide()
+
+// Adiciona ou remove falta do cartão de ponto do colaborador
+$(document).on("click", ".js-alterar-falta", function() {
+    idCartaoPonto = $(this).data("id_cartao_ponto")
+
+    executarAjax("/pessoas/alterar_falta_colaborador", "GET", {
+        id_pessoal: idPessoal,
+        id_cartao_ponto: idCartaoPonto,
+        mes: mes,
+        ano: ano,
+    }, function(data) {
+        $(".card-cartao-ponto-colaborador").html(data["html-card-cartao-ponto-colaborador"]);
+        exibirMensagem(data["mensagem"])
+        $('.box-loader').hide()
+    });
+});
+
+// Adiciona ou remove condução do cartão de ponto do colaborador
+$(document).on("click", ".js-alterar-conducao", function() {
+    idCartaoPonto = $(this).data("id_cartao_ponto")
+
+    executarAjax("/pessoas/alterar_conducao_colaborador", "GET", {
+        id_pessoal: idPessoal,
+        id_cartao_ponto: idCartaoPonto,
+        mes: mes,
+        ano: ano,
+    }, function(data) {
+        $(".card-cartao-ponto-colaborador").html(data["html-card-cartao-ponto-colaborador"]);
+        exibirMensagem(data["mensagem"])
+        $('.box-loader').hide()
+    });
+});
+
+// Abona ou desabona falta do cartão de ponto do colaborador
+$(document).on("click", ".js-abonar-falta", function() {
+    idCartaoPonto = $(this).data("id_cartao_ponto")
+
+    executarAjax("/pessoas/abonar_falta_colaborador", "GET", {
+        id_pessoal: idPessoal,
+        id_cartao_ponto: idCartaoPonto,
+        mes: mes,
+        ano: ano,
+    }, function(data) {
+        $(".card-cartao-ponto-colaborador").html(data["html-card-cartao-ponto-colaborador"]);
+        exibirMensagem(data["mensagem"])
+        $('.box-loader').hide()
+    });
+});
+
 
 function openMyModal(event) {
     const modal = initModalDialog(event, '#MyModal');
@@ -60,6 +127,14 @@ function openMyModal(event) {
         requestData.id_vale = idVale;
     }
 
+    // Verifica se o id_cartao_ponto está presente
+    const idCartaoPonto = $(event.target).data("id_cartao_ponto");
+    if (typeof idCartaoPonto !== "undefined") {
+        requestData.id_cartao_ponto = idCartaoPonto;
+        requestData.mes = mes;
+        requestData.ano = ano;
+    }
+
     executarAjax(url, "GET", requestData, function(data) {
         modal.find(".modal-body").html(data.modal_html);
         modal.modal("show");
@@ -91,6 +166,7 @@ function initModalDialog(event, modal_element) {
 function atualizarInterfaceComDados(xhr) {
     $(".card-colaboradores").html(xhr["html-card-colaboradores"]);
     $(".card-foto-colaborador").html(xhr["html-card-foto-colaborador"]);
+    $(".card-cartao-ponto-colaborador").html(xhr["html-card-cartao-ponto-colaborador"]);
     $(".card-vales-colaborador").html(xhr["html-card-vales-colaborador"]);
     $(".card-docs-colaborador").html(xhr["html-card-docs-colaborador"]);
     $(".card-fones-colaborador").html(xhr["html-card-fones-colaborador"]);
