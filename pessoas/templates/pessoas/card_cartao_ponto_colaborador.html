@@ -65,12 +65,12 @@
             <div class="input-group-addon addon-my-color">
                 <i class="icofont-stopwatch i-button"
                    onclick="openMyModal(event); return false"
-                   data-action="{% url 'altera_horario_cartao_ponto' %}"
-                   data-title="EDITA CARTÃO DE PONTO"
+                   data-action="{% url 'alterar_entrada_colaborador' %}"
+                   data-title="ALTERAR HORA DE ENTRADA DO COLABORADOR"
                    data-button-save-label="ALTERAR"
-                   data-idcartaoponto="{{ dias.idCartaoPonto }}"
-                   data-idpessoal="{{ dias.idPessoal_id }}"
-                   title="Altera Horário de Entrada e Saída"></i>
+                   data-id_cartao_ponto="{{ dias.idCartaoPonto }}"
+                   data-id_pessoal="{{ dias.idPessoal_id }}"
+                   title="ALTERAR HORA DE ENTRADA DO COLABORADOR"></i>
             </div>
             <div class="input-group-addon addon-my-color">
                 {% if dias.CarroEmpresa %}
