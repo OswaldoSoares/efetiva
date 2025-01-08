@@ -71,7 +71,7 @@ def create_contexto_meses_pagamento() -> dict:
     locale.setlocale(locale.LC_TIME, "pt_BR.UTF-8")
     hoje = datetime.datetime.today()
     meses = [
-        (hoje - relativedelta(months=i)).strftime("%B/%Y") for i in range(3)
+        (hoje - relativedelta(months=i)).strftime("%B/%Y") for i in range(6)
     ]
     return {"meses": meses}
 
