@@ -2,7 +2,7 @@ let idContraCheque = null
 
 var ocultarCardsPagamento = function() {
     $(".card-folha-pagamento").hide()
-    $(".card-cartao-ponto").hide()
+    $(".card-cartao-ponto-colaborador").hide()
     $(".card-funcionario-pagamento").hide()
     $(".card-contra-cheque-colaborador").hide()
     $(".card-vales-colaborador").hide()
@@ -54,8 +54,8 @@ $(document).on("click", ".js-selecionar-colaborador", function() {
         mes = $("#mes_referencia").data("mes")
         ano = $("#ano_referencia").data("ano")
         $(".js-fechar-card-contra-cheque").click();
-        $(".card-cartao-ponto").html(data.html_cartao_ponto);
-        $(".card-cartao-ponto").show()
+        $(".card-cartao-ponto-colaborador").html(data.html_cartao_ponto);
+        $(".card-cartao-ponto-colaborador").show()
         $(".card-funcionario-pagamento").html(data.html_funcionario);
         $(".body-funcionario-pagamento").hide()
         $(".card-funcionario-pagamento").show()
