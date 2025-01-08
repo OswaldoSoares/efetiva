@@ -1374,7 +1374,7 @@ def create_contexto_consulta_colaborador(id_pessoal):
     cartao_ponto = create_contexto_cartao_ponto(
         id_pessoal, hoje.month, hoje.year
     )
-    return {
+    contexto = {
         "colaborador": colaborador,
         "colaborador_ant": colaborador_antigo,
         "vales": vales,
@@ -1389,6 +1389,9 @@ def create_contexto_consulta_colaborador(id_pessoal):
         "ano": hoje.year,
         "mensagem": f"COLABORADOR(A) {colaborador.nome_curto} SELECIONADO",
     }
+    contexto.update(cartao_ponto)
+
+    return contexto
 
 
 def list_pessoal_all():
