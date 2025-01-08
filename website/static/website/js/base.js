@@ -113,6 +113,14 @@ function openMyModal(event) {
         requestData.id_vale = idVale;
     }
 
+    // Verifica se o id_cartao_ponto está presente
+    const idCartaoPonto = $(event.target).data("id_cartao_ponto");
+    if (typeof idCartaoPonto !== "undefined") {
+        requestData.id_cartao_ponto = idCartaoPonto;
+        requestData.mes = mes;
+        requestData.ano = ano;
+    }
+
     executarAjax(url, "GET", requestData, function(data) {
         modal.find(".modal-body").html(data.modal_html);
         modal.modal("show");
