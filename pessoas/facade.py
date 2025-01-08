@@ -737,9 +737,12 @@ def atualizar_cartao_ponto_rescisao(id_pessoal, demissao):
     _, ultimo_dia_mes = primeiro_e_ultimo_dia_do_mes(
         demissao.month, demissao.year
     )
+
+    dia_seguinte_demissao = demissao + timedelta(days=1)
+
     cartao_ponto = CartaoPonto.objects.filter(
         idPessoal=id_pessoal,
-        Dia__range=[demissao, ultimo_dia_mes],
+        Dia__range=[dia_seguinte_demissao, ultimo_dia_mes],
     )
 
     if cartao_ponto.exists():
