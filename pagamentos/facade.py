@@ -76,6 +76,40 @@ def create_contexto_meses_pagamento() -> dict:
     return {"meses": meses}
 
 
+def create_contexto_folha_pagamento(request):
+    meses_invertido = {v: k for k, v in MESES.items()}
+    mes, ano = request.GET.get("mes_ano").split("/")
+    mes = meses_invertido.get(mes)
+    primeiro_e_ultimo = primeiro_e_ultimo_dia_do_mes(int(mes), int(ano))
+
+    colaboradores = Pessoal.objects.filter(
+        TipoPgto="MENSALISTA", DataAdmissao__lte=primeiro_e_ultimo[1]
+    ).exclude(DataDemissao__lte=primeiro_e_ultimo[0])
+    pagamento = saldo_contra_cheques_de_colaboradores(
+        colaboradores, "PAGAMENTO", mes, ano
+    )
+    adiantamento = saldo_contra_cheques_de_colaboradores(
+        colaboradores, "ADIANTAMENTO", mes, ano
+    )
+
+    folha_sem_salarios = unir_saldo_contra_cheque_pagamento_e_adiantamento(
+        colaboradores, pagamento, adiantamento
+    )
+    salarios = get_salarios_grupo_colaboradores(colaboradores)
+    folha = adicionar_info_folha(folha_sem_salarios, salarios)
+    totais = get_totais_folha(folha)
+
+    mensagem = f"O mês {mes}/{ano} foi selecionado"
+
+    return {
+        "folha": folha,
+        "mes": mes,
+        "ano": ano,
+        "totais": totais,
+        "mensagem": mensagem,
+    }
+
+
 def obter_itens_contra_cheque(contra_cheques_itens, id_contra_cheque):
     return {
         item
@@ -207,40 +241,6 @@ def get_totais_folha(folha: dict) -> dict:
     soma["saldo"] = soma["adiantamento"] + soma["pagamento"]
 
     return soma
-
-
-def create_contexto_folha_pagamento(request):
-    meses_invertido = {v: k for k, v in MESES.items()}
-    mes, ano = request.GET.get("mes_ano").split("/")
-    mes = meses_invertido.get(mes)
-    primeiro_e_ultimo = primeiro_e_ultimo_dia_do_mes(int(mes), int(ano))
-
-    colaboradores = Pessoal.objects.filter(
-        TipoPgto="MENSALISTA", DataAdmissao__lte=primeiro_e_ultimo[1]
-    ).exclude(DataDemissao__lte=primeiro_e_ultimo[0])
-    pagamento = saldo_contra_cheques_de_colaboradores(
-        colaboradores, "PAGAMENTO", mes, ano
-    )
-    adiantamento = saldo_contra_cheques_de_colaboradores(
-        colaboradores, "ADIANTAMENTO", mes, ano
-    )
-
-    folha_sem_salarios = unir_saldo_contra_cheque_pagamento_e_adiantamento(
-        colaboradores, pagamento, adiantamento
-    )
-    salarios = get_salarios_grupo_colaboradores(colaboradores)
-    folha = adicionar_info_folha(folha_sem_salarios, salarios)
-    totais = get_totais_folha(folha)
-
-    mensagem = f"O mês {mes}/{ano} foi selecionado"
-
-    return {
-        "folha": folha,
-        "mes": mes,
-        "ano": ano,
-        "totais": totais,
-        "mensagem": mensagem,
-    }
 
 
 def folha_pagamento_html_data(request, contexto):
