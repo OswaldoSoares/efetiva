@@ -192,6 +192,22 @@ def alterar_conducao_colaborador(request):
     return facade.cartao_ponto_html_data(request, contexto)
 
 
+def alterar_entrada_colaborador(request):
+    id_pessoal = request.POST.get("id_pessoal") or request.GET.get(
+        "id_pessoal", 0
+    )
+    mes = int(request.POST.get("mes") or request.GET.get("mes", 0))
+    ano = int(request.POST.get("ano") or request.GET.get("ano", 0))
+
+    return handle_modal_colaborador(
+        request,
+        facade.modal_entrada_colaborador,
+        facade.save_entrada_colaborador,
+        partial(facade.create_contexto_cartao_ponto, id_pessoal, mes, ano),
+        facade.cartao_ponto_html_data,
+    )
+
+
 def bloqueia_pessoa(request, idpessoa):
     facade.altera_status(idpessoa)
     return redirect("indexpessoal")
