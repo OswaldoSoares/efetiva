@@ -152,6 +152,7 @@ function initModalDialog(event, modal_element) {
 function atualizarInterfaceComDados(xhr) {
     $(".card-colaboradores").html(xhr["html-card-colaboradores"]);
     $(".card-foto-colaborador").html(xhr["html-card-foto-colaborador"]);
+    $(".card-cartao-ponto-colaborador").html(xhr["html-card-cartao-ponto-colaborador"]);
     $(".card-vales-colaborador").html(xhr["html-card-vales-colaborador"]);
     $(".card-docs-colaborador").html(xhr["html-card-docs-colaborador"]);
     $(".card-fones-colaborador").html(xhr["html-card-fones-colaborador"]);
