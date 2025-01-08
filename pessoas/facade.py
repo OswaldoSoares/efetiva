@@ -1362,6 +1362,21 @@ def modal_entrada_colaborador(id_pessoal, request):
         "cartao_ponto": cartao_ponto,
     }
 
+    modal_html = html_data.html_modal_entrada_colaborador(request, contexto)
+
+    return JsonResponse({"modal_html": modal_html})
+
+
+def save_entrada_colaborador(request):
+    id_cartao_ponto = int(request.POST.get("id_cartao_ponto"))
+
+    hora = datetime.strptime(request.POST.get("entrada"), "%H:%M").time()
+
+    if CartaoPonto.objects.filter(idCartaoPonto=id_cartao_ponto).update(
+        Entrada=hora
+    ):
+        return {"mensagem": "Entrada do colaborador alterada com sucesso"}
+
 
 def create_contexto_cartao_ponto(id_pessoal, mes, ano):
     primeiro_dia_mes = datetime(ano, mes, 1).date()
