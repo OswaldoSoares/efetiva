@@ -1344,6 +1344,22 @@ def alterar_cartao_ponto_conducao(request):
     return contexto
 
 
+def modal_entrada_colaborador(id_pessoal, request):
+    id_pessoal = request.GET.get("id_pessoal")
+    id_cartao_ponto = request.GET.get("id_cartao_ponto")
+    mes = request.GET.get("mes")
+    ano = request.GET.get("ano")
+
+    cartao_ponto = CartaoPonto.objects.filter(
+        idCartaoPonto=id_cartao_ponto
+    ).first()
+
+    contexto = {
+        "id_pessoal": id_pessoal,
+        "id_cartao_ponto": id_cartao_ponto,
+        "mes": mes,
+        "ano": ano,
+        "cartao_ponto": cartao_ponto,
     }
 
 
