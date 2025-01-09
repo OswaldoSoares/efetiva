@@ -513,7 +513,7 @@ def obter_cartao_de_ponto_do_colaborador(colaborador, mes, ano):
     )
 
 
-def verifica_feriados(cartao_ponto, mes, ano):
+def verificar_feriados(cartao_ponto, mes, ano):
     primeiro_dia_mes, ultimo_dia_mes = extremos_mes(mes, ano)
     lista_feriados = list(
         Parametros.objects.filter(
@@ -542,7 +542,7 @@ def verifica_feriados(cartao_ponto, mes, ano):
     )
 
 
-def atualiza_cartao_ponto_transporte(cartao_ponto, vale_transporte):
+def atualizar_cartao_ponto_transporte(cartao_ponto, vale_transporte):
     registros_cartao_ponto = [
         CartaoPonto(
             idCartaoPonto=dia.idCartaoPonto,
@@ -554,10 +554,9 @@ def atualiza_cartao_ponto_transporte(cartao_ponto, vale_transporte):
     ]
 
     CartaoPonto.objects.bulk_update(registros_cartao_ponto, ["Conducao"])
-    return cartao_ponto
 
 
-def atualiza_cartao_ponto_minutas(cartao_ponto, minutas):
+def atualizar_cartao_ponto_minutas(cartao_ponto, minutas):
     registros_cartao_ponto = []
     for minuta in minutas:
         dia = next(
