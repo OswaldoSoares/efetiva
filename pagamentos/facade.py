@@ -364,18 +364,15 @@ def adicionar_info_folha(folha, salarios) -> dict:
                              definido).
               - "salario": Valor total do salário do colaborador.
     """
-    for id_pessoal in folha:
-        salario = {
-            item for item in salarios if item.idPessoal_id == id_pessoal
-        }
-        valor = next(iter(salario)).Salario if salario else Decimal(0.00)
-        folha[id_pessoal]["adiantamento"] = folha[id_pessoal][
-            "adiantamento"
-        ] or (valor / 100 * 40)
-        folha[id_pessoal]["pagamento"] = (
-            folha[id_pessoal]["pagamento"] or valor
+    salarios_map = {sal.idPessoal_id: sal.Salario for sal in salarios}
+
+    for id_pessoal, dados in folha.items():
+        salario = salarios_map.get(id_pessoal, Decimal(0.00))
+        dados["adiantamento"] = dados.get(
+            "adiantamento", salario * Decimal("0.40")
         )
-        folha[id_pessoal]["salario"] = valor
+        dados["pagamento"] = dados.get("pagamento", salario)
+        dados["salario"] = salario
 
     return folha
 
