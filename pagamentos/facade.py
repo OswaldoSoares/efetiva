@@ -250,6 +250,32 @@ def unir_saldo_contra_cheque_pagamento_e_adiantamento(
 
 
 def get_salarios_grupo_colaboradores(colaboradores):
+    """
+    Recupera os salários dos colaboradores fornecidos.
+
+    A função filtra os registros de salários no banco de dados para o grupo
+    de colaboradores especificado com base em seus IDs.
+
+    Args:
+        colaboradores (QuerySet): QuerySet ou lista de objetos de
+                                  colaboradores, cada um contendo um atributo
+                                  `idPessoal`.
+
+    Returns:
+        set: Um conjunto de objetos `Salario` correspondentes aos
+        colaboradores fornecidos.
+
+    Exemplo:
+        >>> colaboradores = Pessoal.objects.filter(...)
+        >>> get_salarios_grupo_colaboradores(colaboradores)
+        {<Salario: Salario1>, <Salario: Salario2>, ...}
+
+    Observações:
+        - A função espera que o modelo `Salario` tenha um campo
+        `idPessoal_id` que corresponda aos IDs dos colaboradores.
+        - O retorno é um conjunto (`set`) para garantir unicidade dos
+        registros.
+    """
     id_colaboradores_list = [item.idPessoal for item in colaboradores]
     return set(Salario.objects.filter(idPessoal_id__in=id_colaboradores_list))
 
