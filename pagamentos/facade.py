@@ -280,6 +280,23 @@ def get_salarios_grupo_colaboradores(colaboradores):
     return set(Salario.objects.filter(idPessoal_id__in=id_colaboradores_list))
 
 
+def adicionar_info_folha(folha, salarios) -> dict:
+    for id_pessoal in folha:
+        salario = {
+            item for item in salarios if item.idPessoal_id == id_pessoal
+        }
+        valor = next(iter(salario)).Salario if salario else Decimal(0.00)
+        folha[id_pessoal]["adiantamento"] = folha[id_pessoal][
+            "adiantamento"
+        ] or (valor / 100 * 40)
+        folha[id_pessoal]["pagamento"] = (
+            folha[id_pessoal]["pagamento"] or valor
+        )
+        folha[id_pessoal]["salario"] = valor
+
+    return folha
+
+
 def create_contexto_folha_pagamento(request):
     """
     Cria o contexto necessário para exibir a folha de pagamento de
@@ -412,23 +429,6 @@ def processar_folha_pagamento(
                 descricao: Decimal(0.00),
             }
     return saldo_por_colaborador
-
-
-def adicionar_info_folha(folha, salarios) -> dict:
-    for id_pessoal in folha:
-        salario = {
-            item for item in salarios if item.idPessoal_id == id_pessoal
-        }
-        valor = next(iter(salario)).Salario if salario else Decimal(0.00)
-        folha[id_pessoal]["adiantamento"] = folha[id_pessoal][
-            "adiantamento"
-        ] or (valor / 100 * 40)
-        folha[id_pessoal]["pagamento"] = (
-            folha[id_pessoal]["pagamento"] or valor
-        )
-        folha[id_pessoal]["salario"] = valor
-
-    return folha
 
 
 def get_totais_folha(folha: dict) -> dict:
