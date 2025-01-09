@@ -346,6 +346,26 @@ def adicionar_info_folha(folha, salarios) -> dict:
 
 
 def get_totais_folha(folha: dict) -> dict:
+    """
+    Calcula os totais consolidados da folha de pagamento.
+
+    A função soma os valores de adiantamento, pagamento e o saldo total
+    (a soma de ambos) 
+    para todos os colaboradores presentes na folha de pagamento.
+
+    Args:
+        folha (dict): Dicionário contendo os dados da folha de pagamento.
+                      Cada chave é o ID de um colaborador, e os valores
+                      são dicionários com os seguintes campos:
+                      - "adiantamento" (Decimal): Valor do adiantamento.
+                      - "pagamento" (Decimal): Valor do pagamento.
+
+    Returns:
+        dict: Um dicionário com os totais da folha, contendo:
+              - "adiantamento": Soma total dos adiantamentos.
+              - "pagamento": Soma total dos pagamentos.
+              - "saldo": Soma de adiantamento e pagamento.
+    """
     soma = {}
     soma["adiantamento"] = sum(info["adiantamento"] for info in folha.values())
     soma["pagamento"] = sum(info["pagamento"] for info in folha.values())
