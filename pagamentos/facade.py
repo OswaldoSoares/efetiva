@@ -512,8 +512,10 @@ def obter_cartao_de_ponto_do_colaborador(colaborador, mes, ano):
         Dia__range=[primeiro_dia, ultimo_dia], idPessoal=id_pessoal
     )
 
-    return cartao_ponto or gerar_cartao_de_ponto_do_colaborador(
-        colaborador, mes, ano
+    return (
+        cartao_ponto
+        if cartao_ponto.exists()
+        else gerar_cartao_de_ponto_do_colaborador(colaborador, mes, ano)
     )
 
 
