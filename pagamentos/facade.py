@@ -345,6 +345,15 @@ def adicionar_info_folha(folha, salarios) -> dict:
     return folha
 
 
+def get_totais_folha(folha: dict) -> dict:
+    soma = {}
+    soma["adiantamento"] = sum(info["adiantamento"] for info in folha.values())
+    soma["pagamento"] = sum(info["pagamento"] for info in folha.values())
+    soma["saldo"] = soma["adiantamento"] + soma["pagamento"]
+
+    return soma
+
+
 def create_contexto_folha_pagamento(request):
     """
     Cria o contexto necessário para exibir a folha de pagamento de
@@ -477,15 +486,6 @@ def processar_folha_pagamento(
                 descricao: Decimal(0.00),
             }
     return saldo_por_colaborador
-
-
-def get_totais_folha(folha: dict) -> dict:
-    soma = {}
-    soma["adiantamento"] = sum(info["adiantamento"] for info in folha.values())
-    soma["pagamento"] = sum(info["pagamento"] for info in folha.values())
-    soma["saldo"] = soma["adiantamento"] + soma["pagamento"]
-
-    return soma
 
 
 def folha_pagamento_html_data(request, contexto):
