@@ -118,6 +118,26 @@ def obter_itens_contra_cheque(contra_cheques_itens, id_contra_cheque):
 
 
 def calcular_saldo_contra_cheque(contra_cheque_itens):
+    """
+    Calcula o saldo total de um contracheque com base nos seus itens.
+
+    A função soma os valores dos itens do contracheque, adicionando ou
+    subtraindo os valores conforme o tipo de registro:
+    - "C" (Crédito): Valor é adicionado ao saldo.
+    - Qualquer outro registro (ex.: "D" para Débito): Valor é subtraído do
+    saldo.
+
+    Args:
+        contra_cheque_itens (iterable): Coleção de objetos `ContraChequeItens`,
+                                        onde cada item possui os seguintes
+                                        atributos:
+                                        - `Valor` (Decimal): Valor do item.
+                                        - `Registro` (str): Tipo do item ("C"
+                                        para crédito, outros para débito).
+
+    Returns:
+        Decimal: O saldo total calculado com base nos itens do contracheque.
+    """
     return sum(
         item.Valor if item.Registro == "C" else -item.Valor
         for item in contra_cheque_itens
