@@ -405,12 +405,13 @@ def get_totais_folha(folha: dict) -> dict:
               - "pagamento": Soma total dos pagamentos.
               - "saldo": Soma de adiantamento e pagamento.
     """
-    soma = {}
-    soma["adiantamento"] = sum(info["adiantamento"] for info in folha.values())
-    soma["pagamento"] = sum(info["pagamento"] for info in folha.values())
-    soma["saldo"] = soma["adiantamento"] + soma["pagamento"]
-
-    return soma
+    return {
+        "adiantamento": sum(info["adiantamento"] for info in folha.values()),
+        "pagamento": sum(info["pagamento"] for info in folha.values()),
+        "saldo": sum(
+            info["adiantamento"] + info["pagamento"] for info in folha.values()
+        ),
+    }
 
 
 def create_contexto_folha_pagamento(request):
