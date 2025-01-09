@@ -93,6 +93,52 @@ def create_contexto_meses_pagamento() -> dict:
 
 
 def saldo_contra_cheques_de_colaboradores(colaboradores, descricao, mes, ano):
+    """
+    Calcula os saldos de contracheques dos colaboradores com base na
+    descrição, mês e ano de referência.
+
+    A função filtra os contracheques e seus respectivos itens para os
+    colaboradores fornecidos, considerando a descrição (ex.: "PAGAMENTO"
+    ou "ADIANTAMENTO") e o período especificado.
+    Em seguida, processa os dados e retorna o saldo correspondente.
+
+    Args:
+        colaboradores (QuerySet): QuerySet contendo os colaboradores para os
+            quais os contracheques serão calculados.
+        descricao (str): A descrição dos valores a serem filtrados
+            (ex.: "PAGAMENTO", "ADIANTAMENTO").
+        mes (int): O número do mês de referência (1 a 12).
+        ano (int): O ano de referência.
+
+    Returns:
+        dict: Dados processados contendo os saldos de contracheques para os
+        colaboradores.
+
+    Dependências:
+        - `ContraCheque`: Modelo ORM que representa os contracheques.
+        - `ContraChequeItens`: Modelo ORM que representa os itens dos
+        contracheques.
+        - `processar_folha_pagamento`: Função para processar os dados
+        filtrados.
+
+    Exemplo de Retorno:
+        >>> saldo_contra_cheques_de_colaboradores(
+            colaboradores, "PAGAMENTO", 1, 2024)
+            {
+                "total": 50000.0,
+                "detalhes": [
+                    {"id_colaborador": 1, "nome": "João", "saldo": 3000.0},
+                    {"id_colaborador": 2, "nome": "Maria", "saldo": 2500.0},
+                    ...
+                ]
+            }
+
+    Observações:
+        - A função utiliza o dicionário `MESES` para converter o número
+        do mês em seu nome correspondente.
+        - Apenas contracheques com descrição correspondente e dentro do
+        período são considerados.
+    """
     id_colaboradores_list = [item.idPessoal for item in colaboradores]
     contra_cheques = set(
         ContraCheque.objects.filter(
