@@ -85,6 +85,7 @@ def create_contexto_folha_pagamento(request):
     colaboradores = Pessoal.objects.filter(
         TipoPgto="MENSALISTA", DataAdmissao__lte=primeiro_e_ultimo[1]
     ).exclude(DataDemissao__lte=primeiro_e_ultimo[0])
+
     pagamento = saldo_contra_cheques_de_colaboradores(
         colaboradores, "PAGAMENTO", mes, ano
     )
@@ -95,18 +96,17 @@ def create_contexto_folha_pagamento(request):
     folha_sem_salarios = unir_saldo_contra_cheque_pagamento_e_adiantamento(
         colaboradores, pagamento, adiantamento
     )
+
     salarios = get_salarios_grupo_colaboradores(colaboradores)
     folha = adicionar_info_folha(folha_sem_salarios, salarios)
     totais = get_totais_folha(folha)
-
-    mensagem = f"O mês {mes}/{ano} foi selecionado"
 
     return {
         "folha": folha,
         "mes": mes,
         "ano": ano,
         "totais": totais,
-        "mensagem": mensagem,
+        "mensagem": f"O mês {mes}/{ano} foi selecionado",
     }
 
 
