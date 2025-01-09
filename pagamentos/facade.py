@@ -53,22 +53,7 @@ dias = [
 
 
 def create_contexto_meses_pagamento() -> dict:
-    """
-    Cria um contexto contendo os nomes dos últimos seis meses no formato
-    'Mês/Ano' (ex.: 'Janeiro/2024').
-
-    A função utiliza a configuração de localidade brasileira (pt_BR.UTF-8)
-    para formatar os meses corretamente.
-
-    Returns:
-        dict: Um dicionário com uma chave "meses", cujo valor é uma lista
-        de strings representando os últimos seis meses no formato 'Mês/Ano',
-        em ordem decrescente.
-
-    Exemplo:
-        >>> create_contexto_meses_pagamento()
-        {'meses': ['Janeiro/2024', 'Dezembro/2023', 'Novembro/2023', ...]}
-    """
+    """Consulte a documentação detalhada em 'docs/funcoes.md'."""
     locale.setlocale(locale.LC_TIME, "pt_BR.UTF-8")
     hoje = datetime.datetime.today()
     meses = [
