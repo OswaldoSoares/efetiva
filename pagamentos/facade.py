@@ -249,6 +249,11 @@ def unir_saldo_contra_cheque_pagamento_e_adiantamento(
     return result
 
 
+def get_salarios_grupo_colaboradores(colaboradores):
+    id_colaboradores_list = [item.idPessoal for item in colaboradores]
+    return set(Salario.objects.filter(idPessoal_id__in=id_colaboradores_list))
+
+
 def create_contexto_folha_pagamento(request):
     """
     Cria o contexto necessário para exibir a folha de pagamento de
@@ -381,11 +386,6 @@ def processar_folha_pagamento(
                 descricao: Decimal(0.00),
             }
     return saldo_por_colaborador
-
-
-def get_salarios_grupo_colaboradores(colaboradores):
-    id_colaboradores_list = [item.idPessoal for item in colaboradores]
-    return set(Salario.objects.filter(idPessoal_id__in=id_colaboradores_list))
 
 
 def adicionar_info_folha(folha, salarios) -> dict:
