@@ -497,7 +497,11 @@ def gerar_cartao_de_ponto_do_colaborador(colaborador, mes, ano):
 
         registros.append(CartaoPonto(**obj))
 
-    return CartaoPonto.objects.bulk_create(registros)
+    CartaoPonto.objects.bulk_create(registros)
+
+    return CartaoPonto.objects.filter(
+        Dia__range=[primeiro_dia, ultimo_dia], idPessoal=id_pessoal
+    )
 
 
 def obter_cartao_de_ponto_do_colaborador(colaborador, mes, ano):
