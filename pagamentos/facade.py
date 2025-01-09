@@ -595,26 +595,27 @@ def atualizar_cartao_ponto_minutas(cartao_ponto, minutas):
     )
 
 
-def contexto_agenda_colaborador(idpessoal, mes_ano):
-    mes, ano = converter_mes_ano(mes_ano)
-    primeiro_dia_mes, ultimo_dia_mes = extremos_mes(mes, ano)
-    agenda = get_agenda_periodo_contra_cheque(
-        idpessoal, primeiro_dia_mes, ultimo_dia_mes
-    )
-    files = FileUpload.objects.filter(DescricaoUpload__startswith="AGENDA")
-    for dia in agenda:
-        filtro = next(
-            (
-                item
-                for item in files
-                if int(item.DescricaoUpload[9:]) == dia["idAgenda"]
-            ),
-            None,
+def contexto_agenda_colaborador(id_pessoal, mes, ano):
+    primeiro_dia, ultimo_dia = primeiro_e_ultimo_dia_do_mes(mes, ano)
+
+    agenda = Agenda.objects.filter(
+        idPessoal=id_pessoal,
+        Dia__range=(primeiro_dia, ultimo_dia),
+    ).values()
+
+    arquivos_por_id_agenda = {
+        int(file.DescricaoUpload[9:]): file
+        for file in FileUpload.objects.filter(
+            DescricaoUpload__startswith="AGENDA"
         )
-        if filtro:
-            dia["file"] = filtro
-    contexto = {"agenda": agenda}
-    return contexto
+    }
+
+    for dia in agenda:
+        id_agenda = dia.get("idAgenda")
+        if id_agenda in arquivos_por_id_agenda:
+            dia["file"] = arquivos_por_id_agenda[id_agenda]
+
+    return {"agenda": agenda}
 
 
 def create_contexto_colaborador(request):
