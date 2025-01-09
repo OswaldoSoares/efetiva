@@ -511,6 +511,35 @@ def obter_cartao_de_ponto_do_colaborador(colaborador, mes, ano):
     )
 
 
+def verifica_feriados(cartao_ponto, mes, ano):
+    primeiro_dia_mes, ultimo_dia_mes = extremos_mes(mes, ano)
+    lista_feriados = list(
+        Parametros.objects.filter(
+            Chave="FERIADO",
+            Valor__gte=primeiro_dia_mes,
+            Valor__lte=ultimo_dia_mes,
+        ).values()
+    )
+    registros_cartao_ponto = []
+    for feriado in lista_feriados:
+        dia = datetime.datetime.strptime(feriado["Valor"], "%Y-%m-%d").date()
+        filtro = list(filter(lambda item: item.Dia == dia, cartao_ponto))
+        if filtro[0].Ausencia != "FÉRIAS":
+            if filtro[0].Ausencia != "FERIADO" and dia.weekday() != 6:
+                filtro[0].Ausencia = "FERIADO"
+                filtro[0].Conducao = False
+                registros_cartao_ponto.append(
+                    CartaoPonto(
+                        idCartaoPonto=filtro[0].idCartaoPonto,
+                        Ausencia="FERIADO",
+                        Conducao=False,
+                    )
+                )
+    CartaoPonto.objects.bulk_update(
+        registros_cartao_ponto, ["Ausencia", "Conducao"]
+    )
+
+
 def create_contexto_colaborador(request):
     id_pessoal = request.GET.get("id_pessoal")
     mes = int(request.GET.get("mes"))
@@ -3400,35 +3429,6 @@ def totais_contra_cheques(contra_cheques, contra_cheque_itens):
         "total_folha": total_folha,
     }
     return contexto
-
-
-def verifica_feriados(cartao_ponto, mes, ano):
-    primeiro_dia_mes, ultimo_dia_mes = extremos_mes(mes, ano)
-    lista_feriados = list(
-        Parametros.objects.filter(
-            Chave="FERIADO",
-            Valor__gte=primeiro_dia_mes,
-            Valor__lte=ultimo_dia_mes,
-        ).values()
-    )
-    registros_cartao_ponto = []
-    for feriado in lista_feriados:
-        dia = datetime.datetime.strptime(feriado["Valor"], "%Y-%m-%d").date()
-        filtro = list(filter(lambda item: item.Dia == dia, cartao_ponto))
-        if filtro[0].Ausencia != "FÉRIAS":
-            if filtro[0].Ausencia != "FERIADO" and dia.weekday() != 6:
-                filtro[0].Ausencia = "FERIADO"
-                filtro[0].Conducao = False
-                registros_cartao_ponto.append(
-                    CartaoPonto(
-                        idCartaoPonto=filtro[0].idCartaoPonto,
-                        Ausencia="FERIADO",
-                        Conducao=False,
-                    )
-                )
-    CartaoPonto.objects.bulk_update(
-        registros_cartao_ponto, ["Ausencia", "Conducao"]
-    )
 
 
 def get_agenda_periodo_contra_cheque(
