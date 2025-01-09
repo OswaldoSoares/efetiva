@@ -338,10 +338,12 @@ def adicionar_info_folha(folha, salarios) -> dict:
 
     for id_pessoal, dados in folha.items():
         salario = salarios_map.get(id_pessoal, Decimal(0.00))
-        dados["adiantamento"] = dados.get(
-            "adiantamento", salario * Decimal("0.40")
-        )
-        dados["pagamento"] = dados.get("pagamento", salario)
+        dados["adiantamento"] = dados.get("adiantamento", Decimal("0"))
+        if dados.get("adiantamento") == Decimal(0):
+            dados["adiantamento"] = salario * Decimal("0.40")
+        dados["pagamento"] = dados.get("pagamento", Decimal("0"))
+        if dados.get("pagamento") == Decimal(0):
+            dados["pagamento"] = salario
         dados["salario"] = salario
 
     return folha
