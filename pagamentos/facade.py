@@ -625,14 +625,16 @@ def create_contexto_colaborador(request):
 
     colaborador = Colaborador(id_pessoal)
 
-    primeiro, ultimo = primeiro_e_ultimo_dia_do_mes(mes, ano)
+    primeiro_dia, ultimo_dia = primeiro_e_ultimo_dia_do_mes(mes, ano)
     cartao_ponto = obter_cartao_de_ponto_do_colaborador(colaborador, mes, ano)
     cartao_ponto = verificar_feriados(cartao_ponto, mes, ano)
 
     vale_transporte = colaborador.salarios.salarios.ValeTransporte
     atualizar_cartao_ponto_transporte(cartao_ponto, vale_transporte)
 
-    minutas = get_minutas_periodo_contra_cheque(id_pessoal, primeiro, ultimo)
+    minutas = get_minutas_periodo_contra_cheque(
+        id_pessoal, primeiro_dia, ultimo_dia
+    )
     atualizar_cartao_ponto_minutas(cartao_ponto, minutas)
 
     # Recria QuerySet para obter as atualizações feitas
