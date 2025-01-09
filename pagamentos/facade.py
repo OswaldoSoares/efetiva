@@ -281,6 +281,54 @@ def get_salarios_grupo_colaboradores(colaboradores):
 
 
 def adicionar_info_folha(folha, salarios) -> dict:
+    """
+    Adiciona informações de salários aos dados da folha de pagamento.
+
+    A função complementa os dados existentes na folha de pagamento com os
+    salários dos colaboradores,
+    ajustando os valores de adiantamento e pagamento caso não estejam
+    definidos.
+
+    Args:
+        folha (dict): Dicionário contendo os dados da folha de pagamento,
+                      onde as chaves são os IDs dos colaboradores e os
+                      valores são dicionários com informações como
+                      "adiantamento" e "pagamento".
+        salarios (set): Conjunto de objetos `Salario` contendo os salários
+                        dos colaboradores, cada um com os atributos
+                        `idPessoal_id` e `Salario`.
+
+    Returns:
+        dict: O dicionário atualizado da folha de pagamento, incluindo os
+        seguintes campos:
+              - "adiantamento": Valor do adiantamento (calculado como 40%
+                                do salário se não definido).
+              - "pagamento": Valor do pagamento (igual ao salário se não
+                             definido).
+              - "salario": Valor total do salário do colaborador.
+
+    Exemplo:
+        >>> folha = {
+        ...     1: {"adiantamento": None, "pagamento": None},
+        ...     2: {"adiantamento": Decimal("500"), "pagamento": None},
+        ... }
+        >>> salarios = {Salario(idPessoal_id=1, Salario=Decimal("3000"))}
+        >>> adicionar_info_folha(folha, salarios)
+        {
+            1: {"adiantamento": Decimal("1200.00"), "pagamento":
+               Decimal("3000.00"), "salario": Decimal("3000.00")},
+            2: {"adiantamento": Decimal("500.00"), "pagamento":
+               Decimal("0.00"), "salario": Decimal("0.00")},
+        }
+
+    Observações:
+        - O campo "adiantamento" é calculado como 40% do salário, caso o valor
+        seja `None`.
+        - O campo "pagamento" é preenchido com o salário caso esteja ausente ou
+        seja `None`.
+        - Caso o colaborador não tenha salário registrado, os valores são
+        definidos como `Decimal(0.00)`.
+    """
     for id_pessoal in folha:
         salario = {
             item for item in salarios if item.idPessoal_id == id_pessoal
