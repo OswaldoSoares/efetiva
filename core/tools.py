@@ -205,7 +205,7 @@ def gerar_data_html(html_functions, request, contexto, data):
 
 def primeiro_e_ultimo_dia_do_mes(mes: int, ano: int) -> tuple:
     """
-    Retorna o primeiro e o último dia de um mês específico em um determinado ano.
+    Retorna o primeiro e o último dia de um mês específico.
 
     Args:
         mes (int): O mês desejado (1 a 12).
