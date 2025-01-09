@@ -92,6 +92,14 @@ def create_contexto_meses_pagamento() -> dict:
     return {"meses": meses}
 
 
+def obter_itens_contra_cheque(contra_cheques_itens, id_contra_cheque):
+    return {
+        item
+        for item in contra_cheques_itens
+        if item.idContraCheque_id == id_contra_cheque
+    }
+
+
 def processar_folha_pagamento(
     colaboradores, contra_cheques, contra_cheques_itens, descricao
 ):
@@ -519,14 +527,6 @@ def create_contexto_folha_pagamento(request):
         "ano": ano,
         "totais": totais,
         "mensagem": f"O mês {mes}/{ano} foi selecionado",
-    }
-
-
-def obter_itens_contra_cheque(contra_cheques_itens, id_contra_cheque):
-    return {
-        item
-        for item in contra_cheques_itens
-        if item.idContraCheque_id == id_contra_cheque
     }
 
 
