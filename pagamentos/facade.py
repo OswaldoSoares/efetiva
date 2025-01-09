@@ -600,34 +600,39 @@ def create_contexto_colaborador(request):
     id_pessoal = request.GET.get("id_pessoal")
     mes = int(request.GET.get("mes"))
     ano = int(request.GET.get("ano"))
+
     colaborador = Colaborador(id_pessoal)
-    salario = colaborador.salarios.salarios.Salario
+
+    primeiro, ultimo = primeiro_e_ultimo_dia_do_mes(mes, ano)
+    cartao_ponto = obter_cartao_de_ponto_do_colaborador(colaborador, mes, ano)
+    cartao_ponto = verificar_feriados(cartao_ponto, mes, ano)
+
     vale_transporte = colaborador.salarios.salarios.ValeTransporte
-    primeiro_dia, ultimo_dia = primeiro_e_ultimo_dia_do_mes(mes, ano)
+    atualizar_cartao_ponto_transporte(cartao_ponto, vale_transporte)
 
+    minutas = get_minutas_periodo_contra_cheque(id_pessoal, primeiro, ultimo)
+    atualizar_cartao_ponto_minutas(cartao_ponto, minutas)
+
+    # Recria QuerySet para obter as atualizações feitas
     cartao_ponto = obter_cartao_de_ponto_do_colaborador(colaborador, mes, ano)
 
-    verifica_feriados(cartao_ponto, mes, ano)
-    minutas = get_minutas_periodo_contra_cheque(
-        id_pessoal, primeiro_dia, ultimo_dia
-    )
-    vales = get_vales_colaborador(id_pessoal)
-    atualiza_cartao_ponto_transporte(cartao_ponto, vale_transporte)
-    atualiza_cartao_ponto_minutas(cartao_ponto, minutas)
-    cartao_ponto = obter_cartao_de_ponto_do_colaborador(colaborador, mes, ano)
-    #  atualiza_itens_contra_cheque_pagamento(
-    #  colaborador, cartao_ponto, minutas, salario, vale_transporte, mes, ano
-    #  )
     contexto = {
+        "idpessoal": id_pessoal,
         "colaborador": colaborador,
         "nome_curto": nome_curto(colaborador.nome),
         "nome_underscore": nome_curto_underscore(colaborador.nome),
-        "idpessoal": id_pessoal,
         "cartao_ponto": cartao_ponto,
-        "vales": vales,
+        "minutas": minutas,
     }
-    #  agenda = contexto_agenda_colaborador(idpessoal, mes_ano)
-    #  contexto.update(agenda)
+
+    agenda = contexto_agenda_colaborador(idpessoal, mes_ano)
+    contexto.update(agenda)
+
+    vales = get_vales_colaborador(id_pessoal)
+    contexto.update("vales": vales)
+    #  atualiza_itens_contra_cheque_pagamento(
+    #  colaborador, cartao_ponto, minutas, salario, vale_transporte, mes, ano
+    #  )
     return contexto
 
 
