@@ -542,6 +542,21 @@ def verifica_feriados(cartao_ponto, mes, ano):
     )
 
 
+def atualiza_cartao_ponto_transporte(cartao_ponto, vale_transporte):
+    registros_cartao_ponto = [
+        CartaoPonto(
+            idCartaoPonto=dia.idCartaoPonto,
+            Conducao=vale_transporte > Decimal(0.00) and not dia.CarroEmpresa,
+            idPessoal_id=dia.idPessoal_id,
+        )
+        for dia in cartao_ponto
+        if dia.Ausencia == ""
+    ]
+
+    CartaoPonto.objects.bulk_update(registros_cartao_ponto, ["Conducao"])
+    return cartao_ponto
+
+
 def create_contexto_colaborador(request):
     id_pessoal = request.GET.get("id_pessoal")
     mes = int(request.GET.get("mes"))
@@ -3490,21 +3505,6 @@ def union_minutas_agenda_periodo_contra_cheque(
         )
     minutas_agenda = sorted(minutas, key=lambda d: d["data_minuta"])
     return minutas_agenda
-
-
-def atualiza_cartao_ponto_transporte(cartao_ponto, vale_transporte):
-    registros_cartao_ponto = [
-        CartaoPonto(
-            idCartaoPonto=dia.idCartaoPonto,
-            Conducao=vale_transporte > Decimal(0.00) and not dia.CarroEmpresa,
-            idPessoal_id=dia.idPessoal_id,
-        )
-        for dia in cartao_ponto
-        if dia.Ausencia == ""
-    ]
-
-    CartaoPonto.objects.bulk_update(registros_cartao_ponto, ["Conducao"])
-    return cartao_ponto
 
 
 def atualiza_cartao_ponto_minutas(cartao_ponto, minutas):
