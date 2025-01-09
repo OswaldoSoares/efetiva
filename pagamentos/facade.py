@@ -557,6 +557,45 @@ def atualiza_cartao_ponto_transporte(cartao_ponto, vale_transporte):
     return cartao_ponto
 
 
+def atualiza_cartao_ponto_minutas(cartao_ponto, minutas):
+    registros_cartao_ponto = []
+    for minuta in minutas:
+        dia = next(
+            (
+                item
+                for item in cartao_ponto
+                if item.Dia == minuta["data_minuta"]
+            ),
+            None,
+        )
+        if (
+            minuta["hora_inicial"] < dia.Entrada
+            and dia["Alteracao"] != "MANUAL"
+        ):
+            dia.Entrada = minuta["hora_inicial"]
+            registros_cartao_ponto.append(
+                CartaoPonto(
+                    idCartaoPonto=dia.idCartaoPonto,
+                    Entrada=minuta["hora_inicial"],
+                    Saida=dia.Saida,
+                    idPessoal_id=dia.idPessoal_id,
+                )
+            )
+        if minuta["hora_final"] > dia.Saida and dia.Alteracao != "MANUAL":
+            dia.Saida = minuta["hora_final"]
+            registros_cartao_ponto.append(
+                CartaoPonto(
+                    idCartaoPonto=dia.idCartaoPonto,
+                    Entrada=dia.Entrada,
+                    Saida=minuta["hora_final"],
+                    idPessoal_id=dia.idPessoal_id,
+                )
+            )
+    CartaoPonto.objects.bulk_update(
+        registros_cartao_ponto, ["Entrada", "Saida"]
+    )
+
+
 def create_contexto_colaborador(request):
     id_pessoal = request.GET.get("id_pessoal")
     mes = int(request.GET.get("mes"))
@@ -3505,48 +3544,6 @@ def union_minutas_agenda_periodo_contra_cheque(
         )
     minutas_agenda = sorted(minutas, key=lambda d: d["data_minuta"])
     return minutas_agenda
-
-
-def atualiza_cartao_ponto_minutas(cartao_ponto, minutas):
-    #  start, start_queries = queries_inicio()
-    registros_cartao_ponto = []
-    for minuta in minutas:
-        dia = next(
-            (
-                item
-                for item in cartao_ponto
-                if item.Dia == minuta["data_minuta"]
-            ),
-            None,
-        )
-        if (
-            minuta["hora_inicial"] < dia.Entrada
-            and dia["Alteracao"] != "MANUAL"
-        ):
-            dia.Entrada = minuta["hora_inicial"]
-            registros_cartao_ponto.append(
-                CartaoPonto(
-                    idCartaoPonto=dia.idCartaoPonto,
-                    Entrada=minuta["hora_inicial"],
-                    Saida=dia.Saida,
-                    idPessoal_id=dia.idPessoal_id,
-                )
-            )
-        if minuta["hora_final"] > dia.Saida and dia.Alteracao != "MANUAL":
-            dia.Saida = minuta["hora_final"]
-            registros_cartao_ponto.append(
-                CartaoPonto(
-                    idCartaoPonto=dia.idCartaoPonto,
-                    Entrada=dia.Entrada,
-                    Saida=minuta["hora_final"],
-                    idPessoal_id=dia.idPessoal_id,
-                )
-            )
-    CartaoPonto.objects.bulk_update(
-        registros_cartao_ponto, ["Entrada", "Saida"]
-    )
-    #  queries_termino(start, start_queries, "[INFO] Atualiza Cartão Ponto")
-    return cartao_ponto
 
 
 def atualiza_itens_contra_cheque_pagamento(
