@@ -117,6 +117,13 @@ def obter_itens_contra_cheque(contra_cheques_itens, id_contra_cheque):
     }
 
 
+def calcular_saldo_contra_cheque(contra_cheque_itens):
+    return sum(
+        item.Valor if item.Registro == "C" else -item.Valor
+        for item in contra_cheque_itens
+    )
+
+
 def processar_folha_pagamento(
     colaboradores, contra_cheques, contra_cheques_itens, descricao
 ):
@@ -545,13 +552,6 @@ def create_contexto_folha_pagamento(request):
         "totais": totais,
         "mensagem": f"O mês {mes}/{ano} foi selecionado",
     }
-
-
-def calcular_saldo_contra_cheque(contra_cheque_itens):
-    return sum(
-        item.Valor if item.Registro == "C" else -item.Valor
-        for item in contra_cheque_itens
-    )
 
 
 def folha_pagamento_html_data(request, contexto):
