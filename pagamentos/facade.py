@@ -164,6 +164,62 @@ def saldo_contra_cheques_de_colaboradores(colaboradores, descricao, mes, ano):
 def unir_saldo_contra_cheque_pagamento_e_adiantamento(
     colaboradores, dict_pagamento, dict_adiantamento
 ):
+    """
+    Combina os saldos de pagamento e adiantamento dos colaboradores em um
+    único dicionário.
+
+    A função consolida as informações de pagamento e adiantamento para cada
+    colaborador, garantindo que todos os colaboradores estejam representados
+    no resultado, mesmo que não tenham valores em uma das categorias
+    (pagamento ou adiantamento).
+
+    Args:
+        colaboradores (QuerySet): Lista ou QuerySet de colaboradores a serem
+        processados.
+        dict_pagamento (dict): Dicionário contendo os valores de pagamento
+        por colaborador. O formato esperado é:
+                {
+                    "id_colaborador": {
+                        "nome": str,
+                        "nome_curto": str,
+                        "PAGAMENTO": Decimal,
+                    },
+                    ...
+                }
+        dict_adiantamento (dict): Dicionário contendo os valores de
+        adiantamento por colaborador. O formato esperado é similar ao
+        de `dict_pagamento`.
+
+    Returns:
+        dict: Um dicionário consolidado com as seguintes chaves:
+              - "nome": Nome completo do colaborador.
+              - "nome_curto": Nome curto ou apelido do colaborador.
+              - "pagamento": Valor total de pagamento (Decimal).
+              - "adiantamento": Valor total de adiantamento (Decimal).
+
+    Exemplo de Retorno:
+        >>> unir_saldo_contra_cheque_pagamento_e_adiantamento(
+        ...     colaboradores,
+        ...     {"1": {"nome": "João", "nome_curto": "J.", "PAGAMENTO":
+        Decimal("3000")}},
+        ...     {"1": {"nome": "João", "nome_curto": "J.", "ADIANTAMENTO":
+        Decimal("1000")}}
+        ... )
+        {
+            "1": {
+                "nome": "João",
+                "nome_curto": "J.",
+                "pagamento": Decimal("3000"),
+                "adiantamento": Decimal("1000"),
+            }
+        }
+
+    Observações:
+        - Colaboradores que não possuem valores de pagamento ou adiantamento
+        terão o valor correspondente definido como `Decimal("0")`.
+        - O ID do colaborador é utilizado como chave para o dicionário de
+        retorno.
+    """
     result = {}
     for colaborador, valores_pagamento in dict_pagamento.items():
         if colaborador in dict_adiantamento:
