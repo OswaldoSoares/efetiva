@@ -649,7 +649,7 @@ def create_contexto_colaborador(request):
         "minutas": minutas,
     }
 
-    agenda = contexto_agenda_colaborador(idpessoal, mes_ano)
+    agenda = contexto_agenda_colaborador(id_pessoal, mes, ano)
     contexto.update(agenda)
 
     vales = get_vales_colaborador(id_pessoal)
