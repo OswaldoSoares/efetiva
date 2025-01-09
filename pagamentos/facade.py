@@ -93,6 +93,59 @@ def create_contexto_meses_pagamento() -> dict:
 
 
 def create_contexto_folha_pagamento(request):
+    """
+    Cria o contexto necessário para exibir a folha de pagamento de
+    colaboradores em um mês específico.
+
+    A função processa os dados de colaboradores mensalistas, seus pagamentos
+    e adiantamentos, e retorna informações detalhadas sobre a folha de
+    pagamento, incluindo totais e uma mensagem personalizada.
+
+    Args:
+        request: Objeto de requisição que contém o parâmetro `mes_ano` no
+        formato "Mês/Ano"
+                 (ex.: "Janeiro/2024") via `GET`.
+
+    Returns:
+        dict: Um dicionário contendo:
+            - "folha" (list): Lista detalhada com informações da folha de
+            pagamento.
+            - "mes" (str): O número do mês selecionado (1 a 12).
+            - "ano" (str): O ano selecionado.
+            - "totais" (dict): Totais calculados da folha de pagamento.
+            - "mensagem" (str): Mensagem informando o mês e ano selecionados.
+
+    Exemplo de Retorno:
+        {
+            "folha": [...],
+            "mes": "1",
+            "ano": "2024",
+            "totais": {"total_pagamentos": 50000.0, "total_adiantamentos":
+            20000.0},
+            "mensagem": "O mês 1/2024 foi selecionado",
+        }
+
+    Observações:
+        - A função utiliza o dicionário `MESES` para converter o nome do
+        mês para seu número correspondente.
+        - Filtra os colaboradores com base na data de admissão e,
+        opcionalmente, de demissão.
+        - Integra informações de pagamento e adiantamento com os salários
+        para formar uma folha de pagamento completa.
+
+    Dependências:
+        - `primeiro_e_ultimo_dia_do_mes`: Para obter o primeiro e último dia
+        do mês selecionado.
+        - `Pessoal`: Modelo ORM para acesso aos dados de colaboradores.
+        - `saldo_contra_cheques_de_colaboradores`: Para calcular os valores de
+        pagamento e adiantamento.
+        - `unir_saldo_contra_cheque_pagamento_e_adiantamento`: Para consolidar
+        os dados de pagamento.
+        - `get_salarios_grupo_colaboradores`: Para obter os salários de
+        colaboradores.
+        - `adicionar_info_folha`: Para integrar salários à folha de pagamento.
+        - `get_totais_folha`: Para calcular os totais da folha de pagamento.
+    """
     meses_invertido = {v: k for k, v in MESES.items()}
     mes, ano = request.GET.get("mes_ano").split("/")
     mes = meses_invertido.get(mes)
