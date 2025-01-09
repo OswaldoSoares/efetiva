@@ -233,24 +233,6 @@ def saldo_contra_cheques_de_colaboradores(colaboradores, descricao, mes, ano):
         contracheques.
         - `processar_folha_pagamento`: Função para processar os dados
         filtrados.
-
-    Exemplo de Retorno:
-        >>> saldo_contra_cheques_de_colaboradores(
-            colaboradores, "PAGAMENTO", 1, 2024)
-            {
-                "total": 50000.0,
-                "detalhes": [
-                    {"id_colaborador": 1, "nome": "João", "saldo": 3000.0},
-                    {"id_colaborador": 2, "nome": "Maria", "saldo": 2500.0},
-                    ...
-                ]
-            }
-
-    Observações:
-        - A função utiliza o dicionário `MESES` para converter o número
-        do mês em seu nome correspondente.
-        - Apenas contracheques com descrição correspondente e dentro do
-        período são considerados.
     """
     id_colaboradores_list = [item.idPessoal for item in colaboradores]
     contra_cheques = set(
@@ -309,29 +291,6 @@ def unir_saldo_contra_cheque_pagamento_e_adiantamento(
               - "nome_curto": Nome curto ou apelido do colaborador.
               - "pagamento": Valor total de pagamento (Decimal).
               - "adiantamento": Valor total de adiantamento (Decimal).
-
-    Exemplo de Retorno:
-        >>> unir_saldo_contra_cheque_pagamento_e_adiantamento(
-        ...     colaboradores,
-        ...     {"1": {"nome": "João", "nome_curto": "J.", "PAGAMENTO":
-        Decimal("3000")}},
-        ...     {"1": {"nome": "João", "nome_curto": "J.", "ADIANTAMENTO":
-        Decimal("1000")}}
-        ... )
-        {
-            "1": {
-                "nome": "João",
-                "nome_curto": "J.",
-                "pagamento": Decimal("3000"),
-                "adiantamento": Decimal("1000"),
-            }
-        }
-
-    Observações:
-        - Colaboradores que não possuem valores de pagamento ou adiantamento
-        terão o valor correspondente definido como `Decimal("0")`.
-        - O ID do colaborador é utilizado como chave para o dicionário de
-        retorno.
     """
     result = {}
     for colaborador, valores_pagamento in dict_pagamento.items():
@@ -377,17 +336,6 @@ def get_salarios_grupo_colaboradores(colaboradores):
     Returns:
         set: Um conjunto de objetos `Salario` correspondentes aos
         colaboradores fornecidos.
-
-    Exemplo:
-        >>> colaboradores = Pessoal.objects.filter(...)
-        >>> get_salarios_grupo_colaboradores(colaboradores)
-        {<Salario: Salario1>, <Salario: Salario2>, ...}
-
-    Observações:
-        - A função espera que o modelo `Salario` tenha um campo
-        `idPessoal_id` que corresponda aos IDs dos colaboradores.
-        - O retorno é um conjunto (`set`) para garantir unicidade dos
-        registros.
     """
     id_colaboradores_list = [item.idPessoal for item in colaboradores]
     return set(Salario.objects.filter(idPessoal_id__in=id_colaboradores_list))
@@ -419,28 +367,6 @@ def adicionar_info_folha(folha, salarios) -> dict:
               - "pagamento": Valor do pagamento (igual ao salário se não
                              definido).
               - "salario": Valor total do salário do colaborador.
-
-    Exemplo:
-        >>> folha = {
-        ...     1: {"adiantamento": None, "pagamento": None},
-        ...     2: {"adiantamento": Decimal("500"), "pagamento": None},
-        ... }
-        >>> salarios = {Salario(idPessoal_id=1, Salario=Decimal("3000"))}
-        >>> adicionar_info_folha(folha, salarios)
-        {
-            1: {"adiantamento": Decimal("1200.00"), "pagamento":
-               Decimal("3000.00"), "salario": Decimal("3000.00")},
-            2: {"adiantamento": Decimal("500.00"), "pagamento":
-               Decimal("0.00"), "salario": Decimal("0.00")},
-        }
-
-    Observações:
-        - O campo "adiantamento" é calculado como 40% do salário, caso o valor
-        seja `None`.
-        - O campo "pagamento" é preenchido com o salário caso esteja ausente ou
-        seja `None`.
-        - Caso o colaborador não tenha salário registrado, os valores são
-        definidos como `Decimal(0.00)`.
     """
     for id_pessoal in folha:
         salario = {
@@ -509,24 +435,6 @@ def create_contexto_folha_pagamento(request):
             - "ano" (str): O ano selecionado.
             - "totais" (dict): Totais calculados da folha de pagamento.
             - "mensagem" (str): Mensagem informando o mês e ano selecionados.
-
-    Exemplo de Retorno:
-        {
-            "folha": [...],
-            "mes": "1",
-            "ano": "2024",
-            "totais": {"total_pagamentos": 50000.0, "total_adiantamentos":
-            20000.0},
-            "mensagem": "O mês 1/2024 foi selecionado",
-        }
-
-    Observações:
-        - A função utiliza o dicionário `MESES` para converter o nome do
-        mês para seu número correspondente.
-        - Filtra os colaboradores com base na data de admissão e,
-        opcionalmente, de demissão.
-        - Integra informações de pagamento e adiantamento com os salários
-        para formar uma folha de pagamento completa.
 
     Dependências:
         - `primeiro_e_ultimo_dia_do_mes`: Para obter o primeiro e último dia
