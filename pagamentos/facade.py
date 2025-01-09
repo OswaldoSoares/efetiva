@@ -627,7 +627,7 @@ def create_contexto_colaborador(request):
 
     primeiro_dia, ultimo_dia = primeiro_e_ultimo_dia_do_mes(mes, ano)
     cartao_ponto = obter_cartao_de_ponto_do_colaborador(colaborador, mes, ano)
-    cartao_ponto = verificar_feriados(cartao_ponto, mes, ano)
+    verificar_feriados(cartao_ponto, mes, ano)
 
     vale_transporte = colaborador.salarios.salarios.ValeTransporte
     atualizar_cartao_ponto_transporte(cartao_ponto, vale_transporte)
