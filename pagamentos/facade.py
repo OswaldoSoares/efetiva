@@ -93,6 +93,23 @@ def create_contexto_meses_pagamento() -> dict:
 
 
 def obter_itens_contra_cheque(contra_cheques_itens, id_contra_cheque):
+    """
+    Filtra os itens de um contracheque específico.
+
+    A função retorna um conjunto contendo todos os itens associados a um
+    contracheque, com base no ID do contracheque fornecido.
+
+    Args:
+        contra_cheques_itens (set): Conjunto de objetos `ContraChequeItens`,
+                                    onde cada item representa um detalhe de
+                                    um contracheque.
+        id_contra_cheque (int): O ID do contracheque para o qual os itens
+                                devem ser filtrados.
+
+    Returns:
+        set: Conjunto de objetos `ContraChequeItens` associados ao contracheque
+        especificado.
+    """
     return {
         item
         for item in contra_cheques_itens
