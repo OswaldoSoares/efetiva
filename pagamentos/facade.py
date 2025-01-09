@@ -95,6 +95,35 @@ def create_contexto_meses_pagamento() -> dict:
 def processar_folha_pagamento(
     colaboradores, contra_cheques, contra_cheques_itens, descricao
 ):
+    """
+    Processa os dados da folha de pagamento para um grupo de colaboradores.
+
+    A função calcula o saldo dos contracheques de cada colaborador com base
+    nos itens dos contracheques e na descrição fornecida, gerando um
+    dicionário consolidado com os resultados.
+
+    Args:
+        colaboradores (QuerySet): QuerySet ou lista de colaboradores, cada um
+                                  com os atributos:
+                                  - `idPessoal`: ID único do colaborador.
+                                  - `Nome`: Nome completo do colaborador.
+        contra_cheques (set): Conjunto de objetos `ContraCheque`,
+                              representando os contracheques associados aos
+                              colaboradores.
+        contra_cheques_itens (set): Conjunto de objetos `ContraChequeItens`,
+                                    representando os itens dos contracheques.
+        descricao (str): A descrição associada aos valores a serem calculados
+                         (ex.: "PAGAMENTO", "ADIANTAMENTO").
+
+    Returns:
+        dict: Dicionário contendo os saldos por colaborador. Cada chave é o ID
+        do colaborador, e os valores são dicionários com os seguintes campos:
+              - "nome": Nome completo do colaborador.
+              - "nome_curto": Nome abreviado ou apelido do colaborador.
+              - `descricao` (str): Saldo calculado com base nos itens do
+                                   contracheque ou `Decimal(0.00)` caso não
+                                   haja contracheque associado.
+    """
     saldo_por_colaborador = {}
     for colaborador in colaboradores:
         contra_cheque_colaborador = {
