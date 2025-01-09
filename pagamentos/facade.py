@@ -595,6 +595,28 @@ def atualizar_cartao_ponto_minutas(cartao_ponto, minutas):
     )
 
 
+def contexto_agenda_colaborador(idpessoal, mes_ano):
+    mes, ano = converter_mes_ano(mes_ano)
+    primeiro_dia_mes, ultimo_dia_mes = extremos_mes(mes, ano)
+    agenda = get_agenda_periodo_contra_cheque(
+        idpessoal, primeiro_dia_mes, ultimo_dia_mes
+    )
+    files = FileUpload.objects.filter(DescricaoUpload__startswith="AGENDA")
+    for dia in agenda:
+        filtro = next(
+            (
+                item
+                for item in files
+                if int(item.DescricaoUpload[9:]) == dia["idAgenda"]
+            ),
+            None,
+        )
+        if filtro:
+            dia["file"] = filtro
+    contexto = {"agenda": agenda}
+    return contexto
+
+
 def create_contexto_colaborador(request):
     id_pessoal = request.GET.get("id_pessoal")
     mes = int(request.GET.get("mes"))
@@ -4082,28 +4104,6 @@ def modal_agenda_colaborador(request, idpessoal, mes_ano):
             "pagamentos/modal_adiciona_agenda.html", contexto, request=request
         )
     return JsonResponse(data)
-
-
-def contexto_agenda_colaborador(idpessoal, mes_ano):
-    mes, ano = converter_mes_ano(mes_ano)
-    primeiro_dia_mes, ultimo_dia_mes = extremos_mes(mes, ano)
-    agenda = get_agenda_periodo_contra_cheque(
-        idpessoal, primeiro_dia_mes, ultimo_dia_mes
-    )
-    files = FileUpload.objects.filter(DescricaoUpload__startswith="AGENDA")
-    for dia in agenda:
-        filtro = next(
-            (
-                item
-                for item in files
-                if int(item.DescricaoUpload[9:]) == dia["idAgenda"]
-            ),
-            None,
-        )
-        if filtro:
-            dia["file"] = filtro
-    contexto = {"agenda": agenda}
-    return contexto
 
 
 def modal_confirma(request, confirma, idconfirma, idpessoal, mes_ano):
