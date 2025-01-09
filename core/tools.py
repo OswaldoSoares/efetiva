@@ -221,6 +221,5 @@ def primeiro_e_ultimo_dia_do_mes(mes: int, ano: int) -> tuple:
         (datetime.datetime(2024, 2, 1, 0, 0), datetime.datetime(2024, 2, 29, 0, 0))
     """
     primeiro = datetime(ano, mes, 1)
-    dias_mes = calendar.monthrange(ano, mes)[1]
-    ultimo = datetime(ano, mes, dias_mes)
+    ultimo = primeiro.replace(day=calendar.monthrange(ano, mes)[1])
     return [primeiro, ultimo]
