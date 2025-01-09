@@ -382,7 +382,7 @@ def get_totais_folha(folha: dict) -> dict:
     Calcula os totais consolidados da folha de pagamento.
 
     A função soma os valores de adiantamento, pagamento e o saldo total
-    (a soma de ambos) 
+    (a soma de ambos)
     para todos os colaboradores presentes na folha de pagamento.
 
     Args:
