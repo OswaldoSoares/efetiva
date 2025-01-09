@@ -601,7 +601,7 @@ def atualizar_cartao_ponto_minutas(cartao_ponto, minutas):
     )
 
 
-def contexto_agenda_colaborador(id_pessoal, mes, ano):
+def create_contexto_agenda_colaborador(id_pessoal, mes, ano):
     primeiro_dia, ultimo_dia = primeiro_e_ultimo_dia_do_mes(mes, ano)
 
     agenda = Agenda.objects.filter(
@@ -655,7 +655,7 @@ def create_contexto_colaborador(request):
         "minutas": minutas,
     }
 
-    agenda = contexto_agenda_colaborador(id_pessoal, mes, ano)
+    agenda = create_contexto_agenda_colaborador(id_pessoal, mes, ano)
     contexto.update(agenda)
 
     vales = get_vales_colaborador(id_pessoal)
