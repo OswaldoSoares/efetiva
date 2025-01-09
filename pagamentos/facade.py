@@ -92,6 +92,29 @@ def create_contexto_meses_pagamento() -> dict:
     return {"meses": meses}
 
 
+def saldo_contra_cheques_de_colaboradores(colaboradores, descricao, mes, ano):
+    id_colaboradores_list = [item.idPessoal for item in colaboradores]
+    contra_cheques = set(
+        ContraCheque.objects.filter(
+            idPessoal_id__in=id_colaboradores_list,
+            MesReferencia=MESES.get(mes),
+            AnoReferencia=ano,
+            Descricao=descricao,
+        )
+    )
+
+    id_contra_cheques_list = [item.idContraCheque for item in contra_cheques]
+    contra_cheques_itens = set(
+        ContraChequeItens.objects.filter(
+            idContraCheque_id__in=id_contra_cheques_list
+        )
+    )
+
+    return processar_folha_pagamento(
+        colaboradores, contra_cheques, contra_cheques_itens, descricao
+    )
+
+
 def create_contexto_folha_pagamento(request):
     """
     Cria o contexto necessário para exibir a folha de pagamento de
@@ -224,29 +247,6 @@ def processar_folha_pagamento(
                 descricao: Decimal(0.00),
             }
     return saldo_por_colaborador
-
-
-def saldo_contra_cheques_de_colaboradores(colaboradores, descricao, mes, ano):
-    id_colaboradores_list = [item.idPessoal for item in colaboradores]
-    contra_cheques = set(
-        ContraCheque.objects.filter(
-            idPessoal_id__in=id_colaboradores_list,
-            MesReferencia=MESES.get(mes),
-            AnoReferencia=ano,
-            Descricao=descricao,
-        )
-    )
-
-    id_contra_cheques_list = [item.idContraCheque for item in contra_cheques]
-    contra_cheques_itens = set(
-        ContraChequeItens.objects.filter(
-            idContraCheque_id__in=id_contra_cheques_list
-        )
-    )
-
-    return processar_folha_pagamento(
-        colaboradores, contra_cheques, contra_cheques_itens, descricao
-    )
 
 
 def unir_saldo_contra_cheque_pagamento_e_adiantamento(
