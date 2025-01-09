@@ -653,7 +653,7 @@ def create_contexto_colaborador(request):
     contexto.update(agenda)
 
     vales = get_vales_colaborador(id_pessoal)
-    contexto.update("vales": vales)
+    contexto.update({"vales": vales})
     #  atualiza_itens_contra_cheque_pagamento(
     #  colaborador, cartao_ponto, minutas, salario, vale_transporte, mes, ano
     #  )
