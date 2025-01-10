@@ -1090,6 +1090,21 @@ def create_contra_cheque_itens(
     )
 
 
+def atualizar_ou_adicionar_contra_cheque_item(
+    descricao, valor, registro, referencia, id_contra_cheque
+):
+    """Falta docstring"""
+    ContraChequeItens.objects.update_or_create(
+        Descricao=descricao,
+        Registro=registro,
+        idContraCheque_id=id_contra_cheque,
+        defaults={
+            "Valor": valor,
+            "Referencia": referencia,
+        },
+    )
+
+
 def create_contexto_contra_cheque_pagamento(request):
     id_pessoal = request.GET.get("id_pessoal")
     ano = request.GET.get("ano")
