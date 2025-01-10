@@ -1232,56 +1232,37 @@ def calcular_faltas(salario, cartao_ponto):
 
 def calcula_dsr_feriado(id_pessoal, dias_dsr, semanas_faltas, cartao_ponto):
     """Falta docstring"""
-    semanas_feriados = []
     primeiro_dia = cartao_ponto.order_by("Dia").first().Dia
     ultimo_dia = cartao_ponto.order_by("Dia").last().Dia
     ultimo_dia_mes_seguinte = ultimo_dia + relativedelta(months=+1)
 
-    feriados = list(
-        Parametros.objects.filter(
-            Chave="FERIADO",
-            Valor__gte=primeiro_dia,
-            Valor__lte=ultimo_dia_mes_seguinte,
-        ).values()
-    )
+    feriados = Parametros.objects.filter(
+        Chave="FERIADO",
+        Valor__range=[primeiro_dia, ultimo_dia_mes_seguinte],
+    ).values_list("Valor", flat=True)
 
     feriado_datas = {
-        datetime.strptime(feriado["Valor"], "%Y-%m-%d").date()
-        for feriado in feriados
+        datetime.strptime(data, "%Y-%m-%d").date() for data in feriados
     }
 
-    cartao_ponto_com_mes_seguinte = CartaoPonto.objects.filter(
-        Dia__range=[primeiro_dia, ultimo_dia_mes_seguinte],
-        idPessoal=id_pessoal,
-    )
-
     dias_em_ferias = set(
-        cartao_ponto_com_mes_seguinte.filter(
-            Dia__in=feriado_datas, Ausencia="FERIAS"
+        CartaoPonto.objects.filter(
+            Dia__in=feriado_datas, idPessoal=id_pessoal, Ausencia="FERIAS"
         ).values_list("Dia", flat=True)
     )
 
-    feriados_filtrados = [
-        feriado
-        for feriado in feriados
-        if datetime.strptime(feriado["Valor"], "%Y-%m-%d").date()
-        not in dias_em_ferias
-    ]
+    feriados_validos = feriado_datas - dias_em_ferias
 
-    if feriados:
-        for feriado in feriados_filtrados:
-            dia = datetime.strptime(feriado["Valor"], "%Y-%m-%d")
-            if dia.weekday() != 6:
-                semanas_feriados.append(datetime.strftime(dia, "%V"))
+    semanas_feriados = {
+        int(datetime.strftime(feriado, "%V"))
+        for feriado in feriados_validos
+        if feriado.weekday() != 6  # Exclui feriados no domingo
+    }
 
-        semanas_feriados = list(map(int, semanas_feriados))
-        semanas_feriados = set(semanas_feriados)
-
-        for semana in semanas_faltas:
-            if semana == 52:
-                semana = 0
-            if semana + 1 in semanas_feriados:
-                dias_dsr += 1
+    for semana in semanas_faltas:
+        semana_atual = 0 if semana == 52 else semana
+        if semana_atual + 1 in semanas_feriados:
+            dias_dsr += 1
 
     return dias_dsr
 
