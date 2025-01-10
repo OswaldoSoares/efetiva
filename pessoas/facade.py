@@ -1119,6 +1119,14 @@ def calcular_salario(salario, cartao_ponto):
     return dias_pagar, valor_pagar
 
 
+def calcular_conducao(tarifa_dia, cartao_ponto):
+    """Falta docstring"""
+    dias_conducao = cartao_ponto.filter(Conducao=1).count()
+    valor_conducao = dias_conducao * tarifa_dia
+
+    return dias_conducao, valor_conducao
+
+
 def calcular_horas_extras(salario, cartao_ponto):
     """Falta docstring"""
     horario_padrao_entrada = datetime.strptime("07:00", "%H:%M").time()
