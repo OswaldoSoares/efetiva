@@ -1105,6 +1105,20 @@ def atualizar_ou_adicionar_contra_cheque_item(
     )
 
 
+def calcular_salario(salario, cartao_ponto):
+    ultimo_dia = cartao_ponto.order_by("Dia").last().Dia.day
+
+    dias_pagar = cartao_ponto.exclude(Ausencia__icontains="FÉRIAS").count()
+    dias_pagar = 30 if dias_pagar == 31 else dias_pagar
+
+    incrementos = {28: 2, 29: 1}
+    dias_pagar += incrementos.get(ultimo_dia, 0)
+
+    valor_pagar = salario / 30 * dias_pagar
+
+    return dias_pagar, valor_pagar
+
+
 def calcular_horas_extras(salario, cartao_ponto):
     """Falta docstring"""
     horario_padrao_entrada = datetime.strptime("07:00", "%H:%M").time()
