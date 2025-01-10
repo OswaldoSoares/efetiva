@@ -1107,21 +1107,22 @@ def atualizar_ou_adicionar_contra_cheque_item(
 
 def create_contexto_contra_cheque_pagamento(request):
     id_pessoal = request.GET.get("id_pessoal")
-    ano = request.GET.get("ano")
-    mes = obter_mes_por_numero(int(request.GET.get("mes")))
+    mes = int(request.GET.get("mes"))
+    ano = int(request.GET.get("ano"))
+    mes_extenso = obter_mes_por_numero(mes)
     descricao = "PAGAMENTO"
 
     contra_cheque = ContraCheque.objects.filter(
         Descricao=descricao,
         AnoReferencia=ano,
-        MesReferencia=mes,
+        MesReferencia=mes_extenso,
         idPessoal=id_pessoal,
     ).first()
 
     if not contra_cheque:
         obs = ""
         contra_cheque = create_contra_cheque(
-            mes, ano, descricao, id_pessoal, obs
+            mes_extenso, ano, descricao, id_pessoal, obs
         )
 
     contra_cheque_itens = ContraChequeItens.objects.filter(
