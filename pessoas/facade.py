@@ -1094,15 +1094,22 @@ def atualizar_ou_adicionar_contra_cheque_item(
     descricao, valor, registro, referencia, id_contra_cheque
 ):
     """Falta docstring"""
-    ContraChequeItens.objects.update_or_create(
-        Descricao=descricao,
-        Registro=registro,
-        idContraCheque_id=id_contra_cheque,
-        defaults={
-            "Valor": valor,
-            "Referencia": referencia,
-        },
-    )
+    if valor == 0:
+        ContraChequeItens.objects.filter(
+            Descricao=descricao,
+            Registro=registro,
+            idContraCheque_id=id_contra_cheque,
+        ).delete()
+    else:
+        ContraChequeItens.objects.update_or_create(
+            Descricao=descricao,
+            Registro=registro,
+            idContraCheque_id=id_contra_cheque,
+            defaults={
+                "Valor": valor,
+                "Referencia": referencia,
+            },
+        )
 
 
 def calcular_salario(salario, cartao_ponto):
