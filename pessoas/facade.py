@@ -1136,6 +1136,29 @@ def calcular_horas_extras(salario, cartao_ponto):
     return total_extras, valor_extras
 
 
+def calcular_atrasos(salario, cartao_ponto):
+    """Falta docstring"""
+    horario_padrao_entrada = datetime.strptime("07:00", "%H:%M").time()
+    total_atrasos = timedelta()
+
+    for dia in cartao_ponto:
+        if dia.Entrada > horario_padrao_entrada:
+            total_atrasos += datetime.combine(
+                datetime.min, dia.Entrada
+            ) - datetime.combine(datetime.min, horario_padrao_entrada)
+
+    # Forma de calculo alterada em 01/12/2024.
+    data_limite_calculo = datetime.strptime("2024-11-30", "%Y-%m-%d").date()
+    if cartao_ponto[0].Dia > data_limite_calculo:
+        valor_atrasos = float(salario) / 220 / 60 / 60 * total_atrasos.seconds
+    else:
+        valor_atrasos = (
+            float(salario) / 30 / 9 / 60 / 60 * total_atrasos.seconds
+        )
+
+    return total_atrasos, valor_atrasos
+
+
 def create_contexto_contra_cheque_pagamento(request):
     id_pessoal = request.GET.get("id_pessoal")
     mes = int(request.GET.get("mes"))
