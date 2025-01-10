@@ -1309,6 +1309,83 @@ def calcula_dsr(id_pessoal, salario, cartao_ponto):
     return dias_dsr, valor_dsr
 
 
+def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
+    """Falta docstring"""
+    colaborador = classes.Colaborador(id_pessoal)
+    admissao = colaborador.dados_profissionais.data_admissao
+    demissao = colaborador.dados_profissionais.data_demissao
+    salario = colaborador.salarios.salarios.Salario
+    tarifa_dia = colaborador.salarios.salarios.ValeTransporte
+    id_contra_cheque = contra_cheque.idContraCheque
+
+    primeiro_dia, ultimo_dia = primeiro_e_ultimo_dia_do_mes(mes, ano)
+    primeiro_dia = admissao if admissao > primeiro_dia.date() else primeiro_dia
+    ultimo_dia = (
+        demissao if demissao and demissao < ultimo_dia.date() else ultimo_dia
+    )
+
+    cartao_ponto = CartaoPonto.objects.filter(
+        Dia__range=[primeiro_dia, ultimo_dia], idPessoal=id_pessoal
+    )
+
+    itens_contra_cheque = [
+        {
+            "nome": "SALARIO",
+            "calculo": lambda: calcular_salario(salario, cartao_ponto),
+            "tipo": "C",
+            "descricao": lambda dias: f"{dias}d",
+        },
+        {
+            "nome": "VALE TRANSPORTE",
+            "calculo": lambda: calcular_conducao(tarifa_dia, cartao_ponto)
+            if tarifa_dia
+            else (0, 0),
+            "tipo": "C",
+            "descricao": lambda dias: f"{dias}d",
+        },
+        {
+            "nome": "HORA EXTRA",
+            "calculo": lambda: calcular_horas_extras(salario, cartao_ponto),
+            "tipo": "C",
+            "descricao": lambda horas: horas,
+        },
+        {
+            "nome": "ADIANTAMENTO",
+            "calculo": lambda: calcular_adiantamento(contra_cheque),
+            "tipo": "D",
+            "descricao": lambda porc: porc,
+        },
+        {
+            "nome": "ATRASO",
+            "calculo": lambda: calcular_atrasos(salario, cartao_ponto),
+            "tipo": "D",
+            "descricao": lambda horas: horas,
+        },
+        {
+            "nome": "FALTAS",
+            "calculo": lambda: calcular_faltas(salario, cartao_ponto),
+            "tipo": "D",
+            "descricao": lambda dias: f"{dias}d",
+        },
+        {
+            "nome": "DSR SOBRE FALTAS",
+            "calculo": lambda: calcula_dsr(id_pessoal, salario, cartao_ponto),
+            "tipo": "D",
+            "descricao": lambda dias: f"{dias}d",
+        },
+    ]
+
+    for item in itens_contra_cheque:
+        quantidade, valor = item["calculo"]()
+        atualizar_ou_adicionar_contra_cheque_item(
+            item["nome"],
+            valor,
+            item["tipo"],
+            item["descricao"](quantidade),
+            id_contra_cheque,
+        )
+
+
 def create_contexto_contra_cheque_pagamento(request):
     id_pessoal = request.GET.get("id_pessoal")
     mes = int(request.GET.get("mes"))
