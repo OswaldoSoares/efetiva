@@ -1256,6 +1256,47 @@ def calcula_dsr_feriado(id_pessoal, dias_dsr, semanas_faltas, cartao_ponto):
     return dias_dsr
 
 
+def calcula_dsr(id_pessoal, salario, cartao_ponto):
+    """Falta docstring"""
+    dias_faltas = cartao_ponto.filter(Ausencia="FALTA").exclude(Remunerado=1)
+
+    semanas_faltas = []
+    for falta in dias_faltas:
+        semanas_faltas.append(datetime.strftime(falta.Dia, "%V"))
+
+    semanas_faltas = list(map(int, semanas_faltas))
+    semanas_faltas = set(semanas_faltas)
+
+    primeiro_dia = cartao_ponto.order_by("Dia").first().Dia
+
+    if 1 <= primeiro_dia.weekday() <= 4:
+        inicio = primeiro_dia - datetime.timedelta(primeiro_dia.weekday())
+        fim = primeiro_dia - datetime.timedelta(1)
+        faltas_mes_anterior = list(
+            CartaoPonto.objects.filter(
+                idPessoal=id_pessoal,
+                Ausencia="FALTA",
+                Remunerado=False,
+                Dia__range=[inicio, fim],
+            ).values()
+        )
+        if faltas_mes_anterior:
+            semana_mes_anterior = datetime.datetime.strftime(
+                faltas_mes_anterior[0]["Dia"], "%V"
+            )
+            if semana_mes_anterior in semanas_faltas:
+                semanas_faltas.remove(int(semana_mes_anterior))
+
+    dias_dsr = len(semanas_faltas)
+    dias_dsr = calcula_dsr_feriado(
+        id_pessoal, dias_dsr, semanas_faltas, cartao_ponto
+    )
+
+    valor_dsr = salario / 30 * dias_dsr
+
+    return dias_dsr, valor_dsr
+
+
 def create_contexto_contra_cheque_pagamento(request):
     id_pessoal = request.GET.get("id_pessoal")
     mes = int(request.GET.get("mes"))
