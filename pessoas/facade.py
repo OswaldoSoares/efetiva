@@ -1188,6 +1188,18 @@ def calcular_atrasos(salario, cartao_ponto):
     return total_atrasos, valor_atrasos
 
 
+def calcular_faltas(salario, cartao_ponto):
+    """Falta docstring"""
+    dias_faltas = cartao_ponto.filter(Ausencia="FALTA")
+    faltas_abonadas = dias_faltas.filter(Remunerado=1).count()
+
+    dias_descontar = len(dias_faltas) - faltas_abonadas
+
+    valor_faltas = salario / 30 * dias_descontar
+
+    return dias_descontar, valor_faltas
+
+
 def create_contexto_contra_cheque_pagamento(request):
     id_pessoal = request.GET.get("id_pessoal")
     mes = int(request.GET.get("mes"))
