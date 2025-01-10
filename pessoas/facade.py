@@ -1105,6 +1105,37 @@ def atualizar_ou_adicionar_contra_cheque_item(
     )
 
 
+def calcular_horas_extras(salario, cartao_ponto):
+    """Falta docstring"""
+    horario_padrao_entrada = datetime.strptime("07:00", "%H:%M").time()
+    horario_padrao_saida = datetime.strptime("17:00", "%H:%M").time()
+    total_extras = timedelta()
+
+    for dia in cartao_ponto:
+        if dia.Saida > horario_padrao_saida:
+            total_extras += datetime.combine(
+                datetime.min, dia.Saida
+            ) - datetime.combine(datetime.min, horario_padrao_saida)
+
+        if dia.Entrada < horario_padrao_entrada:
+            total_extras += datetime.combine(
+                datetime.min, horario_padrao_entrada
+            ) - datetime.combine(datetime.min, dia.Entrada)
+
+    # Forma de calculo alterada em 01/12/2024.
+    data_limite_calculo = datetime.strptime("2024-11-30", "%Y-%m-%d").date()
+    if cartao_ponto[0].Dia > data_limite_calculo:
+        valor_extras = (
+            float(salario) / 220 / 60 / 60 * 1.5 * total_extras.seconds
+        )
+    else:
+        valor_extras = (
+            float(salario) / 30 / 9 / 60 / 60 * 1.5 * total_extras.seconds
+        )
+
+    return total_extras, valor_extras
+
+
 def create_contexto_contra_cheque_pagamento(request):
     id_pessoal = request.GET.get("id_pessoal")
     mes = int(request.GET.get("mes"))
