@@ -1165,6 +1165,36 @@ def calcular_horas_extras(salario, cartao_ponto):
     return total_extras, valor_extras
 
 
+def calcular_adiantamento(contra_cheque):
+    """Falta docstring"""
+    contra_cheque_adiantamento = ContraCheque.objects.filter(
+        Descricao="ADIANTAMENTO",
+        MesReferencia=contra_cheque.MesReferencia,
+        AnoReferencia=contra_cheque.AnoReferencia,
+        idPessoal=contra_cheque.idPessoal,
+    ).first()
+
+    if contra_cheque_adiantamento:
+        contra_cheque_itens = ContraChequeItens.objects.filter(
+            idContraCheque=contra_cheque_adiantamento.idContraCheque,
+            Descricao="ADIANTAMENTO",
+        ).first()
+        referencia = (
+            contra_cheque_itens.Referencia
+            if contra_cheque_adiantamento.Pago
+            else "0%"
+        )
+        valor = (
+            contra_cheque_itens.Valor
+            if contra_cheque_adiantamento.Pago
+            else Decimal(0.00)
+        )
+
+        return referencia, valor
+
+    return "0%", Decimal(0.00)
+
+
 def calcular_atrasos(salario, cartao_ponto):
     """Falta docstring"""
     horario_padrao_entrada = datetime.strptime("07:00", "%H:%M").time()
