@@ -53,7 +53,7 @@ from pessoas.models import (
     ContraChequeItens,
     CartaoPonto,
 )
-from website.models import FileUpload
+from website.models import FileUpload, Parametros
 from website.facade import (
     converter_mes_ano,
     nome_curto,
