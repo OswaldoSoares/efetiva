@@ -1091,14 +1091,21 @@ def create_contra_cheque_itens(
 
 
 def get_saldo_contra_cheque(contra_cheque_itens):
-    creditos = contra_cheque_itens.filter(Registro="C").aggregate(
-        total=Sum("Valor")
-    )["total"] or Decimal(0)
-    debitos = contra_cheque_itens.filter(Registro="D").aggregate(
-        total=Sum("Valor")
-    )["total"] or Decimal(0)
+    creditos = (
+        contra_cheque_itens.filter(Registro="C")
+        .aggregate(total=Sum("Valor"))
+        .get("total", Decimal(0))
+    )
+
+    debitos = (
+        contra_cheque_itens.filter(Registro="D")
+        .aggregate(total=Sum("Valor"))
+        .get("total", Decimal(0))
+    )
+
     saldo = creditos - debitos
-    return {"credito": creditos, "debitos": debitos, "saldo": saldo}
+
+    return {"credito": creditos, "debito": debitos, "saldo": saldo}
 
 
 def atualizar_ou_adicionar_contra_cheque_item(
