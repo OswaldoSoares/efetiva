@@ -1091,6 +1091,7 @@ def create_contra_cheque_itens(
 
 
 def get_saldo_contra_cheque(contra_cheque_itens):
+    """Falta docstring"""
     creditos = (
         contra_cheque_itens.filter(Registro="C")
         .aggregate(total=Sum("Valor"))
@@ -1405,6 +1406,7 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
 
 
 def create_contexto_contra_cheque_pagamento(request):
+    """Falta docstring"""
     id_pessoal = request.GET.get("id_pessoal")
     mes = int(request.GET.get("mes"))
     ano = int(request.GET.get("ano"))
