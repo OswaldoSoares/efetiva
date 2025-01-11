@@ -41,21 +41,6 @@ from pagamentos.forms import CadastraCartaoPonto, FormAgenda
 from pagamentos.models import FolhaPagamento, Recibo, ReciboItens
 from pagamentos import html_data
 
-meses = [
-    "JANEIRO",
-    "FEVEREIRO",
-    "MARÇO",
-    "ABRIL",
-    "MAIO",
-    "JUNHO",
-    "JULHO",
-    "AGOSTO",
-    "SETEMBRO",
-    "OUTUBRO",
-    "NOVEMBRO",
-    "DEZEMBRO",
-]
-
 dias = [
     "SEGUNDA-FEIRA",
     "TERÇA-FEIRA",
@@ -68,15 +53,33 @@ dias = [
 
 
 def create_contexto_meses_pagamento() -> dict:
+    """Consulte a documentação detalhada em 'docs/facade.md'."""
     locale.setlocale(locale.LC_TIME, "pt_BR.UTF-8")
     hoje = datetime.datetime.today()
     meses = [
-        (hoje - relativedelta(months=i)).strftime("%B/%Y") for i in range(3)
+        (hoje - relativedelta(months=i)).strftime("%B/%Y") for i in range(6)
     ]
     return {"meses": meses}
 
 
 def obter_itens_contra_cheque(contra_cheques_itens, id_contra_cheque):
+    """
+    Filtra os itens de um contracheque específico.
+
+    A função retorna um conjunto contendo todos os itens associados a um
+    contracheque, com base no ID do contracheque fornecido.
+
+    Args:
+        contra_cheques_itens (set): Conjunto de objetos `ContraChequeItens`,
+                                    onde cada item representa um detalhe de
+                                    um contracheque.
+        id_contra_cheque (int): O ID do contracheque para o qual os itens
+                                devem ser filtrados.
+
+    Returns:
+        set: Conjunto de objetos `ContraChequeItens` associados ao contracheque
+        especificado.
+    """
     return {
         item
         for item in contra_cheques_itens
@@ -85,6 +88,26 @@ def obter_itens_contra_cheque(contra_cheques_itens, id_contra_cheque):
 
 
 def calcular_saldo_contra_cheque(contra_cheque_itens):
+    """
+    Calcula o saldo total de um contracheque com base nos seus itens.
+
+    A função soma os valores dos itens do contracheque, adicionando ou
+    subtraindo os valores conforme o tipo de registro:
+    - "C" (Crédito): Valor é adicionado ao saldo.
+    - Qualquer outro registro (ex.: "D" para Débito): Valor é subtraído do
+    saldo.
+
+    Args:
+        contra_cheque_itens (iterable): Coleção de objetos `ContraChequeItens`,
+                                        onde cada item possui os seguintes
+                                        atributos:
+                                        - `Valor` (Decimal): Valor do item.
+                                        - `Registro` (str): Tipo do item ("C"
+                                        para crédito, outros para débito).
+
+    Returns:
+        Decimal: O saldo total calculado com base nos itens do contracheque.
+    """
     return sum(
         item.Valor if item.Registro == "C" else -item.Valor
         for item in contra_cheque_itens
@@ -94,36 +117,89 @@ def calcular_saldo_contra_cheque(contra_cheque_itens):
 def processar_folha_pagamento(
     colaboradores, contra_cheques, contra_cheques_itens, descricao
 ):
+    """
+    Processa os dados da folha de pagamento para um grupo de colaboradores.
+
+    A função calcula o saldo dos contracheques de cada colaborador com base
+    nos itens dos contracheques e na descrição fornecida, gerando um
+    dicionário consolidado com os resultados.
+
+    Args:
+        colaboradores (QuerySet): QuerySet ou lista de colaboradores, cada um
+                                  com os atributos:
+                                  - `idPessoal`: ID único do colaborador.
+                                  - `Nome`: Nome completo do colaborador.
+        contra_cheques (set): Conjunto de objetos `ContraCheque`,
+                              representando os contracheques associados aos
+                              colaboradores.
+        contra_cheques_itens (set): Conjunto de objetos `ContraChequeItens`,
+                                    representando os itens dos contracheques.
+        descricao (str): A descrição associada aos valores a serem calculados
+                         (ex.: "PAGAMENTO", "ADIANTAMENTO").
+
+    Returns:
+        dict: Dicionário contendo os saldos por colaborador. Cada chave é o ID
+        do colaborador, e os valores são dicionários com os seguintes campos:
+              - "nome": Nome completo do colaborador.
+              - "nome_curto": Nome abreviado ou apelido do colaborador.
+              - `descricao` (str): Saldo calculado com base nos itens do
+                                   contracheque ou `Decimal(0.00)` caso não
+                                   haja contracheque associado.
+    """
+    contra_cheques_map = {
+        cheque.idPessoal_id: cheque for cheque in contra_cheques
+    }
+
     saldo_por_colaborador = {}
     for colaborador in colaboradores:
-        contra_cheque_colaborador = {
-            item
-            for item in contra_cheques
-            if item.idPessoal_id == colaborador.idPessoal
-        }
-        if contra_cheque_colaborador:
-            cheque = next(iter(contra_cheque_colaborador))
-
-            contra_cheque_itens = obter_itens_contra_cheque(
-                contra_cheques_itens, cheque.idContraCheque
-            )
-
-            saldo = calcular_saldo_contra_cheque(contra_cheque_itens)
-            saldo_por_colaborador[colaborador.idPessoal] = {
-                "nome": colaborador.Nome,
-                "nome_curto": nome_curto(colaborador.Nome),
-                descricao: saldo,
+        cheque = contra_cheques_map.get(colaborador.idPessoal)
+        if cheque:
+            itens = {
+                item
+                for item in contra_cheques_itens
+                if item.idContraCheque_id == cheque.idContraCheque
             }
+            saldo = calcular_saldo_contra_cheque(itens)
         else:
-            saldo_por_colaborador[colaborador.idPessoal] = {
-                "nome": colaborador.Nome,
-                "nome_curto": nome_curto(colaborador.Nome),
-                descricao: Decimal(0.00),
-            }
+            saldo = Decimal(0.00)
+
+        saldo_por_colaborador[colaborador.idPessoal] = {
+            "nome": colaborador.Nome,
+            "nome_curto": nome_curto(colaborador.Nome),
+            descricao: saldo,
+        }
     return saldo_por_colaborador
 
 
 def saldo_contra_cheques_de_colaboradores(colaboradores, descricao, mes, ano):
+    """
+    Calcula os saldos de contracheques dos colaboradores com base na
+    descrição, mês e ano de referência.
+
+    A função filtra os contracheques e seus respectivos itens para os
+    colaboradores fornecidos, considerando a descrição (ex.: "PAGAMENTO"
+    ou "ADIANTAMENTO") e o período especificado.
+    Em seguida, processa os dados e retorna o saldo correspondente.
+
+    Args:
+        colaboradores (QuerySet): QuerySet contendo os colaboradores para os
+            quais os contracheques serão calculados.
+        descricao (str): A descrição dos valores a serem filtrados
+            (ex.: "PAGAMENTO", "ADIANTAMENTO").
+        mes (int): O número do mês de referência (1 a 12).
+        ano (int): O ano de referência.
+
+    Returns:
+        dict: Dados processados contendo os saldos de contracheques para os
+        colaboradores.
+
+    Dependências:
+        - `ContraCheque`: Modelo ORM que representa os contracheques.
+        - `ContraChequeItens`: Modelo ORM que representa os itens dos
+        contracheques.
+        - `processar_folha_pagamento`: Função para processar os dados
+        filtrados.
+    """
     id_colaboradores_list = [item.idPessoal for item in colaboradores]
     contra_cheques = set(
         ContraCheque.objects.filter(
@@ -149,6 +225,39 @@ def saldo_contra_cheques_de_colaboradores(colaboradores, descricao, mes, ano):
 def unir_saldo_contra_cheque_pagamento_e_adiantamento(
     colaboradores, dict_pagamento, dict_adiantamento
 ):
+    """
+    Combina os saldos de pagamento e adiantamento dos colaboradores em um
+    único dicionário.
+
+    A função consolida as informações de pagamento e adiantamento para cada
+    colaborador, garantindo que todos os colaboradores estejam representados
+    no resultado, mesmo que não tenham valores em uma das categorias
+    (pagamento ou adiantamento).
+
+    Args:
+        colaboradores (QuerySet): Lista ou QuerySet de colaboradores a serem
+        processados.
+        dict_pagamento (dict): Dicionário contendo os valores de pagamento
+        por colaborador. O formato esperado é:
+                {
+                    "id_colaborador": {
+                        "nome": str,
+                        "nome_curto": str,
+                        "PAGAMENTO": Decimal,
+                    },
+                    ...
+                }
+        dict_adiantamento (dict): Dicionário contendo os valores de
+        adiantamento por colaborador. O formato esperado é similar ao
+        de `dict_pagamento`.
+
+    Returns:
+        dict: Um dicionário consolidado com as seguintes chaves:
+              - "nome": Nome completo do colaborador.
+              - "nome_curto": Nome curto ou apelido do colaborador.
+              - "pagamento": Valor total de pagamento (Decimal).
+              - "adiantamento": Valor total de adiantamento (Decimal).
+    """
     result = {}
     for colaborador, valores_pagamento in dict_pagamento.items():
         if colaborador in dict_adiantamento:
@@ -169,8 +278,8 @@ def unir_saldo_contra_cheque_pagamento_e_adiantamento(
     for colaborador, valores_adiantamento in dict_adiantamento.items():
         if colaborador not in result:
             result[colaborador] = {
-                "nome": valores_pagamento["nome"],
-                "nome_curto": valores_pagamento["nome_curto"],
+                "nome": valores_adiantamento["nome"],
+                "nome_curto": valores_adiantamento["nome_curto"],
                 "pagamento": Decimal("0"),
                 "adiantamento": valores_adiantamento["ADIANTAMENTO"],
             }
@@ -179,37 +288,133 @@ def unir_saldo_contra_cheque_pagamento_e_adiantamento(
 
 
 def get_salarios_grupo_colaboradores(colaboradores):
+    """
+    Recupera os salários dos colaboradores fornecidos.
+
+    A função filtra os registros de salários no banco de dados para o grupo
+    de colaboradores especificado com base em seus IDs.
+
+    Args:
+        colaboradores (QuerySet): QuerySet ou lista de objetos de
+                                  colaboradores, cada um contendo um atributo
+                                  `idPessoal`.
+
+    Returns:
+        set: Um conjunto de objetos `Salario` correspondentes aos
+        colaboradores fornecidos.
+    """
     id_colaboradores_list = [item.idPessoal for item in colaboradores]
     return set(Salario.objects.filter(idPessoal_id__in=id_colaboradores_list))
 
 
 def adicionar_info_folha(folha, salarios) -> dict:
-    for id_pessoal in folha:
-        salario = {
-            item for item in salarios if item.idPessoal_id == id_pessoal
-        }
-        valor = next(iter(salario)).Salario if salario else Decimal(0.00)
-        folha[id_pessoal]["adiantamento"] = folha[id_pessoal][
-            "adiantamento"
-        ] or (valor / 100 * 40)
-        folha[id_pessoal]["pagamento"] = (
-            folha[id_pessoal]["pagamento"] or valor
-        )
-        folha[id_pessoal]["salario"] = valor
+    """
+    Adiciona informações de salários aos dados da folha de pagamento.
+
+    A função complementa os dados existentes na folha de pagamento com os
+    salários dos colaboradores,
+    ajustando os valores de adiantamento e pagamento caso não estejam
+    definidos.
+
+    Args:
+        folha (dict): Dicionário contendo os dados da folha de pagamento,
+                      onde as chaves são os IDs dos colaboradores e os
+                      valores são dicionários com informações como
+                      "adiantamento" e "pagamento".
+        salarios (set): Conjunto de objetos `Salario` contendo os salários
+                        dos colaboradores, cada um com os atributos
+                        `idPessoal_id` e `Salario`.
+
+    Returns:
+        dict: O dicionário atualizado da folha de pagamento, incluindo os
+        seguintes campos:
+              - "adiantamento": Valor do adiantamento (calculado como 40%
+                                do salário se não definido).
+              - "pagamento": Valor do pagamento (igual ao salário se não
+                             definido).
+              - "salario": Valor total do salário do colaborador.
+    """
+    salarios_map = {sal.idPessoal_id: sal.Salario for sal in salarios}
+
+    for id_pessoal, dados in folha.items():
+        salario = salarios_map.get(id_pessoal, Decimal(0.00))
+        dados["adiantamento"] = dados.get("adiantamento", Decimal("0"))
+        if dados.get("adiantamento") == Decimal(0):
+            dados["adiantamento"] = salario * Decimal("0.40")
+        dados["pagamento"] = dados.get("pagamento", Decimal("0"))
+        if dados.get("pagamento") == Decimal(0):
+            dados["pagamento"] = salario
+        dados["salario"] = salario
 
     return folha
 
 
 def get_totais_folha(folha: dict) -> dict:
-    soma = {}
-    soma["adiantamento"] = sum(info["adiantamento"] for info in folha.values())
-    soma["pagamento"] = sum(info["pagamento"] for info in folha.values())
-    soma["saldo"] = soma["adiantamento"] + soma["pagamento"]
+    """
+    Calcula os totais consolidados da folha de pagamento.
 
-    return soma
+    A função soma os valores de adiantamento, pagamento e o saldo total
+    (a soma de ambos)
+    para todos os colaboradores presentes na folha de pagamento.
+
+    Args:
+        folha (dict): Dicionário contendo os dados da folha de pagamento.
+                      Cada chave é o ID de um colaborador, e os valores
+                      são dicionários com os seguintes campos:
+                      - "adiantamento" (Decimal): Valor do adiantamento.
+                      - "pagamento" (Decimal): Valor do pagamento.
+
+    Returns:
+        dict: Um dicionário com os totais da folha, contendo:
+              - "adiantamento": Soma total dos adiantamentos.
+              - "pagamento": Soma total dos pagamentos.
+              - "saldo": Soma de adiantamento e pagamento.
+    """
+    return {
+        "adiantamento": sum(info["adiantamento"] for info in folha.values()),
+        "pagamento": sum(info["pagamento"] for info in folha.values()),
+        "saldo": sum(
+            info["adiantamento"] + info["pagamento"] for info in folha.values()
+        ),
+    }
 
 
 def create_contexto_folha_pagamento(request):
+    """
+    Cria o contexto necessário para exibir a folha de pagamento de
+    colaboradores em um mês específico.
+
+    A função processa os dados de colaboradores mensalistas, seus pagamentos
+    e adiantamentos, e retorna informações detalhadas sobre a folha de
+    pagamento, incluindo totais e uma mensagem personalizada.
+
+    Args:
+        request: Objeto de requisição que contém o parâmetro `mes_ano` no
+        formato "Mês/Ano"
+                 (ex.: "Janeiro/2024") via `GET`.
+
+    Returns:
+        dict: Um dicionário contendo:
+            - "folha" (list): Lista detalhada com informações da folha de
+            pagamento.
+            - "mes" (str): O número do mês selecionado (1 a 12).
+            - "ano" (str): O ano selecionado.
+            - "totais" (dict): Totais calculados da folha de pagamento.
+            - "mensagem" (str): Mensagem informando o mês e ano selecionados.
+
+    Dependências:
+        - `primeiro_e_ultimo_dia_do_mes`: Para obter o primeiro e último dia
+        do mês selecionado.
+        - `Pessoal`: Modelo ORM para acesso aos dados de colaboradores.
+        - `saldo_contra_cheques_de_colaboradores`: Para calcular os valores de
+        pagamento e adiantamento.
+        - `unir_saldo_contra_cheque_pagamento_e_adiantamento`: Para consolidar
+        os dados de pagamento.
+        - `get_salarios_grupo_colaboradores`: Para obter os salários de
+        colaboradores.
+        - `adicionar_info_folha`: Para integrar salários à folha de pagamento.
+        - `get_totais_folha`: Para calcular os totais da folha de pagamento.
+    """
     meses_invertido = {v: k for k, v in MESES.items()}
     mes, ano = request.GET.get("mes_ano").split("/")
     mes = meses_invertido.get(mes)
@@ -218,6 +423,7 @@ def create_contexto_folha_pagamento(request):
     colaboradores = Pessoal.objects.filter(
         TipoPgto="MENSALISTA", DataAdmissao__lte=primeiro_e_ultimo[1]
     ).exclude(DataDemissao__lte=primeiro_e_ultimo[0])
+
     pagamento = saldo_contra_cheques_de_colaboradores(
         colaboradores, "PAGAMENTO", mes, ano
     )
@@ -228,18 +434,17 @@ def create_contexto_folha_pagamento(request):
     folha_sem_salarios = unir_saldo_contra_cheque_pagamento_e_adiantamento(
         colaboradores, pagamento, adiantamento
     )
+
     salarios = get_salarios_grupo_colaboradores(colaboradores)
     folha = adicionar_info_folha(folha_sem_salarios, salarios)
     totais = get_totais_folha(folha)
-
-    mensagem = f"O mês {mes}/{ano} foi selecionado"
 
     return {
         "folha": folha,
         "mes": mes,
         "ano": ano,
         "totais": totais,
-        "mensagem": mensagem,
+        "mensagem": f"O mês {mes}/{ano} foi selecionado",
     }
 
 
@@ -292,7 +497,11 @@ def gerar_cartao_de_ponto_do_colaborador(colaborador, mes, ano):
 
         registros.append(CartaoPonto(**obj))
 
-    return CartaoPonto.objects.bulk_create(registros)
+    CartaoPonto.objects.bulk_create(registros)
+
+    return CartaoPonto.objects.filter(
+        Dia__range=[primeiro_dia, ultimo_dia], idPessoal=id_pessoal
+    )
 
 
 def obter_cartao_de_ponto_do_colaborador(colaborador, mes, ano):
@@ -303,43 +512,157 @@ def obter_cartao_de_ponto_do_colaborador(colaborador, mes, ano):
         Dia__range=[primeiro_dia, ultimo_dia], idPessoal=id_pessoal
     )
 
-    return cartao_ponto or gerar_cartao_de_ponto_do_colaborador(
-        colaborador, mes, ano
+    return (
+        cartao_ponto
+        if cartao_ponto.exists()
+        else gerar_cartao_de_ponto_do_colaborador(colaborador, mes, ano)
     )
+
+
+def verificar_feriados(cartao_ponto, mes, ano):
+    primeiro_dia_mes, ultimo_dia_mes = extremos_mes(mes, ano)
+    lista_feriados = list(
+        Parametros.objects.filter(
+            Chave="FERIADO",
+            Valor__gte=primeiro_dia_mes,
+            Valor__lte=ultimo_dia_mes,
+        ).values()
+    )
+    registros_cartao_ponto = []
+    for feriado in lista_feriados:
+        dia = datetime.datetime.strptime(feriado["Valor"], "%Y-%m-%d").date()
+        filtro = list(filter(lambda item: item.Dia == dia, cartao_ponto))
+        if filtro[0].Ausencia != "FÉRIAS":
+            if filtro[0].Ausencia != "FERIADO" and dia.weekday() != 6:
+                filtro[0].Ausencia = "FERIADO"
+                filtro[0].Conducao = False
+                registros_cartao_ponto.append(
+                    CartaoPonto(
+                        idCartaoPonto=filtro[0].idCartaoPonto,
+                        Ausencia="FERIADO",
+                        Conducao=False,
+                    )
+                )
+    CartaoPonto.objects.bulk_update(
+        registros_cartao_ponto, ["Ausencia", "Conducao"]
+    )
+
+
+def atualizar_cartao_ponto_transporte(cartao_ponto, vale_transporte):
+    registros_cartao_ponto = [
+        CartaoPonto(
+            idCartaoPonto=dia.idCartaoPonto,
+            Conducao=vale_transporte > Decimal(0.00) and not dia.CarroEmpresa,
+            idPessoal_id=dia.idPessoal_id,
+        )
+        for dia in cartao_ponto
+        if dia.Ausencia == ""
+    ]
+
+    CartaoPonto.objects.bulk_update(registros_cartao_ponto, ["Conducao"])
+
+
+def atualizar_cartao_ponto_minutas(cartao_ponto, minutas):
+    registros_cartao_ponto = []
+    for minuta in minutas:
+        dia = next(
+            (
+                item
+                for item in cartao_ponto
+                if item.Dia == minuta["data_minuta"]
+            ),
+            None,
+        )
+        if (
+            minuta["hora_inicial"] < dia.Entrada
+            and dia["Alteracao"] != "MANUAL"
+        ):
+            dia.Entrada = minuta["hora_inicial"]
+            registros_cartao_ponto.append(
+                CartaoPonto(
+                    idCartaoPonto=dia.idCartaoPonto,
+                    Entrada=minuta["hora_inicial"],
+                    Saida=dia.Saida,
+                    idPessoal_id=dia.idPessoal_id,
+                )
+            )
+        if minuta["hora_final"] > dia.Saida and dia.Alteracao != "MANUAL":
+            dia.Saida = minuta["hora_final"]
+            registros_cartao_ponto.append(
+                CartaoPonto(
+                    idCartaoPonto=dia.idCartaoPonto,
+                    Entrada=dia.Entrada,
+                    Saida=minuta["hora_final"],
+                    idPessoal_id=dia.idPessoal_id,
+                )
+            )
+    CartaoPonto.objects.bulk_update(
+        registros_cartao_ponto, ["Entrada", "Saida"]
+    )
+
+
+def create_contexto_agenda_colaborador(id_pessoal, mes, ano):
+    primeiro_dia, ultimo_dia = primeiro_e_ultimo_dia_do_mes(mes, ano)
+
+    agenda = Agenda.objects.filter(
+        idPessoal=id_pessoal,
+        Dia__range=(primeiro_dia, ultimo_dia),
+    ).values()
+
+    arquivos_por_id_agenda = {
+        int(file.DescricaoUpload[9:]): file
+        for file in FileUpload.objects.filter(
+            DescricaoUpload__startswith="AGENDA"
+        )
+    }
+
+    for dia in agenda:
+        id_agenda = dia.get("idAgenda")
+        if id_agenda in arquivos_por_id_agenda:
+            dia["file"] = arquivos_por_id_agenda[id_agenda]
+
+    return {"agenda": agenda}
 
 
 def create_contexto_colaborador(request):
     id_pessoal = request.GET.get("id_pessoal")
     mes = int(request.GET.get("mes"))
     ano = int(request.GET.get("ano"))
+
     colaborador = Colaborador(id_pessoal)
-    salario = colaborador.salarios.salarios.Salario
-    vale_transporte = colaborador.salarios.salarios.ValeTransporte
+
     primeiro_dia, ultimo_dia = primeiro_e_ultimo_dia_do_mes(mes, ano)
-
     cartao_ponto = obter_cartao_de_ponto_do_colaborador(colaborador, mes, ano)
+    verificar_feriados(cartao_ponto, mes, ano)
 
-    verifica_feriados(cartao_ponto, mes, ano)
+    vale_transporte = colaborador.salarios.salarios.ValeTransporte
+    atualizar_cartao_ponto_transporte(cartao_ponto, vale_transporte)
+
     minutas = get_minutas_periodo_contra_cheque(
         id_pessoal, primeiro_dia, ultimo_dia
     )
-    vales = get_vales_colaborador(id_pessoal)
-    atualiza_cartao_ponto_transporte(cartao_ponto, vale_transporte)
-    atualiza_cartao_ponto_minutas(cartao_ponto, minutas)
+    atualizar_cartao_ponto_minutas(cartao_ponto, minutas)
+
+    # Recria QuerySet para obter as atualizações feitas
     cartao_ponto = obter_cartao_de_ponto_do_colaborador(colaborador, mes, ano)
-    #  atualiza_itens_contra_cheque_pagamento(
-    #  colaborador, cartao_ponto, minutas, salario, vale_transporte, mes, ano
-    #  )
+
     contexto = {
+        "idpessoal": id_pessoal,
         "colaborador": colaborador,
         "nome_curto": nome_curto(colaborador.nome),
         "nome_underscore": nome_curto_underscore(colaborador.nome),
-        "idpessoal": id_pessoal,
         "cartao_ponto": cartao_ponto,
-        "vales": vales,
+        "minutas": minutas,
     }
-    #  agenda = contexto_agenda_colaborador(idpessoal, mes_ano)
-    #  contexto.update(agenda)
+
+    agenda = create_contexto_agenda_colaborador(id_pessoal, mes, ano)
+    contexto.update(agenda)
+
+    vales = get_vales_colaborador(id_pessoal)
+    contexto.update({"vales": vales})
+    #  atualiza_itens_contra_cheque_pagamento(
+    #  colaborador, cartao_ponto, minutas, salario, vale_transporte, mes, ano
+    #  )
     return contexto
 
 
@@ -3199,35 +3522,6 @@ def totais_contra_cheques(contra_cheques, contra_cheque_itens):
     return contexto
 
 
-def verifica_feriados(cartao_ponto, mes, ano):
-    primeiro_dia_mes, ultimo_dia_mes = extremos_mes(mes, ano)
-    lista_feriados = list(
-        Parametros.objects.filter(
-            Chave="FERIADO",
-            Valor__gte=primeiro_dia_mes,
-            Valor__lte=ultimo_dia_mes,
-        ).values()
-    )
-    registros_cartao_ponto = []
-    for feriado in lista_feriados:
-        dia = datetime.datetime.strptime(feriado["Valor"], "%Y-%m-%d").date()
-        filtro = list(filter(lambda item: item.Dia == dia, cartao_ponto))
-        if filtro[0].Ausencia != "FÉRIAS":
-            if filtro[0].Ausencia != "FERIADO" and dia.weekday() != 6:
-                filtro[0].Ausencia = "FERIADO"
-                filtro[0].Conducao = False
-                registros_cartao_ponto.append(
-                    CartaoPonto(
-                        idCartaoPonto=filtro[0].idCartaoPonto,
-                        Ausencia="FERIADO",
-                        Conducao=False,
-                    )
-                )
-    CartaoPonto.objects.bulk_update(
-        registros_cartao_ponto, ["Ausencia", "Conducao"]
-    )
-
-
 def get_agenda_periodo_contra_cheque(
     idpessoal, primeiro_dia_mes, ultimo_dia_mes
 ):
@@ -3285,63 +3579,6 @@ def union_minutas_agenda_periodo_contra_cheque(
         )
     minutas_agenda = sorted(minutas, key=lambda d: d["data_minuta"])
     return minutas_agenda
-
-
-def atualiza_cartao_ponto_transporte(cartao_ponto, vale_transporte):
-    registros_cartao_ponto = [
-        CartaoPonto(
-            idCartaoPonto=dia.idCartaoPonto,
-            Conducao=vale_transporte > Decimal(0.00) and not dia.CarroEmpresa,
-            idPessoal_id=dia.idPessoal_id,
-        )
-        for dia in cartao_ponto
-        if dia.Ausencia == ""
-    ]
-
-    CartaoPonto.objects.bulk_update(registros_cartao_ponto, ["Conducao"])
-    return cartao_ponto
-
-
-def atualiza_cartao_ponto_minutas(cartao_ponto, minutas):
-    #  start, start_queries = queries_inicio()
-    registros_cartao_ponto = []
-    for minuta in minutas:
-        dia = next(
-            (
-                item
-                for item in cartao_ponto
-                if item.Dia == minuta["data_minuta"]
-            ),
-            None,
-        )
-        if (
-            minuta["hora_inicial"] < dia.Entrada
-            and dia["Alteracao"] != "MANUAL"
-        ):
-            dia.Entrada = minuta["hora_inicial"]
-            registros_cartao_ponto.append(
-                CartaoPonto(
-                    idCartaoPonto=dia.idCartaoPonto,
-                    Entrada=minuta["hora_inicial"],
-                    Saida=dia.Saida,
-                    idPessoal_id=dia.idPessoal_id,
-                )
-            )
-        if minuta["hora_final"] > dia.Saida and dia.Alteracao != "MANUAL":
-            dia.Saida = minuta["hora_final"]
-            registros_cartao_ponto.append(
-                CartaoPonto(
-                    idCartaoPonto=dia.idCartaoPonto,
-                    Entrada=dia.Entrada,
-                    Saida=minuta["hora_final"],
-                    idPessoal_id=dia.idPessoal_id,
-                )
-            )
-    CartaoPonto.objects.bulk_update(
-        registros_cartao_ponto, ["Entrada", "Saida"]
-    )
-    #  queries_termino(start, start_queries, "[INFO] Atualiza Cartão Ponto")
-    return cartao_ponto
 
 
 def atualiza_itens_contra_cheque_pagamento(
@@ -3876,28 +4113,6 @@ def modal_agenda_colaborador(request, idpessoal, mes_ano):
             "pagamentos/modal_adiciona_agenda.html", contexto, request=request
         )
     return JsonResponse(data)
-
-
-def contexto_agenda_colaborador(idpessoal, mes_ano):
-    mes, ano = converter_mes_ano(mes_ano)
-    primeiro_dia_mes, ultimo_dia_mes = extremos_mes(mes, ano)
-    agenda = get_agenda_periodo_contra_cheque(
-        idpessoal, primeiro_dia_mes, ultimo_dia_mes
-    )
-    files = FileUpload.objects.filter(DescricaoUpload__startswith="AGENDA")
-    for dia in agenda:
-        filtro = next(
-            (
-                item
-                for item in files
-                if int(item.DescricaoUpload[9:]) == dia["idAgenda"]
-            ),
-            None,
-        )
-        if filtro:
-            dia["file"] = filtro
-    contexto = {"agenda": agenda}
-    return contexto
 
 
 def modal_confirma(request, confirma, idconfirma, idpessoal, mes_ano):

@@ -53,7 +53,7 @@ from pessoas.models import (
     ContraChequeItens,
     CartaoPonto,
 )
-from website.models import FileUpload
+from website.models import FileUpload, Parametros
 from website.facade import (
     converter_mes_ano,
     nome_curto,
@@ -737,9 +737,12 @@ def atualizar_cartao_ponto_rescisao(id_pessoal, demissao):
     _, ultimo_dia_mes = primeiro_e_ultimo_dia_do_mes(
         demissao.month, demissao.year
     )
+
+    dia_seguinte_demissao = demissao + timedelta(days=1)
+
     cartao_ponto = CartaoPonto.objects.filter(
         idPessoal=id_pessoal,
-        Dia__range=[demissao, ultimo_dia_mes],
+        Dia__range=[dia_seguinte_demissao, ultimo_dia_mes],
     )
 
     if cartao_ponto.exists():
@@ -1087,44 +1090,351 @@ def create_contra_cheque_itens(
     )
 
 
+def get_saldo_contra_cheque(contra_cheque_itens):
+    """Falta docstring"""
+    creditos = (
+        contra_cheque_itens.filter(Registro="C")
+        .aggregate(total=Sum("Valor"))
+        .get("total", Decimal(0))
+    )
+
+    debitos = (
+        contra_cheque_itens.filter(Registro="D")
+        .aggregate(total=Sum("Valor"))
+        .get("total", Decimal(0))
+    )
+
+    saldo = creditos - debitos
+
+    return {"credito": creditos, "debito": debitos, "saldo": saldo}
+
+
+def atualizar_ou_adicionar_contra_cheque_item(
+    descricao, valor, registro, referencia, id_contra_cheque
+):
+    """Falta docstring"""
+    if valor == 0:
+        ContraChequeItens.objects.filter(
+            Descricao=descricao,
+            Registro=registro,
+            idContraCheque_id=id_contra_cheque,
+        ).delete()
+    else:
+        ContraChequeItens.objects.update_or_create(
+            Descricao=descricao,
+            Registro=registro,
+            idContraCheque_id=id_contra_cheque,
+            defaults={
+                "Valor": valor,
+                "Referencia": referencia,
+            },
+        )
+
+
+def calcular_salario(salario, cartao_ponto):
+    """Falta docstring"""
+    ultimo_dia = cartao_ponto.order_by("Dia").last().Dia.day
+
+    dias_pagar = cartao_ponto.exclude(Ausencia__icontains="FÉRIAS").count()
+    dias_pagar = 30 if dias_pagar == 31 else dias_pagar
+
+    incrementos = {28: 2, 29: 1}
+    dias_pagar += incrementos.get(ultimo_dia, 0)
+
+    valor_pagar = salario / 30 * dias_pagar
+
+    return dias_pagar, valor_pagar
+
+
+def calcular_conducao(tarifa_dia, cartao_ponto):
+    """Falta docstring"""
+    dias_conducao = cartao_ponto.filter(Conducao=1, CarroEmpresa=0).count()
+    valor_conducao = dias_conducao * tarifa_dia
+
+    return dias_conducao, valor_conducao
+
+
+def calcular_horas_extras(salario, cartao_ponto):
+    """Falta docstring"""
+    horario_padrao_entrada = datetime.strptime("07:00", "%H:%M").time()
+    horario_padrao_saida = datetime.strptime("17:00", "%H:%M").time()
+    total_extras = timedelta()
+
+    for dia in cartao_ponto:
+        if dia.Saida > horario_padrao_saida:
+            total_extras += datetime.combine(
+                datetime.min, dia.Saida
+            ) - datetime.combine(datetime.min, horario_padrao_saida)
+
+        if dia.Entrada < horario_padrao_entrada:
+            total_extras += datetime.combine(
+                datetime.min, horario_padrao_entrada
+            ) - datetime.combine(datetime.min, dia.Entrada)
+
+    # Forma de calculo alterada em 01/12/2024.
+    data_limite_calculo = datetime.strptime("2024-11-30", "%Y-%m-%d").date()
+    if cartao_ponto[0].Dia > data_limite_calculo:
+        valor_extras = (
+            float(salario) / 220 / 60 / 60 * 1.5 * total_extras.seconds
+        )
+    else:
+        valor_extras = (
+            float(salario) / 30 / 9 / 60 / 60 * 1.5 * total_extras.seconds
+        )
+
+    return total_extras, valor_extras
+
+
+def calcular_adiantamento(contra_cheque):
+    """Falta docstring"""
+    contra_cheque_adiantamento = ContraCheque.objects.filter(
+        Descricao="ADIANTAMENTO",
+        MesReferencia=contra_cheque.MesReferencia,
+        AnoReferencia=contra_cheque.AnoReferencia,
+        idPessoal=contra_cheque.idPessoal,
+    ).first()
+
+    if contra_cheque_adiantamento:
+        contra_cheque_itens = ContraChequeItens.objects.filter(
+            idContraCheque=contra_cheque_adiantamento.idContraCheque,
+            Descricao="ADIANTAMENTO",
+        ).first()
+        referencia = (
+            contra_cheque_itens.Referencia
+            if contra_cheque_adiantamento.Pago
+            else "0%"
+        )
+        valor = (
+            contra_cheque_itens.Valor
+            if contra_cheque_adiantamento.Pago
+            else Decimal(0.00)
+        )
+
+        return referencia, valor
+
+    return "0%", Decimal(0.00)
+
+
+def calcular_atrasos(salario, cartao_ponto):
+    """Falta docstring"""
+    horario_padrao_entrada = datetime.strptime("07:00", "%H:%M").time()
+    total_atrasos = timedelta()
+
+    for dia in cartao_ponto:
+        if dia.Entrada > horario_padrao_entrada:
+            total_atrasos += datetime.combine(
+                datetime.min, dia.Entrada
+            ) - datetime.combine(datetime.min, horario_padrao_entrada)
+
+    # Forma de calculo alterada em 01/12/2024.
+    data_limite_calculo = datetime.strptime("2024-11-30", "%Y-%m-%d").date()
+    if cartao_ponto[0].Dia > data_limite_calculo:
+        valor_atrasos = float(salario) / 220 / 60 / 60 * total_atrasos.seconds
+    else:
+        valor_atrasos = (
+            float(salario) / 30 / 9 / 60 / 60 * total_atrasos.seconds
+        )
+
+    return total_atrasos, valor_atrasos
+
+
+def calcular_faltas(salario, cartao_ponto):
+    """Falta docstring"""
+    dias_faltas = cartao_ponto.filter(Ausencia="FALTA")
+    faltas_abonadas = dias_faltas.filter(Remunerado=1).count()
+
+    dias_descontar = len(dias_faltas) - faltas_abonadas
+
+    valor_faltas = salario / 30 * dias_descontar
+
+    return dias_descontar, valor_faltas
+
+
+def calcula_dsr_feriado(id_pessoal, dias_dsr, semanas_faltas, cartao_ponto):
+    """Falta docstring"""
+    primeiro_dia = cartao_ponto.order_by("Dia").first().Dia
+    ultimo_dia = cartao_ponto.order_by("Dia").last().Dia
+    ultimo_dia_mes_seguinte = ultimo_dia + relativedelta(months=+1)
+
+    feriados = Parametros.objects.filter(
+        Chave="FERIADO",
+        Valor__range=[primeiro_dia, ultimo_dia_mes_seguinte],
+    ).values_list("Valor", flat=True)
+
+    feriado_datas = {
+        datetime.strptime(data, "%Y-%m-%d").date() for data in feriados
+    }
+
+    dias_em_ferias = set(
+        CartaoPonto.objects.filter(
+            Dia__in=feriado_datas, idPessoal=id_pessoal, Ausencia="FERIAS"
+        ).values_list("Dia", flat=True)
+    )
+
+    feriados_validos = feriado_datas - dias_em_ferias
+
+    semanas_feriados = {
+        int(datetime.strftime(feriado, "%V"))
+        for feriado in feriados_validos
+        if feriado.weekday() != 6  # Exclui feriados no domingo
+    }
+
+    for semana in semanas_faltas:
+        semana_atual = 0 if semana == 52 else semana
+        if semana_atual + 1 in semanas_feriados:
+            dias_dsr += 1
+
+    return dias_dsr
+
+
+def calcula_dsr(id_pessoal, salario, cartao_ponto):
+    """Falta docstring"""
+    dias_faltas = cartao_ponto.filter(Ausencia="FALTA").exclude(Remunerado=1)
+
+    semanas_faltas = []
+    for falta in dias_faltas:
+        semanas_faltas.append(datetime.strftime(falta.Dia, "%V"))
+
+    semanas_faltas = list(map(int, semanas_faltas))
+    semanas_faltas = set(semanas_faltas)
+
+    primeiro_dia = cartao_ponto.order_by("Dia").first().Dia
+
+    if 1 <= primeiro_dia.weekday() <= 4:
+        inicio = primeiro_dia - datetime.timedelta(primeiro_dia.weekday())
+        fim = primeiro_dia - datetime.timedelta(1)
+        faltas_mes_anterior = list(
+            CartaoPonto.objects.filter(
+                idPessoal=id_pessoal,
+                Ausencia="FALTA",
+                Remunerado=False,
+                Dia__range=[inicio, fim],
+            ).values()
+        )
+        if faltas_mes_anterior:
+            semana_mes_anterior = datetime.datetime.strftime(
+                faltas_mes_anterior[0]["Dia"], "%V"
+            )
+            if semana_mes_anterior in semanas_faltas:
+                semanas_faltas.remove(int(semana_mes_anterior))
+
+    dias_dsr = len(semanas_faltas)
+    dias_dsr = calcula_dsr_feriado(
+        id_pessoal, dias_dsr, semanas_faltas, cartao_ponto
+    )
+
+    valor_dsr = salario / 30 * dias_dsr
+
+    return dias_dsr, valor_dsr
+
+
+def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
+    """Falta docstring"""
+    colaborador = classes.Colaborador(id_pessoal)
+    admissao = colaborador.dados_profissionais.data_admissao
+    demissao = colaborador.dados_profissionais.data_demissao
+    salario = colaborador.salarios.salarios.Salario
+    tarifa_dia = colaborador.salarios.salarios.ValeTransporte
+    id_contra_cheque = contra_cheque.idContraCheque
+
+    primeiro_dia, ultimo_dia = primeiro_e_ultimo_dia_do_mes(mes, ano)
+    primeiro_dia = admissao if admissao > primeiro_dia.date() else primeiro_dia
+    ultimo_dia = (
+        demissao if demissao and demissao < ultimo_dia.date() else ultimo_dia
+    )
+
+    cartao_ponto = CartaoPonto.objects.filter(
+        Dia__range=[primeiro_dia, ultimo_dia], idPessoal=id_pessoal
+    )
+
+    itens_contra_cheque = [
+        {
+            "nome": "SALARIO",
+            "calculo": lambda: calcular_salario(salario, cartao_ponto),
+            "tipo": "C",
+            "descricao": lambda dias: f"{dias}d",
+        },
+        {
+            "nome": "VALE TRANSPORTE",
+            "calculo": lambda: calcular_conducao(tarifa_dia, cartao_ponto)
+            if tarifa_dia
+            else (0, 0),
+            "tipo": "C",
+            "descricao": lambda dias: f"{dias}d",
+        },
+        {
+            "nome": "HORA EXTRA",
+            "calculo": lambda: calcular_horas_extras(salario, cartao_ponto),
+            "tipo": "C",
+            "descricao": lambda horas: horas,
+        },
+        {
+            "nome": "ADIANTAMENTO",
+            "calculo": lambda: calcular_adiantamento(contra_cheque),
+            "tipo": "D",
+            "descricao": lambda porc: porc,
+        },
+        {
+            "nome": "ATRASO",
+            "calculo": lambda: calcular_atrasos(salario, cartao_ponto),
+            "tipo": "D",
+            "descricao": lambda horas: horas,
+        },
+        {
+            "nome": "FALTAS",
+            "calculo": lambda: calcular_faltas(salario, cartao_ponto),
+            "tipo": "D",
+            "descricao": lambda dias: f"{dias}d",
+        },
+        {
+            "nome": "DSR SOBRE FALTAS",
+            "calculo": lambda: calcula_dsr(id_pessoal, salario, cartao_ponto),
+            "tipo": "D",
+            "descricao": lambda dias: f"{dias}d",
+        },
+    ]
+
+    for item in itens_contra_cheque:
+        quantidade, valor = item["calculo"]()
+        atualizar_ou_adicionar_contra_cheque_item(
+            item["nome"],
+            valor,
+            item["tipo"],
+            item["descricao"](quantidade),
+            id_contra_cheque,
+        )
+
+
 def create_contexto_contra_cheque_pagamento(request):
+    """Falta docstring"""
     id_pessoal = request.GET.get("id_pessoal")
-    ano = request.GET.get("ano")
-    mes = obter_mes_por_numero(int(request.GET.get("mes")))
+    mes = int(request.GET.get("mes"))
+    ano = int(request.GET.get("ano"))
+    mes_extenso = obter_mes_por_numero(mes)
     descricao = "PAGAMENTO"
 
     contra_cheque = ContraCheque.objects.filter(
         Descricao=descricao,
         AnoReferencia=ano,
-        MesReferencia=mes,
+        MesReferencia=mes_extenso,
         idPessoal=id_pessoal,
-    ).first()
+    ).first() or create_contra_cheque(
+        mes_extenso, ano, descricao, id_pessoal, obs=""
+    )
 
-    if not contra_cheque:
-        obs = ""
-        contra_cheque = create_contra_cheque(
-            mes, ano, descricao, id_pessoal, obs
-        )
+    atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque)
 
     contra_cheque_itens = ContraChequeItens.objects.filter(
         idContraCheque=contra_cheque
     ).order_by("Registro")
 
-    if not contra_cheque_itens:
-        contra_cheque_itens = create_contra_cheque_itens(
-            "SALARIO", Decimal(0.00), "C", "0d", contra_cheque
-        )
-
-    contexto = {
-        "mensagem": f"Pagamento selecionada: {mes}/{ano}",
+    return {
+        "mensagem": f"Pagamento selecionadao: {mes}/{ano}",
         "contra_cheque": contra_cheque,
         "contra_cheque_itens": contra_cheque_itens,
         "id_pessoal": id_pessoal,
+        **get_saldo_contra_cheque(contra_cheque_itens),
     }
-
-    contexto.update(get_saldo_contra_cheque(contra_cheque_itens))
-
-    return contexto
 
 
 def create_contexto_contra_cheque_adiantamento(request):
@@ -3003,17 +3313,6 @@ def update_contra_cheque_item_referencia(contra_cheque_item, referencia):
     obj = contra_cheque_item[0]
     obj.Referencia = referencia
     obj.save()
-
-
-def get_saldo_contra_cheque(contra_cheque_itens):
-    creditos = contra_cheque_itens.filter(Registro="C").aggregate(
-        total=Sum("Valor")
-    )["total"] or Decimal(0)
-    debitos = contra_cheque_itens.filter(Registro="D").aggregate(
-        total=Sum("Valor")
-    )["total"] or Decimal(0)
-    saldo = creditos - debitos
-    return {"credito": creditos, "debitos": debitos, "saldo": saldo}
 
 
 def contexto_vales_colaborador(colaborador):

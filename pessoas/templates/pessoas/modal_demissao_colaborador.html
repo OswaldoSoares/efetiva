@@ -1,7 +1,7 @@
 <form class="row g-3" method="post" action="{% url 'adicionar_data_demissao_colaborador' %}">
 {% csrf_token %}
-    <div class="col-md-3">
-		<label for="demissao" class="form-label">DATA DEMISSÃO:</label>
+    <div class="col-md-6">
+		<label for="demissao" class="form-label">DATA DEMISSÃO (ÚLTIMO DIA TRABALHADO):</label>
         <input type="date" class="form-control" name="demissao" value="{{ hoje }}">
     </div>
     <input type="hidden" name="id_pessoal" value="{{ colaborador.id_pessoal }}">

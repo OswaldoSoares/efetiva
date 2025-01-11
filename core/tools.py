@@ -204,7 +204,22 @@ def gerar_data_html(html_functions, request, contexto, data):
 
 
 def primeiro_e_ultimo_dia_do_mes(mes: int, ano: int) -> tuple:
+    """
+    Retorna o primeiro e o último dia de um mês específico.
+
+    Args:
+        mes (int): O mês desejado (1 a 12).
+        ano (int): O ano desejado.
+
+    Returns:
+        tuple: Uma tupla contendo duas datas:
+            - O primeiro dia do mês como um objeto `datetime`.
+            - O último dia do mês como um objeto `datetime`.
+
+    Exemplo:
+        >>> primeiro_e_ultimo_dia_do_mes(2, 2024)
+        (datetime.datetime(2024, 2, 1, 0, 0), datetime.datetime(2024, 2, 29, 0, 0))
+    """
     primeiro = datetime(ano, mes, 1)
-    ultimo = calendar.monthrange(ano, mes)
-    ultimo = datetime(ano, mes, ultimo[1])
+    ultimo = primeiro.replace(day=calendar.monthrange(ano, mes)[1])
     return [primeiro, ultimo]
