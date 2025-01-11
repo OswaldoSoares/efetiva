@@ -1418,33 +1418,23 @@ def create_contexto_contra_cheque_pagamento(request):
         AnoReferencia=ano,
         MesReferencia=mes_extenso,
         idPessoal=id_pessoal,
-    ).first()
+    ).first() or create_contra_cheque(
+        mes_extenso, ano, descricao, id_pessoal, obs=""
+    )
 
-    if not contra_cheque:
-        obs = ""
-        contra_cheque = create_contra_cheque(
-            mes_extenso, ano, descricao, id_pessoal, obs
-        )
+    atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque)
 
     contra_cheque_itens = ContraChequeItens.objects.filter(
         idContraCheque=contra_cheque
     ).order_by("Registro")
 
-    if not contra_cheque_itens:
-        contra_cheque_itens = create_contra_cheque_itens(
-            "SALARIO", Decimal(0.00), "C", "0d", contra_cheque
-        )
-
-    contexto = {
-        "mensagem": f"Pagamento selecionada: {mes}/{ano}",
+    return {
+        "mensagem": f"Pagamento selecionadao: {mes}/{ano}",
         "contra_cheque": contra_cheque,
         "contra_cheque_itens": contra_cheque_itens,
         "id_pessoal": id_pessoal,
+        **get_saldo_contra_cheque(contra_cheque_itens),
     }
-
-    contexto.update(get_saldo_contra_cheque(contra_cheque_itens))
-
-    return contexto
 
 
 def create_contexto_contra_cheque_adiantamento(request):
