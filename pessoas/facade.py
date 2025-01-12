@@ -1092,17 +1092,13 @@ def create_contra_cheque_itens(
 
 def get_saldo_contra_cheque(contra_cheque_itens):
     """Falta docstring"""
-    creditos = (
-        contra_cheque_itens.filter(Registro="C")
-        .aggregate(total=Sum("Valor"))
-        .get("total", Decimal(0))
-    )
+    creditos = contra_cheque_itens.filter(Registro="C").aggregate(
+        total=Sum("Valor")
+    ).get("total") or Decimal(0)
 
-    debitos = (
-        contra_cheque_itens.filter(Registro="D")
-        .aggregate(total=Sum("Valor"))
-        .get("total", Decimal(0))
-    )
+    debitos = contra_cheque_itens.filter(Registro="D").aggregate(
+        total=Sum("Valor")
+    ).get("total") or Decimal(0)
 
     saldo = creditos - debitos
 
