@@ -803,7 +803,7 @@ def contra_cheque_itens(pdf, contexto):
 
 def contra_cheque_totais(pdf, contexto):
     credito = f'R$ {valor_ponto_milhar(contexto["credito"], 2)}'
-    debito = f'R$ {valor_ponto_milhar(contexto["debitos"], 2)}'
+    debito = f'R$ {valor_ponto_milhar(contexto["debito"], 2)}'
     saldo = f'R$ {valor_ponto_milhar(contexto["saldo"], 2)}'
     linha = 297
     pdf.setFont("Times-Roman", 11)
