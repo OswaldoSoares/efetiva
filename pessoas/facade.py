@@ -1297,8 +1297,8 @@ def calcula_dsr(id_pessoal, salario, cartao_ponto):
     primeiro_dia = cartao_ponto.order_by("Dia").first().Dia
 
     if 1 <= primeiro_dia.weekday() <= 4:
-        inicio = primeiro_dia - datetime.timedelta(primeiro_dia.weekday())
-        fim = primeiro_dia - datetime.timedelta(1)
+        inicio = primeiro_dia - timedelta(primeiro_dia.weekday())
+        fim = primeiro_dia - timedelta(1)
         faltas_mes_anterior = list(
             CartaoPonto.objects.filter(
                 idPessoal=id_pessoal,
@@ -1308,7 +1308,7 @@ def calcula_dsr(id_pessoal, salario, cartao_ponto):
             ).values()
         )
         if faltas_mes_anterior:
-            semana_mes_anterior = datetime.datetime.strftime(
+            semana_mes_anterior = datetime.strftime(
                 faltas_mes_anterior[0]["Dia"], "%V"
             )
             if semana_mes_anterior in semanas_faltas:
