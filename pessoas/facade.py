@@ -2089,7 +2089,7 @@ def colaborador_html_data(request, contexto):
         html_data.html_card_contas_colaborador,
         html_data.html_card_salario_colaborador,
     ]
-
+    html_ferias_colaborador(request, contexto, data)
     return gerar_data_html(html_functions, request, contexto, data)
 
 
