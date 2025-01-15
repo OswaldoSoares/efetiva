@@ -853,6 +853,14 @@ def meses_proporcionais(data_inicial, data_final):
     return mes_final - mes_inicial + 1
 
 
+def meses_proporcionais_ferias(data_inicial, data_final):
+    mes_inicial = data_inicial.month + (1 if data_inicial.day >= 16 else 0)
+    mes_final = data_final.month - (1 if data_final.day <= 14 else 0)
+    if mes_inicial > mes_final:
+        mes_final += 12
+    return mes_final - mes_inicial + 1
+
+
 def calcular_ferias_proporcionais(colaborador):
     aquisitivo = (
         Aquisitivo.objects.filter(idPessoal=colaborador.id_pessoal)
