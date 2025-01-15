@@ -34,23 +34,22 @@ def faltas_periodo_aquisitivo(id_pessoal: int, aquisitivo) -> List[str]:
 
 ## Exemplo de Uso
 
-```{.py3 linenums="1" hl_lines="19"}
+```{.py3 linenums="1" hl_lines="18"}
 # Exemplo de um objeto com período aquisitivo
->>>class PeriodoAquisitivo:
-...    def __init__(self, data_inicial, data_final):
-...        self.DataInicial = data_inicial
-...        self.DataFinal = data_final
+class PeriodoAquisitivo:
+    def __init__(self, data_inicial, data_final):
+        self.DataInicial = data_inicial
+        self.DataFinal = data_final
 
 # Período de 1º de janeiro de 2024 a 31 de dezembro de 2024
->>>aquisitivo = PeriodoAquisitivo(
-...    data_inicial=datetime(2024, 1, 1),
-...    data_final=datetime(2024, 12, 31)
-...)
+aquisitivo = PeriodoAquisitivo(
+    data_inicial=datetime(2024, 1, 1),
+    data_final=datetime(2024, 12, 31)
+)
 
 # Obtendo as faltas de um colaborador com ID 1234
->>>faltas = faltas_periodo_aquisitivo(1234, aquisitivo)
-
->>>print(faltas)
+faltas = faltas_periodo_aquisitivo(1234, aquisitivo)
+print(faltas)
 
 # Resultado esperado (exemplo fictício):
 ['15/03/2024', '28/05/2024', '10/09/2024']
