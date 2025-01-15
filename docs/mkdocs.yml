@@ -1,11 +1,33 @@
 site_name: Documentação Sistema Efetiva
 theme:
   name: material
+  locale: pt
+  palette:
+    - scheme: default
+      primary: orange
+      toggle:
+        icon: material/weather-night
+        name: Modo Escuro
+    - scheme: slate
+      primary: deep orange
+      toggle:
+        icon: material/weather-sunny
+        name: Modo Claro
+  features:
+    - content.code.copy
 
 nav:
   - Início: index.md
   - Módulos:
       - Colaboradores:
-          - Models: models.md
-          - Facade: facade.md
-          - Views: views.md
+          - Models: pessoas/models.md
+          - Facade:
+              - pessoas/facade/calcular_ferias_proporcionais.md
+              - pessoas/facade/faltas_periodo_aquisitivo.md
+          - Views: pessoas/views.md
+
+markdown_extensions:
+  - pymdownx.emoji
+  - pymdownx.mark
+  - pymdownx.highlight
+  - pymdownx.superfences
