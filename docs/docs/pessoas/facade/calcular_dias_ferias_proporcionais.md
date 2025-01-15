@@ -1,4 +1,4 @@
-# `calcular_ferias_proporcionais`
+# `calcular_dias_ferias_proporcionais`
 
 Calcula os dias proporcionais de férias com base no número de faltas do período aquisitivo e no número de meses trabalhados.
 
@@ -22,7 +22,7 @@ O cálculo é feito com base em faixas predefinidas
 ## Código da função
 
 ```{.py3 linenums="1"}
-def calcular_ferias_proporcionais(faltas, dozeavos):
+def calcular_dias_ferias_proporcionais(faltas, dozeavos):
     faixas = [
         (5, 2.5),   # Até 5 faltas
         (14, 2.0),  # De 6 a 14 faltas
@@ -38,25 +38,25 @@ def calcular_ferias_proporcionais(faltas, dozeavos):
 ## Exemplo de Uso
 
 ```{.py3 linenums="1" hl_lines="5 11 17 23"}
-dias = calcular_ferias_proporcionais(4, 6)
+dias = calcular_dias_ferias_proporcionais(4, 6)
 print(dias)
 
 # Resultado esperado
 15.0
 
-dias = calcular_ferias_proporcionais(10, 12)
+dias = calcular_dias_ferias_proporcionais(10, 12)
 print(dias)
 
 # Resultado esperado
 24.0
 
-dias = calcular_ferias_proporcionais(25, 9)
+dias = calcular_dias_ferias_proporcionais(25, 9)
 print(dias)
 
 # Resultado esperado
 9.0
 
-dias = calcular_ferias_proporcionais(35, 10)
+dias = calcular_dias_ferias_proporcionais(35, 10)
 print(dias)
 
 # Resultado esperado

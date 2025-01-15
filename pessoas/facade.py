@@ -1740,7 +1740,7 @@ def create_contexto_consulta_colaborador(id_pessoal):
     return contexto
 
 
-def calcular_ferias_proporcionais(faltas, dozeavos):
+def calcular_dias_ferias_proporcionais(faltas, dozeavos):
     faixas = [
         (5, 2.5),  # Até 5 faltas
         (14, 2.0),  # De 6 a 14 faltas
