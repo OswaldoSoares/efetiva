@@ -65,6 +65,7 @@ from .itens_card import categorias_colaborador
 from transefetiva.settings.settings import MEDIA_ROOT
 from pessoas import classes
 from pessoas import html_data
+from typing import List
 
 meses = [
     "JANEIRO",
@@ -853,6 +854,14 @@ def meses_proporcionais(data_inicial, data_final):
     return mes_final - mes_inicial + 1
 
 
+def meses_proporcionais_ferias(data_inicial, data_final):
+    mes_inicial = data_inicial.month + (1 if data_inicial.day >= 16 else 0)
+    mes_final = data_final.month - (1 if data_final.day <= 14 else 0)
+    if mes_inicial > mes_final:
+        mes_final += 12
+    return mes_final - mes_inicial + 1
+
+
 def calcular_ferias_proporcionais(colaborador):
     aquisitivo = (
         Aquisitivo.objects.filter(idPessoal=colaborador.id_pessoal)
@@ -870,7 +879,7 @@ def calcular_ferias_proporcionais(colaborador):
         aquisitivo.DataFinal = colaborador.dados_profissionais.data_demissao
         aquisitivo.save()
 
-    meses_proporcinais = meses_proporcionais(
+    meses_proporcinais = meses_proporcionais_ferias(
         aquisitivo.DataInicial, aquisitivo.DataFinal
     )
 
@@ -1729,6 +1738,35 @@ def create_contexto_consulta_colaborador(id_pessoal):
     contexto.update(cartao_ponto)
 
     return contexto
+
+
+def calcular_ferias_proporcionais(faltas, dozeavos):
+    faixas = [
+        (5, 2.5),  # Até 5 faltas
+        (14, 2.0),  # De 6 a 14 faltas
+        (23, 1.5),  # De 15 a 23 faltas
+        (32, 1.0),  # De 24 a 32 faltas
+    ]
+
+    multiplicador = next(
+        (valor for limite, valor in faixas if faltas <= limite), 0
+    )
+
+    return multiplicador * dozeavos
+
+
+def faltas_periodo_aquisitivo(id_pessoal: int, aquisitivo) -> List[str]:
+    inicio = aquisitivo.DataInicial
+    final = aquisitivo.DataFinal
+
+    dias_faltas = CartaoPonto.objects.filter(
+        idPessoal=id_pessoal,
+        Dia__range=[inicio, final],
+        Ausencia="FALTA",
+        Remunerado=False,
+    ).values_list("Dia", flat=True)
+
+    return [datetime.strftime(dia, "%d/%m/%Y") for dia in dias_faltas]
 
 
 def list_pessoal_all():
