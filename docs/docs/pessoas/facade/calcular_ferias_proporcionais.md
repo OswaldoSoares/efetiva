@@ -37,20 +37,28 @@ def calcular_ferias_proporcionais(faltas, dozeavos):
 
 ## Exemplo de Uso
 
-```{.py3 linenums="1" hl_lines="3 7 11 15"}
->>>dias = calcular_ferias_proporcionais(4, 6)
->>>print(dias)
+```{.py3 linenums="1" hl_lines="5 11 17 23"}
+dias = calcular_ferias_proporcionais(4, 6)
+print(dias)
+
+# Resultado esperado
 15.0
 
->>>dias = calcular_ferias_proporcionais(10, 12)
->>>print(dias)
+dias = calcular_ferias_proporcionais(10, 12)
+print(dias)
+
+# Resultado esperado
 24.0
 
->>>dias = calcular_ferias_proporcionais(25, 9)
->>>print(dias)
+dias = calcular_ferias_proporcionais(25, 9)
+print(dias)
+
+# Resultado esperado
 9.0
 
->>>dias = calcular_ferias_proporcionais(35, 10)
->>>print(dias)
+dias = calcular_ferias_proporcionais(35, 10)
+print(dias)
+
+# Resultado esperado
 0
 ```
