@@ -22,6 +22,7 @@ nav:
       - Colaboradores:
           - Models: pessoas/models.md
           - Facade:
+              - pessoas/facade/calcular_ferias_proporcionais.md
               - pessoas/facade/calcular_dias_ferias_proporcionais.md
               - pessoas/facade/faltas_periodo_aquisitivo.md
           - Views: pessoas/views.md
