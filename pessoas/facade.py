@@ -878,7 +878,7 @@ def calcular_ferias_proporcionais(colaborador):
         aquisitivo.DataFinal = colaborador.dados_profissionais.data_demissao
         aquisitivo.save()
 
-    meses_proporcinais = meses_proporcionais(
+    meses_proporcinais = meses_proporcionais_ferias(
         aquisitivo.DataInicial, aquisitivo.DataFinal
     )
 
