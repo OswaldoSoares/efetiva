@@ -41,24 +41,24 @@ def calcular_dias_ferias_proporcionais(faltas, dozeavos):
 dias = calcular_dias_ferias_proporcionais(4, 6)
 print(dias)
 
-# Resultado esperado
+# Resultado esperado:
 15.0
 
 dias = calcular_dias_ferias_proporcionais(10, 12)
 print(dias)
 
-# Resultado esperado
+# Resultado esperado:
 24.0
 
 dias = calcular_dias_ferias_proporcionais(25, 9)
 print(dias)
 
-# Resultado esperado
+# Resultado esperado:
 9.0
 
 dias = calcular_dias_ferias_proporcionais(35, 10)
 print(dias)
 
-# Resultado esperado
+# Resultado esperado:
 0
 ```
