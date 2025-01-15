@@ -3726,7 +3726,3 @@ def create_contexto_cartao_ponto_contra_cheque(id_pessoal, contra_cheque):
         colaborador, mes, ano
     )
     return {"cartao_ponto": cartao_ponto}
-
-
-def faltas_periodo_aquisitivo():
-    pass
