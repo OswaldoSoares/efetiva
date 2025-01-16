@@ -857,16 +857,6 @@ def meses_proporcionais_decimo_terceiro(data_inicial, data_final):
     return fim_contagem - inicio_contagem + 1
 
 
-def meses_proporcionais_ferias(data_inicial, data_final):
-    """Consultar Documentação Sistema Efetiva"""
-    periodo = relativedelta(data_final, data_inicial)
-
-    meses = periodo.months
-    days = periodo.days
-
-    return meses if days < 15 else meses + 1
-
-
 def faltas_periodo_aquisitivo(id_pessoal: int, aquisitivo) -> List[str]:
     """Consultar Documentação Sistema Efetiva"""
     inicio = aquisitivo.DataInicial
@@ -880,6 +870,16 @@ def faltas_periodo_aquisitivo(id_pessoal: int, aquisitivo) -> List[str]:
     ).values_list("Dia", flat=True)
 
     return [datetime.strftime(dia, "%d/%m/%Y") for dia in dias_faltas]
+
+
+def meses_proporcionais_ferias(data_inicial, data_final):
+    """Consultar Documentação Sistema Efetiva"""
+    periodo = relativedelta(data_final, data_inicial)
+
+    meses = periodo.months
+    days = periodo.days
+
+    return meses if days < 15 else meses + 1
 
 
 def calcular_ferias_proporcionais(colaborador):
