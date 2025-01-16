@@ -22,7 +22,8 @@ from decimal import Decimal, ROUND_HALF_UP
 from PIL import Image, ImageDraw
 from typing import Any
 
-#  from despesas import facade as facade_multa
+from despesas import facade as facade_multa
+
 #  from pagamentos import facade as facade_pagamentos
 from pagamentos.models import Recibo
 
