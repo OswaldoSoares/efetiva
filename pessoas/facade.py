@@ -850,14 +850,6 @@ def calcular_rescisao_saldo_salario(colaborador):
     return {"contra_cheque_itens": contra_cheque_itens}
 
 
-def meses_proporcionais_decimo_terceiro(data_inicial, data_final):
-    """Consultar Documentação Sistema Efetiva"""
-    inicio_contagem = data_inicial.month + (1 if data_inicial.day >= 16 else 0)
-    fim_contagem = data_final.month - (1 if data_final.day <= 14 else 0)
-
-    return fim_contagem - inicio_contagem + 1
-
-
 def faltas_periodo_aquisitivo(id_pessoal: int, aquisitivo) -> List[str]:
     """Consultar Documentação Sistema Efetiva"""
     inicio = aquisitivo.DataInicial
@@ -936,6 +928,14 @@ def calcular_ferias_proporcionais(colaborador):
         "ferias_meses": dozeavos,
         "ferias_um_terco": um_terco,
     }
+
+
+def meses_proporcionais_decimo_terceiro(data_inicial, data_final):
+    """Consultar Documentação Sistema Efetiva"""
+    inicio_contagem = data_inicial.month + (1 if data_inicial.day >= 16 else 0)
+    fim_contagem = data_final.month - (1 if data_final.day <= 14 else 0)
+
+    return fim_contagem - inicio_contagem + 1
 
 
 def calcular_decimo_terceiro_proporcional(colaborador):
