@@ -939,6 +939,7 @@ def calcular_ferias_proporcionais(colaborador):
 
 
 def calcular_decimo_terceiro_proporcional(colaborador):
+    """Consultar Documentação Sistema Efetiva"""
     data_admissao = colaborador.dados_profissionais.data_admissao
     data_demissao = colaborador.dados_profissionais.data_demissao
     hoje = datetime.today().date()
