@@ -849,10 +849,14 @@ def calcular_rescisao_saldo_salario(colaborador):
     return {"contra_cheque_itens": contra_cheque_itens}
 
 
-def meses_proporcionais(data_inicial, data_final):
-    mes_inicial = data_inicial.month + (1 if data_inicial.day >= 16 else 0)
-    mes_final = data_final.month - (1 if data_final.day <= 14 else 0)
-    return mes_final - mes_inicial + 1
+def meses_proporcionais_decimo_terceiro(data_inicial, data_final):
+    inicio_contagem = data_inicial.month + (1 if data_inicial.day >= 16 else 0)
+    fim_contagem = data_final.month - (1 if data_final.day <= 14 else 0)
+
+    if inicio_contagem > fim_contagem:
+        fim_contagem += 12
+
+    return fim_contagem - inicio_contagem + 1
 
 
 def meses_proporcionais_ferias(data_inicial, data_final):
