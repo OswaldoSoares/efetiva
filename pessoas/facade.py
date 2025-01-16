@@ -802,6 +802,7 @@ def data_demissao_html_data(request, contexto):
 
 
 def create_contexto_eventos_rescisorios_colaborador(request):
+    """Consultar Documentação Sistema Efetiva"""
     id_pessoal = request.GET.get("id_pessoal")
     eventos = EVENTOS_RESCISORIOS
     motivos = MOTIVOS_DEMISSAO
