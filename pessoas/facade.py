@@ -69,20 +69,20 @@ from pessoas import classes
 from pessoas import html_data
 from typing import List
 
-meses = [
-    "JANEIRO",
-    "FEVEREIRO",
-    "MARÇO",
-    "ABRIL",
-    "MAIO",
-    "JUNHO",
-    "JULHO",
-    "AGOSTO",
-    "SETEMBRO",
-    "OUTUBRO",
-    "NOVEMBRO",
-    "DEZEMBRO",
-]
+#  meses = [
+#  "JANEIRO",
+#  "FEVEREIRO",
+#  "MARÇO",
+#  "ABRIL",
+#  "MAIO",
+#  "JUNHO",
+#  "JULHO",
+#  "AGOSTO",
+#  "SETEMBRO",
+#  "OUTUBRO",
+#  "NOVEMBRO",
+#  "DEZEMBRO",
+#  ]
 dias = [
     "SEGUNDA-FEIRA",
     "TERÇA-FEIRA",
