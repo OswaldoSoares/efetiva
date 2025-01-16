@@ -941,12 +941,12 @@ def calcular_decimo_terceiro_proporcional(colaborador):
     data_admissao = colaborador.dados_profissionais.data_admissao
     data_demissao = colaborador.dados_profissionais.data_demissao
     hoje = datetime.today().date()
-    inicio_ano = datetime.strptime(f"{hoje.year}-01-01", "%Y-%m-%d").date()
+    inicio_ano = date(hoje.year, 1, 1)
+    fim_ano = date(hoje.year, 12, 31)
 
     if hoje.year > data_demissao.year:
-        inicio_ano = datetime.strptime(
-            f"{hoje.year - 1}-01-01", "%Y-%m-%d"
-        ).date()
+        inicio_ano = date(hoje.year - 1, 1, 1)
+        fim_ano = date(hoje.year - 1, 12, 31)
 
     parcelas_pagas = ContraCheque.objects.filter(
         idPessoal=colaborador.id_pessoal,
@@ -960,17 +960,18 @@ def calcular_decimo_terceiro_proporcional(colaborador):
     )
 
     data_inicial = data_admissao if data_admissao > inicio_ano else inicio_ano
-    data_final = data_demissao
+    data_final = data_demissao if data_demissao < fim_ano else fim_ano
 
-    meses_proporcinais = meses_proporcionais(data_inicial, data_final)
+    dozeavos = meses_proporcionais_decimo_terceiro(data_inicial, data_final)
 
-    valor = (
-        colaborador.salarios.salarios.Salario / 12 * meses_proporcinais
-    ).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+    salario_base = colaborador.salarios.salarios.Salario
+    valor = (salario_base / 12 * dozeavos).quantize(
+        Decimal("0.01"), rounding=ROUND_HALF_UP
+    )
 
     return {
         "decimo_terceiro_valor": valor,
-        "decimo_terceiro_meses": meses_proporcinais,
+        "decimo_terceiro_meses": dozeavos,
         "decimo_terceiro_parcelas_pagas": parcelas_pagas,
         "decimo_terceiro_total_pago": total_valor,
     }
