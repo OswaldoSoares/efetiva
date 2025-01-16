@@ -33,7 +33,7 @@ Calcula os valores de férias proporcionais de um colaborador com base no perío
 Esta função depende das seguintes funções auxiliares. Acesse os links para consultar suas respectivas documentações:
 
 - [`faltas_periodo_aquisitivo`](./faltas_periodo_aquisitivo.md): Função que calcula as faltas do colaborador no período aquisitivo.
-- [`meses_proporcionais_ferias`](#): Função que calcula o número de meses proporcionais de férias em dozeavos.
+- [`meses_proporcionais_ferias`](./meses_proporcionais_ferias.md): Função que calcula o número de meses proporcionais de férias em dozeavos.
 - [`calcular_dias_ferias_proporcionais`](./calcular_dias_ferias_proporcionais.md): Função que calcula os dias proporcionais de férias com base no número de faltas e meses trabalhados.
 
 ## Retorno
