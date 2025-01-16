@@ -806,6 +806,7 @@ def create_contexto_eventos_rescisorios_colaborador(request):
     eventos = EVENTOS_RESCISORIOS
     motivos = MOTIVOS_DEMISSAO
     aviso_previo = AVISO_PREVIO
+
     return {
         "id_pessoal": id_pessoal,
         "eventos": eventos,
