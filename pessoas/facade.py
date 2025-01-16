@@ -867,6 +867,21 @@ def meses_proporcionais_ferias(data_inicial, data_final):
     return meses if days < 15 else meses + 1
 
 
+def faltas_periodo_aquisitivo(id_pessoal: int, aquisitivo) -> List[str]:
+    """Consultar Documentação Sistema Efetiva"""
+    inicio = aquisitivo.DataInicial
+    final = aquisitivo.DataFinal
+
+    dias_faltas = CartaoPonto.objects.filter(
+        idPessoal=id_pessoal,
+        Dia__range=[inicio, final],
+        Ausencia="FALTA",
+        Remunerado=False,
+    ).values_list("Dia", flat=True)
+
+    return [datetime.strftime(dia, "%d/%m/%Y") for dia in dias_faltas]
+
+
 def calcular_ferias_proporcionais(colaborador):
     """Consultar Documentação Sistema Efetiva"""
     aquisitivo = (
@@ -1765,21 +1780,6 @@ def calcular_dias_ferias_proporcionais(faltas, dozeavos):
     )
 
     return multiplicador * dozeavos
-
-
-def faltas_periodo_aquisitivo(id_pessoal: int, aquisitivo) -> List[str]:
-    """Consultar Documentação Sistema Efetiva"""
-    inicio = aquisitivo.DataInicial
-    final = aquisitivo.DataFinal
-
-    dias_faltas = CartaoPonto.objects.filter(
-        idPessoal=id_pessoal,
-        Dia__range=[inicio, final],
-        Ausencia="FALTA",
-        Remunerado=False,
-    ).values_list("Dia", flat=True)
-
-    return [datetime.strftime(dia, "%d/%m/%Y") for dia in dias_faltas]
 
 
 def list_pessoal_all():
