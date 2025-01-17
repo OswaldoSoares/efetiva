@@ -291,10 +291,13 @@ def dados_rescisao_trabalho_nova(pdf, contexto):
     else:
         col = 11
         linha -= 7.7
-    pdf.drawString(
-        cmp(col), cmp(linha), f"13º PROPORCIONAL - {meses_decimo_terceiro}/12"
-    )
-    pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {decimo_terceiro}")
+    if meses_decimo_terceiro:
+        pdf.drawString(
+            cmp(col),
+            cmp(linha),
+            f"13º PROPORCIONAL - {meses_decimo_terceiro}/12",
+        )
+        pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {decimo_terceiro}")
     linha = 116.7
     #  bruto = "261,87"
     pdf.drawRightString(cmp(199), cmp(linha + 1), f"R$ {bruto}")
