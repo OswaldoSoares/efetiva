@@ -178,7 +178,6 @@ def print_pdf_rescisao_trabalho(pdf, contexto):
 
 def dados_rescisao_trabalho_nova(pdf, contexto):
     print(contexto)
-    print("Teste")
     cnpj = "21.602.117/0001-15"
     razao_social = "TRANSEFETIVA TRANSPORTE - EIRELLI - ME"
     endereco_empregador = "RUA OLIMPIO PORTUGAL, 245"
