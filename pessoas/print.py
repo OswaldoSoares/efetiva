@@ -216,7 +216,8 @@ def dados_rescisao_trabalho_nova(pdf, contexto):
     meses_decimo_terceiro = contexto["decimo_terceiro_meses"]
     decimo_terceiro = contexto["decimo_terceiro_valor"]
     decimo_terceiro_pago = contexto["decimo_terceiro_total_pago"]
-    ferias_paga = contexto["desconto_ferias"]
+    if "desconto_ferias" in contexto:
+        ferias_paga = contexto["desconto_ferias"]
     bruto += decimo_terceiro
     linha = 267.3
     pdf.setFont("Times-Roman", 10)
@@ -326,7 +327,7 @@ def dados_rescisao_trabalho_nova(pdf, contexto):
             else:
                 col = 11
                 linha -= 7.7
-    if contexto["desconto_ferias"]:
+    if "desconto_ferias" in contexto:
         pdf.drawString(cmp(col), cmp(linha), "DESCONTO FÉRIAS PAGA")
         pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {ferias_paga}")
         deducoes += ferias_paga
