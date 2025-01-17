@@ -5,6 +5,11 @@
         <input type="time" class="form-control" name="entrada" id="id_entrada"
                value="{{ cartao_ponto.Entrada }}">
     </div>
+    <div class="col-md-3">
+        <label for="id_saida" class="form-label">HORA DA SAÍDA:</label>
+        <input type="time" class="form-control" name="saida" id="id_saida"
+               value="{{ cartao_ponto.Saida }}">
+    </div>
 
     <input type="hidden" name="id_pessoal" value="{{ id_pessoal }}">
     <input type="hidden" name="id_cartao_ponto" value="{{ id_cartao_ponto }}">
