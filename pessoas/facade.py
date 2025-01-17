@@ -4,7 +4,7 @@ import os
 import ast
 from django.db import connection
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta
 from django.db.models import (
     Sum,
@@ -21,8 +21,10 @@ from django.template.loader import render_to_string
 from decimal import Decimal, ROUND_HALF_UP
 from PIL import Image, ImageDraw
 from typing import Any
+
 from despesas import facade as facade_multa
-from pagamentos import facade as facade_pagamentos
+
+#  from pagamentos import facade as facade_pagamentos
 from pagamentos.models import Recibo
 
 
@@ -67,20 +69,20 @@ from pessoas import classes
 from pessoas import html_data
 from typing import List
 
-meses = [
-    "JANEIRO",
-    "FEVEREIRO",
-    "MARÇO",
-    "ABRIL",
-    "MAIO",
-    "JUNHO",
-    "JULHO",
-    "AGOSTO",
-    "SETEMBRO",
-    "OUTUBRO",
-    "NOVEMBRO",
-    "DEZEMBRO",
-]
+#  meses = [
+#  "JANEIRO",
+#  "FEVEREIRO",
+#  "MARÇO",
+#  "ABRIL",
+#  "MAIO",
+#  "JUNHO",
+#  "JULHO",
+#  "AGOSTO",
+#  "SETEMBRO",
+#  "OUTUBRO",
+#  "NOVEMBRO",
+#  "DEZEMBRO",
+#  ]
 dias = [
     "SEGUNDA-FEIRA",
     "TERÇA-FEIRA",
@@ -792,18 +794,22 @@ def save_data_demissao_colaborador(request):
 
 
 def data_demissao_html_data(request, contexto):
+    """Consultar Documentação Sistema Efetiva"""
     data = {}
     html_functions = [
         html_data.html_card_foto_colaborador,
     ]
+
     return gerar_data_html(html_functions, request, contexto, data)
 
 
 def create_contexto_eventos_rescisorios_colaborador(request):
+    """Consultar Documentação Sistema Efetiva"""
     id_pessoal = request.GET.get("id_pessoal")
     eventos = EVENTOS_RESCISORIOS
     motivos = MOTIVOS_DEMISSAO
     aviso_previo = AVISO_PREVIO
+
     return {
         "id_pessoal": id_pessoal,
         "eventos": eventos,
@@ -848,21 +854,49 @@ def calcular_rescisao_saldo_salario(colaborador):
     return {"contra_cheque_itens": contra_cheque_itens}
 
 
-def meses_proporcionais(data_inicial, data_final):
-    mes_inicial = data_inicial.month + (1 if data_inicial.day >= 16 else 0)
-    mes_final = data_final.month - (1 if data_final.day <= 14 else 0)
-    return mes_final - mes_inicial + 1
+def faltas_periodo_aquisitivo(id_pessoal: int, aquisitivo) -> List[str]:
+    """Consultar Documentação Sistema Efetiva"""
+    inicio = aquisitivo.DataInicial
+    final = aquisitivo.DataFinal
+
+    dias_faltas = CartaoPonto.objects.filter(
+        idPessoal=id_pessoal,
+        Dia__range=[inicio, final],
+        Ausencia="FALTA",
+        Remunerado=False,
+    ).values_list("Dia", flat=True)
+
+    return [datetime.strftime(dia, "%d/%m/%Y") for dia in dias_faltas]
 
 
 def meses_proporcionais_ferias(data_inicial, data_final):
-    mes_inicial = data_inicial.month + (1 if data_inicial.day >= 16 else 0)
-    mes_final = data_final.month - (1 if data_final.day <= 14 else 0)
-    if mes_inicial > mes_final:
-        mes_final += 12
-    return mes_final - mes_inicial + 1
+    """Consultar Documentação Sistema Efetiva"""
+    periodo = relativedelta(data_final, data_inicial)
+
+    meses = periodo.months
+    days = periodo.days
+
+    return meses if days < 15 else meses + 1
+
+
+def calcular_dias_ferias_proporcionais(faltas, dozeavos):
+    """Consultar Documentação Sistema Efetiva"""
+    faixas = [
+        (5, 2.5),  # Até 5 faltas
+        (14, 2.0),  # De 6 a 14 faltas
+        (23, 1.5),  # De 15 a 23 faltas
+        (32, 1.0),  # De 24 a 32 faltas
+    ]
+
+    multiplicador = next(
+        (valor for limite, valor in faixas if faltas <= limite), 0
+    )
+
+    return multiplicador * dozeavos
 
 
 def calcular_ferias_proporcionais(colaborador):
+    """Consultar Documentação Sistema Efetiva"""
     aquisitivo = (
         Aquisitivo.objects.filter(idPessoal=colaborador.id_pessoal)
         .order_by("-DataInicial")
@@ -873,38 +907,52 @@ def calcular_ferias_proporcionais(colaborador):
         aquisitivo = Aquisitivo.objects.create(
             DataInicial=colaborador.dados_profissionais.data_admissao,
             DataFinal=colaborador.dados_profissionais.data_demissao,
-            idPessoal_id=colaborador.id_pessoas,
+            idPessoal_id=colaborador.id_pessoal,
         )
     else:
         aquisitivo.DataFinal = colaborador.dados_profissionais.data_demissao
         aquisitivo.save()
 
-    meses_proporcinais = meses_proporcionais_ferias(
+    faltas = faltas_periodo_aquisitivo(colaborador.id_pessoal, aquisitivo)
+
+    dozeavos = meses_proporcionais_ferias(
         aquisitivo.DataInicial, aquisitivo.DataFinal
     )
 
-    valor = (
-        colaborador.salarios.salarios.Salario / 12 * meses_proporcinais
-    ).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+    dias = Decimal(calcular_dias_ferias_proporcionais(len(faltas), dozeavos))
+
+    salario_base = colaborador.salarios.salarios.Salario
+    valor = (salario_base / 30 * dias).quantize(
+        Decimal("0.01"), rounding=ROUND_HALF_UP
+    )
     um_terco = (valor / 3).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
 
     return {
         "ferias_valor": valor,
-        "ferias_meses": meses_proporcinais,
+        "ferias_meses": dozeavos,
         "ferias_um_terco": um_terco,
     }
 
 
+def meses_proporcionais_decimo_terceiro(data_inicial, data_final):
+    """Consultar Documentação Sistema Efetiva"""
+    inicio_contagem = data_inicial.month + (1 if data_inicial.day >= 16 else 0)
+    fim_contagem = data_final.month - (1 if data_final.day <= 14 else 0)
+
+    return fim_contagem - inicio_contagem + 1
+
+
 def calcular_decimo_terceiro_proporcional(colaborador):
+    """Consultar Documentação Sistema Efetiva"""
     data_admissao = colaborador.dados_profissionais.data_admissao
     data_demissao = colaborador.dados_profissionais.data_demissao
     hoje = datetime.today().date()
-    inicio_ano = datetime.strptime(f"{hoje.year}-01-01", "%Y-%m-%d").date()
+    inicio_ano = date(hoje.year, 1, 1)
+    fim_ano = date(hoje.year, 12, 31)
 
     if hoje.year > data_demissao.year:
-        inicio_ano = datetime.strptime(
-            f"{hoje.year - 1}-01-01", "%Y-%m-%d"
-        ).date()
+        inicio_ano = date(hoje.year - 1, 1, 1)
+        fim_ano = date(hoje.year - 1, 12, 31)
 
     parcelas_pagas = ContraCheque.objects.filter(
         idPessoal=colaborador.id_pessoal,
@@ -918,20 +966,50 @@ def calcular_decimo_terceiro_proporcional(colaborador):
     )
 
     data_inicial = data_admissao if data_admissao > inicio_ano else inicio_ano
-    data_final = data_demissao
+    data_final = data_demissao if data_demissao < fim_ano else fim_ano
 
-    meses_proporcinais = meses_proporcionais(data_inicial, data_final)
+    dozeavos = meses_proporcionais_decimo_terceiro(data_inicial, data_final)
 
-    valor = (
-        colaborador.salarios.salarios.Salario / 12 * meses_proporcinais
-    ).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+    salario_base = colaborador.salarios.salarios.Salario
+    valor = (salario_base / 12 * dozeavos).quantize(
+        Decimal("0.01"), rounding=ROUND_HALF_UP
+    )
 
     return {
         "decimo_terceiro_valor": valor,
-        "decimo_terceiro_meses": meses_proporcinais,
+        "decimo_terceiro_meses": dozeavos,
         "decimo_terceiro_parcelas_pagas": parcelas_pagas,
         "decimo_terceiro_total_pago": total_valor,
     }
+
+
+def calcular_pagamento_ferias_proporcionais(colaborador):
+    aquisitivo = (
+        Aquisitivo.objects.filter(idPessoal=colaborador.id_pessoal)
+        .order_by("-DataInicial")
+        .first()
+    )
+
+    data_inicial = aquisitivo.DataInicial
+    data_final_original = data_inicial + relativedelta(years=1, days=-1)
+    mes_por_extenso = MESES[data_final_original.month]
+    ano = data_final_original.year
+
+    contra_cheque_ferias = ContraCheque.objects.filter(
+        idPessoal=colaborador.id_pessoal,
+        MesReferencia=mes_por_extenso,
+        AnoReferencia=ano,
+        Descricao="FERIAS",
+    ).first()
+
+    if contra_cheque_ferias and contra_cheque_ferias.Pago:
+        total_ferias_paga = ContraChequeItens.objects.filter(
+            idContraCheque=1105, Registro="C"
+        ).aggregate(total=Sum("Valor")).get("total") or Decimal(0)
+
+        return {"desconto_ferias": total_ferias_paga}
+
+    return {"ferias_nao_paga": "ferias_nao_paga"}
 
 
 def verbas_rescisorias(request):
@@ -969,6 +1047,8 @@ def verbas_rescisorias(request):
         if decimo_terceiro_proporcional.lower() == "true"
         else {"decimo_terceiro_valor": None}
     )
+
+    contexto.update(calcular_pagamento_ferias_proporcionais(colaborador))
 
     contexto.update({"mensagem": "Rescião Calculada"})
     return contexto
@@ -1738,35 +1818,6 @@ def create_contexto_consulta_colaborador(id_pessoal):
     contexto.update(cartao_ponto)
 
     return contexto
-
-
-def calcular_ferias_proporcionais(faltas, dozeavos):
-    faixas = [
-        (5, 2.5),  # Até 5 faltas
-        (14, 2.0),  # De 6 a 14 faltas
-        (23, 1.5),  # De 15 a 23 faltas
-        (32, 1.0),  # De 24 a 32 faltas
-    ]
-
-    multiplicador = next(
-        (valor for limite, valor in faixas if faltas <= limite), 0
-    )
-
-    return multiplicador * dozeavos
-
-
-def faltas_periodo_aquisitivo(id_pessoal: int, aquisitivo) -> List[str]:
-    inicio = aquisitivo.DataInicial
-    final = aquisitivo.DataFinal
-
-    dias_faltas = CartaoPonto.objects.filter(
-        idPessoal=id_pessoal,
-        Dia__range=[inicio, final],
-        Ausencia="FALTA",
-        Remunerado=False,
-    ).values_list("Dia", flat=True)
-
-    return [datetime.strftime(dia, "%d/%m/%Y") for dia in dias_faltas]
 
 
 def list_pessoal_all():
@@ -3726,7 +3777,3 @@ def create_contexto_cartao_ponto_contra_cheque(id_pessoal, contra_cheque):
         colaborador, mes, ano
     )
     return {"cartao_ponto": cartao_ponto}
-
-
-def faltas_periodo_aquisitivo():
-    pass
