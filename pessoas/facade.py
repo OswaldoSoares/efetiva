@@ -3312,7 +3312,7 @@ def get_contra_cheque_mes_ano_descricao(colaborador, mes, ano, descricao):
     print(descricao)
     contra_cheque = ContraCheque.objects.get(
         idPessoal=colaborador,
-        MesReferencia=meses[mes - 1],
+        MesReferencia=MESES[mes],
         AnoReferencia=ano,
         Descricao=descricao,
     )
