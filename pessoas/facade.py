@@ -1048,6 +1048,8 @@ def verbas_rescisorias(request):
         else {"decimo_terceiro_valor": None}
     )
 
+    contexto.update(calcular_pagamento_ferias_proporcionais(colaborador))
+
     contexto.update({"mensagem": "Rescião Calculada"})
     return contexto
 
