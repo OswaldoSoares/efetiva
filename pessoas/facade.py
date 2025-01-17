@@ -1766,12 +1766,16 @@ def modal_entrada_colaborador(id_pessoal, request):
 def save_entrada_colaborador(request):
     id_cartao_ponto = int(request.POST.get("id_cartao_ponto"))
 
-    hora = datetime.strptime(request.POST.get("entrada"), "%H:%M").time()
+    entrada = datetime.strptime(request.POST.get("entrada"), "%H:%M").time()
+    saida = datetime.strptime(request.POST.get("saida"), "%H:%M").time()
 
     if CartaoPonto.objects.filter(idCartaoPonto=id_cartao_ponto).update(
-        Entrada=hora
+        Entrada=entrada,
+        Saida=saida,
     ):
-        return {"mensagem": "Entrada do colaborador alterada com sucesso"}
+        return {
+            "mensagem": "Entrada e saída do colaborador alterada com sucesso"
+        }
 
 
 def create_contexto_cartao_ponto(id_pessoal, mes, ano):

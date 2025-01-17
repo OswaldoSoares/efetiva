@@ -66,11 +66,11 @@
                 <i class="icofont-stopwatch i-button"
                    onclick="openMyModal(event); return false"
                    data-action="{% url 'alterar_entrada_colaborador' %}"
-                   data-title="ALTERAR HORA DE ENTRADA DO COLABORADOR"
+                   data-title="ALTERAR HORA DE ENTRADA E SAÍDA DO COLABORADOR"
                    data-button-save-label="ALTERAR"
                    data-id_cartao_ponto="{{ dias.idCartaoPonto }}"
                    data-id_pessoal="{{ dias.idPessoal_id }}"
-                   title="ALTERAR HORA DE ENTRADA DO COLABORADOR"></i>
+                   title="ALTERAR HORA DE ENTRADA E SAÍDA DO COLABORADOR"></i>
             </div>
             <div class="input-group-addon addon-my-color">
                 {% if dias.CarroEmpresa %}
