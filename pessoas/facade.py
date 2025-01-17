@@ -794,6 +794,7 @@ def save_data_demissao_colaborador(request):
 
 
 def data_demissao_html_data(request, contexto):
+    """Consultar Documentação Sistema Efetiva"""
     data = {}
     html_functions = [
         html_data.html_card_foto_colaborador,
