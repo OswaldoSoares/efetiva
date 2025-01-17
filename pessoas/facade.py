@@ -984,6 +984,7 @@ def calcular_decimo_terceiro_proporcional(colaborador):
 
 
 def calcular_pagamento_ferias_proporcionais(colaborador):
+    """Consultar Documentação Sistema Efetiva"""
     aquisitivo = (
         Aquisitivo.objects.filter(idPessoal=colaborador.id_pessoal)
         .order_by("-DataInicial")
