@@ -24,7 +24,7 @@ from typing import Any
 
 from despesas import facade as facade_multa
 
-#  from pagamentos import facade as facade_pagamentos
+from pagamentos import facade as facade_pagamentos
 from pagamentos.models import Recibo
 
 
