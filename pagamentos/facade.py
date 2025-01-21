@@ -573,10 +573,7 @@ def atualizar_cartao_ponto_minutas(cartao_ponto, minutas):
             ),
             None,
         )
-        if (
-            minuta["hora_inicial"] < dia.Entrada
-            and dia["Alteracao"] != "MANUAL"
-        ):
+        if minuta["hora_inicial"] < dia.Entrada and dia.Alteracao != "MANUAL":
             dia.Entrada = minuta["hora_inicial"]
             registros_cartao_ponto.append(
                 CartaoPonto(
