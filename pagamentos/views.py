@@ -18,6 +18,7 @@ from .print import (
 
 @has_permission_decorator("modulo_pagamentos")
 def index_pagamento(request):
+    """Consultar Documentação Sistema Efetiva"""
     contexto = facade.create_contexto_meses_pagamento()
     return render(request, "pagamentos/index.html", contexto)
 

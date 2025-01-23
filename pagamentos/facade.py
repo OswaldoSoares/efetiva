@@ -53,7 +53,7 @@ dias = [
 
 
 def create_contexto_meses_pagamento() -> dict:
-    """Consulte a documentação detalhada em 'docs/facade.md'."""
+    """Consultar Documentação Sistema Efetiva"""
     locale.setlocale(locale.LC_TIME, "pt_BR.UTF-8")
     hoje = datetime.datetime.today()
     meses = [
