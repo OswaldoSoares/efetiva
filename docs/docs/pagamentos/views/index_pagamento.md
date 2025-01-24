@@ -25,9 +25,9 @@ A lógica principal é construída com a função `facade.create_contexto_meses_
 ## Dependências
 
 - Decorador:
-  - [`@has_permission_decorator`](./has_permission_decorator.md): Valida as permissões do usuário.
+  - [`@has_permission_decorator`](https://django-role-permissions.readthedocs.io/en/stable): Valida as permissões do usuário.
 - Função:
-  - [`facade.create_contexto_meses_pagamento`](./create_contexto_meses_pagamento.md): Constrói o contexto com informações dos meses de pagamento.
+  - [`facade.create_contexto_meses_pagamento`](../facade/create_contexto_meses_pagamento.md): Constrói o contexto com informações dos meses de pagamento.
 
 ## Código da Função
 
