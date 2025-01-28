@@ -1,0 +1,15 @@
+[project]
+name = "Sistema Transportadora Efetiva"
+version = "25.0.0"
+description = ""
+authors = [
+	{name = "Oswaldo Soares", email = "oswaldosoares@gmail.com"}
+]
+readme = "READNE.md"
+requires-python = ""
+dependencias = []
+
+[tool-towncrier]
+directory = "chanlogs.d"]
+filename = "CHANGELOG.md"
+
