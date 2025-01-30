@@ -1791,6 +1791,21 @@ def create_contexto_cartao_ponto(id_pessoal, mes, ano):
     return {"cartao_ponto": cartao_ponto}
 
 
+def verificar_salario_colaborador(colaborador):
+    salario = Salario.objects.filter(idPessoal=colaborador.id_pessoal).first()
+
+    AlteracaoSalarial.objects.get_or_create(
+        idPessoal_id=colaborador.id_pessoal,
+        Data=colaborador.dados_profissionais.data_admissao,
+        defaults={
+            "Valor": salario.Salario if salario else 0,
+            "Obs": "SALÁRIO INICIAL",
+        },
+    )
+
+    return AlteracaoSalarial.objects.filter(idPessoal=colaborador.id_pessoal)
+
+
 def create_contexto_consulta_colaborador(id_pessoal):
     colaborador = classes.Colaborador(id_pessoal)
     colaborador_antigo = classes.ColaboradorAntigo(id_pessoal).__dict__
