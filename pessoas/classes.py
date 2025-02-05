@@ -297,7 +297,10 @@ class ColaboradorAntigo:
         Returns:
             Decimal: Salário calculado para as férias.
         """
-        salario = Decimal(self.salario[0]["salario"])
+        if self.salario:
+            salario = Decimal(self.salario[0]["salario"])
+        else:
+            salario = Decimal(0.00)
         salario_dia = salario / 30
         faltas = len(self.faltas)
         if faltas < 6:
