@@ -431,6 +431,34 @@ def delete_conta_colaborador(request):
     return {"mensagem": "Não foi possível excluir conta do colaborador"}
 
 
+def modal_salario_colaborador(id_salario, request):
+    id_pessoal = request.POST.get("id_pessoal") or request.GET.get(
+        "id_pessoal"
+    )
+    id_salario = request.POST.get("id_salario") or request.GET.get(
+        "id_salario"
+    )
+    colaborador = classes.Colaborador(id_pessoal) if id_pessoal else False
+    hoje = datetime.today().date()
+    salario = colaborador.salarios.salarios.Salario
+    alteracao_salarial = (
+        AlteracaoSalarial.objects.filter(
+            idAlteracaoSalarial=id_salario
+        ).first()
+        if id_salario
+        else None
+    )
+
+    contexto = {
+        "colaborador": colaborador,
+        "hoje": hoje.strftime("%Y-%m-%d"),
+        "salario": salario,
+        "alteracao_salarial": alteracao_salarial,
+    }
+    modal_html = html_data.html_modal_salario_colaborador(request, contexto)
+    return JsonResponse({"modal_html": modal_html})
+
+
 def modal_vale_colaborador(id_vale, request):
     id_pessoal = (
         request.POST.get("id_pessoal")
