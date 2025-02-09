@@ -210,6 +210,20 @@ def alterar_entrada_colaborador(request):
     )
 
 
+def alterar_salario_colaborador(request):
+    error = facade.validar_modal_salario_colaborador(request)
+    if error:
+        return error
+
+    return handle_modal_colaborador(
+        request,
+        facade.modal_salario_colaborador,
+        facade.save_salario_colaborador,
+        partial(facade.create_contexto_salario, request),
+        facade.salario_html_data,
+    )
+
+
 def bloqueia_pessoa(request, idpessoa):
     facade.altera_status(idpessoa)
     return redirect("indexpessoal")
