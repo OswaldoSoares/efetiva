@@ -35,6 +35,7 @@ nav:
               - pessoas/facade/verificar_salario_colaborador.md
           - Views:
               - pessoas/views/index_pessoal.md
+              - pessoas/views/alterar_salario_colaborador.md
       - Pagamentos:
           - Facade:
               - pagamentos/facade/create_contexto_meses_pagamento.md
