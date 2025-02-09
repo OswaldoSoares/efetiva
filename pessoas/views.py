@@ -14,6 +14,7 @@ from website.facade import str_hoje
 
 @has_permission_decorator("modulo_colaboradores")
 def indexpessoal(request):
+    """Consultar Documentação Sistema Efetiva"""
     contexto = facade.create_contexto_categoria()
     contexto.update(facade.create_contexto_colaboradores("MENSALISTA", True))
     return render(request, "pessoas/index.html", contexto)
