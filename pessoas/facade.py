@@ -96,6 +96,7 @@ dias = [
 
 
 def create_contexto_categoria():
+    """Consultar Documentação Sistema Efetiva"""
     return {"categorias": categorias_colaborador}
 
 
