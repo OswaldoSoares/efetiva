@@ -473,6 +473,36 @@ def get_meses_ordem():
     )
 
 
+def verificar_ultimo_pagamento(id_pessoal):
+    meses_ordem = get_meses_ordem()
+
+    ultimo_mes_pago = (
+        ContraCheque.objects.filter(
+            idPessoal_id=id_pessoal, Descricao="PAGAMENTO", Pago=True
+        )
+        .annotate(mes_ordenado=meses_ordem)
+        .order_by("-AnoReferencia", "-mes_ordenado")
+    ).first()
+
+    if ultimo_mes_pago:
+        ano_possivel = (
+            ultimo_mes_pago.AnoReferencia
+            if ultimo_mes_pago.mes_ordenado < 12
+            else ultimo_mes_pago.AnoReferencia + 1
+        )
+        mes_possivel = (
+            ultimo_mes_pago.mes_ordenado + 1
+            if ultimo_mes_pago.mes_ordenado < 12
+            else 1
+        )
+
+        data_possivel = date(ano_possivel, mes_possivel, 1)
+
+        return data_possivel
+
+    return False
+
+
 def modal_vale_colaborador(id_vale, request):
     id_pessoal = (
         request.POST.get("id_pessoal")
