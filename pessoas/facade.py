@@ -595,6 +595,15 @@ def save_salario_colaborador(request):
     return {"mensagem": mensagem}
 
 
+def create_contexto_salario(request):
+    id_pessoal = request.POST.get("id_pessoal") or request.GET.get(
+        "id_pessoal"
+    )
+    colaborador = classes.Colaborador(id_pessoal)
+    salarios = AlteracaoSalarial.objects.filter(idPessoal=id_pessoal)
+    return {"colaborador": colaborador, "salarios": salarios}
+
+
 def modal_vale_colaborador(id_vale, request):
     id_pessoal = (
         request.POST.get("id_pessoal")
