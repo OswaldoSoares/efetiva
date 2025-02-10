@@ -559,6 +559,41 @@ def validar_modal_salario_colaborador(request):
             )
 
 
+def save_salario_colaborador(request):
+    data = datetime.strptime(request.POST.get("data"), "%Y-%m-%d")
+    valor = float(request.POST.get("valor").replace(",", "."))
+    id_pessoal = request.POST.get("id_pessoal")
+    id_salario = request.POST.get("id_salario")
+
+    registro = {
+        "idPessoal_id": id_pessoal,
+        "Data": data,
+        "Valor": valor,
+    }
+
+    with transaction.atomic():
+        if id_salario:
+            AlteracaoSalarial.objects.filter(
+                idAlteracaoSalarial=id_salario
+            ).update(**registro)
+            mensagem = "Salário alterado com sucesso"
+        else:
+            registro["Obs"] = "AUMENTO SALARIAL"
+            AlteracaoSalarial.objects.create(**registro)
+            mensagem = "Aumentao salarial realizado com sucesso"
+
+        Salario.objects.update_or_create(
+            idPessoal_id=request.POST.get("id_pessoal"),
+            defaults={
+                "Salario": valor,
+                "HorasMensais": 220,
+                "ValeTransporte": Decimal("0.00"),
+            },
+        )
+
+    return {"mensagem": mensagem}
+
+
 def modal_vale_colaborador(id_vale, request):
     id_pessoal = (
         request.POST.get("id_pessoal")
