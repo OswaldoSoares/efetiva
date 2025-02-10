@@ -1975,7 +1975,14 @@ def create_contexto_cartao_ponto(id_pessoal, mes, ano):
 
 def verificar_salario_colaborador(colaborador):
     """Consultar Documentação Sistema Efetiva"""
-    salario = Salario.objects.filter(idPessoal=colaborador.id_pessoal).first()
+    salario, created = Salario.objects.get_or_create(
+        idPessoal_id=colaborador.id_pessoal,
+        defaults={
+            "Salario": Decimal("0.00"),
+            "HorasMensais": 220,
+            "ValeTransporte": Decimal("0.00"),
+        },
+    )
 
     AlteracaoSalarial.objects.get_or_create(
         idPessoal_id=colaborador.id_pessoal,
