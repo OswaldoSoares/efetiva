@@ -461,6 +461,7 @@ def modal_salario_colaborador(id_salario, request):
 
 
 def get_meses_ordem():
+    """Consultar Documentação Sistema Efetiva"""
     meses_inverso = {v: k for k, v in MESES.items()}
 
     return Case(
