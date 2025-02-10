@@ -606,6 +606,7 @@ def create_contexto_salario(request):
 
 
 def salario_html_data(request, contexto):
+    """Consultar Documentação Sistema Efetiva"""
     html_functions = [
         html_data.html_card_salario_colaborador,
     ]
