@@ -1,0 +1,18 @@
+<form class="row g-3" method="post" action="{% url 'alterar_salario_colaborador' %}">
+{% csrf_token %}
+    <div class="col-md-6">
+        <label for="id_data" class="form-label">DATA AUMENTO SALARIAL:</label>
+        <input type="date" class="form-control" name="data" id="id_data"
+               value="{% if alteracao_salarial %}{{ alteracao_salarial.Data|date:"Y-m-d" }}{% else %}{{ hoje }}{% endif %}"
+               {% if alteracao_salarial %}readonly{% endif %}>
+    </div>
+    <div class="col-md-6">
+        <label for="id_valor" class="form-label">VALOR DO NOVO SALÁRIO</label>
+        <input type="number" class="form-control" name="valor" id="id_valor" value="0.00" step="0.01">
+    </div>
+
+    <input type="hidden" name="id_pessoal" value="{{ colaborador.id_pessoal }}">
+    <input type="hidden" name="id_salario"
+           value="{{ alteracao_salarial.idAlteracaoSalarial }}">
+</form>
+<div class="thrown-error invisivel"></div>
