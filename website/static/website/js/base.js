@@ -141,6 +141,22 @@ function openMyModal(event) {
         requestData.id_salario = idSalario;
     }
 
+    // Caso seja para criar um novo colaborador oculta cards
+    if ($(event.target).data("title") == "ADICIONAR COLABORADOR") {
+        $(".card-foto-colaborador").hide();
+        $(".card-cartao-ponto-colaborador").hide();
+        $(".card-contra-cheque-colaborador").hide();
+        $(".card-rescisao-colaborador").hide();
+        $(".card-eventos-rescisorios-colaborador").hide();
+        $(".card-vales-colaborador").hide();
+        $(".card-decimo-terceiro-colaborador").hide();
+        $(".card-ferias-colaborador").hide();
+        $(".card-docs-colaborador").hide();
+        $(".card-fones-colaborador").hide();
+        $(".card-contas-colaborador").hide();
+        $(".card-salario-colaborador").hide();
+    }
+
     executarAjax(url, "GET", requestData, function(data) {
         modal.find(".modal-body").html(data.modal_html);
         modal.modal("show");
