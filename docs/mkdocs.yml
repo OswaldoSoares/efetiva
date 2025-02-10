@@ -34,6 +34,7 @@ nav:
               - pessoas/facade/meses_proporcionais_decimo_terceiro.md
               - pessoas/facade/meses_proporcionais_ferias.md
               - pessoas/facade/modal_salario_colaborador.md
+              - pessoas/facade/save_salario_colaborador.md
               - pessoas/facade/validar_modal_salario_colaborador.md
               - pessoas/facade/verificar_salario_colaborador.md
               - pessoas/facade/verificar_ultimo_pagamento.md
