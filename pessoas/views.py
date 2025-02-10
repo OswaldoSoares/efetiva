@@ -211,6 +211,7 @@ def alterar_entrada_colaborador(request):
 
 
 def alterar_salario_colaborador(request):
+    """Consultar Documentação Sistema Efetiva"""
     error = facade.validar_modal_salario_colaborador(request)
     if error:
         return error
