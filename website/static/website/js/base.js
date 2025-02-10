@@ -135,6 +135,12 @@ function openMyModal(event) {
         requestData.ano = ano;
     }
 
+    // Verifica se o id_salario está presente
+    const idSalario = $(event.target).data("id_salario");
+    if (typeof idSalario !== "undefined") {
+        requestData.id_salario = idSalario;
+    }
+
     executarAjax(url, "GET", requestData, function(data) {
         modal.find(".modal-body").html(data.modal_html);
         modal.modal("show");
