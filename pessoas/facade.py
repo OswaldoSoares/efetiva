@@ -432,6 +432,7 @@ def delete_conta_colaborador(request):
 
 
 def modal_salario_colaborador(id_salario, request):
+    """Consultar Documentação Sistema Efetiva"""
     id_pessoal = request.POST.get("id_pessoal") or request.GET.get(
         "id_pessoal"
     )
