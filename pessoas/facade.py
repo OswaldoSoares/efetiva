@@ -560,6 +560,7 @@ def validar_modal_salario_colaborador(request):
 
 
 def save_salario_colaborador(request):
+    """Consultar Documentação Sistema Efetiva"""
     data = datetime.strptime(request.POST.get("data"), "%Y-%m-%d")
     valor = float(request.POST.get("valor").replace(",", "."))
     id_pessoal = request.POST.get("id_pessoal")
