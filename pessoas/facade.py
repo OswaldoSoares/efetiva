@@ -596,6 +596,7 @@ def save_salario_colaborador(request):
 
 
 def create_contexto_salario(request):
+    """Consultar Documentação Sistema Efetiva"""
     id_pessoal = request.POST.get("id_pessoal") or request.GET.get(
         "id_pessoal"
     )
