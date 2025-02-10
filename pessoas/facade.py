@@ -504,6 +504,60 @@ def verificar_ultimo_pagamento(id_pessoal):
     return False
 
 
+def validar_modal_salario_colaborador(request):
+    if request.method == "POST":
+        data = datetime.strptime(request.POST.get("data"), "%Y-%m-%d").date()
+        valor = float(request.POST.get("valor").replace(",", "."))
+        id_pessoal = request.POST.get("id_pessoal")
+        id_salario = request.POST.get("id_salario")
+
+        if not id_salario:
+            ultima_alteracao = (
+                AlteracaoSalarial.objects.filter(idPessoal=id_pessoal)
+                .order_by("-Data")
+                .first()
+            )
+            if ultima_alteracao and data <= ultima_alteracao.Data:
+                msg = "A data tem que ser maior que a última alteração"
+                data_str = datetime.strftime(ultima_alteracao.Data, "%d/%m/%Y")
+
+                return JsonResponse(
+                    {"error": f"{msg} - {data_str}"}, status=400
+                )
+
+            data_possivel = verificar_ultimo_pagamento(id_pessoal)
+            if data_possivel and data < data_possivel:
+                msg = "O mês tem que ser maior que do último pagamento"
+                mes_ano = (
+                    f"{MESES[data_possivel.month -1]}/{data_possivel.year}"
+                )
+
+                return JsonResponse(
+                    {"error": f"{msg} - {mes_ano}"}, status=400
+                )
+
+        colaborador = classes.Colaborador(id_pessoal)
+        salario = (
+            colaborador.salarios.salarios.Salario
+            if colaborador.salarios.salarios
+            else Decimal(0.00)
+        )
+        print(salario)
+        if valor <= salario:
+            msg = "O valor tem que ser maior que o salário atual"
+
+            return JsonResponse(
+                {"error": f"{msg} - R$ {salario}"},
+                status=400,
+            )
+
+        if valor <= 0:
+            return JsonResponse(
+                {"error": "O Valor do vale tem que ser maior que R$ 0,00."},
+                status=400,
+            )
+
+
 def modal_vale_colaborador(id_vale, request):
     id_pessoal = (
         request.POST.get("id_pessoal")
