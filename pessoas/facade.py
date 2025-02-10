@@ -2011,6 +2011,7 @@ def create_contexto_consulta_colaborador(id_pessoal):
     cartao_ponto = create_contexto_cartao_ponto(
         id_pessoal, hoje.month, hoje.year
     )
+    salarios = verificar_salario_colaborador(colaborador)
     contexto = {
         "colaborador": colaborador,
         "colaborador_ant": colaborador_antigo,
@@ -2022,6 +2023,7 @@ def create_contexto_consulta_colaborador(id_pessoal):
         "ano_atual": ano_atual,
         "aquisitivo": aquisitivo,
         "cartao_ponto": cartao_ponto,
+        "salarios": salarios,
         "mes": hoje.month,
         "ano": hoje.year,
         "mensagem": f"COLABORADOR(A) {colaborador.nome_curto} SELECIONADO",
