@@ -460,6 +460,18 @@ def modal_salario_colaborador(id_salario, request):
     return JsonResponse({"modal_html": modal_html})
 
 
+def get_meses_ordem():
+    meses_inverso = {v: k for k, v in MESES.items()}
+
+    return Case(
+        *[
+            When(MesReferencia=mes, then=num)
+            for mes, num in meses_inverso.items()
+        ],
+        output_field=IntegerField(),
+    )
+
+
 def modal_vale_colaborador(id_vale, request):
     id_pessoal = (
         request.POST.get("id_pessoal")
