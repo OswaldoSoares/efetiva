@@ -107,6 +107,11 @@ urlpatterns = [
         name="excluir_conta_colaborador",
     ),
     path(
+        "alterar_salario_colaborador",
+        alterar_salario_colaborador,
+        name="alterar_salario_colaborador",
+    ),
+    path(
         "adicionar_vale_colaborador",
         adicionar_vale_colaborador,
         name="adicionar_vale_colaborador",
