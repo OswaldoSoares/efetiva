@@ -28,6 +28,7 @@ nav:
               - pessoas/facade/calcular_pagamento_ferias_proporcionais.md
               - pessoas/facade/create_contexto_categorias.md
               - pessoas/facade/create_contexto_eventos_rescisorios_colaborador.md
+              - pessoas/facade/create_contexto_salario.md
               - pessoas/facade/data_demissao_html_data.md
               - pessoas/facade/faltas_periodo_aquisitivo.md
               - pessoas/facade/get_meses_ordem.md
