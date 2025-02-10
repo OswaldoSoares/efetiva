@@ -505,6 +505,7 @@ def verificar_ultimo_pagamento(id_pessoal):
 
 
 def validar_modal_salario_colaborador(request):
+    """Consultar Documentação Sistema Efetiva"""
     if request.method == "POST":
         data = datetime.strptime(request.POST.get("data"), "%Y-%m-%d").date()
         valor = float(request.POST.get("valor").replace(",", "."))
