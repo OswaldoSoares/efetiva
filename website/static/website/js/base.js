@@ -193,6 +193,7 @@ function atualizarInterfaceComDados(xhr) {
     $(".card-docs-colaborador").html(xhr["html-card-docs-colaborador"]);
     $(".card-fones-colaborador").html(xhr["html-card-fones-colaborador"]);
     $(".card-contas-colaborador").html(xhr["html-card-contas-colaborador"]);
+    $(".card-salario-colaborador").html(xhr["html-card-salario-colaborador"]);
 }
 
 function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
