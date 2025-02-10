@@ -32,6 +32,7 @@ nav:
               - pessoas/facade/faltas_periodo_aquisitivo.md
               - pessoas/facade/meses_proporcionais_decimo_terceiro.md
               - pessoas/facade/meses_proporcionais_ferias.md
+              - pessoas/facade/modal_salario_colaborador.md
               - pessoas/facade/verificar_salario_colaborador.md
           - Views:
               - pessoas/views/index_pessoal.md
