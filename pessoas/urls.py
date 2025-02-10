@@ -47,6 +47,7 @@ from .views import (
     excluir_fone_colaborador,
     adicionar_ou_atualizar_conta_colaborador,
     excluir_conta_colaborador,
+    alterar_salario_colaborador,
     adicionar_vale_colaborador,
     excluir_vale_colaborador,
     selecionar_contra_cheque_decimo_terceiro,
