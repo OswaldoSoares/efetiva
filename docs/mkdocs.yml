@@ -35,6 +35,7 @@ nav:
               - pessoas/facade/meses_proporcionais_ferias.md
               - pessoas/facade/modal_salario_colaborador.md
               - pessoas/facade/verificar_salario_colaborador.md
+              - pessoas/facade/verificar_ultimo_pagamento.md
           - Views:
               - pessoas/views/index_pessoal.md
               - pessoas/views/alterar_salario_colaborador.md
