@@ -14,6 +14,7 @@ from website.facade import str_hoje
 
 @has_permission_decorator("modulo_colaboradores")
 def indexpessoal(request):
+    """Consultar Documentação Sistema Efetiva"""
     contexto = facade.create_contexto_categoria()
     contexto.update(facade.create_contexto_colaboradores("MENSALISTA", True))
     return render(request, "pessoas/index.html", contexto)
@@ -206,6 +207,21 @@ def alterar_entrada_colaborador(request):
         facade.save_entrada_colaborador,
         partial(facade.create_contexto_cartao_ponto, id_pessoal, mes, ano),
         facade.cartao_ponto_html_data,
+    )
+
+
+def alterar_salario_colaborador(request):
+    """Consultar Documentação Sistema Efetiva"""
+    error = facade.validar_modal_salario_colaborador(request)
+    if error:
+        return error
+
+    return handle_modal_colaborador(
+        request,
+        facade.modal_salario_colaborador,
+        facade.save_salario_colaborador,
+        partial(facade.create_contexto_salario, request),
+        facade.salario_html_data,
     )
 
 

@@ -2,7 +2,7 @@ import calendar
 import datetime
 import os
 import ast
-from django.db import connection
+from django.db import connection, transaction
 
 from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta
@@ -96,6 +96,7 @@ dias = [
 
 
 def create_contexto_categoria():
+    """Consultar Documentação Sistema Efetiva"""
     return {"categorias": categorias_colaborador}
 
 
@@ -428,6 +429,187 @@ def delete_conta_colaborador(request):
         return {"mensagem": "Conta do colaborador excluida com sucesso"}
 
     return {"mensagem": "Não foi possível excluir conta do colaborador"}
+
+
+def modal_salario_colaborador(id_salario, request):
+    """Consultar Documentação Sistema Efetiva"""
+    id_pessoal = request.POST.get("id_pessoal") or request.GET.get(
+        "id_pessoal"
+    )
+    id_salario = request.POST.get("id_salario") or request.GET.get(
+        "id_salario"
+    )
+    colaborador = classes.Colaborador(id_pessoal) if id_pessoal else False
+    hoje = datetime.today().date()
+    salario = colaborador.salarios.salarios.Salario
+    alteracao_salarial = (
+        AlteracaoSalarial.objects.filter(
+            idAlteracaoSalarial=id_salario
+        ).first()
+        if id_salario
+        else None
+    )
+
+    contexto = {
+        "colaborador": colaborador,
+        "hoje": hoje.strftime("%Y-%m-%d"),
+        "salario": salario,
+        "alteracao_salarial": alteracao_salarial,
+    }
+    modal_html = html_data.html_modal_salario_colaborador(request, contexto)
+    return JsonResponse({"modal_html": modal_html})
+
+
+def get_meses_ordem():
+    """Consultar Documentação Sistema Efetiva"""
+    meses_inverso = {v: k for k, v in MESES.items()}
+
+    return Case(
+        *[
+            When(MesReferencia=mes, then=num)
+            for mes, num in meses_inverso.items()
+        ],
+        output_field=IntegerField(),
+    )
+
+
+def verificar_ultimo_pagamento(id_pessoal):
+    """Consultar Documentação Sistema Efetiva"""
+    meses_ordem = get_meses_ordem()
+
+    ultimo_mes_pago = (
+        ContraCheque.objects.filter(
+            idPessoal_id=id_pessoal, Descricao="PAGAMENTO", Pago=True
+        )
+        .annotate(mes_ordenado=meses_ordem)
+        .order_by("-AnoReferencia", "-mes_ordenado")
+    ).first()
+
+    if ultimo_mes_pago:
+        ano_possivel = (
+            ultimo_mes_pago.AnoReferencia
+            if ultimo_mes_pago.mes_ordenado < 12
+            else ultimo_mes_pago.AnoReferencia + 1
+        )
+        mes_possivel = (
+            ultimo_mes_pago.mes_ordenado + 1
+            if ultimo_mes_pago.mes_ordenado < 12
+            else 1
+        )
+
+        data_possivel = date(ano_possivel, mes_possivel, 1)
+
+        return data_possivel
+
+    return False
+
+
+def validar_modal_salario_colaborador(request):
+    """Consultar Documentação Sistema Efetiva"""
+    if request.method == "POST":
+        data = datetime.strptime(request.POST.get("data"), "%Y-%m-%d").date()
+        valor = float(request.POST.get("valor").replace(",", "."))
+        id_pessoal = request.POST.get("id_pessoal")
+        id_salario = request.POST.get("id_salario")
+
+        if not id_salario:
+            ultima_alteracao = (
+                AlteracaoSalarial.objects.filter(idPessoal=id_pessoal)
+                .order_by("-Data")
+                .first()
+            )
+            if ultima_alteracao and data <= ultima_alteracao.Data:
+                msg = "A data tem que ser maior que a última alteração"
+                data_str = datetime.strftime(ultima_alteracao.Data, "%d/%m/%Y")
+
+                return JsonResponse(
+                    {"error": f"{msg} - {data_str}"}, status=400
+                )
+
+            data_possivel = verificar_ultimo_pagamento(id_pessoal)
+            if data_possivel and data < data_possivel:
+                msg = "O mês tem que ser maior que do último pagamento"
+                mes_ano = (
+                    f"{MESES[data_possivel.month -1]}/{data_possivel.year}"
+                )
+
+                return JsonResponse(
+                    {"error": f"{msg} - {mes_ano}"}, status=400
+                )
+
+        colaborador = classes.Colaborador(id_pessoal)
+        salario = (
+            colaborador.salarios.salarios.Salario
+            if colaborador.salarios.salarios
+            else Decimal(0.00)
+        )
+        if valor <= salario:
+            msg = "O valor tem que ser maior que o salário atual"
+
+            return JsonResponse(
+                {"error": f"{msg} - R$ {salario}"},
+                status=400,
+            )
+
+        if valor <= 0:
+            return JsonResponse(
+                {"error": "O Valor do vale tem que ser maior que R$ 0,00."},
+                status=400,
+            )
+
+
+def save_salario_colaborador(request):
+    """Consultar Documentação Sistema Efetiva"""
+    data = datetime.strptime(request.POST.get("data"), "%Y-%m-%d")
+    valor = float(request.POST.get("valor").replace(",", "."))
+    id_pessoal = request.POST.get("id_pessoal")
+    id_salario = request.POST.get("id_salario")
+
+    registro = {
+        "idPessoal_id": id_pessoal,
+        "Data": data,
+        "Valor": valor,
+    }
+
+    with transaction.atomic():
+        if id_salario:
+            AlteracaoSalarial.objects.filter(
+                idAlteracaoSalarial=id_salario
+            ).update(**registro)
+            mensagem = "Salário alterado com sucesso"
+        else:
+            registro["Obs"] = "AUMENTO SALARIAL"
+            AlteracaoSalarial.objects.create(**registro)
+            mensagem = "Aumentao salarial realizado com sucesso"
+
+        Salario.objects.update_or_create(
+            idPessoal_id=request.POST.get("id_pessoal"),
+            defaults={
+                "Salario": valor,
+                "HorasMensais": 220,
+                "ValeTransporte": Decimal("0.00"),
+            },
+        )
+
+    return {"mensagem": mensagem}
+
+
+def create_contexto_salario(request):
+    """Consultar Documentação Sistema Efetiva"""
+    id_pessoal = request.POST.get("id_pessoal") or request.GET.get(
+        "id_pessoal"
+    )
+    colaborador = classes.Colaborador(id_pessoal)
+    salarios = AlteracaoSalarial.objects.filter(idPessoal=id_pessoal)
+    return {"colaborador": colaborador, "salarios": salarios}
+
+
+def salario_html_data(request, contexto):
+    """Consultar Documentação Sistema Efetiva"""
+    html_functions = [
+        html_data.html_card_salario_colaborador,
+    ]
+    return gerar_data_html(html_functions, request, contexto, {})
 
 
 def modal_vale_colaborador(id_vale, request):
@@ -1793,7 +1975,14 @@ def create_contexto_cartao_ponto(id_pessoal, mes, ano):
 
 def verificar_salario_colaborador(colaborador):
     """Consultar Documentação Sistema Efetiva"""
-    salario = Salario.objects.filter(idPessoal=colaborador.id_pessoal).first()
+    salario, created = Salario.objects.get_or_create(
+        idPessoal_id=colaborador.id_pessoal,
+        defaults={
+            "Salario": Decimal("0.00"),
+            "HorasMensais": 220,
+            "ValeTransporte": Decimal("0.00"),
+        },
+    )
 
     AlteracaoSalarial.objects.get_or_create(
         idPessoal_id=colaborador.id_pessoal,
@@ -1822,6 +2011,7 @@ def create_contexto_consulta_colaborador(id_pessoal):
     cartao_ponto = create_contexto_cartao_ponto(
         id_pessoal, hoje.month, hoje.year
     )
+    salarios = verificar_salario_colaborador(colaborador)
     contexto = {
         "colaborador": colaborador,
         "colaborador_ant": colaborador_antigo,
@@ -1833,6 +2023,7 @@ def create_contexto_consulta_colaborador(id_pessoal):
         "ano_atual": ano_atual,
         "aquisitivo": aquisitivo,
         "cartao_ponto": cartao_ponto,
+        "salarios": salarios,
         "mes": hoje.month,
         "ano": hoje.year,
         "mensagem": f"COLABORADOR(A) {colaborador.nome_curto} SELECIONADO",

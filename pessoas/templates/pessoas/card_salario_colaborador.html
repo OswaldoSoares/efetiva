@@ -14,22 +14,38 @@
 </div>
 <!-- Card Body -->
 <div class="card-body">
-    {% for i in a  %}
+    {% for salario in salarios %}
     <div class="card-body-item">
         <div class="input-group">
             <div class="input-group-addon addon-my-color">
-                <i class="icofont-"></i>
+                <i class="icofont-dollar"></i>
             </div>
             <div class="div-flex div-form-control">
-                <div class="tamanho-100 text-center font-menor">
+                <div class="tamanho-50 text-center font-menor">
+                    <span>{{ salario.Data }}</span>
+                </div>
+                <div class="tamanho-50 text-center font-menor">
+                    <span>R$ {{ salario.Valor }}</span>
                 </div>
             </div>
             <div class="input-group-addon addon-my-color">
-                <i class="icofont-"></i>
+                {% if salario.Obs == "SALÁRIO INICIAL" and salario.Valor == 0.00 %}
+                <i class="icofont-edit i-button"
+                   title="EDITAR SALÁRIO INICIAL"
+                   onclick="openMyModal(event); return false;"
+                   data-title="EDITAR SALÁRIO INICIAL"
+                   data-action="/pessoas/alterar_salario_colaborador"
+                   data-id_pessoal="{{ colaborador.id_pessoal }}"
+                   data-id_salario="{{ salario.idAlteracaoSalarial }}"
+                   data-button-save-label="ALTERAR"></i>
+                {% else %}
+                <i class="icofont-check"></i>
+                {% endif %}
             </div>
         </div>
     </div>
     {% endfor %}
+    {% if salarios.0.Valor != 0.00 %}
     <div class="card-body-item">
         <div class="input-group">
             <div class="input-group-addon addon-my-color">
@@ -41,10 +57,17 @@
                 </div>
             </div>
             <div class="input-group-addon addon-my-color">
-                <i class="icofont-plus-circle i-button"></i>
+                <i class="icofont-plus-circle i-button"
+                   onclick="openMyModal(event); return false;"
+                   data-title="SALÁRIO DO COLABORADOR"
+                   data-action="/pessoas/alterar_salario_colaborador"
+                   data-id_pessoal="{{ colaborador.id_pessoal }}"
+                   data-button-save-label="ALTERAR"
+                   title="ALTERAR SALÁRIO DO COLABORADOR"></i>
             </div>
         </div>
     </div>
+    {% endif %}
 </div>
 <!-- Card Footer -->
 <div class="card-footer">

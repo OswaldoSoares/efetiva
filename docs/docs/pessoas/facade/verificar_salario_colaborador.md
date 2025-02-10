@@ -8,7 +8,8 @@ Esta função busca todas as alterações salariais registradas para um colabora
 
 ## Lógica da Função
 
-1. Busca o salário do colaborador na tabela `Salario`.
+1. Busca ou cria o salário do colaborador na tabela `Salario` utilizando `get_or_create()`.
+   - Se o registro não existir, é criado com valores padrão (`Salario` igual a `0.00`, `HorasMensais` igual a `220` e `ValeTransporte` igual a `0.00`).
 2. Utiliza `get_or_create()` para garantir que exista um registro na tabela `AlteracaoSalarial` com a data de admissão do colaborador.
 3. Se o registro não existir, ele é criado com o salário inicial.
 4. Retorna um `QuerySet` contendo todas as alterações salariais do colaborador.
@@ -36,13 +37,20 @@ Esta função busca todas as alterações salariais registradas para um colabora
 ## Código da Função
 
 ```{.py3 linenums="1"}
-def verifica_salario_colaborador(colaborador):
-    salario = Salario.objects.filter(idPessoal=colaborador.id_pessoal).first()
-    
+def verificar_salario_colaborador(colaborador):
+    salario, created = Salario.objects.get_or_create(
+        idPessoal_id=colaborador.id_pessoal,
+        defaults={
+            "Salario": Decimal("0.00"),
+            "HorasMensais": 220,
+            "ValeTransporte": Decimal("0.00"),
+        },
+    )
+
     AlteracaoSalarial.objects.get_or_create(
         idPessoal=colaborador.id_pessoal,
         Data=colaborador.admissao,
-        defaults={"Valor": salario.Salario if salario else 0, "Obs": "SALÁRIO INICIAL"},
+        defaults={"Valor": salario.Salario, "Obs": "SALÁRIO INICIAL"},
     )
 
     return AlteracaoSalarial.objects.filter(idPessoal=colaborador.id_pessoal)
@@ -52,7 +60,7 @@ def verifica_salario_colaborador(colaborador):
 
 ```{.py3 linenums="1" hl_lines="8-10"}
 # Supondo que temos um objeto colaborador
-contexto = verifica_salario_colaborador(colaborador)
+contexto = verificar_salario_colaborador(colaborador)
 
 # Verificar o resultado
 print(contexto)

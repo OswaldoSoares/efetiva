@@ -135,6 +135,28 @@ function openMyModal(event) {
         requestData.ano = ano;
     }
 
+    // Verifica se o id_salario está presente
+    const idSalario = $(event.target).data("id_salario");
+    if (typeof idSalario !== "undefined") {
+        requestData.id_salario = idSalario;
+    }
+
+    // Caso seja para criar um novo colaborador oculta cards
+    if ($(event.target).data("title") == "ADICIONAR COLABORADOR") {
+        $(".card-foto-colaborador").hide();
+        $(".card-cartao-ponto-colaborador").hide();
+        $(".card-contra-cheque-colaborador").hide();
+        $(".card-rescisao-colaborador").hide();
+        $(".card-eventos-rescisorios-colaborador").hide();
+        $(".card-vales-colaborador").hide();
+        $(".card-decimo-terceiro-colaborador").hide();
+        $(".card-ferias-colaborador").hide();
+        $(".card-docs-colaborador").hide();
+        $(".card-fones-colaborador").hide();
+        $(".card-contas-colaborador").hide();
+        $(".card-salario-colaborador").hide();
+    }
+
     executarAjax(url, "GET", requestData, function(data) {
         modal.find(".modal-body").html(data.modal_html);
         modal.modal("show");
@@ -171,6 +193,7 @@ function atualizarInterfaceComDados(xhr) {
     $(".card-docs-colaborador").html(xhr["html-card-docs-colaborador"]);
     $(".card-fones-colaborador").html(xhr["html-card-fones-colaborador"]);
     $(".card-contas-colaborador").html(xhr["html-card-contas-colaborador"]);
+    $(".card-salario-colaborador").html(xhr["html-card-salario-colaborador"]);
 }
 
 function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
