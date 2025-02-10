@@ -543,7 +543,6 @@ def validar_modal_salario_colaborador(request):
             if colaborador.salarios.salarios
             else Decimal(0.00)
         )
-        print(salario)
         if valor <= salario:
             msg = "O valor tem que ser maior que o salário atual"
 
