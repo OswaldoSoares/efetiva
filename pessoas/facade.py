@@ -474,6 +474,7 @@ def get_meses_ordem():
 
 
 def verificar_ultimo_pagamento(id_pessoal):
+    """Consultar Documentação Sistema Efetiva"""
     meses_ordem = get_meses_ordem()
 
     ultimo_mes_pago = (
