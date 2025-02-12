@@ -732,6 +732,17 @@ def save_vale_transporte_colaborador(request):
     return {"mensagem": mensagem}
 
 
+def create_contexto_vale_transporte(request):
+    id_pessoal = request.POST.get("id_pessoal") or request.GET.get(
+        "id_pessoal"
+    )
+    colaborador = classes.Colaborador(id_pessoal)
+    vales_transporte = AlteracaoValeTransporte.objects.filter(
+        idPessoal=id_pessoal
+    )
+    return {"colaborador": colaborador, "vales_transporte": vales_transporte}
+
+
 def modal_vale_colaborador(id_vale, request):
     id_pessoal = (
         request.POST.get("id_pessoal")
