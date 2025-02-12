@@ -200,6 +200,7 @@ function atualizarInterfaceComDados(xhr) {
     $(".card-fones-colaborador").html(xhr["html-card-fones-colaborador"]);
     $(".card-contas-colaborador").html(xhr["html-card-contas-colaborador"]);
     $(".card-salario-colaborador").html(xhr["html-card-salario-colaborador"]);
+    $(".card-vale-transporte-colaborador").html(xhr["html-card-vale-transporte-colaborador"]);
 }
 
 function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
