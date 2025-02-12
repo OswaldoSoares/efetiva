@@ -2,6 +2,7 @@ import calendar
 import datetime
 import os
 import ast
+import locale
 from django.db import connection, transaction
 
 from datetime import datetime, timedelta, date
