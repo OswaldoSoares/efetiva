@@ -86,6 +86,8 @@ $(document).on('click', ".js-selecionar-colaborador", function() {
         $(".card-contas-colaborador").show();
         $(".card-salario-colaborador").html(data["html-card-salario-colaborador"]);
         $(".card-salario-colaborador").show();
+        $(".card-vale-transporte-colaborador").html(data["html-card-vale-transporte-colaborador"]);
+        $(".card-vale-transporte-colaborador").show();
         var url = $(".foto").attr("src");
         // Força o recarregamento da foto sem utilizar o cache
         $(".foto").attr("src", url + `?v=${new Date().getTime()}`);
