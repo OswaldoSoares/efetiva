@@ -43,6 +43,15 @@ def html_card_salario_colaborador(request, contexto, data):
     return data
 
 
+def html_card_vale_transporte_colaborador(request, contexto, data):
+    data["html-card-vale-transporte-colaborador"] = render_to_string(
+        "pessoas/card_vale_transporte_colaborador.html",
+        contexto,
+        request=request,
+    )
+    return data
+
+
 def html_card_vales_colaborador(request, contexto, data):
     data["html-card-vales-colaborador"] = render_to_string(
         "pessoas/card_vales_colaborador.html", contexto, request=request
