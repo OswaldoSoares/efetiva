@@ -695,6 +695,43 @@ def validar_modal_vale_transporte_colaborador(request):
             )
 
 
+def save_vale_transporte_colaborador(request):
+    data = datetime.strptime(request.POST.get("data"), "%Y-%m-%d")
+    valor = float(request.POST.get("valor").replace(",", "."))
+    id_pessoal = request.POST.get("id_pessoal")
+    id_transporte = request.POST.get("id_transporte")
+
+    vale_transporte, created = Salario.objects.get_or_create(
+        idPessoal_id=id_pessoal,
+        defaults={
+            "Salario": Decimal("0.00"),
+            "HorasMensais": 220,
+            "ValeTransporte": Decimal("0.00"),
+        },
+    )
+
+    if not created and id_transporte:
+        Salario.objects.filter(idSalario=id_transporte).update(
+            ValeTransporte=valor
+        )
+
+    if id_transporte:
+        AlteracaoValeTransporte.objects.filter(
+            idAlteracaoValeTransporte=id_transporte
+        ).update(Valor=valor)
+        mensagem = "Vale transporte alterado com sucesso"
+    else:
+        AlteracaoValeTransporte.objects.create(
+            Data=data,
+            Valor=valor,
+            Obs="VALE TRANSPORTE INICIAL",
+            idPessoal_id=id_pessoal,
+        )
+        mensagem = "Aumento do vale transporte realizado com sucesso"
+
+    return {"mensagem": mensagem}
+
+
 def modal_vale_colaborador(id_vale, request):
     id_pessoal = (
         request.POST.get("id_pessoal")
