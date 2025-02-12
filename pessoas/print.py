@@ -638,6 +638,7 @@ def formulario_rescisao_trabalho(pdf, contexto):
     pdf.line(cmp(165), cmp(linha), cmp(165), cmp(linha + 7.7))
     pdf.line(cmp(10), cmp(linha), cmp(200), cmp(linha))
     pdf.line(cmp(50), cmp(19), cmp(160), cmp(19))
+    pdf.drawCentredString(cmp(105), cmp(31), contexto["data_extenso"])
     return pdf
 
 
