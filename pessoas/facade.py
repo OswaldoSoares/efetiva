@@ -612,6 +612,36 @@ def salario_html_data(request, contexto):
     return gerar_data_html(html_functions, request, contexto, {})
 
 
+def modal_vale_transporte_colaborador(id_salario, request):
+    id_pessoal = request.POST.get("id_pessoal") or request.GET.get(
+        "id_pessoal"
+    )
+    id_transporte = request.POST.get("id_transporte") or request.GET.get(
+        "id_transporte"
+    )
+    colaborador = classes.Colaborador(id_pessoal) if id_pessoal else False
+    hoje = datetime.today().date()
+    vale_transporte = colaborador.salarios.salarios.ValeTransporte
+    alteracao_vale_transporte = (
+        AlteracaoValeTransporte.objects.filter(
+            idAlteracaoValeTransporte=id_transporte
+        ).first()
+        if id_transporte
+        else None
+    )
+
+    contexto = {
+        "colaborador": colaborador,
+        "hoje": hoje.strftime("%Y-%m-%d"),
+        "vale_transporte": vale_transporte,
+        "alteracao_vale_transporte": alteracao_vale_transporte,
+    }
+    modal_html = html_data.html_modal_vale_transporte_colaborador(
+        request, contexto
+    )
+    return JsonResponse({"modal_html": modal_html})
+
+
 def modal_vale_colaborador(id_vale, request):
     id_pessoal = (
         request.POST.get("id_pessoal")
