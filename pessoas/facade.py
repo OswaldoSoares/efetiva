@@ -743,6 +743,13 @@ def create_contexto_vale_transporte(request):
     return {"colaborador": colaborador, "vales_transporte": vales_transporte}
 
 
+def vale_transporte_html_data(request, contexto):
+    html_functions = [
+        html_data.html_card_vale_transporte_colaborador,
+    ]
+    return gerar_data_html(html_functions, request, contexto, {})
+
+
 def modal_vale_colaborador(id_vale, request):
     id_pessoal = (
         request.POST.get("id_pessoal")
