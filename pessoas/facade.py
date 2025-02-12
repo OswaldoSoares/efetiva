@@ -55,6 +55,7 @@ from pessoas.models import (
     ContraChequeItens,
     CartaoPonto,
     AlteracaoSalarial,
+    AlteracaoValeTransporte,
 )
 from website.models import FileUpload, Parametros
 from website.facade import (
