@@ -113,6 +113,11 @@ urlpatterns = [
         name="alterar_salario_colaborador",
     ),
     path(
+        "alterar_vale_transporte_colaborador",
+        alterar_vale_transporte_colaborador,
+        name="alterar_vale_transporte_colaborador",
+    ),
+    path(
         "adicionar_vale_colaborador",
         adicionar_vale_colaborador,
         name="adicionar_vale_colaborador",
