@@ -2173,6 +2173,7 @@ def create_contexto_consulta_colaborador(id_pessoal):
         id_pessoal, hoje.month, hoje.year
     )
     salarios = verificar_salario_colaborador(colaborador)
+    vales_transporte = verificar_vale_transporte_colaborador(colaborador)
     contexto = {
         "colaborador": colaborador,
         "colaborador_ant": colaborador_antigo,
@@ -2185,6 +2186,7 @@ def create_contexto_consulta_colaborador(id_pessoal):
         "aquisitivo": aquisitivo,
         "cartao_ponto": cartao_ponto,
         "salarios": salarios,
+        "vales_transporte": vales_transporte,
         "mes": hoje.month,
         "ano": hoje.year,
         "mensagem": f"COLABORADOR(A) {colaborador.nome_curto} SELECIONADO",
