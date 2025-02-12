@@ -1188,7 +1188,7 @@ def calcular_pagamento_ferias_proporcionais(colaborador):
 
     if contra_cheque_ferias and contra_cheque_ferias.Pago:
         total_ferias_paga = ContraChequeItens.objects.filter(
-            idContraCheque=1105, Registro="C"
+            idContraCheque=contra_cheque_ferias.idContraCheque, Registro="C"
         ).aggregate(total=Sum("Valor")).get("total") or Decimal(0)
 
         return {"desconto_ferias": total_ferias_paga}
