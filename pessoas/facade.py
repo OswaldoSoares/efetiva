@@ -642,6 +642,59 @@ def modal_vale_transporte_colaborador(id_salario, request):
     return JsonResponse({"modal_html": modal_html})
 
 
+def validar_modal_vale_transporte_colaborador(request):
+    if request.method == "POST":
+        data = datetime.strptime(request.POST.get("data"), "%Y-%m-%d").date()
+        valor = float(request.POST.get("valor").replace(",", "."))
+        id_pessoal = request.POST.get("id_pessoal")
+        id_transporte = request.POST.get("id_transporte")
+
+        if not id_transporte:
+            ultima_alteracao = (
+                AlteracaoValeTransporte.objects.filter(idPessoal=id_pessoal)
+                .order_by("-Data")
+                .first()
+            )
+            if ultima_alteracao and data <= ultima_alteracao.Data:
+                msg = "A data tem que ser maior que a última alteração"
+                data_str = datetime.strftime(ultima_alteracao.Data, "%d/%m/%Y")
+
+                return JsonResponse(
+                    {"error": f"{msg} - {data_str}"}, status=400
+                )
+
+            data_possivel = verificar_ultimo_pagamento(id_pessoal)
+            if data_possivel and data < data_possivel:
+                msg = "O mês tem que ser maior que do último pagamento"
+                mes_ano = (
+                    f"{MESES[data_possivel.month -1]}/{data_possivel.year}"
+                )
+
+                return JsonResponse(
+                    {"error": f"{msg} - {mes_ano}"}, status=400
+                )
+
+        colaborador = classes.Colaborador(id_pessoal)
+        vale_transporte = (
+            colaborador.salarios.salarios.ValeTransporte
+            if colaborador.salarios.salarios
+            else Decimal(0.00)
+        )
+        if valor <= vale_transporte:
+            msg = "O valor tem que ser maior que o vale_transporte atual"
+
+            return JsonResponse(
+                {"error": f"{msg} - R$ {vale_transporte}"},
+                status=400,
+            )
+
+        if valor <= 0:
+            return JsonResponse(
+                {"error": "O Valor do vale tem que ser maior que R$ 0,00."},
+                status=400,
+            )
+
+
 def modal_vale_colaborador(id_vale, request):
     id_pessoal = (
         request.POST.get("id_pessoal")
