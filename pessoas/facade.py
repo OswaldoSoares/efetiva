@@ -566,31 +566,31 @@ def save_salario_colaborador(request):
     id_pessoal = request.POST.get("id_pessoal")
     id_salario = request.POST.get("id_salario")
 
-    registro = {
-        "idPessoal_id": id_pessoal,
-        "Data": data,
-        "Valor": valor,
-    }
+    salario, created = Salario.objects.get_or_create(
+        idPessoal_id=id_pessoal,
+        defaults={
+            "Salario": Decimal("0.00"),
+            "HorasMensais": 220,
+            "ValeTransporte": Decimal("0.00"),
+        },
+    )
 
-    with transaction.atomic():
-        if id_salario:
-            AlteracaoSalarial.objects.filter(
-                idAlteracaoSalarial=id_salario
-            ).update(**registro)
-            mensagem = "Salário alterado com sucesso"
-        else:
-            registro["Obs"] = "AUMENTO SALARIAL"
-            AlteracaoSalarial.objects.create(**registro)
-            mensagem = "Aumentao salarial realizado com sucesso"
+    if not created and id_salario:
+        Salario.objects.filter(idSalario=id_salario).update(Salario=valor)
 
-        Salario.objects.update_or_create(
-            idPessoal_id=request.POST.get("id_pessoal"),
-            defaults={
-                "Salario": valor,
-                "HorasMensais": 220,
-                "ValeTransporte": Decimal("0.00"),
-            },
+    if id_salario:
+        AlteracaoSalarial.objects.filter(
+            idAlteracaoSalarial=id_salario
+        ).update(Valor=valor)
+        mensagem = "Salário alterado com sucesso"
+    else:
+        AlteracaoSalarial.objects.create(
+            Data=data,
+            Valor=valor,
+            Obs="SALÁRIO INICIAL",
+            idPessoal_id=id_pessoal,
         )
+        mensagem = "Aumento salarial realizado com sucesso"
 
     return {"mensagem": mensagem}
 
