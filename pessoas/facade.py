@@ -2,6 +2,7 @@ import calendar
 import datetime
 import os
 import ast
+import locale
 from django.db import connection, transaction
 
 from datetime import datetime, timedelta, date
@@ -1376,7 +1377,8 @@ def verbas_rescisorias(request):
     contexto.update({"mensagem": "Rescião Calculada"})
 
     hoje = datetime.today()
-    data_extenso = hoje.strftime("São Paulo, %d de %B de %Y")
+    locale.setlocale(locale.LC_TIME, "pt_BR.utf8")
+    data_extenso = hoje.strftime("São Paulo, %d de %B de %Y.")
     contexto.update({"data_extenso": data_extenso})
 
     return contexto
