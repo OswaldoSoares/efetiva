@@ -2134,6 +2134,29 @@ def verificar_salario_colaborador(colaborador):
     return AlteracaoSalarial.objects.filter(idPessoal=colaborador.id_pessoal)
 
 
+def verificar_vale_transporte_colaborador(colaborador):
+    salario, created = Salario.objects.get_or_create(
+        idPessoal_id=colaborador.id_pessoal,
+        defaults={
+            "Salario": Decimal("0.00"),
+            "HorasMensais": 220,
+            "ValeTransporte": Decimal("0.00"),
+        },
+    )
+    AlteracaoValeTransporte.objects.get_or_create(
+        idPessoal_id=colaborador.id_pessoal,
+        Data=colaborador.dados_profissionais.data_admissao,
+        defaults={
+            "Valor": salario.ValeTransporte if salario else 0,
+            "Obs": "VALE TRANSPORTE INICIAL",
+        },
+    )
+
+    return AlteracaoValeTransporte.objects.filter(
+        idPessoal=colaborador.id_pessoal
+    )
+
+
 def create_contexto_consulta_colaborador(id_pessoal):
     colaborador = classes.Colaborador(id_pessoal)
     colaborador_antigo = classes.ColaboradorAntigo(id_pessoal).__dict__
