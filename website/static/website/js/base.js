@@ -141,6 +141,12 @@ function openMyModal(event) {
         requestData.id_salario = idSalario;
     }
 
+    // Verifica se o id_salario está presente
+    const idTransporte = $(event.target).data("id_transporte");
+    if (typeof idTransporte !== "undefined") {
+        requestData.id_transporte = idTransporte;
+    }
+
     // Caso seja para criar um novo colaborador oculta cards
     if ($(event.target).data("title") == "ADICIONAR COLABORADOR") {
         $(".card-foto-colaborador").hide();
