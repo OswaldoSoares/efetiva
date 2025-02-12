@@ -225,6 +225,20 @@ def alterar_salario_colaborador(request):
     )
 
 
+def alterar_vale_transporte_colaborador(request):
+    error = facade.validar_modal_vale_transporte_colaborador(request)
+    if error:
+        return error
+
+    return handle_modal_colaborador(
+        request,
+        facade.modal_vale_transporte_colaborador,
+        facade.save_vale_transporte_colaborador,
+        partial(facade.create_contexto_vale_transporte, request),
+        facade.vale_transporte_html_data,
+    )
+
+
 def bloqueia_pessoa(request, idpessoa):
     facade.altera_status(idpessoa)
     return redirect("indexpessoal")
