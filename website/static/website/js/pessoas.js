@@ -12,6 +12,7 @@ var ocultarCardsColaborador =  function() {
     $(".card-fones-colaborador").hide();
     $(".card-contas-colaborador").hide();
     $(".card-salario-colaborador").hide();
+    $(".card-vale-transporte-colaborador").hide();
 };
 
 $(document).ready(function() {
