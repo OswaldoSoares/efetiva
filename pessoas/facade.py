@@ -1374,6 +1374,11 @@ def verbas_rescisorias(request):
     contexto.update(calcular_pagamento_ferias_proporcionais(colaborador))
 
     contexto.update({"mensagem": "Rescião Calculada"})
+
+    hoje = datetime.today()
+    data_extenso = hoje.strftime("São Paulo, %d de %B de %Y")
+    contexto.update({"data_extenso": data_extenso})
+
     return contexto
 
 
