@@ -43,6 +43,15 @@ def html_card_salario_colaborador(request, contexto, data):
     return data
 
 
+def html_card_vale_transporte_colaborador(request, contexto, data):
+    data["html-card-vale-transporte-colaborador"] = render_to_string(
+        "pessoas/card_vale_transporte_colaborador.html",
+        contexto,
+        request=request,
+    )
+    return data
+
+
 def html_card_vales_colaborador(request, contexto, data):
     data["html-card-vales-colaborador"] = render_to_string(
         "pessoas/card_vales_colaborador.html", contexto, request=request
@@ -142,6 +151,15 @@ def html_modal_confirma_excluir_conta_colaborador(request, contexto):
 def html_modal_salario_colaborador(request, contexto):
     modal_html = render_to_string(
         "pessoas/modal_salario_colaborador.html",
+        contexto,
+        request=request,
+    )
+    return modal_html
+
+
+def html_modal_vale_transporte_colaborador(request, contexto):
+    modal_html = render_to_string(
+        "pessoas/modal_vale_transporte_colaborador.html",
         contexto,
         request=request,
     )

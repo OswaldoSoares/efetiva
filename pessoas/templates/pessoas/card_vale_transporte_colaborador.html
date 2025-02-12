@@ -1,0 +1,86 @@
+<!-- Card Header -->
+<div class="card-header">
+    <div class="input-group">
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-up"></i>
+        </div>
+        <div class="div-form-control">
+            <span>VALE TRANSPORTE</span>
+        </div>
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-up"></i>
+        </div>
+    </div>
+</div>
+<!-- Card Body -->
+<div class="card-body">
+    {% for vale_transporte in vales_transporte %}
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-dollar"></i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-50 text-center font-menor">
+                    <span>{{ vale_transporte.Data }}</span>
+                </div>
+                <div class="tamanho-50 text-center font-menor">
+                    <span>R$ {{ vale_transporte.Valor }}</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                {% if vale_transporte.Obs == "VALE TRANSPORTE INICIAL" and vale_transporte.Valor == 0.00 %}
+                <i class="icofont-edit i-button"
+                   title="EDITAR VALE TRANSPORTE INICIAL"
+                   onclick="openMyModal(event); return false;"
+                   data-title="EDITAR VALE TRANPORTE INICIAL"
+                   data-action="/pessoas/alterar_vale_transporte_colaborador"
+                   data-id_pessoal="{{ colaborador.id_pessoal }}"
+                   data-id_transporte="{{ vale_transporte.idAlteracaoValeTransporte }}"
+                   data-button-save-label="ALTERAR"></i>
+                {% else %}
+                <i class="icofont-check"></i>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% if vale_transporte.0.Valor != 0.00 %}
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-wallet"></i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-100 text-center font-menor">
+                    <span>ADICIONAR NOVO VALOR CONDUÇÃO</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-plus-circle i-button"
+                   onclick="openMyModal(event); return false;"
+                   data-title="VALE TYRANSPORTE DO COLABORADOR"
+                   data-action="/pessoas/alterar_vale_transporte_colaborador"
+                   data-id_pessoal="{{ colaborador.id_pessoal }}"
+                   data-button-save-label="ALTERAR"
+                   title="ALTERAR VALE TRANSPORTE DO COLABORADOR"></i>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+<!-- Card Footer -->
+<div class="card-footer">
+    <div class="input-group">
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-down"></i>
+        </div>
+        <div class="div-flex div-form-control">
+            <div class="tamanho-100 text-center">
+            </div>
+        </div>
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-down"></i>
+        </div>
+    </div>
+</div>

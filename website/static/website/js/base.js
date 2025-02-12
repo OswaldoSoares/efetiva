@@ -141,6 +141,12 @@ function openMyModal(event) {
         requestData.id_salario = idSalario;
     }
 
+    // Verifica se o id_salario está presente
+    const idTransporte = $(event.target).data("id_transporte");
+    if (typeof idTransporte !== "undefined") {
+        requestData.id_transporte = idTransporte;
+    }
+
     // Caso seja para criar um novo colaborador oculta cards
     if ($(event.target).data("title") == "ADICIONAR COLABORADOR") {
         $(".card-foto-colaborador").hide();
@@ -194,6 +200,7 @@ function atualizarInterfaceComDados(xhr) {
     $(".card-fones-colaborador").html(xhr["html-card-fones-colaborador"]);
     $(".card-contas-colaborador").html(xhr["html-card-contas-colaborador"]);
     $(".card-salario-colaborador").html(xhr["html-card-salario-colaborador"]);
+    $(".card-vale-transporte-colaborador").html(xhr["html-card-vale-transporte-colaborador"]);
 }
 
 function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {

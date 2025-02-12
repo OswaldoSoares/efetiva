@@ -48,6 +48,7 @@ from .views import (
     adicionar_ou_atualizar_conta_colaborador,
     excluir_conta_colaborador,
     alterar_salario_colaborador,
+    alterar_vale_transporte_colaborador,
     adicionar_vale_colaborador,
     excluir_vale_colaborador,
     selecionar_contra_cheque_decimo_terceiro,
@@ -110,6 +111,11 @@ urlpatterns = [
         "alterar_salario_colaborador",
         alterar_salario_colaborador,
         name="alterar_salario_colaborador",
+    ),
+    path(
+        "alterar_vale_transporte_colaborador",
+        alterar_vale_transporte_colaborador,
+        name="alterar_vale_transporte_colaborador",
     ),
     path(
         "adicionar_vale_colaborador",

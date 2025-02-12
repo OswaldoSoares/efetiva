@@ -55,6 +55,7 @@ from pessoas.models import (
     ContraChequeItens,
     CartaoPonto,
     AlteracaoSalarial,
+    AlteracaoValeTransporte,
 )
 from website.models import FileUpload, Parametros
 from website.facade import (
@@ -565,31 +566,31 @@ def save_salario_colaborador(request):
     id_pessoal = request.POST.get("id_pessoal")
     id_salario = request.POST.get("id_salario")
 
-    registro = {
-        "idPessoal_id": id_pessoal,
-        "Data": data,
-        "Valor": valor,
-    }
+    salario, created = Salario.objects.get_or_create(
+        idPessoal_id=id_pessoal,
+        defaults={
+            "Salario": Decimal("0.00"),
+            "HorasMensais": 220,
+            "ValeTransporte": Decimal("0.00"),
+        },
+    )
 
-    with transaction.atomic():
-        if id_salario:
-            AlteracaoSalarial.objects.filter(
-                idAlteracaoSalarial=id_salario
-            ).update(**registro)
-            mensagem = "Salário alterado com sucesso"
-        else:
-            registro["Obs"] = "AUMENTO SALARIAL"
-            AlteracaoSalarial.objects.create(**registro)
-            mensagem = "Aumentao salarial realizado com sucesso"
+    if not created and id_salario:
+        Salario.objects.filter(idSalario=id_salario).update(Salario=valor)
 
-        Salario.objects.update_or_create(
-            idPessoal_id=request.POST.get("id_pessoal"),
-            defaults={
-                "Salario": valor,
-                "HorasMensais": 220,
-                "ValeTransporte": Decimal("0.00"),
-            },
+    if id_salario:
+        AlteracaoSalarial.objects.filter(
+            idAlteracaoSalarial=id_salario
+        ).update(Valor=valor)
+        mensagem = "Salário alterado com sucesso"
+    else:
+        AlteracaoSalarial.objects.create(
+            Data=data,
+            Valor=valor,
+            Obs="SALÁRIO INICIAL",
+            idPessoal_id=id_pessoal,
         )
+        mensagem = "Aumento salarial realizado com sucesso"
 
     return {"mensagem": mensagem}
 
@@ -608,6 +609,144 @@ def salario_html_data(request, contexto):
     """Consultar Documentação Sistema Efetiva"""
     html_functions = [
         html_data.html_card_salario_colaborador,
+    ]
+    return gerar_data_html(html_functions, request, contexto, {})
+
+
+def modal_vale_transporte_colaborador(id_salario, request):
+    id_pessoal = request.POST.get("id_pessoal") or request.GET.get(
+        "id_pessoal"
+    )
+    id_transporte = request.POST.get("id_transporte") or request.GET.get(
+        "id_transporte"
+    )
+    colaborador = classes.Colaborador(id_pessoal) if id_pessoal else False
+    hoje = datetime.today().date()
+    vale_transporte = colaborador.salarios.salarios.ValeTransporte
+    alteracao_vale_transporte = (
+        AlteracaoValeTransporte.objects.filter(
+            idAlteracaoValeTransporte=id_transporte
+        ).first()
+        if id_transporte
+        else None
+    )
+
+    contexto = {
+        "colaborador": colaborador,
+        "hoje": hoje.strftime("%Y-%m-%d"),
+        "vale_transporte": vale_transporte,
+        "alteracao_vale_transporte": alteracao_vale_transporte,
+    }
+    modal_html = html_data.html_modal_vale_transporte_colaborador(
+        request, contexto
+    )
+    return JsonResponse({"modal_html": modal_html})
+
+
+def validar_modal_vale_transporte_colaborador(request):
+    if request.method == "POST":
+        data = datetime.strptime(request.POST.get("data"), "%Y-%m-%d").date()
+        valor = float(request.POST.get("valor").replace(",", "."))
+        id_pessoal = request.POST.get("id_pessoal")
+        id_transporte = request.POST.get("id_transporte")
+
+        if not id_transporte:
+            ultima_alteracao = (
+                AlteracaoValeTransporte.objects.filter(idPessoal=id_pessoal)
+                .order_by("-Data")
+                .first()
+            )
+            if ultima_alteracao and data <= ultima_alteracao.Data:
+                msg = "A data tem que ser maior que a última alteração"
+                data_str = datetime.strftime(ultima_alteracao.Data, "%d/%m/%Y")
+
+                return JsonResponse(
+                    {"error": f"{msg} - {data_str}"}, status=400
+                )
+
+            data_possivel = verificar_ultimo_pagamento(id_pessoal)
+            if data_possivel and data < data_possivel:
+                msg = "O mês tem que ser maior que do último pagamento"
+                mes_ano = (
+                    f"{MESES[data_possivel.month -1]}/{data_possivel.year}"
+                )
+
+                return JsonResponse(
+                    {"error": f"{msg} - {mes_ano}"}, status=400
+                )
+
+        colaborador = classes.Colaborador(id_pessoal)
+        vale_transporte = (
+            colaborador.salarios.salarios.ValeTransporte
+            if colaborador.salarios.salarios
+            else Decimal(0.00)
+        )
+        if valor <= vale_transporte:
+            msg = "O valor tem que ser maior que o vale_transporte atual"
+
+            return JsonResponse(
+                {"error": f"{msg} - R$ {vale_transporte}"},
+                status=400,
+            )
+
+        if valor <= 0:
+            return JsonResponse(
+                {"error": "O Valor do vale tem que ser maior que R$ 0,00."},
+                status=400,
+            )
+
+
+def save_vale_transporte_colaborador(request):
+    data = datetime.strptime(request.POST.get("data"), "%Y-%m-%d")
+    valor = float(request.POST.get("valor").replace(",", "."))
+    id_pessoal = request.POST.get("id_pessoal")
+    id_transporte = request.POST.get("id_transporte")
+
+    vale_transporte, created = Salario.objects.get_or_create(
+        idPessoal_id=id_pessoal,
+        defaults={
+            "Salario": Decimal("0.00"),
+            "HorasMensais": 220,
+            "ValeTransporte": Decimal("0.00"),
+        },
+    )
+
+    if not created and id_transporte:
+        Salario.objects.filter(idSalario=id_transporte).update(
+            ValeTransporte=valor
+        )
+
+    if id_transporte:
+        AlteracaoValeTransporte.objects.filter(
+            idAlteracaoValeTransporte=id_transporte
+        ).update(Valor=valor)
+        mensagem = "Vale transporte alterado com sucesso"
+    else:
+        AlteracaoValeTransporte.objects.create(
+            Data=data,
+            Valor=valor,
+            Obs="VALE TRANSPORTE INICIAL",
+            idPessoal_id=id_pessoal,
+        )
+        mensagem = "Aumento do vale transporte realizado com sucesso"
+
+    return {"mensagem": mensagem}
+
+
+def create_contexto_vale_transporte(request):
+    id_pessoal = request.POST.get("id_pessoal") or request.GET.get(
+        "id_pessoal"
+    )
+    colaborador = classes.Colaborador(id_pessoal)
+    vales_transporte = AlteracaoValeTransporte.objects.filter(
+        idPessoal=id_pessoal
+    )
+    return {"colaborador": colaborador, "vales_transporte": vales_transporte}
+
+
+def vale_transporte_html_data(request, contexto):
+    html_functions = [
+        html_data.html_card_vale_transporte_colaborador,
     ]
     return gerar_data_html(html_functions, request, contexto, {})
 
@@ -1996,6 +2135,29 @@ def verificar_salario_colaborador(colaborador):
     return AlteracaoSalarial.objects.filter(idPessoal=colaborador.id_pessoal)
 
 
+def verificar_vale_transporte_colaborador(colaborador):
+    salario, created = Salario.objects.get_or_create(
+        idPessoal_id=colaborador.id_pessoal,
+        defaults={
+            "Salario": Decimal("0.00"),
+            "HorasMensais": 220,
+            "ValeTransporte": Decimal("0.00"),
+        },
+    )
+    AlteracaoValeTransporte.objects.get_or_create(
+        idPessoal_id=colaborador.id_pessoal,
+        Data=colaborador.dados_profissionais.data_admissao,
+        defaults={
+            "Valor": salario.ValeTransporte if salario else 0,
+            "Obs": "VALE TRANSPORTE INICIAL",
+        },
+    )
+
+    return AlteracaoValeTransporte.objects.filter(
+        idPessoal=colaborador.id_pessoal
+    )
+
+
 def create_contexto_consulta_colaborador(id_pessoal):
     colaborador = classes.Colaborador(id_pessoal)
     colaborador_antigo = classes.ColaboradorAntigo(id_pessoal).__dict__
@@ -2012,6 +2174,7 @@ def create_contexto_consulta_colaborador(id_pessoal):
         id_pessoal, hoje.month, hoje.year
     )
     salarios = verificar_salario_colaborador(colaborador)
+    vales_transporte = verificar_vale_transporte_colaborador(colaborador)
     contexto = {
         "colaborador": colaborador,
         "colaborador_ant": colaborador_antigo,
@@ -2024,6 +2187,7 @@ def create_contexto_consulta_colaborador(id_pessoal):
         "aquisitivo": aquisitivo,
         "cartao_ponto": cartao_ponto,
         "salarios": salarios,
+        "vales_transporte": vales_transporte,
         "mes": hoje.month,
         "ano": hoje.year,
         "mensagem": f"COLABORADOR(A) {colaborador.nome_curto} SELECIONADO",
@@ -2390,6 +2554,7 @@ def colaborador_html_data(request, contexto):
         html_data.html_card_fones_colaborador,
         html_data.html_card_contas_colaborador,
         html_data.html_card_salario_colaborador,
+        html_data.html_card_vale_transporte_colaborador,
     ]
     html_ferias_colaborador(request, contexto, data)
     return gerar_data_html(html_functions, request, contexto, data)
