@@ -177,7 +177,6 @@ def print_pdf_rescisao_trabalho(pdf, contexto):
 
 
 def dados_rescisao_trabalho_nova(pdf, contexto):
-    print(contexto)
     cnpj = "21.602.117/0001-15"
     razao_social = "TRANSEFETIVA TRANSPORTE - EIRELLI - ME"
     endereco_empregador = "RUA OLIMPIO PORTUGAL, 245"
@@ -298,6 +297,46 @@ def dados_rescisao_trabalho_nova(pdf, contexto):
             f"13º PROPORCIONAL - {meses_decimo_terceiro}/12",
         )
         pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {decimo_terceiro}")
+    if col == 11:
+        col = 106
+    else:
+        col = 11
+        linha -= 7.7
+    for x in contexto["ferias_vencidas"]:
+        pdf.setFont("Times-Roman", 8)
+        pdf.drawString(
+            cmp(col + 4), cmp(linha + 4), f"Periodo Aquisitivo {x['periodo']}"
+        )
+        pdf.setFont("Times-Roman", 10)
+        pdf.drawString(
+            cmp(col), cmp(linha), f"FÉRIAS VENCIDAS {x['dias_pagar']}d"
+        )
+        pdf.drawRightString(
+            cmp(col + 93), cmp(linha), f"R$ {x['valor_pagar']}"
+        )
+        bruto += x["valor_pagar"]
+        if col == 11:
+            col = 106
+        else:
+            col = 11
+            linha -= 7.7
+        pdf.setFont("Times-Roman", 8)
+        pdf.drawString(
+            cmp(col + 4), cmp(linha + 4), f"Periodo Aquisitivo {x['periodo']}"
+        )
+        pdf.setFont("Times-Roman", 10)
+        pdf.drawString(
+            cmp(col), cmp(linha), f"1/3 FÉRIAS VENCIDAS {x['dias_pagar']}d"
+        )
+        pdf.drawRightString(
+            cmp(col + 93), cmp(linha), f"R$ {x['um_terco_pagar']}"
+        )
+        bruto += x["um_terco_pagar"]
+        if col == 11:
+            col = 106
+        else:
+            col = 11
+            linha -= 7.7
     linha = 116.7
     #  bruto = "261,87"
     pdf.drawRightString(cmp(199), cmp(linha + 1), f"R$ {bruto}")
@@ -336,6 +375,7 @@ def dados_rescisao_trabalho_nova(pdf, contexto):
         else:
             col = 11
             linha -= 7.7
+
     linha = 44.4
     pdf.drawRightString(cmp(199), cmp(linha), f"R$ {deducoes}")
     linha -= 7.7
