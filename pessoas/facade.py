@@ -1419,6 +1419,12 @@ def verbas_rescisorias(request):
     )
 
     contexto.update(
+        calcular_ferias_vencidas(colaborador)
+        if ferias_vencidas.lower() == "true"
+        else {"ferias_vencidas_valor": None}
+    )
+
+    contexto.update(
         calcular_ferias_proporcionais(colaborador)
         if ferias_proporcionais.lower() == "true"
         else {"ferias_valor": None}
