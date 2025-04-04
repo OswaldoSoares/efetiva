@@ -3013,6 +3013,7 @@ def filtra_tabela_generico(minuta, tabela, valor_chave):
             if minuta.romaneio_pesos
             else minuta.t_entregas["peso_entregas"]
         )
+
         return next(
             (
                 itens[valor_chave]
