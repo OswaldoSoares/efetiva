@@ -3020,7 +3020,7 @@ def filtra_tabela_generico(minuta, tabela, valor_chave):
                 for itens in tabela
                 if itens["CapacidadeInicial"]
                 <= peso_recebe
-                <= itens["CapacidadeFinal"]
+                <= itens["CapacidadeFinal"] + Decimal(0.999)
             ),
             Decimal(0.00),
         )
