@@ -1,24 +1,27 @@
 # `save_salario_colaborador`
 
-Função responsável por salvar ou atualizar o salário de um colaborador, garantindo a integridade transacional.
+Função responsável por salvar ou atualizar o salário de um colaborador e registrar a respectiva alteração salarial, garantindo a integridade das informações.
 
 ## Fluxo de Execução
 
 1. Obtém e converte os dados da requisição:
    - `data`: Data da alteração salarial.
-   - `valor`: Novo valor do salário.
+   - `valor`: Novo valor do salário (com vírgula convertida para ponto).
    - `id_pessoal`: Identificador do colaborador.
    - `id_salario`: Identificador da alteração salarial, se existente.
-2. Monta um dicionário `registro` com os dados do salário.
-3. Inicia uma transação atômica para garantir a integridade dos dados:
-   - Se `id_salario` existir, atualiza a alteração salarial existente e exibe uma mensagem de sucesso.
-   - Se `id_salario` não existir, cria um novo registro de alteração salarial com observação "AUMENTO SALARIAL".
-   - Atualiza ou cria um novo registro na tabela `Salario`, garantindo que o novo salário e outros atributos sejam registrados corretamente.
-4. Retorna um dicionário contendo a mensagem de sucesso correspondente.
+2. Busca ou cria o salário do colaborador utilizando `get_or_create()`:
+   - Se o registro não existir, cria um novo com valores padrão (`Salario` igual a `0.00`, `HorasMensais` igual a `220` e `ValeTransporte` igual a `0.00`).
+3. Se o salário já existir e `id_salario` estiver presente, atualiza o valor do salário.
+4. Se `id_salario` estiver presente:
+   - Atualiza o valor da alteração salarial correspondente.
+   - Retorna a mensagem **"Salário alterado com sucesso"**.
+5. Caso contrário:
+   - Cria uma nova entrada na tabela `AlteracaoSalarial` com a observação "SALÁRIO INICIAL".
+   - Retorna a mensagem **"Aumento salarial realizado com sucesso"**.
 
 ## Parâmetros
 
-- `request` (HttpRequest): Objeto de requisição contendo os dados enviados pelo cliente.
+- `request` (`HttpRequest`): Objeto de requisição contendo os dados enviados pelo cliente.
 
 ## Retorno
 
@@ -26,58 +29,60 @@ Função responsável por salvar ou atualizar o salário de um colaborador, gara
 
 ## Dependências
 
-- `transaction.atomic()`: Garante que todas as operações dentro do bloco sejam executadas de forma transacional.
-- `AlteracaoSalarial.objects.filter(...).update(...)`: Atualiza um registro de alteração salarial existente.
+- `Salario.objects.get_or_create(...)`: Obtém ou cria o salário do colaborador.
+- `Salario.objects.filter(...).update(...)`: Atualiza o valor do salário existente.
 - `AlteracaoSalarial.objects.create(...)`: Cria um novo registro de alteração salarial.
-- `Salario.objects.update_or_create(...)`: Atualiza ou cria um novo registro de salário para o colaborador.
+- `AlteracaoSalarial.objects.filter(...).update(...)`: Atualiza um registro de alteração salarial existente.
 - `Decimal` do módulo `decimal` para tratar valores monetários.
+- `datetime.strptime` para converter a data.
 
 ## Código da Função
 
-```{.py3 linenums="1"}
+```{py3 linenums="1"}
 def save_salario_colaborador(request):
-    data = datetime.strptime(request.POST.get("data"), "%Y-%m-%d")
+    date = datetime.strptime(request.POST.get("data"), "%Y-%m-%d")
     valor = float(request.POST.get("valor").replace(",", "."))
     id_pessoal = request.POST.get("id_pessoal")
     id_salario = request.POST.get("id_salario")
 
-    registro = {
-        "idPessoal_id": id_pessoal,
-        "Data": data,
-        "Valor": valor,
-    }
+    salario, created = Salario.objects.get_or_create(
+        idPessoal_id=id_pessoal,
+        defaults={
+            "Salario": Decimal("0.00"),
+            "HorasMensais": 220,
+            "ValeTransporte": Decimal("0.00"),
+        },
+    )
 
-    with transaction.atomic():
-        if id_salario:
-            AlteracaoSalarial.objects.filter(
-                idAlteracaoSalarial=id_salario
-            ).update(**registro)
-            mensagem = "Salário alterado com sucesso"
-        else:
-            registro["Obs"] = "AUMENTO SALARIAL"
-            AlteracaoSalarial.objects.create(**registro)
-            mensagem = "Aumento salarial realizado com sucesso"
+    if not created and id_salario:
+        Salario.objects.filter(idPessoal_id=id_pessoal).update(Salario=valor)
 
-        Salario.objects.update_or_create(
-            idPessoal_id=request.POST.get("id_pessoal"),
-            defaults={
-                "Salario": valor,
-                "HorasMensais": 220,
-                "ValeTransporte": Decimal("0.00"),
-            },
+    if id_salario:
+        AlteracaoSalarial.objects.filter(
+            idAlteracaoSalarial=id_salario
+        ).update(Valor=valor)
+        mensagem = "Salário alterado com sucesso"
+    else:
+        AlteracaoSalarial.objects.create(
+            Data=data,
+            Valor=valor,
+            Obs="SALÁRIO INICIAL",
+            idPessoal_id=id_pessoal,
         )
+        mensagem = "Aumento salarial realizado com sucesso"
 
     return {"mensagem": mensagem}
 ```
 
 ## Exemplo de Uso
 
-```{.py3 linenums="1"}
+```{py3 linenums="1"}
 from django.test import RequestFactory
 
 # Simula uma requisição POST com dados de alteração salarial
 request = RequestFactory().post(
-    "/salvar-salario/", {"data": "2025-01-01", "valor": "6000", "id_pessoal": "1"}
+    "/salvar-salario/",
+    {"data": "2025-01-01", "valor": "6000", "id_pessoal": "1"}
 )
 
 # Chama a função
@@ -86,4 +91,3 @@ response = save_salario_colaborador(request)
 # Verifica a resposta
 print(response)
 ```
-

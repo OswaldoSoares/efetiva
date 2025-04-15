@@ -577,7 +577,7 @@ def save_salario_colaborador(request):
     )
 
     if not created and id_salario:
-        Salario.objects.filter(idSalario=id_salario).update(Salario=valor)
+        Salario.objects.filter(idPessoal_id=id_pessoal).update(Salario=valor)
 
     if id_salario:
         AlteracaoSalarial.objects.filter(
