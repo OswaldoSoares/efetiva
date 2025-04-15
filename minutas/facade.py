@@ -2761,7 +2761,7 @@ def salvar_ou_atualizar_entrega_minuta(request):
     valor_nota = request.POST.get("valor_nota")
     peso = request.POST.get("peso")
     volume = request.POST.get("volume")
-    nota_guia = (request.POST.get("nota_guia") or "").upper()
+    nota_guia = (request.POST.get("nota_guia") or "0").upper()
     nome = (request.POST.get("nome") or "").upper()
     bairro = (request.POST.get("bairro") or "").upper()
     cidade = (request.POST.get("cidade") or "").upper()
