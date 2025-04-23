@@ -751,6 +751,30 @@ def calcular_saldo_computavel(queryset) -> Decimal:
     return saldo
 
 
+def modal_pagar_contra_cheque(id_teste, request):
+    id_pessoal = get_request_data(request, "id_pessoal")
+    id_contra_cheque = get_request_data(request, "id_contra_cheque")
+
+    contra_cheque = ContraCheque.objects.filter(
+        idContraCheque=id_contra_cheque
+    ).first()
+    contra_cheque_itens = ContraChequeItens.objects.filter(
+        idContraCheque=contra_cheque
+    )
+
+    saldo = calcular_saldo_computavel(contra_cheque_itens)
+
+    contexto = {
+        "id_pessoal": id_pessoal,
+        "contra_cheque": contra_cheque,
+        "saldo": saldo,
+    }
+
+    modal_html = html_data.html_modal_pagar_contra_cheque(request, contexto)
+
+    return JsonResponse({"modal_html": modal_html})
+
+
 def create_contexto_vale_transporte(request):
     id_pessoal = request.POST.get("id_pessoal") or request.GET.get(
         "id_pessoal"
