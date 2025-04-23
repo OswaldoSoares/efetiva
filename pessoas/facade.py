@@ -775,6 +775,20 @@ def modal_pagar_contra_cheque(id_teste, request):
     return JsonResponse({"modal_html": modal_html})
 
 
+def save_pagamento_contra_cheque(request):
+    id_contra_cheque = int(request.POST.get("id_contra_cheque"))
+    valor = float(request.POST.get("valor"))
+
+    if ContraCheque.objects.filter(idContraCheque=id_contra_cheque).update(
+        Valor=valor, Pago=True
+    ):
+        mensagem = "Informado pagamento do contra cheque com sucesso"
+    else:
+        mensagem = "Não foi possivel informar o pagamento"
+
+    return {"mensagem": mensagem}
+
+
 def create_contexto_vale_transporte(request):
     id_pessoal = request.POST.get("id_pessoal") or request.GET.get(
         "id_pessoal"
