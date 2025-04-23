@@ -62,6 +62,7 @@ from .views import (
     abonar_falta_colaborador,
     alterar_conducao_colaborador,
     alterar_entrada_colaborador,
+    pagar_contra_cheque,
 )
 
 
@@ -181,6 +182,11 @@ urlpatterns = [
         "alterar_entrada_colaborador",
         alterar_entrada_colaborador,
         name="alterar_entrada_colaborador",
+    ),
+    path(
+        "pagar_contra_cheque",
+        pagar_contra_cheque,
+        name="pagar_contra_cheque",
     ),
     # Antigos
     path(

@@ -147,6 +147,12 @@ function openMyModal(event) {
         requestData.id_transporte = idTransporte;
     }
 
+    // Verifica se o id_contra_cheque está presente
+    const idContraCheque = $(event.target).data("id_contra_cheque");
+    if (typeof idContraCheque !== "undefined") {
+        requestData.id_contra_cheque = idContraCheque;
+    }
+
     // Caso seja para criar um novo colaborador oculta cards
     if ($(event.target).data("title") == "ADICIONAR COLABORADOR") {
         $(".card-foto-colaborador").hide();
