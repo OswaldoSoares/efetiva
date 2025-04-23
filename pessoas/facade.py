@@ -2060,15 +2060,19 @@ def create_contexto_contra_cheque_decimo_terceiro(request):
 
 
 def create_contexto_contra_cheque(request):
-    id_pessoal = request.GET.get("id_pessoal")
+    id_pessoal = get_request_data(request, "id_pessoal")
+    id_contra_cheque = get_request_data(request, "id_contra_cheque")
+
     contas = ContaPessoal.objects.filter(idPessoal=id_pessoal)
     contas = list(contas.values())
+
     contra_cheque = ContraCheque.objects.filter(
-        idContraCheque=request.GET.get("id_contra_cheque")
+        idContraCheque=id_contra_cheque
     ).first()
     contra_cheque_itens = ContraChequeItens.objects.filter(
-        idContraCheque_id=request.GET.get("id_contra_cheque")
-    ).order_by("Registro")
+        idContraCheque_id=id_contra_cheque
+    ).order_by("Codigo")
+
     if contas:
         update_contas_bancaria_obs(contra_cheque, contas, "contas")
 
