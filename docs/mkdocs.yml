@@ -52,6 +52,8 @@ nav:
               - pagamentos/facade/create_contexto_meses_pagamento.md
           - Views:
               - pagamentos/views/index_pagamento.md
+  - Tabelas:
+      - tabelas/eventos_contra_cheque.md
 
 markdown_extensions:
   - pymdownx.emoji
