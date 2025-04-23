@@ -243,6 +243,7 @@ class ContraCheque(models.Model):
 
 class ContraChequeItens(models.Model):
     idContraChequeItens = models.AutoField(primary_key=True)
+    Codigo = models.TextField(max_length=4)
     Descricao = models.TextField(max_length=50)
     Valor = models.DecimalField(decimal_places=2, max_digits=9, default=0.00)
     Registro = models.CharField(max_length=1)
