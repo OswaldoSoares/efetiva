@@ -239,6 +239,16 @@ def alterar_vale_transporte_colaborador(request):
     )
 
 
+def pagar_contra_cheque(request):
+    return handle_modal_colaborador(
+        request,
+        facade.modal_pagar_contra_cheque,
+        facade.save_pagamento_contra_cheque,
+        partial(facade.create_contexto_contra_cheque, request),
+        facade.contra_cheque_html_data,
+    )
+
+
 def bloqueia_pessoa(request, idpessoa):
     facade.altera_status(idpessoa)
     return redirect("indexpessoal")
