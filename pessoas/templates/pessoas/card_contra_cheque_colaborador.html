@@ -116,11 +116,11 @@ href="{% url 'imprimir_contra_cheque' %}?id_contra_cheque={{ contra_cheque.idCon
 				<i class="icofont-bill-alt i-button"
 					onclick="openMyModal(event); return false;"
 					data-title="INFORMA PAGAMENTO"
-					data-action="{% url 'pagamento_contra_cheque' %}"
+					data-action="{% url 'pagar_contra_cheque' %}"
 					data-button-save-label="PAGAR"
-					data-confirma="confirma_pagamento_contra_cheque"
-					data-idconfirma="{{ contra_cheque.idContraCheque }}"
-					title="Informa Pagamento"></i>
+					data-id_pessoal="{{ id_pessoal }}"
+					data-id_contra_cheque="{{ contra_cheque.idContraCheque }}"
+					title="INFORMAR PAGAMENTO"></i>
 				{% endif %}
 			</div>
 			{% endif %}
