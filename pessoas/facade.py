@@ -718,7 +718,7 @@ def save_vale_transporte_colaborador(request):
     )
 
     if not created and id_transporte:
-        Salario.objects.filter(idSalario=id_transporte).update(
+        Salario.objects.filter(idPessoal_id=id_pessoal).update(
             ValeTransporte=valor
         )
 
@@ -737,6 +737,18 @@ def save_vale_transporte_colaborador(request):
         mensagem = "Aumento do vale transporte realizado com sucesso"
 
     return {"mensagem": mensagem}
+
+
+def calcular_saldo_computavel(queryset) -> Decimal:
+    saldo = Decimal("0.00")
+    EVENTO_LOOKUP = {evento.codigo: evento for evento in EVENTOS_CONTRA_CHEQUE}
+
+    for item in queryset:
+        evento = EVENTO_LOOKUP.get(item.Codigo)
+        if evento and evento.computavel:
+            saldo += item.Valor if item.Registro == "C" else -item.Valor
+
+    return saldo
 
 
 def create_contexto_vale_transporte(request):
