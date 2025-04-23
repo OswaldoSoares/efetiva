@@ -17,6 +17,7 @@ Exemplo de uso:
     from .constants import TIPOS_FORMAS_CALCULO
 """
 
+from dataclasses import dataclass
 MESES = {
     1: "JANEIRO",
     2: "FEVEREIRO",
