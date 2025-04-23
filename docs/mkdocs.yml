@@ -19,6 +19,9 @@ theme:
 nav:
   - Início: index.md
   - Módulos:
+      - Core:
+          - Constants:
+                - core/constants/Evento.md
       - Colaboradores:
           - Models: pessoas/models.md
           - Facade:
