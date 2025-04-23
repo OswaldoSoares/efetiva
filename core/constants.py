@@ -26,6 +26,29 @@ class Evento:
     descricao: str
     computavel: bool
     credito: bool
+
+
+# Tupla de eventos
+EVENTOS_CONTRA_CHEQUE = (
+    Evento("1000", "SALÁRIO", True, True),
+    Evento("1003", "HORAS EXTRAS", True, True),
+    Evento("1019", "1/3 FÉRIAS", True, True),
+    Evento("1020", "FÉRIAS", True, True),
+    Evento("1211", "GRATIFICAÇÕES", True, True),
+    Evento("1410", "VALE TRANSPORTE", True, True),
+    Evento("5001", "13º SALÁRIO", True, True),
+    Evento("5501", "ADIANTAMENTO DE SALÁRIO", True, True),
+    Evento("5504", "13º SALÁRIO - ADIANTAMENTO", True, True),
+    Evento("9200", "DESCOTO DE ADIANTAMENTOS", True, False),
+    Evento("9207", "FALTAS", True, False),
+    Evento("9208", "ATRASOS", True, False),
+    Evento("9211", "DSR SOBRE FALTAS", True, False),
+    Evento("9212", "DSR SOBRE ATRAZOS", True, False),
+    Evento("9214", "13º SALÁRIO - DESCOTO DE ADIANTAMENTO", True, False),
+    Evento("9901", "VALE", False, False),
+    Evento("9902", "MULTA", False, False),
+)
+
 MESES = {
     1: "JANEIRO",
     2: "FEVEREIRO",
