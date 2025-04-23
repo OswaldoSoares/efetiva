@@ -62,6 +62,7 @@ from .views import (
     abonar_falta_colaborador,
     alterar_conducao_colaborador,
     alterar_entrada_colaborador,
+    pagar_contra_cheque,
 )
 
 
