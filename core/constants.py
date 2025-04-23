@@ -18,6 +18,14 @@ Exemplo de uso:
 """
 
 from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class Evento:
+    codigo: str
+    descricao: str
+    computavel: bool
+    credito: bool
 MESES = {
     1: "JANEIRO",
     2: "FEVEREIRO",
