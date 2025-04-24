@@ -740,6 +740,7 @@ def save_vale_transporte_colaborador(request):
 
 
 def calcular_saldo_computavel(queryset) -> Decimal:
+    """Consultar Documentação Sistema Efetiva"""
     saldo = Decimal("0.00")
     EVENTO_LOOKUP = {evento.codigo: evento for evento in EVENTOS_CONTRA_CHEQUE}
 
@@ -752,6 +753,7 @@ def calcular_saldo_computavel(queryset) -> Decimal:
 
 
 def modal_pagar_contra_cheque(id_teste, request):
+    """Consultar Documentação Sistema Efetiva"""
     id_pessoal = get_request_data(request, "id_pessoal")
     id_contra_cheque = get_request_data(request, "id_contra_cheque")
 
@@ -776,6 +778,7 @@ def modal_pagar_contra_cheque(id_teste, request):
 
 
 def save_pagamento_contra_cheque(request):
+    """Consultar Documentação Sistema Efetiva"""
     id_contra_cheque = int(request.POST.get("id_contra_cheque"))
     valor = float(request.POST.get("valor"))
 
