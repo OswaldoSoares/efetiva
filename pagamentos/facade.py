@@ -166,6 +166,7 @@ def processar_folha_pagamento(
         saldo_por_colaborador[colaborador.idPessoal] = {
             "nome": colaborador.Nome,
             "nome_curto": nome_curto(colaborador.Nome),
+            "data_demissao": colaborador.DataDemissao,
             descricao: saldo,
         }
     return saldo_por_colaborador
@@ -264,6 +265,7 @@ def unir_saldo_contra_cheque_pagamento_e_adiantamento(
             result[colaborador] = {
                 "nome": valores_pagamento["nome"],
                 "nome_curto": valores_pagamento["nome_curto"],
+                "data_demissao": valores_pagamento["data_demissao"],
                 "pagamento": valores_pagamento["PAGAMENTO"],
                 "adiantamento": dict_adiantamento[colaborador]["ADIANTAMENTO"],
             }
@@ -271,6 +273,7 @@ def unir_saldo_contra_cheque_pagamento_e_adiantamento(
             result[colaborador] = {
                 "nome": valores_pagamento["nome"],
                 "nome_curto": valores_pagamento["nome_curto"],
+                "data_demissao": valores_pagamento["data_demissao"],
                 "pagamento": valores_pagamento["PAGAMENTO"],
                 "adiantamento": Decimal("0"),
             }
@@ -280,6 +283,7 @@ def unir_saldo_contra_cheque_pagamento_e_adiantamento(
             result[colaborador] = {
                 "nome": valores_adiantamento["nome"],
                 "nome_curto": valores_adiantamento["nome_curto"],
+                "data_demissao": valores_pagamento["data_demissao"],
                 "pagamento": Decimal("0"),
                 "adiantamento": valores_adiantamento["ADIANTAMENTO"],
             }

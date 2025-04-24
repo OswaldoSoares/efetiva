@@ -24,7 +24,7 @@
 				<i class="i-button-null">{{ forloop.counter|stringformat:"02d" }}</i>
 			</div>
 			<div class="div-flex div-form-control font-menor">
-				<div class="tamanho-50 text-left">
+				<div class="tamanho-50 text-left {% if dados.data_demissao %}demitido{% endif %}">
 					<span title="SALÁRIO ATUAL: R$ {{ dados.salario|formatar_numero:"2" }}">{{ dados.nome_curto }}</span>
 				</div>
 				<div class="tamanho-25 text-right">
