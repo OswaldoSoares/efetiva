@@ -6833,3 +6833,9 @@ label {
   padding: 10px;
   text-align: center;
 }
+
+.demitido {
+  text-decoration: line-through;
+  text-decoration-color: red;
+  text-decoration-style: double;
+}
