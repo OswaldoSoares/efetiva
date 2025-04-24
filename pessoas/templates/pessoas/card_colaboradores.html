@@ -22,7 +22,7 @@
                 <i class="icofont-ui-user i-button-null"></i>
             </div>
             <div class="div-flex div-form-control">
-                <div class="tamanho-100 text-center font-menor">
+                <div class="tamanho-100 text-center font-menor {% if colaborador.data_demissao %}demitido{% endif %}">
                     <span title="{{ colaborador.nome }}">
                         {{ colaborador.nome_curto }}
                     </span>
