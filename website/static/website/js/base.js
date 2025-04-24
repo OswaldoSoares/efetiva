@@ -207,6 +207,9 @@ function atualizarInterfaceComDados(xhr) {
     $(".card-contas-colaborador").html(xhr["html-card-contas-colaborador"]);
     $(".card-salario-colaborador").html(xhr["html-card-salario-colaborador"]);
     $(".card-vale-transporte-colaborador").html(xhr["html-card-vale-transporte-colaborador"]);
+    // Nos módulos Pessoal e Pagamentos
+    $(".card-contra-cheque-colaborador").html(xhr["html-card-contra-cheque-colaborador"]);
+    $(".card-contra-cheque-colaborador").show();
 }
 
 function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {

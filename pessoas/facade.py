@@ -39,8 +39,13 @@ from core.constants import (
     EVENTOS_RESCISORIOS,
     MOTIVOS_DEMISSAO,
     AVISO_PREVIO,
+    EVENTOS_CONTRA_CHEQUE,
 )
-from core.tools import obter_mes_por_numero, primeiro_e_ultimo_dia_do_mes
+from core.tools import (
+    obter_mes_por_numero,
+    primeiro_e_ultimo_dia_do_mes,
+    get_request_data,
+)
 from pessoas.models import (
     Aquisitivo,
     DecimoTerceiro,
@@ -713,7 +718,7 @@ def save_vale_transporte_colaborador(request):
     )
 
     if not created and id_transporte:
-        Salario.objects.filter(idSalario=id_transporte).update(
+        Salario.objects.filter(idPessoal_id=id_pessoal).update(
             ValeTransporte=valor
         )
 
@@ -730,6 +735,59 @@ def save_vale_transporte_colaborador(request):
             idPessoal_id=id_pessoal,
         )
         mensagem = "Aumento do vale transporte realizado com sucesso"
+
+    return {"mensagem": mensagem}
+
+
+def calcular_saldo_computavel(queryset) -> Decimal:
+    """Consultar Documentação Sistema Efetiva"""
+    saldo = Decimal("0.00")
+    EVENTO_LOOKUP = {evento.codigo: evento for evento in EVENTOS_CONTRA_CHEQUE}
+
+    for item in queryset:
+        evento = EVENTO_LOOKUP.get(item.Codigo)
+        if evento and evento.computavel:
+            saldo += item.Valor if item.Registro == "C" else -item.Valor
+
+    return saldo
+
+
+def modal_pagar_contra_cheque(id_teste, request):
+    """Consultar Documentação Sistema Efetiva"""
+    id_pessoal = get_request_data(request, "id_pessoal")
+    id_contra_cheque = get_request_data(request, "id_contra_cheque")
+
+    contra_cheque = ContraCheque.objects.filter(
+        idContraCheque=id_contra_cheque
+    ).first()
+    contra_cheque_itens = ContraChequeItens.objects.filter(
+        idContraCheque=contra_cheque
+    )
+
+    saldo = calcular_saldo_computavel(contra_cheque_itens)
+
+    contexto = {
+        "id_pessoal": id_pessoal,
+        "contra_cheque": contra_cheque,
+        "saldo": saldo,
+    }
+
+    modal_html = html_data.html_modal_pagar_contra_cheque(request, contexto)
+
+    return JsonResponse({"modal_html": modal_html})
+
+
+def save_pagamento_contra_cheque(request):
+    """Consultar Documentação Sistema Efetiva"""
+    id_contra_cheque = int(request.POST.get("id_contra_cheque"))
+    valor = float(request.POST.get("valor"))
+
+    if ContraCheque.objects.filter(idContraCheque=id_contra_cheque).update(
+        Valor=valor, Pago=True
+    ):
+        mensagem = "Informado pagamento do contra cheque com sucesso"
+    else:
+        mensagem = "Não foi possivel informar o pagamento"
 
     return {"mensagem": mensagem}
 
@@ -2005,15 +2063,19 @@ def create_contexto_contra_cheque_decimo_terceiro(request):
 
 
 def create_contexto_contra_cheque(request):
-    id_pessoal = request.GET.get("id_pessoal")
+    id_pessoal = get_request_data(request, "id_pessoal")
+    id_contra_cheque = get_request_data(request, "id_contra_cheque")
+
     contas = ContaPessoal.objects.filter(idPessoal=id_pessoal)
     contas = list(contas.values())
+
     contra_cheque = ContraCheque.objects.filter(
-        idContraCheque=request.GET.get("id_contra_cheque")
+        idContraCheque=id_contra_cheque
     ).first()
     contra_cheque_itens = ContraChequeItens.objects.filter(
-        idContraCheque_id=request.GET.get("id_contra_cheque")
-    ).order_by("Registro")
+        idContraCheque_id=id_contra_cheque
+    ).order_by("Codigo")
+
     if contas:
         update_contas_bancaria_obs(contra_cheque, contas, "contas")
 

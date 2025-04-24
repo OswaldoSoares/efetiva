@@ -1,30 +1,28 @@
 {% load humanize %}
-<form method="post" action="">
+<form class="row g-3" method="post" action="{% url 'pagar_contra_cheque' %}">
     {% csrf_token %}
-    <div>
-        <div class="text-center font-maior">
-            <span>
-                {{ contra_cheque.idPessoal }}
-            </span>
-        </div>
-        <div class="text-center">
-            <span>
-                MÊS REFÊRENCIA: {{ contra_cheque }}
-            </span>
-        </div>
-        <div class="text-center">
-            <span>
-            	{{ contra_cheque.Descricao }}
-            </span>
-        </div>
-        <div class="text-center">
-            <span>
-                VALOR: R$ {{ saldo_contra_cheque|intcomma }}
-            </span>
-        </div>
-        <input type="hidden" name="idcontracheque" value="{{ contra_cheque.idContraCheque }}">
-        <input type="hidden" name="idpessoal" value="{{ idpessoal  }}">
-        <input type="hidden" name="valor" value="{{ saldo_contra_cheque }}">
-        <input type="hidden" name="mes_ano" value="{{ mes_ano }}">
+    <div class="col-md-8">
+        <label for="id_data" class="form-label">DESCRIÇÃO:</label>
+        <input type="text" class="form-control" tabindex="-1"
+               readonly value="{{ contra_cheque.Descricao }}">
     </div>
+    <div class="col-md-4">
+        <label for="id_data" class="form-label">MÊS/ANO REFERENCIA:</label>
+        <input type="text" class="form-control" tabindex="-1" readonly
+               value="{{ contra_cheque.MesReferencia }}/{{ contra_cheque.AnoReferencia }}">
+    </div>
+    <div class="col-md-8">
+        <label for="id_data" class="form-label">COLABORDOR:</label>
+        <input type="text" class="form-control" tabindex="-1"
+               readonly value="{{ contra_cheque.idPessoal }}">
+    </div>
+    <div class="col-md-4">
+        <label for="id_valor" class="form-label">VALOR DO PAGAMENTO</label>
+        <input type="number"class="form-control"name="valor" readonly tabindex="-1"
+               id="id_valor" value="{{ saldo }}">
+    </div>
+
+    <input type="hidden"name="id_contra_cheque"
+           value="{{ contra_cheque.idContraCheque }}">
+    <input type="hidden" name="id_pessoal" value="{{ id_pessoal }}">
 </form>
