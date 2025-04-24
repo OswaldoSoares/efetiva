@@ -122,6 +122,7 @@ def create_contexto_colaboradores(categoria, status_colaborador):
             "idpessoal": item.idPessoal,
             "nome": item.Nome,
             "nome_curto": nome_curto(item.Nome),
+            "data_demissao": item.DataDemissao,
         }
         for item in colaboradores
     ]
