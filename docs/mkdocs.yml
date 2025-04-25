@@ -31,6 +31,7 @@ nav:
               - pessoas/facade/calcular_pagamento_ferias_proporcionais.md
               - pessoas/facade/calcular_saldo_computavel.md
               - pessoas/facade/create_contexto_categorias.md
+              - pessoas/facade/create_contexto_contra_cheque_adiantamento.md
               - pessoas/facade/create_contexto_eventos_rescisorios_colaborador.md
               - pessoas/facade/create_contexto_salario.md
               - pessoas/facade/data_demissao_html_data.md
