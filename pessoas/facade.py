@@ -1608,32 +1608,45 @@ def atualiza_dozeavos_e_parcelas_decimo_terceiro(colaborador):
         ).update(Valor=valor_parcela)
 
 
-def create_contra_cheque(mes, ano, descricao, id_pessoal, obs):
-    return ContraCheque.objects.create(
-        MesReferencia=mes,
+def get_or_create_contra_cheque(mes, ano, descricao, id_pessoal):
+    """Consultar Documentação Sistema Efetiva"""
+    return ContraCheque.objects.get_or_create(
+        Descricao=descricao,
         AnoReferencia=ano,
-        Valor=0.00,
-        Pago=False,
-        Descricao=descricao,
-        Obs=obs,
+        MesReferencia=mes,
         idPessoal_id=id_pessoal,
+        defaults={
+            "Valor": 0.00,
+            "Pago": False,
+            "Obs": "",
+        },
     )
 
 
-def create_contra_cheque_itens(
-    descricao, valor, registro, referencia, contra_cheque
+def get_or_create_contra_cheque_itens(
+    descricao, valor, registro, referencia, contra_cheque, codigo
 ):
-    return ContraChequeItens.objects.create(
-        Descricao=descricao,
-        Valor=valor,
-        Registro=registro,
-        Referencia=referencia,
-        idContraCheque=contra_cheque,
-    )
+    """Consultar Documentação Sistema Efetiva"""
+    itens = ContraChequeItens.objects.filter(idContraCheque=contra_cheque)
+
+    if not itens.exists():
+        ContraChequeItens.objects.create(
+            Descricao=descricao,
+            Valor=valor,
+            Registro=registro,
+            Referencia=referencia,
+            idContraCheque=contra_cheque,
+            Codigo=codigo,
+            Vales_id=0,
+        )
+        # Atualiza queryset após criar
+        itens = ContraChequeItens.objects.filter(idContraCheque=contra_cheque)
+
+    return itens
 
 
 def get_saldo_contra_cheque(contra_cheque_itens):
-    """Falta docstring"""
+    """Consultar Documentação Sistema Efetiva"""
     creditos = contra_cheque_itens.filter(Registro="C").aggregate(
         total=Sum("Valor")
     ).get("total") or Decimal(0)
@@ -1944,20 +1957,14 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
 
 
 def create_contexto_contra_cheque_pagamento(request):
-    """Falta docstring"""
+    """Consultar Documentação Sistema Efetiva"""
     id_pessoal = request.GET.get("id_pessoal")
     mes = int(request.GET.get("mes"))
+    mes_por_extenso = obter_mes_por_numero(mes)
     ano = int(request.GET.get("ano"))
-    mes_extenso = obter_mes_por_numero(mes)
-    descricao = "PAGAMENTO"
 
-    contra_cheque = ContraCheque.objects.filter(
-        Descricao=descricao,
-        AnoReferencia=ano,
-        MesReferencia=mes_extenso,
-        idPessoal=id_pessoal,
-    ).first() or create_contra_cheque(
-        mes_extenso, ano, descricao, id_pessoal, obs=""
+    contra_cheque, criado = get_or_create_contra_cheque(
+        mes_por_extenso, ano, "PAGAMENTO", id_pessoal
     )
 
     atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque)
@@ -1967,7 +1974,7 @@ def create_contexto_contra_cheque_pagamento(request):
     ).order_by("Registro")
 
     return {
-        "mensagem": f"Pagamento selecionadao: {mes}/{ano}",
+        "mensagem": f"Pagamento selecionadao: {mes_por_extenso}/{ano}",
         "contra_cheque": contra_cheque,
         "contra_cheque_itens": contra_cheque_itens,
         "id_pessoal": id_pessoal,
@@ -1976,44 +1983,34 @@ def create_contexto_contra_cheque_pagamento(request):
 
 
 def create_contexto_contra_cheque_adiantamento(request):
+    """Consultar Documentação Sistema Efetiva"""
     id_pessoal = request.GET.get("id_pessoal")
-    mes = obter_mes_por_numero(int(request.GET.get("mes")))
+    mes_por_extenso = obter_mes_por_numero(int(request.GET.get("mes")))
     ano = request.GET.get("ano")
+
+    contra_cheque, _ = get_or_create_contra_cheque(
+        mes_por_extenso, ano, "ADIANTAMENTO", id_pessoal
+    )
+
+    evento_lookup = {evento.codigo: evento for evento in EVENTOS_CONTRA_CHEQUE}
+    evento = evento_lookup.get("5501")
+    descricao = evento.descricao
+
     colaborador = classes.Colaborador(id_pessoal)
     salario = colaborador.salarios.salarios.Salario
     quarenta_por_cento = (salario / 100) * 40
-    descricao = "ADIANTAMENTO"
 
-    contra_cheque = ContraCheque.objects.filter(
-        Descricao=descricao,
-        AnoReferencia=ano,
-        MesReferencia=mes,
-        idPessoal=id_pessoal,
-    ).first()
-
-    if not contra_cheque:
-        obs = ""
-        contra_cheque = create_contra_cheque(
-            mes, ano, descricao, id_pessoal, obs
-        )
-
-    contra_cheque_itens = ContraChequeItens.objects.filter(
-        idContraCheque=contra_cheque
-    ).order_by("Registro")
-
-    if not contra_cheque_itens:
-        contra_cheque_itens = create_contra_cheque_itens(
-            descricao, quarenta_por_cento, "C", "40%", contra_cheque
-        )
+    contra_cheque_itens = get_or_create_contra_cheque_itens(
+        descricao, quarenta_por_cento, "C", "40%", contra_cheque, "5501"
+    )
 
     contexto = {
-        "mensagem": f"Adiantamento selecionada: {mes}/{ano}",
+        "mensagem": f"Adiantamento selecionada: {mes_por_extenso}/{ano}",
         "contra_cheque": contra_cheque,
         "contra_cheque_itens": contra_cheque_itens,
         "id_pessoal": id_pessoal,
+        **get_saldo_contra_cheque(contra_cheque_itens),
     }
-
-    contexto.update(get_saldo_contra_cheque(contra_cheque_itens))
 
     return contexto
 
