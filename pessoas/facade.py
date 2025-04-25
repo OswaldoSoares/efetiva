@@ -1646,7 +1646,7 @@ def get_or_create_contra_cheque_itens(
 
 
 def get_saldo_contra_cheque(contra_cheque_itens):
-    """Falta docstring"""
+    """Consultar Documentação Sistema Efetiva"""
     creditos = contra_cheque_itens.filter(Registro="C").aggregate(
         total=Sum("Valor")
     ).get("total") or Decimal(0)
