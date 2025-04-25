@@ -1957,6 +1957,7 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
 
 
 def create_contexto_contra_cheque_pagamento(request):
+    """Consultar Documentação Sistema Efetiva"""
     id_pessoal = request.GET.get("id_pessoal")
     mes = int(request.GET.get("mes"))
     mes_por_extenso = obter_mes_por_numero(mes)
