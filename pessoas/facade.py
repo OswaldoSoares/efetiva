@@ -1608,15 +1608,17 @@ def atualiza_dozeavos_e_parcelas_decimo_terceiro(colaborador):
         ).update(Valor=valor_parcela)
 
 
-def create_contra_cheque(mes, ano, descricao, id_pessoal, obs):
-    return ContraCheque.objects.create(
-        MesReferencia=mes,
-        AnoReferencia=ano,
-        Valor=0.00,
-        Pago=False,
+def get_or_create_contra_cheque(mes, ano, descricao, id_pessoal):
+    return ContraCheque.objects.get_or_create(
         Descricao=descricao,
-        Obs=obs,
+        AnoReferencia=ano,
+        MesReferencia=mes,
         idPessoal_id=id_pessoal,
+        defaults={
+            "Valor": 0.00,
+            "Pago": False,
+            "Obs": "",
+        },
     )
 
 
