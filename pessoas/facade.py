@@ -1626,6 +1626,7 @@ def get_or_create_contra_cheque(mes, ano, descricao, id_pessoal):
 def get_or_create_contra_cheque_itens(
     descricao, valor, registro, referencia, contra_cheque, codigo
 ):
+    """Consultar Documentação Sistema Efetiva"""
     itens = ContraChequeItens.objects.filter(idContraCheque=contra_cheque)
 
     if not itens.exists():
