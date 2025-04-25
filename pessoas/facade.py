@@ -1957,20 +1957,13 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
 
 
 def create_contexto_contra_cheque_pagamento(request):
-    """Falta docstring"""
     id_pessoal = request.GET.get("id_pessoal")
     mes = int(request.GET.get("mes"))
+    mes_por_extenso = obter_mes_por_numero(mes)
     ano = int(request.GET.get("ano"))
-    mes_extenso = obter_mes_por_numero(mes)
-    descricao = "PAGAMENTO"
 
-    contra_cheque = ContraCheque.objects.filter(
-        Descricao=descricao,
-        AnoReferencia=ano,
-        MesReferencia=mes_extenso,
-        idPessoal=id_pessoal,
-    ).first() or create_contra_cheque(
-        mes_extenso, ano, descricao, id_pessoal, obs=""
+    contra_cheque, criado = get_or_create_contra_cheque(
+        mes_por_extenso, ano, "PAGAMENTO", id_pessoal
     )
 
     atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque)
@@ -1980,7 +1973,7 @@ def create_contexto_contra_cheque_pagamento(request):
     ).order_by("Registro")
 
     return {
-        "mensagem": f"Pagamento selecionadao: {mes}/{ano}",
+        "mensagem": f"Pagamento selecionadao: {mes_por_extenso}/{ano}",
         "contra_cheque": contra_cheque,
         "contra_cheque_itens": contra_cheque_itens,
         "id_pessoal": id_pessoal,
