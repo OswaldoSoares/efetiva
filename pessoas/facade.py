@@ -1976,6 +1976,7 @@ def create_contexto_contra_cheque_pagamento(request):
 
 
 def create_contexto_contra_cheque_adiantamento(request):
+    """Consultar Documentação Sistema Efetiva"""
     id_pessoal = request.GET.get("id_pessoal")
     mes_por_extenso = obter_mes_por_numero(int(request.GET.get("mes")))
     ano = request.GET.get("ano")
