@@ -1609,6 +1609,7 @@ def atualiza_dozeavos_e_parcelas_decimo_terceiro(colaborador):
 
 
 def get_or_create_contra_cheque(mes, ano, descricao, id_pessoal):
+    """Consultar Documentação Sistema Efetiva"""
     return ContraCheque.objects.get_or_create(
         Descricao=descricao,
         AnoReferencia=ano,
