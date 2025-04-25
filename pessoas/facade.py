@@ -1623,16 +1623,25 @@ def get_or_create_contra_cheque(mes, ano, descricao, id_pessoal):
     )
 
 
-def create_contra_cheque_itens(
-    descricao, valor, registro, referencia, contra_cheque
+def get_or_create_contra_cheque_itens(
+    descricao, valor, registro, referencia, contra_cheque, codigo
 ):
-    return ContraChequeItens.objects.create(
-        Descricao=descricao,
-        Valor=valor,
-        Registro=registro,
-        Referencia=referencia,
-        idContraCheque=contra_cheque,
-    )
+    itens = ContraChequeItens.objects.filter(idContraCheque=contra_cheque)
+
+    if not itens.exists():
+        ContraChequeItens.objects.create(
+            Descricao=descricao,
+            Valor=valor,
+            Registro=registro,
+            Referencia=referencia,
+            idContraCheque=contra_cheque,
+            Codigo=codigo,
+            Vales_id=0,
+        )
+        # Atualiza queryset após criar
+        itens = ContraChequeItens.objects.filter(idContraCheque=contra_cheque)
+
+    return itens
 
 
 def get_saldo_contra_cheque(contra_cheque_itens):
