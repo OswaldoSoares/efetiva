@@ -53,7 +53,7 @@ def get_or_create_contra_cheque_itens(
     return itens
 ```
 
-## Código da Função
+## Exemplo de Uso
 
 ```{py3 linenums="1"}
 # Obtém ou cria um item do contracheque vinculado ao contracheque de ID 42
