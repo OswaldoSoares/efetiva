@@ -1977,43 +1977,32 @@ def create_contexto_contra_cheque_pagamento(request):
 
 def create_contexto_contra_cheque_adiantamento(request):
     id_pessoal = request.GET.get("id_pessoal")
-    mes = obter_mes_por_numero(int(request.GET.get("mes")))
+    mes_por_extenso = obter_mes_por_numero(int(request.GET.get("mes")))
     ano = request.GET.get("ano")
+
+    contra_cheque, _ = get_or_create_contra_cheque(
+        mes_por_extenso, ano, "ADIANTAMENTO", id_pessoal
+    )
+
+    evento_lookup = {evento.codigo: evento for evento in EVENTOS_CONTRA_CHEQUE}
+    evento = evento_lookup.get("5501")
+    descricao = evento.descricao
+
     colaborador = classes.Colaborador(id_pessoal)
     salario = colaborador.salarios.salarios.Salario
     quarenta_por_cento = (salario / 100) * 40
-    descricao = "ADIANTAMENTO"
 
-    contra_cheque = ContraCheque.objects.filter(
-        Descricao=descricao,
-        AnoReferencia=ano,
-        MesReferencia=mes,
-        idPessoal=id_pessoal,
-    ).first()
-
-    if not contra_cheque:
-        obs = ""
-        contra_cheque = create_contra_cheque(
-            mes, ano, descricao, id_pessoal, obs
-        )
-
-    contra_cheque_itens = ContraChequeItens.objects.filter(
-        idContraCheque=contra_cheque
-    ).order_by("Registro")
-
-    if not contra_cheque_itens:
-        contra_cheque_itens = create_contra_cheque_itens(
-            descricao, quarenta_por_cento, "C", "40%", contra_cheque
-        )
+    contra_cheque_itens = get_or_create_contra_cheque_itens(
+        descricao, quarenta_por_cento, "C", "40%", contra_cheque, "5501"
+    )
 
     contexto = {
-        "mensagem": f"Adiantamento selecionada: {mes}/{ano}",
+        "mensagem": f"Adiantamento selecionada: {mes_por_extenso}/{ano}",
         "contra_cheque": contra_cheque,
         "contra_cheque_itens": contra_cheque_itens,
         "id_pessoal": id_pessoal,
+        **get_saldo_contra_cheque(contra_cheque_itens),
     }
-
-    contexto.update(get_saldo_contra_cheque(contra_cheque_itens))
 
     return contexto
 
