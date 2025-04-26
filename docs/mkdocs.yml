@@ -30,6 +30,7 @@ nav:
               - pessoas/facade/calcular_conducao.md
               - pessoas/facade/calcular_decimo_terceiro_proporcional.md
               - pessoas/facade/calcular_dias_ferias_proporcionais.md
+              - pessoas/facade/calcular_dsr.md
               - pessoas/facade/calcular_dsr_feriado.md
               - pessoas/facade/calcular_faltas.md
               - pessoas/facade/calcular_ferias_proporcionais.md
