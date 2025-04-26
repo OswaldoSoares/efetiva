@@ -1737,7 +1737,7 @@ def calcular_horas_extras(salario, cartao_ponto):
 
 
 def calcular_adiantamento(contra_cheque):
-    """Falta docstring"""
+    """Consultar Documentação Sistema Efetiva"""
     contra_cheque_adiantamento = ContraCheque.objects.filter(
         Descricao="ADIANTAMENTO",
         MesReferencia=contra_cheque.MesReferencia,
