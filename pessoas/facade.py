@@ -1698,7 +1698,7 @@ def calcular_salario(salario, cartao_ponto):
 
 
 def calcular_conducao(tarifa_dia, cartao_ponto):
-    """Falta docstring"""
+    """Consultar Documentação Sistema Efetiva"""
     dias_conducao = cartao_ponto.filter(Conducao=1, CarroEmpresa=0).count()
     valor_conducao = dias_conducao * tarifa_dia
 
