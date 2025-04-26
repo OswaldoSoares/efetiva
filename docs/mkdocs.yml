@@ -25,6 +25,7 @@ nav:
       - Colaboradores:
           - Models: pessoas/models.md
           - Facade:
+              - pessoas/facade/calcular_adiantamento.md
               - pessoas/facade/calcular_conducao.md
               - pessoas/facade/calcular_decimo_terceiro_proporcional.md
               - pessoas/facade/calcular_dias_ferias_proporcionais.md
