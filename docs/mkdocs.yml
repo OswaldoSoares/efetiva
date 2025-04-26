@@ -29,6 +29,7 @@ nav:
               - pessoas/facade/calcular_decimo_terceiro_proporcional.md
               - pessoas/facade/calcular_dias_ferias_proporcionais.md
               - pessoas/facade/calcular_ferias_proporcionais.md
+              - pessoas/facade/calcular_horas_extras.md
               - pessoas/facade/calcular_pagamento_ferias_proporcionais.md
               - pessoas/facade/calcular_salario.md
               - pessoas/facade/calcular_saldo_computavel.md
