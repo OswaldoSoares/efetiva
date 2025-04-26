@@ -1706,7 +1706,7 @@ def calcular_conducao(tarifa_dia, cartao_ponto):
 
 
 def calcular_horas_extras(salario, cartao_ponto):
-    """Falta docstring"""
+    """Consultar Documentação Sistema Efetiva"""
     horario_padrao_entrada = datetime.strptime("07:00", "%H:%M").time()
     horario_padrao_saida = datetime.strptime("17:00", "%H:%M").time()
     total_extras = timedelta()
