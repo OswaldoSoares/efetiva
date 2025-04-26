@@ -1790,7 +1790,7 @@ def calcular_atrasos(salario, cartao_ponto):
 
 
 def calcular_faltas(salario, cartao_ponto):
-    """Falta docstring"""
+    """Consultar Documentação Sistema Efetiva"""
     dias_faltas = cartao_ponto.filter(Ausencia="FALTA")
     faltas_abonadas = dias_faltas.filter(Remunerado=1).count()
 
