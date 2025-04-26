@@ -1839,7 +1839,7 @@ def calcular_dsr_feriado(id_pessoal, dias_dsr, semanas_faltas, cartao_ponto):
 
 
 def calcular_dsr(id_pessoal, salario, cartao_ponto):
-    """Falta docstring"""
+    """Consultar Documentação Sistema Efetiva"""
     dias_faltas = cartao_ponto.filter(Ausencia="FALTA").exclude(Remunerado=1)
 
     semanas_faltas = []
