@@ -1801,8 +1801,8 @@ def calcular_faltas(salario, cartao_ponto):
     return dias_descontar, valor_faltas
 
 
-    """Falta docstring"""
 def calcular_dsr_feriado(id_pessoal, dias_dsr, semanas_faltas, cartao_ponto):
+    """Consultar Documentação Sistema Efetiva"""
     primeiro_dia = cartao_ponto.order_by("Dia").first().Dia
     ultimo_dia = cartao_ponto.order_by("Dia").last().Dia
     ultimo_dia_mes_seguinte = ultimo_dia + relativedelta(months=+1)
