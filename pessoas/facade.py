@@ -1683,7 +1683,7 @@ def atualizar_ou_adicionar_contra_cheque_item(
 
 
 def calcular_salario(salario, cartao_ponto):
-    """Falta docstring"""
+    """Consultar Documentação Sistema Efetiva"""
     ultimo_dia = cartao_ponto.order_by("Dia").last().Dia.day
 
     dias_pagar = cartao_ponto.exclude(Ausencia__icontains="FÉRIAS").count()
