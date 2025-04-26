@@ -1838,7 +1838,7 @@ def calcular_dsr_feriado(id_pessoal, dias_dsr, semanas_faltas, cartao_ponto):
     return dias_dsr
 
 
-def calcula_dsr(id_pessoal, salario, cartao_ponto):
+def calcular_dsr(id_pessoal, salario, cartao_ponto):
     """Falta docstring"""
     dias_faltas = cartao_ponto.filter(Ausencia="FALTA").exclude(Remunerado=1)
 
@@ -1939,7 +1939,7 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
         },
         {
             "nome": "DSR SOBRE FALTAS",
-            "calculo": lambda: calcula_dsr(id_pessoal, salario, cartao_ponto),
+            "calculo": lambda: calcular_dsr(id_pessoal, salario, cartao_ponto),
             "tipo": "D",
             "descricao": lambda dias: f"{dias}d",
         },
