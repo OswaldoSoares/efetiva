@@ -1767,7 +1767,7 @@ def calcular_adiantamento(contra_cheque):
 
 
 def calcular_atrasos(salario, cartao_ponto):
-    """Falta docstring"""
+    """Consultar Documentação Sistema Efetiva"""
     horario_padrao_entrada = datetime.strptime("07:00", "%H:%M").time()
     total_atrasos = timedelta()
 
