@@ -1901,57 +1901,69 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
     itens_contra_cheque = [
         {
             "nome": "SALARIO",
+            "codigo": "1000",
             "calculo": lambda: calcular_salario(salario, cartao_ponto),
-            "tipo": "C",
-            "descricao": lambda dias: f"{dias}d",
+            "registro": "C",
+            "referencia": lambda dias: dias,
         },
         {
             "nome": "VALE TRANSPORTE",
+            "codigo": "1410",
             "calculo": lambda: calcular_conducao(tarifa_dia, cartao_ponto)
             if tarifa_dia
             else (0, 0),
-            "tipo": "C",
-            "descricao": lambda dias: f"{dias}d",
+            "registro": "C",
+            "referencia": lambda dias: dias,
         },
         {
             "nome": "HORA EXTRA",
+            "codigo": "1003",
             "calculo": lambda: calcular_horas_extras(salario, cartao_ponto),
-            "tipo": "C",
-            "descricao": lambda horas: horas,
+            "registro": "C",
+            "referencia": lambda horas: horas,
         },
         {
             "nome": "ADIANTAMENTO",
+            "codigo": "9200",
             "calculo": lambda: calcular_adiantamento(contra_cheque),
-            "tipo": "D",
-            "descricao": lambda porc: porc,
+            "registro": "D",
+            "referencia": lambda porc: porc,
         },
         {
             "nome": "ATRASO",
+            "codigo": "9208",
             "calculo": lambda: calcular_atrasos(salario, cartao_ponto),
-            "tipo": "D",
-            "descricao": lambda horas: horas,
+            "registro": "D",
+            "referencia": lambda horas: horas,
         },
         {
             "nome": "FALTAS",
+            "codigo": "9207",
             "calculo": lambda: calcular_faltas(salario, cartao_ponto),
-            "tipo": "D",
-            "descricao": lambda dias: f"{dias}d",
+            "registro": "D",
+            "referencia": lambda dias: dias,
         },
         {
             "nome": "DSR SOBRE FALTAS",
+            "codigo": "9211",
             "calculo": lambda: calcular_dsr(id_pessoal, salario, cartao_ponto),
-            "tipo": "D",
-            "descricao": lambda dias: f"{dias}d",
+            "registro": "D",
+            "referencia": lambda dias: dias,
         },
     ]
 
+    evento_lookup = {evento.codigo: evento for evento in EVENTOS_CONTRA_CHEQUE}
+
     for item in itens_contra_cheque:
+        evento = evento_lookup.get(item["codigo"])
+        descricao = evento.descricao
         quantidade, valor = item["calculo"]()
         atualizar_ou_adicionar_contra_cheque_item(
-            item["nome"],
+            descricao,
             valor,
-            item["tipo"],
-            item["descricao"](quantidade),
+            item["registro"],
+            item["referencia"](quantidade),
+            item["codigo"],
             id_contra_cheque,
         )
 
