@@ -1880,7 +1880,7 @@ def calcular_dsr(id_pessoal, salario, cartao_ponto):
 
 
 def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
-    """Falta docstring"""
+    """Consultar Documentação Sistema Efetiva"""
     colaborador = classes.Colaborador(id_pessoal)
     admissao = colaborador.dados_profissionais.data_admissao
     demissao = colaborador.dados_profissionais.data_demissao
