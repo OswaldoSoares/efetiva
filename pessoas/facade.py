@@ -1661,21 +1661,21 @@ def get_saldo_contra_cheque(contra_cheque_itens):
 
 
 def atualizar_ou_adicionar_contra_cheque_item(
-    descricao, valor, registro, referencia, id_contra_cheque
+    descricao, valor, registro, referencia, codigo, id_contra_cheque
 ):
     """Falta docstring"""
     if valor == 0:
         ContraChequeItens.objects.filter(
-            Descricao=descricao,
-            Registro=registro,
+            Codigo=codigo,
             idContraCheque_id=id_contra_cheque,
         ).delete()
     else:
         ContraChequeItens.objects.update_or_create(
-            Descricao=descricao,
-            Registro=registro,
+            Codigo=codigo,
             idContraCheque_id=id_contra_cheque,
             defaults={
+                "Descricao": descricao,
+                "Registro": registro,
                 "Valor": valor,
                 "Referencia": referencia,
             },
