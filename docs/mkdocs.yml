@@ -25,6 +25,7 @@ nav:
       - Colaboradores:
           - Models: pessoas/models.md
           - Facade:
+              - pessoas/facade/atualizar_ou_adicionar_contra_cheque_item.md
               - pessoas/facade/calcular_adiantamento.md
               - pessoas/facade/calcular_atrasos.md
               - pessoas/facade/calcular_conducao.md
