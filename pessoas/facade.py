@@ -1663,7 +1663,7 @@ def get_saldo_contra_cheque(contra_cheque_itens):
 def atualizar_ou_adicionar_contra_cheque_item(
     descricao, valor, registro, referencia, codigo, id_contra_cheque
 ):
-    """Falta docstring"""
+    """Consultar Documentação Sistema Efetiva"""
     if valor == 0:
         ContraChequeItens.objects.filter(
             Codigo=codigo,
