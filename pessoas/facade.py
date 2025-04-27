@@ -1661,21 +1661,21 @@ def get_saldo_contra_cheque(contra_cheque_itens):
 
 
 def atualizar_ou_adicionar_contra_cheque_item(
-    descricao, valor, registro, referencia, id_contra_cheque
+    descricao, valor, registro, referencia, codigo, id_contra_cheque
 ):
-    """Falta docstring"""
+    """Consultar Documentação Sistema Efetiva"""
     if valor == 0:
         ContraChequeItens.objects.filter(
-            Descricao=descricao,
-            Registro=registro,
+            Codigo=codigo,
             idContraCheque_id=id_contra_cheque,
         ).delete()
     else:
         ContraChequeItens.objects.update_or_create(
-            Descricao=descricao,
-            Registro=registro,
+            Codigo=codigo,
             idContraCheque_id=id_contra_cheque,
             defaults={
+                "Descricao": descricao,
+                "Registro": registro,
                 "Valor": valor,
                 "Referencia": referencia,
             },
@@ -1683,7 +1683,7 @@ def atualizar_ou_adicionar_contra_cheque_item(
 
 
 def calcular_salario(salario, cartao_ponto):
-    """Falta docstring"""
+    """Consultar Documentação Sistema Efetiva"""
     ultimo_dia = cartao_ponto.order_by("Dia").last().Dia.day
 
     dias_pagar = cartao_ponto.exclude(Ausencia__icontains="FÉRIAS").count()
@@ -1698,7 +1698,7 @@ def calcular_salario(salario, cartao_ponto):
 
 
 def calcular_conducao(tarifa_dia, cartao_ponto):
-    """Falta docstring"""
+    """Consultar Documentação Sistema Efetiva"""
     dias_conducao = cartao_ponto.filter(Conducao=1, CarroEmpresa=0).count()
     valor_conducao = dias_conducao * tarifa_dia
 
@@ -1706,7 +1706,7 @@ def calcular_conducao(tarifa_dia, cartao_ponto):
 
 
 def calcular_horas_extras(salario, cartao_ponto):
-    """Falta docstring"""
+    """Consultar Documentação Sistema Efetiva"""
     horario_padrao_entrada = datetime.strptime("07:00", "%H:%M").time()
     horario_padrao_saida = datetime.strptime("17:00", "%H:%M").time()
     total_extras = timedelta()
@@ -1737,7 +1737,7 @@ def calcular_horas_extras(salario, cartao_ponto):
 
 
 def calcular_adiantamento(contra_cheque):
-    """Falta docstring"""
+    """Consultar Documentação Sistema Efetiva"""
     contra_cheque_adiantamento = ContraCheque.objects.filter(
         Descricao="ADIANTAMENTO",
         MesReferencia=contra_cheque.MesReferencia,
@@ -1767,7 +1767,7 @@ def calcular_adiantamento(contra_cheque):
 
 
 def calcular_atrasos(salario, cartao_ponto):
-    """Falta docstring"""
+    """Consultar Documentação Sistema Efetiva"""
     horario_padrao_entrada = datetime.strptime("07:00", "%H:%M").time()
     total_atrasos = timedelta()
 
@@ -1790,7 +1790,7 @@ def calcular_atrasos(salario, cartao_ponto):
 
 
 def calcular_faltas(salario, cartao_ponto):
-    """Falta docstring"""
+    """Consultar Documentação Sistema Efetiva"""
     dias_faltas = cartao_ponto.filter(Ausencia="FALTA")
     faltas_abonadas = dias_faltas.filter(Remunerado=1).count()
 
@@ -1801,8 +1801,8 @@ def calcular_faltas(salario, cartao_ponto):
     return dias_descontar, valor_faltas
 
 
-def calcula_dsr_feriado(id_pessoal, dias_dsr, semanas_faltas, cartao_ponto):
-    """Falta docstring"""
+def calcular_dsr_feriado(id_pessoal, dias_dsr, semanas_faltas, cartao_ponto):
+    """Consultar Documentação Sistema Efetiva"""
     primeiro_dia = cartao_ponto.order_by("Dia").first().Dia
     ultimo_dia = cartao_ponto.order_by("Dia").last().Dia
     ultimo_dia_mes_seguinte = ultimo_dia + relativedelta(months=+1)
@@ -1838,8 +1838,8 @@ def calcula_dsr_feriado(id_pessoal, dias_dsr, semanas_faltas, cartao_ponto):
     return dias_dsr
 
 
-def calcula_dsr(id_pessoal, salario, cartao_ponto):
-    """Falta docstring"""
+def calcular_dsr(id_pessoal, salario, cartao_ponto):
+    """Consultar Documentação Sistema Efetiva"""
     dias_faltas = cartao_ponto.filter(Ausencia="FALTA").exclude(Remunerado=1)
 
     semanas_faltas = []
@@ -1870,7 +1870,7 @@ def calcula_dsr(id_pessoal, salario, cartao_ponto):
                 semanas_faltas.remove(int(semana_mes_anterior))
 
     dias_dsr = len(semanas_faltas)
-    dias_dsr = calcula_dsr_feriado(
+    dias_dsr = calcular_dsr_feriado(
         id_pessoal, dias_dsr, semanas_faltas, cartao_ponto
     )
 
@@ -1880,7 +1880,7 @@ def calcula_dsr(id_pessoal, salario, cartao_ponto):
 
 
 def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
-    """Falta docstring"""
+    """Consultar Documentação Sistema Efetiva"""
     colaborador = classes.Colaborador(id_pessoal)
     admissao = colaborador.dados_profissionais.data_admissao
     demissao = colaborador.dados_profissionais.data_demissao
@@ -1901,57 +1901,69 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
     itens_contra_cheque = [
         {
             "nome": "SALARIO",
+            "codigo": "1000",
             "calculo": lambda: calcular_salario(salario, cartao_ponto),
-            "tipo": "C",
-            "descricao": lambda dias: f"{dias}d",
+            "registro": "C",
+            "referencia": lambda dias: dias,
         },
         {
             "nome": "VALE TRANSPORTE",
+            "codigo": "1410",
             "calculo": lambda: calcular_conducao(tarifa_dia, cartao_ponto)
             if tarifa_dia
             else (0, 0),
-            "tipo": "C",
-            "descricao": lambda dias: f"{dias}d",
+            "registro": "C",
+            "referencia": lambda dias: dias,
         },
         {
             "nome": "HORA EXTRA",
+            "codigo": "1003",
             "calculo": lambda: calcular_horas_extras(salario, cartao_ponto),
-            "tipo": "C",
-            "descricao": lambda horas: horas,
+            "registro": "C",
+            "referencia": lambda horas: horas,
         },
         {
             "nome": "ADIANTAMENTO",
+            "codigo": "9200",
             "calculo": lambda: calcular_adiantamento(contra_cheque),
-            "tipo": "D",
-            "descricao": lambda porc: porc,
+            "registro": "D",
+            "referencia": lambda porc: porc,
         },
         {
             "nome": "ATRASO",
+            "codigo": "9208",
             "calculo": lambda: calcular_atrasos(salario, cartao_ponto),
-            "tipo": "D",
-            "descricao": lambda horas: horas,
+            "registro": "D",
+            "referencia": lambda horas: horas,
         },
         {
             "nome": "FALTAS",
+            "codigo": "9207",
             "calculo": lambda: calcular_faltas(salario, cartao_ponto),
-            "tipo": "D",
-            "descricao": lambda dias: f"{dias}d",
+            "registro": "D",
+            "referencia": lambda dias: dias,
         },
         {
             "nome": "DSR SOBRE FALTAS",
-            "calculo": lambda: calcula_dsr(id_pessoal, salario, cartao_ponto),
-            "tipo": "D",
-            "descricao": lambda dias: f"{dias}d",
+            "codigo": "9211",
+            "calculo": lambda: calcular_dsr(id_pessoal, salario, cartao_ponto),
+            "registro": "D",
+            "referencia": lambda dias: dias,
         },
     ]
 
+    evento_lookup = {evento.codigo: evento for evento in EVENTOS_CONTRA_CHEQUE}
+
     for item in itens_contra_cheque:
+        evento = evento_lookup.get(item["codigo"])
+        descricao = evento.descricao
         quantidade, valor = item["calculo"]()
         atualizar_ou_adicionar_contra_cheque_item(
-            item["nome"],
+            descricao,
             valor,
-            item["tipo"],
-            item["descricao"](quantidade),
+            item["registro"],
+            item["referencia"](quantidade),
+            item["codigo"],
             id_contra_cheque,
         )
 

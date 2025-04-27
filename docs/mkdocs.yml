@@ -25,10 +25,20 @@ nav:
       - Colaboradores:
           - Models: pessoas/models.md
           - Facade:
+              - pessoas/facade/atualizar_contra_cheque_pagamento.md
+              - pessoas/facade/atualizar_ou_adicionar_contra_cheque_item.md
+              - pessoas/facade/calcular_adiantamento.md
+              - pessoas/facade/calcular_atrasos.md
+              - pessoas/facade/calcular_conducao.md
               - pessoas/facade/calcular_decimo_terceiro_proporcional.md
               - pessoas/facade/calcular_dias_ferias_proporcionais.md
+              - pessoas/facade/calcular_dsr.md
+              - pessoas/facade/calcular_dsr_feriado.md
+              - pessoas/facade/calcular_faltas.md
               - pessoas/facade/calcular_ferias_proporcionais.md
+              - pessoas/facade/calcular_horas_extras.md
               - pessoas/facade/calcular_pagamento_ferias_proporcionais.md
+              - pessoas/facade/calcular_salario.md
               - pessoas/facade/calcular_saldo_computavel.md
               - pessoas/facade/create_contexto_categorias.md
               - pessoas/facade/create_contexto_contra_cheque_adiantamento.md
