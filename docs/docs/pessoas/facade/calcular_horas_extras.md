@@ -65,7 +65,7 @@ def calcular_horas_extras(salario, cartao_ponto):
     return total_extras, valor_extras
 ```
 
-## Código da Função
+## Exemplo de Uso
 
 ```{py3 linenums="1"}
 # Suponha que temos um conjunto de registros de cartão de ponto

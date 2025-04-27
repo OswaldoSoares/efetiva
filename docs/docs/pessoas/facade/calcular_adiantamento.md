@@ -57,7 +57,7 @@ def calcular_adiantamento(contra_cheque):
     return "0%", Decimal(0.00)
 ```
 
-## Código da Função
+## Exemplo de Uso
 
 ```{py3 linenums="1"}
 # Suponha que temos um objeto de contracheque

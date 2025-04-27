@@ -41,7 +41,7 @@ def calcular_faltas(salario, cartao_ponto):
     return dias_descontar, valor_faltas
 ```
 
-## Código da Função
+## Exemplo de Uso
 
 ```{py3 linenums="1"}
 # Suponha que temos um conjunto de registros de cartão de ponto

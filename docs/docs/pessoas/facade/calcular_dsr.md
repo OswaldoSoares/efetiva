@@ -79,7 +79,7 @@ def calcular_dsr(id_pessoal, salario, cartao_ponto):
     return dias_dsr, valor_dsr
 ```
 
-## Código da Função
+## Exemplo de Uso
 
 ```{py3 linenums="1"}
 # Suponha que temos um conjunto de registros de cartão de ponto

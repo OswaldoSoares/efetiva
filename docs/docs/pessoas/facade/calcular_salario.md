@@ -46,7 +46,7 @@ def calcular_salario(salario, cartao_ponto):
     return dias_pagar, valor_pagar
 ```
 
-## Código da Função
+## Exemplo de Uso
 
 ```{py3 linenums="1"}
 # Suponha que temos um conjunto de registros de cartão de ponto

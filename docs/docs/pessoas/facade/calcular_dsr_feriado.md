@@ -75,7 +75,7 @@ def calcula_dsr_feriado(id_pessoal, dias_dsr, semanas_faltas, cartao_ponto):
     return dias_dsr
 ```
 
-## Código da Função
+## Exemplo de Uso
 
 ```{py3 linenums="1"}
 # Suponha que temos um conjunto de registros de cartão de ponto

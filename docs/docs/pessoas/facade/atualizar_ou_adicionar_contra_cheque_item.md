@@ -52,7 +52,7 @@ def atualizar_ou_adicionar_contra_cheque_item(
         )
 ```
 
-## Código da Função
+## Exemplo de Uso
 
 ```{py3 linenums="1"}
 # Adiciona ou atualiza um item do contracheque com código "5501"

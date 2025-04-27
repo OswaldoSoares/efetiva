@@ -36,7 +36,7 @@ def calcular_conducao(tarifa_dia, cartao_ponto):
     return dias_conducao, valor_conducao
 ```
 
-## Código da Função
+## Exemplo de Uso
 
 ```{py3 linenums="1"}
 # Suponha que temos um conjunto de registros de cartão de ponto
