@@ -833,6 +833,11 @@ def contra_cheque_itens(pdf, contexto):
     linhaitens = 0
     for itens in contexto["contra_cheque_itens"]:
         pdf.drawString(
+            cmp(7.4),
+            cmp(linha - 41.2 - linhaitens),
+            f"{itens.Codigo}",
+        )
+        pdf.drawString(
             cmp(17.5),
             cmp(linha - 41.2 - linhaitens),
             f"{itens.Descricao}",
