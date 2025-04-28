@@ -43,8 +43,16 @@ $(".select-mes-ano").change(function() {
 
 // Seleciona funcionário mensalista
 $(document).on("click", ".js-selecionar-colaborador", function() {
+    const selecionado = $(this)
     const mesAno = $(".select-mes-ano option:selected").text();
+
     idPessoal = $(this).data("id_pessoal");
+
+    $(".js-selecionar-colaborador").each(function() {
+        $(this).removeClass("icofont-checked");
+        $(this).removeClass("disabled");
+        $(this).addClass("icofont-square");
+    });
 
     executarAjax("/pagamentos/selecionar_colaborador", "GET", {
         mes: mes,
@@ -70,6 +78,10 @@ $(document).on("click", ".js-selecionar-colaborador", function() {
         $(".submit-agenda").hide();
         $('.box-loader').hide();
     });
+
+    $(selecionado).removeClass("icofont-square")
+    $(selecionado).addClass("icofont-checked")
+    $(selecionado).addClass("disabled")
 });
 
 
