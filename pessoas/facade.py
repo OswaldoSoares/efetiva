@@ -1985,11 +1985,14 @@ def create_contexto_contra_cheque_pagamento(request):
         idContraCheque=contra_cheque
     ).order_by("Registro")
 
+    file = get_file_contra_cheque(contra_cheque.idContraCheque)
+
     return {
         "mensagem": f"Pagamento selecionadao: {mes_por_extenso}/{ano}",
         "contra_cheque": contra_cheque,
         "contra_cheque_itens": contra_cheque_itens,
         "id_pessoal": id_pessoal,
+        "file": file,
         **get_saldo_contra_cheque(contra_cheque_itens),
     }
 
@@ -2016,11 +2019,14 @@ def create_contexto_contra_cheque_adiantamento(request):
         descricao, quarenta_por_cento, "C", "40%", contra_cheque, "5501"
     )
 
+    file = get_file_contra_cheque(contra_cheque.idContraCheque)
+
     contexto = {
         "mensagem": f"Adiantamento selecionada: {mes_por_extenso}/{ano}",
         "contra_cheque": contra_cheque,
         "contra_cheque_itens": contra_cheque_itens,
         "id_pessoal": id_pessoal,
+        "file": file,
         **get_saldo_contra_cheque(contra_cheque_itens),
     }
 
