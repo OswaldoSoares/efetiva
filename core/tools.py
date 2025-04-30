@@ -4,6 +4,7 @@ import os
 from datetime import datetime, time, timedelta
 from pathlib import Path
 from django.http import JsonResponse
+from django.template.loader import render_to_string
 from core.constants import MESES
 from website.models import FileUpload
 
