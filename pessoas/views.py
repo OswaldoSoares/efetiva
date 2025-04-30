@@ -243,6 +243,7 @@ def alterar_vale_transporte_colaborador(request):
 
 
 def pagar_contra_cheque(request):
+    """Consultar Documentação Sistema Efetiva"""
     return handle_modal_colaborador(
         request,
         facade.modal_pagar_contra_cheque,
