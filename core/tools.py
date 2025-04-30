@@ -1,5 +1,6 @@
 """ MÓDULO COM FUNÇÕES QUE SERÃO USADAS EM TODO O PROJETO """
 import calendar
+import os
 from datetime import datetime, time, timedelta
 from django.http import JsonResponse
 from core.constants import MESES
