@@ -225,3 +225,51 @@ def primeiro_e_ultimo_dia_do_mes(mes: int, ano: int) -> tuple:
     primeiro = datetime(ano, mes, 1)
     ultimo = primeiro.replace(day=calendar.monthrange(ano, mes)[1])
     return [primeiro, ultimo]
+
+
+def upload_de_arquivo(request, nome_arquivo, max_size_mb):
+    if request.method != "POST":
+        return {"mensagem": "Método inválido."}
+
+    if not request.FILES:
+        return {"mensagem": "Arquivo não selecionado."}
+
+    file_uploaded = request.FILES["arquivo"]
+    ext_file = file_uploaded.name.split(".")[-1].lower()
+
+    if ext_file not in ["pdf", "jpg", "png"]:
+        return {
+            "mensagem": "Tipo de arquivo não permitido."
+            " Permitidos: pdf, jpg e png",
+        }
+
+    max_file_size = max_size_mb * 1024 * 1024
+    if file_uploaded.size > max_file_size:
+        return {
+            "mensagem": f"Arquivo muito grande. O limite é {max_size_mb}MB.",
+        }
+
+    descricao = nome_arquivo.rsplit(".", 1)[0]
+    name_file = f"{descricao}.{ext_file}"
+    file_uploaded.name = name_file
+
+    try:
+        obj = FileUpload.objects.filter(DescricaoUpload=descricao).first()
+
+        if obj:
+            if obj.uploadFile and os.path.isfile(obj.uploadFile.path):
+                os.remove(obj.uploadFile.path)
+        else:
+            obj = FileUpload()
+
+        obj.DescricaoUpload = descricao
+        obj.uploadFile = file_uploaded
+        obj.save()
+
+        return {"mensagem": "Arquivo enviado ao servidor com sucesso"}
+
+    # TODO: Refinar exceções específicas mais tarde
+    except Exception as error:  # pylint: disable=W0703
+        print(f"Erro ao salvar: {error}")
+
+        return {"mensagem": "Falha ao salvar o arquivo, tente novamente"}
