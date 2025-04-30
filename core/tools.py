@@ -317,3 +317,25 @@ def modal_excluir_arquivo(id_file_upload, request):
     )
 
     return JsonResponse({"modal_html": modal_html})
+
+
+def injetar_parametro_no_request_post(request, url_field="request_passado"):
+    url_string = request.POST.get(url_field)
+
+    if url_string:
+        parsed_url = urlparse(url_string)
+        query_params = parse_qs(parsed_url.query)
+
+        new_post = request.POST.copy()
+
+        for key, value in query_params.items():
+            if not key == "id_file_upload":
+                if value:
+                    new_post[key] = value[0]
+
+        del new_post[url_field]
+
+        request._post = new_post
+        request._files = request.FILES  # mantém arquivos se houver
+
+    return request
