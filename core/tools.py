@@ -3,6 +3,7 @@ import calendar
 from datetime import datetime, time, timedelta
 from django.http import JsonResponse
 from core.constants import MESES
+from website.models import FileUpload
 
 
 def apos_meia_noite(hora):
