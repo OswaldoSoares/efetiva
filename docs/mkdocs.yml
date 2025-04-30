@@ -24,6 +24,7 @@ nav:
                 - core/constants/Evento.md
           - Tools:
                 - core/tools/excluir_arquivo.md
+                - core/tools/modal_excluir_arquivo.md
                 - core/tools/upload_de_arquivo.md
       - Colaboradores:
           - Models: pessoas/models.md
