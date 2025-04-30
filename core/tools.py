@@ -297,3 +297,21 @@ def excluir_arquivo(id_file_upload):
         mensagem = "Arquivo não encontrado."
 
     return {"mensagem": mensagem}
+
+
+def modal_excluir_arquivo(id_file_upload, request):
+    file = FileUpload.objects.get(idFileUpload=id_file_upload)
+    ext = Path(file.uploadFile.name).suffix.lower().strip(".")
+
+    contexto = {
+        "file": file,
+        "file_url": file.uploadFile.url,
+        "file_ext": ext,
+        "file_id": file.idFileUpload,
+    }
+
+    modal_html = render_to_string(
+        "core/modal_excluir_arquivo.html", contexto, request=request
+    )
+
+    return JsonResponse({"modal_html": modal_html})
