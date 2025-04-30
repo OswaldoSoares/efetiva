@@ -22,6 +22,8 @@ nav:
       - Core:
           - Constants:
                 - core/constants/Evento.md
+          - Tools:
+                - core/tools/upload_de_arquivo.md
       - Colaboradores:
           - Models: pessoas/models.md
           - Facade:
