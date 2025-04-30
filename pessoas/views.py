@@ -693,17 +693,16 @@ def estorna_contra_cheque(request):
     return data
 
 
-def arquiva_contra_cheque(request):
-    idcontracheque = request.POST.get("idcontracheque")
-    idpessoal = request.POST.get("idpessoal")
-    mes_ano = request.POST.get("mes_ano")
-    message = facade.salva_arquivo_contra_cheque(request, idcontracheque)
-    descricao = facade.get_descricao_contra_cheque_id(idcontracheque)
-    contexto = facade.create_contexto_contra_cheque_colaborador(
-        idpessoal, mes_ano, descricao
-    )
-    contexto.update({"message": message})
-    data = facade.create_data_contra_cheque_colaborador(request, contexto)
+def upload_contra_cheque(request):
+    id_contra_cheque = request.POST.get("id_contra_cheque")
+    nome_arquivo = f"Contra-Cheque_-_{str(id_contra_cheque).zfill(6)}"
+    mensagem = upload_de_arquivo(request, nome_arquivo, 5)
+
+    contexto = facade.create_contexto_contra_cheque(request)
+    contexto.update(mensagem)
+
+    data = facade.contra_cheque_html_data(request, contexto)
+
     return data
 
 
