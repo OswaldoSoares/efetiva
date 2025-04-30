@@ -300,6 +300,7 @@ def excluir_arquivo(id_file_upload):
 
 
 def modal_excluir_arquivo(id_file_upload, request):
+    """Consultar Documentação Sistema Efetiva"""
     file = FileUpload.objects.get(idFileUpload=id_file_upload)
     ext = Path(file.uploadFile.name).suffix.lower().strip(".")
 
