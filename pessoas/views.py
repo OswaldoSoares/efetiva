@@ -252,6 +252,16 @@ def pagar_contra_cheque(request):
     )
 
 
+def estornar_pagamento_contra_cheque(request):
+    return handle_modal_colaborador(
+        request,
+        facade.modal_estornar_pagamento_contra_cheque,
+        facade.save_estorno_pagamento_contra_cheque,
+        partial(facade.create_contexto_contra_cheque, request),
+        facade.contra_cheque_html_data,
+    )
+
+
 def bloqueia_pessoa(request, idpessoa):
     facade.altera_status(idpessoa)
     return redirect("indexpessoal")
