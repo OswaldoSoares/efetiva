@@ -9,6 +9,7 @@ from website.models import FileUpload
 
 @login_required(login_url="login")
 def index_core(request):
+    """Consultar Documentação Sistema Efetiva"""
     return render(request, "core/index.html")
 
 
