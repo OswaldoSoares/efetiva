@@ -3,6 +3,7 @@ import calendar
 import os
 from datetime import datetime, time, timedelta
 from pathlib import Path
+from urllib.parse import urlparse, parse_qs
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from core.constants import MESES
