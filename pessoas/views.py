@@ -254,6 +254,7 @@ def pagar_contra_cheque(request):
 
 
 def estornar_pagamento_contra_cheque(request):
+    """Consultar Documentação Sistema Efetiva"""
     return handle_modal_colaborador(
         request,
         facade.modal_estornar_pagamento_contra_cheque,
