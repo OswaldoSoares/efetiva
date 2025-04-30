@@ -320,6 +320,7 @@ def modal_excluir_arquivo(id_file_upload, request):
 
 
 def injetar_parametro_no_request_post(request, url_field="request_passado"):
+    """Consultar Documentação Sistema Efetiva"""
     url_string = request.POST.get(url_field)
 
     if url_string:
