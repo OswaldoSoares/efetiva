@@ -21,15 +21,15 @@ nav:
   - Módulos:
       - Core:
           - Constants:
-                - core/constants/Evento.md
+              - core/constants/Evento.md
           - Tools:
-                - core/tools/excluir_arquivo.md
-                - core/tools/injetar_parametro_no_request_post.md
-                - core/tools/modal_excluir_arquivo.md
-                - core/tools/upload_de_arquivo.md
+              - core/tools/excluir_arquivo.md
+              - core/tools/injetar_parametro_no_request_post.md
+              - core/tools/modal_excluir_arquivo.md
+              - core/tools/upload_de_arquivo.md
           - Views:
-                - core/views/index_core.md
-                - core/views/visualizar_arquivo.md
+              - core/views/index_core.md
+              - core/views/visualizar_arquivo.md
       - Colaboradores:
           - Models: pessoas/models.md
           - Facade:
