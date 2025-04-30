@@ -28,6 +28,7 @@ nav:
                 - core/tools/modal_excluir_arquivo.md
                 - core/tools/upload_de_arquivo.md
           - Views:
+                - core/views/index_core.md
                 - core/views/visualizar_arquivo.md
       - Colaboradores:
           - Models: pessoas/models.md
