@@ -14,6 +14,7 @@ def index_core(request):
 
 @xframe_options_exempt
 def visualizar_arquivo(request, id_file_upload):
+    """Consultar Documentação Sistema Efetiva"""
     try:
         arquivo = FileUpload.objects.get(idFileUpload=id_file_upload)
         file_path = arquivo.uploadFile.path
