@@ -273,3 +273,23 @@ def upload_de_arquivo(request, nome_arquivo, max_size_mb):
         print(f"Erro ao salvar: {error}")
 
         return {"mensagem": "Falha ao salvar o arquivo, tente novamente"}
+
+
+def excluir_arquivo(id_file_upload):
+    file = FileUpload.objects.filter(idFileUpload=id_file_upload).first()
+    if file:
+        try:
+            caminho = file.uploadFile.path
+            if os.path.exists(caminho):
+                os.remove(caminho)
+            file.delete()
+            mensagem = "Arquivo excluído com sucesso."
+
+        # TODO: Refinar exceções específicas mais tarde
+        except Exception as error:  # pylint: disable=W0703
+            print(f"Erro ao excluir arquivo: {error}")
+            mensagem = "Erro ao excluir o arquivo."
+    else:
+        mensagem = "Arquivo não encontrado."
+
+    return {"mensagem": mensagem}
