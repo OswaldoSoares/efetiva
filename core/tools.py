@@ -228,6 +228,7 @@ def primeiro_e_ultimo_dia_do_mes(mes: int, ano: int) -> tuple:
 
 
 def upload_de_arquivo(request, nome_arquivo, max_size_mb):
+    """Consultar Documentação Sistema Efetiva"""
     if request.method != "POST":
         return {"mensagem": "Método inválido."}
 
@@ -276,6 +277,7 @@ def upload_de_arquivo(request, nome_arquivo, max_size_mb):
 
 
 def excluir_arquivo(id_file_upload):
+    """Consultar Documentação Sistema Efetiva"""
     file = FileUpload.objects.filter(idFileUpload=id_file_upload).first()
     if file:
         try:
