@@ -694,6 +694,7 @@ def estorna_contra_cheque(request):
 
 
 def upload_contra_cheque(request):
+    """Consultar Documentação Sistema Efetiva"""
     id_contra_cheque = request.POST.get("id_contra_cheque")
     nome_arquivo = f"Contra-Cheque_-_{str(id_contra_cheque).zfill(6)}"
     mensagem = upload_de_arquivo(request, nome_arquivo, 5)
