@@ -3,6 +3,9 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.http import JsonResponse
 from rolepermissions.decorators import has_permission_decorator
+from core.tools import upload_de_arquivo, excluir_arquivo
+from core.tools import modal_excluir_arquivo, get_request_data
+from core.tools import injetar_parametro_no_request_post
 from pessoas import facade
 from pessoas.print import (
     print_pdf_ficha_colaborador,
@@ -240,10 +243,22 @@ def alterar_vale_transporte_colaborador(request):
 
 
 def pagar_contra_cheque(request):
+    """Consultar Documentação Sistema Efetiva"""
     return handle_modal_colaborador(
         request,
         facade.modal_pagar_contra_cheque,
         facade.save_pagamento_contra_cheque,
+        partial(facade.create_contexto_contra_cheque, request),
+        facade.contra_cheque_html_data,
+    )
+
+
+def estornar_pagamento_contra_cheque(request):
+    """Consultar Documentação Sistema Efetiva"""
+    return handle_modal_colaborador(
+        request,
+        facade.modal_estornar_pagamento_contra_cheque,
+        facade.save_estorno_pagamento_contra_cheque,
         partial(facade.create_contexto_contra_cheque, request),
         facade.contra_cheque_html_data,
     )
@@ -678,39 +693,32 @@ def estorna_contra_cheque(request):
     return data
 
 
-def arquiva_contra_cheque(request):
-    idcontracheque = request.POST.get("idcontracheque")
-    idpessoal = request.POST.get("idpessoal")
-    mes_ano = request.POST.get("mes_ano")
-    message = facade.salva_arquivo_contra_cheque(request, idcontracheque)
-    descricao = facade.get_descricao_contra_cheque_id(idcontracheque)
-    contexto = facade.create_contexto_contra_cheque_colaborador(
-        idpessoal, mes_ano, descricao
-    )
-    contexto.update({"message": message})
-    data = facade.create_data_contra_cheque_colaborador(request, contexto)
+def upload_contra_cheque(request):
+    """Consultar Documentação Sistema Efetiva"""
+    id_contra_cheque = request.POST.get("id_contra_cheque")
+    nome_arquivo = f"Contra-Cheque_-_{str(id_contra_cheque).zfill(6)}"
+    mensagem = upload_de_arquivo(request, nome_arquivo, 5)
+
+    contexto = facade.create_contexto_contra_cheque(request)
+    contexto.update(mensagem)
+
+    data = facade.contra_cheque_html_data(request, contexto)
+
     return data
 
 
-def exclui_arquivo_contra_cheque(request):
+def excluir_arquivo_contra_cheque(request):
+    """Consultar Documentação Sistema Efetiva"""
+    id_file_upload = get_request_data(request, "id_file_upload")
     if request.method == "POST":
-        print(request.POST)
-        idcontracheque = request.POST.get("idcontracheque")
-        idpessoal = request.POST.get("idpessoal")
-        mes_ano = request.POST.get("mes_ano")
-        facade.exclui_arquivo_contra_cheque_servidor(request, idcontracheque)
-        descricao = facade.get_descricao_contra_cheque_id(idcontracheque)
-        contexto = facade.create_contexto_contra_cheque_colaborador(
-            idpessoal, mes_ano, descricao
-        )
-        data = facade.create_data_contra_cheque_colaborador(request, contexto)
+        request_injetado = injetar_parametro_no_request_post(request)
+        mensagem = excluir_arquivo(id_file_upload)
+
+        contexto = facade.create_contexto_contra_cheque(request_injetado)
+        contexto.update(mensagem)
+
+        data = facade.contra_cheque_html_data(request, contexto)
     else:
-        print(request.GET)
-        confirma = request.GET.get("confirma")
-        idconfirma = request.GET.get("idconfirma")
-        idpessoal = request.GET.get("idpessoal")
-        mes_ano = request.GET.get("mes_ano")
-        data = facade.modal_confirma(
-            request, confirma, idconfirma, idpessoal, mes_ano
-        )
+        data = modal_excluir_arquivo(id_file_upload, request)
+
     return data

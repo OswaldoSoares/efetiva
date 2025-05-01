@@ -34,8 +34,6 @@ from .views import (
     exclui_vale_colaborador,
     pagamento_contra_cheque,
     estorna_contra_cheque,
-    arquiva_contra_cheque,
-    exclui_arquivo_contra_cheque,
 )
 
 from .views import (
@@ -63,6 +61,9 @@ from .views import (
     alterar_conducao_colaborador,
     alterar_entrada_colaborador,
     pagar_contra_cheque,
+    estornar_pagamento_contra_cheque,
+    upload_contra_cheque,
+    excluir_arquivo_contra_cheque,
 )
 
 
@@ -187,6 +188,21 @@ urlpatterns = [
         "pagar_contra_cheque",
         pagar_contra_cheque,
         name="pagar_contra_cheque",
+    ),
+    path(
+        "estornar_pagamento_contra_cheque",
+        estornar_pagamento_contra_cheque,
+        name="estornar_pagamento_contra_cheque",
+    ),
+    path(
+        "upload_contra_cheque",
+        upload_contra_cheque,
+        name="upload_contra_cheque",
+    ),
+    path(
+        "excluir_arquivo_contra_cheque",
+        excluir_arquivo_contra_cheque,
+        name="excluir_arquivo_contra_cheque",
     ),
     # Antigos
     path(
@@ -341,15 +357,5 @@ urlpatterns = [
         "estorna_contra_cheque",
         estorna_contra_cheque,
         name="estorna_contra_cheque",
-    ),
-    path(
-        "arquiva_contra_cheque",
-        arquiva_contra_cheque,
-        name="arquiva_contra_cheque",
-    ),
-    path(
-        "exclui_arquivo_contra_cheque",
-        exclui_arquivo_contra_cheque,
-        name="exclui_arquivo_contra_cheque",
     ),
 ]

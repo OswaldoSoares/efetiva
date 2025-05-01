@@ -16,6 +16,12 @@ if (typeof ano !== "undefined") {
     let ano = null; // Declara como null na primeira carga
 }
 
+if (typeof mesAno !== "undefined") {
+    mesAno = null; // Redefine para null se já existir
+} else {
+    let mesAno = null; // Declara como null na primeira carga
+}
+
 $(document).on('keydown', 'input.js-decimal, input.js-inteiro', function(e) {
     // Permitir: backspace, delete, setas (esquerda e direita), tab
     if ($.inArray(e.keyCode, [8, 9, 37, 39, 46]) !== -1) {
@@ -94,13 +100,8 @@ function openMyModal(event) {
     const url = $(event.target).data('action');
     let requestData = {
         title: $(event.target).data("title"),
-        id_pessoal: $(event.target).data("id_pessoal"),
-
-        // idcontapessoal: $(event.target).data("idcontapessoal"),
-        // mes_ano: localStorage.getItem("mes_ano"),
-        // confirma: $(event.target).data("confirma"),
-        // idconfirma: $(event.target).data("idconfirma"),
-        // idcartaoponto: $(event.target).data("idcartaoponto"),
+        id_pessoal: idPessoal,
+        mes_ano: mesAno,
     }
 
     // Verifica se o id_documento está presente
@@ -141,7 +142,7 @@ function openMyModal(event) {
         requestData.id_salario = idSalario;
     }
 
-    // Verifica se o id_salario está presente
+    // Verifica se o id_transporte está presente
     const idTransporte = $(event.target).data("id_transporte");
     if (typeof idTransporte !== "undefined") {
         requestData.id_transporte = idTransporte;
@@ -151,6 +152,12 @@ function openMyModal(event) {
     const idContraCheque = $(event.target).data("id_contra_cheque");
     if (typeof idContraCheque !== "undefined") {
         requestData.id_contra_cheque = idContraCheque;
+    }
+
+    // Verifica se o id_file_upload está presente
+    const idFileUpload = $(event.target).data("id_file_upload");
+    if (typeof idFileUpload !== "undefined") {
+        requestData.id_file_upload = idFileUpload;
     }
 
     // Caso seja para criar um novo colaborador oculta cards
@@ -309,17 +316,14 @@ $(document).on('submit', '.js-file-contra-cheque', function(event) {
     var formData = new FormData();
     var arquivo = $("#file-contracheque").get(0).files[0]
     var csrf_token = $('input[name="csrfmiddlewaretoken"]').val()
-    var mes_ano = localStorage.getItem("mes_ano")
-    var idpessoal = localStorage.getItem("idpessoal")
     var idcontracheque = $('input[name="idcontracheque"').val()
     formData.append("arquivo", arquivo);
     formData.append("csrfmiddlewaretoken", csrf_token);
-    formData.append("mes_ano", mes_ano);
-    formData.append("idpessoal", idpessoal);
-    formData.append("idcontracheque", idcontracheque);
+    formData.append("id_contra_cheque", idcontracheque);
+    formData.append("idpessoal", idPessoal);
     $.ajax({
         type: $(this).attr('method'),
-        url: '/pessoas/arquiva_contra_cheque',
+        url: '/pessoas/upload_contra_cheque',
         data: formData,
         cache: false,
         processData: false,
@@ -331,17 +335,18 @@ $(document).on('submit', '.js-file-contra-cheque', function(event) {
             $(".card-files-contra-cheque").hide()
         },
         success: function(data) {
-            $(".card-contra-cheque").html(data["html_contra_cheque"])
-            $(".card-contra-cheque").show()
+            $(".card-contra-cheque-colaborador").html(data["html-card-contra-cheque-colaborador"])
+            $(".card-contra-cheque-colaborador").show()
             $('.box-loader').hide()
+            exibirMensagem(data["mensagem"])
         },
     });
 });
 
 $(document).on('change', '#file-contracheque', function() {
-    $("#submit-contracheque").attr('title', "Upload Arquivo: " + $(this).val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]);
+    $("#submit-contracheque").attr('title', "UPLOAD DO ARQUIVO: " + $(this).val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]);
     $("#label-contracheque").hide()
-    $("#submit-contracheque").show()
+    $("#submit-contracheque").removeClass("hidden")
 });
 
 var selecionarValesToggle = function() {

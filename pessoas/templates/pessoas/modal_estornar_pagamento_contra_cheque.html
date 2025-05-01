@@ -1,0 +1,24 @@
+{% load humanize %}
+<form class="row g-3" method="post" action="{% url 'estornar_pagamento_contra_cheque' %}">
+    {% csrf_token %}
+	<div class="col-md-12 text-center font-maior">
+		<span>{{ contra_cheque.Descricao }} - {{ contra_cheque.MesReferencia }}/{{ contra_cheque.AnoReferencia }}</span>
+	</div>
+	{% for item in contra_cheque_itens %}
+	<div class="col-md-2 text-center font-menor">
+		<span class="form-control">{{ item.Codigo }}</span>
+	</div>
+	<div class="col-md-7 text-left font-menor">
+	<span class="form-control">{{ item.Descricao }}</span>
+	</div>
+	<div class="col-md-2 text-right font-menor">
+	<span class="form-control">R$ {{ item.Valor }}</span>
+	</div>
+	<div class="col-md-1 text-center font-menor">
+	<span class="form-control">{{ item.Registro }}</span>
+	</div>
+	{% endfor %}
+    <input type="hidden"name="id_contra_cheque"
+           value="{{ contra_cheque.idContraCheque }}">
+    <input type="hidden" name="id_pessoal" value="{{ id_pessoal }}">
+</form>

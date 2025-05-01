@@ -1,0 +1,24 @@
+<form method="post" action="">
+  {% csrf_token %}
+  <div>
+    <div class="text-center font-maior">
+      <span>
+        {{ file.DescricaoUpload }}.{{ file_ext }}
+      </span>
+    </div>
+    <div class="text-center">
+      {% if file_ext in "jpg png jpeg" %}
+      <img src="{{ file_url }}" alt="Preview" width="120" height="auto">
+      {% elif file_ext == "pdf" %}
+      <iframe
+        src="{% url 'visualizar_arquivo' file_id %}" class="modal-arquivo-pdf"
+        allowfullscreen>
+      </iframe>
+      {% else %}
+      <p>Pré-visualização não disponível para este tipo de arquivo.</p>
+      {% endif %}
+    </div>
+    <input type="hidden" name="id_file_upload" value="{{ file.idFileUpload }}">
+    <input type="hidden" name="request_passado" value="{{ request }}">
+  </div>
+</form>

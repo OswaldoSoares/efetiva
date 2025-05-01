@@ -793,6 +793,48 @@ def save_pagamento_contra_cheque(request):
     return {"mensagem": mensagem}
 
 
+def modal_estornar_pagamento_contra_cheque(_, request):
+    """Consultar Documentação Sistema Efetiva"""
+    id_pessoal = get_request_data(request, "id_pessoal")
+    id_contra_cheque = get_request_data(request, "id_contra_cheque")
+
+    contra_cheque = ContraCheque.objects.filter(
+        idContraCheque=id_contra_cheque
+    ).first()
+
+    contra_cheque_itens = ContraChequeItens.objects.filter(
+        idContraCheque=contra_cheque
+    ).order_by("Codigo")
+
+    contexto = {
+        "id_pessoal": id_pessoal,
+        "contra_cheque": contra_cheque,
+        "contra_cheque_itens": contra_cheque_itens,
+    }
+
+    modal_html = html_data.html_modal_estornar_pagamento_contra_cheque(
+        request, contexto
+    )
+
+    return JsonResponse({"modal_html": modal_html})
+
+
+def save_estorno_pagamento_contra_cheque(request):
+    """Consultar Documentação Sistema Efetiva"""
+    if request.method == "POST":
+        id_contra_cheque = request.POST.get("id_contra_cheque")
+
+        if ContraCheque.objects.filter(idContraCheque=id_contra_cheque).update(
+            Valor=Decimal(0.00), Pago=False
+        ):
+            mensagem = "Pagamento estornado com sucesso"
+
+        else:
+            mensagem = "Não foi possivel estornar o pagamento"
+
+        return {"mensagem": mensagem}
+
+
 def create_contexto_vale_transporte(request):
     id_pessoal = request.POST.get("id_pessoal") or request.GET.get(
         "id_pessoal"
@@ -1985,11 +2027,14 @@ def create_contexto_contra_cheque_pagamento(request):
         idContraCheque=contra_cheque
     ).order_by("Registro")
 
+    file = get_file_contra_cheque(contra_cheque.idContraCheque)
+
     return {
         "mensagem": f"Pagamento selecionadao: {mes_por_extenso}/{ano}",
         "contra_cheque": contra_cheque,
         "contra_cheque_itens": contra_cheque_itens,
         "id_pessoal": id_pessoal,
+        "file": file,
         **get_saldo_contra_cheque(contra_cheque_itens),
     }
 
@@ -2016,11 +2061,14 @@ def create_contexto_contra_cheque_adiantamento(request):
         descricao, quarenta_por_cento, "C", "40%", contra_cheque, "5501"
     )
 
+    file = get_file_contra_cheque(contra_cheque.idContraCheque)
+
     contexto = {
         "mensagem": f"Adiantamento selecionada: {mes_por_extenso}/{ano}",
         "contra_cheque": contra_cheque,
         "contra_cheque_itens": contra_cheque_itens,
         "id_pessoal": id_pessoal,
+        "file": file,
         **get_saldo_contra_cheque(contra_cheque_itens),
     }
 
@@ -2089,10 +2137,13 @@ def create_contexto_contra_cheque(request):
     if contas:
         update_contas_bancaria_obs(contra_cheque, contas, "contas")
 
+    file = get_file_contra_cheque(id_contra_cheque)
+
     contexto = {
         "id_pessoal": id_pessoal,
         "contra_cheque": contra_cheque,
         "contra_cheque_itens": contra_cheque_itens,
+        "file": file,
     }
     contexto.update(get_saldo_contra_cheque(contra_cheque_itens))
 

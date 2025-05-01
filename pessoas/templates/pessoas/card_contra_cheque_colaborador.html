@@ -80,15 +80,15 @@ href="{% url 'imprimir_contra_cheque' %}?id_contra_cheque={{ contra_cheque.idCon
 				{% if contra_cheque.Pago %}
 				{% if file %}
 				<a class="icofont-download i-button" href="{{ file.uploadFile.url }}"
-					target="_blank" title="Download do Arquivo"></a>
+					target="_blank" title="DOWNLOAD DO ARQUIVO"></a>
 				<i class="icofont-file-excel i-button js-exclui-arquivo-contra-cheque"
 					onclick="openMyModal(event); return false;"
-					data-title="CONFIRMA EXCLUSÃO DO ARQUIVO CONTRA-CHEQUE"
-					data-action="{% url 'exclui_arquivo_contra_cheque' %}"
+					data-title="CONFIRMAR EXCLUSÃO DO ARQUIVO"
+					data-action="{% url 'excluir_arquivo_contra_cheque' %}"
 					data-button-save-label="EXCLUIR"
-					data-confirma="confirma_exclui_arquivo_contra_cheque"
-					data-idconfirma="{{ contra_cheque.idContraCheque }}"
-					title="Deleta Arquivo"></i>
+					data-id_file_upload="{{ file.idFileUpload }}"
+					data-id_contra_cheque="{{ contra_cheque.idContraCheque }}"
+					title="EXCLUIR ARQUIVO"></i>
 				{% else %}
 				<form class="js-file-contra-cheque" method="post"
 					enctype="multipart/form-data">
@@ -97,20 +97,19 @@ href="{% url 'imprimir_contra_cheque' %}?id_contra_cheque={{ contra_cheque.idCon
 						class="file" id="file-contracheque" value="">
 					<i><label for="file-contracheque" id="label-contracheque"
 						class="icofont-folder i-button"
-						title="Seleciona Arquivo"></label></i>
-					<i><button class="icofont-cloud-download i-button"
+						title="SELECIONAR ARQUIVO"></label></i>
+					<i><button class="icofont-cloud-download i-button hidden"
 						type="submit" id="submit-contracheque"></button></i>
 					<input type="hidden" name="idcontracheque"
 						value="{{ contra_cheque.idContraCheque }}">
 				</form>
 				<i class="icofont-history i-button js-exclui-arquivo-contra-cheque"
 					onclick="openMyModal(event); return false;"
-					data-title="CONFIRMA ESTORNO DO CONTRA-CHEQUE"
-					data-action="{% url 'estorna_contra_cheque' %}"
+					data-title="CONFIRMAR ESTORNO DO CONTRA-CHEQUE"
+					data-action="{% url 'estornar_pagamento_contra_cheque' %}"
 					data-button-save-label="ESTORNAR"
-					data-confirma="confirma_estorno_contra_cheque"
-					data-idconfirma="{{ contra_cheque.idContraCheque }}"
-					title="Estorna Pagamento"></i>
+					data-id_contra_cheque="{{ contra_cheque.idContraCheque }}"
+					title="ESTORNAR PAGAMENTO"></i>
 				{% endif %}
 				{% else %}
 				<i class="icofont-bill-alt i-button"

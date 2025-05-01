@@ -10,8 +10,9 @@ Função responsável por gerar o contexto de contracheque para pagamento salari
 3. Busca ou cria um objeto `ContraCheque` para o colaborador referente ao pagamento.
 4. Atualiza o contracheque com os dados do pagamento por meio de `atualizar_contra_cheque_pagamento`.
 5. Obtém os itens do contracheque ordenados por tipo de registro.
-6. Calcula o saldo do contracheque.
-7. Retorna o contexto com os dados do contracheque, itens e saldo.
+6. Obtém o arquivo gerado referente ao contracheque.
+7. Calcula o saldo do contracheque.
+8. Retorna o contexto com os dados do contracheque, itens e saldo.
 
 ## Parâmetros
 
@@ -27,6 +28,7 @@ Função responsável por gerar o contexto de contracheque para pagamento salari
   - `contra_cheque` (`ContraCheque`): Objeto representando o contracheque do colaborador.
   - `contra_cheque_itens` (`QuerySet`): Lista de itens do contracheque ordenados por registro.
   - `id_pessoal` (`str`): Identificador do colaborador.
+  - `file` (`File`): Arquivo do contracheque gerado.
   - `saldo_computavel` (`dict`): Saldo calculado do contracheque.
 
 ## Dependências
@@ -35,6 +37,7 @@ Função responsável por gerar o contexto de contracheque para pagamento salari
 - `get_or_create_contra_cheque(...)`: Obtém ou cria um contracheque.
 - `atualizar_contra_cheque_pagamento(...)`: Atualiza os dados de pagamento do contracheque.
 - `ContraChequeItens.objects.filter(...)`: Obtém os itens do contracheque.
+- `get_file_contra_cheque(...)`: Obtém o arquivo gerado do contracheque.
 - `get_saldo_contra_cheque(...)`: Calcula o saldo do contracheque.
 
 ## Código da Função
@@ -55,6 +58,8 @@ def create_contexto_contra_cheque_pagamento(request):
     contra_cheque_itens = ContraChequeItens.objects.filter(
         idContraCheque=contra_cheque
     ).order_by("Registro")
+
+    file = get_file_contra_cheque(contra_cheque.idContraCheque)
 
     return {
         "mensagem": f"Pagamento selecionado: {mes_por_extenso}/{ano}",

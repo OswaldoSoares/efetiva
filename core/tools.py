@@ -1,8 +1,13 @@
 """ MÓDULO COM FUNÇÕES QUE SERÃO USADAS EM TODO O PROJETO """
 import calendar
+import os
 from datetime import datetime, time, timedelta
+from pathlib import Path
+from urllib.parse import urlparse, parse_qs
 from django.http import JsonResponse
+from django.template.loader import render_to_string
 from core.constants import MESES
+from website.models import FileUpload
 
 
 def apos_meia_noite(hora):
@@ -223,3 +228,115 @@ def primeiro_e_ultimo_dia_do_mes(mes: int, ano: int) -> tuple:
     primeiro = datetime(ano, mes, 1)
     ultimo = primeiro.replace(day=calendar.monthrange(ano, mes)[1])
     return [primeiro, ultimo]
+
+
+def upload_de_arquivo(request, nome_arquivo, max_size_mb):
+    """Consultar Documentação Sistema Efetiva"""
+    if request.method != "POST":
+        return {"mensagem": "Método inválido."}
+
+    if not request.FILES:
+        return {"mensagem": "Arquivo não selecionado."}
+
+    file_uploaded = request.FILES["arquivo"]
+    ext_file = file_uploaded.name.split(".")[-1].lower()
+
+    if ext_file not in ["pdf", "jpg", "png"]:
+        return {
+            "mensagem": "Tipo de arquivo não permitido."
+            " Permitidos: pdf, jpg e png",
+        }
+
+    max_file_size = max_size_mb * 1024 * 1024
+    if file_uploaded.size > max_file_size:
+        return {
+            "mensagem": f"Arquivo muito grande. O limite é {max_size_mb}MB.",
+        }
+
+    descricao = nome_arquivo.rsplit(".", 1)[0]
+    name_file = f"{descricao}.{ext_file}"
+    file_uploaded.name = name_file
+
+    try:
+        obj = FileUpload.objects.filter(DescricaoUpload=descricao).first()
+
+        if obj:
+            if obj.uploadFile and os.path.isfile(obj.uploadFile.path):
+                os.remove(obj.uploadFile.path)
+        else:
+            obj = FileUpload()
+
+        obj.DescricaoUpload = descricao
+        obj.uploadFile = file_uploaded
+        obj.save()
+
+        return {"mensagem": "Arquivo enviado ao servidor com sucesso"}
+
+    # TODO: Refinar exceções específicas mais tarde
+    except Exception as error:  # pylint: disable=W0703
+        print(f"Erro ao salvar: {error}")
+
+        return {"mensagem": "Falha ao salvar o arquivo, tente novamente"}
+
+
+def excluir_arquivo(id_file_upload):
+    """Consultar Documentação Sistema Efetiva"""
+    file = FileUpload.objects.filter(idFileUpload=id_file_upload).first()
+    if file:
+        try:
+            caminho = file.uploadFile.path
+            if os.path.exists(caminho):
+                os.remove(caminho)
+            file.delete()
+            mensagem = "Arquivo excluído com sucesso."
+
+        # TODO: Refinar exceções específicas mais tarde
+        except Exception as error:  # pylint: disable=W0703
+            print(f"Erro ao excluir arquivo: {error}")
+            mensagem = "Erro ao excluir o arquivo."
+    else:
+        mensagem = "Arquivo não encontrado."
+
+    return {"mensagem": mensagem}
+
+
+def modal_excluir_arquivo(id_file_upload, request):
+    """Consultar Documentação Sistema Efetiva"""
+    file = FileUpload.objects.get(idFileUpload=id_file_upload)
+    ext = Path(file.uploadFile.name).suffix.lower().strip(".")
+
+    contexto = {
+        "file": file,
+        "file_url": file.uploadFile.url,
+        "file_ext": ext,
+        "file_id": file.idFileUpload,
+    }
+
+    modal_html = render_to_string(
+        "core/modal_excluir_arquivo.html", contexto, request=request
+    )
+
+    return JsonResponse({"modal_html": modal_html})
+
+
+def injetar_parametro_no_request_post(request, url_field="request_passado"):
+    """Consultar Documentação Sistema Efetiva"""
+    url_string = request.POST.get(url_field)
+
+    if url_string:
+        parsed_url = urlparse(url_string)
+        query_params = parse_qs(parsed_url.query)
+
+        new_post = request.POST.copy()
+
+        for key, value in query_params.items():
+            if not key == "id_file_upload":
+                if value:
+                    new_post[key] = value[0]
+
+        del new_post[url_field]
+
+        request._post = new_post
+        request._files = request.FILES  # mantém arquivos se houver
+
+    return request

@@ -21,7 +21,15 @@ nav:
   - Módulos:
       - Core:
           - Constants:
-                - core/constants/Evento.md
+              - core/constants/Evento.md
+          - Tools:
+              - core/tools/excluir_arquivo.md
+              - core/tools/injetar_parametro_no_request_post.md
+              - core/tools/modal_excluir_arquivo.md
+              - core/tools/upload_de_arquivo.md
+          - Views:
+              - core/views/index_core.md
+              - core/views/visualizar_arquivo.md
       - Colaboradores:
           - Models: pessoas/models.md
           - Facade:
@@ -53,9 +61,11 @@ nav:
               - pessoas/facade/get_saldo_contra_cheque.md
               - pessoas/facade/meses_proporcionais_decimo_terceiro.md
               - pessoas/facade/meses_proporcionais_ferias.md
+              - pessoas/facade/modal_estornar_pagamento_contra_cheque.md
               - pessoas/facade/modal_pagar_contra_cheque.md
               - pessoas/facade/modal_salario_colaborador.md
               - pessoas/facade/salario_html_data.md
+              - pessoas/facade/save_estorno_pagamento_contra_cheque.md
               - pessoas/facade/save_pagamento_contra_cheque.md
               - pessoas/facade/save_salario_colaborador.md
               - pessoas/facade/validar_modal_salario_colaborador.md
@@ -64,6 +74,10 @@ nav:
           - Views:
               - pessoas/views/index_pessoal.md
               - pessoas/views/alterar_salario_colaborador.md
+              - pessoas/views/estornar_pagamento_contra_cheque.md
+              - pessoas/views/excluir_arquivo_contra_cheque.md
+              - pessoas/views/pagar_contra_cheque.md
+              - pessoas/views/upload_contra_cheque.md
       - Pagamentos:
           - Facade:
               - pagamentos/facade/create_contexto_meses_pagamento.md

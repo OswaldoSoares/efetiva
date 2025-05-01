@@ -11,9 +11,10 @@ Função responsável por gerar o contexto de contracheque para adiantamento sal
 4. Obtém a descrição do evento de adiantamento a partir de `EVENTOS_CONTRA_CHEQUE`.
 5. Calcula 40% do salário do colaborador.
 6. Registra o item de contracheque com o evento de adiantamento.
-7. Obtém o saldo do contracheque.
-8. Monta o contexto com os dados do contracheque, itens e saldo.
-9. Retorna o contexto formatado.
+7. Obtém o arquivo gerado referente ao contracheque.
+8. Obtém o saldo do contracheque.
+9. Monta o contexto com os dados do contracheque, itens e saldo.
+10. Retorna o contexto formatado.
 
 ## Parâmetros
 
@@ -29,6 +30,7 @@ Função responsável por gerar o contexto de contracheque para adiantamento sal
   - `contra_cheque` (`ContraCheque`): Objeto representando o contracheque do colaborador.
   - `contra_cheque_itens` (`ContraChequeItens`): Lista de itens do contracheque.
   - `id_pessoal` (`str`): Identificador do colaborador.
+  - `file` (`File`): Arquivo do contracheque gerado.
   - `saldo_computavel` (`dict`): Saldo calculado do contracheque.
 
 ## Dependências
@@ -37,6 +39,7 @@ Função responsável por gerar o contexto de contracheque para adiantamento sal
 - `get_or_create_contra_cheque(...)`: Obtém ou cria um contracheque.
 - `classes.Colaborador(id_pessoal)`: Obtém informações do colaborador.
 - `get_or_create_contra_cheque_itens(...)`: Registra um item do contracheque.
+- `get_file_contra_cheque(...)`: Obtém o arquivo gerado do contracheque.
 - `get_saldo_contra_cheque(...)`: Obtém o saldo calculado dos itens do contracheque.
 
 ## Código da Função
@@ -62,6 +65,8 @@ def create_contexto_contra_cheque_adiantamento(request):
     contra_cheque_itens = get_or_create_contra_cheque_itens(
         descricao, quarenta_por_cento, "C", "40%", contra_cheque, "5501"
     )
+
+    file = get_file_contra_cheque(contra_cheque.idContraCheque)
 
     contexto = {
         "mensagem": f"Adiantamento selecionado: {mes_por_extenso}/{ano}",
