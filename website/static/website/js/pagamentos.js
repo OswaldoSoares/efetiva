@@ -16,7 +16,7 @@ $(document).ready(function() {
 
 // Seleciona mês e ano para pagamento de colaboradores mensalistas
 $(document).on("click", ".js-selecionar-mes-pagamento", function() {
-    const mesAno = $(".select-mes-ano option:selected").text();
+    mesAno = $(".select-mes-ano option:selected").text();
 
     executarAjax("/pagamentos/selecionar_mes_pagamento", "GET", {
         mes_ano: mesAno,
