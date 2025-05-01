@@ -16,6 +16,12 @@ if (typeof ano !== "undefined") {
     let ano = null; // Declara como null na primeira carga
 }
 
+if (typeof mesAno !== "undefined") {
+    mesAno = null; // Redefine para null se já existir
+} else {
+    let mesAno = null; // Declara como null na primeira carga
+}
+
 $(document).on('keydown', 'input.js-decimal, input.js-inteiro', function(e) {
     // Permitir: backspace, delete, setas (esquerda e direita), tab
     if ($.inArray(e.keyCode, [8, 9, 37, 39, 46]) !== -1) {
