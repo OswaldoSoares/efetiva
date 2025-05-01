@@ -793,6 +793,31 @@ def save_pagamento_contra_cheque(request):
     return {"mensagem": mensagem}
 
 
+def modal_estornar_pagamento_contra_cheque(_, request):
+    id_pessoal = get_request_data(request, "id_pessoal")
+    id_contra_cheque = get_request_data(request, "id_contra_cheque")
+
+    contra_cheque = ContraCheque.objects.filter(
+        idContraCheque=id_contra_cheque
+    ).first()
+
+    contra_cheque_itens = ContraChequeItens.objects.filter(
+        idContraCheque=contra_cheque
+    ).order_by("Codigo")
+
+    contexto = {
+        "id_pessoal": id_pessoal,
+        "contra_cheque": contra_cheque,
+        "contra_cheque_itens": contra_cheque_itens,
+    }
+
+    modal_html = html_data.html_modal_estornar_pagamento_contra_cheque(
+        request, contexto
+    )
+
+    return JsonResponse({"modal_html": modal_html})
+
+
 def create_contexto_vale_transporte(request):
     id_pessoal = request.POST.get("id_pessoal") or request.GET.get(
         "id_pessoal"
