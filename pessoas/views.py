@@ -707,25 +707,17 @@ def upload_contra_cheque(request):
     return data
 
 
-def exclui_arquivo_contra_cheque(request):
+def excluir_arquivo_contra_cheque(request):
+    id_file_upload = get_request_data(request, "id_file_upload")
     if request.method == "POST":
-        print(request.POST)
-        idcontracheque = request.POST.get("idcontracheque")
-        idpessoal = request.POST.get("idpessoal")
-        mes_ano = request.POST.get("mes_ano")
-        facade.exclui_arquivo_contra_cheque_servidor(request, idcontracheque)
-        descricao = facade.get_descricao_contra_cheque_id(idcontracheque)
-        contexto = facade.create_contexto_contra_cheque_colaborador(
-            idpessoal, mes_ano, descricao
-        )
-        data = facade.create_data_contra_cheque_colaborador(request, contexto)
+        request_injetado = injetar_parametro_no_request_post(request)
+        mensagem = excluir_arquivo(id_file_upload)
+
+        contexto = facade.create_contexto_contra_cheque(request_injetado)
+        contexto.update(mensagem)
+
+        data = facade.contra_cheque_html_data(request, contexto)
     else:
-        print(request.GET)
-        confirma = request.GET.get("confirma")
-        idconfirma = request.GET.get("idconfirma")
-        idpessoal = request.GET.get("idpessoal")
-        mes_ano = request.GET.get("mes_ano")
-        data = facade.modal_confirma(
-            request, confirma, idconfirma, idpessoal, mes_ano
-        )
+        data = modal_excluir_arquivo(id_file_upload, request)
+
     return data
