@@ -316,17 +316,14 @@ $(document).on('submit', '.js-file-contra-cheque', function(event) {
     var formData = new FormData();
     var arquivo = $("#file-contracheque").get(0).files[0]
     var csrf_token = $('input[name="csrfmiddlewaretoken"]').val()
-    var mes_ano = localStorage.getItem("mes_ano")
-    var idpessoal = localStorage.getItem("idpessoal")
     var idcontracheque = $('input[name="idcontracheque"').val()
     formData.append("arquivo", arquivo);
     formData.append("csrfmiddlewaretoken", csrf_token);
-    formData.append("mes_ano", mes_ano);
-    formData.append("idpessoal", idpessoal);
-    formData.append("idcontracheque", idcontracheque);
+    formData.append("id_contra_cheque", idcontracheque);
+    formData.append("idpessoal", idPessoal);
     $.ajax({
         type: $(this).attr('method'),
-        url: '/pessoas/arquiva_contra_cheque',
+        url: '/pessoas/upload_contra_cheque',
         data: formData,
         cache: false,
         processData: false,
