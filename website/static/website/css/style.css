@@ -6839,3 +6839,9 @@ label {
   text-decoration-color: red;
   text-decoration-style: double;
 }
+
+.modal-arquivo-pdf {
+  width: 100%;
+  height: 300px;
+  border: none;
+}
