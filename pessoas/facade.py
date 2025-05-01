@@ -820,6 +820,7 @@ def modal_estornar_pagamento_contra_cheque(_, request):
 
 
 def save_estorno_pagamento_contra_cheque(request):
+    """Consultar Documentação Sistema Efetiva"""
     if request.method == "POST":
         id_contra_cheque = request.POST.get("id_contra_cheque")
 
