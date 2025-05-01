@@ -708,6 +708,7 @@ def upload_contra_cheque(request):
 
 
 def excluir_arquivo_contra_cheque(request):
+    """Consultar Documentação Sistema Efetiva"""
     id_file_upload = get_request_data(request, "id_file_upload")
     if request.method == "POST":
         request_injetado = injetar_parametro_no_request_post(request)
