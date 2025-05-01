@@ -344,9 +344,9 @@ $(document).on('submit', '.js-file-contra-cheque', function(event) {
 });
 
 $(document).on('change', '#file-contracheque', function() {
-    $("#submit-contracheque").attr('title', "Upload Arquivo: " + $(this).val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]);
+    $("#submit-contracheque").attr('title', "UPLOAD DO ARQUIVO: " + $(this).val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]);
     $("#label-contracheque").hide()
-    $("#submit-contracheque").show()
+    $("#submit-contracheque").removeClass("hidden")
 });
 
 var selecionarValesToggle = function() {
