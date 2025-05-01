@@ -794,6 +794,7 @@ def save_pagamento_contra_cheque(request):
 
 
 def modal_estornar_pagamento_contra_cheque(_, request):
+    """Consultar Documentação Sistema Efetiva"""
     id_pessoal = get_request_data(request, "id_pessoal")
     id_contra_cheque = get_request_data(request, "id_contra_cheque")
 
