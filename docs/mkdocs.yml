@@ -74,6 +74,7 @@ nav:
               - pessoas/views/alterar_salario_colaborador.md
               - pessoas/views/estornar_pagamento_contra_cheque.md
               - pessoas/views/pagar_contra_cheque.md
+              - pessoas/views/upload_contra_cheque.md
       - Pagamentos:
           - Facade:
               - pagamentos/facade/create_contexto_meses_pagamento.md
