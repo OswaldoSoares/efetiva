@@ -175,6 +175,15 @@ def html_modal_pagar_contra_cheque(request, contexto):
     return modal_html
 
 
+def html_modal_estornar_pagamento_contra_cheque(request, contexto):
+    modal_html = render_to_string(
+        "pessoas/modal_estornar_pagamento_contra_cheque.html",
+        contexto,
+        request=request,
+    )
+    return modal_html
+
+
 def html_modal_vale_colaborador(request, contexto):
     modal_html = render_to_string(
         "pessoas/modal_vale_colaborador.html", contexto, request=request
