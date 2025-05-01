@@ -819,6 +819,21 @@ def modal_estornar_pagamento_contra_cheque(_, request):
     return JsonResponse({"modal_html": modal_html})
 
 
+def save_estorno_pagamento_contra_cheque(request):
+    if request.method == "POST":
+        id_contra_cheque = request.POST.get("id_contra_cheque")
+
+        if ContraCheque.objects.filter(idContraCheque=id_contra_cheque).update(
+            Valor=Decimal(0.00), Pago=False
+        ):
+            mensagem = "Pagamento estornado com sucesso"
+
+        else:
+            mensagem = "Não foi possivel estornar o pagamento"
+
+        return {"mensagem": mensagem}
+
+
 def create_contexto_vale_transporte(request):
     id_pessoal = request.POST.get("id_pessoal") or request.GET.get(
         "id_pessoal"
