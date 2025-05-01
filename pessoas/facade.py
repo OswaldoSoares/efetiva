@@ -2137,10 +2137,13 @@ def create_contexto_contra_cheque(request):
     if contas:
         update_contas_bancaria_obs(contra_cheque, contas, "contas")
 
+    file = get_file_contra_cheque(id_contra_cheque)
+
     contexto = {
         "id_pessoal": id_pessoal,
         "contra_cheque": contra_cheque,
         "contra_cheque_itens": contra_cheque_itens,
+        "file": file,
     }
     contexto.update(get_saldo_contra_cheque(contra_cheque_itens))
 
