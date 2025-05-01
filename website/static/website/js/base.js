@@ -335,9 +335,10 @@ $(document).on('submit', '.js-file-contra-cheque', function(event) {
             $(".card-files-contra-cheque").hide()
         },
         success: function(data) {
-            $(".card-contra-cheque").html(data["html_contra_cheque"])
-            $(".card-contra-cheque").show()
+            $(".card-contra-cheque-colaborador").html(data["html-card-contra-cheque-colaborador"])
+            $(".card-contra-cheque-colaborador").show()
             $('.box-loader').hide()
+            exibirMensagem(data["mensagem"])
         },
     });
 });
