@@ -190,6 +190,11 @@ urlpatterns = [
         name="pagar_contra_cheque",
     ),
     path(
+        "estornar_pagamento_contra_cheque",
+        estornar_pagamento_contra_cheque,
+        name="estornar_pagamento_contra_cheque",
+    ),
+    path(
         "upload_contra_cheque",
         upload_contra_cheque,
         name="upload_contra_cheque",
