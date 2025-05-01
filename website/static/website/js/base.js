@@ -142,7 +142,7 @@ function openMyModal(event) {
         requestData.id_salario = idSalario;
     }
 
-    // Verifica se o id_salario está presente
+    // Verifica se o id_transporte está presente
     const idTransporte = $(event.target).data("id_transporte");
     if (typeof idTransporte !== "undefined") {
         requestData.id_transporte = idTransporte;
