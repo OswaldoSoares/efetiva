@@ -100,13 +100,8 @@ function openMyModal(event) {
     const url = $(event.target).data('action');
     let requestData = {
         title: $(event.target).data("title"),
-        id_pessoal: $(event.target).data("id_pessoal"),
-
-        // idcontapessoal: $(event.target).data("idcontapessoal"),
-        // mes_ano: localStorage.getItem("mes_ano"),
-        // confirma: $(event.target).data("confirma"),
-        // idconfirma: $(event.target).data("idconfirma"),
-        // idcartaoponto: $(event.target).data("idcartaoponto"),
+        id_pessoal: idPessoal,
+        mes_ano: mesAno,
     }
 
     // Verifica se o id_documento está presente
