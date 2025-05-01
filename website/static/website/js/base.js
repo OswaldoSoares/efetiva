@@ -154,6 +154,12 @@ function openMyModal(event) {
         requestData.id_contra_cheque = idContraCheque;
     }
 
+    // Verifica se o id_file_upload está presente
+    const idFileUpload = $(event.target).data("id_file_upload");
+    if (typeof idFileUpload !== "undefined") {
+        requestData.id_file_upload = idFileUpload;
+    }
+
     // Caso seja para criar um novo colaborador oculta cards
     if ($(event.target).data("title") == "ADICIONAR COLABORADOR") {
         $(".card-foto-colaborador").hide();
