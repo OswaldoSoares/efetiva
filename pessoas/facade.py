@@ -1926,7 +1926,6 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
     colaborador = classes.Colaborador(id_pessoal)
     admissao = colaborador.dados_profissionais.data_admissao
     demissao = colaborador.dados_profissionais.data_demissao
-    salario = colaborador.salarios.salarios.Salario
     tarifa_dia = colaborador.salarios.salarios.ValeTransporte
     id_contra_cheque = contra_cheque.idContraCheque
 
@@ -1934,6 +1933,15 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
     primeiro_dia = admissao if admissao > primeiro_dia.date() else primeiro_dia
     ultimo_dia = (
         demissao if demissao and demissao < ultimo_dia.date() else ultimo_dia
+    )
+
+    salario = (
+        AlteracaoSalarial.objects.filter(
+            idPessoal=id_pessoal, Data__lt=ultimo_dia
+        )
+        .order_by("-Valor")
+        .values_list("Valor", flat=True)
+        .first()
     )
 
     cartao_ponto = CartaoPonto.objects.filter(
