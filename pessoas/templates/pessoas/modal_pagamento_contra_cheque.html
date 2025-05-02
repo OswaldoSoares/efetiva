@@ -18,8 +18,8 @@
     </div>
     <div class="col-md-4">
         <label for="id_valor" class="form-label">VALOR DO PAGAMENTO</label>
-        <input type="number"class="form-control"name="valor" readonly tabindex="-1"
-               id="id_valor" value="{{ saldo }}">
+        <input type="number" class="form-control"name="valor" tabindex="-1" readonly
+               id="id_valor" value="{{ saldo|stringformat:'.2f' }}">
     </div>
 
     <input type="hidden"name="id_contra_cheque"
