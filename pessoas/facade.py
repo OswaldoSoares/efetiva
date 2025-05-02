@@ -77,20 +77,6 @@ from pessoas import classes
 from pessoas import html_data
 from typing import List
 
-#  meses = [
-#  "JANEIRO",
-#  "FEVEREIRO",
-#  "MARÇO",
-#  "ABRIL",
-#  "MAIO",
-#  "JUNHO",
-#  "JULHO",
-#  "AGOSTO",
-#  "SETEMBRO",
-#  "OUTUBRO",
-#  "NOVEMBRO",
-#  "DEZEMBRO",
-#  ]
 dias = [
     "SEGUNDA-FEIRA",
     "TERÇA-FEIRA",
@@ -4238,26 +4224,6 @@ def get_cidade_estado(cidade, estado, cep):
         else:
             cidade_estado = cidade_estado + " - CEP: " + cep
     return cidade_estado
-
-    #  @staticmethod
-    #  def get_faltas_aquisitivo(self):
-    #  if self.tipo_pgto == "MENSALISTA":
-    #  inicio = self.aquisitivo[0]["aquisitivo_inicial"]
-    #  final = self.aquisitivo[0]["aquisitivo_final"]
-    #  cartao_ponto = CartaoPonto.objects.filter(
-    #  idPessoal=self.idpes,
-    #  Dia__range=[inicio, final],
-    #  Ausencia="FALTA",
-    #  Remunerado=False,
-    #  )
-    #  lista = [
-    #  datetime.datetime.strftime(i.Dia, "%d/%m/%Y")
-    #  for i in cartao_ponto
-    #  ]
-    #  else:
-    #  lista = []
-    #  return lista
-
 
 def create_contexto_contra_cheque_colaborador(idpessoal, mes_ano, descricao):
     mes, ano = converter_mes_ano(mes_ano)
