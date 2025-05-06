@@ -1,19 +1,19 @@
 if (typeof idPessoal !== "undefined") {
     idPessoal = null; // Redefine para null se já existir
 } else {
-    let idPessoal = null; // Declara como null na primeira carga
+    var idPessoal = null; // Declara como null na primeira carga
 }
 
 if (typeof mes !== "undefined") {
     mes = null; // Redefine para null se já existir
 } else {
-    let mes = null; // Declara como null na primeira carga
+    var mes = null; // Declara como null na primeira carga
 }
 
 if (typeof ano !== "undefined") {
     ano = null; // Redefine para null se já existir
 } else {
-    let ano = null; // Declara como null na primeira carga
+    var ano = null; // Declara como null na primeira carga
 }
 
 if (typeof mesAno !== "undefined") {
