@@ -77,20 +77,6 @@ from pessoas import classes
 from pessoas import html_data
 from typing import List
 
-#  meses = [
-#  "JANEIRO",
-#  "FEVEREIRO",
-#  "MARÇO",
-#  "ABRIL",
-#  "MAIO",
-#  "JUNHO",
-#  "JULHO",
-#  "AGOSTO",
-#  "SETEMBRO",
-#  "OUTUBRO",
-#  "NOVEMBRO",
-#  "DEZEMBRO",
-#  ]
 dias = [
     "SEGUNDA-FEIRA",
     "TERÇA-FEIRA",
@@ -4174,39 +4160,6 @@ def exclui_vale_colaborador_id(request, idvale, idpessoal):
     return JsonResponse(data)
 
 
-def paga_contra_cheque(request, idcontracheque):
-    #  contra_cheque = get_contra_cheque_id(idcontracheque)
-    valor = request.POST.get("valor")
-    valor = valor.replace(".", "_").replace(",", ".").replace("_", ",")
-    valor = Decimal(valor)
-    registro_contra_cheque = []
-    registro_contra_cheque.append(
-        ContraCheque(
-            idContraCheque=idcontracheque,
-            Valor=valor,
-            Pago=True,
-        )
-    )
-    ContraCheque.objects.bulk_update(registro_contra_cheque, ["Valor", "Pago"])
-    data = dict()
-    data["pago"] = True
-    return JsonResponse(data)
-
-
-def estorna_contra_cheque(request, idcontracheque):
-    registro_contra_cheque = []
-    registro_contra_cheque.append(
-        ContraCheque(
-            idContraCheque=idcontracheque,
-            Pago=False,
-        )
-    )
-    ContraCheque.objects.bulk_update(registro_contra_cheque, ["Pago"])
-    data = dict()
-    data["pago"] = False
-    return JsonResponse(data)
-
-
 def salva_arquivo_contra_cheque(request, idcontracheque):
     message = {"text": None, "type": None}
     if request.method == "POST":
@@ -4271,26 +4224,6 @@ def get_cidade_estado(cidade, estado, cep):
         else:
             cidade_estado = cidade_estado + " - CEP: " + cep
     return cidade_estado
-
-    #  @staticmethod
-    #  def get_faltas_aquisitivo(self):
-    #  if self.tipo_pgto == "MENSALISTA":
-    #  inicio = self.aquisitivo[0]["aquisitivo_inicial"]
-    #  final = self.aquisitivo[0]["aquisitivo_final"]
-    #  cartao_ponto = CartaoPonto.objects.filter(
-    #  idPessoal=self.idpes,
-    #  Dia__range=[inicio, final],
-    #  Ausencia="FALTA",
-    #  Remunerado=False,
-    #  )
-    #  lista = [
-    #  datetime.datetime.strftime(i.Dia, "%d/%m/%Y")
-    #  for i in cartao_ponto
-    #  ]
-    #  else:
-    #  lista = []
-    #  return lista
-
 
 def create_contexto_contra_cheque_colaborador(idpessoal, mes_ano, descricao):
     mes, ano = converter_mes_ano(mes_ano)
