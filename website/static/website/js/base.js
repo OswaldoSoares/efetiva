@@ -19,7 +19,7 @@ if (typeof ano !== "undefined") {
 if (typeof mesAno !== "undefined") {
     mesAno = null; // Redefine para null se já existir
 } else {
-    let mesAno = null; // Declara como null na primeira carga
+    var mesAno = null; // Declara como null na primeira carga
 }
 
 $(document).on('keydown', 'input.js-decimal, input.js-inteiro', function(e) {
