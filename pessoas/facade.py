@@ -1123,6 +1123,34 @@ def validar_modal_data_readmissao_colaborador(request: Any) -> JsonResponse:
     return False
 
 
+def save_readmissao_colaborador(request):
+    id_pessoal = request.POST.get("id_pessoal")
+    data_readmissao_str = request.POST.get("readmissao")
+
+    if not id_pessoal or not data_readmissao_str:
+        return {"mensagem": "Parâmetros inválidos"}
+
+    try:
+        data_readmissao = datetime.strptime(data_readmissao_str, "%Y-%m-%d")
+    except ValueError:
+        return {"mensagem": "Formato de data inválido"}
+
+    colaborador = Pessoal.objects.get(idPessoal=id_pessoal)
+
+    Readmissao.objects.create(
+        DataAdmissao=colaborador.DataAdmissao,
+        DataDemissao=colaborador.DataDemissao,
+        DataReadmissao=data_readmissao,
+        idPessoal=colaborador,
+    )
+
+    colaborador.DataAdmissao = data_readmissao
+    colaborador.DataDemissao = None
+    colaborador.save()
+
+    return {"mensagem": "Colaborador Readmitido"}
+
+
 def registrar_contra_cheque(id_pessoal, data_base, descricao):
     mes_por_extenso = obter_mes_por_numero(data_base.month)
     ano = data_base.year
