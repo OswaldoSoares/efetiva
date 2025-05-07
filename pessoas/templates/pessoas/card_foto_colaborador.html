@@ -97,19 +97,30 @@
             <i class="icofont-rounded-left-down"></i>
         </div>
         <div class="div-flex div-form-control">
-            <div class="tamanho-33 text-center">
+            <div class="tamanho-25 text-center">
                 <i class="icofont-ui-block i-button js-alterar-status"
                    data-id_pessoal="{{ colaborador.id_pessoal }}"
                    title="BLOQUEAR COLABORADOR"></i>
                 <input type="hidden" value="{{ colaborador.status_pessoal }}"
                        name="status_pessoal">
             </div>
-            <div class="tamanho-34 text-center">
+            <div class="tamanho-25 text-center">
                 <a class="icofont-printer i-button" target="_blank"
                    href="{% url 'print_ficha_colaborador' %}?idpes={{ colaborador.id_pessoal }}"
                    title="IMPRIMIR FICHA CADASTRAL"></a>
             </div>
-            <div class="tamanho-33 text-center">
+            <div class="tamanho-25 text-center">
+                {% if colaborador.dados_profissionais.data_demissao %}
+                <i class="icofont-aim i-button"
+                   onclick="openMyModal(event); return false;"
+                   data-title="INFORMAR DATA DA READMISSÂO"
+                   data-action="{% url 'readmitir_colaborador' %}"
+                   data-button-save-label="SALVAR"
+                   data-id_pesssoal="{{ colaborador.id_pessoal }}"
+                   title="READMITIR COLABORADOR"></i>
+                {% endif %}
+            </div>
+            <div class="tamanho-25 text-center">
                 {% if colaborador.dados_profissionais.data_demissao %}
                 <i class="icofont-calculator i-button js-mostrar-eventos-rescisorios"
                    title="Verbas Rescisoria" data-id_pessoal="{{ colaborador.idpes }}"></i>
