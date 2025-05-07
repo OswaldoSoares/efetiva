@@ -203,6 +203,11 @@ urlpatterns = [
         excluir_arquivo_contra_cheque,
         name="excluir_arquivo_contra_cheque",
     ),
+    path(
+        "readmitir_colaborador",
+        readmitir_colaborador,
+        name="readmitir_colaborador",
+    ),
     # Antigos
     path(
         "bloqueiapessoa/<int:idpessoa>/",
