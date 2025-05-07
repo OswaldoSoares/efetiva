@@ -69,6 +69,7 @@ nav:
               - pessoas/facade/save_estorno_pagamento_contra_cheque.md
               - pessoas/facade/save_pagamento_contra_cheque.md
               - pessoas/facade/save_salario_colaborador.md
+              - pessoas/facade/validar_modal_data_readmissao_colaborador.md
               - pessoas/facade/validar_modal_salario_colaborador.md
               - pessoas/facade/verificar_salario_colaborador.md
               - pessoas/facade/verificar_ultimo_pagamento.md
