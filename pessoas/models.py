@@ -387,3 +387,20 @@ class Ferias(models.Model):
         return str(self.idFerias)
 
     objects = models.Manager()
+
+
+class Readmissao(models.Model):
+    idReadmissao = models.AutoField(primary_key=True)
+    DataAdmissao = models.DateField(blank=True, null=True)
+    DataDemissao = models.DateField(blank=True, null=True)
+    DataReadmissao = models.DateField(blank=True, null=True)
+    idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = "readmissao"
+        ordering = ["DataReadmissao"]
+
+    def __str__(self):
+        return str(self.idReadmissao)
+
+    objects = models.Manager()
