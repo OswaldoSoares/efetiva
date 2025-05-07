@@ -2236,6 +2236,7 @@ def create_contra_cheque_itens_vale(request):
         Descricao=f"{vale.Descricao} - {dia}",
         Valor=vale.Valor,
         Registro="D",
+        Codigo="9901",
         idContraCheque_id=request.GET.get("id_contra_cheque"),
         Vales_id=request.GET.get("id_vale"),
     ):
