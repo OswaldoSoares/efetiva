@@ -1,0 +1,9 @@
+<form class="row g-3" method="post" action="{% url 'readmitir_colaborador' %}">
+{% csrf_token %}
+    <div class="col-md-6">
+		<label for="readmissao" class="form-label">DATA READMISSÃO (PRIMEIRO DIA TRABALHADO):</label>
+        <input type="date" class="form-control" name="readmissao" value="{{ hoje }}">
+    </div>
+    <input type="hidden" name="id_pessoal" value="{{ colaborador.id_pessoal }}">
+</form>
+<div class="thrown-error invisivel"></div>
