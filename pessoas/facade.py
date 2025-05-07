@@ -62,6 +62,7 @@ from pessoas.models import (
     CartaoPonto,
     AlteracaoSalarial,
     AlteracaoValeTransporte,
+    Readmissao,
 )
 from website.models import FileUpload, Parametros
 from website.facade import (
