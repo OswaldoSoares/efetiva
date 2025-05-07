@@ -77,6 +77,7 @@ nav:
               - pessoas/views/estornar_pagamento_contra_cheque.md
               - pessoas/views/excluir_arquivo_contra_cheque.md
               - pessoas/views/pagar_contra_cheque.md
+              - pessoas/views/readmitir_colaborador.md
               - pessoas/views/upload_contra_cheque.md
       - Pagamentos:
           - Facade:
