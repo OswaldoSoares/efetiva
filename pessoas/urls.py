@@ -62,6 +62,7 @@ from .views import (
     estornar_pagamento_contra_cheque,
     upload_contra_cheque,
     excluir_arquivo_contra_cheque,
+    readmitir_colaborador,
 )
 
 
