@@ -1124,6 +1124,7 @@ def validar_modal_data_readmissao_colaborador(request: Any) -> JsonResponse:
 
 
 def save_readmissao_colaborador(request):
+    """Consultar Documentação Sistema Efetiva"""
     id_pessoal = request.POST.get("id_pessoal")
     data_readmissao_str = request.POST.get("readmissao")
 
