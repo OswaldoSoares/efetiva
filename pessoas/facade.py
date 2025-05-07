@@ -1068,6 +1068,24 @@ def validar_modal_data_demissao_colaborador(request: Any) -> JsonResponse:
     return False
 
 
+def modal_data_readmissao_colaborador(id_pessoal, request):
+    id_pessoal = (
+        request.POST.get("id_pessoal")
+        if request.method == "POST"
+        else request.GET.get("id_pessoal")
+    )
+    colaborador = classes.Colaborador(id_pessoal) if id_pessoal else False
+    hoje = datetime.today().date()
+    contexto = {
+        "colaborador": colaborador,
+        "hoje": hoje.strftime("%Y-%m-%d"),
+    }
+    modal_html = html_data.html_modal_data_readmissao_colaborador(
+        request, contexto
+    )
+    return JsonResponse({"modal_html": modal_html})
+
+
 def registrar_contra_cheque(id_pessoal, data_base, descricao):
     mes_por_extenso = obter_mes_por_numero(data_base.month)
     ano = data_base.year
