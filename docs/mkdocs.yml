@@ -61,13 +61,16 @@ nav:
               - pessoas/facade/get_saldo_contra_cheque.md
               - pessoas/facade/meses_proporcionais_decimo_terceiro.md
               - pessoas/facade/meses_proporcionais_ferias.md
+              - pessoas/facade/modal_data_readmissao_colaborador.md
               - pessoas/facade/modal_estornar_pagamento_contra_cheque.md
               - pessoas/facade/modal_pagar_contra_cheque.md
               - pessoas/facade/modal_salario_colaborador.md
               - pessoas/facade/salario_html_data.md
               - pessoas/facade/save_estorno_pagamento_contra_cheque.md
               - pessoas/facade/save_pagamento_contra_cheque.md
+              - pessoas/facade/save_readmissao_colaborador.md
               - pessoas/facade/save_salario_colaborador.md
+              - pessoas/facade/validar_modal_data_readmissao_colaborador.md
               - pessoas/facade/validar_modal_salario_colaborador.md
               - pessoas/facade/verificar_salario_colaborador.md
               - pessoas/facade/verificar_ultimo_pagamento.md
@@ -77,6 +80,7 @@ nav:
               - pessoas/views/estornar_pagamento_contra_cheque.md
               - pessoas/views/excluir_arquivo_contra_cheque.md
               - pessoas/views/pagar_contra_cheque.md
+              - pessoas/views/readmitir_colaborador.md
               - pessoas/views/upload_contra_cheque.md
       - Pagamentos:
           - Facade:

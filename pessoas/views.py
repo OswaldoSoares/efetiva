@@ -677,3 +677,18 @@ def excluir_arquivo_contra_cheque(request):
         data = modal_excluir_arquivo(id_file_upload, request)
 
     return data
+
+
+def readmitir_colaborador(request):
+    """Consultar Documentação Sistema Efetiva"""
+    error = facade.validar_modal_data_readmissao_colaborador(request)
+    if error:
+        return error
+
+    return handle_modal_colaborador(
+        request,
+        facade.modal_data_readmissao_colaborador,
+        facade.save_readmissao_colaborador,
+        partial(facade.create_contexto_class_colaborador, request),
+        facade.data_demissao_html_data,
+    )

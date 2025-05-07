@@ -62,6 +62,7 @@ from pessoas.models import (
     CartaoPonto,
     AlteracaoSalarial,
     AlteracaoValeTransporte,
+    Readmissao,
 )
 from website.models import FileUpload, Parametros
 from website.facade import (
@@ -1065,6 +1066,90 @@ def validar_modal_data_demissao_colaborador(request: Any) -> JsonResponse:
         )
 
     return False
+
+
+def modal_data_readmissao_colaborador(id_pessoal, request):
+    """Consultar Documentação Sistema Efetiva"""
+    id_pessoal = (
+        request.POST.get("id_pessoal")
+        if request.method == "POST"
+        else request.GET.get("id_pessoal")
+    )
+    colaborador = classes.Colaborador(id_pessoal) if id_pessoal else False
+    hoje = datetime.today().date()
+    contexto = {
+        "colaborador": colaborador,
+        "hoje": hoje.strftime("%Y-%m-%d"),
+    }
+    modal_html = html_data.html_modal_data_readmissao_colaborador(
+        request, contexto
+    )
+    return JsonResponse({"modal_html": modal_html})
+
+
+def validar_modal_data_readmissao_colaborador(request: Any) -> JsonResponse:
+    """Consultar Documentação Sistema Efetiva"""
+    if request.method != "POST":
+        return False
+
+    id_pessoal = request.POST.get("id_pessoal")
+    readmissao_str = request.POST.get("readmissao")
+
+    data_readmissao = datetime.strptime(readmissao_str, "%Y-%m-%d").date()
+    hoje = datetime.today().date()
+
+    colaborador = classes.Colaborador(id_pessoal)
+    data_demissao = colaborador.dados_profissionais.data_demissao
+    _, ultimo_dia_mes_demissao = primeiro_e_ultimo_dia_do_mes(
+        data_demissao.month, data_demissao.year
+    )
+
+    if data_readmissao > hoje:
+        return JsonResponse(
+            {
+                "error": "A data de readmissão não pode ser posterior ao dia de hoje."
+            },
+            status=400,
+        )
+
+    if data_readmissao <= ultimo_dia_mes_demissao.date():
+        return JsonResponse(
+            {
+                "error": "A data de readmissão deve ser posterior ao mês de demissão."
+            },
+            status=400,
+        )
+
+    return False
+
+
+def save_readmissao_colaborador(request):
+    """Consultar Documentação Sistema Efetiva"""
+    id_pessoal = request.POST.get("id_pessoal")
+    data_readmissao_str = request.POST.get("readmissao")
+
+    if not id_pessoal or not data_readmissao_str:
+        return {"mensagem": "Parâmetros inválidos"}
+
+    try:
+        data_readmissao = datetime.strptime(data_readmissao_str, "%Y-%m-%d")
+    except ValueError:
+        return {"mensagem": "Formato de data inválido"}
+
+    colaborador = Pessoal.objects.get(idPessoal=id_pessoal)
+
+    Readmissao.objects.create(
+        DataAdmissao=colaborador.DataAdmissao,
+        DataDemissao=colaborador.DataDemissao,
+        DataReadmissao=data_readmissao,
+        idPessoal=colaborador,
+    )
+
+    colaborador.DataAdmissao = data_readmissao
+    colaborador.DataDemissao = None
+    colaborador.save()
+
+    return {"mensagem": "Colaborador Readmitido"}
 
 
 def registrar_contra_cheque(id_pessoal, data_base, descricao):

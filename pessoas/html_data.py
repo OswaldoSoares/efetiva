@@ -207,6 +207,13 @@ def html_modal_data_demissao_colaborador(request, contexto):
     return modal_html
 
 
+def html_modal_data_readmissao_colaborador(request, contexto):
+    modal_html = render_to_string(
+        "pessoas/modal_readmissao_colaborador.html", contexto, request=request
+    )
+    return modal_html
+
+
 def html_modal_entrada_colaborador(request, contexto):
     modal_html = render_to_string(
         "pessoas/modal_entrada_colaborador.html", contexto, request=request

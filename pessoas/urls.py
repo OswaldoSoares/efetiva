@@ -62,6 +62,7 @@ from .views import (
     estornar_pagamento_contra_cheque,
     upload_contra_cheque,
     excluir_arquivo_contra_cheque,
+    readmitir_colaborador,
 )
 
 
@@ -201,6 +202,11 @@ urlpatterns = [
         "excluir_arquivo_contra_cheque",
         excluir_arquivo_contra_cheque,
         name="excluir_arquivo_contra_cheque",
+    ),
+    path(
+        "readmitir_colaborador",
+        readmitir_colaborador,
+        name="readmitir_colaborador",
     ),
     # Antigos
     path(
