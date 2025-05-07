@@ -680,6 +680,7 @@ def excluir_arquivo_contra_cheque(request):
 
 
 def readmitir_colaborador(request):
+    """Consultar Documentação Sistema Efetiva"""
     error = facade.validar_modal_data_readmissao_colaborador(request)
     if error:
         return error
