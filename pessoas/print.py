@@ -302,9 +302,11 @@ def dados_rescisao_trabalho_nova(pdf, contexto):
         col = 11
         linha -= 7.7
     for x in contexto["ferias_vencidas"]:
-        pdf.setFont("Times-Roman", 8)
+        pdf.setFont("Times-Roman", 7)
         pdf.drawString(
-            cmp(col + 4), cmp(linha + 4), f"Periodo Aquisitivo {x['periodo']}"
+            cmp(col),
+            cmp(linha + 4),
+            f"Periodo Aquisitivo {x['periodo']} - FALTAS {x['numero_faltas']}",
         )
         pdf.setFont("Times-Roman", 10)
         pdf.drawString(
@@ -319,9 +321,9 @@ def dados_rescisao_trabalho_nova(pdf, contexto):
         else:
             col = 11
             linha -= 7.7
-        pdf.setFont("Times-Roman", 8)
+        pdf.setFont("Times-Roman", 7)
         pdf.drawString(
-            cmp(col + 4), cmp(linha + 4), f"Periodo Aquisitivo {x['periodo']}"
+            cmp(col), cmp(linha + 4), f"Periodo Aquisitivo {x['periodo']}"
         )
         pdf.setFont("Times-Roman", 10)
         pdf.drawString(
