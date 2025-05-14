@@ -271,25 +271,24 @@ def dados_rescisao_trabalho_nova(pdf, contexto):
             else:
                 col = 11
                 linha -= 7.7
-    #  meses_ferias = "0"
-    pdf.drawString(
-        cmp(col), cmp(linha), f"FÉRIAS PROPORCIONAIS - {meses_ferias}/12"
-    )
-    #  ferias = "0,00"
-    pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {ferias}")
-    if col == 11:
-        col = 106
-    else:
-        col = 11
-        linha -= 7.7
-    pdf.drawString(cmp(col), cmp(linha), "1/3 FÉRIAS PROPORCIONAIS")
-    #  terco_ferias = "0,00"
-    pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {terco_ferias}")
-    if col == 11:
-        col = 106
-    else:
-        col = 11
-        linha -= 7.7
+    if meses_ferias > 0:
+        pdf.drawString(
+            cmp(col), cmp(linha), f"FÉRIAS PROPORCIONAIS - {meses_ferias}/12"
+        )
+        pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {ferias}")
+        if col == 11:
+            col = 106
+        else:
+            col = 11
+            linha -= 7.7
+        pdf.drawString(cmp(col), cmp(linha), "1/3 FÉRIAS PROPORCIONAIS")
+        #  terco_ferias = "0,00"
+        pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {terco_ferias}")
+        if col == 11:
+            col = 106
+        else:
+            col = 11
+            linha -= 7.7
     if meses_decimo_terceiro:
         pdf.drawString(
             cmp(col),
@@ -303,9 +302,11 @@ def dados_rescisao_trabalho_nova(pdf, contexto):
         col = 11
         linha -= 7.7
     for x in contexto["ferias_vencidas"]:
-        pdf.setFont("Times-Roman", 8)
+        pdf.setFont("Times-Roman", 7)
         pdf.drawString(
-            cmp(col + 4), cmp(linha + 4), f"Periodo Aquisitivo {x['periodo']}"
+            cmp(col),
+            cmp(linha + 4),
+            f"Periodo Aquisitivo {x['periodo']} - FALTAS {x['numero_faltas']}",
         )
         pdf.setFont("Times-Roman", 10)
         pdf.drawString(
@@ -320,9 +321,9 @@ def dados_rescisao_trabalho_nova(pdf, contexto):
         else:
             col = 11
             linha -= 7.7
-        pdf.setFont("Times-Roman", 8)
+        pdf.setFont("Times-Roman", 7)
         pdf.drawString(
-            cmp(col + 4), cmp(linha + 4), f"Periodo Aquisitivo {x['periodo']}"
+            cmp(col), cmp(linha + 4), f"Periodo Aquisitivo {x['periodo']}"
         )
         pdf.setFont("Times-Roman", 10)
         pdf.drawString(
