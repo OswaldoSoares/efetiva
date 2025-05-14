@@ -1861,7 +1861,7 @@ def calcular_adiantamento(contra_cheque):
     if contra_cheque_adiantamento:
         contra_cheque_itens = ContraChequeItens.objects.filter(
             idContraCheque=contra_cheque_adiantamento.idContraCheque,
-            Descricao="ADIANTAMENTO",
+            Codigo="5501",
         ).first()
         referencia = (
             contra_cheque_itens.Referencia
