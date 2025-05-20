@@ -631,6 +631,7 @@ def create_contexto_colaborador(request):
     ano = int(request.GET.get("ano"))
 
     colaborador = Colaborador(id_pessoal)
+    data_demissao = colaborador.dados_profissionais.data_demissao
 
     primeiro_dia, ultimo_dia = primeiro_e_ultimo_dia_do_mes(mes, ano)
     cartao_ponto = obter_cartao_de_ponto_do_colaborador(colaborador, mes, ano)
@@ -646,6 +647,11 @@ def create_contexto_colaborador(request):
 
     # Recria QuerySet para obter as atualizações feitas
     cartao_ponto = obter_cartao_de_ponto_do_colaborador(colaborador, mes, ano)
+    mes_da_demissao = (
+        True
+        if data_demissao and data_demissao >= primeiro_dia.date()
+        else False
+    )
 
     contexto = {
         "idpessoal": id_pessoal,
@@ -654,6 +660,7 @@ def create_contexto_colaborador(request):
         "nome_underscore": nome_curto_underscore(colaborador.nome),
         "cartao_ponto": cartao_ponto,
         "minutas": minutas,
+        "mes_da_demissao": mes_da_demissao,
     }
 
     agenda = create_contexto_agenda_colaborador(id_pessoal, mes, ano)
