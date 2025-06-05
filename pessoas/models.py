@@ -58,6 +58,7 @@ class DocPessoal(models.Model):
     TipoDocumento = models.CharField(max_length=25)
     Documento = models.CharField(max_length=25)
     Data = models.DateField(blank=True, null=True)
+    image = models.ImageField(upload_to=get_file_path, null=True, blank=True)
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
 
     class Meta:
