@@ -180,6 +180,11 @@
 		    <i class="icofont-rounded-left-down"></i>
         </div>
 		<div class="div-form-control div-flex">
+            {% if mes_da_demissao %}
+            <div class="tamanho-100 text-center">
+                <span>MÊS RESCISORIO</span>
+            </div>
+            {% else %}
 	    	<div class="tamanho-50 text-center">
                 <span>
                     <i class="icofont-dollar i-button
@@ -194,6 +199,7 @@
                        data-descricao="PAGAMENTO">PAGAMENTO</i>
                 </span>
 			</div>
+            {% endif %}
 		</div>
         <div class="input-group-addon addon-my-color">
 		    <i class="icofont-rounded-right-down"></i>
