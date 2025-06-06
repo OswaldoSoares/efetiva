@@ -2536,6 +2536,11 @@ def create_contexto_consulta_colaborador(id_pessoal):
     )
     salarios = verificar_salario_colaborador(colaborador)
     vales_transporte = verificar_vale_transporte_colaborador(colaborador)
+    (
+        lista_ids_documentos,
+        arquivos_por_id,
+    ) = gerar_dict_de_urls_arquivos_de_docuemntos()
+
     contexto = {
         "colaborador": colaborador,
         "colaborador_ant": colaborador_antigo,
@@ -2549,12 +2554,13 @@ def create_contexto_consulta_colaborador(id_pessoal):
         "cartao_ponto": cartao_ponto,
         "salarios": salarios,
         "vales_transporte": vales_transporte,
+        "lista_ids_documentos": lista_ids_documentos,
+        "arquivos_por_id": arquivos_por_id,
         "mes": hoje.month,
         "ano": hoje.year,
         "mensagem": f"COLABORADOR(A) {colaborador.nome_curto} SELECIONADO",
     }
     contexto.update(cartao_ponto)
-
     return contexto
 
 
