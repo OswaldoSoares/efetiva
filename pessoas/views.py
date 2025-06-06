@@ -73,6 +73,20 @@ def adicionar_ou_atualizar_doc_colaborador(request):
     )
 
 
+def upload_documento(request):
+    print(request.POST)
+    id_documento = request.POST.get("id_documento")
+    nome_arquivo = f"Documento_-_{str(id_documento).zfill(6)}"
+    mensagem = upload_de_arquivo(request, nome_arquivo, 5)
+
+    contexto = facade.create_contexto_class_colaborador(request)
+    contexto.update(mensagem)
+
+    data = facade.documento_html_data(request, contexto)
+
+    return data
+
+
 def adicionar_ou_atualizar_fone_colaborador(request):
     return handle_modal_colaborador(
         request,
