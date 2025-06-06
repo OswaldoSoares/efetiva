@@ -90,6 +90,11 @@ urlpatterns = [
         name="adicionar_ou_atualizar_doc_colaborador",
     ),
     path(
+        "upload_documento",
+        upload_documento,
+        name="upload_documento",
+    ),
+    path(
         "adicionar_ou_atualizar_fone_colaborador",
         adicionar_ou_atualizar_fone_colaborador,
         name="adicionar_ou_atualizar_fone_colaborador",
