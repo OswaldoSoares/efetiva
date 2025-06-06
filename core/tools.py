@@ -341,3 +341,15 @@ def injetar_parametro_no_request_post(request, url_field="request_passado"):
         request._files = request.FILES  # mantém arquivos se houver
 
     return request
+
+
+def criar_lista_nome_de_arquivos_no_diretorio(inicio_nome, diretorio):
+    caminho = Path(settings.MEDIA_ROOT) / "upload_files"
+
+    arquivos = [
+        f.stem
+        for f in caminho.iterdir()
+        if f.is_file() and f.name.startswith("Documento")
+    ]
+
+    return arquivos
