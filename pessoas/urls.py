@@ -40,6 +40,7 @@ from .views import (
     adicionar_ou_atualizar_colaborador,
     adicionar_ou_atualizar_doc_colaborador,
     upload_documento,
+    excluir_arquivo_documento,
     adicionar_ou_atualizar_fone_colaborador,
     excluir_fone_colaborador,
     adicionar_ou_atualizar_conta_colaborador,
