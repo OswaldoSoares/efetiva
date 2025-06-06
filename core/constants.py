@@ -109,6 +109,19 @@ EVENTOS_RESCISORIOS = [
     ("decimo_terceiro_proporcional", "13º PROPORCIONAL"),
 ]
 
+# Tipos de contracheque
+TIPO_CONTRA_CHEQUE_RESCISAO = "RESCISÃO"
+TIPO_CONTRA_CHEQUE_PAGAMENTO = "PAGAMENTO"
+
+# Campos do modelo ContraChequeItens
+CAMPO_CODIGO_CONTRA_CHEQUE_ITEM = "Codigo"
+
+# Descrições de itens
+DESCRICAO_SALARIO = "SALÁRIO"
+
+# Códigos
+CODIGO_SALARIO = "6000"
+
 # Constants Módulo Minutas
 SETUP_CALCULO_MINUTA = {
     "taxa_expedicao": {
