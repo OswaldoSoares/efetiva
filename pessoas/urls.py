@@ -96,6 +96,11 @@ urlpatterns = [
         name="upload_documento",
     ),
     path(
+        "excluir_arquivo_documento",
+        excluir_arquivo_documento,
+        name="excluir_arquivo_documento",
+    ),
+    path(
         "adicionar_ou_atualizar_fone_colaborador",
         adicionar_ou_atualizar_fone_colaborador,
         name="adicionar_ou_atualizar_fone_colaborador",
