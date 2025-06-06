@@ -20,6 +20,38 @@ $(document).ready(function() {
     ocultarCardsColaborador();
 });
 
+// Função para salvar arquivo de docuemnto
+$(document).on('submit', '.js-file-documento', function(event) {
+    event.preventDefault();
+    var formData = new FormData();
+    var arquivo = $("#file-documento").get(0).files[0]
+    var csrf_token = $('input[name="csrfmiddlewaretoken"]').val()
+    var id_documento = $('input[name="id_documento"').val()
+    formData.append("arquivo", arquivo);
+    formData.append("csrfmiddlewaretoken", csrf_token);
+    formData.append("id_documento", id_documento);
+    formData.append("id_pessoal", idPessoal);
+    $.ajax({
+        type: $(this).attr('method'),
+        url: '/pessoas/upload_documento',
+        data: formData,
+        cache: false,
+        processData: false,
+        contentType: false,
+        enctype: 'multipart/form-data',
+        beforeSend: function() {
+            $('.box-loader').show()
+            $(".card-docuemnto-colaborador").hide()
+        },
+        success: function(data) {
+            $(".card-documento-colaborador").html(data["html-card-docuemnto-colaborador"])
+            $(".card-docuemnto-colaborador").show()
+            $('.box-loader').hide()
+            exibirMensagem(data["mensagem"])
+        },
+    });
+});
+
 $(document).on("click", ".js-alterar-categoria", function() {
     const selecionado = $(this)
     const tipo = $(this).data("tipo")
