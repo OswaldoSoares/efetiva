@@ -427,3 +427,13 @@ FUNCOES_CALCULO = {
         "parametros_comuns": ["tabela", "minuta"],
     },
 }
+
+TIPOS_DOCUEMNTO_PARA_ARQUIVAR = [
+    "ATESTADO MÉDICO",
+    "CARTEIRA PROFISSIONAL",
+    "COMPROVANTE ENDEREÇO",
+    "CPF",
+    "EXAME MÉDICO",
+    "HABILITAÇÃO",
+    "RG",
+]
