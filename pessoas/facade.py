@@ -245,8 +245,16 @@ def create_contexto_class_colaborador(request):
         else request.GET.get("id_pessoal")
     )
     colaborador = classes.Colaborador(id_pessoal)
+
+    (
+        lista_ids_documentos,
+        arquivos_por_id,
+    ) = gerar_dict_de_urls_arquivos_de_docuemntos()
+
     return {
         "colaborador": colaborador,
+        "lista_ids_documentos": lista_ids_documentos,
+        "arquivos_por_id": arquivos_por_id,
     }
 
 
