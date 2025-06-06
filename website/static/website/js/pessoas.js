@@ -52,6 +52,13 @@ $(document).on('submit', '.js-file-documento', function(event) {
     });
 });
 
+$(document).on('change', '#file-documento', function() {
+    $("#submit-docuemnto").attr('title', "UPLOAD DO ARQUIVO: " + $(this).val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]);
+    $("#label-docuemnto").hide()
+    $("#submit-documento").removeClass("hidden")
+});
+
+
 $(document).on("click", ".js-alterar-categoria", function() {
     const selecionado = $(this)
     const tipo = $(this).data("tipo")
