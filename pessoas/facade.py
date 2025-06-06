@@ -31,6 +31,7 @@ from pagamentos import facade as facade_pagamentos
 from pagamentos.models import Recibo
 
 
+from core import constants
 from core.constants import (
     CATEGORIAS,
     TIPOPGTO,
