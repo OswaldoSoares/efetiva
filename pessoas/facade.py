@@ -1245,6 +1245,44 @@ def adicionar_itens_no_contra_cheque_rescisao(
             )
 
 
+def processar_contra_cheque_mes_rescisao(
+    id_pessoal: int, demissao: date
+) -> List[Any]:
+    mes = demissao.month
+    ano = demissao.year
+    mes_por_extenso = obter_mes_por_numero(mes)
+
+    tipo_rescisao = constants.TIPO_CONTRA_CHEQUE_RESCISAO
+    tipo_pagamento = constants.TIPO_CONTRA_CHEQUE_PAGAMENTO
+    campo_codigo = constants.CAMPO_CODIGO_CONTRA_CHEQUE_ITEM
+
+    contra_cheque_rescisao, _ = get_or_create_contra_cheque(
+        mes_por_extenso, ano, tipo_rescisao, id_pessoal
+    )
+    print(type(contra_cheque_rescisao))
+
+    contra_cheque_pagamento, _ = get_or_create_contra_cheque(
+        mes_por_extenso, ano, tipo_pagamento, id_pessoal
+    )
+
+    atualizar_contra_cheque_pagamento(
+        id_pessoal, mes, ano, contra_cheque_pagamento
+    )
+
+    contra_cheque_itens_pagamento = ContraChequeItens.objects.filter(
+        idContraCheque=contra_cheque_pagamento
+    ).order_by(campo_codigo)
+    print(type(contra_cheque_itens_pagamento))
+
+    adicionar_itens_no_contra_cheque_rescisao(
+        contra_cheque_rescisao, contra_cheque_itens_pagamento
+    )
+
+    contra_cheque_itens_rescisao = ContraChequeItens.objects.filter(
+        idContraCheque=contra_cheque_rescisao
+    ).order_by(campo_codigo)
+
+    return contra_cheque_itens_rescisao
 
 
 def excluir_contra_cheque_mes_seguinte_rescisao(id_pessoal, demissao):
