@@ -5,6 +5,7 @@ import ast
 import locale
 from django.core.files.base import ContentFile
 from django.db import connection, transaction
+from transefetiva.settings import settings
 from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta
 from django.db.models import (
