@@ -39,6 +39,10 @@ EVENTOS_CONTRA_CHEQUE = (
     Evento("5001", "13º SALÁRIO", True, True),
     Evento("5501", "ADIANTAMENTO DE SALÁRIO", True, True),
     Evento("5504", "13º SALÁRIO - ADIANTAMENTO", True, True),
+    Evento("6000", "SALDO DE SALÁRIO", True, True),
+    Evento("6002", "13º SALÁRIO PROPORCIONAL", True, True),
+    Evento("6006", "FÉRIAS PROPORCIONAIS", True, True),
+    Evento("6007", "FÉRIAS VENCIDAS", True, True),
     Evento("9200", "DESCONTO DE ADIANTAMENTOS", True, False),
     Evento("9207", "FALTAS", True, False),
     Evento("9208", "ATRASOS", True, False),
@@ -104,6 +108,19 @@ EVENTOS_RESCISORIOS = [
     ("ferias_proporcionais", "FÉRIAS PROPORCIONAIS"),
     ("decimo_terceiro_proporcional", "13º PROPORCIONAL"),
 ]
+
+# Tipos de contracheque
+TIPO_CONTRA_CHEQUE_RESCISAO = "RESCISÃO"
+TIPO_CONTRA_CHEQUE_PAGAMENTO = "PAGAMENTO"
+
+# Campos do modelo ContraChequeItens
+CAMPO_CODIGO_CONTRA_CHEQUE_ITEM = "Codigo"
+
+# Descrições de itens
+DESCRICAO_SALARIO = "SALÁRIO"
+
+# Códigos
+CODIGO_SALARIO = "6000"
 
 # Constants Módulo Minutas
 SETUP_CALCULO_MINUTA = {

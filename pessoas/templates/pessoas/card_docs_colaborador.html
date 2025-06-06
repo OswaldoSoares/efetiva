@@ -1,4 +1,4 @@
-<!-- Card Header -->
+{% load custom_filters %}
 <div class="card-header">
     <div class="input-group">
         <div class="input-group-addon addon-my-color">
@@ -27,6 +27,38 @@
                     </span>
                 </div>
             </div>
+            {% if doc.idDocPessoal|stringformat:"s" in lista_ids_documentos %}
+            <div class="input-group-addon addon-my-color">
+                <a class="icofont-download i-button"href="{{ arquivos_por_id|dict_get:doc.idDocPessoal }}"
+                   target="_blank" title="DOWNLOAD DO ARQUIVO"></a>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-file-excel i-button js-exclui-arquivo-documento"
+                   onclick="openMyModal(event); return false;"
+                   data-title="CONFIRMAR EXCLUSÃO DO ARQUIVO"
+                   data-action="{% url 'excluir_arquivo_documento' %}"
+                   data-button-save-label="EXCLUIR"
+                   data-id_file_upload="{{ file.idFileUpload }}"
+                   data-id_documento="{{ doc.idDocPessoal }}"
+                   title="EXCLUIR ARQUIVO"></i>
+            </div>
+            {% else %}
+            <div class="input-group-addon addon-my-color">
+                <form class="js-file-documento" method="post"
+                    enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="file" name="uploadFile"
+                        class="file" id="file-documento" value="">
+                    <i><label for="file-documento" id="label-documento"
+                        class="icofont-folder i-button"
+                        title="SELECIONAR ARQUIVO"></label></i>
+                    <i><button class="icofont-cloud-download i-button hidden"
+                        type="submit" id="submit-documento"></button></i>
+                    <input type="hidden" name="id_documento"
+                        value="{{ doc.idDocPessoal }}">
+                </form>
+            </div>
+            {% endif %}
             <div class="input-group-addon addon-my-color">
                 <i class="icofont-edit i-button" title="EDITAR DOCUMENTO"
                    onclick="openMyModal(event); return false;"

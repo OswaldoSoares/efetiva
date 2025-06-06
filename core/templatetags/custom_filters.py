@@ -71,3 +71,8 @@ def esta_no_periodo(hoje):
     data_inicio = date(2024, 11, 16)
     data_fim = date(2024, 12, 31)
     return data_inicio <= hoje <= data_fim
+
+
+@register.filter
+def dict_get(dicionario, chave):
+    return dicionario.get(str(chave))

@@ -3,8 +3,9 @@ import datetime
 import os
 import ast
 import locale
+from django.core.files.base import ContentFile
 from django.db import connection, transaction
-
+from transefetiva.settings import settings
 from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta
 from django.db.models import (
@@ -16,19 +17,21 @@ from django.db.models import (
     When,
     Case,
     Value,
+    QuerySet,
 )
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from decimal import Decimal, ROUND_HALF_UP
 from PIL import Image, ImageDraw
-from typing import Any
-
+from typing import List, Dict, Any, Optional
+from pathlib import Path
 from despesas import facade as facade_multa
 
 from pagamentos import facade as facade_pagamentos
 from pagamentos.models import Recibo
 
 
+from core import constants
 from core.constants import (
     CATEGORIAS,
     TIPOPGTO,
@@ -46,6 +49,7 @@ from core.tools import (
     primeiro_e_ultimo_dia_do_mes,
     get_request_data,
 )
+from core.tools import criar_lista_nome_de_arquivos_no_diretorio
 from pessoas.models import (
     Aquisitivo,
     DecimoTerceiro,
@@ -241,8 +245,16 @@ def create_contexto_class_colaborador(request):
         else request.GET.get("id_pessoal")
     )
     colaborador = classes.Colaborador(id_pessoal)
+
+    (
+        lista_ids_documentos,
+        arquivos_por_id,
+    ) = gerar_dict_de_urls_arquivos_de_docuemntos()
+
     return {
         "colaborador": colaborador,
+        "lista_ids_documentos": lista_ids_documentos,
+        "arquivos_por_id": arquivos_por_id,
     }
 
 
@@ -1178,39 +1190,107 @@ def obter_contra_cheque(id_pessoal, data_base, descricao):
     return contra_cheque
 
 
-def verificar_contra_cheque_mes_rescisao(id_pessoal, demissao):
-    contra_cheque_pagamento = obter_contra_cheque(
-        id_pessoal, demissao, "PAGAMENTO"
+def obter_evento_ou_erro(lookup: dict, codigo: str) -> Any:
+    """
+    Função que obter evento ou erro.
+
+    Args:
+        lookup (dict): Descrição do parâmetro lookup
+        codigo (str): Descrição do parâmetro codigo
+
+    Returns:
+        evento: Descrição do retorno
+    """
+    evento = lookup.get(codigo)
+
+    if evento is None:
+        raise ValueError(f"Código de evento inválido: {codigo}")
+
+    return evento
+
+
+def adicionar_itens_no_contra_cheque_rescisao(
+    contra_cheque_rescisao: ContraCheque,
+    contra_cheque_itens_pagamento: QuerySet[ContraChequeItens],
+) -> None:
+    """
+    Função que adicionar itens no contra cheque rescisao.
+
+    Args:
+        contra_cheque_rescisao (ContraCheque): Descrição do parâmetro
+    contra_cheque_rescisao
+        contra_cheque_itens_pagamento (QuerySet[ContraChequeItens]):
+    Descrição do parâmetro contra_cheque_itens_pagamento
+
+    Returns:
+        None: Descrição do retorno
+    """
+    rubrica_saldo_salario = constants.CODIGO_SALARIO
+    descricao_salario = constants.DESCRICAO_SALARIO
+    evento_lookup = {evento.codigo: evento for evento in EVENTOS_CONTRA_CHEQUE}
+
+    ContraChequeItens.objects.filter(
+        idContraCheque=contra_cheque_rescisao
+    ).delete()
+
+    with transaction.atomic():  # type: ignore
+        for item in contra_cheque_itens_pagamento:
+            codigo = (
+                rubrica_saldo_salario
+                if item.Descricao == descricao_salario
+                else item.Codigo
+            )
+            print(descricao_salario, rubrica_saldo_salario, codigo)
+            evento = obter_evento_ou_erro(evento_lookup, codigo)
+
+            atualizar_ou_adicionar_contra_cheque_item(
+                evento.descricao,
+                item.Valor,
+                item.Registro,
+                item.Referencia,
+                codigo,
+                contra_cheque_rescisao.idContraCheque,
+            )
+
+
+def processar_contra_cheque_mes_rescisao(
+    id_pessoal: int, demissao: date
+) -> List[Any]:
+    mes = demissao.month
+    ano = demissao.year
+    mes_por_extenso = obter_mes_por_numero(mes)
+
+    tipo_rescisao = constants.TIPO_CONTRA_CHEQUE_RESCISAO
+    tipo_pagamento = constants.TIPO_CONTRA_CHEQUE_PAGAMENTO
+    campo_codigo = constants.CAMPO_CODIGO_CONTRA_CHEQUE_ITEM
+
+    contra_cheque_rescisao, _ = get_or_create_contra_cheque(
+        mes_por_extenso, ano, tipo_rescisao, id_pessoal
+    )
+    print(type(contra_cheque_rescisao))
+
+    contra_cheque_pagamento, _ = get_or_create_contra_cheque(
+        mes_por_extenso, ano, tipo_pagamento, id_pessoal
     )
 
-    if not contra_cheque_pagamento:
-        contra_cheque_pagamento = registrar_contra_cheque(
-            id_pessoal, demissao, "PAGAMENTO"
-        )
+    atualizar_contra_cheque_pagamento(
+        id_pessoal, mes, ano, contra_cheque_pagamento
+    )
 
-        ContraChequeItens.objects.create(
-            Descricao="SALARIO",
-            Registro="C",
-            idContraCheque_id=contra_cheque_pagamento.idContraCheque,
-        )
+    contra_cheque_itens_pagamento = ContraChequeItens.objects.filter(
+        idContraCheque=contra_cheque_pagamento
+    ).order_by(campo_codigo)
+    print(type(contra_cheque_itens_pagamento))
 
-        contra_cheque_adiantamento = obter_contra_cheque(
-            id_pessoal, demissao, "ADIANTAMENTO"
-        )
+    adicionar_itens_no_contra_cheque_rescisao(
+        contra_cheque_rescisao, contra_cheque_itens_pagamento
+    )
 
-        if contra_cheque_adiantamento:
-            contra_cheque_item = ContraChequeItens.objects.filter(
-                idContraCheque_id=contra_cheque_adiantamento.idContraCheque,
-                Descricao="ADIANTAMENTO",
-            ).first()
+    contra_cheque_itens_rescisao = ContraChequeItens.objects.filter(
+        idContraCheque=contra_cheque_rescisao
+    ).order_by(campo_codigo)
 
-            ContraChequeItens.objects.create(
-                Descricao=contra_cheque_item.Descricao,
-                Valor=contra_cheque_item.Valor,
-                Registro="D",
-                Referencia=contra_cheque_item.Referencia,
-                idContraCheque_id=contra_cheque_pagamento.idContraCheque,
-            )
+    return contra_cheque_itens_rescisao
 
 
 def excluir_contra_cheque_mes_seguinte_rescisao(id_pessoal, demissao):
@@ -1339,7 +1419,7 @@ def calcular_rescisao_saldo_salario(colaborador):
     id_pessoal = colaborador.id_pessoal
     demissao = colaborador.dados_profissionais.data_demissao
 
-    verificar_contra_cheque_mes_rescisao(id_pessoal, demissao)
+    processar_contra_cheque_mes_rescisao(id_pessoal, demissao)
     contra_cheque = obter_contra_cheque(id_pessoal, demissao, "PAGAMENTO")
     atualiza_contra_cheque_item_salario(id_pessoal, demissao, contra_cheque)
     contra_cheque_itens = ContraChequeItens.objects.filter(
@@ -2432,6 +2512,21 @@ def verificar_vale_transporte_colaborador(colaborador):
     )
 
 
+def gerar_dict_de_urls_arquivos_de_docuemntos():
+    base_url = settings.MEDIA_URL + "upload_files/"
+    caminho = Path(settings.MEDIA_ROOT) / "upload_files"
+    arquivos = {}
+    for f in caminho.iterdir():
+        if f.is_file() and f.name.startswith("Documento_-_"):
+            try:
+                id_num = str(int(f.stem.split("_")[-1]))
+                arquivos[id_num] = base_url + f.name
+            except ValueError:
+                continue
+
+    return arquivos.keys(), arquivos
+
+
 def create_contexto_consulta_colaborador(id_pessoal):
     colaborador = classes.Colaborador(id_pessoal)
     colaborador_antigo = classes.ColaboradorAntigo(id_pessoal).__dict__
@@ -2449,6 +2544,11 @@ def create_contexto_consulta_colaborador(id_pessoal):
     )
     salarios = verificar_salario_colaborador(colaborador)
     vales_transporte = verificar_vale_transporte_colaborador(colaborador)
+    (
+        lista_ids_documentos,
+        arquivos_por_id,
+    ) = gerar_dict_de_urls_arquivos_de_docuemntos()
+
     contexto = {
         "colaborador": colaborador,
         "colaborador_ant": colaborador_antigo,
@@ -2462,12 +2562,13 @@ def create_contexto_consulta_colaborador(id_pessoal):
         "cartao_ponto": cartao_ponto,
         "salarios": salarios,
         "vales_transporte": vales_transporte,
+        "lista_ids_documentos": lista_ids_documentos,
+        "arquivos_por_id": arquivos_por_id,
         "mes": hoje.month,
         "ano": hoje.year,
         "mensagem": f"COLABORADOR(A) {colaborador.nome_curto} SELECIONADO",
     }
     contexto.update(cartao_ponto)
-
     return contexto
 
 
@@ -4311,13 +4412,14 @@ def get_cidade_estado(cidade, estado, cep):
             cidade_estado = cidade_estado + " - CEP: " + cep
     return cidade_estado
 
-def create_contexto_contra_cheque_colaborador(idpessoal, mes_ano, descricao):
+
+def create_contexto_contra_cheque_colaborador(id_pessoal, mes_ano, descricao):
     mes, ano = converter_mes_ano(mes_ano)
     contra_cheque = get_contra_cheque_mes_ano_descricao(
-        idpessoal, int(mes), ano, descricao
+        id_pessoal, int(mes), ano, descricao
     )
     contexto = create_contexto_contra_cheque(
-        idpessoal, contra_cheque, descricao
+        id_pessoal, contra_cheque, descricao
     )
     idcontracheque = contra_cheque.idContraCheque
     file = get_file_contra_cheque(idcontracheque)

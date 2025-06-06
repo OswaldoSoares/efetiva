@@ -86,3 +86,7 @@ ROLEPERMISSIONS_REGISTER_ADMIN = True
 
 STATIC_ROOT = os.path.join(BASE_DIR, config("STATIC_ROOT_CONFIG", ""))
 MEDIA_ROOT = os.path.join(BASE_DIR, config("MEDIA_ROOT_CONFIG", ""))
+
+
+STATIC_URL = "/static/"
+MEDIA_URL = "/media/"

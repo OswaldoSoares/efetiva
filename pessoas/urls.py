@@ -39,6 +39,8 @@ from .views import (
     consultar_colaborador,
     adicionar_ou_atualizar_colaborador,
     adicionar_ou_atualizar_doc_colaborador,
+    upload_documento,
+    excluir_arquivo_documento,
     adicionar_ou_atualizar_fone_colaborador,
     excluir_fone_colaborador,
     adicionar_ou_atualizar_conta_colaborador,
@@ -87,6 +89,16 @@ urlpatterns = [
         "adicionar_ou_atualizar_doc_colaborador",
         adicionar_ou_atualizar_doc_colaborador,
         name="adicionar_ou_atualizar_doc_colaborador",
+    ),
+    path(
+        "upload_documento",
+        upload_documento,
+        name="upload_documento",
+    ),
+    path(
+        "excluir_arquivo_documento",
+        excluir_arquivo_documento,
+        name="excluir_arquivo_documento",
     ),
     path(
         "adicionar_ou_atualizar_fone_colaborador",
