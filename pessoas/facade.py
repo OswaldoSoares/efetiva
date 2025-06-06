@@ -1182,25 +1182,25 @@ def obter_contra_cheque(id_pessoal, data_base, descricao):
     return contra_cheque
 
 
-def verificar_contra_cheque_mes_rescisao(id_pessoal, demissao):
-    contra_cheque_pagamento = obter_contra_cheque(
-        id_pessoal, demissao, "PAGAMENTO"
-    )
+def obter_evento_ou_erro(lookup: dict, codigo: str) -> Any:
+    """
+    Função que obter evento ou erro.
 
-    if not contra_cheque_pagamento:
-        contra_cheque_pagamento = registrar_contra_cheque(
-            id_pessoal, demissao, "PAGAMENTO"
-        )
+    Args:
+        lookup (dict): Descrição do parâmetro lookup
+        codigo (str): Descrição do parâmetro codigo
 
-        ContraChequeItens.objects.create(
-            Descricao="SALARIO",
-            Registro="C",
-            idContraCheque_id=contra_cheque_pagamento.idContraCheque,
-        )
+    Returns:
+        evento: Descrição do retorno
+    """
+    evento = lookup.get(codigo)
 
-        contra_cheque_adiantamento = obter_contra_cheque(
-            id_pessoal, demissao, "ADIANTAMENTO"
-        )
+    if evento is None:
+        raise ValueError(f"Código de evento inválido: {codigo}")
+
+    return evento
+
+
 
         if contra_cheque_adiantamento:
             contra_cheque_item = ContraChequeItens.objects.filter(
