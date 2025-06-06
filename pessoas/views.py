@@ -87,6 +87,10 @@ def upload_documento(request):
     return data
 
 
+def excluir_arquivo_documento(request):
+    pass
+
+
 def adicionar_ou_atualizar_fone_colaborador(request):
     return handle_modal_colaborador(
         request,
