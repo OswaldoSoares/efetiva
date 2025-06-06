@@ -2436,6 +2436,21 @@ def verificar_vale_transporte_colaborador(colaborador):
     )
 
 
+def gerar_dict_de_urls_arquivos_de_docuemntos():
+    base_url = settings.MEDIA_URL + "upload_files/"
+    caminho = Path(settings.MEDIA_ROOT) / "upload_files"
+    arquivos = {}
+    for f in caminho.iterdir():
+        if f.is_file() and f.name.startswith("Documento_-_"):
+            try:
+                id_num = str(int(f.stem.split("_")[-1]))
+                arquivos[id_num] = base_url + f.name
+            except ValueError:
+                continue
+
+    return arquivos.keys(), arquivos
+
+
 def create_contexto_consulta_colaborador(id_pessoal):
     colaborador = classes.Colaborador(id_pessoal)
     colaborador_antigo = classes.ColaboradorAntigo(id_pessoal).__dict__
