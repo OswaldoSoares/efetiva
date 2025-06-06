@@ -1343,7 +1343,7 @@ def calcular_rescisao_saldo_salario(colaborador):
     id_pessoal = colaborador.id_pessoal
     demissao = colaborador.dados_profissionais.data_demissao
 
-    verificar_contra_cheque_mes_rescisao(id_pessoal, demissao)
+    processar_contra_cheque_mes_rescisao(id_pessoal, demissao)
     contra_cheque = obter_contra_cheque(id_pessoal, demissao, "PAGAMENTO")
     atualiza_contra_cheque_item_salario(id_pessoal, demissao, contra_cheque)
     contra_cheque_itens = ContraChequeItens.objects.filter(
