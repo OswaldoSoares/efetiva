@@ -17,6 +17,7 @@ from django.db.models import (
     When,
     Case,
     Value,
+    QuerySet,
 )
 from django.http import JsonResponse
 from django.template.loader import render_to_string
