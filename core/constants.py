@@ -52,6 +52,7 @@ EVENTOS_CONTRA_CHEQUE = (
     Evento("9214", "13º SALÁRIO - DESCONTO DE ADIANTAMENTO", True, False),
     Evento("9901", "VALE", False, False),
     Evento("9902", "MULTA", False, False),
+    Evento("9908", "FGTS", True, True),
 )
 
 MESES = {
