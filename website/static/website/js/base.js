@@ -174,6 +174,7 @@ function openMyModal(event) {
         $(".card-fones-colaborador").hide();
         $(".card-contas-colaborador").hide();
         $(".card-salario-colaborador").hide();
+        $(".card-arquivos-colaborador").hide();
     }
 
     executarAjax(url, "GET", requestData, function(data) {
