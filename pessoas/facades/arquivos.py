@@ -56,3 +56,28 @@ def filtrar_tipos_documentos_arquivar(
             tipos_docs_arquivar.remove(tipo)
 
     return tipos_docs_arquivar
+
+
+def maior_indice_documentos_arquivados_tipo(
+    documentos_arquivados: List[FileUpload], id_pessoal: int
+) -> Dict[str, int]:
+    """
+    Retorna o maior índice numérico (ex: 003) para cada tipo de documento.
+    """
+    inicio_nome_arquivo = "DOCUMENTO"
+    id_quatro_caracter = str(id_pessoal).zfill(4)
+    max_indices = {}
+
+    for file in documentos_arquivados:
+        tipo_com_indice = remove_prefix_suffix(
+            str(file.DescricaoUpload), inicio_nome_arquivo, id_quatro_caracter
+        )
+
+        match = re.match(r"^(.*?)(?:_(\d{3}))?$", tipo_com_indice)
+        if match:
+            tipo_base = match.group(1).replace("_", " ")
+            print(tipo_base)
+            indice = int(match.group(2)) if match.group(2) else 0
+            max_indices[tipo_base] = max(indice, max_indices.get(tipo_base, 0))
+
+    return max_indices
