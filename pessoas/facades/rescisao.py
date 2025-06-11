@@ -25,7 +25,7 @@ def validar_modal_data_demissao_colaborador(
     if demissao > hoje:
         return JsonResponse(
             {
-                "error": "A data de demissão não pode ser posterior ao dia"
+                "error": "A data de demissão não pode ser posterior ao dia "
                 "de hoje."
             },
             status=400,
@@ -34,10 +34,10 @@ def validar_modal_data_demissao_colaborador(
     if demissao <= admissao:
         return JsonResponse(
             {
-                "error": "A data de demissão deve ser posterior à data de"
+                "error": "A data de demissão deve ser posterior à data de "
                 "admissão."
                 if demissao == admissao
-                else "A data de demissão não pode ser anterior à data de"
+                else "A data de demissão não pode ser anterior à data de "
                 "admissão."
             },
             status=400,
