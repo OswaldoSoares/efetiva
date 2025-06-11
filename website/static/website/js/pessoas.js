@@ -21,15 +21,15 @@ $(document).ready(function() {
 });
 
 // Função para salvar arquivo de docuemnto
-$(document).on('submit', '.js-file-documento', function(event) {
+$(document).on('submit', '.js-file-arquivo-de-documentos', function(event) {
     event.preventDefault();
     var formData = new FormData();
-    var arquivo = $("#file-documento").get(0).files[0]
+    var arquivo = $("#file-arquivo-de-documentos").get(0).files[0]
+    var tipoDocumento = $("#arquivo-de-documentos").val()
     var csrf_token = $('input[name="csrfmiddlewaretoken"]').val()
-    var id_documento = $('input[name="id_documento"').val()
     formData.append("arquivo", arquivo);
     formData.append("csrfmiddlewaretoken", csrf_token);
-    formData.append("id_documento", id_documento);
+    formData.append("tipo_documento", tipoDocumento);
     formData.append("id_pessoal", idPessoal);
     $.ajax({
         type: $(this).attr('method'),
@@ -41,11 +41,12 @@ $(document).on('submit', '.js-file-documento', function(event) {
         enctype: 'multipart/form-data',
         beforeSend: function() {
             $('.box-loader').show()
-            $(".card-docuemnto-colaborador").hide()
+            $(".card-arquivos-colaborador").hide()
         },
         success: function(data) {
-            $(".card-documento-colaborador").html(data["html-card-docuemnto-colaborador"])
-            $(".card-docuemnto-colaborador").show()
+            console.log(data)
+            $(".card-arquivos-colaborador").html(data["html-card-arquivos-colaborador"])
+            $(".card-arquivos-colaborador").show()
             $('.box-loader').hide()
             exibirMensagem(data["mensagem"])
         },
