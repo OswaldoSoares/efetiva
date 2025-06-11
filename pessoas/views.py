@@ -73,7 +73,7 @@ def adicionar_ou_atualizar_doc_colaborador(request):
     )
 
 
-def upload_documento(request):
+def upload_arquivo_documento(request):
     print(request.POST)
     id_pessoal = request.POST.get("id_pessoal")
     tipo_documento = request.POST.get("tipo_documento")
