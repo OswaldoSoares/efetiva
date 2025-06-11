@@ -32,3 +32,27 @@ def documentos_arquivados_do_colaborador(id_pessoal: int) -> List[FileUpload]:
         DescricaoUpload__startswith=inicio_nome_arquivo,
         DescricaoUpload__endswith=id_quatro_caracter,
     )
+
+
+def filtrar_tipos_documentos_arquivar(
+    documentos_arquivados: List[FileUpload], id_pessoal: int
+) -> List[str]:
+    """
+    Filtra os tipos de documentos que ainda não foram arquivados para o
+    colaborador.
+    """
+    inicio_nome_arquivo = "DOCUMENTO"
+    id_quatro_caracter = str(id_pessoal).zfill(4)
+    tipos_docs = constants.TIPOS_DOCS.copy()
+    tipos_docs_arquivar = constants.TIPOS_DOCUMENTO_PARA_ARQUIVAR.copy()
+
+    for file in documentos_arquivados:
+        tipo = remove_prefix_suffix(
+            str(file.DescricaoUpload), inicio_nome_arquivo, id_quatro_caracter
+        )
+        file.descricao = tipo.replace("_", " ")  # type: ignore[attr-defined]
+
+        if tipo in tipos_docs:
+            tipos_docs_arquivar.remove(tipo)
+
+    return tipos_docs_arquivar
