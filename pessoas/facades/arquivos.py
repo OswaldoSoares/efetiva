@@ -81,3 +81,35 @@ def maior_indice_documentos_arquivados_tipo(
             max_indices[tipo_base] = max(indice, max_indices.get(tipo_base, 0))
 
     return max_indices
+
+
+def dict_de_tipos_documentos_arquivar(
+    documentos_arquivados: List[FileUpload], id_pessoal: int
+) -> Dict[str, str]:
+    """
+    Gera um dicionário com os tipos de documentos que ainda precisam ser
+    arquivados.
+    O valor será o nome formatado com sufixo numérico (ex: 'Receita_003').
+    """
+    tipos_docs = constants.TIPOS_DOCS
+    tipos_docs_arquivar = filtrar_tipos_documentos_arquivar(
+        documentos_arquivados, id_pessoal
+    )
+
+    maior_indice_por_tipo = maior_indice_documentos_arquivados_tipo(
+        documentos_arquivados, id_pessoal
+    )
+
+    tipos_arquivar: Dict[str, str] = {}
+
+    for tipo in tipos_docs_arquivar:
+        proximo_indice = maior_indice_por_tipo.get(tipo, 0) + 1
+        indice_formatada = f"{proximo_indice:03}"
+        tipo_formatado = tipo.replace(" ", "_")
+
+        if tipo in tipos_docs:
+            tipos_arquivar[tipo] = tipo_formatado
+        else:
+            tipos_arquivar[tipo] = f"{tipo_formatado}_{indice_formatada}"
+
+    return tipos_arquivar
