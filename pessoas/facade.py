@@ -1269,27 +1269,6 @@ def excluir_contra_cheque_mes_seguinte_rescisao(id_pessoal, demissao):
         contra_cheque.delete()
 
 
-def atualizar_cartao_ponto_rescisao(id_pessoal, demissao):
-    _, ultimo_dia_mes = primeiro_e_ultimo_dia_do_mes(
-        demissao.month, demissao.year
-    )
-
-    dia_seguinte_demissao = demissao + timedelta(days=1)
-
-    cartao_ponto = CartaoPonto.objects.filter(
-        idPessoal=id_pessoal,
-        Dia__range=[dia_seguinte_demissao, ultimo_dia_mes],
-    )
-
-    if cartao_ponto.exists():
-        cartao_ponto.update(
-            Ausencia="-------",
-            Conducao=0,
-            Remunerado=0,
-            CarroEmpresa=0,
-        )
-
-
 def excluir_cartao_ponto_mes_seguinte_rescisao(id_pessoal, demissao):
     mes_posterior = demissao.month + 1 if demissao.month < 12 else 1
     ano_posterior = demissao.year if demissao.month < 12 else demissao.year + 1
