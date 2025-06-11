@@ -52,10 +52,10 @@ $(document).on('submit', '.js-file-documento', function(event) {
     });
 });
 
-$(document).on('change', '#file-documento', function() {
-    $("#submit-docuemnto").attr('title', "UPLOAD DO ARQUIVO: " + $(this).val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]);
-    $("#label-docuemnto").hide()
-    $("#submit-documento").removeClass("hidden")
+$(document).on('change', '#file-arquivo-de-documentos', function() {
+    $("#submit-arquivo-de-docuemntos").attr('title', "UPLOAD DO ARQUIVO: " + $(this).val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]);
+    $("#label-arquivo-de-documentos").hide()
+    $("#submit-arquivo-de-documentos").removeClass("hidden")
 });
 
 
