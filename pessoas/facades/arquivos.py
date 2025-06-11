@@ -19,3 +19,16 @@ def remove_prefix_suffix(
     if text.endswith(sep + suffix):
         text = text[: -len(sep + suffix)]
     return text
+
+
+def documentos_arquivados_do_colaborador(id_pessoal: int) -> List[FileUpload]:
+    """
+    Retorna os arquivos arquivados do colaborador com base no ID formatado.
+    """
+    inicio_nome_arquivo = "DOCUMENTO"
+    id_quatro_caracter = str(id_pessoal).zfill(4)
+
+    return FileUpload.objects.filter(
+        DescricaoUpload__startswith=inicio_nome_arquivo,
+        DescricaoUpload__endswith=id_quatro_caracter,
+    )
