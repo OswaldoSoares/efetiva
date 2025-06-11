@@ -1269,19 +1269,6 @@ def excluir_contra_cheque_mes_seguinte_rescisao(id_pessoal, demissao):
         contra_cheque.delete()
 
 
-def excluir_cartao_ponto_mes_seguinte_rescisao(id_pessoal, demissao):
-    mes_posterior = demissao.month + 1 if demissao.month < 12 else 1
-    ano_posterior = demissao.year if demissao.month < 12 else demissao.year + 1
-
-    primeiro_dia_mes, ultimo_dia_mes = primeiro_e_ultimo_dia_do_mes(
-        mes_posterior, ano_posterior
-    )
-    CartaoPonto.objects.filter(
-        idPessoal=id_pessoal,
-        Dia__range=[primeiro_dia_mes, ultimo_dia_mes],
-    ).delete()
-
-
 def save_data_demissao_colaborador(request):
     id_pessoal = request.POST.get("id_pessoal")
     demissao_str = request.POST.get("demissao")
