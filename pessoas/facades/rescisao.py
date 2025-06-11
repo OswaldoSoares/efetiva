@@ -1,5 +1,5 @@
 """ Responsável pelo resscisão do colaborador """
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Any, Optional
 from django.http import JsonResponse
 from core.tools import primeiro_e_ultimo_dia_do_mes
