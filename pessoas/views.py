@@ -75,14 +75,16 @@ def adicionar_ou_atualizar_doc_colaborador(request):
 
 def upload_documento(request):
     print(request.POST)
-    id_documento = request.POST.get("id_documento")
-    nome_arquivo = f"Documento_-_{str(id_documento).zfill(6)}"
+    id_pessoal = request.POST.get("id_pessoal")
+    tipo_documento = request.POST.get("tipo_documento")
+    nome_arquivo = f"Documento_-_{tipo_documento}_-_{str(id_pessoal).zfill(4)}"
+    print(nome_arquivo)
     mensagem = upload_de_arquivo(request, nome_arquivo, 5)
 
     contexto = facade.create_contexto_class_colaborador(request)
     contexto.update(mensagem)
 
-    data = facade.documento_html_data(request, contexto)
+    data = facade.arquivo_html_data(request, contexto)
 
     return data
 
