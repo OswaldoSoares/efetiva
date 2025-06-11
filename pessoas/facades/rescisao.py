@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from pessoas import classes
 from pessoas import html_data
 from pessoas.facade import registrar_contra_cheque
-from pessoas.models import Pessoal
+from pessoas.models import CartaoPonto, Pessoal
 
 
 def validar_modal_data_demissao_colaborador(
