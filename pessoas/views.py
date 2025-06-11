@@ -190,7 +190,7 @@ def excluir_vale_do_contra_cheque(request):
 
 
 def adicionar_data_demissao_colaborador(request):
-    error = facade.validar_modal_data_demissao_colaborador(request)
+    error = rescisao.validar_modal_data_demissao_colaborador(request)
     if error:
         return error
 
