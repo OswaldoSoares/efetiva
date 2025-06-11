@@ -246,9 +246,15 @@ def create_contexto_class_colaborador(request):
     )
     colaborador = classes.Colaborador(id_pessoal)
 
+    documentos_arquivados = documentos_arquivados_do_colaborador(id_pessoal)
+    tipos_documentos_arquivar = dict_de_tipos_documentos_arquivar(
+        documentos_arquivados, id_pessoal
+    )
 
     return {
         "colaborador": colaborador,
+        "documentos_arquivados": documentos_arquivados,
+        "tipos_documentos_arquivar": tipos_documentos_arquivar,
     }
 
 
