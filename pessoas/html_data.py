@@ -59,6 +59,13 @@ def html_card_vales_colaborador(request, contexto, data):
     return data
 
 
+def html_card_arquivos_colaborador(request, contexto, data):
+    data["html-card-arquivos-colaborador"] = render_to_string(
+        "pessoas/card_arquivos_colaborador.html", contexto, request=request
+    )
+    return data
+
+
 def html_card_cartao_ponto_colaborador(request, contexto, data):
     data["html-card-cartao-ponto-colaborador"] = render_to_string(
         "pessoas/card_cartao_ponto_colaborador.html", contexto, request=request

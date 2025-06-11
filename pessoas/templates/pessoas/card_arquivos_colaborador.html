@@ -1,0 +1,105 @@
+{% load custom_filters %}
+<div class="card-header">
+    <div class="input-group">
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-up"></i>
+        </div>
+        <div class="div-form-control">
+            <span>ARQUIVAR</span>
+        </div>
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-up"></i>
+        </div>
+    </div>
+</div>
+<!-- Card Body -->
+<div class="card-body">
+    {% for arquivo in documentos_arquivados %}
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-check i-button-null"></i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-70 text-left font-menor">
+                    <span>
+                        {{ arquivo.descricao }}
+                    </span>
+                </div>
+                <div class="tamanho-30 text-right font-menor">
+                    <span>
+                        {{ arquivo.DateUpload|date:"d/m/Y" }}
+                    </span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <a class="icofont-download i-button" href="{{ arquivo.uploadFile.url }}"
+                   target="_blank" title="DOWNLOAD DO ARQUIVO"></a>
+            </div>
+            <div class="input-group-addon addon-my-color">
+            <i class="icofont-file-excel i-button"
+               onclick="openMyModal(event); return false;"
+               data-title="CONFIRMAR EXCLUSÃO DO ARQUIVO"
+               data-action="{% url 'excluir_arquivo_documento' %}"
+               data-button-save-label="EXCLUIR"
+               data-id_file_upload="{{ arquivo.idFileUpload }}"
+               title="EXCLUIR ARQUIVO"></i>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% if documentos_arquivados %}
+        <div class="linha-divisoria-nova"></div>
+    {% endif %}
+    {% if colaborador %}
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-wallet i-button-null"></i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-100 text-center font-menor">
+                    <select class="form-control" name="tipo_docuemtno"
+                            id="arquivo-de-documentos">
+                        <option value="" disabled selected>ARQUIVAR NOVO DOCUMENTO</option>
+                        {% for key, value in tipos_documentos_arquivar.items %}
+                        <option value="{{ value }}">{{ key }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <form class="js-file-arquivo-de-documentos" method="post"
+                    enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="file" name="uploadFile"
+                           class="file" id="file-arquivo-de-documentos" value="">
+                    <i><label for="file-arquivo-de-documentos"
+                              id="label-arquivo-de-documentos"
+                        class="icofont-folder i-button disabled"
+                        title="SELECIONAR ARQUIVO"></label></i>
+                    <i><button class="icofont-cloud-download i-button hidden"
+                        type="submit" id="submit-arquivo-de-documentos"></button></i>
+                    <input type="hidden" name="arquivo_de_documentos"
+                     value="{{ contra_cheque.idContraCheque }}">
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+<!-- Card Footer -->
+<div class="card-footer">
+    <div class="input-group">
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-down"></i>
+        </div>
+        <div class="div-flex div-form-control">
+            <div class="tamanho-100 text-center">
+            </div>
+        </div>
+        <div class=" input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-down"></i>
+        </div>
+    </div>
+</div>

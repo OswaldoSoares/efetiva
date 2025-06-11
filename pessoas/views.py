@@ -73,22 +73,36 @@ def adicionar_ou_atualizar_doc_colaborador(request):
     )
 
 
-def upload_documento(request):
+def upload_arquivo_documento(request):
     print(request.POST)
-    id_documento = request.POST.get("id_documento")
-    nome_arquivo = f"Documento_-_{str(id_documento).zfill(6)}"
+    id_pessoal = request.POST.get("id_pessoal")
+    tipo_documento = request.POST.get("tipo_documento")
+    nome_arquivo = f"Documento_-_{tipo_documento}_-_{str(id_pessoal).zfill(4)}"
+    print(nome_arquivo)
     mensagem = upload_de_arquivo(request, nome_arquivo, 5)
 
     contexto = facade.create_contexto_class_colaborador(request)
     contexto.update(mensagem)
 
-    data = facade.documento_html_data(request, contexto)
+    data = facade.arquivo_html_data(request, contexto)
 
     return data
 
 
 def excluir_arquivo_documento(request):
-    pass
+    id_file_upload = get_request_data(request, "id_file_upload")
+    if request.method == "POST":
+        request_injetado = injetar_parametro_no_request_post(request)
+        mensagem = excluir_arquivo(id_file_upload)
+
+        contexto = facade.create_contexto_class_colaborador(request_injetado)
+        contexto.update(mensagem)
+
+        data = facade.arquivo_html_data(request, contexto)
+    else:
+        data = modal_excluir_arquivo(id_file_upload, request)
+
+    return data
 
 
 def adicionar_ou_atualizar_fone_colaborador(request):

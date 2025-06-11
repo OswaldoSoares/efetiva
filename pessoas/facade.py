@@ -3,6 +3,8 @@ import datetime
 import os
 import ast
 import locale
+from .facades.arquivos import documentos_arquivados_do_colaborador
+from .facades.arquivos import dict_de_tipos_documentos_arquivar
 from django.core.files.base import ContentFile
 from django.db import connection, transaction
 from transefetiva.settings import settings
@@ -246,15 +248,15 @@ def create_contexto_class_colaborador(request):
     )
     colaborador = classes.Colaborador(id_pessoal)
 
-    (
-        lista_ids_documentos,
-        arquivos_por_id,
-    ) = gerar_dict_de_urls_arquivos_de_docuemntos()
+    documentos_arquivados = documentos_arquivados_do_colaborador(id_pessoal)
+    tipos_documentos_arquivar = dict_de_tipos_documentos_arquivar(
+        documentos_arquivados, id_pessoal
+    )
 
     return {
         "colaborador": colaborador,
-        "lista_ids_documentos": lista_ids_documentos,
-        "arquivos_por_id": arquivos_por_id,
+        "documentos_arquivados": documentos_arquivados,
+        "tipos_documentos_arquivar": tipos_documentos_arquivar,
     }
 
 
@@ -262,6 +264,14 @@ def documento_html_data(request, contexto):
     data = {}
     html_functions = [
         html_data.html_card_docs_colaborador,
+    ]
+    return gerar_data_html(html_functions, request, contexto, data)
+
+
+def arquivo_html_data(request, contexto):
+    data = {}
+    html_functions = [
+        html_data.html_card_arquivos_colaborador,
     ]
     return gerar_data_html(html_functions, request, contexto, data)
 
@@ -2316,7 +2326,7 @@ def create_contra_cheque_itens_vale(request):
         Descricao=f"{vale.Descricao} - {dia}",
         Valor=vale.Valor,
         Registro="D",
-        Codigo="9901",
+        Codigo="9801",
         idContraCheque_id=request.GET.get("id_contra_cheque"),
         Vales_id=request.GET.get("id_vale"),
     ):
@@ -2543,11 +2553,12 @@ def create_contexto_consulta_colaborador(id_pessoal):
         id_pessoal, hoje.month, hoje.year
     )
     salarios = verificar_salario_colaborador(colaborador)
+
     vales_transporte = verificar_vale_transporte_colaborador(colaborador)
-    (
-        lista_ids_documentos,
-        arquivos_por_id,
-    ) = gerar_dict_de_urls_arquivos_de_docuemntos()
+    documentos_arquivados = documentos_arquivados_do_colaborador(id_pessoal)
+    tipos_documentos_arquivar = dict_de_tipos_documentos_arquivar(
+        documentos_arquivados, id_pessoal
+    )
 
     contexto = {
         "colaborador": colaborador,
@@ -2562,8 +2573,8 @@ def create_contexto_consulta_colaborador(id_pessoal):
         "cartao_ponto": cartao_ponto,
         "salarios": salarios,
         "vales_transporte": vales_transporte,
-        "lista_ids_documentos": lista_ids_documentos,
-        "arquivos_por_id": arquivos_por_id,
+        "documentos_arquivados": documentos_arquivados,
+        "tipos_documentos_arquivar": tipos_documentos_arquivar,
         "mes": hoje.month,
         "ano": hoje.year,
         "mensagem": f"COLABORADOR(A) {colaborador.nome_curto} SELECIONADO",
@@ -2930,6 +2941,7 @@ def colaborador_html_data(request, contexto):
         html_data.html_card_contas_colaborador,
         html_data.html_card_salario_colaborador,
         html_data.html_card_vale_transporte_colaborador,
+        html_data.html_card_arquivos_colaborador,
     ]
     html_ferias_colaborador(request, contexto, data)
     return gerar_data_html(html_functions, request, contexto, data)
