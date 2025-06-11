@@ -197,7 +197,7 @@ def adicionar_data_demissao_colaborador(request):
     return handle_modal_colaborador(
         request,
         rescisao.modal_data_demissao_colaborador,
-        facade.save_data_demissao_colaborador,
+        rescisao.save_data_demissao_colaborador,
         partial(facade.create_contexto_class_colaborador, request),
         facade.data_demissao_html_data,
     )
