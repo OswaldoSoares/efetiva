@@ -49,6 +49,24 @@ def validar_modal_data_demissao_colaborador(
     return None
 
 
+def modal_data_demissao_colaborador(id_pessoal, request):
+    id_pessoal = (
+        request.POST.get("id_pessoal")
+        if request.method == "POST"
+        else request.GET.get("id_pessoal")
+    )
+    colaborador = classes.Colaborador(id_pessoal) if id_pessoal else False
+    hoje = datetime.today().date()
+    contexto = {
+        "colaborador": colaborador,
+        "hoje": hoje.strftime("%Y-%m-%d"),
+    }
+    modal_html = html_data.html_modal_data_demissao_colaborador(
+        request, contexto
+    )
+    return JsonResponse({"modal_html": modal_html})
+
+
 def atualizar_cartao_ponto_rescisao(id_pessoal, demissao):
     _, ultimo_dia_mes = primeiro_e_ultimo_dia_do_mes(
         demissao.month, demissao.year
@@ -70,19 +88,3 @@ def atualizar_cartao_ponto_rescisao(id_pessoal, demissao):
         )
 
 
-def modal_data_demissao_colaborador(id_pessoal, request):
-    id_pessoal = (
-        request.POST.get("id_pessoal")
-        if request.method == "POST"
-        else request.GET.get("id_pessoal")
-    )
-    colaborador = classes.Colaborador(id_pessoal) if id_pessoal else False
-    hoje = datetime.today().date()
-    contexto = {
-        "colaborador": colaborador,
-        "hoje": hoje.strftime("%Y-%m-%d"),
-    }
-    modal_html = html_data.html_modal_data_demissao_colaborador(
-        request, contexto
-    )
-    return JsonResponse({"modal_html": modal_html})
