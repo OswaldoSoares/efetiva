@@ -1038,40 +1038,6 @@ def delete_vale_colaborador(request):
     return {"mensagem": "Não foi possível excluir vale do colaborador"}
 
 
-def validar_modal_data_demissao_colaborador(request: Any) -> JsonResponse:
-    if request.method != "POST":
-        return False
-
-    id_pessoal = request.POST.get("id_pessoal")
-    demissao_str = request.POST.get("demissao")
-
-    demissao = datetime.strptime(demissao_str, "%Y-%m-%d").date()
-    hoje = datetime.today().date()
-
-    colaborador = classes.Colaborador(id_pessoal)
-    admissao = colaborador.dados_profissionais.data_admissao
-
-    if demissao > hoje:
-        return JsonResponse(
-            {
-                "error": "A data de demissão não pode ser posterior ao dia de hoje."
-            },
-            status=400,
-        )
-
-    if demissao <= admissao:
-        return JsonResponse(
-            {
-                "error": "A data de demissão deve ser posterior à data de admissão."
-                if demissao == admissao
-                else "A data de demissão não pode ser anterior à data de admissão."
-            },
-            status=400,
-        )
-
-    return False
-
-
 def modal_data_readmissao_colaborador(id_pessoal, request):
     """Consultar Documentação Sistema Efetiva"""
     id_pessoal = (
