@@ -34,7 +34,7 @@ $(document).on('submit', '.js-file-arquivo-de-documentos', function(event) {
     formData.append("id_pessoal", idPessoal);
     $.ajax({
         type: $(this).attr('method'),
-        url: '/pessoas/upload_documento',
+        url: '/pessoas/upload_arquivo_documento',
         data: formData,
         cache: false,
         processData: false,
