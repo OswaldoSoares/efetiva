@@ -58,6 +58,9 @@ $(document).on('change', '#file-arquivo-de-documentos', function() {
     $("#submit-arquivo-de-documentos").removeClass("hidden")
 });
 
+$(document).on('change', '#arquivo-de-documentos', function() {
+    $("#label-arquivo-de-documentos").removeClass("disabled")
+});
 
 $(document).on("click", ".js-alterar-categoria", function() {
     const selecionado = $(this)
