@@ -90,7 +90,19 @@ def upload_documento(request):
 
 
 def excluir_arquivo_documento(request):
-    pass
+    id_file_upload = get_request_data(request, "id_file_upload")
+    if request.method == "POST":
+        request_injetado = injetar_parametro_no_request_post(request)
+        mensagem = excluir_arquivo(id_file_upload)
+
+        contexto = facade.create_contexto_class_colaborador(request_injetado)
+        contexto.update(mensagem)
+
+        data = facade.arquivo_html_data(request, contexto)
+    else:
+        data = modal_excluir_arquivo(id_file_upload, request)
+
+    return data
 
 
 def adicionar_ou_atualizar_fone_colaborador(request):
