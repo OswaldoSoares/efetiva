@@ -1251,31 +1251,6 @@ def processar_contra_cheque_mes_rescisao(
     return contra_cheque_itens_rescisao
 
 
-
-
-def save_data_demissao_colaborador(request):
-    id_pessoal = request.POST.get("id_pessoal")
-    demissao_str = request.POST.get("demissao")
-
-    if not id_pessoal or not demissao_str:
-        return {"mensagem": "Parâmetros inválidos"}
-
-    try:
-        demissao = datetime.strptime(demissao_str, "%Y-%m-%d")
-    except ValueError:
-        return {"mensagem": "Formato de data inválido"}
-
-    registrar_contra_cheque(id_pessoal, demissao, "RESCISÃO")
-
-    atualizar_cartao_ponto_rescisao(id_pessoal, demissao)
-    excluir_cartao_ponto_mes_seguinte_rescisao(id_pessoal, demissao)
-    excluir_contra_cheque_mes_seguinte_rescisao(id_pessoal, demissao)
-
-    Pessoal.objects.filter(idPessoal=id_pessoal).update(DataDemissao=demissao)
-
-    return {"mensagem": "Data de demissão inserida com sucesso"}
-
-
 def data_demissao_html_data(request, contexto):
     """Consultar Documentação Sistema Efetiva"""
     data = {}
