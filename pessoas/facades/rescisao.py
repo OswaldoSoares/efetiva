@@ -100,3 +100,21 @@ def excluir_cartao_ponto_mes_seguinte_rescisao(id_pessoal, demissao):
         idPessoal=id_pessoal,
         Dia__range=[primeiro_dia_mes, ultimo_dia_mes],
     ).delete()
+
+
+def excluir_contra_cheque_mes_seguinte_rescisao(id_pessoal, demissao):
+    mes = demissao.month
+    ano = demissao.year
+
+    mes = 1 if mes == 12 else mes + 1
+    ano = ano + 1 if mes == 12 else ano
+
+    data_base = datetime.strptime(f"{ano}-{mes}-1", "%Y-%m-%d")
+
+    contra_cheque = obter_contra_cheque(id_pessoal, data_base, "ADIANTAMENTO")
+    if contra_cheque:
+        contra_cheque.delete()
+
+    contra_cheque = obter_contra_cheque(id_pessoal, data_base, "PAGAMENTO")
+    if contra_cheque:
+        contra_cheque.delete()
