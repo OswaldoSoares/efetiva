@@ -3,6 +3,7 @@ import datetime
 import os
 import ast
 import locale
+from .facades.arquivos import documentos_arquivados_do_colaborador
 from django.core.files.base import ContentFile
 from django.db import connection, transaction
 from transefetiva.settings import settings
