@@ -127,6 +127,8 @@ $(document).on('click', ".js-selecionar-colaborador", function() {
         $(".card-salario-colaborador").show();
         $(".card-vale-transporte-colaborador").html(data["html-card-vale-transporte-colaborador"]);
         $(".card-vale-transporte-colaborador").show();
+        $(".card-arquivos-colaborador").html(data["html-card-arquivos-colaborador"]);
+        $(".card-arquivos-colaborador").show();
         var url = $(".foto").attr("src");
         // Força o recarregamento da foto sem utilizar o cache
         $(".foto").attr("src", url + `?v=${new Date().getTime()}`);
