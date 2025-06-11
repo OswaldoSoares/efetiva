@@ -13,6 +13,7 @@ var ocultarCardsColaborador =  function() {
     $(".card-contas-colaborador").hide();
     $(".card-salario-colaborador").hide();
     $(".card-vale-transporte-colaborador").hide();
+    $(".card-arquivos-colaborador").hide();
 };
 
 $(document).ready(function() {
