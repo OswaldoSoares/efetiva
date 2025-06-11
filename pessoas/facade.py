@@ -2537,12 +2537,7 @@ def create_contexto_consulta_colaborador(id_pessoal):
         id_pessoal, hoje.month, hoje.year
     )
     salarios = verificar_salario_colaborador(colaborador)
-
     vales_transporte = verificar_vale_transporte_colaborador(colaborador)
-    documentos_arquivados = documentos_arquivados_do_colaborador(id_pessoal)
-    tipos_documentos_arquivar = dict_de_tipos_documentos_arquivar(
-        documentos_arquivados, id_pessoal
-    )
 
     contexto = {
         "colaborador": colaborador,
@@ -2557,8 +2552,6 @@ def create_contexto_consulta_colaborador(id_pessoal):
         "cartao_ponto": cartao_ponto,
         "salarios": salarios,
         "vales_transporte": vales_transporte,
-        "documentos_arquivados": documentos_arquivados,
-        "tipos_documentos_arquivar": tipos_documentos_arquivar,
         "mes": hoje.month,
         "ano": hoje.year,
         "mensagem": f"COLABORADOR(A) {colaborador.nome_curto} SELECIONADO",
