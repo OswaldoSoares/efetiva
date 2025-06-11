@@ -4,6 +4,7 @@ from typing import Any, Optional
 from django.http import JsonResponse
 from pessoas import classes
 from pessoas import html_data
+from pessoas.models import Pessoal
 
 
 def validar_modal_data_demissao_colaborador(
