@@ -4,6 +4,7 @@ from typing import Any, Optional
 from django.http import JsonResponse
 from pessoas import classes
 from pessoas import html_data
+from pessoas.facade import registrar_contra_cheque
 from pessoas.models import Pessoal
 
 
