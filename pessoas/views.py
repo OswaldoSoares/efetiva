@@ -6,6 +6,7 @@ from rolepermissions.decorators import has_permission_decorator
 from core.tools import upload_de_arquivo, excluir_arquivo
 from core.tools import modal_excluir_arquivo, get_request_data
 from core.tools import injetar_parametro_no_request_post
+from .facades import rescisao
 from pessoas import facade
 from pessoas.print import (
     print_pdf_ficha_colaborador,
