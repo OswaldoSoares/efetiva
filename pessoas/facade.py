@@ -1261,14 +1261,6 @@ def data_demissao_html_data(request, contexto):
     return gerar_data_html(html_functions, request, contexto, data)
 
 
-def data_eventos_html_data(request, contexto):
-    data = {}
-    html_functions = [
-        html_data.html_card_eventos_rescisorios_colaborador,
-    ]
-    return gerar_data_html(html_functions, request, contexto, data)
-
-
 def atualiza_contra_cheque_item_salario(id_pessoal, demissao, contra_cheque):
     _, ultimo_dia_mes = primeiro_e_ultimo_dia_do_mes(
         demissao.month, demissao.year

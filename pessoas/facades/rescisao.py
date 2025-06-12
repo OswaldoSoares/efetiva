@@ -159,3 +159,11 @@ def create_contexto_eventos_rescisorios_colaborador(request):
         "aviso_previo": aviso_previo,
         "mensagem": "SELECIONAR EVENTOS",
     }
+
+
+def data_eventos_html_data(request, contexto):
+    data = {}
+    html_functions = [
+        html_data.html_card_eventos_rescisorios_colaborador,
+    ]
+    return gerar_data_html(html_functions, request, contexto, data)
