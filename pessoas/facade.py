@@ -1261,22 +1261,6 @@ def data_demissao_html_data(request, contexto):
     return gerar_data_html(html_functions, request, contexto, data)
 
 
-def create_contexto_eventos_rescisorios_colaborador(request):
-    """Consultar Documentação Sistema Efetiva"""
-    id_pessoal = request.GET.get("id_pessoal")
-    eventos = EVENTOS_RESCISORIOS
-    motivos = MOTIVOS_DEMISSAO
-    aviso_previo = AVISO_PREVIO
-
-    return {
-        "id_pessoal": id_pessoal,
-        "eventos": eventos,
-        "motivos": motivos,
-        "aviso_previo": aviso_previo,
-        "mensagem": "SELECIONAR EVENTOS",
-    }
-
-
 def data_eventos_html_data(request, contexto):
     data = {}
     html_functions = [

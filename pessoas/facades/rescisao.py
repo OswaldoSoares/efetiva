@@ -142,3 +142,19 @@ def save_data_demissao_colaborador(request):
     Pessoal.objects.filter(idPessoal=id_pessoal).update(DataDemissao=demissao)
 
     return {"mensagem": "Data de demissão inserida com sucesso"}
+
+
+def create_contexto_eventos_rescisorios_colaborador(request):
+    """Consultar Documentação Sistema Efetiva"""
+    id_pessoal = request.GET.get("id_pessoal")
+    eventos = constants.EVENTOS_RESCISORIOS
+    motivos = constants.MOTIVOS_DEMISSAO
+    aviso_previo = constants.AVISO_PREVIO
+
+    return {
+        "id_pessoal": id_pessoal,
+        "eventos": eventos,
+        "motivos": motivos,
+        "aviso_previo": aviso_previo,
+        "mensagem": "SELECIONAR EVENTOS",
+    }
