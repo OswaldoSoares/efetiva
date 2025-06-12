@@ -199,7 +199,7 @@ def adicionar_data_demissao_colaborador(request):
         rescisao.modal_data_demissao_colaborador,
         rescisao.save_data_demissao_colaborador,
         partial(facade.create_contexto_class_colaborador, request),
-        facade.data_demissao_html_data,
+        rescisao.data_demissao_html_data,
     )
 
 
