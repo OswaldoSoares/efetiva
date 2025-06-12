@@ -109,6 +109,7 @@ EVENTOS_RESCISORIOS = [
     ("ferias_vencidas", "FÉRIAS VENCIDAS"),
     ("ferias_proporcionais", "FÉRIAS PROPORCIONAIS"),
     ("decimo_terceiro_proporcional", "13º PROPORCIONAL"),
+    ("fgts", "FGTS"),
 ]
 
 # Tipos de contracheque
