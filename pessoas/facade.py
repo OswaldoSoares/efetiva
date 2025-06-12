@@ -1251,16 +1251,6 @@ def processar_contra_cheque_mes_rescisao(
     return contra_cheque_itens_rescisao
 
 
-def data_demissao_html_data(request, contexto):
-    """Consultar Documentação Sistema Efetiva"""
-    data = {}
-    html_functions = [
-        html_data.html_card_foto_colaborador,
-    ]
-
-    return gerar_data_html(html_functions, request, contexto, data)
-
-
 def atualiza_contra_cheque_item_salario(id_pessoal, demissao, contra_cheque):
     _, ultimo_dia_mes = primeiro_e_ultimo_dia_do_mes(
         demissao.month, demissao.year

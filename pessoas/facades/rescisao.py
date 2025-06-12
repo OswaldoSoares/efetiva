@@ -145,6 +145,16 @@ def save_data_demissao_colaborador(request):
     return {"mensagem": "Data de demissão inserida com sucesso"}
 
 
+def data_demissao_html_data(request, contexto):
+    """Consultar Documentação Sistema Efetiva"""
+    data = {}
+    html_functions = [
+        html_data.html_card_foto_colaborador,
+    ]
+
+    return gerar_data_html(html_functions, request, contexto, data)
+
+
 def create_contexto_eventos_rescisorios_colaborador(request):
     """Consultar Documentação Sistema Efetiva"""
     id_pessoal = request.GET.get("id_pessoal")
