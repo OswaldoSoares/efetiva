@@ -204,7 +204,9 @@ def adicionar_data_demissao_colaborador(request):
 
 
 def mostrar_eventos_rescisorios_colaborador(request):
-    contexto = facade.create_contexto_eventos_rescisorios_colaborador(request)
+    contexto = rescisao.create_contexto_eventos_rescisorios_colaborador(
+        request
+    )
     return facade.data_eventos_html_data(request, contexto)
 
 
