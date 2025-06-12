@@ -207,7 +207,7 @@ def mostrar_eventos_rescisorios_colaborador(request):
     contexto = rescisao.create_contexto_eventos_rescisorios_colaborador(
         request
     )
-    return facade.data_eventos_html_data(request, contexto)
+    return rescisao.data_eventos_html_data(request, contexto)
 
 
 def calcular_verbas_rescisorias_colaborador(request):
