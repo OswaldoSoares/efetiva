@@ -92,11 +92,41 @@ def calcular_dias_ferias_proporcionais(faltas, dozeavos):
     return multiplicador * dozeavos
 
 
+def calcula_valores_ferias(salario, faltas, data_inicial, data_final):
+    """
+    Calcula os valores financeiros referentes às férias proporcionais,
+    incluindo:
+    - Valor das férias (dias proporcionais x salário diário)
+    - Adicional de 1/3 constitucional
+    - Total a ser pago
+
+    Cálculos realizados conforme a CLT (Art. 129 a 130 e 142).
+
     Args:
         id_pessoal:
+        salario (Decimal): Valor do salário base mensal.
+        faltas (int): Total de faltas injustificadas no período.
+        data_inicial (date): Data inicial do período aquisitivo.
+        data_final (date): Data final do período aquisitivo.
 
     Returns:
         Dict: {"aquisitivos": aquisitivos, "gozo_ferias": gozo_ferias}
+        Tuple[Decimal, Decimal, Decimal, Decimal]:
+            - dias: Dias proporcionais de férias
+            - valor: Valor base das férias
+            - um_terco: Adicional de 1/3 constitucional
+            - total: Valor total a ser pago (férias + 1/3)
+    """
+    meses = meses_proporcionais_ferias(data_inicial, data_final)
+    dias = Decimal(calcular_dias_ferias_proporcionais(faltas, meses))
+    valor = (salario / 30 * dias).quantize(
+        Decimal("0.01"), rounding=ROUND_HALF_UP
+    )
+    um_terco = (valor / 3).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+    total = valor + um_terco
+
+    return dias, valor, um_terco, total
+
 
     """
     aquisitivos = Aquisitivo.objects.filter(idPessoal=id_pessoal)
