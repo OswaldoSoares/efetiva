@@ -57,6 +57,41 @@ def meses_proporcionais_ferias(data_inicial, data_final):
     )
 
     return periodo.months + (1 if periodo.days >= 15 else 0)
+
+
+def calcular_dias_ferias_proporcionais(faltas, dozeavos):
+    """
+    Calcula a quantidade de dias de férias proporcionais de acordo com as
+    faixas de faltas injustificadas, conforme prevê a CLT (Art. 130).
+
+    Faixas aplicadas:
+        - Até 5 faltas: 30 dias (2.5 dias por mês)
+        - 6 a 14 faltas: 24 dias (2.0 dias por mês)
+        - 15 a 23 faltas: 18 dias (1.5 dias por mês)
+        - 24 a 32 faltas: 12 dias (1.0 dia por mês)
+        - Acima de 32 faltas: 0 dias
+
+    Args:
+        faltas (int): Número de faltas injustificadas.
+        dozeavos (int): Meses de férias proporcionais adquiridos.
+
+    Returns:
+        float: Quantidade proporcional de dias de férias devidos.
+    """
+    faixas = [
+        (5, 2.5),  # Até 5 faltas
+        (14, 2.0),  # De 6 a 14 faltas
+        (23, 1.5),  # De 15 a 23 faltas
+        (32, 1.0),  # De 24 a 32 faltas
+    ]
+
+    multiplicador = next(
+        (valor for limite, valor in faixas if faltas <= limite), 0
+    )
+
+    return multiplicador * dozeavos
+
+
     Args:
         id_pessoal:
 
