@@ -3,11 +3,8 @@ from typing import Dict
 from pessoas.models import Aquisitivo, Ferias
 
 
-def create_contexto_ferias_colaborador(id_pessoal: int) -> Dict:
 def faltas_periodo_aquisitivo(id_pessoal: int, aquisitivo) -> List[str]:
     """
-        Retorna um dicionário com os períodos aquititivos e os períodos de
-        gozo das férias de um colaborador
     Retorna uma lista com as datas das faltas não remuneradas registradas
     durante o período aquisitivo do colaborador.
 
@@ -103,14 +100,12 @@ def calcula_valores_ferias(salario, faltas, data_inicial, data_final):
     Cálculos realizados conforme a CLT (Art. 129 a 130 e 142).
 
     Args:
-        id_pessoal:
         salario (Decimal): Valor do salário base mensal.
         faltas (int): Total de faltas injustificadas no período.
         data_inicial (date): Data inicial do período aquisitivo.
         data_final (date): Data final do período aquisitivo.
 
     Returns:
-        Dict: {"aquisitivos": aquisitivos, "gozo_ferias": gozo_ferias}
         Tuple[Decimal, Decimal, Decimal, Decimal]:
             - dias: Dias proporcionais de férias
             - valor: Valor base das férias
@@ -130,8 +125,6 @@ def calcula_valores_ferias(salario, faltas, data_inicial, data_final):
 
 def anota_dados_ferias(id_pessoal, aquisitivos):
     """
-    aquisitivos = Aquisitivo.objects.filter(idPessoal=id_pessoal)
-    gozo_ferias = Ferias.objects.filter(idPessoal=id_pessoal)
     Processa cada período aquisitivo de um colaborador e anota os dados de
     férias calculados, incluindo:
         - Faltas
@@ -166,5 +159,27 @@ def anota_dados_ferias(id_pessoal, aquisitivos):
         aquisitivo.total = total
 
     return aquisitivos
+
+
+def create_contexto_ferias_colaborador(id_pessoal) -> Dict:
+    """
+    Retorna um dicionário com os dados de férias do colaborador, contendo:
+    - Lista de períodos aquisitivos, com valores calculados
+    - Lista de registros de gozo de férias
+
+    Esse contexto é útil para exibição em templates ou consumo por APIs.
+
+    Args:
+        id_pessoal (int): ID do colaborador.
+
+    Returns:
+        Dict: {
+            "aquisitivos": Lista de períodos aquisitivos com dados anotados,
+            "gozo_ferias": Lista de períodos de gozo de férias
+        }
+    """
+    aquisitivos = Aquisitivo.objects.filter(idPessoal=id_pessoal).reverse()
+    aquisitivos = anota_dados_ferias(id_pessoal, aquisitivos)
+    gozo_ferias = Ferias.objects.filter(idPessoal=id_pessoal).reverse()
 
     return {"aquisitivos": aquisitivos, "gozo_ferias": gozo_ferias}
