@@ -1,6 +1,6 @@
 """ Responsável pelas férias do colaborador """
-from pessoas.models import Aquisitivo, Ferias
 from typing import Dict, List
+from pessoas.models import Aquisitivo, CartaoPonto, Ferias, Salario
 
 
 def faltas_periodo_aquisitivo(id_pessoal: int, aquisitivo) -> List[str]:
