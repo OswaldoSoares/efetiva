@@ -6,6 +6,7 @@ from rolepermissions.decorators import has_permission_decorator
 from core.tools import upload_de_arquivo, excluir_arquivo
 from core.tools import modal_excluir_arquivo, get_request_data
 from core.tools import injetar_parametro_no_request_post
+from .facades import rescisao
 from pessoas import facade
 from pessoas.print import (
     print_pdf_ficha_colaborador,
@@ -189,22 +190,24 @@ def excluir_vale_do_contra_cheque(request):
 
 
 def adicionar_data_demissao_colaborador(request):
-    error = facade.validar_modal_data_demissao_colaborador(request)
+    error = rescisao.validar_modal_data_demissao_colaborador(request)
     if error:
         return error
 
     return handle_modal_colaborador(
         request,
-        facade.modal_data_demissao_colaborador,
-        facade.save_data_demissao_colaborador,
+        rescisao.modal_data_demissao_colaborador,
+        rescisao.save_data_demissao_colaborador,
         partial(facade.create_contexto_class_colaborador, request),
-        facade.data_demissao_html_data,
+        rescisao.data_demissao_html_data,
     )
 
 
 def mostrar_eventos_rescisorios_colaborador(request):
-    contexto = facade.create_contexto_eventos_rescisorios_colaborador(request)
-    return facade.data_eventos_html_data(request, contexto)
+    contexto = rescisao.create_contexto_eventos_rescisorios_colaborador(
+        request
+    )
+    return rescisao.data_eventos_html_data(request, contexto)
 
 
 def calcular_verbas_rescisorias_colaborador(request):

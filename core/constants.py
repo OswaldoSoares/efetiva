@@ -81,7 +81,7 @@ CATEGORIAS = [
 
 TIPOPGTO = ["MENSALISTA", "MINUTA", "NENHUM", "SAIDA"]
 
-TIPOS_DOCS = ["CNH", "CPF", "CTPS", "RG"]
+TIPOS_DOCS = ["CNH", "CPF", "CTPS", "RESERVISTA", "RG", "TITULO ELEITOR"]
 
 TIPOS_FONES = ["WHATSAPP", "VIVO", "TIM", "OI", "CLARO", "FIXO", "RECADO"]
 
@@ -109,6 +109,7 @@ EVENTOS_RESCISORIOS = [
     ("ferias_vencidas", "FÉRIAS VENCIDAS"),
     ("ferias_proporcionais", "FÉRIAS PROPORCIONAIS"),
     ("decimo_terceiro_proporcional", "13º PROPORCIONAL"),
+    ("fgts", "FGTS"),
 ]
 
 # Tipos de contracheque
@@ -431,5 +432,7 @@ FUNCOES_CALCULO = {
 
 TIPOS_DOCUMENTO_PARA_ARQUIVAR = TIPOS_DOCS + [
     "ATESTADO MÉDICO",
+    "COMPROVANTE DE ENDEREÇO",
+    "CONTRATO DE TRABALHO",
     "EXAME MÉDICO",
 ]
