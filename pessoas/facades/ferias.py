@@ -1,5 +1,6 @@
 """ Responsável pelas férias do colaborador """
 from datetime import datetime
+from decimal import ROUND_HALF_UP, Decimal
 from typing import Dict, List
 from dateutil.relativedelta import relativedelta
 from pessoas.models import Aquisitivo, CartaoPonto, Ferias, Salario
