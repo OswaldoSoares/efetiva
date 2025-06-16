@@ -128,8 +128,43 @@ def calcula_valores_ferias(salario, faltas, data_inicial, data_final):
     return dias, valor, um_terco, total
 
 
+def anota_dados_ferias(id_pessoal, aquisitivos):
     """
     aquisitivos = Aquisitivo.objects.filter(idPessoal=id_pessoal)
     gozo_ferias = Ferias.objects.filter(idPessoal=id_pessoal)
+    Processa cada período aquisitivo de um colaborador e anota os dados de
+    férias calculados, incluindo:
+        - Faltas
+        - Dias de férias proporcionais
+        - Valor das férias
+        - Adicional de 1/3 constitucional
+        - Valor total
+
+    Args:
+        id_pessoal (int): ID do colaborador.
+        aquisitivos (QuerySet): Lista de objetos de períodos aquisitivos.
+
+    Returns:
+        QuerySet: Lista de objetos aquisitivos com os atributos anotados.
+    """
+    salario = (
+        Salario.objects.filter(idPessoal=id_pessoal)
+        .values_list("Salario", flat=True)
+        .first()
+    )
+
+    for aquisitivo in aquisitivos:
+        faltas = len(faltas_periodo_aquisitivo(id_pessoal, aquisitivo))
+        dias, valor, um_terco, total = calcula_valores_ferias(
+            salario, faltas, aquisitivo.DataInicial, aquisitivo.DataFinal
+        )
+
+        aquisitivo.faltas = faltas
+        aquisitivo.dias = dias
+        aquisitivo.valor = valor
+        aquisitivo.um_terco = um_terco
+        aquisitivo.total = total
+
+    return aquisitivos
 
     return {"aquisitivos": aquisitivos, "gozo_ferias": gozo_ferias}
