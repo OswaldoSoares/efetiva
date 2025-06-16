@@ -1,4 +1,5 @@
 """ Responsável pelas férias do colaborador """
+from datetime import datetime
 from typing import Dict, List
 from pessoas.models import Aquisitivo, CartaoPonto, Ferias, Salario
 
