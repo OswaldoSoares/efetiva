@@ -1278,16 +1278,6 @@ def calcular_rescisao_saldo_salario(colaborador):
     return {"contra_cheque_itens": contra_cheque_itens}
 
 
-def meses_proporcionais_ferias(data_inicial, data_final):
-    """Consultar Documentação Sistema Efetiva"""
-    periodo = relativedelta(data_final, data_inicial)
-
-    meses = periodo.months
-    days = periodo.days
-
-    return meses if days < 15 else meses + 1
-
-
 def calcular_dias_ferias_proporcionais(faltas, dozeavos):
     """Consultar Documentação Sistema Efetiva"""
     faixas = [

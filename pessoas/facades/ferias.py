@@ -33,6 +33,30 @@ def faltas_periodo_aquisitivo(id_pessoal: int, aquisitivo) -> List[str]:
     ).values_list("Dia", flat=True)
 
     return [datetime.strftime(dia, "%d/%m/%Y") for dia in dias_faltas]
+
+
+def meses_proporcionais_ferias(data_inicial, data_final):
+    """
+    Calcula a quantidade de meses proporcionais de férias com base no
+    período entre a data inicial e final do contrato (ou até a data atual).
+
+    Conforme orientação da CLT, cada mês completo de trabalho gera direito
+    a 1/12 de férias. Um mês é considerado completo se houver ao menos 15
+    dias trabalhados.
+
+    Args:
+        data_inicial (date): Data de início do período aquisitivo.
+        data_final (date): Data de fim do contrato ou do período.
+
+    Returns:
+        int: Quantidade de meses proporcionais de férias (doze avos).
+    """
+    hoje = datetime.today().date()
+    periodo = relativedelta(
+        data_final if data_final < hoje else hoje, data_inicial
+    )
+
+    return periodo.months + (1 if periodo.days >= 15 else 0)
     Args:
         id_pessoal:
 
