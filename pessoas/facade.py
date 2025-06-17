@@ -1278,47 +1278,6 @@ def calcular_rescisao_saldo_salario(colaborador):
     return {"contra_cheque_itens": contra_cheque_itens}
 
 
-def faltas_periodo_aquisitivo(id_pessoal: int, aquisitivo) -> List[str]:
-    """Consultar Documentação Sistema Efetiva"""
-    inicio = aquisitivo.DataInicial
-    final = aquisitivo.DataFinal
-
-    dias_faltas = CartaoPonto.objects.filter(
-        idPessoal=id_pessoal,
-        Dia__range=[inicio, final],
-        Ausencia="FALTA",
-        Remunerado=False,
-    ).values_list("Dia", flat=True)
-
-    return [datetime.strftime(dia, "%d/%m/%Y") for dia in dias_faltas]
-
-
-def meses_proporcionais_ferias(data_inicial, data_final):
-    """Consultar Documentação Sistema Efetiva"""
-    periodo = relativedelta(data_final, data_inicial)
-
-    meses = periodo.months
-    days = periodo.days
-
-    return meses if days < 15 else meses + 1
-
-
-def calcular_dias_ferias_proporcionais(faltas, dozeavos):
-    """Consultar Documentação Sistema Efetiva"""
-    faixas = [
-        (5, 2.5),  # Até 5 faltas
-        (14, 2.0),  # De 6 a 14 faltas
-        (23, 1.5),  # De 15 a 23 faltas
-        (32, 1.0),  # De 24 a 32 faltas
-    ]
-
-    multiplicador = next(
-        (valor for limite, valor in faixas if faltas <= limite), 0
-    )
-
-    return multiplicador * dozeavos
-
-
 def calcular_ferias_proporcionais(colaborador):
     """Consultar Documentação Sistema Efetiva"""
     aquisitivo = (

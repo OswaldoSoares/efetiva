@@ -1,0 +1,124 @@
+{% load humanize %}
+{% load custom_filters %}
+<!-- Card Header -->
+<div class="card-header">
+    <div class="input-group">
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-up"></i>
+        </div>
+        <div class="div-form-control">
+            <span>FÉRIAS</span>
+        </div>
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-up"></i>
+        </div>
+    </div>
+</div>
+<!-- Body -->
+<div class="card-body">
+    {% for gozo in gozo_ferias %}
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-beach i-button-null"></i>
+            </div>
+            <div class="div-form-control div-flex">
+                <div class="tamanho-100 text-center font-menor">
+                    <span>GOZO: {{ gozo.DataInicial }} - {{ gozo.DataFinal }} ({{ gozo.DataInicial|dias_completos:gozo.DataFinal }} DIAS)</span>
+                </div>
+            </div>
+            <div class="div-form-control div-flex font-menor">
+                <div class="tamanho-100 text-center">
+                    <span>AQUISITIVO: {{ gozo.idAquisitivo.DataInicial }} - {{ gozo.idAquisitivo.DataFinal }}</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% if gozo_ferias %}
+        <div class="linha-divisoria-nova"></div>
+    {% endif %}
+    {% if colaborador %}
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-wallet i-button-null"></i>
+            </div>
+            <div class="div-flex div-form-control">
+                <div class="tamanho-100 text-center font-menor">
+                    <span>ADINIONAR NOVO PERÍODO DE FÉRIAS</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+<!-- Footer -->
+<div class="card-footer">
+    <div class="input-group">
+        <i class="icofont-rounded-left-down input-group-addon
+        addon-my-color"></i>
+        <div class="div-flex div-form-control"></div>
+        <i class="icofont-rounded-right-down input-group-addon
+        addon-my-color"></i>
+    </div>
+</div>
+<!-- Card Header -->
+<div class="card-header double-card">
+    <div class="input-group">
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-left-up"></i>
+        </div>
+        <div class="div-form-control">
+            <span>PERÍODOS AQUISITIVOS</span>
+        </div>
+        <div class="input-group-addon addon-my-color">
+            <i class="icofont-rounded-right-up"></i>
+        </div>
+    </div>
+</div>
+<div class="card-body">
+    {% for aquisitivo in aquisitivos %}
+    <div class="card-body-item">
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="-button-null">{{ forloop.counter|stringformat:"02d" }}</i>
+            </div>
+            <div class="div-form-control div-flex">
+                <div class="tamanho-100 text-center">
+                    <span>{{ aquisitivo.DataInicial }} - {{ aquisitivo.DataFinal }}</span>
+                </div>
+            </div>
+            <div class="div-form-control div-flex">
+                <div class="tamanho-33 text-left font-menor">
+                    <span>FALTAS: {{ aquisitivo.faltas|stringformat:"02d" }}</span>
+                </div>
+                <div class="tamanho-34 text-center fonr-menor">
+                    <span>DIAS: {{ aquisitivo.dias|stringformat:"02d" }}</span>
+                </div>
+                <div class="tamanho-33 text-right font-menor">
+                    <span title="R$ {{ aquisitivo.valor|intcomma }} + 1/3 R$ {{ aquisitivo.um_terco|intcomma }}">R$ {{ aquisitivo.total|intcomma }}</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-check i-button-null"></i>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    </div>
+</div>
+<!-- Footer -->
+<div class="card-footer">
+    <div class="input-group">
+        <i class="icofont-rounded-left-down input-group-addon
+        addon-my-color"></i>
+        <div class="div-flex div-form-control"></div>
+        <i class="icofont-rounded-right-down input-group-addon
+        addon-my-color"></i>
+    </div>
+</div>

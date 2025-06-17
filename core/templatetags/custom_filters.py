@@ -76,3 +76,8 @@ def esta_no_periodo(hoje):
 @register.filter
 def dict_get(dicionario, chave):
     return dicionario.get(str(chave))
+
+
+@register.filter
+def dias_completos(data_inicial, data_final):
+    return (data_final - data_inicial).days + 1
