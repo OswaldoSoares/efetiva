@@ -2754,7 +2754,7 @@ def colaborador_html_data(request, contexto):
 
 def html_ferias_colaborador(request, contexto, data):
     data["html_ferias_colaborador"] = render_to_string(
-        "pessoas/html_ferias_colaborador.html", contexto, request=request
+        "pessoas/card_ferias_colaborador.html", contexto, request=request
     )
     return data
 
