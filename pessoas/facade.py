@@ -2343,8 +2343,8 @@ def gerar_dict_de_urls_arquivos_de_docuemntos():
 def create_contexto_consulta_colaborador(id_pessoal):
     colaborador = classes.Colaborador(id_pessoal)
     colaborador_antigo = classes.ColaboradorAntigo(id_pessoal).__dict__
-    colaborador_ant = get_colaborador(id_pessoal)
-    aquisitivo = get_aquisitivo(colaborador_ant)
+    #  colaborador_ant = get_colaborador(id_pessoal)
+    #  aquisitivo = get_aquisitivo(colaborador_ant)
     multas = facade_multa.multas_pagar("MOTORISTA", id_pessoal)
     vales = get_vales_colaborador(id_pessoal)
     saldo_vales = get_saldo_vales_colaborador(vales)
@@ -2372,7 +2372,7 @@ def create_contexto_consulta_colaborador(id_pessoal):
         "decimo_terceiro": decimo_terceiro,
         "hoje": hoje,
         "ano_atual": ano_atual,
-        "aquisitivo": aquisitivo,
+        #  "aquisitivo": aquisitivo,
         "cartao_ponto": cartao_ponto,
         "salarios": salarios,
         "vales_transporte": vales_transporte,
