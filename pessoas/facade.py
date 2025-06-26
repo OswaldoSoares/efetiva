@@ -1297,13 +1297,17 @@ def calcular_ferias_proporcionais(colaborador):
         aquisitivo.DataFinal = colaborador.dados_profissionais.data_demissao
         aquisitivo.save()
 
-    faltas = faltas_periodo_aquisitivo(colaborador.id_pessoal, aquisitivo)
+    faltas = ferias.faltas_periodo_aquisitivo(
+        colaborador.id_pessoal, aquisitivo
+    )
 
-    dozeavos = meses_proporcionais_ferias(
+    dozeavos = ferias.meses_proporcionais_ferias(
         aquisitivo.DataInicial, aquisitivo.DataFinal
     )
 
-    dias = Decimal(calcular_dias_ferias_proporcionais(len(faltas), dozeavos))
+    dias = Decimal(
+        ferias.calcular_dias_ferias_proporcionais(len(faltas), dozeavos)
+    )
 
     salario_base = colaborador.salarios.salarios.Salario
     valor = (salario_base / 30 * dias).quantize(
