@@ -3641,6 +3641,8 @@ def atualiza_salario_ferias_dias_referencia(idpessoal, idaquisitivo):
 
     """
     colaborador = get_colaborador(idpessoal)
+    colaborador_class = classes.Colaborador(idpessoal)
+    salario = colaborador_class.salarios.salarios.Salario
     aquisitivo = get_aquisitivo_id(idaquisitivo)
     contra_cheque = get_contra_cheque_descricao(colaborador, "PAGAMENTO")
     contra_cheque = contra_cheque_ano_mes_integer(contra_cheque)
@@ -3648,7 +3650,7 @@ def atualiza_salario_ferias_dias_referencia(idpessoal, idaquisitivo):
     contra_cheque_itens = get_contra_cheque_itens(contra_cheque)
     salario_contra_cheque = get_salario_contra_cheque(contra_cheque_itens)
     faltas = aquisitivo_faltas(colaborador, aquisitivo)
-    salario_ferias = aquisitivo_salario_ferias(salario_contra_cheque, faltas)
+    salario_ferias = aquisitivo_salario_ferias(salario, faltas)
     mes = aquisitivo.DataFinal.month
     ano = aquisitivo.DataFinal.year
     contra_cheque_ferias = get_contra_cheque_mes_ano_descricao(
