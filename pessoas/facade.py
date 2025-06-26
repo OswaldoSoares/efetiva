@@ -2382,6 +2382,8 @@ def create_contexto_consulta_colaborador(id_pessoal):
         "ano": hoje.year,
         "mensagem": f"COLABORADOR(A) {colaborador.nome_curto} SELECIONADO",
     }
+    contexto_ferias = ferias.create_contexto_ferias_colaborador(id_pessoal)
+    contexto.update(contexto_ferias)
     contexto.update(cartao_ponto)
     return contexto
 
