@@ -27,3 +27,10 @@ from pessoas.facades.ferias import (
 def test_calcular_dias_ferias_proporcionais(faltas, dozeavos, esperado):
     resultado = calcular_dias_ferias_proporcionais(faltas, dozeavos)
     assert resultado == esperado
+
+
+def test_meses_proporcionais_com_15_dias():
+    data_inicio = date(2024, 1, 1)
+    data_final = date(2024, 2, 15)
+    resultado = meses_proporcionais_ferias(data_inicio, data_final)
+    assert resultado == 2  # 1 mês completo + 15 dias → conta como 2
