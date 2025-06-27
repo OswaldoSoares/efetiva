@@ -24,3 +24,6 @@ from pessoas.facades.ferias import (
         (33, 12, 0.0),  # acima de 32 faltas = 0
     ],
 )
+def test_calcular_dias_ferias_proporcionais(faltas, dozeavos, esperado):
+    resultado = calcular_dias_ferias_proporcionais(faltas, dozeavos)
+    assert resultado == esperado
