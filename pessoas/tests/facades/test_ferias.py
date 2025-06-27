@@ -41,3 +41,19 @@ def test_meses_proporcionais_menos_de_15_dias():
     data_final = date(2024, 2, 14)
     resultado = meses_proporcionais_ferias(data_inicio, data_final)
     assert resultado == 1
+
+
+def test_calcula_valores_ferias():
+    salario = Decimal("3000.00")
+    faltas = 5
+    data_inicio = date(2024, 1, 1)
+    data_final = date(2024, 12, 31)
+
+    dias, valor, um_terco, total = calcula_valores_ferias(
+        salario, faltas, data_inicio, data_final
+    )
+
+    assert dias == Decimal("30.0")
+    assert valor == Decimal("3000.00")
+    assert um_terco == Decimal("1000.00")
+    assert total == Decimal("4000.00")
