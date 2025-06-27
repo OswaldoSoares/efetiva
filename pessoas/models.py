@@ -405,3 +405,21 @@ class Readmissao(models.Model):
         return str(self.idReadmissao)
 
     objects = models.Manager()
+
+
+class CredencialWebAuthn(models.Model):
+    idCredendialWebAuthn = models.AutoField(primary_key=True)
+    credential_id = models.CharField(max_length=255, unique=True)
+    public_key = models.TextField()
+    sign_count = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = "credenciais"
+        ordering = ["idPessoal"]
+
+    def __str__(self):
+        return str(self.idCredendialWebAuthn)
+
+    objects = models.Manager()

@@ -5,6 +5,7 @@ import ast
 import locale
 from .facades.arquivos import documentos_arquivados_do_colaborador
 from .facades.arquivos import dict_de_tipos_documentos_arquivar
+from .facades import ferias
 from django.core.files.base import ContentFile
 from django.db import connection, transaction
 from transefetiva.settings import settings
@@ -1296,13 +1297,17 @@ def calcular_ferias_proporcionais(colaborador):
         aquisitivo.DataFinal = colaborador.dados_profissionais.data_demissao
         aquisitivo.save()
 
-    faltas = faltas_periodo_aquisitivo(colaborador.id_pessoal, aquisitivo)
+    faltas = ferias.faltas_periodo_aquisitivo(
+        colaborador.id_pessoal, aquisitivo
+    )
 
-    dozeavos = meses_proporcionais_ferias(
+    dozeavos = ferias.meses_proporcionais_ferias(
         aquisitivo.DataInicial, aquisitivo.DataFinal
     )
 
-    dias = Decimal(calcular_dias_ferias_proporcionais(len(faltas), dozeavos))
+    dias = Decimal(
+        ferias.calcular_dias_ferias_proporcionais(len(faltas), dozeavos)
+    )
 
     salario_base = colaborador.salarios.salarios.Salario
     valor = (salario_base / 30 * dias).quantize(
@@ -2338,8 +2343,8 @@ def gerar_dict_de_urls_arquivos_de_docuemntos():
 def create_contexto_consulta_colaborador(id_pessoal):
     colaborador = classes.Colaborador(id_pessoal)
     colaborador_antigo = classes.ColaboradorAntigo(id_pessoal).__dict__
-    colaborador_ant = get_colaborador(id_pessoal)
-    aquisitivo = get_aquisitivo(colaborador_ant)
+    #  colaborador_ant = get_colaborador(id_pessoal)
+    #  aquisitivo = get_aquisitivo(colaborador_ant)
     multas = facade_multa.multas_pagar("MOTORISTA", id_pessoal)
     vales = get_vales_colaborador(id_pessoal)
     saldo_vales = get_saldo_vales_colaborador(vales)
@@ -2367,7 +2372,7 @@ def create_contexto_consulta_colaborador(id_pessoal):
         "decimo_terceiro": decimo_terceiro,
         "hoje": hoje,
         "ano_atual": ano_atual,
-        "aquisitivo": aquisitivo,
+        #  "aquisitivo": aquisitivo,
         "cartao_ponto": cartao_ponto,
         "salarios": salarios,
         "vales_transporte": vales_transporte,
@@ -2377,6 +2382,8 @@ def create_contexto_consulta_colaborador(id_pessoal):
         "ano": hoje.year,
         "mensagem": f"COLABORADOR(A) {colaborador.nome_curto} SELECIONADO",
     }
+    contexto_ferias = ferias.create_contexto_ferias_colaborador(id_pessoal)
+    contexto.update(contexto_ferias)
     contexto.update(cartao_ponto)
     return contexto
 
@@ -2747,7 +2754,7 @@ def colaborador_html_data(request, contexto):
 
 def html_ferias_colaborador(request, contexto, data):
     data["html_ferias_colaborador"] = render_to_string(
-        "pessoas/html_ferias_colaborador.html", contexto, request=request
+        "pessoas/card_ferias_colaborador.html", contexto, request=request
     )
     return data
 
@@ -3636,6 +3643,8 @@ def atualiza_salario_ferias_dias_referencia(idpessoal, idaquisitivo):
 
     """
     colaborador = get_colaborador(idpessoal)
+    colaborador_class = classes.Colaborador(idpessoal)
+    salario = colaborador_class.salarios.salarios.Salario
     aquisitivo = get_aquisitivo_id(idaquisitivo)
     contra_cheque = get_contra_cheque_descricao(colaborador, "PAGAMENTO")
     contra_cheque = contra_cheque_ano_mes_integer(contra_cheque)
@@ -3643,7 +3652,7 @@ def atualiza_salario_ferias_dias_referencia(idpessoal, idaquisitivo):
     contra_cheque_itens = get_contra_cheque_itens(contra_cheque)
     salario_contra_cheque = get_salario_contra_cheque(contra_cheque_itens)
     faltas = aquisitivo_faltas(colaborador, aquisitivo)
-    salario_ferias = aquisitivo_salario_ferias(salario_contra_cheque, faltas)
+    salario_ferias = aquisitivo_salario_ferias(salario, faltas)
     mes = aquisitivo.DataFinal.month
     ano = aquisitivo.DataFinal.year
     contra_cheque_ferias = get_contra_cheque_mes_ano_descricao(
