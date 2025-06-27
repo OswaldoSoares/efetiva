@@ -34,3 +34,10 @@ def test_meses_proporcionais_com_15_dias():
     data_final = date(2024, 2, 15)
     resultado = meses_proporcionais_ferias(data_inicio, data_final)
     assert resultado == 2  # 1 mês completo + 15 dias → conta como 2
+
+
+def test_meses_proporcionais_menos_de_15_dias():
+    data_inicio = date(2024, 1, 1)
+    data_final = date(2024, 2, 14)
+    resultado = meses_proporcionais_ferias(data_inicio, data_final)
+    assert resultado == 1
