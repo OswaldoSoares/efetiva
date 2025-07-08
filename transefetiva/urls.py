@@ -19,6 +19,7 @@ from website import urls as website_urls
 urlpatterns = (
     [
         path("admin/", admin.site.urls),
+        path("api/", include(api_urls)),
         path("clientes/", include(clientes_urls)),
         path("core/", include(core_urls)),
         path("despesas/", include(despesas_urls)),
