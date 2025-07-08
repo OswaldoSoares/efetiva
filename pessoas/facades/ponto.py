@@ -88,3 +88,64 @@ def registrar_credencial(request):
         traceback.print_exc()
         return JsonResponse({"error": f"Erro ao registrar credencial: {str(e)}"}, status=500)
 
+
+@csrf_exempt
+def fido2_login(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "Método não permitido"}, status=405)
+
+    try:
+        data = json.loads(request.body)
+
+        credential_id = data["credentialId"]
+        authenticator_data = base64.urlsafe_b64decode(data["authenticatorData"] + '==')
+        client_data_json = base64.urlsafe_b64decode(data["clientDataJSON"] + '==')
+        signature = base64.urlsafe_b64decode(data["signature"] + '==')
+        challenge = base64.urlsafe_b64decode(data["challenge"] + '==')
+        id_pessoal = data["idPessoal"]
+        cpf = data["cpf"]
+
+
+        colarador = Pessoal.objects.get(idPessoal=id_pessoal)
+
+        cred = FidoCredential.objects.filter(credential_id=credential_id).first()
+        if not cred:
+            return JsonResponse({"error": "Credencial não encontrada"}, status=400)
+
+        public_key = serialization.load_pem_public_key(cred.public_key_pem.encode())
+
+        client_data = json.loads(client_data_json.decode())
+        if base64.urlsafe_b64decode(client_data["challenge"] + '==') != challenge:
+            return JsonResponse({"error": "Challenge inválido"}, status=400)
+
+
+        digest = hashes.Hash(hashes.SHA256())
+        digest.update(client_data_json)
+        client_data_hash = digest.finalize()
+
+        signed_data = authenticator_data + client_data_hash
+        public_key.verify(signature, signed_data, ec.ECDSA(hashes.SHA256()))
+
+        tz = get_current_timezone()
+        inicio_dia = make_aware(datetime.combine(localdate(), time.min), timezone=tz)
+        fim_dia = make_aware(datetime.combine(localdate(), time.max), timezone=tz)
+
+        registros = RegistroPonto.objects.filter(
+            idPessoal_id=id_pessoal,
+            horario__range=(inicio_dia, fim_dia)
+        )
+
+        entrada = registros.filter(tipo="entrada").order_by("horario").first()
+        saida = registros.filter(tipo="saida").order_by("horario").last()
+
+        return JsonResponse({
+            "id_pessoal": id_pessoal,
+            "cpf": cpf,
+            "nome": nome_curto(colarador.Nome),
+            "entrada": localtime(entrada.horario).strftime("%H:%M:%S") if entrada else None,
+            "saida": saida.horario.strftime("%H:%M:%S") if saida else None,
+        })
+
+    except Exception as e:
+        return JsonResponse({"erro": str(e)}, status=400)
+
