@@ -1,3 +1,6 @@
+import os
+from django.views.static import serve
+from transefetiva.settings.settings import BASE_DIR
 from api import urls as api_urls
 from clientes import urls as clientes_urls
 from core import urls as core_urls
