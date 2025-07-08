@@ -11,5 +11,6 @@ from cryptography.hazmat.primitives.asymmetric import ec
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.backends import default_backend
 from fido2.webauthn import AttestationObject
+from fido2.utils import websafe_decode
 
 
