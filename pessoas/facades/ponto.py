@@ -39,3 +39,52 @@ def verificar_credencial_por_cpf(request, cpf):
         "cpf": cpf_formatado,
     })
 
+
+@csrf_exempt
+def registrar_credencial(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "Método não permitido"}, status=405)
+
+    try:
+        data = json.loads(request.body)
+
+        id_pessoal = data["id_pessoal"]
+        credential_id = data["credentialId"]
+        attestation_object_b64 = data["attestationObject"]
+
+        if FidoCredential.objects.filter(idPessoal_id=id_pessoal).exists():
+            return JsonResponse({"error": "Credencial registrada em outro dispositivo"}, status=403)
+
+        attestation_byte = websafe_decode(attestation_object_b64)
+        att_obj = AttestationObject(attestation_byte)
+
+        cose_key = att_obj.auth_data.credential_data.public_key
+        cose_dict = dict(cose_key)
+
+        x_bytes = cose_dict[-2]
+        y_bytes = cose_dict[-3]
+
+        x = int.from_bytes(x_bytes, byteorder="big")
+        y = int.from_bytes(y_bytes, byteorder="big")
+
+        public_numbers = ec.EllipticCurvePublicNumbers(x, y, ec.SECP256R1())
+        public_key = public_numbers.public_key(default_backend())
+
+        public_key_pem = public_key.public_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PublicFormat.SubjectPublicKeyInfo
+        ).decode()
+
+        FidoCredential.objects.create(
+            credential_id=credential_id,
+            public_key_pem=public_key_pem,
+            idPessoal_id=id_pessoal,
+        )
+
+        return JsonResponse({"status": "Credencial registrada com sucesso"})
+
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return JsonResponse({"error": f"Erro ao registrar credencial: {str(e)}"}, status=500)
+
