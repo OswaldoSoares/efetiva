@@ -149,3 +149,21 @@ def fido2_login(request):
     except Exception as e:
         return JsonResponse({"erro": str(e)}, status=400)
 
+
+@csrf_exempt
+def registrar_ponto(request):
+    try:
+        data = json.loads(request.body)
+
+        id_pessoal = data["id_pessoal"]
+        tipo = data["tipo"]
+
+        RegistroPonto.objects.create(
+            tipo=tipo,
+            idPessoal_id=id_pessoal,
+        )
+
+        return JsonResponse({"status": "Ponto registrada com sucesso"})
+
+    except Exception as e:
+        return JsonResponse({"erro": str(e)}, status=400)
