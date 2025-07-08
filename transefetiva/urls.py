@@ -1,7 +1,7 @@
 import os
 from django.views.static import serve
 from transefetiva.settings.settings import BASE_DIR
-from api import urls as api_urls
+#  from api import urls as api_urls
 from clientes import urls as clientes_urls
 from core import urls as core_urls
 from despesas import urls as despesas_urls
@@ -22,7 +22,7 @@ from website import urls as website_urls
 urlpatterns = (
     [
         path("admin/", admin.site.urls),
-        path("api/", include(api_urls)),
+        #  path("api/", include(api_urls)),
         path("clientes/", include(clientes_urls)),
         path("core/", include(core_urls)),
         path("despesas/", include(despesas_urls)),
