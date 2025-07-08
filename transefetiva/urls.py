@@ -35,6 +35,17 @@ urlpatterns = (
         path("usuarios/", include(usuarios_urls)),
         path("veiculos/", include(veiculos_urls)),
         path("", include(website_urls)),
+
+        path(
+            ".well-known/assetlinks.json",
+            serve,
+            {
+                "path": "assetlinks.json",
+                    "document_root": os.path.join(
+                        BASE_DIR, "website/static/website", ".well-known"
+                    ),
+            },
+        ),
     ]
     + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
