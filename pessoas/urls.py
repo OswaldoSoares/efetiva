@@ -67,6 +67,10 @@ from .views import (
     readmitir_colaborador,
 )
 
+from pessoas.facades.ponto import verificar_credencial_por_cpf
+from pessoas.facades.ponto import registrar_credencial, fido2_login
+from pessoas.facades.ponto import registrar_ponto
+
 
 urlpatterns = [
     path("", indexpessoal, name="indexpessoal"),
