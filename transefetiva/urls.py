@@ -42,7 +42,7 @@ urlpatterns = (
             {
                 "path": "assetlinks.json",
                     "document_root": os.path.join(
-                        BASE_DIR, "website/static/website", ".well-known"
+                        BASE_DIR, "site/public/static/website", ".well-known"
                     ),
             },
         ),
