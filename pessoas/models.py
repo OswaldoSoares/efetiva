@@ -407,6 +407,22 @@ class Readmissao(models.Model):
     objects = models.Manager()
 
 
+class RegistroPonto(models.Model):
+    idRegistroPonto = models.AutoField(primary_key=True)
+    tipo = models.CharField(max_length=10, choices=[("entrada", "entrada"), ("saida", "Saída")])
+    horario = models.DateTimeField(auto_now_add=True)
+    idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = "registro_ponto"
+        ordering = ["idPessoal", "horario"]
+
+    def __str__(self):
+        return str(self.idRegistroPonto)
+
+    objects = models.Manager()
+
+
 class FidoCredential(models.Model):
     idFidoCredential = models.AutoField(primary_key=True)
     credential_id = models.CharField(max_length=512, unique=True)
