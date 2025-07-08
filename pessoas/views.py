@@ -8,6 +8,7 @@ from core.tools import modal_excluir_arquivo, get_request_data
 from core.tools import injetar_parametro_no_request_post
 from .facades import rescisao
 from pessoas import facade
+from pessoas.facades import ponto
 from pessoas.print import (
     print_pdf_ficha_colaborador,
     print_pdf_rescisao_trabalho,
