@@ -1,3 +1,4 @@
+from api import urls as api_urls
 from clientes import urls as clientes_urls
 from core import urls as core_urls
 from despesas import urls as despesas_urls
