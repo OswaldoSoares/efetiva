@@ -1631,9 +1631,6 @@ def define_novo_status_minuta(idminuta, status_novo):
 
 
 def create_contexto_minutas_periodo(inicial, final, idcliente):
-    reset_queries()
-    start = time.time()
-    start_queries = len(connection.queries)
     if idcliente == 0:
         minuta = Minuta.objects.filter(DataMinuta__range=[inicial, final])
     else:
@@ -1643,11 +1640,6 @@ def create_contexto_minutas_periodo(inicial, final, idcliente):
     minutas = []
     for x in minuta:
         minutas.append(MinutaSelecionada(x.idMinuta).__dict__)
-    end = time.time()
-    end_queries = len(connection.queries)
-    print(start_queries)
-    print("tempo: %.2fs" % (end - start))
-    print(end_queries)
     return {"minutas": minutas}
 
 
