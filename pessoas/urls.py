@@ -224,6 +224,29 @@ urlpatterns = [
         readmitir_colaborador,
         name="readmitir_colaborador",
     ),
+
+    # Módulo ponto
+    path(
+        "tem_credencial_por_cpf/<str:cpf>/",
+        verificar_credencial_por_cpf,
+        name="verificar_credencial_por_cpf",
+    ),
+    path(
+        "fido2/registrar/",
+        registrar_credencial,
+        name="registrar_credencial",
+    ),
+    path(
+        "fido2/login/",
+        fido2_login,
+        name="fido2_login",
+    ),
+    path(
+        "registrar_ponto/",
+        registrar_ponto,
+        name="registrar_ponto",
+    ),
+
     # Antigos
     path(
         "bloqueiapessoa/<int:idpessoa>/",
