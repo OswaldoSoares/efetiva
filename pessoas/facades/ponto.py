@@ -101,7 +101,6 @@ def registrar_ponto(request):
     try:
         data = json.loads(request.body)
 
-        cpf = data["cpf"]
         tipo = data["tipo"]
         id_pessoal = data["id_pessoal"]
 
