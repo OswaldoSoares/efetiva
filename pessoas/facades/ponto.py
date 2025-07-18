@@ -115,7 +115,7 @@ def registrar_ponto(request):
             "status": "Ponto registrada com sucesso",
             "entrada": localtime(entrada.horario).strftime("%H:%M:%S") if entrada else None,
             "saida": localtime(saida.horario).strftime("%H:%M:%S") if saida else None,
-        }, status=200
+        }, status=200)
 
     except Exception as e:
         return JsonResponse({"erro": str(e)}, status=400)
