@@ -67,9 +67,8 @@ from .views import (
     readmitir_colaborador,
 )
 
-from pessoas.facades.ponto import verificar_credencial_por_cpf
-from pessoas.facades.ponto import registrar_credencial, fido2_login
-from pessoas.facades.ponto import registrar_ponto
+from pessoas.facades.ponto import verificar_identidade, autenticar
+from pessoas.facades.ponto import cadastrar_senha, registrar_ponto
 
 
 urlpatterns = [
@@ -227,19 +226,19 @@ urlpatterns = [
 
     # Módulo ponto
     path(
-        "tem_credencial_por_cpf/<str:cpf>/",
-        verificar_credencial_por_cpf,
-        name="verificar_credencial_por_cpf",
+        "verificar_identidade/<str:cpf>/",
+        verificar_identidade,
+        name="verificar_identidade",
+     ),
+    path(
+        "cadastrar_senha",
+        cadastrar_senha,
+        name="cadastrar_senha",
     ),
     path(
-        "fido2/registrar/",
-        registrar_credencial,
-        name="registrar_credencial",
-    ),
-    path(
-        "fido2/login/",
-        fido2_login,
-        name="fido2_login",
+        "autenticar",
+        autenticar,
+        name="autenticar",
     ),
     path(
         "registrar_ponto/",

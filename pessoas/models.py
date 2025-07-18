@@ -1,6 +1,8 @@
 import os
 
+from django.contrib.auth.hashers import make_password
 from django.db import models
+from django.forms import CharField
 
 
 def get_file_path(instance, filename):
@@ -423,10 +425,26 @@ class RegistroPonto(models.Model):
     objects = models.Manager()
 
 
+class SenhaAppPonto(models.Model):
+    idSenhaAppPonto = models.AutoField(primary_key=True)
+    senha = models.CharField(max_length=128)
+    idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
+
+    def set_senha(self, raw_senha):
+        self.senha = make_password(raw_senha)
+        self.save()
+
+    def __str__(self):
+        return str(self.idSenhaAppPonto)
+
+    objects = models.Manager()
+
+
 class FidoCredential(models.Model):
     idFidoCredential = models.AutoField(primary_key=True)
     credential_id = models.CharField(max_length=512, unique=True)
     public_key_pem = models.TextField()
+    device_id = models.CharField(max_length=128)
     created_at = models.DateTimeField(auto_now_add=True)
     liberado_pelo_rh = models.BooleanField(default=False)
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
