@@ -43,7 +43,6 @@ def verificar_identidade(request, cpf):
 
 @csrf_exempt
 def cadastrar_senha(request):
-    print(request.body.decode())
     if request.method != "POST":
         return JsonResponse({"error": "Método não permitido"}, status=405)
 
@@ -99,15 +98,12 @@ def autenticar(request):
 
 @csrf_exempt
 def registrar_ponto(request):
-    print(request.body.decode())
     try:
         data = json.loads(request.body)
 
         cpf = data["cpf"]
         tipo = data["tipo"]
         id_pessoal = data["id_pessoal"]
-
-        print(id_pessoal)
 
         RegistroPonto.objects.create(
             tipo=tipo,
@@ -138,7 +134,5 @@ def verificar_registro_colaborador_hoje(id_pessoal):
 
     entrada = registros.filter(tipo="ENTRADA").order_by("horario").first()
     saida = registros.filter(tipo="SAIDA").order_by("horario").last()
-
-    print(f"ENTRADA: {entrada} - SAÍDA {saida}")
 
     return entrada, saida
