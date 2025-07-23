@@ -7,10 +7,21 @@ from core import constants
 from core.tools import obter_mes_por_numero, primeiro_e_ultimo_dia_do_mes
 from pessoas import classes
 from pessoas import html_data
-from pessoas.facade import atualizar_ou_adicionar_contra_cheque_item, get_or_create_contra_cheque, obter_contra_cheque, obter_evento_ou_erro
-from pessoas.facade import atualizar_contra_cheque_pagamento, gerar_data_html
-from pessoas.facade import registrar_contra_cheque
-from pessoas.models import CartaoPonto, ContraCheque, ContraChequeItens, Pessoal
+from pessoas.facade import (
+    atualizar_contra_cheque_pagamento,
+    atualizar_ou_adicionar_contra_cheque_item,
+    gerar_data_html,
+    get_or_create_contra_cheque,
+    obter_contra_cheque,
+    obter_evento_ou_erro,
+    registrar_contra_cheque,
+)
+from pessoas.models import (
+    CartaoPonto,
+    ContraCheque,
+    ContraChequeItens,
+    Pessoal,
+)
 
 
 def validar_modal_data_demissao_colaborador(
