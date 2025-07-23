@@ -1,5 +1,6 @@
 """ Responsável pelo resscisão do colaborador """
 from datetime import date, datetime, timedelta
+from decimal import ROUND_HALF_UP, Decimal
 from typing import Any, List, Optional
 from django.db.models import QuerySet
 from django.http import JsonResponse
@@ -17,10 +18,16 @@ from pessoas.facade import (
     obter_evento_ou_erro,
     registrar_contra_cheque,
 )
+from pessoas.facades.ferias import (
+    calcular_dias_ferias_proporcionais,
+    faltas_periodo_aquisitivo,
+)
 from pessoas.models import (
+    Aquisitivo,
     CartaoPonto,
     ContraCheque,
     ContraChequeItens,
+    Ferias,
     Pessoal,
 )
 
@@ -288,6 +295,64 @@ def calcular_rescisao_saldo_salario(colaborador):
     ).order_by("Registro")
 
     return {"contra_cheque_itens": contra_cheque_itens}
+
+
+def calcular_ferias_vencidas(colaborador):
+    aquisitivos = Aquisitivo.objects.filter(
+        idPessoal=colaborador.id_pessoal
+    ).order_by("-DataInicial")
+
+    salario = colaborador.salarios.salarios.Salario
+    salario_dia = salario / 30
+
+    ferias_vencidas = []
+
+    for aquisitivo in aquisitivos:
+        if (aquisitivo.DataFinal - aquisitivo.DataInicial).days + 1 < 365:
+            continue
+
+        faltas = faltas_periodo_aquisitivo(colaborador.id_pessoal, aquisitivo)
+
+        dias_proporcionais = Decimal(
+            calcular_dias_ferias_proporcionais(len(faltas), 12)
+        )
+
+        dias_gozo = sum(
+            (feria.DataFinal - feria.DataInicial).days + 1
+            for feria in Ferias.objects.filter(
+                idAquisitivo_id=aquisitivo.idAquisitivo
+            )
+        )
+
+        dias_a_pagar = max(dias_proporcionais - dias_gozo, 0)
+        valor_pagar = (dias_a_pagar * salario_dia).quantize(
+            Decimal("0.01"), rounding=ROUND_HALF_UP
+        )
+        um_terco_pagar = (valor_pagar / 3).quantize(
+            Decimal("0.01"), rounding=ROUND_HALF_UP
+        )
+
+        data_ionicial_str = datetime.strftime(
+            aquisitivo.DataInicial, "%d/%m/%Y"
+        )
+        data_final_str = datetime.strftime(aquisitivo.DataFinal, "%d/%m/%Y")
+        periodo = f"{data_ionicial_str} a {data_final_str}"
+
+        if dias_a_pagar > 0:
+            ferias_vencidas.append(
+                {
+                    "periodo": periodo,
+                    "dias_faltas": faltas,
+                    "numero_faltas": len(faltas),
+                    "dias_proporcionais": dias_proporcionais,
+                    "dias_gozo": dias_gozo,
+                    "dias_pagar": dias_a_pagar,
+                    "valor_pagar": valor_pagar,
+                    "um_terco_pagar": um_terco_pagar,
+                }
+            )
+
+    return {"ferias_vencidas": ferias_vencidas}
 
 
 def verbas_rescisorias(request):
