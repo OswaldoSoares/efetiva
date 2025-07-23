@@ -1181,49 +1181,6 @@ def atualiza_contra_cheque_item_salario(id_pessoal, demissao, contra_cheque):
     )
 
 
-def calcular_ferias_proporcionais(colaborador):
-    """Consultar Documentação Sistema Efetiva"""
-    aquisitivo = (
-        Aquisitivo.objects.filter(idPessoal=colaborador.id_pessoal)
-        .order_by("-DataInicial")
-        .first()
-    )
-
-    if not aquisitivo:
-        aquisitivo = Aquisitivo.objects.create(
-            DataInicial=colaborador.dados_profissionais.data_admissao,
-            DataFinal=colaborador.dados_profissionais.data_demissao,
-            idPessoal_id=colaborador.id_pessoal,
-        )
-    else:
-        aquisitivo.DataFinal = colaborador.dados_profissionais.data_demissao
-        aquisitivo.save()
-
-    faltas = ferias.faltas_periodo_aquisitivo(
-        colaborador.id_pessoal, aquisitivo
-    )
-
-    dozeavos = ferias.meses_proporcionais_ferias(
-        aquisitivo.DataInicial, aquisitivo.DataFinal
-    )
-
-    dias = Decimal(
-        ferias.calcular_dias_ferias_proporcionais(len(faltas), dozeavos)
-    )
-
-    salario_base = colaborador.salarios.salarios.Salario
-    valor = (salario_base / 30 * dias).quantize(
-        Decimal("0.01"), rounding=ROUND_HALF_UP
-    )
-    um_terco = (valor / 3).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
-
-    return {
-        "ferias_valor": valor,
-        "ferias_meses": dozeavos,
-        "ferias_um_terco": um_terco,
-    }
-
-
 def meses_proporcionais_decimo_terceiro(data_inicial, data_final):
     """Consultar Documentação Sistema Efetiva"""
     inicio_contagem = data_inicial.month + (1 if data_inicial.day >= 16 else 0)

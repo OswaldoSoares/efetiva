@@ -21,6 +21,7 @@ from pessoas.facade import (
 from pessoas.facades.ferias import (
     calcular_dias_ferias_proporcionais,
     faltas_periodo_aquisitivo,
+    meses_proporcionais_ferias,
 )
 from pessoas.models import (
     Aquisitivo,
@@ -353,6 +354,49 @@ def calcular_ferias_vencidas(colaborador):
             )
 
     return {"ferias_vencidas": ferias_vencidas}
+
+
+def calcular_ferias_proporcionais(colaborador):
+    """Consultar Documentação Sistema Efetiva"""
+    aquisitivo = (
+        Aquisitivo.objects.filter(idPessoal=colaborador.id_pessoal)
+        .order_by("-DataInicial")
+        .first()
+    )
+
+    if not aquisitivo:
+        aquisitivo = Aquisitivo.objects.create(
+            DataInicial=colaborador.dados_profissionais.data_admissao,
+            DataFinal=colaborador.dados_profissionais.data_demissao,
+            idPessoal_id=colaborador.id_pessoal,
+        )
+    else:
+        aquisitivo.DataFinal = colaborador.dados_profissionais.data_demissao
+        aquisitivo.save()
+
+    faltas = faltas_periodo_aquisitivo(
+        colaborador.id_pessoal, aquisitivo
+    )
+
+    dozeavos = meses_proporcionais_ferias(
+        aquisitivo.DataInicial, aquisitivo.DataFinal
+    )
+
+    dias = Decimal(
+        calcular_dias_ferias_proporcionais(len(faltas), dozeavos)
+    )
+
+    salario_base = colaborador.salarios.salarios.Salario
+    valor = (salario_base / 30 * dias).quantize(
+        Decimal("0.01"), rounding=ROUND_HALF_UP
+    )
+    um_terco = (valor / 3).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+
+    return {
+        "ferias_valor": valor,
+        "ferias_meses": dozeavos,
+        "ferias_um_terco": um_terco,
+    }
 
 
 def verbas_rescisorias(request):
