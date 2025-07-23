@@ -213,7 +213,7 @@ def mostrar_eventos_rescisorios_colaborador(request):
 
 def calcular_verbas_rescisorias_colaborador(request):
     print(request.POST)
-    contexto = facade.verbas_rescisorias(request)
+    contexto = rescisao.verbas_rescisorias(request)
     response = print_pdf_rescisao_trabalho(request, contexto)
     return response
 
