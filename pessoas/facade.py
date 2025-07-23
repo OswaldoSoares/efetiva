@@ -1459,60 +1459,6 @@ def calcular_pagamento_ferias_proporcionais(colaborador):
     return {"ferias_nao_paga": "ferias_nao_paga"}
 
 
-def verbas_rescisorias(request):
-    id_pessoal = request.POST.get("id_pessoal")
-
-    motivos_dict = dict(MOTIVOS_DEMISSAO)
-    motivo_selecionado = request.POST.get("motivo")
-    motivo = motivos_dict.get(motivo_selecionado)
-
-    saldo_salario = request.POST.get("saldo_salario")
-    ferias_vencidas = request.POST.get("ferias_vencidas")
-    ferias_proporcionais = request.POST.get("ferias_proporcionais")
-    decimo_terceiro_proporcional = request.POST.get(
-        "decimo_terceiro_proporcional"
-    )
-
-    colaborador = classes.Colaborador(id_pessoal)
-
-    contexto = {"colaborador": colaborador, "motivo": motivo}
-
-    contexto.update(
-        calcular_rescisao_saldo_salario(colaborador)
-        if saldo_salario.lower() == "true"
-        else {"saldo_salario": None}
-    )
-
-    contexto.update(
-        calcular_ferias_vencidas(colaborador)
-        if ferias_vencidas.lower() == "true"
-        else {"ferias_vencidas_valor": None}
-    )
-
-    contexto.update(
-        calcular_ferias_proporcionais(colaborador)
-        if ferias_proporcionais.lower() == "true"
-        else {"ferias_valor": None}
-    )
-
-    contexto.update(
-        calcular_decimo_terceiro_proporcional(colaborador)
-        if decimo_terceiro_proporcional.lower() == "true"
-        else {"decimo_terceiro_valor": None}
-    )
-
-    contexto.update(calcular_pagamento_ferias_proporcionais(colaborador))
-
-    contexto.update({"mensagem": "Rescião Calculada"})
-
-    hoje = datetime.today()
-    locale.setlocale(locale.LC_TIME, "pt_BR.utf8")
-    data_extenso = hoje.strftime("São Paulo, %d de %B de %Y.")
-    contexto.update({"data_extenso": data_extenso})
-
-    return contexto
-
-
 def rescisao_html_data(request, contexto):
     data = {}
     html_functions = [
