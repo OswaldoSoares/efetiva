@@ -1189,36 +1189,6 @@ def meses_proporcionais_decimo_terceiro(data_inicial, data_final):
     return fim_contagem - inicio_contagem + 1
 
 
-def calcular_pagamento_ferias_proporcionais(colaborador):
-    """Consultar Documentação Sistema Efetiva"""
-    aquisitivo = (
-        Aquisitivo.objects.filter(idPessoal=colaborador.id_pessoal)
-        .order_by("-DataInicial")
-        .first()
-    )
-
-    data_inicial = aquisitivo.DataInicial
-    data_final_original = data_inicial + relativedelta(years=1, days=-1)
-    mes_por_extenso = MESES[data_final_original.month]
-    ano = data_final_original.year
-
-    contra_cheque_ferias = ContraCheque.objects.filter(
-        idPessoal=colaborador.id_pessoal,
-        MesReferencia=mes_por_extenso,
-        AnoReferencia=ano,
-        Descricao="FERIAS",
-    ).first()
-
-    if contra_cheque_ferias and contra_cheque_ferias.Pago:
-        total_ferias_paga = ContraChequeItens.objects.filter(
-            idContraCheque=contra_cheque_ferias.idContraCheque, Registro="C"
-        ).aggregate(total=Sum("Valor")).get("total") or Decimal(0)
-
-        return {"desconto_ferias": total_ferias_paga}
-
-    return {"ferias_nao_paga": "ferias_nao_paga"}
-
-
 def rescisao_html_data(request, contexto):
     data = {}
     html_functions = [
