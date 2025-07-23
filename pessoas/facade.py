@@ -1168,50 +1168,6 @@ def obter_evento_ou_erro(lookup: dict, codigo: str) -> Any:
     return evento
 
 
-def adicionar_itens_no_contra_cheque_rescisao(
-    contra_cheque_rescisao: ContraCheque,
-    contra_cheque_itens_pagamento: QuerySet[ContraChequeItens],
-) -> None:
-    """
-    Função que adicionar itens no contra cheque rescisao.
-
-    Args:
-        contra_cheque_rescisao (ContraCheque): Descrição do parâmetro
-    contra_cheque_rescisao
-        contra_cheque_itens_pagamento (QuerySet[ContraChequeItens]):
-    Descrição do parâmetro contra_cheque_itens_pagamento
-
-    Returns:
-        None: Descrição do retorno
-    """
-    rubrica_saldo_salario = constants.CODIGO_SALARIO
-    descricao_salario = constants.DESCRICAO_SALARIO
-    evento_lookup = {evento.codigo: evento for evento in EVENTOS_CONTRA_CHEQUE}
-
-    ContraChequeItens.objects.filter(
-        idContraCheque=contra_cheque_rescisao
-    ).delete()
-
-    with transaction.atomic():  # type: ignore
-        for item in contra_cheque_itens_pagamento:
-            codigo = (
-                rubrica_saldo_salario
-                if item.Descricao == descricao_salario
-                else item.Codigo
-            )
-            print(descricao_salario, rubrica_saldo_salario, codigo)
-            evento = obter_evento_ou_erro(evento_lookup, codigo)
-
-            atualizar_ou_adicionar_contra_cheque_item(
-                evento.descricao,
-                item.Valor,
-                item.Registro,
-                item.Referencia,
-                codigo,
-                contra_cheque_rescisao.idContraCheque,
-            )
-
-
 def atualiza_contra_cheque_item_salario(id_pessoal, demissao, contra_cheque):
     _, ultimo_dia_mes = primeiro_e_ultimo_dia_do_mes(
         demissao.month, demissao.year

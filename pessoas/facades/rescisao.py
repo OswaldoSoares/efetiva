@@ -1,15 +1,16 @@
 """ Responsável pelo resscisão do colaborador """
 from datetime import datetime, timedelta
 from typing import Any, Optional
+from django.db.models import QuerySet
 from django.http import JsonResponse
 from core import constants
 from core.tools import obter_mes_por_numero, primeiro_e_ultimo_dia_do_mes
 from pessoas import classes
 from pessoas import html_data
-from pessoas.facade import get_or_create_contra_cheque, obter_contra_cheque
+from pessoas.facade import atualizar_ou_adicionar_contra_cheque_item, get_or_create_contra_cheque, obter_contra_cheque, obter_evento_ou_erro
 from pessoas.facade import atualizar_contra_cheque_pagamento, gerar_data_html
 from pessoas.facade import registrar_contra_cheque
-from pessoas.models import CartaoPonto, ContraChequeItens, Pessoal
+from pessoas.models import CartaoPonto, ContraCheque, ContraChequeItens, Pessoal
 
 
 def validar_modal_data_demissao_colaborador(
@@ -177,6 +178,50 @@ def data_eventos_html_data(request, contexto):
         html_data.html_card_eventos_rescisorios_colaborador,
     ]
     return gerar_data_html(html_functions, request, contexto, data)
+
+
+def adicionar_itens_no_contra_cheque_rescisao(
+    contra_cheque_rescisao: ContraCheque,
+    contra_cheque_itens_pagamento: QuerySet[ContraChequeItens],
+) -> None:
+    """
+    Função que adicionar itens no contra cheque rescisao.
+
+    Args:
+        contra_cheque_rescisao (ContraCheque): Descrição do parâmetro
+    contra_cheque_rescisao
+        contra_cheque_itens_pagamento (QuerySet[ContraChequeItens]):
+    Descrição do parâmetro contra_cheque_itens_pagamento
+
+    Returns:
+        None: Descrição do retorno
+    """
+    rubrica_saldo_salario = constants.CODIGO_SALARIO
+    descricao_salario = constants.DESCRICAO_SALARIO
+    evento_lookup = {evento.codigo: evento for evento in constants.EVENTOS_CONTRA_CHEQUE}
+
+    ContraChequeItens.objects.filter(
+        idContraCheque=contra_cheque_rescisao
+    ).delete()
+
+    with transaction.atomic():  # type: ignore
+        for item in contra_cheque_itens_pagamento:
+            codigo = (
+                rubrica_saldo_salario
+                if item.Descricao == descricao_salario
+                else item.Codigo
+            )
+            print(descricao_salario, rubrica_saldo_salario, codigo)
+            evento = obter_evento_ou_erro(evento_lookup, codigo)
+
+            atualizar_ou_adicionar_contra_cheque_item(
+                evento.descricao,
+                item.Valor,
+                item.Registro,
+                item.Referencia,
+                codigo,
+                contra_cheque_rescisao.idContraCheque,
+            )
 
 
 def processar_contra_cheque_mes_rescisao(
