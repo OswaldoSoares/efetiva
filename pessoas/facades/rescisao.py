@@ -1,6 +1,6 @@
 """ Responsável pelo resscisão do colaborador """
-from datetime import datetime, timedelta
-from typing import Any, Optional
+from datetime import date, datetime, timedelta
+from typing import Any, List, Optional
 from django.db.models import QuerySet
 from django.http import JsonResponse
 from core import constants
