@@ -1189,47 +1189,6 @@ def meses_proporcionais_decimo_terceiro(data_inicial, data_final):
     return fim_contagem - inicio_contagem + 1
 
 
-def calcular_decimo_terceiro_proporcional(colaborador):
-    """Consultar Documentação Sistema Efetiva"""
-    data_admissao = colaborador.dados_profissionais.data_admissao
-    data_demissao = colaborador.dados_profissionais.data_demissao
-    hoje = datetime.today().date()
-    inicio_ano = date(hoje.year, 1, 1)
-    fim_ano = date(hoje.year, 12, 31)
-
-    if hoje.year > data_demissao.year:
-        inicio_ano = date(hoje.year - 1, 1, 1)
-        fim_ano = date(hoje.year - 1, 12, 31)
-
-    parcelas_pagas = ContraCheque.objects.filter(
-        idPessoal=colaborador.id_pessoal,
-        Descricao="DECIMO TERCEIRO",
-        AnoReferencia=data_demissao.year,
-        Pago=True,
-    )
-
-    total_valor = (
-        parcelas_pagas.aggregate(soma_valor=Sum("Valor"))["soma_valor"] or 0
-    )
-
-    data_inicial = data_admissao if data_admissao > inicio_ano else inicio_ano
-    data_final = data_demissao if data_demissao < fim_ano else fim_ano
-
-    dozeavos = meses_proporcionais_decimo_terceiro(data_inicial, data_final)
-
-    salario_base = colaborador.salarios.salarios.Salario
-    valor = (salario_base / 12 * dozeavos).quantize(
-        Decimal("0.01"), rounding=ROUND_HALF_UP
-    )
-
-    return {
-        "decimo_terceiro_valor": valor,
-        "decimo_terceiro_meses": dozeavos,
-        "decimo_terceiro_parcelas_pagas": parcelas_pagas,
-        "decimo_terceiro_total_pago": total_valor,
-    }
-
-
 def calcular_pagamento_ferias_proporcionais(colaborador):
     """Consultar Documentação Sistema Efetiva"""
     aquisitivo = (
