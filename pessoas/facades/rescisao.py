@@ -1,6 +1,7 @@
 """ Responsável pelo resscisão do colaborador """
 from datetime import date, datetime, timedelta
 from decimal import ROUND_HALF_UP, Decimal
+import locale
 from typing import Any, List, Optional
 from dateutil.relativedelta import relativedelta
 from django.db.models import QuerySet, Sum
