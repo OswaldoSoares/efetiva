@@ -179,6 +179,20 @@ def data_eventos_html_data(request, contexto):
     return gerar_data_html(html_functions, request, contexto, data)
 
 
+def calcular_rescisao_saldo_salario(colaborador):
+    id_pessoal = colaborador.id_pessoal
+    demissao = colaborador.dados_profissionais.data_demissao
+
+    processar_contra_cheque_mes_rescisao(id_pessoal, demissao)
+    contra_cheque = obter_contra_cheque(id_pessoal, demissao, "PAGAMENTO")
+    atualiza_contra_cheque_item_salario(id_pessoal, demissao, contra_cheque)
+    contra_cheque_itens = ContraChequeItens.objects.filter(
+        idContraCheque_id=contra_cheque.idContraCheque
+    ).order_by("Registro")
+
+    return {"contra_cheque_itens": contra_cheque_itens}
+
+
 def verbas_rescisorias(request):
     id_pessoal = request.POST.get("id_pessoal")
 

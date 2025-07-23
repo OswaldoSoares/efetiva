@@ -1265,20 +1265,6 @@ def atualiza_contra_cheque_item_salario(id_pessoal, demissao, contra_cheque):
     )
 
 
-def calcular_rescisao_saldo_salario(colaborador):
-    id_pessoal = colaborador.id_pessoal
-    demissao = colaborador.dados_profissionais.data_demissao
-
-    processar_contra_cheque_mes_rescisao(id_pessoal, demissao)
-    contra_cheque = obter_contra_cheque(id_pessoal, demissao, "PAGAMENTO")
-    atualiza_contra_cheque_item_salario(id_pessoal, demissao, contra_cheque)
-    contra_cheque_itens = ContraChequeItens.objects.filter(
-        idContraCheque_id=contra_cheque.idContraCheque
-    ).order_by("Registro")
-
-    return {"contra_cheque_itens": contra_cheque_itens}
-
-
 def calcular_ferias_proporcionais(colaborador):
     """Consultar Documentação Sistema Efetiva"""
     aquisitivo = (
