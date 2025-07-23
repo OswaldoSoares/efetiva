@@ -182,7 +182,7 @@ def data_eventos_html_data(request, contexto):
 def verbas_rescisorias(request):
     id_pessoal = request.POST.get("id_pessoal")
 
-    motivos_dict = dict(MOTIVOS_DEMISSAO)
+    motivos_dict = dict(constants.MOTIVOS_DEMISSAO)
     motivo_selecionado = request.POST.get("motivo")
     motivo = motivos_dict.get(motivo_selecionado)
 
