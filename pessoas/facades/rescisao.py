@@ -8,6 +8,7 @@ from core.tools import obter_mes_por_numero, primeiro_e_ultimo_dia_do_mes
 from pessoas import classes
 from pessoas import html_data
 from pessoas.facade import (
+    atualiza_contra_cheque_item_salario,
     atualizar_contra_cheque_pagamento,
     atualizar_ou_adicionar_contra_cheque_item,
     gerar_data_html,
