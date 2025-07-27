@@ -1651,6 +1651,13 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
             "referencia": lambda horas: horas,
         },
         {
+            "nome": "DSR SOBRE HORA EXTRA",
+            "codigo": "1002",
+            "calculo": "", # função chamada dinamicamente
+            "registro": "C",
+            "referencia": lambda horas: horas,
+        },
+        {
             "nome": "ADIANTAMENTO",
             "codigo": "9200",
             "calculo": lambda: calcular_adiantamento(contra_cheque),
@@ -1681,11 +1688,21 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
     ]
 
     evento_lookup = {evento.codigo: evento for evento in EVENTOS_CONTRA_CHEQUE}
+    valores_temporarios = {}
 
     for item in itens_contra_cheque:
         evento = evento_lookup.get(item["codigo"])
         descricao = evento.descricao
-        quantidade, valor = item["calculo"]()
+
+        if item["nome"] == "DSR SOBRE HORA EXTRA":
+            hora_extra_valor = valores_temporarios.get("HORA EXTRA", (0,0))[1]
+            print(type(hora_extra_valor))
+            quantidade, valor = calcular_dsr_horas_extras(mes, ano, hora_extra_valor)
+        else:
+            quantidade, valor = item["calculo"]()
+
+        valores_temporarios[item["nome"]] = (quantidade, valor)
+
         atualizar_ou_adicionar_contra_cheque_item(
             descricao,
             valor,
