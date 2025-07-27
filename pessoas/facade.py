@@ -1,5 +1,6 @@
 import calendar
 import datetime
+import json
 import os
 import ast
 import locale
@@ -1416,6 +1417,30 @@ def calcular_horas_extras(salario, cartao_ponto):
         )
 
     return total_extras, valor_extras
+
+
+def obter_feriados_e_domingos_mes(mes, ano):
+    with open('data/Feriados_2021_2035.json', encoding='utf-8') as f:
+        feriados = json.load(f)
+
+    feriados_mes_formatado = []
+    feriados_datas = set()
+    if ano in feriados and mes in feriados[ano]:
+        for evento in feriados[ano][mes]:
+            data_formatada = datetime.strptime(evento['data'][:10], "%Y-%m-%d").strftime("%d/%m/%Y")
+            descricao = ", ".join(evento['descricao'])
+            feriados_mes_formatado.append(f"{data_formatada} - {descricao}")
+            feriados_datas.add(data_formatada)
+
+    domingos = []
+    for semana in calendar.monthcalendar(int(ano), int(mes)):
+        dia = semana[calendar.SUNDAY]
+        if dia != 0:
+            data_domingo = datetime(int(ano), int(mes), dia).strftime("%d/%m/%Y")
+            if data_domingo not in feriados_datas:
+                domingos.append(data_domingo)
+
+    return feriados_mes_formatado, domingos
 
 
 def calcular_adiantamento(contra_cheque):
