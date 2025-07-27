@@ -31,6 +31,7 @@ class Evento:
 # Tupla de eventos
 EVENTOS_CONTRA_CHEQUE = (
     Evento("1000", "SALÁRIO", True, True),
+    Evento("1002", "DSR SOBRE HORAS EXTRAS", True, True),
     Evento("1003", "HORAS EXTRAS", True, True),
     Evento("1019", "1/3 FÉRIAS", True, True),
     Evento("1020", "FÉRIAS", True, True),
