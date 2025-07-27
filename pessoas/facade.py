@@ -1724,7 +1724,8 @@ def create_contexto_contra_cheque_pagamento(request):
         mes_por_extenso, ano, "PAGAMENTO", id_pessoal
     )
 
-    atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque)
+    if not contra_cheque.Pago:
+        atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque)
 
     contra_cheque_itens = ContraChequeItens.objects.filter(
         idContraCheque=contra_cheque
