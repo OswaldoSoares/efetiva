@@ -1443,6 +1443,19 @@ def obter_feriados_e_domingos_mes(mes, ano):
     return feriados_mes_formatado, domingos
 
 
+def calcular_dsr_horas_extras(mes, ano, hora_extra_valor):
+    feriados, domingos = obter_feriados_e_domingos_mes(mes, ano)
+    _, ultimo_dia = primeiro_e_ultimo_dia_do_mes(mes, ano)
+    dias_mes = ultimo_dia.date().day
+
+    dias_dsr = len(feriados) + len(domingos)
+    dias_uteis = dias_mes - dias_dsr
+
+    valor_dsr = hora_extra_valor / dias_uteis * dias_dsr
+
+    return dias_dsr, valor_dsr
+
+
 def calcular_adiantamento(contra_cheque):
     """Consultar Documentação Sistema Efetiva"""
     contra_cheque_adiantamento = ContraCheque.objects.filter(
