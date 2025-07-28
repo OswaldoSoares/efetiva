@@ -57,6 +57,17 @@ EVENTOS_CONTRA_CHEQUE = (
     Evento("9908", "FGTS", True, True),
 )
 
+EVENTOS_INCIDE_INSS = (
+    "1000",
+    "1002",
+    "1003",
+    "1019",
+    "1020",
+    "1211",
+    "2001",
+    "6002",
+)
+
 MESES = {
     1: "JANEIRO",
     2: "FEVEREIRO",
