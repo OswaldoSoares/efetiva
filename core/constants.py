@@ -31,6 +31,7 @@ class Evento:
 # Tupla de eventos
 EVENTOS_CONTRA_CHEQUE = (
     Evento("1000", "SALÁRIO", True, True),
+    Evento("1002", "DSR SOBRE HORAS EXTRAS", True, True),
     Evento("1003", "HORAS EXTRAS", True, True),
     Evento("1019", "1/3 FÉRIAS", True, True),
     Evento("1020", "FÉRIAS", True, True),
@@ -45,6 +46,7 @@ EVENTOS_CONTRA_CHEQUE = (
     Evento("6007", "FÉRIAS VENCIDAS", True, True),
     Evento("6901", "DESCONTO DO AVISO PRÉVIO", True, False),
     Evento("9200", "DESCONTO DE ADIANTAMENTOS", True, False),
+    Evento("9201", "INSS", True, False),
     Evento("9207", "FALTAS", True, False),
     Evento("9208", "ATRASOS", True, False),
     Evento("9211", "DSR SOBRE FALTAS", True, False),
@@ -53,6 +55,17 @@ EVENTOS_CONTRA_CHEQUE = (
     Evento("9801", "VALE", False, False),
     Evento("9802", "MULTA", False, False),
     Evento("9908", "FGTS", True, True),
+)
+
+EVENTOS_INCIDE_INSS = (
+    "1000",
+    "1002",
+    "1003",
+    "1019",
+    "1020",
+    "1211",
+    "2001",
+    "6002",
 )
 
 MESES = {

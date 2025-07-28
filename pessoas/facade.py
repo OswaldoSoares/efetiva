@@ -1,5 +1,6 @@
 import calendar
 import datetime
+import json
 import os
 import ast
 import locale
@@ -37,6 +38,7 @@ from pagamentos.models import Recibo
 from core import constants
 from core.constants import (
     CATEGORIAS,
+    EVENTOS_INCIDE_INSS,
     TIPOPGTO,
     TIPOS_DOCS,
     TIPOS_FONES,
@@ -1418,6 +1420,43 @@ def calcular_horas_extras(salario, cartao_ponto):
     return total_extras, valor_extras
 
 
+def obter_feriados_e_domingos_mes(mes, ano):
+    with open('data/Feriados_2021_2035.json', encoding='utf-8') as f:
+        feriados = json.load(f)
+
+    feriados_mes_formatado = []
+    feriados_datas = set()
+    if ano in feriados and mes in feriados[ano]:
+        for evento in feriados[ano][mes]:
+            data_formatada = datetime.strptime(evento['data'][:10], "%Y-%m-%d").strftime("%d/%m/%Y")
+            descricao = ", ".join(evento['descricao'])
+            feriados_mes_formatado.append(f"{data_formatada} - {descricao}")
+            feriados_datas.add(data_formatada)
+
+    domingos = []
+    for semana in calendar.monthcalendar(int(ano), int(mes)):
+        dia = semana[calendar.SUNDAY]
+        if dia != 0:
+            data_domingo = datetime(int(ano), int(mes), dia).strftime("%d/%m/%Y")
+            if data_domingo not in feriados_datas:
+                domingos.append(data_domingo)
+
+    return feriados_mes_formatado, domingos
+
+
+def calcular_dsr_horas_extras(mes, ano, hora_extra_valor):
+    feriados, domingos = obter_feriados_e_domingos_mes(mes, ano)
+    _, ultimo_dia = primeiro_e_ultimo_dia_do_mes(mes, ano)
+    dias_mes = ultimo_dia.date().day
+
+    dias_dsr = len(feriados) + len(domingos)
+    dias_uteis = dias_mes - dias_dsr
+
+    valor_dsr = hora_extra_valor / dias_uteis * dias_dsr
+
+    return dias_dsr, valor_dsr
+
+
 def calcular_adiantamento(contra_cheque):
     """Consultar Documentação Sistema Efetiva"""
     contra_cheque_adiantamento = ContraCheque.objects.filter(
@@ -1561,6 +1600,26 @@ def calcular_dsr(id_pessoal, salario, cartao_ponto):
     return dias_dsr, valor_dsr
 
 
+def calcular_inss(valor_base, ano):
+    with open('data/Tabela_inss_desde_2021.json', encoding='utf-8') as f:
+        tabela = json.load(f)
+
+    aliquota = Decimal(0.00)
+    desconto = Decimal(0.00)
+    print(valor_base)
+
+    for faixa in tabela[ano]:
+        if valor_base <= faixa["faixa_final"]:
+            aliquota = round(Decimal(faixa["aliquota"]), 2)
+            deduzir = round(Decimal( faixa["parcela_deduzir"]), 2)
+
+            desconto = (valor_base * aliquota - deduzir).quantize(
+                Decimal("0.01"), rounding=ROUND_HALF_UP
+            )
+
+            return aliquota * 100, desconto
+
+
 def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
     """Consultar Documentação Sistema Efetiva"""
     colaborador = classes.Colaborador(id_pessoal)
@@ -1613,6 +1672,13 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
             "referencia": lambda horas: horas,
         },
         {
+            "nome": "DSR SOBRE HORA EXTRA",
+            "codigo": "1002",
+            "calculo": "", # função chamada dinamicamente
+            "registro": "C",
+            "referencia": lambda horas: horas,
+        },
+        {
             "nome": "ADIANTAMENTO",
             "codigo": "9200",
             "calculo": lambda: calcular_adiantamento(contra_cheque),
@@ -1640,14 +1706,37 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
             "registro": "D",
             "referencia": lambda dias: dias,
         },
+        {
+            "nome": "INSS",
+            "codigo": "9201",
+            "calculo": "", # função chamada dinamicamente
+            "registro": "D",
+            "referencia": lambda porcentagem: porcentagem,
+        },
     ]
 
     evento_lookup = {evento.codigo: evento for evento in EVENTOS_CONTRA_CHEQUE}
+    eventos_inss = EVENTOS_INCIDE_INSS
+    valores_temporarios = {}
+    valor_base_inss = Decimal(0.00)
 
     for item in itens_contra_cheque:
         evento = evento_lookup.get(item["codigo"])
         descricao = evento.descricao
-        quantidade, valor = item["calculo"]()
+
+        if item["nome"] == "DSR SOBRE HORA EXTRA":
+            hora_extra_valor = valores_temporarios.get("HORA EXTRA", (0,0))[1]
+            quantidade, valor = calcular_dsr_horas_extras(mes, ano, hora_extra_valor)
+        elif item["nome"] == "INSS":
+            quantidade, valor = calcular_inss(valor_base_inss, str(ano))
+            calcular_inss(Decimal(1995.35), "2025")
+        else:
+            quantidade, valor = item["calculo"]()
+
+        valores_temporarios[item["nome"]] = (quantidade, valor)
+        if item["codigo"] in eventos_inss:
+                valor_base_inss += round(Decimal(valor), 2)
+
         atualizar_ou_adicionar_contra_cheque_item(
             descricao,
             valor,
@@ -1669,7 +1758,8 @@ def create_contexto_contra_cheque_pagamento(request):
         mes_por_extenso, ano, "PAGAMENTO", id_pessoal
     )
 
-    atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque)
+    if not contra_cheque.Pago:
+        atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque)
 
     contra_cheque_itens = ContraChequeItens.objects.filter(
         idContraCheque=contra_cheque
