@@ -38,6 +38,7 @@ from pagamentos.models import Recibo
 from core import constants
 from core.constants import (
     CATEGORIAS,
+    EVENTOS_INCIDE_INSS,
     TIPOPGTO,
     TIPOS_DOCS,
     TIPOS_FONES,
@@ -1599,6 +1600,26 @@ def calcular_dsr(id_pessoal, salario, cartao_ponto):
     return dias_dsr, valor_dsr
 
 
+def calcular_inss(valor_base, ano):
+    with open('data/Tabela_inss_desde_2021.json', encoding='utf-8') as f:
+        tabela = json.load(f)
+
+    aliquota = Decimal(0.00)
+    desconto = Decimal(0.00)
+    print(valor_base)
+
+    for faixa in tabela[ano]:
+        if valor_base <= faixa["faixa_final"]:
+            aliquota = round(Decimal(faixa["aliquota"]), 2)
+            deduzir = round(Decimal( faixa["parcela_deduzir"]), 2)
+
+            desconto = (valor_base * aliquota - deduzir).quantize(
+                Decimal("0.01"), rounding=ROUND_HALF_UP
+            )
+
+            return aliquota * 100, desconto
+
+
 def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
     """Consultar Documentação Sistema Efetiva"""
     colaborador = classes.Colaborador(id_pessoal)
@@ -1685,10 +1706,19 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
             "registro": "D",
             "referencia": lambda dias: dias,
         },
+        {
+            "nome": "INSS",
+            "codigo": "9201",
+            "calculo": "", # função chamada dinamicamente
+            "registro": "D",
+            "referencia": lambda porcentagem: porcentagem,
+        },
     ]
 
     evento_lookup = {evento.codigo: evento for evento in EVENTOS_CONTRA_CHEQUE}
+    eventos_inss = EVENTOS_INCIDE_INSS
     valores_temporarios = {}
+    valor_base_inss = Decimal(0.00)
 
     for item in itens_contra_cheque:
         evento = evento_lookup.get(item["codigo"])
@@ -1696,12 +1726,16 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
 
         if item["nome"] == "DSR SOBRE HORA EXTRA":
             hora_extra_valor = valores_temporarios.get("HORA EXTRA", (0,0))[1]
-            print(type(hora_extra_valor))
             quantidade, valor = calcular_dsr_horas_extras(mes, ano, hora_extra_valor)
+        elif item["nome"] == "INSS":
+            quantidade, valor = calcular_inss(valor_base_inss, str(ano))
+            calcular_inss(Decimal(1995.35), "2025")
         else:
             quantidade, valor = item["calculo"]()
 
         valores_temporarios[item["nome"]] = (quantidade, valor)
+        if item["codigo"] in eventos_inss:
+                valor_base_inss += round(Decimal(valor), 2)
 
         atualizar_ou_adicionar_contra_cheque_item(
             descricao,
