@@ -46,7 +46,7 @@ EVENTOS_CONTRA_CHEQUE = (
     Evento("6007", "FÉRIAS VENCIDAS", True, True),
     Evento("6901", "DESCONTO DO AVISO PRÉVIO", True, False),
     Evento("9200", "DESCONTO DE ADIANTAMENTOS", True, False),
-    Evento("9201", "INSS", True, False)
+    Evento("9201", "INSS", True, False),
     Evento("9207", "FALTAS", True, False),
     Evento("9208", "ATRASOS", True, False),
     Evento("9211", "DSR SOBRE FALTAS", True, False),
