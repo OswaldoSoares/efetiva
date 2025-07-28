@@ -189,6 +189,26 @@ def save_colaborador(request):
     return {"mensagem": "Colaborador cadastrado com sucesso"}
 
 
+def modal_registra_colaborador(id_pessoal, request):
+    colaborador = classes.Colaborador(id_pessoal) if id_pessoal else False
+    contexto = {"colaborador": colaborador}
+    modal_html = html_data.html_modal_registro_colaborador(request, contexto)
+
+    return JsonResponse({"modal_html": modal_html})
+
+
+def save_registro_colaborador(request):
+    id_pessoal = request.POST.get("id_pessoal")
+
+    try:
+        Pessoal.objects.filter(idPessoal=id_pessoal).update(registrado=True)
+        return {"mensagem": "Colaborador registrado comm sucesso"}
+
+    except Exception as e:
+        print(e)
+        return {"mensagem": "Erro ao registrar colaborador"}
+
+
 def modal_doc_colaborador(id_doc_pessoal, request):
     id_pessoal = (
         request.POST.get("id_pessoal")
