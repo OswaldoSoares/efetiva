@@ -1620,6 +1620,12 @@ def calcular_dsr(id_pessoal, salario, cartao_ponto):
     return dias_dsr, valor_dsr
 
 
+def calcular_desconto_conducao(salario):
+    deconto_vale_transporte = round(salario * Decimal(0.06), 2)
+
+    return 6, deconto_vale_transporte
+
+
 def calcular_inss(valor_base, ano):
     with open('data/Tabela_inss_desde_2021.json', encoding='utf-8') as f:
         tabela = json.load(f)
@@ -1734,6 +1740,14 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
             "registro": "D",
             "referencia": lambda dias: dias,
             "registrado": False
+        },
+        {
+            "nome": "DESCONTO DE VALE-TRANSPORTE",
+            "codigo": "9216",
+            "calculo": lambda: calcular_desconto_conducao(salario) if tarifa_dia else (0, 0),
+            "registro": "D",
+            "referencia": lambda dias: dias,
+            "registrado": True
         },
         {
             "nome": "INSS",
