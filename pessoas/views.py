@@ -728,3 +728,12 @@ def readmitir_colaborador(request):
         partial(facade.create_contexto_class_colaborador, request),
         facade.data_demissao_html_data,
     )
+
+def registrar_colaborador(request):
+    return handle_modal_colaborador(
+        request,
+        facade.modal_registra_colaborador,
+        facade.save_registro_colaborador,
+        partial(facade.create_contexto_class_colaborador, request),
+        facade.colaborador_html_data,
+    )

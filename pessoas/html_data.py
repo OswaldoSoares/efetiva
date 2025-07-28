@@ -116,6 +116,13 @@ def html_modal_colaborador(request, contexto):
     return modal_html
 
 
+def html_modal_registro_colaborador(request, contexto):
+    modal_html = render_to_string(
+        "pessoas/modal_registra_colaborador.html", contexto, request=request
+    )
+    return modal_html
+
+
 def html_modal_doc_colaborador(request, contexto):
     modal_html = render_to_string(
         "pessoas/modal_doc_colaborador.html", contexto, request=request

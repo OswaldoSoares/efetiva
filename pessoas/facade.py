@@ -189,6 +189,26 @@ def save_colaborador(request):
     return {"mensagem": "Colaborador cadastrado com sucesso"}
 
 
+def modal_registra_colaborador(id_pessoal, request):
+    colaborador = classes.Colaborador(id_pessoal) if id_pessoal else False
+    contexto = {"colaborador": colaborador}
+    modal_html = html_data.html_modal_registro_colaborador(request, contexto)
+
+    return JsonResponse({"modal_html": modal_html})
+
+
+def save_registro_colaborador(request):
+    id_pessoal = request.POST.get("id_pessoal")
+
+    try:
+        Pessoal.objects.filter(idPessoal=id_pessoal).update(registrado=True)
+        return {"mensagem": "Colaborador registrado comm sucesso"}
+
+    except Exception as e:
+        print(e)
+        return {"mensagem": "Erro ao registrar colaborador"}
+
+
 def modal_doc_colaborador(id_doc_pessoal, request):
     id_pessoal = (
         request.POST.get("id_pessoal")
@@ -1600,6 +1620,12 @@ def calcular_dsr(id_pessoal, salario, cartao_ponto):
     return dias_dsr, valor_dsr
 
 
+def calcular_desconto_conducao(salario):
+    deconto_vale_transporte = round(salario * Decimal(0.06), 2)
+
+    return 6, deconto_vale_transporte
+
+
 def calcular_inss(valor_base, ano):
     with open('data/Tabela_inss_desde_2021.json', encoding='utf-8') as f:
         tabela = json.load(f)
@@ -1623,6 +1649,7 @@ def calcular_inss(valor_base, ano):
 def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
     """Consultar Documentação Sistema Efetiva"""
     colaborador = classes.Colaborador(id_pessoal)
+    colaborador_registrado = colaborador.dados_profissionais.registrado
     admissao = colaborador.dados_profissionais.data_admissao
     demissao = colaborador.dados_profissionais.data_demissao
     tarifa_dia = colaborador.salarios.salarios.ValeTransporte
@@ -1654,6 +1681,7 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
             "calculo": lambda: calcular_salario(salario, cartao_ponto),
             "registro": "C",
             "referencia": lambda dias: dias,
+            "registrado": False
         },
         {
             "nome": "VALE TRANSPORTE",
@@ -1663,6 +1691,7 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
             else (0, 0),
             "registro": "C",
             "referencia": lambda dias: dias,
+            "registrado": False
         },
         {
             "nome": "HORA EXTRA",
@@ -1670,6 +1699,7 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
             "calculo": lambda: calcular_horas_extras(salario, cartao_ponto),
             "registro": "C",
             "referencia": lambda horas: horas,
+            "registrado": False
         },
         {
             "nome": "DSR SOBRE HORA EXTRA",
@@ -1677,6 +1707,7 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
             "calculo": "", # função chamada dinamicamente
             "registro": "C",
             "referencia": lambda horas: horas,
+            "registrado": True
         },
         {
             "nome": "ADIANTAMENTO",
@@ -1684,6 +1715,7 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
             "calculo": lambda: calcular_adiantamento(contra_cheque),
             "registro": "D",
             "referencia": lambda porc: porc,
+            "registrado": False
         },
         {
             "nome": "ATRASO",
@@ -1691,6 +1723,7 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
             "calculo": lambda: calcular_atrasos(salario, cartao_ponto),
             "registro": "D",
             "referencia": lambda horas: horas,
+            "registrado": False
         },
         {
             "nome": "FALTAS",
@@ -1698,6 +1731,7 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
             "calculo": lambda: calcular_faltas(salario, cartao_ponto),
             "registro": "D",
             "referencia": lambda dias: dias,
+            "registrado": False
         },
         {
             "nome": "DSR SOBRE FALTAS",
@@ -1705,6 +1739,15 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
             "calculo": lambda: calcular_dsr(id_pessoal, salario, cartao_ponto),
             "registro": "D",
             "referencia": lambda dias: dias,
+            "registrado": False
+        },
+        {
+            "nome": "DESCONTO DE VALE-TRANSPORTE",
+            "codigo": "9216",
+            "calculo": lambda: calcular_desconto_conducao(salario) if tarifa_dia else (0, 0),
+            "registro": "D",
+            "referencia": lambda dias: dias,
+            "registrado": True
         },
         {
             "nome": "INSS",
@@ -1712,6 +1755,7 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
             "calculo": "", # função chamada dinamicamente
             "registro": "D",
             "referencia": lambda porcentagem: porcentagem,
+            "registrado": True
         },
     ]
 
@@ -1723,6 +1767,9 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
     for item in itens_contra_cheque:
         evento = evento_lookup.get(item["codigo"])
         descricao = evento.descricao
+
+        if item["registrado"] and not colaborador_registrado:
+            continue
 
         if item["nome"] == "DSR SOBRE HORA EXTRA":
             hora_extra_valor = valores_temporarios.get("HORA EXTRA", (0,0))[1]

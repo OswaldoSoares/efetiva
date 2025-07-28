@@ -52,6 +52,7 @@ EVENTOS_CONTRA_CHEQUE = (
     Evento("9211", "DSR SOBRE FALTAS", True, False),
     Evento("9212", "DSR SOBRE ATRAZOS", True, False),
     Evento("9214", "13º SALÁRIO - DESCONTO DE ADIANTAMENTO", True, False),
+    Evento("9216", "DESCONTO DE VALE TRANSPORTE", True, False),
     Evento("9801", "VALE", False, False),
     Evento("9802", "MULTA", False, False),
     Evento("9908", "FGTS", True, True),

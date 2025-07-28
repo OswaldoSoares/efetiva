@@ -586,6 +586,7 @@ class DadosProfissionais:
     data_admissao: datetime
     data_demissao: Optional[datetime]
     data_completa_ano: datetime
+    registrado: bool
 
     @classmethod
     def from_queryset(cls, queryset: QuerySet) -> "DadosProfissionais":
@@ -609,6 +610,7 @@ class DadosProfissionais:
             data_completa_ano=(
                 queryset.DataAdmissao + relativedelta(years=+1, days=-1)
             ),
+            registrado=queryset.registrado
         )
 
 

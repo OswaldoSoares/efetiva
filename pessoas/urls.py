@@ -65,6 +65,7 @@ from .views import (
     upload_contra_cheque,
     excluir_arquivo_contra_cheque,
     readmitir_colaborador,
+    registrar_colaborador,
 )
 
 from pessoas.facades.ponto import verificar_identidade, autenticar
@@ -222,6 +223,11 @@ urlpatterns = [
         "readmitir_colaborador",
         readmitir_colaborador,
         name="readmitir_colaborador",
+    ),
+    path(
+        "registrar_colaborador",
+        registrar_colaborador,
+        name="registrar_colaborador",
     ),
 
     # Módulo ponto

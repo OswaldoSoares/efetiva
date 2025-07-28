@@ -1,0 +1,11 @@
+<form class="row g-3" method="post" action="{% url 'registrar_colaborador' %}">
+{% csrf_token %}
+    <div class="col-md-12 text-center">ATENÇÃO:</div>
+    <div class="col-md-12 text-center">
+        <span>
+            O REGISTRO DO COLABORADOR SERÁ PERMANENTE E NÃO PODERÁ SER ALTERADO.
+        </span>
+    </div>
+    <input type="hidden" name="id_pessoal" value="{{ colaborador.id_pessoal }}">
+</form>
+<div class="thrown-error invisivel"></div>
