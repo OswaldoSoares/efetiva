@@ -440,22 +440,3 @@ class SenhaAppPonto(models.Model):
 
     objects = models.Manager()
 
-
-class FidoCredential(models.Model):
-    idFidoCredential = models.AutoField(primary_key=True)
-    credential_id = models.CharField(max_length=512, unique=True)
-    public_key_pem = models.TextField()
-    device_id = models.CharField(max_length=128)
-    created_at = models.DateTimeField(auto_now_add=True)
-    liberado_pelo_rh = models.BooleanField(default=False)
-    idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
-
-    class Meta:
-        db_table = "credentials"
-        ordering = ["idPessoal"]
-
-    def __str__(self):
-        return str(self.idFidoCredential)
-
-    objects = models.Manager()
-
