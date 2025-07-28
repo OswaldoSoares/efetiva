@@ -31,6 +31,7 @@ class Pessoal(models.Model):
     DataAdmissao = models.DateField(blank=True, null=True)
     DataDemissao = models.DateField(blank=True, null=True)
     Foto = models.ImageField(upload_to=get_file_path, null=True, blank=True)
+    registrado = models.BooleanField(default=False)
 
     class Meta:
         db_table = "pessoal"
