@@ -1,0 +1,32 @@
+{
+  "2021": [
+    { "faixa_final": 1100.00, "aliquota": 0.075, "parcela_deduzir": 0.00 },
+    { "faixa_final": 2203.48, "aliquota": 0.09, "parcela_deduzir": 16.50 },
+    { "faixa_final": 3305.22, "aliquota": 0.12, "parcela_deduzir": 82.61 },
+    { "faixa_final": 6433.57, "aliquota": 0.14, "parcela_deduzir": 148.72 }
+  ],
+  "2022": [
+    { "faixa_final": 1212.00, "aliquota": 0.075, "parcela_deduzir": 0.00 },
+    { "faixa_final": 2427.35, "aliquota": 0.09, "parcela_deduzir": 18.18 },
+    { "faixa_final": 3641.03, "aliquota": 0.12, "parcela_deduzir": 91.00 },
+    { "faixa_final": 7087.22, "aliquota": 0.14, "parcela_deduzir": 163.82 }
+  ],
+  "2023": [
+    { "faixa_final": 1302.00, "aliquota": 0.075, "parcela_deduzir": 0.00 },
+    { "faixa_final": 2571.29, "aliquota": 0.09, "parcela_deduzir": 19.53 },
+    { "faixa_final": 3856.94, "aliquota": 0.12, "parcela_deduzir": 96.67 },
+    { "faixa_final": 7507.49, "aliquota": 0.14, "parcela_deduzir": 173.80 }
+  ],
+  "2024": [
+    { "faixa_final": 1412.00, "aliquota": 0.075, "parcela_deduzir": 0.00 },
+    { "faixa_final": 2666.68, "aliquota": 0.09, "parcela_deduzir": 21.18 },
+    { "faixa_final": 4000.03, "aliquota": 0.12, "parcela_deduzir": 100.91 },
+    { "faixa_final": 7786.02, "aliquota": 0.14, "parcela_deduzir": 189.59 }
+  ],
+  "2025": [
+    { "faixa_final": 1518.00, "aliquota": 0.075, "parcela_deduzir": 0.00 },
+    { "faixa_final": 2793.88, "aliquota": 0.09, "parcela_deduzir": 22.77 },
+    { "faixa_final": 4190.83, "aliquota": 0.12, "parcela_deduzir": 106.59 },
+    { "faixa_final": 8157.41, "aliquota": 0.14, "parcela_deduzir": 190.40 }
+  ]
+}
