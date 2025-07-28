@@ -11,7 +11,14 @@
     { "faixa_final": 3641.03, "aliquota": 0.12, "parcela_deduzir": 91.00 },
     { "faixa_final": 7087.22, "aliquota": 0.14, "parcela_deduzir": 163.82 }
   ],
+  "_alrerada_2023": "Em 2023 foi atualizada a partir de Maio",
   "2023": [
+    { "faixa_final": 1302.00, "aliquota": 0.075, "parcela_deduzir": 0.00 },
+    { "faixa_final": 2571.29, "aliquota": 0.09, "parcela_deduzir": 19.80 },
+    { "faixa_final": 3856.94, "aliquota": 0.12, "parcela_deduzir": 96.94 },
+    { "faixa_final": 7507.49, "aliquota": 0.14, "parcela_deduzir": 174.08 }
+  ],
+  "2023_ant": [
     { "faixa_final": 1302.00, "aliquota": 0.075, "parcela_deduzir": 0.00 },
     { "faixa_final": 2571.29, "aliquota": 0.09, "parcela_deduzir": 19.53 },
     { "faixa_final": 3856.94, "aliquota": 0.12, "parcela_deduzir": 96.67 },
