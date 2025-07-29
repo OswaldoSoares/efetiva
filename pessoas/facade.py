@@ -1896,7 +1896,7 @@ def create_contexto_contra_cheque_vale_transporte(request):
     _, ultimo_dia = primeiro_e_ultimo_dia_do_mes(mes, ano)
     dias_mes = ultimo_dia.date().day
 
-    dias_nao_trabalhados = len(feriados) + len(domingos) + len(feriados)
+    dias_nao_trabalhados = len(feriados) + len(domingos) + len(sabados)
     dias_trabalhados = dias_mes - dias_nao_trabalhados
 
     vale_transporte = tarifa_dia * dias_trabalhados
