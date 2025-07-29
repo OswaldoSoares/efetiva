@@ -1871,6 +1871,63 @@ def create_contexto_contra_cheque_adiantamento(request):
     return contexto
 
 
+def create_contexto_contra_cheque_vale_transporte(request):
+    id_pessoal = request.GET.get("id_pessoal")
+    mes = int(request.GET.get("mes"))
+    ano = int(request.GET.get("ano"))
+    mes_por_extenso = obter_mes_por_numero(mes)
+
+    contra_cheque, _ = get_or_create_contra_cheque(
+        mes_por_extenso, ano, "VALE TRANSPORTE", id_pessoal
+    )
+
+    evento_lookup = {
+        evento.codigo: evento for evento in EVENTOS_CONTRA_CHEQUE
+    }
+    evento = evento_lookup.get("1410")
+    descricao = evento.descricao
+
+    colaborador = classes.Colaborador(id_pessoal)
+    tarifa_dia = colaborador.salarios.salarios.ValeTransporte
+
+    feriados, domingos, sabados = obter_feriados_sabados_domingos_mes(
+        mes, ano
+    )
+    _, ultimo_dia = primeiro_e_ultimo_dia_do_mes(mes, ano)
+    dias_mes = ultimo_dia.date().day
+
+    dias_nao_trabalhados = len(feriados) + len(domingos) + len(feriados)
+    dias_trabalhados = dias_mes - dias_nao_trabalhados
+
+    vale_transporte = tarifa_dia * dias_trabalhados
+
+    atualizar_ou_adicionar_contra_cheque_item(
+        descricao,
+        vale_transporte,
+        "C",
+        dias_trabalhados,
+        "1410",
+        contra_cheque.idContraCheque,
+    )
+
+    contra_cheque_itens = ContraChequeItens.objects.filter(
+        idContraCheque=contra_cheque.idContraCheque
+    )
+
+    file = get_file_contra_cheque(contra_cheque.idContraCheque)
+
+    contexto = {
+        "mensagem": f"Vale transporte selecionada: {mes_por_extenso}/{ano}",
+        "contra_cheque": contra_cheque,
+        "contra_cheque_itens": contra_cheque_itens,
+        "id_pessoal": id_pessoal,
+        "file": file,
+        **get_saldo_contra_cheque(contra_cheque_itens),
+    }
+
+    return contexto
+
+
 def create_contexto_contra_cheque_decimo_terceiro(request):
     id_pessoal = request.GET.get("id_pessoal")
     ano = request.GET.get("ano")
