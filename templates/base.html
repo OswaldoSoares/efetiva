@@ -19,6 +19,10 @@
     href="{% static 'website/css/icofont/icofont.min.css' %}">
     <link rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+    <!-- CSS do Toastr -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+
     <link rel="icon" type="image/png" sizes="32x32"
     href="{% static 'website/img/favicon-32x32.png' %}">
     <title>
@@ -161,9 +165,12 @@
     <script src="{% static 'website/js/jquery-3.5.1.min.js' %}"></script>
     <script src="{% static 'website/js/jquery.mask.min.js' %}"></script>
     <script src="{% static 'website/js/bootstrap.min.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="{% static 'website/js/base.js' %}"></script>
     <script src="{% static 'website/js/ajax.js' %}"></script>
     <script src="https://cdn.linearicons.com/free/1.0.0/svgembedder.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     {% block script %}
     {% endblock script %}
 </body>
