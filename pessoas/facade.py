@@ -1782,6 +1782,10 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
         if item["registrado"] and not colaborador_registrado:
             continue
 
+        if item["nome"] == "VALE TRANSPORTE":
+            if (ano, mes) > (2025, 7):
+                continue
+
         if item["nome"] == "DSR SOBRE HORA EXTRA":
             hora_extra_valor = valores_temporarios.get("HORA EXTRA", (0,0))[1]
             quantidade, valor = calcular_dsr_horas_extras(mes, ano, hora_extra_valor)
@@ -1876,6 +1880,10 @@ def create_contexto_contra_cheque_vale_transporte(request):
     mes = int(request.GET.get("mes"))
     ano = int(request.GET.get("ano"))
     mes_por_extenso = obter_mes_por_numero(mes)
+
+    if (ano, mes) < (2025, 8):
+        contexto = {"mensagem": "FUNCIONALIDADE DISPONÍVEL PARA CONTRA CHEQUE A PARTIR DE 01/08/2025"}
+        return contexto
 
     contra_cheque, _ = get_or_create_contra_cheque(
         mes_por_extenso, ano, "VALE TRANSPORTE", id_pessoal
