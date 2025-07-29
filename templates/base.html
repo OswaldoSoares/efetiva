@@ -3,14 +3,16 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="keywords" content="Transportadora Efetiva">
+    <meta name="description" content="Aplicativo Web">
     <meta name="viewport"
-          content="width=device-width, user-scalable=no,
-          initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        content="width=device-width, user-scalable=no,
+        initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet"
     href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet"
-    href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css"> 
+    href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css">
     <link rel="stylesheet"
     href="{% static 'website/css/style.css' %}">
     <link rel="stylesheet"
@@ -21,7 +23,7 @@
     href="{% static 'website/img/favicon-32x32.png' %}">
     <title>
         {% block title %}
-        {% endblock %}
+        {% endblock title %}
     </title>
 </head>
 <body>
@@ -123,24 +125,25 @@
             {% endif %}
         </nav>
     </div>
-    <div class="meu-container">       
+    <div class="meu-container">
         <div class="conteudo">
-            <div class="mensagem"><p><p></div>
+            <div class="mensagem"></div>
             <section>
                 {% block dashboard %}
-                {% endblock %}
+                {% endblock dashboard %}
                 {% block main %}
-                {% endblock %}
+                {% endblock main %}
             </section>
         </div>
     </div>
+    <div id="toast-area" class="toast-container position-fixed bottom-0 end-0 p-3 z-3"></div>
     <!-- DIV MODAL START -->
     <div class="modal fade bd-example-modal-lg" id="MyModal" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="close">
-                        <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true">{{ "\u00D7" }}</span>
                     </button>
                     <h4 class="modal-title"><b>TEXTO DO TITULO</b></h4>
                 </div>
@@ -162,7 +165,6 @@
     <script src="{% static 'website/js/ajax.js' %}"></script>
     <script src="https://cdn.linearicons.com/free/1.0.0/svgembedder.min.js"></script>
     {% block script %}
-    {% endblock %}
+    {% endblock script %}
 </body>
 </html>
-
