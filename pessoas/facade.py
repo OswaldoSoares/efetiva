@@ -1440,32 +1440,43 @@ def calcular_horas_extras(salario, cartao_ponto):
     return total_extras, valor_extras
 
 
-def obter_feriados_e_domingos_mes(mes, ano):
+def obter_feriados_sabados_domingos_mes(mes: int, ano: int):
     with open('data/Feriados_2021_2035.json', encoding='utf-8') as f:
         feriados = json.load(f)
 
+    ano_str = str(ano)
+    mes_str = str(mes).zfill(2)
+
     feriados_mes_formatado = []
     feriados_datas = set()
-    if ano in feriados and mes in feriados[ano]:
-        for evento in feriados[ano][mes]:
+    if ano_str in feriados and mes_str in feriados[ano_str]:
+        for evento in feriados[ano_str][mes_str]:
             data_formatada = datetime.strptime(evento['data'][:10], "%Y-%m-%d").strftime("%d/%m/%Y")
             descricao = ", ".join(evento['descricao'])
             feriados_mes_formatado.append(f"{data_formatada} - {descricao}")
             feriados_datas.add(data_formatada)
 
     domingos = []
-    for semana in calendar.monthcalendar(int(ano), int(mes)):
+    for semana in calendar.monthcalendar(ano, mes):
         dia = semana[calendar.SUNDAY]
         if dia != 0:
-            data_domingo = datetime(int(ano), int(mes), dia).strftime("%d/%m/%Y")
+            data_domingo = datetime(ano, mes, dia).strftime("%d/%m/%Y")
             if data_domingo not in feriados_datas:
                 domingos.append(data_domingo)
 
-    return feriados_mes_formatado, domingos
+    sabados = []
+    for semana in calendar.monthcalendar(ano, mes):
+        dia = semana[calendar.SATURDAY]
+        if dia != 0:
+            data_sabado = datetime(ano, mes, dia).strftime("%d/%m/%Y")
+            if data_sabado not in feriados_datas:
+                sabados.append(data_sabado)
+
+    return feriados_mes_formatado, domingos, sabados
 
 
 def calcular_dsr_horas_extras(mes, ano, hora_extra_valor):
-    feriados, domingos = obter_feriados_e_domingos_mes(mes, ano)
+    feriados, domingos, _ = obter_feriados_sabados_domingos_mes(mes, ano)
     _, ultimo_dia = primeiro_e_ultimo_dia_do_mes(mes, ano)
     dias_mes = ultimo_dia.date().day
 
@@ -1771,6 +1782,10 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
         if item["registrado"] and not colaborador_registrado:
             continue
 
+        if item["nome"] == "VALE TRANSPORTE":
+            if (ano, mes) > (2025, 7):
+                continue
+
         if item["nome"] == "DSR SOBRE HORA EXTRA":
             hora_extra_valor = valores_temporarios.get("HORA EXTRA", (0,0))[1]
             quantidade, valor = calcular_dsr_horas_extras(mes, ano, hora_extra_valor)
@@ -1850,6 +1865,67 @@ def create_contexto_contra_cheque_adiantamento(request):
 
     contexto = {
         "mensagem": f"Adiantamento selecionada: {mes_por_extenso}/{ano}",
+        "contra_cheque": contra_cheque,
+        "contra_cheque_itens": contra_cheque_itens,
+        "id_pessoal": id_pessoal,
+        "file": file,
+        **get_saldo_contra_cheque(contra_cheque_itens),
+    }
+
+    return contexto
+
+
+def create_contexto_contra_cheque_vale_transporte(request):
+    id_pessoal = request.GET.get("id_pessoal")
+    mes = int(request.GET.get("mes"))
+    ano = int(request.GET.get("ano"))
+    mes_por_extenso = obter_mes_por_numero(mes)
+
+    if (ano, mes) < (2025, 8):
+        contexto = {"mensagem": "FUNCIONALIDADE DISPONÍVEL PARA CONTRA CHEQUE A PARTIR DE 01/08/2025"}
+        return contexto
+
+    contra_cheque, _ = get_or_create_contra_cheque(
+        mes_por_extenso, ano, "VALE TRANSPORTE", id_pessoal
+    )
+
+    evento_lookup = {
+        evento.codigo: evento for evento in EVENTOS_CONTRA_CHEQUE
+    }
+    evento = evento_lookup.get("1410")
+    descricao = evento.descricao
+
+    colaborador = classes.Colaborador(id_pessoal)
+    tarifa_dia = colaborador.salarios.salarios.ValeTransporte
+
+    feriados, domingos, sabados = obter_feriados_sabados_domingos_mes(
+        mes, ano
+    )
+    _, ultimo_dia = primeiro_e_ultimo_dia_do_mes(mes, ano)
+    dias_mes = ultimo_dia.date().day
+
+    dias_nao_trabalhados = len(feriados) + len(domingos) + len(sabados)
+    dias_trabalhados = dias_mes - dias_nao_trabalhados
+
+    vale_transporte = tarifa_dia * dias_trabalhados
+
+    atualizar_ou_adicionar_contra_cheque_item(
+        descricao,
+        vale_transporte,
+        "C",
+        dias_trabalhados,
+        "1410",
+        contra_cheque.idContraCheque,
+    )
+
+    contra_cheque_itens = ContraChequeItens.objects.filter(
+        idContraCheque=contra_cheque.idContraCheque
+    )
+
+    file = get_file_contra_cheque(contra_cheque.idContraCheque)
+
+    contexto = {
+        "mensagem": f"Vale transporte selecionada: {mes_por_extenso}/{ano}",
         "contra_cheque": contra_cheque,
         "contra_cheque_itens": contra_cheque_itens,
         "id_pessoal": id_pessoal,

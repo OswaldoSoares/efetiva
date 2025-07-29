@@ -772,6 +772,7 @@ $(document).on('click', '.js-selecionar-contra-cheque-pagamento', function() {
         selecionarValesToggle()
         $(window).scrollTop(0)
         $(".box-loader").hide()
+        exibirMensagem(data["mensagem"])
     });
 });
 
@@ -790,6 +791,26 @@ $(document).on('click', '.js-selecionar-contra-cheque-adiantamento', function() 
         selecionarValesToggle()
         $(window).scrollTop(0)
         $(".box-loader").hide()
+        exibirMensagem(data["mensagem"])
+    });
+});
+
+$(document).on('click', '.js-selecionar-contra-cheque-vale-transporte', function() {
+     executarAjax("/pagamentos/selecionar_contra_cheque_vale_transporte", "GET", {
+        id_pessoal: idPessoal,
+        ano: ano,
+        mes: mes,
+    }, function(data) {
+        console.log(data)
+        $(".card-contra-cheque-colaborador").html(
+            data["html-card-contra-cheque-colaborador"]
+        )
+        $(".card-contra-cheque-colaborador").show()
+        idContraCheque = $("#id_contra_cheque").data("id_contra_cheque")
+        selecionarValesToggle()
+        $(window).scrollTop(0)
+        $(".box-loader").hide()
+        exibirMensagem(data["mensagem"])
     });
 });
 
