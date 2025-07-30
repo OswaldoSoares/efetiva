@@ -26,10 +26,10 @@ $(document).on("click", ".js-selecionar-mes-pagamento", function() {
         $(".js-selecionar-mes-pagamento").removeClass("icofont-square");
         $(".js-selecionar-mes-pagamento").addClass("icofont-checked");
         $(".js-selecionar-mes-pagamento").addClass("disabled");
-        exibirMensagem(data["mensagem"])
         mes = $("#mes_referencia").data("mes")
         ano = $("#ano_referencia").data("ano")
         $('.box-loader').hide()
+        mostrarToast(data["mensagem"], data["tipo"])
     });
 });
 
@@ -77,6 +77,7 @@ $(document).on("click", ".js-selecionar-colaborador", function() {
         $(".card-agenda").show();
         $(".submit-agenda").hide();
         $('.box-loader').hide();
+        mostrarToast(data["mensagem"], data["tipo"])
     });
 
     $(selecionado).removeClass("icofont-square")

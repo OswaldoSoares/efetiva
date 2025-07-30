@@ -10,7 +10,11 @@ from django.db.models import DecimalField, ExpressionWrapper, F, Max, Min, Sum
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from core.constants import MESES
-from core.tools import gerar_data_html, primeiro_e_ultimo_dia_do_mes
+from core.tools import (
+    gerar_data_html,
+    primeiro_e_ultimo_dia_do_mes,
+    get_mensagem,
+)
 from despesas.models import Multas
 from minutas.facade import nome_curto, nome_curto_underscore
 from minutas.models import MinutaColaboradores, MinutaItens
@@ -448,7 +452,7 @@ def create_contexto_folha_pagamento(request):
         "mes": mes,
         "ano": ano,
         "totais": totais,
-        "mensagem": f"O mês {mes}/{ano} foi selecionado",
+        **get_mensagem('pafa0001', mes=mes, ano=ano)
     }
 
 
@@ -661,6 +665,7 @@ def create_contexto_colaborador(request):
         "cartao_ponto": cartao_ponto,
         "minutas": minutas,
         "mes_da_demissao": mes_da_demissao,
+        **get_mensagem("pafa0002", colaborador=colaborador.nome)
     }
 
     agenda = create_contexto_agenda_colaborador(id_pessoal, mes, ano)

@@ -127,6 +127,7 @@ def create_contexto_colaboradores(categoria, status_colaborador):
 
 def gerar_data_html(html_functions, request, contexto, data):
     data["mensagem"] = contexto["mensagem"]
+    data["tipo"] = contexto.get("tipo", None)
     data["mes"] = contexto.get("mes", None)
     data["ano"] = contexto.get("ano", None)
     for html_func in html_functions:
