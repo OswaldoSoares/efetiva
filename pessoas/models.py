@@ -276,7 +276,7 @@ class CartaoPonto(models.Model):
     Entrada = models.TimeField()
     Saida = models.TimeField()
     Ausencia = models.CharField(max_length=7, blank=True)
-    Alteracao = models.CharField(max_length=6, default="ROBOT")
+    Alteracao = models.CharField(max_length=9, default="ROBOT")
     Conducao = models.BooleanField(default=False)
     Remunerado = models.BooleanField(default=True)
     CarroEmpresa = models.BooleanField(default=False)
