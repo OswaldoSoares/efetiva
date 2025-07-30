@@ -19,3 +19,4 @@ transefetiva/settings/.env
 .pytest_cache
 .vscode
 .python-version
+pyrightconfig.json
