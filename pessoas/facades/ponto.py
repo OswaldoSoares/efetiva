@@ -1,5 +1,5 @@
 """
-Módulo responsável pelo registro de ponto e contraoe do cartão de ponto.
+Módulo responsável pelo registro de ponto e contrale do cartão de ponto.
 """
 import json
 from datetime import datetime, time
