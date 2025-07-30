@@ -22,6 +22,29 @@ if (typeof mesAno !== "undefined") {
     var mesAno = null; // Declara como null na primeira carga
 }
 
+function mostrarToast(texto, tipo = 'info') {
+    toastr[tipo](texto);
+}
+
+toastr.options = {
+    "toastClass": "toast text-center",
+    "closeButton": true,
+    "debug": false,
+    "newestOnTop": true,
+    "progressBar": true,
+    "positionClass": "toast-bottom-right",  // pode mudar p/ 'toast-bottom-left' etc.
+    "preventDuplicates": true,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",  // tempo visível
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut",
+};
+
 $(document).on('keydown', 'input.js-decimal, input.js-inteiro', function(e) {
     // Permitir: backspace, delete, setas (esquerda e direita), tab
     if ($.inArray(e.keyCode, [8, 9, 37, 39, 46]) !== -1) {

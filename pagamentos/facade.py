@@ -10,7 +10,11 @@ from django.db.models import DecimalField, ExpressionWrapper, F, Max, Min, Sum
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from core.constants import MESES
-from core.tools import gerar_data_html, primeiro_e_ultimo_dia_do_mes
+from core.tools import (
+    gerar_data_html,
+    primeiro_e_ultimo_dia_do_mes,
+    get_mensagem,
+)
 from despesas.models import Multas
 from minutas.facade import nome_curto, nome_curto_underscore
 from minutas.models import MinutaColaboradores, MinutaItens
@@ -448,7 +452,7 @@ def create_contexto_folha_pagamento(request):
         "mes": mes,
         "ano": ano,
         "totais": totais,
-        "mensagem": f"O mês {mes}/{ano} foi selecionado",
+        **get_mensagem('pafa0001', mes=mes, ano=ano)
     }
 
 
@@ -661,6 +665,7 @@ def create_contexto_colaborador(request):
         "cartao_ponto": cartao_ponto,
         "minutas": minutas,
         "mes_da_demissao": mes_da_demissao,
+        **get_mensagem("pafa0002", colaborador=colaborador.nome)
     }
 
     agenda = create_contexto_agenda_colaborador(id_pessoal, mes, ano)
@@ -1105,18 +1110,21 @@ def create_contexto_funcionario(mes_ano, id) -> JsonResponse:
 
 
 def create_data_seleciona_funcionario(request, contexto):
-    data = dict()
-    html_cartao_ponto(request, contexto, data)
-    html_funcionario(request, contexto, data)
-    html_contra_cheque(request, contexto, data)
-    html_minutas(request, contexto, data)
-    html_vales_pagamento(request, contexto, data)
-    html_agenda(request, contexto, data)
-    html_files_pagamento(request, contexto, data)
-    html_vales(request, contexto, data)
-    html_itens_agenda_pagamento(request, contexto, data)
-    html_itens_contra_cheque(request, contexto, data)
-    return JsonResponse(data)
+    data = {}
+    html_functions = [
+        html_data.html_cartao_ponto,
+        html_data.html_funcionario,
+        html_data.html_contra_cheque,
+        html_data.html_minutas,
+        html_data.html_vales_pagamento,
+        html_data.html_agenda,
+        html_data.html_files_pagamento,
+        html_data.html_vales,
+        html_data.html_itens_agenda_pagamento,
+        html_data.html_itens_contra_cheque,
+    ]
+
+    return gerar_data_html(html_functions, request, contexto, data)
 
 
 # Excluir sem uso

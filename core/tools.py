@@ -7,6 +7,7 @@ from urllib.parse import urlparse, parse_qs
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from core.constants import MESES
+from core.message import mensagens
 from website.models import FileUpload
 from transefetiva.settings import settings
 
@@ -203,6 +204,7 @@ def obter_mes_por_numero(numero):
 
 def gerar_data_html(html_functions, request, contexto, data):
     data["mensagem"] = contexto["mensagem"]
+    data["tipo"] = contexto["tipo"]
     for html_func in html_functions:
         data = html_func(request, contexto, data)
 
@@ -353,3 +355,16 @@ def criar_lista_nome_de_arquivos_no_diretorio(inicio_nome, diretorio):
     ]
 
     return arquivos
+
+
+def get_mensagem(codigo, **kwargs):
+    msg_data = mensagens.get(codigo)
+    if not msg_data:
+        return {"mensagem": "Mensagem não encontrada.", "tipo": "info"}
+
+    try:
+        mensagem_formatada = msg_data["mensagem"].format(**kwargs)
+    except KeyError as e:
+        mensagem_formatada = f"erro ao formatar mensagem: parâmetro ausente ({e})"
+
+    return{"mensagem": mensagem_formatada, "tipo": msg_data["tipo"]}
