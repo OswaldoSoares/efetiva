@@ -773,7 +773,7 @@ $(document).on('click', '.js-selecionar-contra-cheque-pagamento', function() {
         selecionarValesToggle()
         $(window).scrollTop(0)
         $(".box-loader").hide()
-        exibirMensagem(data["mensagem"])
+        mostrarToast(data["mensagem"], data["tipo"])
     });
 });
 
@@ -792,7 +792,7 @@ $(document).on('click', '.js-selecionar-contra-cheque-adiantamento', function() 
         selecionarValesToggle()
         $(window).scrollTop(0)
         $(".box-loader").hide()
-        exibirMensagem(data["mensagem"])
+        mostrarToast(data["mensagem"], data["tipo"])
     });
 });
 
@@ -811,7 +811,7 @@ $(document).on('click', '.js-selecionar-contra-cheque-vale-transporte', function
         selecionarValesToggle()
         $(window).scrollTop(0)
         $(".box-loader").hide()
-        exibirMensagem(data["mensagem"])
+        mostrarToast(data["mensagem"], data["tipo"])
     });
 });
 

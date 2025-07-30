@@ -52,6 +52,7 @@ from core.constants import (
 from core.tools import (
     obter_mes_por_numero,
     primeiro_e_ultimo_dia_do_mes,
+    get_mensagem,
     get_request_data,
 )
 from core.tools import criar_lista_nome_de_arquivos_no_diretorio
@@ -1831,12 +1832,12 @@ def create_contexto_contra_cheque_pagamento(request):
     file = get_file_contra_cheque(contra_cheque.idContraCheque)
 
     return {
-        "mensagem": f"Pagamento selecionadao: {mes_por_extenso}/{ano}",
         "contra_cheque": contra_cheque,
         "contra_cheque_itens": contra_cheque_itens,
         "id_pessoal": id_pessoal,
         "file": file,
         **get_saldo_contra_cheque(contra_cheque_itens),
+        **get_mensagem("pefa0001", mes=mes_por_extenso, ano=ano)
     }
 
 
@@ -1865,12 +1866,12 @@ def create_contexto_contra_cheque_adiantamento(request):
     file = get_file_contra_cheque(contra_cheque.idContraCheque)
 
     contexto = {
-        "mensagem": f"Adiantamento selecionada: {mes_por_extenso}/{ano}",
         "contra_cheque": contra_cheque,
         "contra_cheque_itens": contra_cheque_itens,
         "id_pessoal": id_pessoal,
         "file": file,
         **get_saldo_contra_cheque(contra_cheque_itens),
+        **get_mensagem("pefa0002", mes=mes_por_extenso, ano=ano)
     }
 
     return contexto
@@ -1883,8 +1884,7 @@ def create_contexto_contra_cheque_vale_transporte(request):
     mes_por_extenso = obter_mes_por_numero(mes)
 
     if (ano, mes) < (2025, 8):
-        contexto = {"mensagem": "FUNCIONALIDADE DISPONÍVEL PARA CONTRA CHEQUE A PARTIR DE 01/08/2025"}
-        return contexto
+        return get_mensagem("pefa0004")
 
     contra_cheque, _ = get_or_create_contra_cheque(
         mes_por_extenso, ano, "VALE TRANSPORTE", id_pessoal
@@ -1926,12 +1926,12 @@ def create_contexto_contra_cheque_vale_transporte(request):
     file = get_file_contra_cheque(contra_cheque.idContraCheque)
 
     contexto = {
-        "mensagem": f"Vale transporte selecionada: {mes_por_extenso}/{ano}",
         "contra_cheque": contra_cheque,
         "contra_cheque_itens": contra_cheque_itens,
         "id_pessoal": id_pessoal,
         "file": file,
         **get_saldo_contra_cheque(contra_cheque_itens),
+        **get_mensagem("pefa0002", mes=mes_por_extenso, ano=ano)
     }
 
     return contexto
