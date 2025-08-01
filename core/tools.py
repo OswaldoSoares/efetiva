@@ -1,5 +1,6 @@
 """ MÓDULO COM FUNÇÕES QUE SERÃO USADAS EM TODO O PROJETO """
 import calendar
+import json
 import os
 from datetime import datetime, time, timedelta
 from pathlib import Path
@@ -368,3 +369,40 @@ def get_mensagem(codigo, **kwargs):
         mensagem_formatada = f"erro ao formatar mensagem: parâmetro ausente ({e})"
 
     return{"mensagem": mensagem_formatada, "tipo": msg_data["tipo"]}
+
+
+def obter_feriados_sabados_domingos_mes(mes: int, ano: int):
+    with open('data/Feriados_2021_2035.json', encoding='utf-8') as f:
+        feriados = json.load(f)
+
+    ano_str = str(ano)
+    mes_str = str(mes).zfill(2)
+
+    feriados_mes_formatado = []
+    feriados_datas = set()
+    if ano_str in feriados and mes_str in feriados[ano_str]:
+        for evento in feriados[ano_str][mes_str]:
+            data_formatada = datetime.strptime(
+                evento['data'][:10], "%Y-%m-%d"
+            ).strftime("%d/%m/%Y")
+            descricao = ", ".join(evento['descricao'])
+            feriados_mes_formatado.append(f"{data_formatada} - {descricao}")
+            feriados_datas.add(data_formatada)
+
+    domingos = []
+    for semana in calendar.monthcalendar(ano, mes):
+        dia = semana[calendar.SUNDAY]
+        if dia != 0:
+            data_domingo = datetime(ano, mes, dia).strftime("%d/%m/%Y")
+            if data_domingo not in feriados_datas:
+                domingos.append(data_domingo)
+
+    sabados = []
+    for semana in calendar.monthcalendar(ano, mes):
+        dia = semana[calendar.SATURDAY]
+        if dia != 0:
+            data_sabado = datetime(ano, mes, dia).strftime("%d/%m/%Y")
+            if data_sabado not in feriados_datas:
+                sabados.append(data_sabado)
+
+    return feriados_mes_formatado, domingos, sabados

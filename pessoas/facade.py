@@ -55,7 +55,7 @@ from core.tools import (
     get_mensagem,
     get_request_data,
 )
-from core.tools import criar_lista_nome_de_arquivos_no_diretorio
+from core.tools import criar_lista_nome_de_arquivos_no_diretorio, obter_feriados_sabados_domingos_mes
 from pessoas.models import (
     Aquisitivo,
     DecimoTerceiro,
@@ -1440,41 +1440,6 @@ def calcular_horas_extras(salario, cartao_ponto):
         )
 
     return total_extras, valor_extras
-
-
-def obter_feriados_sabados_domingos_mes(mes: int, ano: int):
-    with open('data/Feriados_2021_2035.json', encoding='utf-8') as f:
-        feriados = json.load(f)
-
-    ano_str = str(ano)
-    mes_str = str(mes).zfill(2)
-
-    feriados_mes_formatado = []
-    feriados_datas = set()
-    if ano_str in feriados and mes_str in feriados[ano_str]:
-        for evento in feriados[ano_str][mes_str]:
-            data_formatada = datetime.strptime(evento['data'][:10], "%Y-%m-%d").strftime("%d/%m/%Y")
-            descricao = ", ".join(evento['descricao'])
-            feriados_mes_formatado.append(f"{data_formatada} - {descricao}")
-            feriados_datas.add(data_formatada)
-
-    domingos = []
-    for semana in calendar.monthcalendar(ano, mes):
-        dia = semana[calendar.SUNDAY]
-        if dia != 0:
-            data_domingo = datetime(ano, mes, dia).strftime("%d/%m/%Y")
-            if data_domingo not in feriados_datas:
-                domingos.append(data_domingo)
-
-    sabados = []
-    for semana in calendar.monthcalendar(ano, mes):
-        dia = semana[calendar.SATURDAY]
-        if dia != 0:
-            data_sabado = datetime(ano, mes, dia).strftime("%d/%m/%Y")
-            if data_sabado not in feriados_datas:
-                sabados.append(data_sabado)
-
-    return feriados_mes_formatado, domingos, sabados
 
 
 def calcular_dsr_horas_extras(mes, ano, hora_extra_valor):
