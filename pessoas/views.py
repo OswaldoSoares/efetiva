@@ -76,11 +76,9 @@ def adicionar_ou_atualizar_doc_colaborador(request):
 
 
 def upload_arquivo_documento(request):
-    print(request.POST)
     id_pessoal = request.POST.get("id_pessoal")
     tipo_documento = request.POST.get("tipo_documento")
     nome_arquivo = f"Documento_-_{tipo_documento}_-_{str(id_pessoal).zfill(4)}"
-    print(nome_arquivo)
     mensagem = upload_de_arquivo(request, nome_arquivo, 5)
 
     contexto = facade.create_contexto_class_colaborador(request)
@@ -212,7 +210,6 @@ def mostrar_eventos_rescisorios_colaborador(request):
 
 
 def calcular_verbas_rescisorias_colaborador(request):
-    print(request.POST)
     contexto = rescisao.verbas_rescisorias(request)
     response = print_pdf_rescisao_trabalho(request, contexto)
     return response
@@ -446,7 +443,6 @@ def demissao_colaborador(request):
 
 
 def salva_demissao_colaborador(request):
-    print("demitido")
     error, msg = facade.valida_demissao_colaborador(request)
     demissao_form = facade.read_demissao_post(request)
     data_demissao = request.POST.get("demissao")

@@ -218,10 +218,8 @@ def obter_horarios(registros_dia):
 
 def processar_dia_util(cartao, dia, nao_uteis, data_implementacao, hoje, vale_transporte):
     if dia < data_implementacao or dia >= hoje or dia in nao_uteis:
-        print(f"{dia} - Retornei")
         return
 
-    print(f"processei {dia}")
     registros_dia = filter_by_local_date(RegistroPonto.objects.filter(
         idPessoal=cartao.idPessoal
     ).order_by("horario"), "horario", dia)
@@ -276,10 +274,8 @@ def atualizar_cartao_ponto_pelo_registro_ponto(cartao_ponto):
             continue
 
         if aplicar_ausencia_dias_nao_util(cartao, dia, tipos_ausencia):
-            print(f"nao util {dia}")
             continue
 
-        print(f"passei {dia}")
         processar_dia_util(cartao, dia, nao_uteis, data_implementacao, hoje, vale_transporte)
 
     return cartao_ponto
