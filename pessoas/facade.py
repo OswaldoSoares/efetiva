@@ -1412,20 +1412,15 @@ def calcular_conducao(tarifa_dia, cartao_ponto):
 
 def calcular_horas_extras(salario, cartao_ponto):
     """Consultar Documentação Sistema Efetiva"""
-    horario_padrao_entrada = datetime.strptime("07:00", "%H:%M").time()
     horario_padrao_saida = datetime.strptime("17:00", "%H:%M").time()
     total_extras = timedelta()
 
     for dia in cartao_ponto:
-        if dia.Saida > horario_padrao_saida:
+        saida = dia.Saida.replace(second=0, microsecond=0)
+        if saida > horario_padrao_saida:
             total_extras += datetime.combine(
-                datetime.min, dia.Saida
+                datetime.min, saida
             ) - datetime.combine(datetime.min, horario_padrao_saida)
-
-        if dia.Entrada < horario_padrao_entrada:
-            total_extras += datetime.combine(
-                datetime.min, horario_padrao_entrada
-            ) - datetime.combine(datetime.min, dia.Entrada)
 
     # Forma de calculo alterada em 01/12/2024.
     data_limite_calculo = datetime.strptime("2024-11-30", "%Y-%m-%d").date()
@@ -1487,12 +1482,14 @@ def calcular_adiantamento(contra_cheque):
 def calcular_atrasos(salario, cartao_ponto):
     """Consultar Documentação Sistema Efetiva"""
     horario_padrao_entrada = datetime.strptime("07:00", "%H:%M").time()
+    horario_tolerancia = datetime.strptime("07:15", "%H:%M").time()
     total_atrasos = timedelta()
 
     for dia in cartao_ponto:
-        if dia.Entrada > horario_padrao_entrada:
+        entrada = dia.Entrada.replace(second=0, microsecond=0)
+        if entrada > horario_tolerancia:
             total_atrasos += datetime.combine(
-                datetime.min, dia.Entrada
+                datetime.min, entrada
             ) - datetime.combine(datetime.min, horario_padrao_entrada)
 
     # Forma de calculo alterada em 01/12/2024.
