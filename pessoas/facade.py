@@ -1894,7 +1894,7 @@ def create_contexto_contra_cheque_vale_transporte(request):
         "id_pessoal": id_pessoal,
         "file": file,
         **get_saldo_contra_cheque(contra_cheque_itens),
-        **get_mensagem("pefa0002", mes=mes_por_extenso, ano=ano)
+        **get_mensagem("pefa0003", mes=mes_por_extenso, ano=ano)
     }
 
     return contexto
