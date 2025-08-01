@@ -55,7 +55,7 @@ from core.tools import (
     get_mensagem,
     get_request_data,
 )
-from core.tools import criar_lista_nome_de_arquivos_no_diretorio
+from core.tools import criar_lista_nome_de_arquivos_no_diretorio, obter_feriados_sabados_domingos_mes
 from pessoas.models import (
     Aquisitivo,
     DecimoTerceiro,
@@ -207,7 +207,6 @@ def save_registro_colaborador(request):
         return {"mensagem": "Colaborador registrado comm sucesso"}
 
     except Exception as e:
-        print(e)
         return {"mensagem": "Erro ao registrar colaborador"}
 
 
@@ -1442,41 +1441,6 @@ def calcular_horas_extras(salario, cartao_ponto):
     return total_extras, valor_extras
 
 
-def obter_feriados_sabados_domingos_mes(mes: int, ano: int):
-    with open('data/Feriados_2021_2035.json', encoding='utf-8') as f:
-        feriados = json.load(f)
-
-    ano_str = str(ano)
-    mes_str = str(mes).zfill(2)
-
-    feriados_mes_formatado = []
-    feriados_datas = set()
-    if ano_str in feriados and mes_str in feriados[ano_str]:
-        for evento in feriados[ano_str][mes_str]:
-            data_formatada = datetime.strptime(evento['data'][:10], "%Y-%m-%d").strftime("%d/%m/%Y")
-            descricao = ", ".join(evento['descricao'])
-            feriados_mes_formatado.append(f"{data_formatada} - {descricao}")
-            feriados_datas.add(data_formatada)
-
-    domingos = []
-    for semana in calendar.monthcalendar(ano, mes):
-        dia = semana[calendar.SUNDAY]
-        if dia != 0:
-            data_domingo = datetime(ano, mes, dia).strftime("%d/%m/%Y")
-            if data_domingo not in feriados_datas:
-                domingos.append(data_domingo)
-
-    sabados = []
-    for semana in calendar.monthcalendar(ano, mes):
-        dia = semana[calendar.SATURDAY]
-        if dia != 0:
-            data_sabado = datetime(ano, mes, dia).strftime("%d/%m/%Y")
-            if data_sabado not in feriados_datas:
-                sabados.append(data_sabado)
-
-    return feriados_mes_formatado, domingos, sabados
-
-
 def calcular_dsr_horas_extras(mes, ano, hora_extra_valor):
     feriados, domingos, _ = obter_feriados_sabados_domingos_mes(mes, ano)
     _, ultimo_dia = primeiro_e_ultimo_dia_do_mes(mes, ano)
@@ -1645,7 +1609,6 @@ def calcular_inss(valor_base, ano):
 
     aliquota = Decimal(0.00)
     desconto = Decimal(0.00)
-    print(valor_base)
 
     for faixa in tabela[ano]:
         if valor_base <= faixa["faixa_final"]:
@@ -2782,7 +2745,6 @@ def create_contexto_verbas_rescisoria(idpessoal):
             "folha_contra_cheque_itens": folha["contra_cheque_itens"],
         }
     ]
-    print(folha["contra_cheque_itens"])
     return {"rescisao": rescisao, "colaborador": colaborador}
 
 
@@ -3018,7 +2980,6 @@ def read_periodo_ferias_post(request):
 
 
 def salva_periodo_ferias_colaborador(idpessoal, inicio, termino, idaquisitivo):
-    print(len(connection.queries))
     inicio = datetime.strptime(inicio, "%Y-%m-%d")
     termino = datetime.strptime(termino, "%Y-%m-%d")
     colaborador = Pessoal.objects.get(idPessoal=idpessoal)
@@ -3063,19 +3024,15 @@ def salva_periodo_ferias_colaborador(idpessoal, inicio, termino, idaquisitivo):
                 facade_pagamentos.create_cartao_ponto(
                     idpessoal, pdm, udm, admissao, demissao, var
                 )
-    print(len(connection.queries))
     CartaoPonto.objects.filter(
         Dia__range=[inicio, termino], idPessoal=idpessoal
     ).update(Ausencia="FÉRIAS", Conducao=0, Remunerado=0, CarroEmpresa=0)
-    print(len(connection.queries))
     obj = Ferias()
-    print(len(connection.queries))
     obj.DataInicial = inicio
     obj.DataFinal = termino
     obj.idPessoal_id = idpessoal
     obj.idAquisitivo_id = idaquisitivo
     obj.save()
-    print(len(connection.queries))
 
 
 def create_contexto_print_ferias(idpes, idaquisitivo, idparcela):
@@ -3111,7 +3068,6 @@ def html_form_altera_demissao(request, contexto, data):
         contexto,
         request=request,
     )
-    print(data)
     return data
 
 
@@ -3479,7 +3435,6 @@ def create_contexto_contra_cheque_ferias(idpessoal, idselecionado, descricao):
 
 def create_contexto_contra_cheque_13(idpessoal, idselecionado, descricao):
     idparcela = idselecionado
-    print(f"[INFO - 1] {idselecionado}")
     contra_cheque = busca_contra_cheque_parcela(
         idpessoal, idparcela, descricao[:15]
     )
@@ -3730,7 +3685,6 @@ def busca_contra_cheque_pagamento(idpessoal, mes, ano):
             colaborador, mes, ano, "PAGAMENTO"
         )
     except ContraCheque.DoesNotExist:  # pylint: disable=no-member
-        print(colaborador, " - chequei aqui")
         create_contra_cheque(meses[mes - 1], ano, "PAGAMENTO", colaborador, "")
         contra_cheque = get_contra_cheque_mes_ano_descricao(
             colaborador, mes, ano, "PAGAMENTO"
@@ -3763,10 +3717,6 @@ def get_contra_cheque_mes_ano_adiantamento(mes, ano):
 
 
 def get_contra_cheque_mes_ano_descricao(colaborador, mes, ano, descricao):
-    print(colaborador)
-    print(mes)
-    print(ano)
-    print(descricao)
     contra_cheque = ContraCheque.objects.get(
         idPessoal=colaborador,
         MesReferencia=MESES[mes],
@@ -3831,19 +3781,14 @@ def aquisitivo_salario_ferias(salario, faltas):
 
 
 def update_contra_cheque_obs(contra_cheque, obs, chave):
-    print(obs)
     try:
         dict_obs = ast.literal_eval(contra_cheque.Obs)
     except (SyntaxError, ValueError) as e:
-        print(f"[ERROR] {e}")
         dict_obs = {}
     except Exception as e:
-        print(f"[ERROR] {e}")
         dict_obs = {}
-    print(dict_obs.get(chave))
 
     if dict_obs.get(chave) != obs:
-        print("aqui")
         dict_obs[chave] = obs
         obj = contra_cheque
         obj.Obs = str(dict_obs)
