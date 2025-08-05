@@ -1,16 +1,32 @@
 """
 Módulo responsável pelo registro de ponto e contrale do cartão de ponto.
 """
+import calendar
 import json
-from datetime import datetime, date, time
+from datetime import datetime, date, time, timedelta
 from django.contrib.auth.hashers import check_password
 from django.http import JsonResponse
-from django.utils.timezone import get_current_timezone, localdate, localtime, make_aware
+from django.utils.timezone import (
+    get_current_timezone,
+    localdate,
+    localtime,
+    make_aware,
+)
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_GET
 from pessoas import classes
-from pessoas.models import CartaoPonto, DocPessoal, Ferias, RegistroPonto, SenhaAppPonto
-from core.tools import nome_curto, obter_feriados_sabados_domingos_mes
+from pessoas.models import (
+    CartaoPonto,
+    DocPessoal,
+    Ferias,
+    RegistroPonto,
+    SenhaAppPonto,
+)
+from core.tools import (
+    nome_curto,
+    obter_feriados_sabados_domingos_mes,
+    primeiro_e_ultimo_dia_do_mes,
+)
 
 
 @require_GET
@@ -279,3 +295,50 @@ def atualizar_cartao_ponto_pelo_registro_ponto(cartao_ponto):
         processar_dia_util(cartao, dia, nao_uteis, data_implementacao, hoje, vale_transporte)
 
     return cartao_ponto
+
+
+def adicionar_cartao_ponto(id_pessoal, mes, ano):
+    colaborador = classes.Colaborador(id_pessoal)
+    if colaborador.dados_profissionais.tipo_pgto != "MENSALISTA":
+        return
+
+    primeiro_dia = date(ano, mes, 1)
+    _, total_dias = calendar.monthrange(ano, mes)
+
+    registros = []
+
+    for index in range(total_dias):
+        dia = primeiro_dia + timedelta(days=index)
+
+        registros.append(CartaoPonto(
+            Dia=dia,
+            Entrada="07:00",
+            Saida="17:00",
+            Ausencia="",
+            idPessoal_id=id_pessoal,
+            Alteracao="ROBOT",
+            Conducao=False,
+            Remunerado=True,
+            CarroEmpresa=False,
+        ))
+
+    CartaoPonto.objects.bulk_create(registros)
+
+
+def obter_cartao_ponto_mes(id_pessoal, mes, ano):
+    primeiro_dia, ultimo_dia = primeiro_e_ultimo_dia_do_mes(mes, ano)
+
+    cartao_ponto = CartaoPonto.objects.filter(
+        idPessoal= id_pessoal,
+        Dia__range=[primeiro_dia, ultimo_dia]
+    )
+
+    if not cartao_ponto.exists():
+        adicionar_cartao_ponto(id_pessoal, mes, ano)
+
+        cartao_ponto = CartaoPonto.objects.filter(
+            idPessoal= id_pessoal,
+            Dia__range=[primeiro_dia, ultimo_dia]
+        )
+
+    return atualizar_cartao_ponto_pelo_registro_ponto(cartao_ponto)
