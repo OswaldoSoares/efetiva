@@ -1770,7 +1770,8 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
 
         valores_temporarios[item["nome"]] = (quantidade, valor)
         if item["codigo"] in eventos_inss:
-                valor_base_inss += round(Decimal(valor), 2)
+            valor_decimal = round(Decimal(valor), 2)
+            valor_base_inss += valor_decimal if item["registro"] == "C" else - valor_decimal
 
         atualizar_ou_adicionar_contra_cheque_item(
             descricao,
