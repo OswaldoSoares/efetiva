@@ -89,6 +89,7 @@ from transefetiva.settings.settings import MEDIA_ROOT
 from pessoas import classes
 from pessoas import html_data
 from typing import List
+from pessoas.facades.ponto import create_contexto_cartao_ponto
 
 dias = [
     "SEGUNDA-FEIRA",
