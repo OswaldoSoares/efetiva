@@ -342,3 +342,9 @@ def obter_cartao_ponto_mes(id_pessoal, mes, ano):
         )
 
     return atualizar_cartao_ponto_pelo_registro_ponto(cartao_ponto)
+
+
+def create_contexto_cartao_ponto(id_pessoal, mes, ano):
+    cartao_ponto = obter_cartao_ponto_mes(id_pessoal, mes, ano)
+
+    return {"cartao_ponto": cartao_ponto}

@@ -41,6 +41,8 @@ from core import constants
 from core.constants import (
     CATEGORIAS,
     EVENTOS_INCIDE_INSS,
+    EVENTOS_INCIDE_FGTS,
+    EVENTOS_INCIDE_IRRF,
     TIPOPGTO,
     TIPOS_DOCS,
     TIPOS_FONES,
@@ -89,6 +91,7 @@ from transefetiva.settings.settings import MEDIA_ROOT
 from pessoas import classes
 from pessoas import html_data
 from typing import List
+from pessoas.facades.ponto import create_contexto_cartao_ponto
 
 dias = [
     "SEGUNDA-FEIRA",
@@ -1736,8 +1739,12 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
 
     evento_lookup = {evento.codigo: evento for evento in EVENTOS_CONTRA_CHEQUE}
     eventos_inss = EVENTOS_INCIDE_INSS
+    eventos_fgts = EVENTOS_INCIDE_FGTS
+    eventos_irrf = EVENTOS_INCIDE_IRRF
     valores_temporarios = {}
     valor_base_inss = Decimal(0.00)
+    valor_base_fgts = Decimal(0.00)
+    valor_base_irrf = Decimal(0.00)
 
     for item in itens_contra_cheque:
         evento = evento_lookup.get(item["codigo"])
@@ -1770,7 +1777,17 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
 
         valores_temporarios[item["nome"]] = (quantidade, valor)
         if item["codigo"] in eventos_inss:
-                valor_base_inss += round(Decimal(valor), 2)
+            valor_decimal = round(Decimal(valor), 2)
+            valor_base_inss += valor_decimal if item["registro"] == "C" else - valor_decimal
+
+        if item["codigo"] in eventos_fgts:
+            valor_decimal = round(Decimal(valor), 2)
+            valor_base_fgts += valor_decimal if item["registro"] == "C" else - valor_decimal
+
+        if item["codigo"] in eventos_irrf:
+            valor_decimal = round(Decimal(valor), 2)
+            valor_base_irrf += valor_decimal if item["registro"] == "C" else - valor_decimal
+
 
         atualizar_ou_adicionar_contra_cheque_item(
             descricao,
@@ -1780,6 +1797,11 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
             item["codigo"],
             id_contra_cheque,
         )
+
+    contra_cheque.BaseINSS = valor_base_inss
+    contra_cheque.BaseFGTS = valor_base_fgts
+    contra_cheque.BaseIRRF = valor_base_irrf
+    contra_cheque.save()
 
 
 def create_contexto_contra_cheque_pagamento(request):

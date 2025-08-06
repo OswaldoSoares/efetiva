@@ -733,8 +733,16 @@ def base_contra_cheque(pdf):
         cmp(131.95), cmp(linha - 132), "Valor Líquido \u279C"
     )
     pdf.setFont("Times-Roman", 10)
-    pdf.drawString(cmp(10), cmp(linha - 139), "SALÁRIO BASE")
+    pdf.drawString(cmp(10), cmp(linha - 139), "Salário Base")
+    pdf.drawString(cmp(32), cmp(linha - 139), "Sal. Contr. INSS")
+    pdf.drawString(cmp(61), cmp(linha - 139), "Base Calculo FGTS")
+    pdf.drawString(cmp(93), cmp(linha - 139), "FGTS do Mês")
+    pdf.drawString(cmp(120), cmp(linha - 139), "Base Calculo IRRF")
+    pdf.drawString(cmp(155), cmp(linha - 139), "Faixa IRRF")
     pdf.setFillColor(HexColor("#808080"))
+
+
+
     pdf.line(cmp(0), cmp(148.5), cmp(210), cmp(148.5))
     pdf.rotate(90)
     linha = 297
@@ -820,11 +828,55 @@ def contra_cheque_dados(pdf, contexto):
     salario_base = valor_ponto_milhar(
         contexto["colaborador"].salarios.salarios.Salario, 2
     )
+    base_inss = valor_ponto_milhar(
+        contexto["contra_cheque"].BaseINSS, 2
+    )
+    base_fgts = valor_ponto_milhar(
+        contexto["contra_cheque"].BaseFGTS, 2
+    )
+    base_irrf = valor_ponto_milhar(
+        contexto["contra_cheque"].BaseIRRF, 2
+    )
+    valor_fgts = valor_ponto_milhar(
+        (contexto["contra_cheque"].BaseFGTS / 100 * 8), 2
+    )
+    faixa_irrf = "******"
+
     pdf.drawString(
         cmp(10),
         cmp(linha - 144),
         f"R$ {salario_base}",
     )
+    pdf.drawString(
+        cmp(32),
+        cmp(linha - 144),
+        f"R$ {base_inss}",
+    )
+    pdf.drawString(
+        cmp(61),
+        cmp(linha - 144),
+        f"R$ {base_fgts}",
+    )
+    pdf.drawString(
+        cmp(93),
+        cmp(linha - 144),
+        f"R$ {valor_fgts}",
+    )
+    pdf.drawString(
+        cmp(120),
+        cmp(linha - 144),
+        f"R$ {base_irrf}",
+    )
+    pdf.drawString(
+        cmp(155),
+        cmp(linha - 144),
+        f"{faixa_irrf}",
+    )
+
+
+
+
+
     contra_cheque_obs(pdf, contexto)
     return pdf
 

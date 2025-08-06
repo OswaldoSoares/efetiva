@@ -241,7 +241,7 @@ def alterar_entrada_colaborador(request):
         request,
         facade.modal_entrada_colaborador,
         facade.save_entrada_colaborador,
-        partial(facade.create_contexto_cartao_ponto, id_pessoal, mes, ano),
+        partial(ponto.create_contexto_cartao_ponto, id_pessoal, mes, ano),
         facade.cartao_ponto_html_data,
     )
 
