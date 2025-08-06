@@ -22,7 +22,7 @@ from pessoas.classes import Colaborador
 from pessoas.forms import CadastraContraChequeItens
 from pessoas.models import Agenda, CartaoPonto, ContaPessoal, ContraCheque
 from pessoas.models import ContraChequeItens, Pessoal, Salario, Vales
-from pessoas.facades.ponto import atualizar_cartao_ponto_pelo_registro_ponto
+from pessoas.facades.ponto import obter_cartao_ponto_mes
 
 
 from pessoas.facade import (
@@ -639,21 +639,22 @@ def create_contexto_colaborador(request):
     data_demissao = colaborador.dados_profissionais.data_demissao
 
     primeiro_dia, ultimo_dia = primeiro_e_ultimo_dia_do_mes(mes, ano)
-    cartao_ponto = obter_cartao_de_ponto_do_colaborador(colaborador, mes, ano)
-    verificar_feriados(cartao_ponto, mes, ano)
+    cartao_ponto = obter_cartao_ponto_mes(id_pessoal, mes, ano)
+    #  cartao_ponto = obter_cartao_de_ponto_do_colaborador(colaborador, mes, ano)
+    #  verificar_feriados(cartao_ponto, mes, ano)
 
-    vale_transporte = colaborador.salarios.salarios.ValeTransporte
-    atualizar_cartao_ponto_transporte(cartao_ponto, vale_transporte)
+    #  vale_transporte = colaborador.salarios.salarios.ValeTransporte
+    #  atualizar_cartao_ponto_transporte(cartao_ponto, vale_transporte)
 
     minutas = get_minutas_periodo_contra_cheque(
         id_pessoal, primeiro_dia, ultimo_dia
     )
-    atualizar_cartao_ponto_minutas(cartao_ponto, minutas)
+    #  atualizar_cartao_ponto_minutas(cartao_ponto, minutas)
 
-    atualizar_cartao_ponto_pelo_registro_ponto(cartao_ponto)
+    #  atualizar_cartao_ponto_pelo_registro_ponto(cartao_ponto)
 
     # Recria QuerySet para obter as atualizações feitas
-    cartao_ponto = obter_cartao_de_ponto_do_colaborador(colaborador, mes, ano)
+    #  cartao_ponto = obter_cartao_de_ponto_do_colaborador(colaborador, mes, ano)
     mes_da_demissao = (
         True
         if data_demissao and data_demissao >= primeiro_dia.date()

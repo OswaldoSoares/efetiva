@@ -4,6 +4,8 @@ import json
 import os
 import ast
 import locale
+
+from pessoas.facades.ponto import obter_cartao_ponto_mes
 from .facades.arquivos import documentos_arquivados_do_colaborador
 from .facades.arquivos import dict_de_tipos_documentos_arquivar
 from .facades import ferias
@@ -1436,7 +1438,7 @@ def calcular_horas_extras(salario, cartao_ponto):
     return total_extras, valor_extras
 
 
-def calcular_dsr_horas_extras(mes, ano, hora_extra_valor):
+def calcular_dsr_horas_extras(mes, ano, hora_extra_valor, dsr_faltas):
     feriados, domingos, _ = obter_feriados_sabados_domingos_mes(mes, ano)
     _, ultimo_dia = primeiro_e_ultimo_dia_do_mes(mes, ano)
     dias_mes = ultimo_dia.date().day
@@ -1444,9 +1446,9 @@ def calcular_dsr_horas_extras(mes, ano, hora_extra_valor):
     dias_dsr = len(feriados) + len(domingos)
     dias_uteis = dias_mes - dias_dsr
 
-    valor_dsr = hora_extra_valor / dias_uteis * dias_dsr
+    valor_dsr = hora_extra_valor / dias_uteis * (dias_dsr - dsr_faltas)
 
-    return dias_dsr, valor_dsr
+    return (dias_dsr - dsr_faltas), valor_dsr
 
 
 def calcular_adiantamento(contra_cheque):
@@ -1597,7 +1599,7 @@ def calcular_dsr(id_pessoal, salario, cartao_ponto):
 def calcular_desconto_conducao(salario):
     deconto_vale_transporte = round(salario * Decimal(0.06), 2)
 
-    return 6, deconto_vale_transporte
+    return "6%", deconto_vale_transporte
 
 
 def calcular_inss(valor_base, ano):
@@ -1616,7 +1618,7 @@ def calcular_inss(valor_base, ano):
                 Decimal("0.01"), rounding=ROUND_HALF_UP
             )
 
-            return aliquota * 100, desconto
+            return f"{aliquota * 100}%", desconto
 
 
 def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
@@ -1675,14 +1677,6 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
             "registrado": False
         },
         {
-            "nome": "DSR SOBRE HORA EXTRA",
-            "codigo": "1002",
-            "calculo": "", # função chamada dinamicamente
-            "registro": "C",
-            "referencia": lambda horas: horas,
-            "registrado": True
-        },
-        {
             "nome": "ADIANTAMENTO",
             "codigo": "9200",
             "calculo": lambda: calcular_adiantamento(contra_cheque),
@@ -1723,6 +1717,14 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
             "registrado": True
         },
         {
+            "nome": "DSR SOBRE HORA EXTRA",
+            "codigo": "1002",
+            "calculo": "", # função chamada dinamicamente
+            "registro": "C",
+            "referencia": lambda horas: horas,
+            "registrado": True
+        },
+        {
             "nome": "INSS",
             "codigo": "9201",
             "calculo": "", # função chamada dinamicamente
@@ -1748,9 +1750,18 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
             if (ano, mes) > (2025, 7):
                 continue
 
+            if colaborador_registrado:
+                continue
+
         if item["nome"] == "DSR SOBRE HORA EXTRA":
             hora_extra_valor = valores_temporarios.get("HORA EXTRA", (0,0))[1]
-            quantidade, valor = calcular_dsr_horas_extras(mes, ano, hora_extra_valor)
+            dsr_faltas = valores_temporarios.get("DSR SOBRE FALTAS", (0,0))[0]
+            quantidade, valor = calcular_dsr_horas_extras(
+                mes,
+                ano,
+                hora_extra_valor,
+                dsr_faltas,
+            )
         elif item["nome"] == "INSS":
             quantidade, valor = calcular_inss(valor_base_inss, str(ano))
             calcular_inss(Decimal(1995.35), "2025")
@@ -2117,18 +2128,6 @@ def save_entrada_colaborador(request):
         }
 
 
-def create_contexto_cartao_ponto(id_pessoal, mes, ano):
-    primeiro_dia_mes = datetime(ano, mes, 1).date()
-    dias_no_mes = calendar.monthrange(ano, mes)[1]
-    ultimo_dia_mes = datetime(ano, mes, dias_no_mes).date()
-
-    cartao_ponto = CartaoPonto.objects.filter(
-        idPessoal=id_pessoal, Dia__range=[primeiro_dia_mes, ultimo_dia_mes]
-    )
-
-    return {"cartao_ponto": cartao_ponto}
-
-
 def verificar_salario_colaborador(colaborador):
     """Consultar Documentação Sistema Efetiva"""
     salario, created = Salario.objects.get_or_create(
@@ -2202,11 +2201,8 @@ def create_contexto_consulta_colaborador(id_pessoal):
     decimo_terceiro = get_decimo_terceiro_colaborador(id_pessoal)
     hoje = datetime.today().date()
     ano_atual = hoje.year
-    cartao_ponto = create_contexto_cartao_ponto(
-        id_pessoal, hoje.month, hoje.year
-    )
+    cartao_ponto = obter_cartao_ponto_mes(id_pessoal, hoje.month, hoje.year)
     salarios = verificar_salario_colaborador(colaborador)
-
     vales_transporte = verificar_vale_transporte_colaborador(colaborador)
     documentos_arquivados = documentos_arquivados_do_colaborador(id_pessoal)
     tipos_documentos_arquivar = dict_de_tipos_documentos_arquivar(
@@ -2234,7 +2230,6 @@ def create_contexto_consulta_colaborador(id_pessoal):
     }
     contexto_ferias = ferias.create_contexto_ferias_colaborador(id_pessoal)
     contexto.update(contexto_ferias)
-    contexto.update(cartao_ponto)
     return contexto
 
 
@@ -2428,54 +2423,6 @@ def print_contracheque_context(idcontracheque):
         "totais": totais,
     }
     return contexto
-
-
-def create_cartaoponto(mesreferencia, anoreferencia, idpessoal):
-    colaborador = get_pessoal(idpessoal)
-    admissao = colaborador[0].DataAdmissao
-    if int(anoreferencia) >= admissao.year:
-        if int(mesreferencia) >= admissao.month:
-            admissao = datetime.datetime(
-                admissao.year, admissao.month, admissao.day
-            )
-            if not busca_cartaoponto_referencia(
-                mesreferencia, anoreferencia, idpessoal
-            ):
-                referencia = calendar.monthrange(
-                    int(anoreferencia), int(mesreferencia)
-                )
-                for x in range(1, referencia[1] + 1):
-                    dia = "{}-{}-{}".format(anoreferencia, mesreferencia, x)
-                    dia = datetime.datetime.strptime(dia, "%Y-%m-%d")
-                    obj = CartaoPonto()
-                    obj.Dia = dia
-                    obj.Entrada = "07:00"
-                    obj.Saida = "17:00"
-                    if dia.weekday() == 5 or dia.weekday() == 6:
-                        obj.Ausencia = dias[dia.weekday()]
-                    else:
-                        obj.Ausencia = ""
-                    if dia < admissao:
-                        obj.Ausencia = "-------"
-                    obj.idPessoal_id = idpessoal
-                    obj.save()
-
-
-def busca_cartaoponto_referencia(mesreferencia, anoreferencia, idpessoal):
-    if mesreferencia in meses:
-        mes = meses.index(mesreferencia) + 1
-    else:
-        mes = int(mesreferencia)
-    dia = "{}-{}-{}".format(anoreferencia, mes, 1)
-    dia = datetime.datetime.strptime(dia, "%Y-%m-%d")
-    referencia = calendar.monthrange(int(anoreferencia), mes)
-    diafinal = "{}-{}-{}".format(anoreferencia, mes, referencia[1])
-    diafinal = datetime.datetime.strptime(diafinal, "%Y-%m-%d")
-    cartaoponto = CartaoPonto.objects.filter(
-        Dia__range=[dia, diafinal], idPessoal=idpessoal
-    )
-    if cartaoponto:
-        return cartaoponto
 
 
 def form_pessoa(request, c_form, c_idobj, c_url, c_view, idpessoal):
