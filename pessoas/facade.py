@@ -1438,7 +1438,7 @@ def calcular_horas_extras(salario, cartao_ponto):
     return total_extras, valor_extras
 
 
-def calcular_dsr_horas_extras(mes, ano, hora_extra_valor):
+def calcular_dsr_horas_extras(mes, ano, hora_extra_valor, dsr_faltas):
     feriados, domingos, _ = obter_feriados_sabados_domingos_mes(mes, ano)
     _, ultimo_dia = primeiro_e_ultimo_dia_do_mes(mes, ano)
     dias_mes = ultimo_dia.date().day
@@ -1446,9 +1446,9 @@ def calcular_dsr_horas_extras(mes, ano, hora_extra_valor):
     dias_dsr = len(feriados) + len(domingos)
     dias_uteis = dias_mes - dias_dsr
 
-    valor_dsr = hora_extra_valor / dias_uteis * dias_dsr
+    valor_dsr = hora_extra_valor / dias_uteis * (dias_dsr - dsr_faltas)
 
-    return dias_dsr, valor_dsr
+    return (dias_dsr - dsr_faltas), valor_dsr
 
 
 def calcular_adiantamento(contra_cheque):
@@ -1599,7 +1599,7 @@ def calcular_dsr(id_pessoal, salario, cartao_ponto):
 def calcular_desconto_conducao(salario):
     deconto_vale_transporte = round(salario * Decimal(0.06), 2)
 
-    return 6, deconto_vale_transporte
+    return "6%", deconto_vale_transporte
 
 
 def calcular_inss(valor_base, ano):
@@ -1618,7 +1618,7 @@ def calcular_inss(valor_base, ano):
                 Decimal("0.01"), rounding=ROUND_HALF_UP
             )
 
-            return aliquota * 100, desconto
+            return f"{aliquota * 100}%", desconto
 
 
 def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
@@ -1677,14 +1677,6 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
             "registrado": False
         },
         {
-            "nome": "DSR SOBRE HORA EXTRA",
-            "codigo": "1002",
-            "calculo": "", # função chamada dinamicamente
-            "registro": "C",
-            "referencia": lambda horas: horas,
-            "registrado": True
-        },
-        {
             "nome": "ADIANTAMENTO",
             "codigo": "9200",
             "calculo": lambda: calcular_adiantamento(contra_cheque),
@@ -1725,6 +1717,14 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
             "registrado": True
         },
         {
+            "nome": "DSR SOBRE HORA EXTRA",
+            "codigo": "1002",
+            "calculo": "", # função chamada dinamicamente
+            "registro": "C",
+            "referencia": lambda horas: horas,
+            "registrado": True
+        },
+        {
             "nome": "INSS",
             "codigo": "9201",
             "calculo": "", # função chamada dinamicamente
@@ -1750,9 +1750,18 @@ def atualizar_contra_cheque_pagamento(id_pessoal, mes, ano, contra_cheque):
             if (ano, mes) > (2025, 7):
                 continue
 
+            if colaborador_registrado:
+                continue
+
         if item["nome"] == "DSR SOBRE HORA EXTRA":
             hora_extra_valor = valores_temporarios.get("HORA EXTRA", (0,0))[1]
-            quantidade, valor = calcular_dsr_horas_extras(mes, ano, hora_extra_valor)
+            dsr_faltas = valores_temporarios.get("DSR SOBRE FALTAS", (0,0))[0]
+            quantidade, valor = calcular_dsr_horas_extras(
+                mes,
+                ano,
+                hora_extra_valor,
+                dsr_faltas,
+            )
         elif item["nome"] == "INSS":
             quantidade, valor = calcular_inss(valor_base_inss, str(ano))
             calcular_inss(Decimal(1995.35), "2025")
