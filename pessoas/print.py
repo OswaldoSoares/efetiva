@@ -734,11 +734,12 @@ def base_contra_cheque(pdf):
     )
     pdf.setFont("Times-Roman", 10)
     pdf.drawString(cmp(10), cmp(linha - 139), "Salário Base")
-    pdf.drawString(cmp(32), cmp(linha - 139), "Sal. Contr. INSS")
-    pdf.drawString(cmp(61), cmp(linha - 139), "Base Calculo FGTS")
-    pdf.drawString(cmp(93), cmp(linha - 139), "FGTS do Mês")
-    pdf.drawString(cmp(120), cmp(linha - 139), "Base Calculo IRRF")
-    pdf.drawString(cmp(155), cmp(linha - 139), "Faixa IRRF")
+    if contexto["colaborador"].dados_profissionais.registrado:
+        pdf.drawString(cmp(32), cmp(linha - 139), "Sal. Contr. INSS")
+        pdf.drawString(cmp(61), cmp(linha - 139), "Base Calculo FGTS")
+        pdf.drawString(cmp(93), cmp(linha - 139), "FGTS do Mês")
+        pdf.drawString(cmp(120), cmp(linha - 139), "Base Calculo IRRF")
+        pdf.drawString(cmp(155), cmp(linha - 139), "Faixa IRRF")
     pdf.setFillColor(HexColor("#808080"))
 
 
@@ -773,7 +774,7 @@ def print_contra_cheque(contexto):
     if contexto["contra_cheque"].Descricao == "PAGAMENTO":
         contra_cheque_cartao_ponto(pdf, contexto)
         contra_cheque_minutas(pdf, contexto)
-    base_contra_cheque(pdf)
+    base_contra_cheque(pdf, contexto)
     pdf.setTitle("Contra Cheque")
     pdf.save()
     buffer.seek(0)
@@ -847,35 +848,32 @@ def contra_cheque_dados(pdf, contexto):
         cmp(linha - 144),
         f"R$ {salario_base}",
     )
-    pdf.drawString(
-        cmp(32),
-        cmp(linha - 144),
-        f"R$ {base_inss}",
-    )
-    pdf.drawString(
-        cmp(61),
-        cmp(linha - 144),
-        f"R$ {base_fgts}",
-    )
-    pdf.drawString(
-        cmp(93),
-        cmp(linha - 144),
-        f"R$ {valor_fgts}",
-    )
-    pdf.drawString(
-        cmp(120),
-        cmp(linha - 144),
-        f"R$ {base_irrf}",
-    )
-    pdf.drawString(
-        cmp(155),
-        cmp(linha - 144),
-        f"{faixa_irrf}",
-    )
-
-
-
-
+    if contexto["colaborador"].dados_profissionais.registrado:
+        pdf.drawString(
+            cmp(32),
+            cmp(linha - 144),
+            f"R$ {base_inss}",
+        )
+        pdf.drawString(
+            cmp(61),
+            cmp(linha - 144),
+            f"R$ {base_fgts}",
+        )
+        pdf.drawString(
+            cmp(93),
+            cmp(linha - 144),
+            f"R$ {valor_fgts}",
+        )
+        pdf.drawString(
+            cmp(120),
+            cmp(linha - 144),
+            f"R$ {base_irrf}",
+        )
+        pdf.drawString(
+            cmp(155),
+            cmp(linha - 144),
+            f"{faixa_irrf}",
+        )
 
     contra_cheque_obs(pdf, contexto)
     return pdf
