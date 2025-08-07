@@ -683,7 +683,7 @@ def formulario_rescisao_trabalho(pdf, contexto):
     return pdf
 
 
-def base_contra_cheque(pdf):
+def base_contra_cheque(pdf, contexto):
     linha = 297
     pdf.setFillColor(HexColor("#000000"))
     pdf.rect(cmp(5), cmp(linha - 18.5), cmp(173), cmp(13.5), fill=0)
