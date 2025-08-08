@@ -17,8 +17,6 @@ from .views import (
     salva_salario_colaborador,
     demissao_colaborador,
     salva_demissao_colaborador,
-    periodo_ferias,
-    salva_periodo_ferias,
     confirma_exclusao_periodo_ferias,
     exclui_periodo_ferias,
     print_ferias,
@@ -66,6 +64,7 @@ from .views import (
     excluir_arquivo_contra_cheque,
     readmitir_colaborador,
     registrar_colaborador,
+    adicionar_gozo_ferias_colaborador,
 )
 
 from pessoas.facades.ponto import verificar_identidade, autenticar
@@ -251,6 +250,11 @@ urlpatterns = [
         registrar_ponto,
         name="registrar_ponto",
     ),
+    path(
+        "adicionar_gozo_ferias_colaborador",
+        adicionar_gozo_ferias_colaborador,
+        name="adicionar_gozo_ferias_colaborador",
+    ),
 
     # Antigos
     path(
@@ -320,16 +324,6 @@ urlpatterns = [
         "salva_demissao_colaborador",
         salva_demissao_colaborador,
         name="salva_demissao_colaborador",
-    ),
-    path(
-        "periodo_ferias",
-        periodo_ferias,
-        name="periodo_ferias",
-    ),
-    path(
-        "salva_periodo_ferias",
-        salva_periodo_ferias,
-        name="salva_periodo_ferias",
     ),
     path(
         "print_ferias",
