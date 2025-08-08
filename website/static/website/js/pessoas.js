@@ -21,6 +21,37 @@ $(document).ready(function() {
     ocultarCardsColaborador();
 });
 
+function calcularDataFinal() {
+    const dataInicial = new Date($("#id_data_inicio").val())
+    const maxDias = parseInt($("#id_dias").attr("max"))
+    const dias = parseInt($("#id_dias").val())
+
+    if (dias > maxDias) {
+        console.log("carai")
+        mostrarToast(
+            "Os dias em férias não podem ser maior que os dias para completar o período aquisitivo",
+            "error"
+        )
+        $(".btn-save").addClass("disabled")
+    } else {
+        $(".btn-save").removeClass("disabled")
+    }
+
+    if (!isNaN(dataInicial.getTime()) && !isNaN(dias)) {
+        const dataFinal = new Date(dataInicial);
+        dataFinal.setDate(dataFinal.getDate() + dias - 1);
+        $("#id_data_fim").val(dataFinal.toISOString().split('T')[0]);
+    }
+}
+
+$(document).on('change', '.js-data-inicio', function() {
+    calcularDataFinal()
+})
+
+$(document).on('change', '.js-dias', function() {
+    calcularDataFinal()
+})
+
 // Função para salvar arquivo de docuemnto
 $(document).on('submit', '.js-file-arquivo-de-documentos', function(event) {
     event.preventDefault();

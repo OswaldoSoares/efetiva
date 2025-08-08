@@ -33,6 +33,10 @@
                 </div>
             </div>
             <div class="input-group-addon addon-my-color">
+                <i class="icofont-square
+                   i-button js-seleciona-gozo-ferias"
+                   title="Pagar Férias"
+                   data-id_ferias="{{ gozo.idFerias }}"></i>
             </div>
         </div>
     </div>
@@ -52,6 +56,13 @@
                 </div>
             </div>
             <div class="input-group-addon addon-my-color">
+                <i class="icofont-plus-circle i-button"
+                   onclick="openMyModal(event); return false;"
+                   data-title="FÉRIAS DO COLABORADOR"
+                   data-action="/pessoas/adicionar_gozo_ferias_colaborador"
+                   data-id_pessoal="{{ colaborador.id_pessoal }}"
+                   data-button-save-label="ADICIONAR"
+                   title="ADICIONAR GOZO DE FÉRIAS DO COLABORADOR"></i>
             </div>
         </div>
     </div>

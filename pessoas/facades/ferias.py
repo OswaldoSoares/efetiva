@@ -1,9 +1,14 @@
 """ Responsável pelas férias do colaborador """
-from datetime import datetime
+from datetime import datetime, timedelta
 from decimal import ROUND_HALF_UP, Decimal
 from typing import Dict, List
 from dateutil.relativedelta import relativedelta
-from pessoas.models import Aquisitivo, CartaoPonto, Ferias, Salario
+from django.http import JsonResponse
+from core.constants import MESES
+from core.tools import get_mensagem, primeiro_e_ultimo_dia_do_mes
+from pessoas import classes, html_data
+from pessoas.facades.ponto import obter_cartao_ponto_mes
+from pessoas.models import Aquisitivo, CartaoPonto, ContraCheque, Ferias, Salario
 
 
 def faltas_periodo_aquisitivo(id_pessoal: int, aquisitivo) -> List[str]:
@@ -186,3 +191,138 @@ def create_contexto_ferias_colaborador(id_pessoal) -> Dict:
     gozo_ferias = Ferias.objects.filter(idPessoal=id_pessoal).reverse()
 
     return {"aquisitivos": aquisitivos, "gozo_ferias": gozo_ferias}
+
+
+def obter_dias_para_gozo_ferias(id_pessoal):
+    dict_ferias = create_contexto_ferias_colaborador(id_pessoal)
+    for aquisitivo in reversed(list(dict_ferias["aquisitivos"])):
+        gozo_ferias = dict_ferias["gozo_ferias"].filter(
+            idAquisitivo_id=aquisitivo.idAquisitivo
+        )
+        dias = 0
+        for gozo in gozo_ferias:
+            dias += (gozo.DataFinal - gozo.DataInicial).days + 1
+
+        if aquisitivo.dias > dias:
+            dias_restantes = round(aquisitivo.dias - dias)
+            return dias_restantes, aquisitivo
+
+    return 0, False
+
+
+def modal_gozo_ferias_colaborador(id_pessoal, request):
+    colaborador = classes.Colaborador(id_pessoal)
+    dias_restantes, aquisitivo = obter_dias_para_gozo_ferias(id_pessoal)
+    hoje = datetime.today().date()
+    data_final = hoje + timedelta(dias_restantes - 1)
+    contexto = {
+        "colaborador": colaborador,
+        "aquisitivo": aquisitivo,
+        "dias_restantes": dias_restantes,
+        "hoje": hoje.strftime("%Y-%m-%d"),
+        "data_final": data_final.strftime("%Y-%m-%d"),
+    }
+    modal_html = html_data.html_modal_gozo_ferias_colaborador(request, contexto)
+    return JsonResponse({"modal_html": modal_html})
+
+
+def validar_dias_ferias(id_pessoal, dias_ferias):
+    dias_restantes, _ = obter_dias_para_gozo_ferias(id_pessoal)
+
+    return False if int(dias_ferias) > dias_restantes else True
+
+
+def validar_data_ferias(id_pessoal, data):
+    data = datetime.strptime(data, "%Y-%m-%d").date()
+    mes = data.month
+    mes_extenso = MESES[int(mes)]
+    ano = data.year
+
+    contra_cheque = ContraCheque.objects.filter(
+        idPessoal_id=id_pessoal,
+        MesReferencia=mes_extenso,
+        AnoReferencia=ano,
+        Descricao="PAGAMENTO",
+    ).first()
+
+    return False if contra_cheque and contra_cheque.Pago else True
+
+
+def validar_admitido_ferias(colaborador, data):
+    data = datetime.strptime(data, "%Y-%m-%d").date()
+    admissao = colaborador.dados_profissionais.data_admissao
+
+    return False if data < admissao else True
+
+
+def validar_gozo_ferias_colaborador(request):
+    if not request.method == "POST":
+        return False
+
+    id_pessoal = request.POST.get("id_pessoal")
+    data_inicio = request.POST.get("data_inicio")
+    dias_ferias = request.POST.get("dias")
+    data_fim = request.POST.get("data_fim")
+
+    colaborador = classes.Colaborador(id_pessoal)
+
+    if not validar_dias_ferias(id_pessoal, dias_ferias):
+        return get_mensagem("pefe0002", dias=dias_ferias)
+
+    if not validar_data_ferias(id_pessoal, data_inicio):
+        return get_mensagem("pefe0003")
+
+    if not validar_data_ferias(id_pessoal, data_fim):
+        return get_mensagem("pefe0004")
+
+    if not validar_admitido_ferias(colaborador, data_inicio):
+        return get_mensagem("pefe0005")
+
+
+
+def atualizar_cartao_ponto_ferias(id_pessoal, data_inicio, data_fim):
+    cartao_ponto = CartaoPonto.objects.filter(
+        idPessoal=id_pessoal,
+        Dia__range=[data_inicio, data_fim]
+    )
+
+    try:
+        cartao_ponto.update(
+            Ausencia="FÉRIAS",
+            Conducao=False,
+            Remunerado=False,
+            Alteracao="ROBOT",
+        )
+
+        return True
+
+    except:
+        return get_mensagem("pefe0001")
+
+
+def save_gozo_ferias_colaborador(request):
+    id_pessoal = int(request.POST.get("id_pessoal"))
+    data_inicio_str = request.POST.get("data_inicio")
+    data_inicio = datetime.strptime(data_inicio_str, "%Y-%m-%d")
+    data_fim_str = request.POST.get("data_fim")
+    data_fim = datetime.strptime(data_fim_str, "%Y-%m-%d")
+
+    _, aquisitivo = obter_dias_para_gozo_ferias(id_pessoal)
+
+    obter_cartao_ponto_mes(id_pessoal, data_inicio.month, data_inicio.year)
+    if data_inicio.month != data_fim.month:
+        obter_cartao_ponto_mes(id_pessoal, data_fim.month, data_fim.year)
+
+    try:
+        Ferias.objects.create(
+            DataInicial=data_inicio,
+            DataFinal=data_fim,
+            idAquisitivo_id=aquisitivo.idAquisitivo,
+            idPessoal_id=id_pessoal,
+        )
+
+        atualizar_cartao_ponto_ferias(id_pessoal, data_inicio, data_fim)
+    except:
+        return get_mensagem("pefe0006")
+
+    return get_mensagem("pefe0001")

@@ -8,7 +8,7 @@ from core.tools import modal_excluir_arquivo, get_request_data
 from core.tools import injetar_parametro_no_request_post
 from .facades import rescisao
 from pessoas import facade
-from pessoas.facades import ponto
+from pessoas.facades import ferias, ponto
 from pessoas.print import (
     print_pdf_ficha_colaborador,
     print_pdf_rescisao_trabalho,
@@ -464,46 +464,6 @@ def salva_demissao_colaborador(request):
     return data
 
 
-def periodo_ferias(request):
-    idpessoal = request.GET.get("idpessoal")
-    idaquisitivo = request.GET.get("idaquisitivo")
-    hoje = str_hoje()
-    contexto = {
-        "idpessoal": idpessoal,
-        "idaquisitivo": idaquisitivo,
-        "hoje": hoje,
-    }
-    data = facade.create_data_form_periodo_ferias(request, contexto)
-    return data
-
-
-def salva_periodo_ferias(request):
-    error, msg = facade.valida_periodo_ferias(request)
-    ferias_form = facade.read_periodo_ferias_post(request)
-    if not error:
-        data = dict()
-        idpessoal = request.POST.get("idpessoal")
-        inicio = request.POST.get("inicio")
-        terminio = request.POST.get("termino")
-        idaquisitivo = request.POST.get("idaquisitivo")
-        facade.salva_periodo_ferias_colaborador(
-            idpessoal, inicio, terminio, idaquisitivo
-        )
-        contexto = facade.create_contexto_consulta_colaborador(idpessoal)
-        data = facade.create_data_consulta_colaborador(request, contexto)
-        ferias_form = dict()
-    else:
-        idpessoal = request.POST.get("idpessoal")
-        contexto = {
-            "ferias_form": ferias_form,
-            "idpessoal": idpessoal,
-            "error": error,
-        }
-        contexto.update(msg)
-        data = facade.create_data_form_periodo_ferias(request, contexto)
-    return data
-
-
 def confirma_exclusao_periodo_ferias(request):
     idferias = request.GET.get("idferias")
     contexto = facade.create_contexto_exclui_ferias(idferias)
@@ -733,3 +693,17 @@ def registrar_colaborador(request):
         partial(facade.create_contexto_class_colaborador, request),
         facade.colaborador_html_data,
     )
+
+
+def adicionar_gozo_ferias_colaborador(request):
+    error = ferias.validar_gozo_ferias_colaborador(request)
+    if error:
+        return JsonResponse(error)
+
+    return handle_modal_colaborador(
+        request,
+        ferias.modal_gozo_ferias_colaborador,
+        ferias.save_gozo_ferias_colaborador,
+        partial(facade.create_contexto_class_colaborador, request),
+        facade.colaborador_html_data,
+        )

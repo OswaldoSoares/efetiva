@@ -233,3 +233,10 @@ def html_modal_entrada_colaborador(request, contexto):
         "pessoas/modal_entrada_colaborador.html", contexto, request=request
     )
     return modal_html
+
+
+def html_modal_gozo_ferias_colaborador(request, contexto):
+    modal_html = render_to_string(
+        "pessoas/modal_gozo_ferias_colaborador.html", contexto, request=request
+    )
+    return modal_html
