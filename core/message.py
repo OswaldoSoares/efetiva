@@ -29,19 +29,19 @@ mensagens = {
     },
     "pefe0002": {
         "mensagem": "COLABORADOR NÃO TEM {dias} DIAS RESTANTES NO PERÍODO AQUISITIVO.",
-        "tipo": "error",
+        "tipo": "warning",
     },
     "pefe0003": {
         "mensagem": "PERÍODO DE FÉRIAS NÃO PODE COMEÇAR EM UMA FOLHA PGTO ENCERRADA, PERÍODO NÃO ADICIONADO.",
-        "tipo": "error",
+        "tipo": "warning",
     },
     "pefe0004": {
         "mensagem": "PERÍODO DE FÉRIAS NÃO PODE TERMINAR EM UMA FOLHA PGTO ENCERRADA, PERÍODO NÃO ADICIONADO.",
-        "tipo": "error",
+        "tipo": "warning",
     },
     "pefe0005": {
         "mensagem": "COLABORADOR TEM QUE ESTAR ADMITIDO NA DATA DE INÍCIO DAS FÉRIAS, PERÍODO NÃO ADICIONADO.",
-        "tipo": "error",
+        "tipo": "warning",
     },
     "pefe0006": {
         "mensagem": "FALHA AO SALVAR FÉRIAS DO COLABORADOR.",
