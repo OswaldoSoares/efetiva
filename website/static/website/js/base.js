@@ -261,7 +261,6 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
         header.addClass('loading');
         var url = $(this).attr('action') || action;
         var formData = new FormData($('.rows').get(0));  
-        console.log(formData)      
         $.ajax({
             type: $(this).attr('method'),
             url: url,
@@ -276,7 +275,7 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                     formAjaxSubmit(modal, url, cbAfterLoad, cbAfterSuccess);
                 } else {
                     $(modal).modal('hide');
-                    console.log(xhr)
+                    mostrarToast(xhr["mensagem"], xhr["tipo"])
                     if (xhr["html_card_folha_pagamento"]) {
                         $(".card-folha-pagamento").html(xhr["html_card_folha_pagamento"])
                     }
