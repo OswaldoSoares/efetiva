@@ -1,97 +1,89 @@
-import calendar
+import ast
 import datetime
 import json
 import os
-import ast
-import locale
+from datetime import date, datetime, timedelta
+from decimal import ROUND_HALF_UP, Decimal
+from pathlib import Path
+from typing import Any
 
-from pessoas.facades.ponto import obter_cartao_ponto_mes
-from .facades.arquivos import documentos_arquivados_do_colaborador
-from .facades.arquivos import dict_de_tipos_documentos_arquivar
-from .facades import ferias
-from django.core.files.base import ContentFile
-from django.db import connection, transaction
-from transefetiva.settings import settings
-from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta
 from django.db.models import (
-    Sum,
-    F,
-    ExpressionWrapper,
-    IntegerField,
-    DateField,
-    When,
     Case,
+    DateField,
+    ExpressionWrapper,
+    F,
+    IntegerField,
+    Sum,
     Value,
-    QuerySet,
+    When,
 )
 from django.http import JsonResponse
 from django.template.loader import render_to_string
-from decimal import Decimal, ROUND_HALF_UP
 from PIL import Image, ImageDraw
-from typing import List, Dict, Any, Optional
-from pathlib import Path
-from despesas import facade as facade_multa
 
-from pagamentos import facade as facade_pagamentos
-from pagamentos.models import Recibo
-
-
-from core import constants
 from core.constants import (
     CATEGORIAS,
-    EVENTOS_INCIDE_INSS,
+    EVENTOS_CONTRA_CHEQUE,
     EVENTOS_INCIDE_FGTS,
+    EVENTOS_INCIDE_INSS,
     EVENTOS_INCIDE_IRRF,
+    MESES,
     TIPOPGTO,
+    TIPOS_CONTAS,
     TIPOS_DOCS,
     TIPOS_FONES,
-    TIPOS_CONTAS,
-    MESES,
-    EVENTOS_RESCISORIOS,
-    MOTIVOS_DEMISSAO,
-    AVISO_PREVIO,
-    EVENTOS_CONTRA_CHEQUE,
 )
 from core.tools import (
-    obter_mes_por_numero,
-    primeiro_e_ultimo_dia_do_mes,
     get_mensagem,
     get_request_data,
+    obter_feriados_sabados_domingos_mes,
+    obter_mes_por_numero,
+    primeiro_e_ultimo_dia_do_mes,
 )
-from core.tools import criar_lista_nome_de_arquivos_no_diretorio, obter_feriados_sabados_domingos_mes
+from despesas import facade as facade_multa
+from pagamentos import facade as facade_pagamentos
+from pagamentos.models import Recibo
+from pessoas import classes, html_data
+from pessoas.facades.ponto import (
+    create_contexto_cartao_ponto,
+    obter_cartao_ponto_mes,
+)
 from pessoas.models import (
-    Aquisitivo,
-    DecimoTerceiro,
-    Ferias,
-    ParcelasDecimoTerceiro,
-    Pessoal,
-    Salario,
-    DocPessoal,
-    FonePessoal,
-    ContaPessoal,
-    Vales,
-    ContraCheque,
-    ContraChequeItens,
-    CartaoPonto,
     AlteracaoSalarial,
     AlteracaoValeTransporte,
+    Aquisitivo,
+    CartaoPonto,
+    ContaPessoal,
+    ContraCheque,
+    ContraChequeItens,
+    DecimoTerceiro,
+    DocPessoal,
+    Ferias,
+    FonePessoal,
+    ParcelasDecimoTerceiro,
+    Pessoal,
     Readmissao,
+    Salario,
+    Vales,
+)
+from transefetiva.settings import settings
+from transefetiva.settings.settings import MEDIA_ROOT
+from website.facade import (
+    busca_arquivo_descricao,
+    converter_mes_ano,
+    extremos_mes,
+    nome_curto,
+    nome_curto_underscore,
 )
 from website.models import FileUpload, Parametros
-from website.facade import (
-    converter_mes_ano,
-    nome_curto,
-    extremos_mes,
-    nome_curto_underscore,
-    busca_arquivo_descricao,
+
+from .facades import ferias
+from .facades.arquivos import (
+    dict_de_tipos_documentos_arquivar,
+    documentos_arquivados_do_colaborador,
 )
 from .itens_card import categorias_colaborador
-from transefetiva.settings.settings import MEDIA_ROOT
-from pessoas import classes
-from pessoas import html_data
-from typing import List
-from pessoas.facades.ponto import create_contexto_cartao_ponto
 
 dias = [
     "SEGUNDA-FEIRA",
