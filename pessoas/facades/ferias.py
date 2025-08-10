@@ -1,17 +1,25 @@
-""" Responsável pelas férias do colaborador """
+"""Responsável pelas férias do colaborador"""
+
 from datetime import datetime, timedelta
 from decimal import ROUND_HALF_UP, Decimal
-from typing import Dict, List
+
 from dateutil.relativedelta import relativedelta
 from django.http import JsonResponse
+
 from core.constants import MESES
-from core.tools import get_mensagem, primeiro_e_ultimo_dia_do_mes
+from core.tools import get_mensagem
 from pessoas import classes, html_data
 from pessoas.facades.ponto import obter_cartao_ponto_mes
-from pessoas.models import Aquisitivo, CartaoPonto, ContraCheque, Ferias, Salario
+from pessoas.models import (
+    Aquisitivo,
+    CartaoPonto,
+    ContraCheque,
+    Ferias,
+    Salario,
+)
 
 
-def faltas_periodo_aquisitivo(id_pessoal: int, aquisitivo) -> List[str]:
+def faltas_periodo_aquisitivo(id_pessoal: int, aquisitivo) -> list[str]:
     """
     Retorna uma lista com as datas das faltas não remuneradas registradas
     durante o período aquisitivo do colaborador.
@@ -169,7 +177,7 @@ def anota_dados_ferias(id_pessoal, aquisitivos):
     return aquisitivos
 
 
-def create_contexto_ferias_colaborador(id_pessoal) -> Dict:
+def create_contexto_ferias_colaborador(id_pessoal) -> dict:
     """
     Retorna um dicionário com os dados de férias do colaborador, contendo:
     - Lista de períodos aquisitivos, com valores calculados
@@ -229,7 +237,7 @@ def modal_gozo_ferias_colaborador(id_pessoal, request):
 def validar_dias_ferias(id_pessoal, dias_ferias):
     dias_restantes, _ = obter_dias_para_gozo_ferias(id_pessoal)
 
-    return False if int(dias_ferias) > dias_restantes else True
+    return not int(dias_ferias) > dias_restantes
 
 
 def validar_data_ferias(id_pessoal, data):
@@ -245,18 +253,18 @@ def validar_data_ferias(id_pessoal, data):
         Descricao="PAGAMENTO",
     ).first()
 
-    return False if contra_cheque and contra_cheque.Pago else True
+    return not contra_cheque and contra_cheque.Pago
 
 
 def validar_admitido_ferias(colaborador, data):
     data = datetime.strptime(data, "%Y-%m-%d").date()
     admissao = colaborador.dados_profissionais.data_admissao
 
-    return False if data < admissao else True
+    return not data < admissao
 
 
 def validar_gozo_ferias_colaborador(request):
-    if not request.method == "POST":
+    if request.method != "POST":
         return False
 
     id_pessoal = request.POST.get("id_pessoal")
@@ -279,11 +287,9 @@ def validar_gozo_ferias_colaborador(request):
         return get_mensagem("pefe0005")
 
 
-
 def atualizar_cartao_ponto_ferias(id_pessoal, data_inicio, data_fim):
     cartao_ponto = CartaoPonto.objects.filter(
-        idPessoal=id_pessoal,
-        Dia__range=[data_inicio, data_fim]
+        idPessoal=id_pessoal, Dia__range=[data_inicio, data_fim]
     )
 
     try:
@@ -296,7 +302,7 @@ def atualizar_cartao_ponto_ferias(id_pessoal, data_inicio, data_fim):
 
         return True
 
-    except:
+    except Exception:
         return get_mensagem("pefe0001")
 
 
@@ -322,7 +328,7 @@ def save_gozo_ferias_colaborador(request):
         )
 
         atualizar_cartao_ponto_ferias(id_pessoal, data_inicio, data_fim)
-    except:
+    except Exception:
         return get_mensagem("pefe0006")
 
     return get_mensagem("pefe0001")
