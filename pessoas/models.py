@@ -384,6 +384,9 @@ class Ferias(models.Model):
     DataInicial = models.DateField(blank=True, null=True)
     DataFinal = models.DateField(blank=True, null=True)
     idAquisitivo = models.ForeignKey(Aquisitivo, on_delete=models.CASCADE)
+    idContraCheque = models.ForeignKey(
+        ContraCheque, on_delete=models.CASCADE, blank=True, null=True
+    )
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
 
     class Meta:
