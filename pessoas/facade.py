@@ -3266,22 +3266,6 @@ def create_contexto_contra_cheque_apaga(idpessoal, idselecionado, descricao):
     return contexto
 
 
-def create_contexto_contra_cheque_ferias(idpessoal, idselecionado, descricao):
-    idaquisitivo = idselecionado
-    contra_cheque = busca_contra_cheque_aquisitivo(
-        idpessoal, idaquisitivo, descricao
-    )
-    contra_cheque_itens = get_contra_cheque_itens(contra_cheque)
-    if not contra_cheque_itens:
-        create_contra_cheque_itens(descricao, 0.00, "C", "30d", contra_cheque)
-        if not busca_um_terco_ferias(contra_cheque_itens):
-            create_contra_cheque_itens(
-                "1/3 FERIAS", 0.00, "C", "30d", contra_cheque
-            )
-    atualiza_salario_ferias_dias_referencia(idpessoal, idaquisitivo)
-    return contra_cheque
-
-
 def create_contexto_contra_cheque_13(idpessoal, idselecionado, descricao):
     idparcela = idselecionado
     contra_cheque = busca_contra_cheque_parcela(
@@ -3323,54 +3307,6 @@ def update_contas_bancaria_obs(contra_cheque, contas, chave):
         obj = contra_cheque
         obj.Obs = dict_obs
         obj.save()
-
-
-def atualiza_salario_ferias_dias_referencia(idpessoal, idaquisitivo):
-    """
-
-    Args:
-        idpessoal:
-        idaquisitivo:
-
-    Returns:
-
-
-    """
-    colaborador = get_colaborador(idpessoal)
-    colaborador_class = classes.Colaborador(idpessoal)
-    salario = colaborador_class.salarios.salarios.Salario
-    aquisitivo = get_aquisitivo_id(idaquisitivo)
-    contra_cheque = get_contra_cheque_descricao(colaborador, "PAGAMENTO")
-    contra_cheque = contra_cheque_ano_mes_integer(contra_cheque)
-    contra_cheque = get_contra_cheque_aquisitivo(aquisitivo, contra_cheque)
-    contra_cheque_itens = get_contra_cheque_itens(contra_cheque)
-    salario_contra_cheque = get_salario_contra_cheque(contra_cheque_itens)
-    faltas = aquisitivo_faltas(colaborador, aquisitivo)
-    salario_ferias = aquisitivo_salario_ferias(salario, faltas)
-    mes = aquisitivo.DataFinal.month
-    ano = aquisitivo.DataFinal.year
-    contra_cheque_ferias = get_contra_cheque_mes_ano_descricao(
-        colaborador, mes, ano, "FERIAS"
-    )
-    contra_cheque_itens = get_contra_cheque_itens(contra_cheque_ferias)
-    contra_cheque_item = contra_cheque_itens.filter(Descricao="FERIAS")
-    #  update_contra_cheque_item_valor(contra_cheque_item, salario_ferias)
-    referencia = tabela_faltas_aquisitivo(faltas)
-    #  update_contra_cheque_item_referencia(contra_cheque_item, referencia)
-    contra_cheque_item = contra_cheque_itens.filter(Descricao="1/3 FERIAS")
-    #  update_contra_cheque_item_valor(contra_cheque_item, salario_ferias / 3)
-    #  update_contra_cheque_item_referencia(contra_cheque_item, referencia)
-    return (
-        colaborador,
-        aquisitivo,
-        contra_cheque,
-        contra_cheque_itens,
-        salario_contra_cheque,
-        salario_ferias,
-        faltas,
-        referencia,
-        contra_cheque_ferias,
-    )
 
 
 def atualiza_dozeavos_decimo_terceiro(idpessoal, idparcela, descricao):
@@ -3458,49 +3394,6 @@ def create_data_contra_cheque(request, contexto):
     data = html_card_contra_cheque_colaborador(request, contexto, data)
     data = html_decimo_terceiro(request, contexto, data)
     return JsonResponse(data)
-
-
-def busca_contra_cheque_aquisitivo(idpessoal, idaquisitivo, descricao):
-    colaborador = get_colaborador(idpessoal)
-    aquisitivo = get_aquisitivo_id(idaquisitivo)
-    faltas = aquisitivo_faltas(colaborador, aquisitivo)
-    ano = aquisitivo.DataFinal.year
-    mes = aquisitivo.DataFinal.month
-    aquisitivo_inicial = datetime.strftime(aquisitivo.DataInicial, "%d/%m/%Y")
-    aquisitivo_final = datetime.strftime(aquisitivo.DataFinal, "%d/%m/%Y")
-    obs = f"AQUISITIVO: {aquisitivo_inicial} - {aquisitivo_final}"
-    try:
-        contra_cheque = get_contra_cheque_mes_ano_descricao(
-            colaborador, mes, ano, descricao
-        )
-        update_contra_cheque_obs(contra_cheque, obs, "aquisitivo")
-    except ContraCheque.DoesNotExist:  # pylint: disable=no-member
-        nova_obs = dict()
-        nova_obs["aquisitivo"] = obs
-        create_contra_cheque(
-            meses[mes - 1], ano, "FERIAS", idpessoal, nova_obs
-        )
-        contra_cheque = get_contra_cheque_mes_ano_descricao(
-            colaborador, mes, ano, descricao
-        )
-    ferias = Ferias.objects.filter(idAquisitivo=aquisitivo)
-    for index, feria in enumerate(ferias):
-        gozo_inicial = datetime.strftime(feria.DataInicial, "%d/%m/%Y")
-        gozo_final = datetime.strftime(feria.DataFinal, "%d/%m/%Y")
-        string_gozo = f"GOZO DE FÉRIAS - {index+1}"
-        chave_gozo = f"gozo{index+1}"
-        obs = f"{string_gozo}: {gozo_inicial} - {gozo_final}"
-        contra_cheque = get_contra_cheque_mes_ano_descricao(
-            colaborador, mes, ano, descricao
-        )
-        update_contra_cheque_obs(contra_cheque, obs, chave_gozo)
-    if faltas:
-        obs = f"FALTAS: {faltas}"
-        contra_cheque = get_contra_cheque_mes_ano_descricao(
-            colaborador, mes, ano, descricao
-        )
-        update_contra_cheque_obs(contra_cheque, obs, "faltas")
-    return contra_cheque
 
 
 def busca_contra_cheque_parcela(idpessoal, idparcela, descricao):
@@ -3711,13 +3604,6 @@ def get_contra_cheque_itens_id(idcontrachequeitens):
         idContraChequeItens=idcontrachequeitens
     )
     return contra_cheque_item
-
-
-def busca_um_terco_ferias(contra_cheque_itens):
-    um_terco = contra_cheque_itens.filter(Descricao="1/3 FERIAS")
-    if not um_terco:
-        return False
-    return True
 
 
 def get_salario_base_contra_cheque_itens(contra_cheque_itens, tipo):

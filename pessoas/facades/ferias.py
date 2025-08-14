@@ -7,13 +7,18 @@ from dateutil.relativedelta import relativedelta
 from django.http import JsonResponse
 
 from core.constants import MESES
-from core.tools import get_mensagem
+from core.tools import (
+    get_mensagem,
+    get_saldo_contra_cheque,
+    obter_mes_por_numero,
+)
 from pessoas import classes, html_data
 from pessoas.facades.ponto import obter_cartao_ponto_mes
 from pessoas.models import (
     Aquisitivo,
     CartaoPonto,
     ContraCheque,
+    ContraChequeItens,
     Ferias,
     Salario,
 )
@@ -332,3 +337,86 @@ def save_gozo_ferias_colaborador(request):
         return get_mensagem("pefe0006")
 
     return get_mensagem("pefe0001")
+
+
+def obter_contra_cheque_itens_ferias(contra_cheque, feria):
+    contra_cheque_itens = ContraChequeItens.objects.filter(
+        idContraCheque=contra_cheque.idContraCheque
+    )
+
+    if not contra_cheque_itens.exists():
+        colaborador = classes.Colaborador(feria.idPessoal_id)
+        salario = colaborador.salarios.salarios.Salario
+        dias_ferias = feria.DataFinal.day - feria.DataInicial.day + 1
+        valor_ferias = (salario / 30 * dias_ferias).quantize(
+            Decimal("0.01"), rounding=ROUND_HALF_UP
+        )
+        terco_ferias = (valor_ferias / 3).quantize(
+            Decimal("0.00"), rounding=ROUND_HALF_UP
+        )
+
+        for i in range(2):
+            descricao = "FÉRIAS" if i == 0 else "1/3 FÈRIAS"
+            valor = valor_ferias if i == 0 else terco_ferias
+            referencia = dias_ferias if i == 0 else round((dias_ferias / 3),2)
+            codigo = "1020" if i == 0 else "1019"
+
+            ContraChequeItens.objects.create(
+                Descricao=descricao,
+                Valor=valor,
+                Registro="C",
+                Referencia=referencia,
+                idContraCheque_id=contra_cheque.idContraCheque,
+                Codigo=codigo,
+                Vales_id=0,
+            )
+
+            contra_cheque_itens = ContraChequeItens.objects.filter(
+                idContraCheque=contra_cheque.idContraCheque
+            )
+
+    return contra_cheque_itens
+
+
+def obter_contra_cheque_ferias(request):
+    id_ferias = request.GET.get("id_ferias")
+
+    feria = Ferias.objects.filter(idFerias=id_ferias).first()
+    mes_inicio = feria.DataInicial.month
+    ano_inicio = feria.DataInicial.year
+    mes_extenso = obter_mes_por_numero(mes_inicio)
+
+    qs = ContraCheque.objects.filter(
+        idContraCheque=feria.idContraCheque_id
+    )
+
+    if not qs.exists():
+        contra_cheque = ContraCheque.objects.create(
+            MesReferencia=mes_extenso,
+            AnoReferencia=ano_inicio,
+            idPessoal_id=feria.idPessoal_id,
+            Descricao="FERIAS"
+        )
+
+        if feria.idContraCheque_id is None:
+            feria.idContraCheque_id=contra_cheque.idContraCheque
+            feria.save()
+
+    else:
+        contra_cheque = qs.first()
+
+    contra_cheque_itens = obter_contra_cheque_itens_ferias(
+        contra_cheque, feria
+    )
+
+    return {
+        "id_pessoal": feria.idPessoal_id,
+        "contra_cheque": contra_cheque,
+        "contra_cheque_itens": contra_cheque_itens,
+        **get_saldo_contra_cheque(contra_cheque_itens),
+        **get_mensagem(
+            "pefe0007",
+            inicio=datetime.strftime(feria.DataInicial, "%d/%m/%Y"),
+            fim=datetime.strftime(feria.DataFinal, "%d/%m/%Y"),
+        ),
+    }

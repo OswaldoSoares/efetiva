@@ -707,3 +707,10 @@ def adicionar_gozo_ferias_colaborador(request):
         partial(facade.create_contexto_class_colaborador, request),
         facade.colaborador_html_data,
         )
+
+
+def selecionar_gozo_ferias(request):
+    print(request.GET)
+    contexto = ferias.obter_contra_cheque_ferias(request)
+    print(contexto)
+    return facade.contra_cheque_html_data(request, contexto)
