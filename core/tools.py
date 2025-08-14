@@ -3,14 +3,18 @@ import calendar
 import json
 import os
 from datetime import datetime, time, timedelta
+from decimal import Decimal
 from pathlib import Path
-from urllib.parse import urlparse, parse_qs
+from urllib.parse import parse_qs, urlparse
+
+from django.db.models import Sum
 from django.http import JsonResponse
 from django.template.loader import render_to_string
+
 from core.constants import MESES
 from core.message import mensagens
-from website.models import FileUpload
 from transefetiva.settings import settings
+from website.models import FileUpload
 
 
 def apos_meia_noite(hora):
