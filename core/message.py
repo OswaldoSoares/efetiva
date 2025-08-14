@@ -47,6 +47,11 @@ mensagens = {
         "mensagem": "FALHA AO SALVAR FÉRIAS DO COLABORADOR.",
         "tipo": "error",
     },
+    "pefe0007": {
+        "mensagem": "CONTRA-CHEQUE DO PERÍODO DE FÉRIAS {inicio} - {fim} SELECIONADO.",
+        "tipo": "info",
+    },
+
 
 
 }
