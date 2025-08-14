@@ -37,6 +37,7 @@ from core.constants import (
 from core.tools import (
     get_mensagem,
     get_request_data,
+    get_saldo_contra_cheque,
     obter_feriados_sabados_domingos_mes,
     obter_mes_por_numero,
     primeiro_e_ultimo_dia_do_mes,
@@ -1345,21 +1346,6 @@ def get_or_create_contra_cheque_itens(
         itens = ContraChequeItens.objects.filter(idContraCheque=contra_cheque)
 
     return itens
-
-
-def get_saldo_contra_cheque(contra_cheque_itens):
-    """Consultar Documentação Sistema Efetiva"""
-    creditos = contra_cheque_itens.filter(Registro="C").aggregate(
-        total=Sum("Valor")
-    ).get("total") or Decimal(0)
-
-    debitos = contra_cheque_itens.filter(Registro="D").aggregate(
-        total=Sum("Valor")
-    ).get("total") or Decimal(0)
-
-    saldo = creditos - debitos
-
-    return {"credito": creditos, "debito": debitos, "saldo": saldo}
 
 
 def atualizar_ou_adicionar_contra_cheque_item(
