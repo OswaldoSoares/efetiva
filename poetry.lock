@@ -423,6 +423,17 @@ files = [
 django = ">=3.0"
 
 [[package]]
+name = "docopt"
+version = "0.6.2"
+description = "Pythonic argument parser, that will make you smile"
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "docopt-0.6.2.tar.gz", hash = "sha256:49b3a825280bd66b3aa83585ef59c4a8c82f2c8a522dbe754a8bc8d08c85c491"},
+]
+
+[[package]]
 name = "fido2"
 version = "1.2.0"
 description = "FIDO2/WebAuthn library for implementing clients and servers."
@@ -561,6 +572,21 @@ files = [
     {file = "mysqlclient-2.2.7-pp39-pypy39_pp73-win_amd64.whl", hash = "sha256:977e35244fe6ef44124e9a1c2d1554728a7b76695598e4b92b37dc2130503069"},
     {file = "mysqlclient-2.2.7.tar.gz", hash = "sha256:24ae22b59416d5fcce7e99c9d37548350b4565baac82f95e149cac6ce4163845"},
 ]
+
+[[package]]
+name = "num2words"
+version = "0.5.14"
+description = "Modules to convert numbers to words. Easily extensible."
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "num2words-0.5.14-py3-none-any.whl", hash = "sha256:1c8e5b00142fc2966fd8d685001e36c4a9911e070d1b120e1beb721fa1edb33d"},
+    {file = "num2words-0.5.14.tar.gz", hash = "sha256:b066ec18e56b6616a3b38086b5747daafbaa8868b226a36127e0451c0cf379c6"},
+]
+
+[package.dependencies]
+docopt = ">=0.6.2"
 
 [[package]]
 name = "packaging"
@@ -1166,4 +1192,4 @@ watchdog = ["watchdog (>=2.3)"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.9.2,<3.11"
-content-hash = "ebf4fa64b37b7118d2f017e5df31fd2b2fae95cda324d98ba7292637e44525d1"
+content-hash = "e6f1eef9e97d4a8988a5111b0046576a66a787dc36d09a56a452fade4ba81fae"
