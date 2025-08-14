@@ -230,6 +230,11 @@ urlpatterns = [
         registrar_colaborador,
         name="registrar_colaborador",
     ),
+    path(
+        "selecionar_gozo_ferias",
+        selecionar_gozo_ferias,
+        name="selecionar_gozo_ferias",
+    ),
 
     # Módulo ponto
     path(
