@@ -2,7 +2,6 @@ import os
 
 from django.contrib.auth.hashers import make_password
 from django.db import models
-from django.forms import CharField
 
 
 def get_file_path(instance, filename):
