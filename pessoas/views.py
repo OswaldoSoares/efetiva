@@ -1,20 +1,26 @@
 from functools import partial
-from django.shortcuts import render
-from django.shortcuts import redirect
+
 from django.http import JsonResponse
+from django.shortcuts import redirect, render
 from rolepermissions.decorators import has_permission_decorator
-from core.tools import upload_de_arquivo, excluir_arquivo
-from core.tools import modal_excluir_arquivo, get_request_data
-from core.tools import injetar_parametro_no_request_post
-from .facades import rescisao
+
+from core.tools import (
+    excluir_arquivo,
+    get_request_data,
+    injetar_parametro_no_request_post,
+    modal_excluir_arquivo,
+    upload_de_arquivo,
+)
 from pessoas import facade
 from pessoas.facades import ferias, ponto
 from pessoas.print import (
+    print_contra_cheque,
     print_pdf_ficha_colaborador,
     print_pdf_rescisao_trabalho,
-    print_contra_cheque,
 )
 from website.facade import str_hoje
+
+from .facades import rescisao
 
 
 @has_permission_decorator("modulo_colaboradores")
