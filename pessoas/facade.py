@@ -203,7 +203,7 @@ def save_registro_colaborador(request):
         Pessoal.objects.filter(idPessoal=id_pessoal).update(registrado=True)
         return {"mensagem": "Colaborador registrado comm sucesso"}
 
-    except Exception as e:
+    except Exception:
         return {"mensagem": "Erro ao registrar colaborador"}
 
 
@@ -3525,9 +3525,9 @@ def aquisitivo_salario_ferias(salario, faltas):
 def update_contra_cheque_obs(contra_cheque, obs, chave):
     try:
         dict_obs = ast.literal_eval(contra_cheque.Obs)
-    except (SyntaxError, ValueError) as e:
+    except (SyntaxError, ValueError):
         dict_obs = {}
-    except Exception as e:
+    except Exception:
         dict_obs = {}
 
     if dict_obs.get(chave) != obs:
