@@ -356,9 +356,9 @@ def obter_contra_cheque_itens_ferias(contra_cheque, feria):
         )
 
         for i in range(2):
-            descricao = "FÉRIAS" if i == 0 else "1/3 FÈRIAS"
+            descricao = "FÉRIAS" if i == 0 else "1/3 FÉRIAS"
             valor = valor_ferias if i == 0 else terco_ferias
-            referencia = dias_ferias if i == 0 else round((dias_ferias / 3),2)
+            referencia = dias_ferias if i == 0 else "1/3"
             codigo = "1020" if i == 0 else "1019"
 
             ContraChequeItens.objects.create(
