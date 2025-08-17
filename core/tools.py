@@ -11,6 +11,7 @@ from urllib.parse import parse_qs, urlparse
 from django.db.models import Sum
 from django.http import JsonResponse
 from django.template.loader import render_to_string
+from num2words import num2words
 
 from core.constants import MESES
 from core.message import mensagens
@@ -433,6 +434,18 @@ def periodo_por_extenso(data_inicial, data_final):
     final_extenso = datetime.strftime(data_final, "%d de %B de %Y")
 
     return f"{inicial_extenso} a {final_extenso}"
+
+
+def valor_por_extenso(valor, tamanho=200, padrao=" _*_"):
+    extenso = num2words(valor, lang="pt_BR", to="currency")
+    extenso = extenso.upper()
+
+    if len(extenso) < tamanho:
+        faltam = tamanho - len(extenso)
+        repeticoes = (padrao * ((faltam // len(padrao)) + 1))[:faltam]
+        extenso += repeticoes
+
+    return extenso
 
 
 def antecipar_data_final_de_semana(data):
