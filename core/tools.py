@@ -1,6 +1,7 @@
 """ MÓDULO COM FUNÇÕES QUE SERÃO USADAS EM TODO O PROJETO """
 import calendar
 import json
+import locale
 import os
 from datetime import datetime, time, timedelta
 from decimal import Decimal
@@ -423,6 +424,15 @@ def get_saldo_contra_cheque(contra_cheque_itens):
     saldo = creditos - debitos
 
     return {"credito": creditos, "debito": debitos, "saldo": saldo}
+
+
+def periodo_por_extenso(data_inicial, data_final):
+    locale.setlocale(locale.LC_TIME, 'pt_BR.UTF-8')
+
+    inicial_extenso = datetime.strftime(data_inicial, "%d de %B de %Y")
+    final_extenso = datetime.strftime(data_final, "%d de %B de %Y")
+
+    return f"{inicial_extenso} a {final_extenso}"
 
 
 def antecipar_data_final_de_semana(data):
