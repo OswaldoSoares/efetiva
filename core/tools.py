@@ -423,3 +423,12 @@ def get_saldo_contra_cheque(contra_cheque_itens):
     saldo = creditos - debitos
 
     return {"credito": creditos, "debito": debitos, "saldo": saldo}
+
+
+def antecipar_data_final_de_semana(data):
+    if data.weekday() == 5:
+        data -= timedelta(days=1)
+    elif data.weekday() == 6:
+        data -= timedelta(days=2)
+
+    return data
