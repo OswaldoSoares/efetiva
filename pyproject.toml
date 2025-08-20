@@ -40,6 +40,7 @@ django-cors-headers = "3.5.0"
 fido2 = "^1.1.1"
 num2words = "^0.5.14"
 pdfrw = "^0.4"
+pymupdf = "^1.26.3"
 
 [tool.poetry.group.dev.dependencies]
 django-stubs = "5.1"
