@@ -3,7 +3,8 @@ Módulo responsável pelo registro de ponto e contrale do cartão de ponto.
 """
 import calendar
 import json
-from datetime import datetime, date, time, timedelta
+from datetime import date, datetime, time, timedelta
+
 from django.contrib.auth.hashers import check_password
 from django.http import JsonResponse
 from django.utils.timezone import (
@@ -14,6 +15,12 @@ from django.utils.timezone import (
 )
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_GET
+
+from core.tools import (
+    nome_curto,
+    obter_feriados_sabados_domingos_mes,
+    primeiro_e_ultimo_dia_do_mes,
+)
 from pessoas import classes
 from pessoas.models import (
     CartaoPonto,
@@ -21,11 +28,6 @@ from pessoas.models import (
     Ferias,
     RegistroPonto,
     SenhaAppPonto,
-)
-from core.tools import (
-    nome_curto,
-    obter_feriados_sabados_domingos_mes,
-    primeiro_e_ultimo_dia_do_mes,
 )
 
 
@@ -103,11 +105,16 @@ def autenticar(request):
 
             return JsonResponse({
                 "success": "Autenticação realizada",
-                "entrada": localtime(entrada.horario).strftime("%H:%M:%S") if entrada else None,
-                "saida": localtime(saida.horario).strftime("%H:%M:%S") if saida else None,
+                "entrada": localtime(entrada.horario).strftime("%H:%M:%S")
+                if entrada else None,
+                "saida": localtime(saida.horario).strftime("%H:%M:%S")
+                if saida else None,
             }, status=200)
         else:
-            return JsonResponse({"error": "Senha não confere, tentar novamente"}, status=200)
+            return JsonResponse(
+                {"error": "Senha não confere, tentar novamente"},
+                status=200
+            )
 
     except SenhaAppPonto.DoesNotExist: # type: ignore[attr-defined]
         return JsonResponse({"error": "Senha não cadastrada"}, status=200)
@@ -130,8 +137,10 @@ def registrar_ponto(request):
 
         return JsonResponse({
             "status": "Ponto registrada com sucesso",
-            "entrada": localtime(entrada.horario).strftime("%H:%M:%S") if entrada else None,
-            "saida": localtime(saida.horario).strftime("%H:%M:%S") if saida else None,
+            "entrada": localtime(entrada.horario).strftime("%H:%M:%S")
+            if entrada else None,
+            "saida": localtime(saida.horario).strftime("%H:%M:%S")
+            if saida else None,
         }, status=200)
 
     except Exception as e:
@@ -140,7 +149,9 @@ def registrar_ponto(request):
 
 def verificar_registro_colaborador_hoje(id_pessoal):
     tz = get_current_timezone()
-    inicio_dia = make_aware(datetime.combine(localdate(), time.min), timezone=tz)
+    inicio_dia = make_aware(
+        datetime.combine(localdate(), time.min), timezone=tz
+    )
     fim_dia = make_aware(datetime.combine(localdate(), time.max), timezone=tz)
 
     registros = RegistroPonto.objects.filter(
@@ -232,7 +243,9 @@ def obter_horarios(registros_dia):
     return entrada, saida
 
 
-def processar_dia_util(cartao, dia, nao_uteis, data_implementacao, hoje, vale_transporte):
+def processar_dia_util(
+        cartao, dia, nao_uteis, data_implementacao, hoje, vale_transporte
+):
     if dia < data_implementacao or dia >= hoje or dia in nao_uteis:
         return
 
@@ -292,7 +305,9 @@ def atualizar_cartao_ponto_pelo_registro_ponto(cartao_ponto):
         if aplicar_ausencia_dias_nao_util(cartao, dia, tipos_ausencia):
             continue
 
-        processar_dia_util(cartao, dia, nao_uteis, data_implementacao, hoje, vale_transporte)
+        processar_dia_util(
+            cartao, dia, nao_uteis, data_implementacao, hoje, vale_transporte
+        )
 
     return cartao_ponto
 

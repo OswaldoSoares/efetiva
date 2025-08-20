@@ -1,97 +1,92 @@
-import calendar
-import datetime
+import ast
 import json
 import os
-import ast
-import locale
+from datetime import date, datetime, timedelta
+from decimal import ROUND_HALF_UP, Decimal
+from pathlib import Path
+from typing import Any
 
-from pessoas.facades.ponto import obter_cartao_ponto_mes
-from .facades.arquivos import documentos_arquivados_do_colaborador
-from .facades.arquivos import dict_de_tipos_documentos_arquivar
-from .facades import ferias
-from django.core.files.base import ContentFile
-from django.db import connection, transaction
-from transefetiva.settings import settings
-from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta
 from django.db.models import (
-    Sum,
-    F,
-    ExpressionWrapper,
-    IntegerField,
-    DateField,
-    When,
     Case,
+    DateField,
+    ExpressionWrapper,
+    F,
+    IntegerField,
+    Sum,
     Value,
-    QuerySet,
+    When,
 )
 from django.http import JsonResponse
 from django.template.loader import render_to_string
-from decimal import Decimal, ROUND_HALF_UP
 from PIL import Image, ImageDraw
-from typing import List, Dict, Any, Optional
-from pathlib import Path
-from despesas import facade as facade_multa
 
-from pagamentos import facade as facade_pagamentos
-from pagamentos.models import Recibo
-
-
-from core import constants
 from core.constants import (
     CATEGORIAS,
-    EVENTOS_INCIDE_INSS,
+    EVENTOS_CONTRA_CHEQUE,
     EVENTOS_INCIDE_FGTS,
+    EVENTOS_INCIDE_INSS,
     EVENTOS_INCIDE_IRRF,
+    MESES,
     TIPOPGTO,
+    TIPOS_CONTAS,
     TIPOS_DOCS,
     TIPOS_FONES,
-    TIPOS_CONTAS,
-    MESES,
-    EVENTOS_RESCISORIOS,
-    MOTIVOS_DEMISSAO,
-    AVISO_PREVIO,
-    EVENTOS_CONTRA_CHEQUE,
 )
 from core.tools import (
-    obter_mes_por_numero,
-    primeiro_e_ultimo_dia_do_mes,
     get_mensagem,
     get_request_data,
+    get_saldo_contra_cheque,
+    obter_dias_inicial_final_contra_cheque,
+    obter_faltas_periodo,
+    obter_feriados_sabados_domingos_mes,
+    obter_mes_por_numero,
+    primeiro_e_ultimo_dia_do_mes,
 )
-from core.tools import criar_lista_nome_de_arquivos_no_diretorio, obter_feriados_sabados_domingos_mes
+from despesas import facade as facade_multa
+from pagamentos import facade as facade_pagamentos
+from pagamentos.models import Recibo
+from pessoas import classes, html_data
+from pessoas.facades.ferias import faltas_periodo_aquisitivo
+from pessoas.facades.ponto import (
+    create_contexto_cartao_ponto,
+    obter_cartao_ponto_mes,
+)
 from pessoas.models import (
-    Aquisitivo,
-    DecimoTerceiro,
-    Ferias,
-    ParcelasDecimoTerceiro,
-    Pessoal,
-    Salario,
-    DocPessoal,
-    FonePessoal,
-    ContaPessoal,
-    Vales,
-    ContraCheque,
-    ContraChequeItens,
-    CartaoPonto,
     AlteracaoSalarial,
     AlteracaoValeTransporte,
+    Aquisitivo,
+    CartaoPonto,
+    ContaPessoal,
+    ContraCheque,
+    ContraChequeItens,
+    DecimoTerceiro,
+    DocPessoal,
+    Ferias,
+    FonePessoal,
+    ParcelasDecimoTerceiro,
+    Pessoal,
     Readmissao,
+    Salario,
+    Vales,
+)
+from transefetiva.settings import settings
+from transefetiva.settings.settings import MEDIA_ROOT
+from website.facade import (
+    busca_arquivo_descricao,
+    converter_mes_ano,
+    extremos_mes,
+    nome_curto,
+    nome_curto_underscore,
 )
 from website.models import FileUpload, Parametros
-from website.facade import (
-    converter_mes_ano,
-    nome_curto,
-    extremos_mes,
-    nome_curto_underscore,
-    busca_arquivo_descricao,
+
+from .facades import ferias
+from .facades.arquivos import (
+    dict_de_tipos_documentos_arquivar,
+    documentos_arquivados_do_colaborador,
 )
 from .itens_card import categorias_colaborador
-from transefetiva.settings.settings import MEDIA_ROOT
-from pessoas import classes
-from pessoas import html_data
-from typing import List
-from pessoas.facades.ponto import create_contexto_cartao_ponto
 
 dias = [
     "SEGUNDA-FEIRA",
@@ -211,7 +206,7 @@ def save_registro_colaborador(request):
         Pessoal.objects.filter(idPessoal=id_pessoal).update(registrado=True)
         return {"mensagem": "Colaborador registrado comm sucesso"}
 
-    except Exception as e:
+    except Exception:
         return {"mensagem": "Erro ao registrar colaborador"}
 
 
@@ -1355,21 +1350,6 @@ def get_or_create_contra_cheque_itens(
     return itens
 
 
-def get_saldo_contra_cheque(contra_cheque_itens):
-    """Consultar Documentação Sistema Efetiva"""
-    creditos = contra_cheque_itens.filter(Registro="C").aggregate(
-        total=Sum("Valor")
-    ).get("total") or Decimal(0)
-
-    debitos = contra_cheque_itens.filter(Registro="D").aggregate(
-        total=Sum("Valor")
-    ).get("total") or Decimal(0)
-
-    saldo = creditos - debitos
-
-    return {"credito": creditos, "debito": debitos, "saldo": saldo}
-
-
 def atualizar_ou_adicionar_contra_cheque_item(
     descricao, valor, registro, referencia, codigo, id_contra_cheque
 ):
@@ -1438,7 +1418,11 @@ def calcular_horas_extras(salario, cartao_ponto):
             float(salario) / 30 / 9 / 60 / 60 * 1.5 * total_extras.seconds
         )
 
-    return total_extras, valor_extras
+    total_segundos = int(total_extras.total_seconds())
+    horas = total_segundos // 3600
+    minutos = (total_segundos % 3600) // 60
+
+    return f"{horas:02d}:{minutos:02d}", valor_extras
 
 
 def calcular_dsr_horas_extras(mes, ano, hora_extra_valor, dsr_faltas):
@@ -1506,7 +1490,11 @@ def calcular_atrasos(salario, cartao_ponto):
             float(salario) / 30 / 9 / 60 / 60 * total_atrasos.seconds
         )
 
-    return total_atrasos, valor_atrasos
+    total_segundos = int(total_atrasos.total_seconds())
+    horas = total_segundos // 3600
+    minutos = (total_segundos % 3600) // 60
+
+    return f"{horas:02d}:{minutos:02d}", valor_atrasos
 
 
 def calcular_faltas(salario, cartao_ponto):
@@ -1975,6 +1963,57 @@ def create_contexto_contra_cheque_decimo_terceiro(request):
     return contexto
 
 
+def create_contexto_print_pagamentos(id_pessoal, contra_cheque):
+    colaborador = classes.Colaborador(id_pessoal)
+    contra_cheque_itens = ContraChequeItens.objects.filter(
+        idContraCheque_id=contra_cheque.idContraCheque
+    )
+
+    if contra_cheque.Descricao == "PAGAMENTO":
+        inicial, final = obter_dias_inicial_final_contra_cheque(
+            contra_cheque
+        )
+        faltas = obter_faltas_periodo(id_pessoal, inicial, final)
+
+    elif contra_cheque.Descricao == "VALE TRANSPORTE":
+        inicial, final = obter_dias_inicial_final_contra_cheque(
+            contra_cheque, mes_atual=-1
+        )
+        if inicial < datetime(2025, 9, 1):
+            faltas = False
+        else:
+            faltas = obter_faltas_periodo(id_pessoal, inicial, final)
+
+    else:
+        faltas = False
+
+    return {
+        "descricao": contra_cheque.Descricao,
+        "colaborador": colaborador,
+        "contra_cheque": contra_cheque,
+        "contra_cheque_itens": contra_cheque_itens,
+        "faltas": faltas,
+        **get_saldo_contra_cheque(contra_cheque_itens),
+    }
+
+
+def create_contexto_print_contra_cheque(request):
+    id_pessoal = request.GET.get("id_pessoal")
+    id_contra_cheque = request.GET.get("id_contra_cheque")
+
+    if not id_contra_cheque:
+        return
+
+    contra_cheque = ContraCheque.objects.filter(
+        idContraCheque=id_contra_cheque
+    ).first()
+
+    if contra_cheque.Descricao == "FERIAS":
+        return create_contexto_print_ferias(id_pessoal, contra_cheque)
+    else:
+        return create_contexto_print_pagamentos(id_pessoal, contra_cheque)
+
+
 def create_contexto_contra_cheque(request):
     id_pessoal = get_request_data(request, "id_pessoal")
     id_contra_cheque = get_request_data(request, "id_contra_cheque")
@@ -2080,6 +2119,10 @@ def alterar_cartao_ponto_abono_falta(request):
 
     CartaoPonto.objects.filter(idCartaoPonto=id_cartao_ponto).update(
         Alteracao="MANUAL",
+        Ausencia=Case(
+            When(Ausencia="FALTA", then=Value("ABONADA")),
+            When(Ausencia="ABONADA", then=Value("FALTA")),
+        ),
         Remunerado=Case(
             When(Remunerado=1, then=Value(0)),
             When(Remunerado=0, then=Value(1)),
@@ -2907,25 +2950,33 @@ def salva_ferias_aquisitivo_inicial(colaborador):
     obj.DataInicial = colaborador.data_admissao
 
 
-def create_contexto_print_ferias(idpes, idaquisitivo, idparcela):
-    colaborador = classes.ColaboradorAntigo(idpes).__dict__
-    colaborador_model = get_colaborador(idpes)
-    aquisitivo = Aquisitivo.objects.filter(idAquisitivo=idaquisitivo)[0]
-    contra_cheque = ContraCheque.objects.filter(idPessoal=colaborador_model)
-    contra_cheque_annotate = contra_cheque_ano_mes_integer(contra_cheque)
-    contra_cheque_selecionado = get_contra_cheque_aquisitivo(
-        aquisitivo, contra_cheque_annotate
+def create_contexto_print_ferias(id_pessoal, contra_cheque):
+    colaborador = classes.Colaborador(id_pessoal)
+
+    feria = Ferias.objects.filter(
+        idContraCheque_id=contra_cheque.idContraCheque
+    ).first()
+
+    aquisitivo = Aquisitivo.objects.filter(
+        idAquisitivo=feria.idAquisitivo_id
+    ).first()
+
+    faltas_aquisitivo = faltas_periodo_aquisitivo(id_pessoal, aquisitivo)
+
+    contra_cheque_itens = ContraChequeItens.objects.filter(
+        idContraCheque_id=contra_cheque.idContraCheque
     )
-    contra_cheque_itens = get_contra_cheque_itens(contra_cheque_selecionado)
-    salario = get_salario_contra_cheque(contra_cheque_itens)
-    #  aquisitivo = Aquisitivo.objects.get(idAquisitivo=idaquisitivo)
-    contexto = {
+
+    return {
+        "descricao": "FERIAS",
         "colaborador": colaborador,
+        "feria": feria,
         "aquisitivo": aquisitivo,
-        "idparcela": idparcela,
-        "salario_aquisitivo": salario,
+        "contra_cheque": contra_cheque,
+        "contra_cheque_itens": contra_cheque_itens,
+        "faltas_aquisitivo": faltas_aquisitivo,
+        **get_saldo_contra_cheque(contra_cheque_itens),
     }
-    return contexto
 
 
 def create_data_form_altera_demissao(request, contexto):
@@ -3289,22 +3340,6 @@ def create_contexto_contra_cheque_apaga(idpessoal, idselecionado, descricao):
     return contexto
 
 
-def create_contexto_contra_cheque_ferias(idpessoal, idselecionado, descricao):
-    idaquisitivo = idselecionado
-    contra_cheque = busca_contra_cheque_aquisitivo(
-        idpessoal, idaquisitivo, descricao
-    )
-    contra_cheque_itens = get_contra_cheque_itens(contra_cheque)
-    if not contra_cheque_itens:
-        create_contra_cheque_itens(descricao, 0.00, "C", "30d", contra_cheque)
-        if not busca_um_terco_ferias(contra_cheque_itens):
-            create_contra_cheque_itens(
-                "1/3 FERIAS", 0.00, "C", "30d", contra_cheque
-            )
-    atualiza_salario_ferias_dias_referencia(idpessoal, idaquisitivo)
-    return contra_cheque
-
-
 def create_contexto_contra_cheque_13(idpessoal, idselecionado, descricao):
     idparcela = idselecionado
     contra_cheque = busca_contra_cheque_parcela(
@@ -3346,54 +3381,6 @@ def update_contas_bancaria_obs(contra_cheque, contas, chave):
         obj = contra_cheque
         obj.Obs = dict_obs
         obj.save()
-
-
-def atualiza_salario_ferias_dias_referencia(idpessoal, idaquisitivo):
-    """
-
-    Args:
-        idpessoal:
-        idaquisitivo:
-
-    Returns:
-
-
-    """
-    colaborador = get_colaborador(idpessoal)
-    colaborador_class = classes.Colaborador(idpessoal)
-    salario = colaborador_class.salarios.salarios.Salario
-    aquisitivo = get_aquisitivo_id(idaquisitivo)
-    contra_cheque = get_contra_cheque_descricao(colaborador, "PAGAMENTO")
-    contra_cheque = contra_cheque_ano_mes_integer(contra_cheque)
-    contra_cheque = get_contra_cheque_aquisitivo(aquisitivo, contra_cheque)
-    contra_cheque_itens = get_contra_cheque_itens(contra_cheque)
-    salario_contra_cheque = get_salario_contra_cheque(contra_cheque_itens)
-    faltas = aquisitivo_faltas(colaborador, aquisitivo)
-    salario_ferias = aquisitivo_salario_ferias(salario, faltas)
-    mes = aquisitivo.DataFinal.month
-    ano = aquisitivo.DataFinal.year
-    contra_cheque_ferias = get_contra_cheque_mes_ano_descricao(
-        colaborador, mes, ano, "FERIAS"
-    )
-    contra_cheque_itens = get_contra_cheque_itens(contra_cheque_ferias)
-    contra_cheque_item = contra_cheque_itens.filter(Descricao="FERIAS")
-    #  update_contra_cheque_item_valor(contra_cheque_item, salario_ferias)
-    referencia = tabela_faltas_aquisitivo(faltas)
-    #  update_contra_cheque_item_referencia(contra_cheque_item, referencia)
-    contra_cheque_item = contra_cheque_itens.filter(Descricao="1/3 FERIAS")
-    #  update_contra_cheque_item_valor(contra_cheque_item, salario_ferias / 3)
-    #  update_contra_cheque_item_referencia(contra_cheque_item, referencia)
-    return (
-        colaborador,
-        aquisitivo,
-        contra_cheque,
-        contra_cheque_itens,
-        salario_contra_cheque,
-        salario_ferias,
-        faltas,
-        referencia,
-        contra_cheque_ferias,
-    )
 
 
 def atualiza_dozeavos_decimo_terceiro(idpessoal, idparcela, descricao):
@@ -3481,49 +3468,6 @@ def create_data_contra_cheque(request, contexto):
     data = html_card_contra_cheque_colaborador(request, contexto, data)
     data = html_decimo_terceiro(request, contexto, data)
     return JsonResponse(data)
-
-
-def busca_contra_cheque_aquisitivo(idpessoal, idaquisitivo, descricao):
-    colaborador = get_colaborador(idpessoal)
-    aquisitivo = get_aquisitivo_id(idaquisitivo)
-    faltas = aquisitivo_faltas(colaborador, aquisitivo)
-    ano = aquisitivo.DataFinal.year
-    mes = aquisitivo.DataFinal.month
-    aquisitivo_inicial = datetime.strftime(aquisitivo.DataInicial, "%d/%m/%Y")
-    aquisitivo_final = datetime.strftime(aquisitivo.DataFinal, "%d/%m/%Y")
-    obs = f"AQUISITIVO: {aquisitivo_inicial} - {aquisitivo_final}"
-    try:
-        contra_cheque = get_contra_cheque_mes_ano_descricao(
-            colaborador, mes, ano, descricao
-        )
-        update_contra_cheque_obs(contra_cheque, obs, "aquisitivo")
-    except ContraCheque.DoesNotExist:  # pylint: disable=no-member
-        nova_obs = dict()
-        nova_obs["aquisitivo"] = obs
-        create_contra_cheque(
-            meses[mes - 1], ano, "FERIAS", idpessoal, nova_obs
-        )
-        contra_cheque = get_contra_cheque_mes_ano_descricao(
-            colaborador, mes, ano, descricao
-        )
-    ferias = Ferias.objects.filter(idAquisitivo=aquisitivo)
-    for index, feria in enumerate(ferias):
-        gozo_inicial = datetime.strftime(feria.DataInicial, "%d/%m/%Y")
-        gozo_final = datetime.strftime(feria.DataFinal, "%d/%m/%Y")
-        string_gozo = f"GOZO DE FÉRIAS - {index+1}"
-        chave_gozo = f"gozo{index+1}"
-        obs = f"{string_gozo}: {gozo_inicial} - {gozo_final}"
-        contra_cheque = get_contra_cheque_mes_ano_descricao(
-            colaborador, mes, ano, descricao
-        )
-        update_contra_cheque_obs(contra_cheque, obs, chave_gozo)
-    if faltas:
-        obs = f"FALTAS: {faltas}"
-        contra_cheque = get_contra_cheque_mes_ano_descricao(
-            colaborador, mes, ano, descricao
-        )
-        update_contra_cheque_obs(contra_cheque, obs, "faltas")
-    return contra_cheque
 
 
 def busca_contra_cheque_parcela(idpessoal, idparcela, descricao):
@@ -3655,9 +3599,9 @@ def aquisitivo_salario_ferias(salario, faltas):
 def update_contra_cheque_obs(contra_cheque, obs, chave):
     try:
         dict_obs = ast.literal_eval(contra_cheque.Obs)
-    except (SyntaxError, ValueError) as e:
+    except (SyntaxError, ValueError):
         dict_obs = {}
-    except Exception as e:
+    except Exception:
         dict_obs = {}
 
     if dict_obs.get(chave) != obs:
@@ -3736,13 +3680,6 @@ def get_contra_cheque_itens_id(idcontrachequeitens):
     return contra_cheque_item
 
 
-def busca_um_terco_ferias(contra_cheque_itens):
-    um_terco = contra_cheque_itens.filter(Descricao="1/3 FERIAS")
-    if not um_terco:
-        return False
-    return True
-
-
 def get_salario_base_contra_cheque_itens(contra_cheque_itens, tipo):
     if tipo == "PAGAMENTO":
         tipo = "SALARIO"
@@ -3769,82 +3706,6 @@ def get_contas_bancaria_colaborador(colaborador):
     contas = ContaPessoal.objects.filter(idPessoal=colaborador)
     contas = list(contas.values())
     return contas
-
-
-def modal_confirma(request, confirma, idconfirma, idpessoal, mes_ano):
-    data = dict()
-    if confirma == "confirma_vale":
-        vale = get_vale_id(idconfirma)
-        contexto = {"vale": vale, "idpessoal": idpessoal}
-        data["html_modal"] = render_to_string(
-            "pessoas/modal_exclui_vale_colaborador.html",
-            contexto,
-            request=request,
-        )
-    elif confirma == "confirma_pagamento_contra_cheque":
-        contra_cheque = get_contra_cheque_id(idconfirma)
-        contra_cheque_itens = get_contra_cheque_itens(contra_cheque)
-        contra_cheque_itens = contra_cheque_itens.order_by(
-            "idContraChequeItens"
-        )
-        credito, debito, saldo_contra_cheque = get_saldo_contra_cheque(
-            contra_cheque_itens
-        )
-        contexto = {
-            "contra_cheque": contra_cheque,
-            "idpessoal": idpessoal,
-            "saldo_contra_cheque": saldo_contra_cheque,
-            "mes_ano": mes_ano,
-        }
-        data["html_modal"] = render_to_string(
-            "pessoas/modal_pagamento_contra_cheque.html",
-            contexto,
-            request=request,
-        )
-    elif confirma == "confirma_exclui_arquivo_contra_cheque":
-        contra_cheque = get_contra_cheque_id(idconfirma)
-        contra_cheque_itens = get_contra_cheque_itens(contra_cheque)
-        contra_cheque_itens = contra_cheque_itens.order_by(
-            "idContraChequeItens"
-        )
-
-        credito, debito, saldo_contra_cheque = get_saldo_contra_cheque(
-            contra_cheque_itens
-        )
-        contexto = {
-            "contra_cheque": contra_cheque,
-            "idpessoal": idpessoal,
-            "saldo_contra_cheque": saldo_contra_cheque,
-            "mes_ano": mes_ano,
-        }
-        data["html_modal"] = render_to_string(
-            "pessoas/modal_exclui_arquivo_contra_cheque.html",
-            contexto,
-            request=request,
-        )
-    elif confirma == "confirma_estorno_contra_cheque":
-        contra_cheque = get_contra_cheque_id(idconfirma)
-        contra_cheque_itens = get_contra_cheque_itens(contra_cheque)
-        contra_cheque_itens = contra_cheque_itens.order_by(
-            "idContraChequeItens"
-        )
-
-        credito, debito, saldo_contra_cheque = get_saldo_contra_cheque(
-            contra_cheque_itens
-        )
-        contexto = {
-            "contra_cheque": contra_cheque,
-            "idpessoal": idpessoal,
-            "saldo_contra_cheque": saldo_contra_cheque,
-            "mes_ano": mes_ano,
-        }
-        data["html_modal"] = render_to_string(
-            "pessoas/modal_exclui_arquivo_contra_cheque.html",
-            contexto,
-            request=request,
-        )
-
-    return JsonResponse(data)
 
 
 def exclui_arquivo_contra_cheque_servidor(request, idcontracheque):

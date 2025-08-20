@@ -1,20 +1,28 @@
 from functools import partial
-from django.shortcuts import render
-from django.shortcuts import redirect
+
 from django.http import JsonResponse
+from django.shortcuts import redirect, render
 from rolepermissions.decorators import has_permission_decorator
-from core.tools import upload_de_arquivo, excluir_arquivo
-from core.tools import modal_excluir_arquivo, get_request_data
-from core.tools import injetar_parametro_no_request_post
-from .facades import rescisao
+
+from core.tools import (
+    excluir_arquivo,
+    get_request_data,
+    injetar_parametro_no_request_post,
+    modal_excluir_arquivo,
+    upload_de_arquivo,
+)
 from pessoas import facade
 from pessoas.facades import ferias, ponto
 from pessoas.print import (
+    print_contra_cheque,
+    print_contra_cheque_pagamento,
     print_pdf_ficha_colaborador,
     print_pdf_rescisao_trabalho,
-    print_contra_cheque,
+    print_recibo_ferias,
 )
 from website.facade import str_hoje
+
+from .facades import rescisao
 
 
 @has_permission_decorator("modulo_colaboradores")
@@ -598,21 +606,29 @@ def imprime_contra_cheque(request):
 
 
 def imprimir_contra_cheque(request):
-    id_pessoal = request.GET.get("id_pessoal")
-    contexto = facade.create_contexto_contra_cheque(request)
-    contexto.update(facade.create_contexto_class_colaborador(request))
-    contexto.update(
-        facade.create_contexto_minutas_contra_cheque(
-            id_pessoal, contexto["contra_cheque"]
-        )
-    )
-    contexto.update(
-        facade.create_contexto_cartao_ponto_contra_cheque(
-            id_pessoal, contexto["contra_cheque"]
-        )
-    )
-    response = print_contra_cheque(contexto)
-    return response
+    contexto = facade.create_contexto_print_contra_cheque(request)
+
+    if contexto["descricao"] == "FERIAS":
+        return print_recibo_ferias(contexto)
+
+
+    return print_contra_cheque_pagamento(contexto)
+
+    #  id_pessoal = request.GET.get("id_pessoal")
+    #  contexto = facade.create_contexto_contra_cheque(request)
+    #  contexto.update(facade.create_contexto_class_colaborador(request))
+    #  contexto.update(
+        #  facade.create_contexto_minutas_contra_cheque(
+            #  id_pessoal, contexto["contra_cheque"]
+        #  )
+    #  )
+    #  contexto.update(
+        #  facade.create_contexto_cartao_ponto_contra_cheque(
+            #  id_pessoal, contexto["contra_cheque"]
+        #  )
+    #  )
+    #  response = print_contra_cheque(contexto)
+    #  return response
 
 
 def adiciona_vale_colaborador(request):
@@ -707,3 +723,8 @@ def adicionar_gozo_ferias_colaborador(request):
         partial(facade.create_contexto_class_colaborador, request),
         facade.colaborador_html_data,
         )
+
+
+def selecionar_gozo_ferias(request):
+    contexto = ferias.obter_contra_cheque_ferias(request)
+    return facade.contra_cheque_html_data(request, contexto)

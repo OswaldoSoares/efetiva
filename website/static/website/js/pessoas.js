@@ -374,6 +374,21 @@ $(document).on('click', '.js-atualiza-decimo-terceiro', function() {
     // });
 // });
 
+$(document).on('click', '.js-selecionar-gozo-ferias', function() {
+    const idFerias = $(this).data("id_ferias")
+
+    executarAjax("/pessoas/selecionar_gozo_ferias", "GET", {
+        id_ferias: idFerias,
+    }, function(data) {
+        console.log(data)
+        $(".card-ferias-colaborador").html(data["html-card-ferias-colaborador"]);
+        $(".card-contra-cheque-colaborador").html(data["html-card-contra-cheque-colaborador"]);
+        $(".card-contra-cheque-colaborador").show();
+        $(".box-loader").hide();
+        mostrarToast(data["mensagem"], data["tipo"])
+    });
+});
+
 $(document).on('click', '.js-periodo-ferias', function() {
     // var idpessoal = $("#idpessoal").val();
     var idpessoal = idPessoal

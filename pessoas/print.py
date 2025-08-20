@@ -1,16 +1,28 @@
 import datetime
-import ast
 from decimal import Decimal
 from io import BytesIO
+from pathlib import Path
+
+import fitz
 from django.http import HttpResponse
+from pdfrw import PdfReader, PdfWriter
 from reportlab.lib.colors import HexColor
+from reportlab.lib.enums import TA_JUSTIFY
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.pdfgen import canvas
 from reportlab.platypus import Paragraph
-from reportlab.lib.enums import TA_JUSTIFY
+
+from core.tools import (
+    antecipar_data_final_de_semana,
+    formatar_numero_com_separadores,
+    get_saldo_contra_cheque,
+    periodo_por_extenso,
+    valor_por_extenso,
+)
 from pessoas.facade import do_crop
+from pessoas.facades.ferias import faltas_periodo_aquisitivo
 from romaneios.print import header
-from transefetiva.settings.settings import STATIC_ROOT
+from transefetiva.settings.settings import MEDIA_ROOT, STATIC_ROOT
 from website.facade import cmp, valor_ponto_milhar
 
 
@@ -161,7 +173,7 @@ def ficha_colaborador(pdf, contexto):
 
 def print_pdf_rescisao_trabalho(pdf, contexto):
     response = HttpResponse(content_type="application/pdf")
-    response["Content-Disposition"] = f'filename="RESCISAO DE TRABALHO.pdf"'
+    response["Content-Disposition"] = 'filename="RESCISAO DE TRABALHO.pdf"'
     buffer = BytesIO()
     pdf = canvas.Canvas(buffer)
     pdf = formulario_rescisao_trabalho(pdf, contexto)
@@ -488,7 +500,7 @@ def dados_rescisao_trabalho(pdf, contexto):
     else:
         col = 11
         linha -= 7.7
-    pdf.drawString(cmp(col), cmp(linha), f"1/3 FÉRIAS PROPORCIONAIS")
+    pdf.drawString(cmp(col), cmp(linha), "1/3 FÉRIAS PROPORCIONAIS")
     #  terco_ferias = "0,00"
     pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {terco_ferias}")
     if col == 11:
@@ -764,7 +776,7 @@ def base_contra_cheque(pdf, contexto):
 
 def print_contra_cheque(contexto):
     response = HttpResponse(content_type="application/pdf")
-    response["Content-Disposition"] = f'filename="Contra Cheque.pdf"'
+    response["Content-Disposition"] = 'filename="Contra Cheque.pdf"'
     buffer = BytesIO()
     pdf = canvas.Canvas(buffer)
     pdf.setFont("Times-Roman", 10)
@@ -1043,3 +1055,355 @@ def contra_cheque_minutas(pdf, contexto):
             fill=0,
         )
     return pdf
+
+
+def foto_colaborador(foto):
+    if foto:
+        return f"{MEDIA_ROOT}/{foto}"
+
+    return f"{STATIC_ROOT}/website/img/usuario.png"
+
+
+def preencher_campos_pdf(pdf_base, campos, filename):
+    template_pdf = PdfReader(str(pdf_base))
+
+    for page in template_pdf.pages:
+        annotations = page.Annots
+        if annotations:
+            for annotation in annotations:
+                if annotation.Subtype == "/Widget" and annotation.T:
+                    key = annotation.T[1:-1]
+                    if key in campos:
+                        valor = campos[key]
+                        annotation.V = f"{valor}"
+                        annotation.Ff = 4097
+
+    output = BytesIO()
+    PdfWriter().write(output, template_pdf)
+    output.seek(0)
+
+    doc = fitz.open(stream=output.getvalue(), filetype="pdf")
+    page = doc[0]
+
+    foto_path = foto_colaborador(campos["foto"])
+    rect = fitz.Rect(30, 40, 126, 130)
+    page.insert_image(rect, filename=foto_path)
+
+    clip = fitz.Rect(0, 0, 595, 418)
+    pix = page.get_pixmap(clip=clip, dpi=150)
+    image_bytes = pix.tobytes("png")
+
+    rect_bottom = fitz.Rect(0, 424, 595, 842)
+    page.insert_image(rect_bottom, stream=image_bytes)
+
+    pdf = BytesIO()
+    doc.save(pdf)
+    doc.close()
+    pdf.seek(0)
+
+    response = HttpResponse(pdf.getvalue(), content_type="application/pdf")
+    response["Content-Disposition"] = f'inline; filename="{filename}"'
+
+    return response
+
+
+def sete_digitos_iniciais_cpf(cpf):
+    somente_numero = "".join(filter(str.isdigit, cpf.Documento))
+    return somente_numero[:7]
+
+
+def quatro_digitos_finais_cpf(cpf):
+    somente_numero = "".join(filter(str.isdigit, cpf.Documento))
+    return somente_numero[-4:]
+
+
+def campos_do_colaborador(campos, colaborador):
+    nome = colaborador.nome
+    cpf = colaborador.documentos.docs.filter(TipoDocumento="CPF").first()
+    ctps = colaborador.documentos.docs.filter(TipoDocumento="CTPS").first()
+    ctps_numero = ctps.Documento[:7] if ctps else False
+    serie = ctps.Documento[-4:] if ctps else False
+    ctps_cpf = sete_digitos_iniciais_cpf(cpf)
+    serie_cpf = quatro_digitos_finais_cpf(cpf)
+    # TODO Adicionar registro na class do colaborador
+    registro = False
+    #  registro = colaborador.dados_profissionais.registro
+    # TODO Adicionar livro_folha na class do colaborador
+    livro_folha = False
+    #  livro_folha = colaborador.dados_profissionais.livro_folha
+    admissao = colaborador.dados_profissionais.data_admissao
+    salario = colaborador.salarios.salarios.Salario
+
+
+    campos |= {
+        "foto": colaborador.foto,
+        "codigo": colaborador.id_pessoal.zfill(4),
+        "funcao": colaborador.dados_profissionais.categoria,
+        "colaborador_1": nome,
+        "colaborador_2": nome,
+        "colaborador_3": nome,
+        "colaborador_4": nome,
+        "cpf": f"CPF: {cpf.Documento}",
+        "ctps": ctps if ctps_numero else ctps_cpf,
+        "serie": serie if ctps_numero else serie_cpf,
+        "registro": registro if registro else "",
+        "livro": livro_folha if livro_folha else "",
+        "admissao": datetime.datetime.strftime(admissao, "%d/%m/%Y"),
+        "salario": f"R$ {formatar_numero_com_separadores(salario, 2)}",
+        "salario_base": f"R$ {formatar_numero_com_separadores(salario, 2)}",
+    }
+
+    return campos
+
+
+def campos_das_ferias(campos, contexto):
+    aquisitivo = contexto["aquisitivo"]
+    feria = contexto["feria"]
+
+    aquisitivo_extenso = periodo_por_extenso(
+        aquisitivo.DataInicial, aquisitivo.DataFinal
+    )
+    feria_extenso = periodo_por_extenso(feria.DataInicial, feria.DataFinal)
+    faltas = faltas_periodo_aquisitivo(aquisitivo.idPessoal_id, aquisitivo)
+    par_de_faltas = []
+    for item in range(0, len(faltas), 2):
+        par = " ".join(faltas[item:item+2])
+        par_de_faltas.append(par)
+
+    campos |= {
+        "aquisitivo": aquisitivo_extenso,
+        "gozo": feria_extenso,
+        "faltas": str(len(faltas)).zfill(2),
+        "faltas_rows": "\n".join(par_de_faltas),
+    }
+
+    return campos
+
+
+def campos_do_contra_cheque_vencimentos(campos, contra_cheque_itens):
+    itens_vencimentos = contra_cheque_itens.filter(Registro="C")
+
+
+    list_codigos_vencimentos = []
+    list_eventos_vencimentos = []
+    list_referencias_vencimentos = []
+    list_valores_vencimentos = []
+
+    for itens in itens_vencimentos:
+        list_codigos_vencimentos.append(f"{itens.Codigo}\n")
+        list_eventos_vencimentos.append(f"{itens.Descricao}\n")
+        list_referencias_vencimentos.append(f"{itens.Referencia}\n")
+        list_valores_vencimentos.append(f"{itens.Valor}\n")
+
+    campos |= {
+        "vencimentos_codigos": "".join(list_codigos_vencimentos),
+        "vencimentos_eventos": "".join(list_eventos_vencimentos),
+        "vencimentos_referencias": "".join(list_referencias_vencimentos),
+        "vencimentos_valores": "".join(list_valores_vencimentos),
+    }
+
+    return campos
+
+
+def campos_do_contra_cheque_descontos(campos, contra_cheque_itens):
+    itens_descontos = contra_cheque_itens.filter(Registro="D")
+
+    list_codigos_descontos = []
+    list_eventos_descontos = []
+    list_referencias_descontos = []
+    list_valores_descontos = []
+
+    for itens in itens_descontos:
+        list_codigos_descontos.append(f"{itens.Codigo}\n")
+        list_eventos_descontos.append(f"{itens.Descricao}\n")
+        list_referencias_descontos.append(f"{itens.Referencia}\n")
+        list_valores_descontos.append(f"{itens.Valor}\n")
+
+    campos |= {
+        "descontos_codigos": "".join(list_codigos_descontos),
+        "descontos_eventos": "".join(list_eventos_descontos),
+        "descontos_referencias": "".join(list_referencias_descontos),
+        "descontos_valores": "".join(list_valores_descontos),
+    }
+
+    return campos
+
+
+def campos_do_contra_cheque_totais(campos, saldo):
+    vencimentos = saldo["credito"]
+    descontos = saldo["debito"]
+    total = saldo["saldo"]
+
+    total_extenso = valor_por_extenso(total, tamanho=239)
+
+    campos |= {
+        "vencimentos": f"R$ {formatar_numero_com_separadores(vencimentos, 2)}",
+        "descontos": f"R$ {formatar_numero_com_separadores(descontos, 2)}",
+        "total": f"R$ {formatar_numero_com_separadores(total, 2)}",
+        "extenso_1": total_extenso,
+        "extenso_2": total_extenso,
+    }
+
+    return campos
+
+
+def campos_datas_aviso_pgto(campos, contexto):
+    feria = contexto["feria"]
+    data_inicio = feria.DataInicial
+
+    data_aviso = data_inicio - datetime.timedelta(days=30)
+    data_aviso = antecipar_data_final_de_semana(data_aviso)
+    data_aviso_str = datetime.datetime.strftime(data_aviso, "%d de %B de %Y")
+
+    data_pgto = data_inicio - datetime.timedelta(days=2)
+    data_pgto = antecipar_data_final_de_semana(data_pgto)
+    data_pgto_str = datetime.datetime.strftime(data_pgto, "%d de %B de %Y")
+
+    campos |= {
+        "aviso": f"São Paulo, {data_aviso_str}.",
+        "pgto": f"São Paulo, {data_pgto_str}.",
+    }
+    return campos
+
+
+def print_recibo_ferias(contexto):
+    colaborador = contexto["colaborador"]
+    contra_cheque_itens = contexto["contra_cheque_itens"]
+    nome_curto = colaborador.nome_curto
+    saldo = get_saldo_contra_cheque(contra_cheque_itens)
+
+    campos = {}
+
+    campos_do_colaborador(campos, colaborador)
+    campos_das_ferias(campos, contexto)
+    campos_do_contra_cheque_vencimentos(campos, contra_cheque_itens)
+    campos_do_contra_cheque_descontos(campos, contra_cheque_itens)
+    campos_do_contra_cheque_totais(campos, saldo)
+    campos_datas_aviso_pgto(campos, contexto)
+
+    pdf_base = Path(f"{STATIC_ROOT}/website/pdf/pdf_base_recibo_ferias.pdf")
+    campos |= {"eventos": "", "referencia": "", "valor": ""}
+    file_name = f"RECIBO DE FÉRIAS {nome_curto}.pdf"
+
+    return preencher_campos_pdf(pdf_base, campos, file_name)
+
+
+def campos_regitro_colaborador(campos, colaborador):
+    conta = colaborador.bancos.contas.first()
+
+    campos |= {
+        "codigo": colaborador.id_pessoal.zfill(4),
+        "pix": f"PIX: {conta.PIX}",
+        "funcao": colaborador.dados_profissionais.categoria,
+        "local": "0001",
+        "depto": "0001",
+        "secao": "0001",
+        "setor": "0001",
+        "folha": "01",
+        "tipo_colaborador": "01-COLABORADOR",
+    }
+
+    return campos
+
+
+def campos_do_contra_cheque(campos, colaborador, contra_cheque):
+    def fmt(valor):
+        return formatar_numero_com_separadores(valor, 2)
+
+    pgto = "RECIBO DE PAGAMENTO DE SALÁRIO"
+    conducao = "RECIBO DE VALE TRANSPORTE"
+    descricao = contra_cheque.Descricao
+
+    mes_referencia = contra_cheque.MesReferencia
+    ano_referencia = contra_cheque.AnoReferencia
+    base_inss = fmt(contra_cheque.BaseINSS)
+    base_fgts = fmt(contra_cheque.BaseFGTS)
+    fgts_mes = fmt(contra_cheque.BaseFGTS / 100 * 8)
+    base_irrf = fmt(contra_cheque.BaseIRRF)
+
+    tem_registro = colaborador.dados_profissionais.registrado
+    mostrar = tem_registro and descricao == "PAGAMENTO"
+    ocultar = "********"
+
+    campos |= {
+        "recibo": conducao if descricao == "VALE TRANSPORTE" else pgto,
+        "tipo_recibo": f"{mes_referencia}/{ano_referencia}",
+        "contr_inss": f"R$ {base_inss}" if mostrar else f"{ocultar}",
+        "base_fgts": f"R$ {base_fgts}" if mostrar else f"{ocultar}",
+        "fgts_mes": f"R$ {fgts_mes}" if mostrar else f"{ocultar}",
+        "calc_irrf": f"R$ {base_irrf}" if mostrar else f"{ocultar}",
+        "faixa_irrf": f"{ocultar}",
+    }
+
+    return campos
+
+
+def campos_do_contra_cheque_itens(campos, contra_cheque_itens):
+    list_codigos = []
+    list_eventos = []
+    list_referencias = []
+    list_valores_vencimentos = []
+    list_valores_descontos = []
+
+    for itens in contra_cheque_itens:
+        list_codigos.append(f"{itens.Codigo}\n")
+        list_eventos.append(f"{itens.Descricao}\n")
+        list_referencias.append(f"{itens.Referencia}\n")
+        if itens.Registro == "C":
+            list_valores_vencimentos.append(f"{itens.Valor}\n")
+            list_valores_descontos.append("\n")
+        else:
+            list_valores_vencimentos.append("\n")
+            list_valores_descontos.append(f"{itens.Valor}\n")
+
+    campos |= {
+        "codigos_rows": "".join(list_codigos),
+        "eventos_rows": "".join(list_eventos),
+        "referencias_rows": "".join(list_referencias),
+        "vencimentos_rows": "".join(list_valores_vencimentos),
+        "descontos_rows": "".join(list_valores_descontos),
+    }
+
+    return campos
+
+
+def campos_de_observacao(campos, colaborador, contra_cheque, faltas):
+    admissao = colaborador.dados_profissionais.data_admissao
+    admissao_br = datetime.datetime.strftime(admissao, "%d/%m/%Y")
+
+    if faltas:
+        faltas = f"{str(len(faltas)).zfill(2)} FALTAS: {' '.join(faltas)}"
+
+    descricao = contra_cheque.Descricao
+    mostrar = descricao == "PAGAMENTO" or descricao == "VALE TRANSPORTE"
+
+    campos |= {
+        "obs": f"{faltas}\n" if faltas and mostrar else "",
+        "obs_2": f"ADMISSÃO: {admissao_br}",
+    }
+
+    return campos
+
+
+def print_contra_cheque_pagamento(contexto):
+    colaborador = contexto["colaborador"]
+    contra_cheque = contexto["contra_cheque"]
+    contra_cheque_itens = contexto["contra_cheque_itens"]
+    faltas = contexto["faltas"]
+    nome_curto = colaborador.nome_curto
+    saldo = get_saldo_contra_cheque(contra_cheque_itens)
+
+    campos = {}
+
+    campos_do_colaborador(campos, colaborador)
+    campos_regitro_colaborador(campos, colaborador)
+    campos_do_contra_cheque(campos, colaborador, contra_cheque)
+    campos_do_contra_cheque_itens(campos, contra_cheque_itens.order_by("Codigo"))
+    campos_do_contra_cheque_totais(campos, saldo)
+    campos_de_observacao(campos, colaborador, contra_cheque, faltas)
+
+    pdf_base = Path(f"{STATIC_ROOT}/website/pdf/pdf_base_contra_cheque.pdf")
+    campos |= {"eventos": "", "referencia": "", "valor": ""}
+    file_name = f"RECIBO DE PAGAMENTO {nome_curto}.pdf"
+
+    return preencher_campos_pdf(pdf_base, campos, file_name)

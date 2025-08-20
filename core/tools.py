@@ -1,16 +1,23 @@
 """ MÓDULO COM FUNÇÕES QUE SERÃO USADAS EM TODO O PROJETO """
 import calendar
 import json
+import locale
 import os
 from datetime import datetime, time, timedelta
+from decimal import Decimal
 from pathlib import Path
-from urllib.parse import urlparse, parse_qs
+from urllib.parse import parse_qs, urlparse
+
+from django.db.models import Sum
 from django.http import JsonResponse
 from django.template.loader import render_to_string
+from num2words import num2words
+
 from core.constants import MESES
 from core.message import mensagens
-from website.models import FileUpload
+from pessoas.models import CartaoPonto
 from transefetiva.settings import settings
+from website.models import FileUpload
 
 
 def apos_meia_noite(hora):
@@ -406,3 +413,67 @@ def obter_feriados_sabados_domingos_mes(mes: int, ano: int):
                 sabados.append(data_sabado)
 
     return feriados_mes_formatado, domingos, sabados
+
+
+def get_saldo_contra_cheque(contra_cheque_itens):
+    """Consultar Documentação Sistema Efetiva"""
+    creditos = contra_cheque_itens.filter(Registro="C").aggregate(
+        total=Sum("Valor")
+    ).get("total") or Decimal(0)
+    debitos = contra_cheque_itens.filter(Registro="D").aggregate(
+        total=Sum("Valor")
+    ).get("total") or Decimal(0)
+    saldo = creditos - debitos
+
+    return {"credito": creditos, "debito": debitos, "saldo": saldo}
+
+
+def periodo_por_extenso(data_inicial, data_final):
+    locale.setlocale(locale.LC_TIME, 'pt_BR.UTF-8')
+
+    inicial_extenso = datetime.strftime(data_inicial, "%d de %B de %Y")
+    final_extenso = datetime.strftime(data_final, "%d de %B de %Y")
+
+    return f"{inicial_extenso} a {final_extenso}"
+
+
+def valor_por_extenso(valor, tamanho=200, padrao=" _*_"):
+    extenso = num2words(valor, lang="pt_BR", to="currency")
+    extenso = extenso.upper()
+
+    if len(extenso) < tamanho:
+        faltam = tamanho - len(extenso)
+        repeticoes = (padrao * ((faltam // len(padrao)) + 1))[:faltam]
+        extenso += repeticoes
+
+    return extenso
+
+
+def antecipar_data_final_de_semana(data):
+    if data.weekday() == 5:
+        data -= timedelta(days=1)
+    elif data.weekday() == 6:
+        data -= timedelta(days=2)
+
+    return data
+
+
+def obter_faltas_periodo(id_pessoal, inicio, final):
+    dias_faltas = CartaoPonto.objects.filter(
+        idPessoal=id_pessoal,
+        Dia__range=[inicio, final],
+        Ausencia="FALTA",
+        Remunerado=False,
+    ).values_list("Dia", flat=True)
+
+    return [datetime.strftime(dia, "%d/%m/%Y") for dia in dias_faltas]
+
+
+def obter_dias_inicial_final_contra_cheque(contra_cheque, mes_atual=0):
+    locale.setlocale(locale.LC_TIME, "pt_BR.UTF-8")
+    mes_extenso = contra_cheque.MesReferencia
+    mes = int(datetime.strptime(mes_extenso, "%B").month)
+    mes += mes_atual
+    ano = contra_cheque.AnoReferencia
+
+    return primeiro_e_ultimo_dia_do_mes(mes, ano)
