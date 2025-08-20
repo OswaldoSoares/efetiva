@@ -15,8 +15,10 @@ from pessoas import facade
 from pessoas.facades import ferias, ponto
 from pessoas.print import (
     print_contra_cheque,
+    print_contra_cheque_pagamento,
     print_pdf_ficha_colaborador,
     print_pdf_rescisao_trabalho,
+    print_recibo_ferias,
 )
 from website.facade import str_hoje
 
@@ -604,21 +606,29 @@ def imprime_contra_cheque(request):
 
 
 def imprimir_contra_cheque(request):
-    id_pessoal = request.GET.get("id_pessoal")
-    contexto = facade.create_contexto_contra_cheque(request)
-    contexto.update(facade.create_contexto_class_colaborador(request))
-    contexto.update(
-        facade.create_contexto_minutas_contra_cheque(
-            id_pessoal, contexto["contra_cheque"]
-        )
-    )
-    contexto.update(
-        facade.create_contexto_cartao_ponto_contra_cheque(
-            id_pessoal, contexto["contra_cheque"]
-        )
-    )
-    response = print_contra_cheque(contexto)
-    return response
+    contexto = facade.create_contexto_print_contra_cheque(request)
+
+    if contexto["descricao"] == "FERIAS":
+        return print_recibo_ferias(contexto)
+
+
+    return print_contra_cheque_pagamento(contexto)
+
+    #  id_pessoal = request.GET.get("id_pessoal")
+    #  contexto = facade.create_contexto_contra_cheque(request)
+    #  contexto.update(facade.create_contexto_class_colaborador(request))
+    #  contexto.update(
+        #  facade.create_contexto_minutas_contra_cheque(
+            #  id_pessoal, contexto["contra_cheque"]
+        #  )
+    #  )
+    #  contexto.update(
+        #  facade.create_contexto_cartao_ponto_contra_cheque(
+            #  id_pessoal, contexto["contra_cheque"]
+        #  )
+    #  )
+    #  response = print_contra_cheque(contexto)
+    #  return response
 
 
 def adiciona_vale_colaborador(request):

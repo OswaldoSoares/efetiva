@@ -37,6 +37,8 @@ from core.tools import (
     get_mensagem,
     get_request_data,
     get_saldo_contra_cheque,
+    obter_dias_inicial_final_contra_cheque,
+    obter_faltas_periodo,
     obter_feriados_sabados_domingos_mes,
     obter_mes_por_numero,
     primeiro_e_ultimo_dia_do_mes,
@@ -45,6 +47,7 @@ from despesas import facade as facade_multa
 from pagamentos import facade as facade_pagamentos
 from pagamentos.models import Recibo
 from pessoas import classes, html_data
+from pessoas.facades.ferias import faltas_periodo_aquisitivo
 from pessoas.facades.ponto import (
     create_contexto_cartao_ponto,
     obter_cartao_ponto_mes,
@@ -1415,7 +1418,11 @@ def calcular_horas_extras(salario, cartao_ponto):
             float(salario) / 30 / 9 / 60 / 60 * 1.5 * total_extras.seconds
         )
 
-    return total_extras, valor_extras
+    total_segundos = int(total_extras.total_seconds())
+    horas = total_segundos // 3600
+    minutos = (total_segundos % 3600) // 60
+
+    return f"{horas:02d}:{minutos:02d}", valor_extras
 
 
 def calcular_dsr_horas_extras(mes, ano, hora_extra_valor, dsr_faltas):
@@ -1483,7 +1490,11 @@ def calcular_atrasos(salario, cartao_ponto):
             float(salario) / 30 / 9 / 60 / 60 * total_atrasos.seconds
         )
 
-    return total_atrasos, valor_atrasos
+    total_segundos = int(total_atrasos.total_seconds())
+    horas = total_segundos // 3600
+    minutos = (total_segundos % 3600) // 60
+
+    return f"{horas:02d}:{minutos:02d}", valor_atrasos
 
 
 def calcular_faltas(salario, cartao_ponto):
@@ -1952,6 +1963,57 @@ def create_contexto_contra_cheque_decimo_terceiro(request):
     return contexto
 
 
+def create_contexto_print_pagamentos(id_pessoal, contra_cheque):
+    colaborador = classes.Colaborador(id_pessoal)
+    contra_cheque_itens = ContraChequeItens.objects.filter(
+        idContraCheque_id=contra_cheque.idContraCheque
+    )
+
+    if contra_cheque.Descricao == "PAGAMENTO":
+        inicial, final = obter_dias_inicial_final_contra_cheque(
+            contra_cheque
+        )
+        faltas = obter_faltas_periodo(id_pessoal, inicial, final)
+
+    elif contra_cheque.Descricao == "VALE TRANSPORTE":
+        inicial, final = obter_dias_inicial_final_contra_cheque(
+            contra_cheque, mes_atual=-1
+        )
+        if inicial < datetime(2025, 9, 1):
+            faltas = False
+        else:
+            faltas = obter_faltas_periodo(id_pessoal, inicial, final)
+
+    else:
+        faltas = False
+
+    return {
+        "descricao": contra_cheque.Descricao,
+        "colaborador": colaborador,
+        "contra_cheque": contra_cheque,
+        "contra_cheque_itens": contra_cheque_itens,
+        "faltas": faltas,
+        **get_saldo_contra_cheque(contra_cheque_itens),
+    }
+
+
+def create_contexto_print_contra_cheque(request):
+    id_pessoal = request.GET.get("id_pessoal")
+    id_contra_cheque = request.GET.get("id_contra_cheque")
+
+    if not id_contra_cheque:
+        return
+
+    contra_cheque = ContraCheque.objects.filter(
+        idContraCheque=id_contra_cheque
+    ).first()
+
+    if contra_cheque.Descricao == "FERIAS":
+        return create_contexto_print_ferias(id_pessoal, contra_cheque)
+    else:
+        return create_contexto_print_pagamentos(id_pessoal, contra_cheque)
+
+
 def create_contexto_contra_cheque(request):
     id_pessoal = get_request_data(request, "id_pessoal")
     id_contra_cheque = get_request_data(request, "id_contra_cheque")
@@ -2057,6 +2119,10 @@ def alterar_cartao_ponto_abono_falta(request):
 
     CartaoPonto.objects.filter(idCartaoPonto=id_cartao_ponto).update(
         Alteracao="MANUAL",
+        Ausencia=Case(
+            When(Ausencia="FALTA", then=Value("ABONADA")),
+            When(Ausencia="ABONADA", then=Value("FALTA")),
+        ),
         Remunerado=Case(
             When(Remunerado=1, then=Value(0)),
             When(Remunerado=0, then=Value(1)),
@@ -2884,25 +2950,33 @@ def salva_ferias_aquisitivo_inicial(colaborador):
     obj.DataInicial = colaborador.data_admissao
 
 
-def create_contexto_print_ferias(idpes, idaquisitivo, idparcela):
-    colaborador = classes.ColaboradorAntigo(idpes).__dict__
-    colaborador_model = get_colaborador(idpes)
-    aquisitivo = Aquisitivo.objects.filter(idAquisitivo=idaquisitivo)[0]
-    contra_cheque = ContraCheque.objects.filter(idPessoal=colaborador_model)
-    contra_cheque_annotate = contra_cheque_ano_mes_integer(contra_cheque)
-    contra_cheque_selecionado = get_contra_cheque_aquisitivo(
-        aquisitivo, contra_cheque_annotate
+def create_contexto_print_ferias(id_pessoal, contra_cheque):
+    colaborador = classes.Colaborador(id_pessoal)
+
+    feria = Ferias.objects.filter(
+        idContraCheque_id=contra_cheque.idContraCheque
+    ).first()
+
+    aquisitivo = Aquisitivo.objects.filter(
+        idAquisitivo=feria.idAquisitivo_id
+    ).first()
+
+    faltas_aquisitivo = faltas_periodo_aquisitivo(id_pessoal, aquisitivo)
+
+    contra_cheque_itens = ContraChequeItens.objects.filter(
+        idContraCheque_id=contra_cheque.idContraCheque
     )
-    contra_cheque_itens = get_contra_cheque_itens(contra_cheque_selecionado)
-    salario = get_salario_contra_cheque(contra_cheque_itens)
-    #  aquisitivo = Aquisitivo.objects.get(idAquisitivo=idaquisitivo)
-    contexto = {
+
+    return {
+        "descricao": "FERIAS",
         "colaborador": colaborador,
+        "feria": feria,
         "aquisitivo": aquisitivo,
-        "idparcela": idparcela,
-        "salario_aquisitivo": salario,
+        "contra_cheque": contra_cheque,
+        "contra_cheque_itens": contra_cheque_itens,
+        "faltas_aquisitivo": faltas_aquisitivo,
+        **get_saldo_contra_cheque(contra_cheque_itens),
     }
-    return contexto
 
 
 def create_data_form_altera_demissao(request, contexto):
