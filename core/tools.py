@@ -15,6 +15,7 @@ from num2words import num2words
 
 from core.constants import MESES
 from core.message import mensagens
+from pessoas.models import CartaoPonto
 from transefetiva.settings import settings
 from website.models import FileUpload
 
@@ -455,3 +456,24 @@ def antecipar_data_final_de_semana(data):
         data -= timedelta(days=2)
 
     return data
+
+
+def obter_faltas_periodo(id_pessoal, inicio, final):
+    dias_faltas = CartaoPonto.objects.filter(
+        idPessoal=id_pessoal,
+        Dia__range=[inicio, final],
+        Ausencia="FALTA",
+        Remunerado=False,
+    ).values_list("Dia", flat=True)
+
+    return [datetime.strftime(dia, "%d/%m/%Y") for dia in dias_faltas]
+
+
+def obter_dias_inicial_final_contra_cheque(contra_cheque, mes_atual=0):
+    locale.setlocale(locale.LC_TIME, "pt_BR.UTF-8")
+    mes_extenso = contra_cheque.MesReferencia
+    mes = int(datetime.strptime(mes_extenso, "%B").month)
+    mes += mes_atual
+    ano = contra_cheque.AnoReferencia
+
+    return primeiro_e_ultimo_dia_do_mes(mes, ano)
