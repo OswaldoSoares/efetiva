@@ -1067,17 +1067,6 @@ def foto_colaborador(foto):
 def preencher_campos_pdf(pdf_base, campos, filename):
     template_pdf = PdfReader(str(pdf_base))
 
-    for page in template_pdf.pages:
-        annotations = page.Annots
-        if annotations:
-            for annotation in annotations:
-                if annotation.Subtype == "/Widget" and annotation.T:
-                    key = annotation.T[1:-1]
-                    if key in campos:
-                        valor = campos[key]
-                        annotation.V = f"{valor}"
-                        annotation.Ff = 4097
-
     output = BytesIO()
     PdfWriter().write(output, template_pdf)
     output.seek(0)
@@ -1085,20 +1074,35 @@ def preencher_campos_pdf(pdf_base, campos, filename):
     doc = fitz.open(stream=output.getvalue(), filetype="pdf")
     page = doc[0]
 
+    for widget in page.widgets():
+        nome = widget.field_name
+        if nome in campos:
+            widget.field_value = str(campos[nome])
+            widget.update()
+
     foto_path = foto_colaborador(campos["foto"])
-    rect = fitz.Rect(30, 40, 126, 130)
-    page.insert_image(rect, filename=foto_path)
+    if campos["descricao"] == "FERIAS":
+        rect_top = fitz.Rect(30, 84, 131, 194)
+    else:
+        rect_top = fitz.Rect(30, 30, 126, 136.5)
+    page.insert_image(rect_top, filename=foto_path)
 
-    clip = fitz.Rect(0, 0, 595, 418)
-    pix = page.get_pixmap(clip=clip, dpi=150)
-    image_bytes = pix.tobytes("png")
+    pdf_bytes = doc.convert_to_pdf()
+    flattened_doc = fitz.open("pdf", pdf_bytes)
+    doc.close()
 
-    rect_bottom = fitz.Rect(0, 424, 595, 842)
-    page.insert_image(rect_bottom, stream=image_bytes)
+    if campos["descricao"] != "FERIAS":
+        page = flattened_doc[0]
+        clip = fitz.Rect(0, 0, 595, 418)
+        pix = page.get_pixmap(clip=clip, dpi=150)
+        image_bytes = pix.tobytes("png")
+
+        rect_bottom = fitz.Rect(0, 424, 595, 842)
+        page.insert_image(rect_bottom, stream=image_bytes)
 
     pdf = BytesIO()
-    doc.save(pdf)
-    doc.close()
+    flattened_doc.save(pdf, deflate=True)
+    flattened_doc.close()
     pdf.seek(0)
 
     response = HttpResponse(pdf.getvalue(), content_type="application/pdf")
@@ -1171,6 +1175,7 @@ def campos_das_ferias(campos, contexto):
         par_de_faltas.append(par)
 
     campos |= {
+        "descricao": "FERIAS",
         "aquisitivo": aquisitivo_extenso,
         "gozo": feria_extenso,
         "faltas": str(len(faltas)).zfill(2),
@@ -1326,6 +1331,7 @@ def campos_do_contra_cheque(campos, colaborador, contra_cheque):
     ocultar = "********"
 
     campos |= {
+        "descricao": descricao,
         "recibo": conducao if descricao == "VALE TRANSPORTE" else pgto,
         "tipo_recibo": f"{mes_referencia}/{ano_referencia}",
         "contr_inss": f"R$ {base_inss}" if mostrar else f"{ocultar}",
