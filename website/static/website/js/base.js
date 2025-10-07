@@ -275,7 +275,6 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                     formAjaxSubmit(modal, url, cbAfterLoad, cbAfterSuccess);
                 } else {
                     $(modal).modal('hide');
-                    mostrarToast(xhr["mensagem"], xhr["tipo"])
                     if (xhr["html_card_folha_pagamento"]) {
                         $(".card-folha-pagamento").html(xhr["html_card_folha_pagamento"])
                     }
@@ -305,6 +304,7 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                         cbAfterSuccess(modal);
                     }
                 }
+                atualizarInterfaceComDados(xhr)
                 $('.box-loader').hide()
             },
             error: function(xhr, ajaxOptions, thrownError) {
@@ -363,6 +363,7 @@ $(document).on('submit', '.js-file-contra-cheque', function(event) {
             $(".card-contra-cheque-colaborador").show()
             $('.box-loader').hide()
             exibirMensagem(data["mensagem"])
+            $('.box-loader').hide()
         },
     });
 });
