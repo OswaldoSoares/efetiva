@@ -1091,14 +1091,15 @@ def preencher_campos_pdf(pdf_base, campos, filename):
     flattened_doc = fitz.open("pdf", pdf_bytes)
     doc.close()
 
-    if campos["descricao"] != "FERIAS":
-        page = flattened_doc[0]
-        clip = fitz.Rect(0, 0, 595, 418)
-        pix = page.get_pixmap(clip=clip, dpi=150)
-        image_bytes = pix.tobytes("png")
+    # REMOVE TEMPORÁRIAMENTE A 2ª VIA DO CONTRA-CHEQUE 09/10/2025
+    #  if campos["descricao"] != "FERIAS":
+        #  page = flattened_doc[0]
+        #  clip = fitz.Rect(0, 0, 595, 418)
+        #  pix = page.get_pixmap(clip=clip, dpi=150)
+        #  image_bytes = pix.tobytes("png")
 
-        rect_bottom = fitz.Rect(0, 424, 595, 842)
-        page.insert_image(rect_bottom, stream=image_bytes)
+        #  rect_bottom = fitz.Rect(0, 424, 595, 842)
+        #  page.insert_image(rect_bottom, stream=image_bytes)
 
     pdf = BytesIO()
     flattened_doc.save(pdf, deflate=True)
