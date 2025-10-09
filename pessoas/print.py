@@ -1064,7 +1064,7 @@ def foto_colaborador(foto):
     return f"{STATIC_ROOT}/website/img/usuario.png"
 
 
-def preencher_campos_pdf(pdf_base, campos, filename):
+def preencher_campos_pdf(pdf_base, campos, filename, contexto):
     template_pdf = PdfReader(str(pdf_base))
 
     output = BytesIO()
@@ -1101,9 +1101,43 @@ def preencher_campos_pdf(pdf_base, campos, filename):
         #  rect_bottom = fitz.Rect(0, 424, 595, 842)
         #  page.insert_image(rect_bottom, stream=image_bytes)
 
-    pdf = BytesIO()
-    flattened_doc.save(pdf, deflate=True)
-    flattened_doc.close()
+    if campos["descricao"] == "PAGAMENTO":
+        overlay_buffers = BytesIO()
+        pdf_ponto = canvas.Canvas(overlay_buffers)
+
+        contra_cheque_cartao_ponto(pdf_ponto, contexto)
+
+        pdf_ponto.save()
+        overlay_buffers.seek(0)
+
+        flattened_doc2 = fitz.open(stream=overlay_buffers.getvalue(), filetype="pdf")
+
+        page_top = flattened_doc[0]
+        page_base = flattened_doc2[0]
+
+        rect_top = fitz.Rect(0, 0, 595, 421)
+        rect_bottom = fitz.Rect(0, 421, 595, 842)
+
+        pix_top = page_top.get_pixmap(clip=rect_top, dpi=150)
+        pix_bottom = page_base.get_pixmap(clip=rect_bottom, dpi=150)
+
+        merge_doc = fitz.open()
+        new_page = merge_doc.new_page(width=595, height=842)
+
+        new_page.insert_image(rect_top, stream=pix_top.tobytes("png"))
+        new_page.insert_image(rect_bottom, stream=pix_bottom.tobytes("png"))
+
+        pdf = BytesIO()
+        merge_doc.save(pdf, deflate=True)
+        merge_doc.close()
+        flattened_doc.close()
+        flattened_doc2.close()
+
+    else:
+        pdf = BytesIO()
+        flattened_doc.save(pdf, deflate=True)
+        flattened_doc.close()
+
     pdf.seek(0)
 
     response = HttpResponse(pdf.getvalue(), content_type="application/pdf")
@@ -1291,7 +1325,7 @@ def print_recibo_ferias(contexto):
     campos |= {"eventos": "", "referencia": "", "valor": ""}
     file_name = f"RECIBO DE FÉRIAS {nome_curto}.pdf"
 
-    return preencher_campos_pdf(pdf_base, campos, file_name)
+    return preencher_campos_pdf(pdf_base, campos, file_name, contexto)
 
 
 def campos_regitro_colaborador(campos, colaborador):
@@ -1415,4 +1449,4 @@ def print_contra_cheque_pagamento(contexto):
     campos |= {"eventos": "", "referencia": "", "valor": ""}
     file_name = f"RECIBO DE PAGAMENTO {nome_curto}.pdf"
 
-    return preencher_campos_pdf(pdf_base, campos, file_name)
+    return preencher_campos_pdf(pdf_base, campos, file_name, contexto)

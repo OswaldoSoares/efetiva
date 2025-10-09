@@ -1974,6 +1974,9 @@ def create_contexto_print_pagamentos(id_pessoal, contra_cheque):
             contra_cheque
         )
         faltas = obter_faltas_periodo(id_pessoal, inicial, final)
+        cartao_ponto = create_contexto_cartao_ponto_contra_cheque(
+            id_pessoal, contra_cheque
+        )
 
     elif contra_cheque.Descricao == "VALE TRANSPORTE":
         inicial, final = obter_dias_inicial_final_contra_cheque(
@@ -1993,6 +1996,7 @@ def create_contexto_print_pagamentos(id_pessoal, contra_cheque):
         "contra_cheque": contra_cheque,
         "contra_cheque_itens": contra_cheque_itens,
         "faltas": faltas,
+        "cartao_ponto": cartao_ponto,
         **get_saldo_contra_cheque(contra_cheque_itens),
     }
 
@@ -3864,4 +3868,4 @@ def create_contexto_cartao_ponto_contra_cheque(id_pessoal, contra_cheque):
     cartao_ponto = facade_pagamentos.obter_cartao_de_ponto_do_colaborador(
         colaborador, mes, ano
     )
-    return {"cartao_ponto": cartao_ponto}
+    return cartao_ponto
