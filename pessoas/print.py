@@ -1404,7 +1404,9 @@ def print_contra_cheque_pagamento(contexto):
     campos_do_colaborador(campos, colaborador)
     campos_regitro_colaborador(campos, colaborador)
     campos_do_contra_cheque(campos, colaborador, contra_cheque)
-    campos_do_contra_cheque_itens(campos, contra_cheque_itens.order_by("Codigo"))
+    campos_do_contra_cheque_itens(
+        campos, contra_cheque_itens.order_by("Codigo")
+    )
     campos_do_contra_cheque_totais(campos, saldo)
     campos_de_observacao(campos, colaborador, contra_cheque, faltas)
 
