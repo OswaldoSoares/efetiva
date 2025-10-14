@@ -153,7 +153,7 @@ def textos_tipo_recebe():
             }
         },
         {
-            "SAIDA NORA EXTRA": {
+            "SAIDA HORA EXTRA": {
                 "texto": lambda item: f"- EXTRA {item[0]} &#x27BA "
                 f"R$ {item[1]}",
                 "item": ["tempo", "valor"],
