@@ -413,7 +413,7 @@ def imprime_fatura_pdf(fatura):
         romaneios = s_minuta["romaneio"]
         romaneios_pesos = s_minuta["romaneio_pesos"]
         lista_romaneios = " - ".join(
-            f"{str(e['romaneio'])}  {str(e['peso'])} Kg"
+            f"{e['romaneio']!s}  {e['peso']!s} Kg"
             for e in romaneios_pesos
         )
         inicialkm = minutas[index].KMInicial
@@ -483,7 +483,7 @@ def imprime_fatura_pdf(fatura):
         pdf.drawRightString(
             cmp(198),
             cmp(linha),
-            "VALOR: R$ {:.2f}".format(minuta_valor).replace(".", ","),
+            f"VALOR: R$ {minuta_valor:.2f}".replace(".", ","),
         )
         pdf.setFillColor(HexColor("#000000"))
         linha -= 1
