@@ -1,16 +1,18 @@
 """
     Módulo responsável pelas impressões do app faturamentos
 """
+from datetime import timedelta
 from decimal import Decimal
 from io import BytesIO
-from datetime import timedelta
+
+from django.core.files.base import ContentFile
+from django.http import HttpResponse
 from reportlab.lib.colors import HexColor
 from reportlab.lib.enums import TA_JUSTIFY
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.pdfgen import canvas
 from reportlab.platypus import Paragraph
-from django.core.files.base import ContentFile
-from django.http import HttpResponse
+
 from clientes.models import Cliente, TabelaPerimetro
 from minutas.facade import MinutaSelecionada
 from minutas.models import (
@@ -21,7 +23,7 @@ from minutas.models import (
 )
 from romaneios.models import RomaneioNotas
 from transefetiva.settings.settings import STATIC_ROOT
-from website.facade import nome_curto, valor_ponto_milhar, cmp
+from website.facade import cmp, nome_curto, valor_ponto_milhar
 from website.models import FileUpload
 
 from .models import Fatura
@@ -153,7 +155,7 @@ def textos_tipo_recebe():
             }
         },
         {
-            "SAIDA NORA EXTRA": {
+            "SAIDA HORA EXTRA": {
                 "texto": lambda item: f"- EXTRA {item[0]} &#x27BA "
                 f"R$ {item[1]}",
                 "item": ["tempo", "valor"],
@@ -411,7 +413,7 @@ def imprime_fatura_pdf(fatura):
         romaneios = s_minuta["romaneio"]
         romaneios_pesos = s_minuta["romaneio_pesos"]
         lista_romaneios = " - ".join(
-            f"{str(e['romaneio'])}  {str(e['peso'])} Kg"
+            f"{e['romaneio']!s}  {e['peso']!s} Kg"
             for e in romaneios_pesos
         )
         inicialkm = minutas[index].KMInicial
@@ -481,7 +483,7 @@ def imprime_fatura_pdf(fatura):
         pdf.drawRightString(
             cmp(198),
             cmp(linha),
-            "VALOR: R$ {:.2f}".format(minuta_valor).replace(".", ","),
+            f"VALOR: R$ {minuta_valor:.2f}".replace(".", ","),
         )
         pdf.setFillColor(HexColor("#000000"))
         linha -= 1
