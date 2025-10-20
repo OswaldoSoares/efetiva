@@ -1969,6 +1969,7 @@ def create_contexto_print_pagamentos(id_pessoal, contra_cheque):
         idContraCheque_id=contra_cheque.idContraCheque
     )
 
+    cartao_ponto = None
     if contra_cheque.Descricao == "PAGAMENTO":
         inicial, final = obter_dias_inicial_final_contra_cheque(
             contra_cheque
