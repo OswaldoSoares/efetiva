@@ -27,6 +27,7 @@ from pessoas.models import (
     DocPessoal,
     Ferias,
     RegistroPonto,
+    Salario,
     SenhaAppPonto,
 )
 
@@ -275,6 +276,14 @@ def atualizar_cartao_ponto_pelo_registro_ponto(cartao_ponto):
     colaborador = classes.Colaborador(id_pessoal)
     admissao = colaborador.dados_profissionais.data_admissao
     demissao = colaborador.dados_profissionais.data_demissao
+    if not colaborador.salarios.salarios:
+        Salario.objects.create(
+            Salario=0.00,
+            ValeTransporte=0.00,
+            HorasMensais=0.00,
+            idPessoal_id=id_pessoal,
+        )
+        colaborador = classes.Colaborador(id_pessoal)
     vale_transporte = colaborador.salarios.salarios.ValeTransporte
 
     sabados, domingos, feriados = obter_datas_nao_uteis_mes(
