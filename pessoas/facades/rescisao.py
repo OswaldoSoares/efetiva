@@ -1,16 +1,17 @@
 """ Responsável pelo resscisão do colaborador """
+import locale
 from datetime import date, datetime, timedelta
 from decimal import ROUND_HALF_UP, Decimal
-import locale
 from typing import Any, List, Optional
+
 from dateutil.relativedelta import relativedelta
 from django.db import transaction
 from django.db.models import QuerySet, Sum
 from django.http import JsonResponse
+
 from core import constants
 from core.tools import obter_mes_por_numero, primeiro_e_ultimo_dia_do_mes
-from pessoas import classes
-from pessoas import html_data
+from pessoas import classes, html_data
 from pessoas.facade import (
     atualiza_contra_cheque_item_salario,
     atualizar_contra_cheque_pagamento,
