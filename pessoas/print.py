@@ -268,22 +268,23 @@ def dados_rescisao_trabalho_nova(pdf, contexto):
     linha -= 7.7
     linha -= 4
     col = 11
-    for x in contexto["contra_cheque_itens"]:
-        if x.Registro == "C":
-            if x.Descricao.startswith("SALARIO"):
-                descricao = x.Descricao.replace("SALARIO", "SALDO DE SALARIO")
-            else:
-                descricao = x.Descricao
-            pdf.drawString(
-                cmp(col), cmp(linha), f"{descricao} - {x.Referencia}"
-            )
-            pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {x.Valor}")
-            bruto += x.Valor
-            if col == 11:
-                col = 106
-            else:
-                col = 11
-                linha -= 7.7
+    if contexto["saldo_salario"] is not None:
+        for x in contexto["contra_cheque_itens"]:
+            if x.Registro == "C":
+                if x.Descricao.startswith("SALARIO"):
+                    descricao = x.Descricao.replace("SALARIO", "SALDO DE SALARIO")
+                else:
+                    descricao = x.Descricao
+                pdf.drawString(
+                    cmp(col), cmp(linha), f"{descricao} - {x.Referencia}"
+                )
+                pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {x.Valor}")
+                bruto += x.Valor
+                if col == 11:
+                    col = 106
+                else:
+                    col = 11
+                    linha -= 7.7
     if meses_ferias > 0:
         pdf.drawString(
             cmp(col), cmp(linha), f"FÉRIAS PROPORCIONAIS - {meses_ferias}/12"
@@ -370,16 +371,17 @@ def dados_rescisao_trabalho_nova(pdf, contexto):
         else:
             col = 11
             linha -= 7.7
-    for item in contexto["contra_cheque_itens"]:
-        if item.Registro == "D":
-            pdf.drawString(cmp(col), cmp(linha), f"{item.Descricao}")
-            pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {item.Valor}")
-            deducoes += item.Valor
-            if col == 11:
-                col = 106
-            else:
-                col = 11
-                linha -= 7.7
+    if contexto["saldo_salario"] is not None:
+        for item in contexto["contra_cheque_itens"]:
+            if item.Registro == "D":
+                pdf.drawString(cmp(col), cmp(linha), f"{item.Descricao}")
+                pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {item.Valor}")
+                deducoes += item.Valor
+                if col == 11:
+                    col = 106
+                else:
+                    col = 11
+                    linha -= 7.7
     if "desconto_ferias" in contexto:
         pdf.drawString(cmp(col), cmp(linha), "DESCONTO FÉRIAS PAGA")
         pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {ferias_paga}")

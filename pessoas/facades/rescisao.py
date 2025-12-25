@@ -300,7 +300,10 @@ def calcular_rescisao_saldo_salario(colaborador):
         idContraCheque_id=contra_cheque.idContraCheque
     ).order_by("Registro")
 
-    return {"contra_cheque_itens": contra_cheque_itens}
+    return {
+        "contra_cheque_itens": contra_cheque_itens,
+        "saldo_salario": True,
+    }
 
 
 def calcular_ferias_vencidas(colaborador):
