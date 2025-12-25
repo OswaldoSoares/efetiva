@@ -219,11 +219,12 @@ def dados_rescisao_trabalho_nova(pdf, contexto):
         contexto["colaborador"].dados_profissionais.data_demissao, "%d/%m/%Y"
     )
     bruto = Decimal(0.00)
-    meses_ferias = contexto["ferias_meses"]
-    ferias = contexto["ferias_valor"]
-    bruto += ferias
-    terco_ferias = contexto["ferias_um_terco"]
-    bruto += terco_ferias
+    if contexto["ferias_valor"] is not None:
+        meses_ferias = contexto["ferias_meses"]
+        ferias = contexto["ferias_valor"]
+        bruto += ferias
+        terco_ferias = contexto["ferias_um_terco"]
+        bruto += terco_ferias
     if contexto["decimo_terceiro_valor"] is not None:
         meses_decimo_terceiro = contexto["decimo_terceiro_meses"]
         decimo_terceiro = contexto["decimo_terceiro_valor"]
@@ -285,7 +286,7 @@ def dados_rescisao_trabalho_nova(pdf, contexto):
                 else:
                     col = 11
                     linha -= 7.7
-    if meses_ferias > 0:
+    if contexto["ferias_valor"] is not None and meses_ferias > 0:
         pdf.drawString(
             cmp(col), cmp(linha), f"FÉRIAS PROPORCIONAIS - {meses_ferias}/12"
         )
