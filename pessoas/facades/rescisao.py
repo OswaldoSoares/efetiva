@@ -508,6 +508,7 @@ def verbas_rescisorias(request):
     ferias_vencidas = request.POST.get("ferias_vencidas")
     ferias_proporcionais = request.POST.get("ferias_proporcionais")
     fgts = request.POST.get("fgts")
+    fgts_40 = request.POST.get("fgts_40")
     decimo_terceiro_proporcional = request.POST.get(
         "decimo_terceiro_proporcional"
     )
@@ -544,6 +545,12 @@ def verbas_rescisorias(request):
         calcular_fgts(colaborador)
         if fgts.lower() == "true"
         else {"fgts_paga": None}
+    )
+
+    contexto.update(
+        {"fgts_40_paga": True}
+         if fgts_40.lower() == "true"
+         else {"fgts_40_paga": False}
     )
 
     contexto.update(calcular_pagamento_ferias_proporcionais(colaborador))

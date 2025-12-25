@@ -235,6 +235,9 @@ def dados_rescisao_trabalho_nova(pdf, contexto):
     if contexto["fgts_paga"]:
         fgts_valor = contexto["fgts"]
         bruto += fgts_valor
+    if contexto["fgts_paga"] and contexto["fgts_40_paga"]:
+        fgts_40_valor = contexto["fgts_40"]
+        bruto += fgts_40_valor
     linha = 267.3
     pdf.setFont("Times-Roman", 10)
     pdf.drawString(cmp(15), cmp(linha), f"{cnpj}")
@@ -314,11 +317,11 @@ def dados_rescisao_trabalho_nova(pdf, contexto):
             f"13º PROPORCIONAL - {meses_decimo_terceiro}/12",
         )
         pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {decimo_terceiro}")
-    if col == 11:
-        col = 106
-    else:
-        col = 11
-        linha -= 7.7
+        if col == 11:
+            col = 106
+        else:
+            col = 11
+            linha -= 7.7
     if contexto["ferias_vencidas_valor"] is not None:
         for x in contexto["ferias_vencidas"]:
             pdf.setFont("Times-Roman", 7)
@@ -369,7 +372,18 @@ def dados_rescisao_trabalho_nova(pdf, contexto):
         else:
             col = 11
             linha -= 7.7
-
+    if contexto["fgts_paga"] and contexto["fgts_40_paga"]:
+        pdf.drawString(
+            cmp(col),
+            cmp(linha),
+            "MULTA 40% FGTS",
+        )
+        pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {fgts_40_valor}")
+        if col == 11:
+            col = 106
+        else:
+            col = 11
+            linha -= 7.7
 
     linha = 116.7
     #  bruto = "261,87"
