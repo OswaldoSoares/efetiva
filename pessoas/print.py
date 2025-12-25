@@ -232,6 +232,9 @@ def dados_rescisao_trabalho_nova(pdf, contexto):
         bruto += decimo_terceiro
     if "desconto_ferias" in contexto:
         ferias_paga = contexto["desconto_ferias"]
+    if contexto["fgts_paga"]:
+        fgts_valor = contexto["fgts"]
+        bruto += fgts_valor
     linha = 267.3
     pdf.setFont("Times-Roman", 10)
     pdf.drawString(cmp(15), cmp(linha), f"{cnpj}")
@@ -354,6 +357,20 @@ def dados_rescisao_trabalho_nova(pdf, contexto):
             else:
                 col = 11
                 linha -= 7.7
+    if contexto["fgts_paga"]:
+        pdf.drawString(
+            cmp(col),
+            cmp(linha),
+            "FGTS",
+        )
+        pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {fgts_valor}")
+        if col == 11:
+            col = 106
+        else:
+            col = 11
+            linha -= 7.7
+
+
     linha = 116.7
     #  bruto = "261,87"
     pdf.drawRightString(cmp(199), cmp(linha + 1), f"R$ {bruto}")

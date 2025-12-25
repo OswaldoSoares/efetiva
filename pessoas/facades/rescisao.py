@@ -481,6 +481,22 @@ def calcular_pagamento_ferias_proporcionais(colaborador):
     return {"ferias_nao_paga": "ferias_nao_paga"}
 
 
+def calcular_fgts(colaborador):
+    fgts_base = ContraCheque.objects.filter(
+        idPessoal=colaborador.id_pessoal,
+        Descricao="PAGAMENTO",
+    ).aggregate(total=Sum("BaseFGTS"))
+
+    fgts = (fgts_base["total"] / 100 * 8).quantize(
+            Decimal("0.01"), rounding=ROUND_HALF_UP
+    )
+    fgts_40 = (fgts / 100 * 40).quantize(
+            Decimal("0.01"), rounding=ROUND_HALF_UP
+    )
+
+    return {"fgts": fgts, "fgts_40": fgts_40, "fgts_paga": True}
+
+
 def verbas_rescisorias(request):
     id_pessoal = request.POST.get("id_pessoal")
 
@@ -491,6 +507,7 @@ def verbas_rescisorias(request):
     saldo_salario = request.POST.get("saldo_salario")
     ferias_vencidas = request.POST.get("ferias_vencidas")
     ferias_proporcionais = request.POST.get("ferias_proporcionais")
+    fgts = request.POST.get("fgts")
     decimo_terceiro_proporcional = request.POST.get(
         "decimo_terceiro_proporcional"
     )
@@ -521,6 +538,12 @@ def verbas_rescisorias(request):
         calcular_decimo_terceiro_proporcional(colaborador)
         if decimo_terceiro_proporcional.lower() == "true"
         else {"decimo_terceiro_valor": None}
+    )
+
+    contexto.update(
+        calcular_fgts(colaborador)
+        if fgts.lower() == "true"
+        else {"fgts_paga": None}
     )
 
     contexto.update(calcular_pagamento_ferias_proporcionais(colaborador))
