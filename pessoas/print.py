@@ -219,17 +219,25 @@ def dados_rescisao_trabalho_nova(pdf, contexto):
         contexto["colaborador"].dados_profissionais.data_demissao, "%d/%m/%Y"
     )
     bruto = Decimal(0.00)
-    meses_ferias = contexto["ferias_meses"]
-    ferias = contexto["ferias_valor"]
-    bruto += ferias
-    terco_ferias = contexto["ferias_um_terco"]
-    bruto += terco_ferias
-    meses_decimo_terceiro = contexto["decimo_terceiro_meses"]
-    decimo_terceiro = contexto["decimo_terceiro_valor"]
-    decimo_terceiro_pago = contexto["decimo_terceiro_total_pago"]
+    if contexto["ferias_valor"] is not None:
+        meses_ferias = contexto["ferias_meses"]
+        ferias = contexto["ferias_valor"]
+        bruto += ferias
+        terco_ferias = contexto["ferias_um_terco"]
+        bruto += terco_ferias
+    if contexto["decimo_terceiro_valor"] is not None:
+        meses_decimo_terceiro = contexto["decimo_terceiro_meses"]
+        decimo_terceiro = contexto["decimo_terceiro_valor"]
+        decimo_terceiro_pago = contexto["decimo_terceiro_total_pago"]
+        bruto += decimo_terceiro
     if "desconto_ferias" in contexto:
         ferias_paga = contexto["desconto_ferias"]
-    bruto += decimo_terceiro
+    if contexto["fgts_paga"]:
+        fgts_valor = contexto["fgts"]
+        bruto += fgts_valor
+    if contexto["fgts_paga"] and contexto["fgts_40_paga"]:
+        fgts_40_valor = contexto["fgts_40"]
+        bruto += fgts_40_valor
     linha = 267.3
     pdf.setFont("Times-Roman", 10)
     pdf.drawString(cmp(15), cmp(linha), f"{cnpj}")
@@ -267,23 +275,24 @@ def dados_rescisao_trabalho_nova(pdf, contexto):
     linha -= 7.7
     linha -= 4
     col = 11
-    for x in contexto["contra_cheque_itens"]:
-        if x.Registro == "C":
-            if x.Descricao.startswith("SALARIO"):
-                descricao = x.Descricao.replace("SALARIO", "SALDO DE SALARIO")
-            else:
-                descricao = x.Descricao
-            pdf.drawString(
-                cmp(col), cmp(linha), f"{descricao} - {x.Referencia}"
-            )
-            pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {x.Valor}")
-            bruto += x.Valor
-            if col == 11:
-                col = 106
-            else:
-                col = 11
-                linha -= 7.7
-    if meses_ferias > 0:
+    if contexto["saldo_salario"] is not None:
+        for x in contexto["contra_cheque_itens"]:
+            if x.Registro == "C":
+                if x.Descricao.startswith("SALARIO"):
+                    descricao = x.Descricao.replace("SALARIO", "SALDO DE SALARIO")
+                else:
+                    descricao = x.Descricao
+                pdf.drawString(
+                    cmp(col), cmp(linha), f"{descricao} - {x.Referencia}"
+                )
+                pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {x.Valor}")
+                bruto += x.Valor
+                if col == 11:
+                    col = 106
+                else:
+                    col = 11
+                    linha -= 7.7
+    if contexto["ferias_valor"] is not None and meses_ferias > 0:
         pdf.drawString(
             cmp(col), cmp(linha), f"FÉRIAS PROPORCIONAIS - {meses_ferias}/12"
         )
@@ -301,55 +310,81 @@ def dados_rescisao_trabalho_nova(pdf, contexto):
         else:
             col = 11
             linha -= 7.7
-    if meses_decimo_terceiro:
+    if contexto["decimo_terceiro_valor"] is not None and meses_decimo_terceiro:
         pdf.drawString(
             cmp(col),
             cmp(linha),
             f"13º PROPORCIONAL - {meses_decimo_terceiro}/12",
         )
         pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {decimo_terceiro}")
-    if col == 11:
-        col = 106
-    else:
-        col = 11
-        linha -= 7.7
-    for x in contexto["ferias_vencidas"]:
-        pdf.setFont("Times-Roman", 7)
+        if col == 11:
+            col = 106
+        else:
+            col = 11
+            linha -= 7.7
+    if contexto["ferias_vencidas_valor"] is not None:
+        for x in contexto["ferias_vencidas"]:
+            pdf.setFont("Times-Roman", 7)
+            pdf.drawString(
+                cmp(col),
+                cmp(linha + 4),
+                f"Periodo Aquisitivo {x['periodo']} - FALTAS {x['numero_faltas']}",
+            )
+            pdf.setFont("Times-Roman", 10)
+            pdf.drawString(
+                cmp(col), cmp(linha), f"FÉRIAS VENCIDAS {x['dias_pagar']}d"
+            )
+            pdf.drawRightString(
+                cmp(col + 93), cmp(linha), f"R$ {x['valor_pagar']}"
+            )
+            bruto += x["valor_pagar"]
+            if col == 11:
+                col = 106
+            else:
+                col = 11
+                linha -= 7.7
+            pdf.setFont("Times-Roman", 7)
+            pdf.drawString(
+                cmp(col), cmp(linha + 4), f"Periodo Aquisitivo {x['periodo']}"
+            )
+            pdf.setFont("Times-Roman", 10)
+            pdf.drawString(
+                cmp(col), cmp(linha), f"1/3 FÉRIAS VENCIDAS {x['dias_pagar']}d"
+            )
+            pdf.drawRightString(
+                cmp(col + 93), cmp(linha), f"R$ {x['um_terco_pagar']}"
+            )
+            bruto += x["um_terco_pagar"]
+            if col == 11:
+                col = 106
+            else:
+                col = 11
+                linha -= 7.7
+    if contexto["fgts_paga"]:
         pdf.drawString(
             cmp(col),
-            cmp(linha + 4),
-            f"Periodo Aquisitivo {x['periodo']} - FALTAS {x['numero_faltas']}",
+            cmp(linha),
+            "FGTS",
         )
-        pdf.setFont("Times-Roman", 10)
-        pdf.drawString(
-            cmp(col), cmp(linha), f"FÉRIAS VENCIDAS {x['dias_pagar']}d"
-        )
-        pdf.drawRightString(
-            cmp(col + 93), cmp(linha), f"R$ {x['valor_pagar']}"
-        )
-        bruto += x["valor_pagar"]
+        pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {fgts_valor}")
         if col == 11:
             col = 106
         else:
             col = 11
             linha -= 7.7
-        pdf.setFont("Times-Roman", 7)
+    if contexto["fgts_paga"] and contexto["fgts_40_paga"]:
         pdf.drawString(
-            cmp(col), cmp(linha + 4), f"Periodo Aquisitivo {x['periodo']}"
+            cmp(col),
+            cmp(linha),
+            "MULTA 40% FGTS",
         )
-        pdf.setFont("Times-Roman", 10)
-        pdf.drawString(
-            cmp(col), cmp(linha), f"1/3 FÉRIAS VENCIDAS {x['dias_pagar']}d"
-        )
-        pdf.drawRightString(
-            cmp(col + 93), cmp(linha), f"R$ {x['um_terco_pagar']}"
-        )
-        bruto += x["um_terco_pagar"]
+        pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {fgts_40_valor}")
         if col == 11:
             col = 106
         else:
             col = 11
             linha -= 7.7
+
     linha = 116.7
     #  bruto = "261,87"
     pdf.drawRightString(cmp(199), cmp(linha + 1), f"R$ {bruto}")
@@ -358,7 +393,7 @@ def dados_rescisao_trabalho_nova(pdf, contexto):
     linha += 1
     deducoes = Decimal(0.00)
     col = 11
-    if contexto["decimo_terceiro_parcelas_pagas"]:
+    if "decimo_terceiro_parcelas_pagas" in contexto:
         pdf.drawString(cmp(col), cmp(linha), "13º PARCELAS PAGAS")
         pdf.drawRightString(
             cmp(col + 93), cmp(linha), f"R$ {decimo_terceiro_pago}"
@@ -369,16 +404,17 @@ def dados_rescisao_trabalho_nova(pdf, contexto):
         else:
             col = 11
             linha -= 7.7
-    for item in contexto["contra_cheque_itens"]:
-        if item.Registro == "D":
-            pdf.drawString(cmp(col), cmp(linha), f"{item.Descricao}")
-            pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {item.Valor}")
-            deducoes += item.Valor
-            if col == 11:
-                col = 106
-            else:
-                col = 11
-                linha -= 7.7
+    if contexto["saldo_salario"] is not None:
+        for item in contexto["contra_cheque_itens"]:
+            if item.Registro == "D":
+                pdf.drawString(cmp(col), cmp(linha), f"{item.Descricao}")
+                pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {item.Valor}")
+                deducoes += item.Valor
+                if col == 11:
+                    col = 106
+                else:
+                    col = 11
+                    linha -= 7.7
     if "desconto_ferias" in contexto:
         pdf.drawString(cmp(col), cmp(linha), "DESCONTO FÉRIAS PAGA")
         pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {ferias_paga}")

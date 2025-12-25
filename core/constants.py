@@ -157,6 +157,7 @@ EVENTOS_RESCISORIOS = [
     ("ferias_proporcionais", "FÉRIAS PROPORCIONAIS"),
     ("decimo_terceiro_proporcional", "13º PROPORCIONAL"),
     ("fgts", "FGTS"),
+    ("fgts_40", "MULTA 40% FGTS"),
 ]
 
 # Tipos de contracheque

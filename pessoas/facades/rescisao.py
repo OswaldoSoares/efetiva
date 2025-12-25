@@ -1,16 +1,17 @@
 """ Responsável pelo resscisão do colaborador """
+import locale
 from datetime import date, datetime, timedelta
 from decimal import ROUND_HALF_UP, Decimal
-import locale
 from typing import Any, List, Optional
+
 from dateutil.relativedelta import relativedelta
 from django.db import transaction
 from django.db.models import QuerySet, Sum
 from django.http import JsonResponse
+
 from core import constants
 from core.tools import obter_mes_por_numero, primeiro_e_ultimo_dia_do_mes
-from pessoas import classes
-from pessoas import html_data
+from pessoas import classes, html_data
 from pessoas.facade import (
     atualiza_contra_cheque_item_salario,
     atualizar_contra_cheque_pagamento,
@@ -299,7 +300,10 @@ def calcular_rescisao_saldo_salario(colaborador):
         idContraCheque_id=contra_cheque.idContraCheque
     ).order_by("Registro")
 
-    return {"contra_cheque_itens": contra_cheque_itens}
+    return {
+        "contra_cheque_itens": contra_cheque_itens,
+        "saldo_salario": True,
+    }
 
 
 def calcular_ferias_vencidas(colaborador):
@@ -357,7 +361,10 @@ def calcular_ferias_vencidas(colaborador):
                 }
             )
 
-    return {"ferias_vencidas": ferias_vencidas}
+    return {
+        "ferias_vencidas": ferias_vencidas,
+        "ferias_vencidas_valor": True,
+    }
 
 
 def calcular_ferias_proporcionais(colaborador):
@@ -474,6 +481,22 @@ def calcular_pagamento_ferias_proporcionais(colaborador):
     return {"ferias_nao_paga": "ferias_nao_paga"}
 
 
+def calcular_fgts(colaborador):
+    fgts_base = ContraCheque.objects.filter(
+        idPessoal=colaborador.id_pessoal,
+        Descricao="PAGAMENTO",
+    ).aggregate(total=Sum("BaseFGTS"))
+
+    fgts = (fgts_base["total"] / 100 * 8).quantize(
+            Decimal("0.01"), rounding=ROUND_HALF_UP
+    )
+    fgts_40 = (fgts / 100 * 40).quantize(
+            Decimal("0.01"), rounding=ROUND_HALF_UP
+    )
+
+    return {"fgts": fgts, "fgts_40": fgts_40, "fgts_paga": True}
+
+
 def verbas_rescisorias(request):
     id_pessoal = request.POST.get("id_pessoal")
 
@@ -484,6 +507,8 @@ def verbas_rescisorias(request):
     saldo_salario = request.POST.get("saldo_salario")
     ferias_vencidas = request.POST.get("ferias_vencidas")
     ferias_proporcionais = request.POST.get("ferias_proporcionais")
+    fgts = request.POST.get("fgts")
+    fgts_40 = request.POST.get("fgts_40")
     decimo_terceiro_proporcional = request.POST.get(
         "decimo_terceiro_proporcional"
     )
@@ -514,6 +539,18 @@ def verbas_rescisorias(request):
         calcular_decimo_terceiro_proporcional(colaborador)
         if decimo_terceiro_proporcional.lower() == "true"
         else {"decimo_terceiro_valor": None}
+    )
+
+    contexto.update(
+        calcular_fgts(colaborador)
+        if fgts.lower() == "true"
+        else {"fgts_paga": None}
+    )
+
+    contexto.update(
+        {"fgts_40_paga": True}
+         if fgts_40.lower() == "true"
+         else {"fgts_40_paga": False}
     )
 
     contexto.update(calcular_pagamento_ferias_proporcionais(colaborador))
