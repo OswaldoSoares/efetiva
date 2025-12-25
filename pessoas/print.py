@@ -224,12 +224,13 @@ def dados_rescisao_trabalho_nova(pdf, contexto):
     bruto += ferias
     terco_ferias = contexto["ferias_um_terco"]
     bruto += terco_ferias
-    meses_decimo_terceiro = contexto["decimo_terceiro_meses"]
-    decimo_terceiro = contexto["decimo_terceiro_valor"]
-    decimo_terceiro_pago = contexto["decimo_terceiro_total_pago"]
+    if contexto["decimo_terceiro_valor"] is not None:
+        meses_decimo_terceiro = contexto["decimo_terceiro_meses"]
+        decimo_terceiro = contexto["decimo_terceiro_valor"]
+        decimo_terceiro_pago = contexto["decimo_terceiro_total_pago"]
+        bruto += decimo_terceiro
     if "desconto_ferias" in contexto:
         ferias_paga = contexto["desconto_ferias"]
-    bruto += decimo_terceiro
     linha = 267.3
     pdf.setFont("Times-Roman", 10)
     pdf.drawString(cmp(15), cmp(linha), f"{cnpj}")
@@ -301,7 +302,7 @@ def dados_rescisao_trabalho_nova(pdf, contexto):
         else:
             col = 11
             linha -= 7.7
-    if meses_decimo_terceiro:
+    if contexto["decimo_terceiro_valor"] is not None and meses_decimo_terceiro:
         pdf.drawString(
             cmp(col),
             cmp(linha),
@@ -358,7 +359,7 @@ def dados_rescisao_trabalho_nova(pdf, contexto):
     linha += 1
     deducoes = Decimal(0.00)
     col = 11
-    if contexto["decimo_terceiro_parcelas_pagas"]:
+    if "decimo_terceiro_parcelas_pagas" in contexto:
         pdf.drawString(cmp(col), cmp(linha), "13º PARCELAS PAGAS")
         pdf.drawRightString(
             cmp(col + 93), cmp(linha), f"R$ {decimo_terceiro_pago}"
