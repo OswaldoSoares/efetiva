@@ -361,7 +361,10 @@ def calcular_ferias_vencidas(colaborador):
                 }
             )
 
-    return {"ferias_vencidas": ferias_vencidas}
+    return {
+        "ferias_vencidas": ferias_vencidas,
+        "ferias_vencidas_valor": True,
+    }
 
 
 def calcular_ferias_proporcionais(colaborador):
