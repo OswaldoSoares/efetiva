@@ -1578,9 +1578,9 @@ def calcular_dsr(id_pessoal, salario, cartao_ponto):
                 semanas_faltas.remove(int(semana_mes_anterior))
 
     dias_dsr = len(semanas_faltas)
-    dias_dsr = calcular_dsr_feriado(
-        id_pessoal, dias_dsr, semanas_faltas, cartao_ponto
-    )
+    #  dias_dsr = calcular_dsr_feriado(
+        #  id_pessoal, dias_dsr, semanas_faltas, cartao_ponto
+    #  )
 
     valor_dsr = salario / 30 * dias_dsr
 
