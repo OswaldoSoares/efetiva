@@ -282,11 +282,11 @@ def validar_gozo_ferias_colaborador(request):
     if not validar_dias_ferias(id_pessoal, dias_ferias):
         return get_mensagem("pefe0002", dias=dias_ferias)
 
-    if not validar_data_ferias(id_pessoal, data_inicio):
-        return get_mensagem("pefe0003")
+    #  if not validar_data_ferias(id_pessoal, data_inicio):
+        #  return get_mensagem("pefe0003")
 
-    if not validar_data_ferias(id_pessoal, data_fim):
-        return get_mensagem("pefe0004")
+    #  if not validar_data_ferias(id_pessoal, data_fim):
+        #  return get_mensagem("pefe0004")
 
     if not validar_admitido_ferias(colaborador, data_inicio):
         return get_mensagem("pefe0005")
