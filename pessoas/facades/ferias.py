@@ -279,8 +279,8 @@ def validar_gozo_ferias_colaborador(request):
 
     colaborador = classes.Colaborador(id_pessoal)
 
-    if not validar_dias_ferias(id_pessoal, dias_ferias):
-        return get_mensagem("pefe0002", dias=dias_ferias)
+    #  if not validar_dias_ferias(id_pessoal, dias_ferias):
+        #  return get_mensagem("pefe0002", dias=dias_ferias)
 
     #  if not validar_data_ferias(id_pessoal, data_inicio):
         #  return get_mensagem("pefe0003")
