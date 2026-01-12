@@ -26,16 +26,16 @@ function calcularDataFinal() {
     const maxDias = parseInt($("#id_dias").attr("max"))
     const dias = parseInt($("#id_dias").val())
 
-    if (dias > maxDias) {
-        console.log("carai")
-        mostrarToast(
-            "Os dias em férias não podem ser maior que os dias para completar o período aquisitivo",
-            "error"
-        )
-        $(".btn-save").addClass("disabled")
-    } else {
-        $(".btn-save").removeClass("disabled")
-    }
+    // if (dias > maxDias) {
+        // console.log("carai")
+        // mostrarToast(
+            // "Os dias em férias não podem ser maior que os dias para completar o período aquisitivo",
+            // "error"
+        // )
+        // $(".btn-save").addClass("disabled")
+    // } else {
+        // $(".btn-save").removeClass("disabled")
+    // }
 
     if (!isNaN(dataInicial.getTime()) && !isNaN(dias)) {
         const dataFinal = new Date(dataInicial);
