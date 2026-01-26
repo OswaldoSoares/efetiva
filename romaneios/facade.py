@@ -1183,7 +1183,7 @@ def last_chat_id_telegram(token):
 
 # enviar mensagens utilizando o bot para um gruppo específico
 def send_message(message, idcliente):
-    token = "5778267083:AAEha8jgzCRYr_niZ7JM4EB5MWDX2Zkk98o"
+    token = "8517596166:AAHfm23NOpAYiNLihLENq1DqQ2V4bYDN5w8"
     if idcliente == "11":
         chat_id = "-666092318"  # Telegram Transefetiva - LogCatavento
     elif idcliente == "7":
@@ -1199,7 +1199,7 @@ def send_message(message, idcliente):
 
 
 def send_arquivo(romaneio, idcliente):
-    token = "5778267083:AAEha8jgzCRYr_niZ7JM4EB5MWDX2Zkk98o"
+    token = "8517596166:AAHfm23NOpAYiNLihLENq1DqQ2V4bYDN5w8"
     if idcliente == "11":
         chat_id = "-666092318"  # Telegram Transefetiva - LogCatavento
     elif idcliente == "7":
@@ -1219,7 +1219,7 @@ def send_arquivo(romaneio, idcliente):
 
 
 def send_arquivo_relatorio(sort_status, idcliente):
-    token = "5778267083:AAEha8jgzCRYr_niZ7JM4EB5MWDX2Zkk98o"
+    token = "8517596166:AAHfm23NOpAYiNLihLENq1DqQ2V4bYDN5w8"
     if idcliente == "11":
         chat_id = "-666092318"  # Telegram Transefetiva - LogCatavento
     elif idcliente == "7":
