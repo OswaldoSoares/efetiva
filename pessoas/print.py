@@ -416,7 +416,7 @@ def dados_rescisao_trabalho_nova(pdf, contexto):
                     col = 11
                     linha -= 7.7
     if "desconto_ferias" in contexto:
-        pdf.drawString(cmp(col), cmp(linha), "DESCONTO FÉRIAS PAGA")
+        pdf.drawString(cmp(col), cmp(linha), "FÉRIAS PAGA")
         pdf.drawRightString(cmp(col + 93), cmp(linha), f"R$ {ferias_paga}")
         deducoes += ferias_paga
         if col == 11:
