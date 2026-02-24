@@ -471,6 +471,12 @@ def calcular_pagamento_ferias_proporcionais(colaborador):
         Descricao="FERIAS",
     ).first()
 
+    gozo_ferias = Ferias.objects.filter(idAquisitivo = aquisitivo).first()
+
+    contra_cheque_ferias = ContraCheque.objects.filter(
+        idContraCheque = gozo_ferias.idContraCheque_id
+    ).first()
+
     if contra_cheque_ferias and contra_cheque_ferias.Pago:
         total_ferias_paga = ContraChequeItens.objects.filter(
             idContraCheque=contra_cheque_ferias.idContraCheque, Registro="C"
