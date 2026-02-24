@@ -393,17 +393,17 @@ def dados_rescisao_trabalho_nova(pdf, contexto):
     linha += 1
     deducoes = Decimal(0.00)
     col = 11
-    if "decimo_terceiro_parcelas_pagas" in contexto:
-        pdf.drawString(cmp(col), cmp(linha), "13º PARCELAS PAGAS")
-        pdf.drawRightString(
-            cmp(col + 93), cmp(linha), f"R$ {decimo_terceiro_pago}"
-        )
-        deducoes += decimo_terceiro_pago
-        if col == 11:
-            col = 106
-        else:
-            col = 11
-            linha -= 7.7
+    #  if "decimo_terceiro_parcelas_pagas" in contexto:
+        #  pdf.drawString(cmp(col), cmp(linha), "13º PARCELAS PAGAS")
+        #  pdf.drawRightString(
+            #  cmp(col + 93), cmp(linha), f"R$ {decimo_terceiro_pago}"
+        #  )
+        #  deducoes += decimo_terceiro_pago
+        #  if col == 11:
+            #  col = 106
+        #  else:
+            #  col = 11
+            #  linha -= 7.7
     if contexto["saldo_salario"] is not None:
         for item in contexto["contra_cheque_itens"]:
             if item.Registro == "D":
