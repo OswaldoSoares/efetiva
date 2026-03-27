@@ -425,6 +425,27 @@ def dados_rescisao_trabalho_nova(pdf, contexto):
             col = 11
             linha -= 7.7
 
+    if contexto["vales"] is not None:
+        for item in contexto["vales"]:
+            if item["checked"] is False:
+                data = datetime.datetime.strftime(item["data"], "%d/%m/%Y")
+                pdf.drawString(
+                    cmp(col),
+                    cmp(linha),
+                    f"{item['descricao']} - {data}"
+                )
+                pdf.drawRightString(
+                    cmp(col + 93),
+                    cmp(linha),
+                    f"R$ {item['valor']}"
+                )
+                deducoes += item["valor"]
+                if col == 11:
+                    col = 106
+                else:
+                    col = 11
+                    linha -= 7.7
+
     linha = 44.4
     pdf.drawRightString(cmp(199), cmp(linha), f"R$ {deducoes}")
     linha -= 7.7
