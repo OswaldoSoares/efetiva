@@ -18,6 +18,7 @@ from pessoas.facade import (
     atualizar_ou_adicionar_contra_cheque_item,
     gerar_data_html,
     get_or_create_contra_cheque,
+    get_vales_colaborador,
     meses_proporcionais_decimo_terceiro,
     obter_contra_cheque,
     obter_evento_ou_erro,
@@ -504,6 +505,12 @@ def calcular_fgts(colaborador):
     return {"fgts": fgts, "fgts_40": fgts_40, "fgts_paga": True}
 
 
+def inserir_vales_na_rescisao(colaborador):
+    vales = get_vales_colaborador(colaborador.id_pessoal)
+
+    return {"vales": vales}
+
+
 def verbas_rescisorias(request):
     id_pessoal = request.POST.get("id_pessoal")
 
@@ -561,6 +568,8 @@ def verbas_rescisorias(request):
     )
 
     contexto.update(calcular_pagamento_ferias_proporcionais(colaborador))
+
+    contexto.update(inserir_vales_na_rescisao(colaborador))
 
     contexto.update({"mensagem": "Rescião Calculada"})
 
