@@ -1,4 +1,5 @@
 import datetime
+import locale
 from decimal import Decimal
 from io import BytesIO
 from pathlib import Path
@@ -16,6 +17,7 @@ from core.tools import (
     antecipar_data_final_de_semana,
     formatar_numero_com_separadores,
     get_saldo_contra_cheque,
+    nome_curto,
     periodo_por_extenso,
     valor_por_extenso,
 )
@@ -1507,3 +1509,126 @@ def print_contra_cheque_pagamento(contexto):
     file_name = f"RECIBO DE PAGAMENTO {nome_curto}.pdf"
 
     return preencher_campos_pdf(pdf_base, campos, file_name, contexto)
+
+
+def campos_base_cartao_ponto(campos, contexto):
+    nome = contexto["colaborador"].nome
+    admissao = datetime.datetime.strftime(
+        contexto["colaborador"].dados_profissionais.data_admissao,
+        "%d/%m/%Y"
+    )
+    cpf = ""
+    for item in contexto["colaborador"].documentos.docs:
+        if item.TipoDocumento == "CPF":
+            cpf = item.Documento
+    cargo = contexto["colaborador"].dados_profissionais.categoria
+
+    campos |= {
+        "empresa": "TRANSPORTADORA EFETIVA LTDA",
+        "cnpj": "00.000.000/0000-00",
+        "admissão": admissao,
+        "colaborador": nome,
+        "cpf": cpf,
+        "cargo": cargo,
+    }
+
+    return campos
+
+
+def campos_dias_cartao_ponto(campos, cartao_ponto):
+    list_dias = []
+    list_previstos  = []
+    list_entradas = []
+    list_saidas = []
+    list_atrasos = []
+    list_extras = []
+    locale.setlocale(locale.LC_TIME, "pt_BR.UTF-8")
+
+    for itens in cartao_ponto:
+        dia = datetime.datetime.strftime(itens.Dia, "%d/%m/%Y - %a").upper()
+        list_dias.append(f"{dia}\n")
+        if itens.Ausencia in ("SABADO", "DOMINGO"):
+            list_previstos.append("\n")
+            list_entradas.append("FOLGA\n")
+            list_saidas.append("\n")
+        else:
+            list_previstos.append("07:00 - 17:00\n")
+            list_entradas.append(f"{itens.Entrada}\n")
+            list_saidas.append(f"{itens.Saida}\n")
+
+    campos |= {
+        "dias_rows": "".join(list_dias),
+        "previstos_rows": "".join(list_previstos),
+        "entradas_rows": "".join(list_entradas),
+        "saidas_rows": "".join(list_saidas),
+        "atraso_rows": "".join(list_atrasos),
+        "extras_rows": "".join(list_extras),
+    }
+
+    return campos
+
+def preencher_cartao_ponto_pdf(pdf_base, campos, file_name, contexto):
+    template_pdf = PdfReader(str(pdf_base))
+
+    output = BytesIO()
+    PdfWriter().write(output, template_pdf)
+    output.seek(0)
+
+    doc = fitz.open(str(pdf_base))
+    page = doc[0]
+
+    for widget in page.widgets():
+        nome = widget.field_name
+        print(nome)
+        if nome in campos:
+            if "rows" in nome:
+                rect = widget.rect
+
+                texto = str(campos[nome])
+                page.delete_widget(widget)
+
+                if nome == "dias_rows":
+                    alinhamento = fitz.TEXT_ALIGN_LEFT
+                else:
+                    alinhamento = fitz.TEXT_ALIGN_CENTER
+
+                page.insert_textbox(
+                    rect,
+                    texto,
+                    fontsize=9,
+                    fontname="helv",
+                    lineheight=1.465,
+                    align=alinhamento,
+                )
+
+            else:
+                widget.field_value = str(campos[nome])
+                widget.field_flags |= fitz.PDF_FIELD_IS_READ_ONLY
+                widget.update()
+
+    pdf = BytesIO()
+    doc.save(pdf, deflate=True, clean=True, incremental=False)
+    doc.close()
+
+    pdf.seek(0)
+
+    response = HttpResponse(pdf.getvalue(), content_type="application/pdf")
+    response["Content-Disposition"] = f'inline; filename="{file_name}"'
+
+    return response
+
+
+def print_carta_ponto(contexto):
+    mes = contexto["mes"]
+    ano = contexto["ano"]
+    cartao_ponto = contexto["cartao_ponto"]
+
+    campos = {}
+
+    campos_base_cartao_ponto(campos, contexto)
+    campos_dias_cartao_ponto(campos, cartao_ponto)
+
+    pdf_base = Path(f"{STATIC_ROOT}/website/pdf/pdf_base_cartao_ponto.pdf")
+    file_name = f"CARTÃO DE PONTO {mes}-{ano} {nome_curto}.pdf"
+
+    return preencher_cartao_ponto_pdf(pdf_base, campos, file_name, contexto)
