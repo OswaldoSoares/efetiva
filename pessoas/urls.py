@@ -48,6 +48,7 @@ from .views import (
     excluir_vale_do_contra_cheque,
     form_paga_decimo_terceiro,
     imprime_contra_cheque,
+    imprimir_cartao_ponto,
     imprimir_contra_cheque,
     indexpessoal,
     mostrar_eventos_rescisorios_colaborador,
@@ -234,6 +235,11 @@ urlpatterns = [
         "selecionar_gozo_ferias",
         selecionar_gozo_ferias,
         name="selecionar_gozo_ferias",
+    ),
+    path(
+        "imprimir_cartao_ponto",
+        imprimir_cartao_ponto,
+        name="imprimir_cartao_ponto",
     ),
 
     # Módulo ponto
