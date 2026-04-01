@@ -14,6 +14,7 @@ from core.tools import (
 from pessoas import facade
 from pessoas.facades import ferias, ponto
 from pessoas.print import (
+    print_carta_ponto,
     print_contra_cheque,
     print_contra_cheque_pagamento,
     print_pdf_ficha_colaborador,
@@ -728,3 +729,16 @@ def adicionar_gozo_ferias_colaborador(request):
 def selecionar_gozo_ferias(request):
     contexto = ferias.obter_contra_cheque_ferias(request)
     return facade.contra_cheque_html_data(request, contexto)
+
+
+def imprimir_cartao_ponto(request):
+    id_pessoal = request.GET.get("id_pessoal")
+    mes = int(request.GET.get("mes"))
+    ano = int(request.GET.get("ano"))
+    contexto = {"mes": request.GET.get("mes"), "ano": request.GET.get("ano")}
+    contexto.update(facade.create_contexto_class_colaborador(request))
+    contexto.update(
+        ponto.create_contexto_cartao_ponto(id_pessoal, mes, ano)
+    )
+
+    return print_carta_ponto(contexto)
