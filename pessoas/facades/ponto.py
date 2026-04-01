@@ -369,6 +369,7 @@ def obter_cartao_ponto_mes(id_pessoal, mes, ano):
 
 
 def create_contexto_cartao_ponto(id_pessoal, mes, ano):
+    colaborador = classes.Colaborador(id_pessoal)
     cartao_ponto = obter_cartao_ponto_mes(id_pessoal, mes, ano)
 
-    return {"cartao_ponto": cartao_ponto}
+    return {"colaborador": colaborador, "cartao_ponto": cartao_ponto}
