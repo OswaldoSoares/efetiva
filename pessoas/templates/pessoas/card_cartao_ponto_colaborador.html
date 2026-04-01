@@ -151,8 +151,19 @@
             <i class="icofont-rounded-left-down"></i>
         </div>
 		<div class="div-flex div-form-control">
-			<div class="tamanho-100 text-left">
-				<span></span>
+			<div class="tamanho-33 text-center">
+                <i class="icofont-arrow-left i-button"
+                   title="MÊS ANTERIOR"></i>
+			</div>
+            <div class="tamanho-34 text-center">
+                {% if cartao_ponto %}
+                <a class="icofont-printer i-button" target="_blank"                        href="{% url 'imprimir_cartao_ponto' %}?mes={{ cartao_ponto.0.Dia|date:"m" }}&ano={{ cartao_ponto.0.Dia|date:"Y" }}&id_pessoal={{ colaborador.id_pessoal }}"
+				title="IMPRIMIR CARTÃO DE PONTO"></a>
+                {% endif %}
+			</div>
+            <div class="tamanho-33 text-center">
+                <i class="icofont-arrow-right i-button"
+                   title="MÊS POSTERIOR"></i>
 			</div>
 		</div>
         <div class=" input-group-addon addon-my-color">
