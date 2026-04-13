@@ -1615,7 +1615,7 @@ def preencher_cartao_ponto_pdf(pdf_base, campos, file_name, contexto):
 
     for widget in page.widgets():
         nome = widget.field_name
-        print(nome)
+
         if nome in campos:
             if "rows" in nome:
                 rect = widget.rect
