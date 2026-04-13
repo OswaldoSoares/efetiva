@@ -368,8 +368,52 @@ def obter_cartao_ponto_mes(id_pessoal, mes, ano):
     return atualizar_cartao_ponto_pelo_registro_ponto(cartao_ponto)
 
 
+def adicionar_atrasos_cartao_ponto(
+        cartao_ponto, horario_entrada=time(7, 0), tolerancia=time(7, 15)
+):
+    total_atrasos = timedelta()
+    for dia in cartao_ponto:
+        atrasos = timedelta()
+        entrada = dia.Entrada.replace(second=0, microsecond=0)
+        if entrada > tolerancia:
+            atrasos = datetime.combine(
+                datetime.min, entrada
+            ) - datetime.combine(datetime.min, horario_entrada)
+            dia.atraso = atrasos
+            total_atrasos += atrasos
+        else:
+            dia.atraso = "--------"
+
+    return cartao_ponto, total_atrasos
+
+
+def adicionar_extras_cartao_ponto(cartao_ponto, horario_saida=time(17, 0)):
+    total_extras = timedelta()
+    for dia in cartao_ponto:
+        extras = timedelta()
+        saida = dia.Saida.replace(second=0, microsecond=0)
+        if saida > horario_saida:
+            extras = datetime.combine(
+                datetime.min, saida
+            ) - datetime.combine(datetime.min, horario_saida)
+            dia.extra = extras
+            total_extras += extras
+        else:
+            dia.extra = "--------"
+
+    return cartao_ponto, total_extras
+
+
 def create_contexto_cartao_ponto(id_pessoal, mes, ano):
     colaborador = classes.Colaborador(id_pessoal)
     cartao_ponto = obter_cartao_ponto_mes(id_pessoal, mes, ano)
 
-    return {"colaborador": colaborador, "cartao_ponto": cartao_ponto}
+    cartao_ponto, atrasos = adicionar_atrasos_cartao_ponto(cartao_ponto)
+    cartao_ponto, extras = adicionar_extras_cartao_ponto(cartao_ponto)
+
+    return {
+        "colaborador": colaborador,
+        "cartao_ponto": cartao_ponto,
+        "atrasos": atrasos,
+        "extras": extras,
+    }

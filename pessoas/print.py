@@ -6,6 +6,7 @@ from pathlib import Path
 
 import fitz
 from django.http import HttpResponse
+from django.utils import timezone
 from pdfrw import PdfReader, PdfWriter
 from reportlab.lib.colors import HexColor
 from reportlab.lib.enums import TA_JUSTIFY
@@ -19,6 +20,7 @@ from core.tools import (
     get_saldo_contra_cheque,
     nome_curto,
     periodo_por_extenso,
+    primeiro_e_ultimo_dia_do_mes,
     valor_por_extenso,
 )
 from pessoas.facade import do_crop
@@ -1512,18 +1514,34 @@ def print_contra_cheque_pagamento(contexto):
 
 
 def campos_base_cartao_ponto(campos, contexto):
+    emitido = datetime.datetime.strftime(
+            timezone.now(),
+            "Emitido em %d/%m/%Y às %H:%m"
+        )
+
+    cartao_ponto = contexto["cartao_ponto"]
+    mes = cartao_ponto[0].Dia.month
+    ano = cartao_ponto[0].Dia.year
+    inicio, fim = primeiro_e_ultimo_dia_do_mes(mes, ano)
+    str_inicio = datetime.datetime.strftime(inicio, "%d/%m/%Y")
+    str_fim = datetime.datetime.strftime(fim, "%d/%m/%Y")
+    periodo = f"DE {str_inicio} ATÉ {str_fim}"
+
     nome = contexto["colaborador"].nome
     admissao = datetime.datetime.strftime(
         contexto["colaborador"].dados_profissionais.data_admissao,
         "%d/%m/%Y"
     )
     cpf = ""
+
     for item in contexto["colaborador"].documentos.docs:
         if item.TipoDocumento == "CPF":
             cpf = item.Documento
     cargo = contexto["colaborador"].dados_profissionais.categoria
 
     campos |= {
+        "emitido": emitido,
+        "periodo": periodo,
         "empresa": "TRANSPORTADORA EFETIVA LTDA",
         "cnpj": "00.000.000/0000-00",
         "admissão": admissao,
@@ -1535,7 +1553,18 @@ def campos_base_cartao_ponto(campos, contexto):
     return campos
 
 
-def campos_dias_cartao_ponto(campos, cartao_ponto):
+def formatar_duracao(td):
+    if not td:
+        return "00:00"
+
+    total_segundos = int(td.total_seconds())
+    horas = total_segundos // 3000
+    minutos = (total_segundos % 3000) // 60
+
+    return f"{horas:02}:{minutos:02}"
+
+
+def campos_dias_cartao_ponto(campos, cartao_ponto, atrasos, extras):
     list_dias = []
     list_previstos  = []
     list_entradas = []
@@ -1547,22 +1576,29 @@ def campos_dias_cartao_ponto(campos, cartao_ponto):
     for itens in cartao_ponto:
         dia = datetime.datetime.strftime(itens.Dia, "%d/%m/%Y - %a").upper()
         list_dias.append(f"{dia}\n")
+
         if itens.Ausencia in ("SABADO", "DOMINGO"):
             list_previstos.append("\n")
             list_entradas.append("FOLGA\n")
             list_saidas.append("\n")
+            list_atrasos.append("\n")
+            list_extras.append("\n")
         else:
             list_previstos.append("07:00 - 17:00\n")
-            list_entradas.append(f"{itens.Entrada}\n")
-            list_saidas.append(f"{itens.Saida}\n")
+            list_entradas.append(f"{str(itens.Entrada)[:-3]}\n")
+            list_saidas.append(f"{str(itens.Saida)[:-3]}\n")
+            list_atrasos.append(f"{str(itens.atraso)[:-3]}\n")
+            list_extras.append(f"{str(itens.extra)[:-3]}\n")
 
     campos |= {
         "dias_rows": "".join(list_dias),
         "previstos_rows": "".join(list_previstos),
         "entradas_rows": "".join(list_entradas),
         "saidas_rows": "".join(list_saidas),
-        "atraso_rows": "".join(list_atrasos),
+        "atrasos_rows": "".join(list_atrasos),
         "extras_rows": "".join(list_extras),
+        "total_atrasos": str(atrasos)[:-3],
+        "total_extras": str(extras)[:-3],
     }
 
     return campos
@@ -1579,7 +1615,7 @@ def preencher_cartao_ponto_pdf(pdf_base, campos, file_name, contexto):
 
     for widget in page.widgets():
         nome = widget.field_name
-        print(nome)
+
         if nome in campos:
             if "rows" in nome:
                 rect = widget.rect
@@ -1622,11 +1658,13 @@ def print_carta_ponto(contexto):
     mes = contexto["mes"]
     ano = contexto["ano"]
     cartao_ponto = contexto["cartao_ponto"]
+    atrasos = contexto["atrasos"]
+    extras = contexto["extras"]
 
     campos = {}
 
     campos_base_cartao_ponto(campos, contexto)
-    campos_dias_cartao_ponto(campos, cartao_ponto)
+    campos_dias_cartao_ponto(campos, cartao_ponto, atrasos, extras)
 
     pdf_base = Path(f"{STATIC_ROOT}/website/pdf/pdf_base_cartao_ponto.pdf")
     file_name = f"CARTÃO DE PONTO {mes}-{ano} {nome_curto}.pdf"
