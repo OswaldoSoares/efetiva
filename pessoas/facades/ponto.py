@@ -268,6 +268,9 @@ def processar_dia_util(
 
 
 def atualizar_cartao_ponto_pelo_registro_ponto(cartao_ponto):
+    if not cartao_ponto.exists():
+        return None
+
     primeiro_dia = cartao_ponto.first().Dia
     hoje = datetime.today().date()
     data_implementacao = datetime(2025, 7, 21).date()
