@@ -1577,18 +1577,18 @@ def campos_dias_cartao_ponto(campos, cartao_ponto, atrasos, extras):
         dia = datetime.datetime.strftime(itens.Dia, "%d/%m/%Y - %a").upper()
         list_dias.append(f"{dia}\n")
 
-        if itens.Ausencia in ("SABADO", "DOMINGO"):
-            list_previstos.append("\n")
-            list_entradas.append("FOLGA\n")
-            list_saidas.append("\n")
-            list_atrasos.append("\n")
-            list_extras.append("\n")
-        else:
+        if itens.Ausencia == "":
             list_previstos.append("07:00 - 17:00\n")
             list_entradas.append(f"{str(itens.Entrada)[:-3]}\n")
             list_saidas.append(f"{str(itens.Saida)[:-3]}\n")
             list_atrasos.append(f"{str(itens.atraso)[:-3]}\n")
             list_extras.append(f"{str(itens.extra)[:-3]}\n")
+        else:
+            list_previstos.append("\n")
+            list_entradas.append(f"{itens.Ausencia}\n")
+            list_saidas.append("\n")
+            list_atrasos.append("\n")
+            list_extras.append("\n")
 
     campos |= {
         "dias_rows": "".join(list_dias),
