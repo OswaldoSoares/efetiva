@@ -35,5 +35,11 @@
     { "faixa_final": 2793.88, "aliquota": 0.09, "parcela_deduzir": 22.77 },
     { "faixa_final": 4190.83, "aliquota": 0.12, "parcela_deduzir": 106.59 },
     { "faixa_final": 8157.41, "aliquota": 0.14, "parcela_deduzir": 190.40 }
+  ],
+  "2026": [
+    { "faixa_final": 1621.00, "aliquota": 0.075, "parcela_deduzir": 0.00 },
+    { "faixa_final": 2902.85, "aliquota": 0.09, "parcela_deduzir": 23.66 },
+    { "faixa_final": 4354.27, "aliquota": 0.12, "parcela_deduzir": 110.75 },
+    { "faixa_final": 8475.55, "aliquota": 0.14, "parcela_deduzir": 197.83 }
   ]
 }
