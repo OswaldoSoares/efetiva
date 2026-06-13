@@ -3,6 +3,8 @@ import json
 import os
 from datetime import date, datetime, timedelta
 from decimal import ROUND_HALF_UP, Decimal
+from django.db.models import Q
+from django.utils import timezone
 from pathlib import Path
 from typing import Any
 
@@ -105,9 +107,12 @@ def create_contexto_categoria():
 
 
 def create_contexto_colaboradores(categoria, status_colaborador):
+    data_limete = timezone.now().date() - timedelta(days=15)
     colaboradores = (
         Pessoal.objects.filter(
             TipoPgto="MENSALISTA", StatusPessoal=status_colaborador
+        ).filter(
+            Q(DataDemissao__gte=data_limete) | Q(DataDemissao__isnull=True)
         )
         if categoria == "MENSALISTA"
         else Pessoal.objects.filter(StatusPessoal=status_colaborador).exclude(
