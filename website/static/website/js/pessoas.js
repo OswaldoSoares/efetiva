@@ -7,6 +7,7 @@ var ocultarCardsColaborador =  function() {
     $(".card-rescisao-colaborador").hide();
     $(".card-eventos-rescisorios-colaborador").hide();
     $(".card-vales-colaborador").hide();
+    $(".card-ferias-colaborador").hide();
     $(".card-decimo-terceiro-colaborador").hide();
     $(".card-docs-colaborador").hide();
     $(".card-fones-colaborador").hide();
