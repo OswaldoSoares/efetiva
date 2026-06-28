@@ -3,8 +3,6 @@ import json
 import os
 from datetime import date, datetime, timedelta
 from decimal import ROUND_HALF_UP, Decimal
-from django.db.models import Q
-from django.utils import timezone
 from pathlib import Path
 from typing import Any
 
@@ -15,12 +13,14 @@ from django.db.models import (
     ExpressionWrapper,
     F,
     IntegerField,
+    Q,
     Sum,
     Value,
     When,
 )
 from django.http import JsonResponse
 from django.template.loader import render_to_string
+from django.utils import timezone
 from PIL import Image, ImageDraw
 
 from core.constants import (
