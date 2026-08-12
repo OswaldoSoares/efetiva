@@ -1,24 +1,22 @@
 import datetime
 import os
 import xml.etree.ElementTree as ET
-from cgitb import html
 from decimal import Decimal
-from xml.dom import ValidationErr
 
 import requests
-from clientes.models import Cliente
 from django.db.models import Max
 from django.http import JsonResponse
 from django.template.loader import render_to_string
-from website.facade import nome_curto
-from website.models import FileUpload
 
+from clientes.models import Cliente
 from romaneios.models import (
     NotasClientes,
     NotasOcorrencias,
     RomaneioNotas,
     Romaneios,
 )
+from website.facade import nome_curto
+from website.models import FileUpload
 
 
 def create_contexto_seleciona_cliente():
