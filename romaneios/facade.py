@@ -1184,6 +1184,8 @@ def send_message(message, idcliente):
     token = "8517596166:AAHfm23NOpAYiNLihLENq1DqQ2V4bYDN5w8"
     if idcliente == "11":
         chat_id = "-666092318"  # Telegram Transefetiva - LogCatavento
+    elif idcliente == "5":
+        chat_id = "-5307964381"
     elif idcliente == "7":
         chat_id = "-994748069"  # Telegram Transefetiva - Kite
     else:
@@ -1200,6 +1202,8 @@ def send_arquivo(romaneio, idcliente):
     token = "8517596166:AAHfm23NOpAYiNLihLENq1DqQ2V4bYDN5w8"
     if idcliente == "11":
         chat_id = "-666092318"  # Telegram Transefetiva - LogCatavento
+    elif idcliente == "5":
+        chat_id = "-5307964381"
     elif idcliente == "7":
         chat_id = "-994748069"  # Telegram Transefetiva - Kite
     else:
@@ -1220,6 +1224,8 @@ def send_arquivo_relatorio(sort_status, idcliente):
     token = "8517596166:AAHfm23NOpAYiNLihLENq1DqQ2V4bYDN5w8"
     if idcliente == "11":
         chat_id = "-666092318"  # Telegram Transefetiva - LogCatavento
+    elif idcliente == "5":
+        chat_id = "-5307964381"
     elif idcliente == "7":
         chat_id = "-994748069"  # Telegram Transefetiva - Kite
     else:
