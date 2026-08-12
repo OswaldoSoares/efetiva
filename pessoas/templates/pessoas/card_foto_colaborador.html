@@ -86,7 +86,35 @@
             <div class="input-group-addon addon-my-color">
                 <i class="icofont-check i-button-null"></i>
             </div>
-
+        </div>
+        <div class="input-group">
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-check i-button-null"></i>
+            </div>
+            {% if colaborador.dados_profissionais.registrado %}
+            <div class="div-flex div-form-control">
+                <div class="tamanho-100 text-center font-menor">
+                    <span>COLABORADOR REGISTRADO</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-check i-button-null"></i>
+            </div>
+            {% else %}
+            <div class="div-flex div-form-control">
+                <div class="tamanho-100 text-center font-menor">
+                    <span>REGISTRAR COLABORADOR</span>
+                </div>
+            </div>
+            <div class="input-group-addon addon-my-color">
+                <i class="icofont-stamp i-button" title="REGISTRAR COLABORADOR"
+                   onclick="openMyModal(event); return false;"
+                   data-title="REGISTRA COLABORADOR"
+                   data-action="{% url 'registrar_colaborador' %}"
+                   data-id_pessoal={{ colaborador.id_pessoal }}
+                   data-button-save-label="REGISTRAR"></i>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>

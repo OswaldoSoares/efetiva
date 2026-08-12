@@ -10,7 +10,11 @@ from django.db.models import DecimalField, ExpressionWrapper, F, Max, Min, Sum
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from core.constants import MESES
-from core.tools import gerar_data_html, primeiro_e_ultimo_dia_do_mes
+from core.tools import (
+    gerar_data_html,
+    primeiro_e_ultimo_dia_do_mes,
+    get_mensagem,
+)
 from despesas.models import Multas
 from minutas.facade import nome_curto, nome_curto_underscore
 from minutas.models import MinutaColaboradores, MinutaItens
@@ -18,6 +22,7 @@ from pessoas.classes import Colaborador
 from pessoas.forms import CadastraContraChequeItens
 from pessoas.models import Agenda, CartaoPonto, ContaPessoal, ContraCheque
 from pessoas.models import ContraChequeItens, Pessoal, Salario, Vales
+from pessoas.facades.ponto import obter_cartao_ponto_mes
 
 
 from pessoas.facade import (
@@ -448,7 +453,7 @@ def create_contexto_folha_pagamento(request):
         "mes": mes,
         "ano": ano,
         "totais": totais,
-        "mensagem": f"O mês {mes}/{ano} foi selecionado",
+        **get_mensagem('pafa0001', mes=mes, ano=ano)
     }
 
 
@@ -634,19 +639,22 @@ def create_contexto_colaborador(request):
     data_demissao = colaborador.dados_profissionais.data_demissao
 
     primeiro_dia, ultimo_dia = primeiro_e_ultimo_dia_do_mes(mes, ano)
-    cartao_ponto = obter_cartao_de_ponto_do_colaborador(colaborador, mes, ano)
-    verificar_feriados(cartao_ponto, mes, ano)
+    cartao_ponto = obter_cartao_ponto_mes(id_pessoal, mes, ano)
+    #  cartao_ponto = obter_cartao_de_ponto_do_colaborador(colaborador, mes, ano)
+    #  verificar_feriados(cartao_ponto, mes, ano)
 
-    vale_transporte = colaborador.salarios.salarios.ValeTransporte
-    atualizar_cartao_ponto_transporte(cartao_ponto, vale_transporte)
+    #  vale_transporte = colaborador.salarios.salarios.ValeTransporte
+    #  atualizar_cartao_ponto_transporte(cartao_ponto, vale_transporte)
 
     minutas = get_minutas_periodo_contra_cheque(
         id_pessoal, primeiro_dia, ultimo_dia
     )
-    atualizar_cartao_ponto_minutas(cartao_ponto, minutas)
+    #  atualizar_cartao_ponto_minutas(cartao_ponto, minutas)
+
+    #  atualizar_cartao_ponto_pelo_registro_ponto(cartao_ponto)
 
     # Recria QuerySet para obter as atualizações feitas
-    cartao_ponto = obter_cartao_de_ponto_do_colaborador(colaborador, mes, ano)
+    #  cartao_ponto = obter_cartao_de_ponto_do_colaborador(colaborador, mes, ano)
     mes_da_demissao = (
         True
         if data_demissao and data_demissao >= primeiro_dia.date()
@@ -661,6 +669,7 @@ def create_contexto_colaborador(request):
         "cartao_ponto": cartao_ponto,
         "minutas": minutas,
         "mes_da_demissao": mes_da_demissao,
+        **get_mensagem("pafa0002", colaborador=colaborador.nome)
     }
 
     agenda = create_contexto_agenda_colaborador(id_pessoal, mes, ano)
@@ -1105,18 +1114,21 @@ def create_contexto_funcionario(mes_ano, id) -> JsonResponse:
 
 
 def create_data_seleciona_funcionario(request, contexto):
-    data = dict()
-    html_cartao_ponto(request, contexto, data)
-    html_funcionario(request, contexto, data)
-    html_contra_cheque(request, contexto, data)
-    html_minutas(request, contexto, data)
-    html_vales_pagamento(request, contexto, data)
-    html_agenda(request, contexto, data)
-    html_files_pagamento(request, contexto, data)
-    html_vales(request, contexto, data)
-    html_itens_agenda_pagamento(request, contexto, data)
-    html_itens_contra_cheque(request, contexto, data)
-    return JsonResponse(data)
+    data = {}
+    html_functions = [
+        html_data.html_cartao_ponto,
+        html_data.html_funcionario,
+        html_data.html_contra_cheque,
+        html_data.html_minutas,
+        html_data.html_vales_pagamento,
+        html_data.html_agenda,
+        html_data.html_files_pagamento,
+        html_data.html_vales,
+        html_data.html_itens_agenda_pagamento,
+        html_data.html_itens_contra_cheque,
+    ]
+
+    return gerar_data_html(html_functions, request, contexto, data)
 
 
 # Excluir sem uso

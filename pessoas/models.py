@@ -2,7 +2,6 @@ import os
 
 from django.contrib.auth.hashers import make_password
 from django.db import models
-from django.forms import CharField
 
 
 def get_file_path(instance, filename):
@@ -31,6 +30,7 @@ class Pessoal(models.Model):
     DataAdmissao = models.DateField(blank=True, null=True)
     DataDemissao = models.DateField(blank=True, null=True)
     Foto = models.ImageField(upload_to=get_file_path, null=True, blank=True)
+    registrado = models.BooleanField(default=False)
 
     class Meta:
         db_table = "pessoal"
@@ -230,8 +230,11 @@ class ContraCheque(models.Model):
     AnoReferencia = models.IntegerField()
     Valor = models.DecimalField(decimal_places=2, max_digits=9, default=0.00)
     Pago = models.BooleanField(default=False)
-    Descricao = models.CharField(max_length=15, blank=15)
+    Descricao = models.CharField(max_length=15)
     Obs = models.TextField(blank=True)
+    BaseINSS = models.DecimalField(decimal_places=2, max_digits=9, default=0.00)
+    BaseFGTS = models.DecimalField(decimal_places=2, max_digits=9, default=0.00)
+    BaseIRRF = models.DecimalField(decimal_places=2, max_digits=9, default=0.00)
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
 
     class Meta:
@@ -274,8 +277,8 @@ class CartaoPonto(models.Model):
     Dia = models.DateField()
     Entrada = models.TimeField()
     Saida = models.TimeField()
-    Ausencia = models.CharField(max_length=7, blank=True)
-    Alteracao = models.CharField(max_length=6, default="ROBOT")
+    Ausencia = models.CharField(max_length=7, blank=True, default="-------")
+    Alteracao = models.CharField(max_length=9, default="ROBOT")
     Conducao = models.BooleanField(default=False)
     Remunerado = models.BooleanField(default=True)
     CarroEmpresa = models.BooleanField(default=False)
@@ -380,6 +383,9 @@ class Ferias(models.Model):
     DataInicial = models.DateField(blank=True, null=True)
     DataFinal = models.DateField(blank=True, null=True)
     idAquisitivo = models.ForeignKey(Aquisitivo, on_delete=models.CASCADE)
+    idContraCheque = models.ForeignKey(
+        ContraCheque, on_delete=models.CASCADE, blank=True, null=True
+    )
     idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
 
     class Meta:
@@ -436,25 +442,6 @@ class SenhaAppPonto(models.Model):
 
     def __str__(self):
         return str(self.idSenhaAppPonto)
-
-    objects = models.Manager()
-
-
-class FidoCredential(models.Model):
-    idFidoCredential = models.AutoField(primary_key=True)
-    credential_id = models.CharField(max_length=512, unique=True)
-    public_key_pem = models.TextField()
-    device_id = models.CharField(max_length=128)
-    created_at = models.DateTimeField(auto_now_add=True)
-    liberado_pelo_rh = models.BooleanField(default=False)
-    idPessoal = models.ForeignKey(Pessoal, on_delete=models.CASCADE)
-
-    class Meta:
-        db_table = "credentials"
-        ordering = ["idPessoal"]
-
-    def __str__(self):
-        return str(self.idFidoCredential)
 
     objects = models.Manager()
 

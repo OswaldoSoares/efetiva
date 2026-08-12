@@ -40,6 +40,7 @@ from .views import (
     selecionar_colaborador,
     selecionar_contra_cheque_pagamento,
     selecionar_contra_cheque_adiantamento,
+    selecionar_contra_cheque_vale_transporte,
 )
 
 urlpatterns = [
@@ -62,6 +63,11 @@ urlpatterns = [
         "selecionar_contra_cheque_adiantamento",
         selecionar_contra_cheque_adiantamento,
         name="selecionar_contra_cheque_adiantamento",
+    ),
+    path(
+        "selecionar_contra_cheque_vale_transporte",
+        selecionar_contra_cheque_vale_transporte,
+        name="selecionar_contra_cheque_vale_transporte",
     ),
     ## Antigos
     path("", index_pagamento, name="index_pagamento"),

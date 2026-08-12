@@ -1,20 +1,29 @@
 from functools import partial
-from django.shortcuts import render
-from django.shortcuts import redirect
+
 from django.http import JsonResponse
+from django.shortcuts import redirect, render
 from rolepermissions.decorators import has_permission_decorator
-from core.tools import upload_de_arquivo, excluir_arquivo
-from core.tools import modal_excluir_arquivo, get_request_data
-from core.tools import injetar_parametro_no_request_post
-from .facades import rescisao
+
+from core.tools import (
+    excluir_arquivo,
+    get_request_data,
+    injetar_parametro_no_request_post,
+    modal_excluir_arquivo,
+    upload_de_arquivo,
+)
 from pessoas import facade
-from pessoas.facades import ponto
+from pessoas.facades import ferias, ponto
 from pessoas.print import (
+    print_carta_ponto,
+    print_contra_cheque,
+    print_contra_cheque_pagamento,
     print_pdf_ficha_colaborador,
     print_pdf_rescisao_trabalho,
-    print_contra_cheque,
+    print_recibo_ferias,
 )
 from website.facade import str_hoje
+
+from .facades import rescisao
 
 
 @has_permission_decorator("modulo_colaboradores")
@@ -76,11 +85,9 @@ def adicionar_ou_atualizar_doc_colaborador(request):
 
 
 def upload_arquivo_documento(request):
-    print(request.POST)
     id_pessoal = request.POST.get("id_pessoal")
     tipo_documento = request.POST.get("tipo_documento")
     nome_arquivo = f"Documento_-_{tipo_documento}_-_{str(id_pessoal).zfill(4)}"
-    print(nome_arquivo)
     mensagem = upload_de_arquivo(request, nome_arquivo, 5)
 
     contexto = facade.create_contexto_class_colaborador(request)
@@ -212,8 +219,7 @@ def mostrar_eventos_rescisorios_colaborador(request):
 
 
 def calcular_verbas_rescisorias_colaborador(request):
-    print(request.POST)
-    contexto = facade.verbas_rescisorias(request)
+    contexto = rescisao.verbas_rescisorias(request)
     response = print_pdf_rescisao_trabalho(request, contexto)
     return response
 
@@ -244,7 +250,7 @@ def alterar_entrada_colaborador(request):
         request,
         facade.modal_entrada_colaborador,
         facade.save_entrada_colaborador,
-        partial(facade.create_contexto_cartao_ponto, id_pessoal, mes, ano),
+        partial(ponto.create_contexto_cartao_ponto, id_pessoal, mes, ano),
         facade.cartao_ponto_html_data,
     )
 
@@ -446,7 +452,6 @@ def demissao_colaborador(request):
 
 
 def salva_demissao_colaborador(request):
-    print("demitido")
     error, msg = facade.valida_demissao_colaborador(request)
     demissao_form = facade.read_demissao_post(request)
     data_demissao = request.POST.get("demissao")
@@ -465,46 +470,6 @@ def salva_demissao_colaborador(request):
         }
         contexto.update(msg)
         data = facade.create_data_form_altera_demissao(request, contexto)
-    return data
-
-
-def periodo_ferias(request):
-    idpessoal = request.GET.get("idpessoal")
-    idaquisitivo = request.GET.get("idaquisitivo")
-    hoje = str_hoje()
-    contexto = {
-        "idpessoal": idpessoal,
-        "idaquisitivo": idaquisitivo,
-        "hoje": hoje,
-    }
-    data = facade.create_data_form_periodo_ferias(request, contexto)
-    return data
-
-
-def salva_periodo_ferias(request):
-    error, msg = facade.valida_periodo_ferias(request)
-    ferias_form = facade.read_periodo_ferias_post(request)
-    if not error:
-        data = dict()
-        idpessoal = request.POST.get("idpessoal")
-        inicio = request.POST.get("inicio")
-        terminio = request.POST.get("termino")
-        idaquisitivo = request.POST.get("idaquisitivo")
-        facade.salva_periodo_ferias_colaborador(
-            idpessoal, inicio, terminio, idaquisitivo
-        )
-        contexto = facade.create_contexto_consulta_colaborador(idpessoal)
-        data = facade.create_data_consulta_colaborador(request, contexto)
-        ferias_form = dict()
-    else:
-        idpessoal = request.POST.get("idpessoal")
-        contexto = {
-            "ferias_form": ferias_form,
-            "idpessoal": idpessoal,
-            "error": error,
-        }
-        contexto.update(msg)
-        data = facade.create_data_form_periodo_ferias(request, contexto)
     return data
 
 
@@ -642,21 +607,29 @@ def imprime_contra_cheque(request):
 
 
 def imprimir_contra_cheque(request):
-    id_pessoal = request.GET.get("id_pessoal")
-    contexto = facade.create_contexto_contra_cheque(request)
-    contexto.update(facade.create_contexto_class_colaborador(request))
-    contexto.update(
-        facade.create_contexto_minutas_contra_cheque(
-            id_pessoal, contexto["contra_cheque"]
-        )
-    )
-    contexto.update(
-        facade.create_contexto_cartao_ponto_contra_cheque(
-            id_pessoal, contexto["contra_cheque"]
-        )
-    )
-    response = print_contra_cheque(contexto)
-    return response
+    contexto = facade.create_contexto_print_contra_cheque(request)
+
+    if contexto["descricao"] == "FERIAS":
+        return print_recibo_ferias(contexto)
+
+
+    return print_contra_cheque_pagamento(contexto)
+
+    #  id_pessoal = request.GET.get("id_pessoal")
+    #  contexto = facade.create_contexto_contra_cheque(request)
+    #  contexto.update(facade.create_contexto_class_colaborador(request))
+    #  contexto.update(
+        #  facade.create_contexto_minutas_contra_cheque(
+            #  id_pessoal, contexto["contra_cheque"]
+        #  )
+    #  )
+    #  contexto.update(
+        #  facade.create_contexto_cartao_ponto_contra_cheque(
+            #  id_pessoal, contexto["contra_cheque"]
+        #  )
+    #  )
+    #  response = print_contra_cheque(contexto)
+    #  return response
 
 
 def adiciona_vale_colaborador(request):
@@ -728,3 +701,44 @@ def readmitir_colaborador(request):
         partial(facade.create_contexto_class_colaborador, request),
         facade.data_demissao_html_data,
     )
+
+def registrar_colaborador(request):
+    return handle_modal_colaborador(
+        request,
+        facade.modal_registra_colaborador,
+        facade.save_registro_colaborador,
+        partial(facade.create_contexto_class_colaborador, request),
+        facade.colaborador_html_data,
+    )
+
+
+def adicionar_gozo_ferias_colaborador(request):
+    error = ferias.validar_gozo_ferias_colaborador(request)
+    if error:
+        return JsonResponse(error)
+
+    return handle_modal_colaborador(
+        request,
+        ferias.modal_gozo_ferias_colaborador,
+        ferias.save_gozo_ferias_colaborador,
+        partial(facade.create_contexto_class_colaborador, request),
+        facade.colaborador_html_data,
+        )
+
+
+def selecionar_gozo_ferias(request):
+    contexto = ferias.obter_contra_cheque_ferias(request)
+    return facade.contra_cheque_html_data(request, contexto)
+
+
+def imprimir_cartao_ponto(request):
+    id_pessoal = request.GET.get("id_pessoal")
+    mes = int(request.GET.get("mes"))
+    ano = int(request.GET.get("ano"))
+    contexto = {"mes": request.GET.get("mes"), "ano": request.GET.get("ano")}
+    contexto.update(facade.create_contexto_class_colaborador(request))
+    contexto.update(
+        ponto.create_contexto_cartao_ponto(id_pessoal, mes, ano)
+    )
+
+    return print_carta_ponto(contexto)

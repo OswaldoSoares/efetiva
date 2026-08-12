@@ -75,7 +75,6 @@ function processarRespostaAjax(xhr, modal, url) {
     } else {
         $(modal).modal("hide");
         atualizarInterfaceComDados(xhr);
-        exibirMensagem(xhr["mensagem"]);
 
         if (xhr["link"]) {
             window.location.href = xhr["link"];

@@ -7,6 +7,7 @@ var ocultarCardsColaborador =  function() {
     $(".card-rescisao-colaborador").hide();
     $(".card-eventos-rescisorios-colaborador").hide();
     $(".card-vales-colaborador").hide();
+    $(".card-ferias-colaborador").hide();
     $(".card-decimo-terceiro-colaborador").hide();
     $(".card-docs-colaborador").hide();
     $(".card-fones-colaborador").hide();
@@ -20,6 +21,37 @@ $(document).ready(function() {
     $(".button-demissao").hide();
     ocultarCardsColaborador();
 });
+
+function calcularDataFinal() {
+    const dataInicial = new Date($("#id_data_inicio").val())
+    const maxDias = parseInt($("#id_dias").attr("max"))
+    const dias = parseInt($("#id_dias").val())
+
+    // if (dias > maxDias) {
+        // console.log("carai")
+        // mostrarToast(
+            // "Os dias em férias não podem ser maior que os dias para completar o período aquisitivo",
+            // "error"
+        // )
+        // $(".btn-save").addClass("disabled")
+    // } else {
+        // $(".btn-save").removeClass("disabled")
+    // }
+
+    if (!isNaN(dataInicial.getTime()) && !isNaN(dias)) {
+        const dataFinal = new Date(dataInicial);
+        dataFinal.setDate(dataFinal.getDate() + dias - 1);
+        $("#id_data_fim").val(dataFinal.toISOString().split('T')[0]);
+    }
+}
+
+$(document).on('change', '.js-data-inicio', function() {
+    calcularDataFinal()
+})
+
+$(document).on('change', '.js-dias', function() {
+    calcularDataFinal()
+})
 
 // Função para salvar arquivo de docuemnto
 $(document).on('submit', '.js-file-arquivo-de-documentos', function(event) {
@@ -342,6 +374,21 @@ $(document).on('click', '.js-atualiza-decimo-terceiro', function() {
             // $(".box-loader").hide()
     // });
 // });
+
+$(document).on('click', '.js-selecionar-gozo-ferias', function() {
+    const idFerias = $(this).data("id_ferias")
+
+    executarAjax("/pessoas/selecionar_gozo_ferias", "GET", {
+        id_ferias: idFerias,
+    }, function(data) {
+        console.log(data)
+        $(".card-ferias-colaborador").html(data["html-card-ferias-colaborador"]);
+        $(".card-contra-cheque-colaborador").html(data["html-card-contra-cheque-colaborador"]);
+        $(".card-contra-cheque-colaborador").show();
+        $(".box-loader").hide();
+        mostrarToast(data["mensagem"], data["tipo"])
+    });
+});
 
 $(document).on('click', '.js-periodo-ferias', function() {
     // var idpessoal = $("#idpessoal").val();

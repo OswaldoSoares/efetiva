@@ -22,6 +22,29 @@ if (typeof mesAno !== "undefined") {
     var mesAno = null; // Declara como null na primeira carga
 }
 
+function mostrarToast(texto, tipo = 'info') {
+    toastr[tipo](texto);
+}
+
+toastr.options = {
+    "toastClass": "toast text-center",
+    "closeButton": true,
+    "debug": false,
+    "newestOnTop": true,
+    "progressBar": true,
+    "positionClass": "toast-bottom-right",  // pode mudar p/ 'toast-bottom-left' etc.
+    "preventDuplicates": true,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",  // tempo visível
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut",
+};
+
 $(document).on('keydown', 'input.js-decimal, input.js-inteiro', function(e) {
     // Permitir: backspace, delete, setas (esquerda e direita), tab
     if ($.inArray(e.keyCode, [8, 9, 37, 39, 46]) !== -1) {
@@ -238,7 +261,6 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
         header.addClass('loading');
         var url = $(this).attr('action') || action;
         var formData = new FormData($('.rows').get(0));  
-        console.log(formData)      
         $.ajax({
             type: $(this).attr('method'),
             url: url,
@@ -253,7 +275,6 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                     formAjaxSubmit(modal, url, cbAfterLoad, cbAfterSuccess);
                 } else {
                     $(modal).modal('hide');
-                    console.log(xhr)
                     if (xhr["html_card_folha_pagamento"]) {
                         $(".card-folha-pagamento").html(xhr["html_card_folha_pagamento"])
                     }
@@ -283,6 +304,7 @@ function formAjaxSubmit(modal, action, cbAfterLoad, cbAfterSuccess) {
                         cbAfterSuccess(modal);
                     }
                 }
+                atualizarInterfaceComDados(xhr)
                 $('.box-loader').hide()
             },
             error: function(xhr, ajaxOptions, thrownError) {
@@ -341,6 +363,7 @@ $(document).on('submit', '.js-file-contra-cheque', function(event) {
             $(".card-contra-cheque-colaborador").show()
             $('.box-loader').hide()
             exibirMensagem(data["mensagem"])
+            $('.box-loader').hide()
         },
     });
 });

@@ -1,12 +1,30 @@
-""" Responsável pelas férias do colaborador """
-from datetime import datetime
+"""Responsável pelas férias do colaborador"""
+
+from datetime import datetime, timedelta
 from decimal import ROUND_HALF_UP, Decimal
-from typing import Dict, List
+
 from dateutil.relativedelta import relativedelta
-from pessoas.models import Aquisitivo, CartaoPonto, Ferias, Salario
+from django.http import JsonResponse
+
+from core.constants import MESES
+from core.tools import (
+    get_mensagem,
+    get_saldo_contra_cheque,
+    obter_mes_por_numero,
+)
+from pessoas import classes, html_data
+from pessoas.facades.ponto import obter_cartao_ponto_mes
+from pessoas.models import (
+    Aquisitivo,
+    CartaoPonto,
+    ContraCheque,
+    ContraChequeItens,
+    Ferias,
+    Salario,
+)
 
 
-def faltas_periodo_aquisitivo(id_pessoal: int, aquisitivo) -> List[str]:
+def faltas_periodo_aquisitivo(id_pessoal: int, aquisitivo) -> list[str]:
     """
     Retorna uma lista com as datas das faltas não remuneradas registradas
     durante o período aquisitivo do colaborador.
@@ -164,7 +182,7 @@ def anota_dados_ferias(id_pessoal, aquisitivos):
     return aquisitivos
 
 
-def create_contexto_ferias_colaborador(id_pessoal) -> Dict:
+def create_contexto_ferias_colaborador(id_pessoal) -> dict:
     """
     Retorna um dicionário com os dados de férias do colaborador, contendo:
     - Lista de períodos aquisitivos, com valores calculados
@@ -186,3 +204,219 @@ def create_contexto_ferias_colaborador(id_pessoal) -> Dict:
     gozo_ferias = Ferias.objects.filter(idPessoal=id_pessoal).reverse()
 
     return {"aquisitivos": aquisitivos, "gozo_ferias": gozo_ferias}
+
+
+def obter_dias_para_gozo_ferias(id_pessoal):
+    dict_ferias = create_contexto_ferias_colaborador(id_pessoal)
+    for aquisitivo in reversed(list(dict_ferias["aquisitivos"])):
+        gozo_ferias = dict_ferias["gozo_ferias"].filter(
+            idAquisitivo_id=aquisitivo.idAquisitivo
+        )
+        dias = 0
+        for gozo in gozo_ferias:
+            dias += (gozo.DataFinal - gozo.DataInicial).days + 1
+
+        if aquisitivo.dias > dias:
+            dias_restantes = round(aquisitivo.dias - dias)
+            return dias_restantes, aquisitivo
+
+    return 0, False
+
+
+def modal_gozo_ferias_colaborador(id_pessoal, request):
+    colaborador = classes.Colaborador(id_pessoal)
+    dias_restantes, aquisitivo = obter_dias_para_gozo_ferias(id_pessoal)
+    hoje = datetime.today().date()
+    data_final = hoje + timedelta(dias_restantes - 1)
+    contexto = {
+        "colaborador": colaborador,
+        "aquisitivo": aquisitivo,
+        "dias_restantes": dias_restantes,
+        "hoje": hoje.strftime("%Y-%m-%d"),
+        "data_final": data_final.strftime("%Y-%m-%d"),
+    }
+    modal_html = html_data.html_modal_gozo_ferias_colaborador(request, contexto)
+    return JsonResponse({"modal_html": modal_html})
+
+
+def validar_dias_ferias(id_pessoal, dias_ferias):
+    dias_restantes, _ = obter_dias_para_gozo_ferias(id_pessoal)
+
+    return not int(dias_ferias) > dias_restantes
+
+
+def validar_data_ferias(id_pessoal, data):
+    data = datetime.strptime(data, "%Y-%m-%d").date()
+    mes = data.month
+    mes_extenso = MESES[int(mes)]
+    ano = data.year
+
+    contra_cheque = ContraCheque.objects.filter(
+        idPessoal_id=id_pessoal,
+        MesReferencia=mes_extenso,
+        AnoReferencia=ano,
+        Descricao="PAGAMENTO",
+    ).first()
+
+    return not contra_cheque and contra_cheque.Pago
+
+
+def validar_admitido_ferias(colaborador, data):
+    data = datetime.strptime(data, "%Y-%m-%d").date()
+    admissao = colaborador.dados_profissionais.data_admissao
+
+    return not data < admissao
+
+
+def validar_gozo_ferias_colaborador(request):
+    if request.method != "POST":
+        return False
+
+    id_pessoal = request.POST.get("id_pessoal")
+    data_inicio = request.POST.get("data_inicio")
+    dias_ferias = request.POST.get("dias")
+    data_fim = request.POST.get("data_fim")
+
+    colaborador = classes.Colaborador(id_pessoal)
+
+    #  if not validar_dias_ferias(id_pessoal, dias_ferias):
+        #  return get_mensagem("pefe0002", dias=dias_ferias)
+
+    #  if not validar_data_ferias(id_pessoal, data_inicio):
+        #  return get_mensagem("pefe0003")
+
+    #  if not validar_data_ferias(id_pessoal, data_fim):
+        #  return get_mensagem("pefe0004")
+
+    if not validar_admitido_ferias(colaborador, data_inicio):
+        return get_mensagem("pefe0005")
+
+
+def atualizar_cartao_ponto_ferias(id_pessoal, data_inicio, data_fim):
+    cartao_ponto = CartaoPonto.objects.filter(
+        idPessoal=id_pessoal, Dia__range=[data_inicio, data_fim]
+    )
+
+    try:
+        cartao_ponto.update(
+            Ausencia="FÉRIAS",
+            Conducao=False,
+            Remunerado=False,
+            Alteracao="ROBOT",
+        )
+
+        return True
+
+    except Exception:
+        return get_mensagem("pefe0001")
+
+
+def save_gozo_ferias_colaborador(request):
+    id_pessoal = int(request.POST.get("id_pessoal"))
+    data_inicio_str = request.POST.get("data_inicio")
+    data_inicio = datetime.strptime(data_inicio_str, "%Y-%m-%d")
+    data_fim_str = request.POST.get("data_fim")
+    data_fim = datetime.strptime(data_fim_str, "%Y-%m-%d")
+
+    _, aquisitivo = obter_dias_para_gozo_ferias(id_pessoal)
+
+    obter_cartao_ponto_mes(id_pessoal, data_inicio.month, data_inicio.year)
+    if data_inicio.month != data_fim.month:
+        obter_cartao_ponto_mes(id_pessoal, data_fim.month, data_fim.year)
+
+    try:
+        Ferias.objects.create(
+            DataInicial=data_inicio,
+            DataFinal=data_fim,
+            idAquisitivo_id=aquisitivo.idAquisitivo,
+            idPessoal_id=id_pessoal,
+        )
+
+        atualizar_cartao_ponto_ferias(id_pessoal, data_inicio, data_fim)
+    except Exception:
+        return get_mensagem("pefe0006")
+
+    return get_mensagem("pefe0001")
+
+
+def obter_contra_cheque_itens_ferias(contra_cheque, feria):
+    contra_cheque_itens = ContraChequeItens.objects.filter(
+        idContraCheque=contra_cheque.idContraCheque
+    )
+
+    if not contra_cheque_itens.exists():
+        colaborador = classes.Colaborador(feria.idPessoal_id)
+        salario = colaborador.salarios.salarios.Salario
+        dias_ferias = feria.DataFinal.day - feria.DataInicial.day + 1
+        valor_ferias = (salario / 30 * dias_ferias).quantize(
+            Decimal("0.01"), rounding=ROUND_HALF_UP
+        )
+        terco_ferias = (valor_ferias / 3).quantize(
+            Decimal("0.00"), rounding=ROUND_HALF_UP
+        )
+
+        for i in range(2):
+            descricao = "FÉRIAS" if i == 0 else "1/3 FÉRIAS"
+            valor = valor_ferias if i == 0 else terco_ferias
+            referencia = dias_ferias if i == 0 else "1/3"
+            codigo = "1020" if i == 0 else "1019"
+
+            ContraChequeItens.objects.create(
+                Descricao=descricao,
+                Valor=valor,
+                Registro="C",
+                Referencia=referencia,
+                idContraCheque_id=contra_cheque.idContraCheque,
+                Codigo=codigo,
+                Vales_id=0,
+            )
+
+            contra_cheque_itens = ContraChequeItens.objects.filter(
+                idContraCheque=contra_cheque.idContraCheque
+            )
+
+    return contra_cheque_itens
+
+
+def obter_contra_cheque_ferias(request):
+    id_ferias = request.GET.get("id_ferias")
+
+    feria = Ferias.objects.filter(idFerias=id_ferias).first()
+    mes_inicio = feria.DataInicial.month
+    ano_inicio = feria.DataInicial.year
+    mes_extenso = obter_mes_por_numero(mes_inicio)
+
+    qs = ContraCheque.objects.filter(
+        idContraCheque=feria.idContraCheque_id
+    )
+
+    if not qs.exists():
+        contra_cheque = ContraCheque.objects.create(
+            MesReferencia=mes_extenso,
+            AnoReferencia=ano_inicio,
+            idPessoal_id=feria.idPessoal_id,
+            Descricao="FERIAS"
+        )
+
+        if feria.idContraCheque_id is None:
+            feria.idContraCheque_id=contra_cheque.idContraCheque
+            feria.save()
+
+    else:
+        contra_cheque = qs.first()
+
+    contra_cheque_itens = obter_contra_cheque_itens_ferias(
+        contra_cheque, feria
+    )
+
+    return {
+        "id_pessoal": feria.idPessoal_id,
+        "contra_cheque": contra_cheque,
+        "contra_cheque_itens": contra_cheque_itens,
+        **get_saldo_contra_cheque(contra_cheque_itens),
+        **get_mensagem(
+            "pefe0007",
+            inicio=datetime.strftime(feria.DataInicial, "%d/%m/%Y"),
+            fim=datetime.strftime(feria.DataFinal, "%d/%m/%Y"),
+        ),
+    }

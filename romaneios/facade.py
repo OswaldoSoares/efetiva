@@ -1,24 +1,22 @@
 import datetime
 import os
 import xml.etree.ElementTree as ET
-from cgitb import html
 from decimal import Decimal
-from xml.dom import ValidationErr
 
 import requests
-from clientes.models import Cliente
 from django.db.models import Max
 from django.http import JsonResponse
 from django.template.loader import render_to_string
-from website.facade import nome_curto
-from website.models import FileUpload
 
+from clientes.models import Cliente
 from romaneios.models import (
     NotasClientes,
     NotasOcorrencias,
     RomaneioNotas,
     Romaneios,
 )
+from website.facade import nome_curto
+from website.models import FileUpload
 
 
 def create_contexto_seleciona_cliente():
@@ -1183,9 +1181,11 @@ def last_chat_id_telegram(token):
 
 # enviar mensagens utilizando o bot para um gruppo específico
 def send_message(message, idcliente):
-    token = "5778267083:AAEha8jgzCRYr_niZ7JM4EB5MWDX2Zkk98o"
+    token = "8517596166:AAHfm23NOpAYiNLihLENq1DqQ2V4bYDN5w8"
     if idcliente == "11":
         chat_id = "-666092318"  # Telegram Transefetiva - LogCatavento
+    elif idcliente == "5":
+        chat_id = "-5307964381"
     elif idcliente == "7":
         chat_id = "-994748069"  # Telegram Transefetiva - Kite
     else:
@@ -1199,9 +1199,11 @@ def send_message(message, idcliente):
 
 
 def send_arquivo(romaneio, idcliente):
-    token = "5778267083:AAEha8jgzCRYr_niZ7JM4EB5MWDX2Zkk98o"
+    token = "8517596166:AAHfm23NOpAYiNLihLENq1DqQ2V4bYDN5w8"
     if idcliente == "11":
         chat_id = "-666092318"  # Telegram Transefetiva - LogCatavento
+    elif idcliente == "5":
+        chat_id = "-5307964381"
     elif idcliente == "7":
         chat_id = "-994748069"  # Telegram Transefetiva - Kite
     else:
@@ -1219,9 +1221,11 @@ def send_arquivo(romaneio, idcliente):
 
 
 def send_arquivo_relatorio(sort_status, idcliente):
-    token = "5778267083:AAEha8jgzCRYr_niZ7JM4EB5MWDX2Zkk98o"
+    token = "8517596166:AAHfm23NOpAYiNLihLENq1DqQ2V4bYDN5w8"
     if idcliente == "11":
         chat_id = "-666092318"  # Telegram Transefetiva - LogCatavento
+    elif idcliente == "5":
+        chat_id = "-5307964381"
     elif idcliente == "7":
         chat_id = "-994748069"  # Telegram Transefetiva - Kite
     else:

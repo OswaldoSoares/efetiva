@@ -1,0 +1,33 @@
+<form class="row g-3" method="post" action="{% url 'adicionar_gozo_ferias_colaborador' %}">
+{% csrf_token %}
+    <div class="col-md-12 text-center">
+        <span>{{ colaborador.nome }}</span>
+    </div>
+    <div class="col-md-12 text-center">
+        <span>
+            PERÍODO AQUISITIVO: {{ aquisitivo.DataInicial }} - {{ aquisitivo.DataFinal }}
+        </span>
+    </div>
+     <div class="col-md-12 text-center">
+        <span>
+            DIAS PARA COMPLETAR PERÍODO AQUISITIVO: {{ dias_restantes }}
+        </span>
+    </div>
+    <div class="col-md-4">
+        <label for="id_data" class="form-label">DATA DO INÍCIO DAS FÉRIAS:</label>
+        <input type="date" class="form-control js-data-inicio" name="data_inicio" id="id_data_inicio"
+               value="{{ hoje }}">
+    </div>
+    <div class="col-md-4">
+        <label for="id_valor" class="form-label">DIAS EM FÉRIAS:</label>
+        <input type="number"class="form-control js-dias"name="dias"
+               id="id_dias" value="{{ dias_restantes }}" min="1" max="{{ dias_restantes }}" step="0">
+    </div>
+    <div class="col-md-4">
+        <label for="id_data" class="form-label">DATA DO TERMINO DAS FÉRIAS:</label>
+        <input type="date"class="form-control"name="data_fim"
+               id="id_data_fim" value="{{ data_final }}" readonly>
+    </div>
+    <input type="hidden" name="id_pessoal" value="{{ colaborador.id_pessoal }}">
+</form>
+<div class="thrown-error invisivel"></div>
