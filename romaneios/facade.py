@@ -1188,6 +1188,8 @@ def send_message(message, idcliente):
         chat_id = "-5307964381"
     elif idcliente == "7":
         chat_id = "-994748069"  # Telegram Transefetiva - Kite
+    elif idcliente == "79":
+        chat_id = "-5434321506" # Telegram Transefetiva - Unifrio
     else:
         chat_id = "-785462150"  # Telegram TransEfetiva - Operacional
     try:
@@ -1206,6 +1208,8 @@ def send_arquivo(romaneio, idcliente):
         chat_id = "-5307964381"
     elif idcliente == "7":
         chat_id = "-994748069"  # Telegram Transefetiva - Kite
+    elif idcliente == "79":
+        chat_id = "-5434321506" # Telegram Transefetiva - Unifrio
     else:
         chat_id = "-785462150"  # Telegram TransEfetiva - Operacional
     rom_numero = str(romaneio).zfill(5)
@@ -1228,6 +1232,8 @@ def send_arquivo_relatorio(sort_status, idcliente):
         chat_id = "-5307964381"
     elif idcliente == "7":
         chat_id = "-994748069"  # Telegram Transefetiva - Kite
+    elif idcliente == "79":
+        chat_id = "-5434321506" # Telegram Transefetiva - Unifrio
     else:
         chat_id = "-785462150"  # Telegram TransEfetiva - Operacional
     descricao_arquivo = f"Notas {sort_status}.pdf"
