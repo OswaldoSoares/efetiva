@@ -4,9 +4,10 @@ from .views import (
     adiciona_categoria,
     adiciona_despesa,
     adiciona_multa,
+    abastecimento_excluir,
+    abastecimento_form,
     adiciona_subcategoria,
     carrega_subcategoria,
-    cria_abastecimento,
     edita_despesa,
     edita_multa,
     exclui_despesa,
@@ -22,7 +23,12 @@ from .views import (
 
 urlpatterns = [
     path("", index_despesas, name="index_despesas"),
-    path("cria_abastecimento", cria_abastecimento, name="cria_abastecimento"),
+    path("abastecimento", abastecimento_form, name="abastecimento_form"),
+    path(
+        "abastecimento/excluir",
+        abastecimento_excluir,
+        name="abastecimento_excluir",
+    ),
     path(
         "adiciona_multa",
         adiciona_multa,
