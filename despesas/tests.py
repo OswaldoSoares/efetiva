@@ -139,3 +139,14 @@ def test_abastecimento_exige_permissao(client, dados):
     response = client.post(reverse("abastecimento_form"), dados)
     assert response.status_code == 403
     assert Abastecimento.objects.count() == 0
+
+
+@pytest.mark.django_db
+def test_index_exibe_somente_abastecimento(client_logado):
+    response = client_logado.get(reverse("index_despesas"))
+    html = response.content.decode()
+    assert response.status_code == 200
+    assert "card-abastecimento" in html
+    assert "csrfmiddlewaretoken" in html
+    assert "card-multas" not in html
+    assert "card-despesas" not in html

@@ -2,6 +2,12 @@
 
 {% block maindespesa %}
 <main class="article">
+    <article class="article-card card-abastecimento">
+        {% include "despesas/components/abastecimento.html" %}
+    </article>
+
+    {% comment %}
+    Funcionalidades ocultas por enquanto, somente o abastecimento está em uso.
     <div>
         <article class="article-card card-multas">
             {% include "despesas/html_form_multas.html" %}
@@ -22,10 +28,6 @@
         </article>
     </div>
 
-    <article class="article-card card-abastecimento">
-        {% include "despesas/components/abastecimento.html" %}
-    </article>
-
     <article class="article-card card-despesas">
         {% include "despesas/html_form_despesas.html" %}
     </article>
@@ -43,5 +45,6 @@
             {% include "despesas/html_form_subcategorias.html" %}
         </article>
     </div>
+    {% endcomment %}
 </main>
 {% endblock maindespesa %}
