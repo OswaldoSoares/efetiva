@@ -407,3 +407,57 @@ var Hoje = function() {
     hoje = yyyy + '-' + mm + '-' + dd;
     return hoje
 }
+// ABASTECIMENTO
+// Funções próprias para não depender de formAjaxSubmit/initModalDialog,
+// que são redefinidas em vários arquivos js.
+
+function abastecimentoAtualizaCard(data) {
+    $(".card-abastecimento").html(data["html-card-abastecimento"]);
+    mostrarToast(data["mensagem"], data["tipo"]);
+}
+
+function abastecimentoSubmit(modal) {
+    var form = modal.find(".modal-body form");
+    modal.find(".modal-footer .btn-save").off("click").on("click", function() {
+        form.trigger("submit");
+    });
+    form.find("input:visible").first().focus();
+    form.on("submit", function(event) {
+        event.preventDefault();
+        executarAjax(form.attr("action"), "POST", form.serialize(), function(data) {
+            if (data["html_form"]) {
+                modal.find(".modal-body").html(data["html_form"]);
+                abastecimentoSubmit(modal);
+            } else {
+                modal.modal("hide");
+                abastecimentoAtualizaCard(data);
+            }
+        });
+    });
+}
+
+$(document).on("click", ".js-abastecimento-abrir", function() {
+    var botao = $(this);
+    var modal = $("#MyModal");
+    var requestData = {};
+    if (botao.data("id_abastecimento")) {
+        requestData.id_abastecimento = botao.data("id_abastecimento");
+    }
+    executarAjax(botao.data("url"), "GET", requestData, function(data) {
+        modal.find(".modal-title").text(botao.data("title"));
+        modal.find(".modal-footer .btn-save").text("SALVAR");
+        modal.find(".modal-body").html(data["modal_html"]);
+        modal.modal("show");
+        abastecimentoSubmit(modal);
+    });
+});
+
+$(document).on("click", ".js-abastecimento-excluir", function() {
+    if (!confirm("CONFIRMA A EXCLUSÃO DO ABASTECIMENTO?")) {
+        return;
+    }
+    executarAjax($(this).data("url"), "POST", {
+        id_abastecimento: $(this).data("id_abastecimento"),
+        csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").first().val(),
+    }, abastecimentoAtualizaCard);
+});
