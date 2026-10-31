@@ -1,59 +1,90 @@
+{% load humanize %}
 {% csrf_token %}
-<div class="article-card-titulo">
-    <i class="bi bi-plus-circle i-button js-abastecimento-abrir"
-       data-url="{% url 'abastecimento_form' %}"
-       data-title="ADICIONAR ABASTECIMENTO"
-       title="ADICIONAR ABASTECIMENTO"></i>
-    <span>ABASTECIMENTOS - ÚLTIMOS {{ dias_abastecimento }} DIAS</span>
-</div>
-<div class="article-card-body">
+<section class="abast">
+    <header class="abast-header">
+        <div>
+            <h2 class="abast-titulo">Abastecimentos</h2>
+            <p class="abast-subtitulo">Últimos {{ dias_abastecimento }} dias</p>
+        </div>
+        <button type="button" class="abast-btn-novo js-abastecimento-abrir"
+                data-url="{% url 'abastecimento_form' %}"
+                data-title="ADICIONAR ABASTECIMENTO">
+            <i class="bi bi-plus-lg"></i> Novo abastecimento
+        </button>
+    </header>
+
+    <div class="abast-kpis">
+        <div class="abast-kpi">
+            <span class="abast-kpi-rotulo">Total gasto</span>
+            <span class="abast-kpi-valor"><small>R$</small> {{ total_valor|intcomma }}</span>
+        </div>
+        <div class="abast-kpi">
+            <span class="abast-kpi-rotulo">Litros</span>
+            <span class="abast-kpi-valor">{{ total_litros|intcomma }} <small>L</small></span>
+        </div>
+        <div class="abast-kpi">
+            <span class="abast-kpi-rotulo">Preço médio</span>
+            <span class="abast-kpi-valor">
+                {% if media_litro %}<small>R$</small> {{ media_litro|floatformat:3 }}{% else %}-{% endif %}
+            </span>
+        </div>
+        <div class="abast-kpi">
+            <span class="abast-kpi-rotulo">Abastecimentos</span>
+            <span class="abast-kpi-valor">{{ abastecimentos|length }}</span>
+        </div>
+    </div>
+
     {% if abastecimentos %}
-        <table class="table table-sm table-hover">
-            <thead>
-                <tr>
-                    <th>DATA</th>
-                    <th>PLACA</th>
-                    <th>COMBUSTÍVEL</th>
-                    <th class="text-right">LITROS</th>
-                    <th class="text-right">R$/L</th>
-                    <th class="text-right">TOTAL</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in abastecimentos %}
+        <div class="abast-tabela-wrap">
+            <table class="abast-tabela">
+                <thead>
                     <tr>
-                        <td>{{ item.DataAbastecimento|date:"d/m/Y" }}</td>
-                        <td>{{ item.idVeiculo.Placa }}</td>
-                        <td>{{ item.get_TipoCombustivel_display }}</td>
-                        <td class="text-right">{{ item.LitrosAbastecidos|floatformat:2 }}</td>
-                        <td class="text-right">{{ item.ValorCombustivel|floatformat:3 }}</td>
-                        <td class="text-right">{{ item.ValorAbastecido|floatformat:2 }}</td>
-                        <td class="text-right">
-                            <i class="bi bi-pencil i-button js-abastecimento-abrir"
-                               data-url="{% url 'abastecimento_form' %}"
-                               data-id_abastecimento="{{ item.idAbastecimento }}"
-                               data-title="ALTERAR ABASTECIMENTO"
-                               title="ALTERAR ABASTECIMENTO"></i>
-                            <i class="bi bi-trash i-button js-abastecimento-excluir"
-                               data-url="{% url 'abastecimento_excluir' %}"
-                               data-id_abastecimento="{{ item.idAbastecimento }}"
-                               title="EXCLUIR ABASTECIMENTO"></i>
-                        </td>
+                        <th>Data</th>
+                        <th>Placa</th>
+                        <th>Combustível</th>
+                        <th class="abast-num">Litros</th>
+                        <th class="abast-num">R$/L</th>
+                        <th class="abast-num">Total</th>
+                        <th></th>
                     </tr>
-                {% endfor %}
-            </tbody>
-            <tfoot>
-                <tr>
-                    <th colspan="3">TOTAL DO PERÍODO</th>
-                    <th class="text-right">{{ total_litros|floatformat:2 }}</th>
-                    <th class="text-right">{{ media_litro|floatformat:3 }}</th>
-                    <th class="text-right">{{ total_valor|floatformat:2 }}</th>
-                    <th></th>
-                </tr>
-            </tfoot>
-        </table>
+                </thead>
+                <tbody>
+                    {% for item in abastecimentos %}
+                        <tr>
+                            <td>{{ item.DataAbastecimento|date:"d/m/Y" }}</td>
+                            <td class="abast-placa">{{ item.idVeiculo.Placa }}</td>
+                            <td>
+                                <span class="abast-badge abast-badge-{{ item.TipoCombustivel|lower }}">
+                                    {{ item.get_TipoCombustivel_display }}
+                                </span>
+                            </td>
+                            <td class="abast-num">{{ item.LitrosAbastecidos|intcomma }}</td>
+                            <td class="abast-num">{{ item.ValorCombustivel|intcomma }}</td>
+                            <td class="abast-num abast-total">R$ {{ item.ValorAbastecido|intcomma }}</td>
+                            <td class="abast-acoes">
+                                <button type="button" class="abast-btn-icone js-abastecimento-abrir"
+                                        data-url="{% url 'abastecimento_form' %}"
+                                        data-id_abastecimento="{{ item.idAbastecimento }}"
+                                        data-title="ALTERAR ABASTECIMENTO"
+                                        title="Alterar">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button type="button" class="abast-btn-icone abast-excluir js-abastecimento-excluir"
+                                        data-url="{% url 'abastecimento_excluir' %}"
+                                        data-id_abastecimento="{{ item.idAbastecimento }}"
+                                        title="Excluir">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     {% else %}
-        <p>NENHUM ABASTECIMENTO NOS ÚLTIMOS {{ dias_abastecimento }} DIAS.</p>
+        <div class="abast-vazio">
+            <i class="bi bi-droplet"></i>
+            <p>Nenhum abastecimento nos últimos {{ dias_abastecimento }} dias.</p>
+        </div>
     {% endif %}
-</div>
+</section>

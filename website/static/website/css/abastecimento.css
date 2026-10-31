@@ -1,0 +1,271 @@
+/* Card de abastecimento - módulo despesas */
+
+.card-abastecimento.article-card {
+  width: 100%;
+  max-width: 1100px;
+  margin: 10px auto 0;
+}
+
+.abast {
+  --abast-superficie: #363636;
+  --abast-superficie-2: #414141;
+  --abast-linha: rgba(255, 255, 255, 0.08);
+  --abast-texto: #f5f5f5;
+  --abast-texto-2: #afafaf;
+  --abast-destaque: #ffd433;
+  --abast-perigo: #ff6b6b;
+
+  background-color: var(--abast-superficie);
+  color: var(--abast-texto);
+  border-radius: 14px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+  padding: 24px;
+  font-size: 14px;
+}
+
+/* Cabeçalho */
+.abast-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.abast-titulo {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: var(--abast-texto);
+}
+
+.abast-subtitulo {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: var(--abast-texto-2);
+}
+
+.abast-btn-novo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--abast-destaque);
+  color: #1f1f1f;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  transition: filter 0.15s ease, transform 0.15s ease;
+}
+
+.abast-btn-novo:hover,
+.abast-btn-novo:focus {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+/* Indicadores */
+.abast-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.abast-kpi {
+  background-color: var(--abast-superficie-2);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+
+.abast-kpi-rotulo {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--abast-texto-2);
+}
+
+.abast-kpi-valor {
+  display: block;
+  margin-top: 4px;
+  font-size: 22px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--abast-texto);
+}
+
+.abast-kpi-valor small {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--abast-texto-2);
+}
+
+/* Tabela */
+.abast-tabela-wrap {
+  overflow-x: auto;
+}
+
+.abast-tabela {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.abast-tabela th {
+  padding: 10px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--abast-texto-2);
+  border-bottom: 1px solid var(--abast-linha);
+  white-space: nowrap;
+}
+
+.abast-tabela td {
+  padding: 12px;
+  border-bottom: 1px solid var(--abast-linha);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.abast-tabela tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.abast-tabela tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+.abast-tabela tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.abast-num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.abast-placa {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.abast-total {
+  font-weight: 600;
+}
+
+/* Combustível */
+.abast-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.06);
+  font-size: 12px;
+  color: var(--abast-texto);
+}
+
+.abast-badge::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--abast-texto-2);
+}
+
+.abast-badge-diesel::before { background-color: #ffd433; }
+.abast-badge-gasolina::before { background-color: #ff8a3d; }
+.abast-badge-etanol::before { background-color: #4cd07d; }
+.abast-badge-arla::before { background-color: #4aa8ff; }
+
+/* Ações */
+.abast-acoes {
+  text-align: right;
+  width: 1%;
+}
+
+.abast-btn-icone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 8px;
+  background-color: transparent;
+  color: var(--abast-texto-2);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.abast-btn-icone:hover,
+.abast-btn-icone:focus {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--abast-texto);
+  outline: none;
+}
+
+.abast-btn-icone.abast-excluir:hover,
+.abast-btn-icone.abast-excluir:focus {
+  color: var(--abast-perigo);
+}
+
+/* Lista vazia */
+.abast-vazio {
+  text-align: center;
+  padding: 40px 16px;
+  color: var(--abast-texto-2);
+}
+
+.abast-vazio i {
+  display: block;
+  font-size: 36px;
+  margin-bottom: 8px;
+  color: var(--abast-texto-2);
+}
+
+.abast-vazio p {
+  margin: 0;
+}
+
+/* Formulário no modal */
+.form-abastecimento .form-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.form-abastecimento .form-control,
+.form-abastecimento .form-select {
+  width: 100%;
+  height: 40px;
+  border-radius: 8px;
+}
+
+.form-abastecimento .errorlist {
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 12px;
+  color: #d9534f;
+}
+
+@media (max-width: 800px) {
+  .abast {
+    padding: 16px;
+  }
+
+  .abast-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .abast-kpi-valor {
+    font-size: 18px;
+  }
+}
