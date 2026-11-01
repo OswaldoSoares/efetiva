@@ -1,50 +1,50 @@
 {% load humanize %}
 {% csrf_token %}
-<section class="abast">
-    <header class="abast-header">
+<section class="ui-card">
+    <header class="ui-card-header">
         <div>
-            <h2 class="abast-titulo">Abastecimentos</h2>
-            <p class="abast-subtitulo">Últimos {{ dias_abastecimento }} dias</p>
+            <h2 class="ui-card-titulo">Abastecimentos</h2>
+            <p class="ui-card-subtitulo">Últimos {{ dias_abastecimento }} dias</p>
         </div>
-        <button type="button" class="abast-btn-novo js-abastecimento-abrir"
+        <button type="button" class="ui-btn ui-btn-primario js-abastecimento-abrir"
                 data-url="{% url 'abastecimento_form' %}"
                 data-title="ADICIONAR ABASTECIMENTO">
             <i class="bi bi-plus-lg"></i> Novo abastecimento
         </button>
     </header>
 
-    <div class="abast-kpis">
-        <div class="abast-kpi">
-            <span class="abast-kpi-rotulo">Total gasto</span>
-            <span class="abast-kpi-valor"><small>R$</small> {{ total_valor|intcomma }}</span>
+    <div class="ui-kpis">
+        <div class="ui-kpi">
+            <span class="ui-kpi-rotulo">Total gasto</span>
+            <span class="ui-kpi-valor"><small>R$</small> {{ total_valor|intcomma }}</span>
         </div>
-        <div class="abast-kpi">
-            <span class="abast-kpi-rotulo">Litros</span>
-            <span class="abast-kpi-valor">{{ total_litros|intcomma }} <small>L</small></span>
+        <div class="ui-kpi">
+            <span class="ui-kpi-rotulo">Litros</span>
+            <span class="ui-kpi-valor">{{ total_litros|intcomma }} <small>L</small></span>
         </div>
-        <div class="abast-kpi">
-            <span class="abast-kpi-rotulo">Preço médio</span>
-            <span class="abast-kpi-valor">
+        <div class="ui-kpi">
+            <span class="ui-kpi-rotulo">Preço médio</span>
+            <span class="ui-kpi-valor">
                 {% if media_litro %}<small>R$</small> {{ media_litro|floatformat:3 }}{% else %}-{% endif %}
             </span>
         </div>
-        <div class="abast-kpi">
-            <span class="abast-kpi-rotulo">Abastecimentos</span>
-            <span class="abast-kpi-valor">{{ abastecimentos|length }}</span>
+        <div class="ui-kpi">
+            <span class="ui-kpi-rotulo">Abastecimentos</span>
+            <span class="ui-kpi-valor">{{ abastecimentos|length }}</span>
         </div>
     </div>
 
     {% if abastecimentos %}
-        <div class="abast-tabela-wrap">
-            <table class="abast-tabela">
+        <div class="ui-tabela-wrap">
+            <table class="ui-tabela">
                 <thead>
                     <tr>
                         <th>Data</th>
                         <th>Placa</th>
                         <th>Combustível</th>
-                        <th class="abast-num">Litros</th>
-                        <th class="abast-num">R$/L</th>
-                        <th class="abast-num">Total</th>
+                        <th class="ui-num">Litros</th>
+                        <th class="ui-num">R$/L</th>
+                        <th class="ui-num">Total</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -52,24 +52,24 @@
                     {% for item in abastecimentos %}
                         <tr>
                             <td>{{ item.DataAbastecimento|date:"d/m/Y" }}</td>
-                            <td class="abast-placa">{{ item.idVeiculo.Placa }}</td>
+                            <td class="ui-forte">{{ item.idVeiculo.Placa }}</td>
                             <td>
-                                <span class="abast-badge abast-badge-{{ item.TipoCombustivel|lower }}">
+                                <span class="ui-badge abast-{{ item.TipoCombustivel|lower }}">
                                     {{ item.get_TipoCombustivel_display }}
                                 </span>
                             </td>
-                            <td class="abast-num">{{ item.LitrosAbastecidos|intcomma }}</td>
-                            <td class="abast-num">{{ item.ValorCombustivel|intcomma }}</td>
-                            <td class="abast-num abast-total">R$ {{ item.ValorAbastecido|intcomma }}</td>
-                            <td class="abast-acoes">
-                                <button type="button" class="abast-btn-icone js-abastecimento-abrir"
+                            <td class="ui-num">{{ item.LitrosAbastecidos|intcomma }}</td>
+                            <td class="ui-num">{{ item.ValorCombustivel|intcomma }}</td>
+                            <td class="ui-num ui-forte">R$ {{ item.ValorAbastecido|intcomma }}</td>
+                            <td class="ui-acoes">
+                                <button type="button" class="ui-btn-icone js-abastecimento-abrir"
                                         data-url="{% url 'abastecimento_form' %}"
                                         data-id_abastecimento="{{ item.idAbastecimento }}"
                                         data-title="ALTERAR ABASTECIMENTO"
                                         title="Alterar">
                                     <i class="bi bi-pencil"></i>
                                 </button>
-                                <button type="button" class="abast-btn-icone abast-excluir js-abastecimento-excluir"
+                                <button type="button" class="ui-btn-icone ui-perigo js-abastecimento-excluir"
                                         data-url="{% url 'abastecimento_excluir' %}"
                                         data-id_abastecimento="{{ item.idAbastecimento }}"
                                         title="Excluir">
@@ -82,7 +82,7 @@
             </table>
         </div>
     {% else %}
-        <div class="abast-vazio">
+        <div class="ui-vazio">
             <i class="bi bi-droplet"></i>
             <p>Nenhum abastecimento nos últimos {{ dias_abastecimento }} dias.</p>
         </div>

@@ -1,0 +1,330 @@
+/*
+ * Padrão visual do sistema (ui-*)
+ * Documentação: docs/docs/padrao-visual.md
+ * Classes novas e com prefixo ui-, não alteram as telas antigas.
+ */
+
+:root {
+  --ui-superficie: #363636;
+  --ui-superficie-2: #414141;
+  --ui-linha: rgba(255, 255, 255, 0.08);
+  --ui-hover: rgba(255, 255, 255, 0.04);
+  --ui-texto: #f5f5f5;
+  --ui-texto-2: #afafaf;
+  --ui-destaque: #ffd433;
+  --ui-destaque-texto: #1f1f1f;
+  --ui-perigo: #ff6b6b;
+  --ui-raio: 14px;
+  --ui-raio-sm: 8px;
+}
+
+/* Card */
+.ui-card {
+  background-color: var(--ui-superficie);
+  color: var(--ui-texto);
+  border-radius: var(--ui-raio);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+  padding: 24px;
+  font-size: 14px;
+}
+
+.ui-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.ui-card-titulo {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: var(--ui-texto);
+}
+
+.ui-card-subtitulo {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: var(--ui-texto-2);
+}
+
+.ui-secao-titulo {
+  margin: 0 0 12px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--ui-texto-2);
+}
+
+.ui-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+/* Botões */
+.ui-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  border-radius: var(--ui-raio-sm);
+  padding: 9px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  transition: filter 0.15s ease, transform 0.15s ease;
+}
+
+.ui-btn-primario {
+  background-color: var(--ui-destaque);
+  color: var(--ui-destaque-texto);
+}
+
+.ui-btn-primario:hover,
+.ui-btn-primario:focus {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.ui-btn-icone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: var(--ui-raio-sm);
+  background-color: transparent;
+  color: var(--ui-texto-2);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.ui-btn-icone:hover,
+.ui-btn-icone:focus {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--ui-texto);
+  outline: none;
+}
+
+.ui-btn-icone:disabled {
+  opacity: 0.3;
+  cursor: default;
+  background-color: transparent;
+}
+
+.ui-btn-icone.ui-perigo:hover,
+.ui-btn-icone.ui-perigo:focus {
+  color: var(--ui-perigo);
+}
+
+/* Navegação de período: < Outubro de 2026 > */
+.ui-nav-periodo {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ui-nav-periodo-rotulo {
+  min-width: 150px;
+  text-align: center;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+/* Indicadores */
+.ui-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.ui-kpi {
+  background-color: var(--ui-superficie-2);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+
+.ui-kpi-rotulo {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--ui-texto-2);
+}
+
+.ui-kpi-valor {
+  display: block;
+  margin-top: 4px;
+  font-size: 22px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--ui-texto);
+}
+
+.ui-kpi-valor small {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--ui-texto-2);
+}
+
+/* Tabela */
+.ui-tabela-wrap {
+  overflow-x: auto;
+}
+
+.ui-tabela {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.ui-tabela th {
+  padding: 10px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--ui-texto-2);
+  border-bottom: 1px solid var(--ui-linha);
+  white-space: nowrap;
+}
+
+.ui-tabela td {
+  padding: 12px;
+  border-bottom: 1px solid var(--ui-linha);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.ui-tabela tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.ui-tabela tbody tr:hover {
+  background-color: var(--ui-hover);
+}
+
+.ui-tabela tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.ui-tabela tr.ui-linha-ativa {
+  background-color: rgba(255, 212, 51, 0.08);
+}
+
+.ui-tabela tr.ui-clicavel {
+  cursor: pointer;
+}
+
+.ui-num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.ui-forte {
+  font-weight: 600;
+}
+
+.ui-acoes {
+  text-align: right;
+  width: 1%;
+}
+
+/* Barra horizontal dentro da tabela (uma série, uma cor) */
+.ui-barra {
+  width: 100%;
+  min-width: 80px;
+  height: 8px;
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+
+.ui-barra-valor {
+  height: 100%;
+  border-radius: 0 4px 4px 0;
+  background-color: var(--ui-destaque);
+}
+
+/* Badge com marcador colorido; a cor vem de --ui-badge-cor */
+.ui-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.06);
+  font-size: 12px;
+  color: var(--ui-texto);
+}
+
+.ui-badge::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--ui-badge-cor, var(--ui-texto-2));
+}
+
+/* Estado vazio */
+.ui-vazio {
+  text-align: center;
+  padding: 40px 16px;
+  color: var(--ui-texto-2);
+}
+
+.ui-vazio i {
+  display: block;
+  font-size: 36px;
+  margin-bottom: 8px;
+}
+
+.ui-vazio p {
+  margin: 0;
+}
+
+/* Formulário (usado dentro do modal) */
+.ui-form .form-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.ui-form .form-control,
+.ui-form .form-select {
+  width: 100%;
+  height: 40px;
+  border-radius: var(--ui-raio-sm);
+}
+
+.ui-form .errorlist {
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 12px;
+  color: #d9534f;
+}
+
+@media (max-width: 800px) {
+  .ui-card {
+    padding: 16px;
+  }
+
+  .ui-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ui-kpi-valor {
+    font-size: 18px;
+  }
+
+  .ui-grid-2 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
