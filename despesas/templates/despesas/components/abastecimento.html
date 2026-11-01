@@ -57,7 +57,7 @@
 
     {% if abastecimentos %}
         <div class="ui-tabela-wrap">
-            <table class="ui-tabela">
+            <table class="ui-tabela ui-tabela-cards">
                 <thead>
                     <tr>
                         <th>Data</th>
@@ -72,16 +72,16 @@
                 <tbody>
                     {% for item in abastecimentos %}
                         <tr>
-                            <td>{{ item.DataAbastecimento|date:"d/m/Y" }}</td>
-                            <td class="ui-forte">{{ item.idVeiculo.Placa }}</td>
-                            <td>
+                            <td data-label="Data">{{ item.DataAbastecimento|date:"d/m/Y" }}</td>
+                            <td class="ui-forte" data-label="Placa">{{ item.idVeiculo.Placa }}</td>
+                            <td data-label="Combustível">
                                 <span class="ui-badge abast-{{ item.TipoCombustivel|lower }}">
                                     {{ item.get_TipoCombustivel_display }}
                                 </span>
                             </td>
-                            <td class="ui-num">{{ item.LitrosAbastecidos|intcomma }}</td>
-                            <td class="ui-num">{{ item.ValorCombustivel|intcomma }}</td>
-                            <td class="ui-num ui-forte">R$ {{ item.ValorAbastecido|intcomma }}</td>
+                            <td class="ui-num" data-label="Litros">{{ item.LitrosAbastecidos|intcomma }}</td>
+                            <td class="ui-num" data-label="R$/L">{{ item.ValorCombustivel|intcomma }}</td>
+                            <td class="ui-num ui-forte" data-label="Total">R$ {{ item.ValorAbastecido|intcomma }}</td>
                             <td class="ui-acoes">
                                 <button type="button" class="ui-btn-icone js-abastecimento-abrir"
                                         data-url="{% url 'abastecimento_form' %}"

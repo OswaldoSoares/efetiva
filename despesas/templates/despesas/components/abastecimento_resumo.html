@@ -11,7 +11,7 @@
         <div>
             <h3 class="ui-secao-titulo">Mês a mês · últimos {{ resumo_meses|length }} meses</h3>
             <div class="ui-tabela-wrap">
-                <table class="ui-tabela">
+                <table class="ui-tabela ui-tabela-cards">
                     <thead>
                         <tr>
                             <th>Mês</th>
@@ -27,15 +27,15 @@
                                 data-url="{% url 'abastecimento_mes' %}"
                                 data-mes="{{ item.param }}"
                                 title="{{ item.mes|date:'M/Y' }}: R$ {{ item.valor|intcomma }} · {{ item.quantidade }} abastecimento{{ item.quantidade|pluralize }}">
-                                <td class="ui-forte">{{ item.mes|date:"M/Y" }}</td>
-                                <td>
+                                <td class="ui-forte" data-label="Mês">{{ item.mes|date:"M/Y" }}</td>
+                                <td class="ui-col-cheia">
                                     <div class="ui-barra">
                                         <div class="ui-barra-valor" style="width: {{ item.percentual }}%"></div>
                                     </div>
                                 </td>
-                                <td class="ui-num ui-forte">{% if item.quantidade %}R$ {{ item.valor|intcomma }}{% else %}-{% endif %}</td>
-                                <td class="ui-num">{% if item.quantidade %}{{ item.litros|intcomma }}{% else %}-{% endif %}</td>
-                                <td class="ui-num">{% include "despesas/components/abastecimento_consumo.html" %}</td>
+                                <td class="ui-num ui-forte" data-label="Total">{% if item.quantidade %}R$ {{ item.valor|intcomma }}{% else %}-{% endif %}</td>
+                                <td class="ui-num" data-label="Litros">{% if item.quantidade %}{{ item.litros|intcomma }}{% else %}-{% endif %}</td>
+                                <td class="ui-num" data-label="km/L">{% include "despesas/components/abastecimento_consumo.html" %}</td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -47,7 +47,7 @@
             <h3 class="ui-secao-titulo">Por placa · {{ mes_abastecimento|date:"M/Y" }}</h3>
             {% if resumo_placas %}
                 <div class="ui-tabela-wrap">
-                    <table class="ui-tabela">
+                    <table class="ui-tabela ui-tabela-cards">
                         <thead>
                             <tr>
                                 <th>Placa</th>
@@ -61,22 +61,22 @@
                         <tbody>
                             {% for item in resumo_placas %}
                                 <tr title="{{ item.placa }}: R$ {{ item.valor|intcomma }} · {{ item.quantidade }} abastecimento{{ item.quantidade|pluralize }}">
-                                    <td class="ui-forte">{{ item.placa }}</td>
-                                    <td>
+                                    <td class="ui-forte" data-label="Placa">{{ item.placa }}</td>
+                                    <td class="ui-col-cheia">
                                         <div class="ui-barra">
                                             <div class="ui-barra-valor" style="width: {{ item.percentual }}%"></div>
                                         </div>
                                     </td>
-                                    <td class="ui-num ui-forte">R$ {{ item.valor|intcomma }}</td>
-                                    <td class="ui-num">{{ item.litros|intcomma }}</td>
-                                    <td class="ui-num">
+                                    <td class="ui-num ui-forte" data-label="Total">R$ {{ item.valor|intcomma }}</td>
+                                    <td class="ui-num" data-label="Litros">{{ item.litros|intcomma }}</td>
+                                    <td class="ui-num" data-label="KM">
                                         {% if item.km %}{{ item.km|intcomma }}{% else %}-{% endif %}
                                         {% if item.descartadas %}
                                             <i class="bi bi-exclamation-circle ui-aviso"
                                                title="{{ item.descartadas }} minuta{{ item.descartadas|pluralize }} com km inválido ignorada{{ item.descartadas|pluralize }}"></i>
                                         {% endif %}
                                     </td>
-                                    <td class="ui-num">{% include "despesas/components/abastecimento_consumo.html" %}</td>
+                                    <td class="ui-num" data-label="km/L">{% include "despesas/components/abastecimento_consumo.html" %}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>

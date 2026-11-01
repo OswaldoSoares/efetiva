@@ -33,6 +33,8 @@ Padrão adotado a partir do card de **Abastecimentos** (módulo Despesas) para m
 | `ui-nav-periodo`, `ui-nav-periodo-rotulo` | navegação `< mês >` |
 | `ui-kpis`, `ui-kpi`, `ui-kpi-rotulo`, `ui-kpi-valor` | indicadores (4 por linha, 2 no celular) |
 | `ui-tabela-wrap`, `ui-tabela` | tabela limpa com rolagem lateral no celular |
+| `ui-tabela-cards` | no celular (≤ 600px) cada linha vira um card; cada `<td>` precisa de `data-label="Rótulo"` |
+| `ui-col-cheia` | célula que ocupa a linha inteira no modo card (ex.: barra) |
 | `ui-num`, `ui-forte`, `ui-acoes` | número alinhado à direita, destaque, coluna de ações |
 | `ui-linha-ativa`, `ui-clicavel` | linha selecionada / linha clicável |
 | `ui-barra`, `ui-barra-valor` | barra horizontal proporcional dentro da tabela |

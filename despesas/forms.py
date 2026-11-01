@@ -44,14 +44,15 @@ class CadastraAbastecimento(forms.ModelForm):
                 },
                 format="%d/%m/%Y",
             ),
+            # inputmode="decimal": teclado numérico com vírgula no celular
             "LitrosAbastecidos": forms.NumberInput(
-                attrs={"step": "0.01", "min": "0.01"}
+                attrs={"step": "0.01", "min": "0.01", "inputmode": "decimal"}
             ),
             "ValorCombustivel": forms.NumberInput(
-                attrs={"step": "0.001", "min": "0.001"}
+                attrs={"step": "0.001", "min": "0.001", "inputmode": "decimal"}
             ),
             "ValorAbastecido": forms.NumberInput(
-                attrs={"step": "0.01", "min": "0.01"}
+                attrs={"step": "0.01", "min": "0.01", "inputmode": "decimal"}
             ),
         }
 

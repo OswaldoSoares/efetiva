@@ -362,6 +362,66 @@
   color: #d9534f;
 }
 
+/* Telas de toque: alvo mínimo de 40px para os botões de ícone */
+@media (pointer: coarse) {
+  .ui-btn-icone {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/*
+ * Tabela que vira card no celular (ui-tabela-cards).
+ * Cada <td> precisa de data-label; ui-col-cheia ocupa a linha inteira
+ * (ex.: barra) e ui-acoes fica no rodapé do card.
+ */
+@media (max-width: 600px) {
+  .ui-tabela-cards thead {
+    display: none;
+  }
+
+  .ui-tabela-cards tbody tr {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-flow: row dense;
+    gap: 8px 16px;
+    padding: 12px 4px;
+    border-bottom: 1px solid var(--ui-linha);
+  }
+
+  .ui-tabela-cards tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  .ui-tabela-cards td {
+    display: block;
+    padding: 0;
+    border: none;
+    white-space: normal;
+    text-align: left;
+  }
+
+  .ui-tabela-cards td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 11px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--ui-texto-2);
+  }
+
+  .ui-tabela-cards .ui-col-cheia,
+  .ui-tabela-cards .ui-acoes {
+    grid-column: 1 / -1;
+  }
+
+  .ui-tabela-cards .ui-acoes {
+    width: auto;
+    text-align: right;
+  }
+}
+
 @media (max-width: 800px) {
   .ui-card {
     padding: 16px;
