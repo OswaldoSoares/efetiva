@@ -1,6 +1,7 @@
 import datetime
 
-from django.db.models import Sum
+from django.db.models import Count, Sum
+from django.db.models.functions import TruncMonth
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 
@@ -58,6 +59,72 @@ def create_contexto_abastecimentos(mes=None):
     }
 
 
+def _resumo(litros, valor, quantidade):
+    return {
+        "litros": litros or 0,
+        "valor": valor or 0,
+        "quantidade": quantidade,
+        "media": valor / litros if litros else None,
+    }
+
+
+def _percentual_do_maior(itens):
+    """Adiciona 'percentual' (valor em relação ao maior) para as barras."""
+    maior = max((item["valor"] for item in itens), default=0)
+    for item in itens:
+        item["percentual"] = round(item["valor"] * 100 / maior) if maior else 0
+    return itens
+
+
+def create_contexto_resumo_abastecimento(mes=None, quantidade_meses=12):
+    """Contexto do card de resumo: mês a mês e por placa no mês."""
+    mes = mes or obter_mes()
+    inicio = somar_meses(mes, -(quantidade_meses - 1))
+    agregados = {
+        "litros": Sum("LitrosAbastecidos"),
+        "valor": Sum("ValorAbastecido"),
+        "quantidade": Count("idAbastecimento"),
+    }
+
+    por_mes = {
+        item["mes"]: item
+        for item in Abastecimento.objects.filter(
+            DataAbastecimento__gte=inicio,
+            DataAbastecimento__lt=somar_meses(mes, 1),
+        )
+        .annotate(mes=TruncMonth("DataAbastecimento"))
+        .values("mes")
+        .annotate(**agregados)
+        .order_by()
+    }
+    meses = []
+    for indice in range(quantidade_meses):
+        data_mes = somar_meses(mes, -indice)
+        item = por_mes.get(data_mes, {})
+        resumo = _resumo(
+            item.get("litros"), item.get("valor"), item.get("quantidade", 0)
+        )
+        resumo.update(mes=data_mes, param=data_mes.strftime("%Y-%m"))
+        meses.append(resumo)
+
+    placas = []
+    for item in (
+        get_abastecimentos_mes(mes)
+        .values("idVeiculo__Placa")
+        .annotate(**agregados)
+        .order_by("-valor")
+    ):
+        resumo = _resumo(item["litros"], item["valor"], item["quantidade"])
+        resumo["placa"] = item["idVeiculo__Placa"]
+        placas.append(resumo)
+
+    return {
+        "mes_abastecimento": mes,
+        "resumo_meses": _percentual_do_maior(meses),
+        "resumo_placas": _percentual_do_maior(placas),
+    }
+
+
 def get_abastecimento_or_none(id_abastecimento):
     if not id_abastecimento:
         return None
@@ -107,7 +174,9 @@ def delete_abastecimento(request):
 
 def create_data_card_abastecimento(request, mes, mensagem=None):
     contexto = create_contexto_abastecimentos(mes)
+    contexto.update(create_contexto_resumo_abastecimento(mes))
     data = html_data.html_card_abastecimento(request, contexto, {})
+    data = html_data.html_card_resumo_abastecimento(request, contexto, data)
     if mensagem:
         data.update(mensagem)
     return JsonResponse(data)

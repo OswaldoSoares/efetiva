@@ -193,3 +193,60 @@ def test_salvar_mostra_mes_do_abastecimento(client_logado, dados):
     html = response.json()["html-card-abastecimento"]
     assert "ABC1D23" in html
     assert "2025-02" in html  # mês anterior na navegação
+
+
+@pytest.mark.django_db
+def test_resumo_mes_a_mes_e_por_placa(veiculo):
+    outro = Veiculo.objects.create(
+        Marca="VW",
+        Modelo="CONSTELLATION",
+        Placa="XYZ9K87",
+        Capacidade=0,
+        MedidaAltura=0,
+        MedidaComprimento=0,
+        MedidaLargura=0,
+        Proprietario=veiculo.Proprietario,
+        Motorista=veiculo.Motorista,
+        Categoria=veiculo.Categoria,
+    )
+
+    def lanca(data, carro, litros, valor):
+        Abastecimento.objects.create(
+            DataAbastecimento=data,
+            idVeiculo=carro,
+            TipoCombustivel="DIESEL",
+            LitrosAbastecidos=Decimal(litros),
+            ValorCombustivel=Decimal("6.000"),
+            ValorAbastecido=Decimal(valor),
+        )
+
+    lanca(datetime.date(2026, 9, 5), veiculo, "10.00", "60.00")
+    lanca(datetime.date(2026, 9, 20), veiculo, "20.00", "120.00")
+    lanca(datetime.date(2026, 9, 21), outro, "50.00", "300.00")
+    lanca(datetime.date(2026, 8, 1), veiculo, "5.00", "30.00")
+
+    contexto = abastecimento.create_contexto_resumo_abastecimento(
+        datetime.date(2026, 9, 1)
+    )
+    meses = contexto["resumo_meses"]
+    assert len(meses) == 12
+    assert meses[0]["mes"] == datetime.date(2026, 9, 1)
+    assert meses[0]["valor"] == Decimal("480.00")
+    assert meses[0]["quantidade"] == 3
+    assert meses[0]["percentual"] == 100
+    assert meses[1]["valor"] == Decimal("30.00")
+    assert meses[2]["quantidade"] == 0 and meses[2]["media"] is None
+
+    placas = contexto["resumo_placas"]
+    assert [p["placa"] for p in placas] == ["XYZ9K87", "ABC1D23"]
+    assert placas[1]["valor"] == Decimal("180.00")
+    assert placas[1]["litros"] == Decimal("30.00")
+    assert placas[1]["media"] == Decimal("6")
+    assert placas[1]["percentual"] == 60
+
+
+@pytest.mark.django_db
+def test_index_exibe_resumo(client_logado):
+    html = client_logado.get(reverse("index_despesas")).content.decode()
+    assert "card-abastecimento-resumo" in html
+    assert "Mês a mês" in html

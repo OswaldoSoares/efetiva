@@ -25,6 +25,7 @@ def index_despesas(request):
     despesas_pagar = facade.create_contexto_despesas()
     contexto.update({"despesas_pagar": despesas_pagar})
     contexto.update(abastecimento.create_contexto_abastecimentos())
+    contexto.update(abastecimento.create_contexto_resumo_abastecimento())
     return render(request, "despesas/index.html", contexto)
 
 

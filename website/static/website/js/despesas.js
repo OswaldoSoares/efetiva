@@ -413,6 +413,7 @@ var Hoje = function() {
 
 function abastecimentoAtualizaCard(data) {
     $(".card-abastecimento").html(data["html-card-abastecimento"]);
+    $(".card-abastecimento-resumo").html(data["html-card-abastecimento-resumo"]);
     if (data["mensagem"]) {
         mostrarToast(data["mensagem"], data["tipo"]);
     }
