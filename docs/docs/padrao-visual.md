@@ -26,6 +26,8 @@ Padrão adotado a partir do card de **Abastecimentos** (módulo Despesas) para m
 | `ui-secao-titulo` | título de uma seção dentro do card |
 | `ui-grid-2` | duas colunas (vira uma no celular) |
 | `ui-btn ui-btn-primario` | botão de ação principal (amarelo) |
+| `ui-btn ui-btn-secundario` | botão secundário (ex.: PDF), funciona em `<a>` |
+| `ui-card-acoes` | agrupa os botões do cabeçalho |
 | `ui-btn-icone` (+ `ui-perigo`) | botão só com ícone (editar, excluir) |
 | `ui-nav-periodo`, `ui-nav-periodo-rotulo` | navegação `< mês >` |
 | `ui-kpis`, `ui-kpi`, `ui-kpi-rotulo`, `ui-kpi-valor` | indicadores (4 por linha, 2 no celular) |
@@ -35,7 +37,23 @@ Padrão adotado a partir do card de **Abastecimentos** (módulo Despesas) para m
 | `ui-barra`, `ui-barra-valor` | barra horizontal proporcional dentro da tabela |
 | `ui-badge` (cor via `--ui-badge-cor`) | selo com marcador colorido |
 | `ui-vazio` | estado de lista vazia |
+| `ui-grafico` | container de gráfico Chart.js (altura 240px) |
 | `ui-form` | formulário dentro do modal |
+| `ui-submit-oculto` | botão submit invisível para salvar com Enter no modal |
+
+## Gráficos
+
+- Chart.js 4.4.1 via cdnjs, carregado só na página que usa (`{% block script %}`).
+- Uma série por gráfico, na cor `--ui-destaque`, sem legenda (o título diz o que é).
+- Medidas diferentes vão em gráficos separados (nunca dois eixos Y).
+- Tooltip com valor formatado em pt-BR; dados entregues via `json_script`.
+- Exemplo: `despesas/templates/despesas/components/abastecimento_graficos.html` e `abastecimentoGraficos()` em `despesas.js`.
+
+## Modal
+
+- Focar o primeiro campo no evento `shown.bs.modal` (antes disso o Bootstrap rouba o foco).
+- Datas como texto com máscara `dd/mm/aaaa` (`jquery.mask`), não `type="date"`, para o Tab ir direto ao próximo campo.
+- Em erro de validação, focar o primeiro campo com erro.
 
 ## Regras
 
