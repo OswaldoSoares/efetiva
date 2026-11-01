@@ -1,5 +1,8 @@
 """Responsável pelas férias do colaborador"""
 
+# Permite anotações como list[str] no Python 3.7 (servidor de produção)
+from __future__ import annotations
+
 from datetime import datetime, timedelta
 from decimal import ROUND_HALF_UP, Decimal
 
