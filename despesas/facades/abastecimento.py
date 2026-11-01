@@ -50,6 +50,7 @@ def create_contexto_abastecimentos(mes=None):
     return {
         "abastecimentos": abastecimentos,
         "mes_abastecimento": mes,
+        "mes_param": mes.strftime("%Y-%m"),
         "mes_anterior": somar_meses(mes, -1).strftime("%Y-%m"),
         "mes_proximo": (
             proximo.strftime("%Y-%m") if proximo <= obter_mes() else None

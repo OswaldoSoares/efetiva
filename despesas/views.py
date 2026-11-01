@@ -12,6 +12,7 @@ from django.views.decorators.http import (
 from despesas import facade
 from despesas.facades import abastecimento
 from despesas.print import print_multas_pagar
+from despesas.print_abastecimento import print_abastecimentos
 from website.facade import str_hoje
 
 from rolepermissions.decorators import has_permission_decorator
@@ -45,6 +46,15 @@ def abastecimento_form(request):
 def abastecimento_mes(request):
     mes = abastecimento.obter_mes(request.GET.get("mes"))
     return abastecimento.create_data_card_abastecimento(request, mes)
+
+
+@has_permission_decorator("modulo_despesas")
+@require_GET
+def abastecimento_pdf(request):
+    mes = abastecimento.obter_mes(request.GET.get("mes"))
+    contexto = abastecimento.create_contexto_abastecimentos(mes)
+    contexto.update(abastecimento.create_contexto_resumo_abastecimento(mes))
+    return print_abastecimentos(contexto)
 
 
 @has_permission_decorator("modulo_despesas")

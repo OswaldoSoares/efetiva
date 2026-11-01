@@ -51,6 +51,12 @@
   color: var(--ui-texto-2);
 }
 
+.ui-card-acoes {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .ui-secao-titulo {
   margin: 0 0 12px;
   font-size: 13px;
@@ -89,6 +95,21 @@
 .ui-btn-primario:focus {
   filter: brightness(1.08);
   transform: translateY(-1px);
+  outline: none;
+}
+
+.ui-btn-secundario,
+.ui-btn-secundario:visited {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--ui-texto);
+  text-decoration: none;
+}
+
+.ui-btn-secundario:hover,
+.ui-btn-secundario:focus {
+  background-color: rgba(255, 255, 255, 0.14);
+  color: var(--ui-texto);
+  text-decoration: none;
   outline: none;
 }
 

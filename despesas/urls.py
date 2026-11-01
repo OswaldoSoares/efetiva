@@ -7,6 +7,7 @@ from .views import (
     abastecimento_excluir,
     abastecimento_form,
     abastecimento_mes,
+    abastecimento_pdf,
     adiciona_subcategoria,
     carrega_subcategoria,
     edita_despesa,
@@ -26,6 +27,7 @@ urlpatterns = [
     path("", index_despesas, name="index_despesas"),
     path("abastecimento", abastecimento_form, name="abastecimento_form"),
     path("abastecimento/mes", abastecimento_mes, name="abastecimento_mes"),
+    path("abastecimento/pdf", abastecimento_pdf, name="abastecimento_pdf"),
     path(
         "abastecimento/excluir",
         abastecimento_excluir,

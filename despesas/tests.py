@@ -274,3 +274,21 @@ def test_form_aceita_data_brasileira(dados):
     assert 'value="' + dados["DataAbastecimento"] + '"' in str(
         CadastraAbastecimento()["DataAbastecimento"]
     )
+
+
+@pytest.mark.django_db
+def test_pdf_abastecimento(client_logado, dados):
+    client_logado.post(reverse("abastecimento_form"), dados)
+    mes = datetime.date.today().strftime("%Y-%m")
+    response = client_logado.get(reverse("abastecimento_pdf"), {"mes": mes})
+    assert response.status_code == 200
+    assert response["Content-Type"] == "application/pdf"
+    assert response.content.startswith(b"%PDF")
+    assert f"ABASTECIMENTOS {mes}.pdf" in response["Content-Disposition"]
+
+
+@pytest.mark.django_db
+def test_pdf_abastecimento_mes_vazio(client_logado):
+    response = client_logado.get(reverse("abastecimento_pdf"), {"mes": "2020-01"})
+    assert response.status_code == 200
+    assert response.content.startswith(b"%PDF")

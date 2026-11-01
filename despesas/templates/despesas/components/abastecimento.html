@@ -20,11 +20,18 @@
                 <i class="bi bi-chevron-right"></i>
             </button>
         </div>
+        <div class="ui-card-acoes">
+        <a class="ui-btn ui-btn-secundario" target="_blank" rel="noopener"
+           href="{% url 'abastecimento_pdf' %}?mes={{ mes_param }}"
+           title="Abrir relatório do mês em PDF">
+            <i class="bi bi-file-earmark-pdf"></i> PDF
+        </a>
         <button type="button" class="ui-btn ui-btn-primario js-abastecimento-abrir"
                 data-url="{% url 'abastecimento_form' %}"
                 data-title="ADICIONAR ABASTECIMENTO">
             <i class="bi bi-plus-lg"></i> Novo abastecimento
         </button>
+        </div>
     </header>
 
     <div class="ui-kpis">
