@@ -1,0 +1,93 @@
+{% load humanize %}
+<section class="ui-card">
+    <header class="ui-card-header">
+        <div>
+            <h2 class="ui-card-titulo">Resumo de abastecimento</h2>
+            <p class="ui-card-subtitulo">Gasto e consumo mês a mês e por placa · km das minutas</p>
+        </div>
+    </header>
+
+    <div class="ui-grid-2">
+        <div>
+            <h3 class="ui-secao-titulo">Mês a mês · últimos {{ resumo_meses|length }} meses</h3>
+            <div class="ui-tabela-wrap">
+                <table class="ui-tabela ui-tabela-cards">
+                    <thead>
+                        <tr>
+                            <th>Mês</th>
+                            <th></th>
+                            <th class="ui-num">Total</th>
+                            <th class="ui-num">Litros</th>
+                            <th class="ui-num">km/L</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in resumo_meses %}
+                            <tr class="ui-clicavel js-abastecimento-mes{% if item.mes == mes_abastecimento %} ui-linha-ativa{% endif %}"
+                                data-url="{% url 'abastecimento_mes' %}"
+                                data-mes="{{ item.param }}"
+                                title="{{ item.mes|date:'M/Y' }}: R$ {{ item.valor|intcomma }} · {{ item.quantidade }} abastecimento{{ item.quantidade|pluralize }}">
+                                <td class="ui-forte" data-label="Mês">{{ item.mes|date:"M/Y" }}</td>
+                                <td class="ui-col-cheia">
+                                    <div class="ui-barra">
+                                        <div class="ui-barra-valor" style="width: {{ item.percentual }}%"></div>
+                                    </div>
+                                </td>
+                                <td class="ui-num ui-forte" data-label="Total">{% if item.quantidade %}R$ {{ item.valor|intcomma }}{% else %}-{% endif %}</td>
+                                <td class="ui-num" data-label="Litros">{% if item.quantidade %}{{ item.litros|intcomma }}{% else %}-{% endif %}</td>
+                                <td class="ui-num" data-label="km/L">{% include "despesas/components/abastecimento_consumo.html" %}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div>
+            <h3 class="ui-secao-titulo">Por placa · {{ mes_abastecimento|date:"M/Y" }}</h3>
+            {% if resumo_placas %}
+                <div class="ui-tabela-wrap">
+                    <table class="ui-tabela ui-tabela-cards">
+                        <thead>
+                            <tr>
+                                <th>Placa</th>
+                                <th></th>
+                                <th class="ui-num">Total</th>
+                                <th class="ui-num">Litros</th>
+                                <th class="ui-num">KM</th>
+                                <th class="ui-num">km/L</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in resumo_placas %}
+                                <tr title="{{ item.placa }}: R$ {{ item.valor|intcomma }} · {{ item.quantidade }} abastecimento{{ item.quantidade|pluralize }}">
+                                    <td class="ui-forte" data-label="Placa">{{ item.placa }}</td>
+                                    <td class="ui-col-cheia">
+                                        <div class="ui-barra">
+                                            <div class="ui-barra-valor" style="width: {{ item.percentual }}%"></div>
+                                        </div>
+                                    </td>
+                                    <td class="ui-num ui-forte" data-label="Total">R$ {{ item.valor|intcomma }}</td>
+                                    <td class="ui-num" data-label="Litros">{{ item.litros|intcomma }}</td>
+                                    <td class="ui-num" data-label="KM">
+                                        {% if item.km %}{{ item.km|intcomma }}{% else %}-{% endif %}
+                                        {% if item.descartadas %}
+                                            <i class="bi bi-exclamation-circle ui-aviso"
+                                               title="{{ item.descartadas }} minuta{{ item.descartadas|pluralize }} com km inválido ignorada{{ item.descartadas|pluralize }}"></i>
+                                        {% endif %}
+                                    </td>
+                                    <td class="ui-num" data-label="km/L">{% include "despesas/components/abastecimento_consumo.html" %}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="ui-vazio">
+                    <i class="bi bi-truck"></i>
+                    <p>Nenhum abastecimento neste mês.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>

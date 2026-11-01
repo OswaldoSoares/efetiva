@@ -7,15 +7,24 @@ from clientes.models import Cliente
 
 
 class Abastecimento(models.Model):
+    TIPOS_COMBUSTIVEL = [
+        ("DIESEL", "DIESEL"),
+        ("GASOLINA", "GASOLINA"),
+        ("ETANOL", "ETANOL"),
+        ("ARLA", "ARLA 32"),
+    ]
+
     idAbastecimento = models.AutoField(primary_key=True)
-    DataAbastecimento = models.DateField(default=0)
-    LitrosAbastecidos = models.PositiveIntegerField()
+    DataAbastecimento = models.DateField()
+    LitrosAbastecidos = models.DecimalField(decimal_places=2, max_digits=7)
     ValorAbastecido = models.DecimalField(decimal_places=2, max_digits=8)
     ValorCombustivel = models.DecimalField(decimal_places=3, max_digits=6)
-    TipoCombustivel = models.CharField(max_length=10)
+    TipoCombustivel = models.CharField(
+        max_length=10, choices=TIPOS_COMBUSTIVEL
+    )
     Pago = models.BooleanField(default=False)
-    DataPagamento = models.DateField(default=0)
-    idVeiculo = models.ForeignKey(Veiculo, on_delete=models.CASCADE)
+    DataPagamento = models.DateField(blank=True, null=True)
+    idVeiculo = models.ForeignKey(Veiculo, on_delete=models.PROTECT)
 
     class Meta:
         db_table = "abastecimento"

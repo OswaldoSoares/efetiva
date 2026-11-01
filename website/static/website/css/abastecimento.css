@@ -1,0 +1,15 @@
+/* Abastecimento - módulo despesas. Componentes base em ui.css */
+
+.card-abastecimento.article-card,
+.card-abastecimento-graficos.article-card,
+.card-abastecimento-resumo.article-card {
+  width: 100%;
+  max-width: 1100px;
+  margin: 10px auto 0;
+}
+
+/* Cor do marcador de cada combustível (validada para daltonismo).
+   ARLA usa o cinza padrão do badge. */
+.abast-diesel { --ui-badge-cor: #c98500; }
+.abast-gasolina { --ui-badge-cor: #3987e5; }
+.abast-etanol { --ui-badge-cor: #199e70; }

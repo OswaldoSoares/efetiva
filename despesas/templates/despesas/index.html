@@ -1,36 +1,65 @@
-{% extends 'despesas/basedespesas.html' %}
+{% extends "despesas/basedespesas.html" %}
 
 {% block maindespesa %}
-<main class='article'>
+{% load static %}
+<link rel="stylesheet" href="{% static 'website/css/abastecimento.css' %}">
+<main class="article">
+    <article class="article-card card-abastecimento">
+        {% include "despesas/components/abastecimento.html" %}
+    </article>
+
+    <article class="article-card card-abastecimento-graficos">
+        {% include "despesas/components/abastecimento_graficos.html" %}
+    </article>
+
+    <article class="article-card card-abastecimento-resumo">
+        {% include "despesas/components/abastecimento_resumo.html" %}
+    </article>
+
+    {% comment %}
+    Funcionalidades ocultas por enquanto, somente o abastecimento está em uso.
     <div>
         <article class="article-card card-multas">
-            {% include 'despesas/html_form_multas.html' %}
+            {% include "despesas/html_form_multas.html" %}
         </article>
+
         <article class="article-card card-filtro-despesas-multa">
-            {% include 'despesas/html_filtro_despesas_multa.html' %}
+            {% include "despesas/html_filtro_despesas_multa.html" %}
         </article>
     </div>
+
     <div>
         <article class="article-card card-minutas-multa">
-            {% include 'despesas/html_minutas_multa.html' %}
+            {% include "despesas/html_minutas_multa.html" %}
         </article>
+
         <article class="article-card card-multas-pagar">
-            {% include 'despesas/html_multas_pagar.html' %}
+            {% include "despesas/html_multas_pagar.html" %}
         </article>
     </div>
+
     <article class="article-card card-despesas">
-        {% comment %} {% include 'despesas/html_form_despesas.html' %} {% endcomment %}
+        {% include "despesas/html_form_despesas.html" %}
     </article>
+
     <article class="article-card card-despesas-pagar">
-        {% comment %} {% include 'despesas/html_despesas_pagar.html' %} {% endcomment %}
+        {% include "despesas/html_despesas_pagar.html" %}
     </article>
+
     <div>
         <article class="article-card card-categoria">
-            {% comment %} {% include 'despesas/html_form_categorias.html' %} {% endcomment %}
+            {% include "despesas/html_form_categorias.html" %}
         </article>
+
         <article class="article-card card-subcategoria">
-            {% comment %} {% include 'despesas/html_form_subcategorias.html' %} {% endcomment %}
+            {% include "despesas/html_form_subcategorias.html" %}
         </article>
     </div>
+    {% endcomment %}
 </main>
-{% endblock %}
+{% endblock maindespesa %}
+
+{% block script %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    {{ block.super }}
+{% endblock script %}

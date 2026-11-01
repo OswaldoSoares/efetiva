@@ -3,12 +3,18 @@ import datetime
 
 from django.http import JsonResponse
 from django.shortcuts import render
+from django.views.decorators.http import (
+    require_GET,
+    require_http_methods,
+    require_POST,
+)
 
 from despesas import facade
+from despesas.facades import abastecimento
 from despesas.print import print_multas_pagar
+from despesas.print_abastecimento import print_abastecimentos
 from website.facade import str_hoje
 
-from .forms import CadastraAbastecimento
 from rolepermissions.decorators import has_permission_decorator
 
 
@@ -19,16 +25,42 @@ def index_despesas(request):
     contexto.update({"categorias": categorias})
     despesas_pagar = facade.create_contexto_despesas()
     contexto.update({"despesas_pagar": despesas_pagar})
+    contexto.update(abastecimento.create_contexto_abastecimentos())
+    contexto.update(abastecimento.create_contexto_resumo_abastecimento())
     return render(request, "despesas/index.html", contexto)
 
 
-def cria_abastecimento(request):
-    c_forn = CadastraAbastecimento
-    c_idobj = None
-    c_url = "despesas/criadespesa/"
-    c_view = "cria_abastecimento"
-    data = facade.form_despesa(request, c_forn, c_idobj, c_url, c_view)
-    return data
+@has_permission_decorator("modulo_despesas")
+@require_http_methods(["GET", "POST"])
+def abastecimento_form(request):
+    if request.method == "POST":
+        return abastecimento.save_abastecimento(request)
+
+    id_abastecimento = request.GET.get("id_abastecimento")
+    modal_html = abastecimento.modal_abastecimento(request, id_abastecimento)
+    return JsonResponse({"modal_html": modal_html})
+
+
+@has_permission_decorator("modulo_despesas")
+@require_GET
+def abastecimento_mes(request):
+    mes = abastecimento.obter_mes(request.GET.get("mes"))
+    return abastecimento.create_data_card_abastecimento(request, mes)
+
+
+@has_permission_decorator("modulo_despesas")
+@require_GET
+def abastecimento_pdf(request):
+    mes = abastecimento.obter_mes(request.GET.get("mes"))
+    contexto = abastecimento.create_contexto_abastecimentos(mes)
+    contexto.update(abastecimento.create_contexto_resumo_abastecimento(mes))
+    return print_abastecimentos(contexto)
+
+
+@has_permission_decorator("modulo_despesas")
+@require_POST
+def abastecimento_excluir(request):
+    return abastecimento.delete_abastecimento(request)
 
 
 def adiciona_multa(request):

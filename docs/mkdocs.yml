@@ -18,6 +18,7 @@ theme:
 
 nav:
   - Início: index.md
+  - Padrão visual: padrao-visual.md
   - Módulos:
       - Core:
           - Constants:

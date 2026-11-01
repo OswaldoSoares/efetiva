@@ -51,6 +51,18 @@ mensagens = {
         "mensagem": "CONTRA-CHEQUE DO PERÍODO DE FÉRIAS {inicio} - {fim} SELECIONADO.",
         "tipo": "info",
     },
+    "deab0001": {
+        "mensagem": "ABASTECIMENTO ADICIONADO COM SUCESSO.",
+        "tipo": "success",
+    },
+    "deab0002": {
+        "mensagem": "ABASTECIMENTO ALTERADO COM SUCESSO.",
+        "tipo": "success",
+    },
+    "deab0003": {
+        "mensagem": "ABASTECIMENTO EXCLUÍDO COM SUCESSO.",
+        "tipo": "success",
+    },
 
 
 

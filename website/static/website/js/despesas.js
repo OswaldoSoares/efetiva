@@ -407,3 +407,229 @@ var Hoje = function() {
     hoje = yyyy + '-' + mm + '-' + dd;
     return hoje
 }
+// ABASTECIMENTO
+// Funções próprias para não depender de formAjaxSubmit/initModalDialog,
+// que são redefinidas em vários arquivos js.
+
+function abastecimentoAtualizaCard(data) {
+    $(".card-abastecimento").html(data["html-card-abastecimento"]);
+    $(".card-abastecimento-graficos").html(data["html-card-abastecimento-graficos"]);
+    $(".card-abastecimento-resumo").html(data["html-card-abastecimento-resumo"]);
+    abastecimentoGraficos();
+    if (data["mensagem"]) {
+        mostrarToast(data["mensagem"], data["tipo"]);
+    }
+}
+
+var abastecimentoChartsAtivos = [];
+
+function abastecimentoFormataReal(valor, casas) {
+    return valor.toLocaleString("pt-BR", {
+        minimumFractionDigits: casas,
+        maximumFractionDigits: casas,
+    });
+}
+
+function abastecimentoGraficos() {
+    var dados = document.getElementById("dados-graficos-abastecimento");
+    if (!dados || typeof Chart === "undefined") {
+        return;
+    }
+    abastecimentoChartsAtivos.forEach(function(grafico) { grafico.destroy(); });
+    abastecimentoChartsAtivos = [];
+
+    var pontos = JSON.parse(dados.textContent);
+    var estilo = getComputedStyle(document.documentElement);
+    var destaque = estilo.getPropertyValue("--ui-destaque").trim() || "#ffd433";
+    var texto2 = estilo.getPropertyValue("--ui-texto-2").trim() || "#afafaf";
+    var grade = "rgba(255, 255, 255, 0.06)";
+    var rotulos = pontos.map(function(p) { return p.rotulo; });
+
+    var opcoesBase = {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: false,
+        plugins: {
+            legend: { display: false },
+            tooltip: {
+                displayColors: false,
+                backgroundColor: "#1f1f1f",
+                padding: 10,
+            },
+        },
+        scales: {
+            x: {
+                grid: { display: false },
+                border: { color: grade },
+                ticks: { color: texto2 },
+            },
+            y: {
+                beginAtZero: true,
+                grid: { color: grade },
+                border: { display: false },
+                ticks: { color: texto2, maxTicksLimit: 5 },
+            },
+        },
+    };
+
+    var gasto = document.getElementById("grafico-abastecimento-gasto");
+    var opcoesGasto = $.extend(true, {}, opcoesBase, {
+        plugins: { tooltip: { callbacks: {
+            label: function(ctx) { return "R$ " + abastecimentoFormataReal(ctx.parsed.y, 2); },
+        } } },
+        scales: { y: { ticks: { callback: function(v) { return abastecimentoFormataReal(v, 0); } } } },
+        onClick: function(evento, itens) {
+            if (itens.length) {
+                var ponto = pontos[itens[0].index];
+                $(".js-abastecimento-mes[data-mes='" + ponto.mes + "']").first().trigger("click");
+            }
+        },
+    });
+    abastecimentoChartsAtivos.push(new Chart(gasto, {
+        type: "bar",
+        data: {
+            labels: rotulos,
+            datasets: [{
+                data: pontos.map(function(p) { return p.valor; }),
+                // mês selecionado em destaque, demais atenuados
+                backgroundColor: pontos.map(function(p) { return p.ativo ? destaque : destaque + "8c"; }),
+                borderRadius: { topLeft: 4, topRight: 4 },
+                borderSkipped: "bottom",
+                maxBarThickness: 28,
+            }],
+        },
+        options: opcoesGasto,
+    }));
+
+    function graficoLinha(id, campo, casas, sufixo, prefixo) {
+        var opcoes = $.extend(true, {}, opcoesBase, {
+            plugins: { tooltip: { callbacks: {
+                label: function(ctx) {
+                    return prefixo + abastecimentoFormataReal(ctx.parsed.y, casas) + sufixo;
+                },
+            } } },
+            interaction: { mode: "index", intersect: false },
+            scales: { y: {
+                beginAtZero: false,
+                ticks: { callback: function(v) { return abastecimentoFormataReal(v, 2); } },
+            } },
+        });
+        abastecimentoChartsAtivos.push(new Chart(document.getElementById(id), {
+            type: "line",
+            data: {
+                labels: rotulos,
+                datasets: [{
+                    data: pontos.map(function(p) { return p[campo]; }),
+                    borderColor: destaque,
+                    backgroundColor: destaque,
+                    borderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                    spanGaps: false,
+                    tension: 0,
+                }],
+            },
+            options: opcoes,
+        }));
+    }
+
+    graficoLinha("grafico-abastecimento-preco", "media", 3, " / litro", "R$ ");
+    graficoLinha("grafico-abastecimento-consumo", "consumo", 2, " km/L", "");
+}
+
+$(function() {
+    abastecimentoGraficos();
+});
+
+$(document).on("click", ".js-abastecimento-mes", function() {
+    if (!$(this).data("mes")) {
+        return;
+    }
+    executarAjax($(this).data("url"), "GET", {
+        mes: $(this).data("mes"),
+    }, abastecimentoAtualizaCard);
+});
+
+// Foca o primeiro campo com erro ou, se não houver erro, o primeiro campo
+function abastecimentoFocaCampo(modal) {
+    var form = modal.find(".modal-body form");
+    var campos = form.find(".errorlist").first().closest("div").find("input, select");
+    if (!campos.length) {
+        campos = form.find("input:visible, select:visible");
+    }
+    campos.first().trigger("focus").trigger("select");
+}
+
+// Calcula o total (litros x preço) enquanto o usuário não digitar o total
+function abastecimentoCalculaTotal(form) {
+    var litros = form.find("[name=LitrosAbastecidos]");
+    var preco = form.find("[name=ValorCombustivel]");
+    var total = form.find("[name=ValorAbastecido]");
+    var automatico = !total.val();
+
+    total.on("input", function() {
+        automatico = false;
+    });
+    litros.add(preco).on("input", function() {
+        var valor = parseFloat(litros.val()) * parseFloat(preco.val());
+        if (automatico && valor > 0) {
+            total.val(valor.toFixed(2));
+        }
+    });
+}
+
+function abastecimentoSubmit(modal) {
+    var form = modal.find(".modal-body form");
+    form.find(".js-abastecimento-data").mask("00/00/0000");
+    form.on("focus", "input", function() {
+        this.select();
+    });
+    abastecimentoCalculaTotal(form);
+    modal.find(".modal-footer .btn-save").off("click").on("click", function() {
+        form.trigger("submit");
+    });
+    form.on("submit", function(event) {
+        event.preventDefault();
+        executarAjax(form.attr("action"), "POST", form.serialize(), function(data) {
+            if (data["html_form"]) {
+                modal.find(".modal-body").html(data["html_form"]);
+                abastecimentoSubmit(modal);
+                abastecimentoFocaCampo(modal);
+            } else {
+                modal.modal("hide");
+                abastecimentoAtualizaCard(data);
+            }
+        });
+    });
+}
+
+$(document).on("click", ".js-abastecimento-abrir", function() {
+    var botao = $(this);
+    var modal = $("#MyModal");
+    var requestData = {};
+    if (botao.data("id_abastecimento")) {
+        requestData.id_abastecimento = botao.data("id_abastecimento");
+    }
+    executarAjax(botao.data("url"), "GET", requestData, function(data) {
+        modal.find(".modal-title").text(botao.data("title"));
+        modal.find(".modal-footer .btn-save").text("SALVAR");
+        modal.find(".modal-body").html(data["modal_html"]);
+        abastecimentoSubmit(modal);
+        // O Bootstrap foca o próprio modal ao terminar de abrir,
+        // então o foco no campo só pode ser dado depois disso
+        modal.off("shown.bs.modal.abastecimento").one("shown.bs.modal.abastecimento", function() {
+            abastecimentoFocaCampo(modal);
+        });
+        modal.modal("show");
+    });
+});
+
+$(document).on("click", ".js-abastecimento-excluir", function() {
+    if (!confirm("CONFIRMA A EXCLUSÃO DO ABASTECIMENTO?")) {
+        return;
+    }
+    executarAjax($(this).data("url"), "POST", {
+        id_abastecimento: $(this).data("id_abastecimento"),
+        csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").first().val(),
+    }, abastecimentoAtualizaCard);
+});
