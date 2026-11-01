@@ -1235,7 +1235,7 @@ def campos_do_colaborador(campos, colaborador):
     salario = colaborador.salarios.salarios.Salario
 
 
-    campos |= {
+    campos.update({
         "foto": colaborador.foto,
         "codigo": colaborador.id_pessoal.zfill(4),
         "funcao": colaborador.dados_profissionais.categoria,
@@ -1251,7 +1251,7 @@ def campos_do_colaborador(campos, colaborador):
         "admissao": datetime.datetime.strftime(admissao, "%d/%m/%Y"),
         "salario": f"R$ {formatar_numero_com_separadores(salario, 2)}",
         "salario_base": f"R$ {formatar_numero_com_separadores(salario, 2)}",
-    }
+    })
 
     return campos
 
@@ -1270,13 +1270,13 @@ def campos_das_ferias(campos, contexto):
         par = " ".join(faltas[item:item+2])
         par_de_faltas.append(par)
 
-    campos |= {
+    campos.update({
         "descricao": "FERIAS",
         "aquisitivo": aquisitivo_extenso,
         "gozo": feria_extenso,
         "faltas": str(len(faltas)).zfill(2),
         "faltas_rows": "\n".join(par_de_faltas),
-    }
+    })
 
     return campos
 
@@ -1296,12 +1296,12 @@ def campos_do_contra_cheque_vencimentos(campos, contra_cheque_itens):
         list_referencias_vencimentos.append(f"{itens.Referencia}\n")
         list_valores_vencimentos.append(f"{itens.Valor}\n")
 
-    campos |= {
+    campos.update({
         "vencimentos_codigos": "".join(list_codigos_vencimentos),
         "vencimentos_eventos": "".join(list_eventos_vencimentos),
         "vencimentos_referencias": "".join(list_referencias_vencimentos),
         "vencimentos_valores": "".join(list_valores_vencimentos),
-    }
+    })
 
     return campos
 
@@ -1320,12 +1320,12 @@ def campos_do_contra_cheque_descontos(campos, contra_cheque_itens):
         list_referencias_descontos.append(f"{itens.Referencia}\n")
         list_valores_descontos.append(f"{itens.Valor}\n")
 
-    campos |= {
+    campos.update({
         "descontos_codigos": "".join(list_codigos_descontos),
         "descontos_eventos": "".join(list_eventos_descontos),
         "descontos_referencias": "".join(list_referencias_descontos),
         "descontos_valores": "".join(list_valores_descontos),
-    }
+    })
 
     return campos
 
@@ -1337,13 +1337,13 @@ def campos_do_contra_cheque_totais(campos, saldo):
 
     total_extenso = valor_por_extenso(total, tamanho=239)
 
-    campos |= {
+    campos.update({
         "vencimentos": f"R$ {formatar_numero_com_separadores(vencimentos, 2)}",
         "descontos": f"R$ {formatar_numero_com_separadores(descontos, 2)}",
         "total": f"R$ {formatar_numero_com_separadores(total, 2)}",
         "extenso_1": total_extenso,
         "extenso_2": total_extenso,
-    }
+    })
 
     return campos
 
@@ -1360,10 +1360,10 @@ def campos_datas_aviso_pgto(campos, contexto):
     data_pgto = antecipar_data_final_de_semana(data_pgto)
     data_pgto_str = datetime.datetime.strftime(data_pgto, "%d de %B de %Y")
 
-    campos |= {
+    campos.update({
         "aviso": f"São Paulo, {data_aviso_str}.",
         "pgto": f"São Paulo, {data_pgto_str}.",
-    }
+    })
     return campos
 
 
@@ -1383,7 +1383,7 @@ def print_recibo_ferias(contexto):
     campos_datas_aviso_pgto(campos, contexto)
 
     pdf_base = Path(f"{STATIC_ROOT}/website/pdf/pdf_base_recibo_ferias.pdf")
-    campos |= {"eventos": "", "referencia": "", "valor": ""}
+    campos.update({"eventos": "", "referencia": "", "valor": ""})
     file_name = f"RECIBO DE FÉRIAS {nome_curto}.pdf"
 
     return preencher_campos_pdf(pdf_base, campos, file_name, contexto)
@@ -1392,7 +1392,7 @@ def print_recibo_ferias(contexto):
 def campos_regitro_colaborador(campos, colaborador):
     conta = colaborador.bancos.contas.first()
 
-    campos |= {
+    campos.update({
         "codigo": colaborador.id_pessoal.zfill(4),
         "pix": f"PIX: {conta.PIX}",
         "funcao": colaborador.dados_profissionais.categoria,
@@ -1402,7 +1402,7 @@ def campos_regitro_colaborador(campos, colaborador):
         "setor": "0001",
         "folha": "01",
         "tipo_colaborador": "01-COLABORADOR",
-    }
+    })
 
     return campos
 
@@ -1426,7 +1426,7 @@ def campos_do_contra_cheque(campos, colaborador, contra_cheque):
     mostrar = tem_registro and descricao == "PAGAMENTO"
     ocultar = "********"
 
-    campos |= {
+    campos.update({
         "descricao": descricao,
         "recibo": conducao if descricao == "VALE TRANSPORTE" else pgto,
         "tipo_recibo": f"{mes_referencia}/{ano_referencia}",
@@ -1435,7 +1435,7 @@ def campos_do_contra_cheque(campos, colaborador, contra_cheque):
         "fgts_mes": f"R$ {fgts_mes}" if mostrar else f"{ocultar}",
         "calc_irrf": f"R$ {base_irrf}" if mostrar else f"{ocultar}",
         "faixa_irrf": f"{ocultar}",
-    }
+    })
 
     return campos
 
@@ -1458,13 +1458,13 @@ def campos_do_contra_cheque_itens(campos, contra_cheque_itens):
             list_valores_vencimentos.append("\n")
             list_valores_descontos.append(f"{itens.Valor}\n")
 
-    campos |= {
+    campos.update({
         "codigos_rows": "".join(list_codigos),
         "eventos_rows": "".join(list_eventos),
         "referencias_rows": "".join(list_referencias),
         "vencimentos_rows": "".join(list_valores_vencimentos),
         "descontos_rows": "".join(list_valores_descontos),
-    }
+    })
 
     return campos
 
@@ -1479,10 +1479,10 @@ def campos_de_observacao(campos, colaborador, contra_cheque, faltas):
     descricao = contra_cheque.Descricao
     mostrar = descricao == "PAGAMENTO" or descricao == "VALE TRANSPORTE"
 
-    campos |= {
+    campos.update({
         "obs": f"{faltas}\n" if faltas and mostrar else "",
         "obs_2": f"ADMISSÃO: {admissao_br}",
-    }
+    })
 
     return campos
 
@@ -1507,7 +1507,7 @@ def print_contra_cheque_pagamento(contexto):
     campos_de_observacao(campos, colaborador, contra_cheque, faltas)
 
     pdf_base = Path(f"{STATIC_ROOT}/website/pdf/pdf_base_contra_cheque.pdf")
-    campos |= {"eventos": "", "referencia": "", "valor": ""}
+    campos.update({"eventos": "", "referencia": "", "valor": ""})
     file_name = f"RECIBO DE PAGAMENTO {nome_curto}.pdf"
 
     return preencher_campos_pdf(pdf_base, campos, file_name, contexto)
@@ -1539,7 +1539,7 @@ def campos_base_cartao_ponto(campos, contexto):
             cpf = item.Documento
     cargo = contexto["colaborador"].dados_profissionais.categoria
 
-    campos |= {
+    campos.update({
         "emitido": emitido,
         "periodo": periodo,
         "empresa": "TRANSPORTADORA EFETIVA LTDA",
@@ -1548,7 +1548,7 @@ def campos_base_cartao_ponto(campos, contexto):
         "colaborador": nome,
         "cpf": cpf,
         "cargo": cargo,
-    }
+    })
 
     return campos
 
@@ -1590,7 +1590,7 @@ def campos_dias_cartao_ponto(campos, cartao_ponto, atrasos, extras):
             list_atrasos.append("\n")
             list_extras.append("\n")
 
-    campos |= {
+    campos.update({
         "dias_rows": "".join(list_dias),
         "previstos_rows": "".join(list_previstos),
         "entradas_rows": "".join(list_entradas),
@@ -1599,7 +1599,7 @@ def campos_dias_cartao_ponto(campos, cartao_ponto, atrasos, extras):
         "extras_rows": "".join(list_extras),
         "total_atrasos": str(atrasos)[:-3],
         "total_extras": str(extras)[:-3],
-    }
+    })
 
     return campos
 
