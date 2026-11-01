@@ -24,7 +24,8 @@ Padrão adotado a partir do card de **Abastecimentos** (módulo Despesas) para m
 |---|---|
 | `ui-card`, `ui-card-header`, `ui-card-titulo`, `ui-card-subtitulo` | card com cabeçalho |
 | `ui-secao-titulo` | título de uma seção dentro do card |
-| `ui-grid-2` | duas colunas (vira uma no celular) |
+| `ui-grid-2`, `ui-grid-3` | duas / três colunas (vira uma no celular) |
+| `ui-aviso` | ícone de aviso ao lado de um valor, explicação no `title` |
 | `ui-btn ui-btn-primario` | botão de ação principal (amarelo) |
 | `ui-btn ui-btn-secundario` | botão secundário (ex.: PDF), funciona em `<a>` |
 | `ui-card-acoes` | agrupa os botões do cabeçalho |
