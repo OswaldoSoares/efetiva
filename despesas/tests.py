@@ -250,3 +250,13 @@ def test_index_exibe_resumo(client_logado):
     html = client_logado.get(reverse("index_despesas")).content.decode()
     assert "card-abastecimento-resumo" in html
     assert "Mês a mês" in html
+
+
+@pytest.mark.django_db
+def test_form_aceita_data_brasileira(dados):
+    dados["DataAbastecimento"] = datetime.date.today().strftime("%d/%m/%Y")
+    form = CadastraAbastecimento(data=dados)
+    assert form.is_valid(), form.errors
+    assert 'value="' + dados["DataAbastecimento"] + '"' in str(
+        CadastraAbastecimento()["DataAbastecimento"]
+    )

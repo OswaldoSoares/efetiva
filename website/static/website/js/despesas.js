@@ -428,18 +428,51 @@ $(document).on("click", ".js-abastecimento-mes", function() {
     }, abastecimentoAtualizaCard);
 });
 
+// Foca o primeiro campo com erro ou, se não houver erro, o primeiro campo
+function abastecimentoFocaCampo(modal) {
+    var form = modal.find(".modal-body form");
+    var campos = form.find(".errorlist").first().closest("div").find("input, select");
+    if (!campos.length) {
+        campos = form.find("input:visible, select:visible");
+    }
+    campos.first().trigger("focus").trigger("select");
+}
+
+// Calcula o total (litros x preço) enquanto o usuário não digitar o total
+function abastecimentoCalculaTotal(form) {
+    var litros = form.find("[name=LitrosAbastecidos]");
+    var preco = form.find("[name=ValorCombustivel]");
+    var total = form.find("[name=ValorAbastecido]");
+    var automatico = !total.val();
+
+    total.on("input", function() {
+        automatico = false;
+    });
+    litros.add(preco).on("input", function() {
+        var valor = parseFloat(litros.val()) * parseFloat(preco.val());
+        if (automatico && valor > 0) {
+            total.val(valor.toFixed(2));
+        }
+    });
+}
+
 function abastecimentoSubmit(modal) {
     var form = modal.find(".modal-body form");
+    form.find(".js-abastecimento-data").mask("00/00/0000");
+    form.on("focus", "input", function() {
+        this.select();
+    });
+    abastecimentoCalculaTotal(form);
     modal.find(".modal-footer .btn-save").off("click").on("click", function() {
         form.trigger("submit");
     });
-    form.find("input:visible").first().focus();
     form.on("submit", function(event) {
         event.preventDefault();
         executarAjax(form.attr("action"), "POST", form.serialize(), function(data) {
             if (data["html_form"]) {
                 modal.find(".modal-body").html(data["html_form"]);
                 abastecimentoSubmit(modal);
+                abastecimentoFocaCampo(modal);
             } else {
                 modal.modal("hide");
                 abastecimentoAtualizaCard(data);
@@ -459,8 +492,13 @@ $(document).on("click", ".js-abastecimento-abrir", function() {
         modal.find(".modal-title").text(botao.data("title"));
         modal.find(".modal-footer .btn-save").text("SALVAR");
         modal.find(".modal-body").html(data["modal_html"]);
-        modal.modal("show");
         abastecimentoSubmit(modal);
+        // O Bootstrap foca o próprio modal ao terminar de abrir,
+        // então o foco no campo só pode ser dado depois disso
+        modal.off("shown.bs.modal.abastecimento").one("shown.bs.modal.abastecimento", function() {
+            abastecimentoFocaCampo(modal);
+        });
+        modal.modal("show");
     });
 });
 

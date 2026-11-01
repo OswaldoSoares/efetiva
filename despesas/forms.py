@@ -34,8 +34,15 @@ class CadastraAbastecimento(forms.ModelForm):
             "ValorAbastecido": "VALOR TOTAL",
         }
         widgets = {
+            # Texto com máscara: no type="date" o Tab percorre dia/mês/ano
             "DataAbastecimento": forms.DateInput(
-                attrs={"type": "date"}, format="%Y-%m-%d"
+                attrs={
+                    "class": "form-control js-abastecimento-data",
+                    "placeholder": "dd/mm/aaaa",
+                    "inputmode": "numeric",
+                    "autocomplete": "off",
+                },
+                format="%d/%m/%Y",
             ),
             "LitrosAbastecidos": forms.NumberInput(
                 attrs={"step": "0.01", "min": "0.01"}
@@ -54,15 +61,16 @@ class CadastraAbastecimento(forms.ModelForm):
             Proprietario_id=ID_PROPRIETARIO_FROTA
         ).order_by("Placa")
         self.fields["idVeiculo"].label_from_instance = lambda obj: obj.Placa
+        self.fields["DataAbastecimento"].input_formats = [
+            "%d/%m/%Y",
+            "%Y-%m-%d",
+        ]
         if not self.instance.pk and not self.is_bound:
             self.initial.setdefault(
                 "DataAbastecimento", datetime.date.today()
             )
         for field in self.fields.values():
-            css = "form-select" if field.widget.input_type == "select" else (
-                "form-control"
-            )
-            field.widget.attrs.setdefault("class", css)
+            field.widget.attrs.setdefault("class", "form-control")
 
     def clean_DataAbastecimento(self):
         data = self.cleaned_data["DataAbastecimento"]
