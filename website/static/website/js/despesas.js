@@ -413,8 +413,19 @@ var Hoje = function() {
 
 function abastecimentoAtualizaCard(data) {
     $(".card-abastecimento").html(data["html-card-abastecimento"]);
-    mostrarToast(data["mensagem"], data["tipo"]);
+    if (data["mensagem"]) {
+        mostrarToast(data["mensagem"], data["tipo"]);
+    }
 }
+
+$(document).on("click", ".js-abastecimento-mes", function() {
+    if (!$(this).data("mes")) {
+        return;
+    }
+    executarAjax($(this).data("url"), "GET", {
+        mes: $(this).data("mes"),
+    }, abastecimentoAtualizaCard);
+});
 
 function abastecimentoSubmit(modal) {
     var form = modal.find(".modal-body form");

@@ -131,10 +131,14 @@
 }
 
 .ui-nav-periodo-rotulo {
+  display: inline-block;
   min-width: 150px;
   text-align: center;
   font-weight: 600;
-  text-transform: capitalize;
+}
+
+.ui-nav-periodo-rotulo::first-letter {
+  text-transform: uppercase;
 }
 
 /* Indicadores */

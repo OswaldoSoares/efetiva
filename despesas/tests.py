@@ -5,6 +5,7 @@ import pytest
 from django.contrib.auth.models import User
 from django.urls import reverse
 
+from despesas.facades import abastecimento
 from despesas.forms import ID_PROPRIETARIO_FROTA, CadastraAbastecimento
 from despesas.models import Abastecimento
 from pessoas.models import Pessoal
@@ -150,3 +151,45 @@ def test_index_exibe_somente_abastecimento(client_logado):
     assert "csrfmiddlewaretoken" in html
     assert "card-multas" not in html
     assert "card-despesas" not in html
+
+
+def test_somar_meses_vira_o_ano():
+    assert abastecimento.somar_meses(datetime.date(2026, 12, 1), 1) == (
+        datetime.date(2027, 1, 1)
+    )
+    assert abastecimento.somar_meses(datetime.date(2026, 1, 1), -1) == (
+        datetime.date(2025, 12, 1)
+    )
+
+
+def test_obter_mes_invalido_usa_mes_atual():
+    assert abastecimento.obter_mes("xx") == datetime.date.today().replace(
+        day=1
+    )
+
+
+@pytest.mark.django_db
+def test_abastecimento_mes_filtra_pelo_mes(client_logado, dados):
+    client_logado.post(reverse("abastecimento_form"), dados)
+    mes_atual = datetime.date.today().strftime("%Y-%m")
+    url = reverse("abastecimento_mes")
+
+    html = client_logado.get(url, {"mes": mes_atual}).json()[
+        "html-card-abastecimento"
+    ]
+    assert "ABC1D23" in html
+
+    html = client_logado.get(url, {"mes": "2020-01"}).json()[
+        "html-card-abastecimento"
+    ]
+    assert "ABC1D23" not in html
+    assert "Nenhum abastecimento" in html
+
+
+@pytest.mark.django_db
+def test_salvar_mostra_mes_do_abastecimento(client_logado, dados):
+    dados["DataAbastecimento"] = "2025-03-10"
+    response = client_logado.post(reverse("abastecimento_form"), dados)
+    html = response.json()["html-card-abastecimento"]
+    assert "ABC1D23" in html
+    assert "2025-02" in html  # mês anterior na navegação

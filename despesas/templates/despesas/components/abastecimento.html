@@ -4,7 +4,21 @@
     <header class="ui-card-header">
         <div>
             <h2 class="ui-card-titulo">Abastecimentos</h2>
-            <p class="ui-card-subtitulo">Últimos {{ dias_abastecimento }} dias</p>
+            <p class="ui-card-subtitulo">Lançamentos do mês</p>
+        </div>
+        <div class="ui-nav-periodo">
+            <button type="button" class="ui-btn-icone js-abastecimento-mes"
+                    data-url="{% url 'abastecimento_mes' %}"
+                    data-mes="{{ mes_anterior }}" title="Mês anterior">
+                <i class="bi bi-chevron-left"></i>
+            </button>
+            <span class="ui-nav-periodo-rotulo">{{ mes_abastecimento|date:"F \d\e Y" }}</span>
+            <button type="button" class="ui-btn-icone js-abastecimento-mes"
+                    data-url="{% url 'abastecimento_mes' %}"
+                    data-mes="{{ mes_proximo|default:'' }}" title="Próximo mês"
+                    {% if not mes_proximo %}disabled{% endif %}>
+                <i class="bi bi-chevron-right"></i>
+            </button>
         </div>
         <button type="button" class="ui-btn ui-btn-primario js-abastecimento-abrir"
                 data-url="{% url 'abastecimento_form' %}"
@@ -84,7 +98,7 @@
     {% else %}
         <div class="ui-vazio">
             <i class="bi bi-droplet"></i>
-            <p>Nenhum abastecimento nos últimos {{ dias_abastecimento }} dias.</p>
+            <p>Nenhum abastecimento em {{ mes_abastecimento|date:"F \d\e Y" }}.</p>
         </div>
     {% endif %}
 </section>

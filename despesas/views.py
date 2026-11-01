@@ -3,7 +3,11 @@ import datetime
 
 from django.http import JsonResponse
 from django.shortcuts import render
-from django.views.decorators.http import require_http_methods, require_POST
+from django.views.decorators.http import (
+    require_GET,
+    require_http_methods,
+    require_POST,
+)
 
 from despesas import facade
 from despesas.facades import abastecimento
@@ -33,6 +37,13 @@ def abastecimento_form(request):
     id_abastecimento = request.GET.get("id_abastecimento")
     modal_html = abastecimento.modal_abastecimento(request, id_abastecimento)
     return JsonResponse({"modal_html": modal_html})
+
+
+@has_permission_decorator("modulo_despesas")
+@require_GET
+def abastecimento_mes(request):
+    mes = abastecimento.obter_mes(request.GET.get("mes"))
+    return abastecimento.create_data_card_abastecimento(request, mes)
 
 
 @has_permission_decorator("modulo_despesas")

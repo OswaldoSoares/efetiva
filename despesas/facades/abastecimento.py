@@ -9,23 +9,34 @@ from despesas import html_data
 from despesas.forms import CadastraAbastecimento
 from despesas.models import Abastecimento
 
-# Quantidade de dias exibidos no card de abastecimentos
-DIAS_LISTAGEM = 30
+def obter_mes(valor=None):
+    """Converte 'AAAA-MM' no primeiro dia do mês; padrão é o mês atual."""
+    try:
+        return datetime.datetime.strptime(valor, "%Y-%m").date()
+    except (TypeError, ValueError):
+        return datetime.date.today().replace(day=1)
 
 
-def get_abastecimentos(dias=DIAS_LISTAGEM):
-    """Retorna os abastecimentos dos últimos `dias` dias."""
-    inicio = datetime.date.today() - datetime.timedelta(days=dias)
-    return (
-        Abastecimento.objects.filter(DataAbastecimento__gte=inicio)
-        .select_related("idVeiculo")
-        .order_by("-DataAbastecimento", "-idAbastecimento")
+def somar_meses(mes, quantidade):
+    total = mes.year * 12 + mes.month - 1 + quantidade
+    return datetime.date(total // 12, total % 12 + 1, 1)
+
+
+def get_abastecimentos_mes(mes):
+    return Abastecimento.objects.filter(
+        DataAbastecimento__gte=mes,
+        DataAbastecimento__lt=somar_meses(mes, 1),
     )
 
 
-def create_contexto_abastecimentos():
-    """Contexto do card de abastecimentos: lista e totais do período."""
-    abastecimentos = get_abastecimentos()
+def create_contexto_abastecimentos(mes=None):
+    """Contexto do card de abastecimentos: lista e totais do mês."""
+    mes = mes or obter_mes()
+    abastecimentos = (
+        get_abastecimentos_mes(mes)
+        .select_related("idVeiculo")
+        .order_by("-DataAbastecimento", "-idAbastecimento")
+    )
     totais = abastecimentos.aggregate(
         litros=Sum("LitrosAbastecidos"), valor=Sum("ValorAbastecido")
     )
@@ -33,9 +44,14 @@ def create_contexto_abastecimentos():
     if totais["litros"]:
         media = totais["valor"] / totais["litros"]
 
+    proximo = somar_meses(mes, 1)
     return {
         "abastecimentos": abastecimentos,
-        "dias_abastecimento": DIAS_LISTAGEM,
+        "mes_abastecimento": mes,
+        "mes_anterior": somar_meses(mes, -1).strftime("%Y-%m"),
+        "mes_proximo": (
+            proximo.strftime("%Y-%m") if proximo <= obter_mes() else None
+        ),
         "total_litros": totais["litros"] or 0,
         "total_valor": totais["valor"] or 0,
         "media_litro": media,
@@ -72,20 +88,26 @@ def save_abastecimento(request):
         modal_html = modal_abastecimento(request, id_abastecimento, form)
         return JsonResponse({"html_form": modal_html})
 
-    form.save()
+    abastecimento = form.save()
     codigo = "deab0002" if id_abastecimento else "deab0001"
-    return create_data_card_abastecimento(request, get_mensagem(codigo))
+    # Mostra o mês do abastecimento salvo
+    mes = abastecimento.DataAbastecimento.replace(day=1)
+    return create_data_card_abastecimento(request, mes, get_mensagem(codigo))
 
 
 def delete_abastecimento(request):
     id_abastecimento = request.POST.get("id_abastecimento")
     abastecimento = get_object_or_404(Abastecimento, pk=id_abastecimento)
+    mes = abastecimento.DataAbastecimento.replace(day=1)
     abastecimento.delete()
-    return create_data_card_abastecimento(request, get_mensagem("deab0003"))
+    return create_data_card_abastecimento(
+        request, mes, get_mensagem("deab0003")
+    )
 
 
-def create_data_card_abastecimento(request, mensagem):
-    contexto = create_contexto_abastecimentos()
+def create_data_card_abastecimento(request, mes, mensagem=None):
+    contexto = create_contexto_abastecimentos(mes)
     data = html_data.html_card_abastecimento(request, contexto, {})
-    data.update(mensagem)
+    if mensagem:
+        data.update(mensagem)
     return JsonResponse(data)
