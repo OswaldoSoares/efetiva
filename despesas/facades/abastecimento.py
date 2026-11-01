@@ -1,4 +1,5 @@
 import datetime
+from collections import defaultdict
 
 from django.db.models import Count, Sum
 from django.db.models.functions import TruncMonth
@@ -8,6 +9,7 @@ from django.utils.formats import date_format
 
 from core.tools import get_mensagem
 from despesas import html_data
+from despesas.facades import consumo
 from despesas.forms import CadastraAbastecimento
 from despesas.models import Abastecimento
 
@@ -78,47 +80,82 @@ def _percentual_do_maior(itens):
     return itens
 
 
+def _com_consumo(resumo, km, litros, descartadas=0):
+    """Adiciona km rodados e consumo (km/L) ao resumo."""
+    resumo["km"] = km
+    resumo["descartadas"] = descartadas
+    resumo["consumo"], resumo["verificar"] = consumo.calcular_consumo(
+        km, litros
+    )
+    return resumo
+
+
 def create_contexto_resumo_abastecimento(mes=None, quantidade_meses=12):
     """Contexto do card de resumo: mês a mês e por placa no mês."""
     mes = mes or obter_mes()
     inicio = somar_meses(mes, -(quantidade_meses - 1))
-    agregados = {
-        "litros": Sum("LitrosAbastecidos"),
-        "valor": Sum("ValorAbastecido"),
-        "quantidade": Count("idAbastecimento"),
-    }
+    fim = somar_meses(mes, 1)
 
-    por_mes = {
-        item["mes"]: item
-        for item in Abastecimento.objects.filter(
-            DataAbastecimento__gte=inicio,
-            DataAbastecimento__lt=somar_meses(mes, 1),
+    linhas = (
+        Abastecimento.objects.filter(
+            DataAbastecimento__gte=inicio, DataAbastecimento__lt=fim
         )
         .annotate(mes=TruncMonth("DataAbastecimento"))
-        .values("mes")
-        .annotate(**agregados)
+        .values("mes", "idVeiculo", "idVeiculo__Placa")
+        .annotate(
+            litros=Sum("LitrosAbastecidos"),
+            valor=Sum("ValorAbastecido"),
+            quantidade=Count("idAbastecimento"),
+        )
         .order_by()
-    }
+    )
+    km_veiculos = consumo.km_rodados_por_veiculo_mes(inicio, fim)
+    sem_km = {"km": 0, "descartadas": 0}
+
+    por_mes = defaultdict(
+        lambda: {
+            "litros": 0,
+            "valor": 0,
+            "quantidade": 0,
+            "km": 0,
+            "litros_com_km": 0,
+        }
+    )
+    placas = []
+    for linha in linhas:
+        km = km_veiculos.get((linha["idVeiculo"], linha["mes"]), sem_km)
+        total = por_mes[linha["mes"]]
+        for campo in ("litros", "valor", "quantidade"):
+            total[campo] += linha[campo]
+        # Veículo sem minuta no mês não entra no consumo da frota
+        if km["km"]:
+            total["km"] += km["km"]
+            total["litros_com_km"] += linha["litros"]
+        if linha["mes"] == mes:
+            resumo = _resumo(
+                linha["litros"], linha["valor"], linha["quantidade"]
+            )
+            resumo["placa"] = linha["idVeiculo__Placa"]
+            placas.append(
+                _com_consumo(
+                    resumo, km["km"], linha["litros"], km["descartadas"]
+                )
+            )
+    placas.sort(key=lambda item: item["valor"], reverse=True)
+
     meses = []
     for indice in range(quantidade_meses):
         data_mes = somar_meses(mes, -indice)
-        item = por_mes.get(data_mes, {})
+        total = por_mes.get(data_mes, {})
         resumo = _resumo(
-            item.get("litros"), item.get("valor"), item.get("quantidade", 0)
+            total.get("litros"), total.get("valor"), total.get("quantidade", 0)
         )
         resumo.update(mes=data_mes, param=data_mes.strftime("%Y-%m"))
-        meses.append(resumo)
-
-    placas = []
-    for item in (
-        get_abastecimentos_mes(mes)
-        .values("idVeiculo__Placa")
-        .annotate(**agregados)
-        .order_by("-valor")
-    ):
-        resumo = _resumo(item["litros"], item["valor"], item["quantidade"])
-        resumo["placa"] = item["idVeiculo__Placa"]
-        placas.append(resumo)
+        meses.append(
+            _com_consumo(
+                resumo, total.get("km", 0), total.get("litros_com_km", 0)
+            )
+        )
 
     contexto = {
         "mes_abastecimento": mes,
@@ -139,6 +176,11 @@ def create_contexto_graficos_abastecimento(resumo_meses, mes):
                 "mes": item["param"],
                 "valor": float(item["valor"]),
                 "media": float(item["media"]) if item["media"] else None,
+                "consumo": (
+                    round(item["consumo"], 2)
+                    if item["consumo"] and not item["verificar"]
+                    else None
+                ),
                 "ativo": item["mes"] == mes,
             }
         )

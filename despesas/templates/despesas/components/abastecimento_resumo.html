@@ -3,7 +3,7 @@
     <header class="ui-card-header">
         <div>
             <h2 class="ui-card-titulo">Resumo de abastecimento</h2>
-            <p class="ui-card-subtitulo">Gasto mês a mês e por placa</p>
+            <p class="ui-card-subtitulo">Gasto e consumo mês a mês e por placa · km das minutas</p>
         </div>
     </header>
 
@@ -18,7 +18,7 @@
                             <th></th>
                             <th class="ui-num">Total</th>
                             <th class="ui-num">Litros</th>
-                            <th class="ui-num">R$/L</th>
+                            <th class="ui-num">km/L</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -35,7 +35,7 @@
                                 </td>
                                 <td class="ui-num ui-forte">{% if item.quantidade %}R$ {{ item.valor|intcomma }}{% else %}-{% endif %}</td>
                                 <td class="ui-num">{% if item.quantidade %}{{ item.litros|intcomma }}{% else %}-{% endif %}</td>
-                                <td class="ui-num">{% if item.media %}{{ item.media|floatformat:3 }}{% else %}-{% endif %}</td>
+                                <td class="ui-num">{% include "despesas/components/abastecimento_consumo.html" %}</td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -54,7 +54,8 @@
                                 <th></th>
                                 <th class="ui-num">Total</th>
                                 <th class="ui-num">Litros</th>
-                                <th class="ui-num">R$/L</th>
+                                <th class="ui-num">KM</th>
+                                <th class="ui-num">km/L</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -68,7 +69,14 @@
                                     </td>
                                     <td class="ui-num ui-forte">R$ {{ item.valor|intcomma }}</td>
                                     <td class="ui-num">{{ item.litros|intcomma }}</td>
-                                    <td class="ui-num">{{ item.media|floatformat:3 }}</td>
+                                    <td class="ui-num">
+                                        {% if item.km %}{{ item.km|intcomma }}{% else %}-{% endif %}
+                                        {% if item.descartadas %}
+                                            <i class="bi bi-exclamation-circle ui-aviso"
+                                               title="{{ item.descartadas }} minuta{{ item.descartadas|pluralize }} com km inválido ignorada{{ item.descartadas|pluralize }}"></i>
+                                        {% endif %}
+                                    </td>
+                                    <td class="ui-num">{% include "despesas/components/abastecimento_consumo.html" %}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>

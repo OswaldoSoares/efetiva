@@ -1,0 +1,3 @@
+{% if item.consumo %}{{ item.consumo|floatformat:2 }}{% if item.verificar %}
+    <i class="bi bi-exclamation-triangle ui-aviso"
+       title="Consumo fora do esperado: confira o km das minutas e os litros lançados"></i>{% endif %}{% else %}<span title="Sem minutas com km no mês">-</span>{% endif %}

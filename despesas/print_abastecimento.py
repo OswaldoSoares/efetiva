@@ -21,13 +21,13 @@ def _numero(valor, casas=2):
     return number_format(valor, casas, use_l10n=True, force_grouping=True)
 
 
-def _tabela(linhas, larguras, linha_total=False):
+def _tabela(linhas, larguras, linha_total=False, numeros_desde=3):
     tabela = Table(linhas, colWidths=[cmp(w) for w in larguras], repeatRows=1)
     estilo = [
         ("FONT", (0, 0), (-1, -1), "Times-Roman", 9),
         ("FONT", (0, 0), (-1, 0), "Times-Bold", 9),
         ("BACKGROUND", (0, 0), (-1, 0), COR_CABECALHO),
-        ("ALIGN", (3, 0), (-1, -1), "RIGHT"),
+        ("ALIGN", (numeros_desde, 0), (-1, -1), "RIGHT"),
         ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, COR_ZEBRA]),
         ("LINEBELOW", (0, 0), (-1, 0), 0.5, colors.black),
         ("TOPPADDING", (0, 0), (-1, -1), 3),
@@ -117,19 +117,37 @@ def print_abastecimentos(contexto):
             Spacer(1, cmp(6)),
             Paragraph("RESUMO POR PLACA", subtitulo),
         ]
-        linhas = [["PLACA", "ABAST.", "", "LITROS", "R$/L", "TOTAL"]]
+        linhas = [
+            ["PLACA", "ABAST.", "KM", "LITROS", "KM/L", "R$/L", "TOTAL"]
+        ]
         for item in contexto["resumo_placas"]:
+            consumo = _numero(item["consumo"]) if item["consumo"] else "-"
+            if item["verificar"]:
+                consumo += " *"
             linhas.append(
                 [
                     item["placa"],
                     item["quantidade"],
-                    "",
+                    _numero(item["km"], 0) if item["km"] else "-",
                     _numero(item["litros"]),
+                    consumo,
                     _numero(item["media"], 3),
                     f"R$ {_numero(item['valor'])}",
                 ]
             )
-        elementos.append(_tabela(linhas, [28, 30, 40, 30, 28, 30]))
+        elementos.append(
+            _tabela(linhas, [26, 18, 28, 28, 24, 28, 34], numeros_desde=1)
+        )
+        elementos.append(
+            Paragraph(
+                "KM obtido das minutas do mês. Consumo = km rodados no mês ÷ "
+                "litros abastecidos no mês. * Consumo fora do esperado, "
+                "conferir.",
+                ParagraphStyle(
+                    "nota", fontName="Times-Italic", fontSize=8, spaceBefore=4
+                ),
+            )
+        )
 
     pagina = _pagina(titulo)
     doc.build(elementos, onFirstPage=pagina, onLaterPages=pagina)

@@ -5,9 +5,11 @@ import pytest
 from django.contrib.auth.models import User
 from django.urls import reverse
 
-from despesas.facades import abastecimento
+from despesas.facades import abastecimento, consumo
 from despesas.forms import ID_PROPRIETARIO_FROTA, CadastraAbastecimento
+from clientes.models import Cliente
 from despesas.models import Abastecimento
+from minutas.models import Minuta
 from pessoas.models import Pessoal
 from veiculos.models import CategoriaVeiculo, Veiculo
 
@@ -252,6 +254,7 @@ def test_resumo_mes_a_mes_e_por_placa(veiculo):
         "mes": "2026-09",
         "valor": 480.0,
         "media": 6.0,
+        "consumo": None,
         "ativo": True,
     }
     assert graficos[-3]["media"] is None
@@ -292,3 +295,95 @@ def test_pdf_abastecimento_mes_vazio(client_logado):
     response = client_logado.get(reverse("abastecimento_pdf"), {"mes": "2020-01"})
     assert response.status_code == 200
     assert response.content.startswith(b"%PDF")
+
+
+def _minuta(veiculo, data, km_inicial, km_final, status="FATURADA"):
+    cliente, _ = Cliente.objects.get_or_create(Fantasia="CLIENTE", Nome="CLIENTE")
+    return Minuta.objects.create(
+        Minuta=Minuta.objects.count() + 1,
+        DataMinuta=data,
+        KMInicial=km_inicial,
+        KMFinal=km_final,
+        StatusMinuta=status,
+        idCliente=cliente,
+        idVeiculo=veiculo,
+    )
+
+
+@pytest.mark.django_db
+def test_km_rodados_soma_percurso_e_descarta_erros(veiculo):
+    setembro = datetime.date(2026, 9, 1)
+    _minuta(veiculo, datetime.date(2026, 9, 2), 998100, 998200)
+    _minuta(veiculo, datetime.date(2026, 9, 3), 998200, 998350)
+    # km absoluto de outra sequência: o percurso continua válido
+    _minuta(veiculo, datetime.date(2026, 9, 4), 104783, 104833)
+    _minuta(veiculo, datetime.date(2026, 9, 5), 998350, 309494)  # erro
+    _minuta(veiculo, datetime.date(2026, 9, 6), 998350, 998400, "CANCELADA")
+    _minuta(veiculo, datetime.date(2026, 10, 1), 998400, 998500)  # outro mês
+
+    km = consumo.km_rodados_por_veiculo_mes(setembro, datetime.date(2026, 10, 1))
+    assert dict(km) == {(veiculo.pk, setembro): {"km": 300, "descartadas": 1}}
+
+
+def test_calcular_consumo():
+    assert consumo.calcular_consumo(250, Decimal("25")) == (10.0, False)
+    assert consumo.calcular_consumo(0, Decimal("25")) == (None, False)
+    assert consumo.calcular_consumo(250, 0) == (None, False)
+    assert consumo.calcular_consumo(2500, Decimal("25"))[1] is True
+
+
+@pytest.mark.django_db
+def test_resumo_inclui_consumo_por_placa_e_frota(veiculo):
+    sem_minuta = Veiculo.objects.create(
+        Marca="VW",
+        Modelo="DELIVERY",
+        Placa="SEM0M00",
+        Capacidade=0,
+        MedidaAltura=0,
+        MedidaComprimento=0,
+        MedidaLargura=0,
+        Proprietario=veiculo.Proprietario,
+        Motorista=veiculo.Motorista,
+        Categoria=veiculo.Categoria,
+    )
+    for carro, litros in ((veiculo, "25.00"), (sem_minuta, "50.00")):
+        Abastecimento.objects.create(
+            DataAbastecimento=datetime.date(2026, 9, 10),
+            idVeiculo=carro,
+            TipoCombustivel="DIESEL",
+            LitrosAbastecidos=Decimal(litros),
+            ValorCombustivel=Decimal("6.000"),
+            ValorAbastecido=Decimal(litros) * 6,
+        )
+    _minuta(veiculo, datetime.date(2026, 9, 2), 1000, 1100)
+    _minuta(veiculo, datetime.date(2026, 9, 20), 1100, 1250)
+
+    contexto = abastecimento.create_contexto_resumo_abastecimento(
+        datetime.date(2026, 9, 1)
+    )
+    placas = {p["placa"]: p for p in contexto["resumo_placas"]}
+    assert placas["ABC1D23"]["km"] == 250
+    assert placas["ABC1D23"]["consumo"] == 10.0
+    assert placas["SEM0M00"]["consumo"] is None
+    # veículo sem minuta não entra no consumo da frota
+    assert contexto["resumo_meses"][0]["consumo"] == 10.0
+    assert contexto["graficos_abastecimento"][-1]["consumo"] == 10.0
+
+
+@pytest.mark.django_db
+def test_resumo_exibe_km_e_consumo(client_logado, dados, veiculo):
+    client_logado.post(reverse("abastecimento_form"), dados)
+    hoje = datetime.date.today()
+    _minuta(veiculo, hoje, 5000, 5457)
+    _minuta(veiculo, hoje, 5457, 99999)  # descartada
+    data = client_logado.get(
+        reverse("abastecimento_mes"), {"mes": hoje.strftime("%Y-%m")}
+    ).json()
+    html = data["html-card-abastecimento-resumo"]
+    assert "457" in html  # km
+    assert "10,00" in html  # 457 km / 45,70 L
+    assert "1 minuta com km inválido ignorada" in html
+    pdf = client_logado.get(
+        reverse("abastecimento_pdf"), {"mes": hoje.strftime("%Y-%m")}
+    )
+    assert pdf.content.startswith(b"%PDF")

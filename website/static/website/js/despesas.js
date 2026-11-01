@@ -501,34 +501,40 @@ function abastecimentoGraficos() {
         options: opcoesGasto,
     }));
 
-    var preco = document.getElementById("grafico-abastecimento-preco");
-    var opcoesPreco = $.extend(true, {}, opcoesBase, {
-        plugins: { tooltip: { callbacks: {
-            label: function(ctx) { return "R$ " + abastecimentoFormataReal(ctx.parsed.y, 3) + " / litro"; },
-        } } },
-        interaction: { mode: "index", intersect: false },
-        scales: { y: {
-            beginAtZero: false,
-            ticks: { callback: function(v) { return abastecimentoFormataReal(v, 2); } },
-        } },
-    });
-    abastecimentoChartsAtivos.push(new Chart(preco, {
-        type: "line",
-        data: {
-            labels: rotulos,
-            datasets: [{
-                data: pontos.map(function(p) { return p.media; }),
-                borderColor: destaque,
-                backgroundColor: destaque,
-                borderWidth: 2,
-                pointRadius: 4,
-                pointHoverRadius: 6,
-                spanGaps: false,
-                tension: 0,
-            }],
-        },
-        options: opcoesPreco,
-    }));
+    function graficoLinha(id, campo, casas, sufixo, prefixo) {
+        var opcoes = $.extend(true, {}, opcoesBase, {
+            plugins: { tooltip: { callbacks: {
+                label: function(ctx) {
+                    return prefixo + abastecimentoFormataReal(ctx.parsed.y, casas) + sufixo;
+                },
+            } } },
+            interaction: { mode: "index", intersect: false },
+            scales: { y: {
+                beginAtZero: false,
+                ticks: { callback: function(v) { return abastecimentoFormataReal(v, 2); } },
+            } },
+        });
+        abastecimentoChartsAtivos.push(new Chart(document.getElementById(id), {
+            type: "line",
+            data: {
+                labels: rotulos,
+                datasets: [{
+                    data: pontos.map(function(p) { return p[campo]; }),
+                    borderColor: destaque,
+                    backgroundColor: destaque,
+                    borderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                    spanGaps: false,
+                    tension: 0,
+                }],
+            },
+            options: opcoes,
+        }));
+    }
+
+    graficoLinha("grafico-abastecimento-preco", "media", 3, " / litro", "R$ ");
+    graficoLinha("grafico-abastecimento-consumo", "consumo", 2, " km/L", "");
 }
 
 $(function() {

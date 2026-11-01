@@ -72,6 +72,12 @@
   gap: 24px;
 }
 
+.ui-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
 /* Botões */
 .ui-btn {
   display: inline-flex;
@@ -256,6 +262,13 @@
   font-weight: 600;
 }
 
+/* Ícone de aviso ao lado de um valor (o texto explicativo vai no title) */
+.ui-aviso {
+  margin-left: 4px;
+  color: var(--ui-destaque);
+  cursor: help;
+}
+
 .ui-acoes {
   text-align: right;
   width: 1%;
@@ -362,7 +375,8 @@
     font-size: 18px;
   }
 
-  .ui-grid-2 {
+  .ui-grid-2,
+  .ui-grid-3 {
     grid-template-columns: minmax(0, 1fr);
   }
 }
