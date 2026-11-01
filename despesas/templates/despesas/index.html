@@ -8,6 +8,10 @@
         {% include "despesas/components/abastecimento.html" %}
     </article>
 
+    <article class="article-card card-abastecimento-graficos">
+        {% include "despesas/components/abastecimento_graficos.html" %}
+    </article>
+
     <article class="article-card card-abastecimento-resumo">
         {% include "despesas/components/abastecimento_resumo.html" %}
     </article>
@@ -54,3 +58,8 @@
     {% endcomment %}
 </main>
 {% endblock maindespesa %}
+
+{% block script %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    {{ block.super }}
+{% endblock script %}

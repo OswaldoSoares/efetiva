@@ -1,6 +1,7 @@
 /* Abastecimento - módulo despesas. Componentes base em ui.css */
 
 .card-abastecimento.article-card,
+.card-abastecimento-graficos.article-card,
 .card-abastecimento-resumo.article-card {
   width: 100%;
   max-width: 1100px;

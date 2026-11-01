@@ -256,6 +256,12 @@
   background-color: var(--ui-destaque);
 }
 
+/* Área de gráfico (Chart.js precisa de altura definida no container) */
+.ui-grafico {
+  position: relative;
+  height: 240px;
+}
+
 /* Badge com marcador colorido; a cor vem de --ui-badge-cor */
 .ui-badge {
   display: inline-flex;

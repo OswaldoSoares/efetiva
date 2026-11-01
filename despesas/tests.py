@@ -245,11 +245,25 @@ def test_resumo_mes_a_mes_e_por_placa(veiculo):
     assert placas[1]["percentual"] == 60
 
 
+    graficos = contexto["graficos_abastecimento"]
+    assert len(graficos) == 12
+    assert graficos[-1] == {
+        "rotulo": "Set/26",
+        "mes": "2026-09",
+        "valor": 480.0,
+        "media": 6.0,
+        "ativo": True,
+    }
+    assert graficos[-3]["media"] is None
+
+
 @pytest.mark.django_db
-def test_index_exibe_resumo(client_logado):
+def test_index_exibe_resumo_e_graficos(client_logado):
     html = client_logado.get(reverse("index_despesas")).content.decode()
     assert "card-abastecimento-resumo" in html
     assert "Mês a mês" in html
+    assert 'id="dados-graficos-abastecimento"' in html
+    assert "chart.umd.min.js" in html
 
 
 @pytest.mark.django_db

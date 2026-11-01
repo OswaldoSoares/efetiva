@@ -4,6 +4,7 @@ from django.db.models import Count, Sum
 from django.db.models.functions import TruncMonth
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
+from django.utils.formats import date_format
 
 from core.tools import get_mensagem
 from despesas import html_data
@@ -118,11 +119,29 @@ def create_contexto_resumo_abastecimento(mes=None, quantidade_meses=12):
         resumo["placa"] = item["idVeiculo__Placa"]
         placas.append(resumo)
 
-    return {
+    contexto = {
         "mes_abastecimento": mes,
         "resumo_meses": _percentual_do_maior(meses),
         "resumo_placas": _percentual_do_maior(placas),
     }
+    contexto.update(create_contexto_graficos_abastecimento(meses, mes))
+    return contexto
+
+
+def create_contexto_graficos_abastecimento(resumo_meses, mes):
+    """Séries dos gráficos em ordem cronológica, para o json_script."""
+    pontos = []
+    for item in reversed(resumo_meses):
+        pontos.append(
+            {
+                "rotulo": date_format(item["mes"], "M/y"),
+                "mes": item["param"],
+                "valor": float(item["valor"]),
+                "media": float(item["media"]) if item["media"] else None,
+                "ativo": item["mes"] == mes,
+            }
+        )
+    return {"graficos_abastecimento": pontos}
 
 
 def get_abastecimento_or_none(id_abastecimento):
@@ -177,6 +196,7 @@ def create_data_card_abastecimento(request, mes, mensagem=None):
     contexto.update(create_contexto_resumo_abastecimento(mes))
     data = html_data.html_card_abastecimento(request, contexto, {})
     data = html_data.html_card_resumo_abastecimento(request, contexto, data)
+    data = html_data.html_card_graficos_abastecimento(request, contexto, data)
     if mensagem:
         data.update(mensagem)
     return JsonResponse(data)

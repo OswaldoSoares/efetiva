@@ -21,3 +21,12 @@ def html_card_resumo_abastecimento(request, contexto, data):
         request=request,
     )
     return data
+
+
+def html_card_graficos_abastecimento(request, contexto, data):
+    data["html-card-abastecimento-graficos"] = render_to_string(
+        "despesas/components/abastecimento_graficos.html",
+        contexto,
+        request=request,
+    )
+    return data
