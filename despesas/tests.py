@@ -110,6 +110,27 @@ def test_get_abastecimento_form_retorna_modal(client_logado):
 
 
 @pytest.mark.django_db
+def test_ultimos_precos_combustivel(veiculo):
+    for data, tipo, preco in [
+        (datetime.date(2026, 9, 1), "DIESEL", "5.990"),
+        (datetime.date(2026, 10, 1), "DIESEL", "6.190"),
+        (datetime.date(2026, 9, 15), "ARLA", "3.500"),
+    ]:
+        Abastecimento.objects.create(
+            DataAbastecimento=data,
+            idVeiculo=veiculo,
+            TipoCombustivel=tipo,
+            LitrosAbastecidos=Decimal("10"),
+            ValorCombustivel=Decimal(preco),
+            ValorAbastecido=Decimal(preco) * 10,
+        )
+    assert abastecimento.ultimos_precos_combustivel() == {
+        "DIESEL": "6.190",
+        "ARLA": "3.500",
+    }
+
+
+@pytest.mark.django_db
 def test_post_abastecimento_valido_salva(client_logado, dados):
     response = client_logado.post(reverse("abastecimento_form"), dados)
     data = response.json()

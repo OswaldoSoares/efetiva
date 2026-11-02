@@ -578,12 +578,31 @@ function abastecimentoCalculaLitros(form) {
     });
 }
 
+// Sugere o preço do último abastecimento do combustível escolhido
+// enquanto o usuário não digitar o preço
+function abastecimentoSugerePreco(form) {
+    var tipo = form.find("[name=TipoCombustivel]");
+    var preco = form.find("[name=ValorCombustivel]");
+    var precos = form.data("precos") || {};
+    var automatico = !preco.val();
+
+    preco.on("input", function() {
+        automatico = false;
+    });
+    tipo.on("change", function() {
+        if (automatico && precos[tipo.val()]) {
+            preco.val(precos[tipo.val()]).trigger("change");
+        }
+    });
+}
+
 function abastecimentoSubmit(modal) {
     var form = modal.find(".modal-body form");
     form.find(".js-abastecimento-data").mask("00/00/0000");
     form.on("focus", "input", function() {
         this.select();
     });
+    abastecimentoSugerePreco(form);
     abastecimentoCalculaLitros(form);
     modal.find(".modal-footer .btn-save").off("click").on("click", function() {
         form.trigger("submit");
