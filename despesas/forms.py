@@ -21,9 +21,9 @@ class CadastraAbastecimento(forms.ModelForm):
             "DataAbastecimento",
             "idVeiculo",
             "TipoCombustivel",
-            "LitrosAbastecidos",
-            "ValorCombustivel",
             "ValorAbastecido",
+            "ValorCombustivel",
+            "LitrosAbastecidos",
         ]
         labels = {
             "DataAbastecimento": "DATA",
@@ -102,9 +102,10 @@ class CadastraAbastecimento(forms.ModelForm):
         if litros and preco and total:
             calculado = (litros * preco).quantize(Decimal("0.01"))
             if abs(calculado - total) > TOLERANCIA_VALOR:
+                litros_esperados = (total / preco).quantize(Decimal("0.01"))
                 self.add_error(
-                    "ValorAbastecido",
-                    f"Valor não confere com litros x preço "
-                    f"(R$ {calculado}).",
+                    "LitrosAbastecidos",
+                    f"Litros não conferem com valor ÷ preço "
+                    f"({litros_esperados} L).",
                 )
         return cleaned_data

@@ -560,20 +560,20 @@ function abastecimentoFocaCampo(modal) {
     campos.first().trigger("focus").trigger("select");
 }
 
-// Calcula o total (litros x preço) enquanto o usuário não digitar o total
-function abastecimentoCalculaTotal(form) {
-    var litros = form.find("[name=LitrosAbastecidos]");
-    var preco = form.find("[name=ValorCombustivel]");
+// Calcula os litros (valor total ÷ preço) enquanto o usuário não digitar os litros
+function abastecimentoCalculaLitros(form) {
     var total = form.find("[name=ValorAbastecido]");
-    var automatico = !total.val();
+    var preco = form.find("[name=ValorCombustivel]");
+    var litros = form.find("[name=LitrosAbastecidos]");
+    var automatico = !litros.val();
 
-    total.on("input", function() {
+    litros.on("input", function() {
         automatico = false;
     });
-    litros.add(preco).on("input", function() {
-        var valor = parseFloat(litros.val()) * parseFloat(preco.val());
-        if (automatico && valor > 0) {
-            total.val(valor.toFixed(2));
+    total.add(preco).on("input change", function() {
+        var valor = parseFloat(total.val()) / parseFloat(preco.val());
+        if (automatico && isFinite(valor) && valor > 0) {
+            litros.val(valor.toFixed(2));
         }
     });
 }
@@ -584,7 +584,7 @@ function abastecimentoSubmit(modal) {
     form.on("focus", "input", function() {
         this.select();
     });
-    abastecimentoCalculaTotal(form);
+    abastecimentoCalculaLitros(form);
     modal.find(".modal-footer .btn-save").off("click").on("click", function() {
         form.trigger("submit");
     });

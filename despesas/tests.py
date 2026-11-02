@@ -65,7 +65,7 @@ def test_form_abastecimento_valido(dados):
         ("DataAbastecimento", "2999-01-01"),
         ("LitrosAbastecidos", "0"),
         ("ValorCombustivel", "-1"),
-        ("ValorAbastecido", "999.00"),
+        ("ValorAbastecido", "0"),
         ("TipoCombustivel", "QUEROSENE"),
     ],
 )
@@ -74,6 +74,23 @@ def test_form_abastecimento_invalido(dados, campo, valor):
     form = CadastraAbastecimento(data=dados)
     assert not form.is_valid()
     assert campo in form.errors
+
+
+@pytest.mark.django_db
+def test_form_abastecimento_litros_nao_conferem_com_valor(dados):
+    dados["ValorAbastecido"] = "999.00"
+    form = CadastraAbastecimento(data=dados)
+    assert not form.is_valid()
+    assert "LitrosAbastecidos" in form.errors
+
+
+@pytest.mark.django_db
+def test_form_abastecimento_ordem_dos_campos():
+    assert list(CadastraAbastecimento().fields)[3:] == [
+        "ValorAbastecido",
+        "ValorCombustivel",
+        "LitrosAbastecidos",
+    ]
 
 
 @pytest.mark.django_db
