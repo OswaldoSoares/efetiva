@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 
 from despesas.facades import abastecimento, consumo
-from despesas.forms import ID_PROPRIETARIO_FROTA, CadastraAbastecimento
+from despesas.forms import CadastraAbastecimento
 from clientes.models import Cliente
 from despesas.models import Abastecimento
 from minutas.models import Minuta
@@ -16,9 +16,7 @@ from veiculos.models import CategoriaVeiculo, Veiculo
 
 @pytest.fixture
 def veiculo():
-    proprietario = Pessoal.objects.create(
-        idPessoal=ID_PROPRIETARIO_FROTA, Nome="TRANSEFETIVA"
-    )
+    proprietario = Pessoal.objects.create(Nome="TRANSEFETIVA")
     categoria = CategoriaVeiculo.objects.create(Categoria="VUC")
     return Veiculo.objects.create(
         Marca="VW",
@@ -65,7 +63,7 @@ def test_form_abastecimento_valido(dados):
         ("DataAbastecimento", "2999-01-01"),
         ("LitrosAbastecidos", "0"),
         ("ValorCombustivel", "-1"),
-        ("ValorAbastecido", "999.00"),
+        ("ValorAbastecido", "0"),
         ("TipoCombustivel", "QUEROSENE"),
     ],
 )
@@ -77,12 +75,45 @@ def test_form_abastecimento_invalido(dados, campo, valor):
 
 
 @pytest.mark.django_db
-def test_form_abastecimento_rejeita_veiculo_de_terceiro(dados, veiculo):
-    terceiro = Pessoal.objects.create(Nome="TERCEIRO")
-    veiculo.Proprietario = terceiro
+def test_form_abastecimento_litros_nao_conferem_com_valor(dados):
+    dados["ValorAbastecido"] = "999.00"
+    form = CadastraAbastecimento(data=dados)
+    assert not form.is_valid()
+    assert "LitrosAbastecidos" in form.errors
+
+
+@pytest.mark.django_db
+def test_form_abastecimento_ordem_dos_campos():
+    assert list(CadastraAbastecimento().fields)[3:] == [
+        "ValorAbastecido",
+        "ValorCombustivel",
+        "LitrosAbastecidos",
+    ]
+
+
+@pytest.mark.django_db
+def test_form_abastecimento_aceita_veiculo_de_agregado(dados, veiculo):
+    agregado = Pessoal.objects.create(Nome="AGREGADO")
+    veiculo.Proprietario = agregado
+    veiculo.save()
+    assert CadastraAbastecimento(data=dados).is_valid()
+
+
+@pytest.mark.django_db
+def test_form_abastecimento_rejeita_veiculo_inativo(dados, veiculo):
+    veiculo.Ativo = False
     veiculo.save()
     form = CadastraAbastecimento(data=dados)
     assert "idVeiculo" in form.errors
+
+
+@pytest.mark.django_db
+def test_form_abastecimento_edicao_mantem_veiculo_inativo(dados, veiculo):
+    registro = CadastraAbastecimento(data=dados).save()
+    veiculo.Ativo = False
+    veiculo.save()
+    form = CadastraAbastecimento(data=dados, instance=registro)
+    assert form.is_valid()
 
 
 @pytest.mark.django_db
@@ -90,6 +121,27 @@ def test_get_abastecimento_form_retorna_modal(client_logado):
     response = client_logado.get(reverse("abastecimento_form"))
     assert response.status_code == 200
     assert "LitrosAbastecidos" in response.json()["modal_html"]
+
+
+@pytest.mark.django_db
+def test_ultimos_precos_combustivel(veiculo):
+    for data, tipo, preco in [
+        (datetime.date(2026, 9, 1), "DIESEL", "5.990"),
+        (datetime.date(2026, 10, 1), "DIESEL", "6.190"),
+        (datetime.date(2026, 9, 15), "ARLA", "3.500"),
+    ]:
+        Abastecimento.objects.create(
+            DataAbastecimento=data,
+            idVeiculo=veiculo,
+            TipoCombustivel=tipo,
+            LitrosAbastecidos=Decimal("10"),
+            ValorCombustivel=Decimal(preco),
+            ValorAbastecido=Decimal(preco) * 10,
+        )
+    assert abastecimento.ultimos_precos_combustivel() == {
+        "DIESEL": "6.190",
+        "ARLA": "3.500",
+    }
 
 
 @pytest.mark.django_db

@@ -1,4 +1,5 @@
 import datetime
+import json
 from collections import defaultdict
 
 from django.db.models import Count, Sum
@@ -193,13 +194,32 @@ def get_abastecimento_or_none(id_abastecimento):
     return get_object_or_404(Abastecimento, pk=id_abastecimento)
 
 
+def ultimos_precos_combustivel():
+    """Preço do litro do abastecimento mais recente de cada combustível."""
+    precos = {}
+    for tipo, _ in Abastecimento.TIPOS_COMBUSTIVEL:
+        ultimo = (
+            Abastecimento.objects.filter(TipoCombustivel=tipo)
+            .order_by("-DataAbastecimento", "-idAbastecimento")
+            .values_list("ValorCombustivel", flat=True)
+            .first()
+        )
+        if ultimo is not None:
+            precos[tipo] = str(ultimo)
+    return precos
+
+
 def modal_abastecimento(request, id_abastecimento=None, form=None):
     """Prepara o formulário de abastecimento para exibição no modal."""
     abastecimento = get_abastecimento_or_none(id_abastecimento)
     if form is None:
         form = CadastraAbastecimento(instance=abastecimento)
 
-    contexto = {"form": form, "abastecimento": abastecimento}
+    contexto = {
+        "form": form,
+        "abastecimento": abastecimento,
+        "precos_combustivel": json.dumps(ultimos_precos_combustivel()),
+    }
     return html_data.html_modal_abastecimento(request, contexto)
 
 

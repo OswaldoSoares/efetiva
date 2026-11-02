@@ -2,13 +2,11 @@ import datetime
 from decimal import Decimal
 
 from django import forms
+from django.db.models import Q
 
 from veiculos.models import Veiculo
 
 from .models import Abastecimento
-
-# Proprietário dos veículos da frota própria
-ID_PROPRIETARIO_FROTA = 17
 
 # Diferença máxima aceita entre o valor total e litros x preço do litro
 TOLERANCIA_VALOR = Decimal("0.10")
@@ -21,9 +19,9 @@ class CadastraAbastecimento(forms.ModelForm):
             "DataAbastecimento",
             "idVeiculo",
             "TipoCombustivel",
-            "LitrosAbastecidos",
-            "ValorCombustivel",
             "ValorAbastecido",
+            "ValorCombustivel",
+            "LitrosAbastecidos",
         ]
         labels = {
             "DataAbastecimento": "DATA",
@@ -58,8 +56,14 @@ class CadastraAbastecimento(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # Frota própria e agregados (o abastecimento do agregado é
+        # descontado do frete)
+        # Só veículos ativos; na edição mantém o veículo já gravado
+        ativos = Q(Ativo=True)
+        if self.instance.idVeiculo_id:
+            ativos |= Q(pk=self.instance.idVeiculo_id)
         self.fields["idVeiculo"].queryset = Veiculo.objects.filter(
-            Proprietario_id=ID_PROPRIETARIO_FROTA
+            ativos
         ).order_by("Placa")
         self.fields["idVeiculo"].label_from_instance = lambda obj: obj.Placa
         self.fields["DataAbastecimento"].input_formats = [
@@ -102,9 +106,10 @@ class CadastraAbastecimento(forms.ModelForm):
         if litros and preco and total:
             calculado = (litros * preco).quantize(Decimal("0.01"))
             if abs(calculado - total) > TOLERANCIA_VALOR:
+                litros_esperados = (total / preco).quantize(Decimal("0.01"))
                 self.add_error(
-                    "ValorAbastecido",
-                    f"Valor não confere com litros x preço "
-                    f"(R$ {calculado}).",
+                    "LitrosAbastecidos",
+                    f"Litros não conferem com valor ÷ preço "
+                    f"({litros_esperados} L).",
                 )
         return cleaned_data
