@@ -57,6 +57,23 @@ def veiculo_excluir(request):
     return facade.delete_veiculo(request)
 
 
+@has_permission_decorator("modulo_veiculos")
+def categoria_form(request):
+    """GET abre o modal da categoria; POST salva."""
+    if request.method == "POST":
+        return facade.save_categoria(request)
+    modal_html = facade.modal_categoria(
+        request, request.GET.get("id_categoria_form")
+    )
+    return JsonResponse({"modal_html": modal_html})
+
+
+@has_permission_decorator("modulo_veiculos")
+@require_POST
+def categoria_excluir(request):
+    return facade.delete_categoria(request)
+
+
 def consultaveiculo(request, idvei):
     """Endereço antigo da consulta: abre a tela nova com o veículo."""
     return redirect(f"{reverse('indexveiculo')}?id_veiculo={idvei}")

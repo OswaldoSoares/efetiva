@@ -1,6 +1,8 @@
 from django.urls import path
 
 from .views import (
+    categoria_excluir,
+    categoria_form,
     consultaveiculo,
     indexveiculo,
     veiculo_consulta,
@@ -17,6 +19,12 @@ urlpatterns = [
     path("veiculo", veiculo_form, name="veiculo_form"),
     path("situacao", veiculo_situacao, name="veiculo_situacao"),
     path("excluir", veiculo_excluir, name="veiculo_excluir"),
+    path("categoria", categoria_form, name="categoria_veiculo_form"),
+    path(
+        "categoria/excluir",
+        categoria_excluir,
+        name="categoria_veiculo_excluir",
+    ),
     # Endereço antigo, mantido para links salvos
     path(
         "consultaveiculo/<int:idvei>/",

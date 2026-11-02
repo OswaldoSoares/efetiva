@@ -27,8 +27,12 @@ function veiculosFiltros() {
     return {
         situacao: card.attr("data-situacao"),
         id_categoria: card.attr("data-id_categoria"),
-        id_veiculo: card.attr("data-id_veiculo"),
     };
+}
+
+// Veículo aberto no card de detalhes
+function veiculosSelecionado() {
+    return $(".js-veiculos").attr("data-id_veiculo") || "";
 }
 
 function veiculosAtualiza(data) {
@@ -38,12 +42,16 @@ function veiculosAtualiza(data) {
     if (data["html-card-veiculo"]) {
         $(".card-veiculo").html(data["html-card-veiculo"]);
     }
+    if (data["html-card-categorias-veiculo"]) {
+        $(".card-categorias-veiculo").html(data["html-card-categorias-veiculo"]);
+    }
     if (data["mensagem"]) {
         mostrarToast(data["mensagem"], data["tipo"]);
     }
 }
 
 function veiculosCarregaLista(filtros) {
+    filtros.id_veiculo = veiculosSelecionado();
     veiculosAjax($(".js-veiculos").data("url-lista"), "GET", filtros, veiculosAtualiza);
 }
 
@@ -98,7 +106,7 @@ function veiculosSubmit(modal) {
     form.on("submit", function(event) {
         event.preventDefault();
         var filtros = veiculosFiltros();
-        delete filtros.id_veiculo;
+        filtros.id_selecionado = veiculosSelecionado();
         var dados = form.serialize() + "&" + $.param(filtros);
         veiculosAjax(form.attr("action"), "POST", dados, function(data) {
             if (data["html_form"]) {
@@ -119,9 +127,11 @@ $(document).on("click", ".js-veiculo-abrir", function(event) {
     var botao = $(this);
     var modal = $("#MyModal");
     var requestData = {};
-    if (botao.data("id_veiculo")) {
-        requestData.id_veiculo = botao.data("id_veiculo");
-    }
+    $.each(["id_veiculo", "id_categoria_form"], function(i, chave) {
+        if (botao.data(chave)) {
+            requestData[chave] = botao.data(chave);
+        }
+    });
     veiculosAjax(botao.data("url"), "GET", requestData, function(data) {
         modal.find(".modal-title").text(botao.data("title"));
         modal.find(".modal-footer .btn-save").text("SALVAR");
@@ -136,14 +146,19 @@ $(document).on("click", ".js-veiculo-abrir", function(event) {
     });
 });
 
-// Ativar/inativar e excluir: POST com confirmação opcional
+// Ativar/inativar e excluir (veículo ou categoria): POST com confirmação opcional
 $(document).on("click", ".js-veiculo-acao", function() {
     var botao = $(this);
     if (botao.data("confirmar") && !confirm(botao.data("confirmar"))) {
         return;
     }
     var dados = veiculosFiltros();
-    dados.id_veiculo = botao.data("id_veiculo");
+    dados.id_selecionado = veiculosSelecionado();
+    $.each(["id_veiculo", "id_categoria_excluir"], function(i, chave) {
+        if (botao.data(chave)) {
+            dados[chave] = botao.data(chave);
+        }
+    });
     dados.csrfmiddlewaretoken = $("[name=csrfmiddlewaretoken]").first().val();
     veiculosAjax(botao.data("url"), "POST", dados, veiculosAtualiza);
 });

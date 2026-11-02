@@ -134,12 +134,19 @@ class CadastraVeiculo(forms.ModelForm):
 class CadastraCategoria(forms.ModelForm):
     class Meta:
         model = CategoriaVeiculo
-        fields = ('Categoria',)
+        fields = ("Categoria",)
+        labels = {"Categoria": "CATEGORIA"}
         widgets = {
-            'Categoria': forms.TextInput(
-                attrs={
-                    'class': 'formfields',
-                    'placeholder': 'Categoria:'
-                }
+            "Categoria": forms.TextInput(
+                attrs={"class": "form-control", "autocomplete": "off"}
             ),
         }
+
+    def clean_Categoria(self):
+        categoria = " ".join(self.cleaned_data["Categoria"].split()).upper()
+        existe = CategoriaVeiculo.objects.filter(
+            Categoria__iexact=categoria
+        ).exclude(pk=self.instance.pk)
+        if existe.exists():
+            raise forms.ValidationError("Esta categoria já existe.")
+        return categoria

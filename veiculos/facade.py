@@ -1,3 +1,4 @@
+from django.db import transaction
 from django.db.models import Count, Max
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
@@ -5,7 +6,7 @@ from django.shortcuts import get_object_or_404
 from core.tools import get_mensagem
 from pessoas.models import FonePessoal
 from veiculos import html_data
-from veiculos.forms import CadastraVeiculo
+from veiculos.forms import CadastraCategoria, CadastraVeiculo
 from veiculos.models import CategoriaVeiculo, Veiculo
 
 # Nome exibido para os registros de outros módulos que usam o veículo
@@ -218,3 +219,85 @@ def delete_veiculo(request):
         id_categoria,
         mensagem=get_mensagem("veic0003", placa=placa),
     )
+
+
+def create_data_categorias(request, mensagem=None):
+    """Atualiza o card de categorias e a lista (filtro de categoria)."""
+    situacao, id_categoria = obter_filtros(request)
+    if not CategoriaVeiculo.objects.filter(pk=id_categoria).exists():
+        id_categoria = None
+    id_veiculo = obter_id(request.POST.get("id_selecionado"))
+    contexto = create_contexto_veiculos(situacao, id_categoria)
+    contexto["id_veiculo"] = id_veiculo
+    data = html_data.html_card_veiculos(request, contexto, {})
+    data = html_data.html_card_categorias(
+        request, create_contexto_categorias(), data
+    )
+    if mensagem:
+        data.update(mensagem)
+    return JsonResponse(data)
+
+
+def get_categoria_or_none(id_categoria):
+    if not id_categoria:
+        return None
+    return get_object_or_404(CategoriaVeiculo, pk=id_categoria)
+
+
+def modal_categoria(request, id_categoria=None, form=None):
+    categoria = get_categoria_or_none(id_categoria)
+    if form is None:
+        form = CadastraCategoria(instance=categoria)
+    contexto = {"form": form, "categoria": categoria}
+    return html_data.html_modal_categoria(request, contexto)
+
+
+def save_categoria(request):
+    id_categoria = request.POST.get("id_categoria_form")
+    categoria = get_categoria_or_none(id_categoria)
+    form = CadastraCategoria(request.POST, instance=categoria)
+
+    if not form.is_valid():
+        modal_html = modal_categoria(request, id_categoria, form)
+        return JsonResponse({"html_form": modal_html})
+
+    categoria = form.save()
+    codigo = "veic0008" if id_categoria else "veic0007"
+    return create_data_categorias(
+        request, get_mensagem(codigo, categoria=categoria.Categoria)
+    )
+
+
+def delete_categoria(request):
+    """Exclui a categoria se nenhum veículo, minuta ou orçamento a usa.
+
+    As linhas das tabelas de preço dos clientes para a categoria são
+    apagadas junto, como já fazia a tela antiga.
+    """
+    categoria = get_object_or_404(
+        CategoriaVeiculo, pk=request.POST.get("id_categoria_excluir")
+    )
+    em_uso = {
+        "veículo(s)": categoria.veiculo_set.count(),
+        "minuta(s)": categoria.minuta_set.count(),
+        "orçamento(s)": categoria.orcamento_set.count(),
+    }
+    vinculos = [f"{qtd} {nome}" for nome, qtd in em_uso.items() if qtd]
+    if vinculos:
+        return create_data_categorias(
+            request,
+            get_mensagem(
+                "veic0010",
+                categoria=categoria.Categoria,
+                vinculos=", ".join(vinculos),
+            ),
+        )
+
+    nome = categoria.Categoria
+    with transaction.atomic():
+        categoria.tabelaveiculo_set.all().delete()
+        categoria.delete()
+    return create_data_categorias(
+        request, get_mensagem("veic0009", categoria=nome)
+    )
+

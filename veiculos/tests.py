@@ -232,3 +232,54 @@ def test_acoes_exigem_post(client_logado, veiculo):
     for nome in ("veiculo_situacao", "veiculo_excluir"):
         response = client_logado.get(reverse(nome), {"id_veiculo": veiculo.pk})
         assert response.status_code == 405
+
+
+@pytest.mark.django_db
+def test_form_categoria_normaliza_e_rejeita_duplicada(categoria):
+    from veiculos.forms import CadastraCategoria
+
+    form = CadastraCategoria(data={"Categoria": "  truck  "})
+    assert form.is_valid()
+    assert form.cleaned_data["Categoria"] == "TRUCK"
+    assert "Categoria" in CadastraCategoria(data={"Categoria": "vuc"}).errors
+
+
+@pytest.mark.django_db
+def test_post_categoria_cria_e_atualiza_cards(client_logado):
+    response = client_logado.post(
+        reverse("categoria_veiculo_form"), {"Categoria": "truck"}
+    )
+    data = response.json()
+    assert CategoriaVeiculo.objects.filter(Categoria="TRUCK").exists()
+    assert "TRUCK" in data["html-card-categorias-veiculo"]
+    assert "TRUCK" in data["html-card-veiculos"]
+
+
+@pytest.mark.django_db
+def test_post_categoria_altera(client_logado, categoria):
+    client_logado.post(
+        reverse("categoria_veiculo_form"),
+        {"Categoria": "VAN", "id_categoria_form": categoria.pk},
+    )
+    categoria.refresh_from_db()
+    assert categoria.Categoria == "VAN"
+
+
+@pytest.mark.django_db
+def test_excluir_categoria_em_uso_e_recusado(client_logado, veiculo, categoria):
+    response = client_logado.post(
+        reverse("categoria_veiculo_excluir"),
+        {"id_categoria_excluir": categoria.pk},
+    )
+    assert response.json()["tipo"] == "warning"
+    assert CategoriaVeiculo.objects.filter(pk=categoria.pk).exists()
+
+
+@pytest.mark.django_db
+def test_excluir_categoria_sem_uso(client_logado, categoria):
+    response = client_logado.post(
+        reverse("categoria_veiculo_excluir"),
+        {"id_categoria_excluir": categoria.pk, "id_categoria": categoria.pk},
+    )
+    assert response.json()["tipo"] == "success"
+    assert not CategoriaVeiculo.objects.exists()

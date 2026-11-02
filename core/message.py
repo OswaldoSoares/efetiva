@@ -87,6 +87,22 @@ mensagens = {
         "mensagem": "O VEÍCULO {placa} NÃO PODE SER EXCLUÍDO, POIS TEM {vinculos}. INATIVE-O.",
         "tipo": "warning",
     },
+    "veic0007": {
+        "mensagem": "CATEGORIA {categoria} ADICIONADA COM SUCESSO.",
+        "tipo": "success",
+    },
+    "veic0008": {
+        "mensagem": "CATEGORIA {categoria} ALTERADA COM SUCESSO.",
+        "tipo": "success",
+    },
+    "veic0009": {
+        "mensagem": "CATEGORIA {categoria} EXCLUÍDA COM SUCESSO.",
+        "tipo": "success",
+    },
+    "veic0010": {
+        "mensagem": "A CATEGORIA {categoria} NÃO PODE SER EXCLUÍDA, POIS TEM {vinculos}.",
+        "tipo": "warning",
+    },
 
 
 
