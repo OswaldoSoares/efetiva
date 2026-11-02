@@ -293,3 +293,16 @@ def test_lista_sem_veiculo_selecionado_limpa_detalhes(client_logado, veiculo):
     data = response.json()
     assert "Selecione um veículo" in data["html-card-veiculo"]
     assert 'data-id_veiculo=""' in data["html-card-veiculos"]
+
+
+@pytest.mark.django_db
+def test_lista_usa_nome_curto_com_nome_completo_no_title(
+    client_logado, veiculo, pessoa
+):
+    pessoa.Nome = "JOSE CARLOS DA SILVA SANTOS"
+    pessoa.save()
+    html = client_logado.get(reverse("veiculos_lista")).json()[
+        "html-card-veiculos"
+    ]
+    assert 'title="JOSE CARLOS DA SILVA SANTOS"' in html
+    assert "JOSE CARLOS\n" in html

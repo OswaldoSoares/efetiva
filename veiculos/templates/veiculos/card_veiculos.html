@@ -67,10 +67,10 @@
                             <td data-label="Categoria">{{ veiculo.Categoria }}</td>
                             <td data-label="Marca / Modelo">{{ veiculo.Marca }} {{ veiculo.Modelo }}</td>
                             <td data-label="Proprietário" title="{{ veiculo.Proprietario }}">
-                                {{ veiculo.Proprietario|truncatechars:24 }}
+                                {{ veiculo.proprietario_curto }}
                             </td>
                             <td data-label="Motorista" title="{{ veiculo.Motorista }}">
-                                {{ veiculo.Motorista|truncatechars:24 }}
+                                {{ veiculo.motorista_curto }}
                             </td>
                         </tr>
                     {% endfor %}

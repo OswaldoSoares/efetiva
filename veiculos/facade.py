@@ -3,7 +3,7 @@ from django.db.models import Count, Max
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 
-from core.tools import get_mensagem
+from core.tools import get_mensagem, nome_curto
 from pessoas.models import FonePessoal
 from veiculos import html_data
 from veiculos.forms import CadastraCategoria, CadastraVeiculo
@@ -56,8 +56,14 @@ def create_contexto_veiculos(situacao=SITUACAO_PADRAO, id_categoria=None):
     if SITUACOES[situacao] is not None:
         veiculos = veiculos.filter(Ativo=SITUACOES[situacao])
 
+    veiculos = list(veiculos.order_by("Placa"))
+    # Na lista vai o nome curto; o completo aparece ao passar o mouse
+    for veiculo in veiculos:
+        veiculo.proprietario_curto = nome_curto(veiculo.Proprietario.Nome)
+        veiculo.motorista_curto = nome_curto(veiculo.Motorista.Nome)
+
     return {
-        "veiculos": veiculos.order_by("Placa"),
+        "veiculos": veiculos,
         "situacao": situacao,
         "situacoes": ROTULOS_SITUACAO,
         "id_categoria": id_categoria,
