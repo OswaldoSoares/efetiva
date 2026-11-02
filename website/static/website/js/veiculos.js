@@ -76,7 +76,7 @@ $(document).on("click", ".js-veiculo-selecionar", function() {
         $(".js-veiculos").attr("data-id_veiculo", id);
         veiculosAtualiza(data);
         // Em telas estreitas o card de detalhes fica abaixo da lista
-        if (window.matchMedia("(max-width: 1000px)").matches) {
+        if (window.matchMedia("(max-width: 1200px)").matches) {
             $("html, body").animate({scrollTop: $(".card-veiculo").offset().top - 10}, 200);
         }
     });

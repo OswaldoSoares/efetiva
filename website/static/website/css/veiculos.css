@@ -10,9 +10,16 @@
   margin: 10px auto 0;
 }
 
+/* Coluna com largura travada: sem isso a tabela (white-space: nowrap)
+   alarga o card por cima da coluna vizinha em vez de rolar */
 .veiculos-coluna {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 16px;
+  min-width: 0;
+}
+
+.veiculos-coluna > article {
   min-width: 0;
 }
 
@@ -109,7 +116,7 @@
   color: var(--ui-texto-2);
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1200px) {
   .veiculos-layout {
     grid-template-columns: minmax(0, 1fr);
   }
