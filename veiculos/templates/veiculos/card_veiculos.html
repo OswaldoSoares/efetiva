@@ -53,7 +53,6 @@
                         <th>Marca / Modelo</th>
                         <th>Proprietário</th>
                         <th>Motorista</th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -72,15 +71,6 @@
                             </td>
                             <td data-label="Motorista" title="{{ veiculo.Motorista }}">
                                 {{ veiculo.Motorista|truncatechars:24 }}
-                            </td>
-                            <td class="ui-acoes">
-                                <button type="button" class="ui-btn-icone js-veiculo-abrir"
-                                        data-url="{% url 'veiculo_form' %}"
-                                        data-id_veiculo="{{ veiculo.pk }}"
-                                        data-title="ALTERAR VEÍCULO {{ veiculo.Placa }}"
-                                        title="Alterar" aria-label="Alterar {{ veiculo.Placa }}">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
                             </td>
                         </tr>
                     {% endfor %}

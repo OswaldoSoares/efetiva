@@ -121,9 +121,7 @@ function veiculosSubmit(modal) {
     });
 }
 
-$(document).on("click", ".js-veiculo-abrir", function(event) {
-    // O botão fica dentro da linha, que também é clicável
-    event.stopPropagation();
+$(document).on("click", ".js-veiculo-abrir", function() {
     var botao = $(this);
     var modal = $("#MyModal");
     var requestData = {};
