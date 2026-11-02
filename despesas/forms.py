@@ -2,6 +2,7 @@ import datetime
 from decimal import Decimal
 
 from django import forms
+from django.db.models import Q
 
 from veiculos.models import Veiculo
 
@@ -57,7 +58,13 @@ class CadastraAbastecimento(forms.ModelForm):
         super().__init__(*args, **kwargs)
         # Frota própria e agregados (o abastecimento do agregado é
         # descontado do frete)
-        self.fields["idVeiculo"].queryset = Veiculo.objects.order_by("Placa")
+        # Só veículos ativos; na edição mantém o veículo já gravado
+        ativos = Q(Ativo=True)
+        if self.instance.idVeiculo_id:
+            ativos |= Q(pk=self.instance.idVeiculo_id)
+        self.fields["idVeiculo"].queryset = Veiculo.objects.filter(
+            ativos
+        ).order_by("Placa")
         self.fields["idVeiculo"].label_from_instance = lambda obj: obj.Placa
         self.fields["DataAbastecimento"].input_formats = [
             "%d/%m/%Y",

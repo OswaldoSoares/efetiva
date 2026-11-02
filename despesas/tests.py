@@ -100,6 +100,23 @@ def test_form_abastecimento_aceita_veiculo_de_agregado(dados, veiculo):
 
 
 @pytest.mark.django_db
+def test_form_abastecimento_rejeita_veiculo_inativo(dados, veiculo):
+    veiculo.Ativo = False
+    veiculo.save()
+    form = CadastraAbastecimento(data=dados)
+    assert "idVeiculo" in form.errors
+
+
+@pytest.mark.django_db
+def test_form_abastecimento_edicao_mantem_veiculo_inativo(dados, veiculo):
+    registro = CadastraAbastecimento(data=dados).save()
+    veiculo.Ativo = False
+    veiculo.save()
+    form = CadastraAbastecimento(data=dados, instance=registro)
+    assert form.is_valid()
+
+
+@pytest.mark.django_db
 def test_get_abastecimento_form_retorna_modal(client_logado):
     response = client_logado.get(reverse("abastecimento_form"))
     assert response.status_code == 200
