@@ -26,6 +26,7 @@ class CadastraVeiculo(forms.ModelForm):
             'Proprietario',
             'Motorista',
             'Categoria',
+            'Ativo',
         )
         labels = {
             'Marca': 'MARCA',
@@ -44,6 +45,7 @@ class CadastraVeiculo(forms.ModelForm):
             'Proprietario': 'PROPRIETÁRIO',
             'Motorista': 'MOTORISTA',
             'Categoria': 'CATEGORIA',
+            'Ativo': 'ATIVO',
         }
         widgets = {
             'Marca': forms.TextInput(
