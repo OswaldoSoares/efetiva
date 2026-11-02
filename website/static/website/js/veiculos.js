@@ -50,8 +50,8 @@ function veiculosAtualiza(data) {
     }
 }
 
+// Ao trocar o filtro a seleção é desfeita e o card de detalhes volta vazio
 function veiculosCarregaLista(filtros) {
-    filtros.id_veiculo = veiculosSelecionado();
     veiculosAjax($(".js-veiculos").data("url-lista"), "GET", filtros, veiculosAtualiza);
 }
 

@@ -283,3 +283,13 @@ def test_excluir_categoria_sem_uso(client_logado, categoria):
     )
     assert response.json()["tipo"] == "success"
     assert not CategoriaVeiculo.objects.exists()
+
+
+@pytest.mark.django_db
+def test_lista_sem_veiculo_selecionado_limpa_detalhes(client_logado, veiculo):
+    response = client_logado.get(
+        reverse("veiculos_lista"), {"situacao": "todos"}
+    )
+    data = response.json()
+    assert "Selecione um veículo" in data["html-card-veiculo"]
+    assert 'data-id_veiculo=""' in data["html-card-veiculos"]
