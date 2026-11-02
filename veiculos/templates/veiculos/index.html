@@ -39,7 +39,7 @@
                 <tbody>
                     {% for itens in veiculo %}
                         <tr class="tabelalinha">
-                            <td class="primeiracoluna"> {{ itens.Placa }}</td>
+                            <td class="primeiracoluna"> {{ itens.Placa }}{% if not itens.Ativo %} (INATIVO){% endif %}</td>
                             <td>{{ itens.Categoria }}</td>
                             <td>{{ itens.Marca }}</td>
                             <td>{{ itens.Modelo }}</td>

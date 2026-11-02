@@ -39,6 +39,7 @@ class Veiculo(models.Model):
     Proprietario = models.ForeignKey(Pessoal, related_name='PessoalProprietario',on_delete=models.PROTECT)
     Motorista = models.ForeignKey(Pessoal, related_name='PessoalMotorista',on_delete=models.PROTECT)
     Categoria = models.ForeignKey(CategoriaVeiculo, on_delete=models.PROTECT)
+    Ativo = models.BooleanField(default=True)
 
     class Meta:
         db_table = 'veiculo'
