@@ -1,0 +1,58 @@
+<section class="ui-card">
+    <header class="ui-card-header">
+        <div>
+            <h2 class="ui-card-titulo">Categorias</h2>
+            <p class="ui-card-subtitulo">Tipos de veículo usados em minutas e tabelas de preço</p>
+        </div>
+        <div class="ui-card-acoes">
+            <button type="button" class="ui-btn ui-btn-secundario js-veiculo-abrir"
+                    data-url="{% url 'categoria_veiculo_form' %}"
+                    data-title="ADICIONAR CATEGORIA">
+                <i class="bi bi-plus-lg"></i> Nova categoria
+            </button>
+        </div>
+    </header>
+
+    {% if categorias_veiculo %}
+        <div class="ui-tabela-wrap">
+            <table class="ui-tabela">
+                <thead>
+                    <tr>
+                        <th>Categoria</th>
+                        <th class="ui-num">Veículos</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for categoria in categorias_veiculo %}
+                        <tr>
+                            <td>{{ categoria.Categoria }}</td>
+                            <td class="ui-num">{{ categoria.quantidade }}</td>
+                            <td class="ui-acoes">
+                                <button type="button" class="ui-btn-icone js-veiculo-abrir"
+                                        data-url="{% url 'categoria_veiculo_form' %}"
+                                        data-id_categoria_form="{{ categoria.pk }}"
+                                        data-title="ALTERAR CATEGORIA {{ categoria.Categoria }}"
+                                        title="Alterar" aria-label="Alterar {{ categoria.Categoria }}">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button type="button" class="ui-btn-icone ui-perigo js-veiculo-acao"
+                                        data-url="{% url 'categoria_veiculo_excluir' %}"
+                                        data-id_categoria_excluir="{{ categoria.pk }}"
+                                        data-confirmar="Excluir a categoria {{ categoria.Categoria }}? As tabelas de preço dos clientes para essa categoria também serão apagadas."
+                                        title="Excluir" aria-label="Excluir {{ categoria.Categoria }}">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="ui-vazio">
+            <i class="bi bi-tags"></i>
+            <p>Nenhuma categoria cadastrada.</p>
+        </div>
+    {% endif %}
+</section>

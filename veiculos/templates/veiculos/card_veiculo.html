@@ -1,0 +1,111 @@
+{% load humanize %}
+{% if veiculo %}
+<section class="ui-card veiculos-detalhe">
+    <header class="ui-card-header">
+        <div>
+            <h2 class="ui-card-titulo">
+                {{ veiculo.Placa }}
+                {% if veiculo.Ativo %}
+                    <span class="ui-badge veiculos-ativo">Ativo</span>
+                {% else %}
+                    <span class="ui-badge">Inativo</span>
+                {% endif %}
+            </h2>
+            <p class="ui-card-subtitulo">{{ veiculo.Categoria }} · {{ veiculo.Marca }} {{ veiculo.Modelo }}</p>
+        </div>
+        <div class="ui-card-acoes">
+            <button type="button" class="ui-btn-icone js-veiculo-abrir"
+                    data-url="{% url 'veiculo_form' %}"
+                    data-id_veiculo="{{ veiculo.pk }}"
+                    data-title="ALTERAR VEÍCULO {{ veiculo.Placa }}"
+                    title="Alterar" aria-label="Alterar">
+                <i class="bi bi-pencil"></i>
+            </button>
+            {% if veiculo.Ativo %}
+                <button type="button" class="ui-btn-icone js-veiculo-acao"
+                        data-url="{% url 'veiculo_situacao' %}"
+                        data-id_veiculo="{{ veiculo.pk }}"
+                        data-confirmar="Inativar o veículo {{ veiculo.Placa }}? Ele deixa de aparecer nas listas de escolha, como no abastecimento."
+                        title="Inativar" aria-label="Inativar">
+                    <i class="bi bi-toggle-on"></i>
+                </button>
+            {% else %}
+                <button type="button" class="ui-btn-icone js-veiculo-acao"
+                        data-url="{% url 'veiculo_situacao' %}"
+                        data-id_veiculo="{{ veiculo.pk }}"
+                        title="Ativar" aria-label="Ativar">
+                    <i class="bi bi-toggle-off"></i>
+                </button>
+            {% endif %}
+            <button type="button" class="ui-btn-icone ui-perigo js-veiculo-acao"
+                    data-url="{% url 'veiculo_excluir' %}"
+                    data-id_veiculo="{{ veiculo.pk }}"
+                    data-confirmar="Excluir o veículo {{ veiculo.Placa }}? Só é possível se ele nunca foi usado."
+                    title="Excluir" aria-label="Excluir">
+                <i class="bi bi-trash"></i>
+            </button>
+        </div>
+    </header>
+
+    <div class="ui-kpis">
+        <div class="ui-kpi">
+            <span class="ui-kpi-rotulo">Minutas</span>
+            <span class="ui-kpi-valor">{{ minutas.quantidade|intcomma }}</span>
+        </div>
+        <div class="ui-kpi">
+            <span class="ui-kpi-rotulo">Última minuta</span>
+            <span class="ui-kpi-valor">{{ minutas.ultima|date:"d/m/Y"|default:"-" }}</span>
+        </div>
+        <div class="ui-kpi">
+            <span class="ui-kpi-rotulo">Abastecimentos</span>
+            <span class="ui-kpi-valor">{{ abastecimentos.quantidade|intcomma }}</span>
+        </div>
+        <div class="ui-kpi">
+            <span class="ui-kpi-rotulo">Último abastecimento</span>
+            <span class="ui-kpi-valor">{{ abastecimentos.ultimo|date:"d/m/Y"|default:"-" }}</span>
+        </div>
+    </div>
+
+    <h3 class="ui-secao-titulo">Dados do veículo</h3>
+    <dl class="veiculos-dados">
+        <div><dt>Ano</dt><dd>{{ veiculo.Ano|default:"-" }}</dd></div>
+        <div><dt>Cor</dt><dd>{{ veiculo.Cor|default:"-" }}</dd></div>
+        <div><dt>Combustível</dt><dd>{{ veiculo.Combustivel|default:"-" }}</dd></div>
+        <div><dt>Renavam</dt><dd>{{ veiculo.Renavam|default:"-" }}</dd></div>
+        <div><dt>RNTRC</dt><dd>{{ veiculo.RNTRC|default:"-" }}</dd></div>
+        <div><dt>Rastreador</dt><dd>{{ veiculo.Rastreador|default:"-" }}</dd></div>
+        <div><dt>Capacidade</dt><dd>{{ veiculo.Capacidade|floatformat:0|intcomma }} kg</dd></div>
+        <div><dt>Medidas (A × C × L)</dt>
+            <dd>{{ veiculo.MedidaAltura|floatformat:2 }} × {{ veiculo.MedidaComprimento|floatformat:2 }} × {{ veiculo.MedidaLargura|floatformat:2 }} m</dd></div>
+        <div><dt>Cubagem</dt><dd>{{ cubagem|floatformat:2 }} m³</dd></div>
+    </dl>
+
+    <div class="ui-grid-2 veiculos-pessoas">
+        <div>
+            <h3 class="ui-secao-titulo">Proprietário</h3>
+            <p class="ui-forte">{{ veiculo.Proprietario }}</p>
+            {% for fone in fones_proprietario %}
+                <p class="veiculos-fone">{{ fone.TipoFone }}: {{ fone.Fone }}{% if fone.Contato %} ({{ fone.Contato }}){% endif %}</p>
+            {% endfor %}
+        </div>
+        <div>
+            <h3 class="ui-secao-titulo">Motorista</h3>
+            {% if veiculo.Motorista_id == veiculo.Proprietario_id %}
+                <p class="veiculos-fone">O próprio proprietário.</p>
+            {% else %}
+                <p class="ui-forte">{{ veiculo.Motorista }}</p>
+                {% for fone in fones_motorista %}
+                    <p class="veiculos-fone">{{ fone.TipoFone }}: {{ fone.Fone }}{% if fone.Contato %} ({{ fone.Contato }}){% endif %}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% else %}
+<section class="ui-card">
+    <div class="ui-vazio">
+        <i class="bi bi-truck"></i>
+        <p>Selecione um veículo na lista para ver os detalhes.</p>
+    </div>
+</section>
+{% endif %}

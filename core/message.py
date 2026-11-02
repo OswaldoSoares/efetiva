@@ -63,6 +63,46 @@ mensagens = {
         "mensagem": "ABASTECIMENTO EXCLUÍDO COM SUCESSO.",
         "tipo": "success",
     },
+    "veic0001": {
+        "mensagem": "VEÍCULO {placa} ADICIONADO COM SUCESSO.",
+        "tipo": "success",
+    },
+    "veic0002": {
+        "mensagem": "VEÍCULO {placa} ALTERADO COM SUCESSO.",
+        "tipo": "success",
+    },
+    "veic0003": {
+        "mensagem": "VEÍCULO {placa} EXCLUÍDO COM SUCESSO.",
+        "tipo": "success",
+    },
+    "veic0004": {
+        "mensagem": "VEÍCULO {placa} ATIVADO.",
+        "tipo": "success",
+    },
+    "veic0005": {
+        "mensagem": "VEÍCULO {placa} INATIVADO. ELE NÃO APARECE MAIS NAS LISTAS DE ESCOLHA.",
+        "tipo": "info",
+    },
+    "veic0006": {
+        "mensagem": "O VEÍCULO {placa} NÃO PODE SER EXCLUÍDO, POIS TEM {vinculos}. INATIVE-O.",
+        "tipo": "warning",
+    },
+    "veic0007": {
+        "mensagem": "CATEGORIA {categoria} ADICIONADA COM SUCESSO.",
+        "tipo": "success",
+    },
+    "veic0008": {
+        "mensagem": "CATEGORIA {categoria} ALTERADA COM SUCESSO.",
+        "tipo": "success",
+    },
+    "veic0009": {
+        "mensagem": "CATEGORIA {categoria} EXCLUÍDA COM SUCESSO.",
+        "tipo": "success",
+    },
+    "veic0010": {
+        "mensagem": "A CATEGORIA {categoria} NÃO PODE SER EXCLUÍDA, POIS TEM {vinculos}.",
+        "tipo": "warning",
+    },
 
 
 
