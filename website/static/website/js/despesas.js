@@ -598,7 +598,6 @@ function abastecimentoSugerePreco(form) {
 
 function abastecimentoSubmit(modal) {
     var form = modal.find(".modal-body form");
-    form.find(".js-abastecimento-data").mask("00/00/0000");
     form.on("focus", "input", function() {
         this.select();
     });

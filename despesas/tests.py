@@ -326,9 +326,9 @@ def test_form_aceita_data_brasileira(dados):
     dados["DataAbastecimento"] = datetime.date.today().strftime("%d/%m/%Y")
     form = CadastraAbastecimento(data=dados)
     assert form.is_valid(), form.errors
-    assert 'value="' + dados["DataAbastecimento"] + '"' in str(
-        CadastraAbastecimento()["DataAbastecimento"]
-    )
+    campo = str(CadastraAbastecimento()["DataAbastecimento"])
+    assert 'type="date"' in campo
+    assert 'value="' + datetime.date.today().isoformat() + '"' in campo
 
 
 @pytest.mark.django_db
