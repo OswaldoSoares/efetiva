@@ -1,0 +1,96 @@
+{% csrf_token %}
+<section class="ui-card js-veiculos"
+         data-url-lista="{% url 'veiculos_lista' %}"
+         data-situacao="{{ situacao }}"
+         data-id_categoria="{{ id_categoria|default:'' }}"
+         data-id_veiculo="{{ id_veiculo|default:'' }}">
+    <header class="ui-card-header">
+        <div>
+            <h2 class="ui-card-titulo">Veículos</h2>
+            <p class="ui-card-subtitulo">
+                {{ total_ativos }} ativo{{ total_ativos|pluralize }} ·
+                {{ total_inativos }} inativo{{ total_inativos|pluralize }}
+            </p>
+        </div>
+        <div class="ui-card-acoes">
+            <button type="button" class="ui-btn ui-btn-primario js-veiculo-abrir"
+                    data-url="{% url 'veiculo_form' %}"
+                    data-title="ADICIONAR VEÍCULO">
+                <i class="bi bi-plus-lg"></i> Novo veículo
+            </button>
+        </div>
+    </header>
+
+    <div class="veiculos-filtros">
+        <div class="veiculos-segmentado" role="group" aria-label="Situação">
+            {% for valor, rotulo in situacoes %}
+                <button type="button" class="js-veiculos-filtro{% if valor == situacao %} ativo{% endif %}"
+                        data-situacao="{{ valor }}"
+                        aria-pressed="{% if valor == situacao %}true{% else %}false{% endif %}">
+                    {{ rotulo }}
+                </button>
+            {% endfor %}
+        </div>
+        <select class="form-control veiculos-filtro-categoria js-veiculos-categoria"
+                aria-label="Categoria">
+            <option value="">Todas as categorias</option>
+            {% for categoria in categorias %}
+                <option value="{{ categoria.idCategoria }}"
+                        {% if categoria.idCategoria == id_categoria %}selected{% endif %}>
+                    {{ categoria.Categoria }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    {% if veiculos %}
+        <div class="ui-tabela-wrap">
+            <table class="ui-tabela ui-tabela-cards">
+                <thead>
+                    <tr>
+                        <th>Placa</th>
+                        <th>Categoria</th>
+                        <th>Marca / Modelo</th>
+                        <th>Proprietário</th>
+                        <th>Motorista</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for veiculo in veiculos %}
+                        <tr class="ui-clicavel js-veiculo-selecionar{% if veiculo.pk == id_veiculo %} ui-linha-ativa{% endif %}{% if not veiculo.Ativo %} veiculos-linha-inativa{% endif %}"
+                            data-url="{% url 'veiculo_consulta' %}"
+                            data-id_veiculo="{{ veiculo.pk }}">
+                            <td data-label="Placa" class="ui-forte">
+                                {{ veiculo.Placa }}
+                                {% if not veiculo.Ativo %}<span class="ui-badge">Inativo</span>{% endif %}
+                            </td>
+                            <td data-label="Categoria">{{ veiculo.Categoria }}</td>
+                            <td data-label="Marca / Modelo">{{ veiculo.Marca }} {{ veiculo.Modelo }}</td>
+                            <td data-label="Proprietário" title="{{ veiculo.Proprietario }}">
+                                {{ veiculo.Proprietario|truncatechars:24 }}
+                            </td>
+                            <td data-label="Motorista" title="{{ veiculo.Motorista }}">
+                                {{ veiculo.Motorista|truncatechars:24 }}
+                            </td>
+                            <td class="ui-acoes">
+                                <button type="button" class="ui-btn-icone js-veiculo-abrir"
+                                        data-url="{% url 'veiculo_form' %}"
+                                        data-id_veiculo="{{ veiculo.pk }}"
+                                        data-title="ALTERAR VEÍCULO {{ veiculo.Placa }}"
+                                        title="Alterar" aria-label="Alterar {{ veiculo.Placa }}">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="ui-vazio">
+            <i class="bi bi-truck"></i>
+            <p>Nenhum veículo encontrado com esses filtros.</p>
+        </div>
+    {% endif %}
+</section>

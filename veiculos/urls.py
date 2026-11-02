@@ -1,39 +1,26 @@
 from django.urls import path
-from .views import indexveiculo, \
-    consultaveiculo, \
-    criaveiculo, \
-    editaveiculo, \
-    excluiveiculo, \
-    lista_categoria_veiculos, cria_categoria_veiculos,\
-    atualiza_categoria_veiculos,exclui_categoria_veiculos
+
+from .views import (
+    consultaveiculo,
+    indexveiculo,
+    veiculo_consulta,
+    veiculo_excluir,
+    veiculo_form,
+    veiculo_situacao,
+    veiculos_lista,
+)
 
 urlpatterns = [
-    path('',
-         indexveiculo,
-         name='indexveiculo'
-     ),
+    path("", indexveiculo, name="indexveiculo"),
+    path("lista", veiculos_lista, name="veiculos_lista"),
+    path("consulta", veiculo_consulta, name="veiculo_consulta"),
+    path("veiculo", veiculo_form, name="veiculo_form"),
+    path("situacao", veiculo_situacao, name="veiculo_situacao"),
+    path("excluir", veiculo_excluir, name="veiculo_excluir"),
+    # Endereço antigo, mantido para links salvos
     path(
-        'consultaveiculo/<int:idvei>/',
+        "consultaveiculo/<int:idvei>/",
         consultaveiculo,
-        name='consultaveiculo'
+        name="consultaveiculo",
     ),
-    path(
-        'criaveiculo/',
-        criaveiculo,
-        name='criaveiculo'
-    ),
-    path(
-        'editaveiculo/<int:idvei>/',
-        editaveiculo,
-        name='editaveiculo'
-    ),
-    path(
-        'excluiveiculo/<int:idvei>/',
-        excluiveiculo,
-        name='excluiveiculo'
-    ),
-    path('listacategoria/', lista_categoria_veiculos, name='lista_categoria_veiculos'),
-    path('criacategoria/', cria_categoria_veiculos, name='cria_categoria_veiculos'),
-    path('atualizacategoria/<int:id>/', atualiza_categoria_veiculos, name='atualiza_categoria_veiculos'),
-    path('excluicategoria/<int:id>/', exclui_categoria_veiculos, name='exclui_categoria_veiculos'),
 ]
