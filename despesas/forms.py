@@ -32,15 +32,10 @@ class CadastraAbastecimento(forms.ModelForm):
             "ValorAbastecido": "VALOR TOTAL",
         }
         widgets = {
-            # Texto com máscara: no type="date" o Tab percorre dia/mês/ano
+            # type="date": o cliente prefere escolher a data no calendário,
+            # mesmo com o Tab passando por dia/mês/ano
             "DataAbastecimento": forms.DateInput(
-                attrs={
-                    "class": "form-control js-abastecimento-data",
-                    "placeholder": "dd/mm/aaaa",
-                    "inputmode": "numeric",
-                    "autocomplete": "off",
-                },
-                format="%d/%m/%Y",
+                attrs={"type": "date"}, format="%Y-%m-%d"
             ),
             # inputmode="decimal": teclado numérico com vírgula no celular
             "LitrosAbastecidos": forms.NumberInput(

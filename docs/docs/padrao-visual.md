@@ -55,7 +55,7 @@ Padrão adotado a partir do card de **Abastecimentos** (módulo Despesas) para m
 ## Modal
 
 - Focar o primeiro campo no evento `shown.bs.modal` (antes disso o Bootstrap rouba o foco).
-- Datas como texto com máscara `dd/mm/aaaa` (`jquery.mask`), não `type="date"`, para o Tab ir direto ao próximo campo.
+- Datas com `type="date"` (formato `%Y-%m-%d` no widget): o cliente prefere escolher no calendário, mesmo com o Tab passando por dia/mês/ano.
 - Em erro de validação, focar o primeiro campo com erro.
 
 ## Regras
