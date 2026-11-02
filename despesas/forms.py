@@ -7,9 +7,6 @@ from veiculos.models import Veiculo
 
 from .models import Abastecimento
 
-# Proprietário dos veículos da frota própria
-ID_PROPRIETARIO_FROTA = 17
-
 # Diferença máxima aceita entre o valor total e litros x preço do litro
 TOLERANCIA_VALOR = Decimal("0.10")
 
@@ -58,9 +55,9 @@ class CadastraAbastecimento(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["idVeiculo"].queryset = Veiculo.objects.filter(
-            Proprietario_id=ID_PROPRIETARIO_FROTA
-        ).order_by("Placa")
+        # Frota própria e agregados (o abastecimento do agregado é
+        # descontado do frete)
+        self.fields["idVeiculo"].queryset = Veiculo.objects.order_by("Placa")
         self.fields["idVeiculo"].label_from_instance = lambda obj: obj.Placa
         self.fields["DataAbastecimento"].input_formats = [
             "%d/%m/%Y",

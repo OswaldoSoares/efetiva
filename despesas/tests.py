@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 
 from despesas.facades import abastecimento, consumo
-from despesas.forms import ID_PROPRIETARIO_FROTA, CadastraAbastecimento
+from despesas.forms import CadastraAbastecimento
 from clientes.models import Cliente
 from despesas.models import Abastecimento
 from minutas.models import Minuta
@@ -16,9 +16,7 @@ from veiculos.models import CategoriaVeiculo, Veiculo
 
 @pytest.fixture
 def veiculo():
-    proprietario = Pessoal.objects.create(
-        idPessoal=ID_PROPRIETARIO_FROTA, Nome="TRANSEFETIVA"
-    )
+    proprietario = Pessoal.objects.create(Nome="TRANSEFETIVA")
     categoria = CategoriaVeiculo.objects.create(Categoria="VUC")
     return Veiculo.objects.create(
         Marca="VW",
@@ -94,12 +92,11 @@ def test_form_abastecimento_ordem_dos_campos():
 
 
 @pytest.mark.django_db
-def test_form_abastecimento_rejeita_veiculo_de_terceiro(dados, veiculo):
-    terceiro = Pessoal.objects.create(Nome="TERCEIRO")
-    veiculo.Proprietario = terceiro
+def test_form_abastecimento_aceita_veiculo_de_agregado(dados, veiculo):
+    agregado = Pessoal.objects.create(Nome="AGREGADO")
+    veiculo.Proprietario = agregado
     veiculo.save()
-    form = CadastraAbastecimento(data=dados)
-    assert "idVeiculo" in form.errors
+    assert CadastraAbastecimento(data=dados).is_valid()
 
 
 @pytest.mark.django_db
